@@ -1,5 +1,7 @@
 package controllers;
 
+import controllers.Application.ConfiguracoesApp;
+import controllers.Application.DadosApp;
 import security.Auth;
 import security.UsuarioSessao;
 import serializers.ApplicationSerializer;
@@ -22,8 +24,9 @@ public class Application extends GenericController {
 		
 		DadosApp dados = new DadosApp();
 		dados.usuarioSessao = Auth.getUsuarioSessao(session.current());
+		String jsonConfig = ApplicationSerializer.findInfo.serialize(dados);
 		
-		renderJSON(dados, ApplicationSerializer.findInfo);
+		render(jsonConfig);
 	}
 	
 	public static void versao() {
@@ -34,6 +37,12 @@ public class Application extends GenericController {
 	public static class DadosApp {
 		
 		public UsuarioSessao usuarioSessao;
+		public ConfiguracoesApp configuracoes = new ConfiguracoesApp();
+	}
+	
+	public static class ConfiguracoesApp {
+		
+		public String baseURL = Configuracoes.HTTP_PATH;
 	}
 
 }

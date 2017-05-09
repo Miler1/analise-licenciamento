@@ -1,0 +1,2 @@
+
+LICENCIAMENTO_CONFIG = ${jsonConfig};

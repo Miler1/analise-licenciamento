@@ -4,7 +4,7 @@
 
 # Aplicação
 GET		/											Application.index
-GET		/aplicacao/info								Application.findInfo
+GET		/app/aplicacao/info							Application.findInfo(format:'js')
 GET		/versao										Application.versao
 
 # Login

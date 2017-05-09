@@ -8,5 +8,6 @@ public class ApplicationSerializer {
 	public static JSONSerializer findInfo = SerializerUtil.create(
 			"usuarioSessao.nome",
 			"usuarioSessao.cpfCnpj",
-			"usuarioSessao.permissoes");
+			"usuarioSessao.permissoes",
+			"configuracoes.baseURL");
 }

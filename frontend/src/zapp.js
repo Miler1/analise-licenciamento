@@ -40,17 +40,14 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 	$rootScope.confirmacao = {};
 	$rootScope.mensagens = app.utils.Mensagens;
 
-	applicationService.findInfo(function(dados) {
+	$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
+	$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
 
-		$rootScope.usuarioSessao = dados.data.usuarioSessao;
-		$rootScope.config = dados.data.configuracoes;
+	if(!$rootScope.usuarioSessao){
+		window.location = $rootScope.config.baseUrl;
+	}
 
-		if(!$rootScope.usuarioSessao){
-			window.location = "/";
-		}
-
-		configurarPermissoes($rootScope.usuarioSessao, $rootScope);
-	});
+	configurarPermissoes($rootScope.usuarioSessao, $rootScope);
 
 	/*  Limpando o breadcrumb ao acessar a tela inicial */
 	$scope.$on('$routeChangeSuccess', function(event, rotaAtual, rotaAnterior){
@@ -86,7 +83,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 }]);
 
 licenciamento.constant('config', {
-	BASE_URL: "/",
+	BASE_URL: LICENCIAMENTO_CONFIG.configuracoes.baseURL,
 	QTDE_ITENS_POR_PAGINA: 10
 });
 
