@@ -1,0 +1,9 @@
+ol.breadcrumb(ng-controller='breadcrumbController as breadcrumb', ng-cloak)
+	li
+		a(href='#') Sistema de Regularização
+	li
+		a(href='#') Módulo de análise
+
+	li(ng-repeat='item in breadcrumb.itens')
+		span(ng-if="$last") {{item.title}}
+		a(ng-if='!$last', href='{{item.href}}') {{item.title}}

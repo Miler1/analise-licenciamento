@@ -1,0 +1,18 @@
+div.modal-header
+
+	button.close(type='button', ng-click="modalCtrl.cancelar()")
+		span(aria-hidden='true') ×
+		span.sr-only Fechar
+
+	h4.modal-title {{modalCtrl.titulo}}
+
+div.modal-body
+
+	div(ng-bind-html='modalCtrl.conteudo')
+	p
+		strong {{modalCtrl.conteudoDestaque}}
+
+div.modal-footer
+
+	button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()") {{modalCtrl.labelBotaoCancelar}}
+	button.btn.btn-success.pull-right(ng-click="modalCtrl.ok()") {{modalCtrl.labelBotaoConfirmar}}

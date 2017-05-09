@@ -1,0 +1,20 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Aplicação
+GET		/											Application.index
+GET		/aplicacao/info								Application.findInfo
+GET		/versao										Application.versao
+
+# Login
+GET		/login										Login.showLogin
+GET		/authenticate								Login.login
+GET		/logout										Login.logout
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Estáticos
+GET     /public/									staticDir:public
+GET     /app/										staticDir:public/app

@@ -1,0 +1,7 @@
+mixin panel(title)
+	fieldset.panel.panel-default
+		if (title)
+			div.panel-heading
+				h3.panel-title #{title}
+		div.panel-body
+			block

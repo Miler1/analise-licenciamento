@@ -1,0 +1,47 @@
+header
+
+	div.nav-global-linha.visible-xs
+		p.pull-left Sistema de Regularização - Módulo de análise
+
+		ul.text-right
+			li
+				a.btn.btn-link(href="../logout")
+					span.glyphicon.glyphicon-off
+					|  Sair
+
+
+	div.header-bg
+		div.container
+			div.row
+				div.col-sm-6
+					a(href='#/', title='Ir à Página Inicial')
+						img.img-responsive(src='images/logo.png', style='margin-top: 26px;')
+				div.col-sm-6
+
+					nav.navbar.navbar-right.navbar-inverse.navbar-global.hidden-xs(role='navigation')
+						ul.nav.navbar-nav
+							li.hidden-sm(style='margin-right: 16px;')
+								p.navbar-text.pull-right
+									small
+										| Bem vindo(a), 
+										strong {{usuarioSessao.nome | textoTruncado : 25}}
+							li.dropdown
+								li
+									a(href='../logout')
+										small
+											span.glyphicon.glyphicon-off
+											|  Sair
+
+	div.hidden-header
+		nav.navbar.navbar-right.navbar-inverse.navbar-global.hidden-xs(role='navigation')
+			
+			ul.nav.navbar-nav
+
+				li.dropdown
+					li
+						a(href='/logout')
+							small
+								span.glyphicon.glyphicon-off
+								|  Sair
+
+	include menu

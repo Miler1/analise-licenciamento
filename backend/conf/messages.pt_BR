@@ -1,0 +1,11 @@
+ERRO_PADRAO = Desculpe, ocorreu um erro inesperado no sistema e a ação não pode ser executada. Tente novamente ou contate o administrador do sistema.
+
+ERRO_VALIDACAO = Campos inválidos.
+
+PERMISSAO_NEGADA = Você não possui permissão para efetuar esta ação.
+
+CPF_CNPJ_INVALIDO_NAO_INFORMADO = CPF/CNPJ não informado ou inválido.
+
+PARAMETRO_NAO_INFORMADO = Parâmetro faltante para requisição: %s.
+
+ENDERECOS_EXTRAS_NAO_PERMITIDOS = É permitido cadastrar para um CPF/CNPJ apenas um endereço comum e outro de correspondência.

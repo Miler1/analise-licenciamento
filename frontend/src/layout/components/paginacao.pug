@@ -1,0 +1,18 @@
+mixin paginacao(model, changeCallback)
+
+	div.text-center
+		ul.pagination-sm(uib-pagination,
+						rotate="true",
+						boundary-links="true",
+						max-size=5,
+						total-items=model + '.totalItens',
+						items-per-page=model + '.itensPorPagina',
+						num-pages=model + '.numPaginas',
+						ng-model=model + '.paginaAtual',
+						ng-change=changeCallback + "()",
+						previous-text="‹", next-text="›",
+						first-text="«",
+						last-text="»")
+
+		p.paginationLabel
+			| Exibindo {{#{model}.inicioIntervalo}} - {{#{model}.fimIntervalo}} de {{#{model}.totalItens}} registro(s)

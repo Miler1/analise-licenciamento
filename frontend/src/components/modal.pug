@@ -1,0 +1,21 @@
+mixin modal()
+	- var dialogClass = (attributes.large) ? "modal-lg" : "";
+	- var controller = attributes["ng-controller"] || null;
+
+	div.modal.fade(id=`${attributes.id}` tabindex='-1', role='dialog')
+		div.modal-dialog(class=`${dialogClass}`)
+			| <div class="modal-content" #{ controller != null ? 'ng-controller=' + controller : ''} > 	
+			div.modal-header
+				button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') ×
+				h3.modal-title #{attributes.titulo}
+			
+			block
+			| </div>
+
+
+mixin modal-body()
+
+	div.modal-body
+
+		block

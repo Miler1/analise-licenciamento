@@ -1,0 +1,10 @@
+mixin panelAtalhos()
+	div.col-sm-6
+		div.panel.panel-ra.atalhos
+			div.panel-heading
+				h3.panel-title #{attributes.titulo}
+			div.panel-body
+				div.col-sm-3.col-xs-3
+					img.img-responsive(src=attributes.img)
+				div.col-sm-9.col-xs-9.links
+					block

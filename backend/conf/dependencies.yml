@@ -1,0 +1,50 @@
+# Application dependencies
+
+require:
+    - play
+    - net.sf.flexjson -> flexjson 2.1
+    - org.hibernate -> hibernate-spatial 4.0
+    - org.geotools -> gt-geojson 2.7.1
+    - org.mockito -> mockito-all 1.9.5
+    - com.nimbusds -> nimbus-jose-jwt 3.9.2
+    
+repositories:
+
+    - Nexus Lemaf:
+        type: iBiblio
+        root: "http://repo.ti.lemaf.ufla.br/repository/public"
+        contains:
+            - br.ufla -> *
+            - org.hibernatespatial -> *
+            - org.geotools -> *
+            - jgridshift -> *
+            - org.geotools.xsd -> *
+            - org.geotools.ogc -> *
+            - org.eclipse.emf -> *
+            - it.geosolutions -> *
+            - it.geosolutions.imageio-ext -> *
+            - org.eclipse.xsd -> *
+            - org.apache.xml -> *
+            - xml-apis -> *
+            - xml-apis.xml-apis-xerces -> *
+            - org.mongodb -> *
+            - java3d -> *
+            - javax.media -> *
+
+    - OPENGEO:
+       type: iBiblio
+       force: true
+       root: "http://download.osgeo.org/webdav/geotools/"
+       contains:
+           - org.geotools -> *
+           - javax.media -> *
+           - java3d -> *
+
+
+    - Hibernate Spatial repo:
+        type: iBiblio
+        root: "http://www.hibernatespatial.org/repository"
+        contains:
+            - org.hibernate -> *
+            - org.postgis -> *
+

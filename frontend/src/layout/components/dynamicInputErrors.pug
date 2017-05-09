@@ -1,0 +1,6 @@
+mixin dynamicInputErrors(form, name, ...errors)
+
+	if name && errors
+		.error-message(ng-messages= `${form}[${name}].$error`, ng-if= `${form}.$submitted`)
+			for e in errors	
+				div(ng-message= e) {{$root.mensagens.valid.#{e}}}

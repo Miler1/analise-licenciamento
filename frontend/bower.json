@@ -1,0 +1,31 @@
+{
+  "name": "analise",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "jquery": "3.1.1",
+    "angular": "1.6.2",
+    "angular-i18n": "1.6.2",
+    "angular-route": "1.6.2",
+    "components-font-awesome": "*",
+    "angular-bootstrap": "2.5.0",
+    "angular-input-masks": "2.5.0",
+    "jquery-mask-plugin": "jquery-mask#1.14.10",
+    "gsap": "1.19.0",
+    "blockUI": "*",
+    "lodash": "4.13.1",
+    "angular-growl-v2": "0.7.9",
+    "angular-messages": "1.6.2",
+    "angular-br-filters": "0.7.0",
+    "angular-moment": "1.0.1",
+    "leaflet": "1.0.3",
+    "leaflet-graphicscale": "git://github.com/nerik/leaflet-graphicscale#v0.0.2",
+    "Leaflet.EasyButton": "2.0.0",
+    "Leaflet.fullscreen": "Leaflet/Leaflet.fullscreen#1.0.2",
+    "leaflet-draw": "0.4.9",
+    "ng-file-upload": "12.2.13",
+    "angular-sanitize": "1.6.2",
+    "angular-ui-select": "^0.19.6",
+    "proj4": "^2.4.3"
+  }
+}
