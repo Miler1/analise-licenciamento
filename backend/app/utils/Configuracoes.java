@@ -16,7 +16,7 @@ public class Configuracoes {
 	public static String AUTH_SERVICE = getConfig("auth.service", null);
 	public static String LOGIN_URL = getConfig("auth.login.url", DEFAULT_LOGIN_URL);
 	public static Boolean EXTERNAL_LOGIN = !LOGIN_URL.equals(DEFAULT_LOGIN_URL);
-	public static String INDEX_URL = "/app/index.html";
+	public static String INDEX_URL = "app/index.html";
 
 	public static String APPLICATION_TEMP_FOLDER = getConfig("application.tempFolder", Play.applicationPath + "/tmp/");
 
