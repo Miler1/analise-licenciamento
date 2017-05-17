@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 
+import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.FileManager;
@@ -35,8 +36,10 @@ public class Documento extends GenericModel implements Identificavel {
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
 	
+	@Required
 	public String caminho;
 	
+	@Required
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
 	public TipoDocumento tipo;
@@ -53,6 +56,7 @@ public class Documento extends GenericModel implements Identificavel {
 	@Transient
 	public String extensao;
 	
+	@Required
 	@Column(name="data_cadastro")
 	public Date dataCadastro;
 	

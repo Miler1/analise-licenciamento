@@ -1,0 +1,14 @@
+package models.licenciamento;
+
+public enum TipoPergunta {
+	
+	SIM_NAO,
+	VALIDA_APP,
+	VALIDA_MZEE,
+	VALIDA_OUTORGA,
+	VALIDA_PASSIVO,
+	VALIDA_AREA_CONSOLIDADA,
+	VALIDA_ZONA_CONSOLIDACAO,
+	VALIDA_RESERVA_LEGAL
+
+}

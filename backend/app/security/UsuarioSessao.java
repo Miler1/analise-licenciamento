@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.PessoaFisica;
+import models.licenciamento.PessoaFisica;
 
 public class UsuarioSessao implements Serializable {
 
