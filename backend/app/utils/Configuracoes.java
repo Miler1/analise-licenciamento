@@ -29,6 +29,8 @@ public class Configuracoes {
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
 	
+	public static final String DATABASE_SCHEMA = getConfig("database.schema", null);
+	
 	/*
 	 * Métodos utilitários
 	 */

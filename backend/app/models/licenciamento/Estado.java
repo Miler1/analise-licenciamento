@@ -1,4 +1,4 @@
-package models;
+package models.licenciamento;
 
 import java.util.List;
 

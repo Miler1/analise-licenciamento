@@ -1,4 +1,4 @@
-package models;
+package models.licenciamento;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,16 +28,4 @@ public class Contato extends GenericModel {
 	public String telefone;
 	
 	public String celular;
-	
-	
-	public void update(Contato dados) {
-		
-		this.email = dados.email;
-		this.telefone = dados.telefone;
-		this.celular = dados.celular;
-		
-		Validacao.validar(this);
-		
-		super.save();
-	}
 }

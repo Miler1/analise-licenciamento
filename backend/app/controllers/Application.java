@@ -1,7 +1,5 @@
 package controllers;
 
-import controllers.Application.ConfiguracoesApp;
-import controllers.Application.DadosApp;
 import security.Auth;
 import security.UsuarioSessao;
 import serializers.ApplicationSerializer;

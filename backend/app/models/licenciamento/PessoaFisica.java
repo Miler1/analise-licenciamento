@@ -1,4 +1,4 @@
-package models;
+package models.licenciamento;
 
 import java.util.Date;
 
@@ -56,19 +56,4 @@ public class PessoaFisica extends Pessoa {
 	@ManyToOne
 	@JoinColumn(name="id_municipio_nascimento", referencedColumnName="id_municipio")
 	public Municipio municipioNascimento;
-	
-	public boolean isMesmaPessoa(PessoaFisica pessoa) {
-		
-		return (this.id != null && pessoa.id != null && this.id.equals(pessoa.id)) ||
-				(this.cpf != null && pessoa.cpf != null && this.cpf.equals(pessoa.cpf));
-	}
-	
-	public PessoaFisica() {
-		
-	}
-	
-	public PessoaFisica(Long id) {
-		
-		this.id = id;
-	}
 }
