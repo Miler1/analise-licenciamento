@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
-import models.licenciamento.Documento;
+import models.licenciamento.DocumentoLicenciamento;
 
 @Entity
 @Table(schema="anlise", name="analise_documento")
@@ -36,5 +36,5 @@ public class AnaliseDocumento extends GenericModel {
 	
 	@ManyToOne
 	@JoinColumn(name="id_documento")
-	public Documento documento;
+	public DocumentoLicenciamento documento;
 }

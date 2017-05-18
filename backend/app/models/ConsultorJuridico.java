@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,10 +22,11 @@ import play.db.jpa.GenericModel;
 @Table(schema="analise", name="consultor_juridico")
 public class ConsultorJuridico extends GenericModel {
 	
-	public static final String SEQ = "processo_id_seq";
+	public static final String SEQ = "analise.consultor_juridico_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
+	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 	
 	@Required
