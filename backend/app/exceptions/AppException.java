@@ -22,6 +22,9 @@ public class AppException extends RuntimeException {
 		this.msgArgs = msgArgs;
 	}
 	
+	public AppException() {
+	}
+
 	public String getTextoMensagem () {
 		
 		return this.mensagem.getTexto(this.msgArgs);

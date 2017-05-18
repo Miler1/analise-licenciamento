@@ -7,29 +7,9 @@ require:
     - org.geotools -> gt-geojson 2.7.1
     - org.mockito -> mockito-all 1.9.5
     - com.nimbusds -> nimbus-jose-jwt 3.9.2
+    - br.ufla.lemaf -> InterfaceTramitacao 0.3.5-SNAPSHOT
     
 repositories:
-
-    - Nexus Lemaf:
-        type: iBiblio
-        root: "http://repo.ti.lemaf.ufla.br/repository/public"
-        contains:
-            - br.ufla -> *
-            - org.hibernatespatial -> *
-            - org.geotools -> *
-            - jgridshift -> *
-            - org.geotools.xsd -> *
-            - org.geotools.ogc -> *
-            - org.eclipse.emf -> *
-            - it.geosolutions -> *
-            - it.geosolutions.imageio-ext -> *
-            - org.eclipse.xsd -> *
-            - org.apache.xml -> *
-            - xml-apis -> *
-            - xml-apis.xml-apis-xerces -> *
-            - org.mongodb -> *
-            - java3d -> *
-            - javax.media -> *
 
     - OPENGEO:
        type: iBiblio
@@ -47,4 +27,15 @@ repositories:
         contains:
             - org.hibernate -> *
             - org.postgis -> *
+            
+    - Nexus Lemaf:
+        type: iBiblio
+        root: "http://repo.ti.lemaf.ufla.br/repository/public"
+        contains:
+            - br.ufla.lemaf -> *
+            - org.hibernatespatial -> *
+            - org.geotools -> *
+            - jgridshift -> *
+            - java3d -> *
+            - javax.media -> *
 
