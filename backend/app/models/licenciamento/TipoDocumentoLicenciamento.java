@@ -8,7 +8,7 @@ import play.db.jpa.Model;
 
 @Entity
 @Table(schema = "licenciamento", name = "tipo_documento")
-public class TipoDocumento extends Model {
+public class TipoDocumentoLicenciamento extends Model {
 
 	public static Long DOCUMENTO_REPRESENTACAO = 1l;
 	public static Long DISPENSA_LICENCIAMENTO = 2l;

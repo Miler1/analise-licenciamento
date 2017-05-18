@@ -26,10 +26,10 @@ import utils.FileManager;
 import utils.Identificavel;
 
 @Entity
-@Table(schema = "licenciamento", name = "documento")
+@Table(schema = "analise", name = "documento")
 public class Documento extends GenericModel implements Identificavel {
 
-	private static final String SEQ = "licenciamento.documento_id_seq";
+	private static final String SEQ = "analise.documento_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)

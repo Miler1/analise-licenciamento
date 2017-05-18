@@ -84,7 +84,7 @@ public class ResponsavelEmpreendimento extends GenericModel implements IPessoaFi
 	@JoinTable(schema = "licenciamento", name = "documento_responsavel_empreendimento",
 			joinColumns = @JoinColumn(name = "id_responsavel_empreendimento"),
 			inverseJoinColumns = @JoinColumn(name = "id_documento"))
-	public List<Documento> documentosRepresentacao;
+	public List<DocumentoLicenciamento> documentosRepresentacao;
 
 
 	@Override

@@ -28,13 +28,13 @@ public class AnaliseJuridica extends GenericModel {
 	public static final String SEQ = "analise_juridica_id_seq";
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 	
 	@ManyToOne
 	@JoinColumn(name="id_analise")
-	public List<Analise> analise;
+	public Analise analise;
 	
 	public String parecer;
 	

@@ -26,7 +26,7 @@ import utils.Identificavel;
 
 @Entity
 @Table(schema = "licenciamento", name = "documento")
-public class Documento extends GenericModel implements Identificavel {
+public class DocumentoLicenciamento extends GenericModel implements Identificavel {
 
 	private static final String SEQ = "licenciamento.documento_id_seq";
 	
@@ -39,7 +39,7 @@ public class Documento extends GenericModel implements Identificavel {
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
-	public TipoDocumento tipo;
+	public TipoDocumentoLicenciamento tipo;
 	
 	@Transient
 	public String key;
