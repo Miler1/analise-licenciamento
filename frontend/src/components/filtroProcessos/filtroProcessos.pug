@@ -1,0 +1,35 @@
+div(uib-accordion class="accordion")
+    div(uib-accordion-group class="panel-success" is-open="$ctrl.openedAccordion")
+        div(uib-accordion-heading)
+            | Filtros para consulta 
+            i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordion, 'glyphicon-chevron-right': !$ctrl.openedAccordion}")
+
+        .row.form-group
+            .col-md-5
+                label.obrigatorio.control-label Número do processo:
+                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numProcesso', placeholder='Número do processo:')
+
+            .col-md-7
+                label.obrigatorio.control-label CPF/CNPJ do empreendimento:
+                input.form-control(type='text', name='cpfCnpjEmpreendimento', ng-model='$ctrl.filtro.cpfCnpjEmpreendimento', placeholder=' CPF/CNPJ do empreendimento:')                            
+
+        .row.form-group
+            .col-md-12
+                label.obrigatorio.control-label Município do empreendimento:
+                input.form-control(type='text', name='municipioEmpreendimento', ng-model='$ctrl.filtro.municipioEmpreendimento', placeholder='Município do empreendimento:')
+
+        .row.form-group
+            .col-md-12
+                label.obrigatorio.control-label Tipologia do empreendimento:
+                input.form-control(type='text', name='municipioEmpreendimento', ng-model='$ctrl.filtro.municipioEmpreendimento', placeholder='Município do empreendimento:')
+
+        .row.form-group
+            .col-md-12
+                label.obrigatorio.control-label Atividade do empreendimento:
+                input.form-control(type='text', name='municipioEmpreendimento', ng-model='$ctrl.filtro.municipioEmpreendimento', placeholder='Município do empreendimento:')
+
+        .row
+            .col-md-12
+                button.btn.btn-default.btn-block.pull-right(ng-click="$ctrl.pesquisar()", tabindex="0")
+                    | Pesquisar
+                    span.glyphicon.glyphicon-search

@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -34,7 +35,7 @@ public class Processo extends GenericModel {
 	
 	@Required
 	@ManyToOne
-	@JoinColumn(columnDefinition="id_empreendimento")
+	@JoinColumn(name="id_empreendimento")
 	public Empreendimento empreendimento;
 	
 	//TODO Adicionar objeto tramitável
@@ -45,4 +46,6 @@ public class Processo extends GenericModel {
 		inverseJoinColumns = @JoinColumn(name="id_caracterizacao"))
 	public List<Caracterizacao> caracterizacoes;
 
+	@OneToMany(mappedBy="processo")
+	public List<Analise> analises;
 }
