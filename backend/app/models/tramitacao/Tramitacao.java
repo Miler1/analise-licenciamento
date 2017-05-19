@@ -15,7 +15,6 @@ import models.portalSeguranca.Usuario;
 import models.tramitacao.enums.FluxoTramitacao;
 import models.tramitacao.enums.TipoObjetoTramitavel;
 import play.Logger;
-import play.i18n.Messages;
 import utils.Mensagem;
 
 public class Tramitacao {
@@ -27,7 +26,7 @@ public class Tramitacao {
 	private final int POSICAO_TIPO_OBJETO_TRAMITAVEL= 2;
 	
 	//Ao inserir um fluxo tambem inserir um array com os seguintes valores: id fluxo tramitação, id ação inicial do fluxo e id do tipo objeto tramitavel na respectiva ordem.
-	public static final Long []ANALISE_CAR = {FluxoTramitacao.PROCESSO_ANALISE_CAR.getId(), AcaoTramitacao.CLASSIFICAR , TipoObjetoTramitavel.ANALISE_CAR.getId()};
+	public static final Long []ANALISE_CAR = {FluxoTramitacao.PROCESSO_ANALISE_LICENCIAMENTO.getId(), AcaoTramitacao.VINCULAR , TipoObjetoTramitavel.LICENCIAMENTO_AMBIENTAL.getId()};
 
 	
 	/*Método que inicia o fluxo de tramitação recebendo o objeto tramitavel 
@@ -35,10 +34,10 @@ public class Tramitacao {
 	public void iniciar(Tramitavel objetoTramitavel, Usuario usuarioDestino, Long[] fluxo) {
 		
 		if (objetoTramitavel == null)
-			throw new IllegalArgumentException( Messages.get("TRAMITACAO_OBJETO_TRAMITAVEL_OBRIGATORIO"));
+			throw new IllegalArgumentException(Mensagem.TRAMITACAO_OBJETO_TRAMITAVEL_OBRIGATORIO.getTexto());
 		
 		if (fluxo == null)
-			throw new IllegalArgumentException( Messages.get("TRAMITACAO_FLUXO_OBRIGATORIO") );
+			throw new IllegalArgumentException(Mensagem.TRAMITACAO_FLUXO_OBRIGATORIO.getTexto());
 		
 		try {
 			InicioTramitacaoRequestVO request = new InicioTramitacaoRequestVO()
@@ -165,16 +164,16 @@ public class Tramitacao {
 	private void validateTramitar(List<? extends Tramitavel> tramitaveis, Long idAcaoTramitacao, Usuario usuarioExecutor) {
 
 		if (tramitaveis == null || tramitaveis.isEmpty())
-			throw new IllegalArgumentException(Messages.get("TRAMITACAO_OBJETO_OBRIGATORIO_TRAMITAR"));
+			throw new IllegalArgumentException(Mensagem.TRAMITACAO_OBJETO_OBRIGATORIO_TRAMITAR.getTexto());
 
 		for (Tramitavel tramitavel : tramitaveis) {
 
 			if (tramitavel == null || tramitavel.getIdObjetoTramitavel() == null)
-				throw new IllegalArgumentException(Messages.get("TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO"));
+				throw new IllegalArgumentException(Mensagem.TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO.getTexto());
 		}
 
 		if (idAcaoTramitacao == null)
-			throw new IllegalArgumentException(Messages.get("TRAMITACAO_ACAO_OBRIGATORIA"));
+			throw new IllegalArgumentException(Mensagem.TRAMITACAO_ACAO_OBRIGATORIA.getTexto());
 	}
 	
 	// Retorna o historico do objeto tramitavél
@@ -184,14 +183,14 @@ public class Tramitacao {
 										tramitavel.getIdObjetoTramitavel()).fetch();
 	}
 	
-	// Retorna se a ação está disponivel para o obeto tramitavel
+	// Retorna se a ação está disponivel para o objeto tramitavel
 	public boolean isAcaoDisponivel(Long idAcao, Tramitavel objeto) {
 		
 		if (idAcao == null)
-			throw new IllegalArgumentException(Messages.get("TRAMITACAO_ACAO_DISPONIVEL_OBRIGATORIA"));
+			throw new IllegalArgumentException(Mensagem.TRAMITACAO_ACAO_DISPONIVEL_OBRIGATORIA.getTexto());
 		
 		if (objeto == null || objeto.getIdObjetoTramitavel() == null)
-			throw new IllegalArgumentException(Messages.get("TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO"));
+			throw new IllegalArgumentException(Mensagem.TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO.getTexto());
 		
 		AcaoDisponivelObjetoTramitavel acaoDisponivel = AcaoDisponivelObjetoTramitavel.find("idAcao = ? AND idObjetoTramitavel = ?", idAcao, objeto.getIdObjetoTramitavel()).first();
 		return acaoDisponivel != null;

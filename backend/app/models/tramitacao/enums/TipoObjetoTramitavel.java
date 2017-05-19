@@ -2,11 +2,11 @@ package models.tramitacao.enums;
 
 
 // Enum com os tipos de objetos tramitaveis
-// Estão cadastrados na tabela TipoObjetoTramitavel no banco de tramitacao do analise car
+// Estão cadastrados na tabela TipoObjetoTramitavel no banco de tramitacao do licenciamento-pa
 
 public enum TipoObjetoTramitavel {
 	
-	ANALISE_CAR( 1L );
+	LICENCIAMENTO_AMBIENTAL( 1L );
 
 	private Long id;
 

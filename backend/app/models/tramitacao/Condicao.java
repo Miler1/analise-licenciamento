@@ -12,6 +12,14 @@ import play.db.jpa.GenericModel;
 @Table(schema = "tramitacao", name = "VW_CONDICAO")
 public class Condicao extends GenericModel {
 	
+	public static final Long AGUARDANDO_VINCULACAO_JURIDICA = 1l;
+	public static final Long AGUARDANDO_ANALISE_JURIDICA = 2l;
+	public static final Long EM_ANALISE_JURIDICA = 3l;
+	public static final Long NOTIFICADO = 4l;
+	public static final Long AGUARDANDO_VALIDACAO_JURIDICA = 5l;
+	public static final Long ARQUIVADO = 6l;
+	public static final Long AGUARDANDO_VINCULACAO_TECNICA = 7l;
+	
 	@Id
 	@Column(name = "ID_CONDICAO")
 	public Long idCondicao;

@@ -29,7 +29,7 @@ public class ObjetoTramitavel extends GenericModel {
 	public Condicao condicao;
 
  	@ManyToOne(fetch=FetchType.LAZY)
- 	@JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
+ 	@JoinColumn(name = "ID_USUARIO", referencedColumnName = "id")
 	public Usuario usuarioResponsavel;
 	
  	@ManyToOne
@@ -40,7 +40,7 @@ public class ObjetoTramitavel extends GenericModel {
 	public Long idFluxo;
  	
  	@ManyToOne(fetch=FetchType.LAZY)
- 	@JoinColumn(name = "ID_RESPONSAVEL_ANTERIOR", referencedColumnName = "ID_USUARIO")
+ 	@JoinColumn(name = "ID_RESPONSAVEL_ANTERIOR", referencedColumnName = "id")
 	public Usuario responsavelAnterior;
 	
  	@OneToMany

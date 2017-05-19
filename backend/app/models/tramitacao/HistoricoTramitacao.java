@@ -85,7 +85,7 @@ public class HistoricoTramitacao extends GenericModel {
 	 * @return
 	 */
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView
-	(Date dataInicio, Date dataFim,Long acao,Long condicaoFinal ){
+	(Date dataInicio, Date dataFim, Long acao, Long condicaoFinal){
 		List<HistoricoTramitacao> historicoTramitacao = 
 				HistoricoTramitacao.find(" data >=? AND data <=? AND idCondicaoFinal=? AND idAcao=? ",
 						dataInicio,dataFim,condicaoFinal,acao).fetch();
@@ -97,13 +97,11 @@ public class HistoricoTramitacao extends GenericModel {
 	 * @param processo
 	 * @return
 	 */
-	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView(Long acao,Long condicaoFinal ){
+	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView(Long acao, Long condicaoFinal){
 		List<HistoricoTramitacao> historicoTramitacao = 
-				HistoricoTramitacao.find(" idCondicaoFinal=? AND idAcao=? ",condicaoFinal,acao).fetch();
+				HistoricoTramitacao.find(" idCondicaoFinal=? AND idAcao=? ", condicaoFinal, acao).fetch();
 		return historicoTramitacao;		
 	}
-
-
 
 	public static HistoricoTramitacao getUltimaTramitacao (Long idObjetoTramitavel){
 
