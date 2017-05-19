@@ -38,7 +38,7 @@ public class Usuario extends GenericModel  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_usuario")
 	@SequenceGenerator(name = "sq_usuario", sequenceName = "portal_seguranca.sq_usuario", allocationSize = 1)
-	public Integer id;
+	public Long id;
 
 	@Required(message = "usuarios.validacao.login.req")
 	@MaxSize(value = 20)

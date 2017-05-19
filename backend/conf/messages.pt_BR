@@ -9,3 +9,15 @@ CPF_CNPJ_INVALIDO_NAO_INFORMADO = CPF/CNPJ não informado ou inválido.
 PARAMETRO_NAO_INFORMADO = Parâmetro faltante para requisição: %s.
 
 ENDERECOS_EXTRAS_NAO_PERMITIDOS = É permitido cadastrar para um CPF/CNPJ apenas um endereço comum e outro de correspondência.
+
+#
+# Tramitação
+#
+
+TRAMITACAO_ACAO_DISPONIVEL_OBRIGATORIA=A ação não foi informada para verificar a disponibilidade na tramitação.
+TRAMITACAO_ACAO_OBRIGATORIA=A ação tramitação informada não está associada a uma ação na tramitação, portanto não é tramitável.
+TRAMITACAO_OBJETO_TRAMITAVEL_OBRIGATORIO=Objeto tramitavél é obrigatório.
+TRAMITACAO_FLUXO_OBRIGATORIO=O fluxo é obrigatório.
+TRAMITACAO_USUARIO_EXECUTOR_OBRIGATORIO=O usuário executor é obrigatório.
+TRAMITACAO_OBJETO_OBRIGATORIO_TRAMITAR=Nenhum objeto tramitável foi passado para tramitar.
+TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO=O id do objeto tramitável está vazio.
