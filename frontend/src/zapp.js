@@ -125,3 +125,6 @@ utils.directives(licenciamento)
 licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)
 	.controller('modalSimplesController', controllers.ModalSimplesController);
+
+licenciamento
+	.component('menuPrincipal', directives.MenuPrincipal);

@@ -1,0 +1,21 @@
+nav
+    ul.menu-principal
+        li(ng-repeat="item in $ctrl.itens")
+            a.menu-principal__item(ng-click="$ctrl.irPara(item.url)")
+                i(ng-class="item.icone")
+                | {{item.titulo}}
+        //- li
+        //-     a.menu-principal__item--selecionado 
+        //-         i.glyphicon.glyphicon-inbox
+        //-         | Caixa de entrada      
+        //-         br         
+        //-         | (novos processos)
+        //- li
+        //-     a.menu-principal__item
+        //-         i.glyphicon.glyphicon-check
+        //-         | Aguardando validação
+        //- li
+        //-     a.menu-principal__item 
+        //-         i.glyphicon.glyphicon-search
+        //-         | Consultar processo
+        
