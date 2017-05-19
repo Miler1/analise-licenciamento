@@ -33,7 +33,13 @@ html(lang='pt-br')
 
 				div(growl inline="true")
 
-				div(ng-view)
+				div.row
+
+					aside.col-xs-3.main-container__menu
+						menu-principal
+
+					div.col-xs-9.main-container__views
+						div(ng-view)
 
 		script(src="./aplicacao/info")
 		script(src="./libs/jquery/jquery.min.js")
