@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.TemporalType;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="analise")
@@ -30,7 +32,7 @@ public class Analise extends GenericModel {
 	
 	@Required
 	@ManyToOne
-	@JoinColumn(columnDefinition="id_processo")
+	@JoinColumn(name="id_processo")
 	public Processo processo;
 	
 	@Required
@@ -41,4 +43,14 @@ public class Analise extends GenericModel {
 	@Required
 	@Column(name="data_vencimento_prazo")
 	public Date dataVencimentoPrazo;
+	
+	public Analise save() {
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(this.dataCadastro);
+		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE);
+		this.dataVencimentoPrazo = c.getTime();
+		
+		return super.save();
+	}
 }

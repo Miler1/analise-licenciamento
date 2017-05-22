@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +21,13 @@ import javax.persistence.TemporalType;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
 public class AnaliseJuridica extends GenericModel {
 
-	public static final String SEQ = "analise_juridica_id_seq";
+	public static final String SEQ = "analise.analise_juridica_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -69,4 +71,16 @@ public class AnaliseJuridica extends GenericModel {
 		joinColumns=@JoinColumn(name="id_documento"), 
 		inverseJoinColumns=@JoinColumn(name="id_analise_juridica"))
 	public List<Documento> documentos;
+	
+	public AnaliseJuridica save() {
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_JURIDICA);
+		this.dataVencimentoPrazo = c.getTime();
+		
+		this.ativo = true;
+		
+		return super.save();
+	}
 }
