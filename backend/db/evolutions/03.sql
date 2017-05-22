@@ -42,11 +42,11 @@ COMMENT ON COLUMN analise.analise_documento.validado IS 'Flag que indica se o do
 COMMENT ON COLUMN analise.analise_documento.parecer IS 'Parecer da análise de documento.';
 COMMENT ON COLUMN analise.analise_documento.id_documento IS 'Identificador da tabela documento, responsável pelo relacionamento entre as duas tabelas.';
 
-COMMENT ON TABLE analise.rel_documento_analise_juridica IS 'Entidade responsável por armazenar';
+COMMENT ON TABLE analise.rel_documento_analise_juridica IS 'Entidade responsável por armazenar a relação entre as entidades documento e análise jurídica.';
 COMMENT ON COLUMN analise.rel_documento_analise_juridica.id_documento IS 'Identificador da tabela documento, responsável pelo relacionamento entre as duas tabelas.';
 COMMENT ON COLUMN analise.rel_documento_analise_juridica.id_analise_juridica IS 'Identificador da tabela analise_juridica, responsável pelo relacionamento entre as duas tabelas.';
 
-COMMENT ON TABLE analise.rel_processo_caracterizacao IS 'Entidade responsável por armazenar';
+COMMENT ON TABLE analise.rel_processo_caracterizacao IS 'Entidade responsável por armazenar a relação entre as entidades processo e caracterização.';
 COMMENT ON COLUMN analise.rel_processo_caracterizacao.id_caracterizacao IS 'Identificador da tabela caracterizacao, responsável pelo relacionamento entre as duas tabelas.';
 COMMENT ON COLUMN analise.rel_processo_caracterizacao.id_processo IS 'Identificador da tabela processo, responsável pelo relacionamento entre as duas tabelas.';
 
