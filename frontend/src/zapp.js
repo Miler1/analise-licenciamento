@@ -43,6 +43,37 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 	$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
 	$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
 
+	$rootScope.itensMenuPrincipal = [{
+
+                    titulo: 'Caixa de entrada (novos processos)',
+                    icone: 'glyphicon glyphicon-inbox',
+                    url: '/',
+					estaSelecionado: function() {
+
+						return $location.path() === '/inicial' || $location.path() === '/';
+					}
+
+                }, {
+
+                    titulo: 'Aguardando validação',
+                    icone: 'glyphicon glyphicon-check',
+                    url: '/aguardando-validacao',
+					estaSelecionado: function() {
+
+						return false;
+					}
+                    
+                }, {
+                    titulo: 'Consultar processo',
+                    icone: 'glyphicon glyphicon-search',
+                    url: '/consultar-processo',
+					estaSelecionado: function() {
+
+						return false;
+					}					                
+                }];
+
+
 	if(!$rootScope.usuarioSessao){
 		window.location = $rootScope.config.baseUrl;
 	}
