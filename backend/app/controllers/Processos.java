@@ -2,27 +2,20 @@ package controllers;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
-import builders.ProcessoBuilder;
+import builders.ProcessoBuilder.FiltroProcesso;
 import models.Processo;
-import play.db.jpa.JPA;
-import play.mvc.Controller;
-import serializers.ProcessoSerializer;
 
 public class Processos extends GenericController {
 
-	public void list(){
+	public void listWithFilter(FiltroProcesso filtro){
 		
-		List list = new ProcessoBuilder()
-			.comNumeroProcesso()
-			.comCpfCnpjEmpreendimento()
-			.comDenominacaoEmpreendimento()
-			.comMunicipioEmpreendimento()
-			.comDataVencimentoPrazoAnalise()
-			.comDataVencimentoPrazoAnaliseJuridica()
-			.list();
+		List processosList = Processo.list(filtro);
 		
-		renderJSON(list);
+		renderJSON(processosList);
+	}
+	
+	public void countWithFilter(FiltroProcesso filtro){
+		
+		 renderJSON(Processo.count(filtro));
 	}
 }

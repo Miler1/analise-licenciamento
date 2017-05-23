@@ -1,6 +1,7 @@
 var licenciamento = angular.module("licenciamento", [
 	"ngRoute",
 	"ui.bootstrap",
+	"caixasEntrada",
 	"angular-growl",
 	"ngMessages",
 	"idf.br-filters",
@@ -15,11 +16,11 @@ licenciamento.config(["$routeProvider",	function($routeProvider) {
 
 	$routeProvider
 		.when("/", {
-			redirectTo: "/inicial"
+			redirectTo: "/caixa-entrada"
 		})
-		.when("/inicial", {
-			templateUrl: "layout/inicial.html"
-		})
+		// .when("/inicial", {
+		// 	templateUrl: "layout/inicial.html"
+		// })
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -144,7 +145,11 @@ utils.services(licenciamento)
 	.add('request', services.Request)
 	.add('animacaoLoader', services.AnimacaoLoader)
 	.add('breadcrumb', services.BreadcrumbService)
-	.add('modalSimplesService', services.ModalSimples);
+	.add('modalSimplesService', services.ModalSimples)
+	.add('processoService', services.ProcessoService)
+	.add('municipioService', services.MunicipioService)
+	.add('tipologiaService', services.TipologiaService)
+	.add('atividadeService', services.AtividadeService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

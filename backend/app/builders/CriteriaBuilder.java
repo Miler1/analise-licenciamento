@@ -5,16 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
-import org.hibernate.transform.ResultTransformer;
-import org.hibernate.transform.Transformers;
+import org.hibernate.criterion.SimpleExpression;
 
 import play.db.jpa.JPA;
 
@@ -38,7 +37,7 @@ public abstract class CriteriaBuilder<T> {
 		
 	}
 	
-	public void addAlias(String table, String alias){
+	protected void addAlias(String table, String alias){
 		
 		aliases.put(table, alias);
 	}
@@ -59,26 +58,56 @@ public abstract class CriteriaBuilder<T> {
 			
 			criteria.setProjection(projectionList)
 				.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-//				.setResultTransformer(Transformers.aliasToBean(clazz))
-			;
 		}
+	}
+	
+	private void createProjection() {
+		
+		if (projectionList == null)
+			projectionList = Projections.projectionList();
 	}
 	
 	protected void addProjection(Projection projection) {
 		
-		if (projectionList == null)
-			projectionList = Projections.projectionList();
+		createProjection();
 		
 		projectionList.add(projection);
 	}	
 	
 	protected void addProjection(Property property) {
 		
-		if (projectionList == null)
-			projectionList = Projections.projectionList();
+		createProjection();
 		
 		projectionList.add(property);
 	}
+	
+	protected void addRestricton(SimpleExpression expression) {
+		
+		criteria.add(expression);
+	}
+	
+	protected void addOrder(Order order) {
+		
+		criteria.addOrder(order);
+	}
+	
+	public CriteriaBuilder setMaxResult(int maxResult) {
+		
+		criteria.setMaxResults(maxResult);
+		
+		return this;
+	}
+	
+	public CriteriaBuilder fetch(Integer page, Integer length) {
+		
+		if ( page > 0 && length > 0 ) {
+			
+			criteria.setFirstResult((page - 1) * length);
+	        criteria.setMaxResults(length);
+		}
+		
+		return this;
+	}	
 	
 	public Object unique(){
 		
@@ -99,7 +128,5 @@ public abstract class CriteriaBuilder<T> {
 		setProjection();
 		
 		return criteria.list();
-	}	
-	
-	public abstract Long count();
+	}
 }

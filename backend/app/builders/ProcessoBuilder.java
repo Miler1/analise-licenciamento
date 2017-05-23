@@ -1,112 +1,268 @@
 package builders;
 
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.Property;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StringType;
 
 import models.Processo;
 
-public class ProcessoBuilder extends CriteriaBuilder<Processo> {
+public class ProcessoBuilder extends CriteriaBuilder<Processo> { 
 	
 	private static final String EMPREENDIMENTO_ALIAS = "emp";
 	private static final String PESSOA_EMPREENDIMENTO_ALIAS = "pes";
 	private static final String MUNICIPIO_EMPREENDIMENTO_ALIAS = "mun";
 	private static final String ESTADO_EMPREENDIMENTO_ALIAS = "est";
-	private static final String ANALISE_EMPREENDIMENTO_ALIAS = "ana";
-	private static final String ANALISE_JURIDICA_EMPREENDIMENTO_ALIAS = "anj";
+	private static final String ANALISE_ALIAS = "ana";
+	private static final String ANALISE_JURIDICA_ALIAS = "anj";
+	private static final String CARACTERIZACOES_ALIAS = "carac";
+	private static final String ATIVIDADE_CARACTERIZACAO_ALIAS = "atc";
+	private static final String ATIVIDADE_ALIAS = "atv";
+	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
 	
-	public void createEmpreendimentoAlias() {
+	
+	public ProcessoBuilder addEmpreendimentoAlias() {
 		
 		addAlias("empreendimento", EMPREENDIMENTO_ALIAS);
+		
+		return this;		
 	}
 	
-	public void createPessoaEmpreendimentoAlias() {
+	public ProcessoBuilder addPessoaEmpreendimentoAlias() {
 		
-		createEmpreendimentoAlias();
+		addEmpreendimentoAlias();
 		
 		addAlias(EMPREENDIMENTO_ALIAS+".pessoa", PESSOA_EMPREENDIMENTO_ALIAS);
+		
+		return this;
 	}
 	
-	public void createMunicipioEmpreendimentoAlias() {
+	public ProcessoBuilder addMunicipioEmpreendimentoAlias() {
 		
-		createEmpreendimentoAlias();
+		addEmpreendimentoAlias();
 		
 		addAlias(EMPREENDIMENTO_ALIAS+".municipio", MUNICIPIO_EMPREENDIMENTO_ALIAS);
+		
+		return this;
 	}
 	
-	public void createEstadoEmpreendimentoAlias() {
+	public ProcessoBuilder addEstadoEmpreendimentoAlias() {
 		
-		createMunicipioEmpreendimentoAlias();
+		addMunicipioEmpreendimentoAlias();
 		
 		addAlias(MUNICIPIO_EMPREENDIMENTO_ALIAS+".estado", ESTADO_EMPREENDIMENTO_ALIAS);
-	}
-	
-	public void createAnaliseAlias() {
-		
-		addAlias("analises", ANALISE_EMPREENDIMENTO_ALIAS);
-	}
-	
-	public void createAnaliseJuridicaAlias() {
-		
-		addAlias(ANALISE_EMPREENDIMENTO_ALIAS+".analisesJuridica", ANALISE_JURIDICA_EMPREENDIMENTO_ALIAS);
-	}
-	
-	public ProcessoBuilder comNumeroProcesso(){
-		
-		addProjection(Property.forName("numero").as("numero"));
 		
 		return this;
 	}
 	
-	public ProcessoBuilder comCpfCnpjEmpreendimento(){
+	public ProcessoBuilder addAnaliseAlias() {
 		
-		createPessoaEmpreendimentoAlias();
-
-		addProjection(Property.forName(PESSOA_EMPREENDIMENTO_ALIAS+".cpf").as("cpfEmpreendimento"));
-		addProjection(Property.forName(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj").as("cnpjEmpreendimento"));
+		addAlias("analises", ANALISE_ALIAS);
+		
+		return this;
+	}
+	
+	public ProcessoBuilder createAnaliseJuridicaAlias() {
+		
+		addAlias(ANALISE_ALIAS+".analisesJuridica", ANALISE_JURIDICA_ALIAS);
+		
+		return this;
+	}
+	
+	private ProcessoBuilder addCaracterizacoesAlias() {
+		
+		addAlias("caracterizacoes", CARACTERIZACOES_ALIAS);
+		
+		return this;
+	}
+	
+	private ProcessoBuilder addAtividadeCaracterizacaoAlias() {
+		
+		addCaracterizacoesAlias();
+		
+		addAlias(CARACTERIZACOES_ALIAS+".atividadeCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
+		
+		return this;
+	}
+	
+	private ProcessoBuilder addAtividadeAlias() {
+		
+		addAtividadeCaracterizacaoAlias();
+		
+		addAlias(ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade", ATIVIDADE_ALIAS);
+		
+		return this;
+	}
+	
+	private ProcessoBuilder addTipologiaAtividadeAlias() {
+		
+		addAtividadeAlias();
+		
+		addAlias(ATIVIDADE_ALIAS+".tipologia", TIPOLOGIA_ATIVIDADE_ALIAS);
 		
 		return this;
 	}	
 	
-	public ProcessoBuilder comDenominacaoEmpreendimento(){
+	public ProcessoBuilder comTiposLicencas(){
 		
-		createEmpreendimentoAlias();
-
-		addProjection(Property.forName(EMPREENDIMENTO_ALIAS+".denominacao").as("denominacaoEmpreendimento"));
+		StringBuilder sb = new StringBuilder();
 		
-		return this;
-	}
-	
-	public ProcessoBuilder comMunicipioEmpreendimento(){
-		
-		createMunicipioEmpreendimentoAlias();		
-		addProjection(Property.forName(MUNICIPIO_EMPREENDIMENTO_ALIAS+".nome").as("municipioEmpreendimento"));
-		
-		createEstadoEmpreendimentoAlias();
-		addProjection(Property.forName(ESTADO_EMPREENDIMENTO_ALIAS+".id").as("siglaEstadoEmpreendimento"));
-		
-		return this;
-	}
-	
-	public ProcessoBuilder comDataVencimentoPrazoAnalise(){
-		
-		createAnaliseAlias();
-		addProjection(Property.forName(ANALISE_EMPREENDIMENTO_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnalise"));
+		sb.append("(SELECT string_agg(t.sigla, '-') ");
+		sb.append("FROM licenciamento.tipo_licenca t ");
+		sb.append("INNER JOIN licenciamento.caracterizacao c ON t.id = c.id_tipo_licenca ");
+		sb.append("INNER JOIN analise.rel_processo_caracterizacao r ON c.id = r.id_caracterizacao ");
+		sb.append("WHERE r.id_processo = {alias}.id) AS licencas");
 				
+		addProjection(Projections.sqlProjection(sb.toString(), new String[]{"licencas"}, new org.hibernate.type.Type[]{StringType.INSTANCE}));
+		
 		return this;
 	}
 	
-	public ProcessoBuilder comDataVencimentoPrazoAnaliseJuridica(){
+	public ProcessoBuilder groupByIdProcesso(){
+		
+		addProjection(Projections.groupProperty("id").as("idProcesso"));
+		
+		return this;
+	}	
+	
+	public ProcessoBuilder groupByNumeroProcesso(){
+		
+		addProjection(Projections.groupProperty("numero").as("numero"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder groupByCpfCnpjEmpreendimento(){
+		
+		addPessoaEmpreendimentoAlias();
+		
+		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cpf").as("cpfEmpreendimento"));
+		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj").as("cnpjEmpreendimento"));
+		
+		return this;
+	}	
+	
+	public ProcessoBuilder groupByDenominacaoEmpreendimento(){
+		
+		addEmpreendimentoAlias();
+		
+		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".denominacao").as("denominacaoEmpreendimento"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder groupByMunicipioEmpreendimento(){
+		
+		addMunicipioEmpreendimentoAlias();
+		addProjection(Projections.groupProperty(MUNICIPIO_EMPREENDIMENTO_ALIAS+".nome").as("municipioEmpreendimento"));
+		
+		addEstadoEmpreendimentoAlias();
+		addProjection(Projections.groupProperty(ESTADO_EMPREENDIMENTO_ALIAS+".id").as("siglaEstadoEmpreendimento"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder groupByDataVencimentoPrazoAnalise(){
+		
+		addAnaliseAlias();		
+		addProjection(Projections.groupProperty(ANALISE_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnalise"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseJuridica(){
 		
 		createAnaliseJuridicaAlias();
-		addProjection(Property.forName(ANALISE_JURIDICA_EMPREENDIMENTO_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseJuridica"));
+		addProjection(Projections.groupProperty(ANALISE_JURIDICA_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseJuridica"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
+		
+		if (StringUtils.isNotEmpty(numeroProcesso)) {
+
+			addRestricton(Restrictions.eq("numero", numeroProcesso));
+		}
+		
+		return this;
+	}
+	
+	
+	public ProcessoBuilder filtrarPorCpfCnpjEmpreendimento(String cpfCnpj) {
+		
+		if (StringUtils.isNotEmpty(cpfCnpj)) {
+
+			addPessoaEmpreendimentoAlias();
+			criteria.add(Restrictions.or(
+				Restrictions.eq(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpfCnpj), 
+				Restrictions.eq(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cpfCnpj)
+			));
+		}
 		
 		return this;
 	}	
 	
-	@Override
-	public Long count() {
-
-		return null;
+	public ProcessoBuilder filtrarPorIdMunicipio(Long idMunicipio) {
+		
+		if (idMunicipio != null) {
+			
+			addMunicipioEmpreendimentoAlias();
+			addRestricton(Restrictions.eq(MUNICIPIO_EMPREENDIMENTO_ALIAS+".id", idMunicipio));
+		}
+		
+		return this;
+	}
+	
+	public ProcessoBuilder filtrarPorIdTipologia(Long idTipologia) {
+		
+		if (idTipologia != null) {
+			
+			addTipologiaAtividadeAlias();
+			addRestricton(Restrictions.eq(TIPOLOGIA_ATIVIDADE_ALIAS+".id", idTipologia));
+		}
+		
+		return this;
+	}
+	
+	public ProcessoBuilder filtrarPorIdAtividade(Long idAtividade) {
+		
+		if (idAtividade != null) {
+			
+			addAtividadeAlias();
+			addRestricton(Restrictions.eq(ATIVIDADE_ALIAS+".id", idAtividade));
+		}
+		
+		return this;
+	}
+	
+	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
+		
+		addOrder(Order.asc("dataVencimentoPrazoAnaliseJuridica"));
+		
+		return this;
+	}		
+	
+	public ProcessoBuilder count() {
+		
+		addProjection(Projections.countDistinct("id").as("total"));
+		
+		return this;
+	}
+	
+	public static class FiltroProcesso {
+		
+		public String numeroProcesso;
+		public String cpfCnpjEmpreendimento;
+		public Long idMunicipioEmpreendimento;
+		public Long idTipologiaEmpreendimento;
+		public Long idAtividadeEmpreendimento;
+		public Long paginaAtual;
+		public Long itensPorPagina;
+		
+		public FiltroProcesso() {
+			
+		}
 	}
 }

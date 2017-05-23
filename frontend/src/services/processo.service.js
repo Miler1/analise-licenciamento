@@ -1,14 +1,16 @@
 var ProcessoService = function(request, config) {
 
-	this.getProcessoslist = function(filtro, paginaAtual, itensPorPagina) {
+	this.getProcessos = function(filtro) {
 
 		return request
-			.get(config.BASE_URL() + "processos", {
-				filtro: filtro,
-				numeroPagina: paginaAtual,
-				qtdItensPorPagina: itensPorPagina
-			});
+			.post(config.BASE_URL + "processos", filtro);
 	};
+
+	this.getProcessosCount = function(filtro) {
+
+		return request
+			.post(config.BASE_URL + "processos/count", filtro);
+	};	
 };
 
 exports.services.ProcessoService = ProcessoService;

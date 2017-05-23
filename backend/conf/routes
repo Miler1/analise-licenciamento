@@ -8,7 +8,17 @@ GET		/app/aplicacao/info							Application.findInfo(format:'js')
 GET		/versao										Application.versao
 
 # Processo
-GET		/processos									Processos.list
+POST	/processos									Processos.listWithFilter
+POST	/processos/count							Processos.countWithFilter
+
+# Municipios
+GET		/estados/{uf}/municipios					Municipios.listByEstado
+
+# Atividades
+GET		/atividades									Atividades.list
+
+# tipologias
+GET		/tipologias									Tipologias.list
 
 # Login
 GET		/login										Login.showLogin

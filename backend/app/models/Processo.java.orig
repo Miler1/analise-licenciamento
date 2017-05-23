@@ -1,8 +1,6 @@
 package models;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,15 +12,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+<<<<<<< HEAD
 import javax.persistence.OneToMany;
+=======
 import javax.persistence.OneToOne;
+>>>>>>> 3381b3ddb41c0677823f6851a59f56d2023a5690
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import builders.ProcessoBuilder;
-import builders.ProcessoBuilder.FiltroProcesso;
-import builders.ProcessoBuilder.QuantidadeTotalItens;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
@@ -65,9 +63,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		inverseJoinColumns = @JoinColumn(name="id_caracterizacao"))
 	public List<Caracterizacao> caracterizacoes;
 	
-	@OneToMany(mappedBy="processo")
-	public List<Analise> analises;
-
 	@Transient
 	public transient static Tramitacao tramitacao = new Tramitacao();
 	
@@ -105,44 +100,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public void salvaObjetoTramitavel() {
 		super.save();
 	}
-	
-	private static ProcessoBuilder createCommonProcesso(FiltroProcesso filtro) {
-		
-		return new ProcessoBuilder()
-			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
-			.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
-			.filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
-			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
-			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento);		
-	}
-	
-	public static List list(FiltroProcesso filtro) {
-		
-		return createCommonProcesso(filtro)
-			.comTiposLicencas()
-			.groupByIdProcesso()
-			.groupByNumeroProcesso()
-			.groupByCpfCnpjEmpreendimento()
-			.groupByDenominacaoEmpreendimento()
-			.groupByMunicipioEmpreendimento()			
-			.groupByDataVencimentoPrazoAnalise()
-			.groupByDataVencimentoPrazoAnaliseJuridica()				
-			.orderByDataVencimentoPrazoAnaliseJuridica()
-			.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
-			.list();	
-	}
-	
-	public static Long count(FiltroProcesso filtro) {
-		
-		Object qtdeTotalItens = createCommonProcesso(filtro)
-			.addPessoaEmpreendimentoAlias()
-			.addMunicipioEmpreendimentoAlias()
-			.addAnaliseAlias()
-			.createAnaliseJuridicaAlias()
-			.count()
-			.unique();
-		
-		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
-	}
 
+	@OneToMany(mappedBy="processo")
+	public List<Analise> analises;
 }
