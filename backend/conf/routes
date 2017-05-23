@@ -12,6 +12,9 @@ GET		/login										Login.showLogin
 GET		/authenticate								Login.login
 GET		/logout										Login.logout
 
+# Consultores
+POST	/consultores/vincular						Consultores.vincularAnalise
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

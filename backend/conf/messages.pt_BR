@@ -21,3 +21,9 @@ TRAMITACAO_FLUXO_OBRIGATORIO=O fluxo é obrigatório.
 TRAMITACAO_USUARIO_EXECUTOR_OBRIGATORIO=O usuário executor é obrigatório.
 TRAMITACAO_OBJETO_OBRIGATORIO_TRAMITAR=Nenhum objeto tramitável foi passado para tramitar.
 TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO=O id do objeto tramitável está vazio.
+
+#
+# Consultores
+#
+
+CONSULTOR_VINCULADO_SUCESSO=Consultor vinculado com sucesso.
