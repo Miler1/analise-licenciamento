@@ -2,7 +2,9 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,19 +12,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
+import models.tramitacao.AcaoDisponivelObjetoTramitavel;
+import models.tramitacao.ObjetoTramitavel;
+import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.InterfaceTramitavel;
+import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="processo")
-public class Processo extends GenericModel {
+public class Processo extends GenericModel implements InterfaceTramitavel{
 	
-	private static final String SEQ = "processo_id_seq";
+	private static final String SEQ = "analise.processo_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -34,15 +43,58 @@ public class Processo extends GenericModel {
 	
 	@Required
 	@ManyToOne
-	@JoinColumn(columnDefinition="id_empreendimento")
+	@JoinColumn(name="id_empreendimento")
 	public Empreendimento empreendimento;
 	
-	//TODO Adicionar objeto tramitável
+	@Column(name = "id_objeto_tramitavel")
+	public Long idObjetoTramitavel;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
+	public ObjetoTramitavel objetoTramitavel;
 	
 	@ManyToMany
 	@JoinTable(schema="analise", name="rel_processo_caracterizacao", 
 		joinColumns= @JoinColumn(name="id_processo"),
 		inverseJoinColumns = @JoinColumn(name="id_caracterizacao"))
 	public List<Caracterizacao> caracterizacoes;
+	
+	@Transient
+	public transient static Tramitacao tramitacao = new Tramitacao();
+	
+	@Override
+	public Processo save() {
+
+		// Inicia a tramitacao e chama o metodo salvaObjetoTramitavel() que cria o Processo ja com o objeto tramitavel setado que eh obrigatorio.
+		tramitacao.iniciar(this, null, Tramitacao.LICENCIAMENTO_AMBIENTAL);
+			
+		return this;
+	}
+
+	@Override
+	public Long getIdObjetoTramitavel() {
+		return this.idObjetoTramitavel;
+	}
+
+	@Override
+	public void setIdObjetoTramitavel(Long idObjetoTramitavel) {
+		this.idObjetoTramitavel = idObjetoTramitavel;
+	}
+
+	@Override
+	public List<AcaoDisponivelObjetoTramitavel> getAcoesDisponiveisTramitacao() {
+		
+		if (this.idObjetoTramitavel == null)
+			return null;
+
+		ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.idObjetoTramitavel);
+		return objetoTramitavel.acoesDisponiveis;
+		
+	}
+
+	@Override
+	public void salvaObjetoTramitavel() {
+		super.save();
+	}
 
 }

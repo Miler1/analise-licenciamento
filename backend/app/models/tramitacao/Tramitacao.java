@@ -26,7 +26,7 @@ public class Tramitacao {
 	private final int POSICAO_TIPO_OBJETO_TRAMITAVEL= 2;
 	
 	//Ao inserir um fluxo tambem inserir um array com os seguintes valores: id fluxo tramitação, id ação inicial do fluxo e id do tipo objeto tramitavel na respectiva ordem.
-	public static final Long []ANALISE_CAR = {FluxoTramitacao.PROCESSO_ANALISE_LICENCIAMENTO.getId(), AcaoTramitacao.VINCULAR , TipoObjetoTramitavel.LICENCIAMENTO_AMBIENTAL.getId()};
+	public static final Long []LICENCIAMENTO_AMBIENTAL = {FluxoTramitacao.PROCESSO_ANALISE_LICENCIAMENTO.getId(), AcaoTramitacao.VINCULAR , TipoObjetoTramitavel.LICENCIAMENTO_AMBIENTAL.getId()};
 
 	
 	/*Método que inicia o fluxo de tramitação recebendo o objeto tramitavel 
@@ -42,7 +42,6 @@ public class Tramitacao {
 		try {
 			InicioTramitacaoRequestVO request = new InicioTramitacaoRequestVO()
 									.withIdFluxo(fluxo[POSICAO_FLUXO])
-									.withIdAcaoInicial(fluxo[POSICAO_ACAO])
 									.withIdTipoObjetoTramitavel(fluxo[POSICAO_TIPO_OBJETO_TRAMITAVEL]);
 			
 			if (usuarioDestino != null) {
