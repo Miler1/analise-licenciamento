@@ -15,19 +15,10 @@ import utils.WebService;
 
 public class LicenciamentoWebService {
 	
-	private GsonBuilder gsonBuilder = new GsonBuilder().setDateFormat(DateDeserializer.DATE_FORMAT);
-	
 	public List<Caracterizacao> getCaracterizacoesEmAndamento() {
 		
-		HttpResponse response = new WebService().get(Configuracoes.URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO);
-		
-		if(!response.success()) {
-			throw new WebServiceException("Erro ao buscar caracterizações no Licenciamento-PA");
-		}
-		
 		Type type = new TypeToken<List<Caracterizacao>>(){}.getType();
-		
-		List<Caracterizacao> caracterizacoesRetorno = gsonBuilder.create().fromJson(response.getJson(), type);
+		List<Caracterizacao> caracterizacoesRetorno = new WebService().getJson(Configuracoes.URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO, type);
 		
 		return caracterizacoesRetorno;
 	}
