@@ -98,7 +98,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		super.save();
 	}
 	
-	public void vincularConsultorJuridico(Usuario consultor, Usuario usuarioExecutor) {
+	public void vincularConsultor(Usuario consultor, Usuario usuarioExecutor) {
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this));
 		

@@ -21,7 +21,7 @@ public class Consultores extends InternalController {
 			Processo processo = Processo.findById(idProcesso);
 			
 			if(isJuridica)
-				processo.vincularConsultorJuridico(consultor, usuarioExecultor);
+				processo.vincularConsultor(consultor, usuarioExecultor);
 			
 		}
 		
