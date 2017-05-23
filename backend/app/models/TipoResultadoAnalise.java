@@ -14,7 +14,7 @@ import play.db.jpa.GenericModel;
 @Table(schema="analise", name="tipo_resultado_analise")
 public class TipoResultadoAnalise extends GenericModel {
 	
-	public static final String SEQ = "tipo_resultado_analise_id_seq";
+	public static final String SEQ = "analise.tipo_resultado_analise_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)

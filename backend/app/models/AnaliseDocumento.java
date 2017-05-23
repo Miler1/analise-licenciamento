@@ -18,7 +18,7 @@ import models.licenciamento.DocumentoLicenciamento;
 @Table(schema="anlise", name="analise_documento")
 public class AnaliseDocumento extends GenericModel {
 	
-	public static final String SEQ = "analise_documento_id_seq";
+	public static final String SEQ = "analise.analise_documento_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)

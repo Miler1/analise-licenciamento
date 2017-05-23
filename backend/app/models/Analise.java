@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.persistence.TemporalType;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="analise")
@@ -46,4 +48,14 @@ public class Analise extends GenericModel {
 	
 	@OneToMany(mappedBy="analise")
 	public List<AnaliseJuridica> analisesJuridica;
+
+	public Analise save() {
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(this.dataCadastro);
+		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE);
+		this.dataVencimentoPrazo = c.getTime();
+		
+		return super.save();
+	}
 }
