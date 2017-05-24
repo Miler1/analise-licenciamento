@@ -63,12 +63,12 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 				
 			}
 			
-			commitTransaction();
-			
 			new LicenciamentoWebService().adicionarCaracterizacaoEmAnalise(caracterizacao);
 			
 			if(deveTramitar)
 				processo.save();
+			
+			commitTransaction();
 			
 		} catch (Exception e) {
 			
