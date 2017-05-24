@@ -66,7 +66,11 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 		} else {
 			
-			processo.associarCaracterizacao(caracterizacao);
+			if(processo.caracterizacoes == null)
+				processo.caracterizacoes = new ArrayList<>();
+			
+			processo.caracterizacoes.add(caracterizacao);
+
 			
 		}
 		
