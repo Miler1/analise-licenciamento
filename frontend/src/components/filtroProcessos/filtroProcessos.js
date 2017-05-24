@@ -84,7 +84,7 @@ var FiltroProcessos = {
 
             if (ctrl.pesquisarAoInicializar){
 
-                ctrl.pesquisar()
+                ctrl.pesquisar();
             }
         };
 	},
