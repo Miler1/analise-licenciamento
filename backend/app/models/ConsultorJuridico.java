@@ -43,4 +43,20 @@ public class ConsultorJuridico extends GenericModel {
 	@Column(name="data_vinculacao")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
+	
+	public ConsultorJuridico(AnaliseJuridica analiseJuridica, Usuario usuario) {
+		
+		super();
+		this.analiseJuridica = analiseJuridica;
+		this.usuario = usuario;
+		this.dataVinculacao = new Date();
+		
+	}
+	
+	public static void vincularAnalise(Usuario usuario, AnaliseJuridica analiseJuridica) {
+		
+		ConsultorJuridico consultorJuridico = new ConsultorJuridico(analiseJuridica, usuario);
+		consultorJuridico.save();
+		
+	}
 }
