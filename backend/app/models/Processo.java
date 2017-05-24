@@ -2,7 +2,6 @@ package models;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +21,6 @@ import javax.persistence.Transient;
 
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
-import builders.ProcessoBuilder.QuantidadeTotalItens;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
@@ -31,7 +29,6 @@ import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
-import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -106,7 +103,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		super.save();
 	}
 	
-	private static ProcessoBuilder createCommonProcesso(FiltroProcesso filtro) {
+	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro) {
 		
 		return new ProcessoBuilder()
 			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
@@ -116,9 +113,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento);		
 	}
 	
-	public static List list(FiltroProcesso filtro) {
+	public static List listWithFilter(FiltroProcesso filtro) {
 		
-		return createCommonProcesso(filtro)
+		return commonFilterProcesso(filtro)
 			.comTiposLicencas()
 			.groupByIdProcesso()
 			.groupByNumeroProcesso()
@@ -132,11 +129,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.list();	
 	}
 	
-	public static Long count(FiltroProcesso filtro) {
+	public static Long countWithFilter(FiltroProcesso filtro) {
 		
-		Object qtdeTotalItens = createCommonProcesso(filtro)
+		Object qtdeTotalItens = commonFilterProcesso(filtro)
 			.addPessoaEmpreendimentoAlias()
-			.addMunicipioEmpreendimentoAlias()
+			.addEstadoEmpreendimentoAlias()
 			.addAnaliseAlias()
 			.createAnaliseJuridicaAlias()
 			.count()

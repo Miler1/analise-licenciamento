@@ -4,6 +4,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config) {
 
 	cxEntCoordenadorJuridico.atualizarListaProcessos = atualizarListaProcessos;
 	cxEntCoordenadorJuridico.atualizarPaginacao = atualizarPaginacao;
+	cxEntCoordenadorJuridico.calcularDiasRestantes = calcularDiasRestantes;
 
 	cxEntCoordenadorJuridico.processos = [];
 
@@ -17,6 +18,12 @@ var CxEntCoordenadorJuridicoController = function($scope, config) {
 	function atualizarPaginacao(totalItens) {
 
 		cxEntCoordenadorJuridico.paginacao.update(totalItens, cxEntCoordenadorJuridico.paginacao.paginaAtual);
+	}
+
+	function calcularDiasRestantes(stringDate){
+
+		return moment(stringDate, 'DD/MM/yyyy').startOf('day')
+			.diff(moment(Date.now()).startOf('day'), 'days');		
 	}	
 };
 

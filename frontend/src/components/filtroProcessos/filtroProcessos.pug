@@ -11,7 +11,7 @@ div(uib-accordion class="accordion")
 
             .col-md-7.col-sm-6
                 label.control-label CPF/CNPJ do empreendimento:
-                input.form-control(type='text', name='cpfCnpjEmpreendimento', ng-model='$ctrl.filtro.cpfCnpjEmpreendimento', placeholder=' CPF/CNPJ do empreendimento:')                            
+                input.form-control(type='text', name='cpfCnpjEmpreendimento', ng-model='$ctrl.filtro.cpfCnpjEmpreendimento', placeholder=' CPF/CNPJ do empreendimento:', ui-br-cpfcnpj-mask)                            
 
         .row.form-group
             .col-md-12
@@ -24,14 +24,14 @@ div(uib-accordion class="accordion")
             .col-md-12
                 label.control-label Tipologia do empreendimento:
                 select.form-control(ng-model="$ctrl.filtro.idTipologiaEmpreendimento", name="selectTipologia",
-                                    ng-options="tipologia.id as tipologia.nome for tipologia in $ctrl.tipologias track by tipologia.id")
+                                    ng-options="tipologia.id as tipologia.nome for tipologia in $ctrl.tipologias | orderBy:'nome' track by tipologia.id")
                     option(value="") Selecione a tipologia do empreendimento
 
         .row.form-group
             .col-md-12
                 label.control-label Atividade do empreendimento:
                 select.form-control(ng-model="$ctrl.filtro.idAtividadeEmpreendimento", name="selectAtividade",
-                                    ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades track by atividade.id")
+                                    ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades | orderBy:'nome' track by atividade.id")
                     option(value="") Selecione a atividade do empreendimento
 
         div
