@@ -2,12 +2,13 @@ package controllers;
 
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.licenciamento.TipoCaracterizacaoAtividade.FiltroAtividade;
+import security.Acao;
 
 public class Tipologias extends InternalController {
 
 	public static void list() {
 
-//		verificarPermissao(Acao.CADASTRAR_CARACTERIZACAO);
+		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		FiltroAtividade filtro = new FiltroAtividade();
 		filtro.licenciamentoSimplificado = getParamAsBoolean("licenciamentoSimplificado");

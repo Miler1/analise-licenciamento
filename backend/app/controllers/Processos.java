@@ -4,10 +4,13 @@ import java.util.List;
 
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.Processo;
+import security.Acao;
 
-public class Processos extends GenericController {
+public class Processos extends InternalController {
 
 	public void listWithFilter(FiltroProcesso filtro){
+		
+		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		List processosList = Processo.listWithFilter(filtro);
 		
@@ -16,6 +19,8 @@ public class Processos extends GenericController {
 	
 	public void countWithFilter(FiltroProcesso filtro){
 		
-		 renderJSON(Processo.countWithFilter(filtro));
+		verificarPermissao(Acao.LISTAR_PROCESSO);
+		
+		renderJSON(Processo.countWithFilter(filtro));
 	}
 }

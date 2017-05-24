@@ -20,6 +20,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ATIVIDADE_CARACTERIZACAO_ALIAS = "atc";
 	private static final String ATIVIDADE_ALIAS = "atv";
 	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
+	private static final String OBJETO_TRAMITAVEL_ALIAS = "obt";
 	
 	
 	public ProcessoBuilder addEmpreendimentoAlias() {
@@ -70,14 +71,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
-	private ProcessoBuilder addCaracterizacoesAlias() {
+	public ProcessoBuilder addCaracterizacoesAlias() {
 		
 		addAlias("caracterizacoes", CARACTERIZACOES_ALIAS);
 		
 		return this;
 	}
 	
-	private ProcessoBuilder addAtividadeCaracterizacaoAlias() {
+	public ProcessoBuilder addAtividadeCaracterizacaoAlias() {
 		
 		addCaracterizacoesAlias();
 		
@@ -86,7 +87,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
-	private ProcessoBuilder addAtividadeAlias() {
+	public ProcessoBuilder addAtividadeAlias() {
 		
 		addAtividadeCaracterizacaoAlias();
 		
@@ -95,14 +96,24 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
-	private ProcessoBuilder addTipologiaAtividadeAlias() {
+	public ProcessoBuilder addTipologiaAtividadeAlias() {
 		
 		addAtividadeAlias();
 		
 		addAlias(ATIVIDADE_ALIAS+".tipologia", TIPOLOGIA_ATIVIDADE_ALIAS);
 		
 		return this;
+	}
+	
+	public ProcessoBuilder addObjetoTramitavelAlias() {
+		
+		addAtividadeCaracterizacaoAlias();
+		
+		addAlias("objetoTramitavel", OBJETO_TRAMITAVEL_ALIAS);
+		
+		return this;
 	}	
+	
 	
 	public ProcessoBuilder comTiposLicencas(){
 		
@@ -189,6 +200,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	public ProcessoBuilder filtrarAnaliseJuridicaAtiva() {
+		
+		createAnaliseJuridicaAlias();
+		addRestricton(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".ativo", true));
+		
+		return this;
+	}	
+	
 	
 	public ProcessoBuilder filtrarPorCpfCnpjEmpreendimento(String cpfCnpj) {
 		
@@ -237,6 +256,17 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	public ProcessoBuilder filtrarPorIdCondicao(Long idCondicao) {
+		
+		if (idCondicao != null) {
+			
+			addObjetoTramitavelAlias();
+			addRestricton(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao", idCondicao));
+		}
+		
+		return this;
+	}	
+	
 	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
 		
 		addOrder(Order.asc("dataVencimentoPrazoAnaliseJuridica"));
@@ -258,6 +288,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idMunicipioEmpreendimento;
 		public Long idTipologiaEmpreendimento;
 		public Long idAtividadeEmpreendimento;
+		public Long idCondicaoTramitacao;
 		public Long paginaAtual;
 		public Long itensPorPagina;
 		

@@ -121,7 +121,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
 			.filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
 			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
-			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento);		
+			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
+			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
+			.filtrarAnaliseJuridicaAtiva();
 	}
 	
 	public static List listWithFilter(FiltroProcesso filtro) {

@@ -4,15 +4,17 @@ var FiltroProcessos = {
         paginacao: '=',
 		disabledFields: '<',
         atualizarLista: '=',
-        atualizarPaginacao: '='
+        atualizarPaginacao: '=',
+        condicaoTramitacao: '<',
+        pesquisarAoInicializar: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, atividadeService) {
 
 		var ctrl = this;
 
-        ctrl.filtro = {};
         ctrl.openedAccordion = false;
+        ctrl.filtro = {};
         ctrl.municipios = [];
         ctrl.tipologias = [];
         ctrl.atividades = [];
@@ -46,6 +48,11 @@ var FiltroProcessos = {
 
         this.$postLink = function(){
 
+            if (ctrl.condicaoTramitacao) {
+
+                ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
+            }
+
 			municipioService.getMunicipiosByUf('PA').then(
 				function(response){
 					
@@ -74,6 +81,11 @@ var FiltroProcessos = {
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
+
+            if (ctrl.pesquisarAoInicializar){
+
+                ctrl.pesquisar()
+            }
         };
 	},
 
