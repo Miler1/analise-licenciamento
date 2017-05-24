@@ -1,7 +1,9 @@
 package models.licenciamento;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.ws.WebServiceException;
 
@@ -23,11 +25,12 @@ public class LicenciamentoWebService {
 		return caracterizacoesRetorno;
 	}
 	
-	public void adicionarCaracterizacaoEmAnalise(Caracterizacao caracterizacao) {
+	public void adicionarCaracterizacoesEmAnalise(Long...ids) {
 		
-		String url = Configuracoes.URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE.replace("{id}", caracterizacao.id.toString());
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("ids", ids);
 		
-		HttpResponse response = new WebService().post(url);
+		HttpResponse response = new WebService().post(Configuracoes.URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE, params);
 		
 		if(!response.success()) {
 			throw new WebServiceException("Erro ao definir o status da Caracterização.");
