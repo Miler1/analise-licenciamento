@@ -61,7 +61,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public List<Caracterizacao> caracterizacoes;
 	
 	@Transient
-	public transient static Tramitacao tramitacao = new Tramitacao();
+	public transient Tramitacao tramitacao = new Tramitacao();
 	
 	@Override
 	public Processo save() {

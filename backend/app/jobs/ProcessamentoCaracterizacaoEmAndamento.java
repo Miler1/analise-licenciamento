@@ -5,14 +5,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Session;
+
 import models.Analise;
 import models.AnaliseJuridica;
 import models.Processo;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
 import play.Logger;
+import play.db.jpa.JPA;
 import play.jobs.On;
 import utils.Configuracoes;
+import utils.ListUtil;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
@@ -22,7 +26,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Iniciando job");
 		
-		List<Caracterizacao> caracterizacoes = new LicenciamentoWebService().getCaracterizacoesEmAndamento();
+		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
+		
+		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 		
 		for(Caracterizacao caracterizacao : caracterizacoes) {
 			
@@ -30,51 +36,44 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 		}
 		
+		Long[] ids = new ListUtil().getIdsAsArray(caracterizacoes);
+		
+		try {
+			licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
+		} catch (Exception e) {
+			rollbackTransaction();
+		}
+		
 	}
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
-		
-		try {
 
-			Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numeroProcesso);
+		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numeroProcesso);
+		
+		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
+		
+		boolean deveTramitar = false;
+		
+		if(processo == null) {
 			
-			Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
+			processo = criarNovoProcesso(caracterizacao);
 			
-			boolean deveTramitar = false;
+			Analise analise = criarNovaAnalise(processo);
 			
-			if(processo == null) {
-				
-				processo = criarNovoProcesso(caracterizacao);
-				
-				Analise analise = criarNovaAnalise(processo);
-				
-				criarNovaAnaliseJuridica(analise);
-				
-				deveTramitar = true;
-				
-			} else {
-				
-				if(processo.caracterizacoes == null)
-					processo.caracterizacoes = new ArrayList<>();
-				
-				processo.caracterizacoes.add(caracterizacao);
-				
-				processo._save();
-				
-			}
+			criarNovaAnaliseJuridica(analise);
 			
-			commitTransaction();
+			deveTramitar = true;
 			
-			new LicenciamentoWebService().adicionarCaracterizacaoEmAnalise(caracterizacao);
+		} else {
 			
-			if(deveTramitar)
-				processo.save();
+			processo.associarCaracterizacao(caracterizacao);
 			
-		} catch (Exception e) {
-			
-			Logger.error(e, e.getMessage());
-			rollbackTransaction();
 		}
+		
+		if(deveTramitar)
+			processo.save();
+		
+		commitTransaction();
 		
 	}
 	
@@ -88,7 +87,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		processo.caracterizacoes.add(caracterizacao);
 		
 		processo._save();
-		
+
 		return processo;
 		
 	}
