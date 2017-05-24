@@ -83,4 +83,8 @@ public class AnaliseJuridica extends GenericModel {
 		
 		return super.save();
 	}
+	
+	public static AnaliseJuridica findByProcesso(Processo processo) {
+		return AnaliseJuridica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
+	}
 }

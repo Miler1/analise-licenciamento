@@ -23,12 +23,15 @@ import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
+import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
+import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
+import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -103,6 +106,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		super.save();
 	}
 	
+	public void vincularConsultor(Usuario consultor, Usuario usuarioExecutor) {
+		
+		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this));
+		
+		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR, usuarioExecutor);
+		
+	}
+
 	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro) {
 		
 		return new ProcessoBuilder()
