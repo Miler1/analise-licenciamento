@@ -1,0 +1,71 @@
+include ../../../layout/components/paginacao
+
+div
+	h3.text-center Em análise jurídica
+
+	filtro-processos(paginacao="cxEntCoordenadorJuridico.paginacao", 
+		atualizar-lista="cxEntCoordenadorJuridico.atualizarListaProcessos",
+		atualizar-paginacao="cxEntCoordenadorJuridico.atualizarPaginacao",
+		condicao-tramitacao="cxEntCoordenadorJuridico.condicaoTramitacao",
+		pesquisar-ao-inicializar="true")
+
+	h4 Lista de processos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="cxEntCoordenadorJuridico.processos && cxEntCoordenadorJuridico.processos.length > 0")
+				table.table.table-striped.table-condensed
+					thead
+						tr
+							th
+								input(type='checkbox',
+									ng-model='cxEntCoordenadorJuridico.todosProcessosSelecionados',
+									ng-click='cxEntCoordenadorJuridico.selecionarTodosProcessos()')
+							th.col-md-2 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-2 Empreendimento
+							th.col-md-2 Município
+							th.col-md-1 Licenças
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise jurídica
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in cxEntCoordenadorJuridico.processos")
+							td 
+								input(type='checkbox', ng-model='processo.selecionado')
+							td {{processo.numero}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
+								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+												a(ng-click="")
+													i.glyphicon.glyphicon-share
+													span Vincular consultor
+											li
+												a(ng-click="")
+													i.glyphicon.glyphicon-eye-open 
+													span Visualizar processo
+				div
+					button.btn.btn-default.pull-right.btn-default(ng-click="", tabindex="0")
+						span.glyphicon.glyphicon-share
+						| &nbsp; Vincular consultor
+
+				+paginacao('cxEntCoordenadorJuridico.paginacao', 'cxEntCoordenadorJuridico.onPaginaAlterada')
+
+		.row(ng-show="!cxEntCoordenadorJuridico.processos || cxEntCoordenadorJuridico.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.    

@@ -74,8 +74,19 @@ public class Atividade extends GenericModel {
 			inverseJoinColumns = @JoinColumn(name = "id_tipo_licenca"))
 	public List<TipoLicenca> tiposLicenca;
 	
+	@OneToMany(mappedBy="atividade")
+	public List<TipoCaracterizacaoAtividade> tiposCaracterizacoesAtividade;
+	
 	@Transient
 	public List<AtividadeCnae> atividadesCnae;
+	
+	public static List<Atividade> listAtividadesSimplificado() {
+		
+		List<Atividade> atividades = 
+				Atividade.find("SELECT a FROM atividade a JOIN a.tiposCaracterizacoesAtividade t WHERE t.licenciamentoSimplificado = ?", true).fetch();
+		
+		return atividades;
+	}
 
 }
 

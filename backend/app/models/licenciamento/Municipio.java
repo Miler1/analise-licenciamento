@@ -11,13 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.SQLQuery;
-import org.hibernate.spatial.GeometryType;
-
-import com.vividsolutions.jts.geom.Geometry;
-
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
 
 @Entity
 @Table(schema = "licenciamento", name = "municipio")
@@ -44,4 +38,9 @@ public class Municipio extends GenericModel {
 		joinColumns = @JoinColumn(name = "id_municipio"), 
 		inverseJoinColumns = @JoinColumn(name="id_atividade"))
 	public List<Atividade> atividadesNaoAptas;
+	
+	public static List<Municipio> findByEstado(String uf) {
+		return Municipio.find("estado.codigo = :uf order by nome")
+				.setParameter("uf", uf.toUpperCase()).fetch();
+	}	
 }
