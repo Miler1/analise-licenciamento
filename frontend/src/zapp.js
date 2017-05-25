@@ -18,9 +18,6 @@ licenciamento.config(["$routeProvider",	function($routeProvider) {
 		.when("/", {
 			redirectTo: "/caixa-entrada"
 		})
-		// .when("/inicial", {
-		// 	templateUrl: "layout/inicial.html"
-		// })
 		.otherwise({
 			redirectTo: "/"
 		});
