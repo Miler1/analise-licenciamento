@@ -9,7 +9,7 @@ public class Login extends GenericController {
 	public static void login() {
 		
 		if (Auth.autenticar(Request.current(), session.current()))
-			redirect("/");
+			redirect(Configuracoes.HTTP_PATH);
 		else if(Configuracoes.EXTERNAL_LOGIN)
 			redirect(Configuracoes.LOGIN_URL);
 		

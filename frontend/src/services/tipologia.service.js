@@ -2,7 +2,7 @@ var TipologiaService = function(request, config) {
 
 	this.getTipologias = function(params) {
 
-		return request.getWithCache(config.BASE_URL + "tipologias", params);
+		return request.getWithCache(config.BASE_URL() + "tipologias", params);
 	};
 
 };

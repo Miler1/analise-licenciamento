@@ -37,12 +37,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		}
 		
 		Long[] ids = new ListUtil().getIdsAsArray(caracterizacoes);
-		
-		try {
-			licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
-		} catch (Exception e) {
-			rollbackTransaction();
-		}
+		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
+
 		
 	}
 	
@@ -71,7 +67,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 			processo.caracterizacoes.add(caracterizacao);
 
-			
+			processo._save();
 		}
 		
 		if(deveTramitar)

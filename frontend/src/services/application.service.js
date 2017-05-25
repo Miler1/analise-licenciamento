@@ -2,7 +2,7 @@ var ApplicationService = function(request, config) {
 
 	this.findInfo = function(successCallback) {
 
-		request.get(config.BASE_URL + "aplicacao/info").then(successCallback);
+		request.get(config.BASE_URL() + "aplicacao/info").then(successCallback);
 
 	};
 
