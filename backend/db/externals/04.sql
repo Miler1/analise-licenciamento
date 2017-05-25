@@ -17,12 +17,12 @@ INSERT INTO portal_seguranca.perfil(id, avatar, data_cadastro, nome) VALUES (9, 
 
 -- Insert de duas novas permissões
 INSERT INTO portal_seguranca.permissao( codigo, data_cadastro, nome, id_modulo)
-VALUES ('LISTAR_PROCESSO',now(),'Listar Processo',(SELECT id
+VALUES ('LISTAR_PROCESSO_JURIDICO',now(),'Listar Processo',(SELECT id
 FROM portal_seguranca.modulo
 WHERE sigla = 'ANL'));
 
 INSERT INTO portal_seguranca.permissao( codigo, data_cadastro, nome, id_modulo)
-VALUES ('VINCULAR_PROCESSO',now(),'Vincular Processo',
+VALUES ('VINCULAR_PROCESSO_JURIDICO',now(),'Vincular Processo',
 (SELECT id
 FROM portal_seguranca.modulo
 WHERE sigla = 'ANL'));
@@ -47,29 +47,29 @@ VALUES (9, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'acessarAna
 
 -- Vinculação das novas permissões para os perfis competentes
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (3, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO'));
+VALUES (3, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (4, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO'));
+VALUES (4, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (5, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO'));
+VALUES (5, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (6, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO'));
+VALUES (6, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (7, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO'));
+VALUES (7, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (8, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO'));
+VALUES (8, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (9, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO'));
+VALUES (9, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'LISTAR_PROCESSO_JURIDICO'));
 
 
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (3, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO'));
+VALUES (3, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (4, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO'));
+VALUES (4, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (6, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO'));
+VALUES (6, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO_JURIDICO'));
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
-VALUES (7, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO'));
+VALUES (7, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VINCULAR_PROCESSO_JURIDICO'));
 
 -- Remoção da permissão de visualizar o modulo de analise para o perfil externo (este só deve ter permissões referentes ao modulo de licenciamento)
 DELETE FROM portal_seguranca.permissao_perfil where id_perfil = 2 AND id_permissao = (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'acessarAnaliseLicenciamento');
@@ -81,6 +81,6 @@ DELETE FROM portal_seguranca.permissao_perfil where id_perfil = 2 AND id_permiss
 INSERT INTO portal_seguranca.permissao_perfil (id_perfil, id_permissao) VALUES
 (2,(SELECT id FROM portal_seguranca.permissao WHERE codigo = 'acessarAnaliseLicenciamento'));
 DELETE FROM portal_seguranca.permissao_perfil WHERE id_perfil IN (3,4,5,6,7,8,9);
-DELETE FROM portal_seguranca.permissao WHERE codigo='VINCULAR_PROCESSO'; 
-DELETE FROM portal_seguranca.permissao WHERE codigo='LISTAR_PROCESSO'; 
+DELETE FROM portal_seguranca.permissao WHERE codigo='LISTAR_PROCESSO_JURIDICO'; 
+DELETE FROM portal_seguranca.permissao WHERE codigo='VINCULAR_PROCESSO_JURIDICO'; 
 DELETE FROM portal_seguranca.perfil WHERE id IN (3,4,5,6,7,8,9);
