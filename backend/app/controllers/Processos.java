@@ -10,7 +10,7 @@ public class Processos extends InternalController {
 
 	public void listWithFilter(FiltroProcesso filtro){
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO);
+		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
 		List processosList = Processo.listWithFilter(filtro);
 		
@@ -19,7 +19,7 @@ public class Processos extends InternalController {
 	
 	public void countWithFilter(FiltroProcesso filtro){
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO);
+		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
 		renderJSON(Processo.countWithFilter(filtro));
 	}

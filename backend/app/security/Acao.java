@@ -3,7 +3,7 @@ package security;
 
 public enum Acao {
 
-	LISTAR_PROCESSO,
-	VINCULAR_PROCESSO;
+	LISTAR_PROCESSO_JURIDICO,
+	VINCULAR_PROCESSO_JURIDICO;
 	
 }

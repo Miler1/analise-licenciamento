@@ -1,0 +1,47 @@
+include ../../../layout/components/inputErrors
+
+form(name="formVincularConsultor", novalidate)
+	div.modal-header
+
+		button.close(type='button', ng-click="modalCtrl.cancelar()")
+			span(aria-hidden='true') ×
+			span.sr-only Fechar
+
+		h3.modal-title Vincular consultor jurídico
+
+	div.modal-body
+
+		h4 Processos a vincular
+		.row
+			.col-md-12
+				table.table.table-striped
+					thead
+						tr
+							th.col-md-2 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-2 Empreendimento
+							th.col-md-2 Município
+					tbody
+						tr(ng-repeat="processo in modalCtrl.processos | orderBy: 'numero'")
+							td {{processo.numero}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+
+		.row.form-group
+			.col-md-12
+				label.control-label.obrigatorio Consultor jurídico:
+				select.form-control(ng-model="modalCtrl.idConsultorSelecionado", name="selectConsultor", required,
+									ng-options="consultor.id as consultor.pessoa.nome for consultor in modalCtrl.consultores track by consultor.id")
+					option(value="") Selecione o consultor jurídico
+
+				+inputErrors('formVincularConsultor', 'selectConsultor', 'required')
+
+	div.modal-footer#footer-modal
+
+		button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()")
+			i.glyphicon.glyphicon-arrow-left
+			| &nbsp;Fechar
+		button.btn.btn-success.pull-right(type="submit" ng-click="modalCtrl.vincular()", ng-disable="!modalCtrl.consultorSelecionado")
+			i.glyphicon.glyphicon-share
+			| &nbsp;Vincular consultor

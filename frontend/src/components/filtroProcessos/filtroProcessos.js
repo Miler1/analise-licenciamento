@@ -9,25 +9,19 @@ var FiltroProcessos = {
         pesquisarAoInicializar: '<'
 	},
 
-	controller: function(mensagem, processoService, municipioService, tipologiaService, atividadeService) {
+	controller: function(mensagem, processoService, municipioService, tipologiaService, atividadeService, $scope) {
 
 		var ctrl = this;
 
         ctrl.openedAccordion = false;
-        ctrl.filtro = {};
         ctrl.municipios = [];
         ctrl.tipologias = [];
         ctrl.atividades = [];
 
+		this.pesquisar = function(pagina){
 
-        function setFiltroControlePagina(){
-            ctrl.filtro.paginaAtual = ctrl.paginacao.paginaAtual;
+            ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
             ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
-        }
-
-		this.pesquisar = function(){
-
-            setFiltroControlePagina();
 
             processoService.getProcessos(ctrl.filtro)
                 .then(function(response){
@@ -46,12 +40,28 @@ var FiltroProcessos = {
                 });                
 		};
 
-        this.$postLink = function(){
+        function setFiltrosPadrao(){
+
+            ctrl.filtro = {};
 
             if (ctrl.condicaoTramitacao) {
 
                 ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
             }
+        }
+
+        this.limparFiltros = function(){
+
+            setFiltrosPadrao();
+
+            $('#cpfCnpjEmpreendimento').val('');
+
+            this.pesquisar(1);
+        };
+
+        this.$postLink = function(){
+
+            setFiltrosPadrao();
 
 			municipioService.getMunicipiosByUf('PA').then(
 				function(response){
@@ -84,9 +94,14 @@ var FiltroProcessos = {
 
             if (ctrl.pesquisarAoInicializar){
 
-                ctrl.pesquisar();
+                ctrl.pesquisar(1);
             }
         };
+
+		$scope.$on('pesquisarProcessos', function(event){
+
+			this.pesquisar();
+		});        
 	},
 
 	templateUrl: 'components/filtroProcessos/filtroProcessos.html'

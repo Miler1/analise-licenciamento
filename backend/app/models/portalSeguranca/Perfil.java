@@ -18,6 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.codehaus.groovy.runtime.dgmimpl.arrays.IntegerArrayGetAtMetaMethod;
+
 import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
@@ -30,6 +32,7 @@ public class Perfil extends GenericModel {
 	public static final int NOME_TAMANHO_MAXIMO = 100;
 	public static final String CAMINHO_TEMP = Play.applicationPath + "/tmp/";
 	public static final String PATH_PERFIS = Play.configuration.getProperty("application.diretorioGravarImagens.perfis");
+	public static final Integer CONSULTOR_JURIDICO = 5;
 	private static final Integer ID_EXTERNO = 2;
 
 	@Id

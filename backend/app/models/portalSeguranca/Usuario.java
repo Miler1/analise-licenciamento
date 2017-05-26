@@ -93,5 +93,21 @@ public class Usuario extends GenericModel  {
 
 	@Transient
 	public List<String> acoesPermitidas;
-
+	
+	public static List<Usuario> getUsuariosByPerfil(Integer idPerfil) {
+		
+		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfis p WHERE p.id = ?", idPerfil).fetch();
+	}
+	
+	public boolean hasPerfil(Integer idPerfil){
+		
+		for (Perfil perfil: perfis) {
+			
+			if (perfil.id.equals(idPerfil)){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
