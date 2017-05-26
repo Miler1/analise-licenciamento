@@ -48,7 +48,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
                     url: '/',
 					estaSelecionado: function() {
 
-						return $location.path() === '/inicial' || $location.path() === '/';
+						return $location.path() === '/caixa-entrada' || $location.path() === '/';
 					}
 
                 }, {
@@ -112,7 +112,12 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 }]);
 
 licenciamento.constant('config', {
-	BASE_URL: LICENCIAMENTO_CONFIG.configuracoes.baseURL,
+	BASE_URL: function() {
+		if(LICENCIAMENTO_CONFIG.configuracoes.baseURL === "/")
+			return LICENCIAMENTO_CONFIG.configuracoes.baseURL;
+		else
+			return LICENCIAMENTO_CONFIG.configuracoes.baseURL + "/";
+	},
 	QTDE_ITENS_POR_PAGINA: 10
 });
 
