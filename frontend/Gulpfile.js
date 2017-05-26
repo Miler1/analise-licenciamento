@@ -141,11 +141,11 @@ gulp.task('concat', function () {
 
 gulp.task("js", function() {
 
-	return gulp.src([config.src.all + ".js"])
-		.pipe(order([
-			config.src.all + ".js",
-			"src/zapp.js"
-		]))
+	return gulp.src([
+			config.src.all.slice(0,-1) + "!(*.module|app).js",
+			config.src.all + ".module.js",
+			"src/app.js"
+		])
 		.pipe(wrapper({
 			header: '!function(exports) {\n/* @ngInject */\n',
 			footer: '\n}(function() { this.app = this.app || {controllers:{}, directives:{}, services:{}, factories: {}, filters:{}, utils: {}}; return this.app;}());'
