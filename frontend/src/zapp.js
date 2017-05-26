@@ -151,7 +151,8 @@ utils.services(licenciamento)
 	.add('processoService', services.ProcessoService)
 	.add('municipioService', services.MunicipioService)
 	.add('tipologiaService', services.TipologiaService)
-	.add('atividadeService', services.AtividadeService);
+	.add('atividadeService', services.AtividadeService)
+	.add('consultorService', services.ConsultorService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

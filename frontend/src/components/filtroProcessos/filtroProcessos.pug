@@ -7,11 +7,11 @@ div(uib-accordion class="accordion")
         .row.form-group
             .col-md-5.col-sm-6
                 label.control-label Número do processo:
-                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numProcesso', placeholder='Número do processo', maxlength="15")
+                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numeroProcesso', placeholder='Número do processo', maxlength="15")
 
             .col-md-7.col-sm-6
                 label.control-label CPF/CNPJ do empreendimento:
-                input.form-control(type='text', name='cpfCnpjEmpreendimento', ng-model='$ctrl.filtro.cpfCnpjEmpreendimento', placeholder=' CPF/CNPJ do empreendimento', ui-br-cpfcnpj-mask)                            
+                input.form-control(type='text', id="cpfCnpjEmpreendimento", name='cpfCnpjEmpreendimento', ng-model='$ctrl.filtro.cpfCnpjEmpreendimento', placeholder=' CPF/CNPJ do empreendimento', ui-br-cpfcnpj-mask)                            
 
         .row.form-group
             .col-md-12
@@ -34,7 +34,9 @@ div(uib-accordion class="accordion")
                                     ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades | orderBy:'nome' track by atividade.id")
                     option(value="") Selecione a atividade do empreendimento
 
-        div
-            button.btn.btn-default.pull-right.btn-success(ng-click="$ctrl.pesquisar()", tabindex="0")
+        div.pull-right
+            a.limpar-filtros.traditional(ng-click="$ctrl.limparFiltros()")
+                span Limpar filtros    
+            button.btn.btn-default.btn-success(ng-click="$ctrl.pesquisar(1)", tabindex="0")
                 span.glyphicon.glyphicon-search 
-                | &nbsp;Pesquisar
+                | &nbsp;Pesquisar            

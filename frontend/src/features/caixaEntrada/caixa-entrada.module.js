@@ -18,7 +18,8 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 }]);
 
 caixasEntrada
-	.controller('cxEntCoordenadorJuridicoController', controllers.CxEntCoordenadorJuridicoController);
+	.controller('cxEntCoordenadorJuridicoController', controllers.CxEntCoordenadorJuridicoController)
+	.controller('modalVincularConsutorJuridicoController', controllers.ModalVincularConsutorJuridicoController);
 
 caixasEntrada
 	.component('filtroProcessos', directives.FiltroProcessos);

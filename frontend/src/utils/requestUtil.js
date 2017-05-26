@@ -139,6 +139,29 @@ Request.prototype.post = function(url, params, elem, comLoad) {
 
 };
 
+Request.prototype.postAsUrlEncoded = function(url, params, elem, comLoad) {
+
+	if(comLoad === null || comLoad === undefined)
+		comLoad = true;
+
+	var http = this._$http({
+		url:  url,
+		method: 'POST',
+		cache: false,
+		data: $.param(params),
+		headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	});
+
+	if(comLoad) {
+		this.load(url, elem);
+		this._finally(http, url);
+	}
+
+	return http;
+
+};
+
+
 Request.prototype.delete = function(url, params, elem, comLoad) {
 
 	if(comLoad === null || comLoad === undefined)

@@ -26,7 +26,8 @@ GET		/authenticate								Login.login
 GET		/logout										Login.logout
 
 # Consultores
-POST	/consultores/vincular						Consultores.vincularAnalise
+POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
+GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
