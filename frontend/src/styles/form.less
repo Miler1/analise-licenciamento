@@ -179,3 +179,30 @@ form{
   vertical-align: middle;
   margin-right: 10px;
 }
+
+.icone-revisao-solicitada {
+    color: #757575;
+    font-style: italic;
+
+  &:before {
+    content: "";
+    background-color: orange;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &.legenda {
+    margin-left: 5px;
+
+    &:before {
+      margin-right: 5px;
+    }
+  }
+}
+
+.no-margin {
+	margin:0px !important;
+}

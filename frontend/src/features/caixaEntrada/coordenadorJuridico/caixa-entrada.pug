@@ -1,7 +1,7 @@
 include ../../../layout/components/paginacao
 
 div
-	h3.text-center Em análise jurídica
+	h3.text-center Aguardando análise jurídica
 
 	filtro-processos(paginacao="cxEntCoordenadorJuridico.paginacao", 
 		atualizar-lista="cxEntCoordenadorJuridico.atualizarListaProcessos",
@@ -39,10 +39,10 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
-								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
-							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
-								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
+							td(ng-class="{'error-message': caixaEntrada.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+								| {{caixaEntrada.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': caixaEntrada.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
+								| {{caixaEntrada.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
 							td
 								span.pull-right
 

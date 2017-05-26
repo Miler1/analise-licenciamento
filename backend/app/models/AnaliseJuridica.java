@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -71,6 +72,9 @@ public class AnaliseJuridica extends GenericModel {
 		joinColumns=@JoinColumn(name="id_documento"), 
 		inverseJoinColumns=@JoinColumn(name="id_analise_juridica"))
 	public List<Documento> documentos;
+	
+	@OneToMany(mappedBy="analiseJuridica")
+	public List<ConsultorJuridico> consultoresJuridicos;
 	
 	public AnaliseJuridica save() {
 		
