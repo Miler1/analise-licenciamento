@@ -106,7 +106,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 			controllerAs: 'modalCtrl',
 			backdrop: 'static',
 			keyboard  : false,
-			templateUrl: './features/caixaEntrada/_coordenadorJuridico/modal-vincular-consultor.html',
+			templateUrl: './features/caixaEntrada/coordenadorJuridico/modal-vincular-consultor.html',
 			size: "lg",
 			resolve: {
 				processos: function () {
