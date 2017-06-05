@@ -66,8 +66,8 @@ public class Empreendimento extends GenericModel {
 	@Valid
 	@Required
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_endereco_correspondencia", referencedColumnName = "id")
-	public Endereco enderecoCorrespondencia;
+	@JoinColumn(name = "id_endereco", referencedColumnName = "id")
+	public Endereco endereco;
 	
 	@Column(name="tipo_localizacao")
 	@Enumerated(EnumType.ORDINAL)

@@ -1,2 +1,7 @@
-div(ng-controller='cxEntCoordenadorJuridicoController as cxEntCoordenadorJuridico')
+div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.COORDENADOR_JURIDICO", 
+    ng-controller='cxEntCoordenadorJuridicoController as cxEntCoordenadorJuridico')
     include coordenadorJuridico/caixa-entrada
+
+div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.CONSULTOR_JURIDICO", 
+    ng-controller='cxEntConsultorJuridicoController as cxEntConsultorJuridico')
+    include consultorJuridico/caixa-entrada

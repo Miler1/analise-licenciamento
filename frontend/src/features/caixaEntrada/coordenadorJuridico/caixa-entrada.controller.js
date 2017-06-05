@@ -4,10 +4,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 	cxEntCoordenadorJuridico.atualizarListaProcessos = atualizarListaProcessos;
 	cxEntCoordenadorJuridico.atualizarPaginacao = atualizarPaginacao;
-	cxEntCoordenadorJuridico.calcularDiasRestantes = calcularDiasRestantes;	
-	cxEntCoordenadorJuridico.getDiasRestantes = getDiasRestantes;
 	cxEntCoordenadorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
-	cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
 	cxEntCoordenadorJuridico.vincularConsultor = vincularConsultor;
 	cxEntCoordenadorJuridico.onPaginaAlterada = onPaginaAlterada;
 
@@ -31,30 +28,12 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		$scope.$broadcast('pesquisarProcessos');
 	}
 
-	function calcularDiasRestantes(stringDate){
-
-		return moment(stringDate, 'DD/MM/yyyy').startOf('day')
-			.diff(moment(Date.now()).startOf('day'), 'days');		
-	}
-
-	function getDiasRestantes(dataVencimento){
-
-		var diasRestantes = calcularDiasRestantes(dataVencimento);
-
-		return diasRestantes >=0 ? diasRestantes : Math.abs(diasRestantes) + ' dia(s) atraso';
-	}
-
 	function selecionarTodosProcessos() {
 
 		_.each(cxEntCoordenadorJuridico.processos, function(processo){
 
 			processo.selecionado = cxEntCoordenadorJuridico.todosProcessosSelecionados;
 		});
-	}
-
-	function isPrazoMinimoAvisoAnalise(dataVencimento, prazoMinimo) {
-
-		return calcularDiasRestantes(dataVencimento) <= prazoMinimo; 
 	}
 
 	function vincularConsultor(processoSelecionado) {
@@ -90,7 +69,8 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 				consultorService.vincularAnaliseConsultorJuridico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
 					.then(function(response){
 
-						mensagem.success(response.data);
+						$scope.$broadcast('pesquisarProcessos');
+						mensagem.success(response.data);						
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
