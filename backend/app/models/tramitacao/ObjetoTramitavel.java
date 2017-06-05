@@ -1,5 +1,6 @@
 package models.tramitacao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -38,6 +39,9 @@ public class ObjetoTramitavel extends GenericModel {
 	
  	@Column(name = "ID_FLUXO")
 	public Long idFluxo;
+ 	
+ 	@Column(name = "dt_criacao_objeto_tramitavel")
+ 	public Date dataCriacao;
  	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "ID_RESPONSAVEL_ANTERIOR", referencedColumnName = "id")

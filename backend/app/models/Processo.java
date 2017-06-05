@@ -71,6 +71,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
 	
+	@Transient
+	public Caracterizacao caracterizacao;
+	
 	@Override
 	public Processo save() {
 
@@ -153,6 +156,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.unique();
 		
 		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
+	}
+	
+	public Caracterizacao getCaracterizacao() {
+		return caracterizacoes.get(0);
 	}
 
 }
