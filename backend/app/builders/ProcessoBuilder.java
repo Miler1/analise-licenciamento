@@ -1,12 +1,15 @@
 package builders;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StringType;
 
 import models.Processo;
+import utils.IlikeNoAccents;
 
 public class ProcessoBuilder extends CriteriaBuilder<Processo> { 
 	
@@ -209,8 +212,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
 		if (StringUtils.isNotEmpty(numeroProcesso)) {
-
-			addRestricton(Restrictions.eq("numero", numeroProcesso));
+			
+			addRestricton(Restrictions.ilike("numero", numeroProcesso, MatchMode.ANYWHERE));
 		}
 		
 		return this;
@@ -230,9 +233,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (StringUtils.isNotEmpty(cpfCnpj)) {
 
 			addPessoaEmpreendimentoAlias();
+			
 			criteria.add(Restrictions.or(
-				Restrictions.eq(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpfCnpj), 
-				Restrictions.eq(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cpfCnpj)
+					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpfCnpj, MatchMode.START), 
+					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cpfCnpj, MatchMode.START)
 			));
 		}
 		
