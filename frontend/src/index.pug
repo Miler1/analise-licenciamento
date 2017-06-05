@@ -27,22 +27,23 @@ html(lang='pt-br')
 
 			div#wrap
 				include layout/header
+				include layout/menu
 
-			section.container.main-container
+				section.container.main-container
 
-				include components/breadcrumb/breadcrumb
+					include components/breadcrumb/breadcrumb
 
-				div(growl inline="true")
+					div(growl inline="true")
 
-				div.row
+					div.row
 
-					aside.col-xs-3.main-container__menu
-						menu-principal(itens="itensMenuPrincipal")
+						aside.col-xs-3.main-container__menu
+							menu-principal(itens="itensMenuPrincipal")
 
-					div.col-xs-9.main-container__views
-						div(ng-view)
+						div.col-xs-9.main-container__views
+							div(ng-view)
 
-			include layout/footer
+				include layout/footer
 
 		script(src="./aplicacao/info")
 		script(src="./libs/jquery/jquery.min.js")

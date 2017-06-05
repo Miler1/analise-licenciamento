@@ -43,7 +43,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 	$rootScope.itensMenuPrincipal = [{
 
-                    titulo: 'Caixa de entrada (novos processos)',
+                    titulo: 'Caixa de entrada',
                     icone: 'glyphicon glyphicon-inbox',
                     url: '/',
 					estaSelecionado: function() {
