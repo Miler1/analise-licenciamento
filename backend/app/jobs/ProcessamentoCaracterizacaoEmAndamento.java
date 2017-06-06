@@ -59,6 +59,10 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			criarNovaAnaliseJuridica(analise);
 			
 			deveTramitar = true;
+
+		} else if(processo.caracterizacoes.contains(caracterizacao)) {
+			
+			return;
 			
 		} else {
 			
