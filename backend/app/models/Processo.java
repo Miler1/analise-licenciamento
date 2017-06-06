@@ -26,11 +26,14 @@ import models.licenciamento.Empreendimento;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.Condicao;
 import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.Auth;
 import security.InterfaceTramitavel;
+import security.UsuarioSessao;
 import utils.Configuracoes;
 
 @Entity
@@ -117,7 +120,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 
-	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro) {
+	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, Long idUsuarioLogado ) {
 		
 		return new ProcessoBuilder()
 			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
@@ -126,12 +129,23 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
 			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
 			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
+			.filtrarPorIdConsultorJuridico(getIdConsultorJuridico(filtro.idCondicaoTramitacao, idUsuarioLogado))
 			.filtrarAnaliseJuridicaAtiva();
 	}
 	
-	public static List listWithFilter(FiltroProcesso filtro) {
+	private static Long getIdConsultorJuridico(Long idCondicaoTramitacao, Long idUsuarioLogado) {
 		
-		return commonFilterProcesso(filtro)
+		if (idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) || idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA)) {
+			
+			return idUsuarioLogado;
+		}
+		
+		return null;
+	}
+
+	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
+		
+		return commonFilterProcesso(filtro, usuarioSessao.id)
 			.comTiposLicencas()
 			.groupByIdProcesso()
 			.groupByNumeroProcesso()
@@ -139,19 +153,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDenominacaoEmpreendimento()
 			.groupByMunicipioEmpreendimento()			
 			.groupByDataVencimentoPrazoAnalise()
-			.groupByDataVencimentoPrazoAnaliseJuridica()				
+			.groupByDataVencimentoPrazoAnaliseJuridica()
+			.groupByRevisaoSolicitadaAnaliseJuridica()
 			.orderByDataVencimentoPrazoAnaliseJuridica()
 			.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
 			.list();	
 	}
 	
-	public static Long countWithFilter(FiltroProcesso filtro) {
+	public static Long countWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
 		
-		Object qtdeTotalItens = commonFilterProcesso(filtro)
+		Object qtdeTotalItens = commonFilterProcesso(filtro, usuarioSessao.id)
 			.addPessoaEmpreendimentoAlias()
 			.addEstadoEmpreendimentoAlias()
 			.addAnaliseAlias()
-			.createAnaliseJuridicaAlias()
+			.addAnaliseJuridicaAlias()
 			.count()
 			.unique();
 		

@@ -100,7 +100,7 @@ var FiltroProcessos = {
 
 		$scope.$on('pesquisarProcessos', function(event){
 
-			this.pesquisar();
+			ctrl.pesquisar();
 		});        
 	},
 

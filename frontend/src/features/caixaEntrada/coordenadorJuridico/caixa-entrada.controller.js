@@ -4,12 +4,10 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 	cxEntCoordenadorJuridico.atualizarListaProcessos = atualizarListaProcessos;
 	cxEntCoordenadorJuridico.atualizarPaginacao = atualizarPaginacao;
-	cxEntCoordenadorJuridico.calcularDiasRestantes = calcularDiasRestantes;	
-	cxEntCoordenadorJuridico.getDiasRestantes = getDiasRestantes;
 	cxEntCoordenadorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
-	cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
 	cxEntCoordenadorJuridico.vincularConsultor = vincularConsultor;
 	cxEntCoordenadorJuridico.onPaginaAlterada = onPaginaAlterada;
+	cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
 
 	cxEntCoordenadorJuridico.processos = [];
 	cxEntCoordenadorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
@@ -31,19 +29,6 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		$scope.$broadcast('pesquisarProcessos');
 	}
 
-	function calcularDiasRestantes(stringDate){
-
-		return moment(stringDate, 'DD/MM/yyyy').startOf('day')
-			.diff(moment(Date.now()).startOf('day'), 'days');		
-	}
-
-	function getDiasRestantes(dataVencimento){
-
-		var diasRestantes = calcularDiasRestantes(dataVencimento);
-
-		return diasRestantes >=0 ? diasRestantes : Math.abs(diasRestantes) + ' dia(s) atraso';
-	}
-
 	function selecionarTodosProcessos() {
 
 		_.each(cxEntCoordenadorJuridico.processos, function(processo){
@@ -52,9 +37,9 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		});
 	}
 
-	function isPrazoMinimoAvisoAnalise(dataVencimento, prazoMinimo) {
+	function hasAtLeastOneProcessoSelected() {
 
-		return calcularDiasRestantes(dataVencimento) <= prazoMinimo; 
+		return _.some(cxEntCoordenadorJuridico.processos, {selecionado: true});		
 	}
 
 	function vincularConsultor(processoSelecionado) {
@@ -78,7 +63,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor');
+			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor.');
 			return;
 		}
 
@@ -90,7 +75,8 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 				consultorService.vincularAnaliseConsultorJuridico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
 					.then(function(response){
 
-						mensagem.success(response.data);
+						$scope.$broadcast('pesquisarProcessos');
+						mensagem.success(response.data);						
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});

@@ -9,5 +9,6 @@ public class ApplicationSerializer {
 			"usuarioSessao.nome",
 			"usuarioSessao.cpfCnpj",
 			"usuarioSessao.permissoes",
+			"usuarioSessao.perfilSelecionado.id",
 			"configuracoes.baseURL");
 }
