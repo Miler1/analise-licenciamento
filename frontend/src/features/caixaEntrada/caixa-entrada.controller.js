@@ -1,9 +1,10 @@
-var CaixaEntradaController = function($scope, $rootScope) {
+var CaixaEntradaController = function($scope, $rootScope, $location) {
 
 	var caixaEntrada = this;
 
 	caixaEntrada.getDiasRestantes = getDiasRestantes;
 	caixaEntrada.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
+	caixaEntrada.iniciarAnalise = iniciarAnalise;
 	caixaEntrada.perfis = app.utils.Perfis;
 
 	function calcularDiasRestantes(stringDate){
@@ -23,6 +24,11 @@ var CaixaEntradaController = function($scope, $rootScope) {
 
 		return calcularDiasRestantes(dataVencimento) <= prazoMinimo; 
 	}	
+
+	function iniciarAnalise(idProcesso) {
+
+		$location.path('/analise-juridica/' + idProcesso.toString());
+	}
 
 };
 
