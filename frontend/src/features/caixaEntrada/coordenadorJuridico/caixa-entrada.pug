@@ -60,7 +60,10 @@ div
 													i.glyphicon.glyphicon-eye-open 
 													span Visualizar processo
 				div
-					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorJuridico.vincularConsultor()", tabindex="0")
+					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorJuridico.vincularConsultor()", 
+																  ng-disabled="!cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected()",
+																  ng-attr-title="{{!cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao consultor.' : ''}}" 
+																  tabindex="0")
 						span.glyphicon.glyphicon-share
 						| &nbsp; Vincular consultor
 
