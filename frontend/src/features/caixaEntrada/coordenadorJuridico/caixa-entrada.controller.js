@@ -7,6 +7,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	cxEntCoordenadorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntCoordenadorJuridico.vincularConsultor = vincularConsultor;
 	cxEntCoordenadorJuridico.onPaginaAlterada = onPaginaAlterada;
+	cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
 
 	cxEntCoordenadorJuridico.processos = [];
 	cxEntCoordenadorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
@@ -36,6 +37,11 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		});
 	}
 
+	function hasAtLeastOneProcessoSelected() {
+
+		return _.some(cxEntCoordenadorJuridico.processos, {selecionado: true});		
+	}
+
 	function vincularConsultor(processoSelecionado) {
 		
 		var processosSelecionados = [];
@@ -57,7 +63,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor');
+			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor.');
 			return;
 		}
 
