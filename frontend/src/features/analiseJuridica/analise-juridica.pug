@@ -1,1 +1,134 @@
-h1 Análise juridica
+div
+    h1 Parecer jurídico
+
+    section
+        header.row
+            h3.col-md-6 Processo
+
+            div.btn-group.col-md-6(role="group")
+                button.btn.btn-default.pull-right
+                    i.glyphicon.glyphicon-eye-open.btn__i
+                    | Dados do processo
+                button.btn.btn-default.pull-right.col-md-6
+                    i.glyphicon.glyphicon-th-list.btn__i
+                    | Legislações
+
+        div
+
+            div
+                label(for="texto_numero_processo") Número:
+                    span#texto_numero_processo
+            div
+                label(for="texto_cpf_ou_cnpj") CPF/CNPJ:
+                    span#texto_cpf_ou_cnpj
+            div
+                label(for="texto_nome_empreendimento") Empreendimento:
+                    span#texto_nome_empreendimento
+            div
+                label(for="texto_municipio_estado") Município:
+                    span#texto_municipio_estado        
+
+
+    section.row
+
+        form.col-md-6.col-md-offset-6
+            div.form-group
+                label(for="input_numero_processo") Número do processo para clonar parecer
+                div.input-group
+                    input#input_numero_processo(type="text", class="form-control")
+                    span.input-group-btn
+                        button.btn.btn-default(type="button") 
+                            i.glyphicon.glyphicon-refresh.btn__i
+                            | Clonar parecer
+
+    section
+
+        h4 Análise jurídica
+
+        div
+            label Consultor jurídico: 
+            span {{usuarioSessao.nome}}
+
+        form
+
+            .form-group
+                textarea#texto_parecer.form-control
+
+            .form-group
+                button.btn.btn-default
+                    i.glyphicon.glyphicon-open.btn__i
+                    | Anexar arquivo ao parecer
+
+        table.table.table-condensed
+
+            thead
+
+                tr
+                    th Arquivo anexado
+                    th.text-right Ações
+
+            tbody
+
+                tr
+
+                    td {{documento.nome}}
+                    td.text-right 
+                        a
+                            i.glyphicon.glyphicon-save
+
+                        a
+                            i.glyphicon.glyphicon-trash                            
+
+        table.table.table-condensed
+
+            thead
+
+                tr
+                    th Documento
+                    th Validar
+                    th.text-right Ações
+
+            tbody
+
+                tr
+
+                    td {{documento.nome}}
+                    td
+                    td.text-right 
+                        a
+                            i.glyphicon.glyphicon-download
+
+        
+        form.text-center
+            label.radio-inline(for="radio_parecer_deferido")
+                input#radio_parecer_deferido(type="radio", name="parecer", value="DEFERIDO") 
+                | Deferido
+            label.radio-inline(for="radio_parecer_indeferido")
+                input#radio_parecer_indeferido(type="radio", name="parecer", value="INDEFERIDO") 
+                | Indeferido
+            label.radio-inline(for="radio_parecer_notificacao")
+                input#radio_parecer_notificacao(type="radio", name="parecer", value="EMITIR_NOTIFICACAO") 
+                | Emitir notificação
+
+    section
+    
+        button.btn.btn-default.col-md-2.col-md-offset-0
+            i.glyphicon.glyphicon-ban-circle.btn__i
+            | Cancelar
+        
+        button.btn.btn-default.col-md-2.col-md-offset-5
+            i.glyphicon.glyphicon-edit.btn__i
+            | Salvar
+        
+        button.btn.btn-default.col-md-2.col-md-offset-1
+            i.glyphicon.glyphicon-check.btn__i
+            | Concluir
+            
+
+        
+
+
+
+
+
+
