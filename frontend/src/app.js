@@ -61,8 +61,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			estaSelecionado: function () {
 
 				return $location.path() === '/caixa-entrada' || $location.path() === '/';
-			}
+			},
+			visivel: function(){
 
+				return true;
+			}
 		}, {
 
 			titulo: 'Em análise',
@@ -74,7 +77,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function() {
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id !== 5;
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO;
 			}
 		},
 		{
@@ -85,7 +88,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			estaSelecionado: function () {
 
 				return false;
-			}
+			},
+			visivel: function() {
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfils.COORDENADOR_JURIDICO;
+			}			
 
 		}, {
 			titulo: 'Consultar processo',
@@ -94,6 +101,10 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			estaSelecionado: function () {
 
 				return false;
+			},
+			visivel: function(){
+
+				return true;
 			}
 		}];
 
