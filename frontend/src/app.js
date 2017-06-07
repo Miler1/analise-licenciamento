@@ -36,7 +36,8 @@ licenciamento.config(["$routeProvider", function ($routeProvider) {
         toolbarButtons : ["bold", "italic", "underline", "|", "align", 
                             "formatOL", "formatUL", "strikeThrough", "color",
                             "fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
-                            "paragraphFormat","insertLink", "insertLink", "subscript", "superscript"]	
+                            "paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
+		placeholderText: ''
 
 }).run(function (amMoment) {
 	amMoment.changeLocale('pt-br');

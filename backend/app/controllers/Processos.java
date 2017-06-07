@@ -6,6 +6,7 @@ import builders.ProcessoBuilder.FiltroProcesso;
 import models.Processo;
 import security.Acao;
 import security.Auth;
+import serializers.ProcessoSerializer;
 
 public class Processos extends InternalController {
 
@@ -23,5 +24,10 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
 		renderJSON(Processo.countWithFilter(filtro, Auth.getUsuarioSessao()));
+	}
+	
+	public void findById(Long idProcesso) {
+		
+		renderJSON(Processo.findById(idProcesso), ProcessoSerializer.list);
 	}
 }

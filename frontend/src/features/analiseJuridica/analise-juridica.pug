@@ -1,4 +1,4 @@
-div
+div(ng-init="analiseJuridica.init()")
     h1 Parecer jurídico
 
     section.margin-bottom-md
@@ -7,7 +7,7 @@ div
                 
             h3.col-md-6 Processo
 
-            .col-md-6(, style="margin-top: 20px; margin-bottom: 10px")
+            .col-md-6(style="margin-top: 20px; margin-bottom: 10px")
                 .btn-group.pull-right(role="group")
                     button.btn.btn-default
                         i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
@@ -19,16 +19,16 @@ div
         div
 
             div
-                label(for="texto_numero_processo") Número:
+                label(for="texto_numero_processo") Número: {{analiseJuridica.processo.numero}}
                     span#texto_numero_processo
             div
-                label(for="texto_cpf_ou_cnpj") CPF/CNPJ:
+                label(for="texto_cpf_ou_cnpj") CPF/CNPJ: {{analiseJuridica.processo.pessoa.cpf}}
                     span#texto_cpf_ou_cnpj
             div
-                label(for="texto_nome_empreendimento") Empreendimento:
+                label(for="texto_nome_empreendimento") Empreendimento: {{analiseJuridica.processo.empreendimento.denominacao}}
                     span#texto_nome_empreendimento
             div
-                label(for="texto_municipio_estado") Município:
+                label(for="texto_municipio_estado") Município: {{analiseJuridica.processo.empreendimento.municipio.nome}} / {{analiseJuridica.processo.empreendimento.municipio.estado.codigo}}
                     span#texto_municipio_estado            
 
     section.margin-bottom-md
@@ -59,7 +59,7 @@ div
                 textarea#texto_parecer.form-control(froala, ng-model="analiseJuridica.textoParecer")
 
             .form-group
-                button.btn.btn-default
+                button.btn.btn-default(type="file", ngf-select="analiseJuridica.upload($file)", accept="application/pdf", ngf-pattern="application/pdf")
                     i.glyphicon.glyphicon-open.glyphicon--with-right-margin
                     | Anexar arquivo ao parecer
 
@@ -120,11 +120,11 @@ div
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
         
-        button.btn.btn-default.col-md-2.col-md-offset-5
+        button.btn.btn-success.col-md-2.col-md-offset-5
             i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
             | Salvar
         
-        button.btn.btn-default.col-md-2.col-md-offset-1
+        button.btn.btn-success.col-md-2.col-md-offset-1
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
             

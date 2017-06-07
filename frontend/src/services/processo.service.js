@@ -11,6 +11,12 @@ var ProcessoService = function(request, config) {
 		return request
 			.post(config.BASE_URL() + "processos/count", filtro);
 	};	
+
+	this.consultar = function(idProcesso) {
+
+		return request
+			.get(config.BASE_URL() + 'processos/' + idProcesso);
+	};
 };
 
 exports.services.ProcessoService = ProcessoService;

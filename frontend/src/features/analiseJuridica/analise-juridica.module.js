@@ -10,7 +10,20 @@ analiseJuridica.config(['$routeProvider', function($routeProvider) {
 		.when('/analise-juridica/:idProcesso', {
 			templateUrl: 'features/analiseJuridica/analise-juridica.html',
 			controller: controllers.AnaliseJuridicaController,
-			controllerAs: 'analiseJuridica'
+			controllerAs: 'analiseJuridica',
+
+			resolve: {
+
+				processo: function(processoService, $route, $q) {
+
+					var deferred = $q.defer();					
+					processoService.consultar($route.current.params.idProcesso)
+						.then(function(processo){
+							deferred.resolve(processo.data);
+						});
+					return deferred.promise;
+				}
+			}
 		})
 		.otherwise({
 			redirectTo: '/'

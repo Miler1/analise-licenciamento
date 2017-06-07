@@ -1,8 +1,13 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams) {
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, Upload, processoService, processo) {
 
     var analiseJuridica = this;
 
-    analiseJuridica.textoParecer = '<h1>Teste</h1>';
+    analiseJuridica.processo = processo;
+
+    analiseJuridica.upload = function(file) {
+
+        console.log(file);
+    };
     
 
 };
