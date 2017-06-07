@@ -1,8 +1,26 @@
+@cinza: #999;
+@cinza-escuro: #444;
+@cinza-claro: lighten(@cinza, 25%);
+
+// [INICIO] Sobrescrita de variáveis do Bootstrap
+@brand-primary: #536F00;
+
+@gray-dark: @cinza-escuro;
+@gray: @cinza;
+@gray-light: @cinza-claro;
+
+// Alterações Botões 
+@btn-success-bg: @brand-primary;
+
+// [FIM] Sobrescrita de variáveis do Bootstrap
+
 @images-path: '../images';
-@verde-claro: #8AAA2E;
-@verde-padrao: #719800;
-@verde-escuro: #536F00;
-@verde-mais-escuro: #3E5300;
+
+// Cores padrões do sistema
+@brand-primary-light: lighten(@brand-primary, 8%);
+@brand-primary-darker: darken(@brand-primary, 8%);
+@brand-primary-dark: darken(@brand-primary, 13%);
+
 @cinza: #999;
 @cinza-escuro: #444;
 @cinza-claro: lighten(@cinza, 25%);
@@ -10,6 +28,10 @@
 @vermelho-erro: #C50000;
 @azul-info: #46b8da;
 @preto: #000000;
+
+@warning-text: #735b31;
+@warning-bg: #fff7bf;
+@warning-border: #ffee73;
 
 @footer-height: 40px;
 @header-height: 160px;

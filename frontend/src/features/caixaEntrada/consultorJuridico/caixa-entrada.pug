@@ -1,7 +1,6 @@
 include ../../../layout/components/paginacao
 
 div
-	h3.text-center Em análise jurídica
 
 	filtro-processos(paginacao="cxEntConsultorJuridico.paginacao", 
 		atualizar-lista="cxEntConsultorJuridico.atualizarListaProcessos",
@@ -19,11 +18,11 @@ div
 					thead
 						tr
 							th
-							th.col-md-2 Processo
+							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
-							th.col-md-1 Licenças
+							th.col-md-2 Licenças
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise jurídica
 							th.col-md-1.text-right Ações
@@ -31,7 +30,7 @@ div
 						tr(ng-repeat="processo in cxEntConsultorJuridico.processos")
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseJuridica}")
-							td {{processo.numero}}
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}

@@ -1,4 +1,6 @@
-var ConsultarProcessoController = function($scope, config) {
+var ConsultarProcessoController = function($scope, config, $rootScope) {
+
+	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
 
 	var consultarProcesso = this;
 
