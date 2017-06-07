@@ -15,17 +15,22 @@ var licenciamento = angular.module("licenciamento", [
 	"froala"
 ]);
 
-licenciamento.config(["$routeProvider", function ($routeProvider) {
+licenciamento.config(["$routeProvider", function($routeProvider) {
 
 	$routeProvider
 		.when("/", {
 			redirectTo: "/caixa-entrada"
 		})
+		.when("/consultar-processo", {
+			templateUrl: "features/consultarProcesso/consultar-processo.html",
+			controller: controllers.ConsultarProcessoController,
+			controllerAs: 'consultarProcesso'
+		})		
 		.otherwise({
 			redirectTo: "/"
 		});
 
-}]).config(['growlProvider', function (growlProvider) {
+}]).config(['growlProvider', function(growlProvider) {
 
 	growlProvider.globalDisableCountDown(false)
 		.globalTimeToLive(5000);
@@ -39,12 +44,12 @@ licenciamento.config(["$routeProvider", function ($routeProvider) {
                             "paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
 		placeholderText: ''
 
-}).run(function (amMoment) {
+}).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
 });
 
 licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
-	function ($scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
+	function($scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
 
 		$rootScope.location = $location;
 		$rootScope.confirmacao = {};
@@ -100,7 +105,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			url: '/consultar-processo',
 			estaSelecionado: function () {
 
-				return false;
+				return $location.path() === '/consultar-processo';
 			},
 			visivel: function(){
 
@@ -126,7 +131,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 		});
 
-		$scope.$on("$routeChangeError", function (event, rotaAtual, rotaAnterior, error) {
+		$scope.$on("$routeChangeError", function(event, rotaAtual, rotaAnterior, error) {
 
 			if (error.data.texto) {
 
@@ -149,7 +154,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 	}]);
 
 licenciamento.constant('config', {
-	BASE_URL: function () {
+	BASE_URL: function() {
 		if (LICENCIAMENTO_CONFIG.configuracoes.baseURL === "/")
 			return LICENCIAMENTO_CONFIG.configuracoes.baseURL;
 		else
@@ -189,14 +194,16 @@ utils.services(licenciamento)
 	.add('municipioService', services.MunicipioService)
 	.add('tipologiaService', services.TipologiaService)
 	.add('atividadeService', services.AtividadeService)
-	.add('consultorService', services.ConsultorService);
+	.add('consultorService', services.ConsultorService)
+	.add('condicaoService', services.CondicaoService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
 	.add('capitalize', filters.Capitalize);
 
 utils.directives(licenciamento)
-	.add('enter', directives.Enter, { link: directives.Enter.link, require: 'ngModel' });
+	.add('enter', directives.Enter, {link: directives.Enter.link, require: 'ngModel'})
+	.add('mascara', directives.Mascara, {link: directives.Mascara.link, require: 'ngModel'});
 
 licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)

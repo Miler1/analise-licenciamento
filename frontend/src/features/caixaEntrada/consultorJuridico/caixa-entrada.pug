@@ -3,7 +3,8 @@ include ../../../layout/components/paginacao
 div
 	h3.text-center Em análise jurídica
 
-	filtro-processos(paginacao="cxEntConsultorJuridico.paginacao", 
+	filtro-processos(paginacao="cxEntConsultorJuridico.paginacao",
+		disabled-fields="caixaEntrada.disabledFields"
 		atualizar-lista="cxEntConsultorJuridico.atualizarListaProcessos",
 		atualizar-paginacao="cxEntConsultorJuridico.atualizarPaginacao",
 		condicao-tramitacao="cxEntConsultorJuridico.condicaoTramitacao",
@@ -36,10 +37,10 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': caixaEntrada.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
-								| {{caixaEntrada.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
-							td(ng-class="{'error-message': caixaEntrada.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
-								| {{caixaEntrada.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
+							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+								| {{cxEntConsultorJuridico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
+								| {{cxEntConsultorJuridico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
 							td
 								span.pull-right
 
@@ -49,7 +50,7 @@ div
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="caixaEntrada.iniciarAnalise(processo.idProcesso)")
+												a(ng-click="cxEntConsultorJuridico.iniciarAnalise(processo.idProcesso)")
 													i.glyphicon.glyphicon-ok-circle
 													span Iniciar análise
 											li

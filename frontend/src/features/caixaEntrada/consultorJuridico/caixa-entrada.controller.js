@@ -1,4 +1,4 @@
-var CxEntConsultorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal) {
+var CxEntConsultorJuridicoController = function($scope, config) {
 
 	var cxEntConsultorJuridico = this;
 
@@ -6,11 +6,13 @@ var CxEntConsultorJuridicoController = function($scope, config, consultorService
 	cxEntConsultorJuridico.atualizarPaginacao = atualizarPaginacao;
 	cxEntConsultorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntConsultorJuridico.onPaginaAlterada = onPaginaAlterada;
+	cxEntConsultorJuridico.iniciarAnalise = iniciarAnalise;
 
 	cxEntConsultorJuridico.processos = [];
 	cxEntConsultorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
 	cxEntConsultorJuridico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntConsultorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntConsultorJuridico.dateUtil = app.utils.DateUtil;
 
 	function atualizarListaProcessos(processos) {
 
@@ -34,6 +36,11 @@ var CxEntConsultorJuridicoController = function($scope, config, consultorService
 			processo.selecionado = cxEntConsultorJuridico.todosProcessosSelecionados;
 		});
 	}
+
+	function iniciarAnalise(idProcesso) {
+
+		$location.path('/analise-juridica/' + idProcesso.toString());
+	}	
 };
 
 exports.controllers.CxEntConsultorJuridicoController = CxEntConsultorJuridicoController;
