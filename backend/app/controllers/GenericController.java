@@ -30,7 +30,8 @@ public class GenericController extends Controller {
 	
 	static {
 
-		GsonBuilder builder = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm:ss");
+		GsonBuilder builder = new GsonBuilder()
+				.setDateFormat("dd/MM/yyyy HH:mm:ss");
 		gson = builder.create();		
 	}
 	

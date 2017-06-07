@@ -8,6 +8,7 @@ import models.licenciamento.Caracterizacao;
 import models.tramitacao.HistoricoTramitacao;
 import security.Acao;
 import security.Auth;
+import serializers.ProcessoSerializer;
 
 public class Processos extends InternalController {
 
@@ -27,23 +28,11 @@ public class Processos extends InternalController {
 		renderJSON(Processo.countWithFilter(filtro, Auth.getUsuarioSessao()));
 	}
 	
-	public class ProcessoVO {
-		
-		private Processo processo;
-		private List<HistoricoTramitacao> historicoTramitacao;
-		
-	}
-	
 	public void getInfoProcesso(Long id) {
 		
 		Processo processo = Processo.findById(id);
-		List<HistoricoTramitacao> historicoTramitacao = HistoricoTramitacao.getByObjetoTramitavel(processo.idObjetoTramitavel);
 		
-		ProcessoVO processoVO = new ProcessoVO();
-		processoVO.processo = processo;
-		processoVO.historicoTramitacao = historicoTramitacao;
-		
-		renderJSON(processoVO);
+		renderJSON(processo, ProcessoSerializer.getInfo);
 		
 	}
 }

@@ -50,6 +50,8 @@ public class Analise extends GenericModel {
 	@OneToMany(mappedBy="analise")
 	public List<AnaliseJuridica> analisesJuridica;
 	
+	public Boolean ativo;
+	
 	@Transient
 	public AnaliseJuridica analiseJuridica;
 
@@ -78,5 +80,9 @@ public class Analise extends GenericModel {
 
 		return this.analiseJuridica;
 		
+	}
+	
+	public static Analise findByProcesso(Processo processo) {
+		return Analise.find("processo.id = ? AND ativo = true", processo.id).first();
 	}
 }
