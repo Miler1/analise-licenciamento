@@ -2,7 +2,8 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams) {
 
     var analiseJuridica = this;
 
-    console.log($routeParams.idProcesso);
+    analiseJuridica.textoParecer = '<h1>Teste</h1>';
+    
 
 };
 

@@ -11,7 +11,8 @@ var licenciamento = angular.module("licenciamento", [
 	'ui.select',
 	"ngSanitize",
 	"analiseJuridica",
-	"analisesEmAndamento"
+	"analisesEmAndamento",
+	"froala"
 ]);
 
 licenciamento.config(["$routeProvider", function ($routeProvider) {
@@ -29,7 +30,15 @@ licenciamento.config(["$routeProvider", function ($routeProvider) {
 	growlProvider.globalDisableCountDown(false)
 		.globalTimeToLive(5000);
 
-}]).run(function (amMoment) {
+}]).value('froalaConfig', {
+
+        language: 'pt_br',
+        toolbarButtons : ["bold", "italic", "underline", "|", "align", 
+                            "formatOL", "formatUL", "strikeThrough", "color",
+                            "fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
+                            "paragraphFormat","insertLink", "insertLink", "subscript", "superscript"]	
+
+}).run(function (amMoment) {
 	amMoment.changeLocale('pt-br');
 });
 
