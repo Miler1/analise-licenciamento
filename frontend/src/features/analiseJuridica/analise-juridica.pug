@@ -1,4 +1,4 @@
-div(ng-init="analiseJuridica.init()")
+div
     h1 Parecer jurídico
 
     section.margin-bottom-md
@@ -19,18 +19,22 @@ div(ng-init="analiseJuridica.init()")
         div
 
             div
-                label(for="texto_numero_processo") Número: {{analiseJuridica.processo.numero}}
-                    span#texto_numero_processo
+                label.not-bold(for="texto_numero_processo") Número: 
+                span#texto_numero_processo
+                    strong {{ctrl.processo.numero}}
             div
-                label(for="texto_cpf_ou_cnpj") CPF/CNPJ: {{analiseJuridica.processo.pessoa.cpf}}
-                    span#texto_cpf_ou_cnpj
+                label.not-bold(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
+                span#texto_cpf_ou_cnpj
+                    strong {{ctrl.processo.empreendimento.pessoa.cpf}}
             div
-                label(for="texto_nome_empreendimento") Empreendimento: {{analiseJuridica.processo.empreendimento.denominacao}}
-                    span#texto_nome_empreendimento
+                label.not-bold(for="texto_nome_empreendimento") Empreendimento: 
+                span#texto_nome_empreendimento
+                    strong {{ctrl.processo.empreendimento.denominacao}}
             div
-                label(for="texto_municipio_estado") Município: {{analiseJuridica.processo.empreendimento.municipio.nome}} / {{analiseJuridica.processo.empreendimento.municipio.estado.codigo}}
-                    span#texto_municipio_estado            
-
+                label.not-bold(for="texto_municipio_estado") Município: 
+                span#texto_municipio_estado   
+                    strong {{ctrl.processo.empreendimento.municipio.nome}} / {{ctrl.processo.empreendimento.municipio.estado.codigo}} 
+ 
     section.margin-bottom-md
 
         form
@@ -48,18 +52,19 @@ div(ng-init="analiseJuridica.init()")
         h3 Análise jurídica
 
         div.margin-top-md
-            label Consultor jurídico:  
-            span {{usuarioSessao.nome}}
+            label.not-bold(for="texto_nome_consultor_juridico") Consultor jurídico:  
+            span#texto_nome_consultor_juridico
+                strong {{usuarioSessao.nome}}
 
         hr
 
         form
 
             .form-group
-                textarea#texto_parecer.form-control(froala, ng-model="analiseJuridica.textoParecer")
+                textarea#texto_parecer.form-control(froala, ng-model="ctrl.textoParecer")
 
             .form-group
-                button.btn.btn-default(type="file", ngf-select="analiseJuridica.upload($file)", accept="application/pdf", ngf-pattern="application/pdf")
+                button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", accept="application/pdf", ngf-pattern="application/pdf")
                     i.glyphicon.glyphicon-open.glyphicon--with-right-margin
                     | Anexar arquivo ao parecer
 

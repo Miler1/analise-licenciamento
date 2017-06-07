@@ -96,7 +96,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function() {
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfils.COORDENADOR_JURIDICO;
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO;
 			}			
 
 		}, {
