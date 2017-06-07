@@ -1,17 +1,20 @@
 div
     h1 Parecer jurídico
 
-    section
+    section.margin-bottom-md
+        
         header.row
+                
             h3.col-md-6 Processo
 
-            div.btn-group.col-md-6(role="group")
-                button.btn.btn-default.pull-right
-                    i.glyphicon.glyphicon-eye-open.btn__i
-                    | Dados do processo
-                button.btn.btn-default.pull-right.col-md-6
-                    i.glyphicon.glyphicon-th-list.btn__i
-                    | Legislações
+            .col-md-6(, style="margin-top: 20px; margin-bottom: 10px")
+                .btn-group.pull-right(role="group")
+                    button.btn.btn-default
+                        i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
+                        | Legislações
+                    button.btn.btn-default
+                        i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
+                        | Dados do processo
 
         div
 
@@ -26,28 +29,29 @@ div
                     span#texto_nome_empreendimento
             div
                 label(for="texto_municipio_estado") Município:
-                    span#texto_municipio_estado        
+                    span#texto_municipio_estado            
 
+    section.margin-bottom-md
 
-    section.row
-
-        form.col-md-6.col-md-offset-6
+        form
             div.form-group
                 label(for="input_numero_processo") Número do processo para clonar parecer
                 div.input-group
-                    input#input_numero_processo(type="text", class="form-control")
+                    input#input_numero_processo(type="text", class="form-control", placeholder="Digite o número do processo do qual você deseja clonar o parecer")
                     span.input-group-btn
                         button.btn.btn-default(type="button") 
-                            i.glyphicon.glyphicon-refresh.btn__i
+                            i.glyphicon.glyphicon-refresh.glyphicon--with-right-margin
                             | Clonar parecer
 
-    section
+    section.margin-bottom-md
 
-        h4 Análise jurídica
+        h3 Análise jurídica
 
-        div
-            label Consultor jurídico: 
+        div.margin-top-md
+            label Consultor jurídico:  
             span {{usuarioSessao.nome}}
+
+        hr
 
         form
 
@@ -56,7 +60,7 @@ div
 
             .form-group
                 button.btn.btn-default
-                    i.glyphicon.glyphicon-open.btn__i
+                    i.glyphicon.glyphicon-open.glyphicon--with-right-margin
                     | Anexar arquivo ao parecer
 
         table.table.table-condensed
@@ -73,11 +77,11 @@ div
 
                     td {{documento.nome}}
                     td.text-right 
-                        a
+                        a.btn
                             i.glyphicon.glyphicon-save
 
-                        a
-                            i.glyphicon.glyphicon-trash                            
+                        a.btn
+                            i.glyphicon.glyphicon-trash
 
         table.table.table-condensed
 
@@ -95,11 +99,11 @@ div
                     td {{documento.nome}}
                     td
                     td.text-right 
-                        a
+                        a.btn
                             i.glyphicon.glyphicon-download
 
         
-        form.text-center
+        form.text-center.margin-bottom-md.margin-top-md
             label.radio-inline(for="radio_parecer_deferido")
                 input#radio_parecer_deferido(type="radio", name="parecer", value="DEFERIDO") 
                 | Deferido
@@ -110,18 +114,18 @@ div
                 input#radio_parecer_notificacao(type="radio", name="parecer", value="EMITIR_NOTIFICACAO") 
                 | Emitir notificação
 
-    section
+    section.margin-bottom-md
     
         button.btn.btn-default.col-md-2.col-md-offset-0
-            i.glyphicon.glyphicon-ban-circle.btn__i
+            i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
         
         button.btn.btn-default.col-md-2.col-md-offset-5
-            i.glyphicon.glyphicon-edit.btn__i
+            i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
             | Salvar
         
         button.btn.btn-default.col-md-2.col-md-offset-1
-            i.glyphicon.glyphicon-check.btn__i
+            i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
             
 
