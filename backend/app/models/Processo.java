@@ -30,6 +30,7 @@ import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
+import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
@@ -38,6 +39,7 @@ import security.Auth;
 import security.InterfaceTramitavel;
 import security.UsuarioSessao;
 import utils.Configuracoes;
+import utils.DateUtil;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -82,6 +84,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
 	
+	@Transient
+	public Analise analise;
+	
 	@Override
 	public Processo save() {
 
@@ -121,7 +126,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this));
 		
-		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR, usuarioExecutor);
+		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR, usuarioExecutor, consultor);
 		
 	}
 
@@ -179,6 +184,47 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.unique();
 		
 		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
+	}
+	
+	public Caracterizacao getCaracterizacao() {
+		return caracterizacoes.get(0);
+	}
+	
+	public Analise getAnalise() {
+
+		if(this.analise != null)
+			return this.analise;
+
+		if(this.analises != null && !this.analises.isEmpty())
+			for(Analise analise : this.analises)
+				if(analise.ativo)
+					this.analise = analise;
+		
+		if(this.analise == null)
+			this.analise = Analise.findByProcesso(this);
+
+		return this.analise;
+		
+	}
+	
+	//Retorna o historico da tramitação com o tempo que o objeto tramitavel permaneceu na condição
+	public List<HistoricoTramitacao> getHistoricoTramitacao() {
+
+		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
+
+		Date dataAtual = new Date();
+
+		//Lógica que verifica os dias que ficou na condição
+		for (int i = 0; i < historicosTramitacoes.size(); i++) {
+
+			if(i == 0)
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).data, dataAtual);
+			else
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).data, historicosTramitacoes.get(i - 1).data);
+		}
+
+		return historicosTramitacoes;
+
 	}
 
 }

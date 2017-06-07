@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -48,6 +49,11 @@ public class Analise extends GenericModel {
 	
 	@OneToMany(mappedBy="analise")
 	public List<AnaliseJuridica> analisesJuridica;
+	
+	public Boolean ativo;
+	
+	@Transient
+	public AnaliseJuridica analiseJuridica;
 
 	public Analise save() {
 		
@@ -57,5 +63,26 @@ public class Analise extends GenericModel {
 		this.dataVencimentoPrazo = c.getTime();
 		
 		return super.save();
+	}
+	
+	public AnaliseJuridica getAnaliseJuridica() {
+
+		if(this.analiseJuridica != null)
+			return this.analiseJuridica;
+
+		if(this.analisesJuridica != null && !this.analisesJuridica.isEmpty())
+			for(AnaliseJuridica analiseJuridica : this.analisesJuridica)
+				if(analiseJuridica.ativo)
+					this.analiseJuridica = analiseJuridica;
+		
+		if(this.analiseJuridica == null)
+			this.analiseJuridica = AnaliseJuridica.findByProcesso(processo);
+
+		return this.analiseJuridica;
+		
+	}
+	
+	public static Analise findByProcesso(Processo processo) {
+		return Analise.find("processo.id = ? AND ativo = true", processo.id).first();
 	}
 }

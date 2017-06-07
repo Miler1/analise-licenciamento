@@ -1,5 +1,6 @@
 package models.licenciamento;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import models.Documento;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
 
@@ -96,5 +98,18 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public Long getId() {
 		
 		return this.id;
+	}
+	
+	public List<DocumentoLicenciamento> getDocumentosEnviados() {
+		
+		List<DocumentoLicenciamento> documentos = new ArrayList<>();
+		
+		for(SolicitacaoDocumentoCaracterizacao solicitacao : this.solicitacoesDocumento) {
+			if(solicitacao.documento != null)
+				documentos.add(solicitacao.documento);
+		}
+		
+		return documentos;
+		
 	}
 }
