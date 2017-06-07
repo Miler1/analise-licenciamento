@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import builders.ProcessoBuilder;
@@ -70,6 +73,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	
 	@OneToMany(mappedBy="processo")
 	public List<Analise> analises;
+	
+	@Required
+	@Column(name="data_cadastro")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataCadastro;
 
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
@@ -126,13 +134,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
 			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
 			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
-			.filtrarPorIdConsultorJuridico(getIdConsultorJuridico(filtro.idCondicaoTramitacao, idUsuarioLogado))
+			.filtrarPorIdConsultorJuridico(getIdConsultorJuridico(filtro, idUsuarioLogado))
+			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal)
 			.filtrarAnaliseJuridicaAtiva();
 	}
 	
-	private static Long getIdConsultorJuridico(Long idCondicaoTramitacao, Long idUsuarioLogado) {
+	private static Long getIdConsultorJuridico(FiltroProcesso filtro, Long idUsuarioLogado) {
 		
-		if (idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) || idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA)) {
+		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
+		   (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) || 
+			filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA))) {
 			
 			return idUsuarioLogado;
 		}

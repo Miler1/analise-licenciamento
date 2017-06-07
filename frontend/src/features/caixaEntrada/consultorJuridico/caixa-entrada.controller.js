@@ -1,4 +1,4 @@
-var CxEntConsultorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal) {
+var CxEntConsultorJuridicoController = function($scope, config) {
 
 	var cxEntConsultorJuridico = this;
 
@@ -11,6 +11,7 @@ var CxEntConsultorJuridicoController = function($scope, config, consultorService
 	cxEntConsultorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
 	cxEntConsultorJuridico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntConsultorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntConsultorJuridico.dateUtil = app.utils.DateUtil;
 
 	function atualizarListaProcessos(processos) {
 
