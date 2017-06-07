@@ -30,6 +30,9 @@ GET		/logout										Login.logout
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
 GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
 
+# Condições
+GET		/condicoes									Condicoes.list
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

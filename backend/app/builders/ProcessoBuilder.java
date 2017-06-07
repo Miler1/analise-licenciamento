@@ -1,5 +1,8 @@
 package builders;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
@@ -297,6 +300,24 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		return this;
 	}	
+
+	public ProcessoBuilder filtrarPorPeriodoProcesso(Date periodoInicial, Date periodoFinal) {
+		
+		if (periodoInicial != null) {
+			
+			addRestricton(Restrictions.ge("dataCadastro", periodoInicial));
+		}
+		
+		if (periodoFinal != null) {
+			
+			//Somando um dia a mais no periodo final para resolver o problema da data com hora
+			periodoFinal = new Date(periodoFinal.getTime() + TimeUnit.DAYS.toMillis(1));
+			
+			addRestricton(Restrictions.le("dataCadastro", periodoFinal));
+		}
+		
+		return this;
+	}		
 	
 	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
 		
@@ -320,6 +341,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idTipologiaEmpreendimento;
 		public Long idAtividadeEmpreendimento;
 		public Long idCondicaoTramitacao;
+		public Boolean filtrarPorUsuario;
+		public Date periodoInicial;
+		public Date periodoFinal;
 		public Long paginaAtual;
 		public Long itensPorPagina;
 		

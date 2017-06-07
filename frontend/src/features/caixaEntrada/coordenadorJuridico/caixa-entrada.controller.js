@@ -13,6 +13,8 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	cxEntCoordenadorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
 	cxEntCoordenadorJuridico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntCoordenadorJuridico.dateUtil = app.utils.DateUtil;
+	cxEntCoordenadorJuridico.disabledFields = [app.DISABLED_FILTER_FIELDS.SITUACAO, app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO];
 
 	function atualizarListaProcessos(processos) {
 
