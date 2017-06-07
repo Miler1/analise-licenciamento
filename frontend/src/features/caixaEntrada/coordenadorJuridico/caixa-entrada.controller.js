@@ -9,11 +9,14 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	cxEntCoordenadorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntCoordenadorJuridico.vincularConsultor = vincularConsultor;
 	cxEntCoordenadorJuridico.onPaginaAlterada = onPaginaAlterada;
+	cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
 
 	cxEntCoordenadorJuridico.processos = [];
 	cxEntCoordenadorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
 	cxEntCoordenadorJuridico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntCoordenadorJuridico.dateUtil = app.utils.DateUtil;
+	cxEntCoordenadorJuridico.disabledFields = [app.DISABLED_FILTER_FIELDS.SITUACAO, app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO];
 
 	function atualizarListaProcessos(processos) {
 
@@ -38,6 +41,11 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		});
 	}
 
+	function hasAtLeastOneProcessoSelected() {
+
+		return _.some(cxEntCoordenadorJuridico.processos, {selecionado: true});		
+	}
+
 	function vincularConsultor(processoSelecionado) {
 		
 		var processosSelecionados = [];
@@ -59,7 +67,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor');
+			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor.');
 			return;
 		}
 

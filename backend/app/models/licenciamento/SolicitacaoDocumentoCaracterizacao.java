@@ -33,7 +33,7 @@ public class SolicitacaoDocumentoCaracterizacao extends GenericModel {
 	
 	@OneToOne
 	@JoinColumn(name = "id_documento", referencedColumnName="id")
-	public Documento documento;
+	public DocumentoLicenciamento documento;
 	
 	@ManyToOne
 	@JoinColumn(name="id_caracterizacao", referencedColumnName="id")

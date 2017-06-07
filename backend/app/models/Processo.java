@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import builders.ProcessoBuilder;
@@ -27,6 +30,7 @@ import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
+import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
@@ -35,6 +39,7 @@ import security.Auth;
 import security.InterfaceTramitavel;
 import security.UsuarioSessao;
 import utils.Configuracoes;
+import utils.DateUtil;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -70,9 +75,17 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	
 	@OneToMany(mappedBy="processo")
 	public List<Analise> analises;
+	
+	@Required
+	@Column(name="data_cadastro")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataCadastro;
 
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
+	
+	@Transient
+	public Analise analise;
 	
 	@Override
 	public Processo save() {
@@ -113,7 +126,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this));
 		
-		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR, usuarioExecutor);
+		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR, usuarioExecutor, consultor);
 		
 	}
 
@@ -126,13 +139,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
 			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
 			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
-			.filtrarPorIdConsultorJuridico(getIdConsultorJuridico(filtro.idCondicaoTramitacao, idUsuarioLogado))
+			.filtrarPorIdConsultorJuridico(getIdConsultorJuridico(filtro, idUsuarioLogado))
+			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal)
 			.filtrarAnaliseJuridicaAtiva();
 	}
 	
-	private static Long getIdConsultorJuridico(Long idCondicaoTramitacao, Long idUsuarioLogado) {
+	private static Long getIdConsultorJuridico(FiltroProcesso filtro, Long idUsuarioLogado) {
 		
-		if (idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) || idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA)) {
+		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
+		   (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) || 
+			filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA))) {
 			
 			return idUsuarioLogado;
 		}
@@ -168,6 +184,47 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.unique();
 		
 		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
+	}
+	
+	public Caracterizacao getCaracterizacao() {
+		return caracterizacoes.get(0);
+	}
+	
+	public Analise getAnalise() {
+
+		if(this.analise != null)
+			return this.analise;
+
+		if(this.analises != null && !this.analises.isEmpty())
+			for(Analise analise : this.analises)
+				if(analise.ativo)
+					this.analise = analise;
+		
+		if(this.analise == null)
+			this.analise = Analise.findByProcesso(this);
+
+		return this.analise;
+		
+	}
+	
+	//Retorna o historico da tramitação com o tempo que o objeto tramitavel permaneceu na condição
+	public List<HistoricoTramitacao> getHistoricoTramitacao() {
+
+		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
+
+		Date dataAtual = new Date();
+
+		//Lógica que verifica os dias que ficou na condição
+		for (int i = 0; i < historicosTramitacoes.size(); i++) {
+
+			if(i == 0)
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).data, dataAtual);
+			else
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).data, historicosTramitacoes.get(i - 1).data);
+		}
+
+		return historicosTramitacoes;
+
 	}
 
 }

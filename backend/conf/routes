@@ -10,6 +10,7 @@ GET		/versao										Application.versao
 # Processo
 POST	/processos									Processos.listWithFilter
 POST	/processos/count							Processos.countWithFilter
+GET		/processos/{id}								Processos.getInfoProcesso
 
 # Municipios
 GET		/estados/{uf}/municipios					Municipios.listByEstado
@@ -28,6 +29,9 @@ GET		/logout										Login.logout
 # Consultores
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
 GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
+
+# Condições
+GET		/condicoes									Condicoes.list
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

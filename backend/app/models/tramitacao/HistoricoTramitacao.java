@@ -75,7 +75,7 @@ public class HistoricoTramitacao extends GenericModel {
 	public Date data;
 
 	@Transient
-	public int diasPermanencia;
+	public String tempoPermanencia;
 
 
 	/** 

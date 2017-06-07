@@ -4,8 +4,11 @@ import java.util.List;
 
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.Processo;
+import models.licenciamento.Caracterizacao;
+import models.tramitacao.HistoricoTramitacao;
 import security.Acao;
 import security.Auth;
+import serializers.ProcessoSerializer;
 
 public class Processos extends InternalController {
 
@@ -23,5 +26,13 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
 		renderJSON(Processo.countWithFilter(filtro, Auth.getUsuarioSessao()));
+	}
+	
+	public void getInfoProcesso(Long id) {
+		
+		Processo processo = Processo.findById(id);
+		
+		renderJSON(processo, ProcessoSerializer.getInfo);
+		
 	}
 }
