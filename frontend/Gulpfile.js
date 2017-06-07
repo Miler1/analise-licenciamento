@@ -128,6 +128,12 @@ gulp.task("fonts", function() {
 		.pipe(gulp.dest(config.dist.fontsPath));
 });
 
+gulp.task("fonts-bootstrap", function() {
+
+	return gulp.src('./bower_components/bootstrap/fonts/**')
+		.pipe(gulp.dest(config.dist.fontsPath));
+});
+
 gulp.task('less', function() {
 
 	return gulp.src(config.src.less)
@@ -214,12 +220,12 @@ gulp.task("libs", function() {
 
 gulp.task('dist',['clean-dist'], function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts");
+	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts", "fonts-bootstrap");
 });
 
 gulp.task('dev', function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts");
+	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap");
 });
 
 gulp.task('default', function() {
