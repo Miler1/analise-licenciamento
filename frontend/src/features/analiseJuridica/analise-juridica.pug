@@ -107,7 +107,7 @@ div
                         avaliar-documento(identificador="$index", documento="documento")
                     td.col-md-1.text-right 
 
-                        a.margin-right-xs.pointer(ng-if="!documento.validado", title="Editar motivo de invalidar")
+                        a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="!documento.validado", title="Editar motivo de invalidar")
                             i.fa.fa-pencil-square-o                    
                         
                         a.margin-right-xs.pointer(ng-click="ctrl.downloadDocumentoLicenciamento(documento.id)", title="Baixar documento")

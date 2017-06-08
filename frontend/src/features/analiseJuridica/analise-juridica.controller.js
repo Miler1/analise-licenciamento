@@ -1,5 +1,5 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, processo, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem) {
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal) {
 
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
     var ctrl = this;
@@ -43,8 +43,37 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
 
         documentoLicenciamentoService.download(idDocumento);
     };
-    
 
+    ctrl.editarMotivoInvalidacao = function(indiceDocumento) {
+
+        var documento = ctrl.documentosProcesso[indiceDocumento];
+
+        var modalInstance = $uibModal.open({
+
+            component: 'modalParecerDocumento',
+            size: 'lg',
+            resolve: {
+
+                nomeDocumento: function() {
+
+                    return documento.tipo.nome;
+                },
+
+                parecer: function() {
+
+                    return documento.parecer;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(response){
+
+            console.log(response);
+        
+        }, function(){
+
+        });
+    };
 };
 
 exports.controllers.AnaliseJuridicaController = AnaliseJuridicaController;

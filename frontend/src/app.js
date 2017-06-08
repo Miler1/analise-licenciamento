@@ -215,4 +215,5 @@ licenciamento
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
-	.component('avaliarDocumento', directives.AvaliarDocumento);
+	.component('avaliarDocumento', directives.AvaliarDocumento)
+	.component('modalParecerDocumento', directives.ModalParecerDocumento);	
