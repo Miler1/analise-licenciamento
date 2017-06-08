@@ -27,3 +27,8 @@ TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO=O id do objeto tramitável está vazio.
 #
 CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO = "Consultor informando não tem perfil de consultor jurídico."
 CONSULTOR_VINCULADO_SUCESSO=Consultor vinculado com sucesso.
+
+#
+# Documentos
+#
+DOCUMENTO_NAO_ENCONTRADO=Documento não encontrado.
