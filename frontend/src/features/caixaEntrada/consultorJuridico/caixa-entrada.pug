@@ -1,7 +1,7 @@
 include ../../../layout/components/paginacao
 
 div
-	h3.text-center Em análise jurídica
+	h3.text-center Aguardando análise jurídica
 
 	filtro-processos(paginacao="cxEntConsultorJuridico.paginacao",
 		disabled-fields="caixaEntrada.disabledFields"
@@ -53,10 +53,6 @@ div
 												a(ng-click="cxEntConsultorJuridico.iniciarAnalise(processo.idProcesso)")
 													i.glyphicon.glyphicon-ok-circle
 													span Iniciar análise
-											li
-												a(ng-click="")
-													i.glyphicon.glyphicon-play-circle
-													span Continuar análise
 											li
 												a(ng-click="")
 													i.glyphicon.glyphicon-eye-open 
