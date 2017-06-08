@@ -1,4 +1,4 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, Upload, processoService, processo) {
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, Upload, processo) {
 
     var analiseJuridica = this;
 

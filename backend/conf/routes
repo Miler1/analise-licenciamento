@@ -10,7 +10,7 @@ GET		/versao										Application.versao
 # Processo
 POST	/processos									Processos.listWithFilter
 POST	/processos/count							Processos.countWithFilter
-GET		/processos/{id}/completo								Processos.getInfoProcesso
+GET		/processos/{id}/completo					Processos.getInfoProcesso
 GET		/processos/{idProcesso}						Processos.findById
 
 # Municipios

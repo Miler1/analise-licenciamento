@@ -10,7 +10,7 @@ analiseJuridica.config(['$routeProvider', function($routeProvider) {
 		.when('/analise-juridica/:idProcesso', {
 			templateUrl: 'features/analiseJuridica/analise-juridica.html',
 			controller: controllers.AnaliseJuridicaController,
-			controllerAs: 'analiseJuridica',
+			controllerAs: 'ctrl',
 
 			resolve: {
 

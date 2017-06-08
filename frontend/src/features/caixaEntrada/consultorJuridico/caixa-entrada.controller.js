@@ -1,4 +1,4 @@
-var CxEntConsultorJuridicoController = function($scope, config) {
+var CxEntConsultorJuridicoController = function($scope, config, $location) {
 
 	var cxEntConsultorJuridico = this;
 
