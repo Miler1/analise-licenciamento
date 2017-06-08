@@ -38,11 +38,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 }]).value('froalaConfig', {
 
-        language: 'pt_br',
-        toolbarButtons : ["bold", "italic", "underline", "|", "align", 
-                            "formatOL", "formatUL", "strikeThrough", "color",
-                            "fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
-                            "paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
+		language: 'pt_br',
+		toolbarButtons : ["bold", "italic", "underline", "|", "align", 
+							"formatOL", "formatUL", "strikeThrough", "color",
+							"fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
+							"paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
 		placeholderText: '',
 		height: 150
 
@@ -62,9 +62,10 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 		$rootScope.itensMenuPrincipal = [{
 
-			titulo: 'Caixa de entrada (novos processos)',
+			titulo: 'Caixa de entrada',
 			icone: 'glyphicon glyphicon-inbox',
 			url: '/',
+			countItens: true,
 			estaSelecionado: function () {
 
 				return $location.path() === '/caixa-entrada' || $location.path() === '/';
@@ -72,12 +73,25 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			visivel: function(){
 
 				return true;
+			},
+			condicaoTramitacao: function() {
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
+			},
+			deveFiltrarPorUsuario: function() {
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+					return false;
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+					return true;
 			}
 		}, {
 
 			titulo: 'Em análise',
 			icone: 'glyphicon glyphicon-ok',
 			url: '/analise-juridica',
+			countItens: true,
 			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-juridica') > -1;
@@ -85,13 +99,16 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			visivel: function() {
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO;
-			}
+			},
+			condicaoTramitacao: app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA,
+			deveFiltrarPorUsuario: true
 		},
 		{
 
 			titulo: 'Aguardando validação',
 			icone: 'glyphicon glyphicon-check',
 			url: '/aguardando-validacao',
+			countItens: true,
 			estaSelecionado: function () {
 
 				return false;
@@ -99,8 +116,9 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			visivel: function() {
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO;
-			}			
-
+			},
+			condicaoTramitacao: app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA,
+			deveFiltrarPorUsuario: false
 		}, {
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
