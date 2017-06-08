@@ -28,7 +28,8 @@ public class Configuracoes {
 
 	public static String ARQUIVOS_PATH = getConfig("arquivos.path", null);
 	public static String ARQUIVOS_DOCUMENTOS_PATH = ARQUIVOS_PATH + getConfig("arquivos.documentos.path", null);
-	
+	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
+
 	public static String ESTADO = "PA";
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
@@ -45,6 +46,8 @@ public class Configuracoes {
 
 	public static CoordinateReferenceSystem CRS_DEFAULT = null;
 	public static Integer SRID_DEFAULT = null;
+	public static String GETCAPABILITIES_GEOSERVER_SICAR = getConfig("sistema.url.getcapabilities.geoserver.sicar", null);
+	public static String GEOSERVER_SICAR_IMOVEL_LAYER = getConfig("sistema.url.getcapabilities.geoserver.sicar.layer.name", null);
 
 
 	static {
