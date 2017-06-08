@@ -104,8 +104,13 @@ div
 
                     td.col-md-8 {{documento.tipo.nome}}
                     td.col-md-3.text-center
+                        avaliar-documento(identificador="$index", documento="documento")
                     td.col-md-1.text-right 
-                        a.btn(ng-click="ctrl.downloadDocumentoLicenciamento(documento.id)", title="Baixar documento")
+
+                        a.margin-right-xs.pointer(ng-if="!documento.validado", title="Editar motivo de invalidar")
+                            i.fa.fa-pencil-square-o                    
+                        
+                        a.margin-right-xs.pointer(ng-click="ctrl.downloadDocumentoLicenciamento(documento.id)", title="Baixar documento")
                             i.glyphicon.glyphicon-download
 
         

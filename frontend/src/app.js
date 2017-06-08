@@ -12,7 +12,8 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
-	"froala"
+	"froala",
+	"ui.bootstrap"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {
@@ -231,4 +232,5 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController);
 
 licenciamento
-	.component('menuPrincipal', directives.MenuPrincipal);
+	.component('menuPrincipal', directives.MenuPrincipal)
+	.component('avaliarDocumento', directives.AvaliarDocumento);

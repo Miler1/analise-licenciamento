@@ -8,7 +8,7 @@
     "angular-i18n": "1.6.2",
     "angular-route": "1.6.2",
     "components-font-awesome": "^4.7.0",
-    "angular-bootstrap": "2.5.0",
+    "angular-bootstrap": "^2.5.0",
     "angular-input-masks": "2.5.0",
     "jquery-mask-plugin": "jquery-mask#1.14.10",
     "gsap": "1.19.0",
