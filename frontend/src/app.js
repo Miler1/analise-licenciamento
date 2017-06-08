@@ -11,7 +11,7 @@ var licenciamento = angular.module("licenciamento", [
 	'ui.select',
 	"ngSanitize",
 	"analiseJuridica",
-	"analisesEmAndamento",
+	"analiseEmAndamento",
 	"froala"
 ]);
 

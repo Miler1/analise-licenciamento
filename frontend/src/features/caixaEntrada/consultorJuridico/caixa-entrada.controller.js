@@ -1,4 +1,6 @@
-var CxEntConsultorJuridicoController = function($scope, config, $location) {
+var CxEntConsultorJuridicoController = function($scope, config, $rootScope) {
+
+	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE JURÍDICA';
 
 	var cxEntConsultorJuridico = this;
 
