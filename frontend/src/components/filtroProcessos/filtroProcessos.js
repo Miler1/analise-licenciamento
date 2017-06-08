@@ -121,7 +121,7 @@ var FiltroProcessos = {
                         ctrl.condicoes = response.data; 
                     })
                     .catch(function(){
-                        mensagem.warning('Não foi possível obter a lista de condicoes.');
+                        mensagem.warning('Não foi possível obter a lista de situações.');
                     });
             }
 
