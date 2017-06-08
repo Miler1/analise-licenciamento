@@ -186,7 +186,7 @@ public class Documento extends GenericModel implements Identificavel {
 	
 	private void criarPasta() {
 		
-		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_PATH + File.separator + tipo.caminhoPasta;
+		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_PATH_ANALISE + File.separator + tipo.caminhoPasta;
 		
 		File pasta = new File(caminho);
 		
@@ -197,7 +197,7 @@ public class Documento extends GenericModel implements Identificavel {
 	
 	private String getCaminhoCompleto() {
 		
-		return Configuracoes.ARQUIVOS_DOCUMENTOS_PATH + File.separator + this.caminho;
+		return Configuracoes.ARQUIVOS_DOCUMENTOS_PATH_ANALISE + File.separator + this.caminho;
 	}
 	
 	public File getFile() {
