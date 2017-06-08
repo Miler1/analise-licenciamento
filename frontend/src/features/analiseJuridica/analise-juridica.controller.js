@@ -1,7 +1,12 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, processo, 
-        analiseJuridica, documentoLicenciamentoService, uploadService) {
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem) {
 
+    var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
     var ctrl = this;
+
+    $rootScope.tituloPagina = 'PARECER JURÍDICO';
+
+    ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 
     ctrl.processo = processo;
     ctrl.analiseJuridica = angular.copy(analiseJuridica);
@@ -16,17 +21,21 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
 
     ctrl.upload = function(file) {
 
-        console.log(file);
         uploadService.save(file)
             .then(function(response) {
 
                 ctrl.documentosParecer.push({
 
                     key: response,
-                    nome: file.name
-                });
+                    nome: file.name,
+                    tipoDocumento: {
 
-                console.log(response.data);
+                        id: app.utils.TiposDocumentosAnalise.ANALISE_JURIDICA
+                    }
+                });
+            }, function(error){
+
+                mensagem.error('Ocorreu um erro ao enviar o arquivo. Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
             });
     };
 

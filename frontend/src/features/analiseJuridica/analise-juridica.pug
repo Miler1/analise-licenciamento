@@ -1,5 +1,5 @@
 div
-    h1 Parecer jurídico
+    //-h1 Parecer jurídico
 
     section.margin-bottom-md
         
@@ -19,19 +19,19 @@ div
         div
 
             div
-                label.not-bold(for="texto_numero_processo") Número: 
+                label.not-bold.margin-right-xs(for="texto_numero_processo") Número: 
                 span#texto_numero_processo
                     strong {{ctrl.processo.numero}}
             div
-                label.not-bold(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
+                label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
                 span#texto_cpf_ou_cnpj
                     strong {{ctrl.processo.empreendimento.pessoa.cpf}}
             div
-                label.not-bold(for="texto_nome_empreendimento") Empreendimento: 
+                label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Empreendimento: 
                 span#texto_nome_empreendimento
                     strong {{ctrl.processo.empreendimento.denominacao}}
             div
-                label.not-bold(for="texto_municipio_estado") Município: 
+                label.not-bold.margin-right-xs(for="texto_municipio_estado") Município: 
                 span#texto_municipio_estado   
                     strong {{ctrl.processo.empreendimento.municipio.nome}} / {{ctrl.processo.empreendimento.municipio.estado.codigo}} 
  
@@ -52,7 +52,7 @@ div
         h3 Análise jurídica
 
         div.margin-top-md
-            label.not-bold(for="texto_nome_consultor_juridico") Consultor jurídico:  
+            label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Consultor jurídico:  
             span#texto_nome_consultor_juridico
                 strong {{usuarioSessao.nome}}
 
@@ -64,10 +64,10 @@ div
                 textarea#texto_parecer.form-control(froala, ng-model="ctrl.analiseJuridica.parecer")
 
             .form-group
-                button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="10MB")
+                button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                     i.glyphicon.glyphicon-open.glyphicon--with-right-margin
                     | Anexar arquivo ao parecer
-                i   Tamanho máximo de 10MB
+                i   Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
 
         table.table.table-condensed(ng-if="ctrl.documentosParecer.length > 0")
 
