@@ -17,6 +17,12 @@ var ProcessoService = function(request, config) {
 		return request
 			.get(config.BASE_URL() + 'processos/' + idProcesso);
 	};
+
+	this.getAnaliseJuridica = function(idProcesso) {
+
+		return request
+			.get(config.BASE_URL() + 'processos/' + idProcesso + '/analiseJuridica');
+	};
 };
 
 exports.services.ProcessoService = ProcessoService;
