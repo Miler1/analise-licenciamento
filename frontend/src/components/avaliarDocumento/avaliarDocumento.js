@@ -2,7 +2,7 @@ var AvaliarDocumento = {
 
     bindings: {
 
-        validado: '<',
+        documento: '<',
         identificador: '<',
         parecer: '<'
     },
@@ -15,9 +15,14 @@ var AvaliarDocumento = {
             ctrl.nome = 'documento_' + this.identificador;
         };
 
-        ctrl.setValido = function(valor) {
+        ctrl.setValido = function(validado) {
 
-            ctrl.validado = valor;
+            if(validado) {
+
+                ctrl.documento.parecer = null;
+            }
+
+            ctrl.documento.validado = validado;
         };
 
     },

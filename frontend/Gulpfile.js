@@ -38,7 +38,8 @@ var config = {
 			"./bower_components/angular-br-filters/release/angular-br-filters.min.js",
 			"./bower_components/angular-sanitize/angular-sanitize.min.js",
 			"./bower_components/angular-ui-select/dist/select.js",
-			"./bower_components/angular-ui-select/dist/select.min.css"
+			"./bower_components/angular-ui-select/dist/select.min.css",
+			"./bower_components/angular-bootstrap/ui-bootstrap-csp.css"
 		],
 		jquery: [
 			"./bower_components/jquery/dist/jquery.min.js",

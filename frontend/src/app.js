@@ -12,7 +12,8 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
-	"froala"
+	"froala",
+	"ui.bootstrap"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {
