@@ -24,6 +24,7 @@ var config = {
 		all:  "src/**/*",
 		imgs: "src/images/**",
 		less: "src/styles/main.less",
+		fonts: "src/fonts/**"
 	},
 
 	libs: {
@@ -105,7 +106,8 @@ var config = {
 		htmlPath: DIST_FOLDER + "/",
 		cssPath:  DIST_FOLDER + "/css",
 		libsPath: DIST_FOLDER + "/libs",
-		imgsPath: DIST_FOLDER + "/images"
+		imgsPath: DIST_FOLDER + "/images",
+		fontsPath: DIST_FOLDER + "/fonts"
 	}
 };
 
@@ -139,6 +141,17 @@ gulp.task("images", function() {
 		.pipe(gulp.dest(config.dist.imgsPath));
 });
 
+gulp.task("fonts", function() {
+
+	return gulp.src(config.src.fonts)
+		.pipe(gulp.dest(config.dist.fontsPath));
+});
+
+gulp.task("fonts-bootstrap", function() {
+
+	return gulp.src('./bower_components/bootstrap/fonts/**')
+		.pipe(gulp.dest(config.dist.fontsPath));
+});
 
 gulp.task('less', function() {
 
@@ -226,12 +239,12 @@ gulp.task("libs", function() {
 
 gulp.task('dist',['clean-dist'], function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "js");
+	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts", "fonts-bootstrap");
 });
 
 gulp.task('dev', function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev");
+	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap");
 });
 
 gulp.task('default', function() {

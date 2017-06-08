@@ -1,4 +1,6 @@
-var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal) {
+var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope) {
+
+	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE JURÍDICA';
 
 	var cxEntCoordenadorJuridico = this;
 

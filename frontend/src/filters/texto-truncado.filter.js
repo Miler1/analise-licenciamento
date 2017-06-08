@@ -15,7 +15,7 @@ var TextoTruncado = function() {
 		if (texto.length === textoInicio.length)
 			return textoInicio;
 		else
-			return textoInicio + " ... " + textoFim;
+			return textoInicio + "..." + textoFim;
 	};
 
 };

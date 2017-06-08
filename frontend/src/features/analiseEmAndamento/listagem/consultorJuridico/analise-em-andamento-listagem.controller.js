@@ -1,4 +1,6 @@
-var AnaliseEmAndamentoJuridicoListController = function($scope, config) {
+var AnaliseEmAndamentoJuridicoListController = function($scope, config, $location, $rootScope) {
+
+	$rootScope.tituloPagina = 'EM ANÁLISE JURÍDICA';
 
 	var listagem = this;
 

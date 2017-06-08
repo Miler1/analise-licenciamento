@@ -23,8 +23,7 @@ header
 							li.hidden-sm(style='margin-right: 16px;')
 								p.navbar-text.pull-right
 									small
-										| Bem vindo(a), 
-										strong {{usuarioSessao.nome | textoTruncado : 25}}
+										strong {{usuarioSessao.nome | textoTruncado : 25}} ({{usuarioSessao.perfilSelecionado.nome}})
 							li.dropdown
 								li
 									a(href='../logout')
@@ -39,9 +38,8 @@ header
 
 				li.dropdown
 					li
-						a(href='/logout')
+						a(href='../logout')
 							small
 								span.glyphicon.glyphicon-off
 								|  Sair
 
-	include menu
