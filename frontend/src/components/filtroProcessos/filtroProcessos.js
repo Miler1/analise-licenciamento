@@ -48,7 +48,7 @@ var FiltroProcessos = {
 
             processoService.getProcessosCount(ctrl.filtro)
                 .then(function(response){
-                     ctrl.atualizarPaginacao(response.data);
+                     ctrl.atualizarPaginacao(response.data, ctrl.filtro.paginaAtual);
                 })
                 .catch(function(){
                     mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");

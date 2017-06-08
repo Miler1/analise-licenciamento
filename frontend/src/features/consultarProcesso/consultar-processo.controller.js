@@ -19,9 +19,9 @@ var ConsultarProcessoController = function($scope, config, $rootScope) {
 		consultarProcesso.processos = processos;
 	}
 
-	function atualizarPaginacao(totalItens) {
+	function atualizarPaginacao(totalItens, paginaAtual) {
 
-		consultarProcesso.paginacao.update(totalItens, consultarProcesso.paginacao.paginaAtual);
+		consultarProcesso.paginacao.update(totalItens, paginalAtual);
 	}
 
 	function onPaginaAlterada(){

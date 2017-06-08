@@ -23,9 +23,9 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		cxEntCoordenadorJuridico.processos = processos;
 	}
 
-	function atualizarPaginacao(totalItens) {
+	function atualizarPaginacao(totalItens, paginaAtual) {
 
-		cxEntCoordenadorJuridico.paginacao.update(totalItens, cxEntCoordenadorJuridico.paginacao.paginaAtual);
+		cxEntCoordenadorJuridico.paginacao.update(totalItens, paginaAtual);
 	}
 
 	function onPaginaAlterada(){
