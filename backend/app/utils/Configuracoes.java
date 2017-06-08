@@ -4,6 +4,10 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.AbstractIdentifiedObject;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import play.Play;
 
 public class Configuracoes {
@@ -38,7 +42,27 @@ public class Configuracoes {
 	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);	
 	public static String URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacoes.andamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.adicionar.analise", null);
-	
+
+	public static CoordinateReferenceSystem CRS_DEFAULT = null;
+	public static Integer SRID_DEFAULT = null;
+
+
+	static {
+
+		try {
+
+			CRS_DEFAULT = CRS.parseWKT(getConfig("sistema.crs.default", null));
+
+			SRID_DEFAULT = Integer.parseInt(AbstractIdentifiedObject.getIdentifier(CRS_DEFAULT, Citations.EPSG).getCode());
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+
+
 	/*
 	 * Métodos utilitários
 	 */
