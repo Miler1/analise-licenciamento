@@ -7,14 +7,15 @@ public class AnaliseJuridicaSerializer {
 	
 	public static JSONSerializer findInfo = SerializerUtil.create(
 			
-				"id",
+				"id"
+			,
 				"analise.id",
 				"analise.dataVencimentoPrazo",
 				"analise.processo.caracterizacoes.id",
 				"analise.processo.caracterizacoes.tipoLicenca.id",
 				"analise.processo.caracterizacoes.tipoLicenca.nome",
 				"analise.processo.caracterizacoes.documentosEnviados.id",
-				"analise.processo.caracterizacoes.documentosEnviados.caminho",
+				"analise.processo.caracterizacoes.documentosEnviados.nome",
 				"analise.processo.caracterizacoes.documentosEnviados.tipo.nome",
 				"parecer",
 				"dataVencimentoPrazo",
@@ -26,7 +27,7 @@ public class AnaliseJuridicaSerializer {
 				"tipoResultadoAnalise.nome"	,
 				"ativo",
 				"documentos.id",
-				"documentos.caminho",
+				"documentos.nome",
 				"documentos.tipo.id",
 				"documentos.tipo.nome",
 				"consultoresJuridicos.id",

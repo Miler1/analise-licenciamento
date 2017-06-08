@@ -198,6 +198,7 @@ utils.services(licenciamento)
 	.add('consultorService', services.ConsultorService)
 	.add('condicaoService', services.CondicaoService)
 	.add('documentoLicenciamentoService', services.DocumentoLicenciamentoService)
+	.add('uploadService', services.UploadService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

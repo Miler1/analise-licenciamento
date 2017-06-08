@@ -64,9 +64,10 @@ div
                 textarea#texto_parecer.form-control(froala, ng-model="ctrl.analiseJuridica.parecer")
 
             .form-group
-                button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", accept="application/pdf", ngf-pattern="application/pdf")
+                button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="10MB")
                     i.glyphicon.glyphicon-open.glyphicon--with-right-margin
                     | Anexar arquivo ao parecer
+                i   Tamanho máximo de 10MB
 
         table.table.table-condensed(ng-if="ctrl.documentosParecer.length > 0")
 
@@ -80,12 +81,12 @@ div
 
                 tr(ng-repeat="documento in ctrl.documentosParecer")
 
-                    td {{documento.caminho}}
+                    td {{documento.nome}}
                     td.text-right 
-                        a.btn
+                        a.btn(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.baixarDocumento(documento.id)")
                             i.glyphicon.glyphicon-save
 
-                        a.btn
+                        a.btn(title="Remover documento", ng-click="ctrl.removerDocumento($index)")
                             i.glyphicon.glyphicon-trash
 
         table.table.table-condensed
@@ -104,7 +105,7 @@ div
                     td.col-md-8 {{documento.tipo.nome}}
                     td.col-md-3.text-center
                     td.col-md-1.text-right 
-                        a.btn(ng-click="ctrl.downloadDocumentoLicenciamento(documento.id)")
+                        a.btn(ng-click="ctrl.downloadDocumentoLicenciamento(documento.id)", title="Baixar documento")
                             i.glyphicon.glyphicon-download
 
         

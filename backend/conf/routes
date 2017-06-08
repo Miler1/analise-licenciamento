@@ -42,6 +42,10 @@ GET		/condicoes									Condicoes.list
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
+#Upload de arquivos
+POST	/upload/save								Uploads.upload
+
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app

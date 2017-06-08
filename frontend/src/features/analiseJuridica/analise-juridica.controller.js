@@ -1,4 +1,5 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, Upload, processo, analiseJuridica, documentoLicenciamentoService) {
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, processo, 
+        analiseJuridica, documentoLicenciamentoService, uploadService) {
 
     var ctrl = this;
 
@@ -11,11 +12,22 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, Uploa
                                                 .caracterizacoes[0]
                                                 .documentosEnviados);
 
-    ctrl.documentosParacer = angular.copy(ctrl.analiseJuridica.documentos);
+    ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
 
     ctrl.upload = function(file) {
 
         console.log(file);
+        uploadService.save(file)
+            .then(function(response) {
+
+                ctrl.documentosParecer.push({
+
+                    key: response,
+                    nome: file.name
+                });
+
+                console.log(response.data);
+            });
     };
 
     ctrl.downloadDocumentoLicenciamento = function(idDocumento) {
