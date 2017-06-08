@@ -33,6 +33,10 @@ GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
 # Condições
 GET		/condicoes									Condicoes.list
 
+# Documentos
+GET		/documentos/licenciamento/{id}/download		Documentos.downloadLicenciamento
+GET		/documentos/{id}/download					Documentos.download
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
