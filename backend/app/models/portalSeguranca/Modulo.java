@@ -34,7 +34,7 @@ public class Modulo extends GenericModel {
 	}
 	
 	public static final String caminhoTemp = Play.applicationPath + "/tmp/";
-	public static final String pathModulos = Play.configuration.getProperty("application.diretorioGravarImagens.modulos");
+	public static final String pathModulos = Play.configuration.getProperty("application.diretorioGravarImagens.modulos") + "/";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_modulo")

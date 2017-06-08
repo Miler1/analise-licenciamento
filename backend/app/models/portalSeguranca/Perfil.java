@@ -31,7 +31,7 @@ public class Perfil extends GenericModel {
 
 	public static final int NOME_TAMANHO_MAXIMO = 100;
 	public static final String CAMINHO_TEMP = Play.applicationPath + "/tmp/";
-	public static final String PATH_PERFIS = Play.configuration.getProperty("application.diretorioGravarImagens.perfis");
+	public static final String PATH_PERFIS = Play.configuration.getProperty("application.diretorioGravarImagens.perfis") + "/";
 	public static final Integer CONSULTOR_JURIDICO = 5;
 	private static final Integer ID_EXTERNO = 2;
 

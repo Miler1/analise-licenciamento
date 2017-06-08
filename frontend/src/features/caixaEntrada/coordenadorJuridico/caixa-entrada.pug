@@ -1,9 +1,9 @@
 include ../../../layout/components/paginacao
 
 div
-	h3.text-center Em análise jurídica
 
 	filtro-processos(paginacao="cxEntCoordenadorJuridico.paginacao",
+		disabled-fields="cxEntCoordenadorJuridico.disabledFields",
 		atualizar-lista="cxEntCoordenadorJuridico.atualizarListaProcessos",
 		atualizar-paginacao="cxEntCoordenadorJuridico.atualizarPaginacao",
 		condicao-tramitacao="cxEntCoordenadorJuridico.condicaoTramitacao",
@@ -22,27 +22,27 @@ div
 								input(type='checkbox',
 									ng-model='cxEntCoordenadorJuridico.todosProcessosSelecionados',
 									ng-click='cxEntCoordenadorJuridico.selecionarTodosProcessos()')
-							th.col-md-2 Processo
+							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
-							th.col-md-1 Licenças
+							th.col-md-2 Licenças
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise jurídica
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntCoordenadorJuridico.processos")
-							td
+							td 
 								input(type='checkbox', ng-model='processo.selecionado')
-							td {{processo.numero}}
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
-							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
-								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
+							td(ng-class="{'error-message': cxEntCoordenadorJuridico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+								| {{cxEntCoordenadorJuridico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntCoordenadorJuridico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
+								| {{cxEntCoordenadorJuridico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
 							td
 								span.pull-right
 
@@ -61,7 +61,10 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
-					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorJuridico.vincularConsultor()", tabindex="0")
+					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorJuridico.vincularConsultor()", 
+																  ng-disabled="!cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected()",
+																  ng-attr-title="{{!cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao consultor.' : ''}}" 
+																  tabindex="0")
 						span.glyphicon.glyphicon-share
 						| &nbsp; Vincular consultor
 
@@ -69,4 +72,4 @@ div
 
 		.row(ng-show="!cxEntCoordenadorJuridico.processos || cxEntCoordenadorJuridico.processos.length == 0")
 			.col-md-12
-				p.empty-result Não existem dados a serem exibidos.
+				p.empty-result Não existem dados a serem exibidos.    

@@ -59,6 +59,10 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			criarNovaAnaliseJuridica(analise);
 			
 			deveTramitar = true;
+
+		} else if(processo.caracterizacoes.contains(caracterizacao)) {
+			
+			return;
 			
 		} else {
 			
@@ -82,6 +86,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Processo processo = new Processo();
 		processo.numero = caracterizacao.numeroProcesso;
 		processo.empreendimento = caracterizacao.empreendimento;
+		processo.dataCadastro = new Date();
 		
 		processo.caracterizacoes = new ArrayList<>();
 		processo.caracterizacoes.add(caracterizacao);

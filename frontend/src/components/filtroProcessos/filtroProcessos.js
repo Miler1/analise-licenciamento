@@ -9,16 +9,31 @@ var FiltroProcessos = {
         pesquisarAoInicializar: '<'
 	},
 
-	controller: function(mensagem, processoService, municipioService, tipologiaService, atividadeService, $scope) {
+	controller: function(mensagem, processoService, municipioService, tipologiaService, 
+        atividadeService, $scope, condicaoService) {
 
 		var ctrl = this;
+
+        ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
 
         ctrl.openedAccordion = false;
         ctrl.municipios = [];
         ctrl.tipologias = [];
         ctrl.atividades = [];
+        ctrl.condicoes = [];
 
 		this.pesquisar = function(pagina){
+
+            if (ctrl.filtro.periodoInicial && ctrl.filtro.periodoInicial) {
+
+                var diff = moment(ctrl.filtro.periodoFinal, 'DD/MM/yyyy')
+                    .diff(moment(ctrl.filtro.periodoInicial, 'DD/MM/yyyy'), 'days');
+
+                if (diff < 0) {
+                    mensagem.warning("O período inicial não pode ser maior que o período final.");
+                    return;
+                }                
+            }
 
             ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
             ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
@@ -40,12 +55,18 @@ var FiltroProcessos = {
                 });                
 		};
 
+        this.isDisabledFields = function(field) {
+
+            return ctrl.disabledFields && ctrl.disabledFields.indexOf(field) !== -1;
+        };
+
         function setFiltrosPadrao(){
 
             ctrl.filtro = {};
 
             if (ctrl.condicaoTramitacao) {
 
+                ctrl.filtro.filtrarPorUsuario = true;
                 ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
             }
         }
@@ -92,6 +113,18 @@ var FiltroProcessos = {
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
 
+            if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
+
+                condicaoService.getCondicoes().then(
+                    function(response){
+                        
+                        ctrl.condicoes = response.data; 
+                    })
+                    .catch(function(){
+                        mensagem.warning('Não foi possível obter a lista de condicoes.');
+                    });
+            }
+
             if (ctrl.pesquisarAoInicializar){
 
                 ctrl.pesquisar(1);
@@ -100,7 +133,7 @@ var FiltroProcessos = {
 
 		$scope.$on('pesquisarProcessos', function(event){
 
-			this.pesquisar();
+			ctrl.pesquisar();
 		});        
 	},
 

@@ -59,7 +59,7 @@ public class ConsultorJuridico extends GenericModel {
 	public static void vincularAnalise(Usuario usuario, AnaliseJuridica analiseJuridica) {
 		
 		if (!usuario.hasPerfil(Perfil.CONSULTOR_JURIDICO))
-			throw new PermissaoNegadaException(Mensagem.CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO);
+			throw new PermissaoNegadaException(Mensagem.CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO);		
 		
 		ConsultorJuridico consultorJuridico = new ConsultorJuridico(analiseJuridica, usuario);
 		consultorJuridico.save();

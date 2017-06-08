@@ -1,17 +1,12 @@
-.menu
-	.container
-		nav.navbar.navbar-ra(role="navigation")
-			
-			.navbar-header
-				button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-ex2-collapse")
-					span.sr-only Toggle navigation
-					span.icon-bar
-					span.icon-bar
-					span.icon-bar
-			
-			.collapse.navbar-collapse.navbar-ex2-collapse
+section.menu#menu(affix, data-offset-top="160")
 
-				ul.nav.navbar-nav
+	div.container
 
-					li(class="{{ location.$$path == '/inicial' ? 'active' : '' }}")
-						a(href="#!/inicial") Inicial
+		div.col-md-2
+
+		div.col-md-8.text-center
+			h2.tituloPagina {{ tituloPagina }}
+
+		div.col-md-2
+
+				

@@ -1,12 +1,18 @@
 package builders;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StringType;
 
 import models.Processo;
+import utils.IlikeNoAccents;
 
 public class ProcessoBuilder extends CriteriaBuilder<Processo> { 
 	
@@ -21,6 +27,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ATIVIDADE_ALIAS = "atv";
 	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
 	private static final String OBJETO_TRAMITAVEL_ALIAS = "obt";
+	private static final String CONSULTOR_JURIDICO_ALIAS = "coj";
 	
 	
 	public ProcessoBuilder addEmpreendimentoAlias() {
@@ -64,7 +71,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
-	public ProcessoBuilder createAnaliseJuridicaAlias() {
+	public ProcessoBuilder addAnaliseJuridicaAlias() {
 		
 		addAlias(ANALISE_ALIAS+".analisesJuridica", ANALISE_JURIDICA_ALIAS);
 		
@@ -110,6 +117,13 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAtividadeCaracterizacaoAlias();
 		
 		addAlias("objetoTramitavel", OBJETO_TRAMITAVEL_ALIAS);
+		
+		return this;
+	}
+	
+	public ProcessoBuilder addConsultorJuridicoAlias() {
+		
+		addAlias(ANALISE_JURIDICA_ALIAS+".consultoresJuridicos", CONSULTOR_JURIDICO_ALIAS);
 		
 		return this;
 	}	
@@ -184,17 +198,25 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	
 	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseJuridica(){
 		
-		createAnaliseJuridicaAlias();
+		addAnaliseJuridicaAlias();
 		addProjection(Projections.groupProperty(ANALISE_JURIDICA_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseJuridica"));
 		
 		return this;
 	}
 	
+	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseJuridica(){
+		
+		addAnaliseJuridicaAlias();
+		addProjection(Projections.groupProperty(ANALISE_JURIDICA_ALIAS+".revisaoSolicitada").as("revisaoSolicitadaAnaliseJuridica"));
+		
+		return this;
+	}	
+	
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
 		if (StringUtils.isNotEmpty(numeroProcesso)) {
-
-			addRestricton(Restrictions.eq("numero", numeroProcesso));
+			
+			addRestricton(Restrictions.ilike("numero", numeroProcesso, MatchMode.ANYWHERE));
 		}
 		
 		return this;
@@ -202,7 +224,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	
 	public ProcessoBuilder filtrarAnaliseJuridicaAtiva() {
 		
-		createAnaliseJuridicaAlias();
+		addAnaliseJuridicaAlias();
 		addRestricton(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".ativo", true));
 		
 		return this;
@@ -214,9 +236,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (StringUtils.isNotEmpty(cpfCnpj)) {
 
 			addPessoaEmpreendimentoAlias();
+			
 			criteria.add(Restrictions.or(
-				Restrictions.eq(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpfCnpj), 
-				Restrictions.eq(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cpfCnpj)
+					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpfCnpj, MatchMode.START), 
+					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cpfCnpj, MatchMode.START)
 			));
 		}
 		
@@ -265,7 +288,36 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		}
 		
 		return this;
+	}
+	
+	public ProcessoBuilder filtrarPorIdConsultorJuridico(Long idConsultorJuridico) {
+		
+		if (idConsultorJuridico != null) {
+			
+			addConsultorJuridicoAlias();
+			addRestricton(Restrictions.eq(CONSULTOR_JURIDICO_ALIAS+".usuario.id", idConsultorJuridico));
+		}
+		
+		return this;
 	}	
+
+	public ProcessoBuilder filtrarPorPeriodoProcesso(Date periodoInicial, Date periodoFinal) {
+		
+		if (periodoInicial != null) {
+			
+			addRestricton(Restrictions.ge("dataCadastro", periodoInicial));
+		}
+		
+		if (periodoFinal != null) {
+			
+			//Somando um dia a mais no periodo final para resolver o problema da data com hora
+			periodoFinal = new Date(periodoFinal.getTime() + TimeUnit.DAYS.toMillis(1));
+			
+			addRestricton(Restrictions.le("dataCadastro", periodoFinal));
+		}
+		
+		return this;
+	}		
 	
 	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
 		
@@ -289,6 +341,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idTipologiaEmpreendimento;
 		public Long idAtividadeEmpreendimento;
 		public Long idCondicaoTramitacao;
+		public Boolean filtrarPorUsuario;
+		public Date periodoInicial;
+		public Date periodoFinal;
 		public Long paginaAtual;
 		public Long itensPorPagina;
 		

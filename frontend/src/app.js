@@ -18,6 +18,11 @@ licenciamento.config(["$routeProvider",	function($routeProvider) {
 		.when("/", {
 			redirectTo: "/caixa-entrada"
 		})
+		.when("/consultar-processo", {
+			templateUrl: "features/consultarProcesso/consultar-processo.html",
+			controller: controllers.ConsultarProcessoController,
+			controllerAs: 'consultarProcesso'
+		})		
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -43,7 +48,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 	$rootScope.itensMenuPrincipal = [{
 
-                    titulo: 'Caixa de entrada (novos processos)',
+                    titulo: 'Caixa de entrada',
                     icone: 'glyphicon glyphicon-inbox',
                     url: '/',
 					estaSelecionado: function() {
@@ -60,15 +65,15 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 						return false;
 					}
-
+                    
                 }, {
                     titulo: 'Consultar processo',
                     icone: 'glyphicon glyphicon-search',
                     url: '/consultar-processo',
 					estaSelecionado: function() {
 
-						return false;
-					}
+						return $location.path() === '/consultar-processo';
+					}					                
                 }];
 
 
@@ -99,7 +104,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 		if (rotaAnterior) {
 
             $timeout(function() {
-
+				
             	$window.history.back();
             }, 0);
         }
@@ -152,14 +157,16 @@ utils.services(licenciamento)
 	.add('municipioService', services.MunicipioService)
 	.add('tipologiaService', services.TipologiaService)
 	.add('atividadeService', services.AtividadeService)
-	.add('consultorService', services.ConsultorService);
+	.add('consultorService', services.ConsultorService)
+	.add('condicaoService', services.CondicaoService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
 	.add('capitalize', filters.Capitalize);
 
 utils.directives(licenciamento)
-	.add('enter', directives.Enter, {link: directives.Enter.link, require: 'ngModel'});
+	.add('enter', directives.Enter, {link: directives.Enter.link, require: 'ngModel'})
+	.add('mascara', directives.Mascara, {link: directives.Mascara.link, require: 'ngModel'});
 
 licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)

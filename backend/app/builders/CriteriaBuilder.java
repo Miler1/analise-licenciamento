@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
@@ -81,7 +82,7 @@ public abstract class CriteriaBuilder<T> {
 		projectionList.add(property);
 	}
 	
-	protected void addRestricton(SimpleExpression expression) {
+	protected void addRestricton(Criterion expression) {
 		
 		criteria.add(expression);
 	}

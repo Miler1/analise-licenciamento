@@ -1,21 +1,23 @@
-var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, processoService) {
+var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope, processoService) {
+
+	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE JURÍDICA';
 
 	var cxEntCoordenadorJuridico = this;
 
 	cxEntCoordenadorJuridico.atualizarListaProcessos = atualizarListaProcessos;
 	cxEntCoordenadorJuridico.atualizarPaginacao = atualizarPaginacao;
-	cxEntCoordenadorJuridico.calcularDiasRestantes = calcularDiasRestantes;
-	cxEntCoordenadorJuridico.getDiasRestantes = getDiasRestantes;
 	cxEntCoordenadorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
-	cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
 	cxEntCoordenadorJuridico.vincularConsultor = vincularConsultor;
 	cxEntCoordenadorJuridico.onPaginaAlterada = onPaginaAlterada;
+	cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
 	cxEntCoordenadorJuridico.visualizarProcesso = visualizarProcesso;
 
 	cxEntCoordenadorJuridico.processos = [];
 	cxEntCoordenadorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
 	cxEntCoordenadorJuridico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntCoordenadorJuridico.dateUtil = app.utils.DateUtil;
+	cxEntCoordenadorJuridico.disabledFields = [app.DISABLED_FILTER_FIELDS.SITUACAO, app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO];
 
 	function atualizarListaProcessos(processos) {
 
@@ -32,19 +34,6 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		$scope.$broadcast('pesquisarProcessos');
 	}
 
-	function calcularDiasRestantes(stringDate){
-
-		return moment(stringDate, 'DD/MM/yyyy').startOf('day')
-			.diff(moment(Date.now()).startOf('day'), 'days');
-	}
-
-	function getDiasRestantes(dataVencimento){
-
-		var diasRestantes = calcularDiasRestantes(dataVencimento);
-
-		return diasRestantes >=0 ? diasRestantes : Math.abs(diasRestantes) + ' dia(s) atraso';
-	}
-
 	function selecionarTodosProcessos() {
 
 		_.each(cxEntCoordenadorJuridico.processos, function(processo){
@@ -53,13 +42,13 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		});
 	}
 
-	function isPrazoMinimoAvisoAnalise(dataVencimento, prazoMinimo) {
+	function hasAtLeastOneProcessoSelected() {
 
-		return calcularDiasRestantes(dataVencimento) <= prazoMinimo;
+		return _.some(cxEntCoordenadorJuridico.processos, {selecionado: true});		
 	}
 
 	function vincularConsultor(processoSelecionado) {
-
+		
 		var processosSelecionados = [];
 
 		if (processoSelecionado) {
@@ -73,13 +62,13 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 				 if (processo.selecionado) {
 
 					 processosSelecionados.push(processo);
-				 }
-			});
+				 } 
+			});  
 		}
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor');
+			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao consultor.');
 			return;
 		}
 
@@ -91,17 +80,18 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 				consultorService.vincularAnaliseConsultorJuridico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
 					.then(function(response){
 
-						mensagem.success(response.data);
+						$scope.$broadcast('pesquisarProcessos');
+						mensagem.success(response.data);						
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
-					});
+					});				
 			})
 			.catch(function(){ });
 	}
 
 	function abrirModal(processos){
-
+		
 		var modalInstance = $uibModal.open({
 			controller: 'modalVincularConsutorJuridicoController',
 			controllerAs: 'modalCtrl',

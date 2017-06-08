@@ -11,7 +11,7 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 			templateUrl: "features/caixaEntrada/caixa-entrada.html",
 			controller: controllers.CaixaEntradaController,
 			controllerAs: 'caixaEntrada'
-		})		
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -19,7 +19,8 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 
 caixasEntrada
 	.controller('cxEntCoordenadorJuridicoController', controllers.CxEntCoordenadorJuridicoController)
-	.controller('modalVincularConsutorJuridicoController', controllers.ModalVincularConsutorJuridicoController);
+	.controller('modalVincularConsutorJuridicoController', controllers.ModalVincularConsutorJuridicoController)
+	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController);
 
 caixasEntrada
 	.component('filtroProcessos', directives.FiltroProcessos);
