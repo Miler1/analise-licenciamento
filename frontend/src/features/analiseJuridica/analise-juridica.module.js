@@ -18,10 +18,20 @@ analiseJuridica.config(['$routeProvider', function($routeProvider) {
 
 					var deferred = $q.defer();					
 					processoService.consultar($route.current.params.idProcesso)
-						.then(function(processo){
-							deferred.resolve(processo.data);
+						.then(function(response){
+							deferred.resolve(response.data);
 						});
 					return deferred.promise;
+				},
+
+				analiseJuridica: function(processoService, $route, $q) {
+
+					var deferred = $q.defer();					
+					processoService.getAnaliseJuridica($route.current.params.idProcesso)
+						.then(function(response){
+							deferred.resolve(response.data);
+						});
+					return deferred.promise;					
 				}
 			}
 		})

@@ -42,7 +42,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
                             "formatOL", "formatUL", "strikeThrough", "color",
                             "fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
                             "paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
-		placeholderText: ''
+		placeholderText: '',
+		height: 150
 
 }).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
@@ -195,7 +196,8 @@ utils.services(licenciamento)
 	.add('tipologiaService', services.TipologiaService)
 	.add('atividadeService', services.AtividadeService)
 	.add('consultorService', services.ConsultorService)
-	.add('condicaoService', services.CondicaoService);
+	.add('condicaoService', services.CondicaoService)
+	.add('documentoLicenciamentoService', services.DocumentoLicenciamentoService)
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

@@ -12,6 +12,11 @@ POST	/processos									Processos.listWithFilter
 POST	/processos/count							Processos.countWithFilter
 GET		/processos/{id}/completo					Processos.getInfoProcesso
 GET		/processos/{idProcesso}						Processos.findById
+GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
+
+# Documentos licenciamento
+
+GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
 
 # Municipios
 GET		/estados/{uf}/municipios					Municipios.listByEstado

@@ -25,6 +25,9 @@ public class Configuracoes {
 	public static String ARQUIVOS_PATH = getConfig("arquivos.path", null);
 	public static String ARQUIVOS_DOCUMENTOS_PATH = ARQUIVOS_PATH + getConfig("arquivos.documentos.path", null);
 	
+	public static String ARQUIVOS_PATH_LICENCIAMENTO = getConfig("arquivos.pathLicenciamento", null);
+	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_PATH_LICENCIAMENTO + getConfig("arquivos.documentosLicenciamento.path", null);
+	
 	public static String ESTADO = "PA";
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
