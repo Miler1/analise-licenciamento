@@ -60,7 +60,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 						return false;
 					}
-                    
+
                 }, {
                     titulo: 'Consultar processo',
                     icone: 'glyphicon glyphicon-search',
@@ -68,7 +68,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					estaSelecionado: function() {
 
 						return false;
-					}					                
+					}
                 }];
 
 
@@ -99,7 +99,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 		if (rotaAnterior) {
 
             $timeout(function() {
-				
+
             	$window.history.back();
             }, 0);
         }
@@ -163,7 +163,8 @@ utils.directives(licenciamento)
 
 licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)
-	.controller('modalSimplesController', controllers.ModalSimplesController);
+	.controller('modalSimplesController', controllers.ModalSimplesController)
+	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController);
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal);

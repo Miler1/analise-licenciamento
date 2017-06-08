@@ -1,4 +1,4 @@
-var ProcessoService = function(request, config) {
+var ProcessoService = function(request, config, $uibModal) {
 
 	this.getProcessos = function(filtro) {
 
@@ -10,7 +10,24 @@ var ProcessoService = function(request, config) {
 
 		return request
 			.post(config.BASE_URL() + "processos/count", filtro);
-	};	
+	};
+
+
+
+	this.visualizarProcesso = function(processo) {
+		$uibModal.open({
+			controller: 'visualizacaoProcessoController',
+			controllerAs: 'modalVisualizacaoProcessoCtrl',
+			templateUrl: 'components/visualizacaoProcesso/visualizacaoProcesso.html',
+			size: 'lg',
+			resolve: {
+				processo: function() {
+					return processo;
+				}
+			}
+		});
+	};
+
 };
 
 exports.services.ProcessoService = ProcessoService;

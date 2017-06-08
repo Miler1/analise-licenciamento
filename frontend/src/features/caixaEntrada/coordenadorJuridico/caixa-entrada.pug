@@ -3,7 +3,7 @@ include ../../../layout/components/paginacao
 div
 	h3.text-center Em análise jurídica
 
-	filtro-processos(paginacao="cxEntCoordenadorJuridico.paginacao", 
+	filtro-processos(paginacao="cxEntCoordenadorJuridico.paginacao",
 		atualizar-lista="cxEntCoordenadorJuridico.atualizarListaProcessos",
 		atualizar-paginacao="cxEntCoordenadorJuridico.atualizarPaginacao",
 		condicao-tramitacao="cxEntCoordenadorJuridico.condicaoTramitacao",
@@ -32,14 +32,14 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntCoordenadorJuridico.processos")
-							td 
+							td
 								input(type='checkbox', ng-model='processo.selecionado')
 							td {{processo.numero}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
 							td(ng-class="{'error-message': cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
 								| {{cxEntCoordenadorJuridico.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
@@ -56,8 +56,9 @@ div
 													i.glyphicon.glyphicon-share
 													span Vincular consultor
 											li
-												a(ng-click="")
-													i.glyphicon.glyphicon-eye-open 
+
+												a(ng-click="cxEntCoordenadorJuridico.visualizarProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
 					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorJuridico.vincularConsultor()", tabindex="0")
@@ -68,4 +69,4 @@ div
 
 		.row(ng-show="!cxEntCoordenadorJuridico.processos || cxEntCoordenadorJuridico.processos.length == 0")
 			.col-md-12
-				p.empty-result Não existem dados a serem exibidos.    
+				p.empty-result Não existem dados a serem exibidos.

@@ -1,15 +1,16 @@
-var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal) {
+var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, processoService) {
 
 	var cxEntCoordenadorJuridico = this;
 
 	cxEntCoordenadorJuridico.atualizarListaProcessos = atualizarListaProcessos;
 	cxEntCoordenadorJuridico.atualizarPaginacao = atualizarPaginacao;
-	cxEntCoordenadorJuridico.calcularDiasRestantes = calcularDiasRestantes;	
+	cxEntCoordenadorJuridico.calcularDiasRestantes = calcularDiasRestantes;
 	cxEntCoordenadorJuridico.getDiasRestantes = getDiasRestantes;
 	cxEntCoordenadorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntCoordenadorJuridico.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
 	cxEntCoordenadorJuridico.vincularConsultor = vincularConsultor;
 	cxEntCoordenadorJuridico.onPaginaAlterada = onPaginaAlterada;
+	cxEntCoordenadorJuridico.visualizarProcesso = visualizarProcesso;
 
 	cxEntCoordenadorJuridico.processos = [];
 	cxEntCoordenadorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
@@ -34,7 +35,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	function calcularDiasRestantes(stringDate){
 
 		return moment(stringDate, 'DD/MM/yyyy').startOf('day')
-			.diff(moment(Date.now()).startOf('day'), 'days');		
+			.diff(moment(Date.now()).startOf('day'), 'days');
 	}
 
 	function getDiasRestantes(dataVencimento){
@@ -54,11 +55,11 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 	function isPrazoMinimoAvisoAnalise(dataVencimento, prazoMinimo) {
 
-		return calcularDiasRestantes(dataVencimento) <= prazoMinimo; 
+		return calcularDiasRestantes(dataVencimento) <= prazoMinimo;
 	}
 
 	function vincularConsultor(processoSelecionado) {
-		
+
 		var processosSelecionados = [];
 
 		if (processoSelecionado) {
@@ -72,8 +73,8 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 				 if (processo.selecionado) {
 
 					 processosSelecionados.push(processo);
-				 } 
-			});  
+				 }
+			});
 		}
 
 		if (processosSelecionados.length === 0) {
@@ -94,13 +95,13 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
-					});				
+					});
 			})
 			.catch(function(){ });
 	}
 
 	function abrirModal(processos){
-		
+
 		var modalInstance = $uibModal.open({
 			controller: 'modalVincularConsutorJuridicoController',
 			controllerAs: 'modalCtrl',
@@ -122,6 +123,11 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	function getConsultores(consultorService) {
 
 		return consultorService.getConsultoresJuridicos();
+	}
+
+	function visualizarProcesso(processo) {
+
+		return processoService.visualizarProcesso(processo);
 	}
 };
 

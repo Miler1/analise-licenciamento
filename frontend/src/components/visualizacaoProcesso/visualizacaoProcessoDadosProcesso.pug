@@ -1,0 +1,97 @@
+#dadosProcesso
+
+	div.row
+
+		.col-xs-12.col-md-8
+			blockquote.success
+				div.row
+					label.col-sm-3 Tipo do Licenciamento:
+					span.col-sm-9 {{modalVisualizacaoProcessoCtrl.dadosProcesso.tipo.nome}}
+
+				div.row
+					label.col-sm-3 Licenças Solicitadas:
+					div.col-sm-9(ng-repeat="licenca in modalVisualizacaoProcessoCtrl.dadosProcesso.tiposLicencaEmAndamento")
+						span {{licenca.nome}}
+
+			blockquote.success
+				div.row
+					label.col-sm-3 Atividade Licenciada:
+					span.col-sm-9 {{modalVisualizacaoProcessoCtrl.caracterizacao.atividadeCaracterizacao.atividade.nome}}
+				div.row
+					label.col-sm-3 Tipologia:
+					span.col-sm-9 {{modalVisualizacaoProcessoCtrl.tipologia.nome}}
+				div.row
+					label.col-sm-3 CNAE:
+					span.col-sm-9 {{modalVisualizacaoProcessoCtrl.caracterizacao.atividadeCaracterizacao.atividadeCnae.codigo}} - {{modalVisualizacaoProcessoCtrl.caracterizacao.atividadeCaracterizacao.atividadeCnae.nome}}
+
+		.col-xs-12.col-md-4
+			div.panel.panel-success
+				div.panel-body
+					| Parâmetro
+				div.panel-footer.text-center
+					.media-div
+						.media-context
+							span {{modalVisualizacaoProcessoCtrl.dadosProcesso.atividadeCaracterizacao.atividade.parametro.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.atividadeCaracterizacao.atividade.parametro.nome}} ({{modalVisualizacaoProcessoCtrl.dadosProcesso.atividadeCaracterizacao.atividade.parametro.unidade}}):
+							div
+								b {{modalVisualizacaoProcessoCtrl.dadosProcesso.atividadeCaracterizacao.valorParametro}}
+
+
+			div.panel.panel-success
+				div.panel-body
+					| Porte/Potencial Poluidor
+				div.panel-footer.text-center
+					.media-div
+						.media-context
+							label {{modalVisualizacaoProcessoCtrl.dadosProcesso.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+
+	div
+
+		h4 Histórico do Processo:
+
+		blockquote.success
+
+			div
+				div.text-center
+					h5 Análise do Processo em Dias:
+
+				table.table.table-striped.table-condensed
+
+					thead
+						tr
+							th Análise Jurídica
+							th Análise Técnica
+							th Análise Total
+
+					tbody
+						tr
+							td 5
+							td 12
+							td 17
+
+			small Data: 10/12/2016
+
+		h4 Tramitação do Processo:
+
+		blockquote.success
+
+			div
+
+				table.table.table-striped.table-condensed
+
+					thead
+						tr
+							th Data Entrada
+							th Data Saída
+							th Status
+							th Tempo do Status (dias e horas)
+							th Responsável
+
+					tbody
+						tr
+							td 14/10/2016
+							td 14/10/2016
+							td Aguardando Análise Jurídica
+							td 2d 2:00h
+							td João da Silva
+
+			small Tempo Total da Tramitação: 17 dias

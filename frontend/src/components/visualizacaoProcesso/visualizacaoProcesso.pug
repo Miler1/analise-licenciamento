@@ -1,0 +1,47 @@
+#modalProcesso
+
+	div.modal-header
+
+		button.close(type='button', ng-click="modalVisualizacaoProcessoCtrl.fechar()")
+			span(aria-hidden='true') ×
+			span.sr-only Fechar
+
+		h4.modal-title Visualizar Processo
+
+	div.modal-body
+
+		ul.nav.nav-tabs
+			li.active(ng-click="selecionado = 'dados'")
+				a Dados do Processo
+			li(ng-click="selecionado = 'caracterizacao'")
+				a Caracterização
+			li(ng-click="selecionado = 'empreendimento'")
+				a Empreendedor / Empreendimento
+
+		div.row#dadosProcesso
+			.col-md-12
+				blockquote.success
+
+					div.row
+						label.col-sm-3 Processo:
+						span.col-sm-9 {{modalVisualizacaoProcessoCtrl.processo.numero}}
+
+
+					div.row
+						label.col-sm-3 Cpf/Cnpj:
+						span.col-sm-9 {{modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento}}
+
+					div.row
+						label.col-sm-3 Nome/Razão Social:
+						span.col-sm-9 {{modalVisualizacaoProcessoCtrl.processo.denominacaoEmpreendimento}}
+
+		//- div(ng-switch on="selecionado")
+		//- 	div(ng-switch-when="dados" ng-include="'visualizacaoProcessoDadosProcesso.html'")
+
+		include visualizacaoProcessoDadosProcesso
+
+	div.modal-footer#footer-modal
+
+		button.btn.btn-default.pull-left(ng-click="modalVisualizacaoProcessoCtrl.fechar()")
+			i.glyphicon.glyphicon-arrow-left
+			| &nbsp;Fechar
