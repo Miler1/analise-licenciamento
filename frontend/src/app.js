@@ -213,4 +213,5 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController);
 
 licenciamento
-	.component('menuPrincipal', directives.MenuPrincipal);
+	.component('menuPrincipal', directives.MenuPrincipal)
+	.component('avaliarDocumento', directives.AvaliarDocumento);
