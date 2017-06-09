@@ -91,4 +91,9 @@ public class AnaliseJuridica extends GenericModel {
 	public static AnaliseJuridica findByProcesso(Processo processo) {
 		return AnaliseJuridica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
 	}
+	
+	public static List<AnaliseDocumento> findDocumentos(Long idAnaliseJuridica) {
+		
+		return AnaliseDocumento.find("analiseJuridica.id = ? ", idAnaliseJuridica).fetch();
+	}
 }

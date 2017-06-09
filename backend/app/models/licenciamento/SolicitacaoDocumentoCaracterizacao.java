@@ -27,7 +27,7 @@ public class SolicitacaoDocumentoCaracterizacao extends GenericModel {
 
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
-	public TipoDocumento tipoDocumento;
+	public TipoDocumentoLicenciamento tipoDocumento;
 	
 	public Boolean obrigatorio;
 	
