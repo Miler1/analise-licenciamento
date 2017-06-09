@@ -7,8 +7,8 @@
     "angular": "1.6.2",
     "angular-i18n": "1.6.2",
     "angular-route": "1.6.2",
-    "components-font-awesome": "*",
-    "angular-bootstrap": "2.5.0",
+    "components-font-awesome": "^4.7.0",
+    "angular-bootstrap": "^2.5.0",
     "angular-input-masks": "2.5.0",
     "jquery-mask-plugin": "jquery-mask#1.14.10",
     "gsap": "1.19.0",
@@ -26,6 +26,8 @@
     "ng-file-upload": "12.2.13",
     "angular-sanitize": "1.6.2",
     "angular-ui-select": "^0.19.6",
-    "proj4": "^2.4.3"
+    "proj4": "^2.4.3",
+    "froala-wysiwyg-editor": "froala-wysiwyg#^2.6.1",
+    "angular-froala": "^2.6.1"
   }
 }

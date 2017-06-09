@@ -1,0 +1,19 @@
+.modal-header
+    h4 Parecer de documento não validado
+
+.modal-body
+
+    label.margin-right-xs Documento: 
+    span {{$ctrl.nomeDocumento}}
+
+    form.margin-top-md
+        .form-group
+            label(for="texto_parecer_documento_invalido") Parecer de documento não validado
+            textarea.form-control#texto_parecer_documento_invalido(rows="4", ng-model="$ctrl.parecer")
+
+.modal-footer
+
+    button.btn.btn-default.pull-left(type="button", ng-click="$ctrl.cancelar()") Cancelar
+    button.btn.btn-success.pull-right(type="button", ng-click="$ctrl.confirmarParecer()") Confirmar parecer
+
+

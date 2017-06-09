@@ -22,10 +22,10 @@ public class Configuracoes {
 
 	public static long TAMANHO_MAXIMO_ARQUIVO = getLongConfig("sistema.tamanhoMaximoArquivoUpload");
 
-	public static String ARQUIVOS_PATH_ANALISE = getConfig("arquivos.path.analise", null);
-	public static String ARQUIVOS_PATH_LICENCIAMENTO = getConfig("arquivos.path.licenciamento", null);
-	public static String ARQUIVOS_DOCUMENTOS_PATH_ANALISE = ARQUIVOS_PATH_ANALISE + getConfig("arquivos.documentos.path", null);
-	public static String ARQUIVOS_DOCUMENTOS_PATH_LICENCIAMENTO = ARQUIVOS_PATH_LICENCIAMENTO + getConfig("arquivos.documentos.path", null);
+	public static String ARQUIVOS_ANALISE_PATH = getConfig("arquivos.path.analise", null);
+	public static String ARQUIVOS_LICENCIAMENTO_PATH = getConfig("arquivos.path.licenciamento", null);
+	public static String ARQUIVOS_DOCUMENTOS_ANALISE_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.documentos.path", null);
+	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_LICENCIAMENTO_PATH + getConfig("arquivos.documentos.path", null);
 	
 	public static String ESTADO = "PA";
 

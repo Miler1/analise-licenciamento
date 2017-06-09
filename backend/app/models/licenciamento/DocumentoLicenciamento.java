@@ -64,12 +64,21 @@ public class DocumentoLicenciamento extends GenericModel implements Identificave
 	
 	private String getCaminhoCompleto() {
 		
-		return Configuracoes.ARQUIVOS_DOCUMENTOS_PATH_LICENCIAMENTO + File.separator + this.caminho;
+		return Configuracoes.ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH + File.separator + this.caminho;
 	}
 	
 	public File getFile() {
 		
 		return new File(getCaminhoCompleto());
-	}
+	}	
+	
+	public String getNome() {
+		
+		if (this.caminho.isEmpty())
+			return "";
+		
+		return this.caminho.substring(this.caminho.lastIndexOf("/") + 1);
+	}		
+	
 	
 }
