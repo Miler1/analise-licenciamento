@@ -44,7 +44,9 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
         documentoLicenciamentoService.download(idDocumento);
     };
 
-    ctrl.editarMotivoInvalidacao = function(indiceDocumento) {
+    ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
+
+    function editarMotivoInvalidacao(indiceDocumento) {
 
         var documento = ctrl.documentosProcesso[indiceDocumento];
 
@@ -68,12 +70,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
 
         modalInstance.result.then(function(response){
 
-            console.log(response);
+            ctrl.documentosProcesso[indiceDocumento].parecer = response;
         
-        }, function(){
-
-        });
-    };
+        }, function(){ });
+    }
 };
 
 exports.controllers.AnaliseJuridicaController = AnaliseJuridicaController;
+
