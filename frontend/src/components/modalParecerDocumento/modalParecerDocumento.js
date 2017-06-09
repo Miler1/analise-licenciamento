@@ -7,7 +7,7 @@ var ModalParecerDocumento = {
         dismiss: '&'
     },
 
-    controller: function() {
+    controller: function($scope, mensagem) {
 
         var ctrl = this;
 
@@ -18,6 +18,13 @@ var ModalParecerDocumento = {
         };
 
         ctrl.confirmarParecer = function() {
+
+            $scope.formularioParecerDocumento.$setSubmitted();
+
+            if(!$scope.formularioParecerDocumento.$valid) {
+
+                return;
+            }
 
             ctrl.close({$value: ctrl.parecer});
         };

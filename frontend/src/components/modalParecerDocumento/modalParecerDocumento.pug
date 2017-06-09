@@ -1,15 +1,20 @@
+include ../../layout/components/inputErrors
+
 .modal-header
     h4 Parecer de documento não validado
 
 .modal-body
 
-    label.margin-right-xs Documento: 
+    label.margin-right-xs Documento: * 
     span {{$ctrl.nomeDocumento}}
 
-    form.margin-top-md
+    form.margin-top-md(name="formularioParecerDocumento", novalidate)
         .form-group
             label(for="texto_parecer_documento_invalido") Parecer de documento não validado
-            textarea.form-control#texto_parecer_documento_invalido(rows="4", ng-model="$ctrl.parecer")
+            textarea.form-control#texto_parecer_documento_invalido(rows="4", ng-model="$ctrl.parecer", required, name="parecerDocumento")
+        +inputErrors('formularioParecerDocumento', 'parecerDocumento', 'required')            
+
+    i * Campo obrigatório
 
 .modal-footer
 

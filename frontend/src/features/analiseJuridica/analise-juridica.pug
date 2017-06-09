@@ -66,8 +66,9 @@ div(ng-init="ctrl.init()")
 
             .form-group
                 button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
-                    i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-                    | Anexar arquivo ao parecer (opcional)
+                    i.glyphicon.glyphicon-open.glyphicon--with-right-margin 
+                    | Anexar arquivo ao parecer 
+                    i (opcional)
                 i   Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
                 
 
@@ -109,7 +110,7 @@ div(ng-init="ctrl.init()")
                         avaliar-documento(identificador="$index", documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
                     td.col-md-1.text-right 
 
-                        a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="!documento.validado", title="Editar motivo de invalidar")
+                        a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo de invalidar")
                             i.fa.fa-pencil-square-o                    
                         
                         a.margin-right-xs.pointer(ng-click="ctrl.downloadDocumentoLicenciamento(analiseDocumento.documento.id)", title="Baixar documento")
