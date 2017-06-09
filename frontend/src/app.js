@@ -2,6 +2,7 @@ var licenciamento = angular.module("licenciamento", [
 	"ngRoute",
 	"ui.bootstrap",
 	"caixasEntrada",
+	"aguardandoValidacao",
 	"angular-growl",
 	"ngMessages",
 	"idf.br-filters",
@@ -111,7 +112,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			countItens: true,
 			estaSelecionado: function () {
 
-				return false;
+				return $location.path() === '/aguardando-validacao';
 			},
 			visivel: function() {
 
