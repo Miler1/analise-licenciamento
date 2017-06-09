@@ -12,6 +12,13 @@ var ProcessoService = function(request, config, $uibModal) {
 			.post(config.BASE_URL() + "processos/count", filtro);
 	};
 
+	this.getInfoProcesso = function(idProcesso) {
+
+		return request
+			.get(config.BASE_URL() + "processos/" + idProcesso);
+
+	};
+
 
 
 	this.visualizarProcesso = function(processo) {

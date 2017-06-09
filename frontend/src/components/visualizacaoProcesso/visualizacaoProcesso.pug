@@ -11,12 +11,12 @@
 	div.modal-body
 
 		ul.nav.nav-tabs
-			li.active(ng-click="selecionado = 'dados'")
-				a Dados do Processo
-			li(ng-click="selecionado = 'caracterizacao'")
-				a Caracterização
-			li(ng-click="selecionado = 'empreendimento'")
-				a Empreendedor / Empreendimento
+			li.active
+				a(href="#tabDadosProcesso", data-toggle="tab") Dados do Processo
+			li
+				a(href="#tabCaracterizacao", data-toggle="tab") Caracterização
+			li
+				a(href="#tabEmpreendimento", data-toggle="tab") Empreendedor / Empreendimento
 
 		div.row#dadosProcesso
 			.col-md-12
@@ -35,10 +35,18 @@
 						label.col-sm-3 Nome/Razão Social:
 						span.col-sm-9 {{modalVisualizacaoProcessoCtrl.processo.denominacaoEmpreendimento}}
 
-		//- div(ng-switch on="selecionado")
-		//- 	div(ng-switch-when="dados" ng-include="'visualizacaoProcessoDadosProcesso.html'")
+		.tab-content
 
-		include visualizacaoProcessoDadosProcesso
+			#tabDadosProcesso.tab-pane.fade.in.active
+				include visualizacaoProcessoDadosProcesso
+
+			#tabCaracterizacao.tab-pane.fade
+				include visualizacaoProcessoCaracterizacao
+
+			#tabEmpreendimento.tab-pane.fade
+				//include visualizacaoProcessoCaracterizacao
+
+
 
 	div.modal-footer#footer-modal
 

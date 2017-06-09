@@ -22,7 +22,7 @@ licenciamento.config(["$routeProvider",	function($routeProvider) {
 			templateUrl: "features/consultarProcesso/consultar-processo.html",
 			controller: controllers.ConsultarProcessoController,
 			controllerAs: 'consultarProcesso'
-		})		
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -65,7 +65,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 						return false;
 					}
-                    
+
                 }, {
                     titulo: 'Consultar processo',
                     icone: 'glyphicon glyphicon-search',
@@ -73,7 +73,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					estaSelecionado: function() {
 
 						return $location.path() === '/consultar-processo';
-					}					                
+					}
                 }];
 
 
@@ -104,7 +104,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 		if (rotaAnterior) {
 
             $timeout(function() {
-				
+
             	$window.history.back();
             }, 0);
         }
@@ -174,4 +174,5 @@ licenciamento
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController);
 
 licenciamento
-	.component('menuPrincipal', directives.MenuPrincipal);
+	.component('menuPrincipal', directives.MenuPrincipal)
+	.component('mapa', directives.Mapa);
