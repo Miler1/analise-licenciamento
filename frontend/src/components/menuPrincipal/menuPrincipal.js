@@ -25,8 +25,16 @@ var MenuPrincipal = {
 		function countProcessos(item) {
 
 			var filtro = {};
-			filtro.idCondicaoTramitacao = item.condicaoTramitacao();
-			filtro.filtrarPorUsuario = item.deveFiltrarPorUsuario();
+
+			if(_.isFunction(item.condicaoTramitacao))
+				filtro.idCondicaoTramitacao = item.condicaoTramitacao();
+			else
+				filtro.idCondicaoTramitacao = item.condicaoTramitacao;
+
+			if(_.isFunction(item.deveFiltrarPorUsuario))
+				filtro.filtrarPorUsuario = item.deveFiltrarPorUsuario();
+			else
+				filtro.filtrarPorUsuario = item.deveFiltrarPorUsuario;
 
 			processoService.getProcessosCount(filtro)
 				.then(function(response){
