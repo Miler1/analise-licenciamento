@@ -29,6 +29,12 @@ CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO = "Consultor informando não tem perfi
 CONSULTOR_VINCULADO_SUCESSO=Consultor vinculado com sucesso.
 
 #
+# Upload
+#
+UPLOAD_ERRO=Ocorreu um erro ao realizar o upload do arquivo.
+UPLOAD_EXTENSAO_NAO_SUPORTADA=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos nos seguintes formatos: .pdf, .jpg, .jpeg, .png, .bmp ou .zip
+
+#
 # Documentos
 #
 DOCUMENTO_NAO_ENCONTRADO=Documento não encontrado.

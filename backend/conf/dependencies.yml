@@ -22,7 +22,7 @@ require:
     - com.nimbusds -> nimbus-jose-jwt 3.9.2
     - org.junit -> com.springsource.org.junit 4.7.0
     - br.ufla.lemaf -> InterfaceTramitacao 0.3.5-SNAPSHOT
-
+    - org.apache.tika -> tika-core 1.7
 
 repositories:
 

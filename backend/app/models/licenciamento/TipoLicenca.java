@@ -1,8 +1,6 @@
 package models.licenciamento;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -11,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import models.TipoDocumento;
 import play.db.jpa.GenericModel;
 
 @Entity
@@ -28,11 +25,11 @@ public class TipoLicenca extends GenericModel {
 	
 	static {
 		
-		TIPOS_DOCUMENTO.put(DLA, TipoDocumento.DISPENSA_LICENCIAMENTO);
-		TIPOS_DOCUMENTO.put(LICENCA_PREVIA, TipoDocumento.LICENCA_PREVIA);
-		TIPOS_DOCUMENTO.put(LICENCA_INSTALACAO, TipoDocumento.LICENCA_INSTALACAO);
-		TIPOS_DOCUMENTO.put(LICENCA_OPERACAO, TipoDocumento.LICENCA_OPERACAO);
-		TIPOS_DOCUMENTO.put(LICENCA_AMBIENTAL_RURAL, TipoDocumento.LICENCA_AMBIENTAL_RURAL);
+		TIPOS_DOCUMENTO.put(DLA, TipoDocumentoLicenciamento.DISPENSA_LICENCIAMENTO);
+		TIPOS_DOCUMENTO.put(LICENCA_PREVIA, TipoDocumentoLicenciamento.LICENCA_PREVIA);
+		TIPOS_DOCUMENTO.put(LICENCA_INSTALACAO, TipoDocumentoLicenciamento.LICENCA_INSTALACAO);
+		TIPOS_DOCUMENTO.put(LICENCA_OPERACAO, TipoDocumentoLicenciamento.LICENCA_OPERACAO);
+		TIPOS_DOCUMENTO.put(LICENCA_AMBIENTAL_RURAL, TipoDocumentoLicenciamento.LICENCA_AMBIENTAL_RURAL);
 	}
 	
 	@Id

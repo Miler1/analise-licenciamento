@@ -2,6 +2,7 @@ var licenciamento = angular.module("licenciamento", [
 	"ngRoute",
 	"ui.bootstrap",
 	"caixasEntrada",
+	"aguardandoValidacao",
 	"angular-growl",
 	"ngMessages",
 	"idf.br-filters",
@@ -9,10 +10,14 @@ var licenciamento = angular.module("licenciamento", [
 	"angularMoment",
 	"ngFileUpload",
 	'ui.select',
-	"ngSanitize"
+	"ngSanitize",
+	"analiseJuridica",
+	"analiseEmAndamento",
+	"froala",
+	"ui.bootstrap"
 ]);
 
-licenciamento.config(["$routeProvider",	function($routeProvider) {
+licenciamento.config(["$routeProvider", function($routeProvider) {
 
 	$routeProvider
 		.when("/", {
@@ -30,95 +35,148 @@ licenciamento.config(["$routeProvider",	function($routeProvider) {
 }]).config(['growlProvider', function(growlProvider) {
 
 	growlProvider.globalDisableCountDown(false)
-				.globalTimeToLive(5000);
+		.globalTimeToLive(5000);
 
-}]).run(function(amMoment) {
+}]).value('froalaConfig', {
+
+		language: 'pt_br',
+		toolbarButtons : ["bold", "italic", "underline", "|", "align", 
+							"formatOL", "formatUL", "strikeThrough", "color",
+							"fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
+							"paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
+		placeholderText: '',
+		height: 150
+
+}).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
 });
 
 licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
 	function($scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
 
-	$rootScope.location = $location;
-	$rootScope.confirmacao = {};
-	$rootScope.mensagens = app.utils.Mensagens;
+		$rootScope.location = $location;
+		$rootScope.confirmacao = {};
+		$rootScope.mensagens = app.utils.Mensagens;
 
-	$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
-	$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
+		$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
+		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
 
-	$rootScope.itensMenuPrincipal = [{
+		$rootScope.itensMenuPrincipal = [{
 
-                    titulo: 'Caixa de entrada',
-                    icone: 'glyphicon glyphicon-inbox',
-                    url: '/',
-					estaSelecionado: function() {
+			titulo: 'Caixa de entrada',
+			icone: 'glyphicon glyphicon-inbox',
+			url: '/',
+			countItens: true,
+			estaSelecionado: function () {
 
-						return $location.path() === '/caixa-entrada' || $location.path() === '/';
-					}
+				return $location.path() === '/caixa-entrada' || $location.path() === '/';
+			},
+			visivel: function(){
 
-                }, {
+				return true;
+			},
+			condicaoTramitacao: function() {
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
+			},
+			deveFiltrarPorUsuario: function() {
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+					return false;
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+					return true;
+			}
+		}, {
 
-                    titulo: 'Aguardando validação',
-                    icone: 'glyphicon glyphicon-check',
-                    url: '/aguardando-validacao',
-					estaSelecionado: function() {
+			titulo: 'Em análise',
+			icone: 'glyphicon glyphicon-ok',
+			url: '/analise-juridica',
+			countItens: true,
+			estaSelecionado: function() {
 
-						return false;
-					}
-                    
-                }, {
-                    titulo: 'Consultar processo',
-                    icone: 'glyphicon glyphicon-search',
-                    url: '/consultar-processo',
-					estaSelecionado: function() {
+				return $location.path().indexOf('/analise-juridica') > -1;
+			},
+			visivel: function() {
 
-						return $location.path() === '/consultar-processo';
-					}					                
-                }];
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO;
+			},
+			condicaoTramitacao: app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA,
+			deveFiltrarPorUsuario: true
+		},
+		{
+
+			titulo: 'Aguardando validação',
+			icone: 'glyphicon glyphicon-check',
+			url: '/aguardando-validacao',
+			countItens: true,
+			estaSelecionado: function () {
+
+				return $location.path() === '/aguardando-validacao';
+			},
+			visivel: function() {
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO;
+			},
+			condicaoTramitacao: app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA,
+			deveFiltrarPorUsuario: false
+		}, {
+			titulo: 'Consultar processo',
+			icone: 'glyphicon glyphicon-search',
+			url: '/consultar-processo',
+			estaSelecionado: function () {
+
+				return $location.path() === '/consultar-processo';
+			},
+			visivel: function(){
+
+				return true;
+			}
+		}];
 
 
-	if(!$rootScope.usuarioSessao){
-		window.location = $rootScope.config.baseUrl;
-	}
-
-	configurarPermissoes($rootScope.usuarioSessao, $rootScope);
-
-	/*  Limpando o breadcrumb ao acessar a tela inicial */
-	$scope.$on('$routeChangeSuccess', function(event, rotaAtual, rotaAnterior){
-
-		if(rotaAtual.$$route.originalPath === '/'){
-
-			breadcrumb.set([]);
-
+		if (!$rootScope.usuarioSessao) {
+			window.location = $rootScope.config.baseUrl;
 		}
 
-	});
+		configurarPermissoes($rootScope.usuarioSessao, $rootScope);
 
-	$scope.$on("$routeChangeError", function (event, rotaAtual, rotaAnterior, error) {
+		/*  Limpando o breadcrumb ao acessar a tela inicial */
+		$scope.$on('$routeChangeSuccess', function (event, rotaAtual, rotaAnterior) {
 
-		if (error.data.texto) {
+			if (rotaAtual.$$route.originalPath === '/') {
 
-			mensagem.error(error.data.texto);
-		}
+				breadcrumb.set([]);
 
-		if (rotaAnterior) {
+			}
 
-            $timeout(function() {
-				
-            	$window.history.back();
-            }, 0);
-        }
-        else {
+		});
 
-            $location.path("/");
-        }
-	});
+		$scope.$on("$routeChangeError", function(event, rotaAtual, rotaAnterior, error) {
 
-}]);
+			if (error.data.texto) {
+
+				mensagem.error(error.data.texto);
+			}
+
+			if (rotaAnterior) {
+
+				$timeout(function () {
+
+					$window.history.back();
+				}, 0);
+			}
+			else {
+
+				$location.path("/");
+			}
+		});
+
+	}]);
 
 licenciamento.constant('config', {
 	BASE_URL: function() {
-		if(LICENCIAMENTO_CONFIG.configuracoes.baseURL === "/")
+		if (LICENCIAMENTO_CONFIG.configuracoes.baseURL === "/")
 			return LICENCIAMENTO_CONFIG.configuracoes.baseURL;
 		else
 			return LICENCIAMENTO_CONFIG.configuracoes.baseURL + "/";
@@ -127,7 +185,7 @@ licenciamento.constant('config', {
 });
 
 
-function configurarPermissoes (usuarioSessao, $rootScope) {
+function configurarPermissoes(usuarioSessao, $rootScope) {
 
 	var permissoes = {};
 
@@ -158,7 +216,10 @@ utils.services(licenciamento)
 	.add('tipologiaService', services.TipologiaService)
 	.add('atividadeService', services.AtividadeService)
 	.add('consultorService', services.ConsultorService)
-	.add('condicaoService', services.CondicaoService);
+	.add('condicaoService', services.CondicaoService)
+	.add('documentoLicenciamentoService', services.DocumentoLicenciamentoService)
+	.add('analiseJuridicaService', services.AnaliseJuridicaService)	
+	.add('uploadService', services.UploadService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -173,4 +234,6 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController);
 
 licenciamento
-	.component('menuPrincipal', directives.MenuPrincipal);
+	.component('menuPrincipal', directives.MenuPrincipal)
+	.component('avaliarDocumento', directives.AvaliarDocumento)
+	.component('modalParecerDocumento', directives.ModalParecerDocumento);	

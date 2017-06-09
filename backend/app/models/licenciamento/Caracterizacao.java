@@ -20,7 +20,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import models.Documento;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
 

@@ -8,18 +8,10 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-@Table(schema = "licenciamento", name = "tipo_documento")
+@Table(schema = "analise", name = "tipo_documento")
 public class TipoDocumento extends Model {
 
-	public static Long DOCUMENTO_REPRESENTACAO = 1l;
-	public static Long DISPENSA_LICENCIAMENTO = 2l;
-	public static Long DOCUMENTO_ARRECADACAO_ESTADUAL = 3l;
-	
-	public static Long LICENCA_PREVIA = 66l;
-	public static Long LICENCA_INSTALACAO = 67l;
-	public static Long LICENCA_OPERACAO = 68l;
-	public static Long LICENCA_AMBIENTAL_RURAL = 69l;
-	
+
 	@Required
 	public String nome;
 	

@@ -10,8 +10,18 @@ GET		/versao										Application.versao
 # Processo
 POST	/processos									Processos.listWithFilter
 POST	/processos/count							Processos.countWithFilter
-GET		/processos/{id}/analiseGeo					Processos.getAnaliseGeo
-GET		/processos/{id}								Processos.getInfoProcesso
+GET		/processos/{id}/completo					Processos.getInfoProcesso
+GET		/processos/{idProcesso}						Processos.findById
+GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
+GET	/processos/{id}/analiseGeo					Processos.getAnaliseGeo
+
+# Analise juridica
+
+GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
+
+# Documentos licenciamento
+
+GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
 
 # Municipios
 GET		/estados/{uf}/municipios					Municipios.listByEstado
@@ -40,6 +50,10 @@ GET		/documentos/{id}/download					Documentos.download
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
+
+#Upload de arquivos
+POST	/upload/save								Uploads.upload
+
 
 # Estáticos
 GET     /public/									staticDir:public
