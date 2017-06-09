@@ -1,15 +1,13 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location, processo, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService) {
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {
 
+    $rootScope.tituloPagina = 'PARECER JURÍDICO';
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
     var ctrl = this;
 
     ctrl.DEFERIDO = app.utils.TiposResultadoAnalise.DEFERIDO;
     ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
     ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
-
-    $rootScope.tituloPagina = 'PARECER JURÍDICO';
-
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
     ctrl.processo = processo;    
     ctrl.analiseJuridica = angular.copy(analiseJuridica);    
@@ -24,7 +22,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
                 ctrl.documentosParecer.push({
 
-                    key: response,
+                    key: response.data,
                     nome: file.name,
                     tipoDocumento: {
 
@@ -45,6 +43,8 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.salvar = function() {
 
         montarAnaliseJuridica();
+
+        console.log(ctrl.analiseJuridica);
         analiseJuridicaService.salvar(ctrl.analiseJuridica)
             .then(function(response) {
 
@@ -52,7 +52,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
             
             }, function(error){
 
-                mensagem.error(error);
+                mensagem.error(error.data);
             });        
     };
 
@@ -60,7 +60,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         if(!analiseValida()) {
 
-            mensagem.error('Não foi possível concluir a análise porque existem campos inválidos.');
+            mensagem.error('Não foi possível concluir a análise porque existem campos inválidos ou documentos que não foram avaliados.');
         }
 
         montarAnaliseJuridica();
@@ -73,6 +73,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.downloadDocumentoLicenciamento = function(idDocumento) {
 
         documentoLicenciamentoService.download(idDocumento);
+    };
+
+    ctrl.downloadDocumentoAnalise = function(idDocumento) {
+
+        documentoAnaliseService.download(idDocumento);
     };
 
     ctrl.init = function() {

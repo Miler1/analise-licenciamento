@@ -6,6 +6,7 @@ import models.AnaliseDocumento;
 import models.AnaliseJuridica;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
+import utils.Mensagem;
 
 public class AnalisesJuridicas extends InternalController {
 	
@@ -24,9 +25,21 @@ public class AnalisesJuridicas extends InternalController {
 	
 	}
 
-	public static void save(AnaliseJuridica analise) {
+	public static void alterar(AnaliseJuridica analise) {
 		
-		renderText("Chegou");	
+		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
+				
+		analiseAAlterar.update(analise);
+				
+		renderMensagem(Mensagem.ANALISE_JURIDICA_CADASTRADA_SUCESSO);	
+	}
+	
+	public static void concluir(AnaliseJuridica analise) {
+		
+		analise.finalizar();
+		
+		renderMensagem(Mensagem.ANALISE_JURIDICA_CONCLUIDA_SUCESSO);				
+		
 	}
 
 }

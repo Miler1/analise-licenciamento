@@ -86,7 +86,7 @@ div(ng-init="ctrl.init()")
 
                     td {{documento.nome}}
                     td.text-right 
-                        a.btn(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.baixarDocumento(documento.id)")
+                        a.btn(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
                             i.glyphicon.glyphicon-save
 
                         a.btn(title="Remover documento", ng-click="ctrl.removerDocumento($index)")
@@ -119,13 +119,13 @@ div(ng-init="ctrl.init()")
         
         form.text-center.margin-bottom-md.margin-top-md(name="formularioResultado", novalidate)
             label.radio-inline(for="radio_deferido")
-                input#radio_deferido(type="radio", name="resultado", value="{{ctrl.DEFERIDO}}", ng-model="ctrl.analiseJuridica.tipoResultadoAnalise.id", ng-required="!ctrl.analiseJuridica.tipoResultadoAnalise.id") 
+                input#radio_deferido(type="radio", name="resultado", ng-value="{{ctrl.DEFERIDO}}", ng-model="ctrl.analiseJuridica.tipoResultadoAnalise.id", ng-required="!ctrl.analiseJuridica.tipoResultadoAnalise.id") 
                 | Deferido
             label.radio-inline(for="radio_indeferido")
-                input#radio_indeferido(type="radio", name="resultado", value="{{ctrl.INDEFERIDO}}", ng-model="ctrl.analiseJuridica.tipoResultadoAnalise.id", ng-required="!ctrl.analiseJuridica.tipoResultadoAnalise.id" ) 
+                input#radio_indeferido(type="radio", name="resultado", ng-value="{{ctrl.INDEFERIDO}}", ng-model="ctrl.analiseJuridica.tipoResultadoAnalise.id", ng-required="!ctrl.analiseJuridica.tipoResultadoAnalise.id" ) 
                 | Indeferido
             label.radio-inline(for="radio_notificacao")
-                input#radio_notificacao(type="radio", name="resultado", value="{{ctrl.EMITIR_NOTIFICACAO}}", ng-model="ctrl.analiseJuridica.tipoResultadoAnalise.id", ng-required="!ctrl.analiseJuridica.tipoResultadoAnalise.id") 
+                input#radio_notificacao(type="radio", name="resultado", ng-value="{{ctrl.EMITIR_NOTIFICACAO}}", ng-model="ctrl.analiseJuridica.tipoResultadoAnalise.id", ng-required="!ctrl.analiseJuridica.tipoResultadoAnalise.id") 
                 | Emitir notificação
             +inputErrors('formularioResultado', 'resultado', 'required')
 
