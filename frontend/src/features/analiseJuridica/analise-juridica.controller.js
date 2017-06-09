@@ -48,7 +48,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
         analiseJuridicaService.salvar(ctrl.analiseJuridica)
             .then(function(response) {
 
-                mensagem.success(response.data);
+                mensagem.success(response.data.texto);
             
             }, function(error){
 
@@ -78,6 +78,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.downloadDocumentoAnalise = function(idDocumento) {
 
         documentoAnaliseService.download(idDocumento);
+    };
+
+    ctrl.removerDocumento = function(indiceDocumento) {
+
+        ctrl.documentosParecer.splice(indiceDocumento,1);
     };
 
     ctrl.init = function() {
