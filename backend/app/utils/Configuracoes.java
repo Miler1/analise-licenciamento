@@ -4,6 +4,10 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.AbstractIdentifiedObject;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import play.Play;
 
 public class Configuracoes {
@@ -26,7 +30,7 @@ public class Configuracoes {
 	public static String ARQUIVOS_LICENCIAMENTO_PATH = getConfig("arquivos.path.licenciamento", null);
 	public static String ARQUIVOS_DOCUMENTOS_ANALISE_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.documentos.path", null);
 	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_LICENCIAMENTO_PATH + getConfig("arquivos.documentos.path", null);
-	
+	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
 	public static String ESTADO = "PA";
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
@@ -40,7 +44,29 @@ public class Configuracoes {
 	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);	
 	public static String URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacoes.andamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.adicionar.analise", null);
-	
+
+	public static CoordinateReferenceSystem CRS_DEFAULT = null;
+	public static Integer SRID_DEFAULT = null;
+	public static String GETCAPABILITIES_GEOSERVER_SICAR = getConfig("sistema.url.getcapabilities.geoserver.sicar", null);
+	public static String GEOSERVER_SICAR_IMOVEL_LAYER = getConfig("sistema.url.getcapabilities.geoserver.sicar.layer.name", null);
+
+
+	static {
+
+		try {
+
+			CRS_DEFAULT = CRS.parseWKT(getConfig("sistema.crs.default", null));
+
+			SRID_DEFAULT = Integer.parseInt(AbstractIdentifiedObject.getIdentifier(CRS_DEFAULT, Citations.EPSG).getCode());
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+
+
 	/*
 	 * Métodos utilitários
 	 */
