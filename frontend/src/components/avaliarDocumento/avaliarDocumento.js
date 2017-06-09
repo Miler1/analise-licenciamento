@@ -4,7 +4,8 @@ var AvaliarDocumento = {
 
         documento: '<',
         identificador: '<',
-        parecer: '<'
+        parecer: '<',
+        invalidar: '<'
     },
     controller: function($location) {
 
@@ -19,7 +20,11 @@ var AvaliarDocumento = {
 
             if(validado) {
 
-                ctrl.documento.parecer = null;
+                ctrl.documento.parecer = undefined;
+            
+            } else {
+
+                ctrl.invalidar(ctrl.identificador);
             }
 
             ctrl.documento.validado = validado;
