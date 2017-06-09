@@ -1,5 +1,11 @@
 var AnaliseJuridicaService = function(request, config) {
 
+	this.getAnaliseJuridica =function(idAnaliseJuridica) {
+
+		return request
+                .get(config.BASE_URL() + 'analisesJuridicas/' + idAnaliseJuridica);
+	};
+	
 	this.getDocumentosAnalisados = function(idAnaliseJuridica) {
 
 		return request
