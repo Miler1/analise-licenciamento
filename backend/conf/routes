@@ -16,6 +16,7 @@ GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
 
 # Analise juridica
 
+POST	/analisesJuridicas							AnalisesJuridicas.save
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 

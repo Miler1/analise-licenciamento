@@ -74,6 +74,9 @@ public class AnaliseJuridica extends GenericModel {
 	public List<Documento> documentos;
 	
 	@OneToMany(mappedBy="analiseJuridica")
+	public List<AnaliseDocumento> analisesDocumentos;
+	
+	@OneToMany(mappedBy="analiseJuridica")
 	public List<ConsultorJuridico> consultoresJuridicos;
 	
 	public AnaliseJuridica save() {

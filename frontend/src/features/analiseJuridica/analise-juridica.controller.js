@@ -44,8 +44,16 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
     ctrl.salvar = function() {
 
-        ctrl.analiseJuridica.documentos = ctrl.analisesDocumentos;
-        console.log(angular.toJson(ctrl.analiseJuridica));
+        montarAnaliseJuridica();
+        analiseJuridicaService.salvar(ctrl.analiseJuridica)
+            .then(function(response) {
+
+                mensagem.success(response.data);
+            
+            }, function(error){
+
+                mensagem.error(error);
+            });        
     };
 
     ctrl.concluir = function(){
@@ -54,6 +62,12 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
             mensagem.error('Não foi possível concluir a análise porque existem campos inválidos.');
         }
+
+        montarAnaliseJuridica();
+        analiseJuridicaService.concluir(ctrl.analiseJuridica)
+            .then(function(response) {
+
+            });
     };
 
     ctrl.downloadDocumentoLicenciamento = function(idDocumento) {
@@ -65,6 +79,12 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         getDocumentosAnalisados();
     };
+
+    function montarAnaliseJuridica() {
+
+        ctrl.analiseJuridica.documentos = ctrl.documentosParecer;
+        ctrl.analiseJuridica.analisesDocumentos = ctrl.analisesDocumentos;
+    }
 
     function editarMotivoInvalidacao(indiceDocumento) {
 
@@ -133,7 +153,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
         var resultadoPreenchido = $scope.formularioResultado.$valid;
         var documentosNaoValidados = ctrl.analisesDocumentos.filter(function(analise){
 
-            return analise.validado === undefined || !analise.parecer;
+            return analise.validado === undefined || (analise.validado === false && !analise.parecer);
         });
 
         return parecerPreenchido && documentosNaoValidados.length === 0 && resultadoPreenchido;

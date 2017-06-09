@@ -24,4 +24,9 @@ public class AnalisesJuridicas extends InternalController {
 	
 	}
 
+	public static void save(AnaliseJuridica analise) {
+		
+		renderText("Chegou");	
+	}
+
 }
