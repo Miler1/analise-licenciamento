@@ -32,7 +32,7 @@ analiseJuridica.config(['$routeProvider', function($routeProvider) {
 							deferred.resolve(response.data);
 						});
 					return deferred.promise;					
-				}
+				}				
 			}
 		})
 		.otherwise({

@@ -7,8 +7,7 @@ public class AnaliseJuridicaSerializer {
 	
 	public static JSONSerializer findInfo = SerializerUtil.create(
 			
-				"id"
-			,
+				"id",
 				"analise.id",
 				"analise.dataVencimentoPrazo",
 				"analise.processo.caracterizacoes.id",

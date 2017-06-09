@@ -7,7 +7,7 @@
         span.glyphicon.glyphicon-ok.checked.valido
         span.glyphicon.glyphicon-ok.unchecked.nao-marcado
 
-    label.btn.btn-plain(for="{{$ctrl.nome}}_invalido", title="Invalidar", ng-class="{active: !$ctrl.documento.validado}", ng-click="$ctrl.setValido(false)")
+    label.btn.btn-plain(for="{{$ctrl.nome}}_invalido", title="Invalidar", ng-class="{active: !$ctrl.documento.validado === false}", ng-click="$ctrl.setValido(false)")
         
         input(id="{{$ctrl.nome}}_invalido",type="radio", name="{{$ctrl.nome}}", ng-value="false", ng-model="$ctrl.documento.validado")
         

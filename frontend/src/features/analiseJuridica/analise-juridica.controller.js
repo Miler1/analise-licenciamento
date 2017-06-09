@@ -1,5 +1,5 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, processo, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal) {
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService) {
 
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
     var ctrl = this;
@@ -11,11 +11,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
     ctrl.processo = processo;
     ctrl.analiseJuridica = angular.copy(analiseJuridica);
     
-    ctrl.documentosProcesso = angular.copy(ctrl.analiseJuridica
-                                                .analise
-                                                .processo
-                                                .caracterizacoes[0]
-                                                .documentosEnviados);
+    ctrl.documentosAnalisados = angular.copy();
 
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
 
@@ -46,9 +42,14 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
 
     ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
 
+    ctrl.init = function() {
+
+        getDocumentosAnalisados();
+    };
+
     function editarMotivoInvalidacao(indiceDocumento) {
 
-        var documento = ctrl.documentosProcesso[indiceDocumento];
+        var analiseDocumento = ctrl.analisesDocumentos[indiceDocumento];
 
         var modalInstance = $uibModal.open({
 
@@ -58,21 +59,49 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
 
                 nomeDocumento: function() {
 
-                    return documento.tipo.nome;
+                    return analiseDocumento.documento.tipo.nome;
                 },
 
                 parecer: function() {
 
-                    return documento.parecer;
+                    return analiseDocumento.parecer;
                 }
             }
         });
 
         modalInstance.result.then(function(response){
 
-            ctrl.documentosProcesso[indiceDocumento].parecer = response;
+            ctrl.analisesDocumentos[indiceDocumento].parecer = response;
         
         }, function(){ });
+    }
+
+    function getDocumentosAnalisados() {
+
+        analiseJuridicaService.getDocumentosAnalisados(ctrl.analiseJuridica.id)
+            .then(function(response){
+                            
+                ctrl.analisesDocumentos = response.data;
+
+                if(ctrl.analisesDocumentos.length === 0) {
+
+                    var documentosProcesso = angular.copy(ctrl.analiseJuridica
+                                                .analise
+                                                .processo
+                                                .caracterizacoes[0]
+                                                .documentosEnviados);
+
+                    ctrl.analisesDocumentos = documentosProcesso.map(function(documento){
+
+                        return {
+
+                            "validado": undefined,
+                            "parecer": undefined,
+                            "documento": documento
+                        };
+                    });
+                }
+            });
     }
 };
 

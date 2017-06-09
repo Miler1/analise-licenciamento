@@ -217,6 +217,7 @@ utils.services(licenciamento)
 	.add('consultorService', services.ConsultorService)
 	.add('condicaoService', services.CondicaoService)
 	.add('documentoLicenciamentoService', services.DocumentoLicenciamentoService)
+	.add('analiseJuridicaService', services.AnaliseJuridicaService)	
 	.add('uploadService', services.UploadService);
 
 utils.filters(licenciamento)

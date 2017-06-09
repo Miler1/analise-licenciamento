@@ -15,7 +15,7 @@ import play.db.jpa.GenericModel;
 import models.licenciamento.DocumentoLicenciamento;
 
 @Entity
-@Table(schema="anlise", name="analise_documento")
+@Table(schema="analise", name="analise_documento")
 public class AnaliseDocumento extends GenericModel {
 	
 	public static final String SEQ = "analise.analise_documento_id_seq";
@@ -37,4 +37,5 @@ public class AnaliseDocumento extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_documento")
 	public DocumentoLicenciamento documento;
+	
 }
