@@ -43,8 +43,6 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.salvar = function() {
 
         montarAnaliseJuridica();
-
-        console.log(ctrl.analiseJuridica);
         analiseJuridicaService.salvar(ctrl.analiseJuridica)
             .then(function(response) {
 
@@ -52,7 +50,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
             
             }, function(error){
 
-                mensagem.error(error.data);
+                mensagem.error(error.data.texto);
             });        
     };
 

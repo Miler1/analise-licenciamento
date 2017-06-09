@@ -146,7 +146,7 @@ public class AnaliseJuridica extends GenericModel {
 		
 		ModelUtil.deleteAll(documentosDeletar);
 	}
-	
+		
 	public AnaliseJuridica save() {
 		
 		Calendar c = Calendar.getInstance();
@@ -168,7 +168,6 @@ public class AnaliseJuridica extends GenericModel {
 		updateDocumentos(novaAnalise.documentos);		
 		
 		this._save();
-		
 	}
 	
 	public void finalizar() {
