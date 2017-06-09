@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import builders.ProcessoBuilder.FiltroProcesso;
+import com.vividsolutions.jts.geom.Geometry;
 import models.AnaliseJuridica;
 import models.Processo;
 import models.geocalculo.Geoserver;
