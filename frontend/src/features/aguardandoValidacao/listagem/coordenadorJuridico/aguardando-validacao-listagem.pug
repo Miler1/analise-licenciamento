@@ -1,0 +1,60 @@
+include ../../../../layout/components/paginacao
+
+div
+	filtro-processos(paginacao="listagem.paginacao",
+		disabled-fields="aguardandoValidacaoListagem.disabledFields"
+		atualizar-lista="listagem.atualizarListaProcessos",
+		atualizar-paginacao="listagem.atualizarPaginacao",
+		condicao-tramitacao="listagem.condicaoTramitacao",
+		pesquisar-ao-inicializar="true")
+
+	h4 Lista de processos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="listagem.processos && listagem.processos.length > 0")
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th.col-md-1 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-2 Empreendimento
+							th.col-md-2 Município
+							th.col-md-2 Licenças
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise jurídica
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in listagem.processos")
+							td {{processo.numero  | textoTruncado : 4:3}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': listagem.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}") 
+								| {{listagem.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': listagem.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, listagem.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
+								| {{listagem.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+												a(ng-click="")
+													i.glyphicon.glyphicon-play-circle
+													span Validar análise
+											li
+												a(ng-click="")
+													i.glyphicon.glyphicon-eye-open 
+													span Visualizar processo
+
+				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
+
+		.row(ng-show="!listagem.processos || listagem.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.
