@@ -131,7 +131,18 @@ public class ProcessoSerializer {
 			"caracterizacao.documentosEnviados.id",
 			"caracterizacao.documentosEnviados.nome",
 			"caracterizacao.documentosEnviados.tipo.id",
-			"caracterizacao.documentosEnviados.tipo.nome")
+			"caracterizacao.documentosEnviados.tipo.nome",
+			"caracterizacao.atividadeCaracterizacao.atividade",
+			"caracterizacao.atividadeCaracterizacao.atividade.nome",
+			"caracterizacao.atividadeCaracterizacao.atividadeCnae",
+			"caracterizacao.atividadeCaracterizacao.atividadeCnae.nome",
+			"caracterizacao.atividadeCaracterizacao.atividadeCnae.codigo",
+			"caracterizacao.atividadeCaracterizacao.valorParametro",
+			"caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo",			
+			"caracterizacao.atividadeCaracterizacao.atividade.parametro.nome",
+			"caracterizacao.atividadeCaracterizacao.atividade.parametro.unidade",
+			"caracterizacao.atividadeCaracterizacao.atividade.parametro.codigo",
+			"caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo")
 			.transform(new GeometryTransformer(), Geometry.class);
 
 }

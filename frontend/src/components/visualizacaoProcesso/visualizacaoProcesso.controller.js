@@ -1,8 +1,10 @@
-var VisualizacaoProcessoController = function ($uibModalInstance, processo, $scope, processoService, mensagem, municipioService) {
+var VisualizacaoProcessoController = function ($uibModalInstance, processo, $scope, processoService, mensagem, municipioService, documentoLicenciamentoService) {
 
 	var modalCtrl = this;
 
 	modalCtrl.processo = processo;
+
+	modalCtrl.baixarDocumento = baixarDocumento;
 
 	processoService.getInfoProcesso(processo.idProcesso)
 		.then(function(response){
@@ -54,6 +56,11 @@ var VisualizacaoProcessoController = function ($uibModalInstance, processo, $sco
 	// 	getTemaGeoserver(codigoImovel, imovelService.camadaPRODES, 'camadaPRODES', "PRODES");
 
 	// }
+
+	function baixarDocumento(idDocumento) {
+
+		documentoLicenciamentoService.download(idDocumento);
+	}
 
 };
 
