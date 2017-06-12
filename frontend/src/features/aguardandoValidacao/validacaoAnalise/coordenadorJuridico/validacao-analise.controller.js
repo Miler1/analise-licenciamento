@@ -8,7 +8,7 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 
 	function getAnaliseJuridica() {
 
-		analiseJuridicaService.getAnaliseJuridicaById($route.current.params.idAnalise)
+		analiseJuridicaService.getAnaliseJuridica($route.current.params.idAnalise)
 			.then(function(response){
 				validacaoAnaliseJuridica.analiseJuridica = response.data;
 				validacaoAnaliseJuridica.analiseJuridica.parecer = 'testando';

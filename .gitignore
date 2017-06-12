@@ -11,6 +11,7 @@ README.md~
 */test-result/*
 */dist/*
 */precompiled/*
+.ideaDataSources/
 
 dist
 backend/public/app/*

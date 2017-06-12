@@ -2,12 +2,11 @@ var AvaliarDocumento = {
 
     bindings: {
 
-        documento: '<',
+        analiseDocumento: '<',
         identificador: '<',
-        parecer: '<',
         invalidar: '<'
     },
-    controller: function($location) {
+    controller: function() {
 
         var ctrl = this;
 
@@ -20,14 +19,14 @@ var AvaliarDocumento = {
 
             if(validado) {
 
-                ctrl.documento.parecer = undefined;
+                ctrl.analiseDocumento.parecer = undefined;
             
             } else {
 
                 ctrl.invalidar(ctrl.identificador);
             }
 
-            ctrl.documento.validado = validado;
+            ctrl.analiseDocumento.validado = validado;
         };
 
     },
