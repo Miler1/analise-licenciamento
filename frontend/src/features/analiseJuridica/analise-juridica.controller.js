@@ -60,7 +60,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
             mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
             '<ul>' +
-                '<li>O parecer foi preenchido.</li>' + 
+                '<li>Para concluir é necessário descrever o parecer.</li>' + 
                 '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
                 '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
             '</ul>', { ttl: 10000 });
@@ -133,6 +133,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
         }, function(){
 
             ctrl.analisesDocumentos[indiceDocumento].validado = undefined;
+            ctrl.analisesDocumentos[indiceDocumento].parecer = undefined;
          });
     }
 
