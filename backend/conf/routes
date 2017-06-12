@@ -18,6 +18,7 @@ GET	/processos/{id}/analiseGeo						Processos.getAnaliseGeo
 # Analise juridica
 
 POST	/analisesJuridicas							AnalisesJuridicas.alterar
+POST	/analisesJuridicas/concluir					AnalisesJuridicas.concluir
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 

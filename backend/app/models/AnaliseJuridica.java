@@ -99,6 +99,21 @@ public class AnaliseJuridica extends GenericModel {
 		
 		if(this.tipoResultadoAnalise == null)
 			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_SEM_RESULTADO);
+		
+		boolean todosDocumentosValidados = true;
+		for(AnaliseDocumento analise : this.analisesDocumentos) {
+			
+			if(analise.validado == null || (!analise.validado || StringUtils.isBlank(analise.parecer))) {
+				
+				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
+			}
+			todosDocumentosValidados &= analise.validado;
+		}	
+		
+		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO && !todosDocumentosValidados) {
+			
+			throw new ValidacaoException(Mensagem.TODOS_OS_DOCUMENTOS_VALIDOS);
+		}		
 	}
 	
 	private void validarAnaliseDocumentos() {
@@ -203,9 +218,11 @@ public class AnaliseJuridica extends GenericModel {
 		c.setTime(new Date());		
 		analiseAlterada.dataFim = c.getTime();
 		
-		//TODO tramitar		
-		
 		analiseAlterada._save();
+		
+		//TODO tramitar
+		
+		
 	}
 		
 	public static AnaliseJuridica findByProcesso(Processo processo) {

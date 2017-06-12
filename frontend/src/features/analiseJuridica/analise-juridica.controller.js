@@ -58,13 +58,22 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         if(!analiseValida()) {
 
-            mensagem.error('Não foi possível concluir a análise porque existem campos inválidos ou documentos que não foram avaliados.');
+            mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
+            '<ul>' +
+                '<li>O parecer foi preenchido.</li>' + 
+                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
+                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
+            '</ul>', { ttl: 10000 });
+            return;
         }
 
         montarAnaliseJuridica();
         analiseJuridicaService.concluir(ctrl.analiseJuridica)
             .then(function(response) {
 
+            }, function(error){
+
+                mensagem.error(error.data.texto);
             });
     };
 
@@ -121,7 +130,10 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
             ctrl.analisesDocumentos[indiceDocumento].parecer = response;
         
-        }, function(){ });
+        }, function(){
+
+            ctrl.analisesDocumentos[indiceDocumento].validado = undefined;
+         });
     }
 
     function getDocumentosAnalisados() {
@@ -159,12 +171,16 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         var parecerPreenchido = $scope.formularioParecer.$valid;
         var resultadoPreenchido = $scope.formularioResultado.$valid;
-        var documentosNaoValidados = ctrl.analisesDocumentos.filter(function(analise){
+        var todosDocumentosValidados = true;
+        var todosDocumentosAvaliados = true;
+        
+        ctrl.analisesDocumentos.forEach(function(analise){
 
-            return analise.validado === undefined || (analise.validado === false && !analise.parecer);
+            todosDocumentosAvaliados = todosDocumentosAvaliados && (analise.validado === true || (analise.validado === false && analise.parecer));
+            todosDocumentosValidados = todosDocumentosValidados && analise.validado;
         });
 
-        return parecerPreenchido && documentosNaoValidados.length === 0 && resultadoPreenchido;
+        return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
     }
 };
 

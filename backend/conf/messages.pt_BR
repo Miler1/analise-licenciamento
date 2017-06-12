@@ -47,3 +47,4 @@ ANALISE_JURIDICA_CADASTRADA_SUCESSO=Análise cadastrada com sucesso.
 ANALISE_JURIDICA_PARECER_NAO_PREENCHIDO=O parecer não foi preenchido.
 ANALISE_JURIDICA_SEM_RESULTADO=O resultado da análise não foi definido.
 ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO=Existem documentos que não foram analisados ou documento não validados sem parecer.
+TODOS_OS_DOCUMENTOS_VALIDOS=Para deferir uma análise, todos os documentos devem ser validados.

@@ -14,6 +14,10 @@ import play.db.jpa.GenericModel;
 @Table(schema="analise", name="tipo_resultado_analise")
 public class TipoResultadoAnalise extends GenericModel {
 	
+	public static Long DEFERIDO = 1l;
+	public static Long INDEFERIDO = 2l;
+	public static Long EMITIR_NOTIFICACAO = 3l;
+	
 	public static final String SEQ = "analise.tipo_resultado_analise_id_seq";
 	
 	@Id

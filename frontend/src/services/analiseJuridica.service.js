@@ -18,10 +18,10 @@ var AnaliseJuridicaService = function(request, config) {
 				.post(config.BASE_URL() + 'analisesJuridicas', analise);
 	};
 
-	this.finalizar = function(analise) {
+	this.concluir = function(analise) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesJuridicas/finalizar', analise);
+				.post(config.BASE_URL() + 'analisesJuridicas/concluir', analise);
 	};
 };
 
