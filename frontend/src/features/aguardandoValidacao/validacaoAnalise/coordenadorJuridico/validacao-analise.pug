@@ -1,0 +1,62 @@
+include ../../../../layout/components/panel
+include ../../../../components/resumoProcesso/resumo-processo
+
++resumo-processo('validacaoAnaliseJuridica.analiseJuridica.analise.processo')
+
+section.margin-bottom-md
+
+	h3 Análise jurídica
+
+	div.margin-top-md
+		label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Consultor jurídico:  
+		span#texto_nome_consultor_juridico
+			strong {{usuarioSessao.nome}}
+	hr
+
+	h4 {{validacaoAnaliseJuridica.analiseJuridica.tipoResultadoAnalise.nome}}
+
+	fieldset.panel.panel-default
+		div.panel-body
+			p(ng-bind-html="validacaoAnaliseJuridica.analiseJuridica.parecer")
+
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th Arquivo anexado
+				th.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="documento in validacaoAnaliseJuridica.analiseJuridica.documentosParecer")
+
+				td {{documento.nome}}
+				td.text-right 
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseJuridica.analiseJuridica.baixarDocumento(documento.id)")
+						i.glyphicon.glyphicon-save
+
+	.row(ng-show="!validacaoAnaliseJuridica.analiseJuridica.documentosParecer || validacaoAnaliseJuridica.analiseJuridica.documentosParecer.length == 0")
+		.col-md-12
+			p.empty-result Não existem arquivos anexados.
+	
+	form.text-center.margin-bottom-md.margin-top-md
+		label.radio-inline(for="radio_parecer_validado")
+			input#radio_parecer_validado(type="radio", name="parecer", value="VALIDADO", ng-model="validacaoAnaliseJuridica.analiseJuridica.analiseJuridica.tipoResultadoAnalise.id") 
+			| Parecer validado
+		label.radio-inline(for="radio_solicitar_ajustes")
+			input#radio_solicitar_ajustes(type="radio", name="parecer", value="AJUSTES", ng-model="validacaoAnaliseJuridica.analiseJuridica.analiseJuridica.tipoResultadoAnalise.id") 
+			| Solicitar ajustes
+		label.radio-inline(for="radio_parecer_nao_validado")
+			input#radio_parecer_nao_validado(type="radio", name="parecer", value="NAO_VALIDADO", ng-model="validacaoAnaliseJuridica.analiseJuridica.analiseJuridica.tipoResultadoAnalise.id") 
+			| Parecer não validado
+
+section.margin-bottom-md
+
+	button.btn.btn-default.col-md-2
+		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
+		| Cancelar
+	
+	button.btn.btn-success.pull-right
+		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+		| Concluir

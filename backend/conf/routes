@@ -17,6 +17,7 @@ GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
 # Analise juridica
 
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
+GET		/analisesJuridicas/{id}						AnalisesJuridicas.findAnaliseJuridicaById
 
 # Documentos licenciamento
 
