@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -226,6 +227,21 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return historicosTramitacoes;
 
+	}
+	
+	public List<String> getTiposLicenca() {
+		
+		List<String> tiposLicenca = new ArrayList<>();
+		
+		for(Caracterizacao caracterizacao : this.caracterizacoes) {
+			
+			String temp = caracterizacao.tipoLicenca.nome + " (" + caracterizacao.tipoLicenca.validadeEmAnos + " anos)";
+			tiposLicenca.add(temp);
+			
+		}
+		
+		return tiposLicenca;
+		
 	}
 
 }
