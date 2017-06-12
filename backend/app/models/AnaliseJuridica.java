@@ -77,8 +77,8 @@ public class AnaliseJuridica extends GenericModel {
 	
 	@ManyToMany
 	@JoinTable(schema="analise", name="rel_documento_analise_juridica", 
-		joinColumns=@JoinColumn(name="id_documento"), 
-		inverseJoinColumns=@JoinColumn(name="id_analise_juridica"))
+		joinColumns=@JoinColumn(name="id_analise_juridica"), 
+		inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 	
 	@OneToMany(mappedBy="analiseJuridica")
@@ -139,8 +139,8 @@ public class AnaliseJuridica extends GenericModel {
 			if (novoDocumento.id == null) {
 				
 				novoDocumento.tipo = tipo;
-				this.documentos.add(novoDocumento);
 				novoDocumento.save();
+				this.documentos.add(novoDocumento);
 			}
 		}
 		
