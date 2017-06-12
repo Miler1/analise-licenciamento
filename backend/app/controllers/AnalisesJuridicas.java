@@ -36,7 +36,9 @@ public class AnalisesJuridicas extends InternalController {
 	
 	public static void concluir(AnaliseJuridica analise) {
 		
-		analise.finalizar();
+		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
+		
+		analiseAAlterar.finalizar(analise);
 		
 		renderMensagem(Mensagem.ANALISE_JURIDICA_CONCLUIDA_SUCESSO);				
 		

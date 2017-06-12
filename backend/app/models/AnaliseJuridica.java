@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +23,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
 
 import exceptions.ValidacaoException;
 import play.data.validation.Required;
@@ -103,7 +101,7 @@ public class AnaliseJuridica extends GenericModel {
 		boolean todosDocumentosValidados = true;
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
-			if(analise.validado == null || (!analise.validado || StringUtils.isBlank(analise.parecer))) {
+			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
 				
 				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
 			}
@@ -123,7 +121,7 @@ public class AnaliseJuridica extends GenericModel {
 			
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
-			if(analise.validado == null || (!analise.validado || StringUtils.isBlank(analise.parecer))) {
+			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
 				
 				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
 			}
@@ -170,13 +168,17 @@ public class AnaliseJuridica extends GenericModel {
 		c.setTime(new Date());
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_JURIDICA);
 		this.dataVencimentoPrazo = c.getTime();
-		
+			
 		this.ativo = true;
 		
 		return super.save();
 	}
 	
 	public void update(AnaliseJuridica novaAnalise) {
+		
+		if(this.dataFim != null) {
+			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONCLUIDA);
+		}
 			
 		this.parecer = novaAnalise.parecer;
 		this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;		
@@ -201,24 +203,24 @@ public class AnaliseJuridica extends GenericModel {
 		}		
 	}
 	
-	public void finalizar() {
+	public void finalizar(AnaliseJuridica analise) {
+		
+		if(this.dataFim != null) {
+			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONCLUIDA);
+		}
+		
+		
+		this.update(analise);
 		
 		validarParecer();
 		validarAnaliseDocumentos();
-		validarResultado();
-		
-		AnaliseJuridica analiseAlterada = AnaliseJuridica.findById(this.id);
-		
-		analiseAlterada.documentos = this.documentos;
-		analiseAlterada.analisesDocumentos = this.analisesDocumentos;
-		analiseAlterada.parecer = this.parecer;
-		analiseAlterada.tipoResultadoAnalise = this.tipoResultadoAnalise;			
+		validarResultado();						
 		
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());		
-		analiseAlterada.dataFim = c.getTime();
+		this.dataFim = c.getTime();
 		
-		analiseAlterada._save();
+		this.save();
 		
 		//TODO tramitar
 		

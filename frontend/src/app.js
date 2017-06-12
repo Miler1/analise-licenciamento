@@ -13,7 +13,8 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
-	"froala",
+	"ngWYSIWYG",
+	//"froala",
 	"ui.bootstrap"
 ]);
 
@@ -37,16 +38,18 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	growlProvider.globalDisableCountDown(false)
 		.globalTimeToLive(5000);
 
-}]).value('froalaConfig', {
-
-		language: 'pt_br',
-		toolbarButtons : ["bold", "italic", "underline", "|", "align", 
-							"formatOL", "formatUL", "strikeThrough", "color",
-							"fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
-							"paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
-		placeholderText: '',
-		height: 150
-
+}]).value('configRichTextEditor', {
+	
+	fontAwesome: true,
+	sanitize: true,
+	toolbar: [
+			{ name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
+			{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
+			{ name: 'doers', items: ['undo', 'redo', '-'] },
+			{ name: 'colors', items: ['fontColor', '-'] },
+			{ name: 'links', items: ['link', '-'] },
+			{ name: 'styling', items: ['font', 'size', 'format'] },		
+	]
 }).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
 });

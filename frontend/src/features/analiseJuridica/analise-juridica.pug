@@ -61,7 +61,8 @@ div(ng-init="ctrl.init()")
         form#formulario_parecer(name="formularioParecer", novalidate)
 
             .form-group
-                textarea#texto_parecer.form-control(froala, name="parecer", ng-model="ctrl.analiseJuridica.parecer", required)
+                //-textarea#texto_parecer.form-control(froala, name="parecer", ng-model="ctrl.analiseJuridica.parecer", required)
+                wysiwyg-edit(class="rte", name="parecer", content="ctrl.analiseJuridica.parecer", config="ctrl.editorConfig", required)
                 +inputErrors('formularioParecer', 'parecer', 'required')
 
             .form-group
@@ -135,13 +136,15 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
         
-        button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()")
+        button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseJuridica.dataFim")
             i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
             | Salvar
         
-        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()")
+        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseJuridica.dataFim")
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
+
+        i.pull-right(ng-if="ctrl.analiseJuridica.dataFim") Esta análise foi concluida em {{ctrl.analiseJuridica.dataFim}} e não pode mais ser alterada.
             
 
         
