@@ -1,20 +1,20 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, processo, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService) {
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location, processo, 
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {
 
+    $rootScope.tituloPagina = 'PARECER JURÍDICO';
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
     var ctrl = this;
 
-    $rootScope.tituloPagina = 'PARECER JURÍDICO';
-
+    ctrl.DEFERIDO = app.utils.TiposResultadoAnalise.DEFERIDO;
+    ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
+    ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-
-    ctrl.processo = processo;
-    ctrl.analiseJuridica = angular.copy(analiseJuridica);
-    
+    ctrl.processo = processo;    
+    ctrl.analiseJuridica = angular.copy(analiseJuridica);    
+    ctrl.analiseJuridica.tipoResultadoAnalise = ctrl.analiseJuridica.tipoResultadoAnalise || {};    
     ctrl.documentosAnalisados = angular.copy();
-
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
-
+    ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
     ctrl.upload = function(file) {
 
         uploadService.save(file)
@@ -22,7 +22,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
 
                 ctrl.documentosParecer.push({
 
-                    key: response,
+                    key: response.data,
                     nome: file.name,
                     tipoDocumento: {
 
@@ -34,18 +34,65 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
                 mensagem.error('Ocorreu um erro ao enviar o arquivo. Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
             });
     };
+    
+    ctrl.cancelar = function() {
+
+        $location.path('caixa-entrada');
+    };
+
+    ctrl.salvar = function() {
+
+        montarAnaliseJuridica();
+        analiseJuridicaService.salvar(ctrl.analiseJuridica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+            
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });        
+    };
+
+    ctrl.concluir = function(){
+
+        if(!analiseValida()) {
+
+            mensagem.error('Não foi possível concluir a análise porque existem campos inválidos ou documentos que não foram avaliados.');
+        }
+
+        montarAnaliseJuridica();
+        analiseJuridicaService.concluir(ctrl.analiseJuridica)
+            .then(function(response) {
+
+            });
+    };
 
     ctrl.downloadDocumentoLicenciamento = function(idDocumento) {
 
         documentoLicenciamentoService.download(idDocumento);
     };
 
-    ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
+    ctrl.downloadDocumentoAnalise = function(idDocumento) {
+
+        documentoAnaliseService.download(idDocumento);
+    };
+
+    ctrl.removerDocumento = function(indiceDocumento) {
+
+        ctrl.documentosParecer.splice(indiceDocumento,1);
+    };
 
     ctrl.init = function() {
 
         getDocumentosAnalisados();
     };
+
+    function montarAnaliseJuridica() {
+
+        ctrl.analiseJuridica.documentos = ctrl.documentosParecer;
+        ctrl.analiseJuridica.analisesDocumentos = ctrl.analisesDocumentos;
+    }
 
     function editarMotivoInvalidacao(indiceDocumento) {
 
@@ -55,6 +102,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
 
             component: 'modalParecerDocumento',
             size: 'lg',
+            backdrop: 'static',
             resolve: {
 
                 nomeDocumento: function() {
@@ -102,6 +150,21 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, proce
                     });
                 }
             });
+    }
+
+    function analiseValida() {
+
+        $scope.formularioParecer.$setSubmitted();
+        $scope.formularioResultado.$setSubmitted();
+
+        var parecerPreenchido = $scope.formularioParecer.$valid;
+        var resultadoPreenchido = $scope.formularioResultado.$valid;
+        var documentosNaoValidados = ctrl.analisesDocumentos.filter(function(analise){
+
+            return analise.validado === undefined || (analise.validado === false && !analise.parecer);
+        });
+
+        return parecerPreenchido && documentosNaoValidados.length === 0 && resultadoPreenchido;
     }
 };
 
