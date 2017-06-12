@@ -107,7 +107,7 @@ div(ng-init="ctrl.init()")
 
                     td.col-md-8 {{analiseDocumento.documento.tipo.nome}}
                     td.col-md-3.text-center
-                        avaliar-documento(identificador="$index", documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
+                        avaliar-documento(identificador="$index",analise-documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
                     td.col-md-1.text-right 
 
                         a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo de invalidar")

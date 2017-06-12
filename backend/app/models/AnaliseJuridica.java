@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Cascade;
 
 import exceptions.ValidacaoException;
 import play.data.validation.Required;
@@ -160,14 +162,28 @@ public class AnaliseJuridica extends GenericModel {
 	}
 	
 	public void update(AnaliseJuridica novaAnalise) {
-		
-		//this.analisesDocumentos = this.analisesDocumentos;
+			
 		this.parecer = novaAnalise.parecer;
-		this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;
+		this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;		
 		
 		updateDocumentos(novaAnalise.documentos);		
 		
 		this._save();
+		
+		this.analisesDocumentos = novaAnalise.analisesDocumentos;
+		
+		for(AnaliseDocumento analiseDocumento : this.analisesDocumentos) {
+			
+			if(analiseDocumento.id != null) {
+				
+				analiseDocumento.update(analiseDocumento);
+			
+			} else {
+				
+				analiseDocumento.analiseJuridica = this;
+				analiseDocumento.save();
+			}			
+		}		
 	}
 	
 	public void finalizar() {
