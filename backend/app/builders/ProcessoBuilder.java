@@ -210,6 +210,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addProjection(Projections.groupProperty(ANALISE_JURIDICA_ALIAS+".revisaoSolicitada").as("revisaoSolicitadaAnaliseJuridica"));
 		
 		return this;
+	}
+	
+	public ProcessoBuilder groupByIdAnaliseJuridica(){
+		
+		addAnaliseJuridicaAlias();
+		addProjection(Projections.groupProperty(ANALISE_JURIDICA_ALIAS+".id").as("idAnaliseJuridica"));
+		
+		return this;
 	}	
 	
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
