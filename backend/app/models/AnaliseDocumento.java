@@ -21,7 +21,7 @@ public class AnaliseDocumento extends GenericModel {
 	public static final String SEQ = "analise.analise_documento_id_seq";
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 	
@@ -37,5 +37,16 @@ public class AnaliseDocumento extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_documento")
 	public DocumentoLicenciamento documento;
+	
+	
+	public AnaliseDocumento update(AnaliseDocumento novaAnalise) {
+		
+		AnaliseDocumento analise = AnaliseDocumento.findById(novaAnalise.id);
+		
+		analise.parecer = novaAnalise.parecer;
+		analise.validado = novaAnalise.validado;
+		
+		return analise.save();
+	}
 	
 }
