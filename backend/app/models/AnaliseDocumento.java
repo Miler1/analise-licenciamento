@@ -48,5 +48,17 @@ public class AnaliseDocumento extends GenericModel {
 		
 		return analise.save();
 	}
+
+
+	public AnaliseDocumento gerarCopia() {
+		
+		AnaliseDocumento copia = new AnaliseDocumento();
+		
+		copia.validado = this.validado;
+		copia.parecer = this.parecer;
+		copia.documento = this.documento;
+		
+		return copia;
+	}
 	
 }
