@@ -10,6 +10,7 @@ var VisualizacaoProcessoController = function ($uibModalInstance, processo, $sco
 		.then(function(response){
 
 			modalCtrl.dadosProcesso = response.data;
+			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 			console.log(response.data);
 		})
 		.catch(function(){
@@ -20,42 +21,6 @@ var VisualizacaoProcessoController = function ($uibModalInstance, processo, $sco
 		$uibModalInstance.dismiss('cancel');
 	};
 
-
-	// function getGeometriaMunicipio(id) {
-
-	// 	municipioService.getMunicipioGeometryById(id)
-	// 		.then(function(response) {
-
-	// 			etapaGeo.limite = response.data.limite;
-
-	// 		})
-	// 		.catch(function() {
-
-	// 			mensagem.error("Não foi possível obter o limite do município.");
-
-	// 		});
-
-	// }
-
-	// function getDadosImovel(codigoImovel) {
-
-	// 	imovelService.getImoveisCompletoByCodigo(codigoImovel)
-	// 		.then(function(response){
-
-	// 			etapaGeo.limite = response.data.geo;
-
-	// 		})
-	// 		.catch(function(){
-
-	// 			mensagem.error("Não foi possível obter os dados do imóvel no CAR.");
-
-	// 		});
-
-	// 	getTemaGeoserver(codigoImovel, imovelService.camadaLDI, 'camadaLDI', "Lista de desmatamento ilegal (LDI)");
-
-	// 	getTemaGeoserver(codigoImovel, imovelService.camadaPRODES, 'camadaPRODES', "PRODES");
-
-	// }
 
 	function baixarDocumento(idDocumento) {
 

@@ -6,12 +6,13 @@
 			blockquote.success
 				div.row
 					label.col-sm-4 Tipo do Licenciamento:
-					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.tipo.nome}}
+					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.tipo.nome}}
 
 				div.row
 					label.col-sm-4 Licenças Solicitadas:
-					div.col-sm-8(ng-repeat="licenca in modalVisualizacaoProcessoCtrl.dadosProcesso.tiposLicencaEmAndamento")
-						span {{licenca.nome}}
+					div.col-sm-8
+						span(ng-repeat="licenca in modalVisualizacaoProcessoCtrl.dadosProcesso.tiposLicenca") {{licenca}}
+							br
 
 			blockquote.success
 				div.row
@@ -19,7 +20,7 @@
 					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.nome}}
 				div.row
 					label.col-sm-4 Tipologia:
-					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.tipologia.nome}}
+					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.tipologia.nome}}
 				div.row
 					label.col-sm-4 CNAE:
 					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividadeCnae.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividadeCnae.nome}}
@@ -46,33 +47,9 @@
 
 	div
 
-		h4 Histórico do Processo:
+		h4(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0") Tramitação do Processo:
 
-		blockquote.success
-
-			div
-				div.text-center
-					h5 Análise do Processo em Dias:
-
-				table.table.table-striped.table-condensed
-
-					thead
-						tr
-							th Análise Jurídica
-							th Análise Técnica
-							th Análise Total
-
-					tbody
-						tr
-							td 5
-							td 12
-							td 17
-
-			small Data: 10/12/2016
-
-		h4 Tramitação do Processo:
-
-		blockquote.success
+		blockquote.success(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
 
 			div
 
@@ -87,11 +64,12 @@
 							th Responsável
 
 					tbody
-						tr
-							td 14/10/2016
-							td 14/10/2016
-							td Aguardando Análise Jurídica
-							td 2d 2:00h
-							td João da Silva
+						tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
+							td {{tramitacao}}
+							td {{tramitacao}}
+							td {{tramitacao}}
+							td {{tramitacao}}
+							td {{tramitacao}}
+
 
 			small Tempo Total da Tramitação: 17 dias

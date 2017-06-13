@@ -32,7 +32,9 @@ var ProcessoService = function(request, config, $uibModal) {
 
 
 	this.visualizarProcesso = function(processo) {
-		$uibModal.open({
+
+
+		var modalInstance = $uibModal.open({
 			controller: 'visualizacaoProcessoController',
 			controllerAs: 'modalVisualizacaoProcessoCtrl',
 			templateUrl: 'components/visualizacaoProcesso/visualizacaoProcesso.html',
@@ -43,6 +45,7 @@ var ProcessoService = function(request, config, $uibModal) {
 				}
 			}
 		});
+
 	};
 };
 

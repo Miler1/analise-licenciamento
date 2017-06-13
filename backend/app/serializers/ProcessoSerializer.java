@@ -138,6 +138,7 @@ public class ProcessoSerializer {
 			"caracterizacao.tipo.nome",
 			"caracterizacao.atividadeCaracterizacao.atividade",
 			"caracterizacao.atividadeCaracterizacao.atividade.nome",
+			"caracterizacao.atividadeCaracterizacao.atividade.tipologia.nome",
 			"caracterizacao.atividadeCaracterizacao.atividadeCnae",
 			"caracterizacao.atividadeCaracterizacao.atividadeCnae.nome",
 			"caracterizacao.atividadeCaracterizacao.atividadeCnae.codigo",
