@@ -25,6 +25,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_PARECER_TECNICO = 15l;
 	public static final Long VALIDAR_DEFERIMENTO_TECNICO = 16l;
 	public static final Long VALIDAR_INDEFERIMENTO_TECNICO = 17l;
+	public static final Long INICIAR_PROCESSO = 18l;
 
 }
 
