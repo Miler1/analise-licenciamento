@@ -22,6 +22,14 @@ public class AnaliseJuridicaSerializer {
 				"analise.processo.caracterizacoes.documentosEnviados.id",
 				"analise.processo.caracterizacoes.documentosEnviados.nome",
 				"analise.processo.caracterizacoes.documentosEnviados.tipo.nome",
+				"analise.processo.numero",
+				"analise.processo.empreendimento.id",
+				"analise.processo.empreendimento.denominacao",
+				"analise.processo.empreendimento.pessoa.id",
+				"analise.processo.empreendimento.pessoa.nome",
+				"analise.processo.empreendimento.pessoa.cpf",
+				"analise.processo.empreendimento.municipio.nome",
+				"analise.processo.empreendimento.municipio.estado.codigo",				
 				"analisesDocumentos.id",
 				"analisesDocumentos.validado",
 				"analisesDocumentos.parecer",
@@ -44,6 +52,11 @@ public class AnaliseJuridicaSerializer {
 				"consultoresJuridicos.usuario.pessoa.cpf",
 				"consultoresJuridicos.usuario.pessoa.id",
 				"consultoresJuridicos.usuario.pessoa.nome"
+			);
+	
+	public static JSONSerializer parecer = SerializerUtil.create(
+			
+				"parecer"
 			);
 
 }

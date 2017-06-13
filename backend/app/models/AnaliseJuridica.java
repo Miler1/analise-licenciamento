@@ -25,6 +25,8 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
+import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -104,6 +106,21 @@ public class AnaliseJuridica extends GenericModel {
 		
 		if(this.tipoResultadoAnalise == null)
 			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_SEM_RESULTADO);
+		
+		boolean todosDocumentosValidados = true;
+		for(AnaliseDocumento analise : this.analisesDocumentos) {
+			
+			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+				
+				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
+			}
+			todosDocumentosValidados &= analise.validado;
+		}	
+		
+		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO && !todosDocumentosValidados) {
+			
+			throw new ValidacaoException(Mensagem.TODOS_OS_DOCUMENTOS_VALIDOS);
+		}		
 	}
 	
 	private void validarAnaliseDocumentos() {
@@ -113,7 +130,7 @@ public class AnaliseJuridica extends GenericModel {
 			
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
-			if(analise.validado == null || (!analise.validado || StringUtils.isBlank(analise.parecer))) {
+			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
 				
 				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
 			}
@@ -168,16 +185,40 @@ public class AnaliseJuridica extends GenericModel {
 		c.setTime(new Date());
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_JURIDICA);
 		this.dataVencimentoPrazo = c.getTime();
-		
+			
 		this.ativo = true;
 		
 		return super.save();
 	}
 	
+	public void iniciar(Usuario usuarioExecutor) {
+		
+		if(this.dataInicio == null) {
+			
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			
+			this.dataInicio = c.getTime();
+			
+			this._save();
+			
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_JURIDICA, usuarioExecutor);
+		}		
+	}
+	
 	public void update(AnaliseJuridica novaAnalise) {
+		
+		if(this.dataFim != null) {
+			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONCLUIDA);
+		}
 			
 		this.parecer = novaAnalise.parecer;
-		this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;		
+		
+		if(novaAnalise.tipoResultadoAnalise != null &&
+				novaAnalise.tipoResultadoAnalise.id != null) {
+			
+			this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;		
+		}
 		
 		updateDocumentos(novaAnalise.documentos);		
 		
@@ -199,27 +240,37 @@ public class AnaliseJuridica extends GenericModel {
 		}		
 	}
 	
-	public void finalizar() {
+	public void finalizar(AnaliseJuridica analise, Usuario usuarioExecultor) {
+					
+		this.update(analise);
 		
 		validarParecer();
 		validarAnaliseDocumentos();
-		validarResultado();
-		
-		AnaliseJuridica analiseAlterada = AnaliseJuridica.findById(this.id);
-		
-		analiseAlterada.documentos = this.documentos;
-		analiseAlterada.analisesDocumentos = this.analisesDocumentos;
-		analiseAlterada.parecer = this.parecer;
-		analiseAlterada.tipoResultadoAnalise = this.tipoResultadoAnalise;			
+		validarResultado();						
 		
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());		
-		analiseAlterada.dataFim = c.getTime();
+		this.dataFim = c.getTime();
 		
-		//TODO tramitar		
+		this.save();
+				
+		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+			
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA, usuarioExecultor);
 		
-		analiseAlterada._save();
+		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
+			
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_JURIDICA, usuarioExecultor);
+		
+		} else {
+		
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
+		}				
 	}
+	
+	public static AnaliseJuridica findByNumeroProcesso(String numeroProcesso) {
+		return AnaliseJuridica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
+	}	
 		
 	public static AnaliseJuridica findByProcesso(Processo processo) {
 		return AnaliseJuridica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
