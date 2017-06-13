@@ -256,6 +256,10 @@ public class AnaliseJuridica extends GenericModel {
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
 		}				
 	}
+	
+	public static AnaliseJuridica findByNumeroProcesso(String numeroProcesso) {
+		return AnaliseJuridica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
+	}	
 		
 	public static AnaliseJuridica findByProcesso(Processo processo) {
 		return AnaliseJuridica.find("analise.processo.id = ? AND ativo = true", processo.id).first();

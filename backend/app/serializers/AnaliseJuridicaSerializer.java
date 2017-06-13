@@ -53,5 +53,10 @@ public class AnaliseJuridicaSerializer {
 				"consultoresJuridicos.usuario.pessoa.id",
 				"consultoresJuridicos.usuario.pessoa.nome"
 			);
+	
+	public static JSONSerializer parecer = SerializerUtil.create(
+			
+				"parecer"
+			);
 
 }

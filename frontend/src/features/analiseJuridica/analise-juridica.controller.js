@@ -104,6 +104,25 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
         ctrl.documentosParecer.splice(indiceDocumento,1);
     };
 
+    ctrl.clonarParecer = function() {
+
+        analiseJuridicaService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+            .then(function(response){
+
+                if(response.data === null) {
+
+                    ctrl.analiseJuridica.parecer = null;
+                    mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+                    return;
+                }
+                ctrl.analiseJuridica.parecer = response.data.parecer;
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
+    };
+
     ctrl.init = function() {
         getDocumentosAnalisados();
     };

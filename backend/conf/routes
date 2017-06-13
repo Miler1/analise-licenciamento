@@ -23,6 +23,7 @@ POST	/analisesJuridicas/concluir					AnalisesJuridicas.concluir
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 GET		/analisesJuridicas/{id}						AnalisesJuridicas.findAnaliseJuridicaById
+GET		/analisesJuridicas/processo/{numeroProcesso}			AnalisesJuridicas.findByNumeroProcesso
 
 # Documentos licenciamento
 
