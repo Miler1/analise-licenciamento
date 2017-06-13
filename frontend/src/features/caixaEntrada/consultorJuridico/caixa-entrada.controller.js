@@ -39,9 +39,9 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 		});
 	}
 
-	function iniciarAnalise(idProcesso) {
+	function iniciarAnalise(idAnaliseJuridica) {
 
-		$location.path('/analise-juridica/' + idProcesso.toString());
+		$location.path('/analise-juridica/' + idAnaliseJuridica.toString());
 	}	
 };
 

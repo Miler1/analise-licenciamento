@@ -25,6 +25,8 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
+import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -208,10 +210,8 @@ public class AnaliseJuridica extends GenericModel {
 		}		
 	}
 	
-	public void finalizar(AnaliseJuridica analise) {
-		
-		
-		
+	public void finalizar(AnaliseJuridica analise, Usuario usuarioExecultor) {
+					
 		this.update(analise);
 		
 		validarParecer();
@@ -223,10 +223,19 @@ public class AnaliseJuridica extends GenericModel {
 		this.dataFim = c.getTime();
 		
 		this.save();
+				
+		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+			
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA, usuarioExecultor);
 		
-		//TODO tramitar
+		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
+			
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_JURIDICA, usuarioExecultor);
 		
+		} else {
 		
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
+		}				
 	}
 		
 	public static AnaliseJuridica findByProcesso(Processo processo) {

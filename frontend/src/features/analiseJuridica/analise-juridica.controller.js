@@ -1,4 +1,4 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location, processo, 
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location,  
         analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {    
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
@@ -9,8 +9,8 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
     ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-    ctrl.processo = processo;    
     ctrl.analiseJuridica = angular.copy(analiseJuridica);    
+    ctrl.processo = analiseJuridica.analise.processo;    
     ctrl.analiseJuridica.tipoResultadoAnalise = ctrl.analiseJuridica.tipoResultadoAnalise || {};    
     ctrl.documentosAnalisados = angular.copy();
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);

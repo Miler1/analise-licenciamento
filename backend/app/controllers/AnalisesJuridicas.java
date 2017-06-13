@@ -4,6 +4,8 @@ import java.util.List;
 
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
+import models.portalSeguranca.Usuario;
+import security.UsuarioSessao;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
 import utils.Mensagem;
@@ -38,7 +40,10 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
-		analiseAAlterar.finalizar(analise);
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);		
+		
+		analiseAAlterar.finalizar(analise, usuarioExecultor);
 		
 		renderMensagem(Mensagem.ANALISE_JURIDICA_CONCLUIDA_SUCESSO);				
 		
