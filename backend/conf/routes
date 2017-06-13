@@ -20,6 +20,7 @@ GET	/processos/{id}/analiseGeo						Processos.getAnaliseGeo
 POST	/analisesJuridicas							AnalisesJuridicas.alterar
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
+GET		/analisesJuridicas/{id}						AnalisesJuridicas.findAnaliseJuridicaById
 
 # Documentos licenciamento
 
