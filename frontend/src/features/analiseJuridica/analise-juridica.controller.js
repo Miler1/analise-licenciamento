@@ -1,11 +1,9 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location, processo, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService, configRichTextEditor) {    
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {    
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
     var ctrl = this;
-
-    ctrl.editorConfig = angular.copy(configRichTextEditor);
 
     ctrl.DEFERIDO = app.utils.TiposResultadoAnalise.DEFERIDO;
     ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
@@ -97,8 +95,6 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     };
 
     ctrl.init = function() {
-
-        app.utils.WysiwygTranslator.translate();
         getDocumentosAnalisados();
     };
 

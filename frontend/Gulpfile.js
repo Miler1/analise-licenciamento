@@ -77,37 +77,13 @@ var config = {
 			"./bower_components/ng-file-upload/ng-file-upload.min.js",
 			"./bower_components/ng-file-upload/ng-file-upload-shim.min.js"
 		],
-		// froala: {
+		textAngular: [
 
-		// 	root: [
-		// 		"./bower_components/froala-wysiwyg-editor/css/froala_editor.pkgd.min.css",
-		// 		"./bower_components/froala-wysiwyg-editor/js/froala_editor.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/align.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/colors.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/char_counter.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/font_family.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/font_size.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/link.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/lists.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/paragraph_format.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/plugins/paragraph_style.min.js",
-		// 		"./bower_components/froala-wysiwyg-editor/js/languages/pt_br.js",
-		// 		"./bower_components/angular-froala/src/angular-froala.js",
-		// 		"./bower_components/angular-froala/src/froala-sanitize.js"
-		// 	]
-		// },
-
-		ngwysigwyg: {
-
-			root: [
-
-				
-				"./bower_components/ngWYSIWYG/dist/editor.min.css",
-				"./bower_components/ngWYSIWYG/dist/wysiwyg.min.js"
-			],
-
-			images: "./bower_components/ngWYSIWYG/dist/images/*"
-		}
+			"./bower_components/textAngular/dist/textAngular-rangy.min.js",
+			"./bower_components/textAngular/dist/textAngular-sanitize.min.js",
+			"./bower_components/textAngular/dist/textAngular.min.js",
+			"./bower_components/textAngular/dist/textAngular.css"
+		]
 	},
 
 	dist: {
@@ -125,7 +101,6 @@ var config = {
 	}
 
 };
-	config.dist.imagesNgWysiwygPath = config.libsPath + "/images";
 
 gulp.task('clean-dist', function () {
 
@@ -155,13 +130,6 @@ gulp.task("images", function() {
 
 	return gulp.src(config.src.imgs)
 		.pipe(gulp.dest(config.dist.imgsPath));
-});
-
-gulp.task("imagesWysiwyg", function(){
-
-	return gulp.src(config.libs.ngwysigwyg.images)
-		.pipe(gulp.dest(config.dist.imagesNgWysiwygPath));
-
 });
 
 gulp.task("fonts", function() {
@@ -262,12 +230,12 @@ gulp.task("libs", function() {
 
 gulp.task('dist',['clean-dist'], function() {
 
-	return gulp.run("bower", "libs", "images", "imagesWysiwyg","pug", "less", "js", "fonts", "fonts-bootstrap");
+	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts", "fonts-bootstrap");
 });
 
 gulp.task('dev', function() {
 
-	return gulp.run("bower", "libs", "images", "imagesWysiwyg", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap");
+	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap");
 });
 
 gulp.task('default', function() {

@@ -62,8 +62,7 @@ div(ng-init="ctrl.init()")
 
             .form-group
                 //-textarea#texto_parecer.form-control(froala, name="parecer", ng-model="ctrl.analiseJuridica.parecer", required)
-                wysiwyg-edit(class="rte", name="parecer", content="ctrl.analiseJuridica.parecer", config="ctrl.editorConfig", required)
-                +inputErrors('formularioParecer', 'parecer', 'required')
+                div(text-angular, ng-model="ctrl.analiseJuridica.parecer", name="parecer", required)
 
             .form-group
                 button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")

@@ -13,9 +13,8 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
-	"ngWYSIWYG",
-	//"froala",
-	"ui.bootstrap"
+	"ui.bootstrap",
+	"textAngular"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {
@@ -38,18 +37,40 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	growlProvider.globalDisableCountDown(false)
 		.globalTimeToLive(5000);
 
-}]).value('configRichTextEditor', {
-	
-	fontAwesome: true,
-	sanitize: true,
-	toolbar: [
-			{ name: 'basicStyling', items: ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '-', 'leftAlign', 'centerAlign', 'rightAlign', 'blockJustify', '-'] },
-			{ name: 'paragraph', items: ['orderedList', 'unorderedList', 'outdent', 'indent', '-'] },
-			{ name: 'doers', items: ['undo', 'redo', '-'] },
-			{ name: 'colors', items: ['fontColor', '-'] },
-			{ name: 'links', items: ['link', '-'] },
-			{ name: 'styling', items: ['font', 'size', 'format'] },		
-	]
+}]).config(function($provide){
+
+	$provide.decorator('taOptions',['$delegate', function(taOptions){
+
+		taOptions.toolbar = [
+			['h1','h2','h3','h4','h5','h6','p'],
+			['bold','italics','underline','strikeThrough','ul','ol','redo','undo','clear'],
+			['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull','indent', 'outdent','insertLink']
+		];
+
+		return taOptions;
+	}]);
+
+	$provide.decorator('taTranslations', ['$delegate', function(taTranslations) {
+
+		taTranslations.justifyLeft.tooltip = 'Alinhar a esquerda';
+		taTranslations.justifyCenter.tooltip = 'Centralizar';
+		taTranslations.justifyRight.tooltip = 'Alinhar a direita';
+		taTranslations.justifyFull.tooltip = 'Justificar';
+		taTranslations.heading.tooltip = 'Cabeçalho ';
+		taTranslations.bold.tooltip = 'Negrito';
+		taTranslations.italic.tooltip = 'Itálico';
+		taTranslations.underline.tooltip = 'Sublinhado';
+		taTranslations.insertLink.tooltip = 'Inserir link';
+		taTranslations.insertLink.dialogPrompt = "Digite a URL";
+		taTranslations.editLink.targetToggle.buttontext = "Abrir em nova aba";
+		taTranslations.editLink.reLinkButton.tooltip = "Refazer link";
+		taTranslations.editLink.unLinkButton.tooltip = "Remover link";
+		taTranslations.clear.tooltip = 'Limpar formatação';		
+		
+		return taTranslations;
+
+	}]);
+
 }).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
 });
