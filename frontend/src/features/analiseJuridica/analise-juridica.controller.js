@@ -15,24 +15,33 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.documentosAnalisados = angular.copy();
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
     ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
-    ctrl.upload = function(file) {
 
-        uploadService.save(file)
-            .then(function(response) {
+    ctrl.upload = function(file, invalidFile) {
 
-                ctrl.documentosParecer.push({
+        if(file) {
 
-                    key: response.data,
-                    nome: file.name,
-                    tipoDocumento: {
+            uploadService.save(file)
+                .then(function(response) {
 
-                        id: app.utils.TiposDocumentosAnalise.ANALISE_JURIDICA
-                    }
+                    ctrl.documentosParecer.push({
+
+                        key: response.data,
+                        nome: file.name,
+                        tipoDocumento: {
+
+                            id: app.utils.TiposDocumentosAnalise.ANALISE_JURIDICA
+                        }
+                    });
+
+                }, function(error){
+
+                    mensagem.error(error.data.texto);
                 });
-            }, function(error){
+        
+        } else if(invalidFile && invalidFile.$error === 'maxSize'){
 
-                mensagem.error('Ocorreu um erro ao enviar o arquivo. Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
-            });
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+        }            
     };
     
     ctrl.cancelar = function() {
@@ -168,11 +177,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
     function analiseValida() {
 
-        $scope.formularioParecer.$setSubmitted();
-        $scope.formularioResultado.$setSubmitted();
+        ctrl.formularioParecer.$setSubmitted();
+        ctrl.formularioResultado.$setSubmitted();
 
-        var parecerPreenchido = $scope.formularioParecer.$valid;
-        var resultadoPreenchido = $scope.formularioResultado.$valid;
+        var parecerPreenchido = ctrl.formularioParecer.$valid;
+        var resultadoPreenchido = ctrl.formularioResultado.$valid;
         var todosDocumentosValidados = true;
         var todosDocumentosAvaliados = true;
         
