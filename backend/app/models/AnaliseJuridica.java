@@ -181,7 +181,12 @@ public class AnaliseJuridica extends GenericModel {
 		}
 			
 		this.parecer = novaAnalise.parecer;
-		this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;		
+		
+		if(novaAnalise.tipoResultadoAnalise != null &&
+				novaAnalise.tipoResultadoAnalise.id != null) {
+			
+			this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;		
+		}
 		
 		updateDocumentos(novaAnalise.documentos);		
 		
@@ -205,9 +210,6 @@ public class AnaliseJuridica extends GenericModel {
 	
 	public void finalizar(AnaliseJuridica analise) {
 		
-		if(this.dataFim != null) {
-			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONCLUIDA);
-		}
 		
 		
 		this.update(analise);
