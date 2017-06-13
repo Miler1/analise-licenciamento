@@ -68,7 +68,6 @@ div(ng-init="ctrl.init()")
                 button.btn.btn-default(type="file", ngf-select="ctrl.upload($file)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                     i.glyphicon.glyphicon-open.glyphicon--with-right-margin 
                     | Anexar arquivo ao parecer 
-                    i (opcional)
                 i   Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
                 
 
@@ -97,16 +96,16 @@ div(ng-init="ctrl.init()")
             thead
 
                 tr
-                    th.col-md-8 Documento
-                    th.col-md-3.text-center Validar
+                    th.col-md-9 Documento
+                    th.col-md-2.text-center Validar
                     th.col-md-1.text-right Ações
 
             tbody
 
                 tr(ng-repeat="analiseDocumento in ctrl.analisesDocumentos")
 
-                    td.col-md-8 {{analiseDocumento.documento.tipo.nome}}
-                    td.col-md-3.text-center
+                    td.col-md-9 {{analiseDocumento.documento.tipo.nome}}
+                    td.col-md-2.text-center
                         avaliar-documento(identificador="$index",analise-documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
                     td.col-md-1.text-right 
 

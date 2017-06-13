@@ -39,7 +39,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 }]).config(function($provide){
 
-	$provide.decorator('taOptions',['$delegate', function(taOptions){
+	$provide.decorator('taOptions',['taRegisterTool','$delegate', function(taRegisterTool, taOptions){
 
 		taOptions.toolbar = [
 			['h1','h2','h3','h4','h5','h6','p'],
@@ -70,6 +70,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 		return taTranslations;
 
 	}]);
+
+	
 
 }).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
