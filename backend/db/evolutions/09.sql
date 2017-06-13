@@ -1,3 +1,5 @@
+# --- !Ups
+
 INSERT INTO analise.tipo_resultado_analise(id,nome) VALUES
 (4,'Parecer validado'),
 (5,'Solicitar ajustes'),
@@ -12,7 +14,7 @@ ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_tipo_resultado_validac
 REFERENCES analise.tipo_resultado_analise;
 COMMENT ON COLUMN analise.analise_juridica.id_tipo_resultado_validacao IS 'Campo responsavel por armazenar o resultado da análise do coordenador jurídico';
 
-
+# --- !Downs
 
 ALTER TABLE analise.analise_juridica DROP COLUMN id_tipo_resultado_validacao;
 ALTER TABLE analise.analise_juridica RENAME id_tipo_resultado_analise TO id_tipo_resultado;
