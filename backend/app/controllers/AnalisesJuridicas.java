@@ -41,12 +41,25 @@ public class AnalisesJuridicas extends InternalController {
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);		
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
 		
-		analiseAAlterar.finalizar(analise, usuarioExecultor);
+		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.ANALISE_JURIDICA_CONCLUIDA_SUCESSO);				
 		
+	}
+
+	public static void iniciar(AnaliseJuridica analise) {
+	
+		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
+		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+				
+		analiseAAlterar.iniciar(usuarioExecutor);
+				
+		renderMensagem(Mensagem.ANALISE_JURIDICA_INICIADA_SUCESSO);	
+
 	}
 
 }

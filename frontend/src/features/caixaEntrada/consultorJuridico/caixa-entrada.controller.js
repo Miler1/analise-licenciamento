@@ -1,4 +1,4 @@
-var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $location) {
+var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $location, analiseJuridicaService, mensagem) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE JURÍDICA';
 
@@ -41,7 +41,15 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 
 	function iniciarAnalise(idAnaliseJuridica) {
 
-		$location.path('/analise-juridica/' + idAnaliseJuridica.toString());
+		analiseJuridicaService.iniciar({ id : idAnaliseJuridica })
+			.then(function(response){
+
+				$location.path('/analise-juridica/' + idAnaliseJuridica.toString());
+			
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
 	}	
 };
 
