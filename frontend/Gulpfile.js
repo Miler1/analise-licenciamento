@@ -51,7 +51,7 @@ var config = {
 			"./bower_components/angular-growl-v2/build/angular-growl.min.css"
 		],
 		fontawesome: {
-			css: "./bower_components/components-font-awesome/css/**",
+			css: "./bower_components/components-font-awesome/css/font-awesome.min.css",
 			fonts: "./bower_components/components-font-awesome/fonts/**"
 		},
 		lodash: "./bower_components/lodash/dist/lodash.min.js",
