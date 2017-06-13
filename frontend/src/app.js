@@ -13,8 +13,8 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
-	"froala",
-	"ui.bootstrap"
+	"ui.bootstrap",
+	"textAngular"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {
@@ -37,15 +37,41 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	growlProvider.globalDisableCountDown(false)
 		.globalTimeToLive(5000);
 
-}]).value('froalaConfig', {
+}]).config(function($provide){
 
-		language: 'pt_br',
-		toolbarButtons : ["bold", "italic", "underline", "|", "align", 
-							"formatOL", "formatUL", "strikeThrough", "color",
-							"fontFamily", "fontSize", "undo", "redo", "indent", "outdent",
-							"paragraphFormat","insertLink", "insertLink", "subscript", "superscript"],
-		placeholderText: '',
-		height: 150
+	$provide.decorator('taOptions',['taRegisterTool','$delegate', function(taRegisterTool, taOptions){
+
+		taOptions.toolbar = [
+			['h1','h2','h3','h4','h5','h6','p'],
+			['bold','italics','underline','strikeThrough','ul','ol','redo','undo','clear'],
+			['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull','indent', 'outdent','insertLink']
+		];
+
+		return taOptions;
+	}]);
+
+	$provide.decorator('taTranslations', ['$delegate', function(taTranslations) {
+
+		taTranslations.justifyLeft.tooltip = 'Alinhar a esquerda';
+		taTranslations.justifyCenter.tooltip = 'Centralizar';
+		taTranslations.justifyRight.tooltip = 'Alinhar a direita';
+		taTranslations.justifyFull.tooltip = 'Justificar';
+		taTranslations.heading.tooltip = 'Cabeçalho ';
+		taTranslations.bold.tooltip = 'Negrito';
+		taTranslations.italic.tooltip = 'Itálico';
+		taTranslations.underline.tooltip = 'Sublinhado';
+		taTranslations.insertLink.tooltip = 'Inserir link';
+		taTranslations.insertLink.dialogPrompt = "Digite a URL";
+		taTranslations.editLink.targetToggle.buttontext = "Abrir em nova aba";
+		taTranslations.editLink.reLinkButton.tooltip = "Refazer link";
+		taTranslations.editLink.unLinkButton.tooltip = "Remover link";
+		taTranslations.clear.tooltip = 'Limpar formatação';		
+		
+		return taTranslations;
+
+	}]);
+
+	
 
 }).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
