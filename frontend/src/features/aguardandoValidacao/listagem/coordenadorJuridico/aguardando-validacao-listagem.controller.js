@@ -8,6 +8,7 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 	listagem.atualizarPaginacao = atualizarPaginacao;
 	listagem.selecionarTodosProcessos = selecionarTodosProcessos;
 	listagem.onPaginaAlterada = onPaginaAlterada;
+	listagem.validarAnalise = validarAnalise;
 
 	listagem.processos = [];
 	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
@@ -37,6 +38,11 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 			processo.selecionado = listagem.todosProcessosSelecionados;
 		});
 	}
+
+	function validarAnalise(idAnaliseJuridica) {
+
+		$location.path('/aguardando-validacao/' + idAnaliseJuridica.toString());
+	}	
 };
 
 exports.controllers.AguardandoValidacaoJuridicoListController = AguardandoValidacaoJuridicoListController;

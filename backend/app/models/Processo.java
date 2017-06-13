@@ -127,7 +127,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this));
 		
-		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR, usuarioExecutor, consultor);
+		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
 		
 	}
 

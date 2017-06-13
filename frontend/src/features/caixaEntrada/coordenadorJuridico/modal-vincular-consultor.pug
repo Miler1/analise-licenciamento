@@ -32,7 +32,7 @@ form(name="formVincularConsultor", novalidate)
 			.col-md-12
 				label.control-label.obrigatorio Consultor jurídico:
 				select.form-control(ng-model="modalCtrl.idConsultorSelecionado", name="selectConsultor", required,
-									ng-options="consultor.id as consultor.pessoa.nome for consultor in modalCtrl.consultores track by consultor.id")
+									ng-options="consultor.id as consultor.pessoa.nome for consultor in modalCtrl.consultores")
 					option(value="") Selecione o consultor jurídico
 
 				+inputErrors('formVincularConsultor', 'selectConsultor', 'required')

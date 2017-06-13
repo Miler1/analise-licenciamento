@@ -77,25 +77,13 @@ var config = {
 			"./bower_components/ng-file-upload/ng-file-upload.min.js",
 			"./bower_components/ng-file-upload/ng-file-upload-shim.min.js"
 		],
-		froala: {
+		textAngular: [
 
-			root: [
-				"./bower_components/froala-wysiwyg-editor/css/froala_editor.pkgd.min.css",
-				"./bower_components/froala-wysiwyg-editor/js/froala_editor.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/align.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/colors.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/char_counter.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/font_family.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/font_size.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/link.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/lists.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/paragraph_format.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/plugins/paragraph_style.min.js",
-				"./bower_components/froala-wysiwyg-editor/js/languages/pt_br.js",
-				"./bower_components/angular-froala/src/angular-froala.js",
-				"./bower_components/angular-froala/src/froala-sanitize.js"
-			]
-		}
+			"./bower_components/textAngular/dist/textAngular-rangy.min.js",
+			"./bower_components/textAngular/dist/textAngular-sanitize.min.js",
+			"./bower_components/textAngular/dist/textAngular.min.js",
+			"./bower_components/textAngular/dist/textAngular.css"
+		]
 	},
 
 	dist: {
@@ -107,9 +95,11 @@ var config = {
 		htmlPath: DIST_FOLDER + "/",
 		cssPath:  DIST_FOLDER + "/css",
 		libsPath: DIST_FOLDER + "/libs",
+	
 		imgsPath: DIST_FOLDER + "/images",
 		fontsPath: DIST_FOLDER + "/fonts"
 	}
+
 };
 
 gulp.task('clean-dist', function () {

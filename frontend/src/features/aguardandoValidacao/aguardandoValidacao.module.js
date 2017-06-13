@@ -12,11 +12,16 @@ aguardandoValidacao.config(['$routeProvider', function($routeProvider){
 			controller: controllers.AguardandoValidacaoListagemController,
 			controllerAs: 'aguardandoValidacaoListagem'
 		})
+		.when('/aguardando-validacao/:idAnalise', {
+			templateUrl: 'features/aguardandoValidacao/validacaoAnalise/validacao-analise.html',
+			controller: controllers.ValidacaoAnaliseController,
+			controllerAs: 'validacaoAnalise'
+		})		
 		.otherwise({
 			redirectTo: '/'
-		});    
-
+		});
 }]);
 
 aguardandoValidacao
-	.controller('aguardandoValidacaoJuridicoListController', controllers.AguardandoValidacaoJuridicoListController);
+	.controller('aguardandoValidacaoJuridicoListController', controllers.AguardandoValidacaoJuridicoListController)
+	.controller('validacaoAnaliseJuridicaController', controllers.ValidacaoAnaliseJuridicaController);

@@ -5,16 +5,16 @@ include ../../layout/components/inputErrors
 
 .modal-body
 
-    label.margin-right-xs Documento: * 
+    div(growl inline="true")
+        
+    label.margin-right-xs Documento:  
     span {{$ctrl.nomeDocumento}}
 
     form.margin-top-md(name="formularioParecerDocumento", novalidate)
         .form-group
-            label(for="texto_parecer_documento_invalido") Parecer de documento não validado
+            label(for="texto_parecer_documento_invalido") Parecer de documento não validado 
             textarea.form-control#texto_parecer_documento_invalido(rows="4", ng-model="$ctrl.parecer", required, name="parecerDocumento")
         +inputErrors('formularioParecerDocumento', 'parecerDocumento', 'required')            
-
-    i * Campo obrigatório
 
 .modal-footer
 

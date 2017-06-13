@@ -7,27 +7,17 @@ var utils = app.utils,
 analiseJuridica.config(['$routeProvider', function($routeProvider) {
 	
 	$routeProvider
-		.when('/analise-juridica/:idProcesso', {
+		.when('/analise-juridica/:idAnaliseJuridica', {
 			templateUrl: 'features/analiseJuridica/analise-juridica.html',
 			controller: controllers.AnaliseJuridicaController,
 			controllerAs: 'ctrl',
 
 			resolve: {
 
-				processo: function(processoService, $route, $q) {
+				analiseJuridica: function(analiseJuridicaService, $route, $q) {
 
 					var deferred = $q.defer();					
-					processoService.consultar($route.current.params.idProcesso)
-						.then(function(response){
-							deferred.resolve(response.data);
-						});
-					return deferred.promise;
-				},
-
-				analiseJuridica: function(processoService, $route, $q) {
-
-					var deferred = $q.defer();					
-					processoService.getAnaliseJuridica($route.current.params.idProcesso)
+					analiseJuridicaService.getAnaliseJuridica($route.current.params.idAnaliseJuridica)
 						.then(function(response){
 							deferred.resolve(response.data);
 						});
