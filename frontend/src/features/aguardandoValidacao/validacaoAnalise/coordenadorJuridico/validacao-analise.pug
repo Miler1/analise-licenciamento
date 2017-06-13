@@ -1,5 +1,6 @@
 include ../../../../layout/components/panel
 include ../../../../components/resumoProcesso/resumo-processo
+include ../../../../layout/components/inputErrors
 
 +resumo-processo('validacaoAnaliseJuridica.analiseJuridica.analise.processo')
 
@@ -33,30 +34,60 @@ section.margin-bottom-md
 
 				td {{documento.nome}}
 				td.text-right 
-					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseJuridica.analiseJuridica.baixarDocumento(documento.id)")
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseJuridica.downloadDocumentoAnalise(documento.id)")
 						i.glyphicon.glyphicon-save
 
 	.row(ng-show="!validacaoAnaliseJuridica.analiseJuridica.documentosParecer || validacaoAnaliseJuridica.analiseJuridica.documentosParecer.length == 0")
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
 	
-	form.text-center.margin-bottom-md.margin-top-md
-		label.radio-inline(for="radio_parecer_validado")
-			input#radio_parecer_validado(type="radio", name="parecer", value="VALIDADO", ng-model="validacaoAnaliseJuridica.analiseJuridica.analiseJuridica.tipoResultadoAnalise.id") 
-			| Parecer validado
-		label.radio-inline(for="radio_solicitar_ajustes")
-			input#radio_solicitar_ajustes(type="radio", name="parecer", value="AJUSTES", ng-model="validacaoAnaliseJuridica.analiseJuridica.analiseJuridica.tipoResultadoAnalise.id") 
-			| Solicitar ajustes
-		label.radio-inline(for="radio_parecer_nao_validado")
-			input#radio_parecer_nao_validado(type="radio", name="parecer", value="NAO_VALIDADO", ng-model="validacaoAnaliseJuridica.analiseJuridica.analiseJuridica.tipoResultadoAnalise.id") 
-			| Parecer não validado
+	form(name="formularioValidacao", novalidate)
+		.form-group.text-center.margin-bottom-md.margin-top-md
+			div(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.resultado.$error.required}")
+				label.radio-inline(for="radio_parecer_validado")
+					input#radio_parecer_validado(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_VALIDADO", 
+						ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
+					| Parecer validado
+				label.radio-inline(for="radio_solicitar_ajustes")
+					input#radio_solicitar_ajustes(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.SOLICITAR_AJUSTES", 
+						ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
+					| Solicitar ajustes
+				label.radio-inline(for="radio_parecer_nao_validado")
+					input#radio_parecer_nao_validado(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_NAO_VALIDADO", 
+						ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
+					| Parecer não validado
+			+inputErrors('formularioValidacao', 'resultado', 'required')
+
+		
+		.form-group(ng-if="!!validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao")
+			label.control-label(ng-class="{'obrigatorio': validacaoAnaliseJuridica.isParecerNaoValidado()}") 
+				| {{validacaoAnaliseJuridica.isParecerNaoValidado() ? 'Justificativa:' : 'Considerações:'}}
+				
+			div(ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
+				textarea#texto_parecer.form-control(
+					froala,
+					name="parecer",
+					ng-required="validacaoAnaliseJuridica.isParecerNaoValidado()",
+					ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.parecerValidacao")
+
+			+inputErrors('formularioValidacao', 'parecer', 'required')
+
+		.form-group(ng-if="validacaoAnaliseJuridica.isParecerNaoValidado()")
+				label.control-label.obrigatorio Consultor jurídico:
+				select.form-control(
+					ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idConsultorJuridico", 
+					name="selectConsultor",
+					required,
+					ng-options="consultor.id as consultor.pessoa.nome for consultor in validacaoAnaliseJuridica.consultores")
+
+				+inputErrors('formularioValidacao', 'selectConsultor', 'required')
 
 section.margin-bottom-xl
 
-	button.btn.btn-default.col-md-2
+	button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseJuridica.cancelar()")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
 	
-	button.btn.btn-success.col-md-2.col-md-offset-8
+	button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseJuridica.concluir()")
 		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
 		| Concluir

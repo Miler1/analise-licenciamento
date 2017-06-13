@@ -74,8 +74,12 @@ public class AnaliseJuridica extends GenericModel {
 	public Date dataFim;
 	
 	@ManyToOne
-	@JoinColumn(name="id_tipo_resultado")
+	@JoinColumn(name="id_tipo_resultado_analise")
 	public TipoResultadoAnalise tipoResultadoAnalise;
+
+	@ManyToOne
+	@JoinColumn(name="id_tipo_resultado_validacao")
+	public TipoResultadoAnalise tipoResultadoValidacao;	
 	
 	@ManyToMany
 	@JoinTable(schema="analise", name="rel_documento_analise_juridica", 

@@ -15,29 +15,13 @@ aguardandoValidacao.config(['$routeProvider', function($routeProvider){
 		.when('/aguardando-validacao/:idAnalise', {
 			templateUrl: 'features/aguardandoValidacao/validacaoAnalise/validacao-analise.html',
 			controller: controllers.ValidacaoAnaliseController,
-			controllerAs: 'validacaoAnalise',
-			// resolve: {
-			// 	analiseJuridica: getAnaliseJuridica
-			// }
+			controllerAs: 'validacaoAnalise'
 		})		
 		.otherwise({
 			redirectTo: '/'
-		});    
-
+		});
 }]);
 
 aguardandoValidacao
 	.controller('aguardandoValidacaoJuridicoListController', controllers.AguardandoValidacaoJuridicoListController)
 	.controller('validacaoAnaliseJuridicaController', controllers.ValidacaoAnaliseJuridicaController);
-
-// function getAnaliseJuridica(analiseJuridicaService, $q, $route) {
-
-// 	var deferred = $q.defer();
-
-// 	analiseJuridicaService.getAnaliseJuridicaById($route.current.params.idAnalise)
-// 		.then(function(response){
-// 			deferred.resolve(response.data);
-// 		});		
-		
-// 	return deferred.promise;	
-// }
