@@ -9,7 +9,7 @@ var AnaliseJuridicaService = function(request, config) {
 	this.getParecerByNumeroProcesso = function(numeroProcesso) {
 
 		return request
-                .get(config.BASE_URL() + 'analisesJuridicas/' + numeroProcesso + '/parecer');
+                .get(config.BASE_URL() + 'analisesJuridicas/parecer?numeroProcesso=' + numeroProcesso);
 	};
 
 	this.iniciar = function(analise) {

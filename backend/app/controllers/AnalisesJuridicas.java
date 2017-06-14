@@ -62,9 +62,9 @@ public class AnalisesJuridicas extends InternalController {
 
 	}
 
-	public static void findByNumeroProcesso(String numeroProcesso) {
+	public static void findByNumeroProcesso() {
 		
-		//String numeroProcesso = getParamAsString("numeroProcesso");
+		String numeroProcesso = getParamAsString("numeroProcesso");
 		
 		AnaliseJuridica analise = AnaliseJuridica.findByNumeroProcesso(numeroProcesso);
 		
