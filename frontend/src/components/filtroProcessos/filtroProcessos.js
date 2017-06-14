@@ -22,6 +22,8 @@ var FiltroProcessos = {
         ctrl.atividades = [];
         ctrl.condicoes = [];
 
+        ctrl.maxDataInicio = new Date();
+
 		this.pesquisar = function(pagina){
 
             if (ctrl.filtro.periodoInicial && ctrl.filtro.periodoInicial) {
