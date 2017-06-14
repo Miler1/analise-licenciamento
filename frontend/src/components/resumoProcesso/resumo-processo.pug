@@ -1,4 +1,4 @@
-mixin resumo-processo(processo)
+mixin resumo-processo(processo, abrirDadosProcesso)
     section.margin-bottom-md
         
         header.row
@@ -9,7 +9,7 @@ mixin resumo-processo(processo)
                 button.btn.btn-default.col-md-offset-2
                     i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
                     | Legislações
-                button.btn.btn-default.col-md-offset-1
+                button.btn.btn-default.col-md-offset-1(ng-click=abrirDadosProcesso)
                     i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
                     | Dados do processo
 

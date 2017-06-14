@@ -33,7 +33,6 @@ var ProcessoService = function(request, config, $uibModal) {
 
 	this.visualizarProcesso = function(processo) {
 
-
 		var modalInstance = $uibModal.open({
 			controller: 'visualizacaoProcessoController',
 			controllerAs: 'modalVisualizacaoProcessoCtrl',

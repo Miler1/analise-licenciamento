@@ -1,5 +1,5 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {    
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService, processoService) {    
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
@@ -122,6 +122,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
                 mensagem.error(error.data.texto);
             });
+    };
+
+    ctrl.exibirDadosProcesso = function() {
+
+        processoService.visualizarProcesso({ idProcesso:ctrl.processo.id});
     };
 
     ctrl.init = function() {
