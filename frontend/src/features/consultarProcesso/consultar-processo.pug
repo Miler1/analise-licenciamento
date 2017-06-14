@@ -1,7 +1,7 @@
 include ../../layout/components/paginacao
 
 div
-	filtro-processos(paginacao="consultarProcesso.paginacao", 
+	filtro-processos(paginacao="consultarProcesso.paginacao",
 		atualizar-lista="consultarProcesso.atualizarListaProcessos",
 		atualizar-paginacao="consultarProcesso.atualizarPaginacao",
 		pesquisar-ao-inicializar="true")
@@ -31,11 +31,11 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
 								| {{consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
-							td -								
+							td -
 							td
 								span.pull-right
 
@@ -45,12 +45,12 @@ div
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="")
-													i.glyphicon.glyphicon-eye-open 
+												a(ng-click="consultarProcesso.visualizarProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
 		.row(ng-show="!consultarProcesso.processos || consultarProcesso.processos.length == 0")
 			.col-md-12
-				p.empty-result Não existem dados a serem exibidos.    
+				p.empty-result Não existem dados a serem exibidos.

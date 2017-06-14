@@ -1,0 +1,18 @@
+mixin contato(contato)
+
+	div.row
+		div.col-md-6
+			div.row
+				label.col-md-4.text-right E-mail:
+				span.col-md-8 {{#{contato}.email || '-' }}
+
+		div.col-md-6
+			div.row
+				label.col-md-4.text-right Telefone fixo:
+				span.col-md-8  {{(#{contato}.telefone | brPhoneNumber) || '-' }}
+
+	div.row.form-group
+		div.col-md-offset-6.col-md-6
+			div.row
+				label.col-md-4.text-right Celular:
+				span.col-md-8 {{(#{contato}.celular | brPhoneNumber) || '-'}}

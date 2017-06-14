@@ -49,27 +49,22 @@
 
 		h4(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0") Tramitação do Processo:
 
-		blockquote.success(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
+		div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
 
-			div
+			table.table.table-striped.table-condensed
 
-				table.table.table-striped.table-condensed
+				thead
+					tr
+						th Data Entrada
+						th Data Saída
+						th Status
+						th Tempo do Status (dias e horas)
+						th Responsável
 
-					thead
-						tr
-							th Data Entrada
-							th Data Saída
-							th Status
-							th Tempo do Status (dias e horas)
-							th Responsável
-
-					tbody
-						tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
-							td {{tramitacao}}
-							td {{tramitacao}}
-							td {{tramitacao}}
-							td {{tramitacao}}
-							td {{tramitacao}}
-
-
-			small Tempo Total da Tramitação: 17 dias
+				tbody
+					tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
+						td {{tramitacao.data}}
+						td {{tramitacao.data}}
+						td {{tramitacao.nomeCondicaoFinal}}
+						td {{tramitacao.tempoPermanencia}}
+						td {{tramitacao.nomeUsuarioExecutor}}

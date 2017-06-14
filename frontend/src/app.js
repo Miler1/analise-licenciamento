@@ -27,7 +27,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			templateUrl: "features/consultarProcesso/consultar-processo.html",
 			controller: controllers.ConsultarProcessoController,
 			controllerAs: 'consultarProcesso'
-		})		
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -65,13 +65,13 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 		taTranslations.editLink.targetToggle.buttontext = "Abrir em nova aba";
 		taTranslations.editLink.reLinkButton.tooltip = "Refazer link";
 		taTranslations.editLink.unLinkButton.tooltip = "Remover link";
-		taTranslations.clear.tooltip = 'Limpar formatação';		
-		
+		taTranslations.clear.tooltip = 'Limpar formatação';
+
 		return taTranslations;
 
 	}]);
 
-	
+
 
 }).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
@@ -245,7 +245,7 @@ utils.services(licenciamento)
 	.add('condicaoService', services.CondicaoService)
 	.add('documentoLicenciamentoService', services.DocumentoLicenciamentoService)
 	.add('documentoAnaliseService', services.DocumentoAnaliseService)
-	.add('analiseJuridicaService', services.AnaliseJuridicaService)	
+	.add('analiseJuridicaService', services.AnaliseJuridicaService)
 	.add('uploadService', services.UploadService);
 
 utils.filters(licenciamento)
@@ -265,4 +265,4 @@ licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
 	.component('avaliarDocumento', directives.AvaliarDocumento)
 	.component('modalParecerDocumento', directives.ModalParecerDocumento)
-	.component('mapa', directives.Mapa);	
+	.component('resumoEmpreendimento', directives.ResumoEmpreendimento);
