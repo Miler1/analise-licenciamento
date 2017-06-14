@@ -260,7 +260,7 @@ public class AnaliseJuridica extends GenericModel {
 		c.setTime(new Date());		
 		this.dataFim = c.getTime();
 		
-		this.save();
+		this._save();
 				
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
