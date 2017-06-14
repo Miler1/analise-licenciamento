@@ -214,7 +214,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             todosDocumentosValidados = todosDocumentosValidados && analise.validado;
         });
 
-        if(ctrl.analiseJuridica.tipoResultadoAnalise.id === DEFERIDO) {
+        if(ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
 
             return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
         
