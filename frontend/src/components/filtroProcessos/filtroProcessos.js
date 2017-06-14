@@ -26,6 +26,12 @@ var FiltroProcessos = {
 
             if (ctrl.filtro.periodoInicial && ctrl.filtro.periodoInicial) {
 
+                if(moment(ctrl.filtro.periodoInicial, 'DD/MM/YYYY').isAfter(moment())) {
+
+                    mensagem.warning("Data de início do período não pode ser posterior a data atual.");
+                    return;                    
+                }
+
                 var diff = moment(ctrl.filtro.periodoFinal, 'DD/MM/yyyy')
                     .diff(moment(ctrl.filtro.periodoInicial, 'DD/MM/yyyy'), 'days');
 
