@@ -31,7 +31,10 @@ var ResumoEmpreendimento = {
 
 		function getEnderecoEmpreendedor(isCorrespondencia) {
 
-			return _.find(ctrl.empreendimento.empreendedor.pessoa.enderecos, {correspondencia: isCorrespondencia});
+			if(ctrl.empreendimento) {
+
+				return _.find(ctrl.empreendimento.empreendedor.pessoa.enderecos, {correspondencia: isCorrespondencia});
+			}
 		}
 
 	},

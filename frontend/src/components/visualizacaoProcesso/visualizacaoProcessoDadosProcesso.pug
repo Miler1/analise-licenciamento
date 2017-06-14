@@ -63,8 +63,8 @@
 
 				tbody
 					tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
-						td {{tramitacao.data}}
-						td {{tramitacao.data}}
-						td {{tramitacao.nomeCondicaoFinal}}
-						td {{tramitacao.tempoPermanencia}}
-						td {{tramitacao.nomeUsuarioExecutor}}
+						td {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
+						td {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
+						td {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
+						td {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+						td {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
