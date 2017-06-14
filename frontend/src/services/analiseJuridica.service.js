@@ -6,6 +6,12 @@ var AnaliseJuridicaService = function(request, config) {
                 .get(config.BASE_URL() + 'analisesJuridicas/' + idAnaliseJuridica);
 	};
 
+	this.getParecerByNumeroProcesso = function(numeroProcesso) {
+
+		return request
+                .get(config.BASE_URL() + 'analisesJuridicas/parecer?numeroProcesso=' + numeroProcesso);
+	};
+
 	this.iniciar = function(analise) {
 
 		return request

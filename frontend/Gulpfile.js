@@ -50,7 +50,10 @@ var config = {
 			"./bower_components/angular-growl-v2/build/angular-growl.min.js",
 			"./bower_components/angular-growl-v2/build/angular-growl.min.css"
 		],
-		fontawesome: "./bower_components/components-font-awesome/**",
+		fontawesome: {
+			css: "./bower_components/components-font-awesome/css/font-awesome.min.css",
+			fonts: "./bower_components/components-font-awesome/fonts/**"
+		},
 		lodash: "./bower_components/lodash/dist/lodash.min.js",
 		blockUI: "./bower_components/blockUI/jquery.blockUI.js",
 		inputMasks: "./bower_components/angular-input-masks/angular-input-masks-standalone.min.js",

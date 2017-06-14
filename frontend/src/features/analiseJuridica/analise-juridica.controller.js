@@ -1,4 +1,4 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location,  
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location, 
         analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {    
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
@@ -47,7 +47,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     
     ctrl.cancelar = function() {
 
-        $location.path('caixa-entrada');
+        $window.history.back();        
     };
 
     ctrl.salvar = function() {
@@ -82,6 +82,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
             .then(function(response) {
 
                 mensagem.success(response.data.texto);
+                $location.path('/analise-juridica');
 
             }, function(error){
 
@@ -102,6 +103,25 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.removerDocumento = function(indiceDocumento) {
 
         ctrl.documentosParecer.splice(indiceDocumento,1);
+    };
+
+    ctrl.clonarParecer = function() {
+
+        analiseJuridicaService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+            .then(function(response){
+
+                if(response.data === null) {
+
+                    ctrl.analiseJuridica.parecer = null;
+                    mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+                    return;
+                }
+                ctrl.analiseJuridica.parecer = response.data.parecer;
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     };
 
     ctrl.init = function() {
@@ -139,12 +159,14 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         modalInstance.result.then(function(response){
 
-            ctrl.analisesDocumentos[indiceDocumento].parecer = response;
+            analiseDocumento.parecer = response;
         
-        }, function(){
+        }, function() {
 
-            ctrl.analisesDocumentos[indiceDocumento].validado = undefined;
-            ctrl.analisesDocumentos[indiceDocumento].parecer = undefined;
+            if(!analiseDocumento.parecer) {
+
+                analiseDocumento.validado = undefined;
+            }
          });
     }
 
@@ -192,7 +214,14 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
             todosDocumentosValidados = todosDocumentosValidados && analise.validado;
         });
 
-        return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
+        if(ctrl.analiseJuridica.tipoResultadoAnalise.id === DEFERIDO) {
+
+            return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
+        
+        } else {
+
+            return parecerPreenchido && todosDocumentosValidados && resultadoPreenchido;
+        }
     }
 };
 

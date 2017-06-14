@@ -58,10 +58,14 @@ public class Processos extends InternalController {
 	
 	public void findById(Long idProcesso) {
 		
+		verificarPermissao(Acao.CONSULTAR_PROCESSO);
+		
 		renderJSON(Processo.findById(idProcesso), ProcessoSerializer.list);
 	}
 
 	public void getInfoProcesso(Long id) {
+		
+		verificarPermissao(Acao.CONSULTAR_PROCESSO);
 		
 		Processo processo = Processo.findById(id);
 		
