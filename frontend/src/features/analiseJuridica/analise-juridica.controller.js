@@ -1,5 +1,5 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location, processo, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location, 
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {    
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
@@ -9,35 +9,45 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
     ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-    ctrl.processo = processo;    
     ctrl.analiseJuridica = angular.copy(analiseJuridica);    
+    ctrl.processo = angular.copy(ctrl.analiseJuridica.analise.processo);    
+    ctrl.analiseJuridica.analise.processo.empreendimento = null;
     ctrl.analiseJuridica.tipoResultadoAnalise = ctrl.analiseJuridica.tipoResultadoAnalise || {};    
     ctrl.documentosAnalisados = angular.copy();
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
     ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
-    ctrl.upload = function(file) {
 
-        uploadService.save(file)
-            .then(function(response) {
+    ctrl.upload = function(file, invalidFile) {
 
-                ctrl.documentosParecer.push({
+        if(file) {
 
-                    key: response.data,
-                    nome: file.name,
-                    tipoDocumento: {
+            uploadService.save(file)
+                .then(function(response) {
 
-                        id: app.utils.TiposDocumentosAnalise.ANALISE_JURIDICA
-                    }
+                    ctrl.documentosParecer.push({
+
+                        key: response.data,
+                        nome: file.name,
+                        tipoDocumento: {
+
+                            id: app.utils.TiposDocumentosAnalise.ANALISE_JURIDICA
+                        }
+                    });
+
+                }, function(error){
+
+                    mensagem.error(error.data.texto);
                 });
-            }, function(error){
+        
+        } else if(invalidFile && invalidFile.$error === 'maxSize'){
 
-                mensagem.error('Ocorreu um erro ao enviar o arquivo. Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
-            });
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+        }            
     };
     
     ctrl.cancelar = function() {
 
-        $location.path('caixa-entrada');
+        $window.history.back();        
     };
 
     ctrl.salvar = function() {
@@ -58,13 +68,25 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         if(!analiseValida()) {
 
-            mensagem.error('Não foi possível concluir a análise porque existem campos inválidos ou documentos que não foram avaliados.');
+            mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
+            '<ul>' +
+                '<li>Para concluir é necessário descrever o parecer.</li>' + 
+                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
+                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
+            '</ul>', { ttl: 10000 });
+            return;
         }
 
         montarAnaliseJuridica();
         analiseJuridicaService.concluir(ctrl.analiseJuridica)
             .then(function(response) {
 
+                mensagem.success(response.data.texto);
+                $location.path('/analise-juridica');
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
             });
     };
 
@@ -83,8 +105,26 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
         ctrl.documentosParecer.splice(indiceDocumento,1);
     };
 
-    ctrl.init = function() {
+    ctrl.clonarParecer = function() {
 
+        analiseJuridicaService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+            .then(function(response){
+
+                if(response.data === null) {
+
+                    ctrl.analiseJuridica.parecer = null;
+                    mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+                    return;
+                }
+                ctrl.analiseJuridica.parecer = response.data.parecer;
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
+    };
+
+    ctrl.init = function() {
         getDocumentosAnalisados();
     };
 
@@ -119,9 +159,15 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         modalInstance.result.then(function(response){
 
-            ctrl.analisesDocumentos[indiceDocumento].parecer = response;
+            analiseDocumento.parecer = response;
         
-        }, function(){ });
+        }, function() {
+
+            if(!analiseDocumento.parecer) {
+
+                analiseDocumento.validado = undefined;
+            }
+         });
     }
 
     function getDocumentosAnalisados() {
@@ -154,17 +200,28 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
     function analiseValida() {
 
-        $scope.formularioParecer.$setSubmitted();
-        $scope.formularioResultado.$setSubmitted();
+        ctrl.formularioParecer.$setSubmitted();
+        ctrl.formularioResultado.$setSubmitted();
 
-        var parecerPreenchido = $scope.formularioParecer.$valid;
-        var resultadoPreenchido = $scope.formularioResultado.$valid;
-        var documentosNaoValidados = ctrl.analisesDocumentos.filter(function(analise){
+        var parecerPreenchido = ctrl.formularioParecer.$valid;
+        var resultadoPreenchido = ctrl.formularioResultado.$valid;
+        var todosDocumentosValidados = true;
+        var todosDocumentosAvaliados = true;
+        
+        ctrl.analisesDocumentos.forEach(function(analise){
 
-            return analise.validado === undefined || (analise.validado === false && !analise.parecer);
+            todosDocumentosAvaliados = todosDocumentosAvaliados && (analise.validado === true || (analise.validado === false && analise.parecer));
+            todosDocumentosValidados = todosDocumentosValidados && analise.validado;
         });
 
-        return parecerPreenchido && documentosNaoValidados.length === 0 && resultadoPreenchido;
+        if(ctrl.analiseJuridica.tipoResultadoAnalise.id === DEFERIDO) {
+
+            return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
+        
+        } else {
+
+            return parecerPreenchido && todosDocumentosValidados && resultadoPreenchido;
+        }
     }
 };
 

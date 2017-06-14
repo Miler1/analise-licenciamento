@@ -30,7 +30,7 @@ div
 						tr(ng-repeat="processo in listagem.processos")
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseJuridica}")
-							td {{processo.numero}}
+							td {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -48,7 +48,7 @@ div
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="listagem.continuarAnalise(processo.idProcesso)")
+												a(ng-click="listagem.continuarAnalise(processo.idAnaliseJuridica)")
 													i.glyphicon.glyphicon-play-circle
 													span Continuar análise
 											li
