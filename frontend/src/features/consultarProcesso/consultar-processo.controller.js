@@ -1,4 +1,4 @@
-var ConsultarProcessoController = function($scope, config, $rootScope) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
 
@@ -8,6 +8,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope) {
 	consultarProcesso.atualizarPaginacao = atualizarPaginacao;
 	consultarProcesso.selecionarTodosProcessos = selecionarTodosProcessos;
 	consultarProcesso.onPaginaAlterada = onPaginaAlterada;
+	consultarProcesso.visualizarProcesso = visualizarProcesso;
 
 	consultarProcesso.processos = [];
 	consultarProcesso.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -35,6 +36,11 @@ var ConsultarProcessoController = function($scope, config, $rootScope) {
 
 			processo.selecionado = consultarProcesso.todosProcessosSelecionados;
 		});
+	}
+
+	function visualizarProcesso(processo) {
+
+		return processoService.visualizarProcesso(processo);
 	}
 };
 

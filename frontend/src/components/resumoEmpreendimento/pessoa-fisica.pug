@@ -1,0 +1,39 @@
+mixin pessoa-fisica(pessoa)
+	div.row.form-group
+		div.col-md-6
+			div.row
+				label.col-md-4.text-right CPF:
+				span.col-md-8 {{#{pessoa}.cpf | brCpf}}
+
+			div.row
+				label.col-md-4.text-right Nome completo:
+				span.col-md-8 {{#{pessoa}.nome}}
+
+			div.row
+				label.col-md-4.text-right Nome da mãe:
+				span.col-md-8 {{#{pessoa}.nomeMae}}
+
+			div.row
+				label.col-md-4.text-right Número do RG:
+				span.col-md-8 {{#{pessoa}.rg}}
+
+			div.row
+				label.col-md-4.text-right Naturalidade:
+				span.col-md-8 {{#{pessoa}.municipioNascimento.nome}}/{{#{pessoa}.municipioNascimento.estado.codigo}}					
+
+		div.col-md-6
+			div.row
+				label.col-md-4.text-right Data de nascimento:
+				span.col-md-8 {{#{pessoa}.dataNascimento | date :  'dd/MM/yyyy'}}
+
+			div.row
+				label.col-md-4.text-right Sexo:
+				span.col-md-8 {{#{pessoa}.sexo === 'M' ? 'Masculino' : 'Feminino'}}
+
+			div.row
+				label.col-md-4.text-right Estado civil:
+				span.col-md-8  {{#{pessoa}.estadoCivil.nome}}
+
+			div.row
+				label.col-md-4.text-right Número do título de eleitor:
+				span.col-md-8  {{#{pessoa}.tituloEleitor || '-'}}
