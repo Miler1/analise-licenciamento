@@ -1,4 +1,4 @@
-var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $location, analiseJuridicaService, mensagem) {
+var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $location, analiseJuridicaService, mensagem, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE JURÍDICA';
 
@@ -9,6 +9,7 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 	cxEntConsultorJuridico.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntConsultorJuridico.onPaginaAlterada = onPaginaAlterada;
 	cxEntConsultorJuridico.iniciarAnalise = iniciarAnalise;
+	cxEntConsultorJuridico.visualizarProcesso = visualizarProcesso;
 
 	cxEntConsultorJuridico.processos = [];
 	cxEntConsultorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
@@ -50,7 +51,12 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 
 				mensagem.error(error.data.texto);
 			});
-	}	
+	}
+
+	function visualizarProcesso(processo) {
+
+		return processoService.visualizarProcesso(processo);
+	}
 };
 
 exports.controllers.CxEntConsultorJuridicoController = CxEntConsultorJuridicoController;
