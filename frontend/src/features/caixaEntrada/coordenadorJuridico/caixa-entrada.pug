@@ -33,7 +33,7 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntCoordenadorJuridico.processos")
 							td 
-								input(type='checkbox', ng-model='processo.selecionado')
+								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntCoordenadorJuridico.verificarTodosProcessosMarcados()")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
