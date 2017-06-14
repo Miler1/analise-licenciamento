@@ -10,7 +10,7 @@ var AnaliseJuridicaService = function(request, config) {
 
 		// envia numero do processo 'encodado' por causa da barra
 		return request
-                .get(config.BASE_URL() + 'analisesJuridicas/processo/' + encodeURIComponent(numeroProcesso));
+                .get(config.BASE_URL() + 'analisesJuridicas/' + encodeURIComponent(numeroProcesso) + '/parecer');
 	};
 
 	this.iniciar = function(analise) {
