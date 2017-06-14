@@ -1,4 +1,4 @@
-var ProcessoService = function(request, config) {
+var ProcessoService = function(request, config, $uibModal) {
 
 	this.getProcessos = function(filtro) {
 
@@ -10,7 +10,7 @@ var ProcessoService = function(request, config) {
 
 		return request
 			.post(config.BASE_URL() + "processos/count", filtro);
-	};	
+	};
 
 	this.consultar = function(idProcesso) {
 
@@ -22,6 +22,29 @@ var ProcessoService = function(request, config) {
 
 		return request
 			.get(config.BASE_URL() + 'processos/' + idProcesso + '/analiseJuridica');
+	};
+
+	this.getInfoProcesso = function(idProcesso) {
+
+		return request
+			.get(config.BASE_URL() + 'processos/' + idProcesso + '/completo');
+	};
+
+
+	this.visualizarProcesso = function(processo) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'visualizacaoProcessoController',
+			controllerAs: 'modalVisualizacaoProcessoCtrl',
+			templateUrl: 'components/visualizacaoProcesso/visualizacaoProcesso.html',
+			size: 'lg',
+			resolve: {
+				processo: function() {
+					return processo;
+				}
+			}
+		});
+
 	};
 };
 

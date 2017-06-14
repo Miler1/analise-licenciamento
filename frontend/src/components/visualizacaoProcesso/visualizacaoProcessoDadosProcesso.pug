@@ -1,0 +1,70 @@
+#dadosProcesso
+
+	div.row
+
+		.col-xs-12.col-md-8
+			blockquote.success
+				div.row
+					label.col-sm-4 Tipo do Licenciamento:
+					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.tipo.nome}}
+
+				div.row
+					label.col-sm-4 Licenças Solicitadas:
+					div.col-sm-8
+						span(ng-repeat="licenca in modalVisualizacaoProcessoCtrl.dadosProcesso.tiposLicenca") {{licenca}}
+							br
+
+			blockquote.success
+				div.row
+					label.col-sm-4 Atividade Licenciada:
+					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.nome}}
+				div.row
+					label.col-sm-4 Tipologia:
+					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.tipologia.nome}}
+				div.row
+					label.col-sm-4 CNAE:
+					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividadeCnae.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividadeCnae.nome}}
+
+		.col-xs-12.col-md-4
+			div.panel.panel-success
+				div.panel-body
+					| Parâmetro
+				div.panel-footer.text-center
+					.media-div
+						.media-context
+							span {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.parametro.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.parametro.nome}} ({{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.parametro.unidade}}):
+							div
+								b {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.valorParametro}}
+
+
+			div.panel.panel-success
+				div.panel-body
+					| Porte/Potencial Poluidor
+				div.panel-footer.text-center
+					.media-div
+						.media-context
+							label {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+
+	div
+
+		h4(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0") Tramitação do Processo:
+
+		div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
+
+			table.table.table-striped.table-condensed
+
+				thead
+					tr
+						th Data Entrada
+						th Data Saída
+						th Status
+						th Tempo do Status (dias e horas)
+						th Responsável
+
+				tbody
+					tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
+						td {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
+						td {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
+						td {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
+						td {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+						td {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}

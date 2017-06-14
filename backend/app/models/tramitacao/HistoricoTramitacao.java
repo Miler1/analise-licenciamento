@@ -72,10 +72,13 @@ public class HistoricoTramitacao extends GenericModel {
 	public String nomeUsuarioDestino;
 
 	@Column(name = "DT_CADASTRO")
-	public Date data;
+	public Date dataInicial;
 
 	@Transient
 	public String tempoPermanencia;
+	
+	@Transient
+	public Date dataFinal;
 
 
 	/** 
@@ -87,7 +90,7 @@ public class HistoricoTramitacao extends GenericModel {
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView
 	(Date dataInicio, Date dataFim, Long acao, Long condicaoFinal){
 		List<HistoricoTramitacao> historicoTramitacao = 
-				HistoricoTramitacao.find(" data >=? AND data <=? AND idCondicaoFinal=? AND idAcao=? ",
+				HistoricoTramitacao.find(" dataInicial >=? AND dataInicial <=? AND idCondicaoFinal=? AND idAcao=? ",
 						dataInicio,dataFim,condicaoFinal,acao).fetch();
 		return historicoTramitacao;		
 	}
@@ -105,13 +108,13 @@ public class HistoricoTramitacao extends GenericModel {
 
 	public static HistoricoTramitacao getUltimaTramitacao (Long idObjetoTramitavel){
 
-		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel and idCondicaoInicial != idCondicaoFinal order by data desc").setParameter("idObjetoTramitavel", idObjetoTramitavel).first();
+		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel and idCondicaoInicial != idCondicaoFinal order by dataInicial desc").setParameter("idObjetoTramitavel", idObjetoTramitavel).first();
 
 	}
 
 	public static List<HistoricoTramitacao> getByObjetoTramitavel (Long idObjetoTramitavel){
 
-		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by data desc, idHistorico desc")
+		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by dataInicial desc, idHistorico desc")
 									  .setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch();
 	}
 
@@ -155,9 +158,9 @@ public class HistoricoTramitacao extends GenericModel {
 
 	public static Date getPrimeiraDataHistoricoTramitacao() {
 		
-		String jpql = "SELECT ht.data "
+		String jpql = "SELECT ht.dataInicial "
 				+ "FROM " + HistoricoTramitacao.class.getSimpleName() + " ht "
-						+ "ORDER BY ht.data ASC";
+						+ "ORDER BY ht.dataInicial ASC";
 		
 		Date primeiraData = (Date) HistoricoTramitacao.find(jpql).first();
 		

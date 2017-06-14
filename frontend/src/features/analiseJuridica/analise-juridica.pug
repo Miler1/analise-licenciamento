@@ -1,39 +1,10 @@
 include ../../layout/components/inputErrors
+include ../../components/resumoProcesso/resumo-processo
 
 div(ng-init="ctrl.init()")
-    section.margin-bottom-md
+    section
         
-        header.row
-                
-            h3.col-md-6 Resumo do processo
-
-            .col-md-6(style="margin-top: 20px; margin-bottom: 10px")
-                .btn-group.pull-right(role="group")
-                    button.btn.btn-default
-                        i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
-                        | Legislações
-                    button.btn.btn-default
-                        i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
-                        | Dados do processo
-
-        div
-
-            div
-                label.not-bold.margin-right-xs(for="texto_numero_processo") Número: 
-                span#texto_numero_processo
-                    strong {{ctrl.processo.numero}}
-            div
-                label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
-                span#texto_cpf_ou_cnpj
-                    strong {{ctrl.processo.empreendimento.pessoa.cpf}}
-            div
-                label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Empreendimento: 
-                span#texto_nome_empreendimento
-                    strong {{ctrl.processo.empreendimento.denominacao}}
-            div
-                label.not-bold.margin-right-xs(for="texto_municipio_estado") Município: 
-                span#texto_municipio_estado   
-                    strong {{ctrl.processo.empreendimento.municipio.nome}} / {{ctrl.processo.empreendimento.municipio.estado.codigo}} 
+    +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()')
 
     section.margin-bottom-md
 
@@ -64,7 +35,7 @@ div(ng-init="ctrl.init()")
                         avaliar-documento(identificador="$index",analise-documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
                     td.col-md-1.text-right 
 
-                        a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo de invalidar")
+                        a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo da invalidação")
                             i.fa.fa-pencil-square-o                    
                         
                         a.margin-right-xs.pointer(ng-click="ctrl.downloadDocumentoLicenciamento(analiseDocumento.documento.id)", title="Baixar documento")
@@ -102,19 +73,19 @@ div(ng-init="ctrl.init()")
             thead
 
                 tr
-                    th Arquivo anexado
-                    th.text-right Ações
+                    th.col-md-10 Arquivo anexado
+                    th.col-md-2.text-right Ações
 
             tbody
 
                 tr(ng-repeat="documento in ctrl.documentosParecer")
 
-                    td {{documento.nome}}
-                    td.text-right 
-                        a.btn(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
+                    td.col-md-10 {{documento.nome}}
+                    td.col-md-2.text-right 
+                        a.d-inline.margin-right-xs(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
                             i.glyphicon.glyphicon-save
 
-                        a.btn(title="Remover documento", ng-click="ctrl.removerDocumento($index)")
+                        a.d-inline.margin-right-xs(title="Remover documento", ng-click="ctrl.removerDocumento($index)")
                             i.glyphicon.glyphicon-trash          
 
         form.text-center.margin-bottom-md.margin-top-md(name="ctrl.formularioResultado", novalidate)

@@ -10,6 +10,7 @@ public class AnaliseJuridicaSerializer {
 				"id",
 				"analise.id",
 				"analise.dataVencimentoPrazo",
+				"analise.processo.id",
 				"analise.processo.numero",
 				"analise.processo.empreendimento.pessoa.cpf",
 				"analise.processo.empreendimento.pessoa.cnpj",

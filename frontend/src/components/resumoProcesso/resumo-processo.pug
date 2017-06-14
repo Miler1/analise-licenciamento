@@ -1,4 +1,4 @@
-mixin resumo-processo(processo)
+mixin resumo-processo(processo, abrirDadosProcesso)
     section.margin-bottom-md
         
         header.row
@@ -6,13 +6,12 @@ mixin resumo-processo(processo)
             h3.col-md-6 Resumo do processo
 
             .col-md-6(style="margin-top: 20px; margin-bottom: 10px")
-                .btn-group.pull-right(role="group")
-                    button.btn.btn-default
-                        i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
-                        | Legislações
-                    button.btn.btn-default
-                        i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
-                        | Dados do processo
+                button.btn.btn-default.col-md-offset-2
+                    i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
+                    | Legislações
+                button.btn.btn-default.col-md-offset-1(ng-click=abrirDadosProcesso)
+                    i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
+                    | Dados do processo
 
         div
 
@@ -23,7 +22,7 @@ mixin resumo-processo(processo)
             div
                 label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
                 span#texto_cpf_ou_cnpj
-                    strong {{#{processo}.empreendimento.pessoa.cpf}}
+                    strong {{#{processo}.empreendimento.pessoa.cpf | brCpfCnpj}}
             div
                 label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Empreendimento: 
                 span#texto_nome_empreendimento

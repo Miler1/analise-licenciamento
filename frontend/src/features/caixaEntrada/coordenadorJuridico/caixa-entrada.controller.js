@@ -1,4 +1,4 @@
-var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope) {
+var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE JURÍDICA';
 
@@ -10,6 +10,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	cxEntCoordenadorJuridico.vincularConsultor = vincularConsultor;
 	cxEntCoordenadorJuridico.onPaginaAlterada = onPaginaAlterada;
 	cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
+	cxEntCoordenadorJuridico.visualizarProcesso = visualizarProcesso;
 
 	cxEntCoordenadorJuridico.processos = [];
 	cxEntCoordenadorJuridico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
@@ -112,6 +113,11 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	function getConsultores(consultorService) {
 
 		return consultorService.getConsultoresJuridicos();
+	}
+
+	function visualizarProcesso(processo) {
+
+		return processoService.visualizarProcesso(processo);
 	}
 };
 

@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -219,13 +220,37 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		for (int i = 0; i < historicosTramitacoes.size(); i++) {
 
 			if(i == 0)
-				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).data, dataAtual);
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, dataAtual);
 			else
-				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).data, historicosTramitacoes.get(i - 1).data);
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, historicosTramitacoes.get(i - 1).dataInicial);
+		}
+		
+		//Lógica que adiciona a data final da condição
+		for (int i = historicosTramitacoes.size() - 1; i >= 0; i--) {
+
+			if(i == 0)
+				historicosTramitacoes.get(i).dataFinal = null;
+			else
+				historicosTramitacoes.get(i).dataFinal = historicosTramitacoes.get(i - 1).dataInicial;
 		}
 
 		return historicosTramitacoes;
 
+	}
+	
+	public List<String> getTiposLicenca() {
+		
+		List<String> tiposLicenca = new ArrayList<>();
+		
+		for(Caracterizacao caracterizacao : this.caracterizacoes) {
+			
+			String temp = caracterizacao.tipoLicenca.nome + " (" + caracterizacao.tipoLicenca.validadeEmAnos + " anos)";
+			tiposLicenca.add(temp);
+			
+		}
+		
+		return tiposLicenca;
+		
 	}
 
 }
