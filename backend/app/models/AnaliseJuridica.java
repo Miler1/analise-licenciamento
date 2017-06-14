@@ -354,7 +354,6 @@ public class AnaliseJuridica extends GenericModel {
 		
 		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica) {
 			
-			ativo = false;
 			tipoResultadoValidacao = novaAnaliseJuridica.tipoResultadoValidacao;
 			parecerValidacao = novaAnaliseJuridica.parecerValidacao;
 		}
@@ -414,6 +413,8 @@ public class AnaliseJuridica extends GenericModel {
 			
 			validarTipoResultadoValidacao();
 			
+			ativo = false;
+			
 			_save();
 			
 			AnaliseJuridica copia = gerarCopia();
@@ -434,6 +435,8 @@ public class AnaliseJuridica extends GenericModel {
 		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
 			
 			validarAnaliseJuridica(novaAnaliseJuridica);
+			
+			ativo = false;
 			
 			_save();
 						
