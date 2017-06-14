@@ -23,7 +23,7 @@ var ModalParecerDocumento = {
 
             if(!$scope.formularioParecerDocumento.$valid) {
 
-                mensagem.error('Parecer de documento não validado é obrigatório.');
+                mensagem.error('Parecer de documento não validado é obrigatório.', {referenceId: 1});
                 return;
             }
 

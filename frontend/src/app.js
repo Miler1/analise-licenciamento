@@ -42,9 +42,9 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	$provide.decorator('taOptions',['taRegisterTool','$delegate', function(taRegisterTool, taOptions){
 
 		taOptions.toolbar = [
-			['h1','h2','h3','h4','h5','h6','p'],
-			['bold','italics','underline','strikeThrough','ul','ol','redo','undo','clear'],
-			['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull','indent', 'outdent','insertLink']
+			['h1','h2','h3','h4','h5','h6','p',
+			'bold','italics','underline','strikeThrough','ul','ol','redo','undo','clear',
+			'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull','indent', 'outdent','insertLink']
 		];
 
 		return taOptions;

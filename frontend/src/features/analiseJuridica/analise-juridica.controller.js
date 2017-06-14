@@ -1,4 +1,4 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $location,  
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location, 
         analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService) {    
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
@@ -47,7 +47,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
     
     ctrl.cancelar = function() {
 
-        $location.path('caixa-entrada');
+        $window.history.back();        
     };
 
     ctrl.salvar = function() {
@@ -82,6 +82,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
             .then(function(response) {
 
                 mensagem.success(response.data.texto);
+                $location.path('/analise-juridica');
 
             }, function(error){
 
@@ -158,12 +159,14 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
 
         modalInstance.result.then(function(response){
 
-            ctrl.analisesDocumentos[indiceDocumento].parecer = response;
+            analiseDocumento.parecer = response;
         
-        }, function(){
+        }, function() {
 
-            ctrl.analisesDocumentos[indiceDocumento].validado = undefined;
-            ctrl.analisesDocumentos[indiceDocumento].parecer = undefined;
+            if(!analiseDocumento.parecer) {
+
+                analiseDocumento.validado = undefined;
+            }
          });
     }
 
@@ -211,7 +214,14 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $loca
             todosDocumentosValidados = todosDocumentosValidados && analise.validado;
         });
 
-        return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
+        if(ctrl.analiseJuridica.tipoResultadoAnalise.id === DEFERIDO) {
+
+            return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
+        
+        } else {
+
+            return parecerPreenchido && todosDocumentosValidados && resultadoPreenchido;
+        }
     }
 };
 
