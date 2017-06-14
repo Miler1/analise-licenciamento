@@ -11,12 +11,12 @@ import javax.persistence.Table;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-
+import utils.Identificavel;
 import models.licenciamento.DocumentoLicenciamento;
 
 @Entity
 @Table(schema="analise", name="analise_documento")
-public class AnaliseDocumento extends GenericModel {
+public class AnaliseDocumento extends GenericModel implements Identificavel {
 	
 	public static final String SEQ = "analise.analise_documento_id_seq";
 	
@@ -39,14 +39,10 @@ public class AnaliseDocumento extends GenericModel {
 	public DocumentoLicenciamento documento;
 	
 	
-	public AnaliseDocumento update(AnaliseDocumento novaAnalise) {
+	public void update(AnaliseDocumento novaAnalise) {
 		
-		AnaliseDocumento analise = AnaliseDocumento.findById(novaAnalise.id);
-		
-		analise.parecer = novaAnalise.parecer;
-		analise.validado = novaAnalise.validado;
-		
-		return analise.save();
+		this.parecer = novaAnalise.parecer;
+		this.validado = novaAnalise.validado;
 	}
 
 
@@ -59,6 +55,13 @@ public class AnaliseDocumento extends GenericModel {
 		copia.documento = this.documento;
 		
 		return copia;
+	}
+
+
+	@Override
+	public Long getId() {
+		
+		return this.id;
 	}
 	
 }

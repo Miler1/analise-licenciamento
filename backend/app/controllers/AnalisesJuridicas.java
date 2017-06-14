@@ -82,7 +82,7 @@ public class AnalisesJuridicas extends InternalController {
 		
 		analiseAValidar.validaParecer(analise, usuarioExecutor);
 		
-		renderMensagem(Mensagem.ANALISE_JURIDICA_CONCLUIDA_SUCESSO);				
+		renderMensagem(Mensagem.VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO);				
 		
 	}	
 

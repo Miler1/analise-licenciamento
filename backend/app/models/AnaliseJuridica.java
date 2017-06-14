@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -87,10 +88,10 @@ public class AnaliseJuridica extends GenericModel {
 		inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 	
-	@OneToMany(mappedBy="analiseJuridica")
+	@OneToMany(mappedBy="analiseJuridica", cascade=CascadeType.ALL)
 	public List<AnaliseDocumento> analisesDocumentos;
 	
-	@OneToMany(mappedBy="analiseJuridica")
+	@OneToMany(mappedBy="analiseJuridica", cascade=CascadeType.ALL)
 	public List<ConsultorJuridico> consultoresJuridicos;
 	
 	@Column(name="parecer_validacao")
@@ -202,8 +203,9 @@ public class AnaliseJuridica extends GenericModel {
 			
 			this._save();
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_JURIDICA, usuarioExecutor);
-		}		
+		}
+		
+		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_JURIDICA, usuarioExecutor);
 	}
 	
 	public void update(AnaliseJuridica novaAnalise) {
@@ -222,22 +224,28 @@ public class AnaliseJuridica extends GenericModel {
 		
 		updateDocumentos(novaAnalise.documentos);		
 		
-		this._save();
 		
-		this.analisesDocumentos = novaAnalise.analisesDocumentos;
-		
-		for(AnaliseDocumento analiseDocumento : this.analisesDocumentos) {
+		if (this.analisesDocumentos == null) {
 			
-			if(analiseDocumento.id != null) {
+			this.analisesDocumentos = new ArrayList<>();
+		}
+		
+		for(AnaliseDocumento novaAnaliseDocumento : novaAnalise.analisesDocumentos) {
+						
+			AnaliseDocumento analiseDocumento = ListUtil.getById(novaAnaliseDocumento.id, this.analisesDocumentos);
 				
-				analiseDocumento.update(analiseDocumento);
+			if(analiseDocumento != null) {
+				
+				analiseDocumento.update(novaAnaliseDocumento);
 			
 			} else {
 				
-				analiseDocumento.analiseJuridica = this;
-				analiseDocumento.save();
+				novaAnaliseDocumento.analiseJuridica = this;
+				this.analisesDocumentos.add(novaAnaliseDocumento);
 			}			
-		}		
+		}
+		
+		this._save();		
 	}
 	
 	public void finalizar(AnaliseJuridica analise, Usuario usuarioExecultor) {
@@ -301,6 +309,7 @@ public class AnaliseJuridica extends GenericModel {
 		copia.ativo = true;
 		copia.analiseJuridicaRevisada = this;
 		copia.dataInicio = this.dataInicio;
+		copia.tipoResultadoAnalise = this.tipoResultadoAnalise;
 		copia.documentos = new ArrayList<>(this.documentos);
 		copia.analisesDocumentos = new ArrayList<>();
 		
@@ -311,7 +320,7 @@ public class AnaliseJuridica extends GenericModel {
 			copia.analisesDocumentos.add(copiaAnaliseDoc);
 		}
 		
-		copia.consultoresJuridicos = new ArrayList<>(this.consultoresJuridicos);
+		copia.consultoresJuridicos = new ArrayList<>();
 		
 		for (ConsultorJuridico consultorJuridico: this.consultoresJuridicos) {
 			
@@ -345,8 +354,9 @@ public class AnaliseJuridica extends GenericModel {
 		
 		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica) {
 			
+			ativo = false;
 			tipoResultadoValidacao = novaAnaliseJuridica.tipoResultadoValidacao;
-			parecerValidacao = novaAnaliseJuridica.parecerValidacao;			
+			parecerValidacao = novaAnaliseJuridica.parecerValidacao;
 		}
 		
 		public void validarParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
@@ -426,20 +436,26 @@ public class AnaliseJuridica extends GenericModel {
 			validarAnaliseJuridica(novaAnaliseJuridica);
 			
 			_save();
-			
-			AnaliseJuridica novaAnalise = new AnaliseJuridica();
-			
-			criarNovaAnalise(novaAnalise);
+						
+			criarNovaAnalise(novaAnaliseJuridica.consultoresJuridicos.get(0).usuario);
 			
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_PARECER_JURIDICO, usuarioExecultor);
 		}
 
-		private void criarNovaAnalise(AnaliseJuridica novaAnalise) {
+		private void criarNovaAnalise(Usuario usuarioConsultor) {
+			
+			AnaliseJuridica novaAnalise = new AnaliseJuridica();
 			
 			novaAnalise.analise = analise;
 			novaAnalise.dataVencimentoPrazo = dataVencimentoPrazo;
+			novaAnalise.revisaoSolicitada = true;
 			novaAnalise.ativo = true;
-			_save();
+			
+			novaAnalise.consultoresJuridicos = new ArrayList<>();
+			ConsultorJuridico consultorJuridico = new ConsultorJuridico(novaAnalise, usuarioConsultor);
+			novaAnalise.consultoresJuridicos.add(consultorJuridico);
+			
+			novaAnalise._save();
 		}
 
 		private void validarAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica) {
