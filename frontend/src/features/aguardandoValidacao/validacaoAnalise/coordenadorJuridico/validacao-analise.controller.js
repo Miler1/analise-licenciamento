@@ -57,7 +57,15 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 
         var analiseJuridica = montarAnaliseJuridica(validacaoAnaliseJuridica.analiseJuridicaValidacao);
 
-		//Aguardando serviço para validar parecer jurídico
+		analiseJuridicaService.validarParecer(analiseJuridica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     }
 
 	function montarAnaliseJuridica(analiseJuridicaValidacao){

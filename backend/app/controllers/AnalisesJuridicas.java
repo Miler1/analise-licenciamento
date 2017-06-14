@@ -5,6 +5,7 @@ import java.util.List;
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
 import models.portalSeguranca.Usuario;
+import security.Acao;
 import security.UsuarioSessao;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
@@ -69,5 +70,20 @@ public class AnalisesJuridicas extends InternalController {
 		renderJSON(analise, AnaliseJuridicaSerializer.parecer);
 	
 	}
+	
+	public static void validarParecer(AnaliseJuridica analise) {
+		
+		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO);
+		
+		AnaliseJuridica analiseAValidar = AnaliseJuridica.findById(analise.id);
+		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		
+		analiseAValidar.validaParecer(analise, usuarioExecutor);
+		
+		renderMensagem(Mensagem.ANALISE_JURIDICA_CONCLUIDA_SUCESSO);				
+		
+	}	
 
 }

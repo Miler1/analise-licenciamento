@@ -281,13 +281,13 @@ public class AnaliseJuridica extends GenericModel {
 		return AnaliseDocumento.find("analiseJuridica.id = ? ", idAnaliseJuridica).fetch();
 	}
 	
-	public void validaParecer(AnaliseJuridica analiseJuridica) {
+	public void validaParecer(AnaliseJuridica analiseJuridica, Usuario usuarioExecultor) {
 		
 		TipoResultadoAnaliseChain tiposResultadosAnalise = new ParecerValidado();
 		tiposResultadosAnalise.setNext(new SolicitarAjustes());
 		tiposResultadosAnalise.setNext(new ParecerNaoValidado());
 		
-		tiposResultadosAnalise.validarParecer(analiseJuridica);		
+		tiposResultadosAnalise.validarParecer(analiseJuridica, usuarioExecultor);		
 	}
 	
 	public AnaliseJuridica gerarCopia(){
@@ -349,20 +349,20 @@ public class AnaliseJuridica extends GenericModel {
 			parecerValidacao = novaAnaliseJuridica.parecerValidacao;			
 		}
 		
-		public void validarParecer(AnaliseJuridica novaAnaliseJuridica) {
+		public void validarParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
 			
 			if (novaAnaliseJuridica.tipoResultadoValidacao.id.equals(idResultadoAnalise)) {
 				
 				setAnaliseJuridica(novaAnaliseJuridica);				
-				validaParecer(novaAnaliseJuridica);
+				validaParecer(novaAnaliseJuridica, usuarioExecultor);
 				
 			} else if (next != null) {
 				
-				next.validarParecer(novaAnaliseJuridica);
+				next.validarParecer(novaAnaliseJuridica, usuarioExecultor);
 			}
 		}
 		
-		protected abstract void validaParecer(AnaliseJuridica novaAnaliseJuridica);
+		protected abstract void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor);
 	}
 	
 	private class ParecerValidado extends TipoResultadoAnaliseChain{
@@ -372,13 +372,24 @@ public class AnaliseJuridica extends GenericModel {
 		}
 
 		@Override
-		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica) {
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
 			
 			validarTipoResultadoValidacao();
 			
 			_save();
 			
-			//TODO Tramitar e criar a análise técnica
+			if (tipoResultadoAnalise.id == tipoResultadoAnalise.INDEFERIDO) {
+				
+				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_JURIDICO, usuarioExecultor);				
+				return;
+			}
+			
+			if (tipoResultadoAnalise.id == tipoResultadoAnalise.DEFERIDO) {
+				
+				//TODO criar a análise técnica
+				
+				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecultor);
+			}
 		}
 	}
 	
@@ -389,7 +400,7 @@ public class AnaliseJuridica extends GenericModel {
 		}	
 
 		@Override
-		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica) {
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
 			
 			validarTipoResultadoValidacao();
 			
@@ -399,7 +410,7 @@ public class AnaliseJuridica extends GenericModel {
 			
 			copia._save();
 			
-			//TODO tramitar
+			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_JURIDICO, usuarioExecultor);
 		}
 	}
 	
@@ -410,7 +421,7 @@ public class AnaliseJuridica extends GenericModel {
 		}	
 
 		@Override
-		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica) {
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
 			
 			validarAnaliseJuridica(novaAnaliseJuridica);
 			
@@ -420,7 +431,7 @@ public class AnaliseJuridica extends GenericModel {
 			
 			criarNovaAnalise(novaAnalise);
 			
-			//TODO tramitar
+			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_PARECER_JURIDICO, usuarioExecultor);
 		}
 
 		private void criarNovaAnalise(AnaliseJuridica novaAnalise) {

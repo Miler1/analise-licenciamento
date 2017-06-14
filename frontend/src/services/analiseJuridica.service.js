@@ -36,6 +36,12 @@ var AnaliseJuridicaService = function(request, config) {
 		return request
 				.post(config.BASE_URL() + 'analisesJuridicas/concluir', analise);
 	};
+
+	this.validarParecer = function(analise) {
+
+		return request
+				.post(config.BASE_URL() + 'analisesJuridicas/validarParecer', analise);
+	};	
 };
 
 exports.services.AnaliseJuridicaService = AnaliseJuridicaService;
