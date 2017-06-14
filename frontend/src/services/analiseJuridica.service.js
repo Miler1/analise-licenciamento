@@ -8,9 +8,8 @@ var AnaliseJuridicaService = function(request, config) {
 
 	this.getParecerByNumeroProcesso = function(numeroProcesso) {
 
-		// envia numero do processo 'encodado' por causa da barra
 		return request
-                .get(config.BASE_URL() + 'analisesJuridicas/' + encodeURIComponent(numeroProcesso) + '/parecer');
+                .get(config.BASE_URL() + 'analisesJuridicas/' + numeroProcesso + '/parecer');
 	};
 
 	this.iniciar = function(analise) {
