@@ -12,7 +12,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long INICIAR_ANALISE_JURIDICA = 2l;
 	public static final Long NOTIFICAR = 3l;
 	public static final Long DEFERIR_ANALISE_JURIDICA = 4l;
-	public static final Long INVALIDAR_ANALISE_JURIDICA = 5l;
+	public static final Long INVALIDAR_PARECER_JURIDICO = 5l;
 	public static final Long VALIDAR_DEFERIMENTO_JURIDICO = 6l;
 	public static final Long VALIDAR_INDEFERIMENTO_JURIDICO = 7l;
 	public static final Long INDEFERIR_ANALISE_JURIDICA = 8l;

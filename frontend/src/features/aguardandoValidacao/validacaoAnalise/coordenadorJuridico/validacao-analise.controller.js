@@ -1,4 +1,5 @@
-var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaService, $route, $scope, mensagem, $location, consultorService) {
+var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaService, $route, $scope, 
+		mensagem, $location, consultorService, documentoAnaliseService) {
 
 	$rootScope.tituloPagina = 'VALIDAÇÃO PARECER JURÍDICO';
 
@@ -57,7 +58,16 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 
         var analiseJuridica = montarAnaliseJuridica(validacaoAnaliseJuridica.analiseJuridicaValidacao);
 
-		//Aguardando serviço para validar parecer jurídico
+		analiseJuridicaService.validarParecer(analiseJuridica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+				$location.path('aguardando-validacao');
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     }
 
 	function montarAnaliseJuridica(analiseJuridicaValidacao){

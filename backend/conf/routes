@@ -21,6 +21,7 @@ GET		/analisesJuridicas/parecer					AnalisesJuridicas.findByNumeroProcesso
 POST	/analisesJuridicas/iniciar 					AnalisesJuridicas.iniciar
 POST	/analisesJuridicas							AnalisesJuridicas.alterar
 POST	/analisesJuridicas/concluir					AnalisesJuridicas.concluir
+POST	/analisesJuridicas/validarParecer			AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 

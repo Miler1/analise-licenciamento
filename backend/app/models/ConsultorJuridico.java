@@ -47,6 +47,10 @@ public class ConsultorJuridico extends GenericModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
 	
+	public ConsultorJuridico(){
+		super();
+	}
+	
 	public ConsultorJuridico(AnaliseJuridica analiseJuridica, Usuario usuario) {
 		
 		super();
@@ -64,5 +68,15 @@ public class ConsultorJuridico extends GenericModel {
 		ConsultorJuridico consultorJuridico = new ConsultorJuridico(analiseJuridica, usuario);
 		consultorJuridico.save();
 		
+	}
+
+	public ConsultorJuridico gerarCopia() {
+		
+		ConsultorJuridico copia = new ConsultorJuridico();
+		
+		copia.usuario = this.usuario;
+		copia.dataVinculacao = this.dataVinculacao;
+		
+		return copia;
 	}
 }

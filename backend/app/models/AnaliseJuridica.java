@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -87,11 +88,14 @@ public class AnaliseJuridica extends GenericModel {
 		inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 	
-	@OneToMany(mappedBy="analiseJuridica")
+	@OneToMany(mappedBy="analiseJuridica", cascade=CascadeType.ALL)
 	public List<AnaliseDocumento> analisesDocumentos;
 	
-	@OneToMany(mappedBy="analiseJuridica")
+	@OneToMany(mappedBy="analiseJuridica", cascade=CascadeType.ALL)
 	public List<ConsultorJuridico> consultoresJuridicos;
+	
+	@Column(name="parecer_validacao")
+	public String parecerValidacao;
 	
 	private void validarParecer() {
 		
@@ -132,6 +136,14 @@ public class AnaliseJuridica extends GenericModel {
 				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
 			}
 		}
+	}
+	
+	private void validarTipoResultadoValidacao() {
+		
+		if (tipoResultadoValidacao == null) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_SEM_RESULTADO_VALIDACAO);
+		}		
 	}
 	
 	private void updateDocumentos(List<Documento> novosDocumentos) {
@@ -191,8 +203,9 @@ public class AnaliseJuridica extends GenericModel {
 			
 			this._save();
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_JURIDICA, usuarioExecutor);
-		}		
+		}
+		
+		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_JURIDICA, usuarioExecutor);
 	}
 	
 	public void update(AnaliseJuridica novaAnalise) {
@@ -211,22 +224,28 @@ public class AnaliseJuridica extends GenericModel {
 		
 		updateDocumentos(novaAnalise.documentos);		
 		
-		this._save();
 		
-		this.analisesDocumentos = novaAnalise.analisesDocumentos;
-		
-		for(AnaliseDocumento analiseDocumento : this.analisesDocumentos) {
+		if (this.analisesDocumentos == null) {
 			
-			if(analiseDocumento.id != null) {
+			this.analisesDocumentos = new ArrayList<>();
+		}
+		
+		for(AnaliseDocumento novaAnaliseDocumento : novaAnalise.analisesDocumentos) {
+						
+			AnaliseDocumento analiseDocumento = ListUtil.getById(novaAnaliseDocumento.id, this.analisesDocumentos);
 				
-				analiseDocumento.update(analiseDocumento);
+			if(analiseDocumento != null) {
+				
+				analiseDocumento.update(novaAnaliseDocumento);
 			
 			} else {
 				
-				analiseDocumento.analiseJuridica = this;
-				analiseDocumento.save();
+				novaAnaliseDocumento.analiseJuridica = this;
+				this.analisesDocumentos.add(novaAnaliseDocumento);
 			}			
-		}		
+		}
+		
+		this._save();		
 	}
 	
 	public void finalizar(AnaliseJuridica analise, Usuario usuarioExecultor) {
@@ -269,4 +288,188 @@ public class AnaliseJuridica extends GenericModel {
 		
 		return AnaliseDocumento.find("analiseJuridica.id = ? ", idAnaliseJuridica).fetch();
 	}
+	
+	public void validaParecer(AnaliseJuridica analiseJuridica, Usuario usuarioExecultor) {
+		
+		TipoResultadoAnaliseChain tiposResultadosAnalise = new ParecerValidado();
+		tiposResultadosAnalise.setNext(new SolicitarAjustes());
+		tiposResultadosAnalise.setNext(new ParecerNaoValidado());
+		
+		tiposResultadosAnalise.validarParecer(analiseJuridica, usuarioExecultor);		
+	}
+	
+	public AnaliseJuridica gerarCopia(){
+		
+		AnaliseJuridica copia = new AnaliseJuridica();
+		
+		copia.analise = this.analise;
+		copia.parecer = this.parecer;
+		copia.dataVencimentoPrazo = this.dataVencimentoPrazo;
+		copia.revisaoSolicitada = true;
+		copia.ativo = true;
+		copia.analiseJuridicaRevisada = this;
+		copia.dataInicio = this.dataInicio;
+		copia.tipoResultadoAnalise = this.tipoResultadoAnalise;
+		copia.documentos = new ArrayList<>(this.documentos);
+		copia.analisesDocumentos = new ArrayList<>();
+		
+		for (AnaliseDocumento analiseDocumento: this.analisesDocumentos) {
+			
+			AnaliseDocumento copiaAnaliseDoc = analiseDocumento.gerarCopia();
+			copiaAnaliseDoc.analiseJuridica = copia;
+			copia.analisesDocumentos.add(copiaAnaliseDoc);
+		}
+		
+		copia.consultoresJuridicos = new ArrayList<>();
+		
+		for (ConsultorJuridico consultorJuridico: this.consultoresJuridicos) {
+			
+			ConsultorJuridico copiaConsultorJur = consultorJuridico.gerarCopia();
+			
+			copiaConsultorJur.analiseJuridica = copia;
+			copia.consultoresJuridicos.add(copiaConsultorJur);
+		}		
+		
+		return copia;
+	}
+	
+	private abstract class TipoResultadoAnaliseChain {
+		
+		protected TipoResultadoAnaliseChain next;
+		protected Long idResultadoAnalise;
+		
+		public TipoResultadoAnaliseChain(Long idResultadoAnalise){
+			
+			this.next = null;
+			this.idResultadoAnalise = idResultadoAnalise;			
+		}
+		
+		public void setNext(TipoResultadoAnaliseChain tipoResultadoAnalise) {
+	        if (next == null) {
+	            next = tipoResultadoAnalise;
+	        } else {
+	            next.setNext(tipoResultadoAnalise);
+	        }
+	    }
+		
+		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica) {
+			
+			tipoResultadoValidacao = novaAnaliseJuridica.tipoResultadoValidacao;
+			parecerValidacao = novaAnaliseJuridica.parecerValidacao;
+		}
+		
+		public void validarParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
+			
+			if (novaAnaliseJuridica.tipoResultadoValidacao.id.equals(idResultadoAnalise)) {
+				
+				setAnaliseJuridica(novaAnaliseJuridica);				
+				validaParecer(novaAnaliseJuridica, usuarioExecultor);
+				
+			} else if (next != null) {
+				
+				next.validarParecer(novaAnaliseJuridica, usuarioExecultor);
+			}
+		}
+		
+		protected abstract void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor);
+	}
+	
+	private class ParecerValidado extends TipoResultadoAnaliseChain{
+		
+		public ParecerValidado() {
+			super(TipoResultadoAnalise.PARECER_VALIDADO);
+		}
+
+		@Override
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
+			
+			validarTipoResultadoValidacao();
+			
+			_save();
+			
+			if (tipoResultadoAnalise.id == tipoResultadoAnalise.INDEFERIDO) {
+				
+				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_JURIDICO, usuarioExecultor);				
+				return;
+			}
+			
+			if (tipoResultadoAnalise.id == tipoResultadoAnalise.DEFERIDO) {
+				
+				//TODO criar a análise técnica
+				
+				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecultor);
+			}
+		}
+	}
+	
+	private class SolicitarAjustes extends TipoResultadoAnaliseChain{
+		
+		public SolicitarAjustes() {
+			super(TipoResultadoAnalise.SOLICITAR_AJUSTES);
+		}	
+
+		@Override
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
+			
+			validarTipoResultadoValidacao();
+			
+			ativo = false;
+			
+			_save();
+			
+			AnaliseJuridica copia = gerarCopia();
+			
+			copia._save();
+			
+			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_JURIDICO, usuarioExecultor);
+		}
+	}
+	
+	private class ParecerNaoValidado extends TipoResultadoAnaliseChain{
+		
+		public ParecerNaoValidado() {
+			super(TipoResultadoAnalise.PARECER_NAO_VALIDADO);
+		}	
+
+		@Override
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
+			
+			validarAnaliseJuridica(novaAnaliseJuridica);
+			
+			ativo = false;
+			
+			_save();
+						
+			criarNovaAnalise(novaAnaliseJuridica.consultoresJuridicos.get(0).usuario);
+			
+			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_PARECER_JURIDICO, usuarioExecultor);
+		}
+
+		private void criarNovaAnalise(Usuario usuarioConsultor) {
+			
+			AnaliseJuridica novaAnalise = new AnaliseJuridica();
+			
+			novaAnalise.analise = analise;
+			novaAnalise.dataVencimentoPrazo = dataVencimentoPrazo;
+			novaAnalise.revisaoSolicitada = true;
+			novaAnalise.ativo = true;
+			
+			novaAnalise.consultoresJuridicos = new ArrayList<>();
+			ConsultorJuridico consultorJuridico = new ConsultorJuridico(novaAnalise, usuarioConsultor);
+			novaAnalise.consultoresJuridicos.add(consultorJuridico);
+			
+			novaAnalise._save();
+		}
+
+		private void validarAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica) {
+			
+			validarTipoResultadoValidacao();
+			
+			if (novaAnaliseJuridica.consultoresJuridicos == null || novaAnaliseJuridica.consultoresJuridicos.isEmpty()) {
+				
+				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONSULTOR_NAO_INFORMADO);
+			}
+			
+		}
+	}	
 }
