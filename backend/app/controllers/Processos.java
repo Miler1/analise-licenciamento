@@ -4,19 +4,19 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import builders.ProcessoBuilder.FiltroProcesso;
-import com.vividsolutions.jts.geom.Geometry;
 import models.AnaliseJuridica;
 import models.Processo;
 import models.geocalculo.Geoserver;
-import models.licenciamento.Caracterizacao;
-import models.tramitacao.HistoricoTramitacao;
+
 import org.apache.commons.io.FileUtils;
-import org.geotools.geometry.jts.WKTReader2;
+
 import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
+import builders.ProcessoBuilder.FiltroProcesso;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 public class Processos extends InternalController {
 

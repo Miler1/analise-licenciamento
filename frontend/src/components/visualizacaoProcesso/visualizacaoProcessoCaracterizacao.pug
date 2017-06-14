@@ -1,0 +1,22 @@
+#dadosProcesso
+
+	div.row
+
+		//mapa(id-mapa='"mapa-empreendimento"', limite='modalVisualizacaoProcessoCtrl.limite', empreendimento='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.coordenadas', mapa-ctrl='modalVisualizacaoProcessoCtrl.mapa', teste='modalVisualizacaoProcessoCtrl.teste')
+
+		div.mapa#mapa-processo
+	div.row
+
+		div.col-md-12
+
+			h4 Documentação
+
+			table.table.table-striped.table-condensed
+				thead
+					th Documento
+					th
+				tbody
+					tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
+						td {{ documento.tipo.nome}}
+						td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
+							i.glyphicon.glyphicon-download-alt

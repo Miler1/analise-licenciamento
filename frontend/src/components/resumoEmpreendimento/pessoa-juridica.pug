@@ -1,0 +1,30 @@
+mixin pessoa-juridica(pessoa, isEmpreendimento)
+	div.row.form-group
+		div.col-md-6
+			div.row
+				label.col-md-4.text-right CNPJ:
+				span.col-md-8 {{#{pessoa}.cnpj | brCnpj}}
+
+			div.row
+				label.col-md-4.text-right Razão Social:
+				span.col-md-8 {{#{pessoa}.razaoSocial}}
+
+			div.row
+				label.col-md-4.text-right Nome fantasia:
+				span.col-md-8 {{#{pessoa}.nomeFantasia}}
+
+			div.row(ng-if=`!${isEmpreendimento}`)
+				label.col-md-4.text-right Município:
+				span.col-md-8 {{#{pessoa}.municipio.nome}}/{{#{pessoa}.municipio.estado.codigo}}
+		div.col-md-6
+			div.row
+				label.col-md-4.text-right Inscrição estadual:
+				span.col-md-8 {{#{pessoa}.isento ? 'Isento' : #{pessoa}.inscricaoEstadual}}
+
+			div.row
+				label.col-md-4.text-right Data da fundação:
+				span.col-md-8 {{#{pessoa}.dataFundacao | date :  'dd/MM/yyyy'}}
+
+			div.row(ng-if=`!${isEmpreendimento}`)
+				label.col-md-4.text-right Esfera de atuação:
+				span.col-md-8  {{#{attributes.modelEsfera}}}

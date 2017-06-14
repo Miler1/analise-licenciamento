@@ -1,0 +1,18 @@
+mixin endereco(endereco, labelEndereco)
+
+	div.row(ng-if=`${endereco}.tipo === 'ZONA_URBANA'`)
+		label.col-md-2.text-right {{#{labelEndereco}}}
+		span.col-md-10 
+			| {{#{endereco}.logradouro}}, 
+			| {{#{endereco}.numero ? #{endereco}.numero : 'S/N'}}, 
+			| {{#{endereco}.complemento ? #{endereco}.complemento + ', ' : ''}} 
+			| {{#{endereco}.bairro ? #{endereco}.bairro + ', ' : ''}}
+			| {{#{endereco}.municipio.nome}}/{{#{endereco}.municipio.estado.codigo + ', '}}
+			| {{#{endereco}.correspondencia && #{endereco}.caixaPostal ? "Caixa postal: " + #{endereco}.caixaPostal + ", " : ""}}
+			| CEP: {{#{endereco}.cep.zeroEsquerda(8) | brCep}}
+
+	div.row(ng-if=`${endereco}.tipo === 'ZONA_RURAL'`)
+		label.col-md-2.text-right {{#{labelEndereco}}}
+		span.col-md-10
+			| {{#{endereco}.municipio.nome}}/{{#{endereco}.municipio.estado.codigo}} - 
+			| {{#{endereco}.roteiroAcesso}}
