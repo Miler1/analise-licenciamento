@@ -220,7 +220,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         
         } else {
 
-            return parecerPreenchido && todosDocumentosValidados && resultadoPreenchido;
+            return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido;
         }
     }
 };
