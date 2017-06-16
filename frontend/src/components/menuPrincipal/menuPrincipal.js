@@ -4,7 +4,7 @@ var MenuPrincipal = {
 
 		itens: '<'
 	},
-	controller: function($location, mensagem, processoService, $timeout) {
+	controller: function($location, mensagem, processoService, $timeout, $scope) {
 
 		var ctrl = this;
 
@@ -49,6 +49,11 @@ var MenuPrincipal = {
 				});
 
 		}
+
+		$scope.$on('atualizarContagemProcessos', function(event){
+
+			atualizarContagemProcessos();
+		});  
 
 		//$timeout(atualizarContagemProcessos,500);
 	},

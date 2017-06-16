@@ -29,6 +29,8 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 			.then(function(response){
 				validacaoAnaliseJuridica.consultores = response.data;
 			});
+
+		$rootScope.$broadcast('atualizarContagemProcessos');
 	}
 
     function downloadDocumentoAnalise(idDocumento) {
