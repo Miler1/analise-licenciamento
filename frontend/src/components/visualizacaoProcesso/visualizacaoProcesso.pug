@@ -28,8 +28,8 @@
 
 
 					div.row
-						label.col-sm-4 Cpf/Cnpj:
-						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento}}
+						label.col-sm-4 CPF/CNPJ:
+						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento ? modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento : modalVisualizacaoProcessoCtrl.processo.cnpjEmpreendimento | brCpfCnpj}}
 
 					div.row
 						label.col-sm-4 Nome/Razão Social:
