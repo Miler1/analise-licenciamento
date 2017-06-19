@@ -1,9 +1,6 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,17 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.apache.commons.lang.StringUtils;
-
-import exceptions.ValidacaoException;
-import models.portalSeguranca.Usuario;
-import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
-import utils.ListUtil;
-import utils.Mensagem;
-import utils.ModelUtil;
 
 @Entity
 @Table(schema="analise", name="analise_tecnica")
@@ -94,7 +82,10 @@ public class AnaliseTecnica extends GenericModel {
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<AnalistaTecnico> analistasTecnicos;
 	
-	//TODO rever
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;	
+	
+	public static AnaliseTecnica findByProcesso(Processo processo) {
+		return AnaliseTecnica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
+	}
 }

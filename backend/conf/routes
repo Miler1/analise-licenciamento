@@ -47,6 +47,10 @@ GET		/logout										Login.logout
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
 GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
 
+# Analistas
+POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
+GET		/analistas									Analistas.getAnalistaTecnico
+
 # Condições
 GET		/condicoes									Condicoes.list
 

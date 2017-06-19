@@ -22,10 +22,10 @@ import play.db.jpa.GenericModel;
 import utils.Mensagem;
 
 @Entity
-@Table(schema="analise", name="parecer_tecnico_restricao")
+@Table(schema="analise", name="analista_tecnico")
 public class AnalistaTecnico extends GenericModel {
 	
-	public static final String SEQ = "analise.parecer_tecnico_restricao_id_seq";
+	public static final String SEQ = "analise.analista_tecnico_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -38,9 +38,31 @@ public class AnalistaTecnico extends GenericModel {
 	public AnaliseTecnica analiseTecnica;
 	
 	@Required
-	@Column(name="codigo_camada")
-	public String CodigoCamada;
+	@ManyToOne
+	@JoinColumn(name="id_usuario")
+	public Usuario usuario;
 	
 	@Required
-	public String parecer;
+	@Column(name="data_vinculacao")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataVinculacao;
+	
+	public AnalistaTecnico(AnaliseTecnica analiseTecnica, Usuario usuario) {
+		
+		super();
+		this.analiseTecnica = analiseTecnica;
+		this.usuario = usuario;
+		this.dataVinculacao = new Date();
+		
+	}	
+	
+	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica) {
+		
+		if (!usuario.hasPerfil(Perfil.ANALISTA_TECNICO))
+			throw new PermissaoNegadaException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);		
+		
+		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
+		analistaTecnico.save();
+		
+	}
 }
