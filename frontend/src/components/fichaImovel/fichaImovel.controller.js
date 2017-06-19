@@ -1,14 +1,13 @@
 var FichaImovel = {
 
 	bindings: {
-		imovel: '='
+		imovel: '=',
+		isOpen: '=?'
 	},
 
 	controller: function(imovelService, $scope, $timeout) {
 
 		var ctrl = this;
-
-		ctrl.openedAccordion = true;
 
 		$timeout(function () {
 
@@ -59,7 +58,7 @@ var FichaImovel = {
 
 				});
 
-		});
+		}, 1000);
 
 
 
@@ -85,6 +84,12 @@ var FichaImovel = {
 			}.bind(this), 70);
 
 		};
+
+		this.toogleAccordion = function() {
+
+			ctrl.isOpen=!ctrl.isOpen;
+		};
+
 	},
 
 	templateUrl: 'components/fichaImovel/fichaImovel.html'

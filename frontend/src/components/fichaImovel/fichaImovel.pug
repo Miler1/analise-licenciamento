@@ -1,9 +1,9 @@
 div(uib-accordion class="accordion")
-	div(uib-accordion-group class="panel-default" is-open="$ctrl.openedAccordion")
-		uib-accordion-heading(ng-click="$ctrl.openedAccordion=!$ctrl.openedAccordion")
-			div(role="button", ng-click="$ctrl.visualizarFichaImovel()")
+	div(uib-accordion-group class="panel-default" is-open="$ctrl.isOpen")
+		uib-accordion-heading(ng-click="$ctrl.isOpen=!$ctrl.isOpen")
+			div(role="button")
 				| Ficha do Imóvel
-				i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordion, 'glyphicon-chevron-right': !$ctrl.openedAccordion}")
+				i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.isOpen, 'glyphicon-chevron-right': !$ctrl.isOpen}")
 
 
 		#fichaImovel
@@ -42,8 +42,6 @@ div(uib-accordion class="accordion")
 							br
 							.row.tabset
 								.col-md-12
-									br
-									br
 									button.btn.btn-sm.btn-link.pull-right(ng-click="$ctrl.baixarShapefile()") Baixar Shapefile
 									br
 									br

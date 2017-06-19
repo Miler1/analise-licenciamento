@@ -19,22 +19,33 @@
 	div.row
 
 		div.mapa#mapa-processo
+
 	div.row
 
-		div.col-md-12
+		.col-md-12
 
-			h4 Documentação
+			br
 
-			table.table.table-striped.table-condensed
-				thead
-					th Documento
-					th
-				tbody
-					tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
-						td {{ documento.tipo.nome}}
-						td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
-							i.glyphicon.glyphicon-download-alt
+			br
 
-	div.ficha#ficha
+			div(uib-accordion class="accordion")
+				div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreDocumentacao")
+					uib-accordion-heading(ng-click="modalVisualizacaoProcessoCtrl.abreDocumentacao=!modalVisualizacaoProcessoCtrl.abreDocumentacao")
+						div(role="button", ng-click="$ctrl.visualizarFichaImovel()")
+							| Documentação
+							i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.abreDocumentacao, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.abreDocumentacao}")
 
-		ficha-imovel(imovel='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel')
+
+					table.table.table-striped.table-condensed
+						thead
+							th Documento
+							th
+						tbody
+							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
+								td {{ documento.tipo.nome}}
+								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
+									i.glyphicon.glyphicon-download-alt
+
+	div#ficha
+
+		ficha-imovel(imovel='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel', is-open="!modalVisualizacaoProcessoCtrl.abreDocumentacao")

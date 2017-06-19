@@ -6,6 +6,8 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 	modalCtrl.baixarDocumento = baixarDocumento;
 
+	modalCtrl.abreDocumentacao = true;
+
 	var estiloPoligono = {
 		color: 'tomato',
 		opacity: 1,
@@ -152,6 +154,8 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 	};
 
 	this.visualizarFichaImovel = function() {
+
+		modalCtrl.abreDocumentacao = false;
 
 		$location.hash('ficha');
 
