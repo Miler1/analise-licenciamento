@@ -4,23 +4,27 @@ var MenuPrincipal = {
 
 		itens: '<'
 	},
-	controller: function($location, mensagem, processoService) {
+	controller: function($location, mensagem, processoService, $timeout, $scope) {
 
 		var ctrl = this;
 
 		this.$onInit = function() {
 
-			for (var i = 0; i < ctrl.itens.length; i++) {
-				if(ctrl.itens[i].condicaoTramitacao)
-					countProcessos(ctrl.itens[i]);
-			}
-
+			atualizarContagemProcessos();
 		};
 
 		this.irPara = function(url) {
 
 			$location.path(url);
 		};
+
+		function atualizarContagemProcessos() {
+			
+			for (var i = 0; i < ctrl.itens.length; i++) {
+				if(ctrl.itens[i].condicaoTramitacao)
+					countProcessos(ctrl.itens[i]);
+			}
+		}
 
 		function countProcessos(item) {
 
@@ -45,6 +49,13 @@ var MenuPrincipal = {
 				});
 
 		}
+
+		$scope.$on('atualizarContagemProcessos', function(event){
+
+			atualizarContagemProcessos();
+		});  
+
+		//$timeout(atualizarContagemProcessos,500);
 	},
 	templateUrl: 'components/menuPrincipal/menuPrincipal.html'
 };

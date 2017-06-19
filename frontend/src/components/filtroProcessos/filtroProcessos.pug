@@ -52,7 +52,7 @@ div(uib-accordion class="accordion")
                                             name='dataNascimento',
                                             ng-disabled=bloqueado,
                                             ng-model="$ctrl.filtro.periodoInicial",
-                                            datepicker-options="{maxDate: $ctrl.filtro.periodoFinal}"
+                                            datepicker-options="{maxDate: $ctrl.maxDataInicio}"
                                             show-button-bar="false",
                                             is-open='isOpenPeriodoInicial',
                                             ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial', 

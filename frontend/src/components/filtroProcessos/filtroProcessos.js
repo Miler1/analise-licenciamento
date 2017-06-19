@@ -1,94 +1,98 @@
 var FiltroProcessos = {
 
 	bindings: {
-        paginacao: '=',
+		paginacao: '=',
 		disabledFields: '<',
-        atualizarLista: '=',
-        atualizarPaginacao: '=',
-        condicaoTramitacao: '<',
-        pesquisarAoInicializar: '<'
+		atualizarLista: '=',
+		atualizarPaginacao: '=',
+		condicaoTramitacao: '<',
+		pesquisarAoInicializar: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
-        atividadeService, $scope, condicaoService) {
+		atividadeService, $scope, condicaoService, $rootScope) {
 
 		var ctrl = this;
 
-        ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
+		ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
 
-        ctrl.openedAccordion = false;
-        ctrl.municipios = [];
-        ctrl.tipologias = [];
-        ctrl.atividades = [];
-        ctrl.condicoes = [];
+		ctrl.openedAccordion = false;
+		ctrl.municipios = [];
+		ctrl.tipologias = [];
+		ctrl.atividades = [];
+		ctrl.condicoes = [];
+
+		ctrl.maxDataInicio = new Date();
 
 		this.pesquisar = function(pagina){
 
-            if (ctrl.filtro.periodoInicial && ctrl.filtro.periodoInicial) {
+			if (ctrl.filtro.periodoInicial && ctrl.filtro.periodoInicial) {
 
-                if(moment(ctrl.filtro.periodoInicial, 'DD/MM/YYYY').isAfter(moment())) {
+				if(moment(ctrl.filtro.periodoInicial, 'DD/MM/YYYY').isAfter(moment())) {
 
-                    mensagem.warning("Data de início do período não pode ser posterior a data atual.");
-                    return;                    
-                }
+					mensagem.warning("Data de início do período não pode ser posterior a data atual.");
+					return;
+				}
 
-                var diff = moment(ctrl.filtro.periodoFinal, 'DD/MM/yyyy')
-                    .diff(moment(ctrl.filtro.periodoInicial, 'DD/MM/yyyy'), 'days');
+				var diff = moment(ctrl.filtro.periodoFinal, 'DD/MM/yyyy')
+					.diff(moment(ctrl.filtro.periodoInicial, 'DD/MM/yyyy'), 'days');
 
-                if (diff < 0) {
-                    mensagem.warning("O período inicial não pode ser maior que o período final.");
-                    return;
-                }                
-            }
+				if (diff < 0) {
+					mensagem.warning("O período inicial não pode ser maior que o período final.");
+					return;
+				}
+			}
 
-            ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
-            ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
+			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
+			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
 
-            processoService.getProcessos(ctrl.filtro)
-                .then(function(response){
-                     ctrl.atualizarLista(response.data);
-                })
-                .catch(function(){
-                    mensagem.error("Ocorreu um erro ao buscar a lista de processos.");
-                });
+			processoService.getProcessos(ctrl.filtro)
+				.then(function(response){
+					 ctrl.atualizarLista(response.data);
+				})
+				.catch(function(){
+					mensagem.error("Ocorreu um erro ao buscar a lista de processos.");
+				});
 
-            processoService.getProcessosCount(ctrl.filtro)
-                .then(function(response){
-                     ctrl.atualizarPaginacao(response.data, ctrl.filtro.paginaAtual);
-                })
-                .catch(function(){
-                    mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
-                });                
+			processoService.getProcessosCount(ctrl.filtro)
+				.then(function(response){
+					 ctrl.atualizarPaginacao(response.data, ctrl.filtro.paginaAtual);
+				})
+				.catch(function(){
+					mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
+				});
+
+			$rootScope.$broadcast('atualizarContagemProcessos');
 		};
 
-        this.isDisabledFields = function(field) {
+		this.isDisabledFields = function(field) {
 
-            return ctrl.disabledFields && ctrl.disabledFields.indexOf(field) !== -1;
-        };
+			return ctrl.disabledFields && ctrl.disabledFields.indexOf(field) !== -1;
+		};
 
-        function setFiltrosPadrao(){
+		function setFiltrosPadrao(){
 
-            ctrl.filtro = {};
+			ctrl.filtro = {};
 
-            if (ctrl.condicaoTramitacao) {
+			if (ctrl.condicaoTramitacao) {
 
-                ctrl.filtro.filtrarPorUsuario = true;
-                ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
-            }
-        }
+				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
+			}
+		}
 
-        this.limparFiltros = function(){
+		this.limparFiltros = function(){
 
-            setFiltrosPadrao();
+			setFiltrosPadrao();
 
-            $('#cpfCnpjEmpreendimento').val('');
+			$('#cpfCnpjEmpreendimento').val('');
 
-            this.pesquisar(1);
-        };
+			this.pesquisar(1);
+		};
 
-        this.$postLink = function(){
+		this.$postLink = function(){
 
-            setFiltrosPadrao();
+			setFiltrosPadrao();
 
 			municipioService.getMunicipiosByUf('PA').then(
 				function(response){
@@ -99,48 +103,48 @@ var FiltroProcessos = {
 					mensagem.warning('Não foi possível obter a lista de municípios.');
 				});
 
-            var params = {licenciamentoSimplificado: true};
+			var params = {licenciamentoSimplificado: true};
 
-            tipologiaService.getTipologias(params).then(
+			tipologiaService.getTipologias(params).then(
 				function(response){
 					
 					ctrl.tipologias = response.data; 
 				})
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de tipologia.');
-				});              
+				});
 
-            atividadeService.getAtividades(params).then(
+			atividadeService.getAtividades(params).then(
 				function(response){
 					
-					ctrl.atividades = response.data; 
+					ctrl.atividades = response.data;
 				})
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
 
-            if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
 
-                condicaoService.getCondicoes().then(
-                    function(response){
-                        
-                        ctrl.condicoes = response.data; 
-                    })
-                    .catch(function(){
-                        mensagem.warning('Não foi possível obter a lista de situações.');
-                    });
-            }
+				condicaoService.getCondicoes().then(
+					function(response){
+						
+						ctrl.condicoes = response.data; 
+					})
+					.catch(function(){
+						mensagem.warning('Não foi possível obter a lista de situações.');
+					});
+			}
 
-            if (ctrl.pesquisarAoInicializar){
+			if (ctrl.pesquisarAoInicializar){
 
-                ctrl.pesquisar(1);
-            }
-        };
+				ctrl.pesquisar(1);
+			}
+		};
 
 		$scope.$on('pesquisarProcessos', function(event){
 
 			ctrl.pesquisar();
-		});        
+		});
 	},
 
 	templateUrl: 'components/filtroProcessos/filtroProcessos.html'
