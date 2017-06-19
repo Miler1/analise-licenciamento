@@ -1,6 +1,7 @@
 var licenciamento = angular.module("licenciamento", [
 	"ngRoute",
 	"ui.bootstrap",
+	"analiseGeo",
 	"caixasEntrada",
 	"aguardandoValidacao",
 	"angular-growl",
@@ -232,6 +233,7 @@ var services = app.services,
 
 utils.services(licenciamento)
 	.add('applicationService', services.ApplicationService)
+	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('mensagem', services.Mensagem)
 	.add('request', services.Request)
 	.add('animacaoLoader', services.AnimacaoLoader)
