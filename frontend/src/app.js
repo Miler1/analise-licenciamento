@@ -132,7 +132,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 			titulo: 'Em análise',
 			icone: 'glyphicon glyphicon-ok',
-			url: '/analise-juridica',
+			url: $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO ? '/analise-juridica' : '/analise-tecnica',
 			countItens: true,
 			estaSelecionado: function () {
 
