@@ -20,7 +20,8 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 caixasEntrada
 	.controller('cxEntCoordenadorJuridicoController', controllers.CxEntCoordenadorJuridicoController)
 	.controller('modalVincularConsutorJuridicoController', controllers.ModalVincularConsutorJuridicoController)
-	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController);
+	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController)
+	.controller('cxEntAnalistaTecnicoController', controllers.CxEntAnalistaTecnicoController);
 
 caixasEntrada
 	.component('filtroProcessos', directives.FiltroProcessos);
