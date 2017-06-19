@@ -109,7 +109,53 @@ var AnaliseGeoController = function(restricoes, $scope, idAnaliseTecnica) {
 
 	};
 
+	function piscarFeature(layer, color) {
+
+		setTimeout(function(){
+
+			var pisca = true;
+
+			var interval = setInterval(function () {
+
+				if (layer.setOpacity) {
+
+					layer.setOpacity(pisca ? 0 : 1);
+
+				} else {
+
+					if (pisca) {
+						layer.setStyle({
+							color: 'red'
+						});
+					} else {
+						layer.setStyle({
+							color: color
+						});
+					}
+
+				}
+
+				pisca = !pisca;
+
+			}, 200);
+
+			setTimeout(function () {
+
+				clearInterval(interval);
+
+			}, 2000);
+			mapa.off('moveend', funcaoAnterior);
+
+			}, 350);
+
+	}
+
+	var funcaoAnterior;
 	$scope.visualizarLayer = function(layer, color){
+
+		funcaoAnterior = piscarFeature.bind(this, layer, color);
+
+		mapa.on('moveend', funcaoAnterior);
 
 		$('html, body').animate({
 
@@ -129,38 +175,6 @@ var AnaliseGeoController = function(restricoes, $scope, idAnaliseTecnica) {
 				mapa.flyTo(layer.getLatLng());
 
 			}
-
-			var pisca = true;
-
-			var interval = setInterval(function(){
-
-				if(layer.setOpacity) {
-
-					layer.setOpacity(pisca ? 0 : 1);
-
-				} else {
-
-					if(pisca){
-						layer.setStyle({
-							color: 'red'
-						});
-					} else {
-						layer.setStyle({
-							color: color
-						});
-					}
-
-				}
-
-				pisca = !pisca;
-
-			}, 200);
-
-			setTimeout(function(){
-
-				clearInterval(interval);
-
-			}, 2000);
 
 
 		});
