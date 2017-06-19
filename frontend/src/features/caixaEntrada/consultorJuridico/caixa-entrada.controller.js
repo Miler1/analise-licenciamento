@@ -45,6 +45,7 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 		analiseJuridicaService.iniciar({ id : idAnaliseJuridica })
 			.then(function(response){
 
+				$rootScope.$broadcast('atualizarContagemProcessos');
 				$location.path('/analise-juridica/' + idAnaliseJuridica.toString());
 			
 			}, function(error){

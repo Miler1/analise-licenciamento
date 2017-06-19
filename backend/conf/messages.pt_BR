@@ -29,6 +29,12 @@ CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO = "Consultor informando não tem perfi
 CONSULTOR_VINCULADO_SUCESSO=Consultor vinculado com sucesso.
 
 #
+# Analistas
+#
+ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO=O Analista informado não tem perfil de analista técnico.
+ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
+
+#
 # Upload
 #
 UPLOAD_ERRO=Ocorreu um erro ao realizar o upload do arquivo.

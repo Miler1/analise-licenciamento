@@ -10,13 +10,13 @@ import security.UsuarioSessao;
 import serializers.UsuarioSerializer;
 import utils.Mensagem;
 
-public class Consultores extends InternalController {
+public class Analistas extends InternalController {
 
-	public static  void vincularAnaliseConsultorJuridico(Long idUsuario, Long... idsProcesso) {
+	public static  void vincularAnaliseAnalistaTecnico(Long idUsuario, Long... idsProcesso) {
 		
-		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		Usuario consultor = Usuario.findById(idUsuario);				
+		Usuario analista = Usuario.findById(idUsuario);				
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
 		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);
 		
@@ -24,19 +24,19 @@ public class Consultores extends InternalController {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
-				processo.vincularConsultor(consultor, usuarioExecultor);
+			processo.vincularAnalista(analista, usuarioExecultor);
 			
 		}
 		
-		renderMensagem(Mensagem.CONSULTOR_VINCULADO_SUCESSO);
+		renderMensagem(Mensagem.ANALISTA_VINCULADO_SUCESSO);
 		
 	}
 	
-	public static void getConsultoresJuridicos() {
+	public static void getAnalistaTecnico() {
 		
-		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.CONSULTOR_JURIDICO);
+		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);
 	}
