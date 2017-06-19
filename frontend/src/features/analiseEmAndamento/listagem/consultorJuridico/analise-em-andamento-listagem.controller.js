@@ -1,4 +1,4 @@
-var AnaliseEmAndamentoJuridicoListController = function($scope, config, $location, $rootScope) {
+var AnaliseEmAndamentoJuridicoListController = function($scope, config, $location, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE JURÍDICA';
 
@@ -15,6 +15,7 @@ var AnaliseEmAndamentoJuridicoListController = function($scope, config, $locatio
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
+	listagem.exibirDadosProcesso = exibirDadosProcesso;
 
 	function atualizarListaProcessos(processos) {
 
@@ -43,6 +44,11 @@ var AnaliseEmAndamentoJuridicoListController = function($scope, config, $locatio
 
 		$location.path('/analise-juridica/' + idAnaliseJuridica.toString());
 	}	
+
+	function exibirDadosProcesso(idProcesso) {
+
+        processoService.visualizarProcesso({ idProcesso:idProcesso});
+    }	
 };
 
 exports.controllers.AnaliseEmAndamentoJuridicoListController = AnaliseEmAndamentoJuridicoListController;
