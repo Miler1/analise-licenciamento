@@ -23,6 +23,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import builders.CriteriaBuilder;
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.licenciamento.Caracterizacao;
@@ -131,63 +132,146 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 
-	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, Long idUsuarioLogado ) {
+	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, Long idUsuarioLogado) {
 		
-		return new ProcessoBuilder()
+		ProcessoBuilder processoBuilder = new ProcessoBuilder()
 			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
 			.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
 			.filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
 			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
 			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
 			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
-			.filtrarPorIdConsultorJuridico(getIdConsultorJuridico(filtro, idUsuarioLogado))
-			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal)
-			.filtrarAnaliseJuridicaAtiva();
+			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
+		
+		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, idUsuarioLogado);
+		
+		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, idUsuarioLogado);
+		
+		return processoBuilder;
 	}
-	
-	private static Long getIdConsultorJuridico(FiltroProcesso filtro, Long idUsuarioLogado) {
+
+
+	private static void commonFilterProcessoAnaliseJuridica(ProcessoBuilder processoBuilder,
+			FiltroProcesso filtro, Long idUsuarioLogado) {
+
+		if (!filtro.isAnaliseJuridica) {
+			
+			return;
+		}		
+		
+		processoBuilder.filtrarAnaliseJuridicaAtiva();
 		
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
 		   (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) || 
 			filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA))) {
+					
+			processoBuilder.filtrarPorIdConsultorJuridico(idUsuarioLogado);
+		}
+	}
+	
+	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+			Long idUsuarioLogado) {
+		
+		if (!filtro.isAnaliseTecnica) {
 			
-			return idUsuarioLogado;
+			return;
 		}
 		
-		return null;
+		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);		
+		
+		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
+				(filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) || 
+						filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA))) {
+			
+			processoBuilder.filtrarPorIdAnalistaTecnico(idUsuarioLogado, filtro.isAnaliseTecnicaOpcional);
+		}
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
 		
-		return commonFilterProcesso(filtro, usuarioSessao.id)
+		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao.id)
 			.comTiposLicencas()
 			.groupByIdProcesso()
 			.groupByNumeroProcesso()
 			.groupByCpfCnpjEmpreendimento()
 			.groupByDenominacaoEmpreendimento()
-			.groupByMunicipioEmpreendimento()			
-			.groupByDataVencimentoPrazoAnalise()
-			.groupByIdAnaliseJuridica()
-			.groupByDataVencimentoPrazoAnaliseJuridica()
-			.groupByRevisaoSolicitadaAnaliseJuridica()
-			.orderByDataVencimentoPrazoAnaliseJuridica()
-			.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
-			.list();	
+			.groupByMunicipioEmpreendimento()
+			.groupByDataVencimentoPrazoAnalise();
+						
+		listWithFilterAnaliseJuridica(processoBuilder, filtro);
+		
+		listWithFilterAnaliseTecnica(processoBuilder, filtro);
+					
+		return processoBuilder
+			.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())				
+			.list();		
 	}
 	
+
+	private static void listWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+		
+		if (!filtro.isAnaliseJuridica) {
+			
+			return;
+		}
+		
+		processoBuilder.groupByIdAnaliseJuridica()
+			.groupByDataVencimentoPrazoAnaliseJuridica()
+			.groupByRevisaoSolicitadaAnaliseJuridica()
+			.orderByDataVencimentoPrazoAnaliseJuridica();
+	}
+	
+	private static void listWithFilterAnaliseTecnica(ProcessoBuilder processoBuilder,
+			FiltroProcesso filtro) {
+		
+		if (!filtro.isAnaliseTecnica) {
+			
+			return;
+		}
+		
+		processoBuilder.groupByIdAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+			.groupByDataVencimentoPrazoAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+			.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+			.orderByDataVencimentoPrazoAnaliseTecnica();
+	}
+
 	public static Long countWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
 		
-		Object qtdeTotalItens = commonFilterProcesso(filtro, usuarioSessao.id)
+		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao.id)
 			.addPessoaEmpreendimentoAlias()
 			.addEstadoEmpreendimentoAlias()
 			.addAnaliseAlias()
-			.addAnaliseJuridicaAlias()
-			.count()
-			.unique();
+			.count();
+						
+		countWithFilterAnaliseJuridica(processoBuilder, filtro);
+		
+		countWithFilterAnaliseTecnica(processoBuilder, filtro);
+			
+		Object qtdeTotalItens = processoBuilder.unique();
 		
 		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
 	}
 	
+	private static void countWithFilterAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+		
+		if (!filtro.isAnaliseTecnica) {
+			
+			return;
+		}
+		
+		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);		
+	}
+
+	private static void countWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+		
+		if (!filtro.isAnaliseJuridica) {
+			
+			return;
+		}
+		
+		processoBuilder.addAnaliseJuridicaAlias();		
+	}
+
 	public Caracterizacao getCaracterizacao() {
 		return caracterizacoes.get(0);
 	}

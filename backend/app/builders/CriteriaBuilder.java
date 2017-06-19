@@ -1,6 +1,7 @@
 package builders;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +15,13 @@ import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
-import org.hibernate.criterion.SimpleExpression;
+import org.hibernate.sql.JoinType;
 
 import play.db.jpa.JPA;
 
 public abstract class CriteriaBuilder<T> {
 	
-	private Map<String, String> aliases;
+	private Map<String, List> aliases;
 	protected Criteria criteria;
 	protected ProjectionList projectionList;
 	private Class<T> clazz;
@@ -40,8 +41,17 @@ public abstract class CriteriaBuilder<T> {
 	
 	protected void addAlias(String table, String alias){
 		
-		aliases.put(table, alias);
+		List value = Arrays.asList(alias);
+		
+		aliases.put(table, value);
 	}
+	
+	protected void addAlias(String table, String alias, JoinType joinType){
+		
+		List value = Arrays.asList(alias, joinType);
+		
+		aliases.put(table, value);
+	}	
 	
 	public CriteriaBuilder(Criteria criteria) {
 		
@@ -52,9 +62,17 @@ public abstract class CriteriaBuilder<T> {
 		
 		if (projectionList != null){
 			
-			for (Entry<String, String> alias : aliases.entrySet()) {
+			for (Entry<String, List> alias : aliases.entrySet()) {
 				
-				criteria.createAlias(alias.getKey(), alias.getValue());
+				List value = alias.getValue();
+				
+				if (value.size() == 2){
+					
+					criteria.createAlias(alias.getKey(), (String) value.get(0), (JoinType) value.get(1));
+				} else {
+					
+					criteria.createAlias(alias.getKey(), (String) value.get(0));
+				}
 			}
 			
 			criteria.setProjection(projectionList)

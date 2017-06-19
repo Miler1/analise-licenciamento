@@ -5,3 +5,7 @@ div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.COORDENADO
 div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.CONSULTOR_JURIDICO", 
     ng-controller='cxEntConsultorJuridicoController as cxEntConsultorJuridico')
     include consultorJuridico/caixa-entrada
+
+div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.COORDENADOR_TECNICO", 
+    ng-controller='cxEntCoordenadorTecnicoController as cxEntCoordenadorTecnico')
+    include coordenadorTecnico/caixa-entrada    

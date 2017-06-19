@@ -50,6 +50,9 @@ public class Analise extends GenericModel {
 	@OneToMany(mappedBy="analise")
 	public List<AnaliseJuridica> analisesJuridica;
 	
+	@OneToMany(mappedBy="analise")
+	public List<AnaliseTecnica> analisesTecnicas;	
+	
 	public Boolean ativo;
 	
 	@Transient

@@ -4,7 +4,10 @@ div
 	filtro-processos(paginacao="consultarProcesso.paginacao",
 		atualizar-lista="consultarProcesso.atualizarListaProcessos",
 		atualizar-paginacao="consultarProcesso.atualizarPaginacao",
-		pesquisar-ao-inicializar="true")
+		pesquisar-ao-inicializar="true",
+		is-analise-juridica="true",
+		is-analise-tecnica="true",
+		is-analise-tecnica-opcional="true")
 
 	h4 Lista de processos
 
@@ -33,7 +36,8 @@ div
 								| {{consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
 								| {{consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
-							td -
+							td(ng-class="{'error-message': processo.dataVencimentoPrazoAnaliseTecnica ? consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA) : false}")
+								| {{processo.dataVencimentoPrazoAnaliseTecnica ? consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica) : '-'}}
 							td
 								span.pull-right
 

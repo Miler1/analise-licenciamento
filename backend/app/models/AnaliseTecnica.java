@@ -97,4 +97,26 @@ public class AnaliseTecnica extends GenericModel {
 	//TODO rever
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;	
+	
+	public AnaliseTecnica(Analise analise) {
+				
+		this.analise = analise;		
+	}
+	
+	public AnaliseTecnica() {
+		
+		super();
+	}
+	
+	public AnaliseTecnica save() {
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
+		this.dataVencimentoPrazo = c.getTime();
+			
+		this.ativo = true;
+		
+		return super.save();
+	}
 }

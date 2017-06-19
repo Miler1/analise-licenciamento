@@ -19,7 +19,8 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 
 caixasEntrada
 	.controller('cxEntCoordenadorJuridicoController', controllers.CxEntCoordenadorJuridicoController)
-	.controller('modalVincularConsutorJuridicoController', controllers.ModalVincularConsutorJuridicoController)
+	.controller('cxEntCoordenadorTecnicoController', controllers.CxEntCoordenadorTecnicoController)
+	.controller('modalVincularConsultorController', controllers.ModalVincularConsultorController)
 	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController);
 
 caixasEntrada

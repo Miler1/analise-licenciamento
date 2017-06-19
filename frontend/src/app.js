@@ -112,6 +112,10 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					return false;
 				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
 					return true;
+			},
+			idPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
 		}, {
 
@@ -128,7 +132,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO;
 			},
 			condicaoTramitacao: app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA,
-			deveFiltrarPorUsuario: true
+			deveFiltrarPorUsuario: true,
+			idPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id;
+			}
 		},
 		{
 
@@ -145,7 +153,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO;
 			},
 			condicaoTramitacao: app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA,
-			deveFiltrarPorUsuario: false
+			deveFiltrarPorUsuario: false,
+			idPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id;
+			}
 		}, {
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
