@@ -1,5 +1,5 @@
 var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaService, $route, $scope, 
-		mensagem, $location, consultorService, documentoAnaliseService) {
+		mensagem, $location, consultorService, documentoAnaliseService, processoService) {
 
 	$rootScope.tituloPagina = 'VALIDAÇÃO PARECER JURÍDICO';
 
@@ -15,6 +15,8 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 
 	validacaoAnaliseJuridica.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
+	validacaoAnaliseJuridica.exibirDadosProcesso = exibirDadosProcesso; 
+	
 	function init() {
 
 		analiseJuridicaService.getAnaliseJuridica($route.current.params.idAnalise)
@@ -86,6 +88,11 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 			]
 		};
 	}
+
+	function exibirDadosProcesso() {
+
+        processoService.visualizarProcesso({ idProcesso:validacaoAnaliseJuridica.analiseJuridica.analise.processo.id});
+    }
 };
 
 exports.controllers.ValidacaoAnaliseJuridicaController = ValidacaoAnaliseJuridicaController;

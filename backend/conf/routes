@@ -14,6 +14,12 @@ GET		/processos/{id}/completo					Processos.getInfoProcesso
 GET		/processos/{idProcesso}						Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
 
+# Ficha do Imovel
+GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
+GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
+GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
+GET		/baixarShapefile							Imoveis.baixarShapefile
+
 # Analise juridica
 
 GET		/analisesJuridicas/parecer					AnalisesJuridicas.findByNumeroProcesso
@@ -48,6 +54,10 @@ GET		/logout										Login.logout
 # Consultores
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
 GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
+
+# Analistas
+POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
+GET		/analistas									Analistas.getAnalistaTecnico
 
 # Condições
 GET		/condicoes									Condicoes.list

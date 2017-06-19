@@ -66,6 +66,7 @@ public class ProcessoSerializer {
 			"empreendimento.proprietarios.pessoa.rg",
 			"empreendimento.localizacao",
 			"empreendimento.imovel.codigo",
+			"empreendimento.imovel.idCar",
 			"empreendimento.imovel.nome",
 			"empreendimento.imovel.limite",
 			"empreendimento.imovel.municipio.nome",
