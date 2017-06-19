@@ -29,6 +29,12 @@ CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO = "Consultor informando não tem perfi
 CONSULTOR_VINCULADO_SUCESSO=Consultor vinculado com sucesso.
 
 #
+# Analistas
+#
+ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO=O Analista informado não tem perfil de analista técnico.
+ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
+
+#
 # Upload
 #
 UPLOAD_ERRO=Ocorreu um erro ao realizar o upload do arquivo.
@@ -50,5 +56,7 @@ ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO=Existem documentos que não foram analis
 TODOS_OS_DOCUMENTOS_VALIDOS=Para deferir uma análise, todos os documentos devem ser validados.
 ANALISE_JURIDICA_CONCLUIDA=Esta análise jurídica já foi concluída e não pode mais ser alterada.
 ANALISE_JURIDICA_INICIADA_SUCESSO=Análise jurídica iniciada.
-
+ANALISE_JURIDICA_SEM_RESULTADO_VALIDACAO=O resultado da validação do parecer não foi definido.
+ANALISE_JURIDICA_CONSULTOR_NAO_INFORMADO=O consultor jurídico não foi informado.
+VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO=Validação do parecer jurídico concluída com sucesso.
 

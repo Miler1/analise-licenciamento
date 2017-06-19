@@ -126,7 +126,10 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
     ctrl.exibirDadosProcesso = function() {
 
-        processoService.visualizarProcesso({ idProcesso:ctrl.processo.id});
+        var copiaProcesso = angular.copy(ctrl.processo);
+        copiaProcesso.idProcesso = copiaProcesso.id;
+
+        processoService.visualizarProcesso(copiaProcesso);
     };
 
     ctrl.init = function() {

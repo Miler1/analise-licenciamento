@@ -16,7 +16,6 @@ div
 					thead
 						tr
 							th.col-md-1 Processo
-							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
 							th.col-md-1 Licenças
@@ -27,7 +26,6 @@ div
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
-							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}

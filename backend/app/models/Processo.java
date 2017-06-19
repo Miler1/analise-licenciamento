@@ -130,6 +130,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
 		
 	}
+	
+	public void vincularAnalista(Usuario analista, Usuario usuarioExecutor) {
+		
+		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this));
+		
+		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
+		
+	}
 
 	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, Long idUsuarioLogado ) {
 		

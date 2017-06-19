@@ -2,7 +2,7 @@ include ../../../../layout/components/panel
 include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
-+resumo-processo('validacaoAnaliseJuridica.analiseJuridica.analise.processo')
++resumo-processo('validacaoAnaliseJuridica.analiseJuridica.analise.processo','validacaoAnaliseJuridica.exibirDadosProcesso()')
 
 section.margin-bottom-md
 
@@ -11,7 +11,7 @@ section.margin-bottom-md
 	div.margin-top-md
 		label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Consultor jurídico:  
 		span#texto_nome_consultor_juridico
-			strong {{usuarioSessao.nome}}
+			strong {{validacaoAnaliseJuridica.analiseJuridica.consultoresJuridicos[0].usuario.pessoa.nome}}
 	hr
 
 	h4 {{validacaoAnaliseJuridica.analiseJuridica.tipoResultadoAnalise.nome}}
@@ -30,14 +30,14 @@ section.margin-bottom-md
 
 		tbody
 
-			tr(ng-repeat="documento in validacaoAnaliseJuridica.analiseJuridica.documentosParecer")
+			tr(ng-repeat="documento in validacaoAnaliseJuridica.analiseJuridica.documentos")
 
 				td {{documento.nome}}
 				td.text-right 
 					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseJuridica.downloadDocumentoAnalise(documento.id)")
 						i.glyphicon.glyphicon-save
 
-	.row(ng-show="!validacaoAnaliseJuridica.analiseJuridica.documentosParecer || validacaoAnaliseJuridica.analiseJuridica.documentosParecer.length == 0")
+	.row(ng-show="!validacaoAnaliseJuridica.analiseJuridica.documentos || validacaoAnaliseJuridica.analiseJuridica.documentos.length == 0")
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
 	
@@ -62,13 +62,12 @@ section.margin-bottom-md
 		.form-group(ng-if="!!validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao")
 			label.control-label(ng-class="{'obrigatorio': validacaoAnaliseJuridica.isParecerNaoValidado()}") 
 				| {{validacaoAnaliseJuridica.isParecerNaoValidado() ? 'Justificativa:' : 'Considerações:'}}
-				
-			div(ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
-				textarea#texto_parecer.form-control(
-					froala,
-					name="parecer",
-					ng-required="validacaoAnaliseJuridica.isParecerNaoValidado()",
-					ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.parecerValidacao")
+
+			div(text-angular, ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.parecerValidacao", name="parecer", required, 
+				ta-text-editor-class="form-control myform2-height", 
+				ta-html-editor-class="form-control myform2-height",
+				ng-required="validacaoAnaliseJuridica.isParecerNaoValidado()",
+				ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
 
 			+inputErrors('formularioValidacao', 'parecer', 'required')
 

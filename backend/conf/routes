@@ -27,6 +27,7 @@ GET		/analisesJuridicas/parecer					AnalisesJuridicas.findByNumeroProcesso
 POST	/analisesJuridicas/iniciar 					AnalisesJuridicas.iniciar
 POST	/analisesJuridicas							AnalisesJuridicas.alterar
 POST	/analisesJuridicas/concluir					AnalisesJuridicas.concluir
+POST	/analisesJuridicas/validarParecer			AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 
@@ -51,6 +52,10 @@ GET		/logout										Login.logout
 # Consultores
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
 GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
+
+# Analistas
+POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
+GET		/analistas									Analistas.getAnalistaTecnico
 
 # Condições
 GET		/condicoes									Condicoes.list

@@ -7,7 +7,7 @@ import utils.SerializerUtil;
 
 public class UsuarioSerializer {
 	
-	public static JSONSerializer getConsultoresJuridico = SerializerUtil.create(
+	public static JSONSerializer getConsultoresEAnalistas = SerializerUtil.create(
 			"id",
 			"pessoa.nome");
 }

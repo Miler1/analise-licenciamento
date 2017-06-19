@@ -1,4 +1,5 @@
-var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaService, $route, $scope, mensagem, $location, consultorService) {
+var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaService, $route, $scope, 
+		mensagem, $location, consultorService, documentoAnaliseService, processoService) {
 
 	$rootScope.tituloPagina = 'VALIDAÇÃO PARECER JURÍDICO';
 
@@ -14,6 +15,8 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 
 	validacaoAnaliseJuridica.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
+	validacaoAnaliseJuridica.exibirDadosProcesso = exibirDadosProcesso; 
+	
 	function init() {
 
 		analiseJuridicaService.getAnaliseJuridica($route.current.params.idAnalise)
@@ -28,6 +31,8 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 			.then(function(response){
 				validacaoAnaliseJuridica.consultores = response.data;
 			});
+
+		$rootScope.$broadcast('atualizarContagemProcessos');
 	}
 
     function downloadDocumentoAnalise(idDocumento) {
@@ -57,7 +62,16 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 
         var analiseJuridica = montarAnaliseJuridica(validacaoAnaliseJuridica.analiseJuridicaValidacao);
 
-		//Aguardando serviço para validar parecer jurídico
+		analiseJuridicaService.validarParecer(analiseJuridica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+				$location.path('aguardando-validacao');
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     }
 
 	function montarAnaliseJuridica(analiseJuridicaValidacao){
@@ -74,6 +88,11 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 			]
 		};
 	}
+
+	function exibirDadosProcesso() {
+
+        processoService.visualizarProcesso({ idProcesso:validacaoAnaliseJuridica.analiseJuridica.analise.processo.id});
+    }
 };
 
 exports.controllers.ValidacaoAnaliseJuridicaController = ValidacaoAnaliseJuridicaController;

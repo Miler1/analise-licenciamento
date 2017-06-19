@@ -22,10 +22,10 @@ import play.db.jpa.GenericModel;
 import utils.Mensagem;
 
 @Entity
-@Table(schema="analise", name="consultor_juridico")
-public class ConsultorJuridico extends GenericModel {
+@Table(schema="analise", name="analista_tecnico")
+public class AnalistaTecnico extends GenericModel {
 	
-	public static final String SEQ = "analise.consultor_juridico_id_seq";
+	public static final String SEQ = "analise.analista_tecnico_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -34,8 +34,8 @@ public class ConsultorJuridico extends GenericModel {
 	
 	@Required
 	@ManyToOne
-	@JoinColumn(name="id_analise_juridica")
-	public AnaliseJuridica analiseJuridica;
+	@JoinColumn(name="id_analise_tecnica")
+	public AnaliseTecnica analiseTecnica;
 	
 	@Required
 	@ManyToOne
@@ -47,36 +47,22 @@ public class ConsultorJuridico extends GenericModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
 	
-	public ConsultorJuridico(){
-		super();
-	}
-	
-	public ConsultorJuridico(AnaliseJuridica analiseJuridica, Usuario usuario) {
+	public AnalistaTecnico(AnaliseTecnica analiseTecnica, Usuario usuario) {
 		
 		super();
-		this.analiseJuridica = analiseJuridica;
+		this.analiseTecnica = analiseTecnica;
 		this.usuario = usuario;
 		this.dataVinculacao = new Date();
 		
-	}
+	}	
 	
-	public static void vincularAnalise(Usuario usuario, AnaliseJuridica analiseJuridica) {
+	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica) {
 		
-		if (!usuario.hasPerfil(Perfil.CONSULTOR_JURIDICO))
-			throw new PermissaoNegadaException(Mensagem.CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO);		
+		if (!usuario.hasPerfil(Perfil.ANALISTA_TECNICO))
+			throw new PermissaoNegadaException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);		
 		
-		ConsultorJuridico consultorJuridico = new ConsultorJuridico(analiseJuridica, usuario);
-		consultorJuridico.save();
+		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
+		analistaTecnico.save();
 		
-	}
-
-	public ConsultorJuridico gerarCopia() {
-		
-		ConsultorJuridico copia = new ConsultorJuridico();
-		
-		copia.usuario = this.usuario;
-		copia.dataVinculacao = this.dataVinculacao;
-		
-		return copia;
 	}
 }

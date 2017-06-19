@@ -22,7 +22,7 @@ mixin resumo-processo(processo, abrirDadosProcesso)
             div
                 label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
                 span#texto_cpf_ou_cnpj
-                    strong {{#{processo}.empreendimento.pessoa.cpf | brCpfCnpj}}
+                    strong {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
             div
                 label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Empreendimento: 
                 span#texto_nome_empreendimento
