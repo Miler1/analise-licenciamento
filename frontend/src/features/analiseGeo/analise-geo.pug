@@ -1,0 +1,61 @@
+
+div
+	section.margin-bottom-md
+
+		header.row
+
+			h3.col-md-6 Análise Geo
+
+			.col-md-6(style="margin-top: 20px; margin-bottom: 10px")
+				.btn-group.pull-right(role="group")
+					button.btn.btn-default
+						i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
+						| legislações
+					button.btn.btn-default
+						i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
+						| dados do processo
+
+
+		.row
+			.col-md-12
+
+				#mapa-restricoes
+				br
+				#lista-restricoes
+					uib-accordion#mapa-restricoes-info
+						div.panel-default(uib-accordion-group, heading="Meus Dados")
+							table.table.table-condensed
+								thead
+									tr
+										th Nome
+										th.text-right #
+
+								tbody
+									tr(ng-repeat='(key, layer) in meusDados.getLayers()')
+										td.col-md-11(ng-if='layer.feature.id === "meu-imovel"') Minha área do imóvel
+										td.col-md-11(ng-if='layer.feature.id === "meu-empreendimento"') Meu empreendimento
+										td.col-md-1.text-right
+											i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
+											i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
+											| &nbsp;&nbsp;
+											i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
+
+						div.panel-default(uib-accordion-group, heading="{{key}}", ng-repeat='(key, groupLayer) in layersRestricoes')
+							table.table.table-condensed
+								thead
+									tr
+										th Nome
+										th.text-right Distância (metros)
+										th.text-right #
+
+								tbody
+									tr(ng-repeat='(key, layer) in groupLayer.getLayers()')
+										td.col-md-6 {{layer.feature.properties.descricaoLayer | textoTruncado: 30:4}}
+										td.col-md-4.text-right {{layer.feature.properties.distancia | number: 3}}
+										td.col-md-2.text-right
+											i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
+											i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
+											| &nbsp;&nbsp;
+											i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, groupLayer.color)')
+											| &nbsp;&nbsp;
+											i.glyphicon.glyphicon-comment(ng-click='adicionarRestricao(layer.feature.id)')

@@ -2,6 +2,7 @@ package models.geocalculo;
 
 import com.vividsolutions.jts.geom.Geometry;
 import groovy.transform.Immutable;
+import models.licenciamento.ImovelEmpreendimento;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -55,7 +56,7 @@ public class Geoserver extends GenericModel {
 	}
 
 
-	public static File verificarRestricoes(Geometry geoEmpreendimento, Geometry geoImovel, String nomeArquivo) throws Exception {
+	public static File verificarRestricoes(Geometry geoEmpreendimento, ImovelEmpreendimento imovel, String nomeArquivo) throws Exception {
 
 		String caminhoFile = Configuracoes.GEOJSON_INCONFORMIDADES_PATH + File.separator + nomeArquivo + ".geojson";
 
@@ -106,15 +107,15 @@ public class Geoserver extends GenericModel {
 
 			}
 
-			if(geoImovel != null){
+			if(imovel != null){
 
-				processarImovel(geoEmpreendimento, geoImovel, featureCollection);
+				processarImovel(geoEmpreendimento, imovel, featureCollection);
 
 			}
 
 			featureCollection.add(getGeoserverFeature(
-					"meuEmpreendimento",
-					"empreendimento",
+					"meu-empreendimento",
+					"Limite do Emmpreendimento",
 					"Empreendimento",
 					0.0,
 					geoEmpreendimento
@@ -133,9 +134,11 @@ public class Geoserver extends GenericModel {
 
 	}
 
-	private static void processarImovel(Geometry geoEmpreendimento, Geometry geoImovel, DefaultFeatureCollection featureCollection) throws IOException, TransformException {
+	private static void processarImovel(Geometry geoEmpreendimento, ImovelEmpreendimento imovel, DefaultFeatureCollection featureCollection) throws IOException, TransformException {
 
-			WFSGeoserver wfsSicar = new WFSGeoserver(Configuracoes.GETCAPABILITIES_GEOSERVER_SICAR);
+		WFSGeoserver wfsSicar = new WFSGeoserver(Configuracoes.GETCAPABILITIES_GEOSERVER_SICAR);
+
+		Geometry geoImovel = imovel.limite;
 
 		FeatureIterator<SimpleFeature> interatorImoveisSobrepostos = wfsSicar.intersects(Configuracoes.GEOSERVER_SICAR_IMOVEL_LAYER, geoImovel).features();
 
@@ -143,23 +146,33 @@ public class Geoserver extends GenericModel {
 
 			SimpleFeature feature = interatorImoveisSobrepostos.next();
 			Geometry featurePolygon = (Geometry) feature.getDefaultGeometry();
-			featureCollection.add(getGeoserverFeature(
-					feature.getID(),
-					"imovel-sobreposto",
-					"Imóvel Sobreposto",
-					GeoHelper.calcularDistancia(feature, geoEmpreendimento),
-					featurePolygon
-					));
+			String codigoImovel = String.valueOf(feature.getAttribute("cod_imovel"));
+
+			if(imovel.codigo.equals(codigoImovel)){
+
+				featureCollection.add(getGeoserverFeature(
+						"meu-imovel",
+						codigoImovel,
+						"Imóvel Análisado",
+						0.0,
+						geoImovel
+				));
+
+			}else{
+				featureCollection.add(getGeoserverFeature(
+						feature.getID(),
+						codigoImovel,
+						"Imóvel Sobreposto",
+						GeoHelper.calcularDistancia(feature, geoEmpreendimento),
+						featurePolygon
+				));
+
+			}
+
 
 		}
 
-		featureCollection.add(getGeoserverFeature(
-				"meuGeoImovel",
-				"imovel",
-				"Imóvel",
-				0.0,
-				geoImovel
-		));
+
 	}
 
 
@@ -169,8 +182,8 @@ public class Geoserver extends GenericModel {
 
 		return getGeoserverFeature(
 				featureProcessada.getID(),
-				configuracaoLayer.descricao,
 				featureProcessada.getAttribute(configuracaoLayer.atributoDescricao).toString(),
+				configuracaoLayer.descricao,
 				distancia,
 				featurePolygon
 

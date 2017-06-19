@@ -13,7 +13,6 @@ POST	/processos/count							Processos.countWithFilter
 GET		/processos/{id}/completo					Processos.getInfoProcesso
 GET		/processos/{idProcesso}						Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
-GET		/processos/{id}/analiseGeo					Processos.getAnaliseGeo
 
 # Analise juridica
 
@@ -24,6 +23,9 @@ POST	/analisesJuridicas/concluir					AnalisesJuridicas.concluir
 POST	/analisesJuridicas/validarParecer			AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
+
+#Analise técnica
+GET		/analisesTecnica/{id}/restricoesGeo				AnalisesTecnica.getRestricoesGeo
 
 # Documentos licenciamento
 
