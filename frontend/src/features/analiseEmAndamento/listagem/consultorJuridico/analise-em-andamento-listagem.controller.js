@@ -45,9 +45,9 @@ var AnaliseEmAndamentoJuridicoListController = function($scope, config, $locatio
 		$location.path('/analise-juridica/' + idAnaliseJuridica.toString());
 	}	
 
-	function exibirDadosProcesso(idProcesso) {
+	function exibirDadosProcesso(processo) {
 
-        processoService.visualizarProcesso({ idProcesso:idProcesso});
+        processoService.visualizarProcesso(processo);
     }	
 };
 

@@ -45,9 +45,9 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 		$location.path('/aguardando-validacao/' + idAnaliseJuridica.toString());
 	}	
 
-	function exibirDadosProcesso(idProcesso) {
+	function exibirDadosProcesso(processo) {
 
-        processoService.visualizarProcesso({ idProcesso:idProcesso});
+        processoService.visualizarProcesso(processo);
     }
 };
 
