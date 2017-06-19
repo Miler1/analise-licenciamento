@@ -2,7 +2,21 @@
 
 	div.row
 
-		//mapa(id-mapa='"mapa-empreendimento"', limite='modalVisualizacaoProcessoCtrl.limite', empreendimento='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.coordenadas', mapa-ctrl='modalVisualizacaoProcessoCtrl.mapa', teste='modalVisualizacaoProcessoCtrl.teste')
+		.col-md-12
+
+			h4 Empreendimento
+
+			blockquote.success
+
+				div.row
+
+					div.col-md-10(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel.codigo")
+						span CAR vinculado: {{modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel.codigo}}
+
+					div.col-md-2(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel.codigo")
+						button.btn.btn-sm.btn-link.pull-right(ng-click="modalVisualizacaoProcessoCtrl.visualizarFichaImovel()") Ficha do Imóvel
+
+	div.row
 
 		div.mapa#mapa-processo
 	div.row
@@ -20,3 +34,7 @@
 						td {{ documento.tipo.nome}}
 						td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
 							i.glyphicon.glyphicon-download-alt
+
+	div.ficha#ficha
+
+		ficha-imovel(imovel='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel')

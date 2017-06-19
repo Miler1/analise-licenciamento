@@ -15,6 +15,12 @@ GET		/processos/{idProcesso}						Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
 GET		/processos/{id}/analiseGeo					Processos.getAnaliseGeo
 
+# Ficha do Imovel
+GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
+GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
+GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
+GET		/baixarShapefile							Imoveis.baixarShapefile
+
 # Analise juridica
 
 GET		/analisesJuridicas/parecer					AnalisesJuridicas.findByNumeroProcesso

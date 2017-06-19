@@ -1,4 +1,4 @@
-var VisualizacaoProcessoController = function ($timeout, $uibModalInstance, processo, $scope, processoService, mensagem, municipioService, documentoLicenciamentoService) {
+var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeout, $uibModalInstance, processo, $scope, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService) {
 
 	var modalCtrl = this;
 
@@ -39,12 +39,37 @@ var VisualizacaoProcessoController = function ($timeout, $uibModalInstance, proc
 	// Métodos referentes ao Mapa da caracterização
 	this.inicializarMapa = function() {
 
-		modalCtrl.map = new L.Map('mapa-processo').setView([-3, -52.497545], 6);
+		modalCtrl.map = new L.Map('mapa-processo', {
+			zoomControl: false,
+			minZoom: 5,
+			maxZoom: 16,
+			scrollWheelZoom: false
+		}).setView([-3, -52.497545], 6);
 
 		/* Termos de uso: http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf */
 		L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 			attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 		}).addTo(modalCtrl.map);
+
+		modalCtrl.map.on('moveend click', function() {
+
+			if (!modalCtrl.map.scrollWheelZoom.enabled()) {
+
+				modalCtrl.map.scrollWheelZoom.enable();
+
+			}
+
+		});
+
+		window.onscroll = function () {
+
+			if (modalCtrl.map.scrollWheelZoom.enabled()) {
+
+				modalCtrl.map.scrollWheelZoom.disable();
+
+			}
+
+		};
 
 		modalCtrl.atualizarMapa();
 	};
@@ -123,6 +148,14 @@ var VisualizacaoProcessoController = function ($timeout, $uibModalInstance, proc
 			modalCtrl.map.addLayer(modalCtrl.localizacao);
 
 		}
+
+	};
+
+	this.visualizarFichaImovel = function() {
+
+		$location.hash('ficha');
+
+		$anchorScroll();
 
 	};
 

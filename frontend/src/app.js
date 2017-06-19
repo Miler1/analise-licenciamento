@@ -246,7 +246,8 @@ utils.services(licenciamento)
 	.add('documentoLicenciamentoService', services.DocumentoLicenciamentoService)
 	.add('documentoAnaliseService', services.DocumentoAnaliseService)
 	.add('analiseJuridicaService', services.AnaliseJuridicaService)
-	.add('uploadService', services.UploadService);
+	.add('uploadService', services.UploadService)
+	.add('imovelService', services.ImovelService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -265,4 +266,5 @@ licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
 	.component('avaliarDocumento', directives.AvaliarDocumento)
 	.component('modalParecerDocumento', directives.ModalParecerDocumento)
-	.component('resumoEmpreendimento', directives.ResumoEmpreendimento);
+	.component('resumoEmpreendimento', directives.ResumoEmpreendimento)
+	.component('fichaImovel', directives.FichaImovel);

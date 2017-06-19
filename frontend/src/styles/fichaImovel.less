@@ -1,0 +1,83 @@
+@import "variaveis.less";
+
+#fichaImovel {
+
+	.row.tabset{
+		max-height: 400px;
+		min-height: 400px;
+		overflow-x: auto;
+	}
+
+	#ficha-imovel-demonstrativo{
+
+		.ativo, .Ativo{
+			color: green;
+		}
+
+		.pendente, .Pendente {
+			color: #D9A300;
+		}
+
+		.cancelado, .Cancelado {
+			color: red;
+		}
+
+		.excedente{
+			color: #329C21;
+		}
+
+		.passivo {
+
+			color: red;
+		}
+
+		.titulo {
+
+			margin-top: 20px;
+			border-bottom: 2px solid #DFDFDF;
+			font-weight: bold;
+
+			.titulo-situacao {
+
+				color: #333;
+			}
+		}
+
+		.demonstrativo-section{
+
+			page-break-inside: avoid;
+		}
+
+		.item{
+			padding: 0px;
+			color: @cinza-escuro;
+			font-weight: normal;
+			border-bottom: 2px dotted #EEEEEE;
+			background-color: white;
+		}
+
+		.item-label {
+
+			color: @cinza-escuro;
+			font-weight: bold;
+			font-size: 12px;
+		}
+
+		.titulo-table {
+
+			background-color: #CCCDD2;
+			font-weight: bold;
+
+		}
+
+		.subtitulo {
+
+			margin-top: 5px;
+			font-size: 11pt;
+			color: #666;
+			font-weight: bold;
+
+		}
+	}
+
+}
