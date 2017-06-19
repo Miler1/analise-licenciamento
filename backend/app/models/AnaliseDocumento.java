@@ -26,7 +26,7 @@ public class AnaliseDocumento extends GenericModel implements Identificavel {
 	public Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="id_analise_juridica")
+	@JoinColumn(name="id_analise_juridica", nullable=true)
 	public AnaliseJuridica analiseJuridica;
 	
 	
@@ -38,6 +38,9 @@ public class AnaliseDocumento extends GenericModel implements Identificavel {
 	@JoinColumn(name="id_documento")
 	public DocumentoLicenciamento documento;
 	
+	@ManyToOne
+	@JoinColumn(name="id_analise_tecnica", nullable=true)
+	public AnaliseTecnica analiseTecnica;	
 	
 	public void update(AnaliseDocumento novaAnalise) {
 		
