@@ -31,8 +31,8 @@ POST	/analisesJuridicas/validarParecer			AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 
-# Analise tecnica
-
+#Analise técnica
+GET		/analisesTecnica/{id}/restricoesGeo				AnalisesTecnica.getRestricoesGeo
 POST	/analisesTecnicas/iniciar 					AnalisesTecnicas.iniciar
 
 # Documentos licenciamento
