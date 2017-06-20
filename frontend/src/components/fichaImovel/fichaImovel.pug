@@ -1,4 +1,4 @@
-div(uib-accordion class="accordion")
+div(uib-accordion class="accordion", ng-if="$ctrl.imovel")
 	div(uib-accordion-group class="panel-default" is-open="$ctrl.isOpen")
 		uib-accordion-heading(ng-click="$ctrl.isOpen=!$ctrl.isOpen")
 			div(role="button")
