@@ -113,6 +113,22 @@ public class AnaliseTecnica extends GenericModel {
 		return super.save();
 	}
 	
+	public void iniciar(Usuario usuarioExecutor) {
+		
+		if(this.dataInicio == null) {
+			
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			
+			this.dataInicio = c.getTime();
+			
+			this._save();
+			
+		}
+		
+		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
+	}	
+	
 	//TODO - Fazer o restante do update, no momento só está chamando o método de salvar os documentos
 	public void update(AnaliseTecnica novaAnalise) {
 				

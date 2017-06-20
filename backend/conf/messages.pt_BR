@@ -61,3 +61,7 @@ ANALISE_JURIDICA_CONSULTOR_NAO_INFORMADO=O consultor jurídico não foi informad
 VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO=Validação do parecer jurídico concluída com sucesso.
 ANALISE_JURIDICA_SEM_PARECER_VALIDACAO=O parecer da validação não foi informado.
 
+#
+# Analise tecnica
+#
+ANALISE_TECNICA_INICIADA_SUCESSO=Análise técnica iniciada.

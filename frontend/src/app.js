@@ -184,7 +184,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path() === '/aguardando-validacao';
+				return $location.path().indexOf('/aguardando-validacao') > -1;
 			},
 			visivel: function() {
 
@@ -306,7 +306,9 @@ utils.services(licenciamento)
 	.add('analiseJuridicaService', services.AnaliseJuridicaService)
 	.add('uploadService', services.UploadService)
 	.add('imovelService', services.ImovelService)
-	.add('analistaService', services.AnalistaService);
+	.add('analistaService', services.AnalistaService)
+	.add('analiseTecnicaService', services.AnaliseTecnicaService);
+
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
