@@ -112,4 +112,46 @@ public class AnaliseTecnica extends GenericModel {
 		
 		return super.save();
 	}
+	
+	//TODO - Fazer o restante do update, no momento só está chamando o método de salvar os documentos
+	public void update(AnaliseTecnica novaAnalise) {
+				
+		updateDocumentos(novaAnalise.documentos);		
+				
+		this._save();		
+	}
+	
+	private void updateDocumentos(List<Documento> novosDocumentos) {
+		
+		TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_TECNICA);
+		
+		if (this.documentos == null)
+			this.documentos = new ArrayList<>();
+		
+		Iterator<Documento> docsCadastrados = documentos.iterator();
+		List<Documento> documentosDeletar = new ArrayList<>();
+		
+		while (docsCadastrados.hasNext()) {
+			
+			Documento docCadastrado = docsCadastrados.next();
+			
+			if (ListUtil.getById(docCadastrado.id, novosDocumentos) == null) {
+				
+				docsCadastrados.remove();
+				documentosDeletar.add(docCadastrado);
+			}
+		}
+		
+		for (Documento novoDocumento : novosDocumentos) {
+			
+			if (novoDocumento.id == null) {
+				
+				novoDocumento.tipo = tipo;
+				novoDocumento.save();
+				this.documentos.add(novoDocumento);
+			}
+		}
+		
+		ModelUtil.deleteAll(documentosDeletar);
+	}
 }
