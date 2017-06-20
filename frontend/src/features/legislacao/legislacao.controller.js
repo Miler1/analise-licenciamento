@@ -70,13 +70,13 @@ var LegislacaoController = function($scope, $rootScope) {
 			htmlLei = $("div[title='" + lei.titulo + "']").html();
 		}
 
-		if($scope.criteria && $scope.criteria.length > 3) {
-			htmlLei = htmlLei.replace('<highlighted>', '');
-			htmlLei = htmlLei.replace('</highlighted>', '');
+		if($scope.criteria && $scope.criteria.length >= 3) {
+			htmlLei = htmlLei.replace(new RegExp('<highlighted>', 'g'), '');
+			htmlLei = htmlLei.replace(new RegExp('</highlighted>', 'g'), '');
 			htmlLei = htmlLei.replace(new RegExp($scope.criteria, 'gi'), '<highlighted>' + $scope.criteria + '</highlighted>');
 		} else {
-			htmlLei = htmlLei.replace('<highlighted>', '');
-			htmlLei = htmlLei.replace('</highlighted>', '');
+			htmlLei = htmlLei.replace(new RegExp('<highlighted>', 'g'), '');
+			htmlLei = htmlLei.replace(new RegExp('</highlighted>', 'g'), '');
 		}
 
 		divLei.html('');

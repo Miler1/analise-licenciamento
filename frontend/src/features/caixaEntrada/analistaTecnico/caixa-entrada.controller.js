@@ -42,16 +42,7 @@ var CxEntAnalistaTecnicoController = function($scope, config, consultorService, 
 
 	function iniciarAnalise(idAnaliseTecnica) {
 
-		analiseJuridicaService.iniciar({ id : idAnaliseTecnica })
-			.then(function(response){
-
-				$rootScope.$broadcast('atualizarContagemProcessos');
-				$location.path('/analise-tecnica/' + idAnaliseTecnica.toString());
-			
-			}, function(error){
-
-				mensagem.error(error.data.texto);
-			});
+		//TODO Iniciar a análise
 	}
 
 	function visualizarProcesso(processo) {

@@ -6,7 +6,10 @@ var FiltroProcessos = {
 		atualizarLista: '=',
 		atualizarPaginacao: '=',
 		condicaoTramitacao: '<',
-		pesquisarAoInicializar: '<'
+		pesquisarAoInicializar: '<',
+		isAnaliseJuridica: '<',
+		isAnaliseTecnica: '<',
+		isAnaliseTecnicaOpcional: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -79,6 +82,10 @@ var FiltroProcessos = {
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
 			}
+
+			ctrl.filtro.isAnaliseJuridica = !!ctrl.isAnaliseJuridica;
+			ctrl.filtro.isAnaliseTecnica = !!ctrl.isAnaliseTecnica;
+			ctrl.filtro.isAnaliseTecnicaOpcional = !!ctrl.isAnaliseTecnicaOpcional;
 		}
 
 		this.limparFiltros = function(){

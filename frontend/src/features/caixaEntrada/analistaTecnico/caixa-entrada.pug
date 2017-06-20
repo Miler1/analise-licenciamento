@@ -7,7 +7,8 @@ div
 		atualizar-lista="cxEntAnalistaTecnico.atualizarListaProcessos",
 		atualizar-paginacao="cxEntAnalistaTecnico.atualizarPaginacao",
 		condicao-tramitacao="cxEntAnalistaTecnico.condicaoTramitacao",
-		pesquisar-ao-inicializar="true")
+		pesquisar-ao-inicializar="true",
+		is-analise-tecnica="true")
 
 	h4 Lista de processos
 
@@ -25,12 +26,12 @@ div
 							th.col-md-2 Município
 							th.col-md-2 Licenças
 							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise jurídica
+							th.col-md-1 Prazo análise técnica
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntAnalistaTecnico.processos")
 							td
-								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseJuridica}")
+								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -38,8 +39,8 @@ div
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE)}") 
 								| {{cxEntAnalistaTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
-							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
-								| {{cxEntAnalistaTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
+							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseTecnica, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{cxEntAnalistaTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica)}}
 							td
 								span.pull-right
 
@@ -49,7 +50,7 @@ div
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="cxEntAnalistaTecnico.iniciarAnalise(processo.idAnaliseJuridica)")
+												a(ng-click="cxEntAnalistaTecnico.iniciarAnalise(processo.idAnaliseTecnica)")
 													i.glyphicon.glyphicon-ok-circle
 													span Iniciar análise
 											li

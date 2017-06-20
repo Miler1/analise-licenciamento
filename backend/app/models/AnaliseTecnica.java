@@ -1,7 +1,9 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,9 +23,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang.StringUtils;
+
+import exceptions.ValidacaoException;
+import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
+import utils.ListUtil;
+import utils.Mensagem;
+import utils.ModelUtil;
 
 @Entity
 @Table(schema="analise", name="analise_tecnica")
@@ -101,5 +111,47 @@ public class AnaliseTecnica extends GenericModel {
 		this.ativo = true;
 		
 		return super.save();
-	}	
+	}
+	
+	//TODO - Fazer o restante do update, no momento só está chamando o método de salvar os documentos
+	public void update(AnaliseTecnica novaAnalise) {
+				
+		updateDocumentos(novaAnalise.documentos);		
+				
+		this._save();		
+	}
+	
+	private void updateDocumentos(List<Documento> novosDocumentos) {
+		
+		TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_TECNICA);
+		
+		if (this.documentos == null)
+			this.documentos = new ArrayList<>();
+		
+		Iterator<Documento> docsCadastrados = documentos.iterator();
+		List<Documento> documentosDeletar = new ArrayList<>();
+		
+		while (docsCadastrados.hasNext()) {
+			
+			Documento docCadastrado = docsCadastrados.next();
+			
+			if (ListUtil.getById(docCadastrado.id, novosDocumentos) == null) {
+				
+				docsCadastrados.remove();
+				documentosDeletar.add(docCadastrado);
+			}
+		}
+		
+		for (Documento novoDocumento : novosDocumentos) {
+			
+			if (novoDocumento.id == null) {
+				
+				novoDocumento.tipo = tipo;
+				novoDocumento.save();
+				this.documentos.add(novoDocumento);
+			}
+		}
+		
+		ModelUtil.deleteAll(documentosDeletar);
+	}
 }

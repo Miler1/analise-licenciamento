@@ -146,6 +146,14 @@ public class AnaliseJuridica extends GenericModel {
 		}		
 	}
 	
+	private void validarParecerValidacao() {
+		
+		if (StringUtils.isEmpty(parecerValidacao)) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_SEM_PARECER_VALIDACAO);
+		}		
+	}	
+	
 	private void updateDocumentos(List<Documento> novosDocumentos) {
 		
 		TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_JURIDICA);
@@ -395,13 +403,11 @@ public class AnaliseJuridica extends GenericModel {
 			
 			if (tipoResultadoAnalise.id == tipoResultadoAnalise.DEFERIDO) {
 				
-				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecultor);								
-
-				//TODO criar a análise técnica
 				AnaliseTecnica analiseTecnica = new AnaliseTecnica();
-				analiseTecnica.analise = Analise.findByAnaliseJuridica(novaAnaliseJuridica.id);
+				analiseTecnica.analise = AnaliseJuridica.this.analise;
 				analiseTecnica.save();
 				
+				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecultor);
 			}
 		}
 	}
@@ -415,7 +421,7 @@ public class AnaliseJuridica extends GenericModel {
 		@Override
 		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
 			
-			validarTipoResultadoValidacao();
+			validarAnaliseJuridica();
 			
 			ativo = false;
 			
@@ -426,6 +432,13 @@ public class AnaliseJuridica extends GenericModel {
 			copia._save();
 			
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_JURIDICO, usuarioExecultor);
+		}
+
+		private void validarAnaliseJuridica() {
+			
+			validarTipoResultadoValidacao();
+			
+			validarParecerValidacao();
 		}
 	}
 	
@@ -468,6 +481,8 @@ public class AnaliseJuridica extends GenericModel {
 		private void validarAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica) {
 			
 			validarTipoResultadoValidacao();
+			
+			validarParecerValidacao();
 			
 			if (novaAnaliseJuridica.consultoresJuridicos == null || novaAnaliseJuridica.consultoresJuridicos.isEmpty()) {
 				

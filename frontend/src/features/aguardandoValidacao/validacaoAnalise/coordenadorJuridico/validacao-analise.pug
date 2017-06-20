@@ -60,13 +60,13 @@ section.margin-bottom-md
 
 		
 		.form-group(ng-if="!!validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao")
-			label.control-label(ng-class="{'obrigatorio': validacaoAnaliseJuridica.isParecerNaoValidado()}") 
+			label.control-label(ng-class="{'obrigatorio': validacaoAnaliseJuridica.isObrigatorio()}") 
 				| {{validacaoAnaliseJuridica.isParecerNaoValidado() ? 'Justificativa:' : 'Considerações:'}}
 
-			div(text-angular, ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.parecerValidacao", name="parecer", required, 
+			div(text-angular, ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.parecerValidacao", name="parecer",
 				ta-text-editor-class="form-control myform2-height", 
 				ta-html-editor-class="form-control myform2-height",
-				ng-required="validacaoAnaliseJuridica.isParecerNaoValidado()",
+				ng-required="validacaoAnaliseJuridica.isObrigatorio()",
 				ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
 
 			+inputErrors('formularioValidacao', 'parecer', 'required')

@@ -1,8 +1,9 @@
-var ModalVincularConsutorJuridicoController = function ($uibModalInstance, mensagem, processos, consultores, $scope) {
+var ModalVincularConsultorController = function ($uibModalInstance, mensagem, processos, consultores, $scope, tipo) {
 
 	var modalCtrl = this;
 
 	modalCtrl.processos = processos;
+	modalCtrl.tipo = tipo;
 
 	if (consultores){
 
@@ -31,4 +32,4 @@ var ModalVincularConsutorJuridicoController = function ($uibModalInstance, mensa
 
 };
 
-exports.controllers.ModalVincularConsutorJuridicoController = ModalVincularConsutorJuridicoController;
+exports.controllers.ModalVincularConsultorController = ModalVincularConsultorController;
