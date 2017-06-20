@@ -84,6 +84,12 @@ var LegislacaoController = function($scope, $rootScope) {
 
 	};
 
+	$scope.limparFiltro = function(){
+
+		$scope.criteria = undefined;
+		
+	};
+
 };
 
 exports.controllers.LegislacaoController = LegislacaoController;
