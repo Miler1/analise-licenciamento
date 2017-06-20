@@ -31,6 +31,10 @@ POST	/analisesJuridicas/validarParecer			AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 
+# Analise tecnica
+
+POST	/analisesTecnicas/iniciar 					AnalisesTecnicas.iniciar
+
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
