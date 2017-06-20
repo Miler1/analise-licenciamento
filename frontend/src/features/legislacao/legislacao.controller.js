@@ -49,8 +49,6 @@ var LegislacaoController = function($scope, $rootScope) {
 
 		}
 
-		window.find($scope.criteria);
-
 	};
 
 	$scope.voltarAoTopo = function(){
