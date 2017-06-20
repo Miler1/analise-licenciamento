@@ -306,7 +306,9 @@ utils.services(licenciamento)
 	.add('analiseJuridicaService', services.AnaliseJuridicaService)
 	.add('uploadService', services.UploadService)
 	.add('imovelService', services.ImovelService)
-	.add('analistaService', services.AnalistaService);
+	.add('analistaService', services.AnalistaService)
+	.add('analiseTecnicaService', services.AnaliseTecnicaService);
+
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

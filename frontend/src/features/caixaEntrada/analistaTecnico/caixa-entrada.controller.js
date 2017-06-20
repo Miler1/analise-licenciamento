@@ -1,4 +1,4 @@
-var CxEntAnalistaTecnicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope, processoService) {
+var CxEntAnalistaTecnicoController = function($scope, config, $location, analiseTecnicaService, mensagem, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
 
@@ -42,7 +42,16 @@ var CxEntAnalistaTecnicoController = function($scope, config, consultorService, 
 
 	function iniciarAnalise(idAnaliseTecnica) {
 
-		//TODO Iniciar a análise
+		analiseTecnicaService.iniciar({ id : idAnaliseTecnica })
+			.then(function(response){
+
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				$location.path('/analise-tecnica/' + idAnaliseTecnica.toString());
+			
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
 	}
 
 	function visualizarProcesso(processo) {
