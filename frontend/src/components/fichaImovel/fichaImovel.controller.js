@@ -11,6 +11,10 @@ var FichaImovel = {
 
 		$timeout(function () {
 
+			if(!ctrl.imovel) {
+				return;
+			}
+
 			imovelService.getImovelDadosCadastrante(ctrl.imovel.idCar)
 				.then(function(response){
 
@@ -34,19 +38,16 @@ var FichaImovel = {
 					$('#ficha-imovel-dominio').html(response.data);
 
 				});
+						
+			$scope.$evalAsync(function(){
 
-			imovelService.getImovelDadosGeo(ctrl.imovel.idCar)
-				.then(function(response){
+				imovelService.getImovelDadosGeo(ctrl.imovel.idCar)
+					.then(function(response){
 
-					ctrl.fichaImovelGeo = response.data;
+						ctrl.fichaImovelGeo = response.data;
 
-					if(!$scope.$$phase) {
-
-						$scope.$apply();
-
-					}
-
-				}.bind(this));
+					}.bind(this));
+			});
 
 
 			imovelService.getImovelDemonstrativo(ctrl.imovel.codigo)
