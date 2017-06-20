@@ -7,7 +7,7 @@ form(name="formVincularConsultor", novalidate)
 			span(aria-hidden='true') ×
 			span.sr-only Fechar
 
-		h3.modal-title Vincular consultor jurídico
+		h3.modal-title Vincular {{ modalCtrl.tipo }}
 
 	div.modal-body
 
@@ -30,10 +30,10 @@ form(name="formVincularConsultor", novalidate)
 
 		.row.form-group
 			.col-md-12
-				label.control-label.obrigatorio Consultor jurídico:
+				label.control-label.obrigatorio.capitalize {{ modalCtrl.tipo }}:
 				select.form-control(ng-model="modalCtrl.idConsultorSelecionado", name="selectConsultor", required,
 									ng-options="consultor.id as consultor.pessoa.nome for consultor in modalCtrl.consultores")
-					option(value="") Selecione o consultor jurídico
+					option(value="") Selecione o {{ modalCtrl.tipo }}
 
 				+inputErrors('formVincularConsultor', 'selectConsultor', 'required')
 
@@ -44,4 +44,4 @@ form(name="formVincularConsultor", novalidate)
 			| &nbsp;Fechar
 		button.btn.btn-success.pull-right(type="submit" ng-click="modalCtrl.vincular()")
 			i.glyphicon.glyphicon-share
-			| &nbsp;Vincular consultor
+			| &nbsp;Vincular {{ modalCtrl.tipo }}

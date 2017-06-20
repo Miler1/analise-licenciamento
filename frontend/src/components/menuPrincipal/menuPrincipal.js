@@ -40,6 +40,14 @@ var MenuPrincipal = {
 			else
 				filtro.filtrarPorUsuario = item.deveFiltrarPorUsuario;
 
+			if (_.isFunction(item.idPerfilSelecionado)){
+
+				var idPerfilSelecionado = item.idPerfilSelecionado();
+
+				filtro.isAnaliseJuridica = isAnaliseJuridica(idPerfilSelecionado);
+				filtro.isAnaliseTecnica = isAnaliseTecnica(idPerfilSelecionado);
+			}
+
 			processoService.getProcessosCount(filtro)
 				.then(function(response){
 					 item.totalItens = response.data;
@@ -47,7 +55,18 @@ var MenuPrincipal = {
 				.catch(function(){
 					mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
 				});
+		}
 
+		function isAnaliseJuridica(idPerfilSelecionado) {
+
+			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_JURIDICO || 
+				   idPerfilSelecionado === app.utils.Perfis.CONSULTOR_JURIDICO;
+		}
+
+		function isAnaliseTecnica(idPerfilSelecionado) {
+
+			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO || 
+				   idPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO;
 		}
 
 		$scope.$on('atualizarContagemProcessos', function(event){

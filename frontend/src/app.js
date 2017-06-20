@@ -17,7 +17,7 @@ var licenciamento = angular.module("licenciamento", [
 	"textAngular"
 ]);
 
-licenciamento.config(["$routeProvider", function ($routeProvider) {
+licenciamento.config(["$routeProvider", function($routeProvider) {
 
 	$routeProvider
 		.when("/", {
@@ -32,25 +32,25 @@ licenciamento.config(["$routeProvider", function ($routeProvider) {
 			redirectTo: "/"
 		});
 
-}]).config(['growlProvider', function (growlProvider) {
+}]).config(['growlProvider', function(growlProvider) {
 
 	growlProvider.globalDisableCountDown(false)
 		.globalTimeToLive(5000);
 
-}]).config(function ($provide) {
+}]).config(function($provide){
 
-	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) {
+	$provide.decorator('taOptions',['taRegisterTool','$delegate', function(taRegisterTool, taOptions){
 
 		taOptions.toolbar = [
-			['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p',
-				'bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear',
-				'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent', 'insertLink']
+			['h1','h2','h3','h4','h5','h6','p',
+			'bold','italics','underline','strikeThrough','ul','ol','redo','undo','clear',
+			'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull','indent', 'outdent','insertLink']
 		];
 
 		return taOptions;
 	}]);
 
-	$provide.decorator('taTranslations', ['$delegate', function (taTranslations) {
+	$provide.decorator('taTranslations', ['$delegate', function(taTranslations) {
 
 		taTranslations.justifyLeft.tooltip = 'Alinhar a esquerda';
 		taTranslations.justifyCenter.tooltip = 'Centralizar';
@@ -73,19 +73,19 @@ licenciamento.config(["$routeProvider", function ($routeProvider) {
 
 
 
-}).run(function (amMoment) {
+}).run(function(amMoment) {
 	amMoment.changeLocale('pt-br');
 });
 
 licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
-	function ($scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
+	function($scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
 
 		$rootScope.location = $location;
 		$rootScope.confirmacao = {};
 		$rootScope.mensagens = app.utils.Mensagens;
 
 		$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
-		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;		
+		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
 
 		if (!$rootScope.usuarioSessao) {
 			window.location = $rootScope.config.baseUrl;
@@ -103,22 +103,18 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $location.path() === '/caixa-entrada' || $location.path() === '/';
 			},
-			visivel: function () {
+			visivel: function(){
 
 				return true;
 			},
-			condicaoTramitacao: function () {
-				
-				if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+			condicaoTramitacao: function() {
+
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
-				
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
-				
-				else if([app.utils.Perfis.GERENTE_TECNICO,
-							app.utils.Perfis.COORDENADOR_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA;
-				
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;				
+				else if([app.utils.Perfis.GERENTE_TECNICO,							app.utils.Perfis.COORDENADOR_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA;				
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 			},
@@ -128,11 +124,15 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 						app.utils.Perfis.COORDENADOR_TECNICO, 
 						app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
 					return false;
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
 					return true;
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
 					return true;
 
+			},
+			idPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
 		}, {
 
@@ -150,12 +150,12 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				}
 			},
 			countItens: true,
-			estaSelecionado: function () {
+			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-juridica') > -1 ||
 					$location.path().indexOf('/analise-tecnica') > -1;
 			},
-			visivel: function () {
+			visivel: function() {
 
 				return [app.utils.Perfis.CONSULTOR_JURIDICO,
 				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
@@ -167,8 +167,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
 			},
+			deveFiltrarPorUsuario: true,
+			idPerfilSelecionado: function(){
 
-			deveFiltrarPorUsuario: true
+				return $rootScope.usuarioSessao.perfilSelecionado.id;
+			}
 		},
 		{
 
@@ -183,7 +186,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $location.path() === '/aguardando-validacao';
 			},
-			visivel: function () {
+			visivel: function() {
 
 				return [app.utils.Perfis.GERENTE_TECNICO,
 				app.utils.Perfis.COORDENADOR_TECNICO,
@@ -198,7 +201,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 			},
-			deveFiltrarPorUsuario: false
+			deveFiltrarPorUsuario: false,
+			idPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id;
+			}
 		}, {
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
@@ -210,7 +217,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $location.path() === '/consultar-processo';
 			},
-			visivel: function () {
+			visivel: function(){
 
 				return true;
 			}
@@ -229,7 +236,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 		});
 
-		$scope.$on("$routeChangeError", function (event, rotaAtual, rotaAnterior, error) {
+		$scope.$on("$routeChangeError", function(event, rotaAtual, rotaAnterior, error) {
 
 			if (error.data.texto) {
 
@@ -252,7 +259,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 	}]);
 
 licenciamento.constant('config', {
-	BASE_URL: function () {
+	BASE_URL: function() {
 		if (LICENCIAMENTO_CONFIG.configuracoes.baseURL === "/")
 			return LICENCIAMENTO_CONFIG.configuracoes.baseURL;
 		else
@@ -298,15 +305,16 @@ utils.services(licenciamento)
 	.add('documentoAnaliseService', services.DocumentoAnaliseService)
 	.add('analiseJuridicaService', services.AnaliseJuridicaService)
 	.add('uploadService', services.UploadService)
-	.add('imovelService', services.ImovelService);
+	.add('imovelService', services.ImovelService)
+	.add('analistaService', services.AnalistaService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
 	.add('capitalize', filters.Capitalize);
 
 utils.directives(licenciamento)
-	.add('enter', directives.Enter, { link: directives.Enter.link, require: 'ngModel' })
-	.add('mascara', directives.Mascara, { link: directives.Mascara.link, require: 'ngModel' });
+	.add('enter', directives.Enter, {link: directives.Enter.link, require: 'ngModel'})
+	.add('mascara', directives.Mascara, {link: directives.Mascara.link, require: 'ngModel'});
 
 licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)

@@ -23,8 +23,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import exceptions.ValidacaoException;
+import org.apache.commons.lang.StringUtils;
 
+import exceptions.ValidacaoException;
+import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;

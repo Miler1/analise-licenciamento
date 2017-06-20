@@ -395,13 +395,11 @@ public class AnaliseJuridica extends GenericModel {
 			
 			if (tipoResultadoAnalise.id == tipoResultadoAnalise.DEFERIDO) {
 				
-				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecultor);								
-
-				//TODO criar a análise técnica
 				AnaliseTecnica analiseTecnica = new AnaliseTecnica();
-				analiseTecnica.analise = Analise.findByAnaliseJuridica(novaAnaliseJuridica.id);
+				analiseTecnica.analise = AnaliseJuridica.this.analise;
 				analiseTecnica.save();
 				
+				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecultor);
 			}
 		}
 	}

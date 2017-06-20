@@ -9,8 +9,10 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.type.StringType;
 
+import builders.ProcessoBuilder.FiltroProcesso;
 import models.Processo;
 import utils.IlikeNoAccents;
 
@@ -28,7 +30,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
 	private static final String OBJETO_TRAMITAVEL_ALIAS = "obt";
 	private static final String CONSULTOR_JURIDICO_ALIAS = "coj";
-	
+	private static final String ANALISE_TECNICA_ALIAS = "ant";
+	private static final String ANALISTA_TECNICO_ALIAS = "att";
 	
 	public ProcessoBuilder addEmpreendimentoAlias() {
 		
@@ -72,6 +75,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	}
 	
 	public ProcessoBuilder addAnaliseJuridicaAlias() {
+		
+		addAnaliseAlias();
 		
 		addAlias(ANALISE_ALIAS+".analisesJuridica", ANALISE_JURIDICA_ALIAS);
 		
@@ -123,11 +128,44 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	
 	public ProcessoBuilder addConsultorJuridicoAlias() {
 		
+		addAnaliseJuridicaAlias();
+		
 		addAlias(ANALISE_JURIDICA_ALIAS+".consultoresJuridicos", CONSULTOR_JURIDICO_ALIAS);
 		
 		return this;
-	}	
+	}
 	
+	public ProcessoBuilder addAnaliseTecnicaAlias(boolean isLeftOuterJoin) {
+		
+		addAnaliseAlias();
+		
+		if (isLeftOuterJoin){
+			
+			addAlias(ANALISE_ALIAS+".analisesTecnicas", ANALISE_TECNICA_ALIAS, JoinType.LEFT_OUTER_JOIN);
+			
+		} else {
+			
+			addAlias(ANALISE_ALIAS+".analisesTecnicas", ANALISE_TECNICA_ALIAS);
+		}
+		
+		return this;
+	}
+	
+	public ProcessoBuilder addAnalistaTecnicoAlias(boolean isLeftOuterJoin) {
+		
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
+		
+		if (isLeftOuterJoin){
+			
+			addAlias(ANALISE_TECNICA_ALIAS+".analistasTecnicos", ANALISTA_TECNICO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+			
+		} else {
+			
+			addAlias(ANALISE_TECNICA_ALIAS+".analistasTecnicos", ANALISTA_TECNICO_ALIAS);
+		}
+		
+		return this;
+	}	
 	
 	public ProcessoBuilder comTiposLicencas(){
 		
@@ -219,6 +257,31 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		return this;
 	}	
+	
+	
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnica(boolean isLeftOuterJoin) {
+		
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
+		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseTecnica"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(boolean isLeftOuterJoin) {
+		
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
+		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".revisaoSolicitada").as("revisaoSolicitadaAnaliseTecnica"));
+		
+		return this;	
+	}
+	
+	public ProcessoBuilder groupByIdAnaliseTecnica(boolean isLeftOuterJoin) {
+		
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
+		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".id").as("idAnaliseTecnica"));
+		
+		return this;
+	}
 	
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
@@ -325,7 +388,37 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		}
 		
 		return this;
-	}		
+	}
+	
+	public ProcessoBuilder filtrarPorIdAnalistaTecnico(Long idAnalistaTecnico, boolean isLeftOuterJoin) {
+		
+		if (idAnalistaTecnico != null) {
+			
+			addAnalistaTecnicoAlias(isLeftOuterJoin);
+			addRestricton(Restrictions.eq(ANALISTA_TECNICO_ALIAS+".usuario.id", idAnalistaTecnico));
+		}
+		
+		return this;		
+	}
+	
+	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(boolean isLeftOuterJoin) {
+		
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
+		
+		if (isLeftOuterJoin) {
+			
+			addRestricton(Restrictions.or(
+					Restrictions.isNull(ANALISE_TECNICA_ALIAS+".ativo"),
+					Restrictions.eq(ANALISE_TECNICA_ALIAS+".ativo", true)
+			));
+			
+		} else {
+			
+			addRestricton(Restrictions.eq(ANALISE_TECNICA_ALIAS+".ativo", true));
+		}
+		
+		return this;		
+	}
 	
 	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
 		
@@ -333,6 +426,13 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		return this;
 	}		
+	
+	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseTecnica() {
+		
+		addOrder(Order.asc("dataVencimentoPrazoAnaliseTecnica"));
+		
+		return this;		
+	}
 	
 	public ProcessoBuilder count() {
 		
@@ -354,6 +454,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Date periodoFinal;
 		public Long paginaAtual;
 		public Long itensPorPagina;
+		public boolean isAnaliseJuridica;
+		public boolean isAnaliseTecnica;
+		public boolean isAnaliseTecnicaOpcional;
 		
 		public FiltroProcesso() {
 			
