@@ -1,0 +1,46 @@
+div.modal.fade(id="modalLegislacao", data-backdrop="static", data-keyboard="true", tabindex="-1", role="dialog", aria-hidden="true")
+
+	div.modal-dialog.modal-lg
+
+		div.modal-content
+
+			div.modal-header
+
+				button.close(type='button', data-dismiss='modal')
+					span(aria-hidden='true') ×
+					span.sr-only Fechar
+
+				h4.modal-title Consulta à legislação
+
+			div.modal-body
+				include leis/leis
+
+				div(ng-controller='legislacaoController')
+
+					div
+						label.control-label Pesquisar:
+						input.form-control(type='text', ng-model='criteria', placeholder='Pesquise o termo desejado')
+
+					div
+						table.table.table-striped.table-condensed.no-margin
+							thead
+								tr
+									th Lei
+									th Ações
+							tbody
+								tr.itemLegislacao(ng-repeat="lei in leis | filter:criteria.normalizeText()", ng-class="{'ativo': leiSelecionada.id === lei.id}")
+									td {{lei.titulo}}
+									td
+										div.btn-toolbar.pull-right
+											button.btn.btn-default.btn-xs(title="Visualizar/esconder", ng-click="verLei(lei)",
+																			ng-class="{'btn-danger': leiSelecionada.id === lei.id}")
+												span.glyphicon.glyphicon-search(ng-class="{'glyphicon-remove': leiSelecionada.id === lei.id}")
+
+					div#visualizarLei
+						div#conteudoLei(ng-show="modalAberta && leiSelecionada")
+					
+						div.text-right(ng-if="modalAberta && leiSelecionada")
+							button.btn.btn-default(ng-click="voltarAoTopo()")
+								span.glyphicon.glyphicon-chevron-up
+								| Voltar ao topo
+						div.clear

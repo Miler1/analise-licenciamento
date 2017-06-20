@@ -109,3 +109,137 @@ String.prototype.zeroEsquerda = function(length) {
 	return numberString;
 
 };
+
+String.prototype.reduceWhiteSpace = function() {
+	return this.replace(/\s+/g, ' ');
+};
+
+String.prototype.purifyString = function() {
+	var r = [];
+	for (var i = 0, length = this.length; i < length; i++) {
+		r.push(replaceCharacter(this.charAt(i)));
+	}
+	return r.join("");
+};
+
+String.prototype.normalizeText = function() {
+	return this.purifyString().reduceWhiteSpace().toLowerCase();
+};
+
+function replaceCharacter(character) {
+	switch (character) {
+		case '\r': return " ";
+		case '\n': return " ";
+		case '\t': return " ";
+		case '\f': return " ";
+		case '\v': return " ";
+		case '`': return "'";
+		case '€': return "_";
+		case '‚': return ",";
+		case 'ƒ': return "f";
+		case '„': return "\"";
+		case '…': return "...";
+		case '†': return "_";
+		case '‡': return "_";
+		case 'ˆ': return "^";
+		case '‰': return "%";
+		case 'Š': return "S";
+		case '‹': return "<";
+		case 'Œ': return "CE";
+		case 'Ž': return "Z";
+		case '‘': return "'";
+		case '’': return "'";
+		case '“': return "\"";
+		case '”': return "\"";
+		case '•': return "-";
+		case '–': return "-";
+		case '—': return "-";
+		case '˜': return "~";
+		case '™': return "(tm)";
+		case 'š': return "s";
+		case '›': return ">";
+		case 'œ': return "ce";
+		case 'ž': return "z";
+		case 'Ÿ': return "Y";
+		case '¡': return "i";
+		case '¥': return "Y";
+		case '¦': return "|";
+		case 'ª': return "a";
+		case '¬': return "-";
+		case '¯': return "-";
+		case '²': return "2";
+		case '³': return "3";
+		case '´': return "'";
+		case '¸': return ",";
+		case '¹': return "1";
+		case 'º': return "0";
+		case '¼': return "1/4";
+		case '½': return "1/2";
+		case '¾': return "3/4";
+		case '¿': return "?";
+		case 'À': return "A";
+		case 'Á': return "A";
+		case 'Â': return "A";
+		case 'Ã': return "A";
+		case 'Ä': return "A";
+		case 'Å': return "A";
+		case 'Æ': return "AE";
+		case 'Ç': return "C";
+		case 'È': return "E";
+		case 'É': return "E";
+		case 'Ê': return "E";
+		case 'Ë': return "E";
+		case 'Ì': return "I";
+		case 'Í': return "I";
+		case 'Î': return "I";
+		case 'Ï': return "I";
+		case 'Ð': return "D";
+		case 'Ñ': return "N";
+		case 'Ò': return "O";
+		case 'Ó': return "O";
+		case 'Ô': return "O";
+		case 'Õ': return "O";
+		case 'Ö': return "O";
+		case '×': return "x";
+		case 'Ø': return "O";
+		case 'Ù': return "U";
+		case 'Ú': return "U";
+		case 'Û': return "U";
+		case 'Ü': return "U";
+		case 'Ý': return "Y";
+		case 'ß': return "B";
+		case 'à': return "a";
+		case 'á': return "a";
+		case 'â': return "a";
+		case 'ã': return "a";
+		case 'ä': return "a";
+		case 'å': return "a";
+		case 'æ': return "ae";
+		case 'ç': return "c";
+		case 'è': return "e";
+		case 'é': return "e";
+		case 'ê': return "e";
+		case 'ë': return "e";
+		case 'ì': return "i";
+		case 'í': return "i";
+		case 'î': return "i";
+		case 'ï': return "i";
+		case 'ñ': return "n";
+		case 'ò': return "o";
+		case 'ó': return "o";
+		case 'ô': return "o";
+		case 'õ': return "o";
+		case 'ö': return "o";
+		case '÷': return "/";
+		case 'ø': return "o";
+		case 'ù': return "u";
+		case 'ú': return "u";
+		case 'û': return "u";
+		case 'ü': return "u";
+		case 'ý': return "y";
+		case 'ÿ': return "y";
+		case '©': return "(c)";
+		case '®': return "(r)";
+		default: return character;
+	}
+}

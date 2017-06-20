@@ -1,0 +1,8 @@
+span#ver_lei.hide
+	button.avancar(type='button', title='Voltar para Legislação', ng-click="voltar()") Voltar
+	form(ng-submit="findTermo()")
+		div
+			label Pesquisar
+			input(type='text', ng-model="criteria")
+			img(src='images/form/bt_buscar_big.png', title='Pesquisar', ng-click="findTermo()")
+	span#conteudo_lei(style="-webkit-user-select: auto !important; ")

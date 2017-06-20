@@ -1,0 +1,16 @@
+// Para inserir um arquivo com lei:
+// 1) copiar o html da lei e converter jade <http://html2jade.com/>
+// 2) criar um arquivo dentro da pasta leis e colar o jade gerado
+// 3) inserir na 1a linha um div com o seguinte padrao:
+//    div(title='nome da lei que deve aparecer na listagem', type='doc')
+//    IMPORTANTE: todo o html da lei deve estar dentro desse div
+// 4) fazer o include do arquivo gerado
+
+span#leis(ng-hide="true")
+	include NORMATIVA_22
+	include PORTARIA_1421
+	include PORTARIA_179
+	include RESOLUCAO_COEMA_107
+	include RESOLUCAO_COEMA_117
+	include RESOLUCAO_COEMA_120
+	include RESOLUCAO_COEMA_127
