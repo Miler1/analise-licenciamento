@@ -3,7 +3,7 @@ var LegislacaoController = function($scope, $rootScope) {
 	$scope.leis = [];
 	$scope.leiSelecionada = "";
 
-	$('#modalLegislacao').on('shown.bs.modal', function(){
+	$('#modalLegislacao').on('show.bs.modal', function(){
 		$scope.modalAberta = true;
 		carregarLeis();
 		$scope.$apply();
@@ -43,15 +43,7 @@ var LegislacaoController = function($scope, $rootScope) {
 		}else{
 
 			$scope.leiSelecionada = lei;
-			var divLei = $('#conteudoLei');
-			
-			divLei.html('');
-
-			var htmlLei = $("div[title='" + lei.titulo + "']").html();
-
-			// htmlLei = htmlLei.replace(new RegExp($scope.criteria.normalizeText(), 'gi'), '<criteria>'+$scope.criteria+'</criteria>');
-
-			divLei.html( htmlLei );
+			$scope.pesquisarTermo(lei);
 
 			$('#modalLegislacao').animate({scrollTop:$('#visualizarLei').position(0).top}, 'slow');
 
@@ -65,6 +57,33 @@ var LegislacaoController = function($scope, $rootScope) {
 
 		$('#modalLegislacao').animate({scrollTop:$('#modalLegislacao').position(0).top}, 'slow');
 		
+	};
+
+	$scope.pesquisarTermo = function(lei) {
+
+		var divLei = $('#conteudoLei');
+		var htmlLei;
+		
+		if(!lei && divLei.html().length <= 0) {
+			return;
+		} else if(!lei && divLei.html().length > 0) {
+			htmlLei = divLei.html();
+		} else {
+			htmlLei = $("div[title='" + lei.titulo + "']").html();
+		}
+
+		if($scope.criteria.length > 3) {
+			htmlLei = htmlLei.replace('<highlighted>', '');
+			htmlLei = htmlLei.replace('</highlighted>', '');
+			htmlLei = htmlLei.replace(new RegExp($scope.criteria, 'gi'), '<highlighted>' + $scope.criteria + '</highlighted>');
+		} else {
+			htmlLei = htmlLei.replace('<highlighted>', '');
+			htmlLei = htmlLei.replace('</highlighted>', '');
+		}
+
+		divLei.html('');
+		divLei.html(htmlLei);
+
 	};
 
 };

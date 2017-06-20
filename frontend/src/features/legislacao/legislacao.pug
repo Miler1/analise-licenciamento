@@ -19,7 +19,7 @@ div.modal.fade(id="modalLegislacao", data-backdrop="static", data-keyboard="true
 
 					div
 						label.control-label Pesquisar:
-						input.form-control(type='text', ng-model='criteria', placeholder='Pesquise o termo desejado')
+						input.form-control(type='text', ng-model='criteria', placeholder='Pesquise o termo desejado', ng-change='pesquisarTermo()')
 
 					div
 						table.table.table-striped.table-condensed.no-margin
