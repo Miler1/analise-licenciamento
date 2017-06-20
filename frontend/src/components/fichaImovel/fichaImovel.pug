@@ -1,0 +1,48 @@
+div(uib-accordion class="accordion")
+	div(uib-accordion-group class="panel-default" is-open="$ctrl.isOpen")
+		uib-accordion-heading(ng-click="$ctrl.isOpen=!$ctrl.isOpen")
+			div(role="button")
+				| Ficha do Imóvel
+				i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.isOpen, 'glyphicon-chevron-right': !$ctrl.isOpen}")
+
+
+		#fichaImovel
+
+			.row
+				.col-md-12.content-container
+					uib-tabset(active='$ctrl.active', justified='true')
+						uib-tab(index='0', heading='Cadastrante')
+							br
+							.row.tabset
+								.col-md-12
+									#ficha-imovel-cadastrante
+						uib-tab(index='1', heading='Imóvel')
+							br
+							.row.tabset
+								.col-md-12
+									#ficha-imovel-imovel
+						uib-tab(index='2', heading='Domínio')
+							br
+							.row.tabset
+								.col-md-12
+									#ficha-imovel-dominio
+
+						uib-tab(index='3', heading='Demonstrativo')
+							br
+							.row.tabset
+								.col-md-12
+									#ficha-imovel-demonstrativo
+									br
+									br
+									button.btn.btn-sm.btn-link.pull-right(ng-click="$ctrl.baixarDemonstrativo()") Baixar Demonstrativo
+									br
+									br
+
+						uib-tab(index='4', heading='Geo', select="$ctrl.initMap()", disable="!$ctrl.fichaImovelGeo")
+							br
+							.row.tabset
+								.col-md-12
+									button.btn.btn-sm.btn-link.pull-right(ng-click="$ctrl.baixarShapefile()") Baixar Shapefile
+									br
+									br
+									#ficha-imovel-geo

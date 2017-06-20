@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import javax.persistence.TemporalType;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="analise_tecnica")
@@ -88,4 +90,16 @@ public class AnaliseTecnica extends GenericModel {
 	public static AnaliseTecnica findByProcesso(Processo processo) {
 		return AnaliseTecnica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
 	}
+	
+	public AnaliseTecnica save() {
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
+		this.dataVencimentoPrazo = c.getTime();
+			
+		this.ativo = true;
+		
+		return super.save();
+	}	
 }
