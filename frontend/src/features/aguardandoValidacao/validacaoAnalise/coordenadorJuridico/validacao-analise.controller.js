@@ -91,7 +91,23 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 
 	function exibirDadosProcesso() {
 
-        processoService.visualizarProcesso({ idProcesso:validacaoAnaliseJuridica.analiseJuridica.analise.processo.id});
+        var processo = {
+
+            idProcesso: validacaoAnaliseJuridica.analiseJuridica.analise.processo.id,
+            numero: validacaoAnaliseJuridica.analiseJuridica.analise.processo.numero,
+            denominacaoEmpreendimento: validacaoAnaliseJuridica.analiseJuridica.analise.processo.empreendimento.denominacao
+        };
+
+        if(validacaoAnaliseJuridica.analiseJuridica.analise.processo.empreendimento.pessoa.cnpj) {
+
+            processo.cnpjEmpreendimento = validacaoAnaliseJuridica.analiseJuridica.analise.processo.empreendimento.pessoa.cnpj;
+
+        } else {
+
+            processo.cpfEmpreendimento = validacaoAnaliseJuridica.analiseJuridica.analise.processo.empreendimento.pessoa.cpf;
+        }		
+
+        processoService.visualizarProcesso(processo);
     }
 };
 

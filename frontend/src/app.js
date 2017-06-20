@@ -87,11 +87,17 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 		$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
 		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;		
 
+		if (!$rootScope.usuarioSessao) {
+			window.location = $rootScope.config.baseUrl;
+		}		
+
 		$rootScope.itensMenuPrincipal = [{
 
 			titulo: 'Caixa de entrada',
 			icone: 'glyphicon glyphicon-inbox',
-			url: '/',
+			url: function() {
+				return '/';
+			},
 			countItens: true,
 			estaSelecionado: function () {
 
@@ -132,7 +138,17 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 			titulo: 'Em análise',
 			icone: 'glyphicon glyphicon-ok',
-			url: $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO ? '/analise-juridica' : '/analise-tecnica',
+			url: function() {
+
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO) {
+
+					return '/analise-juridica';	
+				
+				} else {
+					 
+					 return '/analise-tecnica';
+				}
+			},
 			countItens: true,
 			estaSelecionado: function () {
 
@@ -158,7 +174,10 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 			titulo: 'Aguardando validação',
 			icone: 'glyphicon glyphicon-check',
-			url: '/aguardando-validacao',
+			url: function() {
+
+				return '/aguardando-validacao';
+			},
 			countItens: true,
 			estaSelecionado: function () {
 
@@ -176,14 +195,17 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA;
 
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 			},
 			deveFiltrarPorUsuario: false
 		}, {
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
-			url: '/consultar-processo',
+			url: function() {
+
+				return '/consultar-processo';
+			},			
 			estaSelecionado: function () {
 
 				return $location.path() === '/consultar-processo';
@@ -193,11 +215,6 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				return true;
 			}
 		}];
-
-
-		if (!$rootScope.usuarioSessao) {
-			window.location = $rootScope.config.baseUrl;
-		}
 
 		configurarPermissoes($rootScope.usuarioSessao, $rootScope);
 
