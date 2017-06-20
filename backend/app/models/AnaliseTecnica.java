@@ -94,18 +94,11 @@ public class AnaliseTecnica extends GenericModel {
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<AnalistaTecnico> analistasTecnicos;
 	
-	//TODO rever
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;	
 	
-	public AnaliseTecnica(Analise analise) {
-				
-		this.analise = analise;		
-	}
-	
-	public AnaliseTecnica() {
-		
-		super();
+	public static AnaliseTecnica findByProcesso(Processo processo) {
+		return AnaliseTecnica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
 	}
 	
 	public AnaliseTecnica save() {

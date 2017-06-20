@@ -10,13 +10,13 @@
 
 	div.modal-body
 
-		ul.nav.nav-tabs
-			li.active
-				a(href="#tabDadosProcesso", data-toggle="tab") Dados do Processo
+		ul.nav.nav-tabs(role="tablist")
+			li.active(role="presentation")
+				a(href="#tabDadosProcesso", data-toggle="tab", aria-controls="tabDadosProcesso") Dados do Processo
 			li
-				a(href="#tabCaracterizacao", data-toggle="tab") Caracterização
+				a(href="#tabCaracterizacao", data-toggle="tab", aria-controls="tabCaracterizacao") Caracterização
 			li
-				a(href="#tabEmpreendimento", data-toggle="tab") Empreendedor / Empreendimento
+				a(href="#tabEmpreendimento", data-toggle="tab", aria-controls="tabEmpreendimento") Empreendedor / Empreendimento
 
 		div.row#dadosProcesso
 			.col-xs-12.col-md-8

@@ -73,8 +73,6 @@ var MenuPrincipal = {
 
 			atualizarContagemProcessos();
 		});  
-
-		//$timeout(atualizarContagemProcessos,500);
 	},
 	templateUrl: 'components/menuPrincipal/menuPrincipal.html'
 };

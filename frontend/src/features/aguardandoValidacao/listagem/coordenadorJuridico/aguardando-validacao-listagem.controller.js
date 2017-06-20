@@ -1,4 +1,4 @@
-var AguardandoValidacaoJuridicoListController = function($scope, config, $location, $rootScope) {
+var AguardandoValidacaoJuridicoListController = function($scope, config, $location, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO VALIDACÃO JURÍDICA';
 
@@ -15,6 +15,7 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
+	listagem.exibirDadosProcesso = exibirDadosProcesso;
 
 	function atualizarListaProcessos(processos) {
 
@@ -43,6 +44,11 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 
 		$location.path('/aguardando-validacao/' + idAnaliseJuridica.toString());
 	}	
+
+	function exibirDadosProcesso(processo) {
+
+        processoService.visualizarProcesso(processo);
+    }
 };
 
 exports.controllers.AguardandoValidacaoJuridicoListController = AguardandoValidacaoJuridicoListController;

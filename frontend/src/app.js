@@ -61,10 +61,10 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 		taTranslations.italic.tooltip = 'Itálico';
 		taTranslations.underline.tooltip = 'Sublinhado';
 		taTranslations.insertLink.tooltip = 'Inserir link';
-		taTranslations.insertLink.dialogPrompt = "Digite a URL";
-		taTranslations.editLink.targetToggle.buttontext = "Abrir em nova aba";
-		taTranslations.editLink.reLinkButton.tooltip = "Refazer link";
-		taTranslations.editLink.unLinkButton.tooltip = "Remover link";
+		taTranslations.insertLink.dialogPrompt = 'Digite a URL';
+		taTranslations.editLink.targetToggle.buttontext = 'Abrir em nova aba';
+		taTranslations.editLink.reLinkButton.tooltip = 'Refazer link';
+		taTranslations.editLink.unLinkButton.tooltip = 'Remover link';
 		taTranslations.clear.tooltip = 'Limpar formatação';
 
 		return taTranslations;
@@ -102,16 +102,27 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				return true;
 			},
 			condicaoTramitacao: function() {
+
 				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
 				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;				
+				else if([app.utils.Perfis.GERENTE_TECNICO,							app.utils.Perfis.COORDENADOR_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA;				
+				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 			},
-			deveFiltrarPorUsuario: function() {
-				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+			deveFiltrarPorUsuario: function () {
+				
+				if ([app.utils.Perfis.COORDENADOR_JURIDICO, 
+						app.utils.Perfis.COORDENADOR_TECNICO, 
+						app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
 					return false;
 				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
 					return true;
+				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
+					return true;
+
 			},
 			idPerfilSelecionado: function(){
 
@@ -121,17 +132,25 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 			titulo: 'Em análise',
 			icone: 'glyphicon glyphicon-ok',
-			url: '/analise-juridica',
+			url: $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO ? '/analise-juridica' : '/analise-tecnica',
 			countItens: true,
 			estaSelecionado: function() {
 
-				return $location.path().indexOf('/analise-juridica') > -1;
+				return $location.path().indexOf('/analise-juridica') > -1 ||
+					$location.path().indexOf('/analise-tecnica') > -1;
 			},
 			visivel: function() {
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO;
+				return [app.utils.Perfis.CONSULTOR_JURIDICO,
+				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
 			},
-			condicaoTramitacao: app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA,
+			condicaoTramitacao: function () {
+
+				if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA;
+				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
+			},
 			deveFiltrarPorUsuario: true,
 			idPerfilSelecionado: function(){
 
@@ -150,9 +169,19 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function() {
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO;
+				return [app.utils.Perfis.GERENTE_TECNICO,
+				app.utils.Perfis.COORDENADOR_TECNICO,
+				app.utils.Perfis.COORDENADOR_JURIDICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
 			},
-			condicaoTramitacao: app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA,
+			condicaoTramitacao: function () {
+
+				if ([app.utils.Perfis.COORDENADOR_TECNICO,
+				app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA;
+
+				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
+			},
 			deveFiltrarPorUsuario: false,
 			idPerfilSelecionado: function(){
 
@@ -258,7 +287,8 @@ utils.services(licenciamento)
 	.add('documentoLicenciamentoService', services.DocumentoLicenciamentoService)
 	.add('documentoAnaliseService', services.DocumentoAnaliseService)
 	.add('analiseJuridicaService', services.AnaliseJuridicaService)
-	.add('uploadService', services.UploadService);
+	.add('uploadService', services.UploadService)
+	.add('imovelService', services.ImovelService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -277,4 +307,5 @@ licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
 	.component('avaliarDocumento', directives.AvaliarDocumento)
 	.component('modalParecerDocumento', directives.ModalParecerDocumento)
-	.component('resumoEmpreendimento', directives.ResumoEmpreendimento);
+	.component('resumoEmpreendimento', directives.ResumoEmpreendimento)
+	.component('fichaImovel', directives.FichaImovel);

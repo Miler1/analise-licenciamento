@@ -88,4 +88,11 @@ public class Analise extends GenericModel {
 	public static Analise findByProcesso(Processo processo) {
 		return Analise.find("processo.id = ? AND ativo = true", processo.id).first();
 	}
+	
+	public static Analise findByAnaliseJuridica(Long idAnaliseJuridica) {
+		
+		AnaliseJuridica analiseJuridica = AnaliseJuridica.find("id = ? AND ativo = true", idAnaliseJuridica).first();
+		
+		return analiseJuridica.analise;
+	}
 }
