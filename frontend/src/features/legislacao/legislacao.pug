@@ -19,7 +19,11 @@ div.modal.fade(id="modalLegislacao", data-backdrop="static", data-keyboard="true
 
 					div
 						label.control-label Pesquisar:
-						input.form-control(type='text', ng-model='criteria', placeholder='Pesquise o termo desejado', ng-change='pesquisarTermo()', ng-minlength="3")
+						.input-group
+							input.form-control(type='text', ng-model='criteria', placeholder='Pesquise o termo desejado', ng-change='pesquisarTermo()', ng-minlength="3")
+							span.input-group-btn
+								button.btn.btn-default(title="Limpar filtro", ng-click="limparFiltro()")
+									span.glyphicon.glyphicon-erase
 
 					div
 						table.table.table-striped.table-condensed.no-margin
