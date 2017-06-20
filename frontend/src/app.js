@@ -184,7 +184,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path() === '/aguardando-validacao';
+				return $location.path().indexOf('/aguardando-validacao') > -1;
 			},
 			visivel: function() {
 

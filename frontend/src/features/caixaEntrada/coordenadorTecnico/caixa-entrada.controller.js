@@ -105,7 +105,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 				},
 				consultores: getAnalistas,
 				tipo: function() {
-					return 'coordenador técnico';
+					return 'analista técnico';
 				}
 			}
 		});

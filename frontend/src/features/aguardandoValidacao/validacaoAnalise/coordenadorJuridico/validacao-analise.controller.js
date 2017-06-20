@@ -10,6 +10,7 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 	validacaoAnaliseJuridica.init = init;
 	validacaoAnaliseJuridica.downloadDocumentoAnalise = downloadDocumentoAnalise;
 	validacaoAnaliseJuridica.isParecerNaoValidado = isParecerNaoValidado;
+	validacaoAnaliseJuridica.isObrigatorio = isObrigatorio;
 	validacaoAnaliseJuridica.cancelar = cancelar;
 	validacaoAnaliseJuridica.concluir = concluir;
 
@@ -43,6 +44,12 @@ var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaSer
 	function isParecerNaoValidado() {
 
 		return validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao === validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_NAO_VALIDADO;
+	}
+
+	function isObrigatorio() {
+		return [validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_NAO_VALIDADO,
+				validacaoAnaliseJuridica.TiposResultadoAnalise.SOLICITAR_AJUSTES]
+				.indexOf(validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao) !== -1;
 	}
 
     function cancelar() {
