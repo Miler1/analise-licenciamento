@@ -28,7 +28,7 @@ div.modal.fade(id="modalLegislacao", data-backdrop="static", data-keyboard="true
 									th Lei
 									th Ações
 							tbody
-								tr.itemLegislacao(ng-repeat="lei in leis | filter:criteria.normalizeText()", ng-class="{'ativo': leiSelecionada.id === lei.id}")
+								tr.itemLegislacao(ng-repeat="lei in leisEncontradas = (leis | filter:criteria.normalizeText())", ng-class="{'ativo': leiSelecionada.id === lei.id}")
 									td {{lei.titulo}}
 									td
 										div.btn-toolbar.pull-right
@@ -36,10 +36,10 @@ div.modal.fade(id="modalLegislacao", data-backdrop="static", data-keyboard="true
 																			ng-class="{'btn-danger': leiSelecionada.id === lei.id}")
 												span.glyphicon.glyphicon-search(ng-class="{'glyphicon-remove': leiSelecionada.id === lei.id}")
 
-					div#visualizarLei
-						div#conteudoLei(ng-show="modalAberta && leiSelecionada")
+					div#visualizarLei(ng-show="modalAberta && leiSelecionada && leisEncontradas.length > 0")
+						div#conteudoLei
 					
-						div.text-right(ng-if="modalAberta && leiSelecionada")
+						div.text-right
 							button.btn.btn-default(ng-click="voltarAoTopo()")
 								span.glyphicon.glyphicon-chevron-up
 								| Voltar ao topo
