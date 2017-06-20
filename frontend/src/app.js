@@ -302,7 +302,8 @@ utils.directives(licenciamento)
 licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)
 	.controller('modalSimplesController', controllers.ModalSimplesController)
-	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController);
+	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
+	.controller('legislacaoController', controllers.LegislacaoController);
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
