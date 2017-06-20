@@ -1,6 +1,6 @@
 var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE JURÍDICA';
+	$rootScope.tituloPagina = 'AGUARDANDO VINCULAÇÃO JURÍDICA';
 
 	var cxEntCoordenadorJuridico = this;
 
@@ -81,7 +81,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data);						
+						mensagem.success(response.data.texto);						
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
@@ -113,7 +113,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 		return modalInstance;
 	}
 
-	function getConsultores(consultorService) {
+	function getConsultores() {
 
 		return consultorService.getConsultoresJuridicos();
 	}

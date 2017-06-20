@@ -179,7 +179,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA;
 
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 			},
 			deveFiltrarPorUsuario: false,
@@ -288,7 +288,8 @@ utils.services(licenciamento)
 	.add('documentoAnaliseService', services.DocumentoAnaliseService)
 	.add('analiseJuridicaService', services.AnaliseJuridicaService)
 	.add('uploadService', services.UploadService)
-	.add('imovelService', services.ImovelService);
+	.add('imovelService', services.ImovelService)
+	.add('analistaService', services.AnalistaService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

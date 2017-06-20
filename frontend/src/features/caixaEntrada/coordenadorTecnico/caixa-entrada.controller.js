@@ -1,6 +1,6 @@
-var CxEntCoordenadorTecnicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope, processoService) {
+var CxEntCoordenadorTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
+	$rootScope.tituloPagina = 'AGUARDANDO VINCULAÇÃO TÉCNICA';
 
 	var cxEntCoordenadorTecnico = this;
 
@@ -77,11 +77,11 @@ var CxEntCoordenadorTecnicoController = function($scope, config, consultorServic
 		modalInstance.result
 			.then(function (result) {
 
-				consultorService.vincularAnaliseConsultorJuridico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
+				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data);						
+						mensagem.success(response.data.texto);						
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
@@ -113,9 +113,9 @@ var CxEntCoordenadorTecnicoController = function($scope, config, consultorServic
 		return modalInstance;
 	}
 
-	function getAnalistas(consultorService) {
+	function getAnalistas() {
 
-		return consultorService.getConsultoresJuridicos();
+		return analistaService.getAnalistasTecnicos();
 	}
 
 	function visualizarProcesso(processo) {
