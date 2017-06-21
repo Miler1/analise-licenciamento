@@ -1,5 +1,6 @@
 include ../../layout/components/inputErrors
 include ../../components/resumoProcesso/resumo-processo
+include parecer
 
 div(ng-init="ctrl.init()")
     section
@@ -8,9 +9,11 @@ div(ng-init="ctrl.init()")
 
     section.margin-bottom-md
 
+        uib-tabset
+            uib-tab(index="0", heading="Análise geo")
 
-            
-
+            uib-tab(index="1", heading="Parecer")
+                +parecer()
         
 
 
