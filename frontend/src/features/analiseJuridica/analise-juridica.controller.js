@@ -57,6 +57,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             .then(function(response) {
 
                 mensagem.success(response.data.texto);
+                carregarAnalise();
             
             }, function(error){
 
@@ -140,7 +141,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         } else {
 
             copiaProcesso.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
-        }
+        }ploads/project/avatar/228/icon_colorido.png
         processoService.visualizarProcesso(copiaProcesso);
     };
 
@@ -243,6 +244,18 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido;
         }
     }
+
+     function carregarAnalise() {
+
+        analiseJuridicaService.getAnaliseJuridica(ctrl.analiseJuridica.id)
+            .then(function(response){
+
+                ctrl.analiseJuridica = response.data;
+                ctrl.analisesDocumentos = ctrl.analiseJuridica.analisesDocumentos;
+                ctrl.documentos = ctrl.analiseJuridica.documentos;
+                ctrl.analiseJuridica.analise.processo.empreendimento = null;                
+            });
+     }
 };
 
 exports.controllers.AnaliseJuridicaController = AnaliseJuridicaController;
