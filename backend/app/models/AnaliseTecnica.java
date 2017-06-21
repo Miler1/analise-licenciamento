@@ -170,4 +170,9 @@ public class AnaliseTecnica extends GenericModel {
 		
 		ModelUtil.deleteAll(documentosDeletar);
 	}
+
+	public static AnaliseTecnica findByNumeroProcesso(String numeroProcesso) {
+		
+		return AnaliseTecnica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
+	}
 }
