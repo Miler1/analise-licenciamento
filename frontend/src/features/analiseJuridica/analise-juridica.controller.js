@@ -57,6 +57,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             .then(function(response) {
 
                 mensagem.success(response.data.texto);
+                carregarAnalise();
             
             }, function(error){
 
@@ -242,6 +243,20 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
             return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido;
         }
+    }
+
+    function carregarAnalise() {
+
+        analiseJuridicaService.getAnaliseJuridica(ctrl.analiseJuridica.id)
+            .then(function(response){
+                
+                ctrl.analiseJuridica = angular.copy(response.data);   
+                ctrl.analisesDocumentos = ctrl.analiseJuridica.analisesDocumentos;  
+                ctrl.documentosParecer = ctrl.analiseJuridica.documentos;
+                ctrl.analiseJuridica.analise.processo.empreendimento = null;
+                ctrl.analiseJuridica.tipoResultadoAnalise = ctrl.analiseJuridica.tipoResultadoAnalise || {};    
+                       
+            });        
     }
 };
 
