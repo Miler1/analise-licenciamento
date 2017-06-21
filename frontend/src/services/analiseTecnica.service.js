@@ -3,14 +3,20 @@ var AnaliseTecnicaService = function(request, config) {
 	this.getRestricoesGeo = function(idAnaliseTecnica) {
 
 		return request
-                .get(config.BASE_URL() + 'analisesTecnica/' + idAnaliseTecnica + '/restricoesGeo');
+                	.get(config.BASE_URL() + 'analisesTecnica/' + idAnaliseTecnica + '/restricoesGeo');
 	};
 
 	this.iniciar = function(analise) {
 
 		return request
-                .post(config.BASE_URL() + 'analisesTecnicas/iniciar', analise);
+                	.post(config.BASE_URL() + 'analisesTecnicas/iniciar', analise);
 	};	
+
+	this.getAnaliseTecnica = function(idAnaliseTecnica) {
+
+		return request
+                	.get(config.BASE_URL() + 'analisesTecnicas/' + idAnaliseTecnica);
+	};
 };
 
 exports.services.AnaliseTecnicaService = AnaliseTecnicaService;

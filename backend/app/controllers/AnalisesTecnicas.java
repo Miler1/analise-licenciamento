@@ -4,6 +4,7 @@ import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.portalSeguranca.Usuario;
 import security.UsuarioSessao;
+import serializers.AnaliseJuridicaSerializer;
 import utils.Mensagem;
 
 public class AnalisesTecnicas extends InternalController {
@@ -19,5 +20,13 @@ public class AnalisesTecnicas extends InternalController {
 				
 		renderMensagem(Mensagem.ANALISE_TECNICA_INICIADA_SUCESSO);	
 
+	}
+
+	public static void findById(Long idAnaliseTecnica) {
+	
+		AnaliseTecnica analise = AnaliseTecnica.findById(idAnaliseTecnica);
+		
+		renderJSON(analise, AnaliseJuridicaSerializer.findInfo);
+		
 	}
 }

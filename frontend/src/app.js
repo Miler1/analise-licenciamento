@@ -15,7 +15,8 @@ var licenciamento = angular.module("licenciamento", [
 	"analiseJuridica",
 	"analiseEmAndamento",
 	"ui.bootstrap",
-	"textAngular"
+	"textAngular",
+	"analiseTecnica"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {

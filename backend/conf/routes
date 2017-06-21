@@ -32,8 +32,9 @@ GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 
 #Analise técnica
-GET		/analisesTecnica/{id}/restricoesGeo				AnalisesTecnica.getRestricoesGeo
+GET		/analisesTecnica/{id}/restricoesGeo			AnalisesTecnica.getRestricoesGeo
 POST	/analisesTecnicas/iniciar 					AnalisesTecnicas.iniciar
+GET		/analisesTecnicas/{idAnaliseTecnica}		AnalisesTecnicas.findById
 
 # Documentos licenciamento
 
