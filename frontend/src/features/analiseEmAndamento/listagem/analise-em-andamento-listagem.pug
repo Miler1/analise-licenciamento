@@ -1,3 +1,7 @@
 div(ng-if="usuarioSessao.perfilSelecionado.id === analiseEmAndamentoListagem.perfis.CONSULTOR_JURIDICO", 
     ng-controller='analiseEmAndamentoJuridicoListController as listagem')
     include consultorJuridico/analise-em-andamento-listagem
+
+div(ng-if="usuarioSessao.perfilSelecionado.id === analiseEmAndamentoListagem.perfis.ANALISTA_TECNICO", 
+    ng-controller='analiseEmAndamentoTecnicaListController as listagem')
+    include analistaTecnico/analise-em-andamento-listagem
