@@ -141,7 +141,8 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         } else {
 
             copiaProcesso.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
-        }ploads/project/avatar/228/icon_colorido.png
+        }
+        
         processoService.visualizarProcesso(copiaProcesso);
     };
 
