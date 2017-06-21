@@ -142,6 +142,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
             copiaProcesso.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
         }
+        
         processoService.visualizarProcesso(copiaProcesso);
     };
 
