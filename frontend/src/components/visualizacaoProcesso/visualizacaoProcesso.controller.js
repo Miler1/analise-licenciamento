@@ -81,7 +81,7 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 	$(document).on( 'shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
 
-		var target = $(e.target).attr("href");
+		var target = $(e.target).attr("data-target");
 
 		if(target === '#tabCaracterizacao') {
 
