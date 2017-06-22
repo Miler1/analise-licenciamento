@@ -17,6 +17,12 @@ var AnaliseTecnicaService = function(request, config) {
 		return request
                 	.get(config.BASE_URL() + 'analisesTecnicas/' + idAnaliseTecnica);
 	};
+
+	this.getParecerByNumeroProcesso = function(numeroProcesso) {
+
+		return request
+                .get(config.BASE_URL() + 'analisesTecnicas/parecer?numeroProcesso=' + numeroProcesso);
+	};	
 };
 
 exports.services.AnaliseTecnicaService = AnaliseTecnicaService;

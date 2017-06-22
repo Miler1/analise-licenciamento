@@ -38,6 +38,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     function concluir() {
 
+        console.log(ctrl.analiseTecnica);
     }
 
     function salvar() {

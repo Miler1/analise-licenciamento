@@ -20,7 +20,7 @@ table.table.table-condensed
 
     tbody
 
-        tr(ng-repeat="analiseDocumento in $ctrl.analisesDocumentos")
+        tr(ng-repeat="analiseDocumento in $ctrl.analiseTecnica.analisesDocumentos")
 
             td.col-md-9 {{analiseDocumento.documento.tipo.nome}}
             td.col-md-2.text-center
@@ -30,7 +30,7 @@ table.table.table-condensed
                 a.margin-right-xs.pointer(ng-click="$ctrl.invalidarDocumento($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo da invalidação")
                     i.fa.fa-pencil-square-o                    
                 
-                a.margin-right-xs.pointer(ng-click="$ctrl.downloadDocumentoLicenciamento(analiseDocumento.documento.id)", title="Baixar documento")
+                a.margin-right-xs.pointer(ng-click="$ctrl.baixarDocumento(analiseDocumento.documento.id)", title="Baixar documento")
                     i.glyphicon.glyphicon-download
 
 section.margin-bottom-md
@@ -49,7 +49,7 @@ section.margin-bottom-md
     form#formulario_parecer(name="$ctrl.formularioParecer", novalidate)
 
         .form-group
-            div(text-angular, ng-model="$ctrl.parecer", name="parecer", required, ta-text-editor-class="form-control myform2-height", 
+            div(text-angular, ng-model="$ctrl.analiseTecnica.parecer", name="parecer", required, ta-text-editor-class="form-control myform2-height", 
                 ta-html-editor-class="form-control myform2-height")
             +inputErrors('$ctrl.formularioParecer', 'parecer', 'required')
         
@@ -60,7 +60,7 @@ section.margin-bottom-md
             i   Tamanho máximo de {{$ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
             
 
-    table.table.table-condensed(ng-if="$ctrl.documentosParecer.length > 0")
+    table.table.table-condensed(ng-if="$ctrl.analiseTecnica.documentos.length > 0")
 
         thead
 
@@ -70,11 +70,11 @@ section.margin-bottom-md
 
         tbody
 
-            tr(ng-repeat="documento in $ctrl.documentosParecer")
+            tr(ng-repeat="documento in $ctrl.analiseTecnica.documentos")
 
                 td.col-md-10 {{documento.nome}}
                 td.col-md-2.text-right 
-                    a.d-inline.margin-right-xs(ng-if="documento.id", title="Baixar documento", ng-click="$ctrl.downloadDocumentoAnalise(documento.id)")
+                    a.d-inline.margin-right-xs(ng-if="documento.id", title="Baixar documento", ng-click="$ctrl.baixarDocumentoAnalise(documento.id)")
                         i.glyphicon.glyphicon-save
 
                     a.d-inline.margin-right-xs(title="Remover documento", ng-click="$ctrl.removerDocumento($index)")
@@ -82,13 +82,13 @@ section.margin-bottom-md
 
     form.text-center.margin-bottom-md.margin-top-md(name="$ctrl.formularioResultado", novalidate)
         label.radio-inline(for="radio_deferido")
-            input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.tipoResultadoAnalise.id", ng-required="!$ctrl.tipoResultadoAnalise.id") 
+            input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id") 
             | Deferido
         label.radio-inline(for="radio_indeferido")
-            input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.tipoResultadoAnalise.id", ng-required="!$ctrl.tipoResultadoAnalise.id" ) 
+            input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id" ) 
             | Indeferido
         label.radio-inline(for="radio_notificacao")
-            input#radio_notificacao(type="radio", name="resultado", ng-value="{{ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.tipoResultadoAnalise.id", ng-required="!$ctrl.tipoResultadoAnalise.id") 
+            input#radio_notificacao(type="radio", name="resultado", ng-value="{{ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id") 
             | Emitir notificação
         +inputErrors('$ctrl.formularioResultado', 'resultado', 'required')  
 
