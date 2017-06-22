@@ -1,15 +1,21 @@
-var AnaliseTecnicaController = function($rootScope, $scope, $routeParams, $window, $location, 
-        analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService, documentoAnaliseService, processoService) {    
+var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $window, $location,
+    analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService, documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB) {
 
-    var ctrl = this;
-    
     $rootScope.tituloPagina = 'PARECER Técnico';
 
+    var ctrl = this;
+
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
-
-
     ctrl.exibirDadosProcesso = exibirDadosProcesso;
+    ctrl.concluir = concluir;
+    ctrl.salvar = salvar;
+    ctrl.cancelar = cancelar;
     
+    ctrl.init = function () {
+        
+        ctrl.analiseTecnica = angular.copy(analiseTecnica);
+    };
+
     function exibirDadosProcesso() {
 
         var processo = {
@@ -19,7 +25,7 @@ var AnaliseTecnicaController = function($rootScope, $scope, $routeParams, $windo
             denominacaoEmpreendimento: ctrl.processo.empreendimento.denominacao
         };
 
-        if(ctrl.processo.empreendimento.pessoa.cnpj) {
+        if (ctrl.processo.empreendimento.pessoa.cnpj) {
 
             processo.cnpjEmpreendimento = ctrl.processo.empreendimento.pessoa.cnpj;
 
@@ -28,6 +34,18 @@ var AnaliseTecnicaController = function($rootScope, $scope, $routeParams, $windo
             processo.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
         }
         processoService.visualizarProcesso(processo);
+    }
+
+    function concluir() {
+
+    }
+
+    function salvar() {
+
+    }
+
+    function cancelar() {
+
     }
 };
 

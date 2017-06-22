@@ -1,0 +1,96 @@
+include ../../layout/components/inputErrors
+
+h3 Análise jurídica
+
+div.margin-top-md
+    label.not-bold.margin-right-xs(for="texto_nome_analista") Analista técnico:  
+    span#texto_nome_consultor_juridico
+        strong {{usuarioSessao.nome}}
+
+hr
+
+table.table.table-condensed
+
+    thead
+
+        tr
+            th.col-md-9 Documento
+            th.col-md-2.text-center Validar
+            th.col-md-1.text-right Ações
+
+    tbody
+
+        tr(ng-repeat="analiseDocumento in $ctrl.analisesDocumentos")
+
+            td.col-md-9 {{analiseDocumento.documento.tipo.nome}}
+            td.col-md-2.text-center
+                avaliar-documento(identificador="$index", analise-documento="analiseDocumento", invalidar="$ctrl.invalidarDocumento")
+            td.col-md-1.text-right 
+
+                a.margin-right-xs.pointer(ng-click="$ctrl.invalidarDocumento($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo da invalidação")
+                    i.fa.fa-pencil-square-o                    
+                
+                a.margin-right-xs.pointer(ng-click="$ctrl.downloadDocumentoLicenciamento(analiseDocumento.documento.id)", title="Baixar documento")
+                    i.glyphicon.glyphicon-download
+
+section.margin-bottom-md
+
+    form
+        div.form-group
+            label(for="input_numero_processo") Número do processo para clonar parecer
+            div.input-group
+                input#input_numero_processo(type="text", class="form-control", placeholder="Digite o número do processo do qual você deseja clonar o parecer", ng-model="ctrl.numeroProcesso")
+                span.input-group-btn
+                    button.btn.btn-default(type="button", ng-click="$ctrl.clonarParecer()") 
+                        i.glyphicon.glyphicon-refresh.glyphicon--with-right-margin
+                        | Clonar parecer                            
+
+    
+    form#formulario_parecer(name="$ctrl.formularioParecer", novalidate)
+
+        .form-group
+            div(text-angular, ng-model="$ctrl.parecer", name="parecer", required, ta-text-editor-class="form-control myform2-height", 
+                ta-html-editor-class="form-control myform2-height")
+            +inputErrors('$ctrl.formularioParecer', 'parecer', 'required')
+        
+        .form-group
+            div.btn.btn-default(type="file", name="arquivo", ngf-select="$ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+                i.glyphicon.glyphicon-open.glyphicon--with-right-margin 
+                | Anexar arquivo ao parecer 
+            i   Tamanho máximo de {{$ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+            
+
+    table.table.table-condensed(ng-if="$ctrl.documentosParecer.length > 0")
+
+        thead
+
+            tr
+                th.col-md-10 Arquivo anexado
+                th.col-md-2.text-right Ações
+
+        tbody
+
+            tr(ng-repeat="documento in $ctrl.documentosParecer")
+
+                td.col-md-10 {{documento.nome}}
+                td.col-md-2.text-right 
+                    a.d-inline.margin-right-xs(ng-if="documento.id", title="Baixar documento", ng-click="$ctrl.downloadDocumentoAnalise(documento.id)")
+                        i.glyphicon.glyphicon-save
+
+                    a.d-inline.margin-right-xs(title="Remover documento", ng-click="$ctrl.removerDocumento($index)")
+                        i.glyphicon.glyphicon-trash          
+
+    form.text-center.margin-bottom-md.margin-top-md(name="$ctrl.formularioResultado", novalidate)
+        label.radio-inline(for="radio_deferido")
+            input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.tipoResultadoAnalise.id", ng-required="!$ctrl.tipoResultadoAnalise.id") 
+            | Deferido
+        label.radio-inline(for="radio_indeferido")
+            input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.tipoResultadoAnalise.id", ng-required="!$ctrl.tipoResultadoAnalise.id" ) 
+            | Indeferido
+        label.radio-inline(for="radio_notificacao")
+            input#radio_notificacao(type="radio", name="resultado", ng-value="{{ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.tipoResultadoAnalise.id", ng-required="!$ctrl.tipoResultadoAnalise.id") 
+            | Emitir notificação
+        +inputErrors('$ctrl.formularioResultado', 'resultado', 'required')  
+
+section        
+    a.btn << Etapa anterior

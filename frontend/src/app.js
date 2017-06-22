@@ -268,7 +268,7 @@ licenciamento.constant('config', {
 			return LICENCIAMENTO_CONFIG.configuracoes.baseURL + "/";
 	},
 	QTDE_ITENS_POR_PAGINA: 10
-});
+}).constant('tamanhoMaximoArquivoAnaliseMB', 10);
 
 
 function configurarPermissoes(usuarioSessao, $rootScope) {
@@ -326,10 +326,12 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController)
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
 	.controller('legislacaoController', controllers.LegislacaoController);
+	
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
 	.component('avaliarDocumento', directives.AvaliarDocumento)
 	.component('modalParecerDocumento', directives.ModalParecerDocumento)
 	.component('resumoEmpreendimento', directives.ResumoEmpreendimento)
-	.component('fichaImovel', directives.FichaImovel);
+	.component('fichaImovel', directives.FichaImovel)
+	.component('parecer', directives.Parecer);

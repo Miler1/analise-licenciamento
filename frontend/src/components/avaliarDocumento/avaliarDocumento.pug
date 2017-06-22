@@ -1,15 +1,16 @@
 .btn-group(data-toggle="buttons")
+
     
-    label.btn.btn-plain(for="{{$ctrl.nome}}_valido", title="Validar", ng-class="{active: $ctrl.analiseDocumento.validado}", ng-click="$ctrl.setValido(true)")
+    label.btn.btn-plain(for="{{$ctrl.nome}}_valido", title="Validar", ng-class="{'ativo': $ctrl.analiseDocumento.validado}", ng-click="$ctrl.setValido(true)")
         
-        input(id="{{$ctrl.nome}}_valido",type="radio", name="{{$ctrl.nome}}", ng-value="true", value="true", ng-model="$ctrl.documento.validado")
+        input(id="{{$ctrl.nome}}_valido",type="radio", name="{{$ctrl.nome}}", ng-value="true", value="true", ng-model="$ctrl.analiseDocumento.validado")
         
         span.glyphicon.glyphicon-ok.checked.valido
         span.glyphicon.glyphicon-ok.unchecked.nao-marcado
 
-    label.btn.btn-plain(for="{{$ctrl.nome}}_invalido", title="Invalidar", ng-class="{active: $ctrl.analiseDocumento.validado === false}", ng-click="$ctrl.setValido(false)")
+    label.btn.btn-plain(for="{{$ctrl.nome}}_invalido", title="Invalidar", ng-class="{'ativo': $ctrl.analiseDocumento.validado === false}", ng-click="$ctrl.setValido(false)")
         
-        input(id="{{$ctrl.nome}}_invalido",type="radio", name="{{$ctrl.nome}}", ng-value="false", value="false", ng-model="$ctrl.documento.validado")
-        
-        span.glyphicon.glyphicon-remove.checked.invalido
+        input(id="{{$ctrl.nome}}_invalido",type="radio", name="{{$ctrl.nome}}", ng-value="false", value="false", ng-model="$ctrl.analiseDocumento.validado")
+                       
+        span.glyphicon.glyphicon-remove.checked.invalido 
         span.glyphicon.glyphicon-remove.unchecked.nao-marcado
