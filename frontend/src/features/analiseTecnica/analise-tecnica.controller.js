@@ -40,60 +40,60 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
             return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido;
         }
+    }
 
-        function exibirDadosProcesso() {
+    function exibirDadosProcesso() {
 
-            var processo = {
+        var processo = {
 
-                idProcesso: ctrl.processo.id,
-                numero: ctrl.processo.numero,
-                denominacaoEmpreendimento: ctrl.processo.empreendimento.denominacao
-            };
+            idProcesso: ctrl.processo.id,
+            numero: ctrl.processo.numero,
+            denominacaoEmpreendimento: ctrl.processo.empreendimento.denominacao
+        };
 
-            if (ctrl.processo.empreendimento.pessoa.cnpj) {
+        if (ctrl.processo.empreendimento.pessoa.cnpj) {
 
-                processo.cnpjEmpreendimento = ctrl.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = ctrl.processo.empreendimento.pessoa.cnpj;
 
-            } else {
+        } else {
 
-                processo.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
-            }
-            processoService.visualizarProcesso(processo);
+            processo.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
         }
+        processoService.visualizarProcesso(processo);
+    }
 
-        function concluir() {
+    function concluir() {
 
-            console.log(ctrl.analiseTecnica);
-        }
+        console.log(ctrl.analiseTecnica);
+    }
 
-        function salvar() {
+    function salvar() {
 
-            ctrl.analiseTecnica.analise.processo.empreendimento = null;
-            analiseTecnicaService.salvar(ctrl.analiseTecnica)
-                .then(function (response) {
+        ctrl.analiseTecnica.analise.processo.empreendimento = null;
+        analiseTecnicaService.salvar(ctrl.analiseTecnica)
+            .then(function (response) {
 
-                    mensagem.success(response.data.texto);
-                    carregarAnalise();
+                mensagem.success(response.data.texto);
+                carregarAnalise();
 
-                }, function (error) {
+            }, function (error) {
 
-                    mensagem.error(error.data.texto);
-                });
-        }
+                mensagem.error(error.data.texto);
+            });
+    }
 
-        function cancelar() {
+    function cancelar() {
 
-            $window.history.back();
-        }
+        $window.history.back();
+    }
 
-        function carregarAnalise() {
+    function carregarAnalise() {
 
-            analiseTecnicaService.getAnaliseTecnica(ctrl.analiseTecnica.id)
-                .then(function (response) {
+        analiseTecnicaService.getAnaliseTecnica(ctrl.analiseTecnica.id)
+            .then(function (response) {
 
-                    ctrl.analiseTecnica = response.data;
-                });
-        }
+                ctrl.analiseTecnica = response.data;
+            });
     }
 };
 
