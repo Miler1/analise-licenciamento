@@ -34,7 +34,7 @@ public class AnalisesJuridicas extends InternalController {
 				
 		analiseAAlterar.update(analise);
 				
-		renderMensagem(Mensagem.ANALISE_JURIDICA_CADASTRADA_SUCESSO);	
+		renderMensagem(Mensagem.ANALISE_CADASTRADA_SUCESSO);	
 	}
 	
 	public static void concluir(AnaliseJuridica analise) {

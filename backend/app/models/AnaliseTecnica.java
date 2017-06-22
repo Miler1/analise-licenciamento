@@ -128,11 +128,42 @@ public class AnaliseTecnica extends GenericModel {
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
 	}	
-	
-	//TODO - Fazer o restante do update, no momento só está chamando o método de salvar os documentos
+
 	public void update(AnaliseTecnica novaAnalise) {
 				
-		updateDocumentos(novaAnalise.documentos);		
+		if(this.dataFim != null) {
+			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONCLUIDA);
+		}
+			
+		this.parecer = novaAnalise.parecer;
+		
+		if(novaAnalise.tipoResultadoAnalise != null &&
+				novaAnalise.tipoResultadoAnalise.id != null) {
+			
+			this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;		
+		}
+		
+		updateDocumentos(novaAnalise.documentos);
+		
+		if (this.analisesDocumentos == null) {
+			
+			this.analisesDocumentos = new ArrayList<>();
+		}
+		
+		for(AnaliseDocumento novaAnaliseDocumento : novaAnalise.analisesDocumentos) {
+						
+			AnaliseDocumento analiseDocumento = ListUtil.getById(novaAnaliseDocumento.id, this.analisesDocumentos);
+				
+			if(analiseDocumento != null) {
+				
+				analiseDocumento.update(novaAnaliseDocumento);
+			
+			} else {
+				
+				novaAnaliseDocumento.analiseTecnica = this;
+				this.analisesDocumentos.add(novaAnaliseDocumento);
+			}			
+		}
 				
 		this._save();		
 	}

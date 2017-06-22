@@ -3,6 +3,7 @@ package controllers;
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.portalSeguranca.Usuario;
+import security.Acao;
 import security.UsuarioSessao;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.AnaliseTecnicaSerializer;
@@ -11,6 +12,8 @@ import utils.Mensagem;
 public class AnalisesTecnicas extends InternalController {
 		
 	public static void iniciar(AnaliseTecnica analise) {
+		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 		
@@ -25,11 +28,24 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public static void findByNumeroProcesso() {
 		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+		
 		String numeroProcesso = getParamAsString("numeroProcesso");
 		
 		AnaliseTecnica analise = AnaliseTecnica.findByNumeroProcesso(numeroProcesso);
 		
 		renderJSON(analise, AnaliseTecnicaSerializer.parecer);
 	
+	}
+	
+	public static void alterar(AnaliseTecnica analise) {
+		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+		
+		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
+				
+		analiseAAlterar.update(analise);
+				
+		renderMensagem(Mensagem.ANALISE_CADASTRADA_SUCESSO);	
 	}	
 }
