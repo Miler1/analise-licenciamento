@@ -5,7 +5,7 @@ var Parecer = {
         analiseTecnica: '<'
     },
 
-    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem) {
+    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService) {
 
         var ctrl = this;
 
@@ -17,6 +17,34 @@ var Parecer = {
         ctrl.baixarDocumento = baixarDocumento;
         ctrl.baixarDocumentoAnalise = baixarDocumentoAnalise;
         ctrl.clonarParecer = clonarParecer;
+        ctrl.alterarLicenca = alterarLicenca;
+        ctrl.upload = function(file, invalidFile) {
+
+            if(file) {
+
+                uploadService.save(file)
+                    .then(function(response) {
+
+                        ctrl.analiseTecnica.documentos.push({
+
+                            key: response.data,
+                            nome: file.name,
+                            tipoDocumento: {
+
+                                id: app.utils.TiposDocumentosAnalise.ANALISE_TECNICA
+                            }
+                        });
+
+                    }, function(error){
+
+                        mensagem.error(error.data.texto);
+                    });
+            
+            } else if(invalidFile && invalidFile.$error === 'maxSize'){
+
+                mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+            }            
+        };        
 
         ctrl.$onInit = function() {
 
@@ -99,10 +127,14 @@ var Parecer = {
         }
 
         function baixarDocumento(idDocumento) {
-
+            documentoLicenciamentoService.download(idDocumento);                
         }
 
         function baixarDocumentoAnalise(idDocumento) {
+            documentoAnaliseService.download(idDocumento);
+        }
+
+        function alterarLicenca(licenca) {
 
         }
     },

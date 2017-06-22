@@ -92,5 +92,33 @@ section.margin-bottom-md
             | Emitir notificação
         +inputErrors('$ctrl.formularioResultado', 'resultado', 'required')  
 
+    section(ng-if="$ctrl.analiseTecnica.tipoResultadoAnalise.id === $ctrl.DEFERIDO")
+
+        table.table.table-condensed
+
+            thead
+                
+                tr
+                    th.col-md-1 Emitir
+                    th.col-md-3 Licença
+                    th.col-md-4 Porte e potencial poluidor
+                    th.col-md-2 Validade
+                    th.col-md-2 Ações
+
+            tbody
+
+                tr(ng-repeat="licenca in $ctrl.licencas")
+
+                    th.col-md-1
+                        input(type="checkbox")
+                    th.col-md-3 {{licenca.nome}}
+                    th.col-md-4 {{licenca.porte}}
+                    th.col-md-2 {{licenca.validade}}
+                    th.col-md-2
+                        a.d-inline.margin-right-xs(title="Alterar licença, ng-click($ctrl.alterarLicenca($index)")
+                            i.glyphicon.glyphicon-pencil
+
+
+
 section        
     a.btn << Etapa anterior

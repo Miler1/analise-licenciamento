@@ -14,6 +14,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.init = function () {
         
         ctrl.analiseTecnica = angular.copy(analiseTecnica);
+        ctrl.analiseTecnica.analise.processo.empreendimento = null;
     };
 
     function exibirDadosProcesso() {
@@ -43,11 +44,31 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     function salvar() {
 
+        analiseTecnicaService.salvar(ctrl.analiseTecnica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+                carregarAnalise();
+            
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     }
 
     function cancelar() {
 
+        $window.history.back();
     }
+
+     function carregarAnalise() {
+
+        analiseTecnicaService.getAnaliseTecnica(ctrl.analiseTecnica.id)
+            .then(function(response){
+
+                ctrl.analiseTecnica = response.data;
+            });
+     }    
 };
 
 exports.controllers.AnaliseTecnicaController = AnaliseTecnicaController;

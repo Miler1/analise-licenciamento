@@ -23,6 +23,18 @@ var AnaliseTecnicaService = function(request, config) {
 		return request
                 .get(config.BASE_URL() + 'analisesTecnicas/parecer?numeroProcesso=' + numeroProcesso);
 	};	
+
+	this.salvar = function(analise) {
+
+		return request
+				.post(config.BASE_URL() + 'analisesTecnicas', analise);
+	};
+
+	this.concluir = function(analise) {
+
+		return request
+				.post(config.BASE_URL() + 'analisesTecnicas/concluir', analise);
+	};	
 };
 
 exports.services.AnaliseTecnicaService = AnaliseTecnicaService;
