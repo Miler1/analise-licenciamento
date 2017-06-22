@@ -39,7 +39,7 @@ section.margin-bottom-md
         div.form-group
             label(for="input_numero_processo") Número do processo para clonar parecer
             div.input-group
-                input#input_numero_processo(type="text", class="form-control", placeholder="Digite o número do processo do qual você deseja clonar o parecer", ng-model="ctrl.numeroProcesso")
+                input#input_numero_processo(type="text", class="form-control", placeholder="Digite o número do processo do qual você deseja clonar o parecer", ng-model="$ctrl.numeroProcesso")
                 span.input-group-btn
                     button.btn.btn-default(type="button", ng-click="$ctrl.clonarParecer()") 
                         i.glyphicon.glyphicon-refresh.glyphicon--with-right-margin
@@ -88,7 +88,7 @@ section.margin-bottom-md
             input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id" ) 
             | Indeferido
         label.radio-inline(for="radio_notificacao")
-            input#radio_notificacao(type="radio", name="resultado", ng-value="{{ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id") 
+            input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id") 
             | Emitir notificação
         +inputErrors('$ctrl.formularioResultado', 'resultado', 'required')  
 
