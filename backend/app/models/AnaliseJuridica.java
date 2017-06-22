@@ -100,20 +100,20 @@ public class AnaliseJuridica extends GenericModel {
 	private void validarParecer() {
 		
 		if(StringUtils.isBlank(this.parecer)) 
-			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_PARECER_NAO_PREENCHIDO);
+			throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
 	}
 	
 	private void validarResultado() {
 		
 		if(this.tipoResultadoAnalise == null)
-			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_SEM_RESULTADO);
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO);
 		
 		boolean todosDocumentosValidados = true;
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
 			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
 				
-				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
+				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
 			}
 			todosDocumentosValidados &= analise.validado;
 		}	
@@ -127,13 +127,13 @@ public class AnaliseJuridica extends GenericModel {
 	private void validarAnaliseDocumentos() {
 		
 		if(this.analisesDocumentos == null || this.analisesDocumentos.size() == 0)
-			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
+			throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
 			
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
 			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
 				
-				throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_DOCUMENTO_NAO_AVALIADO);
+				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
 			}
 		}
 	}

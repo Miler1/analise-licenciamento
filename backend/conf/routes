@@ -31,9 +31,12 @@ POST	/analisesJuridicas/validarParecer			AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 
-#Analise técnica
-GET		/analisesTecnica/{id}/restricoesGeo			AnalisesTecnica.getRestricoesGeo
+# Analise tecnica
+
+GET		/analisesTecnicas/parecer					AnalisesTecnicas.findByNumeroProcesso
 POST	/analisesTecnicas/iniciar 					AnalisesTecnicas.iniciar
+POST	/analisesTecnicas							AnalisesTecnicas.alterar
+POST	/analisesTecnicas/concluir					AnalisesTecnicas.concluir
 GET		/analisesTecnicas/{idAnaliseTecnica}		AnalisesTecnicas.findById
 
 # Documentos licenciamento

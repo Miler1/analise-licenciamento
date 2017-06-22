@@ -1,7 +1,7 @@
 package serializers;
 
-import flexjson.JSONSerializer;
 import utils.SerializerUtil;
+import flexjson.JSONSerializer;
 
 public class AnaliseTecnicaSerializer {
 	

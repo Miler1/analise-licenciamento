@@ -142,6 +142,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
             copiaProcesso.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
         }
+        
         processoService.visualizarProcesso(copiaProcesso);
     };
 
@@ -249,19 +250,17 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         }
     }
 
-    function carregarAnalise() {
+     function carregarAnalise() {
 
         analiseJuridicaService.getAnaliseJuridica(ctrl.analiseJuridica.id)
             .then(function(response){
-                
-                ctrl.analiseJuridica = angular.copy(response.data);   
-                ctrl.analisesDocumentos = ctrl.analiseJuridica.analisesDocumentos;  
-                ctrl.documentosParecer = ctrl.analiseJuridica.documentos;
-                ctrl.analiseJuridica.analise.processo.empreendimento = null;
-                ctrl.analiseJuridica.tipoResultadoAnalise = ctrl.analiseJuridica.tipoResultadoAnalise || {};    
-                       
-            });        
-    }
+
+                ctrl.analiseJuridica = response.data;
+                ctrl.analisesDocumentos = ctrl.analiseJuridica.analisesDocumentos;
+                ctrl.documentos = ctrl.analiseJuridica.documentos;
+                ctrl.analiseJuridica.analise.processo.empreendimento = null;                
+            });
+     }
 };
 
 exports.controllers.AnaliseJuridicaController = AnaliseJuridicaController;
