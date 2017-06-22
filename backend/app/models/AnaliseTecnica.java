@@ -97,6 +97,12 @@ public class AnaliseTecnica extends GenericModel {
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;	
 	
+	private void validarParecer() {
+		
+		if(StringUtils.isBlank(this.parecer)) 
+			throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
+	}	
+	
 	public static AnaliseTecnica findByProcesso(Processo processo) {
 		return AnaliseTecnica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
 	}
@@ -206,4 +212,67 @@ public class AnaliseTecnica extends GenericModel {
 		
 		return AnaliseTecnica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
 	}
+	
+	public void finalizar(AnaliseTecnica analise, Usuario usuarioExecultor) {
+		
+		this.update(analise);
+		
+		validarParecer();
+		validarAnaliseDocumentos();
+		validarResultado();						
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());		
+		this.dataFim = c.getTime();
+		
+		this._save();
+				
+		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+			
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA, usuarioExecultor);
+		
+		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
+			
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA, usuarioExecultor);
+		
+		} else {
+		
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
+		}
+	}
+
+	private void validarResultado() {
+		
+		if(this.tipoResultadoAnalise == null)
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO);
+		
+		boolean todosDocumentosValidados = true;
+		for(AnaliseDocumento analise : this.analisesDocumentos) {
+			
+			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+				
+				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
+			}
+			todosDocumentosValidados &= analise.validado;
+		}	
+		
+		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO && !todosDocumentosValidados) {
+			
+			throw new ValidacaoException(Mensagem.TODOS_OS_DOCUMENTOS_VALIDOS);
+		}
+	}
+
+	private void validarAnaliseDocumentos() {
+
+		if(this.analisesDocumentos == null || this.analisesDocumentos.size() == 0)
+			throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
+			
+		for(AnaliseDocumento analise : this.analisesDocumentos) {
+			
+			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+				
+				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
+			}
+		}		
+	}	
 }

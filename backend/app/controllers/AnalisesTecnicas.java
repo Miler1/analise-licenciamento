@@ -26,6 +26,21 @@ public class AnalisesTecnicas extends InternalController {
 
 	}
 	
+	public static void concluir(AnaliseTecnica analise) {
+		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+		
+		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
+		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		
+		analiseAAlterar.finalizar(analise, usuarioExecutor);
+		
+		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);				
+		
+	}	
+	
 	public static void findByNumeroProcesso() {
 		
 		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
