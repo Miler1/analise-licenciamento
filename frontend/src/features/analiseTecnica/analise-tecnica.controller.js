@@ -64,6 +64,17 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     function concluir() {
 
+        if(!analiseValida()) {
+
+            mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
+            '<ul>' +
+                '<li>Para concluir é necessário descrever o parecer.</li>' + 
+                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
+                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
+            '</ul>', { ttl: 10000 });
+            return;            
+        }
+
         console.log(ctrl.analiseTecnica);
     }
 
