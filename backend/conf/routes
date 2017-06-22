@@ -36,6 +36,7 @@ GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridic
 GET		/analisesTecnicas/parecer					AnalisesTecnicas.findByNumeroProcesso
 POST	/analisesTecnicas/iniciar 					AnalisesTecnicas.iniciar
 POST	/analisesTecnicas							AnalisesTecnicas.alterar
+POST	/analisesTecnicas/concluir					AnalisesTecnicas.concluir
 
 # Documentos licenciamento
 
