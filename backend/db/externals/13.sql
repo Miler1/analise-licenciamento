@@ -5,7 +5,7 @@ DELETE FROM portal_seguranca.permissao_perfil WHERE id_perfil = 8 AND id_permiss
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
 VALUES (5, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'INICIAR_PARECER_JURIDICO'));
 
-INSERT INTO portal_seguranca.permissao (codigo, data_cadastro, nome, id_modulo) VALUES ('INICIAR_PARECER_TECNICO', NOW(), 'Vincular esta permissão ao perfil Analista técnico', 5);
+INSERT INTO portal_seguranca.permissao (codigo, data_cadastro, nome, id_modulo) VALUES ('INICIAR_PARECER_TECNICO', NOW(), 'niciar/continuar parecer da análise técnica', 5);
 
 # ---!Downs
 
