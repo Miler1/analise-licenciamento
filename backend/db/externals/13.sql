@@ -16,3 +16,5 @@ DELETE FROM portal_seguranca.permissao_perfil WHERE id_perfil = 8 AND  id_permis
 DELETE FROM portal_seguranca.permissao_perfil WHERE id_perfil = 5 AND  id_permissao IN (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'INICIAR_PARECER_JURIDICO');
 
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES (8, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'INICIAR_PARECER_JURIDICO'));
+
+DELETE FROM portal_seguranca.permissao_perfil WHERE id_perfil = 8 AND id_permissao = (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'INICIAR_PARECER_TECNICO');
