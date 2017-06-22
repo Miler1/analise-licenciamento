@@ -28,6 +28,8 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public static void concluir(AnaliseTecnica analise) {
 		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
