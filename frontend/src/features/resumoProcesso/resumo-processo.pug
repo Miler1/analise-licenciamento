@@ -1,0 +1,34 @@
+include ../../features/legislacao/legislacao
+mixin resumo-processo(processo, abrirDadosProcesso)
+    section.margin-bottom-md
+        
+        header.row
+                
+            h3.col-md-6 Resumo do processo
+
+            .col-md-6(style="margin-top: 20px; margin-bottom: 10px")
+                button.btn.btn-default.col-md-offset-2(data-toggle="modal", data-target="#modalLegislacao")
+                    i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
+                    | Legislações
+                button.btn.btn-default.col-md-offset-1(ng-click=abrirDadosProcesso)
+                    i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
+                    | Dados do processo
+
+        div
+
+            div
+                label.not-bold.margin-right-xs(for="texto_numero_processo") Número: 
+                span#texto_numero_processo
+                    strong {{#{processo}.numero}}
+            div
+                label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
+                span#texto_cpf_ou_cnpj
+                    strong {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
+            div
+                label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Empreendimento: 
+                span#texto_nome_empreendimento
+                    strong {{#{processo}.empreendimento.denominacao}}
+            div
+                label.not-bold.margin-right-xs(for="texto_municipio_estado") Município: 
+                span#texto_municipio_estado   
+                    strong {{#{processo}.empreendimento.municipio.nome}} / {{#{processo}.empreendimento.municipio.estado.codigo}}

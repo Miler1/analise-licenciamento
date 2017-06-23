@@ -20,11 +20,12 @@ import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Identificavel;
 import utils.Mensagem;
 
 @Entity
 @Table(schema="analise", name="recomendacao")
-public class Recomendacao extends GenericModel {
+public class Recomendacao extends GenericModel implements Identificavel {
 	
 	public static final String SEQ = "analise.recomendacao_id_seq";
 	
@@ -43,4 +44,16 @@ public class Recomendacao extends GenericModel {
 	
 	@Required
 	public Integer ordem;
+
+	@Override
+	public Long getId() {
+		
+		return this.id;
+	}
+
+	public void update(Recomendacao novaRecomendacao) {
+
+		this.texto = novaRecomendacao.texto;
+		this.ordem = novaRecomendacao.ordem;		
+	}
 }

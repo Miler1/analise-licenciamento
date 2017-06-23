@@ -1,7 +1,7 @@
 var AvaliarDocumento = {
 
     bindings: {
-
+        
         analiseDocumento: '<',
         identificador: '<',
         invalidar: '<'
@@ -12,7 +12,7 @@ var AvaliarDocumento = {
 
         this.$onInit = function() {
 
-            ctrl.nome = 'documento_' + this.identificador;
+            ctrl.nome = 'documento_' + this.identificador;            
         };
 
         ctrl.setValido = function(validado) {
@@ -28,7 +28,6 @@ var AvaliarDocumento = {
 
             ctrl.analiseDocumento.validado = validado;
         };
-
     },
     templateUrl: 'components/avaliarDocumento/avaliarDocumento.html'
 };

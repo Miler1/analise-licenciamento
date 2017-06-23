@@ -1,8 +1,5 @@
 package models;
 
-import java.util.Date;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,20 +8,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import exceptions.PermissaoNegadaException;
-import models.licenciamento.Licenca;
-import models.portalSeguranca.Perfil;
-import models.portalSeguranca.Usuario;
+import com.sun.corba.se.spi.ior.Identifiable;
+
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Mensagem;
+import utils.Identificavel;
 
 @Entity
 @Table(schema="analise", name="condicionante")
-public class Condicionante extends GenericModel {
+public class Condicionante extends GenericModel implements Identificavel {
 	
 	public static final String SEQ = "analise.condicionante_id_seq";
 	
@@ -46,4 +39,17 @@ public class Condicionante extends GenericModel {
 	
 	@Required
 	public Integer ordem;
+
+	@Override
+	public Long getId() {
+		
+		return this.id;
+	}
+
+	public void update(Condicionante novaCondicionante) {
+		
+		this.texto = novaCondicionante.texto;
+		this.prazo = novaCondicionante.prazo;
+		this.ordem = novaCondicionante.ordem;
+	}
 }

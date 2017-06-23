@@ -1,0 +1,38 @@
+include ../../components/resumoProcesso/resumo-processo
+
+div(ng-init="ctrl.init()")
+    
+    section
+        
+        +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()')        
+
+    section.margin-bottom-md
+
+        uib-tabset(active='tabAtiva')
+            uib-tab(index="0", heading="Análise geo")
+                div(ng-if='tabAtiva === 0')
+                    include analiseGeo/analise-geo
+
+            uib-tab(index="1", heading="Parecer")
+                parecer(analise-tecnica="ctrl.analiseTecnica")
+        
+
+    section.margin-bottom-xl
+    
+        button.btn.btn-default.col-md-2.col-md-offset-0(ng-click="ctrl.cancelar()")
+            i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
+            | Cancelar
+        
+        button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseJuridica.dataFim")
+            i.glyphicon.glyphicon-edit.glyphicon--with-right-mainiciarrgin
+            | Salvar
+        
+        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseJuridica.dataFim")
+            i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+            | Concluir
+
+        i.pull-right(ng-if="ctrl.analiseJuridica.dataFim") Esta análise foi concluida em {{ctrl.analiseJuridica.dataFim}} e não pode mais ser alterada.
+
+
+
+

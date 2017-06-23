@@ -150,6 +150,10 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         getDocumentosAnalisados();
     };
 
+    ctrl.invalidarDocumento = function(indice) {
+
+    };
+
     function montarAnaliseJuridica() {
 
         ctrl.analiseJuridica.documentos = ctrl.documentosParecer;

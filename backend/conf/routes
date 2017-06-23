@@ -13,7 +13,6 @@ POST	/processos/count							Processos.countWithFilter
 GET		/processos/{id}/completo					Processos.getInfoProcesso
 GET		/processos/{idProcesso}						Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
-GET		/processos/{id}/analiseGeo					Processos.getAnaliseGeo
 
 # Ficha do Imovel
 GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
@@ -23,20 +22,22 @@ GET		/baixarShapefile							Imoveis.baixarShapefile
 
 # Analise juridica
 
-GET		/analisesJuridicas/parecer					AnalisesJuridicas.findByNumeroProcesso
-POST	/analisesJuridicas/iniciar 					AnalisesJuridicas.iniciar
-POST	/analisesJuridicas							AnalisesJuridicas.alterar
-POST	/analisesJuridicas/concluir					AnalisesJuridicas.concluir
-POST	/analisesJuridicas/validarParecer			AnalisesJuridicas.validarParecer
-GET		/analisesJuridicas/{idAnaliseJuridica}		AnalisesJuridicas.findById
+GET		/analisesJuridicas/parecer									AnalisesJuridicas.findByNumeroProcesso
+POST	/analisesJuridicas/iniciar 									AnalisesJuridicas.iniciar
+POST	/analisesJuridicas											AnalisesJuridicas.alterar
+POST	/analisesJuridicas/concluir									AnalisesJuridicas.concluir
+POST	/analisesJuridicas/validarParecer							AnalisesJuridicas.validarParecer
+GET		/analisesJuridicas/{idAnaliseJuridica}						AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 
 # Analise tecnica
 
-GET		/analisesTecnicas/parecer					AnalisesTecnicas.findByNumeroProcesso
-POST	/analisesTecnicas/iniciar 					AnalisesTecnicas.iniciar
-POST	/analisesTecnicas							AnalisesTecnicas.alterar
-POST	/analisesTecnicas/concluir					AnalisesTecnicas.concluir
+GET		/analisesTecnicas/parecer							AnalisesTecnicas.findByNumeroProcesso
+POST	/analisesTecnicas/iniciar 							AnalisesTecnicas.iniciar
+POST	/analisesTecnicas									AnalisesTecnicas.alterar
+POST	/analisesTecnicas/concluir							AnalisesTecnicas.concluir
+GET		/analisesTecnicas/{idAnaliseTecnica}				AnalisesTecnicas.findById
+GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRestricoesGeo
 
 # Documentos licenciamento
 
