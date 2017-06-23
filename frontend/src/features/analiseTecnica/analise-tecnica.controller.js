@@ -86,7 +86,17 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             return;            
         }
 
-        console.log(ctrl.analiseTecnica);
+        ctrl.analiseTecnica.analise.processo.empreendimento = null;
+        analiseTecnicaService.concluir(ctrl.analiseTecnica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+                $location.path('/analise-tecnica');
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     }
 
     function salvar() {
