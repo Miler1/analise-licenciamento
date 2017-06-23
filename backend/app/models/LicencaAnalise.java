@@ -56,10 +56,10 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@Required
 	public String observacao;
 	
-	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="licencaAnalise", cascade=CascadeType.ALL)
 	public List<Condicionante> condicionantes;
 
-	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="licencaAnalise", cascade=CascadeType.ALL)
 	public List<Recomendacao> recomendacoes;	
 	
 	public void update(LicencaAnalise novaLicencaAnalise) {
