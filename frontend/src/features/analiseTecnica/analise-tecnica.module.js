@@ -46,4 +46,5 @@ analiseTecnica.config(['$routeProvider', function($routeProvider) {
 }]);    
 
 analiseTecnica
-	.controller('analiseGeoController', controllers.AnaliseGeoController);
+	.controller('analiseGeoController', controllers.AnaliseGeoController)
+	.controller('modalParecerRestricaoController', controllers.ModalParecerRestricaoController);
