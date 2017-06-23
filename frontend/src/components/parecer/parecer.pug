@@ -48,16 +48,17 @@ section.margin-bottom-md
     
     form#formulario_parecer(name="$ctrl.formularioParecer", novalidate)
 
-        .form-group
+        .form-group(ng-class="{'has-error': $ctrl.formularioParecer.$submitted && $ctrl.formularioParecer.parecer.$invalid}")
             div(text-angular, ng-model="$ctrl.analiseTecnica.parecer", name="parecer", required, ta-text-editor-class="form-control myform2-height", 
                 ta-html-editor-class="form-control myform2-height")
-            +inputErrors('$ctrl.formularioParecer', 'parecer', 'required')
+            div(ng-messages='$ctrl.formularioParecer.$submitted && $ctrl.formularioParecer.parecer.$error')
+                p.error-message(ng-message='required') Campo obrigatório.
         
         .form-group
             div.btn.btn-default(type="file", name="arquivo", ngf-select="$ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                 i.glyphicon.glyphicon-open.glyphicon--with-right-margin 
                 | Anexar arquivo ao parecer 
-            i   Tamanho máximo de {{$ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+            i Tamanho máximo de {{$ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
             
 
     table.table.table-condensed(ng-if="$ctrl.analiseTecnica.documentos.length > 0")
@@ -81,16 +82,18 @@ section.margin-bottom-md
                         i.glyphicon.glyphicon-trash          
 
     form.text-center.margin-bottom-md.margin-top-md(name="$ctrl.formularioResultado", novalidate)
-        label.radio-inline(for="radio_deferido")
-            input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id") 
-            | Deferido
-        label.radio-inline(for="radio_indeferido")
-            input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id" ) 
-            | Indeferido
-        label.radio-inline(for="radio_notificacao")
-            input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise.id") 
-            | Emitir notificação
-        +inputErrors('$ctrl.formularioResultado', 'resultado', 'required')  
+        div(ng-class="{'has-error': $ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.$invalid}")
+            label.radio-inline(for="radio_deferido")
+                input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise") 
+                | Deferido
+            label.radio-inline(for="radio_indeferido")
+                input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise") 
+                | Indeferido
+            label.radio-inline(for="radio_notificacao")
+                input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise") 
+                | Emitir notificação
+            div(ng-messages='$ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.resultado.$error')
+                p.error-message(ng-message='required') Campo obrigatório.
 
     section(ng-if="$ctrl.analiseTecnica.tipoResultadoAnalise.id === $ctrl.DEFERIDO")
 
