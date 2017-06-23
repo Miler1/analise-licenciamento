@@ -1,7 +1,7 @@
 var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $window, $location,
     analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService, documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB) {
 
-    $rootScope.tituloPagina = 'PARECER Técnico';
+    $rootScope.tituloPagina = 'Parecer Técnico';
 
     var ctrl = this;
 
@@ -18,9 +18,6 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     function analiseValida() {
 
-        ctrl.formularioParecer.$setSubmitted();
-        ctrl.formularioResultado.$setSubmitted();
-
         var parecerPreenchido = ctrl.formularioParecer.$valid;
         var resultadoPreenchido = ctrl.formularioResultado.$valid;
         var todosDocumentosValidados = true;
@@ -32,7 +29,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             todosDocumentosValidados = todosDocumentosValidados && analise.validado;
         });
 
-        if (ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
+        if (ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
 
             return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
 
@@ -70,7 +67,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             '<ul>' +
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
                 '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
-                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
+                '<li>Para DEFERIDO, todos os documentos de validação técnica devem estar no status válido.</li>' + 
             '</ul>', { ttl: 10000 });
             return;            
         }

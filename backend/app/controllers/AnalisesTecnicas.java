@@ -12,7 +12,7 @@ public class AnalisesTecnicas extends InternalController {
 		
 	public static void iniciar(AnaliseTecnica analise) {
 		
-		//verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 		
@@ -27,7 +27,7 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void concluir(AnaliseTecnica analise) {
 		
-		//verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 		
@@ -42,7 +42,7 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public static void findByNumeroProcesso() {
 		
-		//verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 		
 		String numeroProcesso = getParamAsString("numeroProcesso");
 		
@@ -54,7 +54,7 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public static void alterar(AnaliseTecnica analise) {
 		
-		//verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 				

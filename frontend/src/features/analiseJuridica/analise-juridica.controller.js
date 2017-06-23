@@ -73,7 +73,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             '<ul>' +
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
                 '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
-                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
+                '<li>Para DEFERIDO, todos os documentos de validação técnica devem estar no status válido.</li>' + 
             '</ul>', { ttl: 10000 });
             return;
         }
@@ -83,7 +83,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             .then(function(response) {
 
                 mensagem.success(response.data.texto);
-                $location.path('/analise-juridica');
+                $location.path('/analise-tecnica');
 
             }, function(error){
 
