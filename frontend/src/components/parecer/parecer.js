@@ -2,10 +2,10 @@ var Parecer = {
 
     bindings: {
 
-        analiseTecnica: '<'
+        analiseTecnica: '<',
+        formularios: '='
     },
-
-    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService) {
+    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout) {
 
         var ctrl = this;
 
@@ -18,6 +18,8 @@ var Parecer = {
         ctrl.baixarDocumentoAnalise = baixarDocumentoAnalise;
         ctrl.clonarParecer = clonarParecer;
         ctrl.alterarLicenca = alterarLicenca;
+        ctrl.removerDocumento = removerDocumento;
+        
         ctrl.upload = function(file, invalidFile) {
 
             if(file) {
@@ -49,17 +51,28 @@ var Parecer = {
         ctrl.$onInit = function() {
 
             setAnaliseTecnica(ctrl.analiseTecnica);
-        };
+       };
+
+       ctrl.$postLink = function() {
+
+            ctrl.formularios = {
+
+                parecer: ctrl.formularioParecer,
+                resultado: ctrl.formularioResultado
+            };
+       };
         
         function setAnaliseTecnica(value) {
 
             ctrl.analiseTecnica.documentos = value.documentos || [];
-            ctrl.analiseTecnica.tipoResultadoAnalise = value.tipoResultadoAnalise || {id : 0};
             ctrl.analiseTecnica.analisesDocumentos = !_.isEmpty(value.analisesDocumentos) ? value.analisesDocumentos : criarAnalisesDocumentos(value.analise.processo.caracterizacoes[0].documentosEnviados);
+
+            ctrl.formParecer = ctrl.formularioParecer;
+            ctrl.formResultado = ctrl.formularioResultado;
         }
 
         function clonarParecer() {
-
+            
             analiseTecnicaService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
                 .then(function(response){
 
@@ -133,6 +146,11 @@ var Parecer = {
         function baixarDocumentoAnalise(idDocumento) {
             documentoAnaliseService.download(idDocumento);
         }
+
+        function removerDocumento(indiceDocumento) {
+
+            ctrl.analiseTecnica.documentos.splice(indiceDocumento,1);
+        }      
 
         function alterarLicenca(licenca) {
 

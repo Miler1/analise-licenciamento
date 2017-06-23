@@ -163,6 +163,16 @@ var AnaliseGeoController = function($scope, $timeout) {
 			});
 			meusDados = $scope.meusDados = L.layerGroup().addTo(mapa);
 
+			var measure = L.control.measure({
+				position: 'topright',
+				primaryLengthUnit: 'meters',
+				primaryAreaUnit: 'hectares',
+				captureZIndex: 10000,
+				localization: 'pt_BR'
+			});
+
+			mapa.addControl(measure);
+
 			var restricoesGeoJson = L.geoJSON(restricoes);
 
 			mapa.fitBounds(restricoesGeoJson.getBounds());
