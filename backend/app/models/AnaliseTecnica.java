@@ -34,6 +34,7 @@ import utils.Configuracoes;
 import utils.ListUtil;
 import utils.Mensagem;
 import utils.ModelUtil;
+import utils.PessoaUtils;
 
 @Entity
 @Table(schema="analise", name="analise_tecnica")
@@ -95,7 +96,10 @@ public class AnaliseTecnica extends GenericModel {
 	public List<AnalistaTecnico> analistasTecnicos;
 	
 	@Column(name="parecer_validacao")
-	public String parecerValidacao;	
+	public String parecerValidacao;
+	
+	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
+	public List<LicencaAnalise> licencasAnalise;
 	
 	private void validarParecer() {
 		
@@ -170,10 +174,47 @@ public class AnaliseTecnica extends GenericModel {
 				this.analisesDocumentos.add(novaAnaliseDocumento);
 			}			
 		}
+		
+		updateLicencasAnalise(novaAnalise.licencasAnalise);
 				
 		this._save();		
 	}
 	
+	private void updateLicencasAnalise(List<LicencaAnalise> novasLicencasAnalise) {
+		
+		if (this.licencasAnalise == null) {
+			
+			this.licencasAnalise = new ArrayList<>();
+		}
+		
+		Iterator<LicencaAnalise> licencasCadastradas = this.licencasAnalise.iterator();
+		
+		while(licencasCadastradas.hasNext()) {
+			
+			LicencaAnalise licencaCadastrada = licencasCadastradas.next();
+			
+			if (ListUtil.getById(licencaCadastrada.id, novasLicencasAnalise) == null) {
+				
+				licencaCadastrada.delete();
+			}
+		}		
+				
+		for(LicencaAnalise novaLicencaAnalise : novasLicencasAnalise) {
+						
+			LicencaAnalise licencaAnalise = ListUtil.getById(novaLicencaAnalise.id, this.licencasAnalise);
+				
+			if(licencaAnalise != null) {
+				
+				licencaAnalise.update(novaLicencaAnalise);
+			
+			} else {
+				
+				novaLicencaAnalise.analiseTecnica = this;
+				this.licencasAnalise.add(novaLicencaAnalise);
+			}			
+		}
+	}
+
 	private void updateDocumentos(List<Documento> novosDocumentos) {
 		
 		TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_TECNICA);
