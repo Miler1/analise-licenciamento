@@ -32,8 +32,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
         if(!parecerPreenchido || !resultadoPreenchido) {
 
             return false;
-        };
-        
+        }        
         
         var todosDocumentosValidados = true;
         var todosDocumentosAvaliados = true;
