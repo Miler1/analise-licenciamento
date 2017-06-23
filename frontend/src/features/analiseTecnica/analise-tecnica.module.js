@@ -22,7 +22,22 @@ analiseTecnica.config(['$routeProvider', function($routeProvider) {
 							deferred.resolve(response.data);
 						});
 					return deferred.promise;					
-				}				
+				},
+				restricoes: function(analiseTecnicaService, $route, $q) {
+
+					var deferred = $q.defer();
+					analiseTecnicaService.getRestricoesGeo($route.current.params.idAnaliseTecnica)
+						.then(function(response){
+							deferred.resolve(response.data);
+						});
+					return deferred.promise;
+
+				},
+				idAnaliseTecnica: function($route) {
+
+					return $route.current.params.idAnaliseTecnica;
+
+				}			
 			}
 		})
 		.otherwise({
@@ -30,5 +45,5 @@ analiseTecnica.config(['$routeProvider', function($routeProvider) {
 		});
 }]);    
 
-
-
+analiseTecnica
+	.controller('analiseGeoController', controllers.AnaliseGeoController);

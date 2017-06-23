@@ -1,7 +1,6 @@
 var licenciamento = angular.module("licenciamento", [
 	"ngRoute",
 	"ui.bootstrap",
-	"analiseGeo",
 	"caixasEntrada",
 	"aguardandoValidacao",
 	"angular-growl",

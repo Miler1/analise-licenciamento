@@ -1,7 +1,8 @@
 var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $window, $location,
-    analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService, documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB) {
+    analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService,
+    documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica) {
 
-    $rootScope.tituloPagina = 'PARECER Técnico';
+    $rootScope.tituloPagina = 'PARECER TÉCNICO';
 
     var ctrl = this;
 
@@ -10,6 +11,8 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.concluir = concluir;
     ctrl.salvar = salvar;
     ctrl.cancelar = cancelar;
+    ctrl.restricoes = restricoes;
+    ctrl.idAnaliseTecnica = idAnaliseTecnica;
     
     ctrl.init = function () {
         

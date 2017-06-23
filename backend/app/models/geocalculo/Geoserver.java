@@ -58,12 +58,18 @@ public class Geoserver extends GenericModel {
 
 	public static File verificarRestricoes(Geometry geoEmpreendimento, ImovelEmpreendimento imovel, String nomeArquivo) throws Exception {
 
-		String caminhoFile = Configuracoes.GEOJSON_INCONFORMIDADES_PATH + File.separator + nomeArquivo + ".geojson";
+		String pathDir = Configuracoes.GEOJSON_INCONFORMIDADES_PATH;
+		String caminhoFile = pathDir + File.separator + nomeArquivo + ".geojson";
 
+		File filePathDir = new File(pathDir);
+		
+		if(!filePathDir.exists())
+			filePathDir.mkdirs();
+		
 		File retorno = new File(caminhoFile);
 
 		if(!retorno.exists()){
-
+			
 			List<Geoserver> geoservers = Geoserver.findAll();
 
 			DefaultFeatureCollection featureCollection = new DefaultFeatureCollection(nomeArquivo, featureType);

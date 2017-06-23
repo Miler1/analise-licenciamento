@@ -27,7 +27,8 @@
     "angular-sanitize": "1.6.2",
     "angular-ui-select": "^0.19.6",
     "proj4": "^2.4.3",
-    "textAngular": "^1.5.16"
+    "textAngular": "^1.5.16",
+    "leaflet-measure": "^2.1.7"
   },
   "resolutions": {
     "angular": "1.6.2"
