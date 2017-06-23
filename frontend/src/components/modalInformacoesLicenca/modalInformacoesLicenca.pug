@@ -1,0 +1,33 @@
+.modal-header
+	h4 Informar Dados da Licença
+
+.modal-body#informacoesLicenca
+
+	label.margin-right-xs Observações:
+	form
+		.form-group
+			textarea.form-control(rows="4", ng-model="$ctrl.observacoes", name="observacoes")
+
+	label.margin-right-xs Condicionantes:
+	form
+		.form-group
+			textarea.form-control(rows="4", ng-model="$ctrl.condicionantes", name="condicionantes")
+
+	.btn-inserir
+		button.btn.btn-default.pull-right(type="button", ng-click="$ctrl.inserirCondicionante()") Inserir condicionante
+
+	label.margin-right-xs Recomendações:
+	form
+		.form-group
+			textarea.form-control(rows="4", ng-model="$ctrl.recomendacoes", name="recomendacoes")
+
+	.btn-inserir
+		button.btn.btn-default.pull-right(type="button", ng-click="$ctrl.inserirRecomendacao()") Inserir recomendação
+
+
+.modal-footer
+
+	button.btn.btn-default.pull-left(type="button", ng-click="$ctrl.cancelar()") Cancelar
+	button.btn.btn-success.pull-right(type="button", ng-click="$ctrl.confirmarDadosLicenca()") Confirmar Dados da Licença
+
+
