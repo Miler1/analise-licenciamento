@@ -187,6 +187,11 @@ public class AnaliseTecnica extends GenericModel {
 			this.licencasAnalise = new ArrayList<>();
 		}
 		
+		if(novasLicencasAnalise == null) {
+			
+			novasLicencasAnalise = new ArrayList<>();
+		}
+		
 		Iterator<LicencaAnalise> licencasCadastradas = this.licencasAnalise.iterator();
 		
 		while(licencasCadastradas.hasNext()) {

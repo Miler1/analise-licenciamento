@@ -6,6 +6,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     var ctrl = this;
 
+    ctrl.DEFERIDO = app.utils.TiposResultadoAnalise.DEFERIDO;
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
     ctrl.exibirDadosProcesso = exibirDadosProcesso;
     ctrl.concluir = concluir;
@@ -13,6 +14,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.cancelar = cancelar;
     ctrl.restricoes = restricoes;
     ctrl.idAnaliseTecnica = idAnaliseTecnica;
+    ctrl.formularios = {};
     
     ctrl.init = function () {
 
@@ -21,11 +23,17 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     function analiseValida() {
 
-        ctrl.formularioParecer.$setSubmitted();
-        ctrl.formularioResultado.$setSubmitted();
+        ctrl.formularios.parecer.$setSubmitted();
+        ctrl.formularios.resultado.$setSubmitted();
 
-        var parecerPreenchido = ctrl.formularioParecer.$valid;
-        var resultadoPreenchido = ctrl.formularioResultado.$valid;
+        var parecerPreenchido = ctrl.formularios.parecer.$valid;
+        var resultadoPreenchido = ctrl.formularios.resultado.$valid;
+
+        if(!parecerPreenchido || !resultadoPreenchido) {
+
+            return false;
+        }        
+        
         var todosDocumentosValidados = true;
         var todosDocumentosAvaliados = true;
 
@@ -35,7 +43,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             todosDocumentosValidados = todosDocumentosValidados && analise.validado;
         });
 
-        if (ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
+        if (ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
 
             return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
 
@@ -78,12 +86,23 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             return;            
         }
 
-        console.log(ctrl.analiseTecnica);
+        ctrl.analiseTecnica.analise.processo.empreendimento = null;
+        analiseTecnicaService.concluir(ctrl.analiseTecnica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+                $location.path('/analise-tecnica');
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     }
 
     function salvar() {
 
         ctrl.analiseTecnica.analise.processo.empreendimento = null;
+        ctrl.analiseTecnica.licencasAnalise = [];
         analiseTecnicaService.salvar(ctrl.analiseTecnica)
             .then(function (response) {
 

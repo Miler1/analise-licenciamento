@@ -14,7 +14,7 @@ div(ng-init="ctrl.init()")
                     include analiseGeo/analise-geo
 
             uib-tab(index="1", heading="Parecer")
-                parecer(analise-tecnica="ctrl.analiseTecnica")
+                parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios")
         
 
     section.margin-bottom-xl
@@ -23,15 +23,15 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
         
-        button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseJuridica.dataFim")
+        button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
             i.glyphicon.glyphicon-edit.glyphicon--with-right-mainiciarrgin
             | Salvar
         
-        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseJuridica.dataFim")
+        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim")
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
 
-        i.pull-right(ng-if="ctrl.analiseJuridica.dataFim") Esta análise foi concluida em {{ctrl.analiseJuridica.dataFim}} e não pode mais ser alterada.
+        i.pull-right(ng-if="ctrl.analiseTecnica.dataFim") Esta análise foi concluida em {{ctrl.analiseTecnica.dataFim}} e não pode mais ser alterada.
 
 
 
