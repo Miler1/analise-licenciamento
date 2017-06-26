@@ -13,7 +13,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.cancelar = cancelar;
     ctrl.restricoes = restricoes;
     ctrl.idAnaliseTecnica = idAnaliseTecnica;
-    
+
     ctrl.init = function () {
 
         ctrl.analiseTecnica = angular.copy(analiseTecnica);
@@ -71,11 +71,11 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
             mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
             '<ul>' +
-                '<li>Para concluir é necessário descrever o parecer.</li>' + 
-                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
-                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
+                '<li>Para concluir é necessário descrever o parecer.</li>' +
+                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' +
+                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' +
             '</ul>', { ttl: 10000 });
-            return;            
+            return;
         }
 
         console.log(ctrl.analiseTecnica);
@@ -109,6 +109,23 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
                 ctrl.analiseTecnica = response.data;
             });
     }
+
+    var modalInstance = $uibModal.open({
+
+        component: 'modalInformacoesLicenca',
+        size: 'lg',
+        backdrop: 'static',
+        resolve: {
+
+            dadosLicenca: function() {
+
+                return {
+                    condicionantes: '',
+                    observacoes: 'teste'
+                };
+            }
+        }
+    });
 };
 
 exports.controllers.AnaliseTecnicaController = AnaliseTecnicaController;

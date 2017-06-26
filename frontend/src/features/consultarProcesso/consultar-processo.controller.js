@@ -1,4 +1,4 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
 
@@ -42,6 +42,25 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 		return processoService.visualizarProcesso(processo);
 	}
+
+
+
+	var modalInstance = $uibModal.open({
+
+		component: 'modalInformacoesLicenca',
+		size: 'lg',
+		backdrop: 'static',
+		resolve: {
+
+			dadosLicenca: function() {
+
+				return {
+					condicionantes: '',
+					observacoes: 'teste'
+				};
+			}
+		}
+	});
 };
 
 exports.controllers.ConsultarProcessoController = ConsultarProcessoController;

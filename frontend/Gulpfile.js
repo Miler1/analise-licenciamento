@@ -86,6 +86,11 @@ var config = {
 			"./bower_components/textAngular/dist/textAngular-sanitize.min.js",
 			"./bower_components/textAngular/dist/textAngular.min.js",
 			"./bower_components/textAngular/dist/textAngular.css"
+		],
+		ngSortable: [
+
+			"./bower_components/ng-sortable/dist/ng-sortable.min.js",
+			"./bower_components/ng-sortable/dist/ng-sortable.style.css"
 		]
 	},
 
@@ -98,7 +103,7 @@ var config = {
 		htmlPath: DIST_FOLDER + "/",
 		cssPath:  DIST_FOLDER + "/css",
 		libsPath: DIST_FOLDER + "/libs",
-	
+
 		imgsPath: DIST_FOLDER + "/images",
 		fontsPath: DIST_FOLDER + "/fonts"
 	}
@@ -187,7 +192,7 @@ gulp.task("js-dev", function() {
 	return gulp.src([
 			config.src.all.slice(0,-1) + "!(*.module|app).js",
 			config.src.all + ".module.js",
-			"src/app.js"		
+			"src/app.js"
 		])
 		.pipe(wrapper({
 			header: '!function(exports) {\n/* @ngInject */\n',
@@ -209,14 +214,14 @@ var configureLib = function (configValue, distPath) {
 		var libConfig = configValue[lib];
 
 		if (lib === "root") {
-			
+
 			gulp.src(libConfig)
 				.pipe(gulp.dest(distPath));
 
 		} else if (libConfig instanceof Array || typeof libConfig === "string") {
 
 			gulp.src(libConfig)
-				.pipe(gulp.dest(distPath + "/" + lib));	
+				.pipe(gulp.dest(distPath + "/" + lib));
 
 		} else if (typeof libConfig === "object") {
 
@@ -225,7 +230,7 @@ var configureLib = function (configValue, distPath) {
 	}
 };
 
-gulp.task("libs", function() { 
+gulp.task("libs", function() {
 
 	configureLib(config.libs, config.dist.libsPath);
 });

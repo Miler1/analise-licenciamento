@@ -8,22 +8,82 @@
 		.form-group
 			textarea.form-control(rows="4", ng-model="$ctrl.observacoes", name="observacoes")
 
+	hr
+
 	label.margin-right-xs Condicionantes:
-	form
-		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.condicionantes", name="condicionantes")
+	form.col-md-12
+		.form-group.col-md-6
+			textarea.form-control(rows="2", ng-model="$ctrl.condicionante.texto", name="condicionantes")
+		.col-md-6
+			label Prazo da condicionante em dias
+			input(type="text")
 
 	.btn-inserir
 		button.btn.btn-default.pull-right(type="button", ng-click="$ctrl.inserirCondicionante()") Inserir condicionante
 
+	div.tabela
+
+		table.table.table-striped.table-condensed.no-margin
+			thead
+				tr
+					th.col-md-1 Ordem
+					th.col-md-8 Condicionante
+					th.col-md-2 Prazo(dias)
+					th.col-md-1.text-right Ações
+
+			tbody(as-sortable="$ctrl.sortOptions", data-ng-model="$ctrl.condicionantes")
+				tr(data-ng-repeat="condicionante in $ctrl.condicionantes", as-sortable-item)
+					td {{$index + 1}}
+					td(as-sortable-item-handle) {{condicionante.texto}}
+					td(as-sortable-item-handle) {{condicionante.prazo}}
+					td
+						span.edita.pull-right
+							a(ng-click="$ctrl.editarCondicionante(condicionante)")
+								i.glyphicon.glyphicon-pencil
+
+			//- tbody
+			//- 	tr(ng-repeat="condicionante in $ctrl.condicionantes")
+			//- 		td {{condicionante.ordem}}
+			//- 		td {{condicionante.texto}}
+			//- 		td {{condicionante.prazo}}
+			//- 		td
+			//- 			span.pull-right
+			//- 				a(ng-click="$ctrl.editarCondicionante(condicionante)")
+			//- 					i.glyphicon.glyphicon-pencil
+
+		.text-center.vazio
+			span(ng-if="$ctrl.condicionantes.length == 0") Nenhuma condicionante adicionada
+	hr
+
 	label.margin-right-xs Recomendações:
 	form
 		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.recomendacoes", name="recomendacoes")
+			textarea.form-control(rows="2", ng-model="$ctrl.recomendacao.texto", name="recomendacao")
 
 	.btn-inserir
 		button.btn.btn-default.pull-right(type="button", ng-click="$ctrl.inserirRecomendacao()") Inserir recomendação
 
+	div.tabela
+
+		table.table.table-striped.table-condensed.no-margin
+			thead
+				tr
+					th.col-md-1 Ordem
+					th.col-md-10 Recomendação
+					th.col-md-1.text-right Ações
+
+			tbody(as-sortable="$ctrl.sortOptions", data-ng-model="$ctrl.recomendacoes")
+				tr(data-ng-repeat="recomendacao in $ctrl.recomendacoes", as-sortable-item)
+					td {{$index + 1}}
+					td(as-sortable-item-handle)
+						span(ng-hide="recomendacao.editing" ng-dblclick="$ctrl.editarRecomendacao(recomendacao)") {{recomendacao.texto}}
+						input.input-edicao(ng-show="recomendacao.editing" ng-model="recomendacao.texto" ng-blur="$ctrl.doneEditing(recomendacao)" autofocus)
+					td
+						span.edita.pull-right
+							a(ng-click="$ctrl.editarRecomendacao(recomendacao)")
+								i.glyphicon.glyphicon-pencil
+		.text-center.vazio
+			span(ng-if="$ctrl.recomendacoes.length == 0") Nenhuma recomendação adicionada
 
 .modal-footer
 
