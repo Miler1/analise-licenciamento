@@ -11,7 +11,6 @@ div
 		is-analise-tecnica="true")
 
 	h4 Lista de processos
-
 	hr
 	.row
 		.col-md-12
@@ -32,7 +31,7 @@ div
 						tr(ng-repeat="processo in cxEntAnalistaTecnico.processos")
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
-							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td(ng-attr-title="processo.numero") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}

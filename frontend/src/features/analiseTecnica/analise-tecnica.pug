@@ -8,13 +8,16 @@ div(ng-init="ctrl.init()")
 
     section.margin-bottom-md
 
-        uib-tabset(active='tabAtiva')
+        uib-tabset(active='ctrl.tabAtiva')
             uib-tab(index="0", heading="Análise geo")
-                div(ng-if='tabAtiva === 0')
+                div(ng-if='ctrl.tabAtiva === 0')
                     include analiseGeo/analise-geo
 
             uib-tab(index="1", heading="Parecer")
                 parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
+
+                a.btn(ng-click="ctrl.tabAtiva = 0")
+                    | << Etapa anterior                
         
 
     section.margin-bottom-xl

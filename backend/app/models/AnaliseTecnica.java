@@ -152,6 +152,7 @@ public class AnaliseTecnica extends GenericModel {
 			
 			LicencaAnalise novaLicencaAnalise = new LicencaAnalise();
 			novaLicencaAnalise.caracterizacao = caracterizacao;
+			novaLicencaAnalise.validade = caracterizacao.tipoLicenca.validadeEmAnos;
 			
 			novasLicencasAnalise.add(novaLicencaAnalise);
 		}

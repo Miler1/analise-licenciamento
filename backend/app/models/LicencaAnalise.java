@@ -170,6 +170,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@Override
 	public Long getId() {
 		
-		return this.getId();
+		return this.id;
 	}
 }

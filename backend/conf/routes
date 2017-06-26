@@ -39,6 +39,10 @@ POST	/analisesTecnicas/concluir							AnalisesTecnicas.concluir
 GET		/analisesTecnicas/{idAnaliseTecnica}				AnalisesTecnicas.findById
 GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRestricoesGeo
 
+# Caracterizacao
+
+GET		/caracterizacoes/{id}/analisesLicencas				Caracterizacoes.findAnalisesLicencas
+
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
