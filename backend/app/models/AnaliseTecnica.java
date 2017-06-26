@@ -26,6 +26,7 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
+import models.licenciamento.Caracterizacao;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
@@ -98,7 +99,7 @@ public class AnaliseTecnica extends GenericModel {
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;
 	
-	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="analiseTecnica", orphanRemoval = true)
 	public List<LicencaAnalise> licencasAnalise;
 	
 	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
@@ -134,13 +135,29 @@ public class AnaliseTecnica extends GenericModel {
 			c.setTime(new Date());
 			
 			this.dataInicio = c.getTime();
-			
+									
 			this._save();
 			
+			iniciarLicencas();
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
 	}	
+
+	private void iniciarLicencas() {
+		
+		List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();
+		
+		for (Caracterizacao caracterizacao : this.analise.processo.caracterizacoes) {
+			
+			LicencaAnalise novaLicencaAnalise = new LicencaAnalise();
+			novaLicencaAnalise.caracterizacao = caracterizacao;
+			
+			novasLicencasAnalise.add(novaLicencaAnalise);
+		}
+		
+		updateLicencasAnalise(novasLicencasAnalise);
+	}
 
 	public void update(AnaliseTecnica novaAnalise) {
 				
@@ -178,10 +195,9 @@ public class AnaliseTecnica extends GenericModel {
 			}			
 		}
 		
-		updateLicencasAnalise(novaAnalise.licencasAnalise);
-				
 		this._save();
 		
+		updateLicencasAnalise(novaAnalise.licencasAnalise);
 		updatePareceresTecnicosRestricoes(novaAnalise.pareceresTecnicosRestricoes);		
 	}
 	
@@ -229,23 +245,6 @@ public class AnaliseTecnica extends GenericModel {
 			this.licencasAnalise = new ArrayList<>();
 		}
 		
-		if(novasLicencasAnalise == null) {
-			
-			novasLicencasAnalise = new ArrayList<>();
-		}
-		
-		Iterator<LicencaAnalise> licencasCadastradas = this.licencasAnalise.iterator();
-		
-		while(licencasCadastradas.hasNext()) {
-			
-			LicencaAnalise licencaCadastrada = licencasCadastradas.next();
-			
-			if (ListUtil.getById(licencaCadastrada.id, novasLicencasAnalise) == null) {
-				
-				licencaCadastrada.delete();
-			}
-		}		
-				
 		for(LicencaAnalise novaLicencaAnalise : novasLicencasAnalise) {
 						
 			LicencaAnalise licencaAnalise = ListUtil.getById(novaLicencaAnalise.id, this.licencasAnalise);
@@ -257,6 +256,8 @@ public class AnaliseTecnica extends GenericModel {
 			} else {
 				
 				novaLicencaAnalise.analiseTecnica = this;
+				novaLicencaAnalise.save();
+				
 				this.licencasAnalise.add(novaLicencaAnalise);
 			}			
 		}

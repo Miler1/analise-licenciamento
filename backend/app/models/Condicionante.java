@@ -11,9 +11,14 @@ import javax.persistence.Table;
 
 import com.sun.corba.se.spi.ior.Identifiable;
 
+import exceptions.ValidacaoException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
+import utils.Configuracoes;
 import utils.Identificavel;
+import utils.Mensagem;
+import utils.validacao.Validacao;
 
 @Entity
 @Table(schema="analise", name="condicionante")
@@ -45,11 +50,26 @@ public class Condicionante extends GenericModel implements Identificavel {
 		
 		return this.id;
 	}
+	
+	@Override
+	public Condicionante save() {
+		
+		Validacao.validar(this);
+		
+		if (this.prazo.compareTo(Configuracoes.PRAZO_MAXIMO_CONDICIONANTE) > 0) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO);
+		}
+		
+		return super.save();
+	}
 
 	public void update(Condicionante novaCondicionante) {
 		
 		this.texto = novaCondicionante.texto;
 		this.prazo = novaCondicionante.prazo;
 		this.ordem = novaCondicionante.ordem;
+		
+		this.save();
 	}
 }

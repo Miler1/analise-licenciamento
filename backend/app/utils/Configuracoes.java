@@ -52,6 +52,8 @@ public class Configuracoes {
 	public static String GETCAPABILITIES_GEOSERVER_SICAR = getConfig("sistema.url.getcapabilities.geoserver.sicar", null);
 	public static String GEOSERVER_SICAR_IMOVEL_LAYER = getConfig("sistema.url.getcapabilities.geoserver.sicar.layer.name", null);
 
+	//Prazo da condicionante deverá ser menor ou igual a 1900 (5 anos) conforme regra.
+	public static Integer PRAZO_MAXIMO_CONDICIONANTE = 1900;
 
 	static {
 

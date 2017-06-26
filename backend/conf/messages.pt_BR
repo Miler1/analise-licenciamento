@@ -65,3 +65,5 @@ ANALISE_JURIDICA_SEM_PARECER_VALIDACAO=O parecer da validação não foi informa
 # Analise tecnica
 #
 ANALISE_TECNICA_INICIADA_SUCESSO=Análise técnica iniciada.
+ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO=A validade da licença está maior que o máximo permitido.
+ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO=A validade da condicionante está maior que o máximo permitido. 
