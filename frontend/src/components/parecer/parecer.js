@@ -21,7 +21,7 @@ var Parecer = {
         ctrl.alterarLicenca = alterarLicenca;
         ctrl.removerDocumento = removerDocumento;
         ctrl.listarAnalisesLicencas = listarAnalisesLicencas;
-        
+
         ctrl.upload = function(file, invalidFile) {
 
             if(file) {
@@ -43,12 +43,12 @@ var Parecer = {
 
                         mensagem.error(error.data.texto);
                     });
-            
+
             } else if(invalidFile && invalidFile.$error === 'maxSize'){
 
                 mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
-            }            
-        };        
+            }
+        };
 
         ctrl.$onInit = function() {
 
@@ -63,7 +63,7 @@ var Parecer = {
                 resultado: ctrl.formularioResultado
             };
        };
-        
+
         function setAnaliseTecnica(value) {
 
             ctrl.analiseTecnica.documentos = value.documentos || [];
@@ -74,7 +74,7 @@ var Parecer = {
         }
 
         function clonarParecer() {
-            
+
             analiseTecnicaService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
                 .then(function(response){
 
@@ -131,7 +131,7 @@ var Parecer = {
                 modalInstance.result.then(function(response){
 
                     analiseDocumento.parecer = response;
-                
+
                 }, function() {
 
                     if(!analiseDocumento.parecer) {
@@ -142,7 +142,7 @@ var Parecer = {
         }
 
         function baixarDocumento(idDocumento) {
-            documentoLicenciamentoService.download(idDocumento);                
+            documentoLicenciamentoService.download(idDocumento);
         }
 
         function baixarDocumentoAnalise(idDocumento) {
@@ -152,28 +152,35 @@ var Parecer = {
         function removerDocumento(indiceDocumento) {
 
             ctrl.analiseTecnica.documentos.splice(indiceDocumento,1);
-        }      
+        }
 
         function alterarLicenca(indice) {
 
 	        var modalInstance = $uibModal.open({
 
-                component: 'modalInformacoesLicenca',
-                size: 'lg',
-                backdrop: 'static',
-                resolve: {
+                    component: 'modalInformacoesLicenca',
+                    size: 'lg',
+                    backdrop: 'static',
+                    resolve: {
 
-                    dadosLicenca: function() {
+                        dadosLicenca: function() {
 
-                        // TODO - Inserir a licença escolhida
-                        return {
-                            id: 2,
-                            nome:"LP - Licença Prévia",
-                            validade: 5
-                        };
+                            // TODO - Inserir a licença escolhida
+                            return {
+                                id: 2,
+                                nome:"LP - Licença Prévia",
+                                validade: 5
+                            };
+                        }
                     }
-                }
-            });
+                });
+
+
+                modalInstance.result.then(function (result) {
+
+                    console.log(result);
+                });
+
         }
 
         function listarAnalisesLicencas() {

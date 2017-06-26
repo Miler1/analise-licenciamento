@@ -29,14 +29,23 @@ var ModalInformacoesLicenca = {
 
 		ctrl.$onInit =  function() {
 
-			ctrl.condicionantes = [];
-			ctrl.recomendacoes = [];
+			ctrl.condicionantes = ctrl.resolve.dadosLicenca.condicionantes || [];
+			ctrl.recomendacoes = ctrl.resolve.dadosLicenca.recomendacoes || [];
+			ctrl.observacoes = ctrl.resolve.dadosLicenca.observacoes || [];
 			inicializaValidadesPossiveis();
 		};
 
 		ctrl.confirmarDadosLicenca = function() {
 
-			ctrl.close({$value: ctrl.condicionantes});
+			var dadosLicenca = ctrl.resolve.dadosLicenca;
+
+			dadosLicenca.condicionantes = ctrl.condicionantes;
+
+			dadosLicenca.recomendacoes = ctrl.recomendacoes;
+
+			dadosLicenca.observacoes = ctrl.observacoes;
+
+			ctrl.close({$value: dadosLicenca});
 		};
 
 		ctrl.inserirCondicionante = function() {
