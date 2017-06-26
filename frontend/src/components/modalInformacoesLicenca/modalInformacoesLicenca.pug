@@ -43,7 +43,7 @@ include ../../layout/components/inputErrors
 				tr
 					th.col-md-1.index #
 					th.col-md-8 Condicionante
-					th.col-md-2 Prazo(dias)
+					th.col-md-2.text-right Prazo(dias)
 					th.col-md-1.text-right Ações
 
 			tbody(as-sortable="$ctrl.sortOptions", data-ng-model="$ctrl.condicionantes")
@@ -52,7 +52,7 @@ include ../../layout/components/inputErrors
 					td(as-sortable-item-handle)
 						span(ng-hide="condicionante.editingTexto" ng-dblclick="$ctrl.editarTextoCondicionante(condicionante)") {{condicionante.texto}}
 						input.input-edicao(ng-show="condicionante.editingTexto" ng-model="condicionante.texto" ng-blur="$ctrl.doneEditingTextoCondicionante(condicionante)" autofocus)
-					td(as-sortable-item-handle)
+					td.text-right(as-sortable-item-handle)
 						span(ng-hide="condicionante.editingPrazo " ng-dblclick="$ctrl.editarPrazoCondicionante(condicionante)") {{condicionante.prazo}}
 						input.input-edicao(type="number", ng-show="condicionante.editingPrazo" ng-model="condicionante.prazo" ng-blur="$ctrl.doneEditingPrazoCondicionante(condicionante)" autofocus, max="1900")
 					td

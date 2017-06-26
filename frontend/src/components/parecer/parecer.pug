@@ -87,10 +87,10 @@ section.margin-bottom-md
                 input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()")
                 | Deferido
             label.radio-inline(for="radio_indeferido")
-                input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()")
+                input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise")
                 | Indeferido
             label.radio-inline(for="radio_notificacao")
-                input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()")
+                input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise")
                 | Emitir notificação
             div(ng-messages='$ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.resultado.$error')
                 p.error-message(ng-message='required') Campo obrigatório.
@@ -118,7 +118,7 @@ section.margin-bottom-md
                     th.col-md-3 {{analiseLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{analiseLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
                     th.col-md-2.text-right {{analiseLicenca.validade}} anos
                     th.col-md-1.text-center
-                        emitir-licenca(analise-licenca="analiseLicenca", identificador="$index", invalidar="$ctrl.invalidarEmissaoLicenca(analiseLicenca)")
+                        emitir-licenca(analise-licenca="analiseLicenca", identificador="$index", invalidar="$ctrl.invalidarEmissaoLicenca")
                     th.col-md-2
                         a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca(analiseLicenca)", ng-if="analiseLicenca.emitir === true")
                             i.glyphicon.glyphicon-pencil

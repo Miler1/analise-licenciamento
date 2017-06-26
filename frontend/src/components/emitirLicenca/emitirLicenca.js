@@ -19,7 +19,7 @@ var EmitirLicenca = {
 
             if(!emitir) {
 
-                ctrl.invalidar(ctrl.identificador);            
+                ctrl.invalidar(ctrl.analiseLicenca);            
             }
 
             ctrl.analiseLicenca.emitir = emitir;
