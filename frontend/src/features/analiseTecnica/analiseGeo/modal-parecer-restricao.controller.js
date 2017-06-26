@@ -1,7 +1,8 @@
-var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restricao, empreendimentoGeo, imovel) {
+var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restricao, restricaoGeo, empreendimentoGeo, imovel, mensagem) {
 
 	var modalCtrl = this;
 	modalCtrl.restricao = restricao;
+	modalCtrl.restricaoGeo = restricaoGeo;
 	modalCtrl.empreendimentoGeo = empreendimentoGeo;
 	modalCtrl.imovel = imovel;
 
@@ -10,21 +11,35 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 	$uibModalInstance.rendered.then(function(){
 
 		modalCtrl.inicializarMapa();
+		if(modalCtrl.restricao.feature.properties.parecer) {
+			modalCtrl.parecer = modalCtrl.restricao.feature.properties.parecer;
+		}
 
 	});
 
-	modalCtrl.tratarDistancia = function(distancia) {
-		
-		var result;
+	modalCtrl.tratarRestricao = function(restricaoProperties) {
 
-		if(distancia > 1000) {
-			var km = distancia / 1000;
-			result = km.toFixed(1) + " km";
+		if(restricaoProperties.descricao === "Imóvel Sobreposto") {
+
+			var n =  Math.log(restricaoProperties.restricao) / Math.LN10;
+			var numCasas = 2-n;
+
+			if(numCasas < 0)
+				numCasas = 0;
+
+			return restricaoProperties.restricao.toFixed(Math.ceil(numCasas)) + " %";
+
 		} else {
-			result = distancia.toFixed(1) + " m";
+
+			if(restricaoProperties.restricao > 1000) {
+				var km = restricaoProperties.restricao / 1000;
+				return km.toFixed(1) + " km";
+			} else {
+				return restricaoProperties.restricao.toFixed(1) + " m";
+			}
+
 		}
 
-		return result;
 	};
 
 	modalCtrl.cancelar = function() {
@@ -34,9 +49,9 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 	modalCtrl.inicializarMapa = function() {
 
 		map = L.map('mapa-parecer-restricao',{
-			layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			layers: [L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 				maxZoom: 19,
-				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+				attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 			})],
 			zoomControl: false,
 			scrollWheelZoom: false
@@ -47,7 +62,7 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 		if(modalCtrl.imovel)
 			modalCtrl.dados.addLayer(modalCtrl.imovel);
 		modalCtrl.dados.addLayer(L.geoJSON(modalCtrl.empreendimentoGeo.feature).getLayers()[0]);
-		modalCtrl.dados.addLayer(modalCtrl.restricao);
+		modalCtrl.dados.addLayer(modalCtrl.restricaoGeo);
 
 		map.fitBounds(L.geoJSON(modalCtrl.dados.toGeoJSON()).getBounds());
 
@@ -60,6 +75,21 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 			}
 
 		};
+
+	};
+
+	modalCtrl.confirmarParecer = function() {
+
+		$scope.formParecerRestricaoGeo.$setSubmitted();
+
+		if(!$scope.formParecerRestricaoGeo.$valid) {
+			mensagem.error('Você deve adicionar um parecer para continuar.', {referenceId: 2});
+			return;
+		}
+
+		modalCtrl.restricao.feature.properties.parecer = modalCtrl.parecer;
+
+		$uibModalInstance.dismiss('cancel');
 
 	};
 

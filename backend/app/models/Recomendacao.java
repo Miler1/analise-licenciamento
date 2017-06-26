@@ -20,8 +20,10 @@ import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
 import utils.Identificavel;
 import utils.Mensagem;
+import utils.validacao.Validacao;
 
 @Entity
 @Table(schema="analise", name="recomendacao")
@@ -50,10 +52,20 @@ public class Recomendacao extends GenericModel implements Identificavel {
 		
 		return this.id;
 	}
+	
+	@Override
+	public Recomendacao save() {
+
+		Validacao.validar(this);
+		
+		return super.save();
+	}
 
 	public void update(Recomendacao novaRecomendacao) {
 
 		this.texto = novaRecomendacao.texto;
-		this.ordem = novaRecomendacao.ordem;		
+		this.ordem = novaRecomendacao.ordem;
+		
+		this.save();
 	}
 }
