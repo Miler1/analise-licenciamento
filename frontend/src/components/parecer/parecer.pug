@@ -97,6 +97,8 @@ section.margin-bottom-md
 
     section(ng-if="$ctrl.analiseTecnica.tipoResultadoAnalise.id === $ctrl.DEFERIDO")
 
+        h5 Quadro de licenças
+
         table.table.table-condensed
 
             thead
@@ -118,10 +120,5 @@ section.margin-bottom-md
                     th.col-md-4 {{licenca.porte}}
                     th.col-md-2 {{licenca.validade}}
                     th.col-md-2
-                        a.d-inline.margin-right-xs(title="Alterar licença, ng-click($ctrl.alterarLicenca($index)")
+                        a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca($index)")
                             i.glyphicon.glyphicon-pencil
-
-
-
-section        
-    a.btn << Etapa anterior

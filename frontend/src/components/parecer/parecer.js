@@ -153,7 +153,7 @@ var Parecer = {
             ctrl.analiseTecnica.documentos.splice(indiceDocumento,1);
         }      
 
-        function alterarLicenca(licenca) {
+        function alterarLicenca(indice) {
 
         }
     },

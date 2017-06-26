@@ -15,6 +15,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.restricoes = restricoes;
     ctrl.idAnaliseTecnica = idAnaliseTecnica;
     ctrl.formularios = {};
+    ctrl.tabAtiva = 0;
     
     ctrl.init = function () {
 
