@@ -173,7 +173,7 @@ var Parecer = {
 
                 modalInstance.result.then(function (result) {
 
-                    console.log(result);
+                    analiseLicenca = result;
                 });
 
         }

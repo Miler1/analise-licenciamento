@@ -118,7 +118,7 @@ section.margin-bottom-md
                     th.col-md-3 {{analiseLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{analiseLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
                     th.col-md-2.text-right {{analiseLicenca.validade}} anos
                     th.col-md-1.text-center
-                        emitir-licenca(analise-licenca="analiseLicenca", identificador="$index")
+                        emitir-licenca(analise-licenca="analiseLicenca", identificador="$index", invalidar="$ctrl.invalidar")
                     th.col-md-2
                         a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca(analiseLicenca)", ng-if="analiseLicenca.emitir === true")
                             i.glyphicon.glyphicon-pencil

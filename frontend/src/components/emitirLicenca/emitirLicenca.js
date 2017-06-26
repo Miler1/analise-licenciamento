@@ -17,6 +17,11 @@ var EmitirLicenca = {
 
         ctrl.setEmitir = function(emitir) {
 
+            if(!emitir) {
+
+                ctrl.invalidar(ctrl.identificador);            
+            }
+
             ctrl.analiseLicenca.emitir = emitir;
         };
     },
