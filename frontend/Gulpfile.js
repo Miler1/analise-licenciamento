@@ -69,11 +69,14 @@ var config = {
 				"./bower_components/Leaflet.fullscreen/dist/leaflet.fullscreen.css",
 				"./bower_components/Leaflet.fullscreen/dist/fullscreen.png",
 				"./bower_components/Leaflet.fullscreen/dist/fullscreen@2x.png",
-				"./bower_components/leaflet-graphicscale/dist/Leaflet.GraphicScale.min.*"
+				"./bower_components/leaflet-graphicscale/dist/Leaflet.GraphicScale.min.*",
+				"./bower_components/leaflet-measure/dist/leaflet-measure.css",
+				"./bower_components/leaflet-measure/dist/leaflet-measure.min.js"
 			],
 			images: [
 				"./bower_components/leaflet/dist/images/**",
-				"./bower_components/leaflet-draw/dist/images/**"
+				"./bower_components/leaflet-draw/dist/images/**",
+				"./bower_components/leaflet-measure/dist/images/**"
 			]
 		},
 		"ng-file-upload": [

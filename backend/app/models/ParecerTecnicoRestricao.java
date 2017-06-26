@@ -12,10 +12,13 @@ import javax.persistence.Table;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
+import utils.Identificavel;
+import utils.validacao.Validacao;
 
 @Entity
 @Table(schema="analise", name="parecer_tecnico_restricao")
-public class ParecerTecnicoRestricao extends GenericModel {
+public class ParecerTecnicoRestricao extends GenericModel implements Identificavel {
 	
 	public static final String SEQ = "analise.parecer_tecnico_restricao_id_seq";
 	
@@ -35,4 +38,26 @@ public class ParecerTecnicoRestricao extends GenericModel {
 	
 	@Required
 	public String parecer;
+
+	@Override
+	public Long getId() {
+		
+		return this.id;
+	}
+	
+	@Override
+	public ParecerTecnicoRestricao save() {
+	
+		Validacao.validar(this);		
+		
+		return super.save();
+	}
+
+	public void update(ParecerTecnicoRestricao novoParecerTecnicoRestricao) {
+		
+		this.codigoCamada = novoParecerTecnicoRestricao.codigoCamada;
+		this.parecer = novoParecerTecnicoRestricao.parecer;
+		
+		this.save();
+	}
 }

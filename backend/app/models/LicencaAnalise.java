@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import exceptions.PermissaoNegadaException;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
@@ -50,10 +51,9 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	
 	@Required
 	@ManyToOne
-	@JoinColumn(name="id_licenca")
-	public Licenca licenca;
+	@JoinColumn(name="id_caracterizacao")
+	public Caracterizacao caracterizacao;
 	
-	@Required
 	public String observacao;
 	
 	@OneToMany(mappedBy="licencaAnalise", cascade=CascadeType.ALL)

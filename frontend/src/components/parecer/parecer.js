@@ -2,9 +2,10 @@ var Parecer = {
 
     bindings: {
 
-        analiseTecnica: '<'
+        analiseTecnica: '<',
+        formularios: '=',
+        usuarioSessao: '='
     },
-
     controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout) {
 
         var ctrl = this;
@@ -18,6 +19,8 @@ var Parecer = {
         ctrl.baixarDocumentoAnalise = baixarDocumentoAnalise;
         ctrl.clonarParecer = clonarParecer;
         ctrl.alterarLicenca = alterarLicenca;
+        ctrl.removerDocumento = removerDocumento;
+        
         ctrl.upload = function(file, invalidFile) {
 
             if(file) {
@@ -50,35 +53,42 @@ var Parecer = {
 
             setAnaliseTecnica(ctrl.analiseTecnica);
        };
+
+       ctrl.$postLink = function() {
+
+            ctrl.formularios = {
+
+                parecer: ctrl.formularioParecer,
+                resultado: ctrl.formularioResultado
+            };
+       };
         
         function setAnaliseTecnica(value) {
 
             ctrl.analiseTecnica.documentos = value.documentos || [];
             ctrl.analiseTecnica.analisesDocumentos = !_.isEmpty(value.analisesDocumentos) ? value.analisesDocumentos : criarAnalisesDocumentos(value.analise.processo.caracterizacoes[0].documentosEnviados);
+
+            ctrl.formParecer = ctrl.formularioParecer;
+            ctrl.formResultado = ctrl.formularioResultado;
         }
 
         function clonarParecer() {
-
-            ctrl.formularioParecer.$setSubmitted();
-            ctrl.formularioResultado.$setSubmitted();
-
-            console.log(ctrl.analiseTecnica.tipoResultadoAnalise);
             
-            // analiseTecnicaService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
-            //     .then(function(response){
+            analiseTecnicaService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+                .then(function(response){
 
-            //         if(response.data === null) {
+                    if(response.data === null) {
 
-            //             ctrl.analiseTecnica.parecer = null;
-            //             mensagem.error('Não foi encontrado um parecer para esse número de processo.');
-            //             return;
-            //         }
-            //         ctrl.analiseTecnica.parecer = response.data.parecer;
+                        ctrl.analiseTecnica.parecer = null;
+                        mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+                        return;
+                    }
+                    ctrl.analiseTecnica.parecer = response.data.parecer;
 
-            //     }, function(error){
+                }, function(error){
 
-            //         mensagem.error(error.data.texto);
-            //     });
+                    mensagem.error(error.data.texto);
+                });
         }
 
         function criarAnalisesDocumentos(documentosLicenciamento) {
@@ -137,6 +147,11 @@ var Parecer = {
         function baixarDocumentoAnalise(idDocumento) {
             documentoAnaliseService.download(idDocumento);
         }
+
+        function removerDocumento(indiceDocumento) {
+
+            ctrl.analiseTecnica.documentos.splice(indiceDocumento,1);
+        }      
 
         function alterarLicenca(licenca) {
 
