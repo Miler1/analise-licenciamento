@@ -175,6 +175,9 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 			controllerAs: 'modalCtrl',
 			size: 'lg',
 			resolve: {
+				analiseTecnica: function () {
+					return $scope.analiseTecnica;
+				},
 				restricao: function () {
 					return restricao;
 				},
@@ -202,9 +205,18 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 
 	};
 
-	this.init = function(restricoes, idAnaliseTecnica) {
+	this.init = function(restricoes, analiseTecnica) {
 
-		$scope.idAnaliseTecnica = idAnaliseTecnica;
+		$scope.analiseTecnica = analiseTecnica;
+
+		_.forEach(restricoes.features, function(restricao) {
+			var parecerTecnicoRestricao = _.find($scope.analiseTecnica.pareceresTecnicosRestricoes, function(parecerRestricao) {
+				return parecerRestricao.codigoCamada === restricao.id;
+			});
+
+			if(parecerTecnicoRestricao !== undefined)
+				restricao.properties.parecer = parecerTecnicoRestricao.parecer;
+		});
 
 		$timeout(function() {
 
