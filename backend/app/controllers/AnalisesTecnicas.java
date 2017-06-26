@@ -83,15 +83,13 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
 		
-		Geometry geometryEmpreendimento = new WKTReader2().read("POINT(-54.5526123046875 -4.088418298945898)");
-		Geometry geometryImovel = new WKTReader2().read("POLYGON((-54.45648193359375 -4.165636821607836,-54.6844482421875 -4.198508047098707,-54.56634521484375 -4.332717735806342,-54.3658447265625 -4.280680030820496,-54.35211181640625 -4.198508047098707,-54.45648193359375 -4.165636821607836))");
-
-		ImovelEmpreendimento imovel = new ImovelEmpreendimento();
-
-		imovel.codigo = "PA-1505650-A37C2EB9275541D1BAB5D01CD8783D81";
-		imovel.limite = geometryImovel;
-
-		File file = Geoserver.verificarRestricoes(geometryEmpreendimento, imovel, "analise-geo-id-" + idAnaliseTecnica);
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
+		
+		File file = Geoserver.verificarRestricoes(
+				analiseTecnica.analise.processo.empreendimento.coordenadas,
+				analiseTecnica.analise.processo.empreendimento.imovel,
+				"analise-geo-id-" + idAnaliseTecnica
+		);
 
 		renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
 	}

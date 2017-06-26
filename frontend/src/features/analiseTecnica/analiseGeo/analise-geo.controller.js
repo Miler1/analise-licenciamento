@@ -141,6 +141,31 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 
 	};
 
+	$scope.tratarRestricao = function(restricaoProperties) {
+
+		if(restricaoProperties.descricao === "Imóvel Sobreposto") {
+
+			var n =  Math.log(restricaoProperties.restricao) / Math.LN10;
+			var numCasas = 2-n;
+
+			if(numCasas < 0)
+				numCasas = 0;
+
+			return restricaoProperties.restricao.toFixed(Math.ceil(numCasas)) + " %";
+
+		} else {
+
+			if(restricaoProperties.restricao > 1000) {
+				var km = restricaoProperties.restricao / 1000;
+				return km.toFixed(1) + " km";
+			} else {
+				return restricaoProperties.restricao.toFixed(1) + " m";
+			}
+
+		}
+
+	};
+
 	$scope.adicionarRestricao = function(restricao){
 
 		var modalInstance = $uibModal.open({
@@ -151,6 +176,9 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 			size: 'lg',
 			resolve: {
 				restricao: function () {
+					return restricao;
+				},
+				restricaoGeo: function() {
 					return angular.copy(restricao);
 				},
 				empreendimentoGeo: function () {

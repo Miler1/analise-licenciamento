@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,5 +61,11 @@ public class ParecerTecnicoRestricao extends GenericModel implements Identificav
 		this.parecer = novoParecerTecnicoRestricao.parecer;
 		
 		this.save();
+	}
+
+	public List<ParecerTecnicoRestricao> getByIdAnaliseTecnica(Long idAnaliseTecnica) {
+		
+		return ParecerTecnicoRestricao.find("byAnaliseTecnica", idAnaliseTecnica).fetch();
+		
 	}
 }

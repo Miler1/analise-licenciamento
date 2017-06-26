@@ -84,7 +84,7 @@ section.margin-bottom-md
     form.text-center.margin-bottom-md.margin-top-md(name="$ctrl.formularioResultado", novalidate)
         div(ng-class="{'has-error': $ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.$invalid}")
             label.radio-inline(for="radio_deferido")
-                input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise") 
+                input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-click="$ctrl.listarAnalisesLicencas()") 
                 | Deferido
             label.radio-inline(for="radio_indeferido")
                 input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise") 
@@ -97,31 +97,28 @@ section.margin-bottom-md
 
     section(ng-if="$ctrl.analiseTecnica.tipoResultadoAnalise.id === $ctrl.DEFERIDO")
 
+        h5 Quadro de licenças
+
         table.table.table-condensed
 
             thead
                 
                 tr
-                    th.col-md-1 Emitir
-                    th.col-md-3 Licença
-                    th.col-md-4 Porte e potencial poluidor
+                    th.col-md-4 Licença
+                    th.col-md-3 Porte e potencial poluidor
                     th.col-md-2 Validade
+                    th.col-md-2 Emissão
                     th.col-md-2 Ações
 
             tbody
 
-                tr(ng-repeat="licenca in $ctrl.licencas")
+                tr(ng-repeat="analiseLicenca in $ctrl.analisesLicencas")
 
-                    th.col-md-1
-                        input(type="checkbox")
-                    th.col-md-3 {{licenca.nome}}
-                    th.col-md-4 {{licenca.porte}}
-                    th.col-md-2 {{licenca.validade}}
+                    th.col-md-4 {{analiseLicenca.caracterizacao.tipoLicenca.nome}}
+                    th.col-md-3 {{analiseLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{analiseLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+                    th.col-md-2 {{analiseLicenca.validade}} anos
+                    th.col-md-1 
+
                     th.col-md-2
-                        a.d-inline.margin-right-xs(title="Alterar licença, ng-click($ctrl.alterarLicenca($index)")
+                        a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca($index)", ng-if="analiseLicenca.emitir === false")
                             i.glyphicon.glyphicon-pencil
-
-
-
-section        
-    a.btn << Etapa anterior

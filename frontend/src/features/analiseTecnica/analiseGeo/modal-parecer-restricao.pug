@@ -1,3 +1,5 @@
+include ../../../layout/components/inputErrors
+
 div#modal-parecer-restricao
 	div.modal-header
 
@@ -9,6 +11,8 @@ div#modal-parecer-restricao
 
 	div.modal-body
 
+		div(growl inline="true", reference="2")
+
 		div
 			label.not-bold.margin-right-xs(for="origem") Origem: 
 			span#origem
@@ -16,20 +20,22 @@ div#modal-parecer-restricao
 		div
 			label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Restrição: 
 			span#texto_nome_empreendimento
-				strong {{modalCtrl.tratarDistancia(modalCtrl.restricao.feature.properties.distancia)}}
+				strong {{modalCtrl.tratarRestricao(modalCtrl.restricao.feature.properties)}}
 
 		div#mapa-parecer-restricao
 
-		div.title-textarea
-			label.not-bold Parecer de restrição geo:
-		div
-			textarea(ng-model='modalCtrl.parecer', required) 
+
+		form(name='formParecerRestricaoGeo')
+			.form-group.title-textarea
+				label.not-bold Parecer de restrição geo:
+				textarea.form-control(name='parecerText', ng-model='modalCtrl.parecer', required)
+			+inputErrors('formParecerRestricaoGeo', 'parecerText', 'required')
 
 	div.modal-footer#footer-modal
 
 		button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()")
 			i.glyphicon.glyphicon-arrow-left
 			| &nbsp;Cancelar
-		button.btn.btn-success.pull-right(type="submit" ng-click="modalCtrl.vincular()")
+		button.btn.btn-success.pull-right(type="submit" ng-click="modalCtrl.confirmarParecer()")
 			i.glyphicon.glyphicon-share
 			| &nbsp;Confirmar parecer
