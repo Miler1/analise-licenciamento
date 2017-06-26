@@ -84,13 +84,13 @@ section.margin-bottom-md
     form.text-center.margin-bottom-md.margin-top-md(name="$ctrl.formularioResultado", novalidate)
         div(ng-class="{'has-error': $ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.$invalid}")
             label.radio-inline(for="radio_deferido")
-                input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-click="$ctrl.listarAnalisesLicencas()") 
+                input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()") 
                 | Deferido
             label.radio-inline(for="radio_indeferido")
-                input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise") 
+                input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()") 
                 | Indeferido
             label.radio-inline(for="radio_notificacao")
-                input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise") 
+                input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()") 
                 | Emitir notificação
             div(ng-messages='$ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.resultado.$error')
                 p.error-message(ng-message='required') Campo obrigatório.
@@ -106,8 +106,8 @@ section.margin-bottom-md
                 tr
                     th.col-md-4 Licença
                     th.col-md-3 Porte e potencial poluidor
-                    th.col-md-2 Validade
-                    th.col-md-2 Emissão
+                    th.col-md-2.text-right Validade
+                    th.col-md-2.text-center Emissão
                     th.col-md-2 Ações
 
             tbody
@@ -116,8 +116,8 @@ section.margin-bottom-md
 
                     th.col-md-4 {{analiseLicenca.caracterizacao.tipoLicenca.nome}}
                     th.col-md-3 {{analiseLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{analiseLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
-                    th.col-md-2 {{analiseLicenca.validade}} anos
-                    th.col-md-1 
+                    th.col-md-2.text-right {{analiseLicenca.validade}} anos
+                    th.col-md-1.text-center 
                         emitir-licenca(analise-licenca="analiseLicenca", identificador="$index")
                     th.col-md-2
                         a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca($index)", ng-if="analiseLicenca.emitir === true")

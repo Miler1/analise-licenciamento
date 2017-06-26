@@ -156,7 +156,7 @@ var Parecer = {
 
         function alterarLicenca(indice) {
 
-	    var modalInstance = $uibModal.open({
+	        var modalInstance = $uibModal.open({
 
                     component: 'modalInformacoesLicenca',
                     size: 'lg',
@@ -183,20 +183,20 @@ var Parecer = {
 
         }
 
-        //TODO - RETIRAR
-        alterarLicenca();
-
         function listarAnalisesLicencas() {
 
-            analiseLicencaService.getByCaracterizacao(ctrl.analiseTecnica.analise.processo.caracterizacoes[0].id)
-                .then(function(response){
+            if(ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
 
-                    ctrl.analisesLicencas = response.data;
-                }, function(error){
+                analiseLicencaService.getByCaracterizacao(ctrl.analiseTecnica.analise.processo.caracterizacoes[0].id)
+                    .then(function(response){
 
-                    ctrl.analisesLicencas = [];
-                    mensagem.error(error.data.texto);
-                });
+                        ctrl.analisesLicencas = response.data;
+                    }, function(error){
+
+                        ctrl.analisesLicencas = [];
+                        mensagem.error(error.data.texto);
+                    });
+            }
         }
     },
 
