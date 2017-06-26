@@ -253,7 +253,7 @@ public class AnaliseJuridica extends GenericModel {
 			}			
 		}
 		
-		this._save();		
+		this._save();
 	}
 	
 	public void finalizar(AnaliseJuridica analise, Usuario usuarioExecultor) {

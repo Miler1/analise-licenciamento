@@ -20,15 +20,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import exceptions.PermissaoNegadaException;
+import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
 import utils.Identificavel;
 import utils.ListUtil;
 import utils.Mensagem;
+import utils.validacao.Validacao;
 
 @Entity
 @Table(schema="analise", name="licenca_analise")
@@ -54,22 +57,38 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@JoinColumn(name="id_caracterizacao")
 	public Caracterizacao caracterizacao;
 	
-	@Required
 	public String observacao;
 	
-	@OneToMany(mappedBy="licencaAnalise", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="licencaAnalise", orphanRemoval=true)
 	public List<Condicionante> condicionantes;
 
-	@OneToMany(mappedBy="licencaAnalise", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="licencaAnalise", orphanRemoval=true)
 	public List<Recomendacao> recomendacoes;	
+	
+	public Boolean emitir;
+	
+	@Override
+	public LicencaAnalise save() {
+		
+		Validacao.validar(this);
+		
+		if (this.validade.compareTo(caracterizacao.tipoLicenca.validadeEmAnos) > 0) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO);
+		}
+		 
+		return super.save();		
+	}
 	
 	public void update(LicencaAnalise novaLicencaAnalise) {
 		
 		this.validade = novaLicencaAnalise.validade;
 		this.observacao = novaLicencaAnalise.observacao;
 		
+		this.save();
+		
 		updateCondicionantes(novaLicencaAnalise.condicionantes);
-		updateRecomendacoes(novaLicencaAnalise.recomendacoes);
+		updateRecomendacoes(novaLicencaAnalise.recomendacoes);		
 	}
 
 	private void updateCondicionantes(List<Condicionante> novasCondicionantes) {
@@ -88,6 +107,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			if (ListUtil.getById(condicionanteCadastrada.id, novasCondicionantes) == null) {
 				
 				condicionanteCadastrada.delete();
+				condicionantesCadastradas.remove();
 			}
 		}		
 				
@@ -102,10 +122,12 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			} else {
 				
 				novaCondicionante.licencaAnalise = this;
+				novaCondicionante.save();
+				
 				this.condicionantes.add(novaCondicionante);
-			}			
+			}
 		}
-	}	
+	}
 
 	private void updateRecomendacoes(List<Recomendacao> novasRecomendacoes) {
 		
@@ -123,6 +145,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			if (ListUtil.getById(recomendacaoCadastrada.id, novasRecomendacoes) == null) {
 				
 				recomendacaoCadastrada.delete();
+				recomendacoesCadastradas.remove();
 			}
 		}		
 				
@@ -137,6 +160,8 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			} else {
 				
 				novaRecomendacao.licencaAnalise = this;
+				novaRecomendacao.save();
+				
 				this.recomendacoes.add(novaRecomendacao);
 			}			
 		}		

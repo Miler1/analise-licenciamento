@@ -3,7 +3,8 @@ var Parecer = {
     bindings: {
 
         analiseTecnica: '<',
-        formularios: '='
+        formularios: '=',
+        usuarioSessao: '='
     },
     controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout) {
 
