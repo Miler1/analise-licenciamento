@@ -54,7 +54,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@JoinColumn(name="id_caracterizacao")
 	public Caracterizacao caracterizacao;
 	
-	@Required
 	public String observacao;
 	
 	@OneToMany(mappedBy="licencaAnalise", cascade=CascadeType.ALL)

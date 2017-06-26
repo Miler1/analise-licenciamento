@@ -101,6 +101,9 @@ public class AnaliseTecnica extends GenericModel {
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<LicencaAnalise> licencasAnalise;
 	
+	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
+	public List<ParecerTecnicoRestricao> pareceresTecnicosRestricoes;	
+	
 	private void validarParecer() {
 		
 		if(StringUtils.isBlank(this.parecer)) 
@@ -177,9 +180,48 @@ public class AnaliseTecnica extends GenericModel {
 		
 		updateLicencasAnalise(novaAnalise.licencasAnalise);
 				
-		this._save();		
+		this._save();
+		
+		updatePareceresTecnicosRestricoes(novaAnalise.pareceresTecnicosRestricoes);		
 	}
 	
+	private void updatePareceresTecnicosRestricoes(List<ParecerTecnicoRestricao> pareceresSalvar) {
+		
+		if (this.pareceresTecnicosRestricoes == null)
+			this.pareceresTecnicosRestricoes = new ArrayList<>();
+						
+		Iterator<ParecerTecnicoRestricao> pareceresTecnicosRestricoesIterator = this.pareceresTecnicosRestricoes.iterator();
+		
+		while (pareceresTecnicosRestricoesIterator.hasNext()) {
+			
+			ParecerTecnicoRestricao parecerTecnicoRestricao = pareceresTecnicosRestricoesIterator.next();
+			
+			if (ListUtil.getById(parecerTecnicoRestricao.id, pareceresSalvar) == null) {
+				
+				parecerTecnicoRestricao.delete();
+				pareceresTecnicosRestricoesIterator.remove();
+			}
+		}
+		
+		for (ParecerTecnicoRestricao novoParecerTecnicoRestricao : pareceresSalvar) {
+			
+			ParecerTecnicoRestricao parecerTecnicoRestricao = ListUtil.getById(novoParecerTecnicoRestricao.id, this.pareceresTecnicosRestricoes);
+						
+			if (parecerTecnicoRestricao == null) { // novo parecer técnico restrição
+				
+				novoParecerTecnicoRestricao.analiseTecnica = this;				
+				novoParecerTecnicoRestricao.save();
+				
+				this.pareceresTecnicosRestricoes.add(novoParecerTecnicoRestricao);
+				
+			} else { // parecer técnico já existente
+				
+				parecerTecnicoRestricao.update(novoParecerTecnicoRestricao);
+			}
+		}
+		
+	}
+
 	private void updateLicencasAnalise(List<LicencaAnalise> novasLicencasAnalise) {
 		
 		if (this.licencasAnalise == null) {
