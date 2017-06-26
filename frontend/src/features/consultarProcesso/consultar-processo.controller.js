@@ -1,4 +1,4 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
 
@@ -42,6 +42,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 		return processoService.visualizarProcesso(processo);
 	}
+
 };
 
 exports.controllers.ConsultarProcessoController = ConsultarProcessoController;

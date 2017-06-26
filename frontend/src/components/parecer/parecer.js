@@ -156,7 +156,28 @@ var Parecer = {
 
         function alterarLicenca(indice) {
 
+	    var modalInstance = $uibModal.open({
+
+                component: 'modalInformacoesLicenca',
+                size: 'lg',
+                backdrop: 'static',
+                resolve: {
+
+                    dadosLicenca: function() {
+
+                        // TODO - Inserir a licença escolhida
+                        return {
+                            id: 2,
+                            nome:"LP - Licença Prévia",
+                            validade: 5
+                        };
+                    }
+                }
+            });
         }
+
+        //TODO - RETIRAR
+        alterarLicenca();
 
         function listarAnalisesLicencas() {
 
