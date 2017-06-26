@@ -54,6 +54,10 @@ var Parecer = {
         ctrl.$onInit = function() {
 
             setAnaliseTecnica(ctrl.analiseTecnica);
+            if(ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
+
+                listarAnalisesLicencas();
+            }
        };
 
        ctrl.$postLink = function() {

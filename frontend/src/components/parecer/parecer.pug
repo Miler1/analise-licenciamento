@@ -87,10 +87,10 @@ section.margin-bottom-md
                 input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()")
                 | Deferido
             label.radio-inline(for="radio_indeferido")
-                input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise")
+                input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()")
                 | Indeferido
             label.radio-inline(for="radio_notificacao")
-                input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise")
+                input#radio_notificacao(type="radio", name="resultado", ng-value="{{$ctrl.EMITIR_NOTIFICACAO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()")
                 | Emitir notificação
             div(ng-messages='$ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.resultado.$error')
                 p.error-message(ng-message='required') Campo obrigatório.
