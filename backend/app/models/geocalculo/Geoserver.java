@@ -49,7 +49,7 @@ public class Geoserver extends GenericModel {
 		builderType.add("geometria", Geometry.class);
 		builderType.add("descricaoLayer", String.class);
 		builderType.add("descricao", String.class);
-		builderType.add("distancia", Double.class);
+		builderType.add("restricao", Double.class);
 		builderType.setDefaultGeometry("geometria");
 
 		featureType = builderType.buildFeatureType();
@@ -154,35 +154,33 @@ public class Geoserver extends GenericModel {
 			Geometry featurePolygon = (Geometry) feature.getDefaultGeometry();
 			String codigoImovel = String.valueOf(feature.getAttribute("cod_imovel"));
 
-			if(imovel.codigo.equals(codigoImovel)){
+			if(!imovel.codigo.equals(codigoImovel)){
 
-				featureCollection.add(getGeoserverFeature(
-						"meu-imovel",
-						codigoImovel,
-						"Imóvel Análisado",
-						0.0,
-						geoImovel
-				));
-
-			}else{
 				featureCollection.add(getGeoserverFeature(
 						feature.getID(),
 						codigoImovel,
 						"Imóvel Sobreposto",
-						GeoHelper.calcularDistancia(feature, geoEmpreendimento),
+						featurePolygon.intersection(geoImovel).getArea()*100/geoImovel.getArea(),
 						featurePolygon
-				));
+						));
 
 			}
-
-
+				
 		}
+		
+		featureCollection.add(getGeoserverFeature(
+				"meu-imovel",
+				imovel.codigo,
+				"Imóvel Análisado",
+				0.0,
+				geoImovel
+		));
 
 
 	}
 
 
-	private static SimpleFeature criarFeatureGeoserver(SimpleFeature featureProcessada, ConfiguracaoLayer configuracaoLayer, Double distancia){
+	private static SimpleFeature criarFeatureGeoserver(SimpleFeature featureProcessada, ConfiguracaoLayer configuracaoLayer, Double restricao){
 
 		Geometry featurePolygon = (Geometry) featureProcessada.getDefaultGeometry();
 
@@ -190,14 +188,14 @@ public class Geoserver extends GenericModel {
 				featureProcessada.getID(),
 				featureProcessada.getAttribute(configuracaoLayer.atributoDescricao).toString(),
 				configuracaoLayer.descricao,
-				distancia,
+				restricao,
 				featurePolygon
 
 		);
 
 	}
 
-	private static SimpleFeature getGeoserverFeature(String featureId, String descricaoLayer, String descricao, Double distancia, Geometry featurePolygon) {
+	private static SimpleFeature getGeoserverFeature(String featureId, String descricaoLayer, String descricao, Double restricao, Geometry featurePolygon) {
 
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
 
@@ -207,8 +205,7 @@ public class Geoserver extends GenericModel {
 
 		builder.set("descricao", descricao);
 
-		//distância em metros
-		builder.set("distancia", distancia);
+		builder.set("restricao", restricao);
 
 		return builder.buildFeature(featureId);
 	}
