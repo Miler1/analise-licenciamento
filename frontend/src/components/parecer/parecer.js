@@ -6,7 +6,7 @@ var Parecer = {
         formularios: '=',
         usuarioSessao: '='
     },
-    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, analiseLicencaService) {
+    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, analiseLicencaService, modalSimplesService) {
 
         var ctrl = this;
 
@@ -15,6 +15,7 @@ var Parecer = {
         ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
         ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
         ctrl.invalidarDocumento = invalidarDocumento;
+        ctrl.invalidarEmissaoLicenca = invalidarEmissaoLicenca;
         ctrl.baixarDocumento = baixarDocumento;
         ctrl.baixarDocumentoAnalise = baixarDocumentoAnalise;
         ctrl.clonarParecer = clonarParecer;
@@ -193,6 +194,23 @@ var Parecer = {
                     });
             }
         }
+
+        var configModal = {
+            titulo: 'Reprovar Licença',
+            conteudo: 'Ao reprovar a licença, os dados cadastrados serão excluídos, deseja continuar?',
+            labelBotaoConfirmar: 'Continuar',
+            labelBotaoCancelar: 'Cancelar'
+        };
+
+        function invalidarEmissaoLicenca(analiseLicenca) {
+
+            var instanciaModal = modalSimplesService.abrirModal(configModal);
+
+            instanciaModal.result.then(function() {
+
+            });
+        }
+
     },
 
     templateUrl: 'components/parecer/parecer.html'
