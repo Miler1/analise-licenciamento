@@ -306,6 +306,7 @@ public class AnaliseTecnica extends GenericModel {
 		
 		this.update(analise);
 		
+		validarLicencasAnalise();
 		validarParecer();
 		validarAnaliseDocumentos();
 		validarResultado();						
@@ -327,6 +328,17 @@ public class AnaliseTecnica extends GenericModel {
 		} else {
 		
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
+		}
+	}
+
+	private void validarLicencasAnalise() {
+		
+		for (LicencaAnalise licencaAnalise : this.licencasAnalise) {
+			
+			if (licencaAnalise.emitir == null) {
+				
+				throw new ValidacaoException(Mensagem.ANALISE_TECNICA_LICENCA_SEM_VALIDACAO);
+			}
 		}
 	}
 
