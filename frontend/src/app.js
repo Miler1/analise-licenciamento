@@ -331,6 +331,7 @@ licenciamento
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
 	.component('avaliarDocumento', directives.AvaliarDocumento)
+	.component('emitirLicenca', directives.EmitirLicenca)
 	.component('modalParecerDocumento', directives.ModalParecerDocumento)
 	.component('resumoEmpreendimento', directives.ResumoEmpreendimento)
 	.component('fichaImovel', directives.FichaImovel)
