@@ -119,10 +119,28 @@ var ModalInformacoesLicenca = {
 		};
 
 		ctrl.doneEditingTextoCondicionante = function (item) {
+
+			if(!item.texto){
+
+				mensagem.error("Condicionante não informada.", {referenceId: 1});
+
+				$anchorScroll('informacoesLicenca');
+				return;
+			}
+
 			item.editingTexto = false;
 		};
 
 		ctrl.doneEditingPrazoCondicionante = function (item) {
+
+			if(!item.prazo){
+
+				mensagem.error("Prazo não informado ou acima de 5 anos.", {referenceId: 1});
+
+				$anchorScroll('informacoesLicenca');
+				return;
+			}
+
 			item.editingPrazo = false;
 		};
 
@@ -150,6 +168,15 @@ var ModalInformacoesLicenca = {
 		};
 
 		ctrl.doneEditing = function (item) {
+
+			if(!item.texto){
+
+				mensagem.error("Recomendação não informada.", {referenceId: 1});
+
+				$anchorScroll('informacoesLicenca');
+				return;
+			}
+
 			item.editing = false;
 		};
 
