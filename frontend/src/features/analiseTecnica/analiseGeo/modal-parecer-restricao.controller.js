@@ -13,6 +13,7 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 
 		modalCtrl.inicializarMapa();
 		if(modalCtrl.restricao.feature.properties.parecer) {
+			modalCtrl.codigoCamada = modalCtrl.restricao.feature.id;
 			modalCtrl.parecer = modalCtrl.restricao.feature.properties.parecer;
 		}
 
@@ -79,6 +80,19 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 
 	};
 
+	modalCtrl.excluirParecer = function(codigoCamada) {
+
+		_.remove(modalCtrl.analiseTecnica.pareceresTecnicosRestricoes, function(parecer) {
+			return codigoCamada === parecer.codigoCamada;
+		});
+
+		modalCtrl.parecer = undefined;
+		modalCtrl.restricao.feature.properties.parecer = undefined;
+
+		$uibModalInstance.dismiss('cancel');
+
+	};
+
 	modalCtrl.confirmarParecer = function() {
 
 		$scope.formParecerRestricaoGeo.$setSubmitted();
@@ -112,8 +126,6 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 			});
 
 		}
-
-
 
 		$uibModalInstance.dismiss('cancel');
 

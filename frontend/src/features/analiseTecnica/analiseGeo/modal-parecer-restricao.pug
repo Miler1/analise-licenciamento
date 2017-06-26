@@ -34,8 +34,11 @@ div#modal-parecer-restricao
 	div.modal-footer#footer-modal
 
 		button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()")
-			i.glyphicon.glyphicon-arrow-left
+			i.glyphicon.glyphicon-remove
 			| &nbsp;Cancelar
 		button.btn.btn-success.pull-right(type="submit" ng-click="modalCtrl.confirmarParecer()")
-			i.glyphicon.glyphicon-share
+			i.glyphicon.glyphicon-ok
 			| &nbsp;Confirmar parecer
+		button.btn.btn-error.pull-right(ng-show='modalCtrl.codigoCamada', type="submit" ng-click="modalCtrl.excluirParecer(modalCtrl.codigoCamada)")
+			i.glyphicon.glyphicon-trash
+			| &nbsp;Excluir parecer
