@@ -157,8 +157,6 @@ var Parecer = {
 
         function alterarLicenca(analiseLicenca) {
 
-            var al = angular.copy(analiseLicenca);
-
 	        var modalInstance = $uibModal.open({
 
                     component: 'modalInformacoesLicenca',
@@ -168,7 +166,7 @@ var Parecer = {
 
                         dadosLicenca: function() {
 
-                            return al;
+                            return analiseLicenca;
                         }
                     }
                 });
