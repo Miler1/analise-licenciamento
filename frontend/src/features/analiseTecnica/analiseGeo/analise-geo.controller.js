@@ -203,6 +203,8 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 			}
 		});
 
+		modalInstance.result.then(function(){},function(){});
+
 	};
 
 	this.init = function(restricoes, analiseTecnica) {
