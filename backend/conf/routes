@@ -41,7 +41,7 @@ GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRest
 
 # Caracterizacao
 
-GET		/caracterizacoes/{id}/tiposLicencas				Caracterizacoes.findTiposLicencas
+GET		/caracterizacoes/{id}/analisesLicencas				Caracterizacoes.findAnalisesLicencas
 
 # Documentos licenciamento
 

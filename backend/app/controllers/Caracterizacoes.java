@@ -1,19 +1,26 @@
 package controllers;
 
+import java.util.List;
+
+import models.LicencaAnalise;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.licenciamento.TipoCaracterizacaoAtividade.FiltroAtividade;
 import security.Acao;
 import serializers.AtividadesSerializer;
+import serializers.LicencaAnaliseSerializer;
 
 public class Caracterizacoes extends InternalController {
 	
 
-	public static void findTiposLicencas (Long id) {
+	public static void findAnalisesLicencas (Long id) {
 		
-		Caracterizacao caracterizacao = Caracterizacao.findById(id);
+		//verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
 		
-		renderJSON(caracterizacao.tiposLicencaEmAndamento);
+		List<LicencaAnalise> analisesLicencas = LicencaAnalise.find("caracterizacao.id = ?", id).fetch();
+		
+		renderJSON(analisesLicencas, LicencaAnaliseSerializer.list);
+		
 		
 	}
 }
