@@ -7,7 +7,7 @@ include ../../layout/components/inputErrors
 
 	div(growl inline="true", reference="1")
 
-	label {{$ctrl.resolve.dadosLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.porte}})
+	label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 
 	br
 

@@ -154,7 +154,7 @@ var Parecer = {
             ctrl.analiseTecnica.documentos.splice(indiceDocumento,1);
         }
 
-        function alterarLicenca(indice) {
+        function alterarLicenca(analiseLicenca) {
 
 	        var modalInstance = $uibModal.open({
 
@@ -165,12 +165,7 @@ var Parecer = {
 
                         dadosLicenca: function() {
 
-                            // TODO - Inserir a licença escolhida
-                            return {
-                                id: 2,
-                                nome:"LP - Licença Prévia",
-                                validade: 5
-                            };
+                            return analiseLicenca;
                         }
                     }
                 });
