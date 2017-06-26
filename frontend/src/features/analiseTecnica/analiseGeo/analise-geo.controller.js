@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($scope, $timeout) {
+var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -141,9 +141,36 @@ var AnaliseGeoController = function($scope, $timeout) {
 
 	};
 
-	$scope.adicionarRestricao = function(idRestricao){
+	$scope.adicionarRestricao = function(restricao){
 
-		window.alert('Restricao: ' + idRestricao + ' idAnalise: ' + $scope.idAnaliseTecnica);
+		var modalInstance = $uibModal.open({
+			animation: true,
+			templateUrl: './features/analiseTecnica/analiseGeo/modal-parecer-restricao.html',
+			controller: 'modalParecerRestricaoController',
+			controllerAs: 'modalCtrl',
+			size: 'lg',
+			resolve: {
+				restricao: function () {
+					return angular.copy(restricao);
+				},
+				empreendimentoGeo: function () {
+					var layerSelecionada;
+					_.forEach($scope.meusDados.getLayers(), function(layer) {
+						if(layer.feature.id === "meu-empreendimento")
+							layerSelecionada = angular.copy(layer);
+					});
+					return layerSelecionada;
+				},
+				imovel: function () {
+					var layerSelecionada;
+					_.forEach($scope.meusDados.getLayers(), function(layer) {
+						if(layer.feature.id === "meu-imovel")
+							layerSelecionada = angular.copy(layer);
+					});
+					return layerSelecionada;
+				}
+			}
+		});
 
 	};
 
