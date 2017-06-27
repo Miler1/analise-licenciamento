@@ -91,7 +91,7 @@ include ../../layout/components/inputErrors
 					td {{$index + 1}}
 					td(as-sortable-item-handle)
 						span(ng-hide="recomendacao.editing" ng-dblclick="$ctrl.editarRecomendacao(recomendacao)") {{recomendacao.texto}}
-						input.input-edicao(ng-show="recomendacao.editing" ng-model="recomendacao.texto" ng-blur="$ctrl.doneEditing(recomendacao)" autofocus)
+						textarea.input-edicao(ng-show="recomendacao.editing" ng-model="recomendacao.texto" ng-blur="$ctrl.doneEditing(recomendacao)" autofocus)
 					td
 						span.edita.pull-right
 							a(ng-click="$ctrl.excluirRecomendacao(recomendacao)")
