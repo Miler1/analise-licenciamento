@@ -15,12 +15,12 @@ include ../../layout/components/inputErrors
 
 	.form-group
 		label(for="selectValidade") Validade:
-		select#selectValidade.form-control(ng-model="$ctrl.resolve.validade", ng-options="validade as (validade + ' ano(s)') for validade in $ctrl.validades")
+		select#selectValidade.form-control(ng-model="$ctrl.resolve.dadosLicenca.validade", ng-options="validade as (validade + ' ano(s)') for validade in $ctrl.validades")
 
 	label.margin-right-xs Observações:
 	form
 		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.resolve.observacoes", name="observacoes")
+			textarea.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacoes", name="observacoes")
 
 	hr
 
