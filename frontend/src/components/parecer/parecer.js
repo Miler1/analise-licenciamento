@@ -176,7 +176,7 @@ var Parecer = {
                 modalInstance.result.then(function (result) {
 
                     ctrl.analiseTecnica.licencasAnalise[indice] = result;
-                });
+                }, function(){});
 
         }
 
@@ -189,11 +189,32 @@ var Parecer = {
 
         function invalidarEmissaoLicenca(analiseLicenca) {
 
-            var instanciaModal = modalSimplesService.abrirModal(configModal);
+            var instanciaModal;
 
-            instanciaModal.result.then(function() {
+            if(_.isEmpty(analiseLicenca.condicionantes) && 
+                !analiseLicenca.observacao && 
+                _.isEmpty(analiseLicenca.recomendacoes) && 
+                analiseLicenca.validade === analiseLicenca.validadeMaxima) {
 
-            });
+                analiseLicenca.emitir = false;
+
+            } else {
+
+                instanciaModal = modalSimplesService.abrirModal(configModal);
+
+                instanciaModal.result.then(function(){
+
+                    analiseLicenca.condicionantes = [];
+                    analiseLicenca.observacao = null;
+                    analiseLicenca.recomendacoes = [];
+                    analiseLicenca.validade = analiseLicenca.validadeMaxima;
+
+                    analiseLicenca.emitir = false;
+
+                }, function(){});
+
+            }
+
         }
 
     },

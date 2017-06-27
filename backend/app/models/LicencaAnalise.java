@@ -167,6 +167,10 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}		
 	}
 	
+	public Integer getValidadeMaxima() {
+		return caracterizacao.tipoLicenca.validadeEmAnos;
+	}
+	
 	@Override
 	public Long getId() {
 		
