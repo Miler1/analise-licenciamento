@@ -84,6 +84,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		this.validade = novaLicencaAnalise.validade;
 		this.observacao = novaLicencaAnalise.observacao;
+		this.emitir = novaLicencaAnalise.emitir;
 		
 		this.save();
 		
