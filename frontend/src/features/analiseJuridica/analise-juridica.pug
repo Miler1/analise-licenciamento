@@ -17,6 +17,10 @@ div(ng-init="ctrl.init()")
 
         hr
 
+        section(ng-if="ctrl.analiseJuridica.analiseJuridicaRevisada")   
+            label Parecer da validação:     
+            div(class="alert alert-warning", ng-bind-html="ctrl.analiseJuridica.analiseJuridicaRevisada.parecerValidacao")
+
         table.table.table-condensed
 
             thead
