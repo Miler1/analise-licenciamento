@@ -77,7 +77,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO);
 		}
 		
-		if (!isEmitir()) {
+		if (!emitirIsTrue()) {
 			
 			this.validade = caracterizacao.tipoLicenca.validadeEmAnos;
 			this.observacao = null;
@@ -94,7 +94,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		this.save();
 		
-		if (!isEmitir()){
+		if (!emitirIsTrue()){
 			
 			novaLicencaAnalise.condicionantes = new ArrayList<>();
 			novaLicencaAnalise.recomendacoes = new ArrayList<>();			
@@ -180,7 +180,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}		
 	}
 	
-	private boolean isEmitir() {
+	private boolean emitirIsTrue() {
 		
 		return Boolean.TRUE.equals(this.emitir);
 	}
