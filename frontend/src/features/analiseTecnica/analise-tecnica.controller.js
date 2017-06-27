@@ -20,6 +20,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.init = function () {
 
         ctrl.analiseTecnica = angular.copy(analiseTecnica);
+        ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
     };
 
     function analiseValida() {
