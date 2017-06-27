@@ -22,7 +22,8 @@ var EmitirLicenca = {
                 ctrl.invalidar(ctrl.analiseLicenca);            
             }
 
-            ctrl.analiseLicenca.emitir = emitir;
+            if(emitir)
+                ctrl.analiseLicenca.emitir = emitir;
         };
     },
     templateUrl: 'components/emitirLicenca/emitirLicenca.html'

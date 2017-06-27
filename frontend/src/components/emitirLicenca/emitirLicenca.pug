@@ -10,7 +10,7 @@
 
     label.btn.btn-plain(for="{{$ctrl.nome}}_invalido", title="Não emitir", ng-class="{'ativo': $ctrl.analiseLicenca.emitir === false}", ng-click="$ctrl.setEmitir(false)")
         
-        input(id="{{$ctrl.nome}}_invalido",type="radio", name="{{$ctrl.nome}}", ng-value="false", value="false", ng-model="$ctrl.analiseLicenca.emitir")
+        input(id="{{$ctrl.nome}}_invalido",type="radio", name="{{$ctrl.nome}}", ng-value="false", value="false")
                        
         span.glyphicon.glyphicon-remove.checked.invalido 
         span.glyphicon.glyphicon-remove.unchecked.nao-marcado

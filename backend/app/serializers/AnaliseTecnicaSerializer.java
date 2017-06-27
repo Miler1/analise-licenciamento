@@ -58,6 +58,7 @@ public class AnaliseTecnicaSerializer {
 			"consultoresJuridicos.usuario.pessoa.nome",
 			"licencasAnalise.id",
 			"licencasAnalise.validade",
+			"licencasAnalise.validadeMaxima",
 			"licencasAnalise.observacao",
 			"licencasAnalise.emitir",
 			"licencasAnalise.caracterizacao.tipoLicenca.nome",			
