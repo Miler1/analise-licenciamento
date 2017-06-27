@@ -13,14 +13,17 @@ div(ng-init="ctrl.init()")
                 div(ng-if='ctrl.tabAtiva === 0')
                     include analiseGeo/analise-geo
 
+                a.btn.pull-right(ng-click="ctrl.tabAtiva = 1")
+                    | >> Próxima etapa
+
             uib-tab(index="1", heading="Parecer")
                 parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
 
                 a.btn(ng-click="ctrl.tabAtiva = 0")
-                    | << Etapa anterior                
-        
+                    | << Etapa anterior
 
-    section.margin-bottom-xl
+
+    section.margin-bottom-xl.alone
     
         button.btn.btn-default.col-md-2.col-md-offset-0(ng-click="ctrl.cancelar()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
