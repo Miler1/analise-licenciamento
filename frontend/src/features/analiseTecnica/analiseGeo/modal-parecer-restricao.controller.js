@@ -104,7 +104,7 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 
 		modalCtrl.restricao.feature.properties.parecer = modalCtrl.parecer;
 
-		if(!modalCtrl.analiseTecnica.pareceresTecnicosRestricoes) {
+		if(!modalCtrl.analiseTecnica.pareceresTecnicosRestricoes || _.isEmpty(modalCtrl.analiseTecnica.pareceresTecnicosRestricoes)) {
 
 			modalCtrl.analiseTecnica.pareceresTecnicosRestricoes = [];
 			modalCtrl.analiseTecnica.pareceresTecnicosRestricoes.push({
