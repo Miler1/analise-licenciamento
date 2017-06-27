@@ -21,7 +21,7 @@ var Parecer = {
         ctrl.clonarParecer = clonarParecer;
         ctrl.alterarLicenca = alterarLicenca;
         ctrl.removerDocumento = removerDocumento;
-        ctrl.listarAnalisesLicencas = listarAnalisesLicencas;
+        //ctrl.listarAnalisesLicencas = listarAnalisesLicencas;
 
         ctrl.upload = function(file, invalidFile) {
 
@@ -181,22 +181,22 @@ var Parecer = {
 
         }
 
-        function listarAnalisesLicencas() {
+        // function listarAnalisesLicencas() {
 
-            if(ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
+        //     if(ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
 
-                analiseLicencaService.getByCaracterizacao(ctrl.analiseTecnica.analise.processo.caracterizacoes[0].id)
-                    .then(function(response){
+        //         analiseLicencaService.getByCaracterizacao(ctrl.analiseTecnica.analise.processo.caracterizacoes[0].id)
+        //             .then(function(response){
 
-                        ctrl.analisesLicencas = response.data;
+        //                 ctrl.analisesLicencas = response.data;
                     
-                    }, function(error){
+        //             }, function(error){
 
-                        ctrl.analisesLicencas = [];
-                        mensagem.error(error.data.texto);
-                    });
-            }
-        }
+        //                 ctrl.analisesLicencas = [];
+        //                 mensagem.error(error.data.texto);
+        //             });
+        //     }
+        // }
 
         var configModal = {
             titulo: 'Reprovar Licença',

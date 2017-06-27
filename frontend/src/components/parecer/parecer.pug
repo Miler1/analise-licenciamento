@@ -84,7 +84,7 @@ section.margin-bottom-md
     form.text-center.margin-bottom-md.margin-top-md(name="$ctrl.formularioResultado", novalidate)
         div(ng-class="{'has-error': $ctrl.formularioResultado.$submitted && $ctrl.formularioResultado.$invalid}")
             label.radio-inline(for="radio_deferido")
-                input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise", ng-change="$ctrl.listarAnalisesLicencas()")
+                input#radio_deferido(type="radio", name="resultado", ng-value="{{$ctrl.DEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise")
                 | Deferido
             label.radio-inline(for="radio_indeferido")
                 input#radio_indeferido(type="radio", name="resultado", ng-value="{{$ctrl.INDEFERIDO}}", ng-model="$ctrl.analiseTecnica.tipoResultadoAnalise.id", ng-required="!$ctrl.analiseTecnica.tipoResultadoAnalise")
@@ -112,13 +112,13 @@ section.margin-bottom-md
 
             tbody
 
-                tr(ng-repeat="analiseLicenca in $ctrl.analisesLicencas")
+                tr(ng-repeat="licencaAnalise in $ctrl.analiseTecnica.licencasAnalise")
 
-                    th.col-md-4 {{analiseLicenca.caracterizacao.tipoLicenca.nome}}
-                    th.col-md-3 {{analiseLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{analiseLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
-                    th.col-md-2.text-right {{analiseLicenca.validade}} anos
+                    th.col-md-4 {{licencaAnalise.caracterizacao.tipoLicenca.nome}}
+                    th.col-md-3 {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+                    th.col-md-2.text-right {{licencaAnalise.validade}} anos
                     th.col-md-1.text-center
-                        emitir-licenca(analise-licenca="analiseLicenca", identificador="$index", invalidar="$ctrl.invalidarEmissaoLicenca")
+                        emitir-licenca(analise-licenca="licencaAnalise", identificador="$index", invalidar="$ctrl.invalidarEmissaoLicenca")
                     th.col-md-2
-                        a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca(analiseLicenca)", ng-if="analiseLicenca.emitir === true")
+                        a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca(licencaAnalise)", ng-if="licencaAnalise.emitir === true")
                             i.glyphicon.glyphicon-pencil
