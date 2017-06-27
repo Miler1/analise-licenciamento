@@ -100,6 +100,10 @@ var ModalInformacoesLicenca = {
 
 		ctrl.cancelar = function() {
 
+			ctrl.recomendacoes = [];
+			ctrl.condicionantes = [];
+			ctrl.observacoes = [];
+
 			ctrl.dismiss({$value: 'cancel'});
 		};
 
