@@ -103,7 +103,6 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     function salvar() {
 
         ctrl.analiseTecnica.analise.processo.empreendimento = null;
-        ctrl.analiseTecnica.licencasAnalise = [];
         analiseTecnicaService.salvar(ctrl.analiseTecnica)
             .then(function (response) {
 
