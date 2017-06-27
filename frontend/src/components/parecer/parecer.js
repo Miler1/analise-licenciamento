@@ -21,7 +21,6 @@ var Parecer = {
         ctrl.clonarParecer = clonarParecer;
         ctrl.alterarLicenca = alterarLicenca;
         ctrl.removerDocumento = removerDocumento;
-        //ctrl.listarAnalisesLicencas = listarAnalisesLicencas;
 
         ctrl.upload = function(file, invalidFile) {
 
@@ -157,8 +156,6 @@ var Parecer = {
 
         function alterarLicenca(analiseLicenca) {
 
-            var al = angular.copy(analiseLicenca);
-
 	        var modalInstance = $uibModal.open({
 
                     component: 'modalInformacoesLicenca',
@@ -168,7 +165,7 @@ var Parecer = {
 
                         dadosLicenca: function() {
 
-                            return al;
+                            return analiseLicenca;
                         }
                     }
                 });
@@ -180,23 +177,6 @@ var Parecer = {
                 });
 
         }
-
-        // function listarAnalisesLicencas() {
-
-        //     if(ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
-
-        //         analiseLicencaService.getByCaracterizacao(ctrl.analiseTecnica.analise.processo.caracterizacoes[0].id)
-        //             .then(function(response){
-
-        //                 ctrl.analisesLicencas = response.data;
-                    
-        //             }, function(error){
-
-        //                 ctrl.analisesLicencas = [];
-        //                 mensagem.error(error.data.texto);
-        //             });
-        //     }
-        // }
 
         var configModal = {
             titulo: 'Reprovar Licença',
