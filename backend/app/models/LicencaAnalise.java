@@ -76,6 +76,12 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO);
 		}
+		
+		if (!isEmitir()) {
+			
+			this.validade = caracterizacao.tipoLicenca.validadeEmAnos;
+			this.observacao = null;
+		}
 		 
 		return super.save();		
 	}
@@ -87,6 +93,12 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		this.emitir = novaLicencaAnalise.emitir;
 		
 		this.save();
+		
+		if (!isEmitir()){
+			
+			novaLicencaAnalise.condicionantes = new ArrayList<>();
+			novaLicencaAnalise.recomendacoes = new ArrayList<>();			
+		}
 		
 		updateCondicionantes(novaLicencaAnalise.condicionantes);
 		updateRecomendacoes(novaLicencaAnalise.recomendacoes);		
@@ -166,6 +178,11 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 				this.recomendacoes.add(novaRecomendacao);
 			}			
 		}		
+	}
+	
+	private boolean isEmitir() {
+		
+		return Boolean.TRUE.equals(this.emitir);
 	}
 	
 	@Override
