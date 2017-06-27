@@ -120,5 +120,5 @@ section.margin-bottom-md
                     th.col-md-1.text-center
                         emitir-licenca(analise-licenca="licencaAnalise", identificador="$index", invalidar="$ctrl.invalidarEmissaoLicenca")
                     th.col-md-2
-                        a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca(licencaAnalise)", ng-if="licencaAnalise.emitir === true")
+                        a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca($index)", ng-if="licencaAnalise.emitir === true")
                             i.glyphicon.glyphicon-pencil

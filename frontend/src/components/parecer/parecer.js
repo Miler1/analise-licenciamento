@@ -154,7 +154,9 @@ var Parecer = {
             ctrl.analiseTecnica.documentos.splice(indiceDocumento,1);
         }
 
-        function alterarLicenca(analiseLicenca) {
+        function alterarLicenca(indice) {
+
+            var analiseLicenca = ctrl.analiseTecnica.licencasAnalise[indice];
 
 	        var modalInstance = $uibModal.open({
 
@@ -165,7 +167,7 @@ var Parecer = {
 
                         dadosLicenca: function() {
 
-                            return analiseLicenca;
+                            return angular.copy(analiseLicenca);
                         }
                     }
                 });
@@ -173,7 +175,7 @@ var Parecer = {
 
                 modalInstance.result.then(function (result) {
 
-                    analiseLicenca = result;
+                    ctrl.analiseTecnica.licencasAnalise[indice] = result;
                 });
 
         }
