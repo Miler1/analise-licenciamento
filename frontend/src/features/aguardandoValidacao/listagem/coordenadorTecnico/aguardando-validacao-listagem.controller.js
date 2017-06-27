@@ -1,6 +1,6 @@
-var AguardandoValidacaoJuridicoListController = function($scope, config, $location, $rootScope, processoService) {
+var AguardandoValidacaoTecnicaListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VALIDACÃO JURÍDICA';
+	$rootScope.tituloPagina = 'AGUARDANDO VALIDACÃO TÉCNICA';
 
 	var listagem = this;
 
@@ -11,12 +11,11 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 	listagem.validarAnalise = validarAnalise;
 
 	listagem.processos = [];
-	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
+	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
-	listagem.disabledFields = _.concat($scope.aguardandoValidacaoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO);
 
 	function atualizarListaProcessos(processos) {
 
@@ -41,9 +40,9 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 		});
 	}
 
-	function validarAnalise(idAnaliseJuridica) {
+	function validarAnalise(idAnaliseTecnica) {
 
-		$location.path('/aguardando-validacao/' + idAnaliseJuridica.toString());
+		$location.path('/aguardando-validacao/' + idAnaliseTecnica.toString());
 	}	
 
 	function exibirDadosProcesso(processo) {
@@ -52,4 +51,4 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
     }
 };
 
-exports.controllers.AguardandoValidacaoJuridicoListController = AguardandoValidacaoJuridicoListController;
+exports.controllers.AguardandoValidacaoTecnicaListController = AguardandoValidacaoTecnicaListController;

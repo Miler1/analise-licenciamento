@@ -13,7 +13,7 @@ var FiltroProcessos = {
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
-		atividadeService, $scope, condicaoService, $rootScope) {
+		atividadeService, $scope, condicaoService, $rootScope, analistaService) {
 
 		var ctrl = this;
 
@@ -23,6 +23,7 @@ var FiltroProcessos = {
 		ctrl.municipios = [];
 		ctrl.tipologias = [];
 		ctrl.atividades = [];
+		ctrl.analistasTecnicos = [];
 		ctrl.condicoes = [];
 
 		ctrl.maxDataInicio = new Date();
@@ -129,6 +130,18 @@ var FiltroProcessos = {
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
+
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
+
+				analistaService.getAnalistasTecnicos()
+					.then(function(response){
+
+						ctrl.analistasTecnicos = response.data;
+					})
+					.catch(function(){
+						mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+					});
+			}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
 

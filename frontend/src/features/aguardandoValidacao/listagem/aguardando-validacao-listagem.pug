@@ -1,3 +1,7 @@
 div(ng-if="usuarioSessao.perfilSelecionado.id === aguardandoValidacaoListagem.perfis.COORDENADOR_JURIDICO", 
     ng-controller='aguardandoValidacaoJuridicoListController as listagem')
     include coordenadorJuridico/aguardando-validacao-listagem
+
+div(ng-if="usuarioSessao.perfilSelecionado.id === aguardandoValidacaoListagem.perfis.COORDENADOR_TECNICO", 
+    ng-controller='aguardandoValidacaoTecnicaListController as listagem')
+    include coordenadorTecnico/aguardando-validacao-listagem  
