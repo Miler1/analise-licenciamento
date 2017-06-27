@@ -184,9 +184,16 @@ public class Geoserver extends GenericModel {
 
 		Geometry featurePolygon = (Geometry) featureProcessada.getDefaultGeometry();
 
+		String nome;
+		
+		if(featureProcessada.getAttribute(configuracaoLayer.atributoDescricao) == null)
+			nome = "Nome não informado";
+		else
+			nome = featureProcessada.getAttribute(configuracaoLayer.atributoDescricao).toString();
+		
 		return getGeoserverFeature(
 				featureProcessada.getID(),
-				featureProcessada.getAttribute(configuracaoLayer.atributoDescricao).toString(),
+				nome,
 				configuracaoLayer.descricao,
 				restricao,
 				featurePolygon
