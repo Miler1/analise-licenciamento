@@ -7,7 +7,8 @@ div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.
 		.row
 			.col-md-12
 
-				div.margin-bottom-sm(ng-if="ctrl.imovel") CAR vinculado:
+				div.margin-bottom-sm(ng-if="ctrl.imovel")  
+					span.d-inline-block.margin-right-xs CAR vinculado:
 					strong {{ctrl.imovel.codigo}} 
 					span - {{ctrl.imovel.nome}} - {{ctrl.imovel.municipio.nome}}-{{ctrl.imovel.municipio.estado.codigo}}
 
