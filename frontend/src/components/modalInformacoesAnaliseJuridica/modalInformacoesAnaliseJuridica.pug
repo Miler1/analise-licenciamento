@@ -1,0 +1,58 @@
+.modal-header
+	h4 Análise Jurídica
+
+.modal-body#informacoesAnaliseJuridica
+
+	div(growl inline="true", reference="1")
+
+	div
+
+		label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Coordenador jurídico:
+		span#texto_nome_consultor_juridico
+			strong {{$ctrl.analiseJuridica.coordenadorJuridico.usuario.pessoa.nome}}
+
+		br
+
+		label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Consultor jurídico:
+		span#texto_nome_consultor_juridico
+			strong {{$ctrl.analiseJuridica.consultoresJuridicos[0].usuario.pessoa.nome}}
+	hr
+
+	label Parecer: {{$ctrl.analiseJuridica.tipoResultadoAnalise.nome}}
+
+	fieldset.panel.panel-default
+		div.panel-body
+			p(ng-bind-html="$ctrl.analiseJuridica.parecer")
+
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th Arquivo anexado
+				th.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="documento in $ctrl.analiseJuridica.documentos")
+
+				td {{documento.nome}}
+				td.text-right
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="$ctrl.downloadDocumentoAnalise(documento.id)")
+						i.glyphicon.glyphicon-save
+
+	.row(ng-show="!$ctrl.analiseJuridica.documentos || $ctrl.analiseJuridica.documentos.length == 0")
+		.col-md-12
+			p.empty-result Não existem arquivos anexados.
+
+	label Considerações do Coordenador:
+
+	fieldset.panel.panel-default
+		div.panel-body
+			p(ng-bind-html="$ctrl.analiseJuridica.parecerValidacao")
+
+.modal-footer
+
+	button.btn.btn-default.pull-left(type="button", ng-click="$ctrl.fechar()") Fechar
+
+
