@@ -457,6 +457,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public boolean isAnaliseJuridica;
 		public boolean isAnaliseTecnica;
 		public boolean isAnaliseTecnicaOpcional;
+		public Long idAnalistaTecnico;
 		
 		public FiltroProcesso() {
 			
