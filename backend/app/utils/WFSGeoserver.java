@@ -33,7 +33,8 @@ public class WFSGeoserver {
 		connectionParameters.put("WFSDataStoreFactory:PROTOCOL", true );
 		connectionParameters.put("WFSDataStoreFactory:LENIENT", true );
 		connectionParameters.put("WFSDataStoreFactory:WFS_STRATEGY", "geoserver" );
-		connectionParameters.put("WFSDataStoreFactory:TIMEOUT", 10000 );
+		connectionParameters.put("WFSDataStoreFactory:TIMEOUT", 1000000000 );
+		connectionParameters.put("WFSDataStoreFactory:TRY_GZIP", false );
 
 		//pegar a conexão do geoserver
 		//aqui posso olhar quais as camadas tem o geoserver
