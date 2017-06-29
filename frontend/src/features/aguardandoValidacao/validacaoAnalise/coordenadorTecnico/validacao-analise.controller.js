@@ -3,6 +3,8 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 
     var validacaoAnaliseTecnica = this;
 
+    validacaoAnaliseTecnica.analiseTecnicaValidacao = {};
+
     validacaoAnaliseTecnica.init = init;
     validacaoAnaliseTecnica.exibirDadosProcesso = exibirDadosProcesso; 
     validacaoAnaliseTecnica.exibirAnaliseJuridica = exibirAnaliseJuridica;
@@ -96,11 +98,44 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
         $location.path('aguardando-validacao');
     }
 
-	function concluir(){
+	function montarAnaliseTecnica(analiseTecnicaValidacao){
+		return {
+			id: validacaoAnaliseTecnica.analiseTecnica.id,
+			tipoResultadoValidacao: { id : analiseTecnicaValidacao.idTipoResultadoValidacao},
+			parecerValidacao: validacaoAnaliseTecnica.parecerValidacao,
+			analistasTecnicos:[ 
+				{
+					usuario: {
+						id: validacaoAnaliseTecnica.idAnalistaTecnico
+					}
+				}
+			]
+		};
+	}    
 
+	function concluir() {
+
+		$scope.formularioValidacao.$setSubmitted();
+
+		if (!$scope.formularioValidacao.$valid){
+
+            mensagem.error('Preencha os campos destacados em vermelho para prosseguir com a validação.');
+			return;
+        }
+
+        var analiseTecnica = montarAnaliseJuridica(validacaoAnaliseTecnica.analiseTecnicaValidacao);
+
+		analiseTecnica.validarParecer(analiseTecnica)
+            .then(function(response) {
+
+                mensagem.success(response.data.texto);
+				$location.path('aguardando-validacao');
+
+            }, function(error){
+
+                mensagem.error(error.data.texto);
+            });
     }    
-    
-
 };
 
 exports.controllers.ValidacaoAnaliseTecnicaController = ValidacaoAnaliseTecnicaController;

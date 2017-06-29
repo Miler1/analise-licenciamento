@@ -35,6 +35,12 @@ var AnaliseTecnicaService = function(request, config) {
 		return request
 				.post(config.BASE_URL() + 'analisesTecnicas/concluir', analise);
 	};	
+
+	this.validarParecer = function(analise) {
+
+		return request
+				.post(config.BASE_URL() + 'analisesTecnicas/validarParecer', analise);
+	};		
 };
 
 exports.services.AnaliseTecnicaService = AnaliseTecnicaService;
