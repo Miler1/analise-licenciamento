@@ -138,19 +138,19 @@ public class AnaliseJuridica extends GenericModel {
 		}
 	}
 	
-	private void validarTipoResultadoValidacao() {
+	public void validarTipoResultadoValidacao() {
 		
 		if (tipoResultadoValidacao == null) {
 			
-			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_SEM_RESULTADO_VALIDACAO);
-		}		
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO_VALIDACAO);
+		}
 	}
 	
-	private void validarParecerValidacao() {
+	public void validarParecerValidacao() {
 		
 		if (StringUtils.isEmpty(parecerValidacao)) {
 			
-			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_SEM_PARECER_VALIDACAO);
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
 		}		
 	}	
 	

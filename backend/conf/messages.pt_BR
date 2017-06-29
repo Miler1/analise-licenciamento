@@ -56,10 +56,11 @@ ANALISE_DOCUMENTO_NAO_AVALIADO=Existem documentos que não foram analisados ou d
 TODOS_OS_DOCUMENTOS_VALIDOS=Para deferir uma análise, todos os documentos devem ser validados.
 ANALISE_JURIDICA_CONCLUIDA=Esta análise jurídica já foi concluída e não pode mais ser alterada.
 ANALISE_JURIDICA_INICIADA_SUCESSO=Análise jurídica iniciada.
-ANALISE_JURIDICA_SEM_RESULTADO_VALIDACAO=O resultado da validação do parecer não foi definido.
+ANALISE_SEM_RESULTADO_VALIDACAO=O resultado da validação do parecer não foi definido.
 ANALISE_JURIDICA_CONSULTOR_NAO_INFORMADO=O consultor jurídico não foi informado.
 VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO=Validação do parecer jurídico concluída com sucesso.
-ANALISE_JURIDICA_SEM_PARECER_VALIDACAO=O parecer da validação não foi informado.
+VALIDACAO_PARECER_TECNICO_CONCLUIDA_SUCESSO=Validação do parecer técnico concluída com sucesso.
+ANALISE_SEM_PARECER_VALIDACAO=O parecer da validação não foi informado.
 
 #
 # Analise tecnica

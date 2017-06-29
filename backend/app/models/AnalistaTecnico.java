@@ -47,6 +47,10 @@ public class AnalistaTecnico extends GenericModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
 	
+	public AnalistaTecnico() {
+		
+	}
+	
 	public AnalistaTecnico(AnaliseTecnica analiseTecnica, Usuario usuario) {
 		
 		super();
@@ -64,5 +68,15 @@ public class AnalistaTecnico extends GenericModel {
 		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
 		analistaTecnico.save();
 		
+	}
+	
+	public AnalistaTecnico gerarCopia() {
+		
+		AnalistaTecnico copia = new AnalistaTecnico();
+		
+		copia.usuario = this.usuario;
+		copia.dataVinculacao = this.dataVinculacao;
+		
+		return copia;
 	}
 }
