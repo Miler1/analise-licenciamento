@@ -93,4 +93,18 @@ public class AnalisesTecnicas extends InternalController {
 
 		renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
 	}
+	
+	public static void validarParecer(AnaliseTecnica analise) {
+		
+		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO);
+		
+		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
+		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+		
+		analiseAValidar.validaParecer(analise, usuarioExecutor);
+		
+		renderMensagem(Mensagem.VALIDACAO_PARECER_TECNICO_CONCLUIDA_SUCESSO);
+	}
 }

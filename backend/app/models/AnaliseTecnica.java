@@ -29,17 +29,21 @@ import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
+import models.validacaoParecer.Analisavel;
+import models.validacaoParecer.ParecerNaoValidadoTecnico;
+import models.validacaoParecer.ParecerValidadoTecnico;
+import models.validacaoParecer.SolicitarAjustesTecnico;
+import models.validacaoParecer.TipoResultadoAnaliseChain;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.ListUtil;
 import utils.Mensagem;
 import utils.ModelUtil;
-import utils.PessoaUtils;
 
 @Entity
 @Table(schema="analise", name="analise_tecnica")
-public class AnaliseTecnica extends GenericModel {
+public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	public static final String SEQ = "analise.analise_tecnica_id_seq";
 	
@@ -331,6 +335,15 @@ public class AnaliseTecnica extends GenericModel {
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
 		}
 	}
+	
+	public void validaParecer(AnaliseTecnica analiseTecnica, Usuario usuarioExecultor) {
+		
+		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnico();		
+		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnico());
+		tiposResultadosAnalise.setNext(new ParecerNaoValidadoTecnico());
+		
+		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecultor);		
+	}
 
 	private void validarLicencasAnalise() {
 		
@@ -376,5 +389,62 @@ public class AnaliseTecnica extends GenericModel {
 				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
 			}
 		}		
+	}
+
+	@Override
+	public TipoResultadoAnalise getTipoResultadoValidacao() {
+		
+		return this.getTipoResultadoValidacao();
+	}
+
+	public void validarTipoResultadoValidacao() {
+		
+		if (tipoResultadoValidacao == null) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO_VALIDACAO);
+		}		
+	}
+
+	public void validarParecerValidacao() {
+		
+		if (StringUtils.isEmpty(parecerValidacao)) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
+		}		
+	}
+
+	public AnaliseTecnica gerarCopia() {
+		
+		AnaliseTecnica copia = new AnaliseTecnica();
+		
+		copia.analise = this.analise;
+		copia.parecer = this.parecer;
+		copia.dataVencimentoPrazo = this.dataVencimentoPrazo;
+		copia.revisaoSolicitada = true;
+		copia.ativo = true;
+		copia.analiseTecnicaRevisada = this;
+		copia.dataInicio = this.dataInicio;
+		copia.tipoResultadoAnalise = this.tipoResultadoAnalise;
+		copia.documentos = new ArrayList<>(this.documentos);
+		copia.analisesDocumentos = new ArrayList<>();
+		
+		for (AnaliseDocumento analiseDocumento: this.analisesDocumentos) {
+			
+			AnaliseDocumento copiaAnaliseDoc = analiseDocumento.gerarCopia();
+			copiaAnaliseDoc.analiseTecnica = copia;
+			copia.analisesDocumentos.add(copiaAnaliseDoc);
+		}
+		
+		copia.analistasTecnicos = new ArrayList<>();
+		
+		for (AnalistaTecnico analistaTecnico: this.analistasTecnicos) {
+			
+			AnalistaTecnico copiaAnalistaTec = analistaTecnico.gerarCopia();
+			
+			copiaAnalistaTec.analiseTecnica = copia;
+			copia.analistasTecnicos.add(copiaAnalistaTec);
+		}
+		
+		return copia;
 	}	
 }
