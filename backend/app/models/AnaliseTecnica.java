@@ -394,7 +394,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Override
 	public TipoResultadoAnalise getTipoResultadoValidacao() {
 		
-		return this.getTipoResultadoValidacao();
+		return this.tipoResultadoValidacao;
 	}
 
 	public void validarTipoResultadoValidacao() {

@@ -102,11 +102,11 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 		return {
 			id: validacaoAnaliseTecnica.analiseTecnica.id,
 			tipoResultadoValidacao: { id : analiseTecnicaValidacao.idTipoResultadoValidacao},
-			parecerValidacao: validacaoAnaliseTecnica.parecerValidacao,
+			parecerValidacao: analiseTecnicaValidacao.parecerValidacao,
 			analistasTecnicos:[ 
 				{
 					usuario: {
-						id: validacaoAnaliseTecnica.idAnalistaTecnico
+						id: analiseTecnicaValidacao.idAnalistaTecnico
 					}
 				}
 			]
@@ -123,9 +123,9 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 			return;
         }
 
-        var analiseTecnica = montarAnaliseJuridica(validacaoAnaliseTecnica.analiseTecnicaValidacao);
+        var analiseTecnica = montarAnaliseTecnica(validacaoAnaliseTecnica.analiseTecnicaValidacao);
 
-		analiseTecnica.validarParecer(analiseTecnica)
+		analiseTecnicaService.validarParecer(analiseTecnica)
             .then(function(response) {
 
                 mensagem.success(response.data.texto);
