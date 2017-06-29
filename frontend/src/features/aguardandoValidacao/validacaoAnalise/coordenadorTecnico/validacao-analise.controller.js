@@ -1,12 +1,17 @@
 var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaService, $route, $scope, 
-		mensagem, $location, documentoAnaliseService, processoService, $uibModal) {
+		mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService) {
 
     var validacaoAnaliseTecnica = this;
 
     validacaoAnaliseTecnica.init = init;
     validacaoAnaliseTecnica.exibirDadosProcesso = exibirDadosProcesso; 
     validacaoAnaliseTecnica.exibirAnaliseJuridica = exibirAnaliseJuridica;
-
+    validacaoAnaliseTecnica.downloadDocumentoAnalise = downloadDocumentoAnalise;
+	validacaoAnaliseTecnica.isParecerNaoValidado = isParecerNaoValidado;
+	validacaoAnaliseTecnica.isObrigatorio = isObrigatorio;
+	validacaoAnaliseTecnica.cancelar = cancelar;
+	validacaoAnaliseTecnica.concluir = concluir;  
+    validacaoAnaliseTecnica.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;  
 
     function init() {
 
@@ -14,7 +19,14 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 			.then(function(response){
 				validacaoAnaliseTecnica.analiseTecnica = response.data;
 
+				validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico =
+					validacaoAnaliseTecnica.analiseTecnica.analistasTecnicos[0].usuario.id;                
 			});
+
+		analistaService.getAnalistasTecnicos()
+			.then(function(response){
+				validacaoAnaliseTecnica.analistas = response.data;
+			});            
 		
 		$rootScope.$broadcast('atualizarContagemProcessos');        
     }
@@ -60,6 +72,34 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
                 });    
             });
     }
+
+    function downloadDocumentoAnalise(idDocumento) {
+
+        documentoAnaliseService.download(idDocumento);
+    }
+
+	function isParecerNaoValidado() {
+
+		return validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao === 
+                                validacaoAnaliseTecnica.TiposResultadoAnalise.PARECER_NAO_VALIDADO;
+	}
+
+	function isObrigatorio() {
+		
+        return [validacaoAnaliseTecnica.TiposResultadoAnalise.PARECER_NAO_VALIDADO,
+				validacaoAnaliseTecnica.TiposResultadoAnalise.SOLICITAR_AJUSTES]
+				.indexOf(validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao) !== -1;
+	}
+
+    function cancelar() {
+
+        $location.path('aguardando-validacao');
+    }
+
+	function concluir(){
+
+    }    
+    
 
 };
 
