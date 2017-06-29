@@ -337,4 +337,5 @@ licenciamento
 	.component('resumoEmpreendimento', directives.ResumoEmpreendimento)
 	.component('fichaImovel', directives.FichaImovel)
 	.component('parecer', directives.Parecer)
+	.component('modalInformacoesAnaliseJuridica', directives.ModalInformacoesAnaliseJuridica)
 	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca);
