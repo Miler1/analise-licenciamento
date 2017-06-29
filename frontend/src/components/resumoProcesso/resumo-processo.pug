@@ -1,5 +1,5 @@
 include ../../features/legislacao/legislacao
-mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica)
+mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica, exibirAnaliseJuridica)
     - exibirBotaoAnaliseJuridica = exibirBotaoAnaliseJuridica || false
     section.margin-bottom-md
         
@@ -13,7 +13,7 @@ mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica)
                         i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
                         | Legislações
                 if exibirBotaoAnaliseJuridica
-                    button.btn.btn-default.col-md-offset-1(ng-click=exibiAnaliseJuridica)
+                    button.btn.btn-default.col-md-offset-1(ng-click=exibirAnaliseJuridica)
                         i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
                         | Análise Jurídica                    
                 button.btn.btn-default.col-md-offset-1(ng-click=abrirDadosProcesso)

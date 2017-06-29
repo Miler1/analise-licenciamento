@@ -1,5 +1,5 @@
 var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaService, $route, $scope, 
-		mensagem, $location, documentoAnaliseService, processoService) {
+		mensagem, $location, documentoAnaliseService, processoService, $uibModal) {
 
     var validacaoAnaliseTecnica = this;
 
@@ -41,7 +41,24 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
     }    
 
     function exibirAnaliseJuridica() {
-        
+
+        processoService.getAnaliseJuridica(validacaoAnaliseTecnica.analiseTecnica.analise.processo.id)
+            .then(function(response){
+
+                var modalInstance = $uibModal.open({
+
+                    component: 'modalInformacoesAnaliseJuridica',
+                    size: 'lg',
+                    backdrop: 'static',
+                    resolve: {
+
+                        idAnalise: function() {
+
+                            return response.data.id;
+                        }
+                    }    
+                });    
+            });
     }
 
 };
