@@ -57,11 +57,6 @@ public class AnaliseTecnicaSerializer {
 			"documentos.nome",
 			"documentos.tipo.id",
 			"documentos.tipo.nome",
-			"consultoresJuridicos.id",
-			"consultoresJuridicos.usuario.id",
-			"consultoresJuridicos.usuario.pessoa.cpf",
-			"consultoresJuridicos.usuario.pessoa.id",
-			"consultoresJuridicos.usuario.pessoa.nome",
 			"licencasAnalise.id",
 			"licencasAnalise.validade",
 			"licencasAnalise.validadeMaxima",
@@ -76,7 +71,13 @@ public class AnaliseTecnicaSerializer {
 			"licencasAnalise.condicionantes.ordem",
 			"licencasAnalise.recomendacoes.id",
 			"licencasAnalise.recomendacoes.texto",
-			"licencasAnalise.recomendacoes.ordem"			
+			"licencasAnalise.recomendacoes.ordem",
+			"analistasTecnicos.id",
+			"analistasTecnicos.usuario.id",
+			"analistasTecnicos.usuario.pessoa.cpf",
+			"analistasTecnicos.usuario.pessoa.id",
+			"analistasTecnicos.usuario.pessoa.nome"
+			
 		);
 
 		public static JSONSerializer parecer = SerializerUtil.create(

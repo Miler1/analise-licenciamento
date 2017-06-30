@@ -1,3 +1,7 @@
 div(ng-if="usuarioSessao.perfilSelecionado.id === validacaoAnalise.perfis.COORDENADOR_JURIDICO", 
     ng-controller='validacaoAnaliseJuridicaController as validacaoAnaliseJuridica', ng-init="validacaoAnaliseJuridica.init()")
     include coordenadorJuridico/validacao-analise
+
+div(ng-if="usuarioSessao.perfilSelecionado.id === validacaoAnalise.perfis.COORDENADOR_TECNICO || usuarioSessao.perfilSelecionado.id === validacaoAnalise.perfis.GERENTE_TECNICO", 
+    ng-controller='validacaoAnaliseTecnicaController as validacaoAnaliseTecnica', ng-init="validacaoAnaliseTecnica.init()")
+    include coordenadorTecnico/validacao-analise

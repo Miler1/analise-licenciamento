@@ -38,6 +38,7 @@ POST	/analisesTecnicas									AnalisesTecnicas.alterar
 POST	/analisesTecnicas/concluir							AnalisesTecnicas.concluir
 GET		/analisesTecnicas/{idAnaliseTecnica}				AnalisesTecnicas.findById
 GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRestricoesGeo
+POST	/analisesTecnicas/validarParecer					AnalisesTecnicas.validarParecer
 
 # Caracterizacao
 

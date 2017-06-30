@@ -35,6 +35,13 @@ div(uib-accordion class="accordion")
                                     ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades | orderBy:'nome' track by atividade.id")
                     option(value="") Selecione a atividade do empreendimento
 
+        .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_TECNICO)")
+            .col-md-12
+                label.control-label Analista técnico:
+                select.form-control(ng-model="$ctrl.filtro.idAnalistaTecnico", name="selectAtividade",
+                                    ng-options="analistaTecnico.id as analistaTecnico.pessoa.nome for analistaTecnico in $ctrl.analistasTecnicos | orderBy:'pessoa.nome'")
+                    option(value="") Selecione o analista técnico
+
         .row
             .col-md-5.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.SITUACAO)")
                 label.control-label Situação:
