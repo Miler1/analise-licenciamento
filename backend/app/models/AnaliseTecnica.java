@@ -347,11 +347,14 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	private void validarLicencasAnalise() {
 		
-		for (LicencaAnalise licencaAnalise : this.licencasAnalise) {
-			
-			if (licencaAnalise.emitir == null) {
+		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+						
+			for (LicencaAnalise licencaAnalise : this.licencasAnalise) {
 				
-				throw new ValidacaoException(Mensagem.ANALISE_TECNICA_LICENCA_SEM_VALIDACAO);
+				if (licencaAnalise.emitir == null) {
+					
+					throw new ValidacaoException(Mensagem.ANALISE_TECNICA_LICENCA_SEM_VALIDACAO);
+				}
 			}
 		}
 	}
