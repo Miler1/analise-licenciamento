@@ -115,7 +115,7 @@ echo "server.update=$current_date" >> $DIST_FOLDER/backend/conf/application.conf
 echo "-- Gerando arquivo ZIP ($zip_dist_file):"
 cd $DIST_FOLDER
 zip_sulfix=$(date +'%Y-%m-%d_%H-%M')
-zip_file="(licenciamento_pa)_analise_$zip_sulfix.zip"
+zip_file="licenciamento_pa_analise_$zip_sulfix.zip"
 zip -r $zip_file backend
 
 
