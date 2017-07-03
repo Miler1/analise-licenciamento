@@ -18,6 +18,7 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 		   
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;
+		analiseTecnica.usuarioValidacao = usuarioExecultor;
 		analiseTecnica.ativo = false;
 			
 		analiseTecnica.validarTipoResultadoValidacao();

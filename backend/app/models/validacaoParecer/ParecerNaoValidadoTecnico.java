@@ -23,6 +23,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;		
+		analiseTecnica.usuarioValidacao = usuarioExecultor;
 		analiseTecnica.ativo = false;
 		
 		validarAnaliseTecnica(analiseTecnica, novaAnaliseTecnica);
