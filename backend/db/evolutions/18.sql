@@ -38,7 +38,7 @@ COMMENT ON COLUMN analise.recomendacao.ordem IS 'Ordem de exibição das recomen
 
 COMMENT ON TABLE analise.parecer_tecnico_restricao IS 'Entidade responsável por armazenar o parecer das restrições geográficas.';
 COMMENT ON COLUMN analise.parecer_tecnico_restricao.id IS 'Identificador único da entidade.';
-COMMENT ON COLUMN analise.parecer_tecnico_restricao.id_analise_tecnica IS '';
+COMMENT ON COLUMN analise.parecer_tecnico_restricao.id_analise_tecnica IS 'Identificador da entidade analise_tecnica que faz o relacionamento entre as duas entidades.';
 COMMENT ON COLUMN analise.parecer_tecnico_restricao.codigo_camada IS 'Código da camada do geoserver.';
 COMMENT ON COLUMN analise.parecer_tecnico_restricao.parecer IS 'Descrição do parecer de restrição geográfico.';
 
