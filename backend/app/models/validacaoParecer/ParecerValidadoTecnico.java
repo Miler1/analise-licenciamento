@@ -17,6 +17,7 @@ public class ParecerValidadoTecnico extends TipoResultadoAnaliseChain<AnaliseTec
 
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;
+		analiseTecnica.usuarioValidacao = usuarioExecultor;
 		
 		analiseTecnica.validarTipoResultadoValidacao();
 		

@@ -370,7 +370,18 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		}
 		
 		return this;
-	}	
+	}
+	
+	public ProcessoBuilder filtrarPorIdUsuarioValidacao(Long idUsuarioValidacao) {
+		
+		if (idUsuarioValidacao != null) {
+			
+			addConsultorJuridicoAlias();
+			addRestricton(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".usuarioValidacao.id", idUsuarioValidacao));
+		}
+		
+		return this;
+	}
 
 	public ProcessoBuilder filtrarPorPeriodoProcesso(Date periodoInicial, Date periodoFinal) {
 		

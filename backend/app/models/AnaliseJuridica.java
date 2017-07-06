@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -96,6 +97,11 @@ public class AnaliseJuridica extends GenericModel {
 	
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;
+	
+ 	@ManyToOne(fetch=FetchType.LAZY)
+ 	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
+	public Usuario usuarioValidacao;
+	
 	
 	private void validarParecer() {
 		
@@ -360,7 +366,7 @@ public class AnaliseJuridica extends GenericModel {
 	        }
 	    }
 		
-		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica) {
+		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecutor) {
 			
 			tipoResultadoValidacao = novaAnaliseJuridica.tipoResultadoValidacao;
 			parecerValidacao = novaAnaliseJuridica.parecerValidacao;
@@ -370,7 +376,7 @@ public class AnaliseJuridica extends GenericModel {
 			
 			if (novaAnaliseJuridica.tipoResultadoValidacao.id.equals(idResultadoAnalise)) {
 				
-				setAnaliseJuridica(novaAnaliseJuridica);				
+				setAnaliseJuridica(novaAnaliseJuridica, usuarioExecultor);				
 				validaParecer(novaAnaliseJuridica, usuarioExecultor);
 				
 			} else if (next != null) {

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -102,6 +103,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;
+	
+ 	@ManyToOne(fetch=FetchType.LAZY)
+ 	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
+	public Usuario usuarioValidacao;
 	
 	@OneToMany(mappedBy="analiseTecnica", orphanRemoval = true)
 	public List<LicencaAnalise> licencasAnalise;
