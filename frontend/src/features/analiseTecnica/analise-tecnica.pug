@@ -18,9 +18,6 @@ div(ng-init="ctrl.init()")
                 div(ng-if='ctrl.tabAtiva === 0')
                     include analiseGeo/analise-geo
 
-                a.btn.pull-right(ng-click="ctrl.tabAtiva = 1")
-                    | >> Próxima etapa
-
             uib-tab(index="1", heading="Parecer")
                 parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
 
@@ -37,8 +34,12 @@ div(ng-init="ctrl.init()")
         button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
             i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
             | Salvar
+
+        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.tabAtiva = 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 0")
+            i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
+            | Próxima etapa            
         
-        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim")
+        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 1")
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
 

@@ -149,9 +149,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
 			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
 			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
-			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal)
-			.filtrarPorIdUsuarioValidacao(idUsuarioLogado);
-		
+			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
+			
+				
 		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, idUsuarioLogado);
 		
 		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, idUsuarioLogado);
@@ -176,6 +176,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 					
 			processoBuilder.filtrarPorIdConsultorJuridico(idUsuarioLogado);
 		}
+		
+		if (filtro.idCondicaoTramitacao != null && 
+			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_JURIDICA)) {
+						
+				processoBuilder.filtrarPorIdUsuarioValidacao(idUsuarioLogado);
+		}
+
+		
 	}
 	
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
@@ -202,6 +210,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);			
 		}
+		
+		if (filtro.idCondicaoTramitacao != null && 
+				   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA)) {
+							
+					processoBuilder.filtrarPorIdUsuarioValidacao(idUsuarioLogado);
+		}
+		
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
