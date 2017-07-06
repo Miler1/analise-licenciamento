@@ -104,7 +104,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;
 	
-	@Required
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
 	public Usuario usuarioValidacao;

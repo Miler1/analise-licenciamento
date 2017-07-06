@@ -126,7 +126,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	
 	public void vincularConsultor(Usuario consultor, Usuario usuarioExecutor) {
 		
-		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this));
+		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
 		
@@ -149,7 +149,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
 			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
 			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
-			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
+			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal)
+			.filtrarPorIdUsuarioValidacao(idUsuarioLogado);
 		
 		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, idUsuarioLogado);
 		

@@ -98,7 +98,6 @@ public class AnaliseJuridica extends GenericModel {
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;
 	
-	@Required
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
 	public Usuario usuarioValidacao;
@@ -371,7 +370,6 @@ public class AnaliseJuridica extends GenericModel {
 			
 			tipoResultadoValidacao = novaAnaliseJuridica.tipoResultadoValidacao;
 			parecerValidacao = novaAnaliseJuridica.parecerValidacao;
-			usuarioValidacao = usuarioExecutor;
 		}
 		
 		public void validarParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecultor) {
