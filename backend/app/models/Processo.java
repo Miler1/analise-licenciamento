@@ -221,6 +221,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
 		
+		
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao.id)
 			.comTiposLicencas()
 			.groupByIdProcesso()

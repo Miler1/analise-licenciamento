@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import models.portalSeguranca.Setor;
 import play.db.jpa.GenericModel;
 
 @Entity
@@ -48,4 +49,8 @@ public class AtividadeCaracterizacao extends GenericModel {
 
 	@Column(name = "valor_parametro")
 	public Double valorParametro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_setor")
+	public Setor setor;
 }

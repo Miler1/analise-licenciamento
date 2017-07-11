@@ -75,6 +75,9 @@ public class Usuario extends GenericModel  {
 	@Transient
 	public Perfil perfilSelecionado;
 	
+	@Transient
+	public Setor setorSelecionado;
+		
 	public static transient ExecutorService executorService = new ScheduledThreadPoolExecutor(Integer.valueOf(Play.configuration.getProperty("usuario.threads", "3")));
 
 	@Transient

@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.licenciamento.PessoaFisica;
 import models.portalSeguranca.Perfil;
+import models.portalSeguranca.Setor;
 
 public class UsuarioSessao implements Serializable {
 
@@ -15,12 +16,13 @@ public class UsuarioSessao implements Serializable {
 	public String cpfCnpj;
 	public List<Acao> acoesPermitidas;
 	public Perfil perfilSelecionado;
+	public Setor setorSelecionado;
 	
 	public UsuarioSessao() {
 		
 	}
 	
-	public UsuarioSessao(Long id, String nome, Long idPessoa, String cpfCnpj, List<Acao> acoesPermitidas, Perfil perfilSelecionado) {
+	public UsuarioSessao(Long id, String nome, Long idPessoa, String cpfCnpj, List<Acao> acoesPermitidas, Perfil perfilSelecionado, Setor setorSelecionado) {
 	
 		this.id = id;
 		this.nome = nome;
@@ -28,6 +30,7 @@ public class UsuarioSessao implements Serializable {
 		this.cpfCnpj = cpfCnpj;
 		this.acoesPermitidas = acoesPermitidas;
 		this.perfilSelecionado = perfilSelecionado;
+		this.setorSelecionado = setorSelecionado;
 	}
 	
 	public boolean possuiPermissao(Acao acao) {
