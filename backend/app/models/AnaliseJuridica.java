@@ -326,6 +326,7 @@ public class AnaliseJuridica extends GenericModel {
 		copia.tipoResultadoAnalise = this.tipoResultadoAnalise;
 		copia.documentos = new ArrayList<>(this.documentos);
 		copia.analisesDocumentos = new ArrayList<>();
+		copia.usuarioValidacao = this.usuarioValidacao;
 		
 		for (AnaliseDocumento analiseDocumento: this.analisesDocumentos) {
 			

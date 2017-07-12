@@ -4,8 +4,13 @@ import play.db.jpa.GenericModel;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import models.portalSeguranca.Setor;
+
 import java.util.List;
 
 @Entity
@@ -18,5 +23,9 @@ public class AtividadeCnae extends GenericModel {
 	public String nome;
 
 	public String codigo;
+	
+	@ManyToOne
+	@JoinColumn(name="id_setor")
+	public Setor setor;	
 
 }

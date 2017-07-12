@@ -50,7 +50,4 @@ public class AtividadeCaracterizacao extends GenericModel {
 	@Column(name = "valor_parametro")
 	public Double valorParametro;
 	
-	@ManyToOne
-	@JoinColumn(name="id_setor")
-	public Setor setor;
 }
