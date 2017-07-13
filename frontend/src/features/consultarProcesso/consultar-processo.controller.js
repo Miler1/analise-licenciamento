@@ -14,6 +14,8 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	consultarProcesso.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	consultarProcesso.dateUtil = app.utils.DateUtil;
+	consultarProcesso.getDiasRestantes = getDiasRestantes;
+	consultarProcesso.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
 
 	function atualizarListaProcessos(processos) {
 
@@ -41,6 +43,24 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	function visualizarProcesso(processo) {
 
 		return processoService.visualizarProcesso(processo);
+	}
+
+	function getDiasRestantes(processo) {
+
+		if(processo.dataConclusaoAnaliseJuridica) {
+			return 'Concluída em ' + processo.dataConclusaoAnaliseJuridica.split(' ')[0];
+		}
+		return consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica);
+
+	}
+
+	function isPrazoMinimoAvisoAnalise(processo) {
+
+		if(processo.dataConclusaoAnaliseJuridica) {
+			return false;		
+		}
+		return consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, 
+					consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA);
 	}
 
 };

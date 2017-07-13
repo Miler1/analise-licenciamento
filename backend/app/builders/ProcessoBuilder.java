@@ -242,6 +242,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	public ProcessoBuilder groupByDataFinalAnaliseJuridica() {
+		
+		addAnaliseJuridicaAlias();
+		addProjection(Projections.groupProperty(ANALISE_JURIDICA_ALIAS+".dataFim").as("dataConclusaoAnaliseJuridica"));
+		
+		return this;
+	}
+	
 	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseJuridica(){
 		
 		addAnaliseJuridicaAlias();

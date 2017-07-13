@@ -32,10 +32,13 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
+							
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
-							td(ng-class="{'error-message': consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
-								| {{consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica)}}
+							
+							td(ng-class="{'error-message': consultarProcesso.isPrazoMinimoAvisoAnalise(processo)}")
+								| {{consultarProcesso.getDiasRestantes(processo)}}
+							
 							td(ng-class="{'error-message': processo.dataVencimentoPrazoAnaliseTecnica ? consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA) : false}")
 								| {{processo.dataVencimentoPrazoAnaliseTecnica ? consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica) : '-'}}
 							td
