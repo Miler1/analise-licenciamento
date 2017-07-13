@@ -2,8 +2,11 @@ package models.licenciamento;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+import models.portalSeguranca.TipoSetor;
 import play.db.jpa.Model;
 
 @Entity
@@ -29,5 +32,9 @@ public class TipoDocumentoLicenciamento extends Model {
 	
 	@Column(name="prefixo_nome_arquivo")
 	public String prefixoNomeArquivo;
+	
+	@Column(name="tipo_analise")
+	@Enumerated(EnumType.ORDINAL)
+	public TipoAnalise tipoAnalise;
 	
 }

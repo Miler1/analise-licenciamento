@@ -6,7 +6,7 @@ var Parecer = {
         formularios: '=',
         usuarioSessao: '='
     },
-    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, analiseLicencaService, modalSimplesService) {
+    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, analiseLicencaService, modalSimplesService, TiposAnalise) {
 
         var ctrl = this;
 
@@ -14,6 +14,7 @@ var Parecer = {
         ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
         ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
         ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
+        ctrl.tiposAnalise = TiposAnalise;
         ctrl.invalidarDocumento = invalidarDocumento;
         ctrl.invalidarEmissaoLicenca = invalidarEmissaoLicenca;
         ctrl.baixarDocumento = baixarDocumento;

@@ -27,6 +27,8 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
+import models.licenciamento.TipoAnalise;
+import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
@@ -117,11 +119,14 @@ public class AnaliseJuridica extends GenericModel {
 		boolean todosDocumentosValidados = true;
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
-			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+			if(analise.documento.tipo.tipoAnalise.equals(TipoAnalise.JURIDICA)) {
 				
-				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
-			}
-			todosDocumentosValidados &= analise.validado;
+				if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+					
+					throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
+				}
+				todosDocumentosValidados &= analise.validado;
+			}			
 		}	
 		
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO && !todosDocumentosValidados) {
@@ -136,11 +141,14 @@ public class AnaliseJuridica extends GenericModel {
 			throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
 			
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
-			
-			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+						
+			if(analise.documento.tipo.tipoAnalise.equals(TipoAnalise.JURIDICA)) {
 				
-				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
-			}
+				if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+					
+					throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
+				}
+			}					 
 		}
 	}
 	

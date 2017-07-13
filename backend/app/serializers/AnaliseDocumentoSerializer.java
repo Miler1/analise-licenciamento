@@ -12,7 +12,8 @@ public class AnaliseDocumentoSerializer {
 			"parecer",
 			"documento.id",
 			"documento.nome",
-			"documento.tipo.nome"
+			"documento.tipo.nome",
+			"documento.tipo.tipoAnalise"
 		);	
 
 }
