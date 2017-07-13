@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.TipoAnalise;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.validacaoParecer.Analisavel;
@@ -372,11 +373,14 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		boolean todosDocumentosValidados = true;
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
-			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+			if(analise.documento.tipo.tipoAnalise.equals(TipoAnalise.TECNICA)) {
 				
-				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
-			}
-			todosDocumentosValidados &= analise.validado;
+				if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+					
+					throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
+				}
+				todosDocumentosValidados &= analise.validado;
+			}										
 		}	
 		
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO && !todosDocumentosValidados) {
@@ -392,7 +396,8 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
-			if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
+			if(analise.documento.tipo.tipoAnalise.equals(TipoAnalise.TECNICA) &&
+					(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer)))) {
 				
 				throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
 			}

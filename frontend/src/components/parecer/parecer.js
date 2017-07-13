@@ -14,7 +14,6 @@ var Parecer = {
         ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
         ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
         ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
-        ctrl.tiposAnalise = TiposAnalise;
         ctrl.invalidarDocumento = invalidarDocumento;
         ctrl.invalidarEmissaoLicenca = invalidarEmissaoLicenca;
         ctrl.baixarDocumento = baixarDocumento;
@@ -22,6 +21,7 @@ var Parecer = {
         ctrl.clonarParecer = clonarParecer;
         ctrl.alterarLicenca = alterarLicenca;
         ctrl.removerDocumento = removerDocumento;
+        ctrl.tiposAnalise = TiposAnalise;
 
         ctrl.upload = function(file, invalidFile) {
 
