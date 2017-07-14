@@ -1,6 +1,6 @@
 var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $window, $location,
     analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService,
-    documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica) {
+    documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica, TiposAnalise) {
 
     $rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -16,6 +16,8 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.idAnaliseTecnica = idAnaliseTecnica;
     ctrl.formularios = {};
     ctrl.tabAtiva = 0;
+    ctrl.tiposAnalise = TiposAnalise;
+
     
     ctrl.init = function () {
 
@@ -41,8 +43,11 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
         ctrl.analiseTecnica.analisesDocumentos.forEach(function (analise) {
 
-            todosDocumentosAvaliados = todosDocumentosAvaliados && (analise.validado === true || (analise.validado === false && analise.parecer));
-            todosDocumentosValidados = todosDocumentosValidados && analise.validado;
+            if(analise.documento.tipo.tipoAnalise === ctrl.tiposAnalise.TECNICA) {
+
+                todosDocumentosAvaliados = todosDocumentosAvaliados && (analise.validado === true || (analise.validado === false && analise.parecer));
+                todosDocumentosValidados = todosDocumentosValidados && analise.validado;
+            }
         });
 
         if (ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
@@ -83,7 +88,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             '<ul>' +
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
                 '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
-                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem estar no status válido.</li>' + 
+                '<li>Para DEFERIDO, todos os documentos de validação técnica devem ter sido validados.</li>' + 
             '</ul>', { ttl: 10000 });
             return;            
         }

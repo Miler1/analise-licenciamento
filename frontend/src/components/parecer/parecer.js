@@ -6,7 +6,7 @@ var Parecer = {
         formularios: '=',
         usuarioSessao: '='
     },
-    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, modalSimplesService) {
+    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, analiseLicencaService, modalSimplesService, TiposAnalise) {
 
         var ctrl = this;
 
@@ -21,6 +21,7 @@ var Parecer = {
         ctrl.clonarParecer = clonarParecer;
         ctrl.alterarLicenca = alterarLicenca;
         ctrl.removerDocumento = removerDocumento;
+        ctrl.tiposAnalise = TiposAnalise;
 
         ctrl.upload = function(file, invalidFile) {
 

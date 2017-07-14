@@ -268,7 +268,12 @@ licenciamento.constant('config', {
 			return LICENCIAMENTO_CONFIG.configuracoes.baseURL + "/";
 	},
 	QTDE_ITENS_POR_PAGINA: 10
-}).constant('tamanhoMaximoArquivoAnaliseMB', 10);
+}).constant('tamanhoMaximoArquivoAnaliseMB', 10)
+	.constant('TiposAnalise', {
+
+		JURIDICA: 'JURIDICA',
+		TECNICA: 'TECNICA'
+	});
 
 
 function configurarPermissoes(usuarioSessao, $rootScope) {

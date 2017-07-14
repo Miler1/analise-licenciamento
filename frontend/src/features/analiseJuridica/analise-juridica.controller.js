@@ -1,5 +1,5 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService, processoService) {    
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService, processoService, TiposAnalise) {    
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
@@ -16,6 +16,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
     ctrl.documentosAnalisados = angular.copy();
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
     ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
+    ctrl.tiposAnalise = TiposAnalise;
 
     ctrl.upload = function(file, invalidFile) {
 
@@ -73,7 +74,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             '<ul>' +
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
                 '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
-                '<li>Para DEFERIDO, todos os documentos de validação técnica devem estar no status válido.</li>' + 
+                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem ter sido validados.</li>' + 
             '</ul>', { ttl: 10000 });
             return;
         }
@@ -234,10 +235,15 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         var todosDocumentosValidados = true;
         var todosDocumentosAvaliados = true;
         
-        ctrl.analisesDocumentos.forEach(function(analise){
+        ctrl.analisesDocumentos.forEach(function(analise) {
 
-            todosDocumentosAvaliados = todosDocumentosAvaliados && (analise.validado === true || (analise.validado === false && analise.parecer));
-            todosDocumentosValidados = todosDocumentosValidados && analise.validado;
+            // analise apenas os documento proprios da analise juridica
+            if(analise.documento.tipo.tipoAnalise === ctrl.tiposAnalise.JURIDICA) {
+
+                todosDocumentosAvaliados = todosDocumentosAvaliados && (analise.validado === true || (analise.validado === false && analise.parecer));
+                todosDocumentosValidados = todosDocumentosValidados && analise.validado;
+            }
+
         });
 
         if(ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
