@@ -75,6 +75,8 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void findById(Long idAnaliseTecnica) {
 	
+		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_TECNICO);
+		
 		AnaliseTecnica analise = AnaliseTecnica.findById(idAnaliseTecnica);
 		
 		renderJSON(analise, AnaliseTecnicaSerializer.findInfo);
@@ -82,6 +84,8 @@ public class AnalisesTecnicas extends InternalController {
 	}
 	
 	public void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
+		
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
 		
