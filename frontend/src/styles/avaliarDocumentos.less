@@ -1,12 +1,20 @@
 @import "variaveis.less";
 
+.btn-plain,
 .btn-plain.ativo ,
 .btn-plain:focus,
 .btn-plain:active {
     
-    box-shadow: none;
-    outline: 0;
+    box-shadow: none !important;
+    outline: none !important;
+    -webkit-box-shadow: none !important;
 }
+
+.btn-plain--desabilitado {
+
+    cursor: not-allowed;
+}
+
 
 .checked {
     

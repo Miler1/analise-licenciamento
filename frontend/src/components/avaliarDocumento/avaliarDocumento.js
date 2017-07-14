@@ -4,7 +4,9 @@ var AvaliarDocumento = {
         
         analiseDocumento: '<',
         identificador: '<',
-        invalidar: '<'
+        invalidar: '<',
+        habilitado: '<',
+        mensagemNaoHabilitado: '@'
     },
     controller: function() {
 
@@ -16,6 +18,10 @@ var AvaliarDocumento = {
         };
 
         ctrl.setValido = function(validado) {
+
+            if(!ctrl.habilitado) {
+                return;
+            }
 
             if(validado) {
 

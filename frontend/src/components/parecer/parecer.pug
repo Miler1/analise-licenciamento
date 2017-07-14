@@ -24,7 +24,7 @@ table.table.table-condensed
 
             td.col-md-9 {{analiseDocumento.documento.tipo.nome}}
             td.col-md-2.text-center
-                avaliar-documento(ng-if="analiseDocumento.documento.tipo.tipoAnalise === $ctrl.tiposAnalise.TECNICA", identificador="$index", analise-documento="analiseDocumento", invalidar="$ctrl.invalidarDocumento")
+                avaliar-documento(habilitado="analiseDocumento.documento.tipo.tipoAnalise === $ctrl.tiposAnalise.TECNICA", mensagem-nao-habilitado="Este documento já foi analisado na fase jurídica", identificador="$index", analise-documento="analiseDocumento", invalidar="$ctrl.invalidarDocumento")
             td.col-md-1.text-right
 
                 a.margin-right-xs.pointer(ng-click="$ctrl.invalidarDocumento($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo da invalidação")
