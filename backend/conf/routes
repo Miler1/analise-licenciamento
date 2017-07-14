@@ -40,10 +40,6 @@ GET		/analisesTecnicas/{idAnaliseTecnica}				AnalisesTecnicas.findById
 GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRestricoesGeo
 POST	/analisesTecnicas/validarParecer					AnalisesTecnicas.validarParecer
 
-# Caracterizacao
-
-GET		/caracterizacoes/{id}/analisesLicencas				Caracterizacoes.findAnalisesLicencas
-
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
@@ -74,7 +70,6 @@ GET		/analistas									Analistas.getAnalistaTecnico
 GET		/condicoes									Condicoes.list
 
 # Documentos
-GET		/documentos/licenciamento/{id}/download		Documentos.downloadLicenciamento
 GET		/documentos/{id}/download					Documentos.download
 
 # Ignore favicon requests

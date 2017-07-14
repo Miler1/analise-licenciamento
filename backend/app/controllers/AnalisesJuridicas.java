@@ -15,12 +15,16 @@ public class AnalisesJuridicas extends InternalController {
 	
 	public static void findDocumentosAnalisados(Long idAnaliseJuridica) {
 		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+		
 		List<AnaliseDocumento> documentos = AnaliseJuridica.findDocumentos(idAnaliseJuridica);
 		
 		renderJSON(documentos, AnaliseDocumentoSerializer.analiseJuridica);
 	}
 
 	public static void findById(Long idAnaliseJuridica) {
+		
+		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.VALIDAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_JURIDICO);
 		
 		AnaliseJuridica analise = AnaliseJuridica.findById(idAnaliseJuridica);
 		
@@ -30,6 +34,8 @@ public class AnalisesJuridicas extends InternalController {
 
 	public static void alterar(AnaliseJuridica analise) {
 		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 				
 		analiseAAlterar.update(analise);
@@ -38,6 +44,8 @@ public class AnalisesJuridicas extends InternalController {
 	}
 	
 	public static void concluir(AnaliseJuridica analise) {
+		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
@@ -52,6 +60,8 @@ public class AnalisesJuridicas extends InternalController {
 
 	public static void iniciar(AnaliseJuridica analise) {
 	
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);		
+		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
@@ -64,6 +74,8 @@ public class AnalisesJuridicas extends InternalController {
 	}
 
 	public static void findByNumeroProcesso() {
+		
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
 		
 		String numeroProcesso = getParamAsString("numeroProcesso");
 		

@@ -6,7 +6,7 @@ var Parecer = {
         formularios: '=',
         usuarioSessao: '='
     },
-    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, analiseLicencaService, modalSimplesService) {
+    controller: function(tamanhoMaximoArquivoAnaliseMB, $uibModal, mensagem, analiseTecnicaService, uploadService, documentoLicenciamentoService, documentoAnaliseService, $scope, $timeout, modalSimplesService) {
 
         var ctrl = this;
 
