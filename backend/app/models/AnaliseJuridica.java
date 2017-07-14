@@ -277,11 +277,7 @@ public class AnaliseJuridica extends GenericModel {
 		validarParecer();
 		validarAnaliseDocumentos();
 		validarResultado();						
-		
-		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());		
-		this.dataFim = c.getTime();
-		
+				
 		this._save();
 				
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
@@ -356,6 +352,11 @@ public class AnaliseJuridica extends GenericModel {
 		return copia;
 	}
 	
+	public void setDataFim(Date data) {
+
+		this.dataFim = data;		
+	}
+	
 	private abstract class TipoResultadoAnaliseChain {
 		
 		protected TipoResultadoAnaliseChain next;
@@ -408,6 +409,10 @@ public class AnaliseJuridica extends GenericModel {
 			
 			validarTipoResultadoValidacao();
 			
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());					
+			setDataFim(c.getTime());
+			
 			_save();
 			
 			if (tipoResultadoAnalise.id == tipoResultadoAnalise.INDEFERIDO) {
@@ -420,6 +425,7 @@ public class AnaliseJuridica extends GenericModel {
 				
 				AnaliseTecnica analiseTecnica = new AnaliseTecnica();
 				analiseTecnica.analise = AnaliseJuridica.this.analise;
+				
 				analiseTecnica.save();
 				
 				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecutor);
