@@ -39,6 +39,8 @@ var ModalInformacoesLicenca = {
 
 			var dadosLicenca = ctrl.resolve.dadosLicenca;
 
+			cancelarEdicoes();
+
 			dadosLicenca.condicionantes = ctrl.condicionantes;
 
 			dadosLicenca.recomendacoes = ctrl.recomendacoes;
@@ -47,6 +49,21 @@ var ModalInformacoesLicenca = {
 
 			ctrl.close({$value: dadosLicenca});
 		};
+
+		function cancelarEdicoes() {
+			
+			ctrl.recomendacoes.forEach(function(recomendacao){
+
+				recomendacao.editing = false;
+			});
+
+			ctrl.condicionantes.forEach(function(condicionante){
+
+				condicionante.editingTexto = false;
+				condicionante.editingPrazo = false;
+				
+			});			
+		}
 
 		ctrl.inserirCondicionante = function() {
 

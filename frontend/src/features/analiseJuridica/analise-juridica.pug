@@ -36,7 +36,7 @@ div(ng-init="ctrl.init()")
 
                     td.col-md-9 {{analiseDocumento.documento.tipo.nome}}
                     td.col-md-2.text-center
-                        avaliar-documento(habilitado="analiseDocumento.documento.tipo.tipoAnalise === ctrl.tiposAnalise.JURIDICA", mensagem-nao-habilitado="Este documento pertence a análise técnica",identificador="$index",analise-documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
+                        avaliar-documento(habilitado="analiseDocumento.documento.tipo.tipoAnalise === ctrl.tiposAnalise.JURIDICA", mensagem-nao-habilitado="Este documento será analisado na fase técnica",identificador="$index",analise-documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
                     td.col-md-1.text-right 
 
                         a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo da invalidação")
