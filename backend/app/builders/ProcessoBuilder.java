@@ -250,6 +250,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	public ProcessoBuilder groupByDataFinalAnaliseTecnica(boolean isLeftOuterJoin) {
+		
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
+		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".dataFim").as("dataConclusaoAnaliseTecnica"));
+		
+		return this;
+	}	
+	
 	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseJuridica(){
 		
 		addAnaliseJuridicaAlias();

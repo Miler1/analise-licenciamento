@@ -19,23 +19,23 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecultor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
 		
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;		
-		analiseTecnica.usuarioValidacao = usuarioExecultor;
+		analiseTecnica.usuarioValidacao = usuarioExecutor;
 		analiseTecnica.ativo = false;
 		
 		validarAnaliseTecnica(analiseTecnica, novaAnaliseTecnica);
 		
 		analiseTecnica._save();
 					
-		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.analistasTecnicos.get(0).usuario);
+		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.analistasTecnicos.get(0).usuario, usuarioExecutor);
 		
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO, usuarioExecultor);
+		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO, usuarioExecutor);
 	}
 
-	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista) {
+	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista, Usuario usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		
@@ -43,6 +43,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		novaAnalise.dataVencimentoPrazo = analiseTecnica.dataVencimentoPrazo;
 		novaAnalise.revisaoSolicitada = true;
 		novaAnalise.ativo = true;
+		novaAnalise.usuarioValidacao = usuarioValidacao;
 		
 		novaAnalise.analistasTecnicos = new ArrayList<>();
 		AnalistaTecnico analistaTecnico = new AnalistaTecnico(novaAnalise, usuarioAnalista);

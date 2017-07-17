@@ -45,22 +45,29 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 		return processoService.visualizarProcesso(processo);
 	}
 
-	function getDiasRestantes(processo) {
+	function getDiasRestantes(processo, dataVencimento, dataConclusao) {
 
-		if(processo.dataConclusaoAnaliseJuridica) {
-			return 'Concluída em ' + processo.dataConclusaoAnaliseJuridica.split(' ')[0];
+		if(processo[dataConclusao]) {
+			
+			return 'Concluída em ' + processo[dataConclusao].split(' ')[0];
+		
+		} else if(processo[dataVencimento]) {
+
+			return consultarProcesso.dateUtil.getDiasRestantes(processo[dataVencimento]);
+		
+		} else {
+
+			return '-';
 		}
-		return consultarProcesso.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseJuridica);
-
 	}
 
-	function isPrazoMinimoAvisoAnalise(processo) {
+	function isPrazoMinimoAvisoAnalise(processo, dataVencimento, dataConclusao, tipoAnalise) {
 
-		if(processo.dataConclusaoAnaliseJuridica) {
+		if(processo[dataConclusao]) {
 			return false;		
 		}
-		return consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, 
-					consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA);
+		return consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo[dataVencimento], 
+					consultarProcesso.PrazoMinimoAvisoAnalise[tipoAnalise]);
 	}
 
 };
