@@ -1,5 +1,8 @@
 package models.validacaoParecer;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.TipoResultadoAnalise;
@@ -20,6 +23,10 @@ public class ParecerValidadoTecnico extends TipoResultadoAnaliseChain<AnaliseTec
 		analiseTecnica.usuarioValidacao = usuarioExecultor;
 		
 		analiseTecnica.validarTipoResultadoValidacao();
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());		
+		analiseTecnica.dataFim = c.getTime();		
 		
 		analiseTecnica._save();
 		

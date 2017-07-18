@@ -313,7 +313,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return AnaliseTecnica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
 	}
 	
-	public void finalizar(AnaliseTecnica analise, Usuario usuarioExecultor) {
+	public void finalizar(AnaliseTecnica analise, Usuario usuarioExecutor) {
 		
 		this.update(analise);
 		
@@ -322,33 +322,29 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		validarAnaliseDocumentos();
 		validarResultado();						
 		
-		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());		
-		this.dataFim = c.getTime();
-		
 		this._save();
 				
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA, usuarioExecultor);
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA, usuarioExecutor);
 		
 		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA, usuarioExecultor);
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA, usuarioExecutor);
 		
 		} else {
 		
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
 		}
 	}
 	
-	public void validaParecer(AnaliseTecnica analiseTecnica, Usuario usuarioExecultor) {
+	public void validaParecer(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnico();		
 		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnico());
 		tiposResultadosAnalise.setNext(new ParecerNaoValidadoTecnico());
 		
-		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecultor);		
+		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
 
 	private void validarLicencasAnalise() {
@@ -440,6 +436,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		copia.tipoResultadoAnalise = this.tipoResultadoAnalise;
 		copia.documentos = new ArrayList<>(this.documentos);
 		copia.analisesDocumentos = new ArrayList<>();
+		copia.usuarioValidacao = this.usuarioValidacao;
 		
 		for (AnaliseDocumento analiseDocumento: this.analisesDocumentos) {
 			
