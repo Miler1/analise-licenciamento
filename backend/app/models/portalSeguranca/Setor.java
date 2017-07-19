@@ -1,5 +1,7 @@
 package models.portalSeguranca;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,6 +35,13 @@ public class Setor extends GenericModel {
 	
 	@Column(name="tipo_setor")
 	@Enumerated(EnumType.ORDINAL)
-	public TipoSetor tipoSetor;		
+	public TipoSetor tipoSetor;
+	
+	public List<Setor> getSetoresFilhos() {
+		
+		List<Setor> setoresFilhos = Setor.find("bySetorPai", this.id).fetch();
+		
+		return setoresFilhos;
+	}
 
 }
