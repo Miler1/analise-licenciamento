@@ -72,4 +72,14 @@ public class Condicionante extends GenericModel implements Identificavel {
 		
 		this.save();
 	}
+	
+	public Condicionante gerarCopia() {
+		
+		Condicionante copia = new Condicionante();
+		copia.texto = this.texto;
+		copia.prazo = this.prazo;
+		copia.ordem = this.ordem;
+		
+		return copia;
+	}
 }

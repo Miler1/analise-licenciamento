@@ -248,6 +248,19 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 		
 	}
+	
+	public void updateLicencasAnalise() {
+		
+		if(this.licencasAnalise == null) {
+			return;
+		}
+		
+		for(LicencaAnalise licencaAnalise : this.licencasAnalise) {
+			
+			
+		}
+		
+	}
 
 	private void updateLicencasAnalise(List<LicencaAnalise> novasLicencasAnalise) {
 		
@@ -454,6 +467,16 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			copiaAnalistaTec.analiseTecnica = copia;
 			copia.analistasTecnicos.add(copiaAnalistaTec);
 		}
+		
+		copia.licencasAnalise = new ArrayList<>();
+		for (LicencaAnalise licenca : this.licencasAnalise) {
+			
+			LicencaAnalise copiaLicencaAnalise = licenca.gerarCopia();
+			
+			copiaLicencaAnalise.analiseTecnica = copia;
+			copia.licencasAnalise.add(copiaLicencaAnalise);				
+		}
+		
 		
 		return copia;
 	}	

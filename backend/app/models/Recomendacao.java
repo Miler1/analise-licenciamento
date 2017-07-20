@@ -68,4 +68,13 @@ public class Recomendacao extends GenericModel implements Identificavel {
 		
 		this.save();
 	}
+	
+	public Recomendacao gerarCopia() {
+		
+		Recomendacao copia = new Recomendacao();
+		copia.texto = this.texto;
+		copia.ordem = this.ordem;
+		
+		return copia;
+	}
 }

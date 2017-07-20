@@ -194,4 +194,60 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		return this.id;
 	}
+	
+	public LicencaAnalise gerarCopia() {
+		
+		LicencaAnalise copia = new LicencaAnalise();
+		copia.validade = this.validade;
+		copia.analiseTecnica = this.analiseTecnica;
+		copia.caracterizacao = this.caracterizacao;
+		copia.observacao = this.observacao;
+		copia.emitir = this.emitir;
+				
+		copia.condicionantes = new ArrayList<Condicionante>();
+		for(Condicionante condicionante : this.condicionantes) {
+			
+			Condicionante copiaCondicionante = condicionante.gerarCopia();
+			copiaCondicionante.licencaAnalise = copia;
+			copia.condicionantes.add(copiaCondicionante);						
+		}
+		
+		copia.recomendacoes = new ArrayList<Recomendacao>();
+		for(Recomendacao recomendacao : this.recomendacoes) {
+			
+			Recomendacao copiaRecomendacao = recomendacao.gerarCopia();
+			copiaRecomendacao.licencaAnalise = copia;
+			copia.recomendacoes.add(copiaRecomendacao);						
+		}			
+		
+		return copia;
+		
+	}
+
+	public void saveCondicionantes() {
+		
+		if(this.condicionantes == null) {
+			return;
+		}
+		
+		for(Condicionante condicionante : this.condicionantes) {			
+			
+			condicionante.licencaAnalise = this;
+			condicionante.save();			
+		}					
+	}
+	
+	public void saveRecomendacoes() {
+		
+		if(this.recomendacoes == null) {
+			return;
+		}
+		
+		for(Recomendacao recomendacao : this.recomendacoes) {
+			
+			recomendacao.licencaAnalise = this;
+			recomendacao.save();			
+		}					
+	}
+	
 }
