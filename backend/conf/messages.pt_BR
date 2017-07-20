@@ -69,4 +69,8 @@ ANALISE_TECNICA_INICIADA_SUCESSO=Análise técnica iniciada.
 ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO=A validade da licença está maior que o máximo permitido.
 ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO=A validade da condicionante está maior que o máximo permitido.
 ANALISE_TECNICA_LICENCA_SEM_VALIDACAO=As licenças não foram todas validadas.
- 
+
+#
+# Setor
+#
+SETOR_NAO_ENCONTRADO=Setor não encontrado.

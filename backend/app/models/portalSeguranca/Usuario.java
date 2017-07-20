@@ -2,7 +2,6 @@ package models.portalSeguranca;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -13,9 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -64,13 +62,9 @@ public class Usuario extends GenericModel  {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_pessoa", referencedColumnName = "id_pessoa")
 	public PessoaFisica pessoa;
-
-	@Required(message="usuarios.validacao.perfil.req")
-	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinTable(schema = "portal_seguranca", name = "perfil_usuario",
-	joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"),
-	inverseJoinColumns = @JoinColumn(name = "id_perfil", referencedColumnName = "id"))
-	public Set<Perfil> perfis;
+	
+	@OneToMany(mappedBy="usuario", orphanRemoval = true)
+	public List<PerfilUsuario> perfisUsuario;	
 	
 	@Transient
 	public Perfil perfilSelecionado;
@@ -99,14 +93,14 @@ public class Usuario extends GenericModel  {
 	
 	public static List<Usuario> getUsuariosByPerfil(Integer idPerfil) {
 		
-		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfis p WHERE p.id = ?", idPerfil).fetch();
+		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p WHERE p.id = ?", idPerfil).fetch();
 	}
 	
 	public boolean hasPerfil(Integer idPerfil){
 		
-		for (Perfil perfil: perfis) {
+		for (PerfilUsuario perfilUsuario : perfisUsuario) {
 			
-			if (perfil.id.equals(idPerfil)){
+			if (perfilUsuario.perfil.id.equals(idPerfil)) {
 				return true;
 			}
 		}

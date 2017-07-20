@@ -39,6 +39,13 @@ public class Setor extends GenericModel {
 	
 	@Column(name="tipo_setor")
 	@Enumerated(EnumType.ORDINAL)
-	public TipoSetor tipoSetor;		
+	public TipoSetor tipoSetor;
+	
+	public List<Setor> getSetoresFilhos() {
+		
+		List<Setor> setoresFilhos = Setor.find("bySetorPai", this.id).fetch();
+		
+		return setoresFilhos;
+	}
 
 }

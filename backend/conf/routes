@@ -72,6 +72,9 @@ GET		/condicoes									Condicoes.list
 # Documentos
 GET		/documentos/{id}/download					Documentos.download
 
+# Setores
+GET		/setores/setoresFilhos						Setores.getSetoresFilhos
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
