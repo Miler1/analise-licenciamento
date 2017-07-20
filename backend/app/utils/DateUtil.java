@@ -66,9 +66,14 @@ public class DateUtil {
 	public static String getDiferencaEmDiasHorasMinutos(Date inicial, Date fim) {
 	
 		Long diferenca = getDiferencaEmMilisegundos(inicial, fim);
+		Long diasDiferenca = TimeUnit.MILLISECONDS.toDays(diferenca);
+		
+		//Transforma a diferença de dias em positivo
+		if(diasDiferenca < 0)
+			diasDiferenca = diasDiferenca * -1;
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(TimeUnit.MILLISECONDS.toDays(diferenca) + " dias, ");
+		sb.append(diasDiferenca + " dias, ");
 		sb.append(String.format("%02d", TimeUnit.MILLISECONDS.toHours(diferenca) % TimeUnit.DAYS.toHours(1)) + ":");
 		sb.append(String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(diferenca) % TimeUnit.HOURS.toMinutes(1)) + "h");
 		
