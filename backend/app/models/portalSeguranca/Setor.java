@@ -1,11 +1,15 @@
 package models.portalSeguranca;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,9 +31,11 @@ public class Setor extends GenericModel {
 	@JoinColumn(name="id_setor_pai")
 	public Setor setorPai;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_perfil", nullable = true)
-	public Perfil perfil;
+	@ManyToMany
+	@JoinTable(schema = "portal_seguranca", name = "perfil_setor",
+			joinColumns = @JoinColumn(name = "id_setor"),
+			inverseJoinColumns = @JoinColumn(name = "id_perfil"))
+	public List<Perfil> perfis;
 	
 	@Column(name="tipo_setor")
 	@Enumerated(EnumType.ORDINAL)
