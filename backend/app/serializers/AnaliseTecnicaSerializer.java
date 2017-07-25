@@ -1,6 +1,9 @@
 package serializers;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import utils.SerializerUtil;
+import utils.flexjson.GeometryTransformer;
 import flexjson.JSONSerializer;
 
 public class AnaliseTecnicaSerializer {
@@ -17,6 +20,7 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.empreendimento.denominacao",
 			"analise.processo.empreendimento.municipio.nome",
 			"analise.processo.empreendimento.municipio.estado.codigo",
+			"analise.processo.empreendimento.municipio.limite",
 			"analise.processo.empreendimento.imovel.codigo",
 			"analise.processo.empreendimento.imovel.nome",
 			"analise.processo.empreendimento.imovel.municipio.nome",
@@ -80,7 +84,7 @@ public class AnaliseTecnicaSerializer {
 			"analistasTecnicos.usuario.pessoa.id",
 			"analistasTecnicos.usuario.pessoa.nome"
 			
-		);
+		).transform(new GeometryTransformer(), Geometry.class);
 
 		public static JSONSerializer parecer = SerializerUtil.create(
 		

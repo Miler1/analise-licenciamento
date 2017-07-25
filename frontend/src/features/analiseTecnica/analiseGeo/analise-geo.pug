@@ -29,6 +29,7 @@ div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.
 									tr(ng-repeat='(key, layer) in meusDados.getLayers()')
 										td.col-md-11(ng-if='layer.feature.id === "meu-imovel"') Minha área do imóvel
 										td.col-md-11(ng-if='layer.feature.id === "meu-empreendimento"') Meu empreendimento
+										td.col-md-11(ng-if='layer.feature.id === "municipio-empreendimento"') Município do empreendimento
 										td.col-md-1.text-right
 											i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
 											i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')

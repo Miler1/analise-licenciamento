@@ -77,6 +77,11 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 	var funcaoAnterior;
 	$scope.visualizarLayer = function(layer, color){
 
+		if(!color && layer.options){
+
+			color = layer.options.color;
+		}
+
 		funcaoAnterior = piscarFeature.bind(this, layer, color);
 
 		mapa.on('moveend', funcaoAnterior);
@@ -207,6 +212,31 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 
 	};
 
+	var estiloPoligono = {
+		color: colors.pop(),
+		opacity: 1,
+		weight: 3,
+		fillOpacity: 0.1
+	};
+
+	var inserirGeometriaMunicipio = function(geo, mapa) {
+
+		if(geo && mapa) {
+
+			var objectGeo = JSON.parse(geo);
+
+			var layer = L.geoJson({
+				'type': 'Feature',
+				'id': 'municipio-empreendimento',
+				'geometry': objectGeo
+			}, estiloPoligono);
+
+			$scope.municipioGeormetria = layer.getLayers()[0];
+
+		}
+
+	};
+
 	this.init = function(restricoes, analiseTecnica) {
 
 		$scope.analiseTecnica = analiseTecnica;
@@ -240,7 +270,7 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 				localization: 'pt_BR'
 			});
 
-			mapa.addControl(measure);
+			mapa.addControl(measure);			
 
 			var restricoesGeoJson = L.geoJSON(restricoes);
 
@@ -266,6 +296,17 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 				layerControle.addLayer(layer);
 
 			});
+
+			if ($scope.analiseTecnica.analise.processo.empreendimento &&
+				!$scope.analiseTecnica.analise.processo.empreendimento.imovel &&
+				$scope.analiseTecnica.analise.processo.empreendimento.municipio.limite) {
+
+				inserirGeometriaMunicipio($scope.analiseTecnica.analise.processo.empreendimento.municipio.limite, mapa);
+
+				meusDados.addLayer($scope.municipioGeormetria);
+
+				mapa.flyToBounds($scope.municipioGeormetria.getBounds());
+			}
 
 		});
 
