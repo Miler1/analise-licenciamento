@@ -1,9 +1,9 @@
 var AnalistaService = function(request, config) {
 
-	this.getAnalistasTecnicos = function() {
+	this.getAnalistasTecnicos = function(idProcesso) {
 
 		return request
-			.get(config.BASE_URL() + "analistas");
+			.get(config.BASE_URL() + "analistas/" + idProcesso);
 	};
 
     this.vincularAnaliseAnalistaTecnico = function(idAnalista, idsProcessos) {
