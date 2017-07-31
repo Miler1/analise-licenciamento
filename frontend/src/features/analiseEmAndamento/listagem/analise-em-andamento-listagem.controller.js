@@ -6,7 +6,8 @@ var AnaliseEmAndamentoListagemController = function() {
 	analiseEmAndamentoListagem.disabledFields = [
 		app.DISABLED_FILTER_FIELDS.SITUACAO,
 		app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO,
-		app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO
+		app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO,
+		app.DISABLED_FILTER_FIELDS.GERENCIA
 	];    
 };
 

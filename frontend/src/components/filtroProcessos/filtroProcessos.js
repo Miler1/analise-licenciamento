@@ -13,7 +13,7 @@ var FiltroProcessos = {
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
-		atividadeService, $scope, condicaoService, $rootScope, analistaService) {
+		atividadeService, $scope, condicaoService, $rootScope, analistaService, setorService) {
 
 		var ctrl = this;
 
@@ -25,6 +25,7 @@ var FiltroProcessos = {
 		ctrl.atividades = [];
 		ctrl.analistasTecnicos = [];
 		ctrl.condicoes = [];
+		ctrl.setores = [];
 
 		ctrl.maxDataInicio = new Date();
 
@@ -152,6 +153,18 @@ var FiltroProcessos = {
 					})
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de situações.');
+					});
+			}
+
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.GERENCIA)){
+
+				setorService.getSetoresFilhos()
+					.then(function(response){
+
+						ctrl.setores = response.data;
+					})
+					.catch(function(){
+						mensagem.warning('Não foi possível obter a lista de setores.');
 					});
 			}
 
