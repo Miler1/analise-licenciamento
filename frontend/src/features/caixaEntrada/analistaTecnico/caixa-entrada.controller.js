@@ -16,6 +16,7 @@ var CxEntAnalistaTecnicoController = function($scope, config, $location, analise
 	cxEntAnalistaTecnico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntAnalistaTecnico.dateUtil = app.utils.DateUtil;
+	cxEntAnalistaTecnico.disabledFields = _.concat(app.DISABLED_FILTER_FIELDS.GERENCIA);
 
 	function atualizarListaProcessos(processos) {
 

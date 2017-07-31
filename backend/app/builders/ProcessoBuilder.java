@@ -1,6 +1,7 @@
 package builders;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
@@ -32,6 +33,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String CONSULTOR_JURIDICO_ALIAS = "coj";
 	private static final String ANALISE_TECNICA_ALIAS = "ant";
 	private static final String ANALISTA_TECNICO_ALIAS = "att";
+	private static final String ATIVIDADE_CNAE_ALIAS = "atvc";
 	
 	public ProcessoBuilder addEmpreendimentoAlias() {
 		
@@ -108,6 +110,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	
 	public ProcessoBuilder addTipologiaAtividadeAlias() {
 		
 		addAtividadeAlias();
@@ -166,6 +169,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		return this;
 	}	
+	
+	public ProcessoBuilder addAtividadeCnaeAlias() {
+		
+		addAtividadeCaracterizacaoAlias();
+		
+		addAlias(ATIVIDADE_CARACTERIZACAO_ALIAS+".atividadeCnae", ATIVIDADE_CNAE_ALIAS);
+		
+		return this;
+	}
 	
 	public ProcessoBuilder comTiposLicencas(){
 		
@@ -447,6 +459,28 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;		
 	}
 	
+	public ProcessoBuilder filtrarPorIdSetor(Integer idSetor) {
+		
+		if (idSetor != null) {
+			
+			addAtividadeCnaeAlias();
+			addRestricton(Restrictions.eq(ATIVIDADE_CNAE_ALIAS+".setor.id", idSetor));
+		}
+		
+		return this;
+	}
+	
+	public ProcessoBuilder filtrarPorIdsSetores(List<Integer> idsSetores) {
+		
+		if (idsSetores != null) {
+			
+			addAtividadeCnaeAlias();
+			addRestricton(Restrictions.in(ATIVIDADE_CNAE_ALIAS+".setor.id", idsSetores));
+		}
+		
+		return this;
+	}	
+	
 	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
 		
 		addOrder(Order.asc("dataVencimentoPrazoAnaliseJuridica"));
@@ -485,6 +519,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public boolean isAnaliseTecnica;
 		public boolean isAnaliseTecnicaOpcional;
 		public Long idAnalistaTecnico;
+		public Integer idSetor;
 		
 		public FiltroProcesso() {
 			

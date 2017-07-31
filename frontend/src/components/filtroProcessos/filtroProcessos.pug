@@ -35,6 +35,13 @@ div(uib-accordion class="accordion")
                                     ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades | orderBy:'nome' track by atividade.id")
                     option(value="") Selecione a atividade do empreendimento
 
+        .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.GERENCIA)")
+            .col-md-12
+                label.control-label Gerência:
+                select.form-control(ng-model="$ctrl.filtro.idSetor", name="selectGerencia",
+                                    ng-options="setor.id as setor.nome for setor in $ctrl.setores | orderBy:'nome' track by setor.id")
+                    option(value="") Selecione a gerência
+
         .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_TECNICO)")
             .col-md-12
                 label.control-label Analista técnico:

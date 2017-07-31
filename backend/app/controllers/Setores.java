@@ -9,6 +9,7 @@ import models.portalSeguranca.Usuario;
 import play.db.jpa.JPABase;
 import security.Acao;
 import security.UsuarioSessao;
+import serializers.SetoresSerializer;
 import utils.Mensagem;
 
 public class Setores extends InternalController {
@@ -17,10 +18,9 @@ public class Setores extends InternalController {
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();		
 		
-		Setor setorPai = Setor.findById(usuarioExecutor.setorSelecionado.id);
+		Setor setorPai = Setor.findById(usuarioSessao.setorSelecionado.id);
 		
 		if (setorPai == null) {
 			throw new AppException(Mensagem.SETOR_NAO_ENCONTRADO);
@@ -28,6 +28,6 @@ public class Setores extends InternalController {
 		
 		List<Setor> setoresFilhos = setorPai.getSetoresFilhos();
 		
-		renderJSON(setoresFilhos);
+		renderJSON(setoresFilhos, SetoresSerializer.getSetoresFilhos);
 	}
 }
