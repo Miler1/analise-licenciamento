@@ -10,13 +10,13 @@ import security.UsuarioSessao;
 import serializers.UsuarioSerializer;
 import utils.Mensagem;
 
-public class Analistas extends InternalController {
+public class GerentesTecnicos extends InternalController {
 
-	public static  void vincularAnaliseAnalistaTecnico(Long idUsuario, Long... idsProcesso) {
+	public static void vincularAnaliseGerenteTecnico(Long idUsuario, Long... idsProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		Usuario analista = Usuario.findById(idUsuario);				
+		Usuario gerente = Usuario.findById(idUsuario);				
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
 		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);
 		
@@ -24,21 +24,20 @@ public class Analistas extends InternalController {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
-			processo.vincularAnalista(analista, usuarioExecultor);
+			processo.vincularGerenteTecnico(gerente, usuarioExecultor);
 			
 		}
 		
-		renderMensagem(Mensagem.ANALISTA_VINCULADO_SUCESSO);
-		
+		renderMensagem(Mensagem.GERENTE_VINCULADO_SUCESSO);		
 	}
 	
-	public static void getAnalistaTecnico() {
+	public static void getGerenteTecnico() {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
+		List<Usuario> gerentes = Usuario.getUsuariosByPerfil(Perfil.GERENTE_TECNICO);
 		
-		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(gerentes, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 	
 }

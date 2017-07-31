@@ -38,7 +38,7 @@ public class Consultores extends InternalController {
 		
 		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.CONSULTOR_JURIDICO);
 		
-		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 	
 }
