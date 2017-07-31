@@ -315,7 +315,8 @@ utils.services(licenciamento)
 	.add('uploadService', services.UploadService)
 	.add('imovelService', services.ImovelService)
 	.add('analistaService', services.AnalistaService)
-	.add('analiseTecnicaService', services.AnaliseTecnicaService);
+	.add('analiseTecnicaService', services.AnaliseTecnicaService)
+	.add('setorService', services.SetorService);
 
 
 utils.filters(licenciamento)

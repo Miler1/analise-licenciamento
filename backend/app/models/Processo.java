@@ -42,6 +42,7 @@ import security.InterfaceTramitavel;
 import security.UsuarioSessao;
 import utils.Configuracoes;
 import utils.DateUtil;
+import utils.ListUtil;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -140,7 +141,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 
-	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, Long idUsuarioLogado) {
+	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
 		
 		ProcessoBuilder processoBuilder = new ProcessoBuilder()
 			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
@@ -152,9 +153,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
 			
 				
-		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, idUsuarioLogado);
+		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, usuarioSessao.id);
 		
-		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, idUsuarioLogado);
+		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, usuarioSessao);
 		
 		return processoBuilder;
 	}
@@ -187,28 +188,31 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 	
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
-			Long idUsuarioLogado) {
+			UsuarioSessao usuarioSessao) {
 		
 		if (!filtro.isAnaliseTecnica) {
 			
 			return;
 		}
 		
-		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);		
-		
-		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario){
-			
-		}
+		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
+		processoBuilder.filtrarPorIdSetor(filtro.idSetor);
 		
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
 				(filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) || 
 						filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA))) {
 			
-			processoBuilder.filtrarPorIdAnalistaTecnico(idUsuarioLogado, filtro.isAnaliseTecnicaOpcional);
+			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, filtro.isAnaliseTecnicaOpcional);
 			
 		} else {
 			
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);			
+		}
+		
+		if (filtro.idSetor == null && filtro.idCondicaoTramitacao != null && 
+			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA)) {
+			
+			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresFilhos());			
 		}
 		
 		//if (filtro.idCondicaoTramitacao != null && 
@@ -222,7 +226,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
 		
 		
-		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao.id)
+		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.comTiposLicencas()
 			.groupByIdProcesso()
 			.groupByNumeroProcesso()
@@ -274,7 +278,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public static Long countWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
 		
-		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao.id)
+		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.addPessoaEmpreendimentoAlias()
 			.addEstadoEmpreendimentoAlias()
 			.addAnaliseAlias()
