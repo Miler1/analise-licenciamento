@@ -38,11 +38,8 @@ public class Analistas extends InternalController {
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
 		Processo processo = Processo.findById(idProcesso);
-		Caracterizacao caracterizacao = Caracterizacao.findById(processo.caracterizacoes.get(0).id);
 		
-		
-		//List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
-		List<Usuario> consultores = Usuario.getUsuariosBySetor(caracterizacao.atividadeCaracterizacao.atividadeCnae.setor.id);
+		List<Usuario> consultores = Usuario.getUsuariosBySetor(processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.setor.id);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);
 	}
