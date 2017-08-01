@@ -77,7 +77,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 		modalInstance.result
 			.then(function (result) {
 
-				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
+				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.justificativa, result.idsProcessosSelecionados)
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
@@ -106,6 +106,9 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 				consultores: getAnalistas,
 				tipo: function() {
 					return 'analista técnico';
+				},
+				justificationEnabled: function(){
+					return true;
 				}
 			}
 		});
