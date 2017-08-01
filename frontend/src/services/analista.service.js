@@ -11,11 +11,12 @@ var AnalistaService = function(request, config) {
 			.get(config.BASE_URL() + "analistas" );
 	};
 
-    this.vincularAnaliseAnalistaTecnico = function(idAnalista, idsProcessos) {
+    this.vincularAnaliseAnalistaTecnico = function(idAnalista, justificativaCoordenador, idsProcessos) {
 
         return request
 			.postAsUrlEncoded(config.BASE_URL() + "analistas/vincular",{
                 idUsuario: idAnalista,
+                justificativaCoordenador: justificativaCoordenador,
                 idsProcesso: idsProcessos
             });
     };

@@ -14,9 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import exceptions.AppException;
 import exceptions.PermissaoNegadaException;
-import exceptions.ValidacaoException;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
@@ -24,10 +22,10 @@ import play.db.jpa.GenericModel;
 import utils.Mensagem;
 
 @Entity
-@Table(schema="analise", name="analista_tecnico")
-public class AnalistaTecnico extends GenericModel {
+@Table(schema="analise", name="gerente_tecnico")
+public class GerenteTecnico extends GenericModel {
 	
-	public static final String SEQ = "analise.analista_tecnico_id_seq";
+	public static final String SEQ = "analise.gerente_tecnico_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -49,11 +47,11 @@ public class AnalistaTecnico extends GenericModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
 	
-	public AnalistaTecnico() {
+	public GerenteTecnico() {
 		
 	}
 	
-	public AnalistaTecnico(AnaliseTecnica analiseTecnica, Usuario usuario) {
+	public GerenteTecnico(AnaliseTecnica analiseTecnica, Usuario usuario) {
 		
 		super();
 		this.analiseTecnica = analiseTecnica;
@@ -62,33 +60,19 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}	
 	
-	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica, Usuario usuarioExecutor, String justificativaCoordenador) {
+	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica) {
 		
-		if (!usuario.hasPerfil(Perfil.ANALISTA_TECNICO))
-			throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);
+		if (!usuario.hasPerfil(Perfil.GERENTE_TECNICO))
+			throw new PermissaoNegadaException(Mensagem.GERENTE_DIFERENTE_DE_GERENTE_TECNICO);		
 		
-		/**
-		 * A justificativa é somente obrigatória para o coordenador que vincula uma analista técnico
-		 */
-		if (usuarioExecutor.perfilSelecionado.id.equals(Perfil.COORDENADOR_TECNICO)) {
-			
-			if (justificativaCoordenador == null || justificativaCoordenador.isEmpty()){
-				throw new ValidacaoException(Mensagem.ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA);
-			}
-			
-			analiseTecnica.justificativaCoordenador = justificativaCoordenador;
-		}
+		GerenteTecnico gerenteTecnico = new GerenteTecnico(analiseTecnica, usuario);
+		gerenteTecnico.save();
 		
-		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
-		analistaTecnico.save();
-		
-		analiseTecnica.usuarioValidacao = usuarioExecutor;
-		analiseTecnica._save();		
 	}
 	
-	public AnalistaTecnico gerarCopia() {
+	public GerenteTecnico gerarCopia() {
 		
-		AnalistaTecnico copia = new AnalistaTecnico();
+		GerenteTecnico copia = new GerenteTecnico();
 		
 		copia.usuario = this.usuario;
 		copia.dataVinculacao = this.dataVinculacao;

@@ -14,7 +14,7 @@ import utils.Mensagem;
 
 public class Analistas extends InternalController {
 
-	public static  void vincularAnaliseAnalistaTecnico(Long idUsuario, Long... idsProcesso) {
+	public static  void vincularAnaliseAnalistaTecnico(Long idUsuario, String justificativaCoordenador, Long... idsProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
@@ -26,7 +26,7 @@ public class Analistas extends InternalController {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
-			processo.vincularAnalista(analista, usuarioExecultor);
+			processo.vincularAnalista(analista, usuarioExecultor, justificativaCoordenador);
 			
 		}
 		
@@ -42,7 +42,7 @@ public class Analistas extends InternalController {
 		
 		List<Usuario> consultores = Usuario.getUsuariosBySetor(processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.setor.id);
 		
-		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 	
 	public static void getAnalistaTecnicoPerfil() {
