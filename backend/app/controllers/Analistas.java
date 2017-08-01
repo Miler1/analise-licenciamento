@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Processo;
+import models.licenciamento.Caracterizacao;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import security.Acao;
@@ -32,11 +33,13 @@ public class Analistas extends InternalController {
 		
 	}
 	
-	public static void getAnalistaTecnico() {
+	public static void getAnalistaTecnico(Long idProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
+		Processo processo = Processo.findById(idProcesso);
+		
+		List<Usuario> consultores = Usuario.getUsuariosBySetor(processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.setor.id);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);
 	}

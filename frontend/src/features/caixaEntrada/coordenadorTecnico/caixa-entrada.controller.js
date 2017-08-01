@@ -103,7 +103,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 				processos: function () {
 					return processos;
 				},
-				consultores: getAnalistas,
+				consultores: getAnalistas(processos[0].idProcesso),
 				tipo: function() {
 					return 'analista técnico';
 				},
@@ -116,9 +116,9 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 		return modalInstance;
 	}
 
-	function getAnalistas() {
+	function getAnalistas(idProcesso) {
 
-		return analistaService.getAnalistasTecnicos();
+		return analistaService.getAnalistasTecnicos(idProcesso);
 	}
 
 	function visualizarProcesso(processo) {
