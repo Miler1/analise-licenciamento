@@ -33,6 +33,7 @@ public class Perfil extends GenericModel {
 	public static final String CAMINHO_TEMP = Play.applicationPath + "/tmp/";
 	public static final String PATH_PERFIS = Play.configuration.getProperty("application.diretorioGravarImagens.perfis") + "/";
 	public static final Integer CONSULTOR_JURIDICO = 5;
+	public static final Integer COORDENADOR_TECNICO = 6;
 	public static final Integer ANALISTA_TECNICO = 8;
 	private static final Integer ID_EXTERNO = 2;
 

@@ -1,9 +1,10 @@
-var ModalVincularConsultorController = function ($uibModalInstance, mensagem, processos, consultores, $scope, tipo) {
+var ModalVincularConsultorController = function ($uibModalInstance, mensagem, processos, consultores, $scope, tipo, justificationEnabled) {
 
 	var modalCtrl = this;
 
 	modalCtrl.processos = processos;
 	modalCtrl.tipo = tipo;
+	modalCtrl.justificationEnabled = justificationEnabled;
 
 	if (consultores){
 
@@ -20,10 +21,17 @@ var ModalVincularConsultorController = function ($uibModalInstance, mensagem, pr
 			return processo.idProcesso;
 		});
 
-		$uibModalInstance.close({
+		var response = {
 			idConsultorSelecionado: modalCtrl.idConsultorSelecionado, 
 			idsProcessosSelecionados: idsProcessosSelecionados
-		});
+		};
+
+		if (modalCtrl.justificationEnabled) {
+
+			response.justificativa = modalCtrl.justificativa;
+		}
+
+		$uibModalInstance.close(response);
 	};
 
 	modalCtrl.cancelar = function () {
