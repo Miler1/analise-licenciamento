@@ -22,7 +22,8 @@ caixasEntrada
 	.controller('cxEntCoordenadorTecnicoController', controllers.CxEntCoordenadorTecnicoController)
 	.controller('modalVincularConsultorController', controllers.ModalVincularConsultorController)
 	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController)
-	.controller('cxEntAnalistaTecnicoController', controllers.CxEntAnalistaTecnicoController);
+	.controller('cxEntAnalistaTecnicoController', controllers.CxEntAnalistaTecnicoController)
+	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteTecnicoController);
 
 caixasEntrada
 	.component('filtroProcessos', directives.FiltroProcessos);
