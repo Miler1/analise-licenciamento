@@ -65,6 +65,8 @@ GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
 # Analistas
 POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
 GET		/analistas/{idProcesso}						Analistas.getAnalistaTecnico
+GET		/analistas					                Analistas.getAnalistaTecnicoPerfil
+GET     /analistas                                  Analistas.getAnalistaTecnicoPerfilSetores
 
 # Condições
 GET		/condicoes									Condicoes.list

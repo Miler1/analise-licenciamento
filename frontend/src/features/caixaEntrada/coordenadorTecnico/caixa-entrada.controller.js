@@ -115,7 +115,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function getAnalistas(idProcesso) {
 
-		return analistaService.getAnalistasTecnicos(idProcesso);
+		return analistaService.getAnalistasTecnicosModal(idProcesso);
 	}
 
 	function visualizarProcesso(processo) {

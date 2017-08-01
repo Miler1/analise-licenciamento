@@ -101,6 +101,11 @@ public class Usuario extends GenericModel  {
 		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.setor s where s.id = ? ", idSetor).fetch();
 	}
 	
+	public static List<Usuario> getUsuariosByPerfilSetores(Integer idPerfil, List<Integer> idsSetores) {
+		
+		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = ? and s.id in ?", idPerfil, idsSetores).fetch();
+	}
+	
 	public boolean hasPerfil(Integer idPerfil){
 		
 		for (PerfilUsuario perfilUsuario : perfisUsuario) {
