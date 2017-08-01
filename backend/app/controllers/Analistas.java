@@ -41,7 +41,7 @@ public class Analistas extends InternalController {
 		
 		List<Usuario> consultores = Usuario.getUsuariosBySetor(processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.setor.id);
 		
-		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 	
 }

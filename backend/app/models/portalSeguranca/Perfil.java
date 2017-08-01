@@ -35,6 +35,7 @@ public class Perfil extends GenericModel {
 	public static final Integer CONSULTOR_JURIDICO = 5;
 	public static final Integer COORDENADOR_TECNICO = 6;
 	public static final Integer ANALISTA_TECNICO = 8;
+	public static final Integer GERENTE_TECNICO = 7;
 	private static final Integer ID_EXTERNO = 2;
 
 	@Id
