@@ -6,6 +6,7 @@ import models.Processo;
 import models.licenciamento.Caracterizacao;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
+import play.db.jpa.JPABase;
 import security.Acao;
 import security.UsuarioSessao;
 import serializers.UsuarioSerializer;
@@ -43,5 +44,30 @@ public class Analistas extends InternalController {
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
+	
+	public static void getAnalistaTecnicoPerfil() {
+		
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		
+		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
+		
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);		
+		
+	}
+	
+	public static void getAnalistaTecnicoPerfilSetores() {
+		
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+
+		List<Integer> idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresFilhos();
+		
+		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
+		
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);		
+		
+	}
+	
 	
 }
