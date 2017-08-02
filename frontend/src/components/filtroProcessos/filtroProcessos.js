@@ -133,15 +133,27 @@ var FiltroProcessos = {
 				});
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
+				if(ctrl.isAnaliseTecnicaOpcional){
+					analistaService.getAnalistasTecnicos()
+						.then(function(response){
 
-				analistaService.getAnalistasTecnicos()
-					.then(function(response){
+							ctrl.analistasTecnicos = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+						});
+				}
+				else{
+					analistaService.getAnalistasTecnicosByPerfil()
+						.then(function(response){
 
-						ctrl.analistasTecnicos = response.data;
-					})
-					.catch(function(){
-						mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
-					});
+							ctrl.analistasTecnicos = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+						});
+
+				}
 			}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {

@@ -51,7 +51,7 @@ public class Analistas extends InternalController {
 		
 		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
 		
-		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);		
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);		
 		
 	}
 	
@@ -65,7 +65,7 @@ public class Analistas extends InternalController {
 		
 		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
 		
-		renderJSON(consultores, UsuarioSerializer.getConsultoresEAnalistas);		
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);		
 		
 	}
 	
