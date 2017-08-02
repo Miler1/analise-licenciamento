@@ -41,4 +41,13 @@ public class Analistas extends InternalController {
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 	
+	public static void getAnalistaTecnicoBySetor(Integer idSetor) {
+		
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		
+		List<Usuario> analistas = Usuario.getUsuariosBySetor(idSetor);
+		
+		renderJSON(analistas, UsuarioSerializer.getConsultoresAnalistasGerentes);
+	}	
+	
 }

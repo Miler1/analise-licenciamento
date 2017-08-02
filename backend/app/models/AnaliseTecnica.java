@@ -115,6 +115,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
 	public List<ParecerTecnicoRestricao> pareceresTecnicosRestricoes;	
 	
+	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
+	public List<GerenteTecnico> gerentesTecnicos;
+	
 	private void validarParecer() {
 		
 		if(StringUtils.isBlank(this.parecer)) 
