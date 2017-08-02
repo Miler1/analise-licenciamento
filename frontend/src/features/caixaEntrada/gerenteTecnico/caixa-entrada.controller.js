@@ -90,9 +90,35 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService, me
 			.catch(function(){ });
 	}
 
-	function getAnalistas() {
+	function abrirModal(processos){
+		
+		var modalInstance = $uibModal.open({
+			controller: 'modalVincularConsultorController',
+			controllerAs: 'modalCtrl',
+			backdrop: 'static',
+			keyboard  : false,
+			templateUrl: './features/caixaEntrada/common/modal-vincular-consultor.html',
+			size: "lg",
+			resolve: {
+				processos: function () {
+					return processos;
+				},
+				consultores: getAnalistas(processos[0].idProcesso),
+				tipo: function() {
+					return 'analista técnico';
+				},
+				justificationEnabled: function(){
+					return false;
+				}
+			}
+		});
 
-		return analistaService.getAnalistasTecnicos();
+		return modalInstance;
+	}
+
+	function getAnalistas(idProcesso) {
+
+		return analistaService.getAnalistasTecnicosByProcesso(idProcesso);
 	}
 
 	function visualizarProcesso(processo) {
