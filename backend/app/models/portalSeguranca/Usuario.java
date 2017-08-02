@@ -98,9 +98,9 @@ public class Usuario extends GenericModel  {
 		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p WHERE p.id = ?", idPerfil).fetch();
 	}
 	
-	public static List<Usuario> getUsuariosBySetor(Integer idSetor) {
+	public static List<Usuario> getUsuariosBySetor(Integer idPerfil, Integer idSetor) {
 		
-		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.setor s where s.id = ? ", idSetor).fetch();
+		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = ? and s.id = ? ",idPerfil, idSetor).fetch();
 	}
 	
 	public static List<Usuario> getUsuariosByPerfilSetores(Integer idPerfil, List<Integer> idsSetores) {
