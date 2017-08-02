@@ -18,6 +18,7 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 	cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntCoordenadorJuridico.dateUtil = app.utils.DateUtil;
 	cxEntCoordenadorJuridico.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
+	cxEntCoordenadorJuridico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
 
 	function atualizarListaProcessos(processos) {
 
@@ -106,6 +107,9 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 				consultores: getConsultores,
 				tipo: function() {
 					return 'consultor jurídico';
+				},
+				justificationEnabled: function() {
+					return false;
 				}
 			}
 		});

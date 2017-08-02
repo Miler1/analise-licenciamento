@@ -113,7 +113,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	public List<LicencaAnalise> licencasAnalise;
 	
 	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
-	public List<ParecerTecnicoRestricao> pareceresTecnicosRestricoes;	
+	public List<ParecerTecnicoRestricao> pareceresTecnicosRestricoes;
+	
+	@Column(name="justificativa_coordenador")
+	public String justificativaCoordenador;
 	
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<GerenteTecnico> gerentesTecnicos;

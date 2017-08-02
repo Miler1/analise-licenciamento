@@ -16,6 +16,7 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 	cxEntConsultorJuridico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntConsultorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntConsultorJuridico.dateUtil = app.utils.DateUtil;
+	cxEntConsultorJuridico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
 
 	function atualizarListaProcessos(processos) {
 

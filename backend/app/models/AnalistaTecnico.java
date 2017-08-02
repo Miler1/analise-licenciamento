@@ -14,7 +14,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import exceptions.AppException;
 import exceptions.PermissaoNegadaException;
+import exceptions.ValidacaoException;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
@@ -60,14 +62,28 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}	
 	
-	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica) {
+	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica, Usuario usuarioExecutor, String justificativaCoordenador) {
 		
 		if (!usuario.hasPerfil(Perfil.ANALISTA_TECNICO))
-			throw new PermissaoNegadaException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);		
+			throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);
+		
+		/**
+		 * A justificativa é somente obrigatória para o coordenador que vincula uma analista técnico
+		 */
+		if (usuarioExecutor.perfilSelecionado.id.equals(Perfil.COORDENADOR_TECNICO)) {
+			
+			if (justificativaCoordenador == null || justificativaCoordenador.isEmpty()){
+				throw new ValidacaoException(Mensagem.ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA);
+			}
+			
+			analiseTecnica.justificativaCoordenador = justificativaCoordenador;
+		}
 		
 		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
 		analistaTecnico.save();
 		
+		analiseTecnica.usuarioValidacao = usuarioExecutor;
+		analiseTecnica._save();		
 	}
 	
 	public AnalistaTecnico gerarCopia() {

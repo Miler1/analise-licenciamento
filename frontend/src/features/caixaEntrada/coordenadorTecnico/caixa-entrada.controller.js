@@ -77,7 +77,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 		modalInstance.result
 			.then(function (result) {
 
-				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
+				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.justificativa, result.idsProcessosSelecionados)
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
@@ -103,9 +103,12 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 				processos: function () {
 					return processos;
 				},
-				consultores: getAnalistas,
+				consultores: getAnalistas(processos[0].idProcesso),
 				tipo: function() {
 					return 'analista técnico';
+				},
+				justificationEnabled: function(){
+					return true;
 				}
 			}
 		});
@@ -113,9 +116,9 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 		return modalInstance;
 	}
 
-	function getAnalistas() {
+	function getAnalistas(idProcesso) {
 
-		return analistaService.getAnalistasTecnicos();
+		return analistaService.getAnalistasTecnicosByProcesso(idProcesso);
 	}
 
 	function visualizarProcesso(processo) {

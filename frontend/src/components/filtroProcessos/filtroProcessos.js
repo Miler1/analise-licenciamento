@@ -13,7 +13,7 @@ var FiltroProcessos = {
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
-		atividadeService, $scope, condicaoService, $rootScope, analistaService) {
+		atividadeService, $scope, condicaoService, $rootScope, analistaService, setorService) {
 
 		var ctrl = this;
 
@@ -25,6 +25,7 @@ var FiltroProcessos = {
 		ctrl.atividades = [];
 		ctrl.analistasTecnicos = [];
 		ctrl.condicoes = [];
+		ctrl.setores = [];
 
 		ctrl.maxDataInicio = new Date();
 
@@ -132,15 +133,27 @@ var FiltroProcessos = {
 				});
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
+				if(ctrl.isAnaliseTecnicaOpcional){
+					analistaService.getAnalistasTecnicos()
+						.then(function(response){
 
-				analistaService.getAnalistasTecnicos()
-					.then(function(response){
+							ctrl.analistasTecnicos = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+						});
+				}
+				else{
+					analistaService.getAnalistasTecnicosByPerfil()
+						.then(function(response){
 
-						ctrl.analistasTecnicos = response.data;
-					})
-					.catch(function(){
-						mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
-					});
+							ctrl.analistasTecnicos = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+						});
+
+				}
 			}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
@@ -152,6 +165,18 @@ var FiltroProcessos = {
 					})
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de situações.');
+					});
+			}
+
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.GERENCIA)){
+
+				setorService.getSetoresFilhos()
+					.then(function(response){
+
+						ctrl.setores = response.data;
+					})
+					.catch(function(){
+						mensagem.warning('Não foi possível obter a lista de setores.');
 					});
 			}
 
