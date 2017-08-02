@@ -67,6 +67,8 @@ POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
 GET     /analistas/perfil                           Analistas.getAnalistaTecnicoPerfilSetores
 GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
 GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
+GET		/analistas/setor/{idsetor}			        Analistas.getAnalistaTecnico
+
 
 # Condições
 GET		/condicoes									Condicoes.list
