@@ -1,32 +1,32 @@
-var CxEntCoordenadorTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService) {
+var CxEntGerenteTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VINCULAÇÃO TÉCNICA';
+	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
 
-	var cxEntCoordenadorTecnico = this;
+	var cxEntGerenteTecnico = this;
 
-	cxEntCoordenadorTecnico.atualizarListaProcessos = atualizarListaProcessos;
-	cxEntCoordenadorTecnico.atualizarPaginacao = atualizarPaginacao;
-	cxEntCoordenadorTecnico.selecionarTodosProcessos = selecionarTodosProcessos;
-	cxEntCoordenadorTecnico.vincularAnalista = vincularAnalista;
-	cxEntCoordenadorTecnico.onPaginaAlterada = onPaginaAlterada;
-	cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
-	cxEntCoordenadorTecnico.visualizarProcesso = visualizarProcesso;
+	cxEntGerenteTecnico.atualizarListaProcessos = atualizarListaProcessos;
+	cxEntGerenteTecnico.atualizarPaginacao = atualizarPaginacao;
+	cxEntGerenteTecnico.selecionarTodosProcessos = selecionarTodosProcessos;
+	cxEntGerenteTecnico.vincularAnalista = vincularAnalista;
+	cxEntGerenteTecnico.onPaginaAlterada = onPaginaAlterada;
+	cxEntGerenteTecnico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
+	cxEntGerenteTecnico.visualizarProcesso = visualizarProcesso;
 
-	cxEntCoordenadorTecnico.processos = [];
-	cxEntCoordenadorTecnico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA;
-	cxEntCoordenadorTecnico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
-	cxEntCoordenadorTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
-	cxEntCoordenadorTecnico.dateUtil = app.utils.DateUtil;
-	cxEntCoordenadorTecnico.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
+	cxEntGerenteTecnico.processos = [];
+	cxEntGerenteTecnico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA;
+	cxEntGerenteTecnico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
+	cxEntGerenteTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntGerenteTecnico.dateUtil = app.utils.DateUtil;
+	cxEntGerenteTecnico.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
 
 	function atualizarListaProcessos(processos) {
 
-		cxEntCoordenadorTecnico.processos = processos;
+		cxEntGerenteTecnico.processos = processos;
 	}
 
 	function atualizarPaginacao(totalItens, paginaAtual) {
 
-		cxEntCoordenadorTecnico.paginacao.update(totalItens, paginaAtual);
+		cxEntGerenteTecnico.paginacao.update(totalItens, paginaAtual);
 	}
 
 	function onPaginaAlterada(){
@@ -36,15 +36,15 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function selecionarTodosProcessos() {
 
-		_.each(cxEntCoordenadorTecnico.processos, function(processo){
+		_.each(cxEntGerenteTecnico.processos, function(processo){
 
-			processo.selecionado = cxEntCoordenadorTecnico.todosProcessosSelecionados;
+			processo.selecionado = cxEntGerenteTecnico.todosProcessosSelecionados;
 		});
 	}
 
 	function hasAtLeastOneProcessoSelected() {
 
-		return _.some(cxEntCoordenadorTecnico.processos, {selecionado: true});		
+		return _.some(cxEntGerenteTecnico.processos, {selecionado: true});		
 	}
 
 	function vincularAnalista(processoSelecionado) {
@@ -57,7 +57,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 		} else {
 
-		 	_.each(cxEntCoordenadorTecnico.processos, function(processo){
+		 	_.each(cxEntGerenteTecnico.processos, function(processo){
 
 				 if (processo.selecionado) {
 
@@ -77,7 +77,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 		modalInstance.result
 			.then(function (result) {
 
-				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.justificativa, result.idsProcessosSelecionados)
+				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
@@ -108,7 +108,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 					return 'analista técnico';
 				},
 				justificationEnabled: function(){
-					return true;
+					return false;
 				}
 			}
 		});
@@ -128,9 +128,9 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function verificarTodosProcessosMarcados() {
 
-		cxEntCoordenadorTecnico.todosProcessosSelecionados = 
+		cxEntGerenteTecnico.todosProcessosSelecionados = 
 			
-			_.reduce(cxEntCoordenadorTecnico.processos, function(resultado, p){
+			_.reduce(cxEntGerenteTecnico.processos, function(resultado, p){
 			
 				return resultado && p;
 
@@ -138,4 +138,4 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 	}
 };
 
-exports.controllers.CxEntCoordenadorTecnicoController = CxEntCoordenadorTecnicoController;
+exports.controllers.CxEntGerenteTecnicoController = CxEntGerenteTecnicoController;

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +27,7 @@ import play.data.validation.MaxSize;
 import play.data.validation.MinSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 
 @Entity
 @Table(schema = "portal_seguranca", name = "usuario")
@@ -94,6 +96,21 @@ public class Usuario extends GenericModel  {
 	public static List<Usuario> getUsuariosByPerfil(Integer idPerfil) {
 		
 		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p WHERE p.id = ?", idPerfil).fetch();
+	}
+	
+	public static List<Usuario> getUsuariosBySetor(Integer idPerfil, Integer idSetor) {
+		
+		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = ? and s.id = ? ",idPerfil, idSetor).fetch();
+	}
+	
+	public static List<Usuario> getUsuariosByPerfilSetores(Integer idPerfil, List<Integer> idsSetores) {
+		
+		Query query = JPA.em().createQuery("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = :idPerfil and s.id IN (:idsSetores)");
+		
+		query.setParameter("idPerfil", idPerfil);
+		query.setParameter("idsSetores", idsSetores);
+		
+		return query.getResultList();
 	}
 	
 	public boolean hasPerfil(Integer idPerfil){
