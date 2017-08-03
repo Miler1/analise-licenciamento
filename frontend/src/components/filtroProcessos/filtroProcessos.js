@@ -163,8 +163,16 @@ var FiltroProcessos = {
 
 						ctrl.setores = response.data;
 					})
-					.catch(function(){
-						mensagem.warning('Não foi possível obter a lista de setores.');
+					.catch(function(response){
+
+						if(response.data && response.data.texto) {
+
+							mensagem.warning(response.data.texto);
+
+						} else {
+
+							mensagem.warning('Não foi possível obter a lista de setores.');
+						}
 					});
 			}
 
