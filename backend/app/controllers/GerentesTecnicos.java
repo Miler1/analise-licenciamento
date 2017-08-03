@@ -3,6 +3,8 @@ package controllers;
 import java.util.List;
 
 import models.Processo;
+import models.licenciamento.AtividadeCaracterizacao;
+import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import security.Acao;
@@ -37,9 +39,15 @@ public class GerentesTecnicos extends InternalController {
 		
 		Processo processo = Processo.findById(idProcesso);
 		
-		Integer idSetor = processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.setor.id;
+		AtividadeCaracterizacao atividadeCaracterizacao = processo.caracterizacoes.get(0).atividadeCaracterizacao;
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.GERENTE_TECNICO, idSetor);
+		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
+				TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id :idAtividadeCnane")
+					.setParameter("idAtividade",atividadeCaracterizacao.atividade.id)
+					.setParameter("idAtividadeCnane", atividadeCaracterizacao.atividadeCnae.id)
+					.first();
+		
+		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.GERENTE_TECNICO, tipoAtividadeCaracterizacao.setor.id);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}	

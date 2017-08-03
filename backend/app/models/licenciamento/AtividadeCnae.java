@@ -24,8 +24,4 @@ public class AtividadeCnae extends GenericModel {
 
 	public String codigo;
 	
-	@ManyToOne
-	@JoinColumn(name="id_setor")
-	public Setor setor;	
-
 }
