@@ -167,7 +167,7 @@ var FiltroProcessos = {
 				condicaoService.getCondicoes().then(
 					function(response){
 						
-						ctrl.condicoes = response.data; 
+						ctrl.condicoes = response.data;
 					})
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de situações.');

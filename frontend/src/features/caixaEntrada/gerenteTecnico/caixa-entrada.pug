@@ -1,0 +1,75 @@
+include ../../../layout/components/paginacao
+
+div
+	filtro-processos(paginacao="cxEntGerenteTecnico.paginacao",
+		disabled-fields="caixaEntrada.disabledFields",
+		atualizar-lista="cxEntGerenteTecnico.atualizarListaProcessos",
+		atualizar-paginacao="cxEntGerenteTecnico.atualizarPaginacao",
+		condicao-tramitacao="cxEntGerenteTecnico.condicaoTramitacao",
+		pesquisar-ao-inicializar="true",
+		is-analise-tecnica="true")
+
+	h4 Lista de processos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="cxEntGerenteTecnico.processos && cxEntGerenteTecnico.processos.length > 0")
+				table.table.table-striped.table-condensed
+					thead
+						tr
+							th
+								input(type='checkbox',
+									ng-model='cxEntGerenteTecnico.todosProcessosSelecionados',
+									ng-click='cxEntGerenteTecnico.selecionarTodosProcessos()')
+							th.col-md-1 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-2 Empreendimento
+							th.col-md-2 Município
+							th.col-md-2 Licenças
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise técnica
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in cxEntGerenteTecnico.processos")
+							td 
+								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntGerenteTecnico.verificarTodosProcessosMarcados()")
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+								| {{cxEntGerenteTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseTecnica, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{cxEntGerenteTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica)}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+												a(ng-click="cxEntGerenteTecnico.vincularAnalista(processo)")
+													i.glyphicon.glyphicon-share
+													span Vincular analista
+											li
+
+												a(ng-click="cxEntGerenteTecnico.visualizarProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar processo
+				div
+					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntGerenteTecnico.vincularAnalista()", 
+																  ng-disabled="!cxEntGerenteTecnico.hasAtLeastOneProcessoSelected()",
+																  ng-attr-title="{{!cxEntGerenteTecnico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao analista.' : ''}}" 
+																  tabindex="0")
+						span.glyphicon.glyphicon-share
+						| &nbsp; Vincular analista
+
+				+paginacao('cxEntGerenteTecnico.paginacao', 'cxEntGerenteTecnico.onPaginaAlterada')
+
+		.row(ng-show="!cxEntGerenteTecnico.processos || cxEntGerenteTecnico.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.
