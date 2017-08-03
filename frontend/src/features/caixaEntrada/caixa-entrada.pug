@@ -13,3 +13,7 @@ div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.COORDENADO
 div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.ANALISTA_TECNICO", 
     ng-controller='cxEntAnalistaTecnicoController as cxEntAnalistaTecnico')
     include analistaTecnico/caixa-entrada
+
+div(ng-if="usuarioSessao.perfilSelecionado.id === caixaEntrada.perfis.GERENTE_TECNICO", 
+    ng-controller='cxEntGerenteTecnicoController as cxEntGerenteTecnico')
+    include gerenteTecnico/caixa-entrada

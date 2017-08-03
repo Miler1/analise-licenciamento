@@ -18,7 +18,11 @@ public class Setores extends InternalController {
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		
+		if (usuarioSessao.setorSelecionado == null) {
+			throw new AppException(Mensagem.SETOR_OBRIGATORIO_ANALISE);
+		}
 		
 		Setor setorPai = Setor.findById(usuarioSessao.setorSelecionado.id);
 		

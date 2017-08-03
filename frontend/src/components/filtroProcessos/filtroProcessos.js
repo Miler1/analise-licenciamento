@@ -9,7 +9,8 @@ var FiltroProcessos = {
 		pesquisarAoInicializar: '<',
 		isAnaliseJuridica: '<',
 		isAnaliseTecnica: '<',
-		isAnaliseTecnicaOpcional: '<'
+		isAnaliseTecnicaOpcional: '<',
+		onAfterUpdate: '='
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -53,7 +54,12 @@ var FiltroProcessos = {
 
 			processoService.getProcessos(ctrl.filtro)
 				.then(function(response){
-					 ctrl.atualizarLista(response.data);
+
+					ctrl.atualizarLista(response.data);
+
+					if (_.isFunction(ctrl.onAfterUpdate))
+						ctrl.onAfterUpdate(ctrl.filtro);
+
 				})
 				.catch(function(){
 					mensagem.error("Ocorreu um erro ao buscar a lista de processos.");
@@ -133,15 +139,27 @@ var FiltroProcessos = {
 				});
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
+				if(ctrl.isAnaliseTecnicaOpcional){
+					analistaService.getAnalistasTecnicos()
+						.then(function(response){
 
-				analistaService.getAnalistasTecnicos()
-					.then(function(response){
+							ctrl.analistasTecnicos = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+						});
+				}
+				else{
+					analistaService.getAnalistasTecnicosByPerfil()
+						.then(function(response){
 
-						ctrl.analistasTecnicos = response.data;
-					})
-					.catch(function(){
-						mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
-					});
+							ctrl.analistasTecnicos = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+						});
+
+				}
 			}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
@@ -149,7 +167,7 @@ var FiltroProcessos = {
 				condicaoService.getCondicoes().then(
 					function(response){
 						
-						ctrl.condicoes = response.data; 
+						ctrl.condicoes = response.data;
 					})
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de situações.');
@@ -163,8 +181,16 @@ var FiltroProcessos = {
 
 						ctrl.setores = response.data;
 					})
-					.catch(function(){
-						mensagem.warning('Não foi possível obter a lista de setores.');
+					.catch(function(response){
+
+						if(response.data && response.data.texto) {
+
+							mensagem.warning(response.data.texto);
+
+						} else {
+
+							mensagem.warning('Não foi possível obter a lista de setores.');
+						}
 					});
 			}
 

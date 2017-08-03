@@ -404,7 +404,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		if (idUsuarioValidacao != null) {
 			
-			addConsultorJuridicoAlias();
+			addAnaliseJuridicaAlias();
 			addRestricton(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".usuarioValidacao.id", idUsuarioValidacao));
 		}
 		
@@ -469,6 +469,17 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		return this;
 	}
+	
+	public ProcessoBuilder filtrarPorIdUsuarioValidacaoTecnica(Long idUsuarioValidacao) {
+		
+		if (idUsuarioValidacao != null) {
+			
+			addAnaliseTecnicaAlias(false);
+			addRestricton(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacao.id", idUsuarioValidacao));
+		}
+		
+		return this;
+	}	
 	
 	public ProcessoBuilder filtrarPorIdsSetores(List<Integer> idsSetores) {
 		

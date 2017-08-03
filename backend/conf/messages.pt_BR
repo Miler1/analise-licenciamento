@@ -33,6 +33,14 @@ CONSULTOR_VINCULADO_SUCESSO=Consultor vinculado com sucesso.
 #
 ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO=O Analista informado não tem perfil de analista técnico.
 ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
+ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista técnico pelo coordenador a justificativa é obrigatória.
+
+
+#
+# Gerentes
+#
+GERENTE_DIFERENTE_DE_GERENTE_TECNICO=O gerente informado não tem perfil de gerente técnico.
+GERENTE_VINCULADO_SUCESSO=Gerente vinculado com sucesso.
 
 #
 # Upload
@@ -74,3 +82,4 @@ ANALISE_TECNICA_LICENCA_SEM_VALIDACAO=As licenças não foram todas validadas.
 # Setor
 #
 SETOR_NAO_ENCONTRADO=Setor não encontrado.
+SETOR_OBRIGATORIO_ANALISE=Não existe setor vinculado ao perfil selecionado.
