@@ -31,7 +31,20 @@ public class GerentesTecnicos extends InternalController {
 		renderMensagem(Mensagem.GERENTE_VINCULADO_SUCESSO);		
 	}
 	
-	public static void getGerenteTecnico() {
+	public static void getGerentesTecnicosByIdProcesso(Long idProcesso) {
+		
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		
+		Processo processo = Processo.findById(idProcesso);
+		
+		Integer idSetor = processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.setor.id;
+		
+		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.GERENTE_TECNICO, idSetor);
+		
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
+	}	
+	
+	public static void getGerentesTecnicos() {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		

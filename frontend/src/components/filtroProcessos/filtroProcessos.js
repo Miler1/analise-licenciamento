@@ -9,7 +9,8 @@ var FiltroProcessos = {
 		pesquisarAoInicializar: '<',
 		isAnaliseJuridica: '<',
 		isAnaliseTecnica: '<',
-		isAnaliseTecnicaOpcional: '<'
+		isAnaliseTecnicaOpcional: '<',
+		onAfterUpdate: '='
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -53,7 +54,12 @@ var FiltroProcessos = {
 
 			processoService.getProcessos(ctrl.filtro)
 				.then(function(response){
-					 ctrl.atualizarLista(response.data);
+
+					ctrl.atualizarLista(response.data);
+
+					if (_.isFunction(ctrl.onAfterUpdate))
+						ctrl.onAfterUpdate(ctrl.filtro);
+
 				})
 				.catch(function(){
 					mensagem.error("Ocorreu um erro ao buscar a lista de processos.");
