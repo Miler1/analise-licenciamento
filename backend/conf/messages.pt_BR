@@ -82,3 +82,4 @@ ANALISE_TECNICA_LICENCA_SEM_VALIDACAO=As licenças não foram todas validadas.
 # Setor
 #
 SETOR_NAO_ENCONTRADO=Setor não encontrado.
+SETOR_OBRIGATORIO_ANALISE=Não existe setor vinculado ao perfil selecionado.

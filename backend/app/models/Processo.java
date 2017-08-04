@@ -203,6 +203,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 		
+		if(usuarioSessao.setorSelecionado == null) {
+			
+			return;
+		}
+		
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
 		processoBuilder.filtrarPorIdSetor(filtro.idSetor);
 		

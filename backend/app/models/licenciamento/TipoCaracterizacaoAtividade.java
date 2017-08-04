@@ -19,6 +19,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
+import models.portalSeguranca.Setor;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 
@@ -49,6 +50,10 @@ public class TipoCaracterizacaoAtividade extends GenericModel {
 	
 	@Column(name = "licenciamento_declaratorio")
 	public Boolean licenciamentoDeclatorio;
+	
+	@ManyToOne
+	@JoinColumn(name="id_setor")
+	public Setor setor;	
 	
 	
 	/*

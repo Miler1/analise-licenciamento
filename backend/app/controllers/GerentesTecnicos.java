@@ -3,6 +3,8 @@ package controllers;
 import java.util.List;
 
 import models.Processo;
+import models.licenciamento.AtividadeCaracterizacao;
+import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import security.Acao;
@@ -31,7 +33,26 @@ public class GerentesTecnicos extends InternalController {
 		renderMensagem(Mensagem.GERENTE_VINCULADO_SUCESSO);		
 	}
 	
-	public static void getGerenteTecnico() {
+	public static void getGerentesTecnicosByIdProcesso(Long idProcesso) {
+		
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		
+		Processo processo = Processo.findById(idProcesso);
+		
+		AtividadeCaracterizacao atividadeCaracterizacao = processo.caracterizacoes.get(0).atividadeCaracterizacao;
+		
+		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
+				TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id :idAtividadeCnane")
+					.setParameter("idAtividade",atividadeCaracterizacao.atividade.id)
+					.setParameter("idAtividadeCnane", atividadeCaracterizacao.atividadeCnae.id)
+					.first();
+		
+		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.GERENTE_TECNICO, tipoAtividadeCaracterizacao.setor.id);
+		
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
+	}	
+	
+	public static void getGerentesTecnicos() {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		

@@ -3,7 +3,9 @@ package controllers;
 import java.util.List;
 
 import models.Processo;
+import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Usuario;
 import play.db.jpa.JPABase;
@@ -40,7 +42,15 @@ public class Analistas extends InternalController {
 		
 		Processo processo = Processo.findById(idProcesso);
 		
-		List<Usuario> consultores = Usuario.getUsuariosBySetor(Perfil.ANALISTA_TECNICO,processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.setor.id);
+		AtividadeCaracterizacao atividadeCaracterizacao = processo.caracterizacoes.get(0).atividadeCaracterizacao;
+		
+		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
+				TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id :idAtividadeCnane")
+					.setParameter("idAtividade",atividadeCaracterizacao.atividade.id)
+					.setParameter("idAtividadeCnane", atividadeCaracterizacao.atividadeCnae.id)
+					.first();
+		
+		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO,tipoAtividadeCaracterizacao.setor.id);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}

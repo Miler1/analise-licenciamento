@@ -51,6 +51,7 @@ public enum Mensagem {
 	GERENTE_DIFERENTE_DE_GERENTE_TECNICO,
 	GERENTE_VINCULADO_SUCESSO,
 	
+	SETOR_OBRIGATORIO_ANALISE,
 	SETOR_NAO_ENCONTRADO;
 	
 	public String getTexto(Object ... args) {
