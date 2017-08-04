@@ -68,4 +68,15 @@ public class ParecerTecnicoRestricao extends GenericModel implements Identificav
 		return ParecerTecnicoRestricao.find("byAnaliseTecnica", idAnaliseTecnica).fetch();
 		
 	}
+
+	public ParecerTecnicoRestricao gerarCopia() {
+		
+		ParecerTecnicoRestricao copia = new ParecerTecnicoRestricao();
+		
+		copia.analiseTecnica = this.analiseTecnica;
+		copia.codigoCamada = this.codigoCamada;
+		copia.parecer = this.parecer;
+		
+		return copia;
+	}
 }
