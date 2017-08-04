@@ -34,6 +34,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ANALISE_TECNICA_ALIAS = "ant";
 	private static final String ANALISTA_TECNICO_ALIAS = "att";
 	private static final String ATIVIDADE_CNAE_ALIAS = "atvc";
+	private static final String TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS = "tca";
 	
 	public ProcessoBuilder addEmpreendimentoAlias() {
 		
@@ -175,6 +176,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAtividadeCaracterizacaoAlias();
 		
 		addAlias(ATIVIDADE_CARACTERIZACAO_ALIAS+".atividadeCnae", ATIVIDADE_CNAE_ALIAS);
+		
+		return this;
+	}
+	
+	public ProcessoBuilder addTipoCaracterizacaoAtividade() {
+		
+		addAtividadeCnaeAlias();
+		
+		addAlias(ATIVIDADE_CNAE_ALIAS + ".tiposCaracterizacaoAtividades", TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS);
 		
 		return this;
 	}
@@ -463,8 +473,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		if (idSetor != null) {
 			
-			addAtividadeCnaeAlias();
-			addRestricton(Restrictions.eq(ATIVIDADE_CNAE_ALIAS+".setor.id", idSetor));
+			addTipoCaracterizacaoAtividade();
+			addRestricton(Restrictions.eq(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idSetor));
+			addRestricton(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 		
 		return this;
@@ -485,8 +496,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		if (idsSetores != null) {
 			
-			addAtividadeCnaeAlias();
-			addRestricton(Restrictions.in(ATIVIDADE_CNAE_ALIAS+".setor.id", idsSetores));
+			addTipoCaracterizacaoAtividade();
+			addRestricton(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idsSetores));
+			addRestricton(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 		
 		return this;
