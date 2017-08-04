@@ -26,4 +26,5 @@ aguardandoValidacao
 	.controller('aguardandoValidacaoJuridicoListController', controllers.AguardandoValidacaoJuridicoListController)
 	.controller('validacaoAnaliseJuridicaController', controllers.ValidacaoAnaliseJuridicaController)
 	.controller('aguardandoValidacaoTecnicaListController', controllers.AguardandoValidacaoTecnicaListController)
+	.controller('aguardandoValidacaoGerenteTecnicoListController', controllers.AguardandoValidacaoGerenteTecnicoListController)
 	.controller('validacaoAnaliseTecnicaController', controllers.ValidacaoAnaliseTecnicaController);
