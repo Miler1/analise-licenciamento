@@ -33,8 +33,11 @@ import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.validacaoParecer.Analisavel;
 import models.validacaoParecer.ParecerNaoValidadoTecnico;
+import models.validacaoParecer.ParecerNaoValidadoTecnicoGerente;
 import models.validacaoParecer.ParecerValidadoTecnico;
+import models.validacaoParecer.ParecerValidadoTecnicoGerente;
 import models.validacaoParecer.SolicitarAjustesTecnico;
+import models.validacaoParecer.SolicitarAjustesTecnicoGerente;
 import models.validacaoParecer.TipoResultadoAnaliseChain;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -118,6 +121,17 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Column(name="justificativa_coordenador")
 	public String justificativaCoordenador;
 	
+	@ManyToOne
+	@JoinColumn(name="id_tipo_resultado_validacao_gerente")
+	public TipoResultadoAnalise tipoResultadoValidacaoGerente;
+	
+	@Column(name="parecer_validacao_gerente")
+	public String parecerValidacaoGerente;
+	
+ 	@ManyToOne(fetch=FetchType.LAZY)
+ 	@JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
+	public Usuario usuarioValidacaoGerente;	
+		
 	private void validarParecer() {
 		
 		if(StringUtils.isBlank(this.parecer)) 
@@ -251,19 +265,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 		
 	}
-	
-	public void updateLicencasAnalise() {
-		
-		if(this.licencasAnalise == null) {
-			return;
-		}
-		
-		for(LicencaAnalise licencaAnalise : this.licencasAnalise) {
-			
-			
-		}
-		
-	}
 
 	private void updateLicencasAnalise(List<LicencaAnalise> novasLicencasAnalise) {
 		
@@ -362,6 +363,15 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
+	
+	public void validaParecerGerente(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+		
+		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnicoGerente();		
+		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnicoGerente());
+		tiposResultadosAnalise.setNext(new ParecerNaoValidadoTecnicoGerente());
+		
+		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
+	}	
 
 	private void validarLicencasAnalise() {
 		
@@ -419,7 +429,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Override
 	public TipoResultadoAnalise getTipoResultadoValidacao() {
 		
-		return this.tipoResultadoValidacao;
+		return this.tipoResultadoValidacao != null ? this.tipoResultadoValidacao : this.tipoResultadoValidacaoGerente;
 	}
 
 	public void validarTipoResultadoValidacao() {
@@ -437,6 +447,22 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
 		}		
 	}
+	
+	public void validarTipoResultadoValidacaoGerente() {
+		
+		if (tipoResultadoValidacaoGerente == null) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO_VALIDACAO);
+		}		
+	}
+	
+	public void validarParecerValidacaoGerente() {
+		
+		if (StringUtils.isEmpty(parecerValidacaoGerente)) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
+		}		
+	}	
 
 	public AnaliseTecnica gerarCopia() {
 		
@@ -453,6 +479,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		copia.documentos = new ArrayList<>(this.documentos);
 		copia.analisesDocumentos = new ArrayList<>();
 		copia.usuarioValidacao = this.usuarioValidacao;
+		copia.usuarioValidacaoGerente = this.usuarioValidacaoGerente;
 		
 		for (AnaliseDocumento analiseDocumento: this.analisesDocumentos) {
 			
@@ -480,7 +507,21 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			copia.licencasAnalise.add(copiaLicencaAnalise);				
 		}
 		
+		copia.pareceresTecnicosRestricoes = new ArrayList<>();
+		for (ParecerTecnicoRestricao parecerTecnicoRestricao : this.pareceresTecnicosRestricoes) {
+			
+			ParecerTecnicoRestricao copiaParecerTecnicoRestricao = parecerTecnicoRestricao.gerarCopia();
+			
+			copiaParecerTecnicoRestricao.analiseTecnica = copia;
+			copia.pareceresTecnicosRestricoes.add(copiaParecerTecnicoRestricao);				
+		}		
 		
 		return copia;
+	}
+
+	public void setValidacaoGerente(AnaliseTecnica analise) {
+		
+		this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;
+		this.parecerValidacaoGerente = analise.parecerValidacaoGerente;	
 	}	
 }
