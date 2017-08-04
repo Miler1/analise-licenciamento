@@ -494,7 +494,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	
 	public ProcessoBuilder filtrarPorIdsSetores(List<Integer> idsSetores) {
 		
-		if (idsSetores != null) {
+		if (idsSetores != null && idsSetores.size() > 0) {
 			
 			addTipoCaracterizacaoAtividade();
 			addRestricton(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idsSetores));
