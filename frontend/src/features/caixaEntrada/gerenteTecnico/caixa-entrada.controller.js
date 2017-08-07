@@ -1,4 +1,4 @@
-var CxEntGerenteTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService) {
+var CxEntGerenteTecnicoController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
 
