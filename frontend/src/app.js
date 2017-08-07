@@ -88,6 +88,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 		$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
 		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
+		$rootScope.perfis = app.utils.Perfis;
 
 		if (!$rootScope.usuarioSessao) {
 			window.location = $rootScope.config.baseUrl;
