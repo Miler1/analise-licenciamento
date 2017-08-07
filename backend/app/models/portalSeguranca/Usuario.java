@@ -105,6 +105,10 @@ public class Usuario extends GenericModel  {
 	
 	public static List<Usuario> getUsuariosByPerfilSetores(Integer idPerfil, List<Integer> idsSetores) {
 		
+		if(idsSetores.size() == 0) {
+			return null;
+		}
+		
 		Query query = JPA.em().createQuery("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = :idPerfil and s.id IN (:idsSetores)");
 		
 		query.setParameter("idPerfil", idPerfil);
