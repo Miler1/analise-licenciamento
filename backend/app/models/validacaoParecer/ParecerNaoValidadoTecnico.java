@@ -32,7 +32,8 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 					
 		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.analistasTecnicos.get(0).usuario, usuarioExecutor);
 		
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO, usuarioExecutor);
+		//TODO Adicionar tramitação para gerente ou para analista
+//		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO, usuarioExecutor);
 	}
 
 	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista, Usuario usuarioValidacao) {

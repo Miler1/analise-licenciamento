@@ -36,7 +36,6 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 		 */
 		copia.update(copia);
 			
-		//TODO adicionar a tramitação abaixo, quando o banco terminar, para o gerente técnico 
-		//analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO, usuarioExecutor);
+		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
 	}
 }

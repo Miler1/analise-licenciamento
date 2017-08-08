@@ -26,17 +26,16 @@ public class ParecerValidadoTecnicoGerente extends TipoResultadoAnaliseChain<Ana
 		
 		analiseTecnica._save();
 		
-		//TODO Alterar a ação da tramitação quando o banco terminar de inserir as tramitações do gerente
-//		if (analiseTecnica.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
-//			
-//			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_TECNICO, usuarioExecultor);				
-//			return;
-//		}
-//		
-//		if (analiseTecnica.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
-//			
-//			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_TECNICO, usuarioExecultor);
-//		}
-//		
+		if (analiseTecnica.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
+			
+			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_TECNICO_PELO_GERENTE, usuarioExecultor);				
+			return;
+		}
+		
+		if (analiseTecnica.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+			
+			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_TECNICO_PELO_GERENTE, usuarioExecultor);
+		}
+		
 	}
 }

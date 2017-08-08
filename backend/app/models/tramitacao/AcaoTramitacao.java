@@ -19,13 +19,21 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_PARECER_JURIDICO = 9l;
 	public static final Long VINCULAR_ANALISTA = 10l;
 	public static final Long INICIAR_ANALISE_TECNICA = 11l;
-	public static final Long DEFERIR_ANALISE_TECNICA = 12l;
-	public static final Long INDEFERIR_ANALISE_TECNICA = 13l;
-	public static final Long INVALIDAR_PARECER_TECNICO = 14l;
-	public static final Long SOLICITAR_AJUSTES_PARECER_TECNICO = 15l;
-	public static final Long VALIDAR_DEFERIMENTO_TECNICO = 16l;
-	public static final Long VALIDAR_INDEFERIMENTO_TECNICO = 17l;
+	public static final Long DEFERIR_ANALISE_TECNICA_VIA_GERENTE = 12l;
+	public static final Long INDEFERIR_ANALISE_TECNICA_VIA_GERENTE = 13l;
+	public static final Long INVALIDAR_PARECER_TECNICO_PELO_GERENTE = 14l;
+	public static final Long SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE = 15l;
+	public static final Long VALIDAR_DEFERIMENTO_TECNICO_PELO_GERENTE = 16l;
+	public static final Long VALIDAR_INDEFERIMENTO_TECNICO_PELO_GERENTE = 17l;
 	public static final Long INICIAR_PROCESSO = 18l;
+	public static final Long VINCULAR_GERENTE = 19l;
+	public static final Long INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 20l;
+	public static final Long DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 21l;
+	public static final Long VALIDAR_DEFERIMENTO_TECNICO_PELO_COORDENADOR = 22l;
+	public static final Long VALIDAR_INDEFERIMENTO_TECNICO_PELO_COORDENADOR = 23l;
+	public static final Long INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_GERENTE = 24l;
+	public static final Long INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO = 25l;
+	public static final Long SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR = 26l;
 
 }
 

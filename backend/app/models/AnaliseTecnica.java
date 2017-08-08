@@ -343,11 +343,17 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 				
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA, usuarioExecutor);
+			if(this.usuarioValidacaoGerente != null)
+				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
+			else
+				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
 		
 		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA, usuarioExecutor);
+			if(this.usuarioValidacaoGerente != null)
+				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
+			else
+				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
 		
 		} else {
 		
