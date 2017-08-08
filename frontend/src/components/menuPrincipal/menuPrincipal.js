@@ -66,7 +66,8 @@ var MenuPrincipal = {
 		function isAnaliseTecnica(idPerfilSelecionado) {
 
 			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO || 
-				   idPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO;
+				   idPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO ||
+				   idPerfilSelecionado === app.utils.Perfis.GERENTE_TECNICO;
 		}
 
 		$scope.$on('atualizarContagemProcessos', function(event){
