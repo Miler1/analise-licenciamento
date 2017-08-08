@@ -131,6 +131,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
 	public Usuario usuarioValidacaoGerente;	
+ 	
+	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
+	public List<GerenteTecnico> gerentesTecnicos; 	
 		
 	private void validarParecer() {
 		
@@ -504,6 +507,16 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			copia.analistasTecnicos.add(copiaAnalistaTec);
 		}
 		
+		copia.gerentesTecnicos = new ArrayList<>();
+		
+		for (GerenteTecnico gerenteTecnico: this.gerentesTecnicos) {
+			
+			GerenteTecnico copiaGerenteTec = gerenteTecnico.gerarCopia();
+			
+			copiaGerenteTec.analiseTecnica = copia;
+			copia.gerentesTecnicos.add(copiaGerenteTec);
+		}		
+		
 		copia.licencasAnalise = new ArrayList<>();
 		for (LicencaAnalise licenca : this.licencasAnalise) {
 			
@@ -529,5 +542,20 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 		this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;
 		this.parecerValidacaoGerente = analise.parecerValidacaoGerente;	
-	}	
+	}
+	
+	public AnalistaTecnico getAnalistaTecnico() {
+		
+		return this.analistasTecnicos.get(0);
+	}
+	
+	public boolean hasGerentes() {
+		
+		return this.gerentesTecnicos != null && this.gerentesTecnicos.size() > 0;
+	}
+	
+	public GerenteTecnico getGerenteTecnico() {
+		
+		return this.gerentesTecnicos.get(0);
+	}
 }

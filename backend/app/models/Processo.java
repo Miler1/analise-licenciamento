@@ -226,11 +226,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			
 			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresFilhos());			
 		}
-		//TODO Verificar se realmente é essa condição
+
 		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 							
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
 		}
+		
+		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
+			
+			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
+		}		
 		
 	}
 
