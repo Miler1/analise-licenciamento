@@ -29,16 +29,17 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 		
 		AnaliseTecnica copia = analiseTecnica.gerarCopia();
 		
+		/**
+		 * Quando o ajuste for do coordenador para o gerente deve-se manter a validação do gerente
+		 */
+		copia.setValidacaoGerente(analise);
+		
 		copia._save();
 		
-		for(LicencaAnalise licencaAnalise: copia.licencasAnalise) {
-			
-			LicencaAnalise copiaLicencaAnalise = licencaAnalise.gerarCopia();
-			copiaLicencaAnalise._save();
-			
-			copiaLicencaAnalise.saveCondicionantes();
-			copiaLicencaAnalise.saveRecomendacoes();
-		}
+		/**
+		 * Workaround para persistir as licenças e os pareceres técnicos restrições
+		 */		
+		copia.update(copia);
 						
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO, usuarioExecutor);
 	}

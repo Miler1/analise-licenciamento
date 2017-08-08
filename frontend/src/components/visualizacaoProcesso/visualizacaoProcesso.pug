@@ -17,6 +17,8 @@
 				a(data-toggle="tab", data-target="#tabCaracterizacao") Caracterização
 			li(role="tab")
 				a(data-toggle="tab", data-target="#tabEmpreendimento") Empreendedor / Empreendimento
+			li(role="tab")
+				a(data-toggle="tab", data-target="#tabJustificativaCoordenador") Justificativa do coordenador técnico
 
 		div.row#dadosProcesso
 			.col-xs-12.col-md-8
@@ -25,7 +27,6 @@
 					div.row
 						label.col-sm-4 Processo:
 						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.numero}}
-
 
 					div.row
 						label.col-sm-4 CPF/CNPJ:
@@ -46,6 +47,8 @@
 			#tabEmpreendimento.tab-pane.fade
 				include visualizacaoProcessoEmpreendimento
 
+			#tabJustificativaCoordenador.tab-pane.fade
+				include visualizacaoJustificativaCoordenador
 
 
 	div.modal-footer#footer-modal

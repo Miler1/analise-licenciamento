@@ -10,7 +10,6 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 
-
 	var estiloPoligono = {
 		color: 'tomato',
 		opacity: 1,

@@ -223,31 +223,5 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		return copia;
 		
 	}
-
-	public void saveCondicionantes() {
-		
-		if(this.condicionantes == null) {
-			return;
-		}
-		
-		for(Condicionante condicionante : this.condicionantes) {			
-			
-			condicionante.licencaAnalise = this;
-			condicionante.save();			
-		}					
-	}
-	
-	public void saveRecomendacoes() {
-		
-		if(this.recomendacoes == null) {
-			return;
-		}
-		
-		for(Recomendacao recomendacao : this.recomendacoes) {
-			
-			recomendacao.licencaAnalise = this;
-			recomendacao.save();			
-		}					
-	}
 	
 }

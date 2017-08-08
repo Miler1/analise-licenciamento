@@ -1,0 +1,6 @@
+div#dadosProcesso
+  form
+    .form-group
+      label Justificativa
+      textarea.form-control(readonly="", ng-model="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador", ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador")
+      p(ng-if="!modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador") Não foi inserida uma justificativa

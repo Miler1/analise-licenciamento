@@ -57,6 +57,9 @@ public class Analise extends GenericModel {
 	
 	@Transient
 	public AnaliseJuridica analiseJuridica;
+	
+	@Transient 
+	public AnaliseTecnica analiseTecnica;
 
 	public Analise save() {
 		
@@ -83,6 +86,22 @@ public class Analise extends GenericModel {
 
 		return this.analiseJuridica;
 		
+	}
+	
+	public AnaliseTecnica getAnaliseTecnica() {
+	
+		if(this.analiseTecnica != null)
+			return this.analiseTecnica;
+
+		if(this.analiseTecnica != null && !this.analisesTecnicas.isEmpty())
+			for(AnaliseTecnica analiseJuridica : this.analisesTecnicas)
+				if(analiseTecnica.ativo)
+					this.analiseTecnica = analiseTecnica;
+		
+		if(this.analiseTecnica == null)
+			this.analiseTecnica = analiseTecnica.findByProcesso(processo);
+
+		return this.analiseTecnica;		
 	}
 	
 	public static Analise findByProcesso(Processo processo) {

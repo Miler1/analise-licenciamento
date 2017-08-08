@@ -28,6 +28,7 @@ public class ProcessoSerializer {
 			"analise.analiseJuridica.dataVencimentoPrazo",
 			"analise.analiseJuridica.dataInicio",
 			"analise.analiseJuridica.dataFim",
+			"analise.analiseTecnica.justificativaCoordenador",
 			"historicoTramitacao.dataInicial",
 			"historicoTramitacao.dataFinal",
 			"historicoTramitacao.nomeUsuarioDestino",

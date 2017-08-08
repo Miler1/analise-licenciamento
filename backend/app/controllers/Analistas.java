@@ -45,9 +45,9 @@ public class Analistas extends InternalController {
 		AtividadeCaracterizacao atividadeCaracterizacao = processo.caracterizacoes.get(0).atividadeCaracterizacao;
 		
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
-				TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id :idAtividadeCnane")
+				TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id = :idAtividadeCnae")
 					.setParameter("idAtividade",atividadeCaracterizacao.atividade.id)
-					.setParameter("idAtividadeCnane", atividadeCaracterizacao.atividadeCnae.id)
+					.setParameter("idAtividadeCnae", atividadeCaracterizacao.atividadeCnae.id)
 					.first();
 		
 		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO,tipoAtividadeCaracterizacao.setor.id);
