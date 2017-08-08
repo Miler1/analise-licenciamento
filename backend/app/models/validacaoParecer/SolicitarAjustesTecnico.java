@@ -41,6 +41,6 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 		 */		
 		copia.update(copia);
 						
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO, usuarioExecutor);
+		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR, usuarioExecutor);
 	}
 }
