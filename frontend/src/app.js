@@ -116,8 +116,10 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
 				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
-				else if([app.utils.Perfis.GERENTE_TECNICO,							app.utils.Perfis.COORDENADOR_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA;
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_TECNICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR;
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.GERENTE_TECNICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE;
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 			},
@@ -197,9 +199,10 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			condicaoTramitacao: function () {
 
-				if ([app.utils.Perfis.COORDENADOR_TECNICO,
-				app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA;
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_TECNICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
+				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.GERENTE_TECNICO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
 
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
