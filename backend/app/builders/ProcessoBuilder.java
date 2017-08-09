@@ -502,7 +502,18 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		}
 		
 		return this;
-	}	
+	}
+	
+	public ProcessoBuilder filtrarPorIdUsuarioValidacaoTecnicaGerente(Long idUsuarioValidacaoGerente) {
+		
+		if (idUsuarioValidacaoGerente != null) {
+			
+			addAnaliseTecnicaAlias(false);
+			addRestricton(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacaoGerente.id", idUsuarioValidacaoGerente));
+		}
+		
+		return this;
+	}		
 	
 	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
 		

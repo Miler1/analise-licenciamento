@@ -37,6 +37,7 @@ var ProcessoService = function(request, config, $uibModal) {
 			controller: 'visualizacaoProcessoController',
 			controllerAs: 'modalVisualizacaoProcessoCtrl',
 			templateUrl: 'components/visualizacaoProcesso/visualizacaoProcesso.html',
+			windowClass: 'modalVisualizarProcesso',
 			size: 'lg',
 			resolve: {
 				processo: function() {

@@ -7,6 +7,7 @@ import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.AnalistaTecnico;
 import models.ConsultorJuridico;
+import models.GerenteTecnico;
 import models.TipoResultadoAnalise;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
@@ -29,28 +30,54 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		validarAnaliseTecnica(analiseTecnica, novaAnaliseTecnica);
 		
 		analiseTecnica._save();
-					
-		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.analistasTecnicos.get(0).usuario, usuarioExecutor);
 		
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO, usuarioExecutor);
+		if (novaAnaliseTecnica.hasGerentes()) {
+			
+			criarNovaAnaliseComGerente(analiseTecnica, novaAnaliseTecnica.getGerenteTecnico().usuario, usuarioExecutor);
+			
+			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_GERENTE, usuarioExecutor);
+			
+		} else {
+			
+			criarNovaAnaliseComAnalista(analiseTecnica, novaAnaliseTecnica.getAnalistaTecnico().usuario, usuarioExecutor);
+			
+			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO, usuarioExecutor);
+		}
 	}
 
-	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista, Usuario usuarioValidacao) {
-		
-		AnaliseTecnica novaAnalise = new AnaliseTecnica();
-		
+	private void salvarNovaAnalise(AnaliseTecnica novaAnalise, AnaliseTecnica analiseTecnica, Usuario usuarioValidacao) {
+			
 		novaAnalise.analise = analiseTecnica.analise;
 		novaAnalise.dataVencimentoPrazo = analiseTecnica.dataVencimentoPrazo;
 		novaAnalise.revisaoSolicitada = true;
 		novaAnalise.ativo = true;
 		novaAnalise.usuarioValidacao = usuarioValidacao;
 		
+		novaAnalise._save();
+	}
+	
+	private void criarNovaAnaliseComGerente(AnaliseTecnica analiseTecnica, Usuario usuarioGerente, Usuario usuarioValidacao) {
+		
+		AnaliseTecnica novaAnalise = new AnaliseTecnica();
+		
+		novaAnalise.gerentesTecnicos = new ArrayList<>();
+		GerenteTecnico gerenteTecnico = new GerenteTecnico(novaAnalise, usuarioGerente);
+		novaAnalise.gerentesTecnicos.add(gerenteTecnico);
+		
+		salvarNovaAnalise(novaAnalise, analiseTecnica, usuarioValidacao);
+	}
+	
+	private void criarNovaAnaliseComAnalista(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista, Usuario usuarioValidacao) {
+		
+		AnaliseTecnica novaAnalise = new AnaliseTecnica();
+		
 		novaAnalise.analistasTecnicos = new ArrayList<>();
 		AnalistaTecnico analistaTecnico = new AnalistaTecnico(novaAnalise, usuarioAnalista);
 		novaAnalise.analistasTecnicos.add(analistaTecnico);
 		
-		novaAnalise._save();
-	}
+		salvarNovaAnalise(novaAnalise, analiseTecnica, usuarioValidacao);
+	}	
+	
 
 	private void validarAnaliseTecnica(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica) {
 		

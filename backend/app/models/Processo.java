@@ -145,8 +145,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		GerenteTecnico.vincularAnalise(gerente, AnaliseTecnica.findByProcesso(this));
 		
-		//TODO Quando o fluxo estiver pronto adicionar aqui a tramitação
-		//tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, gerente);		
+		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);		
 	}	
 
 	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
@@ -223,15 +222,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 		
 		if (filtro.idSetor == null && filtro.idCondicaoTramitacao != null && 
-			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA)) {
+			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
 			
 			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresFilhos());			
 		}
-		
-		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA)) {
+
+		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 							
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
 		}
+		
+		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
+			
+			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
+		}		
 		
 	}
 

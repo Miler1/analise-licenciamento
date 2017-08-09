@@ -1,4 +1,4 @@
-var CxEntGerenteTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService) {
+var CxEntGerenteTecnicoController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
 
@@ -13,7 +13,7 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService, me
 	cxEntGerenteTecnico.visualizarProcesso = visualizarProcesso;
 
 	cxEntGerenteTecnico.processos = [];
-	cxEntGerenteTecnico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA;
+	cxEntGerenteTecnico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE;
 	cxEntGerenteTecnico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntGerenteTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntGerenteTecnico.dateUtil = app.utils.DateUtil;

@@ -18,7 +18,7 @@
 			li(role="tab")
 				a(data-toggle="tab", data-target="#tabEmpreendimento") Empreendedor / Empreendimento
 			li(role="tab")
-				a(data-toggle="tab", data-target="#tabJustificativaCoordenador", ng-if="usuarioSessao.perfilSelecionado.id === perfis.COORDENADOR_TECNICO || usuarioSessao.perfilSelecionado.id === perfis.DIRETOR") Justificativa Coordenador Técnico
+				a(data-toggle="tab", data-target="#tabJustificativaCoordenador") Justificativa do coordenador técnico
 
 		div.row#dadosProcesso
 			.col-xs-12.col-md-8
@@ -27,7 +27,6 @@
 					div.row
 						label.col-sm-4 Processo:
 						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.numero}}
-
 
 					div.row
 						label.col-sm-4 CPF/CNPJ:
