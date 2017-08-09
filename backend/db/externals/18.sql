@@ -37,42 +37,42 @@ UPDATE tramitacao.transicao SET id_condicao_final=13 WHERE id_condicao_inicial=1
 UPDATE tramitacao.transicao SET id_condicao_final = 13 WHERE id_transicao = 17;
 
 INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_final,id_acao) VALUES
-(19,12,7,19),
-(20,13,11,22),
-(21,13,6,23),
-(22,13,8,25),
-(23,13,7,24),
-(24,13,8,26),
-(25,12,8,10),
-(26,9,13,21),
-(27,9,13,20);
+(20,12,7,19),
+(21,13,11,22),
+(22,13,6,23),
+(23,13,8,25),
+(24,13,7,24),
+(25,13,8,26),
+(26,12,8,10),
+(27,9,13,21),
+(28,9,13,20);
 
 -- [INICIO] Configurar adição e remoção de situações
 
---Ação 21 (Deferir análise técnica via coordenador) - Adicionar situação "Deferido" - (Nº da transição: 26)
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (25, 1, 26, 1);
---Ação 20 (Indeferir análise técnica via coordenador) - Adicionar situação "Indeferido" - (Nº da transição: 27)
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (26, 2, 27, 1);
+--Ação 21 (Deferir análise técnica via coordenador) - Adicionar situação "Deferido" - (Nº da transição: 27)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (25, 1, 27, 1);
+--Ação 20 (Indeferir análise técnica via coordenador) - Adicionar situação "Indeferido" - (Nº da transição: 28)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (26, 2, 28, 1);
 
---Ação 22 (Validar deferimento técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 20)
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (27, 1, 20, 0);
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (28, 2, 20, 0);
+--Ação 22 (Validar deferimento técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 21)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (27, 1, 21, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (28, 2, 21, 0);
 
---Ação 23 (Validar indeferimento técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 21)
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (29, 1, 21, 0);
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (30, 2, 21, 0);
+--Ação 23 (Validar indeferimento técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 22)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (29, 1, 22, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (30, 2, 22, 0);
 
---Ação 24 (Invalidar parecer técnico pelo coordenador encaminhando para outro gerente) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 23)
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (31, 1, 23, 0);
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (32, 2, 23, 0);
+--Ação 24 (Invalidar parecer técnico pelo coordenador encaminhando para outro gerente) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 24)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (31, 1, 24, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (32, 2, 24, 0);
 
---Ação 25 (Invalidar parecer técnico encaminhando para outro técnico) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 22)
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (33, 1, 22, 0);
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (34, 2, 22, 0);
+--Ação 25 (Invalidar parecer técnico encaminhando para outro técnico) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 23)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (33, 1, 23, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (34, 2, 23, 0);
 
---Ação 26 (Solicitar ajuste do parecer técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 24)
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (35, 1, 24, 0);
-INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (36, 2, 24, 0);
+--Ação 26 (Solicitar ajuste do parecer técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 25)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (35, 1, 25, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (36, 2, 25, 0);
 
 
 -- [FIM] Configurar adição e remoção de situações
@@ -84,10 +84,10 @@ INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situa
 --Ação 17 (Validar indeferimento técnico pelo gerente) - Situação "Indeferido" obrigatória - (Nº da transição: 17)
 INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (4, 2, 17, 1);
 
---Ação 22 (Validar deferimento técnico pelo coordenador) - Situação "Deferido" obrigatória - (Nº da transição: 20)
-INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (5, 1, 20, 1);
---Ação 23 (Validar indeferimento pelo coordenador) - Situação "Indeferido" obrigatória - (Nº da transição: 21)
-INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (6, 2, 21, 1);
+--Ação 22 (Validar deferimento técnico pelo coordenador) - Situação "Deferido" obrigatória - (Nº da transição: 21)
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (5, 1, 21, 1);
+--Ação 23 (Validar indeferimento pelo coordenador) - Situação "Indeferido" obrigatória - (Nº da transição: 22)
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (6, 2, 22, 1);
 
 -- [FIM] Configuração dos impedimentos
 
@@ -105,7 +105,7 @@ AND id_acao=16;
 
 UPDATE tramitacao.transicao SET id_condicao_final = 6 WHERE id_transicao = 17;
 
-DELETE FROM tramitacao.transicao WHERE id_transicao IN (19,20,21,22,23,24,25,26,27);
+DELETE FROM tramitacao.transicao WHERE id_transicao IN (20,21,22,23,24,25,26,27,28);
 
 DELETE FROM tramitacao.acao WHERE id_acao IN (19,20,21,22,23,24,25,26);
 
