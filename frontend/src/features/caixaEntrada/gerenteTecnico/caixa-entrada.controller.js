@@ -18,6 +18,7 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService,ger
 	cxEntGerenteTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntGerenteTecnico.dateUtil = app.utils.DateUtil;
 	cxEntGerenteTecnico.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
+	cxEntGerenteTecnico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
 
 	function atualizarListaProcessos(processos) {
 
