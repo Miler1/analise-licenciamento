@@ -481,6 +481,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	
 	public ProcessoBuilder filtrarPorIdUsuarioValidacaoTecnica(Long idUsuarioValidacao) {
 		
 		if (idUsuarioValidacao != null) {
@@ -514,6 +515,16 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		return this;
 	}		
+	
+	public ProcessoBuilder filtrarPorIdGerenteTecnico(Long idGerenteTecnico) {
+		
+		if (idGerenteTecnico != null) {
+			
+			addRestricton(Restrictions.eq(ANALISTA_TECNICO_ALIAS+".gerentesTecnicos.id", idGerenteTecnico));
+		}
+		
+		return this;		
+	}
 	
 	public ProcessoBuilder orderByDataVencimentoPrazoAnaliseJuridica() {
 		

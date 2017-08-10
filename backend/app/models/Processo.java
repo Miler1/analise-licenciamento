@@ -26,6 +26,8 @@ import javax.persistence.Transient;
 import builders.CriteriaBuilder;
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
+import exceptions.AppException;
+import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.portalSeguranca.Usuario;
@@ -43,6 +45,7 @@ import security.UsuarioSessao;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.ListUtil;
+import utils.Mensagem;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -202,41 +205,53 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 		
-		if(usuarioSessao.setorSelecionado == null) {
+		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
+		processoBuilder.filtrarPorIdSetor(filtro.idSetor);			
+		
+		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
 			
-			return;
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
+			
+			return;		
 		}
 		
-		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
-		processoBuilder.filtrarPorIdSetor(filtro.idSetor);
+		if (usuarioSessao.setorSelecionado == null) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_USUARIO_SEM_SETOR);
+		}
 		
-		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
-				(filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) || 
-						filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA))) {
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) || 
+				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
 			
 			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, filtro.isAnaliseTecnicaOpcional);
 			
 		} else {
 			
-			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);			
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
 		}
 		
-		if (filtro.idSetor == null && filtro.idCondicaoTramitacao != null && 
-			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
+			
+			processoBuilder.filtrarPorIdGerenteTecnico(usuarioSessao.id);
+			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
+		}
+		
+		if (filtro.idSetor == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
 			
 			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresFilhos());			
 		}
 
-		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 							
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
+			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
 		}
 		
-		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
 			
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
+			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
 		}		
-		
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
