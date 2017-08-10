@@ -16,6 +16,7 @@ var AguardandoValidacaoGerenteTecnicoListController = function($scope, config, $
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
+	listagem.disabledFields = _.concat($scope.aguardandoValidacaoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
 
 	function atualizarListaProcessos(processos) {
 

@@ -52,6 +52,8 @@ public class AnaliseTecnicaSerializer {
 			"pareceresTecnicosRestricoes.codigoCamada",
 			"pareceresTecnicosRestricoes.parecer",
 			"parecer",
+			"parecerValidacaoGerente",
+			"usuarioValidacaoGerente",
 			"dataVencimentoPrazo",
 			"revisaoSolicitada",
 			"ativo",
