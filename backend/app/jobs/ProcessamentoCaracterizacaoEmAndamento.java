@@ -24,7 +24,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	@Override
 	public void executar() throws Exception {
 
-		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Iniciando job");
+		Logger.info("[INICIO-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [INICIO-JOB]");
 		
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 		
@@ -39,7 +39,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Long[] ids = new ListUtil().getIdsAsArray(caracterizacoes);
 		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
 
-		
+		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
 	}
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
