@@ -233,6 +233,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
 			
 			processoBuilder.filtrarPorIdGerenteTecnico(usuarioSessao.id);
+			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
 		}
 		
 		if (filtro.idSetor == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
@@ -243,11 +244,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 							
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
+			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
 		}
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
 			
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
+			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
 		}		
 	}
 
