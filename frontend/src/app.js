@@ -123,18 +123,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 			},
-			deveFiltrarPorUsuario: function () {
-
-				if ([app.utils.Perfis.COORDENADOR_JURIDICO,
-						app.utils.Perfis.COORDENADOR_TECNICO,
-						app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1)
-					return false;
-				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
-					return true;
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
-					return true;
-
-			},
+			deveFiltrarPorUsuario: true,
 			idPerfilSelecionado: function(){
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
@@ -207,7 +196,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 			},
-			deveFiltrarPorUsuario: false,
+			deveFiltrarPorUsuario: true,
 			idPerfilSelecionado: function(){
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
