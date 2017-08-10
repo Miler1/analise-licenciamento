@@ -23,6 +23,7 @@ public class Analistas extends InternalController {
 		Usuario analista = Usuario.findById(idUsuario);				
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
 		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);
+		usuarioExecultor.perfilSelecionado = usuarioSessao.perfilSelecionado;
 		
 		for(Long idProcesso : idsProcesso) {
 			
