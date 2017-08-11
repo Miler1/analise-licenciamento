@@ -12,7 +12,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
 	validacaoAnaliseTecnicaGerente.isParecerNaoValidado = isParecerNaoValidado;
 	validacaoAnaliseTecnicaGerente.isObrigatorio = isObrigatorio;
 	validacaoAnaliseTecnicaGerente.cancelar = cancelar;
-	validacaoAnaliseTecnicaGerente.concluir = concluir;  
+	validacaoAnaliseTecnicaGerente.concluir = concluir;
+
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;  
 
     function init() {
@@ -114,7 +115,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
 				}
 			]
 		};
-	}    
+	}   
 
 	function concluir() {
 

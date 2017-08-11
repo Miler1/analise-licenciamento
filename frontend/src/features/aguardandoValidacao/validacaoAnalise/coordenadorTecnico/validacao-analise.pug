@@ -78,17 +78,31 @@ section.margin-bottom-md
 				ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
 
 			+inputErrors('formularioValidacao', 'parecer', 'required')
-
+		
+		
 		.form-group(ng-if="validacaoAnaliseTecnica.isParecerNaoValidado()")
-				label.control-label.obrigatorio Analista técnico:
+			div
+				label.control-label Revisar Parecer
+			div.text-center
+				label.radio-inline(for="radio_gerente_tecnico")
+					input#radio_gerente_tecnico(type="radio", name="revisar_parecer",value="1", ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
+						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente", required) 
+					| Gerente técnico
+				
+				label.radio-inline(for="radio_analista_tecnico")
+					input#radio_analista_tecnico(type="radio", name="revisar_parecer",value="2", ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()", 
+						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente", required) 
+					| Analista técnico
+			div
+				label.control-label.obrigatorio Gerente/Analista:
 				select.form-control(
 					ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico", 
 					name="selectConsultor",
 					required,
-					ng-options="analista.id as analista.pessoa.nome for analista in validacaoAnaliseTecnica.analistas")
+					ng-options="analista.id as analista.pessoa.nome for analista in validacaoAnaliseTecnica.analistasGerentes")
 					
 
-				+inputErrors('formularioValidacao', 'selectConsultor', 'required')            
+			+inputErrors('formularioValidacao', 'selectConsultor', 'required')            
 
 section.margin-bottom-xl
 
