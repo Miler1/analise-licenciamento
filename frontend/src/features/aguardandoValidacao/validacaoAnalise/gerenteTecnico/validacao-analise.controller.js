@@ -22,13 +22,16 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
 				validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
 
 				validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.idAnalistaTecnico =
-					validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.id;                
+					validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.id; 
+                     
+                analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id)
+                    .then(function(response){
+                        validacaoAnaliseTecnicaGerente.analistas = response.data;
+                });            
+		    
+
 			});
 
-		analistaService.getAnalistasTecnicos()
-			.then(function(response){
-				validacaoAnaliseTecnicaGerente.analistas = response.data;
-			});            
 		
 		$rootScope.$broadcast('atualizarContagemProcessos');        
     }
