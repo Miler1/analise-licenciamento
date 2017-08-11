@@ -232,7 +232,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		updatePareceresTecnicosRestricoes(novaAnalise.pareceresTecnicosRestricoes);		
 	}
 	
-	private void updatePareceresTecnicosRestricoes(List<ParecerTecnicoRestricao> pareceresSalvar) {
+	public void updatePareceresTecnicosRestricoes(List<ParecerTecnicoRestricao> pareceresSalvar) {
 		
 		if (this.pareceresTecnicosRestricoes == null)
 			this.pareceresTecnicosRestricoes = new ArrayList<>();
@@ -269,7 +269,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 	}
 
-	private void updateLicencasAnalise(List<LicencaAnalise> novasLicencasAnalise) {
+	public void updateLicencasAnalise(List<LicencaAnalise> novasLicencasAnalise) {
 		
 		if (this.licencasAnalise == null) {
 			

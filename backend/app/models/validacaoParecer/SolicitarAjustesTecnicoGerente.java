@@ -1,8 +1,11 @@
 package models.validacaoParecer;
 
+import java.util.ArrayList;
+
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.LicencaAnalise;
+import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
@@ -34,7 +37,13 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 		/**
 		 * Workaround para persistir as licenças e os pareceres técnicos restrições
 		 */
-		copia.update(copia);
+		ArrayList<LicencaAnalise> licencasAnaliseSalvar = new ArrayList<>(copia.licencasAnalise);
+		copia.licencasAnalise.clear();		
+		copia.updateLicencasAnalise(licencasAnaliseSalvar);
+		
+		ArrayList<ParecerTecnicoRestricao> pareceresTecnicosRestricoesSalvar = new ArrayList<>(copia.pareceresTecnicosRestricoes);
+		copia.pareceresTecnicosRestricoes.clear();		
+		copia.updatePareceresTecnicosRestricoes(pareceresTecnicosRestricoesSalvar);
 			
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
 	}
