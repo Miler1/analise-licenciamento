@@ -266,6 +266,12 @@ licenciamento.constant('config', {
 
 		JURIDICA: 'JURIDICA',
 		TECNICA: 'TECNICA'
+	})
+	.constant('TiposSetores', {
+		SECRETARIA: 'SECRETARIA',
+		DIRETORIA: 'DIRETORIA',
+		COORDENADORIA: 'COORDENADORIA',
+		GERENCIA:'GERENCIA'
 	});
 
 
