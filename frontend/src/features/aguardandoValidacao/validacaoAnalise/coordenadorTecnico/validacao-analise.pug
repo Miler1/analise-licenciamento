@@ -17,7 +17,9 @@ section.margin-bottom-md
 
 	fieldset.panel.panel-default(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
 		div.panel-body
-			p(ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente")
+			p(ng-if="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente", ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente")
+
+			p(ng-if="!validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente") O gerente técnico não fez nenhuma consideração.
 	
 	
 	div.margin-top-md
