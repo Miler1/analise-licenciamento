@@ -84,7 +84,12 @@ public class AnaliseTecnicaSerializer {
 			"analistasTecnicos.usuario.id",
 			"analistasTecnicos.usuario.pessoa.cpf",
 			"analistasTecnicos.usuario.pessoa.id",
-			"analistasTecnicos.usuario.pessoa.nome"
+			"analistasTecnicos.usuario.pessoa.nome",
+			"gerentesTecnicos.id",
+			"gerentesTecnicos.usuario.id",
+			"gerentesTecnicos.usuario.pessoa.cpf",
+			"gerentesTecnicos.usuario.pessoa.id",
+			"gerentesTecnicos.usuario.pessoa.nome"
 			
 		).transform(new GeometryTransformer(), Geometry.class);
 

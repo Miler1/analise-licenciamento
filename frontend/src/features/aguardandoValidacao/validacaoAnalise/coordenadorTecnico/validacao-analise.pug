@@ -8,14 +8,23 @@ section.margin-bottom-md
 
 	h3 Análise técnica
 
+	h4.margin-top-md {{validacaoAnaliseTecnica.analiseTecnica.tipoResultadoAnalise.nome}}
+
+	div.margin-top-md(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
+		label.not-bold.margin-right-xs(for="texto_nome_gerente_tecnico") Gerente técnico:
+		span#texto_nome_gerente_tecnico
+			strong {{validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos[0].usuario.pessoa.nome}}
+
+	fieldset.panel.panel-default(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
+		div.panel-body
+			p(ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente")
+	
+	
 	div.margin-top-md
-		label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Analista técnico:  
-		span#texto_nome_consultor_juridico
+		label.not-bold.margin-right-xs(for="texto_nome_analista_tecnico") Analista técnico:  
+		span#texto_nome_analista_tecnico
 			strong {{validacaoAnaliseTecnica.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
-	hr
-
-	h4 {{validacaoAnaliseTecnica.analiseTecnica.tipoResultadoAnalise.nome}}
-
+	
 	fieldset.panel.panel-default
 		div.panel-body
 			p(ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecer")
@@ -39,7 +48,7 @@ section.margin-bottom-md
 
 	.row(ng-show="!validacaoAnaliseTecnica.analiseTecnica.documentos || validacaoAnaliseTecnica.analiseTecnica.documentos.length == 0")
 		.col-md-12
-			p.empty-result Não existem arquivos anexados.            
+			p.empty-result Não existem arquivos anexados.
 
 	form(name="formularioValidacao", novalidate)
 		.form-group.text-center.margin-bottom-md.margin-top-md
