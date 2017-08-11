@@ -78,7 +78,7 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService,ger
 		modalInstance.result
 			.then(function (result) {
 
-				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
+				analistaService.vincularAnaliseAnalistaTecnico(result.idConsultorSelecionado, null, result.idsProcessosSelecionados)
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
