@@ -82,8 +82,20 @@ public class AnalistaTecnico extends GenericModel {
 		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
 		analistaTecnico.save();
 		
-		analiseTecnica.usuarioValidacao = usuarioExecutor;
-		analiseTecnica._save();		
+		/**
+		 * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
+		 * caso contrário atribui o usuário executor para o campo do coordenador. 
+		 */
+		if (usuarioExecutor.perfilSelecionado.id.equals(Perfil.GERENTE_TECNICO)){
+			
+			analiseTecnica.usuarioValidacaoGerente = usuarioExecutor;
+			
+		} else {
+			
+			analiseTecnica.usuarioValidacao = usuarioExecutor;
+		}
+		
+		analiseTecnica._save();
 	}
 	
 	public AnalistaTecnico gerarCopia() {

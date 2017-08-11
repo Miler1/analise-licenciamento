@@ -146,7 +146,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	
 	public void vincularGerenteTecnico(Usuario gerente, Usuario usuarioExecutor) {
 		
-		GerenteTecnico.vincularAnalise(gerente, AnaliseTecnica.findByProcesso(this));
+		GerenteTecnico.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);		
 	}	

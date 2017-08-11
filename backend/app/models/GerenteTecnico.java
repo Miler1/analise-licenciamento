@@ -60,7 +60,7 @@ public class GerenteTecnico extends GenericModel {
 		
 	}	
 	
-	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica) {
+	public static void vincularAnalise(Usuario usuario, Usuario usuarioExecutor, AnaliseTecnica analiseTecnica) {
 		
 		if (!usuario.hasPerfil(Perfil.GERENTE_TECNICO))
 			throw new PermissaoNegadaException(Mensagem.GERENTE_DIFERENTE_DE_GERENTE_TECNICO);		
@@ -68,6 +68,8 @@ public class GerenteTecnico extends GenericModel {
 		GerenteTecnico gerenteTecnico = new GerenteTecnico(analiseTecnica, usuario);
 		gerenteTecnico.save();
 		
+		analiseTecnica.usuarioValidacao = usuarioExecutor;
+		analiseTecnica._save();			
 	}
 	
 	public GerenteTecnico gerarCopia() {
