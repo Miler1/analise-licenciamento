@@ -35,7 +35,7 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 		/**
 		 * Quando o ajuste for do coordenador para o gerente deve-se manter a validação do gerente
 		 */
-		copia.setValidacaoGerente(analise);
+		copia.setValidacaoGerente(analiseTecnica);
 		
 		copia._save();
 		
