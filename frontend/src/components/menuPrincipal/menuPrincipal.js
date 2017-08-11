@@ -52,8 +52,11 @@ var MenuPrincipal = {
 				.then(function(response){
 					 item.totalItens = response.data;
 				})
-				.catch(function(){
-					mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
+				.catch(function(response){
+					if(!!response.data.texto)
+						mensagem.warning(response.data.texto);
+					else
+						mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
 				});
 		}
 

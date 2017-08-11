@@ -10,7 +10,8 @@ var FiltroProcessos = {
 		isAnaliseJuridica: '<',
 		isAnaliseTecnica: '<',
 		isAnaliseTecnicaOpcional: '<',
-		onAfterUpdate: '='
+		onAfterUpdate: '=',
+		isGerenteLogado: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -61,16 +62,22 @@ var FiltroProcessos = {
 						ctrl.onAfterUpdate(ctrl.filtro);
 
 				})
-				.catch(function(){
-					mensagem.error("Ocorreu um erro ao buscar a lista de processos.");
+				.catch(function(response){
+					if(!!response.data.texto)
+						mensagem.warning(response.data.texto);
+					else
+						mensagem.error("Ocorreu um erro ao buscar a lista de processos.");
 				});
 
 			processoService.getProcessosCount(ctrl.filtro)
 				.then(function(response){
 					 ctrl.atualizarPaginacao(response.data, ctrl.filtro.paginaAtual);
 				})
-				.catch(function(){
-					mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
+				.catch(function(response){
+					if(!!response.data.texto)
+						mensagem.warning(response.data.texto);
+					else
+						mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
 				});
 
 			$rootScope.$broadcast('atualizarContagemProcessos');
@@ -150,7 +157,7 @@ var FiltroProcessos = {
 						});
 				}
 				else{
-					analistaService.getAnalistasTecnicosByPerfil()
+					analistaService.getAnalistasTecnicosByPerfil(ctrl.isGerenteLogado)
 						.then(function(response){
 
 							ctrl.analistasTecnicos = response.data;

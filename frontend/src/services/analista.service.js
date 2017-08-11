@@ -13,10 +13,10 @@ var AnalistaService = function(request, config) {
 			.get(config.BASE_URL() + "analistas/" + idProcesso);
 	};
 
-    this.getAnalistasTecnicosByPerfil = function() {
+    this.getAnalistasTecnicosByPerfil = function(isGerenteLogado) {
 
 		return request
-			.get(config.BASE_URL() + "analistas/perfil");
+			.get(config.BASE_URL() + "analistas/perfil?isGerente=" + isGerenteLogado);
 	};
 
     this.vincularAnaliseAnalistaTecnico = function(idAnalista, justificativaCoordenador, idsProcessos) {
