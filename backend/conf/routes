@@ -83,6 +83,7 @@ GET		/documentos/{id}/download					Documentos.download
 
 # Setores
 GET		/setores/setoresFilhos						Setores.getSetoresFilhos
+GET		/setores/setoresPorTipo						Setores.getSetoresByTipo
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
