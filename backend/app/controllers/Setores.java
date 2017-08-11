@@ -5,6 +5,7 @@ import java.util.List;
 
 import exceptions.AppException;
 import models.portalSeguranca.Setor;
+import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import play.db.jpa.JPABase;
 import security.Acao;
@@ -33,5 +34,16 @@ public class Setores extends InternalController {
 		List<Setor> setoresFilhos = setorPai.getSetoresFilhos();
 		
 		renderJSON(setoresFilhos, SetoresSerializer.getSetoresFilhos);
+	}
+	
+	public void getSetoresByTipo(TipoSetor tipoSetor) {
+		
+		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
+		
+		List<Setor> setores = Setor.find("tipoSetor = :tipoSetor")
+					.setParameter("tipoSetor", tipoSetor)
+					.fetch();
+		
+		renderJSON(setores, SetoresSerializer.getSetoresFilhos);		
 	}
 }

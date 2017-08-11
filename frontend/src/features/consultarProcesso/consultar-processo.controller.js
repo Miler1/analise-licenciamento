@@ -1,4 +1,4 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal, TiposSetores) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
 
@@ -16,6 +16,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.dateUtil = app.utils.DateUtil;
 	consultarProcesso.getDiasRestantes = getDiasRestantes;
 	consultarProcesso.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
+	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 
 	function atualizarListaProcessos(processos) {
 
