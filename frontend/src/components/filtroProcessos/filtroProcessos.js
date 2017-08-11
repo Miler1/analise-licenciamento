@@ -10,7 +10,8 @@ var FiltroProcessos = {
 		isAnaliseJuridica: '<',
 		isAnaliseTecnica: '<',
 		isAnaliseTecnicaOpcional: '<',
-		onAfterUpdate: '='
+		onAfterUpdate: '=',
+		isGerenteLogado: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -156,7 +157,7 @@ var FiltroProcessos = {
 						});
 				}
 				else{
-					analistaService.getAnalistasTecnicosByPerfil()
+					analistaService.getAnalistasTecnicosByPerfil(ctrl.isGerenteLogado)
 						.then(function(response){
 
 							ctrl.analistasTecnicos = response.data;

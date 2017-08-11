@@ -66,17 +66,26 @@ public class Analistas extends InternalController {
 		
 	}
 	
-	public static void getAnalistaTecnicoPerfilSetores() {
+	public static void getAnalistaTecnicoPerfilSetores(boolean isGerente) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		
+		List<Usuario> pessoas = null;
+		if(!isGerente) {
+			
+			List<Integer> idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresFilhos();
+			
+			pessoas = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
+		
+		} else {
+			
+			pessoas = Usuario.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO, usuarioSessao.setorSelecionado.id);
+		}
 
-		List<Integer> idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresFilhos();
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
-		
-		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);		
+		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);		
 		
 	}
 	
