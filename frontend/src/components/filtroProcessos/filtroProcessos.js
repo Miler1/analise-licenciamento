@@ -11,7 +11,9 @@ var FiltroProcessos = {
 		isAnaliseTecnica: '<',
 		isAnaliseTecnicaOpcional: '<',
 		onAfterUpdate: '=',
-		isGerenteLogado: '<'
+		isGerenteLogado: '<',
+		tipoSetor: '<',
+		pesquisarTodasGerencias: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -183,22 +185,45 @@ var FiltroProcessos = {
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.GERENCIA)){
 
-				setorService.getSetoresFilhos()
-					.then(function(response){
+				if(!ctrl.pesquisarTodasGerencias) {
 
-						ctrl.setores = response.data;
-					})
-					.catch(function(response){
+					setorService.getSetoresFilhos()
+						.then(function(response){
 
-						if(response.data && response.data.texto) {
+							ctrl.setores = response.data;
+						})
+						.catch(function(response){
 
-							mensagem.warning(response.data.texto);
+							if(response.data && response.data.texto) {
 
-						} else {
+								mensagem.warning(response.data.texto);
 
-							mensagem.warning('Não foi possível obter a lista de setores.');
-						}
-					});
+							} else {
+
+								mensagem.warning('Não foi possível obter a lista de setores.');
+							}
+						});
+				
+					} else {
+
+					setorService.getSetoresPorTipo(ctrl.tipoSetor)
+						.then(function(response){
+
+							ctrl.setores = response.data;
+						})
+						.catch(function(response){
+
+							if(response.data && response.data.texto) {
+
+								mensagem.warning(response.data.texto);
+
+							} else {
+
+								mensagem.warning('Não foi possível obter a lista de setores.');
+							}
+						});
+				}
+
 			}
 
 			if (ctrl.pesquisarAoInicializar){

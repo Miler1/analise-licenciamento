@@ -36,10 +36,14 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 		
 		/**
 		 * Workaround para persistir as licenças e os pareceres técnicos restrições
-		 */
-		ArrayList<LicencaAnalise> licencasAnaliseSalvar = new ArrayList<>(copia.licencasAnalise);
-		copia.licencasAnalise.clear();		
-		copia.updateLicencasAnalise(licencasAnaliseSalvar);
+		 */		
+		for(LicencaAnalise licencaAnalise: copia.licencasAnalise) {
+			
+			licencaAnalise._save();
+			
+			licencaAnalise.saveCondicionantes();
+			licencaAnalise.saveRecomendacoes();
+		}			
 		
 		ArrayList<ParecerTecnicoRestricao> pareceresTecnicosRestricoesSalvar = new ArrayList<>(copia.pareceresTecnicosRestricoes);
 		copia.pareceresTecnicosRestricoes.clear();		
