@@ -14,7 +14,7 @@ section.margin-bottom-md
 			strong {{validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
 	hr
 
-	section(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada")
+	section(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada && validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
 		label Parecer da validação:
 
 		div(class="alert alert-warning", ng-bind-html="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
