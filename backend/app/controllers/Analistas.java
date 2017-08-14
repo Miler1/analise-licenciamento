@@ -58,7 +58,7 @@ public class Analistas extends InternalController {
 	
 	public static void getAnalistaTecnicoPerfil() {
 		
-		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.CONSULTAR_PROCESSO);
 		
 		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
 		
