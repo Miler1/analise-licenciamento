@@ -85,10 +85,10 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		
 		analiseTecnica.validarParecerValidacao();
 		
-		if (novaAnaliseTecnica.analistasTecnicos == null || novaAnaliseTecnica.analistasTecnicos.isEmpty()) {
+		if ((novaAnaliseTecnica.gerentesTecnicos == null || novaAnaliseTecnica.gerentesTecnicos.isEmpty()) &&
+			(novaAnaliseTecnica.analistasTecnicos == null || novaAnaliseTecnica.analistasTecnicos.isEmpty())) {
 			
-			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONSULTOR_NAO_INFORMADO);
-		}
-		
+			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO);
+		}		
 	}
 }
