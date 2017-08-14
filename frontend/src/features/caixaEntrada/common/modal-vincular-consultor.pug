@@ -40,7 +40,7 @@ form(name="formVincularConsultor", novalidate)
 		.row.form-group(ng-if="modalCtrl.justificationEnabled")
 			.col-md-12
 				label.control-label.obrigatorio Justificativa:
-				textarea#justificativa.form-control(name='justificativa', rows='6', ng-model="modalCtrl.justificativa",
+				textarea#justificativa.form-control.textarea--no-resize(name='justificativa', rows='6', ng-model="modalCtrl.justificativa",
 					maxlength='2200', ng-required="modalCtrl.justificationEnabled")
 
 				+inputErrors('formVincularConsultor', 'justificativa', 'required')
