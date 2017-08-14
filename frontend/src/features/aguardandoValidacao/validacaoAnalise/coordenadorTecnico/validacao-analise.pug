@@ -85,16 +85,20 @@ section.margin-bottom-md
 				label.control-label Revisar Parecer
 			div.text-center
 				label.radio-inline(for="radio_gerente_tecnico")
-					input#radio_gerente_tecnico(type="radio", name="revisar_parecer",value="1", ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
-						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente", required) 
+					input#radio_gerente_tecnico(type="radio", name="revisar_parecer", required,
+						ng-value="validacaoAnaliseTecnica.analistaGerente.GERENTE", 
+						ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
+						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente") 
 					| Gerente técnico
 				
 				label.radio-inline(for="radio_analista_tecnico")
-					input#radio_analista_tecnico(type="radio", name="revisar_parecer",value="2", ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()", 
-						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente", required) 
+					input#radio_analista_tecnico(type="radio", name="revisar_parecer", required,
+						ng-value="validacaoAnaliseTecnica.analistaGerente.ANALISTA",
+						ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()",
+						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
 					| Analista técnico
 			div
-				label.control-label.obrigatorio Gerente/Analista:
+				label.control-label.obrigatorio {{validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente === validacaoAnaliseTecnica.analistaGerente.GERENTE ? 'Gerente:' : 'Analista:'}}
 				select.form-control(
 					ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico", 
 					name="selectConsultor",
