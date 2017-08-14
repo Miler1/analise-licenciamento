@@ -14,6 +14,11 @@ section.margin-bottom-md
 			strong {{validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
 	hr
 
+	section(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada")
+		label Parecer da validação:
+
+		div(class="alert alert-warning", ng-bind-html="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+
 	h4 {{validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoAnalise.nome}}
 
 	fieldset.panel.panel-default

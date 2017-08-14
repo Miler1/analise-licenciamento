@@ -7,8 +7,9 @@ div(ng-init="ctrl.init()")
         +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()')     
 
     section(ng-if="ctrl.analiseTecnica.analiseTecnicaRevisada")   
-        label Parecer da validação:     
-        div(class="alert alert-warning", ng-bind-html="ctrl.analiseJuridica.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+        label Parecer da validação:
+
+        div(class="alert alert-warning", ng-bind-html="ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacaoGerente || ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
            
 
     section.margin-bottom-md
