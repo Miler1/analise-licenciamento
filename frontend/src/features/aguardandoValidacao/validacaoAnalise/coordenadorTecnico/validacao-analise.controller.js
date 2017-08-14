@@ -4,6 +4,10 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
     var validacaoAnaliseTecnica = this;
 
     validacaoAnaliseTecnica.analiseTecnicaValidacao = {};
+    validacaoAnaliseTecnica.analistaGerente = {
+        GERENTE: 'gerentesTecnicos',
+        ANALISTA: 'analistasTecnicos'
+    };
 
     validacaoAnaliseTecnica.init = init;
     validacaoAnaliseTecnica.exibirDadosProcesso = exibirDadosProcesso; 
@@ -21,10 +25,7 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 
 		analiseTecnicaService.getAnaliseTecnica($route.current.params.idAnalise)
 			.then(function(response){
-				validacaoAnaliseTecnica.analiseTecnica = response.data;
-
-				validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico =
-					validacaoAnaliseTecnica.analiseTecnica.analistasTecnicos[0].usuario.id;                
+				validacaoAnaliseTecnica.analiseTecnica = response.data;               
 			});
 
 		analistaService.getAnalistasTecnicos()
@@ -117,18 +118,23 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
     }
 
 	function montarAnaliseTecnica(analiseTecnicaValidacao){
-		return {
-			id: validacaoAnaliseTecnica.analiseTecnica.id,
-			tipoResultadoValidacao: { id : analiseTecnicaValidacao.idTipoResultadoValidacao},
-			parecerValidacao: analiseTecnicaValidacao.parecerValidacao,
-			analistasTecnicos:[ 
-				{
-					usuario: {
-						id: analiseTecnicaValidacao.idAnalistaTecnico
-					}
-				}
-			]
-		};
+
+		var analiseTecnica = 
+            {
+                id: validacaoAnaliseTecnica.analiseTecnica.id,
+                tipoResultadoValidacao: { id : analiseTecnicaValidacao.idTipoResultadoValidacao},
+                parecerValidacao: analiseTecnicaValidacao.parecerValidacao
+            };
+
+        analiseTecnica[analiseTecnicaValidacao.analistaGerente] = [ 
+            {
+                usuario: {
+                    id: analiseTecnicaValidacao.idAnalistaTecnico
+                }
+            }
+        ];
+        
+        return analiseTecnica;
 	}    
 
 	function concluir() {
