@@ -82,8 +82,8 @@ section.margin-bottom-md
 		
 		.form-group(ng-if="validacaoAnaliseTecnica.isParecerNaoValidado()")
 			div
-				label.control-label Revisar Parecer
-			div.text-center
+				label.control-label.obrigatorio Revisar Parecer
+			div.text-center(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.revisar_parecer.$error.required}")
 				label.radio-inline(for="radio_gerente_tecnico")
 					input#radio_gerente_tecnico(type="radio", name="revisar_parecer", required,
 						ng-value="validacaoAnaliseTecnica.analistaGerente.GERENTE", 
@@ -97,10 +97,12 @@ section.margin-bottom-md
 						ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()",
 						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
 					| Analista técnico
-			div
+			+inputErrors('formularioValidacao', 'revisar_parecer', 'required')
+
+			div(ng-if="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
 				label.control-label.obrigatorio {{validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente === validacaoAnaliseTecnica.analistaGerente.GERENTE ? 'Gerente:' : 'Analista:'}}
 				select.form-control(
-					ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico", 
+					ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico",
 					name="selectConsultor",
 					required,
 					ng-options="analista.id as analista.pessoa.nome for analista in validacaoAnaliseTecnica.analistasGerentes")
