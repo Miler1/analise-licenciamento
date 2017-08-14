@@ -1,5 +1,5 @@
 var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaService, $route, $scope, 
-		mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService) {
+		mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService, gerenteService) {
 
     var validacaoAnaliseTecnica = this;
 
@@ -12,7 +12,9 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 	validacaoAnaliseTecnica.isParecerNaoValidado = isParecerNaoValidado;
 	validacaoAnaliseTecnica.isObrigatorio = isObrigatorio;
 	validacaoAnaliseTecnica.cancelar = cancelar;
-	validacaoAnaliseTecnica.concluir = concluir;  
+	validacaoAnaliseTecnica.concluir = concluir;
+    validacaoAnaliseTecnica.getAnalistasTecnicos = getAnalistasTecnicos;
+    validacaoAnaliseTecnica.getGerentesTecnicos = getGerentesTecnicos;  
     validacaoAnaliseTecnica.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;  
 
     function init() {
@@ -31,6 +33,22 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 			});            
 		
 		$rootScope.$broadcast('atualizarContagemProcessos');        
+    }
+
+    function getAnalistasTecnicos() {
+
+        analistaService.getAnalistasTecnicos()
+            .then(function(response){
+                validacaoAnaliseTecnica.analistasGerentes = response.data;
+            });
+    }
+
+    function getGerentesTecnicos() {
+
+        gerenteService.getGerentesTecnicos()
+            .then(function(response){
+                validacaoAnaliseTecnica.analistasGerentes = response.data;
+            });
     }
 
 	function exibirDadosProcesso() {

@@ -12,7 +12,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
 	validacaoAnaliseTecnicaGerente.isParecerNaoValidado = isParecerNaoValidado;
 	validacaoAnaliseTecnicaGerente.isObrigatorio = isObrigatorio;
 	validacaoAnaliseTecnicaGerente.cancelar = cancelar;
-	validacaoAnaliseTecnicaGerente.concluir = concluir;  
+	validacaoAnaliseTecnicaGerente.concluir = concluir;
+
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;  
 
     function init() {
@@ -22,8 +23,17 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
 				validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
 
 				validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.idAnalistaTecnico =
-					validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.id; 
-                     
+					validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.id;
+                
+                if (validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoValidacaoGerente) {
+
+                    validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente =
+                        validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoValidacaoGerente.id;
+                }
+                
+                validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.parecerValidacaoGerente =
+                    validacaoAnaliseTecnicaGerente.analiseTecnica.parecerValidacaoGerente;
+
                 analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id)
                     .then(function(response){
                         validacaoAnaliseTecnicaGerente.analistas = response.data;
@@ -114,7 +124,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
 				}
 			]
 		};
-	}    
+	}   
 
 	function concluir() {
 
