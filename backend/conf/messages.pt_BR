@@ -78,6 +78,7 @@ ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO=A validade da licença está ma
 ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO=A validade da condicionante está maior que o máximo permitido.
 ANALISE_TECNICA_LICENCA_SEM_VALIDACAO=As licenças não foram todas validadas.
 ANALISE_TECNICA_USUARIO_SEM_SETOR=Para a análise técnica o usuário logado precisa ter um setor.
+ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO=O gerente ou analista técnico não foi informado.
 
 #
 # Setor

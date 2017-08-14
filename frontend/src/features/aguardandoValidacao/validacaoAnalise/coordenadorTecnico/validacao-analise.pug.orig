@@ -87,6 +87,15 @@ section.margin-bottom-md
 				label.control-label.obrigatorio Revisar Parecer
 			div.text-center(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.revisar_parecer.$error.required}")
 				label.radio-inline(for="radio_gerente_tecnico")
+<<<<<<< HEAD
+					input#radio_gerente_tecnico(type="radio", name="revisar_parecer",value="1", ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
+						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente", required) 
+					| Gerente técnico
+				
+				label.radio-inline(for="radio_analista_tecnico")
+					input#radio_analista_tecnico(type="radio", name="revisar_parecer",value="2", ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()", 
+						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente", required) 
+=======
 					input#radio_gerente_tecnico(type="radio", name="revisar_parecer", required,
 						ng-value="validacaoAnaliseTecnica.analistaGerente.GERENTE", 
 						ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
@@ -98,6 +107,7 @@ section.margin-bottom-md
 						ng-value="validacaoAnaliseTecnica.analistaGerente.ANALISTA",
 						ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()",
 						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
+>>>>>>> c53aa7aeaa83d4ee426af27fd0716853214c37f8
 					| Analista técnico
 			+inputErrors('formularioValidacao', 'revisar_parecer', 'required')
 

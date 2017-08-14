@@ -2,5 +2,5 @@ div#dadosProcesso
   form
     .form-group
       label Justificativa
-      textarea.form-control(readonly="", ng-model="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador", ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador")
+      textarea.form-control.textarea--no-resize(readonly="", ng-model="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador", ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador")
       p.i(ng-if="!modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador") Não há nenhuma justificativa
