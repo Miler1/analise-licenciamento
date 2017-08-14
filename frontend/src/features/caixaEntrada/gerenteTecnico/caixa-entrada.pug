@@ -15,9 +15,10 @@ div
 	.row
 		.col-md-12
 			div(ng-if="cxEntGerenteTecnico.processos && cxEntGerenteTecnico.processos.length > 0")
-				table.table.table-striped.table-condensed
+				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
+							th
 							th
 								input(type='checkbox',
 									ng-model='cxEntGerenteTecnico.todosProcessosSelecionados',
@@ -32,6 +33,8 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntGerenteTecnico.processos")
+							td
+								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
 							td 
 								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntGerenteTecnico.verificarTodosProcessosMarcados()")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
@@ -60,6 +63,8 @@ div
 												a(ng-click="cxEntGerenteTecnico.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
+				div
+					span.icone-revisao-solicitada.legenda revisão solicitada
 				div
 					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntGerenteTecnico.vincularAnalista()", 
 																  ng-disabled="!cxEntGerenteTecnico.hasAtLeastOneProcessoSelected()",
