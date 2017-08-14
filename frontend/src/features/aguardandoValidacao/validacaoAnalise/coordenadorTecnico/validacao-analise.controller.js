@@ -14,7 +14,7 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 	validacaoAnaliseTecnica.cancelar = cancelar;
 	validacaoAnaliseTecnica.concluir = concluir;
     validacaoAnaliseTecnica.getAnalistasTecnicos = getAnalistasTecnicos;
-    validacaoAnaliseTecnica.getGerentesTecnicos = getGerentesTecnicos;  
+    validacaoAnaliseTecnica.getGerentesTecnicos = getGerentesTecnicos;
     validacaoAnaliseTecnica.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;  
 
     function init() {
@@ -37,7 +37,7 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 
     function getAnalistasTecnicos() {
 
-        analistaService.getAnalistasTecnicos()
+        analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseTecnica.analiseTecnica.analise.processo.id)
             .then(function(response){
                 validacaoAnaliseTecnica.analistasGerentes = response.data;
             });
@@ -45,7 +45,7 @@ var ValidacaoAnaliseTecnicaController = function($rootScope, analiseTecnicaServi
 
     function getGerentesTecnicos() {
 
-        gerenteService.getGerentesTecnicos()
+        gerenteService.getGerentesTecnicosByIdProcesso(validacaoAnaliseTecnica.analiseTecnica.analise.processo.id)
             .then(function(response){
                 validacaoAnaliseTecnica.analistasGerentes = response.data;
             });
