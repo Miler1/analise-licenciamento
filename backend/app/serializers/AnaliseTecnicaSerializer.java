@@ -40,8 +40,9 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.empreendimento.pessoa.cpf",
 			"analise.processo.empreendimento.municipio.nome",
 			"analise.processo.empreendimento.municipio.estado.codigo",	
-			"analiseJuridicaRevisada.id",
-			"analiseJuridicaRevisada.parecerValidacao",			
+			"analiseTecnicaRevisada.id",
+			"analiseTecnicaRevisada.parecerValidacao",
+			"analiseTecnicaRevisada.parecerValidacaoGerente",
 			"analisesDocumentos.id",
 			"analisesDocumentos.validado",
 			"analisesDocumentos.parecer",
@@ -91,7 +92,8 @@ public class AnaliseTecnicaSerializer {
 			"gerentesTecnicos.usuario.pessoa.id",
 			"gerentesTecnicos.usuario.pessoa.nome",
 			"tipoResultadoValidacaoGerente.id",
-			"parecerValidacaoGerente"
+			"parecerValidacaoGerente",
+			"analiseTecnicaRevisada"
 			
 		).transform(new GeometryTransformer(), Geometry.class);
 
