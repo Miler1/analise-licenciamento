@@ -42,7 +42,7 @@ div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.
 													| &nbsp;&nbsp;
 													i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
 						
-						div(ng-repeat='(key, groupLayer) in layersRestricoes')
+						div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
 							a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#outrosDados')
 								.panel.panel-default
 									.panel-heading
