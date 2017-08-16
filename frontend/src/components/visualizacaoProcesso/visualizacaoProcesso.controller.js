@@ -5,6 +5,7 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 	modalCtrl.processo = processo;
 
 	modalCtrl.baixarDocumento = baixarDocumento;
+	modalCtrl.dateUtil = app.utils.DateUtil;
 
 	modalCtrl.abreDocumentacao = true;
 
@@ -164,6 +165,51 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 		$anchorScroll();
 
+	};
+
+	function getDataFimAnalise(dataFimAnalise) {
+
+		if (dataFimAnalise) {
+
+			return moment(dataFimAnalise, 'DD/MM/yyyy').startOf('day');
+		} else {
+
+			return moment(new Date()).startOf('day');
+		}
+	}
+
+	this.isPrazoAnaliseVencido = function(dataFimAnalise, dataVencimentoAnalise){
+		
+		var momentDataFimAnalise = getDataFimAnalise(dataFimAnalise);
+
+		return momentDataFimAnalise.isAfter(moment(dataVencimentoAnalise, 'DD/MM/yyyy').startOf('day'));
+	};
+
+	this.getDiasAnaliseJuridica = function() {
+
+		if (this.dadosProcesso) {
+
+			return this.dateUtil.calcularDias(this.dadosProcesso.analise.dataCadastro, this.dadosProcesso.analise.analiseJuridica.dataFim);
+		}
+	};
+
+	this.getDiasAnaliseTecnica = function() {
+
+		if (this.dadosProcesso) {
+
+			return this.dadosProcesso.analise.analiseTecnica ? this.dateUtil.calcularDias(this.dadosProcesso.analise.analiseTecnica.dataCadastro, this.dadosProcesso.analise.analiseTecnica.dataFim) : '-';
+		}
+	};
+
+	this.getAnaliseTotal = function() {
+
+		if (this.dadosProcesso) {
+
+			var diasAnaliseTecnica = this.getDiasAnaliseTecnica(this.dadosProcesso.analise.analiseTecnica);
+			diasAnaliseTecnica = diasAnaliseTecnica === '-' ? 0 : diasAnaliseTecnica;
+
+			return this.getDiasAnaliseJuridica() + diasAnaliseTecnica;
+		}
 	};
 
 };

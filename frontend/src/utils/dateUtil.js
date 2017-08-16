@@ -16,6 +16,17 @@ DateUtil = {
 	isPrazoMinimoAvisoAnalise: function(dataVencimento, prazoMinimo) {
 
 		return this.calcularDiasRestantes(dataVencimento) <= prazoMinimo; 
+	},
+
+	calcularDias: function(stringInicialDate, stringFinalDate) {
+
+		if (stringFinalDate) {
+
+			return moment(stringFinalDate, 'DD/MM/yyyy').startOf('day')
+				.diff(moment(stringInicialDate, 'DD/MM/yyyy').startOf('day'), 'days');
+		}
+
+		return this.calcularDiasRestantes(stringInicialDate)*-1;
 	}
 };
 

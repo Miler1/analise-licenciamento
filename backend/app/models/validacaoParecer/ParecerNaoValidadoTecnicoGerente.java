@@ -40,6 +40,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		
 		novaAnalise.analise = analiseTecnica.analise;
+		novaAnalise.dataCadastro = analiseTecnica.dataCadastro;
 		novaAnalise.dataVencimentoPrazo = analiseTecnica.dataVencimentoPrazo;
 		novaAnalise.revisaoSolicitada = true;
 		novaAnalise.ativo = true;

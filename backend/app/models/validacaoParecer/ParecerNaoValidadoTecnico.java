@@ -48,6 +48,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 	private void salvarNovaAnalise(AnaliseTecnica novaAnalise, AnaliseTecnica analiseTecnica, Usuario usuarioValidacao) {
 			
 		novaAnalise.analise = analiseTecnica.analise;
+		novaAnalise.dataCadastro = analiseTecnica.dataCadastro;
 		novaAnalise.dataVencimentoPrazo = analiseTecnica.dataVencimentoPrazo;
 		novaAnalise.revisaoSolicitada = true;
 		novaAnalise.ativo = true;

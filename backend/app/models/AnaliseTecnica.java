@@ -133,7 +133,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	public Usuario usuarioValidacaoGerente;	
  	
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
-	public List<GerenteTecnico> gerentesTecnicos; 	
+	public List<GerenteTecnico> gerentesTecnicos;
+	
+	@Required
+	@Column(name="data_cadastro")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataCadastro;	
 		
 	private void validarParecer() {
 		
@@ -147,8 +152,13 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
 	public AnaliseTecnica save() {
 		
+		if (this.dataCadastro == null) {
+			
+			this.dataCadastro = new Date();
+		}
+		
 		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
+		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
 		this.dataVencimentoPrazo = c.getTime();
 			
@@ -479,6 +489,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 		copia.analise = this.analise;
 		copia.parecer = this.parecer;
+		copia.dataCadastro = this.dataCadastro;
 		copia.dataVencimentoPrazo = this.dataVencimentoPrazo;
 		copia.revisaoSolicitada = true;
 		copia.ativo = true;
