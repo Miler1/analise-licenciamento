@@ -205,7 +205,7 @@ public class AnaliseJuridica extends GenericModel {
 	public AnaliseJuridica save() {
 		
 		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
+		c.setTime(this.analise.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_JURIDICA);
 		this.dataVencimentoPrazo = c.getTime();
 			

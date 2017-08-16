@@ -44,6 +44,30 @@
 					.media-div
 						.media-context
 							label {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+	div.row
+		.col-xs-12.col-md-6
+			blockquote.success
+				h4 Histórico do processo
+				label Data:&nbsp;
+				span 14/04/2017
+
+				div.panel.panel-success
+					div.panel-body 
+						| Análise do processo em dias
+					div.panel-footer
+						.row
+							.col-xs-4.col-md-4.text-center
+								span Análise jurídica
+									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.isPrazoAnaliseVencido(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseJuridica.dataFim, modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseJuridica.dataVencimentoPrazo)}")
+										b {{modalVisualizacaoProcessoCtrl.getDiasAnaliseJuridica()}}
+							.col-xs-4.col-md-4.text-center
+								span Análise técnica
+									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.isPrazoAnaliseVencido(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.dataFim, modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.dataVencimentoPrazo)}")
+										b {{modalVisualizacaoProcessoCtrl.getDiasAnaliseTecnica()}}
+							.col-xs-4.col-md-4.text-center
+								span Análise total
+									div
+										b {{modalVisualizacaoProcessoCtrl.getAnaliseTotal()}}
 
 	div
 
