@@ -49,7 +49,7 @@
 
 	fieldset.panel.panel-default
 		div.panel-body
-			p(ng-bind-html="$ctrl.analiseJuridica.parecerValidacao")
+			p(ng-bind-html="$ctrl.analiseJuridica.parecerValidacao ? $ctrl.analiseJuridica.parecerValidacao : 'Não foram feitas considerações'")
 
 .modal-footer
 
