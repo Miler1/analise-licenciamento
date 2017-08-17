@@ -5,6 +5,7 @@ import java.util.List;
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
 import models.portalSeguranca.Usuario;
+import notifiers.Emails;
 import security.Acao;
 import security.UsuarioSessao;
 import serializers.AnaliseDocumentoSerializer;
@@ -98,6 +99,13 @@ public class AnalisesJuridicas extends InternalController {
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO);				
 		
+	}
+
+	public static void email() {
+	
+		AnaliseJuridica a = AnaliseJuridica.findById(57l);
+		
+		Emails.notificarRequerenteAnaliseJuridica(a);
 	}	
 
 }
