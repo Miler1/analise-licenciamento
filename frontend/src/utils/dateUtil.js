@@ -27,6 +27,11 @@ DateUtil = {
 		}
 
 		return this.calcularDiasRestantes(stringInicialDate)*-1;
+	},
+
+	getTodaysStringDate: function(){
+
+		return moment(new Date()).format('DD/MM/YYYY');
 	}
 };
 
