@@ -5,21 +5,24 @@
 	
 	<body>
 		
-		<p>Notificação Jurídico</p>
+		<p>Notificação Jurídica</p>
 		
 		<p>Referente a pendência</p>
 		
-		<p>Em atenção ao processo protocolado nesta Secretaria de Estado de Meio Ambiente – SEMA, sob o nº. <strong>2016/44280</strong>, o qual solicita Licença de Operação – LO (Varia de acordo
-com o pedido) para realização de ${analiseJuridica.analise.processo.caracterizacoes[0].atividadeCaracterizacao.atividade.nome} no Bloco Aquiri, <strong>notifico</strong> V. Sª. a comparecer no prazo de 10 (dez) dias para apresentar as exigências
+		<p>Em atenção ao processo protocolado nesta Secretaria de Estado de Meio Ambiente – SEMAS, sob o nº. <strong>2016/44280</strong>, o qual solicita ${licencas} para realização de ${atividade} no Bloco Aquiri, <strong>notifico</strong> V. Sª. a comparecer no prazo de 10 (dez) dias para apresentar as exigências
 abaixo relacionadas, em cópias autenticadas, <strong>sob pena de arquivamento do mesmo</strong>:</p>
 
 		<ol>
-			#{list items:analiseJuridica.analisesDocumentos, as:'analiseDocumento'}
+			#{list items:documentosAnalisados, as:'analiseDocumento'}
 			    <li><strong>${analiseDocumento.documento.tipo.nome}</strong> - ${analiseDocumento.parecer}</li>
 			#{/list}		
 		</ol>
 		
 	
+		#{verbatim}
+			<p>${observacao}</p>
+		#{/verbatim}
+
 		<p>Solicito sua especial atenção para as orientações consignadas neste expediente, a fim de que possamos dar continuidade à análise do pleito.</p>
 		
 		<p>Outrossim, informo que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.</p>

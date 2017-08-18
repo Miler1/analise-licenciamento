@@ -1,5 +1,6 @@
 package models.licenciamento;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -103,4 +104,25 @@ public class Empreendimento extends GenericModel {
 	
 	@Transient
 	public boolean possuiCaracterizacoes;
+	
+	public List<String> emailsProprietarios() {
+		
+		List<String> emails = new ArrayList<String>();
+		for(Proprietario proprietario : this.proprietarios) {
+			
+			if(proprietario.pessoa.contato != null) {				
+				emails.add(proprietario.pessoa.contato.email);
+			}
+		}
+		return emails;	
+	}
+	
+	public List<String> emailsResponsaveis() {
+		
+		List<String> emails = new ArrayList<String>();
+		for(ResponsavelEmpreendimento responsavel : this.responsaveis) {
+			emails.add(responsavel.pessoa.contato.email);
+		}
+		return emails;		
+	}
 }
