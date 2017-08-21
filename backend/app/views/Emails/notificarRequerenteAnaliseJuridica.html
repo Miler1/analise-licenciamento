@@ -1,32 +1,57 @@
 <!DOCTYPE html>
+%{
+  processo = analiseJuridica.analise.processo;
+  empreendimento = analiseJuridica.analise.processo.empreendimento;
+  atividade = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade;
+  bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : "-" + empreendimento.endereco.bairro;
+}%
+
 <html>
-
-	<head></head>
+  
+  <head>
+  </head>
+  
+  <body>
+    
+	<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
 	
-	<body>
-		
-		<p>Notificação Jurídica</p>
-		
-		<p>Referente a pendência</p>
-		
-		<p>Em atenção ao processo protocolado nesta Secretaria de Estado de Meio Ambiente – SEMAS, sob o nº. <strong>2016/44280</strong>, o qual solicita ${licencas} para realização de ${atividade} no Bloco Aquiri, <strong>notifico</strong> V. Sª. a comparecer no prazo de 10 (dez) dias para apresentar as exigências
-abaixo relacionadas, em cópias autenticadas, <strong>sob pena de arquivamento do mesmo</strong>:</p>
-
-		<ol>
-			#{list items:documentosAnalisados, as:'analiseDocumento'}
-			    <li><strong>${analiseDocumento.documento.tipo.nome}</strong> - ${analiseDocumento.parecer}</li>
-			#{/list}		
-		</ol>
-		
+	<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
 	
-		#{verbatim}
-			<p>${observacao}</p>
-		#{/verbatim}
-
-		<p>Solicito sua especial atenção para as orientações consignadas neste expediente, a fim de que possamos dar continuidade à análise do pleito.</p>
+	<p style="text-align: center">Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR</p>
+	
+	<p style="text-align: right">Belém - PA, ${utils.DateUtil.formatarMesMinusculo(java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, new Locale("pt", "BR")).format(new Date()))};</p>
+	
+	<p><strong>Processo N&ordm;:</strong>${processo.numero}</p>
+	
+	<p>${empreendimento.pessoa.nome}</p>
+	
+	<p>End: ${empreendimento.endereco.logradouro} ${empreendimento.endereco.numero} ${bairro}</p>
+	
+	<p>CEP: ${empreendimento.endereco.cep} ${empreendimento.endereco.municipio.nome} - ${empreendimento.endereco.municipio.estado.codigo}</p>
+	    
+	<p><strong>Referente a pendência</strong></p>
+	    
+	<p>Em atenção ao processo protocolado nesta secretaria, sob o n&ordm; ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+	 no qual solicita ${licencas} para ${atividade.nome}
+	 - ${atividade.parametro.codigo} - ${atividade.potencialPoluidor.codigo}, no município de ${empreendimento.endereco.municipio.nome}, esta Gerência notifica V.Sa. 
+	 a atender dentro do prazo, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.</p>
+	    
+	<p><strong>Prazo de 30 (trinta) dias<strong></p>
+   
+ 	<ul>
+		#{list items:documentosAnalisados, as:'analiseDocumento'}
+		    <li><strong>${analiseDocumento.documento.tipo.nome}</strong> - ${analiseDocumento.parecer}</li>
+		#{/list}	   
+ 	</ul>
+    
+  	#{verbatim}
+	  <p>${analiseJuridica.parecer}</p>
+	#{/verbatim}  
+    
+	<p>Solicito sua especial atenção para as orientações consignadas neste expediente, a fim de que possamos dar continuidade à análise do pleito.</p>
 		
-		<p>Outrossim, informo que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.</p>
-		
-	</body>
-
+	<p>Outrossim, informo que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.</p>      
+    
+  </body>
+  
 </html>

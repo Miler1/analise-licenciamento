@@ -7,9 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
-import models.licenciamento.TipoLicenca;
 import notifiers.Emails;
-import utils.ListUtil;
 
 public class EmailNotificacaoAnaliseJuridica {
 	
@@ -26,7 +24,7 @@ public class EmailNotificacaoAnaliseJuridica {
 				
 		List<String> tiposlicenca = new ArrayList<String>();
 		for(Caracterizacao caracterizacao : this.analiseJuridica.analise.processo.caracterizacoes) {
-			
+//			
 			tiposlicenca.add(caracterizacao.tipoLicenca.nome);
 		}
 		String licencas = StringUtils.join(tiposlicenca, ",");
@@ -40,8 +38,7 @@ public class EmailNotificacaoAnaliseJuridica {
 		}
 		
 		Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, this.analiseJuridica.analise.processo.numero, 
-				licencas, this.analiseJuridica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade.nome, 
-				this.analiseJuridica.parecer, documentosInvalidados); 
+				licencas, documentosInvalidados, this.analiseJuridica); 
 	}
 
 }
