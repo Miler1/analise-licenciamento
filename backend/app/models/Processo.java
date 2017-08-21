@@ -224,6 +224,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
 			
 			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, filtro.isAnaliseTecnicaOpcional);
+			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
 			
 		} else {
 			
