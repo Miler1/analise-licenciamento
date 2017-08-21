@@ -9,22 +9,23 @@ import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
 
-public class EmailNotificacaoAnaliseJuridica {
+public class EmailNotificacaoAnaliseJuridica extends EmailNotificacao {
 	
 	private AnaliseJuridica analiseJuridica;
-	private List<String> emailsDestinatarios;
 	
 	public EmailNotificacaoAnaliseJuridica(AnaliseJuridica analiseJuridica, List<String> emailsDestinatarios) {
 		
+		super(emailsDestinatarios);
 		this.analiseJuridica = analiseJuridica;		
-		this.emailsDestinatarios = emailsDestinatarios;		
+				
 	}
 	
+	@Override	
 	public void enviar() {
 				
 		List<String> tiposlicenca = new ArrayList<String>();
 		for(Caracterizacao caracterizacao : this.analiseJuridica.analise.processo.caracterizacoes) {
-//			
+			
 			tiposlicenca.add(caracterizacao.tipoLicenca.nome);
 		}
 		String licencas = StringUtils.join(tiposlicenca, ",");
@@ -37,8 +38,7 @@ public class EmailNotificacaoAnaliseJuridica {
 			}
 		}
 		
-		Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, this.analiseJuridica.analise.processo.numero, 
-				licencas, documentosInvalidados, this.analiseJuridica); 
+		Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseJuridica); 
 	}
 
 }

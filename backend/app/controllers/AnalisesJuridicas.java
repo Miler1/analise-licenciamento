@@ -4,8 +4,8 @@ import java.util.List;
 
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
+import models.AnaliseTecnica;
 import models.portalSeguranca.Usuario;
-import notifiers.Emails;
 import security.Acao;
 import security.UsuarioSessao;
 import serializers.AnaliseDocumentoSerializer;
@@ -103,7 +103,7 @@ public class AnalisesJuridicas extends InternalController {
 
 	public static void email() {
 	
-		AnaliseJuridica a = AnaliseJuridica.findById(57l);
+		AnaliseTecnica a = AnaliseTecnica.findById(48l);
 		
 		a.enviarEmailNotificacao();
 	}	
