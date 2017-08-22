@@ -11,5 +11,6 @@ public class ApplicationSerializer {
 			"usuarioSessao.permissoes",
 			"usuarioSessao.perfilSelecionado.id",
 			"usuarioSessao.perfilSelecionado.nome",
+			"usuarioSessao.setorSelecionado.sigla",
 			"configuracoes.baseURL");
 }
