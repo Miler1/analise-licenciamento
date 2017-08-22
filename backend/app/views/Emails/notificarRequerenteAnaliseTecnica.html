@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 %{
-  processo = analiseTecnica.analise.processo;
-  empreendimento = analiseTecnica.analise.processo.empreendimento;
-  atividade = analiseTecnica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade;
-  bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : "-" + empreendimento.endereco.bairro;
+  processo = analiseJuridica.analise.processo;
+  empreendimento = analiseJuridica.analise.processo.empreendimento;
+  atividade = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade;
+  bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
+  end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso : empreendimento.endereco.logradouro + " " + empreendimento.endereco.numero + bairro;
 }%
 
 <html>
@@ -25,7 +26,7 @@
 	
 	<p>${empreendimento.pessoa.nome}</p>
 	
-	<p>End: ${empreendimento.endereco.logradouro} ${empreendimento.endereco.numero} ${bairro}</p>
+	<p>End: ${end}</p>
 	
 	<p>CEP: ${empreendimento.endereco.cep} ${empreendimento.endereco.municipio.nome} - ${empreendimento.endereco.municipio.estado.codigo}</p>
 	    

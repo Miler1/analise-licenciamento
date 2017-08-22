@@ -103,7 +103,7 @@ public class AnalisesJuridicas extends InternalController {
 
 	public static void email() {
 	
-		AnaliseTecnica a = AnaliseTecnica.findById(48l);
+		AnaliseJuridica a = AnaliseJuridica.findById(57l);
 		
 		a.enviarEmailNotificacao();
 	}	
