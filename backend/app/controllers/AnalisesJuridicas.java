@@ -4,6 +4,7 @@ import java.util.List;
 
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
+import models.AnaliseTecnica;
 import models.portalSeguranca.Usuario;
 import security.Acao;
 import security.UsuarioSessao;
@@ -89,15 +90,22 @@ public class AnalisesJuridicas extends InternalController {
 		
 		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO);
 		
-		AnaliseJuridica analiseAValidar = AnaliseJuridica.findById(analise.id);
+		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
 		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
 		
-		analiseAValidar.validaParecer(analise, usuarioExecutor);
+		analiseAvalidar.validaParecer(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO);				
 		
+	}
+
+	public static void email() {
+	
+		AnaliseTecnica a = AnaliseTecnica.findById(48l);
+		
+		a.enviarEmailNotificacao();
 	}	
 
 }

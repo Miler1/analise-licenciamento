@@ -371,8 +371,19 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		} else {
 		
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
+			enviarEmailNotificacao();
 		}
 	}
+	
+	public void enviarEmailNotificacao() {
+		
+		List<String> destinatarios = new ArrayList<String>();
+		destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
+		destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
+				
+		EmailNotificacaoAnaliseTecnica notificacao = new EmailNotificacaoAnaliseTecnica(this, destinatarios);
+		notificacao.enviar();				
+	}	
 	
 	public void validaParecer(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
 		
