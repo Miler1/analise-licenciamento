@@ -4,7 +4,10 @@
   empreendimento = analiseTecnica.analise.processo.empreendimento;
   atividade = analiseTecnica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade;
   bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
-  end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso : empreendimento.endereco.logradouro + " " + empreendimento.endereco.numero + bairro;
+  numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
+  cep = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.cep) ? "-" : empreendimento.endereco.numero;
+  municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo; 
+  end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
 }%
 
 <html>
@@ -28,7 +31,7 @@
 	
 	<p>End: ${end}</p>
 	
-	<p>CEP: ${empreendimento.endereco.cep} ${empreendimento.endereco.municipio.nome} - ${empreendimento.endereco.municipio.estado.codigo}</p>
+	<p>CEP: ${cep}</p>
 	    
 	<p><strong>Referente a pendência</strong></p>
 	    
@@ -37,7 +40,7 @@
 	 - ${atividade.parametro.codigo} - ${atividade.potencialPoluidor.codigo}, no município de ${empreendimento.endereco.municipio.nome}, esta Gerência notifica V.Sa. 
 	 a atender dentro do prazo, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.</p>
 	    
-	<p><strong>Prazo de 30 (trinta) dias<strong></p>
+	<p><strong>Prazo de 10 (dez) dias<strong></p>
    
  	<ul>
 		#{list items:documentosAnalisados, as:'analiseDocumento'}
