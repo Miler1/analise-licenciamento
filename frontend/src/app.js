@@ -3,6 +3,7 @@ var licenciamento = angular.module("licenciamento", [
 	"ui.bootstrap",
 	"caixasEntrada",
 	"aguardandoValidacao",
+	"aguardandoAssinatura",
 	"angular-growl",
 	"ngMessages",
 	"idf.br-filters",
@@ -201,7 +202,36 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
-		}, {
+		}, 
+		{
+
+			titulo: 'Aguardando assinatura',
+			icone: 'glyphicon glyphicon-pencil',
+			url: function() {
+
+				return '/aguardando-assinatura';
+			},
+			countItens: true,
+			estaSelecionado: function () {
+
+				return $location.path().indexOf('/aguardando-assinatura') > -1;
+			},
+			visivel: function() {
+
+				return [app.utils.Perfis.DIRETOR].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
+			},
+			condicaoTramitacao: function () {
+
+				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.DIRETOR)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_DIRETOR;
+			},
+			deveFiltrarPorUsuario: true,
+			idPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id;
+			}
+		},		
+		{
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
 			url: function() {
