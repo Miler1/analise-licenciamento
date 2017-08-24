@@ -17,5 +17,5 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 		});
 }]);
 
-aguardandoValidacao
+aguardandoAssinatura
 	.controller('validacaoAnaliseAprovadorController', controllers.ValidacaoAnaliseAprovadorController);
