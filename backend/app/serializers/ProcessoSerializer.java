@@ -16,6 +16,7 @@ public class ProcessoSerializer {
 			"empreendimento.municipio.nome",
 			"empreendimento.municipio.estado.codigo",
 			"empreendimento.pessoa.cpf",
+			"empreendimento.pessoa.cnpj",
 			"empreendimento.denominacao");
 
 	public static JSONSerializer getInfo = SerializerUtil.create(
