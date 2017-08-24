@@ -4,7 +4,6 @@ var ValidacaoAnaliseAprovadorController = function($rootScope,aprovadorService, 
     var validacaoAnaliseAprovador = this;
 
     validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
-    validacaoAnaliseAprovador.formularios = {};
     validacaoAnaliseAprovador.tabAtiva = 0;
 
 
@@ -27,8 +26,7 @@ var ValidacaoAnaliseAprovadorController = function($rootScope,aprovadorService, 
         }		
 
         processoService.visualizarProcesso(processo);
-    }    
-        
+    }
 
 };
 
