@@ -1,0 +1,58 @@
+section.margin-bottom-md
+
+	h3 Análise técnica
+
+	div.margin-top-md
+		label.not-bold.margin-right-xs(for="texto_nome_analista_tecnico") Analista técnico:  
+		span#texto_nome_analista_tecnico
+			strong {{validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
+	hr
+
+	section(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada && validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+		label Parecer da validação:
+
+		div(class="alert alert-warning", ng-bind-html="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+
+	h4 {{validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoAnalise.nome}}
+
+	fieldset.panel.panel-default
+		div.panel-body
+			p(ng-bind-html="validacaoAnaliseTecnicaGerente.analiseTecnica.parecer")
+
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th Arquivo anexado
+				th.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.analiseTecnica.documentos")
+
+				td {{documento.nome}}
+				td.text-right 
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseTecnicaGerente.downloadDocumentoAnalise(documento.id)")
+						i.glyphicon.glyphicon-save
+
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th Documentos Validados
+				th.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.analiseTecnica.documentos")
+
+				td {{documento.nome}}
+				td.text-right 
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseTecnicaGerente.downloadDocumentoAnalise(documento.id)")
+						i.glyphicon.glyphicon-save
+
+	.row(ng-show="!validacaoAnaliseTecnicaGerente.analiseTecnica.documentos || validacaoAnaliseTecnicaGerente.analiseTecnica.documentos.length == 0")
+		.col-md-12
+			p.empty-result Não existem arquivos anexados.
