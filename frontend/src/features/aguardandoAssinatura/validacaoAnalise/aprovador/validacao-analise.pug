@@ -11,9 +11,7 @@ section.margin-bottom-md
                 div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
             
             uib-tab(index="1", heading="Análise geo")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
-                    include ../../../analiseTecnica/analiseGeo/analise-geo
-                    
+                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')                
             
             uib-tab(index="2", heading="Parecer Técnico")
                 div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')

@@ -1,4 +1,4 @@
-var ValidacaoAnaliseAprovadorController = function($rootScope,aprovadorService, $route, $scope, 
+var ValidacaoAnaliseAprovadorController = function($rootScope,aprovadorService, analiseTecnicaService, $route, $scope, 
 		mensagem, $location,processoService, $uibModal) {
 
     var validacaoAnaliseAprovador = this;
