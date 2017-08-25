@@ -21,7 +21,7 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
     }
 
     function exibirDadosProcesso() {
-        var teste = validacaoAnaliseAprovador.analise.processo.id;
+        
         var processo = {
 
             idProcesso: validacaoAnaliseAprovador.analise.processo.id,
