@@ -14,6 +14,8 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
       analiseService.getAnalise($routeParams.idAnalise)
         .then(function(response){
           validacaoAnaliseAprovador.analise = response.data;
+          validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
+              validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
           carregarDadosAnaliseJuridica();
         });
     }
