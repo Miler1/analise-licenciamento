@@ -3,25 +3,47 @@ include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
 div(ng-init="validacaoAnaliseAprovador.init()")
-  +resumo-processo('validacaoAnaliseAprovador.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
+	+resumo-processo('validacaoAnaliseAprovador.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
 
-  section.margin-bottom-md
+	section.margin-bottom-md
 
-          uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
-              uib-tab(index="0", heading="Parecer Jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
-                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
-                    visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica", exibir-documentos-analisados="true")
-                    
-              uib-tab(index="1", heading="Análise geo")
-                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
-                      include ../../../analiseTecnica/analiseGeo/analise-geo
-              
-              uib-tab(index="2", heading="Parecer Técnico")
-                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
-                      
+		uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
+			uib-tab(index="0", heading="Parecer jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
+				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
+					visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica", exibir-documentos-analisados="true")
 
-              uib-tab(index="3", heading="VALIDAR PARECERES")
-                  parecer(aprovador="", usuario-sessao="usuarioSessao")
+						uib-tab(index="1", heading="Análise geo")
+							div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
+								include ../../../analiseTecnica/analiseGeo/analise-geo
+
+						uib-tab(index="2", heading="Parecer técnico")
+							div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
+
+
+			uib-tab(index="3", heading="Validar pareceres")
+
+				div
+					form
+						.form-group
+							label.margin-right-sm Revisão do parecer
+							label.radio-inline(for="parecer_juridico")
+								input#parecer_juridico(type="radio", name="tipo_parecer")
+								| Jurídico
+							label.radio-inline(for="parecer_tecnico")
+								input#parecer_tecnico(type="radio", name="tipo_parecer")
+								| técnico
+						.form-group
+							label Coordenador:
+							select.form-control
+
+						.form-group
+							label Justificativa:
+							textarea.form-control
+					button.btn.btn-default.pull-right
+						| Solicitar revisão do parecer
+
+
+
 
 
 
