@@ -7,8 +7,6 @@ var VisualizarAnaliseJuridica = {
 
 	controller: function(documentoAnaliseService) {
 
-    console.log(this);
-
 		var ctrl = this;
 
 		ctrl.downloadDocumentoAnalise = function(idDocumento) {

@@ -5,19 +5,19 @@ section.margin-bottom-md
 	div.margin-top-md
 		label.not-bold.margin-right-xs(for="texto_nome_analista_tecnico") Analista técnico:  
 		span#texto_nome_analista_tecnico
-			strong {{validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
+			strong {{validacaoAnaliseAprovador.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
 	hr
 
-	section(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada && validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+	section(ng-if="validacaoAnaliseAprovador.analiseTecnica.analiseTecnicaRevisada && validacaoAnaliseAprovador.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
 		label Parecer da validação:
 
-		div(class="alert alert-warning", ng-bind-html="validacaoAnaliseTecnicaGerente.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+		div(class="alert alert-warning", ng-bind-html="validacaoAnaliseAprovador.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
 
-	h4 {{validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoAnalise.nome}}
+	h4 {{validacaoAnaliseAprovador.analiseTecnica.tipoResultadoAnalise.nome}}
 
 	fieldset.panel.panel-default
 		div.panel-body
-			p(ng-bind-html="validacaoAnaliseTecnicaGerente.analiseTecnica.parecer")
+			p(ng-bind-html="validacaoAnaliseAprovador.analiseTecnica.parecer")
 
 	table.table.table-condensed
 
@@ -29,14 +29,14 @@ section.margin-bottom-md
 
 		tbody
 
-			tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.analiseTecnica.documentos")
+			tr(ng-repeat="documento in validacaoAnaliseAprovador.analiseTecnica.documentos")
 
 				td {{documento.nome}}
 				td.text-right 
-					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseTecnicaGerente.downloadDocumentoAnalise(documento.id)")
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseAprovador.downloadDocumentoAnalise(documento.id)")
 						i.glyphicon.glyphicon-save
 
-	.row(ng-show="!validacaoAnaliseTecnicaGerente.analiseTecnica.documentos || validacaoAnaliseTecnicaGerente.analiseTecnica.documentos.length == 0")
+	.row(ng-show="!validacaoAnaliseAprovador.analiseTecnica.documentos || validacaoAnaliseAprovador.analiseTecnica.documentos.length == 0")
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
 
@@ -50,18 +50,18 @@ section.margin-bottom-md
 
 		tbody
 
-			tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.analiseTecnica.documentos")
+			tr(ng-repeat="analiseDocumento in validacaoAnaliseAprovador.analiseTecnica.analisesDocumentos")
 
-				td {{documento.nome}}
-				td.text-right 
-					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseTecnicaGerente.downloadDocumentoAnalise(documento.id)")
+				td(ng-if='analiseDocumento.validado') {{analiseDocumento.documento.tipo.nome}}
+				td.text-right(ng-if='analiseDocumento.validado')
+					a.btn(ng-if="analiseDocumento.documento.id", title="Baixar documento", ng-click="validacaoAnaliseAprovador.downloadDocumentoAnalise(analiseDocumento.documento.id)")
 						i.glyphicon.glyphicon-save
 
-	.row(ng-show="!validacaoAnaliseTecnicaGerente.analiseTecnica.documentos || validacaoAnaliseTecnicaGerente.analiseTecnica.documentos.length == 0")
+	.row(ng-show="!validacaoAnaliseAprovador.analiseTecnica.documentos || validacaoAnaliseAprovador.analiseTecnica.documentos.length == 0")
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
 
-	section(ng-if="$ctrl.analiseTecnica.tipoResultadoAnalise.id === $ctrl.DEFERIDO")
+	section
 
 		h5 Quadro de licenças
 
@@ -70,21 +70,25 @@ section.margin-bottom-md
 			thead
 
 				tr
-					th.col-md-4 Licença
-					th.col-md-3 Porte e potencial poluidor
-					th.col-md-2.text-right Validade
-					th.col-md-2.text-center Emissão
-					th.col-md-2 Ações
+					th
+					th Licença
+					th Porte e potencial poluidor
+					th Validade
+					th.text-right Ações
 
 			tbody
 
-				tr(ng-repeat="licencaAnalise in $ctrl.analiseTecnica.licencasAnalise")
+				tr(ng-repeat="licencaAnalise in validacaoAnaliseAprovador.analiseTecnica.licencasAnalise")
 
-					th.col-md-4 {{licencaAnalise.caracterizacao.tipoLicenca.nome}}
-					th.col-md-3 {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
-					th.col-md-2.text-right {{licencaAnalise.validade}} anos
-					th.col-md-1.text-center
-						emitir-licenca(analise-licenca="licencaAnalise", identificador="$index", invalidar="$ctrl.invalidarEmissaoLicenca")
-					th.col-md-2
-						a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca($index)", ng-if="licencaAnalise.emitir === true")
-							i.glyphicon.glyphicon-pencil
+					th
+						span(ng-class="{'icone-licenca-aprovada': licencaAnalise.emitir, 'icone-licenca-reprovada': !licencaAnalise.emitir}")
+					th {{licencaAnalise.caracterizacao.tipoLicenca.nome}}
+					th {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+					th {{licencaAnalise.validade}} anos
+					td.text-right 
+						a.btn(title="Visualizar licença", ng-click="validacaoAnaliseAprovador.visualizarLicenca($index)")
+							i.glyphicon.glyphicon-eye-open
+
+		div
+			span.icone-licenca-aprovada.legenda licença aprovada
+			span.icone-licenca-reprovada.legenda licença não aprovada

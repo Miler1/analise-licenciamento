@@ -94,7 +94,7 @@ public class Analise extends GenericModel {
 			return this.analiseTecnica;
 
 		if(this.analiseTecnica != null && !this.analisesTecnicas.isEmpty())
-			for(AnaliseTecnica analiseJuridica : this.analisesTecnicas)
+			for(AnaliseTecnica analiseTecnica : this.analisesTecnicas)
 				if(analiseTecnica.ativo)
 					this.analiseTecnica = analiseTecnica;
 		
