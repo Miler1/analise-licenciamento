@@ -347,7 +347,8 @@ utils.services(licenciamento)
 	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('setorService', services.SetorService)
 	.add('gerenteService', services.GerenteService)
-	.add('aprovadorService', services.AprovadorService);
+	.add('aprovadorService', services.AprovadorService)
+	.add('analiseService', services.AnaliseService);
 
 
 utils.filters(licenciamento)

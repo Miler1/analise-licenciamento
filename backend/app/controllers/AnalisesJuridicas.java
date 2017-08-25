@@ -25,7 +25,7 @@ public class AnalisesJuridicas extends InternalController {
 
 	public static void findById(Long idAnaliseJuridica) {
 		
-		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.VALIDAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_JURIDICO);
+		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.VALIDAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_JURIDICO, Acao.CONSULTAR_PROCESSO);
 		
 		AnaliseJuridica analise = AnaliseJuridica.findById(idAnaliseJuridica);
 		
@@ -100,12 +100,5 @@ public class AnalisesJuridicas extends InternalController {
 		renderMensagem(Mensagem.VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO);				
 		
 	}
-
-	public static void email() {
-	
-		AnaliseJuridica a = AnaliseJuridica.findById(57l);
-		
-		a.enviarEmailNotificacao();
-	}	
 
 }

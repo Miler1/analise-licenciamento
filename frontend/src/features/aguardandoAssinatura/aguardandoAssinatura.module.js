@@ -9,13 +9,11 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 	$routeProvider
 		.when('/aguardando-assinatura/:idAnalise', {
 			templateUrl: 'features/aguardandoAssinatura/validacaoAnalise/aprovador/validacao-analise.html',
-			controller: controllers.ValidacaoAnaliseController,
-			controllerAs: 'validacaoAnalise'
+			controller: controllers.ValidacaoAnaliseAprovadorController,
+			controllerAs: 'validacaoAnaliseAprovador'
 		})		
 		.otherwise({
 			redirectTo: '/'
 		});
 }]);
 
-aguardandoAssinatura
-	.controller('validacaoAnaliseAprovadorController', controllers.ValidacaoAnaliseAprovadorController);

@@ -2,24 +2,26 @@ include ../../../../layout/components/panel
 include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
-+resumo-processo('validacaoAnaliseAprovador.analiseTecnica.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
+div(ng-init="validacaoAnaliseAprovador.init()")
+  +resumo-processo('validacaoAnaliseAprovador.analiseTecnica.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
 
-section.margin-bottom-md
+  section.margin-bottom-md
 
-        uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
-            uib-tab(index="0", heading="Parecer Jurídico")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
-            
-            uib-tab(index="1", heading="Análise geo")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
-                    include ../../../analiseTecnica/analiseGeo/analise-geo
-            
-            uib-tab(index="2", heading="Parecer Técnico")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
+          uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
+              uib-tab(index="0", heading="Parecer Jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
+                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
+                    visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica")
                     
+              uib-tab(index="1", heading="Análise geo")
+                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
+                      include ../../../analiseTecnica/analiseGeo/analise-geo
+              
+              uib-tab(index="2", heading="Parecer Técnico")
+                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
+                      
 
-            uib-tab(index="3", heading="VALIDAR PARECERES")
-                parecer(aprovador="", usuario-sessao="usuarioSessao")
+              uib-tab(index="3", heading="VALIDAR PARECERES")
+                  parecer(aprovador="", usuario-sessao="usuarioSessao")
 
 
 
