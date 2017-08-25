@@ -36,6 +36,10 @@ section.margin-bottom-md
 					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseTecnicaGerente.downloadDocumentoAnalise(documento.id)")
 						i.glyphicon.glyphicon-save
 
+	.row(ng-show="!validacaoAnaliseTecnicaGerente.analiseTecnica.documentos || validacaoAnaliseTecnicaGerente.analiseTecnica.documentos.length == 0")
+		.col-md-12
+			p.empty-result Não existem arquivos anexados.
+
 	table.table.table-condensed
 
 		thead
@@ -56,3 +60,31 @@ section.margin-bottom-md
 	.row(ng-show="!validacaoAnaliseTecnicaGerente.analiseTecnica.documentos || validacaoAnaliseTecnicaGerente.analiseTecnica.documentos.length == 0")
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
+
+	section(ng-if="$ctrl.analiseTecnica.tipoResultadoAnalise.id === $ctrl.DEFERIDO")
+
+		h5 Quadro de licenças
+
+		table.table.table-condensed
+
+			thead
+
+				tr
+					th.col-md-4 Licença
+					th.col-md-3 Porte e potencial poluidor
+					th.col-md-2.text-right Validade
+					th.col-md-2.text-center Emissão
+					th.col-md-2 Ações
+
+			tbody
+
+				tr(ng-repeat="licencaAnalise in $ctrl.analiseTecnica.licencasAnalise")
+
+					th.col-md-4 {{licencaAnalise.caracterizacao.tipoLicenca.nome}}
+					th.col-md-3 {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+					th.col-md-2.text-right {{licencaAnalise.validade}} anos
+					th.col-md-1.text-center
+						emitir-licenca(analise-licenca="licencaAnalise", identificador="$index", invalidar="$ctrl.invalidarEmissaoLicenca")
+					th.col-md-2
+						a.d-inline.margin-right-xs(title="Alterar licença", ng-click="$ctrl.alterarLicenca($index)", ng-if="licencaAnalise.emitir === true")
+							i.glyphicon.glyphicon-pencil
