@@ -23,13 +23,26 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 	$routeProvider
 		.when("/", {
-			redirectTo: "/caixa-entrada"
+			redirectTo: function(){
+
+				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR){
+
+					return "/aguardando-assinatura-aprovador";
+				}
+
+				return "/caixa-entrada";
+			}
 		})
 		.when("/consultar-processo", {
 			templateUrl: "features/consultarProcesso/consultar-processo.html",
 			controller: controllers.ConsultarProcessoController,
 			controllerAs: 'consultarProcesso'
 		})
+		.when("/aguardando-assinatura-aprovador", {
+			templateUrl: "features/aguardandoAssinaturaAprovador/listagem/aguardando-assinatura-listagem.html",
+			controller: controllers.AguardandoAssinaturaAprovadorListController,
+			controllerAs: 'listagem'
+		})		
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -104,11 +117,17 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path() === '/caixa-entrada' || $location.path() === '/';
+				return $location.path() === '/caixa-entrada';
 			},
 			visivel: function(){
 
-				return true;
+				return [
+					app.utils.Perfis.COORDENADOR_JURIDICO,
+					app.utils.Perfis.CONSULTOR_JURIDICO,
+					app.utils.Perfis.COORDENADOR_TECNICO,
+					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_TECNICO,
+					].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
 			},
 			condicaoTramitacao: function() {
 
@@ -128,7 +147,8 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
-		}, {
+		}, 
+		{
 
 			titulo: 'Em análise',
 			icone: 'glyphicon glyphicon-ok',
@@ -201,7 +221,29 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
-		}, {
+		},
+		{
+			titulo: 'Aguardando assinatura',
+			icone: 'glyphicon glyphicon-search',
+			url: function() {
+
+				return '/aguardando-assinatura-aprovador';
+			},
+			countItens: true,
+			estaSelecionado: function () {
+
+				return $location.path() === '/aguardando-assinatura-aprovador';
+			},
+			visivel: function(){
+
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR;
+			},
+			condicaoTramitacao: function(){
+
+				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_APROVADOR;
+			}
+		},		 
+		{
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
 			url: function() {
@@ -332,7 +374,6 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController)
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
 	.controller('legislacaoController', controllers.LegislacaoController);
-
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)

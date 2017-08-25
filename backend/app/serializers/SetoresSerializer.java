@@ -9,7 +9,7 @@ import flexjson.JSONSerializer;
 
 public class SetoresSerializer {
 
-	public static JSONSerializer getSetoresFilhos = SerializerUtil.create(
+	public static JSONSerializer getSetoresByNivel = SerializerUtil.create(
 			"id", 
 			"nome");
 }

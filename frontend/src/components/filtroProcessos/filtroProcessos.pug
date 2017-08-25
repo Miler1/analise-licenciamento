@@ -35,17 +35,31 @@ div(uib-accordion class="accordion")
                                     ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades | orderBy:'nome' track by atividade.id")
                     option(value="") Selecione a atividade do empreendimento
 
+        .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.COORDENADORIA)")
+            .col-md-12
+                label.control-label Coordenadoria:
+                select.form-control(ng-model="$ctrl.filtro.idSetorCoordenadoria", name="selectCoordenadoria",
+                                    ng-options="setor.id as setor.nome for setor in $ctrl.Coordenadorias | orderBy:'nome' track by setor.id")
+                    option(value="") Selecione a coordenadoria
+
         .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.GERENCIA)")
             .col-md-12
                 label.control-label Gerência:
-                select.form-control(ng-model="$ctrl.filtro.idSetor", name="selectGerencia",
-                                    ng-options="setor.id as setor.nome for setor in $ctrl.setores | orderBy:'nome' track by setor.id")
+                select.form-control(ng-model="$ctrl.filtro.idSetorGerencia", name="selectGerencia",
+                                    ng-options="setor.id as setor.nome for setor in $ctrl.Gerencias | orderBy:'nome' track by setor.id")
                     option(value="") Selecione a gerência
+
+        .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.CONSULTOR_JURIDICO)")
+            .col-md-12
+                label.control-label Consultor jurídico:
+                select.form-control(ng-model="$ctrl.filtro.idConsultorJuridico", name="selectConsultor",
+                                    ng-options="consultorJuridico.id as consultorJuridico.pessoa.nome for consultorJuridico in $ctrl.consultoresJuridicos | orderBy:'pessoa.nome'")
+                    option(value="") Selecione o consultor jurídico
 
         .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_TECNICO)")
             .col-md-12
                 label.control-label Analista técnico:
-                select.form-control(ng-model="$ctrl.filtro.idAnalistaTecnico", name="selectAtividade",
+                select.form-control(ng-model="$ctrl.filtro.idAnalistaTecnico", name="selectAnalista",
                                     ng-options="analistaTecnico.id as analistaTecnico.pessoa.nome for analistaTecnico in $ctrl.analistasTecnicos | orderBy:'pessoa.nome'")
                     option(value="") Selecione o analista técnico
 

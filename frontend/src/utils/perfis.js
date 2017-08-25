@@ -6,7 +6,7 @@ var Perfis = {
 	COORDENADOR_TECNICO: 6,
 	GERENTE_TECNICO: 7,
 	ANALISTA_TECNICO: 8,
-	DIRETOR: 9
+	APROVADOR: 9
 };
 
 exports.utils.Perfis = Perfis;

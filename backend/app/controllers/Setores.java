@@ -15,7 +15,7 @@ import utils.Mensagem;
 
 public class Setores extends InternalController {
 	
-	public void getSetoresFilhos(){
+	public void getSetoresByNivel(Integer nivel){
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
@@ -31,9 +31,9 @@ public class Setores extends InternalController {
 			throw new AppException(Mensagem.SETOR_NAO_ENCONTRADO);
 		}
 		
-		List<Setor> setoresFilhos = setorPai.getSetoresFilhos();
+		List<Setor> setoresFilhos = setorPai.getSetoresByNivel(nivel);
 		
-		renderJSON(setoresFilhos, SetoresSerializer.getSetoresFilhos);
+		renderJSON(setoresFilhos, SetoresSerializer.getSetoresByNivel);
 	}
 	
 	public void getSetoresByTipo(TipoSetor tipoSetor) {
@@ -44,6 +44,6 @@ public class Setores extends InternalController {
 					.setParameter("tipoSetor", tipoSetor)
 					.fetch();
 		
-		renderJSON(setores, SetoresSerializer.getSetoresFilhos);		
+		renderJSON(setores, SetoresSerializer.getSetoresByNivel);		
 	}
 }
