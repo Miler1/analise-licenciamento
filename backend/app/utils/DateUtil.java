@@ -3,6 +3,8 @@ package utils;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DateUtil {
 
@@ -79,5 +81,19 @@ public class DateUtil {
 		
 		return sb.toString();
 	}
+	
+	public static String formatarMesMinusculo(String strData) {
+		
+		String regexMes = "de\\s[a-zA-Z]{1,}\\sde";
+		Pattern padraoMes = Pattern.compile(regexMes);
+		
+		Matcher matcher = padraoMes.matcher(strData);
+		
+		matcher.find();
+		
+		String nomeMes = matcher.group(0).toLowerCase();
+		
+		return strData.replaceAll(regexMes, nomeMes);
+	}	
 
 }

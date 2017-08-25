@@ -4,6 +4,7 @@ import java.util.List;
 
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
+import models.AnaliseTecnica;
 import models.portalSeguranca.Usuario;
 import security.Acao;
 import security.UsuarioSessao;
@@ -24,7 +25,7 @@ public class AnalisesJuridicas extends InternalController {
 
 	public static void findById(Long idAnaliseJuridica) {
 		
-		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.VALIDAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_JURIDICO);
+		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.VALIDAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_JURIDICO, Acao.CONSULTAR_PROCESSO);
 		
 		AnaliseJuridica analise = AnaliseJuridica.findById(idAnaliseJuridica);
 		
@@ -89,15 +90,15 @@ public class AnalisesJuridicas extends InternalController {
 		
 		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO);
 		
-		AnaliseJuridica analiseAValidar = AnaliseJuridica.findById(analise.id);
+		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
 		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
 		
-		analiseAValidar.validaParecer(analise, usuarioExecutor);
+		analiseAvalidar.validaParecer(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO);				
 		
-	}	
+	}
 
 }

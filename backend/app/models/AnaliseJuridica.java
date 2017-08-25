@@ -31,6 +31,7 @@ import models.licenciamento.TipoAnalise;
 import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
+import notifiers.Emails;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -289,9 +290,20 @@ public class AnaliseJuridica extends GenericModel {
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_JURIDICA, usuarioExecultor);
 		
 		} else {
-		
+					
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
+			enviarEmailNotificacao();
 		}				
+	}
+	
+	public void enviarEmailNotificacao() {
+				
+		List<String> destinatarios = new ArrayList<String>();
+		destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
+		destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
+				
+		EmailNotificacaoAnaliseJuridica notificacao = new EmailNotificacaoAnaliseJuridica(this, destinatarios);
+		notificacao.enviar();				
 	}
 	
 	public static AnaliseJuridica findByNumeroProcesso(String numeroProcesso) {

@@ -21,11 +21,6 @@ var ModalInformacoesAnaliseJuridica = {
 			});
 		};
 
-		ctrl.downloadDocumentoAnalise = function(idDocumento) {
-
-			documentoAnaliseService.download(idDocumento);
-		};
-
 		ctrl.$onInit =  function() {
 
 			getInfoAnaliseJuridica();

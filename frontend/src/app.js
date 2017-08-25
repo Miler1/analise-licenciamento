@@ -3,6 +3,7 @@ var licenciamento = angular.module("licenciamento", [
 	"ui.bootstrap",
 	"caixasEntrada",
 	"aguardandoValidacao",
+	"aguardandoAssinatura",
 	"angular-growl",
 	"ngMessages",
 	"idf.br-filters",

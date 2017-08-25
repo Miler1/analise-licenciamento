@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+%{
+  processo = analiseJuridica.analise.processo;
+  empreendimento = analiseJuridica.analise.processo.empreendimento;
+  atividade = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade;
+  bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
+  numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
+  cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
+  municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo; 
+  end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
+}%
+
+<html>
+  
+  <head>
+  </head>
+  
+  <body>
+    
+	<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
+	
+	<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
+	
+	<p style="text-align: center">Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR</p>
+	
+	<p style="text-align: right">Belém - PA, ${utils.DateUtil.formatarMesMinusculo(java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, new Locale("pt", "BR")).format(new Date()))};</p>
+	
+	<p><strong>Processo N&ordm;:</strong>${processo.numero}</p>
+	
+	<p>${empreendimento.pessoa.nome}</p>
+	
+	<p>End: ${end} </p>
+	
+	<p>CEP: ${cep}</p>
+	    
+	<p><strong>Referente a pendência</strong></p>
+	    
+	<p>Em atenção ao processo protocolado nesta secretaria, sob o n&ordm; ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+	 no qual solicita ${licencas} para ${atividade.nome}
+	 - ${atividade.parametro.codigo} - ${atividade.potencialPoluidor.codigo}, no município de ${empreendimento.endereco.municipio.nome}, esta Gerência notifica V.Sa. 
+	 a atender dentro do prazo, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.</p>
+	    
+	<p><strong>Prazo de 30 (trinta) dias<strong></p>
+   
+ 	<ul>
+		#{list items:documentosAnalisados, as:'analiseDocumento'}
+		    <li><strong>${analiseDocumento.documento.tipo.nome}</strong> - ${analiseDocumento.parecer}</li>
+		#{/list}	   
+ 	</ul>
+    
+  	#{verbatim}
+	  <p>${analiseJuridica.parecer}</p>
+	#{/verbatim}  
+    
+	<p>Solicito sua especial atenção para as orientações consignadas neste expediente, a fim de que possamos dar continuidade à análise do pleito.</p>
+		
+	<p>Outrossim, informo que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.</p>      
+    
+  </body>
+  
+</html>
