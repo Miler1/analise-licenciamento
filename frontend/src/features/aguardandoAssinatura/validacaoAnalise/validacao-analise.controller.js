@@ -1,9 +1,9 @@
-var ValidacaoAnaliseController = function() {
+var ValidacaoAnaliseAprovadorController = function() {
 
-    var validacaoAnalise = this;
+    var validacaoAnaliseAprovador = this;
 
-	validacaoAnalise.perfis = app.utils.Perfis;
+	validacaoAnaliseAprovador.perfis = app.utils.Perfis;
 };
 
-exports.controllers.ValidacaoAnaliseController = ValidacaoAnaliseController;
+exports.controllers.ValidacaoAnaliseAprovadorController = ValidacaoAnaliseAprovadorController;
 

@@ -20,6 +20,11 @@ GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativ
 GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
 GET		/baixarShapefile							Imoveis.baixarShapefile
 
+# Analise
+
+GET		/analises/{id}									Analises.findById
+
+
 # Analise juridica
 
 GET		/analisesJuridicas/parecer									AnalisesJuridicas.findByNumeroProcesso
@@ -29,7 +34,6 @@ POST	/analisesJuridicas/concluir									AnalisesJuridicas.concluir
 POST	/analisesJuridicas/validarParecer							AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}						AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
-GET		/analisesJuridicas/t/email									AnalisesJuridicas.email
 
 # Analise tecnica
 

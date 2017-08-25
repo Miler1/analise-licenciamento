@@ -2,32 +2,31 @@ include ../../../../layout/components/panel
 include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
-+resumo-processo('validacaoAnaliseAprovador.analiseTecnica.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
++resumo-processo('validacaoAnaliseAprovador.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
 
 section.margin-bottom-md
+	uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
+		uib-tab(index="0", heading="Parecer Jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
+				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
+					visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica")
+             	       
+		uib-tab(index="1", heading="Análise geo")
+			div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
 
-        uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
-            uib-tab(index="0", heading="Parecer Jurídico")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
-            
-            uib-tab(index="1", heading="Análise geo")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')                
-            
-            uib-tab(index="2", heading="Parecer Técnico")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
-                    
-
-            uib-tab(index="3", heading="Validar PARECERES")
-                div(ng-if='validacaoAnaliseAprovador.tabAtiva === 3')
+		uib-tab(index="2", heading="Parecer Técnico")
+			div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
+			
+		uib-tab(index="3", heading="Validar PARECERES")
+			div(ng-if='validacaoAnaliseAprovador.tabAtiva === 3')
 
 
-section.margin-bottom-xl.alone
+	section.margin-bottom-xl.alone
 
-    a.btn(ng-click="validacaoAnaliseAprovador.tabAtiva = validacaoAnaliseAprovador.tabAtiva - 1", ng-if="!validacaoAnaliseAprovador.tabAtiva == 0")
-                | << Etapa anterior
+		a.btn(ng-click="validacaoAnaliseAprovador.tabAtiva = validacaoAnaliseAprovador.tabAtiva - 1", ng-if="!validacaoAnaliseAprovador.tabAtiva == 0")
+					| << Etapa anterior
 
-    a.btn(ng-click="validacaoAnaliseAprovador.tabAtiva = validacaoAnaliseAprovador.tabAtiva + 1", ng-if="validacaoAnaliseAprovador.tabAtiva != 3")
-                | >> Proxima etapa
+		a.btn(ng-click="validacaoAnaliseAprovador.tabAtiva = validacaoAnaliseAprovador.tabAtiva + 1", ng-if="validacaoAnaliseAprovador.tabAtiva != 3")
+					| >> Proxima etapa
 
 
 
