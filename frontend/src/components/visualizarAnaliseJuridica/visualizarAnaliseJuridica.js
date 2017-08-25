@@ -2,16 +2,20 @@ var VisualizarAnaliseJuridica = {
 
 	bindings: {
 
-		analiseJuridica: '<'
+		analiseJuridica: '<',
+		exibirDocumentosAnalisados: '<'
 	},
 
-	controller: function(documentoAnaliseService) {
+	controller: function(documentoAnaliseService, documentoLicenciamentoService) {
 
 		var ctrl = this;
 
-		ctrl.downloadDocumentoAnalise = function(idDocumento) {
-
+		ctrl.downloadAnexo = function(idDocumento) {
 			documentoAnaliseService.download(idDocumento);
+		};
+
+		ctrl.downloadDocumentoAnalisado = function(idDocumento) {
+ 			documentoLicenciamentoService.download(idDocumento);
 		};
 	},
 	templateUrl: 'components/visualizarAnaliseJuridica/visualizarAnaliseJuridica.html'

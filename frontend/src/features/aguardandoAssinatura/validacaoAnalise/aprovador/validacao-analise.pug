@@ -10,7 +10,7 @@ div(ng-init="validacaoAnaliseAprovador.init()")
           uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
               uib-tab(index="0", heading="Parecer Jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
                   div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
-                    visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica")
+                    visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica", exibir-documentos-analisados="true")
                     
               uib-tab(index="1", heading="Análise geo")
                   div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
