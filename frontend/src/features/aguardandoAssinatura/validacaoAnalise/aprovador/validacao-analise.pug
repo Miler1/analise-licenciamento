@@ -2,26 +2,31 @@ include ../../../../layout/components/panel
 include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
-div(ng-init="validacaoAnaliseAprovador.init()")
-  +resumo-processo('validacaoAnaliseAprovador.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
+div(ng-init="ctrl.init()")
+	+resumo-processo('ctrl.analise.processo','ctrl.exibirDadosProcesso()')
 
-  section.margin-bottom-md
+	section.margin-bottom-mduib-tabset(active='ctrl.tabAtiva')
+		uib-tabset(active='ctrl.tabAtiva')
+			uib-tab(index="0", heading="Parecer Jurídico", select="ctrl.carregarDadosAnaliseJuridica()")
+				div(ng-if='ctrl.tabAtiva === 0')
+					visualizar-analise-juridica(analise-juridica="ctrl.analiseJuridica")
+					
+			uib-tab(index="1", heading="Análise geo")
+				div(ng-if='ctrl.tabAtiva === 1')
+					include ../../../analiseTecnica/analiseGeo/analise-geo
+					
+			uib-tab(index="2", heading="Parecer Técnico")
+				div(ng-if='ctrl.tabAtiva === 2')
 
-          uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
-              uib-tab(index="0", heading="Parecer Jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
-                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
-                    visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica", exibir-documentos-analisados="true")
-                    
-              uib-tab(index="1", heading="Análise geo")
-                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
-                      include ../../../analiseTecnica/analiseGeo/analise-geo
-              
-              uib-tab(index="2", heading="Parecer Técnico")
-                  div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
-                      
+			uib-tab(index="3", heading="Validar PARECERES")
+				div(ng-if='ctrl.tabAtiva === 3')
+				
+			
+		section.margin-bottom-xl.alone
+				
+			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva == 0")
+					|<< Etapa anterior
 
-              uib-tab(index="3", heading="VALIDAR PARECERES")
-                  parecer(aprovador="", usuario-sessao="usuarioSessao")
-
-
-
+					
+			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
+					| >> Próxima Etapa
