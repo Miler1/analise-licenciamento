@@ -8,18 +8,26 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
     validacaoAnaliseAprovador.init = init;
     validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
     validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
+	validacaoAnaliseAprovador.carregarDadosAnaliseGeo = carregarDadosAnaliseGeo;
 
     function init() {
 
-      analiseService.getAnalise($routeParams.idAnalise)
-        .then(function(response){
-          validacaoAnaliseAprovador.analise = response.data;
-          validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
-              validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
-          carregarDadosAnaliseJuridica();
-          carregarDadosAnaliseGeo();
-		  carregarDadosAnaliseTecnica();
-        });
+    	analiseService.getAnalise($routeParams.idAnalise)
+			.then(function(response){
+				validacaoAnaliseAprovador.analise = response.data;
+				validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
+					validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
+				carregarDadosAnaliseJuridica();
+			
+		});
+		
+		analiseTecnicaService.getAnaliseTecnica($routeParams.idAnalise)
+			.then(function(response){
+				validacaoAnaliseAprovador.analiseTecnica = response.data;
+				carregarDadosAnaliseGeo();
+			});
+
+
     }
 
     function exibirDadosProcesso() {
@@ -54,15 +62,16 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 
     }
 
-    function carregarDadosAnaliseGeo() {
+	 function carregarDadosAnaliseGeo() {
 
-		if(validacaoAnaliseAprovador.analise) {
-			analiseTecnicaService.getRestricoesGeo(validacaoAnaliseAprovador.analise.analiseTecnica.id)
-				.then(function(response) {
-					validacaoAnaliseAprovador.analiseGeo = response.data;
+    	if(validacaoAnaliseAprovador.analise) {
 
+			analiseTecnicaService.getRestricoesGeo(validacaoAnaliseAprovador.analiseTecnica.id)
+				.then(function(response){
+					validacaoAnaliseAprovador.restricoes = response.data;
 				});
-		}
+      	}
+
     }
 
 };

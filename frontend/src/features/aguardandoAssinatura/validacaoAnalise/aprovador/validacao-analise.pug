@@ -2,34 +2,31 @@ include ../../../../layout/components/panel
 include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
-div(ng-init="validacaoAnaliseAprovador.init()")
+div(ng-init="ctrl.init()")
+	+resumo-processo('ctrl.analise.processo','ctrl.exibirDadosProcesso()')
 
-	+resumo-processo('validacaoAnaliseAprovador.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
-
-	section.margin-bottom-md
-		uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
-			uib-tab(index="0", heading="Parecer Jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
-				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
-					visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica")
-						
+	section.margin-bottom-mduib-tabset(active='ctrl.tabAtiva')
+		uib-tabset(active='ctrl.tabAtiva')
+			uib-tab(index="0", heading="Parecer Jurídico", select="ctrl.carregarDadosAnaliseJuridica()")
+				div(ng-if='ctrl.tabAtiva === 0')
+					visualizar-analise-juridica(analise-juridica="ctrl.analiseJuridica")
+					
 			uib-tab(index="1", heading="Análise geo")
-				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
-					visualizar-analise-geo(analise-geo="validacaoAnaliseAprovador.analiseGeo")
-
+				div(ng-if='ctrl.tabAtiva === 1')
+					include ../../../analiseTecnica/analiseGeo/analise-geo
+					
 			uib-tab(index="2", heading="Parecer Técnico")
-				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
-				
+				div(ng-if='ctrl.tabAtiva === 2')
+
 			uib-tab(index="3", heading="Validar PARECERES")
-				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 3')
-
-
+				div(ng-if='ctrl.tabAtiva === 3')
+				
+			
 		section.margin-bottom-xl.alone
+				
+			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva == 0")
+					|<< Etapa anterior
 
-			a.btn(ng-click="validacaoAnaliseAprovador.tabAtiva = validacaoAnaliseAprovador.tabAtiva - 1", ng-if="!validacaoAnaliseAprovador.tabAtiva == 0")
-						| << Etapa anterior
-
-			a.btn(ng-click="validacaoAnaliseAprovador.tabAtiva = validacaoAnaliseAprovador.tabAtiva + 1", ng-if="validacaoAnaliseAprovador.tabAtiva != 3")
-						| >> Proxima etapa
-
-
-
+					
+			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
+					| >> Próxima Etapa

@@ -363,6 +363,7 @@ licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)
 	.controller('modalSimplesController', controllers.ModalSimplesController)
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
+	.controller('analiseGeoController', controllers.AnaliseGeoController)
 	.controller('legislacaoController', controllers.LegislacaoController);
 
 
