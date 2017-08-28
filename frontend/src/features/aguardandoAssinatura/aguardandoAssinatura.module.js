@@ -15,9 +15,5 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 		.otherwise({
 			redirectTo: '/'
 		});
-}]);
-
-aguardandoAssinatura
-	.controller('solicitarAjusteAprovadorController', controllers.SolicitarAjusteAprovadorController);
-	
+}]);	
 

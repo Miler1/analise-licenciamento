@@ -377,4 +377,5 @@ licenciamento
 	.component('parecer', directives.Parecer)
 	.component('modalInformacoesAnaliseJuridica', directives.ModalInformacoesAnaliseJuridica)
 	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca)
+	.component('solicitarAjusteAprovador', directives.SoliciarAjusteAprovador)
 	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica);

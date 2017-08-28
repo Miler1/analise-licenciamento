@@ -82,7 +82,7 @@ GET		/gerentes									GerentesTecnicos.getGerentesTecnicos
 GET		/gerentes/processo/{idProcesso}				GerentesTecnicos.getGerentesTecnicosByIdProcesso
 
 # Coordenadores
-GET		/coordenadores								Coordenadores.getCoordenadores
+GET		/coordenadoresAprovacao						Coordenadores.getCoordenadoresAprovacao
 
 
 # Condições
