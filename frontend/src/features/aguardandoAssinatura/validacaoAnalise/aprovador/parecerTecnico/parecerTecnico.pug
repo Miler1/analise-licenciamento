@@ -86,7 +86,7 @@ section.margin-bottom-md
 					th {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
 					th {{licencaAnalise.validade}} anos
 					td.text-right 
-						a.btn(title="Visualizar licença", ng-click="validacaoAnaliseAprovador.visualizarLicenca($index)")
+						a.btn(ng-if="licencaAnalise.emitir", title="Visualizar licença", ng-click="validacaoAnaliseAprovador.visualizarLicenca($index)")
 							i.glyphicon.glyphicon-eye-open
 
 		div

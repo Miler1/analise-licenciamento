@@ -17,3 +17,8 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 		});
 }]);
 
+aguardandoAssinatura
+	.controller('validacaoAnaliseAprovadorController', controllers.ValidacaoAnaliseAprovadorController);
+
+aguardandoAssinatura
+	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);

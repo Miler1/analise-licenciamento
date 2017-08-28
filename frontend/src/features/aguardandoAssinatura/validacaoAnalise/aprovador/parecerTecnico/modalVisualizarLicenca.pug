@@ -1,7 +1,12 @@
 .modal-header
-	h4 Visualizar Licença
 
-.modal-body#informacoesLicenca
+	button.close(type='button', ng-click="$ctrl.fechar()")
+		span(aria-hidden='true') ×
+		span.sr-only Fechar
+
+	h4.modal-title Visualizar Licença
+
+.modal-body
 
 	label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 
@@ -10,93 +15,55 @@
 	br
 
 	.form-group
-		label(for="selectValidade") Validade:
+		label(for="selectValidade") Validade: 
 		label {{$ctrl.resolve.dadosLicenca.validade}} ano(s)
 
 	label.margin-right-xs Observações:
 	form
 		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes")
+			textarea.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes", disabled)
 
 	hr
 
 	label.margin-right-xs Condicionantes:
-	form.row(novalidate, name="formularioCondicionante")
-		.form-group.col-md-10
-			textarea.form-control(rows="4", ng-model="$ctrl.condicionante.texto", name="condicionante", required)
-		.col-md-2
-			span Prazo da condicionante em dias:
-			input.form-control(type="number", ng-model="$ctrl.condicionante.prazo", max="1900", required)
-
-	.btn-inserir
-		button.btn.btn-default.pull-right(type="button", ng-click="$ctrl.inserirCondicionante()") Inserir condicionante
-
 	div.tabela
 
 		table.table.table-striped.table-condensed.no-margin
 			thead
 				tr
-					th.col-md-1.index #
-					th.col-md-8 Condicionante
+					th.col-md-10 Condicionante
 					th.col-md-2.text-right Prazo(dias)
-					th.col-md-1.text-right Ações
 
-			tbody(as-sortable="$ctrl.sortOptions", data-ng-model="$ctrl.condicionantes")
-				tr(data-ng-repeat="condicionante in $ctrl.condicionantes", as-sortable-item)
-					td {{$index + 1}}
-					td(as-sortable-item-handle)
-						span(ng-hide="condicionante.editingTexto" ng-dblclick="$ctrl.editarTextoCondicionante(condicionante)") {{condicionante.texto}}
-						textarea.input-edicao(ng-show="condicionante.editingTexto" ng-model="condicionante.texto" ng-blur="$ctrl.doneEditingTextoCondicionante(condicionante)" autofocus)
-					td.text-right(as-sortable-item-handle)
-						span(ng-hide="condicionante.editingPrazo " ng-dblclick="$ctrl.editarPrazoCondicionante(condicionante)") {{condicionante.prazo}}
-						input.input-edicao(type="number", ng-show="condicionante.editingPrazo" ng-model="condicionante.prazo" ng-blur="$ctrl.doneEditingPrazoCondicionante(condicionante)" autofocus, max="1900")
+			tbody
+				tr(ng-repeat="condicionante in $ctrl.resolve.dadosLicenca.condicionantes")
 					td
-						span.edita.pull-right
-							a(ng-click="$ctrl.excluirCondicionante(condicionante)")
-								i.glyphicon.glyphicon-remove
-						span.edita.pull-right
-							a(ng-click="$ctrl.editarCondicionante(condicionante)")
-								i.glyphicon.glyphicon-pencil
+						span {{condicionante.texto}}
+					td.text-right
+						span {{condicionante.prazo}}
 
 
 		.text-center.vazio
-			span(ng-if="$ctrl.condicionantes.length == 0") Nenhuma condicionante adicionada
+			span(ng-if="$ctrl.resolve.dadosLicenca.condicionantes.length == 0") Nenhuma condicionante adicionada
 	hr
 
 	label.margin-right-xs Recomendações:
-	form(name="formularioRecomendacao", novalidate)
-		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.recomendacao.texto", name="recomendacao", required)
-
-	.btn-inserir
-		button.btn.btn-default.pull-right(type="button", ng-click="$ctrl.inserirRecomendacao()") Inserir recomendação
-
 	div.tabela
 
 		table.table.table-striped.table-condensed.no-margin
 			thead
 				tr
-					th.col-md-1.index #
-					th.col-md-10 Recomendação
-					th.col-md-1.text-right Ações
+					th.col-md-12 Recomendação
 
-			tbody(as-sortable="$ctrl.sortOptions", data-ng-model="$ctrl.recomendacoes")
-				tr(data-ng-repeat="recomendacao in $ctrl.recomendacoes", as-sortable-item)
-					td {{$index + 1}}
-					td(as-sortable-item-handle)
-						span(ng-hide="recomendacao.editing" ng-dblclick="$ctrl.editarRecomendacao(recomendacao)") {{recomendacao.texto}}
-						textarea.input-edicao(ng-show="recomendacao.editing" ng-model="recomendacao.texto" ng-blur="$ctrl.doneEditing(recomendacao)" autofocus)
+			tbody
+				tr(ng-repeat="recomendacao in $ctrl.resolve.dadosLicenca.recomendacoes")
 					td
-						span.edita.pull-right
-							a(ng-click="$ctrl.excluirRecomendacao(recomendacao)")
-								i.glyphicon.glyphicon-remove
-						span.edita.pull-right
-							a(ng-click="$ctrl.editarRecomendacao(recomendacao)")
-								i.glyphicon.glyphicon-pencil
+						span {{recomendacao.texto}}
+
 		.text-center.vazio
-			span(ng-if="$ctrl.recomendacoes.length == 0") Nenhuma recomendação adicionada
+			span(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length == 0") Nenhuma recomendação adicionada
 
-.modal-footer
+.modal-footer#footer-modal
 
-	button.btn.btn-default.pull-left(type="button", ng-click="$ctrl.cancelar()") Cancelar
-	button.btn.btn-success.pull-right(type="button", ng-click="$ctrl.confirmarDadosLicenca()") Confirmar Dados da Licença
+	button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+		i.glyphicon.glyphicon-arrow-left
+		| &nbsp;Fechar

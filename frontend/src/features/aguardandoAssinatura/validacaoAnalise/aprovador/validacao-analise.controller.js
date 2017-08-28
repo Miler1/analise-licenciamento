@@ -94,24 +94,16 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 
 		var modalInstance = $uibModal.open({
 
-				templateUrl: './parecerTecnico/modalVisualizarLicenca.html',
+				component: 'modalVisualizarLicenca',
 				size: 'lg',
-				backdrop: 'static',
 				resolve: {
 
 					dadosLicenca: function() {
 
 						return angular.copy(analiseLicenca);
-					},
-					isVisualizacao: true
+					}
 				}
 			});
-
-
-			modalInstance.result.then(function (result) {
-
-				validacaoAnaliseAprovador.analiseTecnica.licencasAnalise[indice] = result;
-			}, function(){});
 
 	}
 
