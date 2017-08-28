@@ -24,13 +24,26 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 	$routeProvider
 		.when("/", {
-			redirectTo: "/caixa-entrada"
+			redirectTo: function(){
+
+				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR){
+
+					return "/aguardando-assinatura-aprovador";
+				}
+
+				return "/caixa-entrada";
+			}
 		})
 		.when("/consultar-processo", {
 			templateUrl: "features/consultarProcesso/consultar-processo.html",
 			controller: controllers.ConsultarProcessoController,
 			controllerAs: 'consultarProcesso'
 		})
+		.when("/aguardando-assinatura-aprovador", {
+			templateUrl: "features/aguardandoAssinaturaAprovador/listagem/aguardando-assinatura-listagem.html",
+			controller: controllers.AguardandoAssinaturaAprovadorListController,
+			controllerAs: 'listagem'
+		})		
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -105,11 +118,17 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path() === '/caixa-entrada' || $location.path() === '/';
+				return $location.path() === '/caixa-entrada';
 			},
 			visivel: function(){
 
-				return true;
+				return [
+					app.utils.Perfis.COORDENADOR_JURIDICO,
+					app.utils.Perfis.CONSULTOR_JURIDICO,
+					app.utils.Perfis.COORDENADOR_TECNICO,
+					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_TECNICO,
+					].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
 			},
 			condicaoTramitacao: function() {
 
@@ -129,7 +148,8 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
-		}, {
+		}, 
+		{
 
 			titulo: 'Em análise',
 			icone: 'glyphicon glyphicon-ok',
@@ -202,35 +222,28 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
-		}, 
+		},
 		{
-
 			titulo: 'Aguardando assinatura',
-			icone: 'glyphicon glyphicon-pencil',
+			icone: 'glyphicon glyphicon-search',
 			url: function() {
 
-				return '/aguardando-assinatura';
+				return '/aguardando-assinatura-aprovador';
 			},
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path().indexOf('/aguardando-assinatura') > -1;
+				return $location.path() === '/aguardando-assinatura-aprovador';
 			},
-			visivel: function() {
+			visivel: function(){
 
-				return [app.utils.Perfis.DIRETOR].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR;
 			},
-			condicaoTramitacao: function () {
+			condicaoTramitacao: function(){
 
-				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.DIRETOR)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_DIRETOR;
-			},
-			deveFiltrarPorUsuario: true,
-			idPerfilSelecionado: function(){
-
-				return $rootScope.usuarioSessao.perfilSelecionado.id;
+				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_APROVADOR;
 			}
-		},		
+		},		 
 		{
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
@@ -346,9 +359,7 @@ utils.services(licenciamento)
 	.add('analistaService', services.AnalistaService)
 	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('setorService', services.SetorService)
-	.add('gerenteService', services.GerenteService)
-	.add('aprovadorService', services.AprovadorService)
-	.add('analiseService', services.AnaliseService);
+	.add('gerenteService', services.GerenteService);
 
 
 utils.filters(licenciamento)
@@ -366,7 +377,6 @@ licenciamento
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
 	.controller('legislacaoController', controllers.LegislacaoController);
 
-
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
 	.component('avaliarDocumento', directives.AvaliarDocumento)
@@ -376,5 +386,4 @@ licenciamento
 	.component('fichaImovel', directives.FichaImovel)
 	.component('parecer', directives.Parecer)
 	.component('modalInformacoesAnaliseJuridica', directives.ModalInformacoesAnaliseJuridica)
-	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca)
-	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica);
+	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca);

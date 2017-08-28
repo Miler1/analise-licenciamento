@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,6 +31,8 @@ import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
+import models.portalSeguranca.Perfil;
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.AcaoTramitacao;
@@ -39,6 +42,8 @@ import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
+import play.db.jpa.JPABase;
 import security.Auth;
 import security.InterfaceTramitavel;
 import security.UsuarioSessao;
@@ -167,9 +172,48 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, usuarioSessao);
 		
+		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
+		
 		return processoBuilder;
 	}
 
+	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro, 
+			UsuarioSessao usuarioSessao) {
+		
+		if (usuarioSessao.perfilSelecionado.id != Perfil.APROVADOR) {
+			return;
+		}
+		
+		processoBuilder.filtrarPorIdConsultorJuridico(filtro.idConsultorJuridico);
+		
+		if (filtro.idSetorCoordenadoria != null) {
+			
+			Setor setor = Setor.findById(filtro.idSetorCoordenadoria);
+			
+			/**
+			 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
+			 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
+			 */
+			if (setor != null) {
+				
+				processoBuilder.filtrarPorIdsSetores(setor.getIdsSetoresByNivel(1));
+			}
+		}
+		
+		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
+			
+			Setor setor = Setor.findById(usuarioSessao.setorSelecionado.id);
+			
+			/**
+			 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
+			 * Neste caso, colocamos o nível dois, pois a hierarquia é Diretoria/Coordenadoria(1)/Gerência(2)
+			 */
+			if (setor != null) {
+				
+				processoBuilder.filtrarPorIdsSetores(setor.getIdsSetoresByNivel(2));
+			}
+		}		
+	}
 
 	private static void commonFilterProcessoAnaliseJuridica(ProcessoBuilder processoBuilder,
 			FiltroProcesso filtro, Long idUsuarioLogado) {
@@ -206,7 +250,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 		
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
-		processoBuilder.filtrarPorIdSetor(filtro.idSetor);			
+		processoBuilder.filtrarPorIdSetor(filtro.idSetorGerencia);
 		
 		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
 			
@@ -237,15 +281,23 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
 		}
 		
-		if (filtro.idSetor == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
+		/**
+		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
+		 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
+		 */
+		if (filtro.idSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
 			
-			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresFilhos());			
+			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1));			
 		}
-
+		
+		/**
+		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
+		 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
+		 */
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 							
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
-			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresFilhos());	
+			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1));	
 		}
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
@@ -256,8 +308,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
-		
-		
+				
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.comTiposLicencas()
 			.groupByIdProcesso()
@@ -265,10 +316,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByCpfCnpjEmpreendimento()
 			.groupByDenominacaoEmpreendimento()
 			.groupByMunicipioEmpreendimento()
-			.groupByDataVencimentoPrazoAnalise();
-			
-		
-						
+			.groupByDataVencimentoPrazoAnalise()
+			.groupByDataCadastroAnalise();
+									
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
 		
 		listWithFilterAnaliseTecnica(processoBuilder, filtro);

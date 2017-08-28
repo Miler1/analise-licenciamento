@@ -70,7 +70,7 @@ public class AnalistaTecnico extends GenericModel {
 		/**
 		 * A justificativa é somente obrigatória para o coordenador que vincula uma analista técnico
 		 */
-		if (usuarioExecutor.perfilSelecionado.id.equals(Perfil.COORDENADOR_TECNICO)) {
+		if (usuarioExecutor.perfilSelecionado.id == Perfil.COORDENADOR_TECNICO) {
 			
 			if (justificativaCoordenador == null || justificativaCoordenador.isEmpty()){
 				throw new ValidacaoException(Mensagem.ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA);
@@ -86,7 +86,7 @@ public class AnalistaTecnico extends GenericModel {
 		 * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
 		 * caso contrário atribui o usuário executor para o campo do coordenador. 
 		 */
-		if (usuarioExecutor.perfilSelecionado.id.equals(Perfil.GERENTE_TECNICO)){
+		if (usuarioExecutor.perfilSelecionado.id == Perfil.GERENTE_TECNICO){
 			
 			analiseTecnica.usuarioValidacaoGerente = usuarioExecutor;
 			

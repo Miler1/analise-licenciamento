@@ -1,8 +1,8 @@
-include ../../../../layout/components/paginacao
+include ../../../layout/components/paginacao
 
 div
 	filtro-processos(paginacao="listagem.paginacao",
-		disabled-fields="aguardandoValidacaoListagem.disabledFields"
+		disabled-fields="listagem.disabledFields"
 		atualizar-lista="listagem.atualizarListaProcessos",
 		atualizar-paginacao="listagem.atualizarPaginacao",
 		condicao-tramitacao="listagem.condicaoTramitacao",
@@ -21,11 +21,9 @@ div
 							th
 							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
-							th.col-md-2 Empreendimento
-							th.col-md-2 Município
+							th.col-md-4 Empreendimento
 							th.col-md-2 Licenças
-							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise técnica
+							th.col-md-2 Prazo análise
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
@@ -34,12 +32,8 @@ div
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero  | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
-							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': listagem.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}") 
-								| {{listagem.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
-							td(ng-class="{'error-message': listagem.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseTecnica, listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{listagem.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica)}}
+							td {{listagem.getPrazoAnalise(processo.dataCadastroAnalise)}}
 							td
 								span.pull-right
 
@@ -56,10 +50,11 @@ div
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open 
 													span Visualizar processo
-				div
-					span.icone-revisao-solicitada.legenda revisão solicitada
 
-				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
+			div
+				span.icone-revisao-solicitada.legenda revisão solicitada
+
+			+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 
 		.row(ng-show="!listagem.processos || listagem.processos.length == 0")
 			.col-md-12
