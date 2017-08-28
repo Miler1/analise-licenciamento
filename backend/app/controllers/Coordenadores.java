@@ -5,6 +5,8 @@ import java.util.List;
 import models.Processo;
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
+import models.portalSeguranca.Setor;
+import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import security.Acao;
 import serializers.UsuarioSerializer;
@@ -25,7 +27,14 @@ public class Coordenadores extends InternalController {
 						.setParameter("idAtividadeCnae", processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.id)
 						.first();			
 			
-			renderJSON(Usuario.getUsuariosByPerfilSetor(idPerfil, tipoAtividadeCaracterizacao.setor.id), 
+			// sobe na hierarquia até encontrar o coordenador técnico
+			Setor setor = tipoAtividadeCaracterizacao.setor;
+			while(setor.setorPai != null && !setor.tipoSetor.equals(TipoSetor.COORDENADORIA)) {
+				setor = setor.setorPai;
+			}
+			
+			
+			renderJSON(Usuario.getUsuariosByPerfilSetor(idPerfil, setor.id), 
 					UsuarioSerializer.getConsultoresAnalistasGerentes);
 		}
 		
