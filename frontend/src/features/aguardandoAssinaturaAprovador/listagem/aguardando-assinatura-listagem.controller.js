@@ -45,7 +45,8 @@ var AguardandoAssinaturaAprovadorListController = function($scope, config, $loca
 
 	function validarAnalise(idAnaliseTecnica) {
 
-		//adicionar link para a validação da assinatura do aprovador
+        //adicionar link para a validação da assinatura do aprovador
+        $location.path('aguardando-assinatura/' + idAnaliseTecnica);
 	}	
 
 	function exibirDadosProcesso(processo) {

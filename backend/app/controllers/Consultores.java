@@ -34,7 +34,7 @@ public class Consultores extends InternalController {
 	
 	public static void getConsultoresJuridicos() {
 		
-		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO, Acao.APROVAR_ANALISE);
 		
 		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.CONSULTOR_JURIDICO);
 		

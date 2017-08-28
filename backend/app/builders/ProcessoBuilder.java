@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -13,9 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.type.StringType;
 
-import builders.ProcessoBuilder.FiltroProcesso;
 import models.Processo;
-import utils.IlikeNoAccents;
 
 public class ProcessoBuilder extends CriteriaBuilder<Processo> { 
 	
@@ -272,7 +269,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addProjection(Projections.groupProperty(ANALISE_ALIAS+".dataCadastro").as("dataCadastroAnalise"));
 		
 		return this;
-	}	
+	}
+	
+	public ProcessoBuilder groupByIdAnalise(){
+		
+		addAnaliseAlias();		
+		addProjection(Projections.groupProperty(ANALISE_ALIAS+".id").as("idAnalise"));
+		
+		return this;
+	}		
 	
 	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseJuridica(){
 		
