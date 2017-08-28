@@ -32,11 +32,12 @@ public class Perfil extends GenericModel {
 	public static final int NOME_TAMANHO_MAXIMO = 100;
 	public static final String CAMINHO_TEMP = Play.applicationPath + "/tmp/";
 	public static final String PATH_PERFIS = Play.configuration.getProperty("application.diretorioGravarImagens.perfis") + "/";
-	public static final Integer CONSULTOR_JURIDICO = 5;
-	public static final Integer COORDENADOR_TECNICO = 6;
-	public static final Integer ANALISTA_TECNICO = 8;
-	public static final Integer GERENTE_TECNICO = 7;
-	private static final Integer ID_EXTERNO = 2;
+	public static final int CONSULTOR_JURIDICO = 5;
+	public static final int COORDENADOR_TECNICO = 6;
+	public static final int ANALISTA_TECNICO = 8;
+	public static final int GERENTE_TECNICO = 7;
+	public static final int APROVADOR = 9;
+	private static final int ID_EXTERNO = 2;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_perfil")

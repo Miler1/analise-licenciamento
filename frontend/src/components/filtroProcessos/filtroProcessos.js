@@ -12,12 +12,13 @@ var FiltroProcessos = {
 		isAnaliseTecnicaOpcional: '<',
 		onAfterUpdate: '=',
 		isGerenteLogado: '<',
-		tipoSetor: '<',
-		pesquisarTodasGerencias: '<'
+		pesquisarTodasGerencias: '<',
+		tipoSetor: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
-		atividadeService, $scope, condicaoService, $rootScope, analistaService, setorService) {
+		atividadeService, $scope, condicaoService, $rootScope, analistaService, setorService,
+		TiposSetores, consultorService) {
 
 		var ctrl = this;
 
@@ -29,7 +30,9 @@ var FiltroProcessos = {
 		ctrl.atividades = [];
 		ctrl.analistasTecnicos = [];
 		ctrl.condicoes = [];
-		ctrl.setores = [];
+		ctrl.Gerencias = [];
+		ctrl.Coordenadorias = [];
+		ctrl.Consultores = [];
 
 		ctrl.maxDataInicio = new Date();
 
@@ -186,11 +189,18 @@ var FiltroProcessos = {
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.GERENCIA)){
 
 				if(!ctrl.pesquisarTodasGerencias) {
+					/**
+					 * Nível 1 corresponde aos filhos e nível 2 aos netos na hieraquia. 
+					 * Neste caso, colocamos esta verificação, pois se for o aprovador
+					 * as gerências pertencentes a ele estão dois níveis abaixo. Já se
+					 * for o coordenador estará um nível abaixo. 
+					 */
+					var nivel = $rootScope.usuarioSessao.perfilSelecionado.id === $rootScope.perfis.APROVADOR ? 2 : 1;
 
-					setorService.getSetoresFilhos()
+					setorService.getSetoresByNivel(nivel)
 						.then(function(response){
 
-							ctrl.setores = response.data;
+							ctrl.Gerencias = response.data;
 						})
 						.catch(function(response){
 
@@ -209,7 +219,7 @@ var FiltroProcessos = {
 					setorService.getSetoresPorTipo(ctrl.tipoSetor)
 						.then(function(response){
 
-							ctrl.setores = response.data;
+							ctrl.Gerencias = response.data;
 						})
 						.catch(function(response){
 
@@ -223,7 +233,41 @@ var FiltroProcessos = {
 							}
 						});
 				}
+			}
 
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.COORDENADORIA)){
+				/**
+				 * Nível 1 corresponde aos filhos na hieraquia. Ex. Se o usuário logado for Diretor,
+				 * então os setores que virão serão as coordenadorias
+				 */		
+				setorService.getSetoresByNivel(1)
+					.then(function(response){
+
+						ctrl.Coordenadorias = response.data;
+					})
+					.catch(function(response){
+
+						if(response.data && response.data.texto) {
+
+							mensagem.warning(response.data.texto);
+
+						} else {
+
+							mensagem.warning('Não foi possível obter a lista de setores.');
+						}
+					});
+			}			
+
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.CONSULTOR_JURIDICO)){
+
+				consultorService.getConsultoresJuridicos()
+					.then(function(response){
+
+						ctrl.consultoresJuridicos = response.data;
+					})
+					.catch(function(){
+						mensagem.warning('Não foi possível obter a lista de consultores jurídicos.');
+					});
 			}
 
 			if (ctrl.pesquisarAoInicializar){

@@ -1,6 +1,6 @@
 var ConsultorService = function(request, config) {
 
-	this.getConsultoresJuridicos = function(idPerfil) {
+	this.getConsultoresJuridicos = function() {
 
 		return request
 			.get(config.BASE_URL() + "consultores/juridicos");
