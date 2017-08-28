@@ -266,6 +266,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	public ProcessoBuilder groupByDataCadastroAnalise(){
+		
+		addAnaliseAlias();		
+		addProjection(Projections.groupProperty(ANALISE_ALIAS+".dataCadastro").as("dataCadastroAnalise"));
+		
+		return this;
+	}	
+	
 	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseJuridica(){
 		
 		addAnaliseJuridicaAlias();
@@ -575,7 +583,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public boolean isAnaliseTecnica;
 		public boolean isAnaliseTecnicaOpcional;
 		public Long idAnalistaTecnico;
-		public Integer idSetor;
+		public Integer idSetorGerencia;
+		public Integer idSetorCoordenadoria;
+		public Long idConsultorJuridico;
 		
 		public FiltroProcesso() {
 			

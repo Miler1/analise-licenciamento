@@ -22,7 +22,7 @@ public class Condicao extends GenericModel {
 	public static final Long AGUARDANDO_ANALISE_TECNICA = 8l;
 	public static final Long EM_ANALISE_TECNICA = 9l;
 	public static final Long AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE = 10l;
-	public static final Long AGUARDANDO_ASSINATURA_DIRETOR = 11l;
+	public static final Long AGUARDANDO_ASSINATURA_APROVADOR = 11l;
 	public static final Long AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR = 12l;
 	public static final Long AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR = 13l;
 	

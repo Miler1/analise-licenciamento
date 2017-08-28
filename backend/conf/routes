@@ -92,7 +92,7 @@ GET		/condicoes									Condicoes.list
 GET		/documentos/{id}/download					Documentos.download
 
 # Setores
-GET		/setores/setoresFilhos						Setores.getSetoresFilhos
+GET		/setores/nivel/{nivel}						Setores.getSetoresByNivel
 GET		/setores/setoresPorTipo						Setores.getSetoresByTipo
 
 # Ignore favicon requests

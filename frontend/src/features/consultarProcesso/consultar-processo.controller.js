@@ -17,6 +17,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.getDiasRestantes = getDiasRestantes;
 	consultarProcesso.isPrazoMinimoAvisoAnalise = isPrazoMinimoAvisoAnalise;
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
+	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO];
 
 	function atualizarListaProcessos(processos) {
 
