@@ -17,3 +17,7 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 		});
 }]);
 
+aguardandoAssinatura
+	.controller('solicitarAjusteAprovadorController', controllers.SolicitarAjusteAprovadorController);
+	
+

@@ -37,6 +37,7 @@ public class Perfil extends GenericModel {
 	public static final Integer ANALISTA_TECNICO = 8;
 	public static final Integer GERENTE_TECNICO = 7;
 	private static final Integer ID_EXTERNO = 2;
+	public static final Integer COORDENADOR_JURIDICO = 3;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_perfil")

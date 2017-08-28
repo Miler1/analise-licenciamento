@@ -22,23 +22,23 @@ div(ng-init="validacaoAnaliseAprovador.init()")
 
 			uib-tab(index="3", heading="Validar pareceres")
 
-				div
+				div(ng-controller="solicitarAjusteAprovadorController as solicitarAjuste")
 					form
 						.form-group
 							label.margin-right-sm Revisão do parecer
 							label.radio-inline(for="parecer_juridico")
-								input#parecer_juridico(type="radio", name="tipo_parecer")
+								input#parecer_juridico(type="radio", name="tipo_parecer", ng-model="solicitarAjuste.solicitacao.tipo", value="{{perfis.COORDENADOR_JURIDICO}}", ng-change="solicitarAjuste.listarCoordenadores()")
 								| Jurídico
 							label.radio-inline(for="parecer_tecnico")
-								input#parecer_tecnico(type="radio", name="tipo_parecer")
-								| técnico
+								input#parecer_tecnico(type="radio", name="tipo_parecer", ng-model="solicitarAjuste.solicitacao.tipo", value="{{perfis.COORDENADOR_TECNICO}}", ng-change="solicitarAjuste.listarCoordenadores()")
+								| Técnico
 						.form-group
 							label Coordenador:
-							select.form-control
+							select.form-control(ng-model="solicitarAjuste.solicitacao.coordenador", ng-options="coordenador as coordenador.pessoa.nome for coordenador in solicitarAjuste.coordenadores")
 
 						.form-group
 							label Justificativa:
-							textarea.form-control
+							textarea.form-control.textarea--resize-vertical(ng-model="solicitarAjuste.solicitacao.justificativa")
 					button.btn.btn-default.pull-right
 						| Solicitar revisão do parecer
 
