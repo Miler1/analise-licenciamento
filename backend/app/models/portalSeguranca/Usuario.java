@@ -100,7 +100,7 @@ public class Usuario extends GenericModel  {
 	
 	public static List<Usuario> getUsuariosByPerfilSetor(Integer idPerfil, Integer idSetor) {
 		
-		return Usuario.find("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = ? and s.id = ? ",idPerfil, idSetor).fetch();
+		return Usuario.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = ? and s.id = ? ",idPerfil, idSetor).fetch();
 	}
 	
 	public static List<Usuario> getUsuariosByPerfilSetores(Integer idPerfil, List<Integer> idsSetores) {
@@ -109,7 +109,7 @@ public class Usuario extends GenericModel  {
 			return null;
 		}
 		
-		Query query = JPA.em().createQuery("SELECT u FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = :idPerfil and s.id IN (:idsSetores)");
+		Query query = JPA.em().createQuery("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = :idPerfil and s.id IN (:idsSetores)");
 		
 		query.setParameter("idPerfil", idPerfil);
 		query.setParameter("idsSetores", idsSetores);

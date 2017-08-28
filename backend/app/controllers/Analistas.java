@@ -7,6 +7,7 @@ import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import play.db.jpa.JPABase;
 import security.Acao;
@@ -72,21 +73,36 @@ public class Analistas extends InternalController {
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
 		
+		List<Integer> idsSetoresFilhos = null;
 		List<Usuario> pessoas = null;
-		if(!isGerente) {
-			
-			List<Integer> idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresFilhos();
-			
+		switch (usuarioSessao.perfilSelecionado.id) {
+		/**
+		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
+		 * Neste caso, colocamos o nível 2, pois aqui o aprovador está pesquisando e o setor dele
+		 * é diretoria, então a hierarquia é Diretoria/Coordenadoria(1)/Gerência(2)
+		 */
+		case Perfil.APROVADOR:
+			idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresByNivel(2);
 			pessoas = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
-		
-		} else {
-			
+			break;
+		/**
+		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
+		 * Neste caso, colocamos o nível 1, pois aqui o coordenador está pesquisando e o setor dele
+		 * é cordenadoria, então a hierarquia é Coordenadoria/Gerência(1)
+		 */			
+		case Perfil.COORDENADOR_TECNICO:
+			idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1);
+			pessoas = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
+			break;
+		/**
+		 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
+		 */
+		default:
 			pessoas = Usuario.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO, usuarioSessao.setorSelecionado.id);
+			break;
 		}
-
 		
-		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);		
-		
+		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 	
 	

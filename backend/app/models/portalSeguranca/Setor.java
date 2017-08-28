@@ -43,25 +43,51 @@ public class Setor extends GenericModel {
 	@Enumerated(EnumType.ORDINAL)
 	public TipoSetor tipoSetor;
 	
-	public List<Setor> getSetoresFilhos() {
+	/**
+	 * Método para buscar os setores por nível. Por exemplo:
+	 * nível 1 irá buscar os filhos do setor pesquisado;
+	 * nível 2 irá buscar os netos do setor pesquisado;
+	 * e assim por diante.
+	 * Obs.: O nível mais baixo é o 1
+	 * @param nivel
+	 * @return
+	 */
+	public List<Setor> getSetoresByNivel(Integer nivel) {
 		
-		List<Setor> setoresFilhos = Setor.find("bySetorPai", this).fetch();
-		
-		return setoresFilhos;
-	}
-	
-	public List<Integer> getIdsSetoresFilhos() {
-		
-		List<Setor> setoresFilhos = getSetoresFilhos();
-		
-		ArrayList<Integer> idsSetoresFilhos = new ArrayList<>();
-		
-		for (Setor setor : setoresFilhos) {
+		if (nivel <= 0) {
 			
-			idsSetoresFilhos.add(setor.id);
+			return new ArrayList<>();
 		}
 		
-		return idsSetoresFilhos;
-	}	
+		int i = 0;
+		
+		String sql = String.format("SELECT s%1$d FROM Setor s%1$d ", i);
+		
+		for (i = 1; i < nivel; i++) {
+			
+			sql+= String.format("JOIN s%d.setorPai s%d ", i-1, i);
+		}
+		
+		sql+= String.format("WHERE s%d.setorPai = ?", --i);
+		
+		List<Setor> setoresByNivel = Setor.find(sql, this).fetch();
+		
+		return setoresByNivel;
+	}
+	
+	
+	public List<Integer> getIdsSetoresByNivel(Integer nivel) {
+		
+		List<Setor> setoresByNivel = getSetoresByNivel(nivel);
+		
+		ArrayList<Integer> idsSetoresByNivel = new ArrayList<>();
+		
+		for (Setor setor : setoresByNivel) {
+			
+			idsSetoresByNivel.add(setor.id);
+		}
+		
+		return idsSetoresByNivel;
+	}
 
 }

@@ -1,0 +1,61 @@
+include ../../../layout/components/paginacao
+
+div
+	filtro-processos(paginacao="listagem.paginacao",
+		disabled-fields="listagem.disabledFields"
+		atualizar-lista="listagem.atualizarListaProcessos",
+		atualizar-paginacao="listagem.atualizarPaginacao",
+		condicao-tramitacao="listagem.condicaoTramitacao",
+		pesquisar-ao-inicializar="true",
+		is-analise-tecnica="true")
+
+	h4 Lista de processos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="listagem.processos && listagem.processos.length > 0")
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th
+							th.col-md-1 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-4 Empreendimento
+							th.col-md-2 Licenças
+							th.col-md-2 Prazo análise
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in listagem.processos")
+							td
+								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero  | textoTruncado : 4:3}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.licencas}}
+							td {{listagem.getPrazoAnalise(processo.dataCadastroAnalise)}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+												a(ng-click="listagem.validarAnalise(processo.idAnaliseTecnica)")
+													i.glyphicon.glyphicon-play-circle
+													span Validar análise
+											li
+												a(ng-click="listagem.exibirDadosProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open 
+													span Visualizar processo
+
+			div
+				span.icone-revisao-solicitada.legenda revisão solicitada
+
+			+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
+
+		.row(ng-show="!listagem.processos || listagem.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.
