@@ -1,10 +1,6 @@
+h2.margin-bottom-md Análise Jurídica
+
 div
-
-  label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Coordenador jurídico:
-  span#texto_nome_consultor_juridico
-    strong {{$ctrl.analiseJuridica.usuarioValidacao.pessoa.nome}}
-
-  br
 
   label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Consultor jurídico:
   span#texto_nome_consultor_juridico
@@ -22,7 +18,7 @@ table.table.table-condensed
   thead
 
     tr
-      th Arquivo anexado
+      th Arquivos anexados
       th.text-right Ações
 
   tbody
@@ -31,12 +27,41 @@ table.table.table-condensed
 
       td {{documento.nome}}
       td.text-right
-        a.btn(ng-if="documento.id", title="Baixar documento", ng-click="$ctrl.downloadDocumentoAnalise(documento.id)")
+        a.btn(ng-if="documento.id", title="Baixar documento", ng-click="$ctrl.downloadAnexo(documento.id)")
           i.glyphicon.glyphicon-save
 
 .row(ng-show="!$ctrl.analiseJuridica.documentos || $ctrl.analiseJuridica.documentos.length == 0")
   .col-md-12
     p.empty-result Não existem arquivos anexados.
+
+table.table.table-condensed(ng-if="$ctrl.exibirDocumentosAnalisados")
+
+  thead
+
+    tr
+      th Documentos validados
+      th.text-right Ações
+
+  tbody
+
+    tr(ng-repeat="analiseDocumento in $ctrl.analiseJuridica.analisesDocumentos | filter : { documento : { tipo : { tipoAnalise : 'JURIDICA'} } }")
+
+      td {{analiseDocumento.documento.tipo.nome}}
+      td.text-right
+        a.btn(title="Baixar documento", ng-click="$ctrl.downloadDocumentoAnalisado(analiseDocumento.documento.id)")
+          i.glyphicon.glyphicon-save
+
+h2.margin-bottom-md Validação Jurídica
+
+label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Coordenador jurídico:
+span#texto_nome_consultor_juridico
+  strong {{$ctrl.analiseJuridica.usuarioValidacao.pessoa.nome}}
+
+label.not-bold.margin-left-xs.margin-right-xs Data da validação:
+span
+  strong {{$ctrl.analiseJuridica.dataFim}}
+
+hr
 
 label Considerações do Coordenador:
 

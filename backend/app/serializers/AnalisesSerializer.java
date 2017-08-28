@@ -13,6 +13,8 @@ public class AnalisesSerializer {
 			"processo.empreendimento.denominacao",
 			"processo.empreendimento.pessoa.cpf",
 			"processo.empreendimento.pessoa.cnpj",
+			"processo.empreendimento.endereco.municipio.nome",
+			"processo.empreendimento.endereco.municipio.estado.codigo",
 			"analiseJuridica.id",
 			"analiseTecnica.id"
 

@@ -1,6 +1,6 @@
 var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routeParams, $scope, 
-		mensagem, $location,processoService, $uibModal, analiseService, analiseJuridicaService, analiseTecnicaService,
-		documentoAnaliseService) {
+		mensagem, $location,processoService, $uibModal, analiseService, analiseJuridicaService, 
+		analiseTecnicaService, documentoAnaliseService) {
 
 	var validacaoAnaliseAprovador = this;
 
@@ -15,10 +15,12 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 
 	function init() {
 
-	  analiseService.getAnalise($routeParams.idAnalise)
+		analiseService.getAnalise($routeParams.idAnalise)
 		.then(function(response){
-		  validacaoAnaliseAprovador.analise = response.data;
-		  carregarDadosAnaliseJuridica();
+			validacaoAnaliseAprovador.analise = response.data;
+			validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
+			validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
+			carregarDadosAnaliseJuridica();
 		});
 	}
 
@@ -46,14 +48,15 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 	function carregarDadosAnaliseJuridica() {
 
 		if(validacaoAnaliseAprovador.analise) {
+
 			analiseJuridicaService.getAnaliseJuridica(validacaoAnaliseAprovador.analise.analiseJuridica.id)
-				.then(function(response){
-					validacaoAnaliseAprovador.analiseJuridica = response.data;
-		  		});
-	  	}
+			.then(function(response){
+				validacaoAnaliseAprovador.analiseJuridica = response.data;
+			});
+
+		}
 
 	}
-
 
 	function carregarDadosAnaliseTecnica() {
 
