@@ -85,3 +85,8 @@ ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO=O gerente ou analista técnico n�
 #
 SETOR_NAO_ENCONTRADO=Setor não encontrado.
 SETOR_OBRIGATORIO_ANALISE=Não existe setor vinculado ao perfil selecionado.
+
+#
+# Aprovador
+#
+VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO=Validação do parecer das análises concluída com sucesso.
