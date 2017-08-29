@@ -2,23 +2,32 @@ include ../../../../layout/components/panel
 include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
-div(ng-init="validacaoAnaliseAprovador.init()")
-	+resumo-processo('validacaoAnaliseAprovador.analise.processo','validacaoAnaliseAprovador.exibirDadosProcesso()')
+div(ng-init="ctrl.init()")
+	+resumo-processo('ctrl.analise.processo','ctrl.exibirDadosProcesso()')
 
-	section.margin-bottom-md
-
-		uib-tabset(active='validacaoAnaliseAprovador.tabAtiva')
-			uib-tab(index="0", heading="Parecer Jurídico", select="validacaoAnaliseAprovador.carregarDadosAnaliseJuridica()")
-				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 0')
-					visualizar-analise-juridica(analise-juridica="validacaoAnaliseAprovador.analiseJuridica", exibir-documentos-analisados="true")
-
+	section.margin-bottom-md(active='ctrl.tabAtiva')
+		uib-tabset(active='ctrl.tabAtiva')
+			uib-tab(index="0", heading="Parecer Jurídico")
+				div(ng-if='ctrl.tabAtiva === 0')
+					visualizar-analise-juridica(analise-juridica="ctrl.analiseJuridica")
+					
 			uib-tab(index="1", heading="Análise geo")
-				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 1')
+				div(ng-if='ctrl.tabAtiva === 1')
 					include ../../../analiseTecnica/analiseGeo/analise-geo
-
-			uib-tab(index="2", heading="Parecer Técnico", select="validacaoAnaliseAprovador.carregarDadosAnaliseTecnica()")
-				div(ng-if='validacaoAnaliseAprovador.tabAtiva === 2')
+					
+			uib-tab(index="2", heading="Parecer Técnico")
+				div(ng-if='ctrl.tabAtiva === 2')
 					include parecerTecnico/parecerTecnico
 
-			uib-tab(index="3", heading="VALIDAR PARECERES")
-				parecer(aprovador="", usuario-sessao="usuarioSessao")
+			uib-tab(index="3", heading="Validar PARECERES")
+				div(ng-if='ctrl.tabAtiva === 3')
+				
+			
+		section.margin-bottom-xl.alone
+				
+			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva === 0")
+					|<< Etapa anterior
+
+					
+			a.btn.pull-right(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva !== 3")
+					| >> Próxima Etapa

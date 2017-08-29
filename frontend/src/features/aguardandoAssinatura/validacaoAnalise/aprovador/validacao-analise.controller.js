@@ -4,11 +4,12 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 
 	var validacaoAnaliseAprovador = this;
 
-	validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
 	validacaoAnaliseAprovador.formularios = {};
 	validacaoAnaliseAprovador.tabAtiva = 0;
 	validacaoAnaliseAprovador.init = init;
+	validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
 	validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
+	validacaoAnaliseAprovador.carregarDadosAnaliseGeo = carregarDadosAnaliseGeo;
 	validacaoAnaliseAprovador.carregarDadosAnaliseTecnica = carregarDadosAnaliseTecnica;
 	validacaoAnaliseAprovador.downloadDocumentoAnalise = downloadDocumentoAnalise;
 	validacaoAnaliseAprovador.visualizarLicenca = visualizarLicenca;
@@ -16,11 +17,16 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 	function init() {
 
 		analiseService.getAnalise($routeParams.idAnalise)
-		.then(function(response){
-			validacaoAnaliseAprovador.analise = response.data;
-			validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
-			validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
-			carregarDadosAnaliseJuridica();
+			.then(function(response){
+
+				validacaoAnaliseAprovador.analise = response.data;
+				validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
+					validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
+                    
+				carregarDadosAnaliseJuridica();
+                carregarDadosAnaliseGeo();
+                carregarDadosAnaliseTecnica();
+			
 		});
 	}
 
@@ -50,11 +56,22 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 		if(validacaoAnaliseAprovador.analise) {
 
 			analiseJuridicaService.getAnaliseJuridica(validacaoAnaliseAprovador.analise.analiseJuridica.id)
-			.then(function(response){
-				validacaoAnaliseAprovador.analiseJuridica = response.data;
-			});
+				.then(function(response){
+					validacaoAnaliseAprovador.analiseJuridica = response.data;
+				});
+	  	}
 
-		}
+	}
+
+	 function carregarDadosAnaliseGeo() {
+
+		if(validacaoAnaliseAprovador.analise) {
+
+			analiseTecnicaService.getRestricoesGeo(validacaoAnaliseAprovador.analise.analiseTecnica.id)
+				.then(function(response){
+					validacaoAnaliseAprovador.restricoes = response.data;
+				});
+	  	}
 
 	}
 

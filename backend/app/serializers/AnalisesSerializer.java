@@ -16,7 +16,12 @@ public class AnalisesSerializer {
 			"processo.empreendimento.endereco.municipio.nome",
 			"processo.empreendimento.endereco.municipio.estado.codigo",
 			"analiseJuridica.id",
-			"analiseTecnica.id"
+			"analiseTecnica.id",
+			"analiseTecnica.pareceresTecnicosRestricoes",
+			"analiseTecnica.analise",
+			"analiseTecnica.analise.processo.empreendimento",
+			"analiseTecnica.analise.processo.empreendimento.imovel",
+			"analiseTecnica.analise.processo.empreendimento..municipio.limite"
 
 		);
 

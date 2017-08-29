@@ -5,19 +5,19 @@ section.margin-bottom-md
 	div.margin-top-md
 		label.not-bold.margin-right-xs(for="texto_nome_analista_tecnico") Analista técnico:  
 		span#texto_nome_analista_tecnico
-			strong {{validacaoAnaliseAprovador.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
+			strong {{ctrl.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
 	hr
 
-	section(ng-if="validacaoAnaliseAprovador.analiseTecnica.analiseTecnicaRevisada && validacaoAnaliseAprovador.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+	section(ng-if="ctrl.analiseTecnica.analiseTecnicaRevisada && ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
 		label Parecer da validação:
 
-		div(class="alert alert-warning", ng-bind-html="validacaoAnaliseAprovador.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
+		div(class="alert alert-warning", ng-bind-html="ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
 
-	h4 {{validacaoAnaliseAprovador.analiseTecnica.tipoResultadoAnalise.nome}}
+	h4 {{ctrl.analiseTecnica.tipoResultadoAnalise.nome}}
 
 	fieldset.panel.panel-default
 		div.panel-body
-			p(ng-bind-html="validacaoAnaliseAprovador.analiseTecnica.parecer")
+			p(ng-bind-html="ctrl.analiseTecnica.parecer")
 
 	table.table.table-condensed
 
@@ -29,14 +29,14 @@ section.margin-bottom-md
 
 		tbody
 
-			tr(ng-repeat="documento in validacaoAnaliseAprovador.analiseTecnica.documentos")
+			tr(ng-repeat="documento in ctrl.analiseTecnica.documentos")
 
 				td {{documento.nome}}
 				td.text-right 
-					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseAprovador.downloadDocumentoAnalise(documento.id)")
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
 						i.glyphicon.glyphicon-save
 
-	.row(ng-show="!validacaoAnaliseAprovador.analiseTecnica.documentos || validacaoAnaliseAprovador.analiseTecnica.documentos.length == 0")
+	.row(ng-show="!ctrl.analiseTecnica.documentos || ctrl.analiseTecnica.documentos.length == 0")
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
 
@@ -50,14 +50,14 @@ section.margin-bottom-md
 
 		tbody
 
-			tr(ng-repeat="analiseDocumento in validacaoAnaliseAprovador.analiseTecnica.analisesDocumentos")
+			tr(ng-repeat="analiseDocumento in ctrl.analiseTecnica.analisesDocumentos")
 
 				td(ng-if='analiseDocumento.validado') {{analiseDocumento.documento.tipo.nome}}
 				td.text-right(ng-if='analiseDocumento.validado')
-					a.btn(ng-if="analiseDocumento.documento.id", title="Baixar documento", ng-click="validacaoAnaliseAprovador.downloadDocumentoAnalise(analiseDocumento.documento.id)")
+					a.btn(ng-if="analiseDocumento.documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(analiseDocumento.documento.id)")
 						i.glyphicon.glyphicon-save
 
-	.row(ng-show="!validacaoAnaliseAprovador.analiseTecnica.documentos || validacaoAnaliseAprovador.analiseTecnica.documentos.length == 0")
+	.row(ng-show="!ctrl.analiseTecnica.documentos || ctrl.analiseTecnica.documentos.length == 0")
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
 
@@ -78,7 +78,7 @@ section.margin-bottom-md
 
 			tbody
 
-				tr(ng-repeat="licencaAnalise in validacaoAnaliseAprovador.analiseTecnica.licencasAnalise")
+				tr(ng-repeat="licencaAnalise in ctrl.analiseTecnica.licencasAnalise")
 
 					th
 						span(ng-class="{'icone-licenca-aprovada': licencaAnalise.emitir, 'icone-licenca-reprovada': !licencaAnalise.emitir}")
@@ -86,7 +86,7 @@ section.margin-bottom-md
 					th {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
 					th {{licencaAnalise.validade}} anos
 					td.text-right 
-						a.btn(ng-if="licencaAnalise.emitir", title="Visualizar licença", ng-click="validacaoAnaliseAprovador.visualizarLicenca($index)")
+						a.btn(ng-if="licencaAnalise.emitir", title="Visualizar licença", ng-click="ctrl.visualizarLicenca($index)")
 							i.glyphicon.glyphicon-eye-open
 
 		div

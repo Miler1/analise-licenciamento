@@ -10,15 +10,12 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 		.when('/aguardando-assinatura/:idAnalise', {
 			templateUrl: 'features/aguardandoAssinatura/validacaoAnalise/aprovador/validacao-analise.html',
 			controller: controllers.ValidacaoAnaliseAprovadorController,
-			controllerAs: 'validacaoAnaliseAprovador'
+			controllerAs: 'ctrl'
 		})		
 		.otherwise({
 			redirectTo: '/'
 		});
 }]);
-
-aguardandoAssinatura
-	.controller('validacaoAnaliseAprovadorController', controllers.ValidacaoAnaliseAprovadorController);
 
 aguardandoAssinatura
 	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);
