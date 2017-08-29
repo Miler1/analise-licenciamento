@@ -22,6 +22,9 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
                 validacaoAnaliseAprovador.analise.processo.empreendimento.municipio =
                     validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
                 carregarDadosAnaliseJuridica();
+                carregarDadosAnaliseGeo();
+                carregarDadosAnaliseTecnica();
+                
             });
     }
 
