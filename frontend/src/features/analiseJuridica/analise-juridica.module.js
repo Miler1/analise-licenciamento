@@ -1,11 +1,11 @@
 var analiseJuridica = angular.module('analiseJuridica', ['ngRoute']);
 
 var utils = app.utils,
-    controllers = app.controllers,
-    directives = app.directives;
+	controllers = app.controllers,
+	directives = app.directives;
 
-analiseJuridica.config(['$routeProvider', function($routeProvider) {
-	
+analiseJuridica.config(['$routeProvider', function ($routeProvider) {
+
 	$routeProvider
 		.when('/analise-juridica/:idAnaliseJuridica', {
 			templateUrl: 'features/analiseJuridica/analise-juridica.html',
@@ -14,21 +14,21 @@ analiseJuridica.config(['$routeProvider', function($routeProvider) {
 
 			resolve: {
 
-				analiseJuridica: function(analiseJuridicaService, $route, $q) {
+				analiseJuridica: function (analiseJuridicaService, $route, $q) {
 
-					var deferred = $q.defer();					
+					var deferred = $q.defer();
 					analiseJuridicaService.getAnaliseJuridica($route.current.params.idAnaliseJuridica)
-						.then(function(response){
+						.then(function (response) {
 							deferred.resolve(response.data);
 						});
-					return deferred.promise;					
-				}				
+					return deferred.promise;
+				}
 			}
 		})
 		.otherwise({
 			redirectTo: '/'
 		});
-}]);    
+}]);
 
 
 

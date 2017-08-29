@@ -31,6 +31,10 @@ import models.licenciamento.TipoAnalise;
 import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
+import models.validacaoParecer.Analisavel;
+import models.validacaoParecer.SolicitarAjustesJuridicoAprovador;
+import models.validacaoParecer.SolicitarAjustesTecnicoAprovador;
+import models.validacaoParecer.TipoResultadoAnaliseChain;
 import notifiers.Emails;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -41,7 +45,7 @@ import utils.ModelUtil;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
-public class AnaliseJuridica extends GenericModel {
+public class AnaliseJuridica extends GenericModel implements Analisavel {
 
 	public static final String SEQ = "analise.analise_juridica_id_seq";
 	
@@ -105,7 +109,17 @@ public class AnaliseJuridica extends GenericModel {
  	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
 	public Usuario usuarioValidacao;
 	
+	@ManyToOne
+	@JoinColumn(name="id_tipo_resultado_validacao_aprovador")
+	public TipoResultadoAnalise tipoResultadoValidacaoAprovador;
 	
+	@Column(name="parecer_validacao_aprovador")
+	public String parecerValidacaoAprovador;
+	
+ 	@ManyToOne(fetch=FetchType.LAZY)
+ 	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
+	public Usuario usuarioValidacaoAprovador;
+ 	
 	private void validarParecer() {
 		
 		if(StringUtils.isBlank(this.parecer)) 
@@ -524,5 +538,38 @@ public class AnaliseJuridica extends GenericModel {
 			}
 			
 		}
-	}	
+	}
+
+	@Override
+	public TipoResultadoAnalise getTipoResultadoValidacao() {
+		
+		return this.tipoResultadoValidacao;
+	}
+
+	public void setValidacaoCoordenador(AnaliseJuridica analiseJuridica) {
+		this.tipoResultadoValidacao = analiseJuridica.tipoResultadoValidacao;
+		this.parecerValidacao = analiseJuridica.parecerValidacao;
+	}
+	
+	public void validarTipoResultadoValidacaoAprovador() {
+		
+		if (tipoResultadoValidacaoAprovador == null) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO_VALIDACAO);
+		}
+	}
+	
+	public void validarParecerValidacaoAprovador() {
+		
+		if (StringUtils.isEmpty(parecerValidacaoAprovador)) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
+		}		
+	}
+	
+	public void validarParecerValidacaoAprovador(AnaliseJuridica analiseJuridica, Usuario usuarioExecutor) {
+		
+		models.validacaoParecer.TipoResultadoAnaliseChain<AnaliseJuridica> tiposResultadosAnalise = new SolicitarAjustesJuridicoAprovador();	
+		tiposResultadosAnalise.validarParecer(this, analiseJuridica, usuarioExecutor);		
+	}
 }

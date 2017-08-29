@@ -6,118 +6,130 @@ include ../../../../layout/components/inputErrors
 
 section.margin-bottom-md
 
-	h3 Análise técnica
+    h3 Análise técnica
 
-	h4.margin-top-md {{validacaoAnaliseTecnica.analiseTecnica.tipoResultadoAnalise.nome}}
+    h4.margin-top-md {{validacaoAnaliseTecnica.analiseTecnica.tipoResultadoAnalise.nome}}
 
-	div.margin-top-md(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
-		label.not-bold.margin-right-xs(for="texto_nome_gerente_tecnico") Gerente técnico:
-		span#texto_nome_gerente_tecnico
-			strong {{validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos[0].usuario.pessoa.nome}}
+    div(ng-if="validacaoAnaliseTecnica.analiseTecnica.analiseTecnicaRevisada.parecerValidacaoAprovador")
+        div.margin-top-md
+            label.not-bold.margin-right-xs(for="texto_nome_aprovador") Aprovador:
+            span#texto_nome_aprovador
+                strong {{validacaoAnaliseTecnica.analiseTecnica.analiseTecnicaRevisada.usuarioValidacaoAprovador.pessoa.nome}}
 
-	fieldset.panel.panel-default(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
-		div.panel-body
-			p(ng-if="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente", ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente")
+        div
+            label Parecer do aprovador:
 
-			p(ng-if="!validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente") O gerente técnico não fez nenhuma consideração.
-	
-	
-	div.margin-top-md
-		label.not-bold.margin-right-xs(for="texto_nome_analista_tecnico") Analista técnico:  
-		span#texto_nome_analista_tecnico
-			strong {{validacaoAnaliseTecnica.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
-	
-	fieldset.panel.panel-default
-		div.panel-body
-			p(ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecer")
+            div(class="alert alert-warning", ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.analiseTecnicaRevisada.parecerValidacaoAprovador")
 
-	table.table.table-condensed
 
-		thead
+    div.margin-top-md(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
+        label.not-bold.margin-right-xs(for="texto_nome_gerente_tecnico") Gerente técnico:
+        span#texto_nome_gerente_tecnico
+            strong {{validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos[0].usuario.pessoa.nome}}
 
-			tr
-				th Arquivo anexado
-				th.text-right Ações
+    fieldset.panel.panel-default(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
+        div.panel-body
+            p(ng-if="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente", ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente")
 
-		tbody
+            p(ng-if="!validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente") O gerente técnico não fez nenhuma consideração.
 
-			tr(ng-repeat="documento in validacaoAnaliseTecnica.analiseTecnica.documentos")
 
-				td {{documento.nome}}
-				td.text-right 
-					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseTecnica.downloadDocumentoAnalise(documento.id)")
-						i.glyphicon.glyphicon-save
+    div.margin-top-md
+        label.not-bold.margin-right-xs(for="texto_nome_analista_tecnico") Analista técnico:  
+        span#texto_nome_analista_tecnico
+            strong {{validacaoAnaliseTecnica.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
 
-	.row(ng-show="!validacaoAnaliseTecnica.analiseTecnica.documentos || validacaoAnaliseTecnica.analiseTecnica.documentos.length == 0")
-		.col-md-12
-			p.empty-result Não existem arquivos anexados.
+    fieldset.panel.panel-default
+        div.panel-body
+            p(ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecer")
 
-	form(name="formularioValidacao", novalidate)
-		.form-group.text-center.margin-bottom-md.margin-top-md
-			div(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.resultado.$error.required}")
-				label.radio-inline(for="radio_parecer_validado")
-					input#radio_parecer_validado(type="radio", name="resultado", ng-value="validacaoAnaliseTecnica.TiposResultadoAnalise.PARECER_VALIDADO", 
-						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao", required) 
-					| Parecer validado
-				label.radio-inline(for="radio_solicitar_ajustes")
-					input#radio_solicitar_ajustes(type="radio", name="resultado", ng-value="validacaoAnaliseTecnica.TiposResultadoAnalise.SOLICITAR_AJUSTES", 
-						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao", required) 
-					| Solicitar ajustes
-				label.radio-inline(for="radio_parecer_nao_validado")
-					input#radio_parecer_nao_validado(type="radio", name="resultado", ng-value="validacaoAnaliseTecnica.TiposResultadoAnalise.PARECER_NAO_VALIDADO", 
-						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao", required) 
-					| Parecer não validado
-			+inputErrors('formularioValidacao', 'resultado', 'required')    
+    table.table.table-condensed
 
-		.form-group(ng-if="!!validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao")
-			label.control-label(ng-class="{'obrigatorio': validacaoAnaliseTecnica.isObrigatorio()}") 
-				| {{validacaoAnaliseTecnica.isParecerNaoValidado() ? 'Justificativa:' : 'Considerações:'}}
+        thead
 
-			div(text-angular, ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.parecerValidacao", name="parecer",
-				ta-text-editor-class="form-control myform2-height", 
-				ta-html-editor-class="form-control myform2-height",
-				ng-required="validacaoAnaliseTecnica.isObrigatorio()",
-				ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
+            tr
+                th Arquivo anexado
+                th.text-right Ações
 
-			+inputErrors('formularioValidacao', 'parecer', 'required')
-		
-		
-		.form-group(ng-if="validacaoAnaliseTecnica.isParecerNaoValidado()")
-			div
-				label.control-label.obrigatorio Revisar Parecer
-			div.text-center(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.revisar_parecer.$error.required}")
-				label.radio-inline(for="radio_gerente_tecnico")
-					input#radio_gerente_tecnico(type="radio", name="revisar_parecer", required,
-						ng-value="validacaoAnaliseTecnica.analistaGerente.GERENTE", 
-						ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
-						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente") 
-					| Gerente técnico
-				
-				label.radio-inline(for="radio_analista_tecnico")
-					input#radio_analista_tecnico(type="radio", name="revisar_parecer", required,
-						ng-value="validacaoAnaliseTecnica.analistaGerente.ANALISTA",
-						ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()",
-						ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
-					| Analista técnico
-			+inputErrors('formularioValidacao', 'revisar_parecer', 'required')
+        tbody
 
-			div(ng-if="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
-				label.control-label.obrigatorio {{validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente === validacaoAnaliseTecnica.analistaGerente.GERENTE ? 'Gerente:' : 'Analista:'}}
-				select.form-control(
-					ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico",
-					name="selectConsultor",
-					required,
-					ng-options="analista.id as analista.pessoa.nome for analista in validacaoAnaliseTecnica.analistasGerentes")
-					
+            tr(ng-repeat="documento in validacaoAnaliseTecnica.analiseTecnica.documentos")
 
-			+inputErrors('formularioValidacao', 'selectConsultor', 'required')            
+                td {{documento.nome}}
+                td.text-right 
+                    a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseTecnica.downloadDocumentoAnalise(documento.id)")
+                        i.glyphicon.glyphicon-save
+
+    .row(ng-show="!validacaoAnaliseTecnica.analiseTecnica.documentos || validacaoAnaliseTecnica.analiseTecnica.documentos.length == 0")
+        .col-md-12
+            p.empty-result Não existem arquivos anexados.
+
+    form(name="formularioValidacao", novalidate)
+        .form-group.text-center.margin-bottom-md.margin-top-md
+            div(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.resultado.$error.required}")
+                label.radio-inline(for="radio_parecer_validado")
+                    input#radio_parecer_validado(type="radio", name="resultado", ng-value="validacaoAnaliseTecnica.TiposResultadoAnalise.PARECER_VALIDADO", 
+                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao", required) 
+                    | Parecer validado
+                label.radio-inline(for="radio_solicitar_ajustes")
+                    input#radio_solicitar_ajustes(type="radio", name="resultado", ng-value="validacaoAnaliseTecnica.TiposResultadoAnalise.SOLICITAR_AJUSTES", 
+                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao", required) 
+                    | Solicitar ajustes
+                label.radio-inline(for="radio_parecer_nao_validado")
+                    input#radio_parecer_nao_validado(type="radio", name="resultado", ng-value="validacaoAnaliseTecnica.TiposResultadoAnalise.PARECER_NAO_VALIDADO", 
+                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao", required) 
+                    | Parecer não validado
+            +inputErrors('formularioValidacao', 'resultado', 'required')    
+
+        .form-group(ng-if="!!validacaoAnaliseTecnica.analiseTecnicaValidacao.idTipoResultadoValidacao")
+            label.control-label(ng-class="{'obrigatorio': validacaoAnaliseTecnica.isObrigatorio()}") 
+                | {{validacaoAnaliseTecnica.isParecerNaoValidado() ? 'Justificativa:' : 'Considerações:'}}
+
+            div(text-angular, ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.parecerValidacao", name="parecer",
+                ta-text-editor-class="form-control myform2-height", 
+                ta-html-editor-class="form-control myform2-height",
+                ng-required="validacaoAnaliseTecnica.isObrigatorio()",
+                ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
+
+            +inputErrors('formularioValidacao', 'parecer', 'required')
+
+
+        .form-group(ng-if="validacaoAnaliseTecnica.isParecerNaoValidado()")
+            div
+                label.control-label.obrigatorio Revisar Parecer
+            div.text-center(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.revisar_parecer.$error.required}")
+                label.radio-inline(for="radio_gerente_tecnico")
+                    input#radio_gerente_tecnico(type="radio", name="revisar_parecer", required,
+                        ng-value="validacaoAnaliseTecnica.analistaGerente.GERENTE", 
+                        ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
+                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente") 
+                    | Gerente técnico
+
+                label.radio-inline(for="radio_analista_tecnico")
+                    input#radio_analista_tecnico(type="radio", name="revisar_parecer", required,
+                        ng-value="validacaoAnaliseTecnica.analistaGerente.ANALISTA",
+                        ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()",
+                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
+                    | Analista técnico
+            +inputErrors('formularioValidacao', 'revisar_parecer', 'required')
+
+            div(ng-if="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
+                label.control-label.obrigatorio {{validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente === validacaoAnaliseTecnica.analistaGerente.GERENTE ? 'Gerente:' : 'Analista:'}}
+                select.form-control(
+                    ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico",
+                    name="selectConsultor",
+                    required,
+                    ng-options="analista.id as analista.pessoa.nome for analista in validacaoAnaliseTecnica.analistasGerentes")
+
+
+            +inputErrors('formularioValidacao', 'selectConsultor', 'required')            
 
 section.margin-bottom-xl
 
-	button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseTecnica.cancelar()")
-		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
-		| Cancelar
-	
-	button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseTecnica.concluir()")
-		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
-		| Concluir                    
+    button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseTecnica.cancelar()")
+        i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
+        | Cancelar
+
+    button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseTecnica.concluir()")
+        i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+        | Concluir                    

@@ -200,7 +200,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			}
 		}
 		
-		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
+		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
+			filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
 			
 			Setor setor = Setor.findById(usuarioSessao.setorSelecionado.id);
 			
@@ -317,6 +318,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDenominacaoEmpreendimento()
 			.groupByMunicipioEmpreendimento()
 			.groupByDataVencimentoPrazoAnalise()
+			.groupByIdAnalise()
 			.groupByDataCadastroAnalise();
 									
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
