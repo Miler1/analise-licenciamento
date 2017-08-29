@@ -242,7 +242,8 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			condicaoTramitacao: function(){
 
 				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_APROVADOR;
-			}
+			},
+            deveFiltrarPorUsuario: true
 		},		 
 		{
 			titulo: 'Consultar processo',
