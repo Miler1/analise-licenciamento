@@ -7,7 +7,7 @@ INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
 VALUES (8, (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'INICIAR_PARECER_JURIDICO'));
 
 
-# ---!Downs
+# --- !Downs
 
 DELETE FROM portal_seguranca.permissao_perfil WHERE id_perfil = 8 AND id_permissao IN (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'INICIAR_PARECER_JURIDICO');
 
