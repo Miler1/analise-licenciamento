@@ -10,7 +10,7 @@ import models.TipoResultadoAnalise;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 
-public class SolicitarAjustesJuridicoAprovador extends TipoResultadoAnaliseChain<AnaliseTecnica> {
+public class SolicitarAjustesJuridicoAprovador extends TipoResultadoAnaliseChain<AnaliseJuridica> {
 
 	public SolicitarAjustesJuridicoAprovador() {
 		
@@ -18,43 +18,27 @@ public class SolicitarAjustesJuridicoAprovador extends TipoResultadoAnaliseChain
 	}
 	
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseJuridica analiseJuridica, AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecutor) {
 		   
-		analiseTecnica.tipoResultadoValidacaoAprovador = novaAnaliseTecnica.tipoResultadoValidacaoAprovador;
-		analiseTecnica.parecerValidacaoAprovador = novaAnaliseTecnica.parecerValidacaoAprovador;
-		analiseTecnica.usuarioValidacaoAprovador = usuarioExecutor;
-		analiseTecnica.ativo = false;
+		analiseJuridica.tipoResultadoValidacaoAprovador = novaAnaliseJuridica.tipoResultadoValidacaoAprovador;
+		analiseJuridica.parecerValidacaoAprovador = novaAnaliseJuridica.parecerValidacaoAprovador;
+		analiseJuridica.usuarioValidacaoAprovador = usuarioExecutor;
+		analiseJuridica.ativo = false;
 			
-		analiseTecnica.validarTipoResultadoValidacaoAprovador();
-		analiseTecnica.validarParecerValidacaoAprovador();
+		analiseJuridica.validarTipoResultadoValidacaoAprovador();
+		analiseJuridica.validarParecerValidacaoAprovador();
 			
-		analiseTecnica._save();
+		analiseJuridica._save();
 		
-		AnaliseTecnica copia = analiseTecnica.gerarCopia();
+		AnaliseJuridica copia = analiseJuridica.gerarCopia();
 		
 		/**
-		 * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador e gerente
+		 * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador
 		 */
-		copia.setValidacaoCoordenador(analiseTecnica);
-		copia.setValidacaoGerente(analiseTecnica);
+		copia.setValidacaoCoordenador(analiseJuridica);
 		
 		copia._save();
-		
-		/**
-		 * Workaround para persistir as licenças e os pareceres técnicos restrições
-		 */		
-		for(LicencaAnalise licencaAnalise: copia.licencasAnalise) {
 			
-			licencaAnalise._save();
-			
-			licencaAnalise.saveCondicionantes();
-			licencaAnalise.saveRecomendacoes();
-		}		
-		
-		ArrayList<ParecerTecnicoRestricao> pareceresTecnicosRestricoesSalvar = new ArrayList<>(copia.pareceresTecnicosRestricoes);
-		copia.pareceresTecnicosRestricoes.clear();		
-		copia.updatePareceresTecnicosRestricoes(pareceresTecnicosRestricoesSalvar);
-			
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_ANALISE_TECNICA_APROVADOR, usuarioExecutor);
+		analiseJuridica.analise.processo.tramitacao.tramitar(analiseJuridica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_ANALISE_JURIDICA_APROVADOR, usuarioExecutor);
 	}
 }
