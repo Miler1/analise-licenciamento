@@ -28,7 +28,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR){
 
-					return "/aguardando-assinatura-aprovador";
+					return "/aguardando-assinatura";
 				}
 
 				return "/caixa-entrada";
@@ -39,11 +39,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ConsultarProcessoController,
 			controllerAs: 'consultarProcesso'
 		})
-		.when("/aguardando-assinatura-aprovador", {
-			templateUrl: "features/aguardandoAssinaturaAprovador/listagem/aguardando-assinatura-listagem.html",
+		.when("/aguardando-assinatura", {
+			templateUrl: "features/aguardandoAssinatura/listagem/aguardando-assinatura-listagem.html",
 			controller: controllers.AguardandoAssinaturaAprovadorListController,
 			controllerAs: 'listagem'
-		})		
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -228,12 +228,12 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			icone: 'glyphicon glyphicon-pencil',
 			url: function() {
 
-				return '/aguardando-assinatura-aprovador';
+				return '/aguardando-assinatura';
 			},
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path() === '/aguardando-assinatura-aprovador';
+				return $location.path() === '/aguardando-assinatura';
 			},
 			visivel: function(){
 
@@ -359,7 +359,8 @@ utils.services(licenciamento)
 	.add('analistaService', services.AnalistaService)
 	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('setorService', services.SetorService)
-	.add('gerenteService', services.GerenteService);
+	.add('gerenteService', services.GerenteService)
+	.add('analiseService', services.AnaliseService);
 
 
 utils.filters(licenciamento)
@@ -386,4 +387,5 @@ licenciamento
 	.component('fichaImovel', directives.FichaImovel)
 	.component('parecer', directives.Parecer)
 	.component('modalInformacoesAnaliseJuridica', directives.ModalInformacoesAnaliseJuridica)
-	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca);
+	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca)
+	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica);

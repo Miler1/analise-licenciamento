@@ -16,6 +16,3 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 			redirectTo: '/'
 		});
 }]);
-
-
-

@@ -339,6 +339,13 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	public ProcessoBuilder groupByIdAnalise() {
+		
+		addProjection(Projections.groupProperty(ANALISE_ALIAS+".id").as("idAnalise"));
+		
+		return this;
+	}
+	
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
 		if (StringUtils.isNotEmpty(numeroProcesso)) {
