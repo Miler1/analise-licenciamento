@@ -10,11 +10,7 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 	validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
 	validacaoAnaliseAprovador.carregarDadosAnaliseGeo = carregarDadosAnaliseGeo;
 
-	console.log("fora do init");
-
 	function init() {
-
-		console.log("aqui");
 
 		analiseService.getAnalise($routeParams.idAnalise)
 			.then(function(response){

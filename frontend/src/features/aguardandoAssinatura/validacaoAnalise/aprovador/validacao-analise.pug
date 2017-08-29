@@ -7,7 +7,7 @@ div(ng-init="ctrl.init()")
 
 	section.margin-bottom-md(active='ctrl.tabAtiva')
 		uib-tabset(active='ctrl.tabAtiva')
-			uib-tab(index="0", heading="Parecer Jurídico", select="ctrl.carregarDadosAnaliseJuridica()")
+			uib-tab(index="0", heading="Parecer Jurídico")
 				div(ng-if='ctrl.tabAtiva === 0')
 					visualizar-analise-juridica(analise-juridica="ctrl.analiseJuridica")
 					
