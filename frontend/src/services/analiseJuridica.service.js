@@ -1,46 +1,52 @@
-var AnaliseJuridicaService = function(request, config) {
+var AnaliseJuridicaService = function (request, config) {
 
-	this.getAnaliseJuridica = function(idAnaliseJuridica) {
+    this.getAnaliseJuridica = function (idAnaliseJuridica) {
 
-		return request
-                .get(config.BASE_URL() + 'analisesJuridicas/' + idAnaliseJuridica);
-	};
+        return request
+            .get(config.BASE_URL() + 'analisesJuridicas/' + idAnaliseJuridica);
+    };
 
-	this.getParecerByNumeroProcesso = function(numeroProcesso) {
+    this.getParecerByNumeroProcesso = function (numeroProcesso) {
 
-		return request
-                .get(config.BASE_URL() + 'analisesJuridicas/parecer?numeroProcesso=' + numeroProcesso);
-	};
+        return request
+            .get(config.BASE_URL() + 'analisesJuridicas/parecer?numeroProcesso=' + numeroProcesso);
+    };
 
-	this.iniciar = function(analise) {
+    this.iniciar = function (analise) {
 
-		return request
-                .post(config.BASE_URL() + 'analisesJuridicas/iniciar', analise);
-	};
-	
-	this.getDocumentosAnalisados = function(idAnaliseJuridica) {
+        return request
+            .post(config.BASE_URL() + 'analisesJuridicas/iniciar', analise);
+    };
 
-		return request
-                .get(config.BASE_URL() + 'analisesJuridicas/' + idAnaliseJuridica + '/documentosAnalisados');
-	};
+    this.getDocumentosAnalisados = function (idAnaliseJuridica) {
 
-	this.salvar = function(analise) {
+        return request
+            .get(config.BASE_URL() + 'analisesJuridicas/' + idAnaliseJuridica + '/documentosAnalisados');
+    };
 
-		return request
-				.post(config.BASE_URL() + 'analisesJuridicas', analise);
-	};
+    this.salvar = function (analise) {
 
-	this.concluir = function(analise) {
+        return request
+            .post(config.BASE_URL() + 'analisesJuridicas', analise);
+    };
 
-		return request
-				.post(config.BASE_URL() + 'analisesJuridicas/concluir', analise);
-	};
+    this.concluir = function (analise) {
 
-	this.validarParecer = function(analise) {
+        return request
+            .post(config.BASE_URL() + 'analisesJuridicas/concluir', analise);
+    };
 
-		return request
-				.post(config.BASE_URL() + 'analisesJuridicas/validarParecer', analise);
-	};	
+    this.validarParecer = function (analise) {
+
+        return request
+            .post(config.BASE_URL() + 'analisesJuridicas/validarParecer', analise);
+    };
+
+    this.solicitarAjusteAprovador = function (analise) {
+
+        return request
+            .post(config.BASE_URL() + 'analisesJuridicas/validarParecerAprovador', analise);
+    };
 };
 
 exports.services.AnaliseJuridicaService = AnaliseJuridicaService;

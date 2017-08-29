@@ -68,35 +68,14 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
                     validacaoAnaliseAprovador.restricoes = response.data;
                 });
         }
-
     }
 
     function carregarDadosAnaliseTecnica() {
 
-        analiseTecnicaService.getAnaliseTecnica($routeParams.idAnalise)
+        analiseTecnicaService.getAnaliseTecnica(validacaoAnaliseAprovador.analise.analiseTecnica.id)
             .then(function (response) {
                 validacaoAnaliseAprovador.analiseTecnica = response.data;
-
-                validacaoAnaliseAprovador.analiseTecnicaValidacao.idAnalistaTecnico =
-                    validacaoAnaliseAprovador.analiseTecnica.analistasTecnicos[0].usuario.id;
-
-                if (validacaoAnaliseAprovador.analiseTecnica.tipoResultadoValidacaoGerente) {
-
-                    validacaoAnaliseAprovador.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente =
-                        validacaoAnaliseAprovador.analiseTecnica.tipoResultadoValidacaoGerente.id;
-                }
-
-                validacaoAnaliseAprovador.analiseTecnicaValidacao.parecerValidacaoGerente =
-                    validacaoAnaliseAprovador.analiseTecnica.parecerValidacaoGerente;
-
-                analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseAprovador.analiseTecnica.analise.processo.id)
-                    .then(function (response) {
-                        validacaoAnaliseAprovador.analistas = response.data;
-                    });
-
-
             });
-
     }
 
     function downloadDocumentoAnalise(idDocumento) {

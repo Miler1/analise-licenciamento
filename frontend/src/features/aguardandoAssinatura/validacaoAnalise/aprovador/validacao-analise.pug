@@ -19,7 +19,7 @@ div(ng-init="ctrl.init()")
                 div(ng-if='ctrl.tabAtiva === 2')
                     include parecerTecnico/parecerTecnico
 
-            uib-tab(index="3", heading="Validar PARECERES")
+            uib-tab(index="3", heading="Validar pareceres")
                 solicitar-ajuste-aprovador(ng-if='ctrl.tabAtiva === 3', analise="ctrl.analise")
 
 
@@ -29,5 +29,5 @@ div(ng-init="ctrl.init()")
                 |<< Etapa anterior
 
 
-            a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
+            a.btn.pull-right(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
                 | >> Próxima Etapa

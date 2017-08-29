@@ -4,7 +4,7 @@ var SoliciarAjusteAprovador = {
 
         analise: '<'
     },
-    controller: function (coordenadorService, mensagem, analiseTecnicaService) {
+    controller: function ($location, coordenadorService, mensagem, analiseTecnicaService, analiseJuridicaService) {
 
         var ctrl = this;
 
@@ -21,6 +21,15 @@ var SoliciarAjusteAprovador = {
 
                     ctrl.coordenadores = response.data;
                 });
+        }
+
+        function sucesso(response) {
+            mensagem.success(response.data.texto);
+            $location.path('/aguardando-assinatura');
+        }
+
+        function erro(error) {
+            mensagem.error(error.data.texto);
         }
 
         function solicitar() {
@@ -44,21 +53,13 @@ var SoliciarAjusteAprovador = {
 
                 analise.id = ctrl.analise.analiseTecnica.id;
                 analiseTecnicaService.solicitarAjusteAprovador(analise)
-                    .then(function (response) {
-                        mensagem.success(response.data.texto);
-                    }, function (error) {
-                        mensagem.error(error.data.texto);
-                    });
+                    .then(succeso, erro);
 
             } else {
 
                 analise.id = ctrl.analise.analiseJuridica.id;
                 analiseJuridicaService.solicitarAjusteAprovador(analise)
-                    .then(function (response) {
-                        mensagem.success(response.data.texto);
-                    }, function (error) {
-                        mensagem.error(error.data.texto);
-                    });
+                    .then(sucesso, erro);
             }
         }
     },

@@ -543,7 +543,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 	@Override
 	public TipoResultadoAnalise getTipoResultadoValidacao() {
 		
-		return this.tipoResultadoAnalise;
+		return this.tipoResultadoValidacao;
 	}
 
 	public void setValidacaoCoordenador(AnaliseJuridica analiseJuridica) {
