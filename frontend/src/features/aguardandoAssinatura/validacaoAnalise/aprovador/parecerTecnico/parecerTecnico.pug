@@ -1,0 +1,89 @@
+section.margin-bottom-md
+
+	h3 Análise técnica
+
+	div.margin-top-md
+		label.not-bold.margin-right-xs(for="texto_nome_analista_tecnico") Analista técnico:  
+		span#texto_nome_analista_tecnico
+			strong {{ctrl.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
+	hr
+
+	h4 {{ctrl.analiseTecnica.tipoResultadoAnalise.nome}}
+
+	fieldset.panel.panel-default
+		div.panel-body
+			p(ng-bind-html="ctrl.analiseTecnica.parecer")
+
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th Arquivo anexado
+				th.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="documento in ctrl.analiseTecnica.documentos")
+
+				td {{documento.nome}}
+				td.text-right 
+					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
+						i.glyphicon.glyphicon-save
+
+	.row(ng-show="!ctrl.analiseTecnica.documentos || ctrl.analiseTecnica.documentos.length == 0")
+		.col-md-12
+			p.empty-result Não existem arquivos anexados.
+
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th Documentos Validados
+				th.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="analiseDocumento in ctrl.analiseTecnica.analisesDocumentos")
+
+				td(ng-if='analiseDocumento.validado') {{analiseDocumento.documento.tipo.nome}}
+				td.text-right(ng-if='analiseDocumento.validado')
+					a.btn(ng-if="analiseDocumento.documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(analiseDocumento.documento.id)")
+						i.glyphicon.glyphicon-save
+
+	.row(ng-show="!ctrl.analiseTecnica.documentos || ctrl.analiseTecnica.documentos.length == 0")
+		.col-md-12
+			p.empty-result Não existem arquivos anexados.
+
+	section
+
+		h5 Quadro de licenças
+
+		table.table.table-condensed
+
+			thead
+
+				tr
+					th
+					th Licença
+					th Porte e potencial poluidor
+					th Validade
+					th.text-right Ações
+
+			tbody
+
+				tr(ng-repeat="licencaAnalise in ctrl.analiseTecnica.licencasAnalise")
+
+					th
+						span(ng-class="{'icone-licenca-aprovada': licencaAnalise.emitir, 'icone-licenca-reprovada': !licencaAnalise.emitir}")
+					th {{licencaAnalise.caracterizacao.tipoLicenca.nome}}
+					th {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+					th {{licencaAnalise.validade}} anos
+					td.text-right 
+						a.btn(ng-if="licencaAnalise.emitir", title="Visualizar licença", ng-click="ctrl.visualizarLicenca($index)")
+							i.glyphicon.glyphicon-eye-open
+
+		div
+			span.icone-licenca-aprovada.legenda licença aprovada
+			span.icone-licenca-reprovada.legenda licença não aprovada

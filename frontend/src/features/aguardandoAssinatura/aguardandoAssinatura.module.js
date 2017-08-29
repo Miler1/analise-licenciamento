@@ -16,3 +16,6 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 			redirectTo: '/'
 		});
 }]);
+
+aguardandoAssinatura
+	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);

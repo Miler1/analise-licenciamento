@@ -17,6 +17,7 @@ div(ng-init="ctrl.init()")
 					
 			uib-tab(index="2", heading="Parecer Técnico")
 				div(ng-if='ctrl.tabAtiva === 2')
+					include parecerTecnico/parecerTecnico
 
 			uib-tab(index="3", heading="Validar PARECERES")
 				div(ng-if='ctrl.tabAtiva === 3')
@@ -24,9 +25,9 @@ div(ng-init="ctrl.init()")
 			
 		section.margin-bottom-xl.alone
 				
-			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva == 0")
+			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva === 0")
 					|<< Etapa anterior
 
 					
-			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
+			a.btn.pull-right(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva !== 3")
 					| >> Próxima Etapa
