@@ -229,3 +229,47 @@ form{
 .capitalize:first-letter {
 	text-transform: uppercase;
 }
+
+.icone-licenca-aprovada {
+  color: #757575;
+  font-style: italic;
+
+  &:before {
+    font-family: 'Glyphicons Halflings';
+    color: lighten(@brand-primary,20%);
+    content: "\e013";
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+  }
+
+  &.legenda {
+    margin-left: 5px;
+
+    &:before {
+      margin-right: 5px;
+    }
+  }
+}
+
+.icone-licenca-reprovada {
+  color: #757575;
+  font-style: italic;
+
+  &:before {
+    font-family: 'Glyphicons Halflings';
+    color: @vermelho-erro;
+    content: "\e014";
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+  }
+
+  &.legenda {
+    margin-left: 5px;
+
+    &:before {
+      margin-right: 5px;
+    }
+  }
+}

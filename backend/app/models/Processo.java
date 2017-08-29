@@ -200,7 +200,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			}
 		}
 		
-		if (filtro.idCondicaoTramitacao != null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
+		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
+			filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
 			
 			Setor setor = Setor.findById(usuarioSessao.setorSelecionado.id);
 			
@@ -323,6 +324,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
 		
 		listWithFilterAnaliseTecnica(processoBuilder, filtro);
+		
+		listWithFilterAprovador(processoBuilder, usuarioSessao);
 					
 		return processoBuilder
 			.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())				
@@ -357,6 +360,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 			.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 			.orderByDataVencimentoPrazoAnaliseTecnica();
+	}
+	
+	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioSessao usuarioSessao) {
+		
+		if (usuarioSessao.perfilSelecionado.id != Perfil.APROVADOR) {
+			
+			return;
+		}
+		
+		processoBuilder.groupByIdAnalise();
 	}
 
 	public static Long countWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {

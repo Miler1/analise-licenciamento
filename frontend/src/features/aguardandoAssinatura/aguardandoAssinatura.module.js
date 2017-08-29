@@ -17,5 +17,5 @@ aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 		});
 }]);	
 
-
-
+aguardandoAssinatura
+	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);

@@ -3,45 +3,52 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 
     var validacaoAnaliseAprovador = this;
 
-    validacaoAnaliseAprovador.formularios = {};
-    validacaoAnaliseAprovador.tabAtiva = 0;
-    validacaoAnaliseAprovador.init = init;
-    validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
-    validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
-    validacaoAnaliseAprovador.carregarDadosAnaliseTecnica = carregarDadosAnaliseTecnica;
+	validacaoAnaliseAprovador.formularios = {};
+	validacaoAnaliseAprovador.tabAtiva = 0;
+	validacaoAnaliseAprovador.init = init;
+	validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
+	validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
 	validacaoAnaliseAprovador.carregarDadosAnaliseGeo = carregarDadosAnaliseGeo;
+	validacaoAnaliseAprovador.carregarDadosAnaliseTecnica = carregarDadosAnaliseTecnica;
+	validacaoAnaliseAprovador.downloadDocumentoAnalise = downloadDocumentoAnalise;
+	validacaoAnaliseAprovador.visualizarLicenca = visualizarLicenca;
 
-    function init() {
+	function init() {
 
-    	analiseService.getAnalise($routeParams.idAnalise)
+		analiseService.getAnalise($routeParams.idAnalise)
 			.then(function(response){
+
 				validacaoAnaliseAprovador.analise = response.data;
 				validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
 					validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
                 carregarDadosAnaliseJuridica();
 		});
-    }
+	}
 
-    function exibirDadosProcesso() {
+	function exibirDadosProcesso() {
 
-        var processo = {
+		var processo = {
 
-            idProcesso: validacaoAnaliseAprovador.analise.processo.id,
-            numero: validacaoAnaliseAprovador.analise.processo.numero,
-            denominacaoEmpreendimento: validacaoAnaliseAprovador.analise.processo.empreendimento.denominacao
-        };
+			idProcesso: validacaoAnaliseAprovador.analise.processo.id,
+			numero: validacaoAnaliseAprovador.analise.processo.numero,
+			denominacaoEmpreendimento: validacaoAnaliseAprovador.analise.processo.empreendimento.denominacao
+		};
 
-        if(validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj) {
+		if(validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj;
+			processo.cnpjEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj;
 
-        } else {
+		} else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cpf;
-        }		
+			processo.cpfEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cpf;
+		}		
 
-        processoService.visualizarProcesso(processo);
-    }    
+		processoService.visualizarProcesso(processo);
+	}	
+
+	function carregarDadosAnaliseJuridica() {
+
+		if(validacaoAnaliseAprovador.analise) {
 
     function carregarDadosAnaliseJuridica() {
 
@@ -50,30 +57,73 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 				.then(function(response){
 					validacaoAnaliseAprovador.analiseJuridica = response.data;
 				});
-      	}
-    }
+	  	}
 
-    function carregarDadosAnaliseTecnica() {
-
-    	if(validacaoAnaliseAprovador.analise) {
-			analiseTecnicaService.getAnaliseTecnica(validacaoAnaliseAprovador.analise.analiseTecnica.id)
-				.then(function(response){
-					validacaoAnaliseAprovador.analiseTecnica = response.data;
-				});
-      	}
-    }
+	}
 
 	 function carregarDadosAnaliseGeo() {
 
-    	if(validacaoAnaliseAprovador.analise) {
+		if(validacaoAnaliseAprovador.analise) {
 
-			analiseTecnicaService.getRestricoesGeo(validacaoAnaliseAprovador.analiseTecnica.id)
+			analiseTecnicaService.getRestricoesGeo(validacaoAnaliseAprovador.analise.analiseTecnica.id)
 				.then(function(response){
 					validacaoAnaliseAprovador.restricoes = response.data;
 				});
-      	}
+	  	}
 
-    }
+	}
+
+	function carregarDadosAnaliseTecnica() {
+
+		analiseTecnicaService.getAnaliseTecnica($routeParams.idAnalise)
+			.then(function(response){
+				validacaoAnaliseAprovador.analiseTecnica = response.data;
+
+				validacaoAnaliseAprovador.analiseTecnicaValidacao.idAnalistaTecnico =
+					validacaoAnaliseAprovador.analiseTecnica.analistasTecnicos[0].usuario.id;
+				
+				if (validacaoAnaliseAprovador.analiseTecnica.tipoResultadoValidacaoGerente) {
+
+					validacaoAnaliseAprovador.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente =
+						validacaoAnaliseAprovador.analiseTecnica.tipoResultadoValidacaoGerente.id;
+				}
+				
+				validacaoAnaliseAprovador.analiseTecnicaValidacao.parecerValidacaoGerente =
+					validacaoAnaliseAprovador.analiseTecnica.parecerValidacaoGerente;
+
+				analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseAprovador.analiseTecnica.analise.processo.id)
+					.then(function(response){
+						validacaoAnaliseAprovador.analistas = response.data;
+				});			
+			
+
+			});
+
+	}
+
+	function downloadDocumentoAnalise(idDocumento) {
+
+		documentoAnaliseService.download(idDocumento);
+	}
+
+	function visualizarLicenca(indice) {
+
+		var analiseLicenca = validacaoAnaliseAprovador.analiseTecnica.licencasAnalise[indice];
+
+		var modalInstance = $uibModal.open({
+
+				component: 'modalVisualizarLicenca',
+				size: 'lg',
+				resolve: {
+
+					dadosLicenca: function() {
+
+						return angular.copy(analiseLicenca);
+					}
+				}
+			});
+
+	}
 
 };
 
