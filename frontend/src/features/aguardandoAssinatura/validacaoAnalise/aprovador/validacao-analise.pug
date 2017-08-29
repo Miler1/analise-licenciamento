@@ -16,11 +16,11 @@ div(ng-init="ctrl.init()")
                     include ../../../analiseTecnica/analiseGeo/analise-geo
 
             uib-tab(index="2", heading="Parecer Técnico")
-                div(ng-if='ctrl.tabAtiva === 2')
+                div(ng-if='ctrl.tabAtiva === 2', select="ctrl.carregarDadosAnaliseTecnica()")
                     include parecerTecnico/parecerTecnico
 
             uib-tab(index="3", heading="Validar PARECERES")
-                div(ng-if='ctrl.tabAtiva === 3')
+                solicitar-ajuste-aprovador(ng-if='ctrl.tabAtiva === 3', analise="ctrl.analise")
 
 
         section.margin-bottom-xl.alone
