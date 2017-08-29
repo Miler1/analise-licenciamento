@@ -6,87 +6,98 @@ include ../../../../layout/components/inputErrors
 
 section.margin-bottom-md
 
-	h3 Análise jurídica
+    h3 Análise jurídica
 
-	div.margin-top-md
-		label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Consultor jurídico:  
-		span#texto_nome_consultor_juridico
-			strong {{validacaoAnaliseJuridica.analiseJuridica.consultoresJuridicos[0].usuario.pessoa.nome}}
-	hr
+    div(ng-if="validacaoAnaliseJuridica.analiseJuridica.analiseJuridicaRevisada.parecerValidacaoAprovador")
+        div.margin-top-md
+            label.not-bold.margin-right-xs(for="texto_nome_aprovador") Aprovador:
+            span#texto_nome_aprovador
+                strong {{validacaoAnaliseJuridica.analiseJuridica.analiseJuridicaRevisada.usuarioValidacaoAprovador.pessoa.nome}}
 
-	h4 {{validacaoAnaliseJuridica.analiseJuridica.tipoResultadoAnalise.nome}}
+        div
+            label Parecer do aprovador:
 
-	fieldset.panel.panel-default
-		div.panel-body
-			p(ng-bind-html="validacaoAnaliseJuridica.analiseJuridica.parecer")
+            div(class="alert alert-warning", ng-bind-html="validacaoAnaliseJuridica.analiseJuridica.analiseJuridicaRevisada.parecerValidacaoAprovador")    
 
-	table.table.table-condensed
+    div.margin-top-md
+        label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Consultor jurídico:  
+        span#texto_nome_consultor_juridico
+            strong {{validacaoAnaliseJuridica.analiseJuridica.consultoresJuridicos[0].usuario.pessoa.nome}}
+    hr
 
-		thead
+    h4 {{validacaoAnaliseJuridica.analiseJuridica.tipoResultadoAnalise.nome}}
 
-			tr
-				th Arquivo anexado
-				th.text-right Ações
+    fieldset.panel.panel-default
+        div.panel-body
+            p(ng-bind-html="validacaoAnaliseJuridica.analiseJuridica.parecer")
 
-		tbody
+    table.table.table-condensed
 
-			tr(ng-repeat="documento in validacaoAnaliseJuridica.analiseJuridica.documentos")
+        thead
 
-				td {{documento.nome}}
-				td.text-right 
-					a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseJuridica.downloadDocumentoAnalise(documento.id)")
-						i.glyphicon.glyphicon-save
+            tr
+                th Arquivo anexado
+                th.text-right Ações
 
-	.row(ng-show="!validacaoAnaliseJuridica.analiseJuridica.documentos || validacaoAnaliseJuridica.analiseJuridica.documentos.length == 0")
-		.col-md-12
-			p.empty-result Não existem arquivos anexados.
-	
-	form(name="formularioValidacao", novalidate)
-		.form-group.text-center.margin-bottom-md.margin-top-md
-			div(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.resultado.$error.required}")
-				label.radio-inline(for="radio_parecer_validado")
-					input#radio_parecer_validado(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_VALIDADO", 
-						ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
-					| Parecer validado
-				label.radio-inline(for="radio_solicitar_ajustes")
-					input#radio_solicitar_ajustes(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.SOLICITAR_AJUSTES", 
-						ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
-					| Solicitar ajustes
-				label.radio-inline(for="radio_parecer_nao_validado")
-					input#radio_parecer_nao_validado(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_NAO_VALIDADO", 
-						ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
-					| Parecer não validado
-			+inputErrors('formularioValidacao', 'resultado', 'required')
+        tbody
 
-		
-		.form-group(ng-if="!!validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao")
-			label.control-label(ng-class="{'obrigatorio': validacaoAnaliseJuridica.isObrigatorio()}") 
-				| {{validacaoAnaliseJuridica.isParecerNaoValidado() ? 'Justificativa:' : 'Considerações:'}}
+            tr(ng-repeat="documento in validacaoAnaliseJuridica.analiseJuridica.documentos")
 
-			div(text-angular, ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.parecerValidacao", name="parecer",
-				ta-text-editor-class="form-control myform2-height", 
-				ta-html-editor-class="form-control myform2-height",
-				ng-required="validacaoAnaliseJuridica.isObrigatorio()",
-				ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
+                td {{documento.nome}}
+                td.text-right 
+                    a.btn(ng-if="documento.id", title="Baixar documento", ng-click="validacaoAnaliseJuridica.downloadDocumentoAnalise(documento.id)")
+                        i.glyphicon.glyphicon-save
 
-			+inputErrors('formularioValidacao', 'parecer', 'required')
+    .row(ng-show="!validacaoAnaliseJuridica.analiseJuridica.documentos || validacaoAnaliseJuridica.analiseJuridica.documentos.length == 0")
+        .col-md-12
+            p.empty-result Não existem arquivos anexados.
 
-		.form-group(ng-if="validacaoAnaliseJuridica.isParecerNaoValidado()")
-				label.control-label.obrigatorio Consultor jurídico:
-				select.form-control(
-					ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idConsultorJuridico", 
-					name="selectConsultor",
-					required,
-					ng-options="consultor.id as consultor.pessoa.nome for consultor in validacaoAnaliseJuridica.consultores")
+    form(name="formularioValidacao", novalidate)
+        .form-group.text-center.margin-bottom-md.margin-top-md
+            div(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.resultado.$error.required}")
+                label.radio-inline(for="radio_parecer_validado")
+                    input#radio_parecer_validado(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_VALIDADO", 
+                        ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
+                    | Parecer validado
+                label.radio-inline(for="radio_solicitar_ajustes")
+                    input#radio_solicitar_ajustes(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.SOLICITAR_AJUSTES", 
+                        ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
+                    | Solicitar ajustes
+                label.radio-inline(for="radio_parecer_nao_validado")
+                    input#radio_parecer_nao_validado(type="radio", name="resultado", ng-value="validacaoAnaliseJuridica.TiposResultadoAnalise.PARECER_NAO_VALIDADO", 
+                        ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao", required) 
+                    | Parecer não validado
+            +inputErrors('formularioValidacao', 'resultado', 'required')
 
-				+inputErrors('formularioValidacao', 'selectConsultor', 'required')
+
+        .form-group(ng-if="!!validacaoAnaliseJuridica.analiseJuridicaValidacao.idTipoResultadoValidacao")
+            label.control-label(ng-class="{'obrigatorio': validacaoAnaliseJuridica.isObrigatorio()}") 
+                | {{validacaoAnaliseJuridica.isParecerNaoValidado() ? 'Justificativa:' : 'Considerações:'}}
+
+            div(text-angular, ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.parecerValidacao", name="parecer",
+                ta-text-editor-class="form-control myform2-height", 
+                ta-html-editor-class="form-control myform2-height",
+                ng-required="validacaoAnaliseJuridica.isObrigatorio()",
+                ng-class="{'wysiwyg-error': formularioValidacao.$submitted && formularioValidacao.parecer.$error.required}")
+
+            +inputErrors('formularioValidacao', 'parecer', 'required')
+
+        .form-group(ng-if="validacaoAnaliseJuridica.isParecerNaoValidado()")
+            label.control-label.obrigatorio Consultor jurídico:
+            select.form-control(
+                ng-model="validacaoAnaliseJuridica.analiseJuridicaValidacao.idConsultorJuridico", 
+                name="selectConsultor",
+                required,
+                ng-options="consultor.id as consultor.pessoa.nome for consultor in validacaoAnaliseJuridica.consultores")
+
+            +inputErrors('formularioValidacao', 'selectConsultor', 'required')
 
 section.margin-bottom-xl
 
-	button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseJuridica.cancelar()")
-		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
-		| Cancelar
-	
-	button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseJuridica.concluir()")
-		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
-		| Concluir
+    button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseJuridica.cancelar()")
+        i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
+        | Cancelar
+
+    button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseJuridica.concluir()")
+        i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+        | Concluir
