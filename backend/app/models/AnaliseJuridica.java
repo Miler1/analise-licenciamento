@@ -31,6 +31,7 @@ import models.licenciamento.TipoAnalise;
 import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
+import models.validacaoParecer.Analisavel;
 import notifiers.Emails;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -41,7 +42,7 @@ import utils.ModelUtil;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
-public class AnaliseJuridica extends GenericModel {
+public class AnaliseJuridica extends GenericModel implements Analisavel {
 
 	public static final String SEQ = "analise.analise_juridica_id_seq";
 	
@@ -524,5 +525,11 @@ public class AnaliseJuridica extends GenericModel {
 			}
 			
 		}
+	}
+
+	@Override
+	public TipoResultadoAnalise getTipoResultadoValidacao() {
+		
+		return this.tipoResultadoAnalise;
 	}	
 }
