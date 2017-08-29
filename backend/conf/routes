@@ -45,6 +45,7 @@ GET		/analisesTecnicas/{idAnaliseTecnica}				AnalisesTecnicas.findById
 GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRestricoesGeo
 POST	/analisesTecnicas/validarParecer					AnalisesTecnicas.validarParecer
 POST	/analisesTecnicas/validarParecerGerente				AnalisesTecnicas.validarParecerGerente
+POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecerAprovador
 
 
 # Documentos licenciamento
