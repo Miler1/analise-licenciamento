@@ -10,7 +10,7 @@ INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id
 
 SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 18, true);
 
-# ---!Downs
+# --- !Downs
 
 delete from tramitacao.transicao where id_transicao = 18;
 

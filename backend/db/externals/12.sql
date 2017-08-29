@@ -10,7 +10,7 @@ GRANT USAGE ON SCHEMA analise TO licenciamento_pa;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA analise TO licenciamento_pa;
 GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA analise TO licenciamento_pa;
 
-# ---!Downs
+# --- !Downs
 
 REVOKE USAGE ON SCHEMA tramitacao FROM licenciamento_pa;
 
