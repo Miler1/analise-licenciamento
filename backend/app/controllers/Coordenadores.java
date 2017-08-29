@@ -15,7 +15,7 @@ public class Coordenadores extends InternalController {
 	
 	public static void getCoordenadoresAprovacao(Integer idPerfil, Long idProcesso) {
 		
-		verificarPermissao(Acao.APROVAR_ANALISE);
+		verificarPermissao(Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
 		if(idPerfil == Perfil.COORDENADOR_TECNICO) {
 			

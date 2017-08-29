@@ -46,7 +46,13 @@ var AnaliseTecnicaService = function(request, config) {
 
 		return request
 				.post(config.BASE_URL() + 'analisesTecnicas/validarParecerGerente', analise);
-	};			
+    };
+
+    this.solicitarAjusteAprovador = function(analise) {
+
+        return request
+            .post(config.BASE_URL() + 'analisesTecnicas/validarParecerAprovador', analise);
+    };
 };
 
 exports.services.AnaliseTecnicaService = AnaliseTecnicaService;

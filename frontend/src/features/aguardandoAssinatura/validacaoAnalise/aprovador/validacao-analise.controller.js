@@ -8,6 +8,7 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
     validacaoAnaliseAprovador.init = init;
     validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
     validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
+    validacaoAnaliseAprovador.carregarDadosAnaliseTecnica = carregarDadosAnaliseTecnica;
 	validacaoAnaliseAprovador.carregarDadosAnaliseGeo = carregarDadosAnaliseGeo;
 
     function init() {
@@ -17,17 +18,8 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 				validacaoAnaliseAprovador.analise = response.data;
 				validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
 					validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
-				carregarDadosAnaliseJuridica();
-			
+                carregarDadosAnaliseJuridica();
 		});
-		
-		analiseTecnicaService.getAnaliseTecnica($routeParams.idAnalise)
-			.then(function(response){
-				validacaoAnaliseAprovador.analiseTecnica = response.data;
-				carregarDadosAnaliseGeo();
-			});
-
-
     }
 
     function exibirDadosProcesso() {
@@ -59,7 +51,16 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 					validacaoAnaliseAprovador.analiseJuridica = response.data;
 				});
       	}
+    }
 
+    function carregarDadosAnaliseTecnica() {
+
+    	if(validacaoAnaliseAprovador.analise) {
+			analiseTecnicaService.getAnaliseTecnica(validacaoAnaliseAprovador.analise.analiseTecnica.id)
+				.then(function(response){
+					validacaoAnaliseAprovador.analiseTecnica = response.data;
+				});
+      	}
     }
 
 	 function carregarDadosAnaliseGeo() {
