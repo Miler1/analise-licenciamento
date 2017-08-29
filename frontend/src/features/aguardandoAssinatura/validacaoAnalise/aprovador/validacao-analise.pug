@@ -5,7 +5,7 @@ include ../../../../layout/components/inputErrors
 div(ng-init="ctrl.init()")
 	+resumo-processo('ctrl.analise.processo','ctrl.exibirDadosProcesso()')
 
-	section.margin-bottom-mduib-tabset(active='ctrl.tabAtiva')
+	section.margin-bottom-md(active='ctrl.tabAtiva')
 		uib-tabset(active='ctrl.tabAtiva')
 			uib-tab(index="0", heading="Parecer Jurídico", select="ctrl.carregarDadosAnaliseJuridica()")
 				div(ng-if='ctrl.tabAtiva === 0')

@@ -28,7 +28,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR){
 
-					return "/aguardando-assinatura-aprovador";
+					return "/aguardando-assinatura";
 				}
 
 				return "/caixa-entrada";
@@ -39,11 +39,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ConsultarProcessoController,
 			controllerAs: 'consultarProcesso'
 		})
-		.when("/aguardando-assinatura-aprovador", {
-			templateUrl: "features/aguardandoAssinaturaAprovador/listagem/aguardando-assinatura-listagem.html",
+		.when("/aguardando-assinatura", {
+			templateUrl: "features/aguardandoAssinatura/listagem/aguardando-assinatura-listagem.html",
 			controller: controllers.AguardandoAssinaturaAprovadorListController,
 			controllerAs: 'listagem'
-		})		
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -228,12 +228,12 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			icone: 'glyphicon glyphicon-search',
 			url: function() {
 
-				return '/aguardando-assinatura-aprovador';
+				return '/aguardando-assinatura';
 			},
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path() === '/aguardando-assinatura-aprovador';
+				return $location.path() === '/aguardando-assinatura';
 			},
 			visivel: function(){
 

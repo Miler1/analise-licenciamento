@@ -1,18 +1,22 @@
 var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routeParams, $scope, 
 		mensagem, $location,processoService, $uibModal, analiseService, analiseJuridicaService, analiseTecnicaService) {
 
-    var validacaoAnaliseAprovador = this;
+	var validacaoAnaliseAprovador = this;
 
-    validacaoAnaliseAprovador.formularios = {};
-    validacaoAnaliseAprovador.tabAtiva = 0;
-    validacaoAnaliseAprovador.init = init;
-    validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
-    validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
+	validacaoAnaliseAprovador.formularios = {};
+	validacaoAnaliseAprovador.tabAtiva = 0;
+	validacaoAnaliseAprovador.init = init;
+	validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
+	validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
 	validacaoAnaliseAprovador.carregarDadosAnaliseGeo = carregarDadosAnaliseGeo;
 
-    function init() {
+	console.log("fora do init");
 
-    	analiseService.getAnalise($routeParams.idAnalise)
+	function init() {
+
+		console.log("aqui");
+
+		analiseService.getAnalise($routeParams.idAnalise)
 			.then(function(response){
 				validacaoAnaliseAprovador.analise = response.data;
 				validacaoAnaliseAprovador.analise.processo.empreendimento.municipio = 
@@ -28,51 +32,51 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 			});
 
 
-    }
+	}
 
-    function exibirDadosProcesso() {
+	function exibirDadosProcesso() {
 
-        var processo = {
+		var processo = {
 
-            idProcesso: validacaoAnaliseAprovador.analise.processo.id,
-            numero: validacaoAnaliseAprovador.analise.processo.numero,
-            denominacaoEmpreendimento: validacaoAnaliseAprovador.analise.processo.empreendimento.denominacao
-        };
+			idProcesso: validacaoAnaliseAprovador.analise.processo.id,
+			numero: validacaoAnaliseAprovador.analise.processo.numero,
+			denominacaoEmpreendimento: validacaoAnaliseAprovador.analise.processo.empreendimento.denominacao
+		};
 
-        if(validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj) {
+		if(validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj;
+			processo.cnpjEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cnpj;
 
-        } else {
+		} else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cpf;
-        }		
+			processo.cpfEmpreendimento = validacaoAnaliseAprovador.analise.processo.empreendimento.pessoa.cpf;
+		}		
 
-        processoService.visualizarProcesso(processo);
-    }    
+		processoService.visualizarProcesso(processo);
+	}	
 
-    function carregarDadosAnaliseJuridica() {
+	function carregarDadosAnaliseJuridica() {
 
-    	if(validacaoAnaliseAprovador.analise) {
+		if(validacaoAnaliseAprovador.analise) {
 			analiseJuridicaService.getAnaliseJuridica(validacaoAnaliseAprovador.analise.analiseJuridica.id)
 				.then(function(response){
 					validacaoAnaliseAprovador.analiseJuridica = response.data;
 				});
-      	}
+	  	}
 
-    }
+	}
 
 	 function carregarDadosAnaliseGeo() {
 
-    	if(validacaoAnaliseAprovador.analise) {
+		if(validacaoAnaliseAprovador.analise) {
 
 			analiseTecnicaService.getRestricoesGeo(validacaoAnaliseAprovador.analiseTecnica.id)
 				.then(function(response){
 					validacaoAnaliseAprovador.restricoes = response.data;
 				});
-      	}
+	  	}
 
-    }
+	}
 
 };
 
