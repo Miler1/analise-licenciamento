@@ -37,6 +37,7 @@ import models.validacaoParecer.ParecerNaoValidadoTecnicoGerente;
 import models.validacaoParecer.ParecerValidadoTecnico;
 import models.validacaoParecer.ParecerValidadoTecnicoGerente;
 import models.validacaoParecer.SolicitarAjustesTecnico;
+import models.validacaoParecer.SolicitarAjustesTecnicoAprovador;
 import models.validacaoParecer.SolicitarAjustesTecnicoGerente;
 import models.validacaoParecer.TipoResultadoAnaliseChain;
 import play.data.validation.Required;
@@ -138,7 +139,18 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Required
 	@Column(name="data_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataCadastro;	
+	public Date dataCadastro;
+	
+	@ManyToOne
+	@JoinColumn(name="id_tipo_resultado_validacao_aprovador")
+	public TipoResultadoAnalise tipoResultadoValidacaoAprovador;
+	
+	@Column(name="parecer_validacao_aprovador")
+	public String parecerValidacaoAprovador;
+	
+ 	@ManyToOne(fetch=FetchType.LAZY)
+ 	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
+	public Usuario usuarioValidacaoAprovador;		
 		
 	private void validarParecer() {
 		
@@ -401,6 +413,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.setNext(new ParecerNaoValidadoTecnicoGerente());
 		
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
+	}
+	
+	public void validarParecerValidacaoAprovador(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+		
+		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new SolicitarAjustesTecnicoAprovador();	
+		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}	
 
 	private void validarLicencasAnalise() {
@@ -492,6 +510,22 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			
 			throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
 		}		
+	}
+	
+	public void validarTipoResultadoValidacaoAprovador() {
+		
+		if (tipoResultadoValidacaoAprovador == null) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO_VALIDACAO);
+		}
+	}
+	
+	public void validarParecerValidacaoAprovador() {
+		
+		if (StringUtils.isEmpty(parecerValidacaoAprovador)) {
+			
+			throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
+		}		
 	}	
 
 	public AnaliseTecnica gerarCopia() {
@@ -565,6 +599,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;
 		this.parecerValidacaoGerente = analise.parecerValidacaoGerente;	
 	}
+	
+	public void setValidacaoCoordenador(AnaliseTecnica analise) {
+		
+		this.tipoResultadoValidacao = analise.tipoResultadoValidacao;
+		this.parecerValidacao = analise.parecerValidacao;	
+	}	
 	
 	public AnalistaTecnico getAnalistaTecnico() {
 		

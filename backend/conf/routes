@@ -34,6 +34,7 @@ POST	/analisesJuridicas/concluir									AnalisesJuridicas.concluir
 POST	/analisesJuridicas/validarParecer							AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}						AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
+POST	/analisesJuridicas/validarParecerAprovador					AnalisesJuridicas.validarParecerAprovador
 
 # Analise tecnica
 
@@ -45,6 +46,7 @@ GET		/analisesTecnicas/{idAnaliseTecnica}				AnalisesTecnicas.findById
 GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRestricoesGeo
 POST	/analisesTecnicas/validarParecer					AnalisesTecnicas.validarParecer
 POST	/analisesTecnicas/validarParecerGerente				AnalisesTecnicas.validarParecerGerente
+POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecerAprovador
 
 
 # Documentos licenciamento
