@@ -83,6 +83,10 @@ POST	/gerentes/vincular							GerentesTecnicos.vincularAnaliseGerenteTecnico
 GET		/gerentes									GerentesTecnicos.getGerentesTecnicos
 GET		/gerentes/processo/{idProcesso}				GerentesTecnicos.getGerentesTecnicosByIdProcesso
 
+# Coordenadores
+GET		/coordenadoresAprovacao						Coordenadores.getCoordenadoresAprovacao
+
+
 # Condições
 GET		/condicoes									Condicoes.list
 

@@ -224,6 +224,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			}
 		},
 		{
+
 			titulo: 'Aguardando assinatura',
 			icone: 'glyphicon glyphicon-search',
 			url: function() {
@@ -361,7 +362,9 @@ utils.services(licenciamento)
 	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('setorService', services.SetorService)
 	.add('gerenteService', services.GerenteService)
-	.add('analiseService', services.AnaliseService);
+	.add('aprovadorService', services.AprovadorService)
+	.add('analiseService', services.AnaliseService)
+	.add('coordenadorService', services.CoordenadorService);
 
 
 utils.filters(licenciamento)
@@ -379,6 +382,7 @@ licenciamento
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
 	.controller('legislacaoController', controllers.LegislacaoController);
 
+
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
 	.component('avaliarDocumento', directives.AvaliarDocumento)
@@ -389,4 +393,5 @@ licenciamento
 	.component('parecer', directives.Parecer)
 	.component('modalInformacoesAnaliseJuridica', directives.ModalInformacoesAnaliseJuridica)
 	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca)
+	.component('solicitarAjusteAprovador', directives.SoliciarAjusteAprovador)
 	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica);

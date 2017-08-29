@@ -69,7 +69,7 @@ public class Analistas extends InternalController {
 	
 	public static void getAnalistaTecnicoPerfilSetores(boolean isGerente) {
 		
-		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
 		
