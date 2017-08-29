@@ -357,6 +357,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		copia.documentos = new ArrayList<>(this.documentos);
 		copia.analisesDocumentos = new ArrayList<>();
 		copia.usuarioValidacao = this.usuarioValidacao;
+		copia.usuarioValidacaoAprovador = this.usuarioValidacaoAprovador;
 		
 		for (AnaliseDocumento analiseDocumento: this.analisesDocumentos) {
 			
@@ -449,12 +450,24 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			
 			if (tipoResultadoAnalise.id == tipoResultadoAnalise.DEFERIDO) {
 				
-				AnaliseTecnica analiseTecnica = new AnaliseTecnica();
-				analiseTecnica.analise = AnaliseJuridica.this.analise;
+				/**
+				 * Se tiver usuário aprovador, então volta o processo diretamente para o aguardando assinatura aprovador,
+				 * pois foi uma solicitação de ajuste do aprovador para o coordenador.
+				 */
+				if (usuarioValidacaoAprovador != null) {
+					
+					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA_COORDENADOR_APROVADOR, usuarioExecutor);
+					
+				} else {
+					
+					AnaliseTecnica analiseTecnica = new AnaliseTecnica();
+					analiseTecnica.analise = AnaliseJuridica.this.analise;
+					
+					analiseTecnica.save();
+					
+					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecutor);
+				}
 				
-				analiseTecnica.save();
-				
-				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecutor);
 			}
 		}
 	}
