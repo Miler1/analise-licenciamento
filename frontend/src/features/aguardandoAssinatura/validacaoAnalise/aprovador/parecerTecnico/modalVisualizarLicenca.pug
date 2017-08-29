@@ -1,69 +1,70 @@
 .modal-header
 
-	button.close(type='button', ng-click="$ctrl.fechar()")
-		span(aria-hidden='true') ×
-		span.sr-only Fechar
+    button.close(type='button', ng-click="$ctrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
 
-	h4.modal-title Visualizar Licença
+    h4.modal-title Visualizar Licença
 
 .modal-body
 
-	label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
+    label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 
-	br
+    br
 
-	br
+    br
 
-	.form-group
-		label(for="selectValidade") Validade: 
-		label {{$ctrl.resolve.dadosLicenca.validade}} ano(s)
+    .form-group
+        label.margin-right-xs(for="selectValidade") Validade: 
+        label {{$ctrl.resolve.dadosLicenca.validade}} ano(s)
 
-	label.margin-right-xs Observações:
-	form
-		.form-group
-			textarea.form-control.textarea--no-resize(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes", disabled)
+    label.margin-right-xs Observações:
+    form
+        .form-group
+            textarea.form-control.textarea--no-resize(rows="4", ng-if="$ctrl.resolve.dadosLicenca.observacao", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes", disabled)
+            .text-center.vazio(ng-if="!$ctrl.resolve.dadosLicenca.observacao") 
+                span Nenhuma observação adicionada
+    hr
 
-	hr
+    label.margin-right-xs Condicionantes:
+    div.tabela
 
-	label.margin-right-xs Condicionantes:
-	div.tabela
+        table.table.table-striped.table-condensed.no-margin
+            thead
+                tr
+                    th.col-md-10 Condicionante
+                    th.col-md-2.text-right Prazo(dias)
 
-		table.table.table-striped.table-condensed.no-margin
-			thead
-				tr
-					th.col-md-10 Condicionante
-					th.col-md-2.text-right Prazo(dias)
-
-			tbody
-				tr(ng-repeat="condicionante in $ctrl.resolve.dadosLicenca.condicionantes")
-					td
-						span {{condicionante.texto}}
-					td.text-right
-						span {{condicionante.prazo}}
+            tbody
+                tr(ng-repeat="condicionante in $ctrl.resolve.dadosLicenca.condicionantes")
+                    td
+                        span {{condicionante.texto}}
+                    td.text-right
+                        span {{condicionante.prazo}}
 
 
-		.text-center.vazio
-			span(ng-if="$ctrl.resolve.dadosLicenca.condicionantes.length == 0") Nenhuma condicionante adicionada
-	hr
+        .text-center.vazio
+            span(ng-if="$ctrl.resolve.dadosLicenca.condicionantes.length == 0") Nenhuma condicionante adicionada
+    hr
 
-	label.margin-right-xs Recomendações:
-	div.tabela
+    label.margin-right-xs Recomendações:
+    div.tabela
 
-		table.table.table-striped.table-condensed.no-margin
-			thead
-				tr
-					th.col-md-12 Recomendação
+        table.table.table-striped.table-condensed.no-margin
+            thead
+                tr
+                    th.col-md-12 Recomendação
 
-			tbody
-				tr(ng-repeat="recomendacao in $ctrl.resolve.dadosLicenca.recomendacoes")
-					td
-						span {{recomendacao.texto}}
+            tbody
+                tr(ng-repeat="recomendacao in $ctrl.resolve.dadosLicenca.recomendacoes")
+                    td
+                        span {{recomendacao.texto}}
 
-		.text-center.vazio
-			span(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length == 0") Nenhuma recomendação adicionada
+        .text-center.vazio
+            span(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length == 0") Nenhuma recomendação adicionada
 
 .modal-footer#footer-modal
 
-	button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
-		i.glyphicon.glyphicon-arrow-left
-		| &nbsp;Fechar
+    button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Fechar
