@@ -53,13 +53,15 @@ table.table.table-condensed(ng-if="$ctrl.exibirDocumentosAnalisados")
 
 h2.margin-bottom-md Validação Jurídica
 
-label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Coordenador jurídico:
-span#texto_nome_consultor_juridico
-  strong {{$ctrl.analiseJuridica.usuarioValidacao.pessoa.nome}}
+div
+    label.not-bold.margin-right-xs(for="texto_nome_consultor_juridico") Coordenador jurídico:
+    span#texto_nome_consultor_juridico
+    strong {{$ctrl.analiseJuridica.usuarioValidacao.pessoa.nome}}
 
-label.not-bold.margin-left-xs.margin-right-xs Data da validação:
-span
-  strong {{$ctrl.analiseJuridica.dataFim}}
+div
+    label.not-bold.margin-right-xs Data da validação:
+    span
+    strong {{$ctrl.analiseJuridica.dataFim}}
 
 hr
 

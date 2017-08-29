@@ -234,7 +234,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			countItens: true,
 			estaSelecionado: function () {
 
-				return $location.path() === '/aguardando-assinatura';
+				return $location.path().indexOf('/aguardando-assinatura') > -1;
 			},
 			visivel: function(){
 
