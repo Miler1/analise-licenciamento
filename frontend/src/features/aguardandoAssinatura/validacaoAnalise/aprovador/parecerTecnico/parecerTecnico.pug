@@ -8,11 +8,6 @@ section.margin-bottom-md
 			strong {{ctrl.analiseTecnica.analistasTecnicos[0].usuario.pessoa.nome}}
 	hr
 
-	section(ng-if="ctrl.analiseTecnica.analiseTecnicaRevisada && ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
-		label Parecer da validação:
-
-		div(class="alert alert-warning", ng-bind-html="ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
-
 	h4 {{ctrl.analiseTecnica.tipoResultadoAnalise.nome}}
 
 	fieldset.panel.panel-default
