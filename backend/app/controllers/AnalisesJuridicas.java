@@ -100,5 +100,20 @@ public class AnalisesJuridicas extends InternalController {
 		renderMensagem(Mensagem.VALIDACAO_PARECER_JURIDICO_CONCLUIDA_SUCESSO);				
 		
 	}
+	
+	public static void validarParecerAprovador(AnaliseJuridica analise) {
+		
+		verificarPermissao(Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
+		
+		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
+		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		
+		analiseAvalidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
+		
+		renderMensagem(Mensagem.VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO);				
+		
+	}	
 
 }
