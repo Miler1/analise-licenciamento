@@ -49,7 +49,6 @@ public class AnaliseTecnicaSerializer {
 			"analisesDocumentos.documento.tipo.nome",
 			"analisesDocumentos.documento.id",
 			"analisesDocumentos.documento.tipo.tipoAnalise",
-			"analiseTecnica.id",
 			"pareceresTecnicosRestricoes.id",
 			"pareceresTecnicosRestricoes.codigoCamada",
 			"pareceresTecnicosRestricoes.parecer",

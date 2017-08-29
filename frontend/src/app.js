@@ -225,7 +225,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 		},
 		{
 			titulo: 'Aguardando assinatura',
-			icone: 'glyphicon glyphicon-search',
+			icone: 'glyphicon glyphicon-pencil',
 			url: function() {
 
 				return '/aguardando-assinatura-aprovador';
