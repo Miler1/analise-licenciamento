@@ -192,7 +192,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		
 		Iterator<Documento> docsCadastrados = documentos.iterator();
 		List<Documento> documentosDeletar = new ArrayList<>();
-		
+		 
 		while (docsCadastrados.hasNext()) {
 			
 			Documento docCadastrado = docsCadastrados.next();
@@ -200,7 +200,15 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			if (ListUtil.getById(docCadastrado.id, novosDocumentos) == null) {
 				
 				docsCadastrados.remove();
-				documentosDeletar.add(docCadastrado);
+				
+				// remove o documeto do banco apenas se ele não estiver relacionado
+				// com outra análises
+				List<AnaliseJuridica> analiseJuridicasRelacionadas = docCadastrado.getAnaliseJuridicasRelacionadas();
+				if(analiseJuridicasRelacionadas.size() == 0) {
+					
+					documentosDeletar.add(docCadastrado);
+				}
+				
 			}
 		}
 		

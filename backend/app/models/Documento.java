@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -227,6 +228,21 @@ public class Documento extends GenericModel implements Identificavel {
 		
 		return this.id;
 	}
+	
+	public List<AnaliseJuridica> getAnaliseJuridicasRelacionadas() {
+		
+		return AnaliseJuridica.find("select aj from AnaliseJuridica aj inner join aj.documentos documento where documento.id = :idDocumento")
+				.setParameter("idDocumento", this.id)
+				.fetch();
+	}
+	
+	public List<AnaliseTecnica> getAnaliseTecnicasRelacionadas() {
+		
+		return AnaliseJuridica.find("select at from AnaliseTecnica at inner join at.documentos documento where documento.id = :idDocumento")
+				.setParameter("idDocumento", this.id)
+				.fetch();
+	}
+	
 	
 	
 }
