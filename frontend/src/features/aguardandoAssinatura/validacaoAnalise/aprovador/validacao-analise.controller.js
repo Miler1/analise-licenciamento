@@ -1,5 +1,6 @@
 var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routeParams, $scope,
-    mensagem, $location, processoService, $uibModal, analiseService, analiseJuridicaService, analiseTecnicaService) {
+    mensagem, $location, processoService, $uibModal, analiseService, analiseJuridicaService, 
+    analiseTecnicaService, documentoAnaliseService) {
 
     var validacaoAnaliseAprovador = this;
 
