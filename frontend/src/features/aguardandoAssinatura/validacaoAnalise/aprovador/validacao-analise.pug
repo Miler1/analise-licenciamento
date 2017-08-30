@@ -5,7 +5,7 @@ include ../../../../layout/components/inputErrors
 div(ng-init="ctrl.init()")
 	+resumo-processo('ctrl.analise.processo','ctrl.exibirDadosProcesso()')
 
-	section.margin-bottom-md(active='ctrl.tabAtiva')
+	section.margin-bottom-md
 		uib-tabset(active='ctrl.tabAtiva')
 			uib-tab(index="0", heading="Parecer Jurídico")
 				div(ng-if='ctrl.tabAtiva === 0')
@@ -24,9 +24,9 @@ div(ng-init="ctrl.init()")
 			
 		section.margin-bottom-xl.alone
 				
-			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva == 0")
+			a.btn.pull-left(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva == 0")
 					|<< Etapa anterior
 
 					
-			a.btn(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
+			a.btn.pull-right(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
 					| >> Próxima Etapa

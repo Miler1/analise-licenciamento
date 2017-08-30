@@ -1,4 +1,5 @@
-var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restricao, restricaoGeo, analiseTecnica, empreendimentoGeo, imovel, mensagem) {
+var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restricao, $rootScope, $route, $routeParams, $location,
+									 restricaoGeo, analiseTecnica, empreendimentoGeo, imovel, mensagem) {
 
 	var modalCtrl = this;
 	modalCtrl.restricao = restricao;
@@ -6,6 +7,8 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 	modalCtrl.restricaoGeo = restricaoGeo;
 	modalCtrl.empreendimentoGeo = empreendimentoGeo;
 	modalCtrl.imovel = imovel;
+	modalCtrl.nomePagina = $rootScope.tituloPagina;
+	console.log(modalCtrl.nomePagina);
 
 	var map;
 

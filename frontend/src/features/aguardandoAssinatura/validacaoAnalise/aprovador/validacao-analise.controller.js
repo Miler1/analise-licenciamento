@@ -6,6 +6,7 @@ var ValidacaoAnaliseAprovadorController = function($rootScope, $route, $routePar
 	validacaoAnaliseAprovador.formularios = {};
 	validacaoAnaliseAprovador.tabAtiva = 0;
 	validacaoAnaliseAprovador.init = init;
+	validacaoAnaliseAprovador.exibirDocumentacao = true;
 	validacaoAnaliseAprovador.exibirDadosProcesso = exibirDadosProcesso;
 	validacaoAnaliseAprovador.carregarDadosAnaliseJuridica = carregarDadosAnaliseJuridica;
 	validacaoAnaliseAprovador.carregarDadosAnaliseGeo = carregarDadosAnaliseGeo;
