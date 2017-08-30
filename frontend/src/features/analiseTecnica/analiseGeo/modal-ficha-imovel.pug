@@ -1,0 +1,9 @@
+div#modal-ficha-imovel
+
+    div.modal-body
+        ficha-imovel(imovel='$ctrl.resolve.imovel', is-open="true")
+    
+    div.modal-footer#footer-modal
+        button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+            i.glyphicon.glyphicon-remove
+            | &nbsp;Fechar

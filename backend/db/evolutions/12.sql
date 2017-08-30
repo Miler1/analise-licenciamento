@@ -6,7 +6,7 @@ ALTER TABLE analise.analise_tecnica ADD parecer_validacao TEXT;
 
 COMMENT ON COLUMN analise.analise_tecnica.parecer_validacao IS 'Parecer da validação da análise técnica.';
 
-# ---!Downs
+# --- !Downs
 
 ALTER TABLE analise.analise_tecnica DROP COLUMN parecer_validacao; 
 

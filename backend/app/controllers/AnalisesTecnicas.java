@@ -75,7 +75,7 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void findById(Long idAnaliseTecnica) {
 	
-		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
 		AnaliseTecnica analise = AnaliseTecnica.findById(idAnaliseTecnica);
 		
@@ -86,7 +86,7 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
 		
-		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
 		
@@ -125,5 +125,19 @@ public class AnalisesTecnicas extends InternalController {
 		analiseAValidar.validaParecerGerente(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_TECNICO_CONCLUIDA_SUCESSO);
+	}
+	
+	public static void validarParecerAprovador(AnaliseTecnica analise) {
+		
+		verificarPermissao(Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
+		
+		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
+		
+		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+		
+		analiseAValidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
+		
+		renderMensagem(Mensagem.VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO);
 	}	
 }
