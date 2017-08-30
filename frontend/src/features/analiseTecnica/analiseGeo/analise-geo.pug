@@ -1,5 +1,3 @@
-include ../../../components/fichaImovel/fichaImovel
-
 div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.restricoes, ctrl.analiseTecnica)')
 	section.margin-bottom-md
 
@@ -14,7 +12,7 @@ div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.
 					span - {{ctrl.imovel.nome}} - {{ctrl.imovel.municipio.nome}}-{{ctrl.imovel.municipio.estado.codigo}}
 
 				div.margin-bottom-md
-					button.btn.btn-sm.btn-default.pull-right(data-toggle="modal", data-target="#fichaImovel")
+					button.btn.btn-sm.btn-default.pull-right(ng-click="ctrl.visualizarFichaImovel()")
 						i.glyphicon.glyphicon-search
 						| &nbsp;Ficha do Imóvel
 
