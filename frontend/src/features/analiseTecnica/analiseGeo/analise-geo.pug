@@ -43,12 +43,12 @@ div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.
 													i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
 						
 						div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
-							a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#outrosDados')
+							a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")
 								.panel.panel-default
 									.panel-heading
 										h4.panel-title
 											| {{key}}
-							#outrosDados.collapse
+							div.collapse(id="{{'outrosDados'+$index}}")
 								table.table.table-condensed
 									thead
 										tr
