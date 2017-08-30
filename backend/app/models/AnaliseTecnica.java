@@ -333,7 +333,13 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			if (ListUtil.getById(docCadastrado.id, novosDocumentos) == null) {
 				
 				docsCadastrados.remove();
-				documentosDeletar.add(docCadastrado);
+				// remove o documeto do banco apenas se ele não estiver relacionado
+				// com outra análises
+				List<AnaliseTecnica> analisesTecnicasRelacionadas = docCadastrado.getAnaliseTecnicasRelacionadas();
+				if(analisesTecnicasRelacionadas.size() == 0) {
+				
+					documentosDeletar.add(docCadastrado);
+				}
 			}
 		}
 		
