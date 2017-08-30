@@ -539,6 +539,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			novaAnalise.revisaoSolicitada = true;
 			novaAnalise.ativo = true;
 			novaAnalise.usuarioValidacao = usuarioValidacao;
+			novaAnalise.usuarioValidacaoAprovador = usuarioValidacaoAprovador;
 			
 			novaAnalise.consultoresJuridicos = new ArrayList<>();
 			ConsultorJuridico consultorJuridico = new ConsultorJuridico(novaAnalise, usuarioConsultor);
