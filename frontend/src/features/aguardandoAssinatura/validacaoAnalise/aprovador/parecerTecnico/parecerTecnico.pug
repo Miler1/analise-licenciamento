@@ -49,7 +49,7 @@ section.margin-bottom-md
 
 				td(ng-if='analiseDocumento.validado') {{analiseDocumento.documento.tipo.nome}}
 				td.text-right(ng-if='analiseDocumento.validado')
-					a.btn(ng-if="analiseDocumento.documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(analiseDocumento.documento.id)")
+					a.btn(ng-if="analiseDocumento.documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoValidado(analiseDocumento.documento.id)")
 						i.glyphicon.glyphicon-save
 
 	.row(ng-show="!ctrl.analiseTecnica.documentos || ctrl.analiseTecnica.documentos.length == 0")
