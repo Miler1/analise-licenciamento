@@ -2,30 +2,39 @@ include ../../layout/components/inputErrors
 
 form(name="$ctrl.formulario", novalidate)
 
-	.form-group
-		div(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.tipo_parecer.$invalid}")
-			label.margin-right-sm Revisão do parecer: *
-			label.radio-inline(for="parecer_juridico")
-				input#parecer_juridico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_JURIDICO}}", ng-change="$ctrl.listarCoordenadores()", required)
-				| Jurídico
-			label.radio-inline(for="parecer_tecnico")
-				input#parecer_tecnico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_TECNICO}}", ng-change="$ctrl.listarCoordenadores()", required)
-				| Técnico
-			div(ng-messages='$ctrl.formulario.$submitted && $ctrl.formulario.tipo_parecer.$error')
-				p.error-message(ng-message='required') Campo obrigatório.
+    .form-group
+        div(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.tipo_parecer.$invalid}")
+            label.margin-right-sm Revisão do parecer: *
+            label.radio-inline(for="parecer_juridico")
+                input#parecer_juridico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_JURIDICO}}", ng-change="$ctrl.listarCoordenadores()", required)
+                | Jurídico
+            label.radio-inline(for="parecer_tecnico")
+                input#parecer_tecnico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_TECNICO}}", ng-change="$ctrl.listarCoordenadores()", required)
+                | Técnico
+            div(ng-messages='$ctrl.formulario.$submitted && $ctrl.formulario.tipo_parecer.$error')
+                p.error-message(ng-message='required') Campo obrigatório.
 
-	.form-group(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.coordenadores.$invalid}")
-		label Coordenador: *
-		select.form-control(name="coordenadores", ng-model="$ctrl.solicitacao.coordenador", ng-options="coordenador as coordenador.pessoa.nome for coordenador in $ctrl.coordenadores", required, ng-disabled="!$ctrl.solicitacao.tipo")
-		div(ng-messages='$ctrl.formulario.$submitted && $ctrl.formulario.coordenadores.$error')
-			p.error-message(ng-message='required') Campo obrigatório.
+    .form-group(ng-if="$ctrl.solicitacao.tipo === $ctrl.perfis.COORDENADOR_JURIDICO")
+        label Coordenador jurídico:
+        span.margin-left-xs {{$ctrl.analiseJuridica.usuarioValidacao.pessoa.nome}}
 
-	.form-group(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.justificativa.$invalid}")
-		label Justificativa: *
-		textarea.form-control.textarea--resize-vertical(name="justificativa", ng-model="$ctrl.solicitacao.justificativa", required)
-		div(ng-messages='$ctrl.formulario.$submitted && $ctrl.formulario.justificativa.$error')
-			p.error-message(ng-message='required') Campo obrigatório.
+
+    .form-group(ng-if="$ctrl.solicitacao.tipo === $ctrl.perfis.COORDENADOR_TECNICO")
+        label Coordenador técnico:
+        span.margin-left-xs {{$ctrl.analiseTecnica.usuarioValidacao.pessoa.nome}}
+
+    //- .form-group(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.coordenadores.$invalid}")
+    //- 	label Coordenador: *
+    //- 	select.form-control(name="coordenadores", ng-model="$ctrl.solicitacao.coordenador", ng-options="coordenador as coordenador.pessoa.nome for coordenador in $ctrl.coordenadores", required, ng-disabled="!$ctrl.solicitacao.tipo")
+    //- 	div(ng-messages='$ctrl.formulario.$submitted && $ctrl.formulario.coordenadores.$error')
+    //- 		p.error-message(ng-message='required') Campo obrigatório.
+
+    .form-group(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.justificativa.$invalid}")
+        label Justificativa: *
+        textarea.form-control.textarea--resize-vertical(name="justificativa", ng-model="$ctrl.solicitacao.justificativa", required)
+        div(ng-messages='$ctrl.formulario.$submitted && $ctrl.formulario.justificativa.$error')
+            p.error-message(ng-message='required') Campo obrigatório.
 
 button.btn.btn-default.pull-right(ng-click="$ctrl.solicitar()")
-	i.glyphicon.glyphicon-repeat.margin-right-xs
-	| Solicitar revisão do parecer
+    i.glyphicon.glyphicon-repeat.margin-right-xs
+    | Solicitar revisão do parecer

@@ -97,7 +97,8 @@ public class AnaliseTecnicaSerializer {
 			"gerentesTecnicos.usuario.pessoa.nome",
 			"tipoResultadoValidacaoGerente.id",
 			"parecerValidacaoGerente",
-			"analiseTecnicaRevisada"
+			"analiseTecnicaRevisada",
+			"usuarioValidacao.pessoa.nome"
 			
 		).transform(new GeometryTransformer(), Geometry.class);
 
