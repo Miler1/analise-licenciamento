@@ -14,20 +14,27 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
     validacaoAnaliseAprovador.downloadDocumentoAnalise = downloadDocumentoAnalise;
     validacaoAnaliseAprovador.downloadDocumentoValidado = downloadDocumentoValidado;
     validacaoAnaliseAprovador.visualizarLicenca = visualizarLicenca;
+    
 
     function init() {
 
         analiseService.getAnalise($routeParams.idAnalise)
             .then(function (response) {
 
-                validacaoAnaliseAprovador.analise = response.data;
+                validacaoAnaliseAprovador.analise = response.data;               
                 validacaoAnaliseAprovador.analise.processo.empreendimento.municipio =
                     validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
+                    validacaoAnaliseAprovador.imovel = validacaoAnaliseAprovador.analise.processo.empreendimento.imovel;
                 carregarDadosAnaliseJuridica();
-                carregarDadosAnaliseGeo();
                 carregarDadosAnaliseTecnica();
                 
             });
+	
+	    analiseTecnicaService.getAnaliseTecnica($routeParams.idAnalise)
+			.then(function(response){
+				validacaoAnaliseAprovador.analiseTecnica = response.data;                
+				carregarDadosAnaliseGeo();
+			});
     }
 
     function exibirDadosProcesso() {

@@ -1,4 +1,3 @@
-
 div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.restricoes, ctrl.analiseTecnica)')
 	section.margin-bottom-md
 
@@ -7,10 +6,15 @@ div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.
 		.row
 			.col-md-12
 
-				div.margin-bottom-sm(ng-if="ctrl.imovel")  
+				div.margin-bottom-sm(ng-if="ctrl.imovel")
 					span.d-inline-block.margin-right-xs CAR vinculado:
 					strong {{ctrl.imovel.codigo}} 
 					span - {{ctrl.imovel.nome}} - {{ctrl.imovel.municipio.nome}}-{{ctrl.imovel.municipio.estado.codigo}}
+
+				div.margin-bottom-md(ng-if="ctrl.imovel")
+					button.btn.btn-sm.btn-default.pull-right(ng-click="geoCtrl.visualizarFichaImovel()")
+						i.glyphicon.glyphicon-search
+						| &nbsp;Ficha do Imóvel
 
 				h5 Localização do empreendimento
 
