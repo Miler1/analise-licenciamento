@@ -8,6 +8,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     ctrl.DEFERIDO = app.utils.TiposResultadoAnalise.DEFERIDO;
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
+    ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
     ctrl.exibirDadosProcesso = exibirDadosProcesso;
     ctrl.concluir = concluir;
     ctrl.salvar = salvar;
@@ -22,7 +23,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.init = function () {
 
         ctrl.analiseTecnica = angular.copy(analiseTecnica);
-        ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
+        
     };
 
     function analiseValida() {

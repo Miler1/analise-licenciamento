@@ -17,6 +17,7 @@ public class AnaliseJuridicaSerializer {
 				"analise.processo.empreendimento.denominacao",
 				"analise.processo.empreendimento.municipio.nome",
 				"analise.processo.empreendimento.municipio.estado.codigo",
+				"analise.processo.empreendimento.imovel.id",
 				"analise.processo.caracterizacoes.id",
 				"analise.processo.caracterizacoes.tipoLicenca.id",
 				"analise.processo.caracterizacoes.tipoLicenca.nome",

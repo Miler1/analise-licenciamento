@@ -4,6 +4,7 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
 	meusDados,
+	imovel,
 	colors = ['#ef5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#42A5F5', '#29B6F6', '#26C6DA', '#26A69A',
 		'#66BB6A', '#9CCC65', '#D4E157', '#FFEE58', '#FFCA28', '#FFA726', '#FF7043'];
 
@@ -237,6 +238,20 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 
 	};
 
+	this.visualizarFichaImovel = function () {
+
+        var modalInstance = $uibModal.open({
+
+            component: 'modalFichaImovel',
+            size: 'lg',
+			resolve: {
+				imovel: $scope.analiseTecnica.analise.processo.empreendimento.imovel
+			}
+        });
+
+		modalInstance.result.then(function(){},function(){});
+
+    };
 	this.init = function(restricoes, analiseTecnica) {
 
 		$scope.analiseTecnica = analiseTecnica;

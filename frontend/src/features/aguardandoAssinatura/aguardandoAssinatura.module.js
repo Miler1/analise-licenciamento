@@ -7,7 +7,7 @@ var utils = app.utils,
 aguardandoAssinatura.config(['$routeProvider', function($routeProvider){
 
 	$routeProvider
-		.when('/aguardando-assinatura/:idAnalise', {
+		.when('/aguardando-assinatura-aprovador/:idAnalise', {
 			templateUrl: 'features/aguardandoAssinatura/validacaoAnalise/aprovador/validacao-analise.html',
 			controller: controllers.ValidacaoAnaliseAprovadorController,
 			controllerAs: 'ctrl'

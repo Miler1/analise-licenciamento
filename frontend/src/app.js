@@ -226,7 +226,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 		{
 
 			titulo: 'Aguardando assinatura',
-			icone: 'glyphicon glyphicon-search',
+			icone: 'glyphicon glyphicon-pencil',
 			url: function() {
 
 				return '/aguardando-assinatura';
@@ -394,4 +394,5 @@ licenciamento
 	.component('modalInformacoesAnaliseJuridica', directives.ModalInformacoesAnaliseJuridica)
 	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca)
 	.component('solicitarAjusteAprovador', directives.SoliciarAjusteAprovador)
-	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica);
+	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica)
+	.component('modalFichaImovel', directives.ModalFichaImovel);

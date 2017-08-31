@@ -28,20 +28,20 @@ div#modal-parecer-restricao
 		form(name='formParecerRestricaoGeo')
 			.form-group.title-textarea
 				label.not-bold Parecer de restrição geo:
-				textarea.form-control(name='parecerText', ng-model='modalCtrl.parecer',ng-disabled="modalCtrl.parecer" ,required)
+				textarea.form-control(name='parecerText', ng-model='modalCtrl.parecer',ng-disabled="modalCtrl.codigoCamada" ,required)
 			+inputErrors('formParecerRestricaoGeo', 'parecerText', 'required')
 
 	div.modal-footer#footer-modal
 
-		button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()", ng-if="!modalCtrl.parecer")
+		button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()", ng-if="!modalCtrl.codigoCamada")
 			i.glyphicon.glyphicon-remove
 			| &nbsp;Cancelar
-		button.btn.btn-success.pull-right(type="submit" ng-click="modalCtrl.confirmarParecer()", ng-if="!modalCtrl.parecer")
+		button.btn.btn-success.pull-right(type="submit" ng-click="modalCtrl.confirmarParecer()", ng-if="!modalCtrl.codigoCamada")
 			i.glyphicon.glyphicon-ok
 			| &nbsp;Confirmar parecer
-		button.btn.btn-error.pull-right(ng-show='modalCtrl.codigoCamada', type="submit" ng-click="modalCtrl.excluirParecer(modalCtrl.codigoCamada)",ng-if="!modalCtrl.parecer")
+		button.btn.btn-error.pull-right(ng-show='modalCtrl.codigoCamada && modalCtrl.nomePagina == "PARECER TÉCNICO"', type="submit" ng-click="modalCtrl.excluirParecer(modalCtrl.codigoCamada)")
 			i.glyphicon.glyphicon-trash
 			| &nbsp;Excluir parecer
-		button.btn.btn-default.pull-right(ng-if="modalCtrl.parecer",ng-click="modalCtrl.cancelar()")
+		button.btn.btn-default.pull-left(ng-if="modalCtrl.codigoCamada",ng-click="modalCtrl.cancelar()")
 			i.glyphicon.glyphicon-remove
 			| &nbsp;Fechar
