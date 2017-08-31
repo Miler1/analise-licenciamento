@@ -53,7 +53,7 @@ var SoliciarAjusteAprovador = {
 
                 analise.id = ctrl.analise.analiseTecnica.id;
                 analiseTecnicaService.solicitarAjusteAprovador(analise)
-                    .then(succeso, erro);
+                    .then(sucesso, erro);
 
             } else {
 
