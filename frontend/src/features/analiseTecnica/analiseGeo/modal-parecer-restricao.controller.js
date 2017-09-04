@@ -67,6 +67,7 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 				attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 			})],
 			zoomControl: false,
+			doubleClickZoom: false,
 			scrollWheelZoom: false
 		});
 
