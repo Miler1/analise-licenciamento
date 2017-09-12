@@ -23,7 +23,7 @@ header
 							li.hidden-sm(style='margin-right: 16px;')
 								p.navbar-text.pull-right
 									small
-										strong {{usuarioSessao.nome | textoTruncado : 25}} ({{usuarioSessao.perfilSelecionado.nome}} - {{usuarioSessao.setorSelecionado.sigla}})
+										strong {{usuarioSessao.nome | textoTruncado : 25}} ({{usuarioSessao.perfilSelecionado.nome}}{{usuarioSessao.setorSelecionado ? ' - ' + usuarioSessao.setorSelecionado.sigla : '' }})
 							li.dropdown
 								li
 									a(href='../logout')
