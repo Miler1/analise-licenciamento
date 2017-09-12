@@ -44,6 +44,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.AguardandoAssinaturaAprovadorListController,
 			controllerAs: 'listagem'
 		})
+		.when("/consultar-licencas-emitidas", {
+			templateUrl: "features/consultarLicencasEmitidas/consultar-licencas-emitidas.html",
+			controller: controllers.ConsultarLicencasEmitidasController,
+			controllerAs: 'consultarLicencas'
+		})		
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -256,6 +261,22 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			estaSelecionado: function () {
 
 				return $location.path() === '/consultar-processo';
+			},
+			visivel: function(){
+
+				return true;
+			}
+		},
+		{
+			titulo: 'Consultar licenças emitidas',
+			icone: 'glyphicon glyphicon-list-alt',
+			url: function() {
+
+				return '/consultar-licencas-emitidas';
+			},
+			estaSelecionado: function () {
+
+				return $location.path() === '/consultar-licencas-emitidas';
 			},
 			visivel: function(){
 

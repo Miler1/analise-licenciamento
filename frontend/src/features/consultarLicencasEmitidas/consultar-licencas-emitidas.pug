@@ -1,0 +1,64 @@
+include ../../layout/components/paginacao
+
+div
+	filtro-processos(paginacao="consultarLicencas.paginacao",
+		disabled-fields="consultarLicencas.disabledFields",
+		atualizar-lista="consultarLicencas.atualizarListaProcessos",
+		atualizar-paginacao="consultarLicencas.atualizarPaginacao",
+		pesquisar-ao-inicializar="true",
+		is-analise-juridica="true",
+		is-analise-tecnica="true",
+		is-analise-tecnica-opcional="true",
+		pesquisar-todas-gerencias="true",
+		tipo-setor="consultarLicencas.GERENCIA")
+
+	h4 Lista de processos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="consultarLicencas.processos && consultarLicencas.processos.length > 0")
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th.col-md-1 Processo
+							th.col-md-2 Empreendimento
+							th.col-md-2 Município
+							th.col-md-1 Licenças
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise jurídica
+							th.col-md-1 Prazo análise técnica
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in consultarLicencas.processos")
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							
+							td(ng-class="{'error-message': consultarLicencas.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, consultarLicencas.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{consultarLicencas.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnalise)}}
+							
+							td(ng-class="{'error-message': consultarLicencas.isPrazoMinimoAvisoAnalise(processo, 'dataVencimentoPrazoAnaliseJuridica', 'dataConclusaoAnaliseJuridica','ANALISE_JURIDICA')}")
+								| {{consultarLicencas.getDiasRestantes(processo,'dataVencimentoPrazoAnaliseJuridica', 'dataConclusaoAnaliseJuridica')}}
+							
+							td(ng-class="{'error-message': consultarLicencas.isPrazoMinimoAvisoAnalise(processo, 'dataVencimentoPrazoAnaliseTecnica', 'dataConclusaoAnaliseTecnica','ANALISE_TECNICA')}")
+								| {{consultarLicencas.getDiasRestantes(processo,'dataVencimentoPrazoAnaliseTecnica', 'dataConclusaoAnaliseTecnica')}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+												a(ng-click="consultarLicencas.visualizarProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar processo
+
+				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
+
+		.row(ng-show="!consultarLicencas.processos || consultarLicencas.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.
