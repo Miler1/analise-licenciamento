@@ -1,6 +1,8 @@
 package models.licenciamento;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +14,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import builders.ProcessoBuilder;
+import builders.LicencaBuilder;
+import builders.LicencaBuilder.FiltroLicenca;
+import builders.ProcessoBuilder.FiltroProcesso;
 import models.Documento;
 import play.db.jpa.GenericModel;
+import security.UsuarioSessao;
 
 @Entity
 @Table(schema = "licenciamento", name = "licenca")
@@ -41,4 +48,80 @@ public class Licenca extends GenericModel {
 	
 	@Column(name = "data_validade")
 	public Date dataValidade;
+	
+	
+	private static List groupByLicenca(LicencaBuilder licencaBuilder, FiltroLicenca filtro) {
+		
+		licencaBuilder.groupByNumeroProcesso()
+		.groupByNumeroProcesso()
+		.groupByCpfCnpjEmpreendimento()
+		.groupByDenominacaoEmpreendimento()
+		.groupByMunicipioEmpreendimento()
+		.groupByLicenca();
+				
+	return licencaBuilder
+		.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())				
+		.list();		
+	}
+	
+	/**
+	 * Filtro utilizado para a pesquisa avançada, ou seja, vários campos de pesquisa
+	 * @param filtro
+	 * @return
+	 */
+	private static LicencaBuilder commonFiltersLicenca(FiltroLicenca filtro) {
+		
+		return new LicencaBuilder()
+				.filtrarPorNumeroLicenca(filtro.numeroLicenca)
+				.filtrarPorNumeroProcesso(filtro.numeroProcesso)
+				.filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
+				.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
+				.filtrarPorDenominacaoEmpreendimento(filtro.denominacaoEmpreendimento)
+				.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
+				.filtrarPorIdLicenca(filtro.idLicenca)
+				.filtrarPorPeriodoVencimento(filtro.periodoInicial, filtro.periodoFinal);
+	}
+	
+	public static List listWithFilters(FiltroLicenca filtro) {
+		
+		return groupByLicenca(commonFiltersLicenca(filtro), filtro);
+	}
+	
+	public static Long countWithFilters(FiltroLicenca filtro) {
+		
+		LicencaBuilder licencaBuilder = commonFiltersLicenca(filtro);
+			
+		Object qtdeTotalItens = licencaBuilder.unique();
+		
+		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
+	}	
+	
+	/**
+	 * Filtro utilizado para a pesquisa rápida, ou seja, um único campo de pesquisa
+	 * @param pesquisa
+	 * @return
+	 */
+	private static LicencaBuilder commonFilterLicenca(String pesquisa) {
+		
+		return new LicencaBuilder()
+			.filtrarPorNumeroLicenca(pesquisa)
+			.filtrarPorNumeroProcesso(pesquisa)
+			.filtrarPorCpfCnpjEmpreendimento(pesquisa)
+			.filtrarPorDenominacaoEmpreendimento(pesquisa)
+			.filtrarPorMunicipio(pesquisa);
+	}
+	
+	public static List listWithFilter(FiltroLicenca filtro) {
+		
+		return groupByLicenca(commonFilterLicenca(filtro.pesquisa), filtro);
+	}
+	
+	public static Long countWithFilter(FiltroLicenca filtro) {
+		
+		LicencaBuilder licencaBuilder = commonFilterLicenca(filtro.pesquisa);
+			
+		Object qtdeTotalItens = licencaBuilder.unique();
+		
+		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
+	}
 }
