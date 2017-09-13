@@ -17,12 +17,13 @@ public class UsuarioSessao implements Serializable {
 	public List<Acao> acoesPermitidas;
 	public Perfil perfilSelecionado;
 	public Setor setorSelecionado;
+	public Boolean autenticadoViaToken;
 	
 	public UsuarioSessao() {
 		
 	}
 	
-	public UsuarioSessao(Long id, String nome, Long idPessoa, String cpfCnpj, List<Acao> acoesPermitidas, Perfil perfilSelecionado, Setor setorSelecionado) {
+	public UsuarioSessao(Long id, String nome, Long idPessoa, String cpfCnpj, List<Acao> acoesPermitidas, Perfil perfilSelecionado, Setor setorSelecionado, Boolean autenticadoViaToken) {
 	
 		this.id = id;
 		this.nome = nome;
@@ -31,6 +32,7 @@ public class UsuarioSessao implements Serializable {
 		this.acoesPermitidas = acoesPermitidas;
 		this.perfilSelecionado = perfilSelecionado;
 		this.setorSelecionado = setorSelecionado;
+		this.autenticadoViaToken = autenticadoViaToken;
 	}
 	
 	public boolean possuiPermissao(Acao acao) {
