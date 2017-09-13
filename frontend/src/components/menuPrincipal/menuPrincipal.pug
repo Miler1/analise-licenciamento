@@ -1,7 +1,7 @@
 nav
 	ul.menu-principal
-		li(ng-repeat="item in $ctrl.itens")
-			a.menu-principal__item(ng-click="$ctrl.irPara(item.url())", ng-if="item.visivel()", ng-class="{ 'menu-principal__item--selecionado' : item.estaSelecionado() }")
+		li(ng-repeat="item in $ctrl.itens", ng-if="item.visivel()")
+			a.menu-principal__item(ng-click="$ctrl.irPara(item.url())", ng-class="{ 'menu-principal__item--selecionado' : item.estaSelecionado() }")
 				i(ng-class="item.icone")
 				| {{item.titulo}}
 				span.badge.pull-right(ng-if="item.countItens")
