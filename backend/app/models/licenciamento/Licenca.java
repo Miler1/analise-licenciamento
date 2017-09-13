@@ -52,7 +52,8 @@ public class Licenca extends GenericModel {
 	
 	private static List groupByLicenca(LicencaBuilder licencaBuilder, FiltroLicenca filtro) {
 		
-		licencaBuilder.groupByNumeroProcesso()
+		licencaBuilder.groupByIdLicenca()
+		.groupByNumeroLicenca()
 		.groupByNumeroProcesso()
 		.groupByCpfCnpjEmpreendimento()
 		.groupByDenominacaoEmpreendimento()
@@ -78,7 +79,7 @@ public class Licenca extends GenericModel {
 				.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
 				.filtrarPorDenominacaoEmpreendimento(filtro.denominacaoEmpreendimento)
 				.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
-				.filtrarPorIdLicenca(filtro.idLicenca)
+				.filtrarPorIdTipoLicenca(filtro.idLicenca)
 				.filtrarPorPeriodoVencimento(filtro.periodoInicial, filtro.periodoFinal);
 	}
 	
@@ -89,7 +90,13 @@ public class Licenca extends GenericModel {
 	
 	public static Long countWithFilters(FiltroLicenca filtro) {
 		
-		LicencaBuilder licencaBuilder = commonFiltersLicenca(filtro);
+		LicencaBuilder licencaBuilder = commonFiltersLicenca(filtro)
+			.addProcessosAlias()
+			.addPessoaEmpreendimentoAlias()
+			.addEstadoEmpreendimentoAlias()
+			.addMunicipioEmpreendimentoAlias()
+			.addTipoLicencaAlias()				
+			.count();
 			
 		Object qtdeTotalItens = licencaBuilder.unique();
 		
@@ -118,7 +125,13 @@ public class Licenca extends GenericModel {
 	
 	public static Long countWithFilter(FiltroLicenca filtro) {
 		
-		LicencaBuilder licencaBuilder = commonFilterLicenca(filtro.pesquisa);
+		LicencaBuilder licencaBuilder = commonFilterLicenca(filtro.pesquisa)
+			.addProcessosAlias()
+			.addPessoaEmpreendimentoAlias()
+			.addEstadoEmpreendimentoAlias()
+			.addMunicipioEmpreendimentoAlias()
+			.addTipoLicencaAlias()
+			.count();
 			
 		Object qtdeTotalItens = licencaBuilder.unique();
 		

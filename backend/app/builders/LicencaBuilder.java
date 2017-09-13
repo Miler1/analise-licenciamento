@@ -171,8 +171,10 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 	}
 	
 	public LicencaBuilder groupByLicenca(){
-				
-		addProjection(Projections.groupProperty("sigla").as("licenca"));
+		
+		addTipoLicencaAlias();
+		
+		addProjection(Projections.groupProperty(TIPO_LICENCA_ALIAS+".sigla").as("tipoLicenca"));
 		
 		return this;
 	}
@@ -190,6 +192,8 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 	public LicencaBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
 		if (StringUtils.isNotEmpty(numeroProcesso)) {
+			
+			addCaracterizacaoAlias();
 			
 			addRestricton(Restrictions.ilike(PROCESSOS_ALIAS+".numero", numeroProcesso, MatchMode.ANYWHERE));
 		}
@@ -228,7 +232,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		if (StringUtils.isNotEmpty(denominacaoEmpreendimento)) {
 			
 			addEmpreendimentoAlias();
-			addRestricton(Restrictions.ilike(EMPREENDIMENTO_ALIAS+".numero", denominacaoEmpreendimento, MatchMode.ANYWHERE));
+			addRestricton(Restrictions.ilike(EMPREENDIMENTO_ALIAS+".denominacao", denominacaoEmpreendimento, MatchMode.ANYWHERE));
 		}
 		
 		return this;
@@ -256,11 +260,11 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}	
 		
-	public LicencaBuilder filtrarPorIdLicenca(Long idLicenca) {
+	public LicencaBuilder filtrarPorIdTipoLicenca(Long idTipoLicenca) {
 		
-		if (idLicenca != null) {
+		if (idTipoLicenca != null) {
 			
-			addRestricton(Restrictions.eq(".id", idLicenca));
+			addRestricton(Restrictions.eq(TIPO_LICENCA_ALIAS+".id", idTipoLicenca));
 		}
 		
 		return this;

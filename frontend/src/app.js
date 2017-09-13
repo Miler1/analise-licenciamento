@@ -385,7 +385,9 @@ utils.services(licenciamento)
 	.add('gerenteService', services.GerenteService)
 	.add('aprovadorService', services.AprovadorService)
 	.add('analiseService', services.AnaliseService)
-	.add('coordenadorService', services.CoordenadorService);
+	.add('coordenadorService', services.CoordenadorService)
+	.add('licencaService', services.LicencaService)
+	.add('tipoLicencaService', services.TipoLicencaService);
 
 
 utils.filters(licenciamento)
@@ -416,4 +418,5 @@ licenciamento
 	.component('modalInformacoesLicenca', directives.ModalInformacoesLicenca)
 	.component('solicitarAjusteAprovador', directives.SoliciarAjusteAprovador)
 	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica)
-	.component('modalFichaImovel', directives.ModalFichaImovel);
+	.component('modalFichaImovel', directives.ModalFichaImovel)
+	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas);

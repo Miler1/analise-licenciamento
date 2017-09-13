@@ -97,11 +97,14 @@ GET		/documentos/{id}/download					Documentos.download
 GET		/setores/nivel/{nivel}						Setores.getSetoresByNivel
 GET		/setores/setoresPorTipo						Setores.getSetoresByTipo
 
-# Licencas
+# Licenças
 POST	/licencas/pesquisaRapida					Licencas.listWithFilter
 POST	/licencas/pesquisaRapida/count				Licencas.countWithFilter
 POST	/licencas/pesquisaAvancada					Licencas.listWithFilters
 POST	/licencas/pesquisaAvancada/count			Licencas.countWithFilters
+
+# Tipos Licenças
+GET		/tiposLicencas								TiposLicencas.list
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
