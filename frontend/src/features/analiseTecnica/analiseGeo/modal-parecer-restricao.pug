@@ -28,7 +28,7 @@ div#modal-parecer-restricao
 		form(name='formParecerRestricaoGeo')
 			.form-group.title-textarea
 				label.not-bold Parecer de restrição geo:
-				textarea.form-control(name='parecerText', ng-model='modalCtrl.parecer',ng-disabled='!(modalCtrl.nomePagina == "PARECER TÉCNICO")' ,required)
+				textarea.form-control(name='parecerText', ng-model='modalCtrl.parecer' , ng-disabled='!(modalCtrl.nomePagina == "PARECER TÉCNICO")' ,required)
 			+inputErrors('formParecerRestricaoGeo', 'parecerText', 'required')
 
 	div.modal-footer#footer-modal

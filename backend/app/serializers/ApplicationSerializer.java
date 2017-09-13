@@ -12,5 +12,6 @@ public class ApplicationSerializer {
 			"usuarioSessao.perfilSelecionado.id",
 			"usuarioSessao.perfilSelecionado.nome",
 			"usuarioSessao.setorSelecionado.sigla",
+			"usuarioSessao.autenticadoViaToken",
 			"configuracoes.baseURL");
 }

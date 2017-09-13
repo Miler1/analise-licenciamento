@@ -7,6 +7,7 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 	modalCtrl.empreendimentoGeo = empreendimentoGeo;
 	modalCtrl.imovel = imovel;
 	modalCtrl.nomePagina = $rootScope.tituloPagina;
+	modalCtrl.validaParecer = modalCtrl.validaParecer;
 
 	var map;
 
@@ -17,6 +18,8 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 			modalCtrl.codigoCamada = modalCtrl.restricao.feature.id;
 			modalCtrl.parecer = modalCtrl.restricao.feature.properties.parecer;
 		}
+
+		modalCtrl.validaParecer();
 
 	});
 
@@ -45,6 +48,13 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 
 	};
 
+	modalCtrl.validaParecer = function (){
+
+		if(modalCtrl.nomePagina != "PARECER TÉCNICO" && modalCtrl.parecer == null){
+			modalCtrl.parecer = "Não há nenhum parecer de Restrição Geo";
+		}
+	};
+
 	modalCtrl.cancelar = function() {
 		$uibModalInstance.dismiss('cancel');
 	};
@@ -57,6 +67,7 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 				attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 			})],
 			zoomControl: false,
+			doubleClickZoom: false,
 			scrollWheelZoom: false
 		});
 
