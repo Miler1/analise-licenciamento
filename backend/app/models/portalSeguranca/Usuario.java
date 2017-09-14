@@ -93,6 +93,9 @@ public class Usuario extends GenericModel  {
 	@Transient
 	public List<String> acoesPermitidas;
 	
+	@Transient
+	public Boolean autenticadoViaToken;
+	
 	public static List<Usuario> getUsuariosByPerfil(Integer idPerfil) {
 		
 		return Usuario.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p WHERE p.id = ?", idPerfil).fetch();

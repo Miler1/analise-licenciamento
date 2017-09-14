@@ -12,7 +12,7 @@
    -webkit-padding-start: 0;
    padding-top: @padding-menu-principal;
 
-   li:first-child {
+   li:first-child:not(:only-child) {
 
        a.menu-principal__item, .menu-principal__item--selecionado {
 
@@ -20,7 +20,7 @@
        }
    }
 
-   li:last-child {
+   li:last-child:not(:only-child) {
 
        a.menu-principal__item, .menu-principal__item--selecionado {
 
