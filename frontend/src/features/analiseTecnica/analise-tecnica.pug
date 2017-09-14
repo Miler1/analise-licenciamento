@@ -32,11 +32,11 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
         
-        button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
+        button.btn.btn-success.col-md-2.col-md-offset-5.col-sm-offset-3(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
             i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
             | Salvar
 
-        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.tabAtiva = 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 0")
+        button.btn.btn-success.col-md-2.col-md-offset-1.col-sm-offset-1.botaoProximaEtapa(ng-click="ctrl.tabAtiva = 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 0")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
             | Próxima etapa            
         
