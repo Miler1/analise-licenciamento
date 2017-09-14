@@ -35,7 +35,7 @@ public class DispensaLicenciamento extends GenericModel {
 
 	@OneToOne
 	@JoinColumn(name = "id_documento")
-	public Documento documento;
+	public DocumentoLicenciamento documento;
 
 	@ManyToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id", nullable = false)

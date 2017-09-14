@@ -15,11 +15,10 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th.col-md-1 Nº título
+							th.col-md-2 Nº título
 							th.col-md-2 Processo
 							th.col-md-2 CPF/CNPJ
-							th.col-md-1 Licenças
-							th.col-md-1 Empreendimento
+							th.col-md-3 Empreendimento
 							th.col-md-1 Município
 							th.col-md-1 Licenças
 							th.col-md-1.text-right Ações
@@ -39,10 +38,22 @@ div
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li
-												a(ng-click="consultarLicencas.visualizarlicenca(licenca)")
+											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO")
+												a(ng-click="consultarLicencas.visualizarProcesso(licenca)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar licenca
+													span Visualizar processo
+											li
+												a(ng-click="" ng-if="false")
+													i.glyphicon.glyphicon-eye-open
+													span Suspender licença
+											li
+												a(ng-click="" ng-if="false")
+													i.glyphicon.glyphicon-eye-open
+													span Cancelar licença
+											li
+												a(ng-click="consultarLicencas.downloadLicenca(licenca)")
+													i.glyphicon.glyphicon-download-alt
+													span Baixar licença
 
 				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -14,11 +15,13 @@ import org.hibernate.type.StringType;
 
 import models.Processo;
 import models.licenciamento.Licenca;
+import models.licenciamento.LicencaEmitida;
+import utils.IlikeNoAccents;
 
-public class LicencaBuilder extends CriteriaBuilder<Licenca> { 
+public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> { 
 	
 	private static final String CARACTERIZACAO_ALIAS = "carac";
-	private static final String PROCESSOS_ALIAS = "pro";
+	private static final String PROCESSO_ALIAS = "proc";
 	private static final String EMPREENDIMENTO_ALIAS = "emp";
 	private static final String PESSOA_EMPREENDIMENTO_ALIAS = "pes";
 	private static final String MUNICIPIO_EMPREENDIMENTO_ALIAS = "mun";
@@ -26,25 +29,15 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 	private static final String TIPO_LICENCA_ALIAS = "tlic";
 	private static final String ATIVIDADE_CARACTERIZACAO_ALIAS = "atc";
 	private static final String ATIVIDADE_ALIAS = "atv";
-	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
 
-	public LicencaBuilder addCaracterizacaoAlias() {
+	public LicencaEmitidaBuilder addCaracterizacaoAlias() {
 		
 		addAlias("caracterizacao", CARACTERIZACAO_ALIAS);
 		
 		return this;
 	}
 	
-	public LicencaBuilder addProcessosAlias() {
-		
-		addCaracterizacaoAlias();
-		
-		addAlias(CARACTERIZACAO_ALIAS+".processos", PROCESSOS_ALIAS);
-		
-		return this;
-	}
-	
-	public LicencaBuilder addEmpreendimentoAlias() {
+	public LicencaEmitidaBuilder addEmpreendimentoAlias() {
 		
 		addCaracterizacaoAlias();
 		
@@ -53,7 +46,16 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;		
 	}
 	
-	public LicencaBuilder addPessoaEmpreendimentoAlias() {
+	public LicencaEmitidaBuilder addProcessoAlias() {
+		
+		addCaracterizacaoAlias();
+		
+		addAlias(CARACTERIZACAO_ALIAS+".processos", PROCESSO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		
+		return this;
+	}	
+	
+	public LicencaEmitidaBuilder addPessoaEmpreendimentoAlias() {
 		
 		addEmpreendimentoAlias();
 		
@@ -62,7 +64,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder addMunicipioEmpreendimentoAlias() {
+	public LicencaEmitidaBuilder addMunicipioEmpreendimentoAlias() {
 		
 		addEmpreendimentoAlias();
 		
@@ -71,7 +73,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder addEstadoEmpreendimentoAlias() {
+	public LicencaEmitidaBuilder addEstadoEmpreendimentoAlias() {
 		
 		addMunicipioEmpreendimentoAlias();
 		
@@ -80,7 +82,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder addTipoLicencaAlias() {
+	public LicencaEmitidaBuilder addTipoLicencaAlias() {
 		
 		addCaracterizacaoAlias();
 		
@@ -89,7 +91,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}	
 	
-	public LicencaBuilder addAtividadeCaracterizacaoAlias() {
+	public LicencaEmitidaBuilder addAtividadeCaracterizacaoAlias() {
 		
 		addCaracterizacaoAlias();
 		
@@ -98,7 +100,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder addAtividadeAlias() {
+	public LicencaEmitidaBuilder addAtividadeAlias() {
 		
 		addAtividadeCaracterizacaoAlias();
 		
@@ -106,41 +108,47 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		
 		return this;
 	}
-	
-	
-	public LicencaBuilder addTipologiaAtividadeAlias() {
+
+	public LicencaEmitidaBuilder groupByOrigemLicenca(){
 		
-		addAtividadeAlias();
-		
-		addAlias(ATIVIDADE_ALIAS+".tipologia", TIPOLOGIA_ATIVIDADE_ALIAS);
+		addProjection(Projections.groupProperty("tipoDispensa").as("origemLicenca"));
 		
 		return this;
-	}
-
-	public LicencaBuilder groupByIdLicenca(){
+	}		
+	
+	public LicencaEmitidaBuilder groupByIdLicenca(){
 		
-		addProjection(Projections.groupProperty("id").as("idLincenca"));
+		addProjection(Projections.groupProperty("id").as("idLicenca"));
 		
 		return this;
 	}	
 	
-	public LicencaBuilder groupByNumeroLicenca(){
+	public LicencaEmitidaBuilder groupByNumeroLicenca(){
 		
 		addProjection(Projections.groupProperty("numero").as("numeroLincenca"));
 		
 		return this;
 	}
 	
-	public LicencaBuilder groupByNumeroProcesso(){
+	public LicencaEmitidaBuilder groupByNumeroProcesso(){
 		
-		addProcessosAlias();
+		addCaracterizacaoAlias();
 		
-		addProjection(Projections.groupProperty(PROCESSOS_ALIAS+".numero").as("numeroProcesso"));
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".numeroProcesso").as("numeroProcesso"));
+		
+		return this;
+	}
+
+	public LicencaEmitidaBuilder groupByIdProcesso(){
+		
+		addProcessoAlias();
+		
+		addProjection(Projections.groupProperty(PROCESSO_ALIAS+".id").as("idProcesso"));
 		
 		return this;
 	}
 	
-	public LicencaBuilder groupByCpfCnpjEmpreendimento(){
+	public LicencaEmitidaBuilder groupByCpfCnpjEmpreendimento(){
 		
 		addPessoaEmpreendimentoAlias();
 		
@@ -150,7 +158,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}	
 	
-	public LicencaBuilder groupByDenominacaoEmpreendimento(){
+	public LicencaEmitidaBuilder groupByDenominacaoEmpreendimento(){
 		
 		addEmpreendimentoAlias();
 		
@@ -159,7 +167,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder groupByMunicipioEmpreendimento(){
+	public LicencaEmitidaBuilder groupByMunicipioEmpreendimento(){
 		
 		addMunicipioEmpreendimentoAlias();
 		addProjection(Projections.groupProperty(MUNICIPIO_EMPREENDIMENTO_ALIAS+".nome").as("municipioEmpreendimento"));
@@ -170,7 +178,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder groupByLicenca(){
+	public LicencaEmitidaBuilder groupByLicenca(){
 		
 		addTipoLicencaAlias();
 		
@@ -178,45 +186,72 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		
 		return this;
 	}
-
-	public LicencaBuilder filtrarPorNumeroLicenca(String numeroLicenca) {
+	
+	public LicencaEmitidaBuilder groupByTipoCaracterizacao(){
+		
+		addCaracterizacaoAlias();
+		
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".tipo.id").as("tipoCaracterizacao"));
+		
+		return this;
+	}
+	
+	public LicencaEmitidaBuilder filtrarPorNumeroLicenca(String numeroLicenca) {
 		
 		if (StringUtils.isNotEmpty(numeroLicenca)) {
 			
-			addRestricton(Restrictions.ilike("numero", numeroLicenca, MatchMode.ANYWHERE));
+			addRestricton(getNumeroLicencaRestricao(numeroLicenca));
 		}
 		
 		return this;
 	}
 	
-	public LicencaBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
+	private Criterion getNumeroLicencaRestricao(String numeroLicenca) {
+		
+		return Restrictions.ilike("numero", numeroLicenca, MatchMode.ANYWHERE);
+	}
+	
+	public LicencaEmitidaBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
 		if (StringUtils.isNotEmpty(numeroProcesso)) {
 			
 			addCaracterizacaoAlias();
 			
-			addRestricton(Restrictions.ilike(PROCESSOS_ALIAS+".numero", numeroProcesso, MatchMode.ANYWHERE));
+			addRestricton(getNumeroProcessoRestricao(numeroProcesso));
 		}
 		
 		return this;
 	}
 	
-	public LicencaBuilder filtrarPorCpfCnpjEmpreendimento(String cpfCnpj) {
+	private Criterion getNumeroProcessoRestricao(String numeroProcesso) {
+		
+		return Restrictions.ilike(CARACTERIZACAO_ALIAS+".numeroProcesso", numeroProcesso, MatchMode.ANYWHERE);
+	}	
+	
+	public LicencaEmitidaBuilder filtrarPorCpfCnpjEmpreendimento(String cpfCnpj) {
 		
 		if (StringUtils.isNotEmpty(cpfCnpj)) {
 
 			addPessoaEmpreendimentoAlias();
 			
 			criteria.add(Restrictions.or(
-					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpfCnpj, MatchMode.START), 
-					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cpfCnpj, MatchMode.START)
+					getCpfEmpreendimentoRestricao(cpfCnpj), 
+					getCnpjEmpreendimentoRestricao(cpfCnpj)
 			));
 		}
 		
 		return this;
 	}
+
+	private Criterion getCnpjEmpreendimentoRestricao(String cnpj) {
+		return Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cnpj, MatchMode.START);
+	}
+
+	private Criterion getCpfEmpreendimentoRestricao(String cpf) {
+		return Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpf, MatchMode.START);
+	}
 	
-	public LicencaBuilder filtrarPorIdAtividade(Long idAtividade) {
+	public LicencaEmitidaBuilder filtrarPorIdAtividade(Long idAtividade) {
 		
 		if (idAtividade != null) {
 			
@@ -227,18 +262,22 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder filtrarPorDenominacaoEmpreendimento(String denominacaoEmpreendimento) {
+	public LicencaEmitidaBuilder filtrarPorDenominacaoEmpreendimento(String denominacaoEmpreendimento) {
 		
 		if (StringUtils.isNotEmpty(denominacaoEmpreendimento)) {
 			
 			addEmpreendimentoAlias();
-			addRestricton(Restrictions.ilike(EMPREENDIMENTO_ALIAS+".denominacao", denominacaoEmpreendimento, MatchMode.ANYWHERE));
+			addRestricton(getDenominacaoEmpreendimentoRestricao(denominacaoEmpreendimento));
 		}
 		
 		return this;
 	}
+
+	private Criterion getDenominacaoEmpreendimentoRestricao(String denominacaoEmpreendimento) {		
+		return new IlikeNoAccents(EMPREENDIMENTO_ALIAS+".denominacao", denominacaoEmpreendimento);
+	}
 	
-	public LicencaBuilder filtrarPorIdMunicipio(Long idMunicipio) {
+	public LicencaEmitidaBuilder filtrarPorIdMunicipio(Long idMunicipio) {
 		
 		if (idMunicipio != null) {
 			
@@ -248,19 +287,12 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		
 		return this;
 	}
-	
-	public LicencaBuilder filtrarPorMunicipio(String municipio) {
-		
-		if (StringUtils.isNotEmpty(municipio)) {
-			
-			addMunicipioEmpreendimentoAlias();
-			addRestricton(Restrictions.ilike(MUNICIPIO_EMPREENDIMENTO_ALIAS+".nome", municipio, MatchMode.ANYWHERE));
-		}
-		
-		return this;
+
+	private Criterion getMunicipioRestricao(String municipio) {
+		return new IlikeNoAccents(MUNICIPIO_EMPREENDIMENTO_ALIAS+".nome", municipio);
 	}	
 		
-	public LicencaBuilder filtrarPorIdTipoLicenca(Long idTipoLicenca) {
+	public LicencaEmitidaBuilder filtrarPorIdTipoLicenca(Long idTipoLicenca) {
 		
 		if (idTipoLicenca != null) {
 			
@@ -272,7 +304,7 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 	
 	//TODO Adicionar filtro por situação da licença
 	
-	public LicencaBuilder filtrarPorPeriodoVencimento(Date periodoInicial, Date periodoFinal) {
+	public LicencaEmitidaBuilder filtrarPorPeriodoVencimento(Date periodoInicial, Date periodoFinal) {
 		
 		if (periodoInicial != null) {
 			
@@ -290,14 +322,34 @@ public class LicencaBuilder extends CriteriaBuilder<Licenca> {
 		return this;
 	}
 	
-	public LicencaBuilder orderByNumeroProcesso() {
+	public LicencaEmitidaBuilder filtrarPorCamposPesquisaRapida(String pesquisa) {
+		
+		if (StringUtils.isNotEmpty(pesquisa)) {
+
+			addPessoaEmpreendimentoAlias();
+			addMunicipioEmpreendimentoAlias();
+			
+			criteria.add(Restrictions.or(
+				getNumeroLicencaRestricao(pesquisa),
+				getNumeroProcessoRestricao(pesquisa),
+				getCpfEmpreendimentoRestricao(pesquisa), 
+				getCnpjEmpreendimentoRestricao(pesquisa),
+				getDenominacaoEmpreendimentoRestricao(pesquisa),
+				getMunicipioRestricao(pesquisa)
+			));
+		}
+		
+		return this;
+	}	
+	
+	public LicencaEmitidaBuilder orderByNumeroProcesso() {
 		
 		addOrder(Order.asc("numeroProcesso"));
 		
 		return this;
 	}
 	
-	public LicencaBuilder count() {
+	public LicencaEmitidaBuilder count() {
 		
 		addProjection(Projections.countDistinct("id").as("total"));
 		

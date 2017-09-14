@@ -9,7 +9,7 @@ var FiltroLicencasEmitidas = {
 		isAprovadorLogado: '<'
 	},
 
-	controller: function(mensagem, licencaService, municipioService, atividadeService, 
+	controller: function(mensagem, licencaEmitidaService, municipioService, atividadeService, 
 		$scope, $rootScope, tipoLicencaService) {
 
 		var ctrl = this;
@@ -24,7 +24,7 @@ var FiltroLicencasEmitidas = {
 
 		this.pesquisaRapida = function(pagina){
 			
-			licencaService.getLicencasPesquisaRapida(ctrl.filtro)
+			licencaEmitidaService.getLicencasEmitidasPesquisaRapida(ctrl.filtro)
 				.then(function(response){
 
 					ctrl.atualizarLista(response.data);
@@ -40,7 +40,7 @@ var FiltroLicencasEmitidas = {
 						mensagem.error("Ocorreu um erro ao buscar a lista de licenças emitidas.");
 				});
 
-				licencaService.getLicencasPesquisaRapidaCount(ctrl.filtro)
+				licencaEmitidaService.getLicencasEmitidasPesquisaRapidaCount(ctrl.filtro)
 				.then(function(response){
 					 ctrl.atualizarPaginacao(response.data, ctrl.filtro.paginaAtual);
 				})
@@ -54,7 +54,7 @@ var FiltroLicencasEmitidas = {
 
 		this.pesquisaAvancada = function(pagina){
 
-			licencaService.getLicencasPesquisaAvancada(ctrl.filtro)
+			licencaEmitidaService.getLicencasEmitidasPesquisaAvancada(ctrl.filtro)
 				.then(function(response){
 
 					ctrl.atualizarLista(response.data);
@@ -70,7 +70,7 @@ var FiltroLicencasEmitidas = {
 						mensagem.error("Ocorreu um erro ao buscar a lista de licenças emitidas.");
 				});
 
-				licencaService.getLicencasPesquisaAvancadaCount(ctrl.filtro)
+				licencaEmitidaService.getLicencasEmitidasPesquisaAvancadaCount(ctrl.filtro)
 				.then(function(response){
 					 ctrl.atualizarPaginacao(response.data, ctrl.filtro.paginaAtual);
 				})

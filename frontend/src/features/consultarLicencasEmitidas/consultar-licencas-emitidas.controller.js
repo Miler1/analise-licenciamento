@@ -1,4 +1,4 @@
-var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, $uibModal, TiposSetores) {
+var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, licencaEmitidaService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR LICENCAS EMITIDAS';
 
@@ -8,9 +8,11 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.atualizarPaginacao = atualizarPaginacao;
 	consultarLicencas.onPaginaAlterada = onPaginaAlterada;
 	consultarLicencas.visualizarProcesso = visualizarProcesso;
+	consultarLicencas.downloadLicenca = downloadLicenca;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
+	consultarLicencas.TIPOS_CARACTERIZACOES = app.TIPOS_CARACTERIZACOES;
 
 	function atualizarListaLicencas(licencas) {
 
@@ -27,9 +29,20 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		$scope.$broadcast('pesquisarLicencas');
 	}
 
-	function visualizarProcesso(processo) {
+	function visualizarProcesso(licenca) {
 
-		return processoService.visualizarProcesso(processo);
+		return processoService.visualizarProcesso(licenca);
+	}
+
+	function downloadLicenca(licenca) {
+
+		if (licenca.origemLicenca === app.ORIGEM_LICENCA.DISPENSA) {
+
+			licencaEmitidaService.downloadDla(licenca.idLicenca);
+		} else {
+
+			licencaEmitidaService.downloadLicenca(licenca.idLicenca);
+		}
 	}
 };
 

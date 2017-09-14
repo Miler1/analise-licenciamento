@@ -390,7 +390,7 @@ utils.services(licenciamento)
 	.add('aprovadorService', services.AprovadorService)
 	.add('analiseService', services.AnaliseService)
 	.add('coordenadorService', services.CoordenadorService)
-	.add('licencaService', services.LicencaService)
+	.add('licencaEmitidaService', services.LicencaEmitidaService)
 	.add('tipoLicencaService', services.TipoLicencaService);
 
 

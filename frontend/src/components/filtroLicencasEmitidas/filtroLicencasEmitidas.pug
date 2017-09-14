@@ -5,13 +5,12 @@ div(uib-accordion class="accordion")
                 | Pesquisa rápida 
                 i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordion, 'glyphicon-chevron-right': !$ctrl.openedAccordion}")
 
-        .row
-            .col-md-12.input-group
-                input.form-control.margin-left-xs(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', placeholder='Pesquisar por número do título, processo, CPF/CNPJ, empreendimento e município', maxlength="15")
-                span.input-group-btn
-                    button.btn.btn-success.margin-right-xs(ng-click="$ctrl.pesquisar(1)", tabindex="0")
-                        span.glyphicon.glyphicon-search 
-                        | &nbsp;Pesquisar
+        .input-group
+            input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', enter="$ctrl.pesquisar(1)" placeholder='Pesquisar por número do título, processo, CPF/CNPJ, empreendimento e município', maxlength="15")
+            span.input-group-btn
+                button.btn.btn-success(ng-click="$ctrl.pesquisar(1)", tabindex="0")
+                    span.glyphicon.glyphicon-search 
+                    | &nbsp;Pesquisar
     div(uib-accordion-group class="panel-default" is-open="$ctrl.openedAccordionPesquisaAvancada")
         uib-accordion-heading(ng-click="$ctrl.openedAccordionPesquisaAvancada=!$ctrl.openedAccordionPesquisaAvancada")
             div(role="button")
