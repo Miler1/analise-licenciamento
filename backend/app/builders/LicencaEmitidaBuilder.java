@@ -200,7 +200,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		if (StringUtils.isNotEmpty(numeroLicenca)) {
 			
-			addRestricton(getNumeroLicencaRestricao(numeroLicenca));
+			addRestriction(getNumeroLicencaRestricao(numeroLicenca));
 		}
 		
 		return this;
@@ -217,7 +217,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 			
 			addCaracterizacaoAlias();
 			
-			addRestricton(getNumeroProcessoRestricao(numeroProcesso));
+			addRestriction(getNumeroProcessoRestricao(numeroProcesso));
 		}
 		
 		return this;
@@ -256,7 +256,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		if (idAtividade != null) {
 			
 			addAtividadeAlias();
-			addRestricton(Restrictions.eq(ATIVIDADE_ALIAS+".id", idAtividade));
+			addRestriction(Restrictions.eq(ATIVIDADE_ALIAS+".id", idAtividade));
 		}
 		
 		return this;
@@ -267,7 +267,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		if (StringUtils.isNotEmpty(denominacaoEmpreendimento)) {
 			
 			addEmpreendimentoAlias();
-			addRestricton(getDenominacaoEmpreendimentoRestricao(denominacaoEmpreendimento));
+			addRestriction(getDenominacaoEmpreendimentoRestricao(denominacaoEmpreendimento));
 		}
 		
 		return this;
@@ -282,7 +282,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		if (idMunicipio != null) {
 			
 			addMunicipioEmpreendimentoAlias();
-			addRestricton(Restrictions.eq(MUNICIPIO_EMPREENDIMENTO_ALIAS+".id", idMunicipio));
+			addRestriction(Restrictions.eq(MUNICIPIO_EMPREENDIMENTO_ALIAS+".id", idMunicipio));
 		}
 		
 		return this;
@@ -296,7 +296,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		if (idTipoLicenca != null) {
 			
-			addRestricton(Restrictions.eq(TIPO_LICENCA_ALIAS+".id", idTipoLicenca));
+			addRestriction(Restrictions.eq(TIPO_LICENCA_ALIAS+".id", idTipoLicenca));
 		}
 		
 		return this;
@@ -308,7 +308,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		if (periodoInicial != null) {
 			
-			addRestricton(Restrictions.ge("dataCadastro", periodoInicial));
+			addRestriction(Restrictions.ge("dataCadastro", periodoInicial));
 		}
 		
 		if (periodoFinal != null) {
@@ -316,7 +316,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 			//Somando um dia a mais no periodo final para resolver o problema da data com hora
 			periodoFinal = new Date(periodoFinal.getTime() + TimeUnit.DAYS.toMillis(1));
 			
-			addRestricton(Restrictions.le("dataValidade", periodoFinal));
+			addRestriction(Restrictions.le("dataValidade", periodoFinal));
 		}
 		
 		return this;
