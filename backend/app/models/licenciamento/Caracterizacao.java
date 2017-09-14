@@ -20,6 +20,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import models.Processo;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
 
@@ -86,6 +87,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	
 	@Column(name="quantidade_daes_vencidos")
 	public int quantidadeDaesVencidos;
+	
+	@ManyToMany(mappedBy="caracterizacoes")
+	public List<Processo> processos;	
 	
 	@Transient
 	public Dae dae;

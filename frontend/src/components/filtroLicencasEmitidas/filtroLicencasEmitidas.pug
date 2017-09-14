@@ -1,0 +1,98 @@
+div(uib-accordion class="accordion")
+    div(uib-accordion-group class="panel-default" is-open="$ctrl.openedAccordionPesquisaRapida")
+        uib-accordion-heading(ng-click="$ctrl.openedAccordionPesquisaRapida=!$ctrl.openedAccordionPesquisaRapida")
+            div(role="button")
+                | Pesquisa rápida 
+                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordion, 'glyphicon-chevron-right': !$ctrl.openedAccordion}")
+
+        .input-group
+            input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', enter="$ctrl.pesquisar(1)" placeholder='Pesquisar por número do título, processo, CPF/CNPJ, empreendimento e município', maxlength="15")
+            span.input-group-btn
+                button.btn.btn-success(ng-click="$ctrl.pesquisar(1)", tabindex="0")
+                    span.glyphicon.glyphicon-search 
+                    | &nbsp;Pesquisar
+    div(uib-accordion-group class="panel-default" is-open="$ctrl.openedAccordionPesquisaAvancada")
+        uib-accordion-heading(ng-click="$ctrl.openedAccordionPesquisaAvancada=!$ctrl.openedAccordionPesquisaAvancada")
+            div(role="button")
+                | Pesquisa avançada 
+                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordion, 'glyphicon-chevron-right': !$ctrl.openedAccordion}")
+
+        .row.form-group
+            .col-md-6
+                label.control-label Número do título:
+                input.form-control(type='text', name='numtitulo', ng-model='$ctrl.filtro.numeroLicenca', placeholder='Número do título', maxlength="15")
+
+            .col-md-6
+                label.control-label Número do processo:
+                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numeroProcesso', placeholder='Número do processo', maxlength="15")
+
+        .row.form-group
+            .col-md-6.col-sm-6
+                label.control-label CPF/CNPJ do empreendimento:
+                input.form-control(type='text', id="cpfCnpjEmpreendimento", name='cpfCnpjEmpreendimento', ng-model='$ctrl.filtro.cpfCnpjEmpreendimento', placeholder=' CPF/CNPJ do empreendimento', ng-model-options="{allowInvalid:true}", ui-br-cpfcnpj-mask)                            
+
+            .col-md-6.col-sm-6
+                label.control-label Atividade do empreendimento:
+                select.form-control(ng-model="$ctrl.filtro.idAtividadeEmpreendimento", name="selectAtividade",
+                                    ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades | orderBy:'nome' track by atividade.id")
+                    option(value="") Selecione a atividade do empreendimento
+
+        .row.form-group
+            .col-md-12
+                label.control-label Empreendimento:
+                input.form-control(type='text', name='empreendimento', ng-model='$ctrl.filtro.denominacaoEmpreendimento', placeholder='Denominação do empreendimento', maxlength="15")
+
+        .row.form-group
+            .col-md-6
+                label.control-label Município do empreendimento:
+                select.form-control(ng-model="$ctrl.filtro.idMunicipioEmpreendimento", name="selectMunicipio",
+                                    ng-options="municipio.id as municipio.nome for municipio in $ctrl.municipios track by municipio.id")
+                    option(value="") Selecione o município do empreendimento 
+
+            .col-md-6
+                label.control-label Tipo de licença:
+                select.form-control(ng-model="$ctrl.filtro.idLicenca", name="selectLicenca",
+                                    ng-options="tipoLicenca.id as tipoLicenca.nome for tipoLicenca in $ctrl.tiposLicencas | orderBy:'nome' track by tipoLicenca.id")
+                    option(value="") Selecione o tipo de licença
+        .row
+            .col-md-7.form-group
+                label.control-label Período:
+                .form-inline.periodo
+                    .input-group
+                        input.form-control(uib-datepicker-popup="dd/MM/yyyy",
+                                            required,
+                                            type='text',
+                                            name='dataNascimento',
+                                            ng-disabled=bloqueado,
+                                            ng-model="$ctrl.filtro.periodoInicial",
+                                            datepicker-options="{maxDate: $ctrl.maxDataInicio}"
+                                            show-button-bar="false",
+                                            is-open='isOpenPeriodoInicial',
+                                            ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial', 
+                                            mascara='data')
+                        span.input-group-btn(ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial')
+                            a.btn.btn-default(ng-disabled=bloqueado)
+                                i.glyphicon.glyphicon-calendar
+                    span a
+                    .input-group
+                        input.form-control(uib-datepicker-popup="dd/MM/yyyy",
+                                            required,
+                                            type='text',
+                                            name='dataNascimento',
+                                            ng-disabled=bloqueado,
+                                            ng-model="$ctrl.filtro.periodoFinal",
+                                            datepicker-options="{minDate: $ctrl.filtro.periodoInicial}"
+                                            show-button-bar="false",
+                                            is-open='isOpenPeriodoFinal',
+                                            ng-click='isOpenPeriodoFinal = !isOpenPeriodoFinal', 
+                                            mascara='data')
+                        span.input-group-btn(ng-click='isOpenPeriodoFinal = !isOpenPeriodoFinal')
+                            a.btn.btn-default(ng-disabled=bloqueado)
+                                i.glyphicon.glyphicon-calendar                        
+
+        div.pull-right
+            a.limpar-filtros.traditional(ng-click="$ctrl.limparFiltros()")
+                span Limpar filtros    
+            button.btn.btn-default.btn-success(ng-click="$ctrl.pesquisar(1)", tabindex="0")
+                span.glyphicon.glyphicon-search 
+                | &nbsp;Pesquisar            

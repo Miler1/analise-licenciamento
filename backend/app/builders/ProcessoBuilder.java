@@ -347,7 +347,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		if (StringUtils.isNotEmpty(numeroProcesso)) {
 			
-			addRestricton(Restrictions.ilike("numero", numeroProcesso, MatchMode.ANYWHERE));
+			addRestriction(Restrictions.ilike("numero", numeroProcesso, MatchMode.ANYWHERE));
 		}
 		
 		return this;
@@ -356,7 +356,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder filtrarAnaliseJuridicaAtiva() {
 		
 		addAnaliseJuridicaAlias();
-		addRestricton(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".ativo", true));
+		addRestriction(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".ativo", true));
 		
 		return this;
 	}	
@@ -382,7 +382,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idMunicipio != null) {
 			
 			addMunicipioEmpreendimentoAlias();
-			addRestricton(Restrictions.eq(MUNICIPIO_EMPREENDIMENTO_ALIAS+".id", idMunicipio));
+			addRestriction(Restrictions.eq(MUNICIPIO_EMPREENDIMENTO_ALIAS+".id", idMunicipio));
 		}
 		
 		return this;
@@ -393,7 +393,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idTipologia != null) {
 			
 			addTipologiaAtividadeAlias();
-			addRestricton(Restrictions.eq(TIPOLOGIA_ATIVIDADE_ALIAS+".id", idTipologia));
+			addRestriction(Restrictions.eq(TIPOLOGIA_ATIVIDADE_ALIAS+".id", idTipologia));
 		}
 		
 		return this;
@@ -404,7 +404,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idAtividade != null) {
 			
 			addAtividadeAlias();
-			addRestricton(Restrictions.eq(ATIVIDADE_ALIAS+".id", idAtividade));
+			addRestriction(Restrictions.eq(ATIVIDADE_ALIAS+".id", idAtividade));
 		}
 		
 		return this;
@@ -415,7 +415,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idCondicao != null) {
 			
 			addObjetoTramitavelAlias();
-			addRestricton(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao", idCondicao));
+			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao", idCondicao));
 		}
 		
 		return this;
@@ -426,7 +426,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idConsultorJuridico != null) {
 			
 			addConsultorJuridicoAlias();
-			addRestricton(Restrictions.eq(CONSULTOR_JURIDICO_ALIAS+".usuario.id", idConsultorJuridico));
+			addRestriction(Restrictions.eq(CONSULTOR_JURIDICO_ALIAS+".usuario.id", idConsultorJuridico));
 		}
 		
 		return this;
@@ -437,7 +437,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idUsuarioValidacao != null) {
 			
 			addAnaliseJuridicaAlias();
-			addRestricton(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".usuarioValidacao.id", idUsuarioValidacao));
+			addRestriction(Restrictions.eq(ANALISE_JURIDICA_ALIAS+".usuarioValidacao.id", idUsuarioValidacao));
 		}
 		
 		return this;
@@ -447,7 +447,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		if (periodoInicial != null) {
 			
-			addRestricton(Restrictions.ge("dataCadastro", periodoInicial));
+			addRestriction(Restrictions.ge("dataCadastro", periodoInicial));
 		}
 		
 		if (periodoFinal != null) {
@@ -455,7 +455,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 			//Somando um dia a mais no periodo final para resolver o problema da data com hora
 			periodoFinal = new Date(periodoFinal.getTime() + TimeUnit.DAYS.toMillis(1));
 			
-			addRestricton(Restrictions.le("dataCadastro", periodoFinal));
+			addRestriction(Restrictions.le("dataCadastro", periodoFinal));
 		}
 		
 		return this;
@@ -466,7 +466,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idAnalistaTecnico != null) {
 			
 			addAnalistaTecnicoAlias(isLeftOuterJoin);
-			addRestricton(Restrictions.eq(ANALISTA_TECNICO_ALIAS+".usuario.id", idAnalistaTecnico));
+			addRestriction(Restrictions.eq(ANALISTA_TECNICO_ALIAS+".usuario.id", idAnalistaTecnico));
 		}
 		
 		return this;		
@@ -478,14 +478,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		if (isLeftOuterJoin) {
 			
-			addRestricton(Restrictions.or(
+			addRestriction(Restrictions.or(
 					Restrictions.isNull(ANALISE_TECNICA_ALIAS+".ativo"),
 					Restrictions.eq(ANALISE_TECNICA_ALIAS+".ativo", true)
 			));
 			
 		} else {
 			
-			addRestricton(Restrictions.eq(ANALISE_TECNICA_ALIAS+".ativo", true));
+			addRestriction(Restrictions.eq(ANALISE_TECNICA_ALIAS+".ativo", true));
 		}
 		
 		return this;		
@@ -496,8 +496,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idSetor != null) {
 			
 			addTipoCaracterizacaoAtividade();
-			addRestricton(Restrictions.eq(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idSetor));
-			addRestricton(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
+			addRestriction(Restrictions.eq(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idSetor));
+			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 		
 		return this;
@@ -509,7 +509,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idUsuarioValidacao != null) {
 			
 			addAnaliseTecnicaAlias(false);
-			addRestricton(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacao.id", idUsuarioValidacao));
+			addRestriction(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacao.id", idUsuarioValidacao));
 		}
 		
 		return this;
@@ -520,8 +520,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idsSetores != null && idsSetores.size() > 0) {
 			
 			addTipoCaracterizacaoAtividade();			
-			addRestricton(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idsSetores));
-			addRestricton(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
+			addRestriction(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idsSetores));
+			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 		
 		return this;
@@ -532,7 +532,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idUsuarioValidacaoGerente != null) {
 			
 			addAnaliseTecnicaAlias(false);
-			addRestricton(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacaoGerente.id", idUsuarioValidacaoGerente));
+			addRestriction(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacaoGerente.id", idUsuarioValidacaoGerente));
 		}
 		
 		return this;
@@ -543,7 +543,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idGerenteTecnico != null) {
 			
 			addGerenteTecnicoAlias();			
-			addRestricton(Restrictions.eq(GERENTE_TECNICO_ALIAS+".usuario.id", idGerenteTecnico));
+			addRestriction(Restrictions.eq(GERENTE_TECNICO_ALIAS+".usuario.id", idGerenteTecnico));
 		}
 		
 		return this;		

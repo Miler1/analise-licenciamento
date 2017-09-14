@@ -1,0 +1,62 @@
+include ../../layout/components/paginacao
+
+div
+	filtro-licencas-emitidas(paginacao="consultarLicencas.paginacao",
+		atualizar-lista="consultarLicencas.atualizarListaLicencas",
+		atualizar-paginacao="consultarLicencas.atualizarPaginacao",
+		pesquisar-ao-inicializar="true")
+
+	h4 Lista de licenças emitidas
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="consultarLicencas.licencas && consultarLicencas.licencas.length > 0")
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th.col-md-2 Nº título
+							th.col-md-2 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-3 Empreendimento
+							th.col-md-1 Município
+							th.col-md-1 Licenças
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="licenca in consultarLicencas.licencas")
+							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca | textoTruncado : 4:3}}
+							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numeroProcesso | textoTruncado : 4:3}}
+							td {{licenca.cpfEmpreendimento ? licenca.cpfEmpreendimento : licenca.cnpjEmpreendimento | brCpfCnpj}}
+							td {{licenca.denominacaoEmpreendimento}}
+							td {{licenca.municipioEmpreendimento}}/{{licenca.siglaEstadoEmpreendimento}}
+							td {{licenca.tipoLicenca}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO")
+												a(ng-click="consultarLicencas.visualizarProcesso(licenca)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar processo
+											li
+												a(ng-click="" ng-if="false")
+													i.glyphicon.glyphicon-eye-open
+													span Suspender licença
+											li
+												a(ng-click="" ng-if="false")
+													i.glyphicon.glyphicon-eye-open
+													span Cancelar licença
+											li
+												a(ng-click="consultarLicencas.downloadLicenca(licenca)")
+													i.glyphicon.glyphicon-download-alt
+													span Baixar licença
+
+				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
+
+		.row(ng-show="!consultarLicencas.licencas || consultarLicencas.licencas.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.

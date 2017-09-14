@@ -35,7 +35,7 @@ public class Licenca extends GenericModel {
 	
 	@OneToOne
 	@JoinColumn(name = "id_documento")
-	public Documento documento;
+	public DocumentoLicenciamento documento;
 	
 	public String numero;
 	

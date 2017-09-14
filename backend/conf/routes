@@ -97,6 +97,17 @@ GET		/documentos/{id}/download					Documentos.download
 GET		/setores/nivel/{nivel}						Setores.getSetoresByNivel
 GET		/setores/setoresPorTipo						Setores.getSetoresByTipo
 
+# Licenças
+POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter
+POST	/licencasEmitidas/pesquisaRapida/count		LicencasEmitidas.countWithFilter
+POST	/licencasEmitidas/pesquisaAvancada			LicencasEmitidas.listWithFilters
+POST	/licencasEmitidas/pesquisaAvancada/count	LicencasEmitidas.countWithFilters
+GET		/licencasEmitidas/{id}/downloadDla			LicencasEmitidas.downloadDla
+GET		/licencasEmitidas/{id}/download				LicencasEmitidas.downloadLicencas
+
+# Tipos Licenças
+GET		/tiposLicencas								TiposLicencas.list
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

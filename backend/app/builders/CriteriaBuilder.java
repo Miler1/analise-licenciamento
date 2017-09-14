@@ -100,7 +100,7 @@ public abstract class CriteriaBuilder<T> {
 		projectionList.add(property);
 	}
 	
-	protected void addRestricton(Criterion expression) {
+	protected void addRestriction(Criterion expression) {
 		
 		criteria.add(expression);
 	}
