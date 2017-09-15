@@ -55,8 +55,8 @@ div(uib-accordion class="accordion")
                                     ng-options="tipoLicenca.id as tipoLicenca.nome for tipoLicenca in $ctrl.tiposLicencas | orderBy:'nome' track by tipoLicenca.id")
                     option(value="") Selecione o tipo de licença
         .row
-            .col-md-7.form-group
-                label.control-label Período:
+            .col-md-6.form-group
+                label.control-label Data de Vencimento:
                 .form-inline.periodo
                     .input-group
                         input.form-control(uib-datepicker-popup="dd/MM/yyyy",
