@@ -1,5 +1,5 @@
 var AnimacaoLoader = function() {};
-
+var animacaoRodando;
 AnimacaoLoader.prototype.openPreloader = function(load){
 
 	if(!load.preloader) {
@@ -18,8 +18,9 @@ AnimacaoLoader.prototype.openPreloader = function(load){
 
 AnimacaoLoader.prototype.closePreloader = function(load){
 
-	$(load.elemento).parent().unblock();
-
+	if(animacaoRodando === false){
+		$(load.elemento).parent().unblock();
+	}
 	load.preloader.active(false);
 };
 
@@ -157,6 +158,7 @@ AnimacaoLoader.prototype.GSPreloader = function(config) {
 				element.style.visibility = 'visible';
 				TweenLite.set([element, box], {rotation:0});
 				animation.play(animationOffset);
+				animacaoRodando = true;
 			} else {
 				closingAnimation = new TimelineLite();
 				if (animation.time() < animationOffset + 0.3) {
@@ -168,6 +170,7 @@ AnimacaoLoader.prototype.GSPreloader = function(config) {
 				.to(box, 0.4, {opacity:0, scale:0.2, ease:Power2.easeIn, overwrite:false}, 0)
 				.call(function() { animation.pause(); closingAnimation = null; })
 				.set(element, {visibility:'hidden'});
+				animacaoRodando = false;
 			}
 		}
 		return this;
