@@ -26,11 +26,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 		.when("/", {
 			redirectTo: function(){
 
-				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR &&
-					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken){
-
-					return "/aguardando-assinatura";
-				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR) {
+				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR) {
 					return "/consultar-processo";
 				}
 
@@ -246,8 +242,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR && 
-					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR;
 			},
 			condicaoTramitacao: function(){
 

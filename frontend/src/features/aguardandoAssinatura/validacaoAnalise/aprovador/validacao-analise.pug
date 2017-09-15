@@ -20,7 +20,19 @@ div(ng-init="ctrl.init()")
                     include parecerTecnico/parecerTecnico
 
             uib-tab(index="3", heading="Validar pareceres")
-                solicitar-ajuste-aprovador(ng-if='ctrl.tabAtiva === 3', analise="ctrl.analise", analise-juridica="ctrl.analiseJuridica", analise-tecnica="ctrl.analiseTecnica")
+                div(ng-if='ctrl.tabAtiva === 3')
+                    div.botoes-validar-pareceres
+                        button.btn.btn-default(ng-click="ctrl.itemMenu = 0")
+                            i.glyphicon.glyphicon-ok.margin-right-xs
+                            | Pareceres Validados
+
+                        button.btn.btn-default(ng-click="ctrl.itemMenu = 1")
+                            i.glyphicon.glyphicon-repeat.margin-right-xs
+                            | Solicitar revisão do parecer
+
+                    hr
+                    div
+                        solicitar-ajuste-aprovador(ng-if='ctrl.itemMenu === 1', analise="ctrl.analise", analise-juridica="ctrl.analiseJuridica", analise-tecnica="ctrl.analiseTecnica")
 
 
         section.margin-bottom-xl.alone
