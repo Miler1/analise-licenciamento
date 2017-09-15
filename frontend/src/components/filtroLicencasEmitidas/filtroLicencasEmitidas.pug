@@ -3,7 +3,7 @@ div(uib-accordion class="accordion")
         uib-accordion-heading(ng-click="$ctrl.openedAccordionPesquisaRapida=!$ctrl.openedAccordionPesquisaRapida")
             div(role="button")
                 | Pesquisa rápida 
-                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordion, 'glyphicon-chevron-right': !$ctrl.openedAccordion}")
+                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordionPesquisaRapida, 'glyphicon-chevron-right': !$ctrl.openedAccordionPesquisaRapida}")
 
         .input-group
             input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', enter="$ctrl.pesquisar(1)" placeholder='Pesquisar por número do título, processo, CPF/CNPJ, empreendimento e município', maxlength="15")
@@ -15,7 +15,7 @@ div(uib-accordion class="accordion")
         uib-accordion-heading(ng-click="$ctrl.openedAccordionPesquisaAvancada=!$ctrl.openedAccordionPesquisaAvancada")
             div(role="button")
                 | Pesquisa avançada 
-                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordion, 'glyphicon-chevron-right': !$ctrl.openedAccordion}")
+                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordionPesquisaAvancada, 'glyphicon-chevron-right': !$ctrl.openedAccordionPesquisaAvancada}")
 
         .row.form-group
             .col-md-6
