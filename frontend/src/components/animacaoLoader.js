@@ -8,17 +8,14 @@ AnimacaoLoader.prototype.openPreloader = function(load){
 
 	//open the preloader
 	load.preloader.active(true);
-
 	var elemPreloader = load.elemento;
-
-	$(elemPreloader).parent().block({message: null});
-
+	$(elemPreloader).block({message: null});
 	return load;
 };
 
 AnimacaoLoader.prototype.closePreloader = function(load){
 
-	$(load.elemento).parent().unblock();
+	$(load.elemento).unblock();
 	load.preloader.active(false);
 };
 
@@ -170,18 +167,6 @@ AnimacaoLoader.prototype.GSPreloader = function(config) {
 				.set(element, {visibility:'hidden'});
 				// animacaoRodando = false;
 			}
-			// pai = $(element).parent();
-			// pai = (pai.get(0).offsetParent);
-			// if (isActive) {
-			// 	console.log("ativo");
-			// 	$(pai).block();
-			// } else if (animacaoRodando === false) {
-			// 	console.log("inativo");
-			// 	setTimeout(function(){
-			// 		$(pai).unblock();
-			// 	}, 5000);
-			// }
-
 		}
 		return this;
 	};
