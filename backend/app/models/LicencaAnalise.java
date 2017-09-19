@@ -1,12 +1,9 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,18 +13,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import exceptions.PermissaoNegadaException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
-import models.portalSeguranca.Perfil;
-import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
+import play.db.jpa.JPA;
 import utils.Identificavel;
 import utils.ListUtil;
 import utils.Mensagem;
@@ -248,5 +240,28 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			recomendacao.licencaAnalise = this;
 			recomendacao.save();			
 		}					
-	}	
+	}
+	
+	public static void emitirLicencas(List<LicencaAnalise> licencasAnalise) {
+		
+		List<LicencaAnalise> licencaAnalisesCopia = new ArrayList<>();
+		
+		for(LicencaAnalise licencaAnalise : licencasAnalise) {
+			
+			licencaAnalisesCopia.add(licencaAnalise.gerarCopia());
+			
+			licencaAnalise.save();
+			licencaAnalise.emitirLicenca();
+		}
+		
+		JPA.em().getTransaction().commit();
+		
+	}
+	
+	private void emitirLicenca() {
+		
+		Licenca licenca = new Licenca(this.caracterizacao);
+		licenca.gerar(this);
+		
+	}
 }

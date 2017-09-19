@@ -418,4 +418,5 @@ licenciamento
 	.component('solicitarAjusteAprovador', directives.SoliciarAjusteAprovador)
 	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica)
 	.component('modalFichaImovel', directives.ModalFichaImovel)
-	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas);
+	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas)
+	.component('tabelaLicencas', directives.TabelaLicencas);

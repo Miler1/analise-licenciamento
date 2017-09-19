@@ -56,34 +56,5 @@ section.margin-bottom-md
 		.col-md-12
 			p.empty-result Não existem arquivos anexados.
 
-	section
-
-		h5 Quadro de licenças
-
-		table.table.table-condensed
-
-			thead
-
-				tr
-					th
-					th Licença
-					th Porte e potencial poluidor
-					th Validade
-					th.text-right Ações
-
-			tbody
-
-				tr(ng-repeat="licencaAnalise in ctrl.analiseTecnica.licencasAnalise")
-
-					th
-						span(ng-class="{'icone-licenca-aprovada': licencaAnalise.emitir, 'icone-licenca-reprovada': !licencaAnalise.emitir}")
-					th {{licencaAnalise.caracterizacao.tipoLicenca.nome}}
-					th {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
-					th {{licencaAnalise.validade}} anos
-					td.text-right 
-						a.btn(ng-if="licencaAnalise.emitir", title="Visualizar licença", ng-click="ctrl.visualizarLicenca($index)")
-							i.glyphicon.glyphicon-eye-open
-
-		div
-			span.icone-licenca-aprovada.legenda licença aprovada
-			span.icone-licenca-reprovada.legenda licença não aprovada
+	tabela-licencas(licencas-analise="ctrl.analiseTecnica.licencasAnalise", is-visualizacao="true"
+		metodo-acoes="ctrl.visualizarLicenca")
