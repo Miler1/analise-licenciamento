@@ -40,9 +40,6 @@ Request.prototype._unBlock = function(url) {
 	
 	if (i === 0){
 		var elemPreloader = this.requests[0];
-		// var elemPreloader = _.find(this.requests, function(req) {
-		// 	return req.url === url;
-		// });
 
 		this.animacao.closePreloader(elemPreloader);
 
