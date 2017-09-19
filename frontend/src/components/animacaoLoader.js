@@ -1,5 +1,4 @@
 var AnimacaoLoader = function() {};
-
 AnimacaoLoader.prototype.openPreloader = function(load){
 
 	if(!load.preloader) {
@@ -8,18 +7,14 @@ AnimacaoLoader.prototype.openPreloader = function(load){
 
 	//open the preloader
 	load.preloader.active(true);
-
 	var elemPreloader = load.elemento;
-
-	$(elemPreloader).parent().block({message: null});
-
+	$(elemPreloader).block({message: null});
 	return load;
 };
 
 AnimacaoLoader.prototype.closePreloader = function(load){
 
-	$(load.elemento).parent().unblock();
-
+	$(load.elemento).unblock();
 	load.preloader.active(false);
 };
 
@@ -142,7 +137,6 @@ AnimacaoLoader.prototype.GSPreloader = function(config) {
 
 	//call preloader.active(true) to open the preloader, preloader.active(false) to close it, or preloader.active() to get the current state.
 	this.active = function(show) {
-
 		if (!arguments.length) {
 			return isActive;
 		}

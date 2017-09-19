@@ -4,8 +4,8 @@ var Request = function($http, animacaoLoader) {
 
 	this.requests = [];
 	this.animacao = animacaoLoader;
-
 };
+var i = 0;
 
 Request.prototype._finally = function(http, url) {
 
@@ -19,28 +19,33 @@ Request.prototype._finally = function(http, url) {
 
 Request.prototype._block = function(requestLoader) {
 
-	this.preloader = new this.animacao.GSPreloader({
-		parent: requestLoader.elemento,
-	});
-
-	requestLoader.preloader = this.preloader;
-
-	this.requests.unshift(requestLoader);
-
-	this.animacao.openPreloader(requestLoader);
-	
+	if (i === 0) {
+		
+		this.preloader = new this.animacao.GSPreloader({
+			parent: requestLoader.elemento,
+		});
+		
+		requestLoader.preloader = this.preloader;
+		
+		this.requests.unshift(requestLoader);
+		
+		this.animacao.openPreloader(requestLoader);
+	}
+	i++;
 };
 
 
 Request.prototype._unBlock = function(url) {
+	i--;
+	
+	if (i === 0){
+		var elemPreloader = this.requests[0];
 
-	var elemPreloader = _.find(this.requests, function(req) {
-		return req.url === url;
-	});
+		this.animacao.closePreloader(elemPreloader);
 
-	this.animacao.closePreloader(elemPreloader);
+		this.requests = _.pull(this.requests, elemPreloader);
+	}
 
-	this.requests = _.pull(this.requests, elemPreloader);
 
 };
 
