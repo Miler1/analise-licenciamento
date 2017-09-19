@@ -1,5 +1,4 @@
 var AnimacaoLoader = function() {};
-var animacaoRodando;
 AnimacaoLoader.prototype.openPreloader = function(load){
 
 	if(!load.preloader) {
@@ -138,7 +137,6 @@ AnimacaoLoader.prototype.GSPreloader = function(config) {
 
 	//call preloader.active(true) to open the preloader, preloader.active(false) to close it, or preloader.active() to get the current state.
 	this.active = function(show) {
-		// var pai;
 		if (!arguments.length) {
 			return isActive;
 		}
@@ -153,7 +151,6 @@ AnimacaoLoader.prototype.GSPreloader = function(config) {
 				element.style.visibility = 'visible';
 				TweenLite.set([element, box], {rotation:0});
 				animation.play(animationOffset);
-				// animacaoRodando = true;
 			} else {
 				closingAnimation = new TimelineLite();
 				if (animation.time() < animationOffset + 0.3) {
@@ -165,7 +162,6 @@ AnimacaoLoader.prototype.GSPreloader = function(config) {
 				.to(box, 0.4, {opacity:0, scale:0.2, ease:Power2.easeIn, overwrite:false}, 0)
 				.call(function() { animation.pause(); closingAnimation = null; })
 				.set(element, {visibility:'hidden'});
-				// animacaoRodando = false;
 			}
 		}
 		return this;
