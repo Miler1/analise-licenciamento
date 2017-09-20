@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
@@ -274,8 +275,14 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			for(Long idLicenca : idsLicencas) {
+				Licenca licenca = Licenca.findById(idLicenca);
+				licenca.delete();
+			}
+			
+			throw new AppException(Mensagem.ERRO_EMITIR_LICENCAS);
+			
 		}
 		
 	}
