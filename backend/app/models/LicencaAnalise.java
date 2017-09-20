@@ -11,12 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
+import models.licenciamento.LicenciamentoWebService;
+import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -58,6 +62,9 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	public List<Recomendacao> recomendacoes;	
 	
 	public Boolean emitir;
+	
+	@OneToOne(mappedBy="licencaAnalise")
+	public Licenca licenca;
 	
 	@Override
 	public LicencaAnalise save() {
@@ -222,7 +229,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			return;
 		}
 		
-		for(Condicionante condicionante : this.condicionantes) {			
+		for(Condicionante condicionante : this.condicionantes) {
 			
 			condicionante.licencaAnalise = this;
 			condicionante.save();			
@@ -242,9 +249,10 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}					
 	}
 	
-	public static void emitirLicencas(List<LicencaAnalise> licencasAnalise) {
+	public static void emitirLicencas(List<LicencaAnalise> licencasAnalise, Usuario usuarioExecutor) {
 		
 		List<LicencaAnalise> licencaAnalisesCopia = new ArrayList<>();
+		List<Long> idsLicencas = new ArrayList<>();
 		
 		for(LicencaAnalise licencaAnalise : licencasAnalise) {
 			
@@ -252,9 +260,23 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			
 			licencaAnalise.save();
 			licencaAnalise.emitirLicenca();
+			idsLicencas.add(licencaAnalise.licenca.id);
 		}
 		
 		JPA.em().getTransaction().commit();
+		
+		try {
+			
+			LicenciamentoWebService webService = new LicenciamentoWebService();
+			webService.gerarPDFLicencas(idsLicencas);
+			
+			Processo processo = licencasAnalise.get(0).analiseTecnica.analise.processo;
+			
+			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
