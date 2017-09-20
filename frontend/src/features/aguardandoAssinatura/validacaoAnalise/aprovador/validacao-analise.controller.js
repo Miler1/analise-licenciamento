@@ -146,7 +146,11 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
 
 		licencaService.emitirLicencas(validacaoAnaliseAprovador.analiseTecnica.licencasAnalise)
 			.then(function (response) {
-				
+				mensagem.success(response.data.texto);
+				$location.path('aguardando-assinatura/');
+			})
+			.catch(function(responde) {
+				mensagem.error(response.data.texto);
 			});
 
 	}

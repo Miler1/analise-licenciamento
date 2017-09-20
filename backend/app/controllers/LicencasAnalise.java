@@ -9,7 +9,7 @@ import utils.Mensagem;
 
 public class LicencasAnalise extends InternalController {
 
-    public static void emitirLicencaAnalise(List<LicencaAnalise> licencasAnalise) {
+    public static void emitirLicencaAnalise(LicencaAnalise... licencasAnalise) {
     	
     	UsuarioSessao usuarioSessao = getUsuarioSessao();
     	Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);

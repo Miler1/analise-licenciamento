@@ -67,6 +67,17 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@OneToOne(mappedBy="licencaAnalise")
 	public Licenca licenca;
 	
+	private static void commit() {
+		
+		if(JPA.isInsideTransaction()) {
+			
+			JPA.em().getTransaction().commit();
+			JPA.em().getTransaction().begin();
+			
+		}
+		
+	}
+	
 	@Override
 	public LicencaAnalise save() {
 		
@@ -195,7 +206,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		return this.id;
 	}
 	
-	public LicencaAnalise gerarCopia() {
+	public LicencaAnalise gerarCopia(Boolean copiarId) {
 		
 		LicencaAnalise copia = new LicencaAnalise();
 		copia.validade = this.validade;
@@ -203,6 +214,9 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		copia.caracterizacao = this.caracterizacao;
 		copia.observacao = this.observacao;
 		copia.emitir = this.emitir;
+		
+		if(copiarId)
+			copia.id = this.id;
 				
 		copia.condicionantes = new ArrayList<Condicionante>();
 		for(Condicionante condicionante : this.condicionantes) {
@@ -222,6 +236,10 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		return copia;
 		
+	}
+	
+	public LicencaAnalise gerarCopia() {
+		return gerarCopia(false);
 	}
 	
 	public void saveCondicionantes() {
@@ -250,36 +268,48 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}					
 	}
 	
-	public static void emitirLicencas(List<LicencaAnalise> licencasAnalise, Usuario usuarioExecutor) {
+	public static void emitirLicencas(LicencaAnalise[] licencasAnalise, Usuario usuarioExecutor) {
 		
 		List<LicencaAnalise> licencaAnalisesCopia = new ArrayList<>();
 		List<Long> idsLicencas = new ArrayList<>();
 		
-		for(LicencaAnalise licencaAnalise : licencasAnalise) {
+		for(LicencaAnalise licencaAnaliseUpdate : licencasAnalise) {
 			
-			licencaAnalisesCopia.add(licencaAnalise.gerarCopia());
+			LicencaAnalise licencaAAlterar = LicencaAnalise.findById(licencaAnaliseUpdate.id);
 			
-			licencaAnalise.save();
-			licencaAnalise.emitirLicenca();
-			idsLicencas.add(licencaAnalise.licenca.id);
+			licencaAnalisesCopia.add(licencaAAlterar.gerarCopia(true));
+			
+			licencaAAlterar.update(licencaAnaliseUpdate);
+			Licenca licencaGerada = licencaAAlterar.emitirLicenca();
+			idsLicencas.add(licencaGerada.id);
 		}
 		
-		JPA.em().getTransaction().commit();
+		commit();
 		
 		try {
 			
 			LicenciamentoWebService webService = new LicenciamentoWebService();
 			webService.gerarPDFLicencas(idsLicencas);
 			
-			Processo processo = licencasAnalise.get(0).analiseTecnica.analise.processo;
+			LicencaAnalise lAnalise = LicencaAnalise.findById(licencasAnalise[0].id);
+			Processo processo = lAnalise.analiseTecnica.analise.processo;
 			
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
 		} catch (Exception e) {
+
+			for(LicencaAnalise licencaAnalise : licencaAnalisesCopia) {
+				
+				LicencaAnalise licencaAAlterar = LicencaAnalise.findById(licencaAnalise.id);
+				licencaAAlterar.update(licencaAnalise);
+				
+			}
 			
 			for(Long idLicenca : idsLicencas) {
 				Licenca licenca = Licenca.findById(idLicenca);
 				licenca.delete();
 			}
+			
+			commit();
 			
 			throw new AppException(Mensagem.ERRO_EMITIR_LICENCAS);
 			
@@ -287,10 +317,11 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 	}
 	
-	private void emitirLicenca() {
+	private Licenca emitirLicenca() {
 		
 		Licenca licenca = new Licenca(this.caracterizacao);
 		licenca.gerar(this);
 		
+		return licenca;
 	}
 }

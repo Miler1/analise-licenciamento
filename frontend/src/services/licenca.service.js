@@ -3,7 +3,7 @@ var LicencaService = function(request, config) {
 	this.emitirLicencas = function(licencasAnalise) {
 
 		return request
-			.post(config.BASE_URL() + "/licencasAnalise/emitir", licencasAnalise);
+			.post(config.BASE_URL() + "licencasAnalise/emitir", licencasAnalise);
 	};
 };
 
