@@ -36,7 +36,7 @@ div(ng-init="ctrl.init()")
 					div(ng-if='ctrl.itemMenu === 0')
 						tabela-licencas(licencas-analise="ctrl.analiseTecnica.licencasAnalise", is-visualizacao="false", metodo-acoes="ctrl.alterarLicenca")
 
-						button.btn.btn-default.pull-right
+						button.btn.btn-default.pull-right(ng-click="ctrl.concluirAnalise()")
 							i.glyphicon.glyphicon-ok.margin-right-xs
 							| Concluir
 

@@ -1,6 +1,6 @@
 var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routeParams, $scope,
 	mensagem, $location, processoService, $uibModal, analiseService, analiseJuridicaService, 
-	analiseTecnicaService, documentoAnaliseService, documentoLicenciamentoService) {
+	analiseTecnicaService, documentoAnaliseService, documentoLicenciamentoService, licencaService) {
 
 	var validacaoAnaliseAprovador = this;
 
@@ -15,6 +15,7 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
 	validacaoAnaliseAprovador.downloadDocumentoValidado = downloadDocumentoValidado;
 	validacaoAnaliseAprovador.visualizarLicenca = visualizarLicenca;
 	validacaoAnaliseAprovador.alterarLicenca = alterarLicenca;
+	validacaoAnaliseAprovador.concluirAnalise = concluirAnalise;
 
 	function init() {
 
@@ -138,6 +139,15 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
 
 				validacaoAnaliseAprovador.analiseTecnica.licencasAnalise[indice] = result;
 			}, function(){});
+
+	}
+
+	function concluirAnalise() {
+
+		licencaService.emitirLicencas(validacaoAnaliseAprovador.analiseTecnica.licencasAnalise)
+			.then(function (response) {
+				
+			});
 
 	}
 
