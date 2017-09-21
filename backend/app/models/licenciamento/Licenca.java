@@ -1,5 +1,6 @@
 package models.licenciamento;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import models.Documento;
+import models.LicencaAnalise;
 import play.db.jpa.GenericModel;
 
 @Entity
@@ -41,4 +42,42 @@ public class Licenca extends GenericModel {
 	
 	@Column(name = "data_validade")
 	public Date dataValidade;
+	
+	@OneToOne
+	@JoinColumn(name="id_licenca_analise")
+	public LicencaAnalise licencaAnalise;
+
+	public Licenca(Caracterizacao caracterizacao) {
+		
+		this.caracterizacao = caracterizacao;
+		
+	}
+	
+	public void gerar(LicencaAnalise licencaAnalise) {
+		
+		this.dataCadastro = new Date();
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(this.dataCadastro);
+		
+		c.add(Calendar.YEAR, licencaAnalise.validade);
+		this.dataValidade = c.getTime();
+		this.licencaAnalise = licencaAnalise;
+		
+		this.save();
+		
+		this.gerarNumero();
+		
+		this.save();
+		
+	}
+	
+	private void gerarNumero() {
+		
+		if (this.id == null)
+			throw new IllegalStateException("Licença não salva.");
+		
+		this.numero = Calendar.getInstance().get(Calendar.YEAR) + "/" +
+				String.format("%06d", this.id);
+	}
 }

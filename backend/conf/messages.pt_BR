@@ -90,3 +90,9 @@ SETOR_OBRIGATORIO_ANALISE=Não existe setor vinculado ao perfil selecionado.
 # Aprovador
 #
 VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO=Validação do parecer das análises concluída com sucesso.
+
+#
+# Licenças
+#
+ERRO_EMITIR_LICENCAS=Erro ao emitir as licenças, contate a SEMAS ou tente novamente mais tarde.
+LICENCAS_EMITIDAS_SUCESSO=Licenças emitidas com sucesso! Para visualiza-las acesse a aba "Consultar licenças emitidas".

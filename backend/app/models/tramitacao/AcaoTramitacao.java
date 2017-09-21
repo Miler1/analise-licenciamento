@@ -38,6 +38,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_ANALISE_JURIDICA_APROVADOR = 28l;
 	public static final Long DEFERIR_ANALISE_JURIDICA_COORDENADOR_APROVADOR = 29l;
 	public static final Long SOLICITAR_AJUSTES_ANALISE_TECNICA_APROVADOR = 30l;
+	public static final Long EMITIR_LICENCA = 31l;
 	
 
 }
