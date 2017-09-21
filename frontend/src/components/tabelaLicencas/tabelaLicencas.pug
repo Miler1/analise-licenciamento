@@ -1,0 +1,33 @@
+section
+
+	h5 Quadro de licenças
+
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th
+				th Licença
+				th Porte e potencial poluidor
+				th Validade
+				th.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="licencaAnalise in $ctrl.licencasAnalise")
+
+				th
+					span(ng-class="{'icone-licenca-aprovada': licencaAnalise.emitir, 'icone-licenca-reprovada': !licencaAnalise.emitir}")
+				th {{licencaAnalise.caracterizacao.tipoLicenca.nome}}
+				th {{licencaAnalise.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{licencaAnalise.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+				th {{licencaAnalise.validade}} anos
+				td.text-right 
+					a.btn(ng-if="licencaAnalise.emitir && $ctrl.isVisualizacao", title="Visualizar licença", ng-click="$ctrl.metodoAcoes($index)")
+						i.glyphicon.glyphicon-eye-open
+					a.btn(ng-if="licencaAnalise.emitir && !$ctrl.isVisualizacao", title="Editar licença", ng-click="$ctrl.metodoAcoes($index)")
+						i.glyphicon.glyphicon-pencil
+
+	div
+		span.icone-licenca-aprovada.legenda licença aprovada
+		span.icone-licenca-reprovada.legenda licença não aprovada

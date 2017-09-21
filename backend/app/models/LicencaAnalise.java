@@ -1,12 +1,9 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,20 +11,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import exceptions.PermissaoNegadaException;
+import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
-import models.portalSeguranca.Perfil;
+import models.licenciamento.LicenciamentoWebService;
 import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
+import play.db.jpa.JPA;
 import utils.Identificavel;
 import utils.ListUtil;
 import utils.Mensagem;
@@ -66,6 +63,20 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	public List<Recomendacao> recomendacoes;	
 	
 	public Boolean emitir;
+	
+	@OneToOne(mappedBy="licencaAnalise")
+	public Licenca licenca;
+	
+	private static void commit() {
+		
+		if(JPA.isInsideTransaction()) {
+			
+			JPA.em().getTransaction().commit();
+			JPA.em().getTransaction().begin();
+			
+		}
+		
+	}
 	
 	@Override
 	public LicencaAnalise save() {
@@ -195,7 +206,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		return this.id;
 	}
 	
-	public LicencaAnalise gerarCopia() {
+	public LicencaAnalise gerarCopia(Boolean copiarId) {
 		
 		LicencaAnalise copia = new LicencaAnalise();
 		copia.validade = this.validade;
@@ -203,6 +214,9 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		copia.caracterizacao = this.caracterizacao;
 		copia.observacao = this.observacao;
 		copia.emitir = this.emitir;
+		
+		if(copiarId)
+			copia.id = this.id;
 				
 		copia.condicionantes = new ArrayList<Condicionante>();
 		for(Condicionante condicionante : this.condicionantes) {
@@ -224,13 +238,17 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 	}
 	
+	public LicencaAnalise gerarCopia() {
+		return gerarCopia(false);
+	}
+	
 	public void saveCondicionantes() {
 			
 		if(this.condicionantes == null) {
 			return;
 		}
 		
-		for(Condicionante condicionante : this.condicionantes) {			
+		for(Condicionante condicionante : this.condicionantes) {
 			
 			condicionante.licencaAnalise = this;
 			condicionante.save();			
@@ -248,5 +266,62 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			recomendacao.licencaAnalise = this;
 			recomendacao.save();			
 		}					
-	}	
+	}
+	
+	public static void emitirLicencas(LicencaAnalise[] licencasAnalise, Usuario usuarioExecutor) {
+		
+		List<LicencaAnalise> licencaAnalisesCopia = new ArrayList<>();
+		List<Long> idsLicencas = new ArrayList<>();
+		
+		for(LicencaAnalise licencaAnaliseUpdate : licencasAnalise) {
+			
+			LicencaAnalise licencaAAlterar = LicencaAnalise.findById(licencaAnaliseUpdate.id);
+			
+			licencaAnalisesCopia.add(licencaAAlterar.gerarCopia(true));
+			
+			licencaAAlterar.update(licencaAnaliseUpdate);
+			Licenca licencaGerada = licencaAAlterar.emitirLicenca();
+			idsLicencas.add(licencaGerada.id);
+		}
+		
+		commit();
+		
+		try {
+			
+			LicenciamentoWebService webService = new LicenciamentoWebService();
+			webService.gerarPDFLicencas(idsLicencas);
+			
+			LicencaAnalise lAnalise = LicencaAnalise.findById(licencasAnalise[0].id);
+			Processo processo = lAnalise.analiseTecnica.analise.processo;
+			
+			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
+		} catch (Exception e) {
+
+			for(LicencaAnalise licencaAnalise : licencaAnalisesCopia) {
+				
+				LicencaAnalise licencaAAlterar = LicencaAnalise.findById(licencaAnalise.id);
+				licencaAAlterar.update(licencaAnalise);
+				
+			}
+			
+			for(Long idLicenca : idsLicencas) {
+				Licenca licenca = Licenca.findById(idLicenca);
+				licenca.delete();
+			}
+			
+			commit();
+			
+			throw new AppException(Mensagem.ERRO_EMITIR_LICENCAS);
+			
+		}
+		
+	}
+	
+	private Licenca emitirLicenca() {
+		
+		Licenca licenca = new Licenca(this.caracterizacao);
+		licenca.gerar(this);
+		
+		return licenca;
+	}
 }

@@ -3,31 +3,48 @@ include ../../../../components/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
 div(ng-init="ctrl.init()")
-    +resumo-processo('ctrl.analise.processo','ctrl.exibirDadosProcesso()')
+	+resumo-processo('ctrl.analise.processo','ctrl.exibirDadosProcesso()')
 
-    section.margin-bottom-md
-        uib-tabset(active='ctrl.tabAtiva')
-            uib-tab(index="0", heading="Parecer Jurídico", select="ctrl.carregarDadosAnaliseJuridica()")
-                div(ng-if='ctrl.tabAtiva === 0')
-                    visualizar-analise-juridica(analise-juridica="ctrl.analiseJuridica", exibir-documentos-analisados="true")
+	section.margin-bottom-md
+		uib-tabset(active='ctrl.tabAtiva')
+			uib-tab(index="0", heading="Parecer Jurídico", select="ctrl.carregarDadosAnaliseJuridica()")
+				div(ng-if='ctrl.tabAtiva === 0')
+					visualizar-analise-juridica(analise-juridica="ctrl.analiseJuridica", exibir-documentos-analisados="true")
 
-            uib-tab(index="1", heading="Análise geo")
-                div(ng-if='ctrl.tabAtiva === 1')
-                    include ../../../analiseTecnica/analiseGeo/analise-geo
+			uib-tab(index="1", heading="Análise geo")
+				div(ng-if='ctrl.tabAtiva === 1')
+					include ../../../analiseTecnica/analiseGeo/analise-geo
 
-            uib-tab(index="2", heading="Parecer Técnico")
-                div(ng-if='ctrl.tabAtiva === 2')
-                    include parecerTecnico/parecerTecnico
+			uib-tab(index="2", heading="Parecer Técnico")
+				div(ng-if='ctrl.tabAtiva === 2')
+					include parecerTecnico/parecerTecnico
 
-            uib-tab(index="3", heading="Validar pareceres")
-                solicitar-ajuste-aprovador(ng-if='ctrl.tabAtiva === 3', analise="ctrl.analise", analise-juridica="ctrl.analiseJuridica", analise-tecnica="ctrl.analiseTecnica")
+			uib-tab(index="3", heading="Validar pareceres")
+				div(ng-if='ctrl.tabAtiva === 3')
+					div.botoes-validar-pareceres
+						button.btn.btn-default(ng-click="ctrl.itemMenu = 0", ng-class="{selected: ctrl.itemMenu === 0}")
+							i.glyphicon.glyphicon-ok.margin-right-xs
+							| Pareceres Validados
+
+						button.btn.btn-default(ng-click="ctrl.itemMenu = 1", ng-class="{selected: ctrl.itemMenu === 1}")
+							i.glyphicon.glyphicon-repeat.margin-right-xs
+							| Solicitar revisão do parecer
+
+					hr
+					div(ng-if='ctrl.itemMenu === 1')
+						solicitar-ajuste-aprovador(analise="ctrl.analise", analise-juridica="ctrl.analiseJuridica", analise-tecnica="ctrl.analiseTecnica")
+					div(ng-if='ctrl.itemMenu === 0')
+						tabela-licencas(licencas-analise="ctrl.analiseTecnica.licencasAnalise", is-visualizacao="false", metodo-acoes="ctrl.alterarLicenca")
+
+						button.btn.btn-default.pull-right(ng-click="ctrl.concluirAnalise()")
+							i.glyphicon.glyphicon-ok.margin-right-xs
+							| Concluir
+
+		section.margin-bottom-xl.alone
+
+			a.btn.pull-left(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva == 0")
+				|<< Etapa anterior
 
 
-        section.margin-bottom-xl.alone
-
-            a.btn.pull-left(ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1", ng-if="!ctrl.tabAtiva == 0")
-                |<< Etapa anterior
-
-
-            a.btn.pull-right(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
-                | >> Próxima Etapa
+			a.btn.pull-right(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="ctrl.tabAtiva != 3")
+				| >> Próxima Etapa

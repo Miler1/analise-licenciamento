@@ -37,5 +37,18 @@ public class LicenciamentoWebService {
 		}
 		
 	}
+	
+	public void gerarPDFLicencas(List<Long> idsLicencas) {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("idsLicencas", idsLicencas);
+		
+		HttpResponse response = new WebService().post(Configuracoes.URL_LICENCIAMENTO_GERAR_PDFS_LICENCA, params);
+		
+		if(!response.success()) {
+			throw new WebServiceException("Erro ao gerar os PDFs.");
+		}
+		
+	}
 
 }
