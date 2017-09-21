@@ -27,6 +27,8 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
+import models.licenciamento.Caracterizacao;
+import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
 import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
@@ -452,7 +454,12 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			
 			if (tipoResultadoAnalise.id == tipoResultadoAnalise.INDEFERIDO) {
 				
-				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_JURIDICO, usuarioExecutor);				
+				List<Long> idsCaracterizacoes = ListUtil.getIds(analise.processo.caracterizacoes);
+				
+				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
+				
+				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_JURIDICO, usuarioExecutor);
+				
 				return;
 			}
 			

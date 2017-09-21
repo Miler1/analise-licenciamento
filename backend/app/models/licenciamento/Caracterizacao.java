@@ -22,6 +22,8 @@ import javax.persistence.Transient;
 
 import models.Processo;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
+import play.db.jpa.JPABase;
 import utils.Identificavel;
 
 @Entity
@@ -114,5 +116,15 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		
 		return documentos;
 		
+	}
+	
+	public static void setStatusCaracterizacao(List<Long> idsCaracterizacoes, Long idNewStatusCaracterizacao) {
+		
+		StatusCaracterizacao newStatus = StatusCaracterizacao.findById(idNewStatusCaracterizacao);
+		
+		JPA.em().createQuery("UPDATE Caracterizacao SET status = :status WHERE id IN :idsCaracterizacoes")
+			.setParameter("status", newStatus)
+			.setParameter("idsCaracterizacoes", idsCaracterizacoes)
+			.executeUpdate();
 	}
 }
