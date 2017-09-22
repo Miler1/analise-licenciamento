@@ -314,7 +314,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
 			
 			LicencaAnalise lAnalise = LicencaAnalise.findById(licencasAnalise[0].id);
-			Processo processo = lAnalise.analiseTecnica.analise.processo;			
+			Processo processo = lAnalise.analiseTecnica.analise.processo;
 			
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
 		} catch (Exception e) {
