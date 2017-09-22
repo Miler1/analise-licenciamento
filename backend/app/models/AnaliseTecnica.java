@@ -196,6 +196,16 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
 	}	
 
+	public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {
+		for(int i = 0; i < licencas.size() ; i++ ) {
+			LicencaAnalise licencaVerificar = licencas.get(i);
+			if (licencaVerificar.emitir) {
+				return true;
+			}
+		}
+		throw new ValidacaoException(Mensagem.ERRO_NENHUMA_LICENCA_EMITIDA);
+	}
+	
 	private void iniciarLicencas() {
 		
 		List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();
@@ -369,7 +379,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		validarParecer();
 		validarAnaliseDocumentos();
 		validarResultado();						
-		
+		validarEmissaoLicencas(this.licencasAnalise);
 		this._save();
 				
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
