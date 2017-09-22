@@ -29,7 +29,6 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     function verificarEmissoes() {
         for (i = 0; i < ctrl.analiseTecnica.licencasAnalise.length ; i++){
             if (ctrl.analiseTecnica.licencasAnalise[i].emitir){
-                console.log(ctrl.analiseTecnica.licencasAnalise[i].emitir);
                 return true;
             }
         }
