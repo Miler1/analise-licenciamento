@@ -15,10 +15,11 @@ import javax.persistence.Table;
 
 import models.LicencaAnalise;
 import play.db.jpa.GenericModel;
+import utils.Identificavel;
 
 @Entity
 @Table(schema = "licenciamento", name = "licenca")
-public class Licenca extends GenericModel {
+public class Licenca extends GenericModel implements Identificavel {
 
 	private static final String SEQ = "licenciamento.licenca_id_seq";
 	
@@ -79,5 +80,11 @@ public class Licenca extends GenericModel {
 		
 		this.numero = Calendar.getInstance().get(Calendar.YEAR) + "/" +
 				String.format("%06d", this.id);
+	}
+
+	@Override
+	public Long getId() {
+		
+		return this.id;
 	}
 }

@@ -20,6 +20,7 @@ import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
+import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import play.data.validation.Required;
@@ -77,6 +78,15 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}
 		
 	}
+	
+	private static void rollbackTransaction() {
+		
+		if (JPA.isInsideTransaction()) {
+			
+			JPA.em().getTransaction().rollback();
+			JPA.em().getTransaction().begin();
+		}
+	}	
 	
 	@Override
 	public LicencaAnalise save() {
@@ -272,16 +282,25 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		List<LicencaAnalise> licencaAnalisesCopia = new ArrayList<>();
 		List<Long> idsLicencas = new ArrayList<>();
+		List<Long> idsCaracterizacoesDeferidas = new ArrayList<>();
+		List<Long> idsCaracterizacoesArquivadas = new ArrayList<>();
 		
 		for(LicencaAnalise licencaAnaliseUpdate : licencasAnalise) {
 			
 			LicencaAnalise licencaAAlterar = LicencaAnalise.findById(licencaAnaliseUpdate.id);
+			
+			if (!licencaAAlterar.emitir) {
+				idsCaracterizacoesArquivadas.add(licencaAAlterar.caracterizacao.id);
+				continue;
+			}
 			
 			licencaAnalisesCopia.add(licencaAAlterar.gerarCopia(true));
 			
 			licencaAAlterar.update(licencaAnaliseUpdate);
 			Licenca licencaGerada = licencaAAlterar.emitirLicenca();
 			idsLicencas.add(licencaGerada.id);
+			
+			idsCaracterizacoesDeferidas.add(licencaAAlterar.caracterizacao.id);
 		}
 		
 		commit();
@@ -291,11 +310,16 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			LicenciamentoWebService webService = new LicenciamentoWebService();
 			webService.gerarPDFLicencas(idsLicencas);
 			
+			Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
+			Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
+			
 			LicencaAnalise lAnalise = LicencaAnalise.findById(licencasAnalise[0].id);
-			Processo processo = lAnalise.analiseTecnica.analise.processo;
+			Processo processo = lAnalise.analiseTecnica.analise.processo;			
 			
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
 		} catch (Exception e) {
+			
+			rollbackTransaction();
 
 			for(LicencaAnalise licencaAnalise : licencaAnalisesCopia) {
 				
