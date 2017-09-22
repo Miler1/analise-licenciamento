@@ -26,6 +26,17 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
         
     };
 
+    function verificarEmissoes() {
+        for (i = 0; i < ctrl.analiseTecnica.licencasAnalise.length ; i++){
+            if (ctrl.analiseTecnica.licencasAnalise[i].emitir){
+                console.log(ctrl.analiseTecnica.licencasAnalise[i].emitir);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     function analiseValida() {
 
         ctrl.formularios.parecer.$setSubmitted();
@@ -84,7 +95,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     function concluir() {
 
         if(!analiseValida()) {
-
+ 
             mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
             '<ul>' +
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
@@ -92,6 +103,15 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
                 '<li>Para DEFERIDO, todos os documentos de validação técnica devem ter sido validados.</li>' + 
             '</ul>', { ttl: 10000 });
             return;            
+        }
+
+        if(!verificarEmissoes()){
+            mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
+            '<ul>' +
+                '<li>Para o status Deferido, ao menos uma licença deve ser emitida.</li>' + 
+                '<li>Se desejar indeferir o processo, marque a opção "Indeferido".</li>' + 
+            '</ul>', { ttl: 10000 });
+            return; 
         }
 
         ctrl.analiseTecnica.analise.processo.empreendimento = null;
