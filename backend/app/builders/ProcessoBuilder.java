@@ -33,6 +33,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ATIVIDADE_CNAE_ALIAS = "atvc";
 	private static final String TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS = "tca";
 	private static final String GERENTE_TECNICO_ALIAS = "gte";
+	private static final String DIA_ANALISE_ALIAS = "da";
 	
 	public ProcessoBuilder addEmpreendimentoAlias() {
 		
@@ -71,6 +72,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder addAnaliseAlias() {
 		
 		addAlias("analises", ANALISE_ALIAS);
+		
+		return this;
+	}
+	
+	public ProcessoBuilder addDiasAnaliseAlias() {
+		
+		addAnaliseAlias();
+		
+		addAlias(ANALISE_ALIAS+".diaAnalise", DIA_ANALISE_ALIAS);
 		
 		return this;
 	}
@@ -561,6 +571,30 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addOrder(Order.asc("dataVencimentoPrazoAnaliseTecnica"));
 		
 		return this;		
+	}
+	
+	public ProcessoBuilder groupByDiasAnalise(){
+		
+		addDiasAnaliseAlias();		
+		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdDiasAnalise").as("totalDiasAnalise"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder groupByDiasAnaliseTecnica(){
+		
+		addDiasAnaliseAlias();		
+		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdDiasAnaliseTecnica").as("diasAnaliseTecnica"));
+		
+		return this;
+	}
+	
+	public ProcessoBuilder groupByDiasAnaliseJuridica(){
+		
+		addDiasAnaliseAlias();		
+		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdDiasAnaliseJuridica").as("diasAnaliseJuridica"));
+		
+		return this;
 	}
 	
 	public ProcessoBuilder count() {
