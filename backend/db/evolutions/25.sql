@@ -1,7 +1,7 @@
 # --- !Ups
 
 CREATE TABLE analise.dia_analise(
-id INTEGER NOT NULL,
+id SERIAL NOT NULL,
 id_analise INTEGER NOT NULL,
 qtde_dias_analise INTEGER NOT NULL,
 qtde_dias_juridica INTEGER,
@@ -10,6 +10,7 @@ CONSTRAINT pk_dia_analise PRIMARY KEY(id),
 CONSTRAINT fk_da_analise FOREIGN KEY(id_analise) REFERENCES analise.analise(id)
 );
 GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.dia_analise TO licenciamento_pa;
+GRANT SELECT, USAGE ON SEQUENCE analise.dia_analise_id_seq TO licenciamento_pa;
 ALTER TABLE analise.dia_analise OWNER TO licenciamento_pa;
 
 COMMENT ON TABLE analise.dia_analise IS 'Entidade responsável por armazenar a contagem de dias da análise em cada etapa.';
