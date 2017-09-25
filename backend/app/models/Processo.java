@@ -319,6 +319,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByMunicipioEmpreendimento()
 			.groupByDataVencimentoPrazoAnalise()
 			.groupByIdAnalise()
+			.groupByDiasAnalise()
 			.groupByDataCadastroAnalise();
 									
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
