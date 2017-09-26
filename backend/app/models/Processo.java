@@ -319,7 +319,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByMunicipioEmpreendimento()
 			.groupByDataVencimentoPrazoAnalise()
 			.groupByIdAnalise()
-			.groupByDiasAnalise()
+			//.groupByDiasAnalise()
 			.groupByDataCadastroAnalise();
 									
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
@@ -345,7 +345,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDataFinalAnaliseJuridica()
 			.groupByDataVencimentoPrazoAnaliseJuridica()
 			.groupByRevisaoSolicitadaAnaliseJuridica()	
-			.groupByDiasAnaliseJuridica()
+		//	.groupByDiasAnaliseJuridica()
 			.orderByDataVencimentoPrazoAnaliseJuridica();
 	}
 	
@@ -361,7 +361,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDataVencimentoPrazoAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 			.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 			.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
-			.groupByDiasAnaliseTecnica()
+		//	.groupByDiasAnaliseTecnica()
 			.orderByDataVencimentoPrazoAnaliseTecnica();
 	}
 	
