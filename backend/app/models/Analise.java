@@ -62,10 +62,6 @@ public class Analise extends GenericModel {
 	@Transient 
 	public AnaliseTecnica analiseTecnica;
 	
-	
-	@OneToOne(mappedBy="analise")
-	public DiasAnalise diasAnalise;
-	
 	public Analise save() {
 		
 		Calendar c = Calendar.getInstance();
