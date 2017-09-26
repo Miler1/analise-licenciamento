@@ -80,7 +80,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		addAnaliseAlias();
 		
-		addAlias(ANALISE_ALIAS+".diaAnalise", DIA_ANALISE_ALIAS);
+		addAlias(ANALISE_ALIAS+".diasAnalise", DIA_ANALISE_ALIAS);
 		
 		return this;
 	}
@@ -576,7 +576,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder groupByDiasAnalise(){
 		
 		addDiasAnaliseAlias();		
-		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".diaAnalise.qtdDiasAnalise").as("totalDiasAnalise"));
+		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdeDiasAnalise").as("totalDiasAnalise"));
 		
 		return this;
 	}
@@ -584,7 +584,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder groupByDiasAnaliseTecnica(){
 		
 		addDiasAnaliseAlias();		
-		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".diaAnalise.qtdDiasAnaliseTecnica").as("diasAnaliseTecnica"));
+		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdeDiasTecnica").as("diasAnaliseTecnica"));
 		
 		return this;
 	}
@@ -592,7 +592,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder groupByDiasAnaliseJuridica(){
 		
 		addDiasAnaliseAlias();		
-		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".diaAnalise.qtdDiasAnaliseJuridica").as("diasAnaliseJuridica"));
+		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdeDiasJuridica").as("diasAnaliseJuridica"));
 		
 		return this;
 	}

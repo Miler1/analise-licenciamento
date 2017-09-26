@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -23,7 +24,7 @@ public class DiasAnalise extends GenericModel{
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;	
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="id_analise")
 	public Analise analise;
 	
