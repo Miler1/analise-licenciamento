@@ -13,7 +13,7 @@ public class ProcessamentoPrazos extends GenericJob {
 	public void executar() throws Exception {
 		
 		Logger.info("[INICIO-JOB] ::ProcessamentoPrazos:: [INICIO-JOB]");
-		
+		contarDiasAnalise();
 		Logger.info("[FIM-JOB] ::ProcessamentoPrazos:: [FIM-JOB]");
 		
 		
@@ -25,16 +25,16 @@ public class ProcessamentoPrazos extends GenericJob {
 		
 		for(Analise analise : analises) {
 			
-//			if(analise.diasAnalise == null) {
-//				DiasAnalise diasAnalise = new DiasAnalise(analise);
-//				analise.diasAnalise = diasAnalise;
-//			}
-//			
-//			if(analise.getAnaliseTecnica() != null) {
-//				analise.diasAnalise.qtdeDiasAnaliseTecnica += 1;
-//			} else {
-//				analise.diasAnalise.qtdeDiasAnaliseJuridica += 1;
-//			}
+			if(analise.diasAnalise == null) {
+				DiasAnalise diasAnalise = new DiasAnalise(analise);
+				analise.diasAnalise = diasAnalise;
+			}
+			
+			if(analise.getAnaliseTecnica() != null) {
+				analise.diasAnalise.qtdeDiasAnaliseTecnica += 1;
+			} else {
+				analise.diasAnalise.qtdeDiasAnaliseJuridica += 1;
+			}
 			
 			analise.save();
 			
