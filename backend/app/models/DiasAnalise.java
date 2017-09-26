@@ -10,9 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import play.db.jpa.GenericModel;
+
 @Entity
 @Table(schema="analise", name="dia_analise")
-public class DiasAnalise {
+public class DiasAnalise extends GenericModel{
 	
 	public static final String SEQ = "analise.dia_analise_id_seq";
 	
