@@ -575,7 +575,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	
 	public ProcessoBuilder groupByDiasAnalise(){
 		
-		addDiasAnaliseAlias();		
+		addDiasAnaliseAlias();
 		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdeDiasAnalise").as("totalDiasAnalise"));
 		
 		return this;
@@ -583,7 +583,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	
 	public ProcessoBuilder groupByDiasAnaliseTecnica(){
 		
-		addDiasAnaliseAlias();		
+		addDiasAnaliseAlias();
 		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdeDiasTecnica").as("diasAnaliseTecnica"));
 		
 		return this;
@@ -591,7 +591,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	
 	public ProcessoBuilder groupByDiasAnaliseJuridica(){
 		
-		addDiasAnaliseAlias();		
+		addDiasAnaliseAlias();
 		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdeDiasJuridica").as("diasAnaliseJuridica"));
 		
 		return this;
