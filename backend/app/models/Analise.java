@@ -114,4 +114,8 @@ public class Analise extends GenericModel {
 		
 		return analiseJuridica.analise;
 	}
+	
+	public static List<Analise> findAtivas() {
+		return Analise.find("byAtivo", true).fetch();
+	}
 }
