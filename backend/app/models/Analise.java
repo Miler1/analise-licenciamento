@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -60,14 +61,17 @@ public class Analise extends GenericModel {
 	
 	@Transient 
 	public AnaliseTecnica analiseTecnica;
-
+	
+	
+	@OneToOne(mappedBy="analise")
+	public DiasAnalise diasAnalise;
+	
 	public Analise save() {
 		
 		Calendar c = Calendar.getInstance();
 		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE);
 		this.dataVencimentoPrazo = c.getTime();
-		
 		return super.save();
 	}
 	
