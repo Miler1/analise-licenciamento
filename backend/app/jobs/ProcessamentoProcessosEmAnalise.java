@@ -41,36 +41,54 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 				
 				DiasAnalise diasAnalise = new DiasAnalise();
 	
-				if (analise.analiseTecnica.dataFim != null) {
+				if (analise.getAnaliseTecnica() != null) {
 					
-					diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFim);
-					diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-					diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+					if (analise.analiseTecnica.dataFim != null) {
 					
-				} else {
-					
-						
-					diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-					
-					
-					if(analise.analiseJuridica.dataFim != null) {
-						
+						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFim);
 						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-						
-						if(analise.analiseTecnica.dataFim != null) {
-							
-							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
-							
-						} else { 
-							
-							diasAnalise.qtdeDiasTecnica= CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
-						}
-						
+						diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+					
 					} else {
 						
-						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
+							
+						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+						
+						
+						if(analise.analiseJuridica.dataFim != null) {
+							
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
+							
+							if(analise.analiseTecnica.dataFim != null) {
+								
+								diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+								
+							} else { 
+								
+								diasAnalise.qtdeDiasTecnica= CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
+							}
+							
+						} else {
+							
+							if(analise.getAnaliseJuridica() != null) {
+							
+								if(analise.analiseJuridica.dataFim != null) {
+									
+									diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
+								} else {
+									
+									diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
+								}
+								
+								diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+							}
+							
+						}
 						
 					}
+				}else {
+					
+					diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
 					
 				}
 				
@@ -78,6 +96,8 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 				diasAnalise._save();
 			}
 		}
+				
+		
 		
 	}
 	
