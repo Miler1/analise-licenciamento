@@ -30,48 +30,53 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 	}
 	
 	public void recuperarProcessosEmAnalise() {
-	
-		List<Analise> analises = Analise.findAll();
 		
-		for(Analise analise : analises) {
+		List<DiasAnalise> dAnalise = DiasAnalise.findAll();
+		
+		if(dAnalise.isEmpty()) {
 			
-			DiasAnalise diasAnalise = new DiasAnalise();
-
-			if (analise.analiseTecnica.dataFim != null) {
+			List<Analise> analises = Analise.findAll();
+			
+			for(Analise analise : analises) {
 				
-				diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFim);
-				diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-				diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
-				
-			} else {
-				
+				DiasAnalise diasAnalise = new DiasAnalise();
+	
+				if (analise.analiseTecnica.dataFim != null) {
 					
-				diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-				
-				
-				if(analise.analiseJuridica.dataFim != null) {
-					
+					diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFim);
 					diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-					
-					if(analise.analiseTecnica.dataFim != null) {
-						
-						diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
-						
-					} else { 
-						
-						diasAnalise.qtdeDiasTecnica= CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
-					}
+					diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
 					
 				} else {
 					
-					diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
+						
+					diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+					
+					
+					if(analise.analiseJuridica.dataFim != null) {
+						
+						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
+						
+						if(analise.analiseTecnica.dataFim != null) {
+							
+							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+							
+						} else { 
+							
+							diasAnalise.qtdeDiasTecnica= CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
+						}
+						
+					} else {
+						
+						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
+						
+					}
 					
 				}
 				
+				diasAnalise.analise = analise;
+				diasAnalise._save();
 			}
-			
-			diasAnalise.analise = analise;
-			diasAnalise._save();
 		}
 		
 	}
