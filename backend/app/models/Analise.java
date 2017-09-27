@@ -60,7 +60,11 @@ public class Analise extends GenericModel {
 	public AnaliseJuridica analiseJuridica;
 	
 	@Transient 
-	public AnaliseTecnica analiseTecnica;
+	public AnaliseTecnica analiseTecnica;	
+	
+	@Transient
+	@OneToOne(mappedBy="analise")
+	public DiasAnalise diasAnalise;
 	
 	public Analise save() {
 		
@@ -68,6 +72,7 @@ public class Analise extends GenericModel {
 		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE);
 		this.dataVencimentoPrazo = c.getTime();
+		
 		return super.save();
 	}
 	

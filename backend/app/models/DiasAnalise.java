@@ -46,6 +46,7 @@ public class DiasAnalise extends GenericModel{
 			this.qtdeDiasAnalise = Configuracoes.PRAZO_ANALISE;
 			this.qtdeDiasJuridica = Configuracoes.PRAZO_ANALISE_JURIDICA;
 		}
+		
 	}
 
 }
