@@ -13,9 +13,10 @@ import models.Analise;
 import models.DiasAnalise;
 import play.Logger;
 import play.jobs.On;
+import play.jobs.OnApplicationStart;
 import utils.Configuracoes;
 
-@On("0 0/1 * 1/1 * ? *")
+@OnApplicationStart
 public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 	@Override
