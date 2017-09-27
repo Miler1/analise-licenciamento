@@ -173,7 +173,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
 		this.dataVencimentoPrazo = c.getTime();
-		this.analise.diasAnalise.qtdeDiasTecnica = Configuracoes.PRAZO_ANALISE_TECNICA;
+		
+		DiasAnalise diasAnalise = DiasAnalise.find("analise.id", this.analise.id).first();
+		diasAnalise.qtdeDiasTecnica = 1;
+
 			
 		this.ativo = true;
 		
