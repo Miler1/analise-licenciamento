@@ -1,11 +1,16 @@
 package jobs;
 
+
 import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.Period;
+import org.joda.time.Hours;
+import org.joda.time.LocalDate;
+import org.joda.time.Minutes;
+import org.joda.time.Seconds;
+import org.joda.time.chrono.GregorianChronology;
 
 import com.vividsolutions.jts.index.strtree.Interval;
 
@@ -49,13 +54,18 @@ public class ProcessamentoPrazos extends GenericJob {
 							if(analise.diasAnalise.qtdeDiasTecnica == null){
 								analise.diasAnalise.qtdeDiasTecnica = 0;
 							}
-							int verificaDiasCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
+							int verificaDiasTecnicosCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
+							int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
 							
-							if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasTecnica) {
+							if(verificaDiasTecnicosCorretos != verificaDiasAnalise.qtdeDiasTecnica) {
 								
 								analise.diasAnalise.qtdeDiasTecnica += 1;
 							}
 							
+							if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
+								
+								analise.diasAnalise.qtdeDiasAnalise += 1;
+							}
 							
 						}					
 						
@@ -73,25 +83,20 @@ public class ProcessamentoPrazos extends GenericJob {
 							if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasJuridica) {
 								
 								analise.diasAnalise.qtdeDiasJuridica += 1;
+								analise.diasAnalise.qtdeDiasAnalise += 1;
 							}
 							
 						}
 					}
 					
-					int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
-					
-					if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
-						
-						analise.diasAnalise.qtdeDiasAnalise += 1;
-					}
-					
 				
+				}else {
+					
 					DiasAnalise diasAnalise = new DiasAnalise(analise);
 					analise.diasAnalise = diasAnalise;
-				
 				}
-				analise.diasAnalise._save();
 				
+				analise.diasAnalise._save();
 			}
 		}
 		
@@ -99,10 +104,11 @@ public class ProcessamentoPrazos extends GenericJob {
 	
 	public int CalculaDiferencaDias(Date dataInicial, Date dataFinal) {
 		
-		DateTime dataInicio = new DateTime(dataInicial);
-		DateTime dataFim = new DateTime(dataFinal);
+		LocalDate dataInicio = new LocalDate(dataInicial.getTime());
+		LocalDate dataFim = new LocalDate(dataFinal.getTime());
 		
 		return Days.daysBetween(dataInicio, dataFim).getDays(); 
 	}
-
+	
+	
 }
