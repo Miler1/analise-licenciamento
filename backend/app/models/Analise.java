@@ -62,7 +62,7 @@ public class Analise extends GenericModel {
 	@Transient 
 	public AnaliseTecnica analiseTecnica;	
 	
-	@Transient
+	
 	@OneToOne(mappedBy="analise")
 	public DiasAnalise diasAnalise;
 	

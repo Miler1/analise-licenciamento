@@ -43,8 +43,8 @@ public class DiasAnalise extends GenericModel{
 		if(this.analise == null){
 			
 			this.analise = analise;
-			this.qtdeDiasAnalise = 1;
-			this.qtdeDiasJuridica = 1;
+			this.qtdeDiasAnalise = 0;
+			this.qtdeDiasJuridica = 0;
 		}
 		
 	}
