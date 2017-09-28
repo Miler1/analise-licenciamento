@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import org.joda.time.Period;
 
 import com.vividsolutions.jts.index.strtree.Interval;
@@ -96,8 +97,8 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 	
 	public int CalculaDiferencaDias(Date dataInicial, Date dataFinal) {
 		
-		DateTime dataInicio = new DateTime(dataInicial);
-		DateTime dataFim = new DateTime(dataFinal);
+		LocalDate dataInicio = new LocalDate(dataInicial.getTime());
+		LocalDate dataFim = new LocalDate(dataFinal.getTime());
 		
 		return Days.daysBetween(dataInicio, dataFim).getDays(); 
 	}
