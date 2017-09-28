@@ -16,7 +16,8 @@ import play.jobs.On;
 import play.jobs.OnApplicationStart;
 import utils.Configuracoes;
 
-@OnApplicationStart
+//@OnApplicationStart
+@On("0 0/1 * 1/1 * ? *")
 public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 	@Override
@@ -33,7 +34,7 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 		
 		List<DiasAnalise> dAnalise = DiasAnalise.findAll();
 		
-		if(dAnalise.isEmpty()) {
+		if(dAnalise.size() == 0) {
 			
 			List<Analise> analises = Analise.findAll();
 			
@@ -42,63 +43,53 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 				DiasAnalise diasAnalise = new DiasAnalise();
 	
 				if (analise.getAnaliseTecnica() != null) {
+				// se existe analise tecnica
 					
 					if (analise.analiseTecnica.dataFim != null) {
+					// se a analise tecnica acabou
 					
 						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFim);
 						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
 						diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
 					
 					} else {
-						
+					// se a analise tecnica nao acabou
 							
 						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-						
-						
-						if(analise.analiseJuridica.dataFim != null) {
+						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);							
+						diasAnalise.qtdeDiasTecnica= CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
 							
-							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-							
-							if(analise.analiseTecnica.dataFim != null) {
-								
-								diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
-								
-							} else { 
-								
-								diasAnalise.qtdeDiasTecnica= CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
-							}
-							
-						} else {
-							
-							if(analise.getAnaliseJuridica() != null) {
-							
-								if(analise.analiseJuridica.dataFim != null) {
-									
-									diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-								} else {
-									
-									diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
-								}
-								
-								diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-							}
-							
-						}
-						
 					}
-				}else {
+					
+					
+				} else {
+				// se nao existe analise tecnica 
 					
 					diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
 					
-				}
+					if(analise.getAnaliseJuridica() != null) {
+					// se existe analise juridica
+						
+						if(analise.analiseJuridica.dataFim != null) {
+						// se a analise juridica acabou
+							
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
+							
+						} else {
+						// se a analise juridica nao acabou
+							
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
+						}
 				
+					}
+					
+				}
+
 				diasAnalise.analise = analise;
 				diasAnalise._save();
 			}
 		}
-				
-		
-		
+
 	}
 	
 	public int CalculaDiferencaDias(Date dataInicial, Date dataFinal) {
