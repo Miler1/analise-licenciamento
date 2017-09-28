@@ -9,6 +9,7 @@ import org.hibernate.Session;
 
 import models.Analise;
 import models.AnaliseJuridica;
+import models.DiasAnalise;
 import models.Processo;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
@@ -57,6 +58,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			Analise analise = criarNovaAnalise(processo);
 			
 			criarNovaAnaliseJuridica(analise);
+			
+			DiasAnalise diasAnalise = new DiasAnalise(analise);
+			diasAnalise.save();
 			
 			deveTramitar = true;
 
