@@ -40,40 +40,69 @@ public class ProcessamentoPrazos extends GenericJob {
 				DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 				analise.diasAnalise = verificaDiasAnalise;
 				
-				if(verificaDiasAnalise == null) {
+				if(verificaDiasAnalise != null) {
 					
+					if(analise.getAnaliseTecnica() != null) {
+						
+						if(analise.analiseTecnica.dataFim == null) {
+							
+							if(analise.diasAnalise.qtdeDiasTecnica == null){
+								analise.diasAnalise.qtdeDiasTecnica = 0;
+							}
+							int verificaDiasCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
+							
+							if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasTecnica) {
+								
+								analise.diasAnalise.qtdeDiasTecnica += 1;
+							}
+							
+							
+						}					
+						
+						
+					} else if(analise.getAnaliseJuridica() != null) {
+						
+						if(analise.analiseJuridica.dataFim == null) {
+							
+							if(analise.diasAnalise.qtdeDiasJuridica == null){
+								analise.diasAnalise.qtdeDiasJuridica = 0;
+							}
+							
+							int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
+							
+							if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasJuridica) {
+								
+								analise.diasAnalise.qtdeDiasJuridica += 1;
+							}
+							
+						}
+					}
+					
+					int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
+					
+					if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
+						
+						analise.diasAnalise.qtdeDiasAnalise += 1;
+					}
+					
+				
 					DiasAnalise diasAnalise = new DiasAnalise(analise);
 					analise.diasAnalise = diasAnalise;
-					
-				} else {
-					//tem que verificar se a analise já terminou
-					analise.diasAnalise.qtdeDiasAnalise += 1;
-				}
 				
-				if(analise.getAnaliseTecnica() != null) {
-					
-					if(analise.diasAnalise.qtdeDiasTecnica == null){
-						analise.diasAnalise.qtdeDiasTecnica = 0;
-					}
-					
-					analise.diasAnalise.qtdeDiasTecnica += 1;
-					
-				} else {
-					
-					if(analise.getAnaliseJuridica() != null) {
-						
-						if(analise.diasAnalise.qtdeDiasJuridica == null){
-							analise.diasAnalise.qtdeDiasJuridica = 0;
-						}
-						analise.diasAnalise.qtdeDiasJuridica += 1;
-					}
 				}
-				
 				analise.diasAnalise._save();
 				
 			}
 		}
 		
+	}
+	
+	public int CalculaDiferencaDias(Date dataInicial, Date dataFinal) {
+		
+		DateTime dataInicio = new DateTime(dataInicial);
+		DateTime dataFim = new DateTime(dataFinal);
+		
+		return Days.daysBetween(dataInicio, dataFim).getDays(); 
 	}
 
 }
