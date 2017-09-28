@@ -15,7 +15,8 @@ import play.Logger;
 import play.jobs.On;
 import utils.Configuracoes;
 
-@On("cron.processamentoPrazos")
+//@On("cron.processamentoPrazos")
+@On("	0 0/1 * 1/1 * ? *")
 public class ProcessamentoPrazos extends GenericJob {
 
 	@Override
@@ -32,31 +33,45 @@ public class ProcessamentoPrazos extends GenericJob {
 		
 		List<Analise> analises = Analise.findAtivas();
 		
-		for(Analise analise : analises) {
+		if(!analises.isEmpty()) {
 			
-			DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
-			analise.diasAnalise = verificaDiasAnalise;
-			
-			if(verificaDiasAnalise == null) {
+			for(Analise analise : analises) {
 				
-				DiasAnalise diasAnalise = new DiasAnalise(analise);
-				analise.diasAnalise = diasAnalise;
+				DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
+				analise.diasAnalise = verificaDiasAnalise;
 				
-			} else {
+				if(verificaDiasAnalise == null) {
+					
+					DiasAnalise diasAnalise = new DiasAnalise(analise);
+					analise.diasAnalise = diasAnalise;
+					
+				} else {
+					//tem que verificar se a analise já terminou
+					analise.diasAnalise.qtdeDiasAnalise += 1;
+				}
 				
-				analise.diasAnalise.qtdeDiasAnalise += 1;
+				if(analise.getAnaliseTecnica() != null) {
+					
+					if(analise.diasAnalise.qtdeDiasTecnica == null){
+						analise.diasAnalise.qtdeDiasTecnica = 0;
+					}
+					
+					analise.diasAnalise.qtdeDiasTecnica += 1;
+					
+				} else {
+					
+					if(analise.getAnaliseJuridica() != null) {
+						
+						if(analise.diasAnalise.qtdeDiasJuridica == null){
+							analise.diasAnalise.qtdeDiasJuridica = 0;
+						}
+						analise.diasAnalise.qtdeDiasJuridica += 1;
+					}
+				}
+				
+				analise.diasAnalise._save();
+				
 			}
-			
-			if(analise.getAnaliseTecnica() != null) {
-				
-				analise.diasAnalise.qtdeDiasTecnica += 1;
-				
-			} else {
-				analise.diasAnalise.qtdeDiasJuridica += 1;
-			}
-			
-			analise.diasAnalise._save();
-			
 		}
 		
 	}
