@@ -65,7 +65,6 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 				} else {
 				// se nao existe analise tecnica 
 					
-					diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
 					
 					if(analise.getAnaliseJuridica() != null) {
 					// se existe analise juridica
@@ -75,11 +74,14 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 							
 							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
 							
+	
 						} else {
 						// se a analise juridica nao acabou
-							
+						
 							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
+		
 						}
+						diasAnalise.qtdeDiasAnalise = diasAnalise.qtdeDiasJuridica;
 				
 					}
 					
