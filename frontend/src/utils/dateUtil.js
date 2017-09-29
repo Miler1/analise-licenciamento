@@ -29,6 +29,12 @@ DateUtil = {
 		return this.calcularDiasRestantes(stringInicialDate)*-1;
 	},
 
+	getContaDiasRestantes: function(dias, prazo) {
+
+		var diasRestantes = prazo - dias ;
+		return diasRestantes >= 0 ? diasRestantes : Math.abs(diasRestantes) + ' dia(s) atraso';
+	},
+
 	getTodaysStringDate: function(){
 
 		return moment(new Date()).format('DD/MM/YYYY');
