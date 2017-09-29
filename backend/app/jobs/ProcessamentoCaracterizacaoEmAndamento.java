@@ -59,8 +59,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 			criarNovaAnaliseJuridica(analise);
 			
-			DiasAnalise diasAnalise = new DiasAnalise(analise);
-			diasAnalise.save();
+			criarNovoDiasAnalise(analise);
 			
 			deveTramitar = true;
 
@@ -122,6 +121,16 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analiseJuridica.save();
 		
 		return analiseJuridica;
+	}
+	
+	private DiasAnalise criarNovoDiasAnalise(Analise analise) {
+		
+		DiasAnalise diasAnalise = new DiasAnalise(analise);
+		analise.diasAnalise = diasAnalise;
+		
+		diasAnalise.save();
+		
+		return diasAnalise;
 	}
 
 }

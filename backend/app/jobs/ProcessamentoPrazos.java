@@ -96,7 +96,7 @@ public class ProcessamentoPrazos extends GenericJob {
 					analise.diasAnalise = diasAnalise;
 				}
 				
-				analise.diasAnalise._save();
+				analise.diasAnalise.save();
 			}
 		}
 		
