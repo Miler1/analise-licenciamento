@@ -16,6 +16,7 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService,ger
 	cxEntGerenteTecnico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE;
 	cxEntGerenteTecnico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntGerenteTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntGerenteTecnico.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntGerenteTecnico.dateUtil = app.utils.DateUtil;
 	cxEntGerenteTecnico.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
 	cxEntGerenteTecnico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);

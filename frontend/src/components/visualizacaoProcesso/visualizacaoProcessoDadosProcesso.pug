@@ -59,15 +59,15 @@
 							.col-xs-4.col-md-4.text-center
 								span Análise jurídica
 									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.isPrazoAnaliseVencido(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseJuridica.dataFim, modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseJuridica.dataVencimentoPrazo)}")
-										b {{modalVisualizacaoProcessoCtrl.getDiasAnaliseJuridica()}}
+										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica == null ? 0 : modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica}}
 							.col-xs-4.col-md-4.text-center
 								span Análise técnica
 									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.isPrazoAnaliseVencido(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.dataFim, modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.dataVencimentoPrazo)}")
-										b {{modalVisualizacaoProcessoCtrl.getDiasAnaliseTecnica()}}
+										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica == null ? 0 : modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica}}
 							.col-xs-4.col-md-4.text-center
 								span Análise total
 									div
-										b {{modalVisualizacaoProcessoCtrl.getAnaliseTotal()}}
+										b {{modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise== null ? 0 : modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise}}
 
 	div
 

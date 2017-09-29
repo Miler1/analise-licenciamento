@@ -20,6 +20,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 	cxEntCoordenadorTecnico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR;
 	cxEntCoordenadorTecnico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntCoordenadorTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntCoordenadorTecnico.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntCoordenadorTecnico.dateUtil = app.utils.DateUtil;
 	cxEntCoordenadorTecnico.selecionouUmGerente = false;
 
