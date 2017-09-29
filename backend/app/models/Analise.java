@@ -60,8 +60,7 @@ public class Analise extends GenericModel {
 	public AnaliseJuridica analiseJuridica;
 	
 	@Transient 
-	public AnaliseTecnica analiseTecnica;
-	
+	public AnaliseTecnica analiseTecnica;	
 	
 	@OneToOne(mappedBy="analise")
 	public DiasAnalise diasAnalise;
@@ -72,6 +71,7 @@ public class Analise extends GenericModel {
 		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE);
 		this.dataVencimentoPrazo = c.getTime();
+		
 		return super.save();
 	}
 	
@@ -117,5 +117,9 @@ public class Analise extends GenericModel {
 		AnaliseJuridica analiseJuridica = AnaliseJuridica.find("id = ? AND ativo = true", idAnaliseJuridica).first();
 		
 		return analiseJuridica.analise;
+	}
+	
+	public static List<Analise> findAtivas() {
+		return Analise.find("byAtivo", true).fetch();
 	}
 }

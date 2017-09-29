@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 
 @Entity
 @Table(schema="analise", name="dia_analise")
@@ -36,5 +37,19 @@ public class DiasAnalise extends GenericModel{
 	
 	@Column(name="qtde_dias_analise")
 	public Integer qtdeDiasAnalise;
-
+	
+	public DiasAnalise(Analise analise) {
+		
+		if(this.analise == null){
+			
+			this.analise = analise;
+			this.qtdeDiasAnalise = 0;
+			this.qtdeDiasJuridica = 0;
+		}
+		
+	}
+	
+	public DiasAnalise() {
+		
+	}
 }
