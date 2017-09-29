@@ -48,5 +48,8 @@ public class DiasAnalise extends GenericModel{
 		}
 		
 	}
-
+	
+	public DiasAnalise() {
+		
+	}
 }
