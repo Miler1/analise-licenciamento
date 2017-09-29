@@ -31,6 +31,10 @@ DateUtil = {
 
 	getContaDiasRestantes: function(dias, prazo) {
 
+		if(dias == null){
+			return ' - ';
+		}
+
 		var diasRestantes = prazo - dias ;
 		return diasRestantes >= 0 ? diasRestantes : Math.abs(diasRestantes) + ' dia(s) atraso';
 	},

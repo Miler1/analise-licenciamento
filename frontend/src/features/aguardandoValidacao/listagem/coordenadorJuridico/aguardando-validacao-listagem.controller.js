@@ -14,6 +14,7 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.disabledFields = _.concat($scope.aguardandoValidacaoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO, app.DISABLED_FILTER_FIELDS.GERENCIA);
