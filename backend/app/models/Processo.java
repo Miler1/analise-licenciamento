@@ -372,7 +372,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 		
-		processoBuilder.groupByIdAnalise();
+		processoBuilder.groupByIdAnalise()
+			.groupByDiasAprovador();
 	}
 
 	public static Long countWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {

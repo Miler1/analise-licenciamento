@@ -16,6 +16,7 @@ var AguardandoAssinaturaAprovadorListController = function($scope, config, $loca
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
+	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.dataAtual = Date.now();
 	listagem.disabledFields = [app.DISABLED_FILTER_FIELDS.SITUACAO, app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO];    

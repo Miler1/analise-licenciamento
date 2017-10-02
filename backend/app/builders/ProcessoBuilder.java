@@ -597,6 +597,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
+	public ProcessoBuilder groupByDiasAprovador(){
+		
+		addDiasAnaliseAlias();
+		addProjection(Projections.groupProperty(DIA_ANALISE_ALIAS+".qtdeDiasAprovador").as("diasAprovador"));
+		
+		return this;
+	}
+	
 	public ProcessoBuilder count() {
 		
 		addProjection(Projections.countDistinct("id").as("total"));

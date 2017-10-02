@@ -29,16 +29,16 @@ public class DiasAnalise extends GenericModel{
 	@JoinColumn(name="id_analise")
 	public Analise analise;
 	
-	@Column(name="qtde_dias_juridica")
+	@Column(name="quantidade_dias_juridica")
 	public Integer qtdeDiasJuridica;
 	
-	@Column(name="qtde_dias_tecnica")
+	@Column(name="quantidade_dias_tecnica")
 	public Integer qtdeDiasTecnica;
 	
-	@Column(name="qtde_dias_analise")
+	@Column(name="quantidade_dias_analise")
 	public Integer qtdeDiasAnalise;
 	
-	@Column(name="qtde_dias_aprovador")
+	@Column(name="quantidade_dias_aprovador")
 	public Integer qtdeDiasAprovador;
 	
 	public DiasAnalise(Analise analise) {
