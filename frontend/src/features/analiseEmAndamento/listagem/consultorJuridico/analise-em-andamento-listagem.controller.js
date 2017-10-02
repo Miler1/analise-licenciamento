@@ -14,6 +14,7 @@ var AnaliseEmAndamentoJuridicoListController = function($scope, config, $locatio
 	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 

@@ -38,6 +38,9 @@ public class DiasAnalise extends GenericModel{
 	@Column(name="qtde_dias_analise")
 	public Integer qtdeDiasAnalise;
 	
+	@Column(name="qtde_dias_aprovador")
+	public Integer qtdeDiasAprovador;
+	
 	public DiasAnalise(Analise analise) {
 		
 		if(this.analise == null){

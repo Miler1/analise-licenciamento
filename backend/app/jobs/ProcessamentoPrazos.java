@@ -66,7 +66,29 @@ public class ProcessamentoPrazos extends GenericJob {
 								analise.diasAnalise.qtdeDiasAnalise += 1;
 							}
 							
-						}					
+						} else {
+							
+							if(analise.analiseTecnica.dataFimValidacaoAprovador ==  null){
+								
+								if(analise.diasAnalise.qtdeDiasAprovador == null){
+									analise.diasAnalise.qtdeDiasAprovador = 0;
+								}
+								
+								int verificaDiasAprovadorCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataFim, new Date());
+								int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
+								
+								if(verificaDiasAprovadorCorretos != verificaDiasAnalise.qtdeDiasAprovador) {
+									
+									analise.diasAnalise.qtdeDiasAprovador += 1;
+								}
+								
+								if(verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
+									
+									analise.diasAnalise.qtdeDiasAnalise += 1;
+								}
+														
+							}
+						}
 						
 						
 					} else if(analise.getAnaliseJuridica() != null) {

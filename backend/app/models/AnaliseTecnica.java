@@ -150,7 +150,11 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
-	public Usuario usuarioValidacaoAprovador;		
+	public Usuario usuarioValidacaoAprovador;
+ 	
+ 	@Column(name="data_fim_validacao_aprovador")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataFimValidacaoAprovador;
 		
 	private void validarParecer() {
 		

@@ -201,7 +201,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		addAnaliseTecnicaAlias(false);
 			
-			addAlias(ANALISE_TECNICA_ALIAS+".gerentesTecnicos", GERENTE_TECNICO_ALIAS);
+		addAlias(ANALISE_TECNICA_ALIAS+".gerentesTecnicos", GERENTE_TECNICO_ALIAS);
 		
 		return this;
 	}	
