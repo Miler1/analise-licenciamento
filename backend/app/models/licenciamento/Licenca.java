@@ -87,4 +87,8 @@ public class Licenca extends GenericModel implements Identificavel {
 		
 		return this.id;
 	}
+	
+	public LicencaAnalise getLicencaAnalise() {
+		return this.licencaAnalise;
+	}
 }

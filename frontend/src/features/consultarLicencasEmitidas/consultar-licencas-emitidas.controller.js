@@ -1,4 +1,4 @@
-var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, licencaEmitidaService, licencaService, $uibModal) {
+var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, licencaEmitidaService, licencaService, $uibModal, mensagem) {
 
 	$rootScope.tituloPagina = 'CONSULTAR LICENCAS EMITIDAS';
 
@@ -37,7 +37,19 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	function suspenderLicenca(licenca) {
 
-		return licencaService.suspenderLicenca(licenca);
+		var licencaAnalise = null;
+
+		licencaService.findLicencaAnalise(licenca.idLicenca)
+			.then(function(response) {
+			
+				licencaAnalise = response.data;
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+
+		return licencaService.suspenderLicenca(licencaAnalise);
 	}
 
 	function downloadLicenca(licenca) {

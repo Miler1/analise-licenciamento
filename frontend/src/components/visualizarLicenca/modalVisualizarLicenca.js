@@ -16,7 +16,7 @@ var ModalVisualizarLicenca = {
 		};
 
 	},
-	templateUrl: 'features/aguardandoAssinatura/validacaoAnalise/aprovador/parecerTecnico/modalVisualizarLicenca.html'
+	templateUrl: 'components/visualizarLicenca/modalVisualizarLicenca.html'
 };
 
 exports.directives.ModalVisualizarLicenca = ModalVisualizarLicenca;

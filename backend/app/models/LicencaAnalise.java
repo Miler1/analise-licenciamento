@@ -348,4 +348,5 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		return licenca;
 	}
+	
 }

@@ -6,11 +6,25 @@ var LicencaService = function(request, config, $uibModal) {
 			.post(config.BASE_URL() + "licencasAnalise/emitir", licencasAnalise);
 	};
 
-	this.suspenderLicenca = function(licenca) {
+    this.findLicencaAnalise = function(idLicenca) {
+		
+		return request
+			.get(config.BASE_URL() + "licencasAnalise/" + idLicenca);
+	};
 
+	this.suspenderLicenca = function(licencaAnalise) {
+		
 		var modalInstance = $uibModal.open({
-			templateUrl: 'components/modalResumoLicenca/modalResumoLicenca.html',
+
+			component: 'modalVisualizarLicenca',
 			size: 'lg',
+			resolve: {
+
+				dadosLicenca: function () {
+
+					return licencaAnalise;
+				}
+			}
 		});
 
 	};
