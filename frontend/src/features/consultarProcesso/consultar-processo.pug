@@ -36,14 +36,14 @@ div
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
 							
-							td(ng-class="{'error-message': consultarProcesso.isPrazoMinimoAvisoAnalise(processo, 'dataVencimentoPrazoAnaliseTecnica', 'dataConclusaoAnaliseTecnica','ANALISE')}")
-								| {{processo.totalDiasAnalise > consultarProcesso.PrazoAnalise.ANALISE ? consultarProcesso.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, consultarProcesso.PrazoAnalise.ANALISE) : processo.totalDiasAnalise}}
+							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise ,consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{consultarProcesso.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, consultarProcesso.PrazoAnalise.ANALISE)}}
 							
-							td(ng-class="{'error-message': consultarProcesso.isPrazoMinimoAvisoAnalise(processo, 'dataVencimentoPrazoAnaliseJuridica', 'dataConclusaoAnaliseJuridica','ANALISE_JURIDICA')}")
-								| {{processo.diasAnaliseJuridica > consultarProcesso.PrazoAnalise.ANALISE_JURIDICA ? consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseJuridica, consultarProcesso.PrazoAnalise.ANALISE_JURIDICA) : processo.diasAnaliseJuridica}}
+							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimo(processo.diasAnaliseJuridica ,consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
+								| {{consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseJuridica, consultarProcesso.PrazoAnalise.ANALISE_JURIDICA)}}
 							
-							td(ng-class="{'error-message': consultarProcesso.isPrazoMinimoAvisoAnalise(processo, 'dataVencimentoPrazoAnaliseTecnica', 'dataConclusaoAnaliseTecnica','ANALISE_TECNICA')}")
-								| {{processo.diasAnaliseTecnica > consultarProcesso.PrazoAnalise.ANALISE_TECNICA ? consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica, consultarProcesso.PrazoAnalise.ANALISE_TECNICA) : processo.diasAnaliseTecnica}}
+							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica, consultarProcesso.PrazoAnalise.ANALISE_TECNICA)}}
 							td
 								span.pull-right
 
