@@ -1,4 +1,4 @@
-var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, licencaEmitidaService) {
+var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, licencaEmitidaService, licencaService, $uibModal) {
 
 	$rootScope.tituloPagina = 'CONSULTAR LICENCAS EMITIDAS';
 
@@ -9,6 +9,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.onPaginaAlterada = onPaginaAlterada;
 	consultarLicencas.visualizarProcesso = visualizarProcesso;
 	consultarLicencas.downloadLicenca = downloadLicenca;
+	consultarLicencas.suspenderLicenca = suspenderLicenca;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -32,6 +33,11 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	function visualizarProcesso(licenca) {
 
 		return processoService.visualizarProcesso(licenca);
+	}
+
+	function suspenderLicenca(licenca) {
+
+		return licencaService.suspenderLicenca(licenca);
 	}
 
 	function downloadLicenca(licenca) {
