@@ -17,12 +17,17 @@
 
 	div
 		label PROCESSO:
+		p Numero:
+		p CPF/CNPJ:
+		p Empreendimento:
+		p Município: 
 
 	br
 	label.margin-right-xs Observações:
-	form
-		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes")
+	p {{licenca.observacoes}}
+	//- form
+	//- 	.form-group
+	//- 		textarea.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes")
 
 	hr
 
@@ -67,6 +72,6 @@
 .modal-footer
 
 	button.btn.btn-default.pull-left(type="button", ng-click="$ctrl.cancelar()") Cancelar
-	button.btn.btn-success.pull-right(type="button", ng-click="$ctrl.confirmarDadosLicenca()") Confirmar Dados da Licença
+	button.btn.btn-success.pull-right(type="button", ng-click="$ctrl.confirmarDadosLicenca()") Confirmar Suspensão da Licença
 
 
