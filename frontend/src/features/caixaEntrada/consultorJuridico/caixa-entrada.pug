@@ -37,9 +37,9 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
 								| {{cxEntConsultorJuridico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntConsultorJuridico.PrazoAnalise.ANALISE)}}
-							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseJuridica, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
+							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseJuridica, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
 								| {{cxEntConsultorJuridico.dateUtil.getContaDiasRestantes(processo.diasAnaliseJuridica,cxEntConsultorJuridico.PrazoAnalise.ANALISE_JURIDICA)}}
 							td
 								span.pull-right
