@@ -390,8 +390,17 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		validarAnaliseDocumentos();
 		validarResultado();						
 		validarEmissaoLicencas(this.licencasAnalise);
+		
+		if(this.analise.diasAnalise.qtdeDiasAprovador == null) {
+			
+			this.analise.diasAnalise.qtdeDiasAprovador = 0;
+			this.analise.diasAnalise.save();
+		}
+		
 		this._save();
-				
+		
+		
+		
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
 			if(this.usuarioValidacaoGerente != null)
