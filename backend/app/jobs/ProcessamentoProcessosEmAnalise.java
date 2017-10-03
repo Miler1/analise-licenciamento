@@ -46,10 +46,23 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 					if (analise.analiseTecnica.dataFim != null) {
 					// se a analise tecnica acabou
-
-						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFim);
-						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-						diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+						
+						if(analise.analiseTecnica.dataFimValidacaoAprovador != null) {
+							// se o aprovador já finalizou a analise
+							
+							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFimValidacaoAprovador);
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
+							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.analiseTecnica.dataFim, analise.analiseTecnica.dataFimValidacaoAprovador);
+							
+						} else {
+							
+							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
+							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.analiseTecnica.dataFim, new Date());
+							
+						}
 
 					} else {
 					// se a analise tecnica nao acabou
