@@ -6,7 +6,6 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
-import org.joda.time.Period;
 
 import com.vividsolutions.jts.index.strtree.Interval;
 
