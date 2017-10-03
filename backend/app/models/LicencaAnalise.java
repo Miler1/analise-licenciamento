@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -310,11 +311,16 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			LicenciamentoWebService webService = new LicenciamentoWebService();
 			webService.gerarPDFLicencas(idsLicencas);
 			
-			Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
-			Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
+			if(!idsCaracterizacoesDeferidas.isEmpty())
+				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
+			if(!idsCaracterizacoesArquivadas.isEmpty())
+				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
 			
 			LicencaAnalise lAnalise = LicencaAnalise.findById(licencasAnalise[0].id);
 			Processo processo = lAnalise.analiseTecnica.analise.processo;
+			
+			lAnalise.analiseTecnica.dataFimValidacaoAprovador = new Date();
+			lAnalise.analiseTecnica._save();
 			
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
 		} catch (Exception e) {

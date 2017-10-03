@@ -9,6 +9,7 @@ import org.hibernate.Session;
 
 import models.Analise;
 import models.AnaliseJuridica;
+import models.DiasAnalise;
 import models.Processo;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
@@ -57,6 +58,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			Analise analise = criarNovaAnalise(processo);
 			
 			criarNovaAnaliseJuridica(analise);
+			
+			criarNovoDiasAnalise(analise);
 			
 			deveTramitar = true;
 
@@ -118,6 +121,16 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analiseJuridica.save();
 		
 		return analiseJuridica;
+	}
+	
+	private DiasAnalise criarNovoDiasAnalise(Analise analise) {
+		
+		DiasAnalise diasAnalise = new DiasAnalise(analise);
+		analise.diasAnalise = diasAnalise;
+		
+		diasAnalise.save();
+		
+		return diasAnalise;
 	}
 
 }
