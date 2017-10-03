@@ -37,7 +37,7 @@ public class Suspensao extends GenericModel {
 	@JoinColumn(name="id_usuario_suspensao")
 	public Usuario usuario;
 	
-	@Column(name="qtde_dias_suspenso")
+	@Column(name="quantidade_dias_suspensao")
 	public Integer qtdeDiasSuspensao;
 	
 	@Column(name="data_suspensao")

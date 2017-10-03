@@ -8,6 +8,7 @@ import java.util.List;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import models.Suspensao;
+import models.licenciamento.Licenca;
 import play.Logger;
 import play.jobs.On;
 
@@ -38,7 +39,18 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 				System.out.println("SOMANDO NA DATA "+suspensao.qtdeDiasSuspensao+" days: "+dataFinalSuspenso.toString());
 				Date hoje =  new Date();
 				
-				if(dataFinalSuspenso ==  hoje) {
+				if(dataFinalSuspenso.after(hoje)) {	
+					
+					
+					Licenca novaLicenca = Licenca.findById(suspensao.licenca.id);
+					novaLicenca.dataValidade = dataFinalSuspenso;
+					//novaLicenca.
+					//mudar o ativo
+					//suspensao.ativo = false;
+					//salvar a nova data de validade
+					//suspensao.dataValidadeProrrogada = addDays(hoje, suspensao.qtdeDiasSuspensao;
+					
+					
 					
 					
 					

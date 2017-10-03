@@ -20,7 +20,7 @@ import play.Logger;
 import play.jobs.On;
 import utils.Configuracoes;
 
-@On("0 0/1 * 1/1 * ? *")
+@On("cron.processamentoPrazos")
 public class ProcessamentoPrazos extends GenericJob {
 
 	@Override
