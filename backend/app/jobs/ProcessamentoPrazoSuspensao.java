@@ -13,7 +13,7 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob{
 	public void executar() throws Exception{
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoPrazoSuspensao:: [INICIO-JOB]");
-		verificaPrazoSuspensao();
+		//verificaPrazoSuspensao();
 		Logger.info("[FIM-JOB] ::ProcessamentoPrazoSuspensao:: [FIM-JOB]");
 		
 
