@@ -41,7 +41,7 @@ DateUtil = {
 
 	verificaPrazoMinimo: function (dias, prazoMinimo) {
 
-		if(dias > prazoMinimo)
+		if(dias >= prazoMinimo)
 			return true;
 		else
 			return false;
