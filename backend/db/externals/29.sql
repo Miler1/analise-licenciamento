@@ -37,11 +37,15 @@ INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_fi
 
 SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 36, TRUE);
 
+UPDATE tramitacao.condicao SET nm_condicao = 'Licença emitida' WHERE id_condicao = 14;
+
 --[FIM] Alterações na Tramitação
 
 # --- !Downs
 
 DELETE FROM tramitacao.transicao WHERE id_transicao IN (34, 35, 36);
+
+UPDATE tramitacao.condicao SET nm_condicao = 'Licença emitida' WHERE id_condicao = 14;
 
 SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 33, TRUE);
 
@@ -60,3 +64,5 @@ DELETE FROM portal_seguranca.permissao WHERE codigo = 'CANCELAR_LICENCA_EMITIDA'
 DELETE FROM portal_seguranca.permissao_perfil WHERE (id_perfil, id_permissao) = ((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Aprovador'), (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'SUSPENDER_LICENCA_EMITIDA'));
 
 DELETE FROM portal_seguranca.permissao WHERE codigo = 'SUSPENDER_LICENCA_EMITIDA';
+
+UPDATE tramitacao.condicao SET nm_condicao = 'Licenca emitida' WHERE id_condicao = 14;
