@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import models.LicencaAnalise;
+import models.Suspensao;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
 
@@ -86,5 +87,9 @@ public class Licenca extends GenericModel implements Identificavel {
 	public Long getId() {
 		
 		return this.id;
+	}
+	
+	public Boolean isSuspensa() {
+		return Suspensao.find("byLicenca", this).first() != null ? true : false;
 	}
 }
