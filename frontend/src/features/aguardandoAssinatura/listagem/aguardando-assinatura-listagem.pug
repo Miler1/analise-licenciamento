@@ -33,7 +33,8 @@ div
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.licencas}}
-							td {{listagem.dateUtil.getContaDiasRestantes(processo.diasAprovador,listagem.PrazoAnalise.APROVADOR)}}
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAprovador ,listagem.PrazoMinimoAvisoAnalise.APROVADOR)}") 
+								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAprovador,listagem.PrazoAnalise.APROVADOR)}}
 							td
 								span.pull-right
 
