@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,5 +46,9 @@ public class Suspensao extends GenericModel {
 	
 	public Suspensao() {
 		
+	}
+	
+	public static List<Suspensao> findAtivas() {
+		return Suspensao.find("byAtivo", true).fetch();
 	}
 }
