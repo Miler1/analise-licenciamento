@@ -150,7 +150,11 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
-	public Usuario usuarioValidacaoAprovador;		
+	public Usuario usuarioValidacaoAprovador;
+ 	
+ 	@Column(name="data_fim_validacao_aprovador")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataFimValidacaoAprovador;
 		
 	private void validarParecer() {
 		
@@ -173,8 +177,14 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
 		this.dataVencimentoPrazo = c.getTime();
-			
+					
 		this.ativo = true;
+		
+		if(this.analise.diasAnalise.qtdeDiasTecnica == null) {
+			
+			this.analise.diasAnalise.qtdeDiasTecnica = 0;
+			this.analise.diasAnalise.save();
+		}
 		
 		return super.save();
 	}
@@ -380,8 +390,17 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		validarAnaliseDocumentos();
 		validarResultado();						
 		validarEmissaoLicencas(this.licencasAnalise);
+		
+		if(this.analise.diasAnalise.qtdeDiasAprovador == null) {
+			
+			this.analise.diasAnalise.qtdeDiasAprovador = 0;
+			this.analise.diasAnalise.save();
+		}
+		
 		this._save();
-				
+		
+		
+		
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
 			if(this.usuarioValidacaoGerente != null)
