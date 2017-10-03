@@ -21,17 +21,5 @@ public class LicencasAnalise extends InternalController {
     	renderMensagem(Mensagem.LICENCAS_EMITIDAS_SUCESSO);
         
     }
-    
-    public static void findByIdLicenca(Long idLicenca) {
-    	
-    	returnIfNull(idLicenca, "Long");
-    	
-    	Licenca licenca = Licenca.findById(idLicenca);
-    	
-    	LicencaAnalise lAnalise = licenca.getLicencaAnalise();
-    	
-    	renderJSON(lAnalise, LicencaAnaliseSerializer.list);
-    	
-    }
 
 }

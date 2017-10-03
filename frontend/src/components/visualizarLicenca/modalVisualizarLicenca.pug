@@ -1,70 +1,108 @@
+include ../../layout/components/inputErrors
+
 .modal-header
 
-    button.close(type='button', ng-click="$ctrl.fechar()")
-        span(aria-hidden='true') ×
-        span.sr-only Fechar
+	button.close(type='button', ng-click="$ctrl.fechar()")
+		span(aria-hidden='true') ×
+		span.sr-only Fechar
 
-    h4.modal-title Visualizar Licença
+	h4.modal-title(ng-if="!$ctrl.resolve.isSuspensao") Visualizar Licença
+	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Justificativa Suspensão da Licença
 
 .modal-body
 
-    label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
+	label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 
-    br
+	br
 
-    br
+	br
 
-    .form-group
-        label.margin-right-xs(for="selectValidade") Validade: 
-        label {{$ctrl.resolve.dadosLicenca.validade}} ano(s)
+	div(ng-if="$ctrl.resolve.isSuspensao")
+		label Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
+		br
+		label PROCESSO:
+			p Número: {{$ctrl.resolve.dadosLicenca.licencaAnalise.caracterizacao.numeroProcesso}}
+			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.responsaveis[0].pessoa.cpf}}
+			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
+			p Município: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.endereco.municipio.nome}}
 
-    label.margin-right-xs Observações:
-    form
-        .form-group
-            textarea.form-control.textarea--no-resize(rows="4", ng-if="$ctrl.resolve.dadosLicenca.observacao", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes", disabled)
-            .text-center.vazio(ng-if="!$ctrl.resolve.dadosLicenca.observacao") 
-                span Nenhuma observação adicionada
-    hr
-
-    label.margin-right-xs Condicionantes:
-    div.tabela
-
-        table.table.table-striped.table-condensed.no-margin
-            thead
-                tr
-                    th.col-md-10 Condicionante
-                    th.col-md-2.text-right Prazo(dias)
-
-            tbody
-                tr(ng-repeat="condicionante in $ctrl.resolve.dadosLicenca.condicionantes")
-                    td
-                        span {{condicionante.texto}}
-                    td.text-right
-                        span {{condicionante.prazo}}
+	.form-group
+		label.margin-right-xs(for="selectValidade") Validade: 
+		label {{$ctrl.resolve.dadosLicenca.licencaAnalise.validade}} ano(s)
 
 
-        .text-center.vazio
-            span(ng-if="$ctrl.resolve.dadosLicenca.condicionantes.length == 0") Nenhuma condicionante adicionada
-    hr
+	label.margin-right-xs Observações:
+	form
+		.form-group
+			textarea.form-control.textarea--no-resize(rows="4", ng-if="$ctrl.resolve.dadosLicenca.observacao", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes", disabled)
+			.text-center.vazio(ng-if="!$ctrl.resolve.dadosLicenca.observacao") 
+				span Nenhuma observação adicionada
+	hr
 
-    label.margin-right-xs Recomendações:
-    div.tabela
+	label.margin-right-xs Condicionantes:
+	div.tabela
 
-        table.table.table-striped.table-condensed.no-margin
-            thead
-                tr
-                    th.col-md-12 Recomendação
+		table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length != 0")
+			thead
+				tr
+					th.col-md-10 Condicionante
+					th.col-md-2.text-right Prazo(dias)
 
-            tbody
-                tr(ng-repeat="recomendacao in $ctrl.resolve.dadosLicenca.recomendacoes")
-                    td
-                        span {{recomendacao.texto}}
+			tbody
+				tr(ng-repeat="condicionante in $ctrl.resolve.dadosLicenca.condicionantes")
+					td
+						span {{condicionante.texto}}
+					td.text-right
+						span {{condicionante.prazo}}
 
-        .text-center.vazio
-            span(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length == 0") Nenhuma recomendação adicionada
+
+		.text-center.vazio
+			span(ng-if="$ctrl.resolve.dadosLicenca.condicionantes.length == 0") Nenhuma condicionante adicionada
+	hr
+
+	label.margin-right-xs Recomendações:
+	div.tabela
+
+		table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length != 0")
+			thead
+				tr
+					th.col-md-12 Recomendação
+
+			tbody
+				tr(ng-repeat="recomendacao in $ctrl.resolve.dadosLicenca.recomendacoes")
+					td
+						span {{recomendacao.texto}}
+
+		.text-center.vazio
+			span(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length == 0") Nenhuma recomendação adicionada
+	hr
+
+	label.margin-right-xs(ng-if="$ctrl.resolve.isSuspensao") Justificativa da suspensão da(s) licença(s):
+	div(ng-if="$ctrl.resolve.isSuspensao")
+		.row
+			form(name="formSuspensaoLicenca")
+				div.col-md-9.form-group
+					textarea.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.justificativa", name="justificativa", required)
+					+inputErrors('formSuspensaoLicenca', 'required')
+
+				div.col-md-3.form-group
+					label Prazo de suspensão da(s) licença(s)
+					div.col-sm-6
+						input.input-dias.form-control(id="{{$ctrl.prazo}}",type="number", name="{{$ctrl.prazo}}",
+							ng-model="$ctrl.resolve.dadosLicenca.prazoSuspensao", max="1900", required)
+					div.col-sm-6
+						span dias
+					+inputErrors('formSuspensaoLicenca', 'required', 'max')
+
+
 
 .modal-footer#footer-modal
 
-    button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
-        i.glyphicon.glyphicon-arrow-left
-        | &nbsp;Fechar
+	button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+		i.glyphicon.glyphicon-arrow-left
+		| &nbsp;Fechar
+
+	div(ng-if="$ctrl.resolve.isSuspensao")
+		button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca()")
+			i.glyphicon.glyphicon-ok
+			| &nbsp;Confirmar Suspensão da Licença

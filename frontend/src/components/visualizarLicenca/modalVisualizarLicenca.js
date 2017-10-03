@@ -15,6 +15,11 @@ var ModalVisualizarLicenca = {
 			ctrl.dismiss({$value: 'close'});
 		};
 
+		ctrl.suspenderLicenca = function(){
+			
+			ctrl.dismiss({$value: 'close'});
+		};
+
 	},
 	templateUrl: 'components/visualizarLicenca/modalVisualizarLicenca.html'
 };

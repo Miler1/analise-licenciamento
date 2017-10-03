@@ -37,19 +37,20 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	function suspenderLicenca(licenca) {
 
-		var licencaAnalise = null;
+		var licencaSuspender = null;
 
-		licencaService.findLicencaAnalise(licenca.idLicenca)
+		licencaService.findInfoLicenca(licenca.idLicenca)
 			.then(function(response) {
 			
-				licencaAnalise = response.data;
+				licencaSuspender = response.data;
+				return licencaService.suspenderLicenca(licencaSuspender);
 
-			}, function(error){
+
+			}, function(error) {
 
 				mensagem.error(error.data.texto);
 			});
 
-		return licencaService.suspenderLicenca(licencaAnalise);
 	}
 
 	function downloadLicenca(licenca) {

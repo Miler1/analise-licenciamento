@@ -105,7 +105,7 @@ POST	/licencasEmitidas/pesquisaAvancada/count	LicencasEmitidas.countWithFilters
 GET		/licencasEmitidas/{id}/downloadDla			LicencasEmitidas.downloadDla
 GET		/licencasEmitidas/{id}/download				LicencasEmitidas.downloadLicencas
 POST	/licencasAnalise/emitir						LicencasAnalise.emitirLicencaAnalise
-GET		/licencasAnalise/{idLicenca}				LicencasAnalise.findByIdLicenca
+GET		/licencas/{idLicenca}						Licencas.findByIdLicenca
 
 # Tipos Licenças
 GET		/tiposLicencas								TiposLicencas.list

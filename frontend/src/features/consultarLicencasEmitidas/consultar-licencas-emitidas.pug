@@ -42,7 +42,7 @@ div
 												a(ng-click="consultarLicencas.visualizarProcesso(licenca)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
-											li
+											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO || licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO")
 												a(ng-click="consultarLicencas.suspenderLicenca(licenca)")
 													i.glyphicon.glyphicon-eye-open
 													span Suspender licença
