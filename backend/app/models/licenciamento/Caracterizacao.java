@@ -93,6 +93,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@ManyToMany(mappedBy="caracterizacoes")
 	public List<Processo> processos;	
 	
+	@OneToOne(mappedBy="caracterizacao")
+	public Licenca licenca;
+	
 	@Transient
 	public Dae dae;
 	
