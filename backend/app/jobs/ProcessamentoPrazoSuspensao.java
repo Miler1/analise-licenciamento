@@ -27,7 +27,7 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 	
 	public void verificaPrazoSuspensao() {
 		
-		List<Suspensao> suspensoes = Suspensao.findAll();
+		List<Suspensao> suspensoes = Suspensao.findAtivas();
 		
 		if(!suspensoes.isEmpty()) {
 			
@@ -41,18 +41,15 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 				
 				if(dataFinalSuspenso.after(hoje)) {	
 					
+					Licenca dadosLicenca = Licenca.findById(suspensao.licenca.id);
+					Licenca novaLicenca = new Licenca(dadosLicenca.caracterizacao);
+					novaLicenca.dataValidade = suspensao.dataValidadeLicenca;
+					novaLicenca.licencaAnterior = dadosLicenca.licencaAnalise;
 					
-					Licenca novaLicenca = Licenca.findById(suspensao.licenca.id);
-					novaLicenca.dataValidade = dataFinalSuspenso;
-					//novaLicenca.
-					//mudar o ativo
-					//suspensao.ativo = false;
-					//salvar a nova data de validade
-					//suspensao.dataValidadeProrrogada = addDays(hoje, suspensao.qtdeDiasSuspensao;
-					
-					
-					
-					
+					novaLicenca.save();
+			
+					suspensao.ativo = false;
+					suspensao._save();
 					
 				}
 				

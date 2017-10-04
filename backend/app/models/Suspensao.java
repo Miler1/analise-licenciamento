@@ -43,6 +43,15 @@ public class Suspensao extends GenericModel {
 	@Column(name="data_suspensao")
 	public Date dataSuspensao;
 	
+	@Column(name="data_validade_licenca")
+	public Date dataValidadeLicenca;
+	
+	@Column(name="data_validade_prorrogada")
+	public Date dataValidadeProrrogada;
+	
+	@Column(name="ativo")
+	public Boolean ativo;
+	
 	
 	public Suspensao() {
 		

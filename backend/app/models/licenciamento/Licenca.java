@@ -47,6 +47,12 @@ public class Licenca extends GenericModel implements Identificavel {
 	@OneToOne
 	@JoinColumn(name="id_licenca_analise")
 	public LicencaAnalise licencaAnalise;
+	
+	@OneToOne
+	@JoinColumn(name="id_licenca_anterior")
+	public LicencaAnalise licencaAnterior;
+	
+	
 
 	public Licenca(Caracterizacao caracterizacao) {
 		
