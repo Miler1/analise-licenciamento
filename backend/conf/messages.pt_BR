@@ -97,3 +97,10 @@ VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO=Validação do parecer das anális
 #
 ERRO_EMITIR_LICENCAS=Erro ao emitir as licenças, contate a SEMAS ou tente novamente mais tarde.
 LICENCAS_EMITIDAS_SUCESSO=Licenças emitidas com sucesso! Para visualiza-las acesse a aba "Consultar licenças emitidas".
+PRAZO_MAXIMO_SUSPENSAO_EXCEDIDO=O prazo máximo para suspensão da licença é de %s dias.
+LICENCA_SUSPENSA_SUCESSO=Licença suspendida com sucesso.
+
+#
+# Emails
+#
+ERRO_ENVIAR_EMAIL=O seguinte erro ocorreu ao tentar enviar o email: %s
