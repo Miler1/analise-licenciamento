@@ -9,7 +9,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.onPaginaAlterada = onPaginaAlterada;
 	consultarLicencas.visualizarProcesso = visualizarProcesso;
 	consultarLicencas.downloadLicenca = downloadLicenca;
-	consultarLicencas.suspenderLicenca = suspenderLicenca;
+	consultarLicencas.recuperarInfoLicencaSuspender = recuperarInfoLicencaSuspender;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -35,7 +35,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		return processoService.visualizarProcesso(licenca);
 	}
 
-	function suspenderLicenca(licenca) {
+	function recuperarInfoLicencaSuspender(licenca) {
 
 		var licencaSuspender = null;
 
@@ -44,7 +44,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 				if(response.data.licencaAnalise == null){
 					licencaSuspender = response.data;
-					return licencaService.suspenderLicenca(licencaSuspender);					
+					return licencaService.modalInfoLicencaSuspender(licencaSuspender);					
 				}
 				licencaSuspender = response.data.licencaAnalise;
 				licencaSuspender.caracterizacao = response.data.caracterizacao;
@@ -52,7 +52,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 				licencaSuspender.dataValidade = response.data.dataValidade;
 				licencaSuspender.id = response.data.id;
 
-				return licencaService.suspenderLicenca(licencaSuspender);
+				return licencaService.modalInfoLicencaSuspender(licencaSuspender);
 
 
 			}, function(error) {

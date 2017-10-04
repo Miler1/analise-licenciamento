@@ -12,7 +12,7 @@ var LicencaService = function(request, config, $uibModal) {
 			.get(config.BASE_URL() + "licencas/" + idLicenca);
 	};
 
-	this.suspenderLicenca = function(licencaSuspender) {
+	this.modalInfoLicencaSuspender = function(licencaSuspender) {
 		
 		var modalInstance = $uibModal.open({
 

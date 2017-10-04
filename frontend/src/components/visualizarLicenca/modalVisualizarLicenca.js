@@ -9,14 +9,18 @@ var ModalVisualizarLicenca = {
 	controller: function($scope) {
 
 		var ctrl = this;
+		ctrl.dateUtil = app.utils.DateUtil;
 
 		ctrl.fechar = function() {
 
 			ctrl.dismiss({$value: 'close'});
 		};
 
-		ctrl.suspenderLicenca = function(){
-			
+		ctrl.suspenderLicenca = function(idLicenca,justificativa, qtdeDiasSuspensao){
+			var licenca = {
+				id: idLicenca,
+			};
+			console.log(justificativa,qtdeDiasSuspensao);
 			ctrl.dismiss({$value: 'close'});
 		};
 
