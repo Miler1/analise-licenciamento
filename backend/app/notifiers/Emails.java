@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
+import models.Suspensao;
 import play.Play;
 import play.mvc.Mailer;
 
@@ -33,6 +34,17 @@ public class Emails extends Mailer {
 			addRecipient(email);
 		}
 		return send(licencas, documentosAnalisados, analiseTecnica);
+	}
+	
+	public static Future<Boolean> notificarRequerenteSuspensaoLicenca(List<String> destinatarios, Suspensao suspensao) {
+		
+		setSubject("Notificação referente a suspensão da licença %s(%s)", suspensao.licenca.caracterizacao.tipoLicenca.nome, suspensao.licenca.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+			
+			addRecipient(email);
+		}
+		return send(suspensao);
 	}	
 
 }
