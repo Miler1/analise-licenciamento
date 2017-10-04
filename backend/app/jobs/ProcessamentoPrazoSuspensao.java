@@ -44,7 +44,7 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 					Licenca dadosLicenca = Licenca.findById(suspensao.licenca.id);
 					Licenca novaLicenca = new Licenca(dadosLicenca.caracterizacao);
 					novaLicenca.dataValidade = suspensao.dataValidadeLicenca;
-					novaLicenca.licencaAnterior = dadosLicenca.licencaAnalise;
+					novaLicenca.licencaAnterior = dadosLicenca.licencaAnterior;
 					
 					novaLicenca.save();
 			

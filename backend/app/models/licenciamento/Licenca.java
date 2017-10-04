@@ -50,7 +50,7 @@ public class Licenca extends GenericModel implements Identificavel {
 	
 	@OneToOne
 	@JoinColumn(name="id_licenca_anterior")
-	public LicencaAnalise licencaAnterior;
+	public Licenca licencaAnterior;
 	
 	
 
