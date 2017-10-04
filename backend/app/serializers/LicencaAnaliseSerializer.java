@@ -26,5 +26,24 @@ public class LicencaAnaliseSerializer {
 			"recomendacoes.texto",
 			"recomendacoes.ordem");
 	
-	
+	public static JSONSerializer listSuspensao = SerializerUtil.create(
+			
+			"id",
+			"validade",
+			"observacao",
+			"caracterizacao.tipoLicenca.nome",			
+			"caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo",
+			"caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo",
+			"condicionantes.id",
+			"condicionantes.texto",
+			"condicionantes.prazo",
+			"condicionantes.ordem",
+			"recomendacoes.id",
+			"recomendacoes.texto",
+			"licenca.dataCadastro",
+			"analiseTecnica.analise.processo.numero",
+			"analiseTecnica.analise.processo.empreendimento.denominacao",
+			"analiseTecnica.analise.processo.empreendimento.responsaveis.pessoa.cpf",
+			"analiseTecnica.analise.processo.empreendimento.endereco.municipio.nome",
+			"recomendacoes.ordem");
 }

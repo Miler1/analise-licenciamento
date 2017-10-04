@@ -21,14 +21,14 @@ include ../../layout/components/inputErrors
 		label Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
 		br
 		label PROCESSO:
-			p Número: {{$ctrl.resolve.dadosLicenca.licencaAnalise.caracterizacao.numeroProcesso}}
+			p Número: {{$ctrl.resolve.dadosLicenca.caracterizacao.numeroProcesso ? $ctrl.resolve.dadosLicenca.caracterizacao.numeroProcesso : '-'}}
 			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.responsaveis[0].pessoa.cpf}}
 			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
 			p Município: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.endereco.municipio.nome}}
 
 	.form-group
 		label.margin-right-xs(for="selectValidade") Validade: 
-		label {{$ctrl.resolve.dadosLicenca.licencaAnalise.validade}} ano(s)
+		label {{$ctrl.resolve.dadosLicenca.validade}} ano(s)
 
 
 	label.margin-right-xs Observações:

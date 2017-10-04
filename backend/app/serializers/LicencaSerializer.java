@@ -23,6 +23,7 @@ public static JSONSerializer listSuspensao = SerializerUtil.create(
 			"licencaAnalise.condicionantes.ordem",
 			"licencaAnalise.recomendacoes.texto",
 			"licencaAnalise.validade",
+			"licencaAnalise.observacao",
 			"dataCadastro",
 			"licencaAnalise.caracterizacao.numeroProcesso",
 			"licencaAnalise.recomendacoes.ordem");
