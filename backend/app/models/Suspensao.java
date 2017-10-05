@@ -19,12 +19,14 @@ import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
+import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.DateUtil;
+import utils.ListUtil;
 import utils.Mensagem;
 
 @Entity
@@ -93,6 +95,8 @@ public class Suspensao extends GenericModel {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROCESSO, usuarioExecutor);
 			}
+			
+			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
 			
 			enviarNotificacaoSuspensaoPorEmail();
 			
