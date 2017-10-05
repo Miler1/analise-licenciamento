@@ -48,7 +48,7 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 				Date dataFinalSuspenso = addDays(suspensao.dataSuspensao, suspensao.qtdeDiasSuspensao);
 				Date hoje =  new Date();
 				
-				if(dataFinalSuspenso.after(hoje)) {	
+				if(hoje.after(dataFinalSuspenso)) {	
 					
 					Licenca dadosLicenca = Licenca.findById(suspensao.licenca.id);
 					Licenca novaLicenca = new Licenca(dadosLicenca.caracterizacao);
@@ -56,11 +56,12 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 					novaLicenca.dataCadastro = dadosLicenca.dataCadastro;
 					novaLicenca.dataValidade = dadosLicenca.dataValidade;
 					novaLicenca.numero = dadosLicenca.numero;
+					novaLicenca.ativo = true;
+					novaLicenca.licencaAnterior = dadosLicenca;
 					
 					if(dadosLicenca.dataValidadeProrrogada == null) {
 						
 						novaLicenca.dataValidadeProrrogada = addDays(dadosLicenca.dataValidade, suspensao.qtdeDiasSuspensao);
-						novaLicenca.licencaAnterior = dadosLicenca;
 					} else {
 						
 						novaLicenca.dataValidadeProrrogada = addDays(dadosLicenca.dataValidadeProrrogada, suspensao.qtdeDiasSuspensao);
@@ -99,15 +100,17 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 						
 						rollbackTransaction();
 						
-						novaLicenca.delete();
+						Licenca licenca = Licenca.findById(novaLicenca.id);
 						
+						if(licenca != null)
+							licenca.delete();
 						
 						Suspensao reverterSuspensao = Suspensao.findById(suspensao.id);
 						
 						if(reverterSuspensao != null) {
 							
-							suspensao.ativo = true;
-							suspensao._save();
+							reverterSuspensao.ativo = true;
+							reverterSuspensao._save();
 						}
 						
 						
