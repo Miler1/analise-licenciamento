@@ -13,22 +13,29 @@ include ../../layout/components/inputErrors
 
 	div(growl inline="true", reference="4")
 
-	label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
+	div(ng-if="!$ctrl.resolve.isSuspensao")
+		label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 
 	br
 
 	br
 
 	div(ng-if="$ctrl.resolve.isSuspensao")
-		label Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
-		br
-		label PROCESSO:
+		blockquote.success
+			label Informações da Licença:
+			p {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
+			p Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
+		blockquote.success
+			label Informações do Processo:
 			p Número: {{$ctrl.resolve.dadosLicenca.numeroProcesso ? $ctrl.resolve.dadosLicenca.numeroProcesso : '-'}}
 			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.responsaveis[0].pessoa.cpf}}
 			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
 			p Município: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.endereco.municipio.nome}}
+			p Validade: {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
 
-	.form-group
+
+
+	.form-group(ng-if="!$ctrl.resolve.isSuspensao")
 		label.margin-right-xs(for="selectValidade") Validade: 
 		label {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
 

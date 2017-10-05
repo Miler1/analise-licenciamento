@@ -44,7 +44,7 @@ div
 													span Visualizar processo
 											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO || licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO && LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR")
 												a(ng-click="consultarLicencas.recuperarInfoLicencaSuspender(licenca)")
-													i.glyphicon.glyphicon-remove
+													i.glyphicon.glyphicon-lock
 													span Suspender licença
 											li
 												a(ng-click="" ng-if="false")
