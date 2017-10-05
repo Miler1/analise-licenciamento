@@ -50,6 +50,11 @@ DateUtil = {
 	getTodaysStringDate: function(){
 
 		return moment(new Date()).format('DD/MM/YYYY');
+	},
+	
+	formatarData : function(data){
+
+		return moment(data, 'DD/MM/YYYY').format('DD/MM/YYYY');
 	}
 };
 
