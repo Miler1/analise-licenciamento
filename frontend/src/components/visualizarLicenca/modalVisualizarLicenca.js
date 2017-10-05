@@ -34,7 +34,15 @@ var ModalVisualizarLicenca = {
 				justificativa: ctrl.justificativa
 			};
 
-			licencaEmitidaService.suspenderLicenca(suspensao);
+			licencaEmitidaService.suspenderLicenca(suspensao)
+				.then(function(response) {
+
+					mensagem.success(response.data.texto, {referenceId: 0});
+					ctrl.dismiss({$value: 'close'});
+				}, function(error) {
+
+					mensagem.error(error.data.texto, {referenceId: 4});
+				});
 		};
 
 	},
