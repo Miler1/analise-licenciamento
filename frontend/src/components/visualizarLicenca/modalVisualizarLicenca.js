@@ -6,17 +6,25 @@ var ModalVisualizarLicenca = {
 		dismiss: '&'
 	},
 
-	controller: function($scope) {
+	controller: function($scope, licencaEmitidaService, mensagem) {
 
 		var ctrl = this;
 		ctrl.dateUtil = app.utils.DateUtil;
-
+		
 		ctrl.fechar = function() {
 
 			ctrl.dismiss({$value: 'close'});
 		};
 
 		ctrl.suspenderLicenca = function(){
+
+			ctrl.formSuspensaoLicenca.$setSubmitted();
+
+			if(!ctrl.formSuspensaoLicenca.$valid) {
+				
+				mensagem.error('Verifique se o(s) campo(s) destacado(s) está(estão) completamente preenchido(s)', {referenceId: 4});
+				return;
+			}
 
 			var suspensao = {
 				licenca: {
@@ -26,6 +34,7 @@ var ModalVisualizarLicenca = {
 				justificativa: ctrl.justificativa
 			};
 
+			licencaEmitidaService.suspenderLicenca(suspensao);
 			ctrl.dismiss({$value: 'close'});
 		};
 
