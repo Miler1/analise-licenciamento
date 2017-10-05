@@ -16,6 +16,8 @@ public class StatusCaracterizacao extends GenericModel {
 	public static final Long AGUARDANDO_QUITACAO_DAE = 4l;
 	public static final Long EM_ANALISE = 5l;
 	public static final Long ARQUIVADO = 6l;
+	public static final Long SUSPENSO = 7l;
+	public static final Long CANCELADO =8l;
 	
 	@Id
 	public Long id;

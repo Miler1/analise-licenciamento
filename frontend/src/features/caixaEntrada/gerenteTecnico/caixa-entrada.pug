@@ -42,9 +42,9 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnalise, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE)}") 
 								| {{cxEntGerenteTecnico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntGerenteTecnico.PrazoAnalise.ANALISE)}}
-							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.isPrazoMinimoAvisoAnalise(processo.dataVencimentoPrazoAnaliseTecnica, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{cxEntGerenteTecnico.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,cxEntGerenteTecnico.PrazoAnalise.ANALISE_TECNICA)}}
 							td
 								span.pull-right

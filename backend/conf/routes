@@ -107,6 +107,9 @@ GET		/licencasEmitidas/{id}/download				LicencasEmitidas.downloadLicencas
 POST	/licencasAnalise/emitir						LicencasAnalise.emitirLicencaAnalise
 GET		/licencas/{idLicenca}						Licencas.findByIdLicenca
 
+# Suspensoes
+POST	/suspensoes/licenca							Suspensoes.suspenderLicenca
+
 # Tipos Licenças
 GET		/tiposLicencas								TiposLicencas.list
 

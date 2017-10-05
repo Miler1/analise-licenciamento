@@ -39,9 +39,22 @@ DateUtil = {
 		return diasRestantes >= 0 ? diasRestantes : Math.abs(diasRestantes) + ' dia(s) atraso';
 	},
 
+	verificaPrazoMinimo: function (dias, prazoMinimo) {
+
+		if(dias >= prazoMinimo)
+			return true;
+		else
+			return false;
+	},
+
 	getTodaysStringDate: function(){
 
 		return moment(new Date()).format('DD/MM/YYYY');
+	},
+	
+	formatarData : function(data){
+
+		return moment(data, 'DD/MM/YYYY').format('DD/MM/YYYY');
 	},
 
 	calcularPrazoEmAnos: function(dataInicio, dataVencimento) {

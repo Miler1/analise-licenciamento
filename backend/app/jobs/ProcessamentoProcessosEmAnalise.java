@@ -6,7 +6,6 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
-import org.joda.time.Period;
 
 import com.vividsolutions.jts.index.strtree.Interval;
 
@@ -46,10 +45,23 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 					if (analise.analiseTecnica.dataFim != null) {
 					// se a analise tecnica acabou
-
-						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFim);
-						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-						diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analiseTecnica.dataFim);
+						
+						if(analise.analiseTecnica.dataFimValidacaoAprovador != null) {
+							// se o aprovador já finalizou a analise
+							
+							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFimValidacaoAprovador);
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analisesJuridica.get(analise.analisesJuridica.size()-1).dataFim);
+							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim);
+							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim, analise.analiseTecnica.dataFimValidacaoAprovador);
+							
+						} else {
+							
+							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analisesJuridica.get(analise.analisesJuridica.size()-1).dataFim);
+							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim);
+							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim, new Date());
+							
+						}
 
 					} else {
 					// se a analise tecnica nao acabou
