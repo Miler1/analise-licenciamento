@@ -35,7 +35,6 @@ var ModalVisualizarLicenca = {
 			};
 
 			licencaEmitidaService.suspenderLicenca(suspensao);
-			ctrl.dismiss({$value: 'close'});
 		};
 
 	},
