@@ -58,11 +58,11 @@
 						.row
 							.col-xs-4.col-md-4.text-center
 								span Análise jurídica
-									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.isPrazoAnaliseVencido(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseJuridica.dataFim, modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseJuridica.dataVencimentoPrazo)}")
+									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica , modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_JURIDICA)}")
 										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica == null ? 0 : modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica}}
 							.col-xs-4.col-md-4.text-center
 								span Análise técnica
-									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.isPrazoAnaliseVencido(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.dataFim, modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.dataVencimentoPrazo)}")
+									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica , modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_TECNICA)}")
 										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica == null ? 0 : modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica}}
 							.col-xs-4.col-md-4.text-center
 								span Análise total
