@@ -20,7 +20,7 @@ var ModalVisualizarLicenca = {
 			var licenca = {
 				id: idLicenca,
 			};
-			console.log(justificativa,qtdeDiasSuspensao);
+			console.log(idLicenca, justificativa,qtdeDiasSuspensao);
 			ctrl.dismiss({$value: 'close'});
 		};
 

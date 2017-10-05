@@ -96,13 +96,13 @@ include ../../layout/components/inputErrors
 
 
 
-.modal-footer#footer-modal
+			.modal-footer#footer-modal
 
-	button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
-		i.glyphicon.glyphicon-arrow-left
-		| &nbsp;Fechar
+				button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+					i.glyphicon.glyphicon-arrow-left
+					| &nbsp;Fechar
 
-	div(ng-if="$ctrl.resolve.isSuspensao")
-		button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca($ctrl.resolve.dadosLicenca.id,formSuspensaoLicenca.justificativa,formSuspensaoLicenca.qtdeDiasSuspensao)")
-			i.glyphicon.glyphicon-ok
-			| &nbsp;Confirmar Suspensão da Licença
+				div(ng-if="$ctrl.resolve.isSuspensao")
+					button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca($ctrl.resolve.dadosLicenca.id, justificativa, qtdeDiasSuspensao)")
+						i.glyphicon.glyphicon-ok
+						| &nbsp;Confirmar Suspensão da Licença
