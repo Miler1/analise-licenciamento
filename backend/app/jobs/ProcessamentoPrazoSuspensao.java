@@ -1,5 +1,6 @@
 package jobs;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -7,10 +8,19 @@ import java.util.List;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
+import exceptions.AppException;
+import models.Processo;
 import models.Suspensao;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
+import models.licenciamento.LicenciamentoWebService;
+import models.licenciamento.StatusCaracterizacao;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.Condicao;
 import play.Logger;
+import play.db.jpa.JPA;
 import play.jobs.On;
+import utils.Mensagem;
 
 @On("0 0/1 * 1/1 * ? *")
 public class ProcessamentoPrazoSuspensao  extends GenericJob {
@@ -36,21 +46,77 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 				//mostra a data final da suspensao
 				
 				Date dataFinalSuspenso = addDays(suspensao.dataSuspensao, suspensao.qtdeDiasSuspensao);
-				System.out.println("SOMANDO NA DATA "+suspensao.qtdeDiasSuspensao+" days: "+dataFinalSuspenso.toString());
 				Date hoje =  new Date();
 				
 				if(dataFinalSuspenso.after(hoje)) {	
 					
 					Licenca dadosLicenca = Licenca.findById(suspensao.licenca.id);
 					Licenca novaLicenca = new Licenca(dadosLicenca.caracterizacao);
-					novaLicenca.dataValidade = suspensao.dataValidadeLicenca;
-					novaLicenca.licencaAnterior = dadosLicenca.licencaAnterior;
+					novaLicenca.caracterizacao = dadosLicenca.caracterizacao;					
+					novaLicenca.dataCadastro = dadosLicenca.dataCadastro;
+					novaLicenca.dataValidade = dadosLicenca.dataValidade;
+					novaLicenca.numero = dadosLicenca.numero;
 					
-					novaLicenca.save();
+					if(dadosLicenca.dataValidadeProrrogada == null) {
+						
+						novaLicenca.dataValidadeProrrogada = addDays(dadosLicenca.dataValidade, suspensao.qtdeDiasSuspensao);
+						novaLicenca.licencaAnterior = dadosLicenca;
+					} else {
+						
+						novaLicenca.dataValidadeProrrogada = addDays(dadosLicenca.dataValidadeProrrogada, suspensao.qtdeDiasSuspensao);
+					}
+					
+					novaLicenca._save();
 			
 					suspensao.ativo = false;
 					suspensao._save();
 					
+					commitTransaction();
+					
+					try {
+						
+						List<Long> idsLicencas = new ArrayList<>();
+						idsLicencas.add(novaLicenca.id);
+						
+						LicenciamentoWebService webService = new LicenciamentoWebService();
+						webService.gerarPDFLicencas(idsLicencas);
+						
+						List<Long> idsCaracterizacoes =  new ArrayList();
+						idsCaracterizacoes.add(novaLicenca.caracterizacao.id);
+						
+						if(dadosLicenca.licencaAnalise != null) {
+							Processo processo = dadosLicenca.licencaAnalise.analiseTecnica.analise.processo;
+						
+							if(processo.objetoTramitavel.condicao.equals(Condicao.SUSPENSO)) {						
+								processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA);
+							}
+							
+						}
+						
+						Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.FINALIZADO);
+						
+					} catch (Exception e) {
+						
+						rollbackTransaction();
+						
+						novaLicenca.delete();
+						
+						
+						Suspensao reverterSuspensao = Suspensao.findById(suspensao.id);
+						
+						if(reverterSuspensao != null) {
+							
+							suspensao.ativo = true;
+							suspensao._save();
+						}
+						
+						
+						commitTransaction();
+						
+						throw new AppException(Mensagem.ERRO_EMITIR_LICENCAS);
+						
+						
+					}
 				}
 				
 			}

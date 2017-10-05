@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -29,14 +30,14 @@ public class Licenca extends GenericModel implements Identificavel {
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id", nullable = false)
 	public Caracterizacao caracterizacao;
 	
 	@Column(name = "data_cadastro")
 	public Date dataCadastro;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_documento")
 	public DocumentoLicenciamento documento;
 	
@@ -45,13 +46,16 @@ public class Licenca extends GenericModel implements Identificavel {
 	@Column(name = "data_validade")
 	public Date dataValidade;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="id_licenca_analise")
 	public LicencaAnalise licencaAnalise;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="id_licenca_anterior")
 	public Licenca licencaAnterior;
+	
+	@Column(name = "data_validade_prorrogada")
+	public Date dataValidadeProrrogada;
 	
 	
 
