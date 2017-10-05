@@ -44,7 +44,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 				if(response.data.licencaAnalise == null){
 					licencaSuspender = response.data;
-					return licencaService.modalInfoLicencaSuspender(licencaSuspender);					
+					return licencaEmitidaService.modalInfoLicencaSuspender(licencaSuspender);					
 				}
 				licencaSuspender = response.data.licencaAnalise;
 				licencaSuspender.caracterizacao = response.data.caracterizacao;
@@ -52,7 +52,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 				licencaSuspender.dataValidade = response.data.dataValidade;
 				licencaSuspender.id = response.data.id;
 
-				return licencaService.modalInfoLicencaSuspender(licencaSuspender);
+				return licencaEmitidaService.modalInfoLicencaSuspender(licencaSuspender);
 
 
 			}, function(error) {

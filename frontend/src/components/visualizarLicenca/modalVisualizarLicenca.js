@@ -16,11 +16,16 @@ var ModalVisualizarLicenca = {
 			ctrl.dismiss({$value: 'close'});
 		};
 
-		ctrl.suspenderLicenca = function(idLicenca,justificativa, qtdeDiasSuspensao){
-			var licenca = {
-				id: idLicenca,
+		ctrl.suspenderLicenca = function(){
+
+			var suspensao = {
+				licenca: {
+					id: ctrl.resolve.dadosLicenca.id
+				},
+				qtdeDiasSuspensao: ctrl.qtdeDiasSuspensao,
+				justificativa: ctrl.justificativa
 			};
-			console.log(idLicenca, justificativa,qtdeDiasSuspensao);
+
 			ctrl.dismiss({$value: 'close'});
 		};
 

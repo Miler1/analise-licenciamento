@@ -82,27 +82,27 @@ include ../../layout/components/inputErrors
 		.row
 			form(name="formSuspensaoLicenca")
 				div.col-md-9.form-group
-					textarea.form-control(rows="4", ng-model="justificativa", name="justificativa", required)
+					textarea.form-control(rows="4", ng-model="$ctrl.justificativa", name="justificativa", required)
 					+inputErrors('formSuspensaoLicenca', 'required')
 
 				div.col-md-3.form-group
 					label Prazo de suspensão da(s) licença(s)
 					div.col-sm-6
 						input.input-dias.form-control(id="qtdeDiasSuspensao",type="number", name="qtdeDiasSuspensao",
-							ng-model="qtdeDiasSuspensao", max="1900", min="0", required)
+							ng-model="$ctrl.qtdeDiasSuspensao", max="1900", min="0", required)
 					div.col-sm-6
 						span dias
 					+inputErrors('formSuspensaoLicenca', 'required', 'max', 'min')
 
 
 
-			.modal-footer#footer-modal
+.modal-footer#footer-modal
 
-				button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
-					i.glyphicon.glyphicon-arrow-left
-					| &nbsp;Fechar
+	button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+		i.glyphicon.glyphicon-arrow-left
+		| &nbsp;Fechar
 
-				div(ng-if="$ctrl.resolve.isSuspensao")
-					button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca($ctrl.resolve.dadosLicenca.id, justificativa, qtdeDiasSuspensao)")
-						i.glyphicon.glyphicon-ok
-						| &nbsp;Confirmar Suspensão da Licença
+	div(ng-if="$ctrl.resolve.isSuspensao")
+		button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca()")
+			i.glyphicon.glyphicon-ok
+			| &nbsp;Confirmar Suspensão da Licença

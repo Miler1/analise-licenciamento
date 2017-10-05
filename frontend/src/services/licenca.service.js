@@ -1,4 +1,4 @@
-var LicencaService = function(request, config, $uibModal) {
+var LicencaService = function(request, config) {
 
 	this.emitirLicencas = function(licencasAnalise) {
 
@@ -12,23 +12,6 @@ var LicencaService = function(request, config, $uibModal) {
 			.get(config.BASE_URL() + "licencas/" + idLicenca);
 	};
 
-	this.modalInfoLicencaSuspender = function(licencaSuspender) {
-		
-		var modalInstance = $uibModal.open({
-
-			component: 'modalVisualizarLicenca',
-			size: 'lg',
-			resolve: {
-
-				dadosLicenca: function () {
-
-					return licencaSuspender;
-				},
-				isSuspensao: true
-			}
-		});
-
-	};
 };
 
 exports.services.LicencaService = LicencaService;
