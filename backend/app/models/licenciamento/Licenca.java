@@ -1,7 +1,9 @@
 package models.licenciamento;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +15,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import exceptions.AppException;
+import models.EmailNotificacaoCancelamentoLicenca;
+import models.EmailNotificacaoSuspensaoLicenca;
 import models.LicencaAnalise;
+import models.Processo;
 import models.Suspensao;
+import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
+import play.Logger;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
+import utils.ListUtil;
+import utils.Mensagem;
 
 @Entity
 @Table(schema = "licenciamento", name = "licenca")
@@ -48,6 +59,8 @@ public class Licenca extends GenericModel implements Identificavel {
 	@OneToOne
 	@JoinColumn(name="id_licenca_analise")
 	public LicencaAnalise licencaAnalise;
+	
+	public Boolean ativo;
 
 	public Licenca(Caracterizacao caracterizacao) {
 		
@@ -91,5 +104,66 @@ public class Licenca extends GenericModel implements Identificavel {
 	
 	public Boolean isSuspensa() {
 		return Suspensao.find("byLicenca", this).first() != null ? true : false;
+	}
+	
+	public Boolean isCancelado() {
+		return Licenca.find("byAtivo", this).first() != null ? true : false;
+	}
+	
+	public void cancelarLicenca() {
+		
+		this.ativo = false;
+		
+		try {
+			
+			this.save();
+			
+			if(deveCancelarProcesso(this)) {
+				Processo processo = this.licencaAnalise.analiseTecnica.analise.processo;
+				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROCESSO);
+			}
+			
+			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
+			
+			enviarNotificacaoCanceladoPorEmail();
+			
+		} catch (Exception e) {
+			
+			Logger.error(e, e.getMessage());
+			throw new AppException(Mensagem.ERRO_ENVIAR_EMAIL, e.getMessage());
+			
+		}
+		
+	}
+	
+	private void enviarNotificacaoCanceladoPorEmail() {
+		
+		List<String> destinatarios = new ArrayList<String>();
+		destinatarios.addAll(this.caracterizacao.empreendimento.emailsProprietarios());
+		destinatarios.addAll(this.caracterizacao.empreendimento.emailsResponsaveis());
+		
+		EmailNotificacaoCancelamentoLicenca emailNotificacao = new EmailNotificacaoCancelamentoLicenca(this, destinatarios);
+		emailNotificacao.enviar();
+		
+	}
+	
+	private Boolean deveCancelarProcesso(Licenca licenca) {
+		
+		if(licenca.licencaAnalise == null)
+			return false;
+		
+		Processo processo = licenca.licencaAnalise.analiseTecnica.analise.processo;
+		
+		int numLicencasCanceladas = 0;
+		
+		for(Caracterizacao caracterizacao : processo.caracterizacoes) {
+			if(caracterizacao.licenca.isSuspensa())
+				numLicencasCanceladas++;
+		}
+		
+		if(processo.caracterizacoes.size() == numLicencasCanceladas)
+			return true;
+		
+		return false;
 	}
 }

@@ -7,6 +7,7 @@ import models.AnaliseDocumento;
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.Suspensao;
+import models.licenciamento.Licenca;
 import play.Play;
 import play.mvc.Mailer;
 
@@ -45,6 +46,18 @@ public class Emails extends Mailer {
 			addRecipient(email);
 		}
 		return send(suspensao);
-	}	
+	}
+	
+	public static Future<Boolean> notificarRequerenteCancelamentoLicenca(List<String> destinatarios, Licenca licenca) {
+		
+		setSubject("Notificacao referente ao cancelamento da licenca %s(%s)", licenca.caracterizacao.tipoLicenca.nome, licenca.numero);
+		setFrom("Análise<"+ Play.configuration.getProperty("mail.smtp.sender") + ">");
+		for(String email:destinatarios) {
+			
+			addRecipient(email);
+		}
+		return send(licenca);
+		
+	}
 
 }
