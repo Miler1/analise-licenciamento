@@ -11,9 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Filter;
 
 import exceptions.AppException;
 import exceptions.ValidacaoException;
@@ -44,7 +47,7 @@ public class Suspensao extends GenericModel {
 	@JoinColumn(name="id_licenca")
 	public Licenca licenca;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="id_usuario_suspensao")
 	public Usuario usuario;
 	
@@ -55,12 +58,18 @@ public class Suspensao extends GenericModel {
 	public Date dataSuspensao;
 	
 	public String justificativa;
-	
+		
+	@Column(name="ativo")
+	public Boolean ativo;	
 	
 	public Suspensao() {
 		
 	}
-
+	
+	public static List<Suspensao> findAtivas() {
+		return Suspensao.find("byAtivo", true).fetch();
+	}
+	
 	public void suspenderLicenca(Usuario usuarioExecutor) {
 		
 		Calendar c = Calendar.getInstance();
@@ -81,6 +90,8 @@ public class Suspensao extends GenericModel {
 		
 		try {
 			
+			licencaSuspensa.ativo = false;
+			licencaSuspensa.save();
 			this.save();
 			
 			if(deveSuspenderProcesso(this.licenca)) {

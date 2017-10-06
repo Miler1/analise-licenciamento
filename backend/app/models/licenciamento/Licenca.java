@@ -9,10 +9,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Filter;
+
+import models.DiasAnalise;
 import models.LicencaAnalise;
 import models.Suspensao;
 import play.db.jpa.GenericModel;
@@ -29,7 +34,7 @@ public class Licenca extends GenericModel implements Identificavel {
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id", nullable = false)
 	public Caracterizacao caracterizacao;
 	
@@ -45,9 +50,21 @@ public class Licenca extends GenericModel implements Identificavel {
 	@Column(name = "data_validade")
 	public Date dataValidade;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="id_licenca_analise")
 	public LicencaAnalise licencaAnalise;
+	
+	@OneToOne
+	@JoinColumn(name="id_licenca_anterior")
+	public Licenca licencaAnterior;
+	
+	@Column(name = "data_validade_prorrogada")
+	public Date dataValidadeProrrogada;
+	
+	@OneToOne(mappedBy="licenca")
+	public Suspensao suspensao;
+	
+	public Boolean ativo;
 
 	public Licenca(Caracterizacao caracterizacao) {
 		
