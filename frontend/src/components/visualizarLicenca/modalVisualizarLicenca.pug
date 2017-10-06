@@ -16,17 +16,17 @@ include ../../layout/components/inputErrors
 	div(ng-if="!$ctrl.resolve.isSuspensao")
 		label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 
-	br
+		br
 
-	br
+		br
 
-	div(ng-if="$ctrl.resolve.isSuspensao")
-		blockquote.success
-			label Informações da Licença:
+	div.info-licenca-processo(ng-if="$ctrl.resolve.isSuspensao")
+		blockquote
+			label.tituloMaior Informações da Licença:
 			p {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 			p Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
-		blockquote.success
-			label Informações do Processo:
+		blockquote
+			label.tituloMaior Informações do Processo:
 			p Número: {{$ctrl.resolve.dadosLicenca.numeroProcesso ? $ctrl.resolve.dadosLicenca.numeroProcesso : '-'}}
 			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.responsaveis[0].pessoa.cpf}}
 			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
@@ -51,7 +51,7 @@ include ../../layout/components/inputErrors
 	label.margin-right-xs Condicionantes:
 	div.tabela
 
-		table.table.table-striped.table-condensed.no-margin
+		table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.resolve.dadosLicenca.condicionantes")
 			thead
 				tr
 					th.col-md-10 Condicionante
@@ -72,7 +72,7 @@ include ../../layout/components/inputErrors
 	label.margin-right-xs Recomendações:
 	div.tabela
 
-		table.table.table-striped.table-condensed.no-margin
+		table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes")
 			thead
 				tr
 					th.col-md-12 Recomendação
@@ -86,22 +86,24 @@ include ../../layout/components/inputErrors
 			span(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length == 0 || !$ctrl.resolve.dadosLicenca.recomendacoes") Nenhuma recomendação adicionada
 	hr
 
-	label.margin-right-xs(ng-if="$ctrl.resolve.isSuspensao") Justificativa da suspensão da(s) licença(s):
 	div(ng-if="$ctrl.resolve.isSuspensao")
+		label.margin-right-xs Justificativa da suspensão da(s) licença(s):
+
 		.row
 			form(name="$ctrl.formSuspensaoLicenca")
-				div.col-md-9.form-group
+				div.col-md-10.form-group
 					textarea.form-control(rows="4", ng-model="$ctrl.justificativa", name="justificativa", required)
 
-				div.col-md-3.form-group
+				div.col-md-2.form-group
+
 					label Prazo de suspensão da(s) licença(s)
+
 					div.col-sm-6
 						input.input-dias.form-control(id="qtdeDiasSuspensao",type="number", name="qtdeDiasSuspensao",
 							ng-model="$ctrl.qtdeDiasSuspensao", max="1900", min="1", required)
-					div.col-sm-6
+					div.no-margin-dias.col-sm-6
 						span dias
 					+inputErrors('formSuspensaoLicenca', 'qtdeDiasSuspensao', 'required', 'max', 'min')
-
 
 
 .modal-footer#footer-modal

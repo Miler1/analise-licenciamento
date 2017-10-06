@@ -22,7 +22,7 @@ var ModalVisualizarLicenca = {
 
 			if(!ctrl.formSuspensaoLicenca.$valid) {
 				
-				mensagem.error('Verifique se o(s) campo(s) destacado(s) está(estão) completamente preenchido(s)', {referenceId: 4});
+				mensagem.error('Verifique o preenchimento correto do(s) campo(s) destacado(s)', {referenceId: 4});
 				return;
 			}
 
