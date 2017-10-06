@@ -3,8 +3,10 @@ package controllers;
 import java.util.List;
 
 import models.LicencaAnalise;
+import models.licenciamento.Licenca;
 import models.portalSeguranca.Usuario;
 import security.UsuarioSessao;
+import serializers.LicencaAnaliseSerializer;
 import utils.Mensagem;
 
 public class LicencasAnalise extends InternalController {
