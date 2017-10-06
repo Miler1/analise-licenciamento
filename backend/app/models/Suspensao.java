@@ -57,10 +57,18 @@ public class Suspensao extends GenericModel {
 	public String justificativa;
 	
 	
+	@Column(name="ativo")
+	public Boolean ativo;
+	
+	
 	public Suspensao() {
 		
 	}
-
+	
+	public static List<Suspensao> findAtivas() {
+		return Suspensao.find("byAtivo", true).fetch();
+	}
+	
 	public void suspenderLicenca(Usuario usuarioExecutor) {
 		
 		Calendar c = Calendar.getInstance();
