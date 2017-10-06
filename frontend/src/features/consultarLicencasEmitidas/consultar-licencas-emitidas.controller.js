@@ -9,7 +9,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.onPaginaAlterada = onPaginaAlterada;
 	consultarLicencas.visualizarProcesso = visualizarProcesso;
 	consultarLicencas.downloadLicenca = downloadLicenca;
-	consultarLicencas.recuperarInfoLicencaSuspender = recuperarInfoLicencaSuspender;
+	consultarLicencas.recuperarInfoLicencaRecuperada = recuperarInfoLicencaRecuperada;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -35,25 +35,25 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		return processoService.visualizarProcesso(licenca);
 	}
 
-	function recuperarInfoLicencaSuspender(licenca) {
+	function recuperarInfoLicenca(licenca) {
 
-		var licencaSuspender = null;
+		var licencaRecuperada = null;
 
 		licencaService.findInfoLicenca(licenca.idLicenca)
 			.then(function(response) {
 
 				if(response.data.licencaAnalise == null){
-					licencaSuspender = response.data;
-					return licencaEmitidaService.modalInfoLicencaSuspender(licencaSuspender);
+					licencaRecuperada = response.data;
+					return licencaEmitidaService.modalInfoLicencaRecuperada(licencaRecuperada);
 				}
-				licencaSuspender = response.data.licencaAnalise;
-				licencaSuspender.numeroProcesso = response.data.licencaAnalise.caracterizacao.numeroProcesso;				
-				licencaSuspender.caracterizacao = response.data.caracterizacao;
-				licencaSuspender.dataCadastro = response.data.dataCadastro;
-				licencaSuspender.dataValidade = response.data.dataValidade;
-				licencaSuspender.id = response.data.id;
+				licencaRecuperada = response.data.licencaAnalise;
+				licencaRecuperada.numeroProcesso = response.data.licencaAnalise.caracterizacao.numeroProcesso;				
+				licencaRecuperada.caracterizacao = response.data.caracterizacao;
+				licencaRecuperada.dataCadastro = response.data.dataCadastro;
+				licencaRecuperada.dataValidade = response.data.dataValidade;
+				licencaRecuperada.id = response.data.id;
 
-				return licencaEmitidaService.modalInfoLicencaSuspender(licencaSuspender);
+				return licencaEmitidaService.modalInfoLicencaRecuperada(licencaRecuperada);
 
 
 			}, function(error) {

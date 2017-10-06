@@ -34,7 +34,7 @@ var LicencaEmitidaService = function(request, config, $uibModal) {
 		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/download";
 	};
 
-	this.modalInfoLicencaSuspender = function(licencaSuspender) {
+	this.modalInfoLicencaRecuperada = function(licencaRecuperada) {
 		
 		var modalInstance = $uibModal.open({
 
@@ -44,12 +44,13 @@ var LicencaEmitidaService = function(request, config, $uibModal) {
 
 				dadosLicenca: function () {
 
-					return licencaSuspender;
+					return licencaRecuperada;
 				},
 				isSuspensao: true
 			}
 		});
 	};
+	
 
 	this.suspenderLicenca = function(suspensao){
 
