@@ -17,8 +17,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Filter;
-
 import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;

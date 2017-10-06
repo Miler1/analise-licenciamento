@@ -55,6 +55,14 @@ DateUtil = {
 	formatarData : function(data){
 
 		return moment(data, 'DD/MM/YYYY').format('DD/MM/YYYY');
+	},
+
+	calcularPrazoEmAnos: function(dataInicio, dataVencimento) {
+
+		var a = moment(dataVencimento,'DD/MM/YYYY');
+		var b = moment(dataInicio, 'DD/MM/YYYY');
+		
+		return a.diff(b, 'year');
 	}
 };
 
