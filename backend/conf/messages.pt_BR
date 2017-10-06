@@ -99,6 +99,7 @@ ERRO_EMITIR_LICENCAS=Erro ao emitir as licenças, contate a SEMAS ou tente novam
 LICENCAS_EMITIDAS_SUCESSO=Licenças emitidas com sucesso! Para visualiza-las acesse a aba "Consultar licenças emitidas".
 PRAZO_MAXIMO_SUSPENSAO_EXCEDIDO=O prazo máximo para suspensão da licença é de %s dias.
 LICENCA_SUSPENSA_SUCESSO=Licença suspendida com sucesso.
+LICENCA_CANCELADA_OU_SUSPENSA=A Licença informada não pode ser baixada. 
 
 #
 # Emails

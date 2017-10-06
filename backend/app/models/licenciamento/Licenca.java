@@ -20,6 +20,7 @@ import org.hibernate.annotations.Filter;
 import models.DiasAnalise;
 import models.LicencaAnalise;
 import models.Suspensao;
+import models.licenciamento.StatusCaracterizacao;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
 
@@ -106,8 +107,12 @@ public class Licenca extends GenericModel implements Identificavel {
 		return this.id;
 	}
 	
-	public Boolean isSuspensa() {
-		return Suspensao.find("byLicenca", this).first() != null ? true : false;
+	public boolean isSuspensa() {
+		return this.caracterizacao.status.equals(StatusCaracterizacao.SUSPENSO);
+	}
+	
+	public boolean isCancelada() {
+		return this.caracterizacao.status.equals(StatusCaracterizacao.CANCELADO);
 	}
 
 	public LicencaAnalise getLicencaAnalise() {
