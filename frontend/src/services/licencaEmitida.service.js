@@ -50,7 +50,6 @@ var LicencaEmitidaService = function(request, config, $uibModal) {
 			}
 		});
 	};
-	
 
 	this.suspenderLicenca = function(suspensao){
 
