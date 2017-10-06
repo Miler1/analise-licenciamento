@@ -9,7 +9,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.onPaginaAlterada = onPaginaAlterada;
 	consultarLicencas.visualizarProcesso = visualizarProcesso;
 	consultarLicencas.downloadLicenca = downloadLicenca;
-	consultarLicencas.recuperarInfoLicencaRecuperada = recuperarInfoLicencaRecuperada;
+	consultarLicencas.recuperarInfoLicenca = recuperarInfoLicenca;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
