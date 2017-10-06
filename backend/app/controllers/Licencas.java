@@ -13,7 +13,6 @@ public class Licencas extends InternalController{
     	
     	Licenca licenca = Licenca.findById(idLicenca);
     	
-    	
     	renderJSON(licenca, LicencaSerializer.listSuspensao);
     	
     }
