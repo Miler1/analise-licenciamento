@@ -22,7 +22,7 @@ import play.db.jpa.JPA;
 import play.jobs.On;
 import utils.Mensagem;
 
-@On("0 0/1 * 1/1 * ? *")
+@On("cron.processamentoPrazoSuspensao")
 public class ProcessamentoPrazoSuspensao  extends GenericJob {
 	
 	@Override
@@ -30,8 +30,7 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoPrazoSuspensao:: [INICIO-JOB]");
 		verificaPrazoSuspensao();
-		Logger.info("[FIM-JOB] ::ProcessamentoPrazoSuspensao:: [FIM-JOB]");
-		
+		Logger.info("[FIM-JOB] ::ProcessamentoPrazoSuspensao:: [FIM-JOB]");	
 
 	}
 	
@@ -90,8 +89,7 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 						
 							if(processo.objetoTramitavel.condicao.equals(Condicao.SUSPENSO)) {						
 								processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA);
-							}
-							
+							}							
 						}
 						
 						Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.FINALIZADO);
@@ -111,13 +109,11 @@ public class ProcessamentoPrazoSuspensao  extends GenericJob {
 							
 							reverterSuspensao.ativo = true;
 							reverterSuspensao._save();
-						}
-						
+						}						
 						
 						commitTransaction();
 						
-						throw new AppException(Mensagem.ERRO_EMITIR_LICENCAS);
-						
+						throw new AppException(Mensagem.ERRO_EMITIR_LICENCAS);						
 						
 					}
 				}

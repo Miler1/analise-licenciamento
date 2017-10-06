@@ -58,11 +58,9 @@ public class Suspensao extends GenericModel {
 	public Date dataSuspensao;
 	
 	public String justificativa;
-	
-	
+		
 	@Column(name="ativo")
-	public Boolean ativo;
-	
+	public Boolean ativo;	
 	
 	public Suspensao() {
 		
@@ -92,6 +90,8 @@ public class Suspensao extends GenericModel {
 		
 		try {
 			
+			licencaSuspensa.ativo = false;
+			licencaSuspensa.save();
 			this.save();
 			
 			if(deveSuspenderProcesso(this.licenca)) {

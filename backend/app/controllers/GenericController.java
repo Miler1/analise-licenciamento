@@ -231,14 +231,5 @@ public class GenericController extends Controller {
 	
     /**
      * Enable/disable the declared Hibernate filters on session by each request
-     */
-    
-    @Before
-    protected static void setFilters() {
-    	
-    	((Session) JPA.em().getDelegate()).enableFilter("ativoLicenciamento").setParameter("ativo", true);
-    	
-    }
-
-	
+     */	
 }
