@@ -6,6 +6,7 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 	modalCtrl.baixarDocumento = baixarDocumento;
 	modalCtrl.dateUtil = app.utils.DateUtil;
+	modalCtrl.PrazoAnalise = app.utils.PrazoAnalise;
 
 	modalCtrl.abreDocumentacao = true;
 

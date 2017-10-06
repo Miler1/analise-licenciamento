@@ -25,4 +25,5 @@ public class LicencaAnaliseSerializer {
 			"recomendacoes.id",
 			"recomendacoes.texto",
 			"recomendacoes.ordem");
+
 }

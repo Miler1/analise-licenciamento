@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import exceptions.AppException;
 import exceptions.ValidacaoException;
@@ -66,7 +67,10 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	
 	public Boolean emitir;
 	
-	@OneToOne(mappedBy="licencaAnalise")
+	@OneToMany(mappedBy="licencaAnalise")
+	public List<Licenca> licencas;
+	
+	@Transient
 	public Licenca licenca;
 	
 	private static void commit() {
@@ -353,5 +357,18 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		licenca.gerar(this);
 		
 		return licenca;
+	}
+	
+	public Licenca getLicenca() {
+		
+		if(this.licenca != null)
+			return this.licenca;
+
+		if(this.licenca == null && !this.licencas.isEmpty())
+			for(Licenca licenca : this.licencas)
+				if(licenca.ativo)
+					this.licenca = licenca;
+
+		return this.licenca;
 	}
 }

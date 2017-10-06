@@ -247,8 +247,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR && 
-					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
+				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
 			},
 
 			condicaoTramitacao: function(){
@@ -427,4 +426,5 @@ licenciamento
 	.component('visualizarAnaliseJuridica', directives.VisualizarAnaliseJuridica)
 	.component('modalFichaImovel', directives.ModalFichaImovel)
 	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas)
-	.component('tabelaLicencas', directives.TabelaLicencas);
+	.component('tabelaLicencas', directives.TabelaLicencas)
+	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);
