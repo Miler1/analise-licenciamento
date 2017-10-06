@@ -43,11 +43,11 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 											li(ng-if="(licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO || licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO)")
-												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca)")
+												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
 													i.glyphicon.glyphicon-lock
 													span Suspender licença
 											li
-												a(ng-click="" ng-if="LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR")
+												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)" ng-if="LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR")
 													i.glyphicon.glyphicon-eye-open
 													span Cancelar licença
 											li

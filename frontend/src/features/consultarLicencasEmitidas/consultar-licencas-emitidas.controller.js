@@ -35,7 +35,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		return processoService.visualizarProcesso(licenca);
 	}
 
-	function recuperarInfoLicenca(licenca) {
+	function recuperarInfoLicenca(licenca, isSuspensao) {
 
 		var licencaRecuperada = null;
 
@@ -44,7 +44,11 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 				if(response.data.licencaAnalise == null){
 					licencaRecuperada = response.data;
-					return licencaEmitidaService.modalInfoLicencaRecuperada(licencaRecuperada);
+					if(isSuspensao){
+						return licencaEmitidaService.modalInfoSuspensao(licencaRecuperada);
+					} else {
+						return licencaEmitidaService.modalInfoCancelamento(licencaRecuperada);
+					}
 				}
 				licencaRecuperada = response.data.licencaAnalise;
 				licencaRecuperada.numeroProcesso = response.data.licencaAnalise.caracterizacao.numeroProcesso;				
@@ -53,8 +57,11 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 				licencaRecuperada.dataValidade = response.data.dataValidade;
 				licencaRecuperada.id = response.data.id;
 
-				return licencaEmitidaService.modalInfoLicencaRecuperada(licencaRecuperada);
-
+				if(isSuspensao){
+					return licencaEmitidaService.modalInfoSuspensao(licencaRecuperada);
+				} else {
+					return licencaEmitidaService.modalInfoCancelamento(licencaRecuperada);
+				}
 
 			}, function(error) {
 
