@@ -92,4 +92,8 @@ public class Licenca extends GenericModel implements Identificavel {
 	public Boolean isSuspensa() {
 		return Suspensao.find("byLicenca", this).first() != null ? true : false;
 	}
+
+	public LicencaAnalise getLicencaAnalise() {
+		return this.licencaAnalise;
+	}
 }
