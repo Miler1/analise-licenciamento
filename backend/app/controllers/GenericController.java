@@ -228,8 +228,5 @@ public class GenericController extends Controller {
 			this.dados = dados;
 		}
 	}
-	
-    /**
-     * Enable/disable the declared Hibernate filters on session by each request
-     */	
+
 }
