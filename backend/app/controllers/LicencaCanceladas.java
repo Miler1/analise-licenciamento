@@ -12,6 +12,7 @@ public class LicencaCanceladas extends InternalController {
 	public static void cancelarLicenca(LicencaCancelada licencaCancelada) {
 		
 		verificarPermissao(Acao.CANCELAR_LICENCA_EMITIDA);
+		
 		returnIfNull(licencaCancelada, "LicencaCancelada");
     	
 		UsuarioSessao usuarioSessao = getUsuarioSessao();

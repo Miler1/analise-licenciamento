@@ -10,6 +10,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.visualizarProcesso = visualizarProcesso;
 	consultarLicencas.downloadLicenca = downloadLicenca;
 	consultarLicencas.recuperarInfoLicencaSuspender = recuperarInfoLicencaSuspender;
+	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -72,6 +73,20 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 			licencaEmitidaService.downloadLicenca(licenca.idLicenca);
 		}
+	}
+
+	function isSuspensaoVisivel(licenca) {
+
+		if((licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO ||
+			licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO) &&
+			(LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR &&
+				LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken)) {
+			return true;
+
+		}
+
+		return false;
+
 	}
 };
 

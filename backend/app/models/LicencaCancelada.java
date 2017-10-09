@@ -31,7 +31,7 @@ import utils.Mensagem;
 @Table(schema="analise", name="licenca_cancelada")
 public class LicencaCancelada extends GenericModel{
 	
-	public static final String SEQ = "analise.suspensao_id_seq";
+	public static final String SEQ = "analise.licenca_cancelada_id_seq";
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -43,10 +43,10 @@ public class LicencaCancelada extends GenericModel{
 	public Licenca licenca;
 	
 	@ManyToOne
-	@JoinColumn(name="id_usuario_suspensao")
+	@JoinColumn(name="id_usuario_executor")
 	public Usuario usuario;
 	
-	@Column(name="data_cancelada")
+	@Column(name="data_cancelamento")
 	public Date dataCancelada;
 	
 	@JoinColumn(name="justificativa")
