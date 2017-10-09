@@ -102,7 +102,7 @@ public class LicencaCancelada extends GenericModel{
 		destinatarios.addAll(this.licenca.caracterizacao.empreendimento.emailsProprietarios());
 		destinatarios.addAll(this.licenca.caracterizacao.empreendimento.emailsResponsaveis());
 		
-		EmailNotificacaoCancelamentoLicenca emailNotificacao = new EmailNotificacaoCancelamentoLicenca(this.licenca, destinatarios);
+		EmailNotificacaoCancelamentoLicenca emailNotificacao = new EmailNotificacaoCancelamentoLicenca(this, destinatarios);
 		emailNotificacao.enviar();
 		
 	}

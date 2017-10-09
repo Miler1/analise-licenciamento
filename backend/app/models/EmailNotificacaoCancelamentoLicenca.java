@@ -7,19 +7,19 @@ import notifiers.Emails;
 
 public class EmailNotificacaoCancelamentoLicenca extends EmailNotificacao {
 	
-	private Licenca licenca;
+	private LicencaCancelada licencaCancelada;
 	
-	public EmailNotificacaoCancelamentoLicenca(Licenca licenca, List<String> emailsDestinatarios) {
+	public EmailNotificacaoCancelamentoLicenca(LicencaCancelada licencaCancelada, List<String> emailsDestinatarios) {
 		
 		super(emailsDestinatarios);
-		this.licenca = licenca;
+		this.licencaCancelada = licencaCancelada;
 		
 	}
 	
 	@Override
 	public void enviar() {
 
-		Emails.notificarRequerenteCancelamentoLicenca(this.emailsDestinatarios, this.licenca); 
+		Emails.notificarRequerenteCancelamentoLicenca(this.emailsDestinatarios, this.licencaCancelada); 
 	}
 
 }
