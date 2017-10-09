@@ -7,7 +7,7 @@ include ../../layout/components/inputErrors
 		span.sr-only Fechar
 
 	h4.modal-title(ng-if="!$ctrl.resolve.isSuspensao") Visualizar Licença
-	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Justificativa Suspensão da Licença
+	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Justificativa da suspensão da Licença
 
 .modal-body
 
@@ -92,13 +92,13 @@ include ../../layout/components/inputErrors
 		.row
 			form(name="$ctrl.formSuspensaoLicenca")
 				div.col-md-10.form-group
-					textarea.form-control(rows="4", ng-model="$ctrl.justificativa", name="justificativa", required)
+					textarea.textarea--no-resize.form-control(rows="4", ng-model="$ctrl.justificativa", name="justificativa", required)
 
 				div.col-md-2.form-group
 
-					label Prazo de suspensão da(s) licença(s)
+					label.posicionamento-suspensao-licenca Prazo de suspensão da(s) licença(s)
 
-					div.col-sm-6
+					div.col-sm-6.posicionamento-suspensao-licenca
 						input.input-dias.form-control(id="qtdeDiasSuspensao",type="number", name="qtdeDiasSuspensao",
 							ng-model="$ctrl.qtdeDiasSuspensao", max="1900", min="1", required)
 					div.no-margin-dias.col-sm-6
@@ -116,4 +116,4 @@ include ../../layout/components/inputErrors
 		form(name="formSuspensaoLicenca")
 			button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca()", type="submit")
 				i.glyphicon.glyphicon-ok
-				| &nbsp;Confirmar Suspensão da Licença
+				| &nbsp;Confirmar suspensão da Licença
