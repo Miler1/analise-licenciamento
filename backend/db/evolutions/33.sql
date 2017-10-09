@@ -46,8 +46,6 @@ ALTER TABLE analise.suspensao RENAME CONSTRAINT pk_suspensao TO pk_licenca_suspe
 
 ALTER TABLE analise.suspensao RENAME id_usuario_suspensao  TO id_usuario_executor;
 
-ALTER TABLE analise.suspensao RENAME qtde_dias_suspensao  TO quantidade_dias_suspensao;
-
 ALTER TABLE analise.suspensao RENAME TO licenca_suspensa;
 
 # --- !Downs
@@ -63,5 +61,3 @@ ALTER TABLE analise.licenca_suspensa RENAME TO suspensao;
 ALTER TABLE analise.suspensao RENAME CONSTRAINT pk_licenca_suspensa  TO pk_suspensao;
 
 ALTER TABLE analise.suspensao RENAME id_usuario_executor TO id_usuario_suspensao;
-
-ALTER TABLE analise.suspensao RENAME quantidade_dias_suspensao TO qtde_dias_suspensao;
