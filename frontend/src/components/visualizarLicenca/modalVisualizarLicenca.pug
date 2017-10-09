@@ -6,7 +6,7 @@ include ../../layout/components/inputErrors
 		span(aria-hidden='true') ×
 		span.sr-only Fechar
 
-	h4.modal-title(ng-if="!$ctrl.resolve.isSuspensao && !$ctrl.resolve.isCancelamento") Visualizar Licença
+	h4.modal-title(ng-if="!$ctrl.resolve.isSuspensao") Visualizar Licença
 	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Justificativa da suspensão da Licença
 	h4.modal-title(ng-if="$ctrl.resolve.isCancelamento") Cancelamento de Licença
 
