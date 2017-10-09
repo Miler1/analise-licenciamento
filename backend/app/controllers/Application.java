@@ -1,5 +1,6 @@
 package controllers;
 
+import play.Play;
 import security.Auth;
 import security.UsuarioSessao;
 import serializers.ApplicationSerializer;
@@ -22,6 +23,10 @@ public class Application extends GenericController {
 		
 		DadosApp dados = new DadosApp();
 		dados.usuarioSessao = Auth.getUsuarioSessao(session.current());
+		
+		if(Play.mode == Play.Mode.DEV)
+			dados.usuarioSessao.autenticadoViaToken = true;
+		
 		String jsonConfig = ApplicationSerializer.findInfo.serialize(dados);
 		
 		render(jsonConfig);
