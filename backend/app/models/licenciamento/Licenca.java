@@ -83,7 +83,7 @@ public class Licenca extends GenericModel implements Identificavel {
 		c.add(Calendar.YEAR, licencaAnalise.validade);
 		this.dataValidade = c.getTime();
 		this.licencaAnalise = licencaAnalise;
-		
+		this.ativo = true;
 		this.save();
 		
 		this.gerarNumero();

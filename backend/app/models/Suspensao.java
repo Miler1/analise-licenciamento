@@ -33,7 +33,7 @@ import utils.ListUtil;
 import utils.Mensagem;
 
 @Entity
-@Table(schema="analise", name="suspensao")
+@Table(schema="analise", name="licenca_suspensa")
 public class Suspensao extends GenericModel {
 	
 	public static final String SEQ = "analise.suspensao_id_seq";
@@ -48,7 +48,7 @@ public class Suspensao extends GenericModel {
 	public Licenca licenca;
 	
 	@ManyToOne
-	@JoinColumn(name="id_usuario_suspensao")
+	@JoinColumn(name="id_usuario_executor")
 	public Usuario usuario;
 	
 	@Column(name="quantidade_dias_suspensao")
@@ -59,7 +59,6 @@ public class Suspensao extends GenericModel {
 	
 	public String justificativa;
 		
-	@Column(name="ativo")
 	public Boolean ativo;	
 	
 	public Suspensao() {
@@ -77,6 +76,7 @@ public class Suspensao extends GenericModel {
 		
 		Licenca licencaSuspensa = Licenca.findById(this.licenca.id);
 		this.licenca = licencaSuspensa;
+		this.ativo = true;
 		
 		Date validadeLicenca = this.licenca.dataValidade;
 		
