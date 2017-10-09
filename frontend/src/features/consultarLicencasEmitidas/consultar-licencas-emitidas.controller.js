@@ -56,6 +56,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 				licencaRecuperada.dataCadastro = response.data.dataCadastro;
 				licencaRecuperada.dataValidade = response.data.dataValidade;
 				licencaRecuperada.id = response.data.id;
+				licencaRecuperada.nome = response.data.caracterizacao.tipoLicenca.nome;
 
 				if(isSuspensao){
 					return licencaEmitidaService.modalInfoSuspensao(licencaRecuperada);
