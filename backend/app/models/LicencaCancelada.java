@@ -49,7 +49,6 @@ public class LicencaCancelada extends GenericModel{
 	@Column(name="data_cancelamento")
 	public Date dataCancelada;
 	
-	@JoinColumn(name="justificativa")
 	public String justificativa;
 		
 	
@@ -83,7 +82,7 @@ public class LicencaCancelada extends GenericModel{
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROCESSO);
 			}
 			
-			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
+			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.CANCELADO);
 			
 			enviarNotificacaoCanceladoPorEmail();
 			
