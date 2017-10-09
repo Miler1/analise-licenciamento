@@ -11,9 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Filter;
 
 import exceptions.AppException;
 import exceptions.ValidacaoException;
@@ -30,7 +33,7 @@ import utils.ListUtil;
 import utils.Mensagem;
 
 @Entity
-@Table(schema="analise", name="suspensao")
+@Table(schema="analise", name="licenca_suspensa")
 public class Suspensao extends GenericModel {
 	
 	public static final String SEQ = "analise.suspensao_id_seq";
@@ -44,8 +47,8 @@ public class Suspensao extends GenericModel {
 	@JoinColumn(name="id_licenca")
 	public Licenca licenca;
 	
-	@OneToOne
-	@JoinColumn(name="id_usuario_suspensao")
+	@ManyToOne
+	@JoinColumn(name="id_usuario_executor")
 	public Usuario usuario;
 	
 	@Column(name="quantidade_dias_suspensao")
@@ -55,12 +58,17 @@ public class Suspensao extends GenericModel {
 	public Date dataSuspensao;
 	
 	public String justificativa;
-	
+		
+	public Boolean ativo;	
 	
 	public Suspensao() {
 		
 	}
-
+	
+	public static List<Suspensao> findAtivas() {
+		return Suspensao.find("byAtivo", true).fetch();
+	}
+	
 	public void suspenderLicenca(Usuario usuarioExecutor) {
 		
 		Calendar c = Calendar.getInstance();
@@ -68,6 +76,7 @@ public class Suspensao extends GenericModel {
 		
 		Licenca licencaSuspensa = Licenca.findById(this.licenca.id);
 		this.licenca = licencaSuspensa;
+		this.ativo = true;
 		
 		Date validadeLicenca = this.licenca.dataValidade;
 		
@@ -81,6 +90,8 @@ public class Suspensao extends GenericModel {
 		
 		try {
 			
+			licencaSuspensa.ativo = false;
+			licencaSuspensa.save();
 			this.save();
 			
 			if(deveSuspenderProcesso(this.licenca)) {

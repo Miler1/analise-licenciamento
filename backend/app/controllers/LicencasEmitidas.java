@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import builders.LicencaEmitidaBuilder.FiltroLicenca;
+import exceptions.AppException;
 import models.Documento;
 import models.licenciamento.DispensaLicenciamento;
 import models.licenciamento.DocumentoLicenciamento;
@@ -12,6 +13,7 @@ import models.licenciamento.LicencaEmitida;
 import play.db.jpa.JPABase;
 import play.libs.Crypto;
 import security.Acao;
+import utils.Mensagem;
 
 public class LicencasEmitidas extends InternalController {
 	
@@ -69,6 +71,9 @@ public class LicencasEmitidas extends InternalController {
 		
 		Licenca licenca = Licenca.findById(id);
 
+		if(licenca.isSuspensa())
+			throw new AppException(Mensagem.LICENCA_CANCELADA_OU_SUSPENSA);
+		
 		DocumentoLicenciamento documento = DocumentoLicenciamento.findById(licenca.documento.id);
 		
 		File file = documento.getFile();

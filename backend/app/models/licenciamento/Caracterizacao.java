@@ -23,7 +23,6 @@ import javax.persistence.Transient;
 import models.Processo;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
-import play.db.jpa.JPABase;
 import utils.Identificavel;
 
 @Entity
@@ -93,14 +92,17 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@ManyToMany(mappedBy="caracterizacoes")
 	public List<Processo> processos;	
 	
-	@OneToOne(mappedBy="caracterizacao")
-	public Licenca licenca;
+	@OneToMany(mappedBy="caracterizacao")
+	public List<Licenca> licencas;
 	
 	@Transient
 	public Dae dae;
 	
 	@Transient
 	public String linkTaxasLicenciamento;
+	
+	@Transient
+	public Licenca licenca;
 	
 	@Override
 	public Long getId() {
@@ -129,5 +131,18 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 			.setParameter("status", newStatus)
 			.setParameter("idsCaracterizacoes", idsCaracterizacoes)
 			.executeUpdate();
+	}
+	
+	public Licenca getLicenca() {
+		
+		if(this.licenca != null)
+			return this.licenca;
+
+		if(this.licenca == null && !this.licencas.isEmpty())
+			for(Licenca licenca : this.licencas)
+				if(licenca.ativo)
+					this.licenca = licenca;
+
+		return this.licenca;
 	}
 }

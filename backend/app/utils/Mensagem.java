@@ -64,7 +64,8 @@ public enum Mensagem {
 	
 	PRAZO_MAXIMO_SUSPENSAO_EXCEDIDO,
 	LICENCA_SUSPENSA_SUCESSO,
-	ERRO_ENVIAR_EMAIL;
+	ERRO_ENVIAR_EMAIL,
+	LICENCA_CANCELADA_OU_SUSPENSA;
 	
 	public String getTexto(Object ... args) {
 		
