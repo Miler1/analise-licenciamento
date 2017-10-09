@@ -145,4 +145,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 		return this.licenca;
 	}
+	
+	public boolean isSuspensa() {
+		return this.status.equals(StatusCaracterizacao.SUSPENSO);
+	}
 }
