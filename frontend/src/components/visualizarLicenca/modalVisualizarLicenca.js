@@ -55,14 +55,20 @@ var ModalVisualizarLicenca = {
 				return;
 			}
 
-			var cancelamento = {
-				licenca: {
-					id: ctrl.resolve.dadosLicenca.id
-				},
-				justificativa: ctrl.justificativaCancelamento
-			};
+			var cancelamento = null;
 
 			if (ctrl.resolve.dadosLicenca.tipoLicenca != "DLA"){
+
+				cancelamento = {
+					licenca: {
+						id: ctrl.resolve.dadosLicenca.id
+					},
+					usuario: {
+						id: LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id
+					},
+					justificativa: ctrl.justificativaCancelamento
+				};
+
 				licencaEmitidaService.cancelarLicenca(cancelamento)
 					.then(function(response) {
 
@@ -73,8 +79,30 @@ var ModalVisualizarLicenca = {
 						mensagem.error(error.data.texto, {referenceId: 4});
 					}
 				);
+
 			} else {
-				
+
+				cancelamento = {
+					dispensaLicenciamento: {
+						id: ctrl.resolve.dadosLicenca.id
+					},
+					usuario: {
+						id: LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id
+					},
+					justificativa: ctrl.justificativaCancelamento
+				};
+
+			licencaEmitidaService.cancelarDLA(cancelamento)
+				.then(function(response) {
+
+					mensagem.success(response.data.texto, {referenceId: 0});
+					ctrl.dismiss({$value: 'close'});
+				}, function(error) {
+
+					mensagem.error(error.data.texto, {referenceId: 4});
+				}
+			);
+
 			}
 		};
 

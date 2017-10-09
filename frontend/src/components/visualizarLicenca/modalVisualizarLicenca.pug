@@ -116,7 +116,7 @@ include ../../layout/components/inputErrors
 	div(ng-if="$ctrl.resolve.isCancelamento")
 		form(name="$ctrl.formCancelamentoLicenca")
 			label.margin-right-xs Justificativa do cancelamento da licença: 
-			textarea.form-control(rows="4", ng-model="$ctrl.justificativaCancelamento", name="justificativaCancelamento", required)
+			textarea.textarea--no-resize.form-control(rows="4", ng-model="$ctrl.justificativaCancelamento", name="justificativaCancelamento", required)
 
 .modal-footer#footer-modal
 
