@@ -59,7 +59,6 @@ public class Suspensao extends GenericModel {
 	
 	public String justificativa;
 		
-
 	public Boolean ativo;	
 	
 	public Suspensao() {
@@ -77,6 +76,7 @@ public class Suspensao extends GenericModel {
 		
 		Licenca licencaSuspensa = Licenca.findById(this.licenca.id);
 		this.licenca = licencaSuspensa;
+		this.ativo=true;
 		
 		Date validadeLicenca = this.licenca.dataValidade;
 		
