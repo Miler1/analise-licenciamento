@@ -7,8 +7,8 @@ include ../../layout/components/inputErrors
 		span.sr-only Fechar
 
 	h4.modal-title(ng-if="!$ctrl.resolve.isSuspensao && !$ctrl.resolve.isCancelamento") Visualizar Licença
-	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Justificativa da suspensão da Licença
-	h4.modal-title(ng-if="$ctrl.resolve.isCancelamento") Cancelamento de Licença
+	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Justificativa da suspensão da licença
+	h4.modal-title(ng-if="$ctrl.resolve.isCancelamento") Cancelamento de licença
 
 .modal-body
 
@@ -134,4 +134,4 @@ include ../../layout/components/inputErrors
 		form(name="formCancelamentoLicenca")
 			button.btn.btn-default.pull-right(ng-click="$ctrl.cancelarLicenca()", type="submit")
 				i.glyphicon.glyphicon-ok
-				| &nbsp;Confirmar cancelamento da Licença
+				| &nbsp;Confirmar cancelamento da licença

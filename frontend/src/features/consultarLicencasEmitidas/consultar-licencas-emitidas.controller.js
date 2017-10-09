@@ -11,6 +11,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.downloadLicenca = downloadLicenca;
 	consultarLicencas.recuperarInfoLicenca = recuperarInfoLicenca;
 	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
+	consultarLicencas.isCancelamentoVisivel = isCancelamentoVisivel;	
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -98,6 +99,16 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		return false;
 
 	}
+
+	function isCancelamentoVisivel(licenca) {
+
+				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR &&
+					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken) {
+					return true;
+				}
+
+				return false;
+			}
 };
 
 exports.controllers.ConsultarLicencasEmitidasController = ConsultarLicencasEmitidasController;
