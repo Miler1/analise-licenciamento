@@ -228,5 +228,5 @@ public class GenericController extends Controller {
 			this.dados = dados;
 		}
 	}
-	
+
 }

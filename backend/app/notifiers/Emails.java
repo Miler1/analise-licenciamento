@@ -51,7 +51,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> notificarRequerenteCancelamentoLicenca(List<String> destinatarios, Licenca licenca) {
 		
 		setSubject("Notificacao referente ao cancelamento da licenca %s(%s)", licenca.caracterizacao.tipoLicenca.nome, licenca.numero);
-		setFrom("Análise<"+ Play.configuration.getProperty("mail.smtp.sender") + ">");
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") + ">");
 		for(String email:destinatarios) {
 			
 			addRecipient(email);

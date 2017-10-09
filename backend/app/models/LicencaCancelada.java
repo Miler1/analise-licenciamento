@@ -16,10 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Filter;
-
 import exceptions.AppException;
-import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
@@ -27,14 +24,12 @@ import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
-import utils.DateUtil;
 import utils.ListUtil;
 import utils.Mensagem;
 
 @Entity
-@Table(schema="analise", name="suspensao")
-public class Suspensao extends GenericModel {
+@Table(schema="analise", name="licenca_cancelada")
+public class LicencaCancelada extends GenericModel{
 	
 	public static final String SEQ = "analise.suspensao_id_seq";
 	
@@ -51,57 +46,46 @@ public class Suspensao extends GenericModel {
 	@JoinColumn(name="id_usuario_suspensao")
 	public Usuario usuario;
 	
-	@Column(name="quantidade_dias_suspensao")
-	public Integer qtdeDiasSuspensao;
+	@Column(name="data_cancelada")
+	public Date dataCancelada;
 	
-	@Column(name="data_suspensao")
-	public Date dataSuspensao;
-	
+	@JoinColumn(name="justificativa")
 	public String justificativa;
 		
-	@Column(name="ativo")
-	public Boolean ativo;	
 	
-	public Suspensao() {
+	public LicencaCancelada() {
 		
 	}
 	
-	public static List<Suspensao> findAtivas() {
-		return Suspensao.find("byAtivo", true).fetch();
+	public Boolean isCancelado() {
+		return this.licenca.caracterizacao.status.equals(StatusCaracterizacao.CANCELADO);
 	}
 	
-	public void suspenderLicenca(Usuario usuarioExecutor) {
+	public void cancelarLicenca(Usuario usuarioExecutor) {
 		
 		Calendar c = Calendar.getInstance();
 		Date dataAtual = c.getTime();
 		
-		Licenca licencaSuspensa = Licenca.findById(this.licenca.id);
-		this.licenca = licencaSuspensa;
+		Licenca licenca = Licenca.findById(this.licenca.id);
+		licenca.ativo = false;
 		
-		Date validadeLicenca = this.licenca.dataValidade;
-		
-		Integer maxPrazo = DateUtil.getDiferencaEmDias(dataAtual, validadeLicenca);
-		
-		if(this.qtdeDiasSuspensao > maxPrazo)
-			throw new ValidacaoException(Mensagem.PRAZO_MAXIMO_SUSPENSAO_EXCEDIDO, maxPrazo.toString());
-		
-		this.dataSuspensao = dataAtual;
+		this.licenca = licenca;
 		this.usuario = usuarioExecutor;
+		this.dataCancelada = dataAtual; 
 		
 		try {
 			
-			licencaSuspensa.ativo = false;
-			licencaSuspensa.save();
+			licenca.save();
 			this.save();
 			
-			if(deveSuspenderProcesso(this.licenca)) {
+			if(deveCancelarProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
-				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROCESSO, usuarioExecutor);
+				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROCESSO);
 			}
 			
 			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
 			
-			enviarNotificacaoSuspensaoPorEmail();
+			enviarNotificacaoCanceladoPorEmail();
 			
 		} catch (Exception e) {
 			
@@ -112,34 +96,35 @@ public class Suspensao extends GenericModel {
 		
 	}
 	
-	private void enviarNotificacaoSuspensaoPorEmail() {
+	private void enviarNotificacaoCanceladoPorEmail() {
 		
 		List<String> destinatarios = new ArrayList<String>();
 		destinatarios.addAll(this.licenca.caracterizacao.empreendimento.emailsProprietarios());
 		destinatarios.addAll(this.licenca.caracterizacao.empreendimento.emailsResponsaveis());
 		
-		EmailNotificacaoSuspensaoLicenca emailNotificacao = new EmailNotificacaoSuspensaoLicenca(this, destinatarios);
+		EmailNotificacaoCancelamentoLicenca emailNotificacao = new EmailNotificacaoCancelamentoLicenca(this.licenca, destinatarios);
 		emailNotificacao.enviar();
 		
 	}
 	
-	private Boolean deveSuspenderProcesso(Licenca licenca) {
+	private Boolean deveCancelarProcesso(Licenca licenca) {
 		
 		if(licenca.licencaAnalise == null)
 			return false;
 		
 		Processo processo = licenca.licencaAnalise.analiseTecnica.analise.processo;
 		
-		int numLicencasSuspensas = 0;
+		int numLicencasCanceladas = 0;
 		
 		for(Caracterizacao caracterizacao : processo.caracterizacoes) {
-			if(caracterizacao.licenca.isSuspensa())
-				numLicencasSuspensas++;
+			if(caracterizacao.licenca.isCancelado())
+				numLicencasCanceladas++;
 		}
 		
-		if(processo.caracterizacoes.size() == numLicencasSuspensas)
+		if(processo.caracterizacoes.size() == numLicencasCanceladas)
 			return true;
 		
 		return false;
 	}
+
 }

@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -21,7 +23,6 @@ import models.EmailNotificacaoSuspensaoLicenca;
 import models.LicencaAnalise;
 import models.Processo;
 import models.Suspensao;
-import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
@@ -40,7 +41,7 @@ public class Licenca extends GenericModel implements Identificavel {
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id", nullable = false)
 	public Caracterizacao caracterizacao;
 	
@@ -56,9 +57,19 @@ public class Licenca extends GenericModel implements Identificavel {
 	@Column(name = "data_validade")
 	public Date dataValidade;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="id_licenca_analise")
 	public LicencaAnalise licencaAnalise;
+	
+	@OneToOne
+	@JoinColumn(name="id_licenca_anterior")
+	public Licenca licencaAnterior;
+	
+	@Column(name = "data_validade_prorrogada")
+	public Date dataValidadeProrrogada;
+	
+	@OneToOne(mappedBy="licenca")
+	public Suspensao suspensao;
 	
 	public Boolean ativo;
 
@@ -103,67 +114,14 @@ public class Licenca extends GenericModel implements Identificavel {
 	}
 	
 	public Boolean isSuspensa() {
-		return Suspensao.find("byLicenca", this).first() != null ? true : false;
+		return this.caracterizacao.status.equals(StatusCaracterizacao.SUSPENSO);
 	}
 	
 	public Boolean isCancelado() {
-		return Licenca.find("byAtivo", this).first() != null ? true : false;
+		return this.caracterizacao.status.equals(StatusCaracterizacao.CANCELADO);
 	}
-	
-	public void cancelarLicenca() {
-		
-		this.ativo = false;
-		
-		try {
-			
-			this.save();
-			
-			if(deveCancelarProcesso(this)) {
-				Processo processo = this.licencaAnalise.analiseTecnica.analise.processo;
-				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROCESSO);
-			}
-			
-			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
-			
-			enviarNotificacaoCanceladoPorEmail();
-			
-		} catch (Exception e) {
-			
-			Logger.error(e, e.getMessage());
-			throw new AppException(Mensagem.ERRO_ENVIAR_EMAIL, e.getMessage());
-			
-		}
-		
-	}
-	
-	private void enviarNotificacaoCanceladoPorEmail() {
-		
-		List<String> destinatarios = new ArrayList<String>();
-		destinatarios.addAll(this.caracterizacao.empreendimento.emailsProprietarios());
-		destinatarios.addAll(this.caracterizacao.empreendimento.emailsResponsaveis());
-		
-		EmailNotificacaoCancelamentoLicenca emailNotificacao = new EmailNotificacaoCancelamentoLicenca(this, destinatarios);
-		emailNotificacao.enviar();
-		
-	}
-	
-	private Boolean deveCancelarProcesso(Licenca licenca) {
-		
-		if(licenca.licencaAnalise == null)
-			return false;
-		
-		Processo processo = licenca.licencaAnalise.analiseTecnica.analise.processo;
-		
-		int numLicencasCanceladas = 0;
-		
-		for(Caracterizacao caracterizacao : processo.caracterizacoes) {
-			if(caracterizacao.licenca.isSuspensa())
-				numLicencasCanceladas++;
-		}
-		
-		if(processo.caracterizacoes.size() == numLicencasCanceladas)
-			return true;
-		
-		return false;
+
+	public LicencaAnalise getLicencaAnalise() {
+		return this.licencaAnalise;
 	}
 }
