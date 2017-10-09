@@ -9,7 +9,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.onPaginaAlterada = onPaginaAlterada;
 	consultarLicencas.visualizarProcesso = visualizarProcesso;
 	consultarLicencas.downloadLicenca = downloadLicenca;
-	consultarLicencas.recuperarInfoLicencaSuspender = recuperarInfoLicencaSuspender;
+	consultarLicencas.recuperarInfoLicenca = recuperarInfoLicenca;
 	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
 
 	consultarLicencas.licencas = [];
@@ -36,26 +36,36 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		return processoService.visualizarProcesso(licenca);
 	}
 
-	function recuperarInfoLicencaSuspender(licenca) {
+	function recuperarInfoLicenca(licenca, isSuspensao) {
 
-		var licencaSuspender = null;
+		var licencaRecuperada = null;
 
 		licencaService.findInfoLicenca(licenca.idLicenca)
 			.then(function(response) {
 
 				if(response.data.licencaAnalise == null){
-					licencaSuspender = response.data;
-					return licencaEmitidaService.modalInfoLicencaSuspender(licencaSuspender);
+					licencaRecuperada = response.data;
+					licencaRecuperada.numeroProcesso = licenca.numeroProcesso;
+					if(isSuspensao){
+						return licencaEmitidaService.modalInfoSuspensao(licencaRecuperada);
+					} else {
+						return licencaEmitidaService.modalInfoCancelamento(licencaRecuperada);
+					}
 				}
-				licencaSuspender = response.data.licencaAnalise;
-				licencaSuspender.numeroProcesso = response.data.licencaAnalise.caracterizacao.numeroProcesso;				
-				licencaSuspender.caracterizacao = response.data.caracterizacao;
-				licencaSuspender.dataCadastro = response.data.dataCadastro;
-				licencaSuspender.dataValidade = response.data.dataValidade;
-				licencaSuspender.id = response.data.id;
+				licencaRecuperada = response.data.licencaAnalise;
+				licencaRecuperada.caracterizacao = response.data.caracterizacao;
+				licencaRecuperada.dataCadastro = response.data.dataCadastro;
+				licencaRecuperada.dataValidade = response.data.dataValidade;
+				licencaRecuperada.id = response.data.id;
+				licencaRecuperada.nome = response.data.caracterizacao.tipoLicenca.nome;
+				licencaRecuperada.numeroProcesso = licenca.numeroProcesso;
+				licencaRecuperada.tipoLicenca = licenca.tipoLicenca;
 
-				return licencaEmitidaService.modalInfoLicencaSuspender(licencaSuspender);
-
+				if(isSuspensao){
+					return licencaEmitidaService.modalInfoSuspensao(licencaRecuperada);
+				} else {
+					return licencaEmitidaService.modalInfoCancelamento(licencaRecuperada);
+				}
 
 			}, function(error) {
 

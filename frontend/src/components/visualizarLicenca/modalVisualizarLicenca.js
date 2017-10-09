@@ -45,6 +45,39 @@ var ModalVisualizarLicenca = {
 				});
 		};
 
+		ctrl.cancelarLicenca = function(){
+			
+			ctrl.formCancelamentoLicenca.$setSubmitted();
+
+			if(!ctrl.formCancelamentoLicenca.$valid) {
+				
+				mensagem.error('Por favor, preencha a justificativa para o cancelamento da licença.', {referenceId: 4});
+				return;
+			}
+
+			var cancelamento = {
+				licenca: {
+					id: ctrl.resolve.dadosLicenca.id
+				},
+				justificativa: ctrl.justificativaCancelamento
+			};
+
+			if (ctrl.resolve.dadosLicenca.tipoLicenca != "DLA"){
+				licencaEmitidaService.cancelarLicenca(cancelamento)
+					.then(function(response) {
+
+						mensagem.success(response.data.texto, {referenceId: 0});
+						ctrl.dismiss({$value: 'close'});
+					}, function(error) {
+
+						mensagem.error(error.data.texto, {referenceId: 4});
+					}
+				);
+			} else {
+				
+			}
+		};
+
 	},
 	templateUrl: 'components/visualizarLicenca/modalVisualizarLicenca.html'
 };

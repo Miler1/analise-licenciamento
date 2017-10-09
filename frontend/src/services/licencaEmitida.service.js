@@ -34,7 +34,7 @@ var LicencaEmitidaService = function(request, config, $uibModal) {
 		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/download";
 	};
 
-	this.modalInfoLicencaSuspender = function(licencaSuspender) {
+	this.modalInfoSuspensao = function(licencaRecuperada) {
 		
 		var modalInstance = $uibModal.open({
 
@@ -44,9 +44,25 @@ var LicencaEmitidaService = function(request, config, $uibModal) {
 
 				dadosLicenca: function () {
 
-					return licencaSuspender;
+					return licencaRecuperada;
 				},
 				isSuspensao: true
+			}
+		});
+	};
+
+	this.modalInfoCancelamento = function(licencaRecuperada) {
+		var modalInstance = $uibModal.open({
+			
+			component: 'modalVisualizarLicenca',
+			size: 'lg',
+			resolve: {
+
+				dadosLicenca: function () {
+
+					return licencaRecuperada;
+				},
+				isCancelamento: true
 			}
 		});
 	};
@@ -55,6 +71,12 @@ var LicencaEmitidaService = function(request, config, $uibModal) {
 
 		return request
 			.post(config.BASE_URL() + "suspensoes/licenca", suspensao);
+	};
+
+	this.cancelarLicenca = function(cancelamento){
+
+		return request
+			.post(config.BASE_URL() + "cancelamentos/licenca", cancelamento);
 	};
 };
 
