@@ -72,6 +72,12 @@ var LicencaEmitidaService = function(request, config, $uibModal) {
 		return request
 			.post(config.BASE_URL() + "suspensoes/licenca", suspensao);
 	};
+
+	this.cancelarLicenca = function(cancelamento){
+		
+				return request
+					.post(config.BASE_URL() + "cancelamentos/licenca", cancelamento);
+			};
 };
 
 exports.services.LicencaEmitidaService = LicencaEmitidaService;
