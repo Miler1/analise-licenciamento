@@ -21,14 +21,7 @@ include ../../layout/components/inputErrors
 
 		br
 
-	div.info-licenca-processo(ng-if="$ctrl.resolve.isCancelamento")
-		blockquote 
-			label.tituloMaior Informações da Licença
-			p {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
-			p Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
-			p Validade: {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
-
-	div.info-licenca-processo(ng-if="$ctrl.resolve.isSuspensao")
+	div.info-licenca-processo(ng-if="$ctrl.resolve.isSuspensao || $ctrl.resolve.isCancelamento")
 		blockquote
 			label.tituloMaior Informações da Licença:
 			p {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
@@ -36,11 +29,10 @@ include ../../layout/components/inputErrors
 		blockquote
 			label.tituloMaior Informações do Processo:
 			p Número: {{$ctrl.resolve.dadosLicenca.numeroProcesso ? $ctrl.resolve.dadosLicenca.numeroProcesso : '-'}}
-			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.responsaveis[0].pessoa.cpf}}
+			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj ? $ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj : $ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cpf}}
 			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
-			p Município: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.endereco.municipio.nome}}
+			p Município: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.nome + '/' + $ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.estado.codigo}}
 			p Validade: {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
-
 
 
 	.form-group(ng-if="!$ctrl.resolve.isSuspensao && !$ctrl.resolve.isCancelamento")

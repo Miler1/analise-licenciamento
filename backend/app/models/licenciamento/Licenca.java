@@ -1,9 +1,7 @@
 package models.licenciamento;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,25 +9,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import exceptions.AppException;
-import models.EmailNotificacaoCancelamentoLicenca;
-import models.EmailNotificacaoSuspensaoLicenca;
-import models.tramitacao.AcaoTramitacao;
-import play.Logger;
 import models.LicencaAnalise;
-import models.Processo;
 import models.Suspensao;
-import models.licenciamento.StatusCaracterizacao;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
-import utils.ListUtil;
-import utils.Mensagem;
 
 @Entity
 @Table(schema = "licenciamento", name = "licenca")
