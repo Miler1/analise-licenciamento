@@ -13,6 +13,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.recuperarInfoLicenca = recuperarInfoLicenca;
 	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
 	consultarLicencas.isCancelamentoVisivel = isCancelamentoVisivel;	
+	consultarLicencas.ajustarTamanhoContainer = ajustarTamanhoContainer;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -181,6 +182,29 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 			pesquisar();
 		});
 
+	}
+
+	function ajustarTamanhoContainer(isUltimo) {
+
+		if(!isUltimo)
+			return;
+
+		var lastDropdown = angular.element(".last-dropdown");
+		var ul = lastDropdown.find('ul');
+		var container = angular.element("section.container.main-container");
+		var containerPaddingBottom = parseInt(container.css("padding-bottom"), 10);
+
+		setTimeout(function(){
+
+			if(lastDropdown.hasClass("open")) {
+
+				container.css("padding-bottom", (containerPaddingBottom + (ul.height()/2)));
+
+			} else {
+				container.css("padding-bottom", (containerPaddingBottom - (ul.height()/2)));
+			}
+
+		},0);
 	}
 
 };
