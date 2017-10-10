@@ -63,9 +63,6 @@ var ModalVisualizarLicenca = {
 					licenca: {
 						id: ctrl.resolve.dadosLicenca.id
 					},
-					usuario: {
-						id: LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id
-					},
 					justificativa: ctrl.justificativaCancelamento
 				};
 
@@ -85,9 +82,6 @@ var ModalVisualizarLicenca = {
 				cancelamento = {
 					dispensaLicenciamento: {
 						id: ctrl.resolve.dadosLicenca.id
-					},
-					usuario: {
-						id: LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id
 					},
 					justificativa: ctrl.justificativaCancelamento
 				};
