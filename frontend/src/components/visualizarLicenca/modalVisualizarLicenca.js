@@ -57,7 +57,7 @@ var ModalVisualizarLicenca = {
 
 			var cancelamento = null;
 
-			if (ctrl.resolve.dadosLicenca.tipoLicenca != "DLA"){
+			if (ctrl.resolve.dadosLicenca.tipoLicenca !== app.ORIGEM_LICENCA.DISPENSA){
 
 				cancelamento = {
 					licenca: {

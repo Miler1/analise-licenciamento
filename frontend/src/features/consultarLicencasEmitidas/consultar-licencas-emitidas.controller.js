@@ -1,4 +1,5 @@
-var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, licencaEmitidaService, licencaService, $uibModal, mensagem) {
+var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService,
+	licencaEmitidaService, licencaService, $uibModal, mensagem, dispensaLicencaService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR LICENCAS EMITIDAS';
 
@@ -43,6 +44,15 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	function recuperarInfoLicenca(licenca, isSuspensao) {
 
+		if (licenca.origemLicenca === app.ORIGEM_LICENCA.DISPENSA)
+			preparaDLAParaSuspensaoOuCancelamento(licenca);
+		else
+			preparaLicencaParaSuspensaoOuCancelamento(licenca, isSuspensao);
+
+	}
+
+	function preparaLicencaParaSuspensaoOuCancelamento(licenca, isSuspensao) {
+
 		var licencaRecuperada = null;
 
 		licencaService.findInfoLicenca(licenca.idLicenca)
@@ -71,6 +81,26 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 				} else {
 					return openModalInfoCancelamento(licencaRecuperada);
 				}
+
+			}, function(error) {
+
+				mensagem.error(error.data.texto);
+			});
+
+	}
+
+	function preparaDLAParaSuspensaoOuCancelamento(dla) {
+
+		var dlaRecuperada = null;
+
+		dispensaLicencaService.findInfoDLA(dla.idLicenca)
+			.then(function(response) {
+
+				dlaRecuperada = response.data;
+				dlaRecuperada.numeroProcesso = response.data.caracterizacao.numeroProcesso;
+				dlaRecuperada.tipoLicenca = dla.origemLicenca;
+
+				return openModalInfoCancelamento(dlaRecuperada);
 
 			}, function(error) {
 

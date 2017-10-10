@@ -49,7 +49,7 @@ var LicencaEmitidaService = function(request, config) {
 	this.cancelarDLA = function(cancelamento) {
 
 		return request
-			.post(confg.BASE_URL() + "cancelamentos/dla", cancelamento);
+			.post(config.BASE_URL() + "cancelamentos/dla", cancelamento);
 	};
 };
 

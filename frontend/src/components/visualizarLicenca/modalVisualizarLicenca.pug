@@ -32,7 +32,7 @@ include ../../layout/components/inputErrors
 			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj ? ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj | brCpfCnpj) : ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cpf | brCpfCnpj)}}
 			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
 			p Município: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.nome + '/' + $ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.estado.codigo}}
-			p Validade: {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
+			p(ng-if="$ctrl.resolve.dadosLicenca.validade") Validade: {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
 
 
 	.form-group(ng-if="!$ctrl.resolve.isSuspensao && !$ctrl.resolve.isCancelamento")

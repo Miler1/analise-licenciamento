@@ -393,7 +393,8 @@ utils.services(licenciamento)
 	.add('coordenadorService', services.CoordenadorService)
 	.add('licencaEmitidaService', services.LicencaEmitidaService)
 	.add('tipoLicencaService', services.TipoLicencaService)
-	.add('licencaService', services.LicencaService);
+	.add('licencaService', services.LicencaService)
+	.add('dispensaLicencaService', services.DispensaLicencaService);
 
 
 utils.filters(licenciamento)
