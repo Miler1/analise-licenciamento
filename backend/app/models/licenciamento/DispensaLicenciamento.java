@@ -40,4 +40,8 @@ public class DispensaLicenciamento extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id", nullable = false)
 	public Caracterizacao caracterizacao;
+	
+	public String numero;
+	
+	public Boolean ativo;
 }
