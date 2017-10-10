@@ -73,12 +73,12 @@ public class LicencaCancelada extends GenericModel{
 			licenca.save();
 			this.save();
 			
+			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.CANCELADO);
+			
 			if(deveCancelarProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROCESSO);
 			}
-			
-			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.CANCELADO);
 			
 			enviarNotificacaoCanceladoPorEmail();
 			
@@ -116,7 +116,7 @@ public class LicencaCancelada extends GenericModel{
 				numLicencasCanceladas++;
 		}
 		
-		if(processo.caracterizacoes.size() == numLicencasCanceladas)
+		if(processo.getCaracterizacoesNaoArquivadas().size()-1 == numLicencasCanceladas)
 			return true;
 		
 		return false;

@@ -137,7 +137,7 @@ public class Suspensao extends GenericModel {
 				numLicencasSuspensas++;
 		}
 		
-		if(processo.caracterizacoes.size()-1 == numLicencasSuspensas)
+		if(processo.getCaracterizacoesNaoArquivadas().size()-1 == numLicencasSuspensas)
 			return true;
 		
 		return false;

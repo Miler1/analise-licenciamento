@@ -477,5 +477,17 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return tiposLicenca;
 		
 	}
+	
+	public List<Caracterizacao> getCaracterizacoesNaoArquivadas() {
+		
+		List<Caracterizacao> caracterizacoes = new ArrayList<>();
+		
+		for(Caracterizacao caracterizacao : this.caracterizacoes)
+			if(!caracterizacao.isArquivada())
+				caracterizacoes.add(caracterizacao);
+		
+		return caracterizacoes;
+		
+	}
 
 }
