@@ -28,13 +28,12 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
 					validacaoAnaliseAprovador.imovel = validacaoAnaliseAprovador.analise.processo.empreendimento.imovel;
 				carregarDadosAnaliseJuridica();
 				carregarDadosAnaliseTecnica();
-				
+				carregarDadosAnaliseGeo();
 			});
 	
 		analiseTecnicaService.getAnaliseTecnica($routeParams.idAnalise)
 			.then(function(response){
 				validacaoAnaliseAprovador.analiseTecnica = response.data;				
-				carregarDadosAnaliseGeo();
 			});
 	}
 
