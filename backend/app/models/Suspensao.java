@@ -94,12 +94,12 @@ public class Suspensao extends GenericModel {
 			licencaSuspensa.save();
 			this.save();
 			
+			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
+			
 			if(deveSuspenderProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROCESSO, usuarioExecutor);
 			}
-			
-			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
 			
 			enviarNotificacaoSuspensaoPorEmail();
 			
@@ -137,7 +137,7 @@ public class Suspensao extends GenericModel {
 				numLicencasSuspensas++;
 		}
 		
-		if(processo.caracterizacoes.size() == numLicencasSuspensas)
+		if(processo.caracterizacoes.size()-1 == numLicencasSuspensas)
 			return true;
 		
 		return false;

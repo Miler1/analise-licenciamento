@@ -103,11 +103,11 @@ public class Licenca extends GenericModel implements Identificavel {
 	}
 	
 	public Boolean isSuspensa() {
-		return this.caracterizacao.status.equals(StatusCaracterizacao.SUSPENSO);
+		return this.caracterizacao.status.id.equals(StatusCaracterizacao.SUSPENSO);
 	}
 	
 	public Boolean isCancelado() {
-		return this.caracterizacao.status.equals(StatusCaracterizacao.CANCELADO);
+		return this.caracterizacao.status.id.equals(StatusCaracterizacao.CANCELADO);
 	}
 
 	public LicencaAnalise getLicencaAnalise() {
