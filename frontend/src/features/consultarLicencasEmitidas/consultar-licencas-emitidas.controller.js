@@ -27,9 +27,13 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		consultarLicencas.paginacao.update(totalItens, paginaAtual);
 	}
 
+	function pesquisar() {
+		$scope.$broadcast('pesquisarLicencas');
+	}
+
 	function onPaginaAlterada(){
 
-		$scope.$broadcast('pesquisarLicencas');
+		pesquisar();
 	}
 
 	function visualizarProcesso(licenca) {
@@ -45,27 +49,27 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 			.then(function(response) {
 
 				if(response.data.licencaAnalise == null){
+
 					licencaRecuperada = response.data;
-					licencaRecuperada.numeroProcesso = licenca.numeroProcesso;
-					if(isSuspensao){
-						return licencaEmitidaService.modalInfoSuspensao(licencaRecuperada);
-					} else {
-						return licencaEmitidaService.modalInfoCancelamento(licencaRecuperada);
-					}
+
+				} else {
+
+					licencaRecuperada = response.data.licencaAnalise;
+					licencaRecuperada.caracterizacao = response.data.caracterizacao;
+					licencaRecuperada.dataCadastro = response.data.dataCadastro;
+					licencaRecuperada.dataValidade = response.data.dataValidade;
+					licencaRecuperada.id = response.data.id;
+					licencaRecuperada.nome = response.data.caracterizacao.tipoLicenca.nome;
+					licencaRecuperada.tipoLicenca = licenca.tipoLicenca;
+
 				}
-				licencaRecuperada = response.data.licencaAnalise;
-				licencaRecuperada.caracterizacao = response.data.caracterizacao;
-				licencaRecuperada.dataCadastro = response.data.dataCadastro;
-				licencaRecuperada.dataValidade = response.data.dataValidade;
-				licencaRecuperada.id = response.data.id;
-				licencaRecuperada.nome = response.data.caracterizacao.tipoLicenca.nome;
+
 				licencaRecuperada.numeroProcesso = licenca.numeroProcesso;
-				licencaRecuperada.tipoLicenca = licenca.tipoLicenca;
 
 				if(isSuspensao){
-					return licencaEmitidaService.modalInfoSuspensao(licencaRecuperada);
+					return openModalInfoSuspensao(licencaRecuperada);
 				} else {
-					return licencaEmitidaService.modalInfoCancelamento(licencaRecuperada);
+					return openModalInfoCancelamento(licencaRecuperada);
 				}
 
 			}, function(error) {
@@ -102,13 +106,53 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	function isCancelamentoVisivel(licenca) {
 
-				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR &&
-					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken) {
-					return true;
-				}
+		if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR &&
+			LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken) {
+			return true;
+		}
 
-				return false;
+		return false;
+	}
+
+	function openModalInfoSuspensao(licencaRecuperada) {
+		
+		var modalInstance = $uibModal.open({
+
+			component: 'modalVisualizarLicenca',
+			size: 'lg',
+			resolve: {
+
+				dadosLicenca: function () {
+
+					return licencaRecuperada;
+				},
+				isSuspensao: true
 			}
+		}).closed.then(function(){
+			pesquisar();
+		});
+	}
+
+	function openModalInfoCancelamento(licencaRecuperada) {
+
+		var modalInstance = $uibModal.open({
+			
+			component: 'modalVisualizarLicenca',
+			size: 'lg',
+			resolve: {
+
+				dadosLicenca: function () {
+
+					return licencaRecuperada;
+				},
+				isCancelamento: true
+			}
+		}).closed.then(function(){
+			pesquisar();
+		});
+
+	}
+
 };
 
 exports.controllers.ConsultarLicencasEmitidasController = ConsultarLicencasEmitidasController;

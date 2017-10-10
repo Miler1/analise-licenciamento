@@ -3,6 +3,7 @@
   dispensaLicenciamento = dlaCancelada.dispensaLicenciamento;
   numProcesso = dispensaLicenciamento.caracterizacao.numeroProcesso;
   empreendimento = dispensaLicenciamento.caracterizacao.empreendimento;
+  empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
   bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
   numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
   cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
@@ -28,7 +29,7 @@
 	<p><strong>Processo N&ordm;:</strong>${numProcesso}</p>
 	<p><strong>DLA N&ordm;:</strong>${dispensaLicenciamento.numero}</p>
 	
-	<p>${empreendimento.pessoa.nome}</p>
+	<p>${empreendimentoNome}</p>
 	
 	<p>End: ${end}</p>
 	

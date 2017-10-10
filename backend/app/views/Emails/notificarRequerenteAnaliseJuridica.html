@@ -2,6 +2,7 @@
 %{
   processo = analiseJuridica.analise.processo;
   empreendimento = analiseJuridica.analise.processo.empreendimento;
+  empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
   atividade = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade;
   bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
   numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
@@ -27,7 +28,7 @@
 	
 	<p><strong>Processo N&ordm;:</strong>${processo.numero}</p>
 	
-	<p>${empreendimento.pessoa.nome}</p>
+	<p>${empreendimentoNome}</p>
 	
 	<p>End: ${end} </p>
 	

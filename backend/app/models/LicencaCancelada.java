@@ -112,7 +112,7 @@ public class LicencaCancelada extends GenericModel{
 		int numLicencasCanceladas = 0;
 		
 		for(Caracterizacao caracterizacao : processo.caracterizacoes) {
-			if(caracterizacao.licenca.isCancelado())
+			if(caracterizacao.isCancelado())
 				numLicencasCanceladas++;
 		}
 		
