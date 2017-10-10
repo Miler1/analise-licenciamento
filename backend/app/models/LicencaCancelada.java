@@ -56,10 +56,6 @@ public class LicencaCancelada extends GenericModel{
 		
 	}
 	
-	public Boolean isCancelado() {
-		return this.licenca.caracterizacao.status.equals(StatusCaracterizacao.CANCELADO);
-	}
-	
 	public void cancelarLicenca(Usuario usuarioExecutor) {
 		
 		Calendar c = Calendar.getInstance();
