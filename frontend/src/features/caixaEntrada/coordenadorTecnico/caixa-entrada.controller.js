@@ -158,7 +158,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function afterUpdateFilters(filtro) {
 
-		cxEntCoordenadorTecnico.selecionouUmGerente = !!filtro.idSetor;
+		cxEntCoordenadorTecnico.selecionouUmGerente = !!filtro.idSetorGerencia;
 
 		if (!cxEntCoordenadorTecnico.selecionouUmGerente) {
 
