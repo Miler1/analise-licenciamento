@@ -43,12 +43,12 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 											li(ng-if="consultarLicencas.isSuspensaoVisivel(licenca)")
-												a(ng-click="consultarLicencas.recuperarInfoLicencaSuspender(licenca)")
+												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
 													i.glyphicon.glyphicon-lock
 													span Suspender licença
 											li
-												a(ng-click="" ng-if="false")
-													i.glyphicon.glyphicon-eye-open
+												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)", ng-if="consultarLicencas.isCancelamentoVisivel(licenca)")
+													i.glyphicon.glyphicon-remove
 													span Cancelar licença
 											li
 												a(ng-click="consultarLicencas.downloadLicenca(licenca)")
