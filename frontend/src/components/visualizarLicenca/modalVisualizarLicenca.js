@@ -13,7 +13,7 @@ var ModalVisualizarLicenca = {
 		
 		ctrl.fechar = function() {
 
-			ctrl.dismiss({$value: 'close'});
+			ctrl.dismiss({$value: 'cancel'});
 		};
 
 		ctrl.suspenderLicenca = function(){
@@ -38,7 +38,7 @@ var ModalVisualizarLicenca = {
 				.then(function(response) {
 
 					mensagem.success(response.data.texto, {referenceId: 0});
-					ctrl.dismiss({$value: 'close'});
+					ctrl.close({$value: 'closed'});
 				}, function(error) {
 
 					mensagem.error(error.data.texto, {referenceId: 4});

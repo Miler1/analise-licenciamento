@@ -149,4 +149,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public boolean isSuspensa() {
 		return this.status.equals(StatusCaracterizacao.SUSPENSO);
 	}
+	
+	public Boolean isCancelado() {
+		return this.status.equals(StatusCaracterizacao.CANCELADO);
+	}
 }
