@@ -41,14 +41,23 @@ var ModalInformacoesLicenca = {
 
 			cancelarEdicoes();
 
-			dadosLicenca.condicionantes = ctrl.condicionantes;
+			dadosLicenca.condicionantes = ajustarOrdem(ctrl.condicionantes);
 
-			dadosLicenca.recomendacoes = ctrl.recomendacoes;
+			dadosLicenca.recomendacoes = ajustarOrdem(ctrl.recomendacoes);
 
 			dadosLicenca.observacoes = ctrl.observacoes;
 
 			ctrl.close({$value: dadosLicenca});
 		};
+
+		function ajustarOrdem(lista) {
+
+			for(i=0;i<lista.length; i++) {
+				lista[i].ordem = i;
+			}
+
+			return lista;
+		}
 
 		function cancelarEdicoes() {
 			
