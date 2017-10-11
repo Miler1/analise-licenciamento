@@ -20,14 +20,14 @@ include ../../layout/components/inputErrors
 	label.margin-right-xs Observações:
 	form
 		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes")
+			textarea.textarea--no-resize.form-control(rows="4", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes")
 
 	hr
 
 	label.margin-right-xs Condicionantes:
 	form.row(novalidate, name="formularioCondicionante")
 		.form-group.col-md-10
-			textarea.form-control(rows="4", ng-model="$ctrl.condicionante.texto", name="condicionante", required)
+			textarea.textarea--no-resize.form-control(rows="4", ng-model="$ctrl.condicionante.texto", name="condicionante", required)
 		.col-md-2
 			span Prazo da condicionante em dias:
 			input.form-control(type="number", ng-model="$ctrl.condicionante.prazo", max="1900", required)
@@ -71,7 +71,7 @@ include ../../layout/components/inputErrors
 	label.margin-right-xs Recomendações:
 	form(name="formularioRecomendacao", novalidate)
 		.form-group
-			textarea.form-control(rows="4", ng-model="$ctrl.recomendacao.texto", name="recomendacao", required)
+			textarea.textarea--no-resize.form-control(rows="4", ng-model="$ctrl.recomendacao.texto", name="recomendacao", required)
 		+inputErrors('formularioRecomendacao', 'recomendacao', 'required')
 
 	.btn-inserir
