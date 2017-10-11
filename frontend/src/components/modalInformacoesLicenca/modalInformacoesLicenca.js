@@ -17,13 +17,8 @@ var ModalInformacoesLicenca = {
 
 			ctrl.validadeLicenca = ctrl.resolve.dadosLicenca.validade;
 
-			var val = ctrl.validadeLicenca;
-
-			while(val > 0) {
-
-				ctrl.validades.push(val);
-
-				val--;
+			for (i = 5; i >= 1; i--) {
+				ctrl.validades.push(i);
 			}
 		};
 
