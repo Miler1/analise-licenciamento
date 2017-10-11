@@ -6,9 +6,7 @@ CREATE TABLE analise.suspensao(
  id_usuario_suspensao INTEGER NOT NULL,
  qtde_dias_suspensao INTEGER,
  data_suspensao DATE,
- CONSTRAINT pk_suspensao PRIMARY KEY(id),
- CONSTRAINT fk_licenca_suspensao FOREIGN KEY(id_licenca) 
- REFERENCES licenciamento.licenca(id)
+ CONSTRAINT pk_suspensao PRIMARY KEY(id)
 );
 GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.suspensao TO licenciamento_pa;
 GRANT SELECT, USAGE ON SEQUENCE analise.suspensao_id_seq TO licenciamento_pa;
