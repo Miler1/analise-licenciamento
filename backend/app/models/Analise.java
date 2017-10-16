@@ -122,4 +122,26 @@ public class Analise extends GenericModel {
 	public static List<Analise> findAtivas() {
 		return Analise.find("byAtivo", true).fetch();
 	}
+	
+	public AnaliseJuridica findPrimeiraAnaliseJuridicaComDataFim() {
+		
+		String jpqlMin = "SELECT MIN(aj.id) FROM " + AnaliseJuridica.class.getSimpleName() + " aj WHERE aj.analise.id = :idAnalise AND aj.dataFim IS NOT NULL";
+		String jpql = "SELECT anaJ FROM " + AnaliseJuridica.class.getSimpleName() + " anaJ WHERE anaJ.id = (" + jpqlMin + ")";
+		
+		AnaliseJuridica analiseJuridica = AnaliseJuridica.find(jpql).setParameter("idAnalise", this.id).first();
+		
+		return analiseJuridica;
+		
+	}
+	
+	public AnaliseTecnica findPrimeiraAnaliseTecnicaComDataFim() {
+		
+		String jpqlMin = "SELECT MIN(aj.id) FROM " + AnaliseTecnica.class.getSimpleName() + " aj WHERE aj.analise.id = :idAnalise AND aj.dataFim IS NOT NULL";
+		String jpql = "SELECT anaJ FROM " + AnaliseTecnica.class.getSimpleName() + " anaJ WHERE anaJ.id = (" + jpqlMin + ")";
+		
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.find(jpql).setParameter("idAnalise", this.id).first();
+		
+		return analiseTecnica;
+		
+	}
 }

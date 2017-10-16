@@ -50,16 +50,16 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 							// se o aprovador já finalizou a analise
 							
 							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFimValidacaoAprovador);
-							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analisesJuridica.get(analise.analisesJuridica.size()-1).dataFim);
-							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim);
-							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim, analise.analiseTecnica.dataFimValidacaoAprovador);
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.findPrimeiraAnaliseJuridicaComDataFim().dataFim);
+							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim);
+							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim, analise.analiseTecnica.dataFimValidacaoAprovador);
 							
 						} else {
 							
 							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analisesJuridica.get(analise.analisesJuridica.size()-1).dataFim);
-							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim);
-							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.analisesTecnicas.get(analise.analisesTecnicas.size()-1).dataFim, new Date());
+							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.findPrimeiraAnaliseJuridicaComDataFim().dataFim);
+							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim);
+							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim, new Date());
 							
 						}
 
