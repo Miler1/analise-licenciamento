@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Processos extends InternalController {
 
-	public void listWithFilter(FiltroProcesso filtro){
+	public static void listWithFilter(FiltroProcesso filtro){
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
@@ -21,19 +21,19 @@ public class Processos extends InternalController {
 		renderJSON(processosList);
 	}
 	
-	public void countWithFilter(FiltroProcesso filtro){
+	public static void countWithFilter(FiltroProcesso filtro){
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
 		renderJSON(Processo.countWithFilter(filtro, Auth.getUsuarioSessao()));
 	}
 	
-	public void findById(Long idProcesso) {
+	public static void findById(Long idProcesso) {
 			
 		renderJSON(Processo.findById(idProcesso), ProcessoSerializer.list);
 	}
 
-	public void getInfoProcesso(Long id) {
+	public static void getInfoProcesso(Long id) {
 		
 		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO, Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		

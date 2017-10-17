@@ -12,7 +12,7 @@ import utils.Mensagem;
 
 public class Consultores extends InternalController {
 
-	public static  void vincularAnaliseConsultorJuridico(Long idUsuario, Long... idsProcesso) {
+	public static void vincularAnaliseConsultorJuridico(Long idUsuario, Long... idsProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO);
 		

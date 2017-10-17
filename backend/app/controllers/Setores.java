@@ -15,7 +15,7 @@ import utils.Mensagem;
 
 public class Setores extends InternalController {
 	
-	public void getSetoresByNivel(Integer nivel){
+	public static void getSetoresByNivel(Integer nivel){
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
@@ -36,7 +36,7 @@ public class Setores extends InternalController {
 		renderJSON(setoresFilhos, SetoresSerializer.getSetoresByNivel);
 	}
 	
-	public void getSetoresByTipo(TipoSetor tipoSetor) {
+	public static void getSetoresByTipo(TipoSetor tipoSetor) {
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		

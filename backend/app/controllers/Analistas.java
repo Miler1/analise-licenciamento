@@ -17,7 +17,7 @@ import utils.Mensagem;
 
 public class Analistas extends InternalController {
 
-	public static  void vincularAnaliseAnalistaTecnico(Long idUsuario, String justificativaCoordenador, Long... idsProcesso) {
+	public static void vincularAnaliseAnalistaTecnico(Long idUsuario, String justificativaCoordenador, Long... idsProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		

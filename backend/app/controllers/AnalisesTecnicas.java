@@ -84,7 +84,7 @@ public class AnalisesTecnicas extends InternalController {
 	}
 	
 	
-	public void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
+	public static void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
 		
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		

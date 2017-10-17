@@ -21,7 +21,7 @@ public class LicencasEmitidas extends InternalController {
 	 * Utilizado para a pesquisa rápida, ou seja, um único campo de pesquisa
 	 * @param filtro
 	 */
-	public void listWithFilter(FiltroLicenca filtro){
+	public static void listWithFilter(FiltroLicenca filtro){
 		
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
 		
@@ -34,7 +34,7 @@ public class LicencasEmitidas extends InternalController {
 	 * Utilizado para a pesquisa rápida, ou seja, um único campo de pesquisa
 	 * @param filtro
 	 */	
-	public void countWithFilter(FiltroLicenca filtro){
+	public static void countWithFilter(FiltroLicenca filtro){
 		
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
 		
@@ -45,7 +45,7 @@ public class LicencasEmitidas extends InternalController {
 	 * Utilizado para a pesquisa avançada, ou seja, vários campos de pesquisa
 	 * @param filtro
 	 */
-	public void listWithFilters(FiltroLicenca filtro){
+	public static void listWithFilters(FiltroLicenca filtro){
 		
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
 		
@@ -58,7 +58,7 @@ public class LicencasEmitidas extends InternalController {
 	 * Utilizado para a pesquisa avançada, ou seja, vários campos de pesquisa
 	 * @param filtro
 	 */
-	public void countWithFilters(FiltroLicenca filtro){
+	public static void countWithFilters(FiltroLicenca filtro){
 		
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
 		
