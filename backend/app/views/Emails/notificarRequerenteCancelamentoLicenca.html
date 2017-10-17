@@ -2,6 +2,7 @@
 %{
   licenca = licencaCancelada.licenca;
   numProcesso = licenca.caracterizacao.numeroProcesso;
+  nomelicenca = licenca.caracterizacao.tipoLicenca.nome;
   empreendimento = licenca.caracterizacao.empreendimento;
   empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
   bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
@@ -18,6 +19,10 @@
   
   <body>
     
+	<h1 style="text-align: center">
+		#{embeddedImage src:'conf/images/brasao_pa.png', name:'Pará', alt:'Estado do Pará', height:'100', width: '100' /}
+	</h1>
+
 	<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
 	
 	<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
@@ -26,18 +31,22 @@
 	
 	<p style="text-align: right">Belém - PA, ${utils.DateUtil.formatarMesMinusculo(java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, new Locale("pt", "BR")).format(new Date()))};</p>
 	
-	<p><strong>Processo N&ordm;:</strong>${numProcesso}</p>
-	<p><strong>Licença N&ordm;:</strong>${licenca.numero}</p>
+	<p><strong>Processo N&ordm;:</strong> ${numProcesso}</p>
+	<p><strong>Licença N&ordm;:</strong> ${licenca.numero}</p>
 	
+	<p><b>Á</b></p>
+
 	<p>${empreendimentoNome}</p>
 	
 	<p>End: ${end}</p>
 	
 	<p>CEP: ${cep}</p>
 	    
-	<p><strong>Referente a pendência</strong></p>
+	<p>Em atenção ao processo protocolado nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do processo ${numProcesso}, o qual solicita ${nomelicenca}, notifico V.Sa que a referida licença foi <b>CANCELADA</b>.</p>
+
+	<p>Procure a SEMAS para maiores esclarecimentos.</p>
 	    
-	<p>${licencaCancelada.justificativa}</p>    
+	<!-- <p>${licencaCancelada.justificativa}</p>     -->
     
   </body>
   
