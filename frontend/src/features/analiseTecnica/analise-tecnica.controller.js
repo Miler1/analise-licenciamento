@@ -27,6 +27,10 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     };
 
     function verificarEmissoes() {
+
+        if(ctrl.analiseTecnica.tipoResultadoAnalise.id !== ctrl.DEFERIDO)
+            return true;
+
         for (i = 0; i < ctrl.analiseTecnica.licencasAnalise.length ; i++){
             if (ctrl.analiseTecnica.licencasAnalise[i].emitir){
                 return true;
