@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import models.Processo;
+import models.licenciamento.AtividadeCaracterizacao;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import utils.Identificavel;
@@ -64,8 +65,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@OneToOne(mappedBy = "caracterizacao")
 	public DispensaLicenciamento dispensa;
 
-	@OneToOne(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
-	public AtividadeCaracterizacao atividadeCaracterizacao;
+	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
+	public List<AtividadeCaracterizacao> atividadesCaracterizacao;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(schema = "licenciamento", name = "rel_caracterizacao_resposta",
