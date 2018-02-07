@@ -9,12 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import models.portalSeguranca.Setor;
 import play.db.jpa.GenericModel;
 
 @Entity
@@ -32,9 +33,11 @@ public class AtividadeCaracterizacao extends GenericModel {
 	@JoinColumn(name="id_atividade")
 	public Atividade atividade;
 
-	@ManyToOne
-	@JoinColumn(name="id_atividade_cnae")
-	public AtividadeCnae atividadeCnae;
+	@ManyToMany
+	@JoinTable(schema = "licenciamento", name = "rel_atividade_caracterizacao_cnae",
+		joinColumns = @JoinColumn(name = "id_atividade_caracterizacao"),
+		inverseJoinColumns = @JoinColumn(name = "id_atividade_cnae"))
+	public List<AtividadeCnae> atividadesCnae;
 
 	@OneToMany(mappedBy = "atividadeCaracterizacao", cascade = CascadeType.ALL)
 	public List<GeometriaAtividade> geometriasAtividade;
@@ -49,5 +52,22 @@ public class AtividadeCaracterizacao extends GenericModel {
 
 	@Column(name = "valor_parametro")
 	public Double valorParametro;
+	
+	public static AtividadeCaracterizacao getAtividadeCaracterizacaoWithMaiorPotencialPoluidor(List<AtividadeCaracterizacao> atividadesCaracterizacao) {
+		
+		PotencialPoluidor potencialPoluidor = atividadesCaracterizacao.get(0).atividade.potencialPoluidor;
+		AtividadeCaracterizacao maiorAC = atividadesCaracterizacao.get(0);
+		
+		for(AtividadeCaracterizacao atividadeCaracterizacao : atividadesCaracterizacao) {
+			
+			if(atividadeCaracterizacao.atividade.potencialPoluidor.compareTo(potencialPoluidor) == 1) {
+				potencialPoluidor = atividadeCaracterizacao.atividade.potencialPoluidor;
+				maiorAC = atividadeCaracterizacao;
+			}
+			
+		}
+		
+		return maiorAC;
+	}
 	
 }

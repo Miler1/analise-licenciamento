@@ -127,6 +127,20 @@ public class TipoCaracterizacaoAtividade extends GenericModel {
 		return tipologias;		
 	}
 	
+	public static TipoCaracterizacaoAtividade findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(List<AtividadeCaracterizacao> atividadesCaracterizacao) {
+		
+		AtividadeCaracterizacao atividadeCaracterizacao = AtividadeCaracterizacao.getAtividadeCaracterizacaoWithMaiorPotencialPoluidor(atividadesCaracterizacao);
+		
+		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
+				TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id = :idAtividadeCnae")
+					.setParameter("idAtividade",atividadeCaracterizacao.atividade.id)
+					.setParameter("idAtividadeCnae", atividadeCaracterizacao.atividadesCnae.get(0).id)
+					.first();
+		
+		return tipoAtividadeCaracterizacao;
+		
+	}
+	
 	public static class FiltroAtividade {
 		
 		public Boolean licenciamentoSimplificado;
@@ -135,5 +149,5 @@ public class TipoCaracterizacaoAtividade extends GenericModel {
 		public FiltroAtividade() {
 			
 		}
-	}	
+	}
 }

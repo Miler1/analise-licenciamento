@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Processo;
+import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Setor;
@@ -21,11 +22,10 @@ public class Coordenadores extends InternalController {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
+			List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacoes.get(0).atividadesCaracterizacao;
+			
 			TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
-					TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id = :idAtividadeCnae")
-						.setParameter("idAtividade", processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade.id)
-						.setParameter("idAtividadeCnae", processo.caracterizacoes.get(0).atividadeCaracterizacao.atividadeCnae.id)
-						.first();			
+					TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);		
 			
 			// sobe na hierarquia até encontrar o coordenador técnico
 			Setor setor = tipoAtividadeCaracterizacao.setor;

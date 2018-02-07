@@ -44,13 +44,10 @@ public class Analistas extends InternalController {
 		
 		Processo processo = Processo.findById(idProcesso);
 		
-		AtividadeCaracterizacao atividadeCaracterizacao = processo.caracterizacoes.get(0).atividadeCaracterizacao;
+		List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacoes.get(0).atividadesCaracterizacao;
 		
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
-				TipoCaracterizacaoAtividade.find("atividade.id = :idAtividade and atividadeCnae.id = :idAtividadeCnae")
-					.setParameter("idAtividade",atividadeCaracterizacao.atividade.id)
-					.setParameter("idAtividadeCnae", atividadeCaracterizacao.atividadeCnae.id)
-					.first();
+				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 		
 		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO,tipoAtividadeCaracterizacao.setor.id);
 		

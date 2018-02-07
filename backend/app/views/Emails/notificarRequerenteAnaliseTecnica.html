@@ -3,7 +3,7 @@
   processo = analiseTecnica.analise.processo;
   empreendimento = analiseTecnica.analise.processo.empreendimento;
   empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-  atividade = analiseTecnica.analise.processo.caracterizacoes.get(0).atividadeCaracterizacao.atividade;
+  atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
   bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
   numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
   cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
@@ -41,8 +41,12 @@
 	<p><strong>Referente a pendência</strong></p>
 	    
 	<p>Em atenção ao processo protocolado nesta secretaria, sob o n&ordm; ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
-	 no qual solicita ${licencas} para ${atividade.nome}
-	 - ${atividade.parametro.codigo} - ${atividade.potencialPoluidor.codigo}, no município de ${empreendimento.endereco.municipio.nome}, esta Gerência notifica V.Sa. 
+	 no qual solicita ${licencas} para 
+	 
+	 #{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
+		${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+	 #{/list}
+	 no município de ${empreendimento.endereco.municipio.nome}, esta Gerência notifica V.Sa. 
 	 a atender dentro do prazo, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.</p>
 	    
 	<p><strong>Prazo de 10 (dez) dias<strong></p>

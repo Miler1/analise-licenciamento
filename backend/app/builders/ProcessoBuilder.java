@@ -105,7 +105,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		addCaracterizacoesAlias();
 		
-		addAlias(CARACTERIZACOES_ALIAS+".atividadeCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
+		addAlias(CARACTERIZACOES_ALIAS+".atividadesCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
 		
 		return this;
 	}
