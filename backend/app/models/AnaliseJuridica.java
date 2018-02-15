@@ -304,6 +304,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		validarResultado();						
 				
 		this._save();
+		this.refresh();
 				
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
@@ -314,6 +315,8 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_JURIDICA, usuarioExecultor);
 		
 		} else {
+			
+			Notificacao.criarNotificacoesAnaliseJuridica(analise);
 					
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
 			enviarEmailNotificacao();

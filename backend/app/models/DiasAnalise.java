@@ -41,6 +41,9 @@ public class DiasAnalise extends GenericModel{
 	@Column(name="quantidade_dias_aprovador")
 	public Integer qtdeDiasAprovador;
 	
+	@Column(name="quantidade_dias_notificacao")
+	public Integer qtdeDiasNotificacao;
+	
 	public DiasAnalise(Analise analise) {
 		
 		if(this.analise == null){

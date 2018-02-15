@@ -418,6 +418,8 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
 		
 		} else {
+			
+			Notificacao.criarNotificacoesAnaliseTecnica(analise);
 		
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
 			enviarEmailNotificacao();

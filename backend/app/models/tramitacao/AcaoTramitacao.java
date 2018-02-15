@@ -42,6 +42,9 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SUSPENDER_PROCESSO = 32l;
 	public static final Long REEMITIR_LICENCA = 33l;
 	public static final Long CANCELAR_PROCESSO = 34l;
+	public static final Long RESOLVER_NOTIFICACAO_JURIDICA = 35l;
+	public static final Long RESOLVER_NOTIFICACAO_TECNICA = 36l;
+	public static final Long ARQUIVAR_PROCESSO = 37l;
 
 }
 

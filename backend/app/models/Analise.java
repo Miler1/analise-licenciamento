@@ -65,6 +65,9 @@ public class Analise extends GenericModel {
 	@OneToOne(mappedBy="analise")
 	public DiasAnalise diasAnalise;
 	
+	@Column(name="notificacao_aberta")
+	public Boolean temNotificacaoAberta;
+	
 	public Analise save() {
 		
 		Calendar c = Calendar.getInstance();
@@ -123,6 +126,10 @@ public class Analise extends GenericModel {
 		return Analise.find("byAtivo", true).fetch();
 	}
 	
+	public static List<Analise> findComNotificacao() {
+		return Analise.find("byTemNotificacaoAberta", true).fetch();
+	}
+	
 	public AnaliseJuridica findPrimeiraAnaliseJuridicaComDataFim() {
 		
 		String jpqlMin = "SELECT MIN(aj.id) FROM " + AnaliseJuridica.class.getSimpleName() + " aj WHERE aj.analise.id = :idAnalise AND aj.dataFim IS NOT NULL";
@@ -143,5 +150,21 @@ public class Analise extends GenericModel {
 		
 		return analiseTecnica;
 		
+	}
+	
+	public boolean hasNotificacaoNaoResolvida() {
+		
+		Long notificacoesNaoResolvidas = Notificacao.count(
+				"(analiseJuridica.id = ? OR analiseTecnica = ?) AND ativo = true AND resolvido = false",
+				this.getAnaliseJuridica().id,
+				this.getAnaliseTecnica().id
+		);
+		
+		if(notificacoesNaoResolvidas > 0) {
+			return true;
+		}
+		
+		return false;
+
 	}
 }

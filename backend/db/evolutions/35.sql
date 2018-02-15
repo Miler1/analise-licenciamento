@@ -15,7 +15,7 @@ CREATE TABLE "analise"."notificacao" (
 	"id_analise_juridica" Integer,
 	"id_analise_tecnica" Integer,
 	"id_tipo_documento" Integer NOT NULL,
-	"id_documento_corrigido" Integer NOT NULL,
+	"id_documento_corrigido" Integer,
 	"id_analise_documento" Integer NOT NULL,
 	"resolvido" Boolean NOT NULL DEFAULT false,
 	"ativo" Boolean NOT NULL DEFAULT true,

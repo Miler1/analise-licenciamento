@@ -60,7 +60,15 @@ public class ProcessamentoPrazos extends GenericJob {
 				
 				if(verificaDiasAnalise != null) {
 					
-					if(analise.getAnaliseTecnica() != null) {
+					if(analise.hasNotificacaoNaoResolvida()) {
+					
+						if(analise.diasAnalise.qtdeDiasNotificacao == null){
+							analise.diasAnalise.qtdeDiasNotificacao = 1;
+						} else {
+							analise.diasAnalise.qtdeDiasNotificacao += 1;
+						}
+						
+					} else if(analise.getAnaliseTecnica() != null) {
 						
 						if(analise.analiseTecnica.dataFim == null) {
 							
