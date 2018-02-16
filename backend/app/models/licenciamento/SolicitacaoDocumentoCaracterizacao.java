@@ -38,4 +38,11 @@ public class SolicitacaoDocumentoCaracterizacao extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_caracterizacao", referencedColumnName="id")
 	public Caracterizacao caracterizacao;
+	
+	public static SolicitacaoDocumentoCaracterizacao findByTipoAndCaracterizacao(TipoDocumentoLicenciamento tipo, Caracterizacao caracterizacao) {
+		
+		return SolicitacaoDocumentoCaracterizacao.find("byTipoDocumentoAndCaracterizacao", tipo, caracterizacao).first();
+		
+	}
+	
 }

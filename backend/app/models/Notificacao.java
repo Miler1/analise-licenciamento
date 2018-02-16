@@ -68,6 +68,9 @@ public class Notificacao extends GenericModel {
 			
 		}
 		
+		analiseJuridica.analise.temNotificacaoAberta = true;
+		analiseJuridica.analise._save();
+		
 	}
 	
 	public static void criarNotificacoesAnaliseTecnica(AnaliseTecnica analiseTecnica) {
@@ -87,6 +90,9 @@ public class Notificacao extends GenericModel {
 			notificacao.save();
 			
 		}
+		
+		analiseTecnica.analise.temNotificacaoAberta = true;
+		analiseTecnica.analise._save();
 		
 	}
 	

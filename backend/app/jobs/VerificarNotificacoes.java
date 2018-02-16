@@ -8,6 +8,7 @@ import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.DiasAnalise;
 import models.Notificacao;
+import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
@@ -21,7 +22,6 @@ public class VerificarNotificacoes extends GenericJob {
 		Logger.info("[INICIO-JOB] ::VerificarNotificacoes:: [INICIO-JOB]");
 		verificarStatusNotificacoes();
 		Logger.info("[FIM-JOB] ::VerificarNotificacoes:: [FIM-JOB]");
-		
 		
 	}
 	
@@ -44,6 +44,16 @@ public class VerificarNotificacoes extends GenericJob {
 					List<Notificacao> notificacoes = Notificacao.getByAnalise(analise);
 					analise.temNotificacaoAberta = false;
 					analise.save();
+					
+					for(Notificacao notificacao : notificacoes) {
+						
+						SolicitacaoDocumentoCaracterizacao solicitacaoDocumentoCaracterizacao = 
+								SolicitacaoDocumentoCaracterizacao.findByTipoAndCaracterizacao(notificacao.tipoDocumento, analise.processo.getCaracterizacao());
+						
+						solicitacaoDocumentoCaracterizacao.documento = notificacao.documentoCorrigido;
+						solicitacaoDocumentoCaracterizacao.save();
+						
+					}
 					
 					if(notificacoes.get(0).analiseJuridica != null) {
 						
