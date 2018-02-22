@@ -68,8 +68,10 @@ public class Notificacao extends GenericModel {
 			
 		}
 		
-		analiseJuridica.analise.temNotificacaoAberta = true;
-		analiseJuridica.analise._save();
+		Analise analise = Analise.findById(analiseJuridica.analise.id);
+
+		analise.temNotificacaoAberta = true;
+		analise._save();
 		
 	}
 	
@@ -91,8 +93,10 @@ public class Notificacao extends GenericModel {
 			
 		}
 		
-		analiseTecnica.analise.temNotificacaoAberta = true;
-		analiseTecnica.analise._save();
+		Analise analise = Analise.findById(analiseTecnica.analise.id);
+
+		analise.temNotificacaoAberta = true;
+		analise._save();
 		
 	}
 	
