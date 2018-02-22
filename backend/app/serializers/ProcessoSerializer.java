@@ -143,18 +143,18 @@ public class ProcessoSerializer {
 			"caracterizacao.documentosEnviados.tipo.id",
 			"caracterizacao.documentosEnviados.tipo.nome",
 			"caracterizacao.tipo.nome",
-			"caracterizacao.atividadeCaracterizacao.atividade",
-			"caracterizacao.atividadeCaracterizacao.atividade.nome",
-			"caracterizacao.atividadeCaracterizacao.atividade.tipologia.nome",
-			"caracterizacao.atividadeCaracterizacao.atividadeCnae",
-			"caracterizacao.atividadeCaracterizacao.atividadeCnae.nome",
-			"caracterizacao.atividadeCaracterizacao.atividadeCnae.codigo",
-			"caracterizacao.atividadeCaracterizacao.valorParametro",
-			"caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo",			
-			"caracterizacao.atividadeCaracterizacao.atividade.parametro.nome",
-			"caracterizacao.atividadeCaracterizacao.atividade.parametro.unidade",
-			"caracterizacao.atividadeCaracterizacao.atividade.parametro.codigo",
-			"caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo")
+			"caracterizacao.atividadesCaracterizacao.atividade",
+			"caracterizacao.atividadesCaracterizacao.atividade.nome",
+			"caracterizacao.atividadesCaracterizacao.atividade.tipologia.nome",
+			"caracterizacao.atividadesCaracterizacao.atividadesCnae",
+			"caracterizacao.atividadesCaracterizacao.atividadesCnae.nome",
+			"caracterizacao.atividadesCaracterizacao.atividadesCnae.codigo",
+			"caracterizacao.atividadesCaracterizacao.valorParametro",
+			"caracterizacao.atividadesCaracterizacao.porteEmpreendimento.codigo",			
+			"caracterizacao.atividadesCaracterizacao.atividade.parametro.nome",
+			"caracterizacao.atividadesCaracterizacao.atividade.parametro.unidade",
+			"caracterizacao.atividadesCaracterizacao.atividade.parametro.codigo",
+			"caracterizacao.atividadesCaracterizacao.atividade.potencialPoluidor.codigo")
 			.transform(new GeometryTransformer(), Geometry.class);
 
 }

@@ -95,7 +95,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		addCaracterizacaoAlias();
 		
-		addAlias(CARACTERIZACAO_ALIAS+".atividadeCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
+		addAlias(CARACTERIZACAO_ALIAS+".atividadesCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
 		
 		return this;
 	}
