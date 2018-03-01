@@ -44,6 +44,7 @@ public class AnaliseJuridicaSerializer {
 				"analisesDocumentos.documento.tipo.nome",
 				"analisesDocumentos.documento.id",
 				"analisesDocumentos.documento.tipo.tipoAnalise",
+				"analisesDocumentos.notificacao.justificativa",
 				"parecer",
 				"dataVencimentoPrazo",
 				"revisaoSolicitada",

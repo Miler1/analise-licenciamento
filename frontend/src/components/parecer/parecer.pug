@@ -14,24 +14,27 @@ table.table.table-condensed
     thead
 
         tr
-            th.col-md-9 Documento
+            th.col-md-8 Documento
             th.col-md-2.text-center Validar
-            th.col-md-1.text-right Ações
+            th.col-md-2.text-right Ações
 
     tbody
 
         tr(ng-repeat="analiseDocumento in $ctrl.analiseTecnica.analisesDocumentos")
 
-            td.col-md-9 {{analiseDocumento.documento.tipo.nome}}
+            td.col-md-8 {{analiseDocumento.documento.tipo.nome}}
             td.col-md-2.text-center
                 avaliar-documento(habilitado="analiseDocumento.documento.tipo.tipoAnalise === $ctrl.tiposAnalise.TECNICA", mensagem-nao-habilitado="Este documento já foi analisado na fase jurídica", identificador="$index", analise-documento="analiseDocumento", invalidar="$ctrl.invalidarDocumento")
-            td.col-md-1.text-right
+            td.col-md-2.text-right
 
                 a.margin-right-xs.pointer(ng-click="$ctrl.invalidarDocumento($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo da invalidação")
                     i.fa.fa-pencil-square-o
 
                 a.margin-right-xs.pointer(ng-click="$ctrl.baixarDocumento(analiseDocumento.documento.id)", title="Baixar documento")
                     i.glyphicon.glyphicon-download
+
+                a.margin-right-xs.pointer(ng-click="$ctrl.visualizarJustificativaNotificacao(analiseDocumento.notificacao.justificativa)", title="Visualizar justificativa da notificação", ng-if="analiseDocumento.notificacao.justificativa")
+                    i.fa.fa-comment
 
 section.margin-bottom-md
 

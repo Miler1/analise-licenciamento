@@ -13,7 +13,8 @@ public class AnaliseDocumentoSerializer {
 			"documento.id",
 			"documento.nome",
 			"documento.tipo.nome",
-			"documento.tipo.tipoAnalise"
+			"documento.tipo.tipoAnalise",
+			"notificacao.justificativa"
 		);	
 
 }

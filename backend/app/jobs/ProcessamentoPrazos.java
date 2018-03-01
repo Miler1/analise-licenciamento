@@ -7,15 +7,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.Hours;
 import org.joda.time.LocalDate;
-import org.joda.time.Minutes;
-import org.joda.time.Seconds;
-import org.joda.time.chrono.GregorianChronology;
-
-import com.vividsolutions.jts.index.strtree.Interval;
 
 import exceptions.AppException;
 import models.Analise;
@@ -30,7 +23,6 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
 import play.Logger;
 import play.jobs.On;
-import utils.Configuracoes;
 import utils.Mensagem;
 
 @On("cron.processamentoPrazos")
@@ -60,7 +52,7 @@ public class ProcessamentoPrazos extends GenericJob {
 				
 				if(verificaDiasAnalise != null) {
 					
-					if(analise.hasNotificacaoNaoResolvida()) {
+					if(analise.temNotificacaoAberta) {
 					
 						if(analise.diasAnalise.qtdeDiasNotificacao == null){
 							analise.diasAnalise.qtdeDiasNotificacao = 1;

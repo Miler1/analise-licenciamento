@@ -22,6 +22,7 @@ var Parecer = {
         ctrl.alterarLicenca = alterarLicenca;
         ctrl.removerDocumento = removerDocumento;
         ctrl.tiposAnalise = TiposAnalise;
+        ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
 
         ctrl.upload = function(file, invalidFile) {
 
@@ -215,6 +216,21 @@ var Parecer = {
                 }, function(){});
 
             }
+
+        }
+
+        function visualizarJustificativaNotificacao(justificativa) {
+
+            if(!justificativa) return;
+
+            var configModal = {
+                titulo: 'Justificativa de notificação',
+                conteudo: justificativa,
+                labelBotaoCancelar: 'Fechar',
+                exibirFooter: false
+            };
+
+            modalSimplesService.abrirModal(configModal);
 
         }
 

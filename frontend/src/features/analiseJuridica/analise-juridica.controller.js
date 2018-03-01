@@ -1,5 +1,6 @@
 var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location, 
-        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService, documentoAnaliseService, processoService, TiposAnalise) {    
+        analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService,
+        documentoAnaliseService, processoService, TiposAnalise, modalSimplesService) {
 
     $rootScope.tituloPagina = 'PARECER JURÍDICO';
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
@@ -17,6 +18,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
     ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
     ctrl.tiposAnalise = TiposAnalise;
+    ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
 
     ctrl.upload = function(file, invalidFile) {
 
@@ -195,6 +197,21 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
                 analiseDocumento.validado = undefined;
             }
          });
+    }
+
+    function visualizarJustificativaNotificacao(justificativa) {
+
+        if(!justificativa) return;
+
+        var configModal = {
+            titulo: 'Justificativa de notificação',
+            conteudo: justificativa,
+            labelBotaoCancelar: 'Fechar',
+            exibirFooter: false
+        };
+
+        modalSimplesService.abrirModal(configModal);
+
     }
 
     function getDocumentosAnalisados() {

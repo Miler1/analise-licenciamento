@@ -17,7 +17,7 @@ div(ng-init="ctrl.init()")
 
         hr
 
-        section(ng-if="ctrl.analiseJuridica.analiseJuridicaRevisada")   
+        section(ng-if="ctrl.analiseJuridica.analiseJuridicaRevisada && ctrl.analiseJuridica.parecerValidacao")   
             label Parecer da validação:     
             div(class="alert alert-warning", ng-bind-html="ctrl.analiseJuridica.analiseJuridicaRevisada.parecerValidacao")
 
@@ -26,24 +26,27 @@ div(ng-init="ctrl.init()")
             thead
 
                 tr
-                    th.col-md-9 Documento
+                    th.col-md-8 Documento
                     th.col-md-2.text-center Validar
-                    th.col-md-1.text-right Ações
+                    th.col-md-2.text-right Ações
 
             tbody
 
                 tr(ng-repeat="analiseDocumento in ctrl.analisesDocumentos")
 
-                    td.col-md-9 {{analiseDocumento.documento.tipo.nome}}
+                    td.col-md-8 {{analiseDocumento.documento.tipo.nome}}
                     td.col-md-2.text-center
                         avaliar-documento(habilitado="analiseDocumento.documento.tipo.tipoAnalise === ctrl.tiposAnalise.JURIDICA", mensagem-nao-habilitado="Este documento será analisado na fase técnica",identificador="$index",analise-documento="analiseDocumento", invalidar="ctrl.editarMotivoInvalidacao")
-                    td.col-md-1.text-right 
+                    td.col-md-2.text-right 
 
                         a.margin-right-xs.pointer(ng-click="ctrl.editarMotivoInvalidacao($index)", ng-if="analiseDocumento.validado === false", title="Editar motivo da invalidação")
                             i.fa.fa-pencil-square-o                    
                         
                         a.margin-right-xs.pointer(ng-click="ctrl.downloadDocumentoLicenciamento(analiseDocumento.documento.id)", title="Baixar documento")
                             i.glyphicon.glyphicon-download
+
+                        a.margin-right-xs.pointer(ng-click="ctrl.visualizarJustificativaNotificacao(analiseDocumento.notificacao.justificativa)", title="Visualizar justificativa da notificação", ng-if="analiseDocumento.notificacao.justificativa")
+                            i.fa.fa-comment
 
     section.margin-bottom-md
 

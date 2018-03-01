@@ -50,6 +50,8 @@ public class Notificacao extends GenericModel {
 	
 	public Boolean ativo;
 	
+	public String justificativa;
+	
 	public static void criarNotificacoesAnaliseJuridica(AnaliseJuridica analiseJuridica) {
 		
 		for(AnaliseDocumento analiseDocumento : analiseJuridica.analisesDocumentos) {
@@ -102,12 +104,29 @@ public class Notificacao extends GenericModel {
 	
 	public static List<Notificacao> getByAnalise(Analise analise) {
 		
-		List<Notificacao> notificacoes = Notificacao.find("(analiseJuridica.id = :idAnaliseJuridica OR analiseTecnica = :idAnaliseTecnica) AND ativo = true")
-				.setParameter("idAnaliseJuridica", analise.getAnaliseJuridica().id)
-				.setParameter("idAnaliseTecnica", analise.getAnaliseTecnica().id)
-				.fetch();
+		List<Notificacao> notificacoes;
+		
+		if(analise.getAnaliseTecnica() != null) {
+			
+			notificacoes = Notificacao.find("analiseTecnica.id = :idAnaliseTecnica AND ativo = true")
+					.setParameter("idAnaliseTecnica", analise.getAnaliseTecnica().id)
+					.fetch();
+			
+		} else {
+			
+			notificacoes = Notificacao.find("analiseJuridica.id = :idAnaliseJuridica AND ativo = true")
+					.setParameter("idAnaliseJuridica", analise.getAnaliseJuridica().id)
+					.fetch();
+			
+		}
 		
 		return notificacoes;
+		
+	}
+
+	public static Notificacao getByAnaliseDocumento(AnaliseDocumento analiseDocumento) {
+		
+		return Notificacao.find("byAnaliseDocumento", analiseDocumento).first();
 		
 	}
     

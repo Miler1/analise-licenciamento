@@ -154,11 +154,17 @@ public class Analise extends GenericModel {
 	
 	public boolean hasNotificacaoNaoResolvida() {
 		
-		Long notificacoesNaoResolvidas = Notificacao.count(
-				"(analiseJuridica.id = ? OR analiseTecnica = ?) AND ativo = true AND resolvido = false",
-				this.getAnaliseJuridica().id,
-				this.getAnaliseTecnica().id
-		);
+		Long notificacoesNaoResolvidas;
+		
+		if(this.getAnaliseTecnica() != null) {
+			
+			notificacoesNaoResolvidas = Notificacao.count("analiseTecnica.id = ? AND ativo = true AND resolvido = false", this.getAnaliseTecnica().id);
+			
+		} else {
+			
+			notificacoesNaoResolvidas = Notificacao.count("analiseJuridica.id = ? AND ativo = true AND resolvido = false", this.getAnaliseJuridica().id);
+			
+		}
 		
 		if(notificacoesNaoResolvidas > 0) {
 			return true;

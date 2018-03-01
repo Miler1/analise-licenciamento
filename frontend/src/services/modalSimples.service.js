@@ -14,7 +14,8 @@ var ModalSimples = function($uibModal) {
                 conteudo: function() { return config.conteudo;},
                 conteudoDestaque: function() { return config.conteudoDestaque || '';},
                 labelBotaoConfirmar: function() { return config.labelBotaoConfirmar || 'Sim';},
-                labelBotaoCancelar: function() { return config.labelBotaoCancelar || 'Não';}
+                labelBotaoCancelar: function() { return config.labelBotaoCancelar || 'Não';},
+                exibirFooter: function() { return config.exibirFooter != undefined ? config.exibirFooter : true;}
             }
         });
 

@@ -12,7 +12,7 @@ div.modal-body
 	p
 		strong {{modalCtrl.conteudoDestaque}}
 
-div.modal-footer
+div.modal-footer(ng-if='modalCtrl.exibirFooter')
 
 	button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()") {{modalCtrl.labelBotaoCancelar}}
 	button.btn.btn-success.pull-right(ng-click="modalCtrl.ok()") {{modalCtrl.labelBotaoConfirmar}}

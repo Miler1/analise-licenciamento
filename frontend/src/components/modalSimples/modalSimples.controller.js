@@ -1,5 +1,5 @@
 var ModalSimplesController = function ($uibModalInstance, titulo, conteudo, conteudoDestaque,
-										labelBotaoConfirmar, labelBotaoCancelar) {
+										labelBotaoConfirmar, labelBotaoCancelar, exibirFooter) {
 
 	var modalCtrl = this;
 
@@ -8,6 +8,7 @@ var ModalSimplesController = function ($uibModalInstance, titulo, conteudo, cont
 	modalCtrl.conteudoDestaque = conteudoDestaque;
 	modalCtrl.labelBotaoConfirmar = labelBotaoConfirmar;
 	modalCtrl.labelBotaoCancelar = labelBotaoCancelar;
+	modalCtrl.exibirFooter = exibirFooter;
 
 	modalCtrl.ok = function () {
 		$uibModalInstance.close();
