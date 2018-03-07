@@ -59,10 +59,12 @@ public class Notificacao extends GenericModel {
 			if(analiseDocumento.validado == null || analiseDocumento.validado == true) {
 				continue;
 			}
+			
+			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.getId());
 				
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseJuridica = analiseJuridica;
-			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
+			notificacao.tipoDocumento = tipoDoc;
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
@@ -71,6 +73,9 @@ public class Notificacao extends GenericModel {
 		}
 		
 		Analise analise = Analise.findById(analiseJuridica.analise.id);
+		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
+		verificaDiasAnalise.qtdeDiasNotificacao = 1;
+		verificaDiasAnalise.save();
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
@@ -84,10 +89,12 @@ public class Notificacao extends GenericModel {
 			if(analiseDocumento.validado == null || analiseDocumento.validado == true) {
 				continue;
 			}
+			
+			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.getId());
 				
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseTecnica = analiseTecnica;
-			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
+			notificacao.tipoDocumento = tipoDoc;
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
@@ -96,6 +103,9 @@ public class Notificacao extends GenericModel {
 		}
 		
 		Analise analise = Analise.findById(analiseTecnica.analise.id);
+		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
+		verificaDiasAnalise.qtdeDiasNotificacao = 1;
+		verificaDiasAnalise.save();
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
