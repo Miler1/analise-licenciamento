@@ -17,13 +17,16 @@
 			blockquote.success
 				div.row
 					label.col-sm-4 Tipologia:
-					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.tipologia.nome}}
+					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome}}
 				div.row
-					label.col-sm-4 Atividade Licenciada:
-					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.nome}}
-				div.row
-					label.col-sm-4 CNAE:
-					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividadeCnae.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividadeCnae.nome}}
+					label.col-sm-4 Atividade(s) Licenciada(s):
+					ul.col-sm-8
+						li(ng-repeat='atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao')
+							span {{atividadeCaracterizacao.atividade.nome}}
+							ul
+								li(ng-repeat='atividadeCnae in atividadeCaracterizacao.atividadesCnae')
+									label CNAE: 
+									span {{atividadeCnae.codigo}} - {{atividadeCnae.nome}}
 
 		.col-xs-12.col-md-4
 			div.panel.panel-success
@@ -32,9 +35,12 @@
 				div.panel-footer.text-center
 					.media-div
 						.media-context
-							span {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.parametro.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.parametro.nome}} ({{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.parametro.unidade}}):
-							div
-								b {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.valorParametro}}
+							div(ng-repeat='atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao')
+								h5.info {{atividadeCaracterizacao.atividade.nome}}
+								ul
+									li
+										span {{atividadeCaracterizacao.atividade.parametro.codigo}} - {{atividadeCaracterizacao.atividade.parametro.nome}} ({{atividadeCaracterizacao.atividade.parametro.unidade}}): 
+										b {{atividadeCaracterizacao.valorParametro}}
 
 
 			div.panel.panel-success
@@ -43,7 +49,7 @@
 				div.panel-footer.text-center
 					.media-div
 						.media-context
-							label {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}}
+							label {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao[0].porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.getMaiorPotencialPoluidor(modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao).codigo}}
 	div.row
 		.col-xs-12.col-md-6
 			blockquote.success

@@ -7,6 +7,7 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 	modalCtrl.baixarDocumento = baixarDocumento;
 	modalCtrl.dateUtil = app.utils.DateUtil;
 	modalCtrl.PrazoAnalise = app.utils.PrazoAnalise;
+	modalCtrl.getMaiorPotencialPoluidor = getMaiorPotencialPoluidor;
 
 	modalCtrl.abreDocumentacao = true;
 
@@ -212,6 +213,71 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 			return this.getDiasAnaliseJuridica() + diasAnaliseTecnica;
 		}
 	};
+
+	function romanToInt(romano) {
+
+		if(romano == null) return -1;
+
+		var num = charToInt(romano.charAt(0));
+		var pre, curr;
+
+		for(var i = 1; i < romano.length; i++) {
+
+			curr = charToInt(romano.charAt(i));
+			pre = charToInt(romano.charAt(i-1));
+
+			if(curr <= pre) {
+
+				num += curr;
+
+			} else {
+
+				num = num - pre*2 + curr;
+
+			}
+
+		}
+
+		return num;
+
+	}
+
+	function charToInt(c) {
+
+		switch (c) {
+
+			case 'I': return 1;
+			case 'V': return 5;
+			case 'X': return 10;
+			case 'L': return 50;
+			case 'C': return 100;
+			case 'D': return 500;
+			case 'M': return 1000;
+			default: return -1;
+
+		}
+
+	}
+
+	function getMaiorPotencialPoluidor(atividadesCaracterizacao) {
+
+		if(!atividadesCaracterizacao)
+			return;
+
+		var maiorPotencialPoluidor = atividadesCaracterizacao[0].atividade.potencialPoluidor;
+
+		_.forEach(atividadesCaracterizacao, function(atividadeCaracterizacao) {
+
+			potencialPoluidor = atividadeCaracterizacao.atividade.potencialPoluidor;
+
+			if(romanToInt(potencialPoluidor.codigo) > romanToInt(maiorPotencialPoluidor.codigo)) {
+				maiorPotencialPoluidor = potencialPoluidor;
+			}
+		});
+
+		return maiorPotencialPoluidor;
+
+	}
 
 };
 

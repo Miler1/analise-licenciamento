@@ -60,7 +60,7 @@ public class Notificacao extends GenericModel {
 				continue;
 			}
 			
-			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.getId());
+			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.id);
 				
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseJuridica = analiseJuridica;
@@ -90,7 +90,7 @@ public class Notificacao extends GenericModel {
 				continue;
 			}
 			
-			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.getId());
+			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.id);
 				
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseTecnica = analiseTecnica;
