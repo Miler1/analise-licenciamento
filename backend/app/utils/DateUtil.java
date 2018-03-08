@@ -1,7 +1,10 @@
 package utils;
 
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,18 +85,23 @@ public class DateUtil {
 		return sb.toString();
 	}
 	
-	public static String formatarMesMinusculo(String strData) {
-		
-		String regexMes = "de\\s[a-zA-Z]{1,}\\sde";
-		Pattern padraoMes = Pattern.compile(regexMes);
-		
-		Matcher matcher = padraoMes.matcher(strData);
-		
-		matcher.find();
-		
-		String nomeMes = matcher.group(0).toLowerCase();
-		
-		return strData.replaceAll(regexMes, nomeMes);
+	public static String formatarMesMinusculo(Date data) {
+
+		SimpleDateFormat DATE_FORMAT;
+
+		DATE_FORMAT = new SimpleDateFormat("EEEE, dd 'de' MMMM 'de' yyyy");
+		DateFormatSymbols symbols = new DateFormatSymbols(new Locale("pt", "BR"));
+		symbols.setMonths(new String[] {"janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"});
+		DATE_FORMAT.setDateFormatSymbols(symbols);
+
+		String st;
+		synchronized (DATE_FORMAT) {
+			st = DATE_FORMAT.format(data);
+		}
+       
+       return st;
+				       
+
 	}	
 
 }
