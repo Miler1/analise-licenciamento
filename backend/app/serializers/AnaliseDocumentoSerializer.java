@@ -12,6 +12,7 @@ public class AnaliseDocumentoSerializer {
 			"parecer",
 			"documento.id",
 			"documento.nome",
+			"documento.tipo.id",
 			"documento.tipo.nome",
 			"documento.tipo.tipoAnalise",
 			"notificacao.justificativa"
