@@ -18,7 +18,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.formularios = {};
     ctrl.tabAtiva = 0;
     ctrl.tiposAnalise = TiposAnalise;
-
+    ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
     
     ctrl.init = function () {
 
@@ -158,6 +158,22 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
                 ctrl.analiseTecnica = response.data;
             });
     }
+
+    function visualizarJustificativaNotificacao(justificativa) {
+
+        if(!justificativa) return;
+
+        var configModal = {
+            titulo: 'Justificativa de notificação',
+            conteudo: justificativa,
+            labelBotaoCancelar: 'Fechar',
+            exibirFooter: false
+        };
+
+        modalSimplesService.abrirModal(configModal);
+
+    }
+
 };
 
 exports.controllers.AnaliseTecnicaController = AnaliseTecnicaController;

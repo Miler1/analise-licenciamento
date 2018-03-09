@@ -51,6 +51,7 @@ public class AnaliseTecnicaSerializer {
 			"analisesDocumentos.id",
 			"analisesDocumentos.validado",
 			"analisesDocumentos.parecer",
+			"analisesDocumentos.notificacao.justificativa",
 			"analisesDocumentos.documento.id",
 			"analisesDocumentos.documento.tipo.id",
 			"analisesDocumentos.documento.tipo.nome",
