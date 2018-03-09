@@ -7,6 +7,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     var ctrl = this;
 
     ctrl.DEFERIDO = app.utils.TiposResultadoAnalise.DEFERIDO;
+    ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
     ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
     ctrl.exibirDadosProcesso = exibirDadosProcesso;
