@@ -47,13 +47,17 @@ public class VerificarNotificacoes extends GenericJob {
 					
 					for(Notificacao notificacao : notificacoes) {
 						
-						notificacao.analiseDocumento.documento = notificacao.documentoCorrigido;
+						SolicitacaoDocumentoCaracterizacao solicitacaoDocumentoCaracterizacao = 
+								SolicitacaoDocumentoCaracterizacao.findByTipoAndCaracterizacao(notificacao.tipoDocumento, analise.processo.getCaracterizacao());
+
 						
 						if(notificacao.documentoCorrigido != null) {
 							
+							solicitacaoDocumentoCaracterizacao.documento = notificacao.documentoCorrigido;
+							solicitacaoDocumentoCaracterizacao.save();
+							
 							notificacao.analiseDocumento.documento = notificacao.documentoCorrigido;
 							notificacao.analiseDocumento.save();
-							notificacao.analiseDocumento.refresh();
 							
 						}
 						
