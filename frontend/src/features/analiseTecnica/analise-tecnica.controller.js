@@ -109,7 +109,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
                 '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
                 '<li>Para DEFERIDO, todos os documentos de validação técnica devem ter sido validados.</li>' + 
-                '<li>Para EMITIR NOTIFICACAO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' + 
+                '<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' + 
             '</ul>', { ttl: 10000 });
             return;            
         }
