@@ -77,6 +77,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
                 '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
                 '<li>Para DEFERIDO, todos os documentos de validação jurídica devem ter sido validados.</li>' + 
+                '<li>Para EMITIR NOTIFICACAO, pelo menos um documento de validação jurídica deve ter sido invalidados.</li>' + 
             '</ul>', { ttl: 10000 });
             return;
         }
@@ -267,9 +268,14 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
             return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
         
+        } else if(ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO) {
+
+            return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido && !todosDocumentosValidados;
+
         } else {
 
             return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido;
+
         }
     }
 
