@@ -14,7 +14,7 @@ import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
 
-@On("cron.processamentoCaracterizacoesEmAndamento")
+@On("cron.vetificarNotificacoes")
 public class VerificarNotificacoes extends GenericJob {
 
 	@Override
