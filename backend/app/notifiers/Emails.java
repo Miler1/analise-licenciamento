@@ -30,7 +30,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas, 
 			List<AnaliseDocumento> documentosAnalisados, AnaliseTecnica analiseTecnica) {
 		
-		setSubject("Notificação referente a análise técnica do processo %s", analiseTecnica.analise.processo);
+		setSubject("Notificação referente a análise técnica do processo %s", analiseTecnica.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 			

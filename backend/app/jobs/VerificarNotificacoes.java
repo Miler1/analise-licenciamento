@@ -7,6 +7,7 @@ import models.Analise;
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.DiasAnalise;
+import models.LicencaAnalise;
 import models.Notificacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
@@ -80,6 +81,17 @@ public class VerificarNotificacoes extends GenericJob {
 						
 						AnaliseTecnica novaAnaliseTecnica = analise.analiseTecnica.gerarCopia();
 						novaAnaliseTecnica._save();
+						
+						/**
+						 * Workaround para persistir as licenças e os pareceres técnicos restrições
+						 */		
+						for(LicencaAnalise licencaAnalise: novaAnaliseTecnica.licencasAnalise) {
+							
+							licencaAnalise._save();
+							
+							licencaAnalise.saveCondicionantes();
+							licencaAnalise.saveRecomendacoes();
+						}
 						
 						analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.RESOLVER_NOTIFICACAO_TECNICA);
 						
