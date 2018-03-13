@@ -1,8 +1,10 @@
 package models;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import models.licenciamento.Licenca;
+import exceptions.AppException;
+import models.ReenvioEmail.TipoEmail;
 import notifiers.Emails;
 
 public class EmailNotificacaoCancelamentoLicenca extends EmailNotificacao {
@@ -19,7 +21,22 @@ public class EmailNotificacaoCancelamentoLicenca extends EmailNotificacao {
 	@Override
 	public void enviar() {
 
-		Emails.notificarRequerenteCancelamentoLicenca(this.emailsDestinatarios, this.licencaCancelada); 
+		try {
+			
+			if(!Emails.notificarRequerenteCancelamentoLicenca(this.emailsDestinatarios, this.licencaCancelada).get()) {
+				
+				throw new AppException();
+				
+			}
+			
+		} catch (InterruptedException | ExecutionException | AppException e) {
+			
+			ReenvioEmail reenvioEmail = new ReenvioEmail(this.licencaCancelada.id, TipoEmail.CANCELAMENTO_LICENCA, e.getMessage(), this.emailsDestinatarios);
+			reenvioEmail.save();
+			
+			e.printStackTrace();
+			
+		} 
 	}
 
 }

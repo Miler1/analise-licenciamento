@@ -2,9 +2,12 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang.StringUtils;
 
+import exceptions.AppException;
+import models.ReenvioEmail.TipoEmail;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
@@ -22,23 +25,37 @@ public class EmailNotificacaoAnaliseJuridica extends EmailNotificacao {
 	
 	@Override	
 	public void enviar() {
+		
+		try {
+		
+			List<String> tiposlicenca = new ArrayList<String>();
+			for(Caracterizacao caracterizacao : this.analiseJuridica.analise.processo.caracterizacoes) {
 				
-		List<String> tiposlicenca = new ArrayList<String>();
-		for(Caracterizacao caracterizacao : this.analiseJuridica.analise.processo.caracterizacoes) {
-			
-			tiposlicenca.add(caracterizacao.tipoLicenca.nome);
-		}
-		String licencas = StringUtils.join(tiposlicenca, ",");
-		
-		List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
-		for(AnaliseDocumento analiseDocumento : this.analiseJuridica.analisesDocumentos) {
-			
-			if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.JURIDICA) && !analiseDocumento.validado) {
-				documentosInvalidados.add(analiseDocumento);
+				tiposlicenca.add(caracterizacao.tipoLicenca.nome);
 			}
-		}
+			String licencas = StringUtils.join(tiposlicenca, ",");
+			
+			List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
+			for(AnaliseDocumento analiseDocumento : this.analiseJuridica.analisesDocumentos) {
+				
+				if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.JURIDICA) && !analiseDocumento.validado) {
+					documentosInvalidados.add(analiseDocumento);
+				}
+			}
 		
-		Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseJuridica); 
+			if(!Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseJuridica).get()) {
+				
+				throw new AppException();
+				
+			}
+			
+		} catch (InterruptedException | ExecutionException | AppException e) {
+			
+			ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseJuridica.id, TipoEmail.NOTIFICACAO_ANALISE_JURIDICA, e.getMessage(), this.emailsDestinatarios);
+			reenvioEmail.save();
+			
+			e.printStackTrace();
+		} 
 	}
 
 }
