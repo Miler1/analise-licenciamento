@@ -1,7 +1,9 @@
 package models;
 
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,9 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.TipoDocumentoLicenciamento;
+import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 @Entity
@@ -52,6 +57,10 @@ public class Notificacao extends GenericModel {
 	
 	public String justificativa;
 	
+	@Column(name="data_cadastro")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataCadastro;
+	
 	public static void criarNotificacoesAnaliseJuridica(AnaliseJuridica analiseJuridica) {
 		
 		for(AnaliseDocumento analiseDocumento : analiseJuridica.analisesDocumentos) {
@@ -68,6 +77,7 @@ public class Notificacao extends GenericModel {
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
+			notificacao.dataCadastro = new Date();
 			notificacao.save();
 			
 		}
@@ -98,6 +108,7 @@ public class Notificacao extends GenericModel {
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
+			notificacao.dataCadastro = new Date();
 			notificacao.save();
 			
 		}
