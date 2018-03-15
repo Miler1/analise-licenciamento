@@ -22,6 +22,11 @@ CREATE TABLE "analise"."notificacao" (
 	PRIMARY KEY ( "id" ) );
  ;
 
+ ALTER TABLE analise.notificacao
+  OWNER TO postgres;
+GRANT ALL ON TABLE analise.notificacao TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.notificacao TO licenciamento_pa;
+
 COMMENT ON COLUMN "analise"."notificacao"."id" IS 'Identificador único da entidade.';
 COMMENT ON COLUMN "analise"."notificacao"."id_analise_juridica" IS 'Identificador da tabela analise_juridica, responsável pelo relacionamento entre as duas tabelas.';
 COMMENT ON COLUMN "analise"."notificacao"."id_analise_tecnica" IS 'Identificador da tabela analise_tecnica, responsável pelo relacionamento entre as duas tabelas.';
