@@ -1,4 +1,4 @@
-var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location, 
+var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $window, $location,
         analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService,
         documentoAnaliseService, processoService, TiposAnalise, modalSimplesService) {
 
@@ -10,10 +10,10 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
     ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
     ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-    ctrl.analiseJuridica = angular.copy(analiseJuridica);    
-    ctrl.processo = angular.copy(ctrl.analiseJuridica.analise.processo);    
+    ctrl.analiseJuridica = angular.copy(analiseJuridica);
+    ctrl.processo = angular.copy(ctrl.analiseJuridica.analise.processo);
     ctrl.analiseJuridica.analise.processo.empreendimento = null;
-    ctrl.analiseJuridica.tipoResultadoAnalise = ctrl.analiseJuridica.tipoResultadoAnalise || {};    
+    ctrl.analiseJuridica.tipoResultadoAnalise = ctrl.analiseJuridica.tipoResultadoAnalise || {};
     ctrl.documentosAnalisados = angular.copy();
     ctrl.documentosParecer = angular.copy(ctrl.analiseJuridica.documentos || []);
     ctrl.editarMotivoInvalidacao = editarMotivoInvalidacao;
@@ -41,16 +41,16 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
                     mensagem.error(error.data.texto);
                 });
-        
+
         } else if(invalidFile && invalidFile.$error === 'maxSize'){
 
             mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
-        }            
+        }
     };
-    
+
     ctrl.cancelar = function() {
 
-        $window.history.back();        
+        $window.history.back();
     };
 
     ctrl.salvar = function() {
@@ -61,11 +61,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
                 mensagem.success(response.data.texto);
                 carregarAnalise();
-            
+
             }, function(error){
 
                 mensagem.error(error.data.texto);
-            });        
+            });
     };
 
     ctrl.concluir = function(){
@@ -74,10 +74,10 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
             mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
             '<ul>' +
-                '<li>Para concluir é necessário descrever o parecer.</li>' + 
-                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
-                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem ter sido validados.</li>' + 
-                '<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' + 
+                '<li>Para concluir é necessário descrever o parecer.</li>' +
+                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' +
+                '<li>Para DEFERIDO, todos os documentos de validação jurídica devem ter sido validados.</li>' +
+                '<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' +
             '</ul>', { ttl: 10000 });
             return;
         }
@@ -103,6 +103,17 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
     ctrl.downloadDocumentoAnalise = function(idDocumento) {
 
         documentoAnaliseService.download(idDocumento);
+    };
+
+    ctrl.downloadPDFParecer = function() {
+
+        documentoAnaliseService.generatePDFParecer(this.analiseJuridica.parecer)
+            .then(
+
+                function(error){
+
+                    mensagem.error(error.data.texto);
+            });
     };
 
     ctrl.removerDocumento = function(indiceDocumento) {
@@ -146,7 +157,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
             copiaProcesso.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
         }
-        
+
         processoService.visualizarProcesso(copiaProcesso);
     };
 
@@ -190,7 +201,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         modalInstance.result.then(function(response){
 
             analiseDocumento.parecer = response;
-        
+
         }, function() {
 
             if(!analiseDocumento.parecer) {
@@ -219,7 +230,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
         analiseJuridicaService.getDocumentosAnalisados(ctrl.analiseJuridica.id)
             .then(function(response){
-                            
+
                 ctrl.analisesDocumentos = response.data;
 
                 if(ctrl.analisesDocumentos.length === 0) {
@@ -252,7 +263,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         var resultadoPreenchido = ctrl.formularioResultado.$valid;
         var todosDocumentosValidados = true;
         var todosDocumentosAvaliados = true;
-        
+
         ctrl.analisesDocumentos.forEach(function(analise) {
 
             // analise apenas os documento proprios da analise juridica
@@ -267,7 +278,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         if(ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.DEFERIDO) {
 
             return parecerPreenchido && todosDocumentosAvaliados && todosDocumentosValidados && resultadoPreenchido;
-        
+
         } else if(ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO) {
 
             return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido && !todosDocumentosValidados;
@@ -287,7 +298,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
                 ctrl.analiseJuridica = response.data;
                 ctrl.analisesDocumentos = ctrl.analiseJuridica.analisesDocumentos;
                 ctrl.documentos = ctrl.analiseJuridica.documentos;
-                ctrl.analiseJuridica.analise.processo.empreendimento = null;                
+                ctrl.analiseJuridica.analise.processo.empreendimento = null;
             });
      }
 };
