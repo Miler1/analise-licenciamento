@@ -107,7 +107,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
     ctrl.downloadPDFParecer = function() {
 
-        documentoAnaliseService.generatePDFParecer(this.analiseJuridica.parecer)
+        documentoAnaliseService.generatePDFParecer(this.analiseJuridica)
             .then(
 
                 function(error){
