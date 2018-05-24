@@ -1,10 +1,14 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import models.AnaliseDocumento;
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
+import models.AnalisejuridicaPDFBuilder;
 import models.portalSeguranca.Usuario;
 import security.Acao;
 import security.UsuarioSessao;
@@ -114,6 +118,17 @@ public class AnalisesJuridicas extends InternalController {
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO);				
 		
-	}	
+	}
 
+	public static void generatePDF(Integer idAnalisejuridica) {
+
+		AnaliseJuridica analiseJuridica = AnaliseJuridica.findById(idAnalisejuridica);
+
+		String fileName = "AnaliseJuridica-Parecer" + analiseJuridica.id + ".pdf";
+		response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/download");
+
+		renderBinary(async(new AnalisejuridicaPDFBuilder(analiseJuridica)));
+	}
 }
