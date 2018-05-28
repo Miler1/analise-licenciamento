@@ -36,6 +36,7 @@ import models.validacaoParecer.Analisavel;
 import models.validacaoParecer.SolicitarAjustesJuridicoAprovador;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
 import utils.Configuracoes;
 import utils.ListUtil;
 import utils.Mensagem;
@@ -601,5 +602,24 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		
 		models.validacaoParecer.TipoResultadoAnaliseChain<AnaliseJuridica> tiposResultadosAnalise = new SolicitarAjustesJuridicoAprovador();	
 		tiposResultadosAnalise.validarParecer(this, analiseJuridica, usuarioExecutor);		
+	}
+
+	public Documento gerarPDFParecer() throws Exception {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER);
+
+		String url = Configuracoes.APP_URL + "/parecer/" + Crypto.encryptAES(this.id.toString());
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("parecer", this)
+				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+
+		pdf.generate();
+
+		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+		return documento;
+
 	}
 }

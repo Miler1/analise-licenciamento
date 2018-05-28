@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import models.pdf.PDFTemplate;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
@@ -12,7 +13,8 @@ import play.db.jpa.Model;
 public class TipoDocumento extends Model {
 	
 	public static Long DOCUMENTO_ANALISE_JURIDICA = 1l;
-	public static Long DOCUMENTO_ANALISE_TECNICA = 2l;	
+	public static Long DOCUMENTO_ANALISE_TECNICA = 2l;
+	public static Long PARECER = 66l;
 
 
 	@Required
@@ -28,5 +30,10 @@ public class TipoDocumento extends Model {
 	@Required
 	@Column(name="prefixo_nome_arquivo")
 	public String prefixoNomeArquivo;
+
+	public PDFTemplate getPdfTemplate() {
+
+		return PDFTemplate.getByTipoDocumento(this.id);
+	}
 	
 }
