@@ -48,6 +48,7 @@ GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRest
 POST	/analisesTecnicas/validarParecer					AnalisesTecnicas.validarParecer
 POST	/analisesTecnicas/validarParecerGerente				AnalisesTecnicas.validarParecerGerente
 POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecerAprovador
+POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.downloadPDFParecer
 
 
 # Documentos licenciamento
