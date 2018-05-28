@@ -130,9 +130,11 @@ public class AnalisesJuridicas extends InternalController {
 
 		Documento pdfParecer = analiseJuridicaSalva.gerarPDFParecer();
 
-		String nome = pdfParecer.tipo.nome + ".pdf";
-		response.setHeader("Content-Type", "application/x-download");
+		String nome = pdfParecer.tipo.nome +  "_" + analiseJuridicaSalva.id + ".pdf";
+		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfParecer.arquivo, nome);
 

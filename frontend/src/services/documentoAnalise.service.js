@@ -8,8 +8,7 @@ var DocumentoAnaliseService = function(request, config, $window) {
 
 	this.generatePDFParecer = function(analiseJuridica) {
 
-		return request
-			.post(config.BASE_URL() + 'analisesJuridicas/downloadPDFParecer', analiseJuridica);
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFParecer', analiseJuridica);
 	};
 
 };
