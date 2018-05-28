@@ -606,13 +606,11 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 
 	public Documento gerarPDFParecer() throws Exception {
 
-		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER);
-
-		String url = Configuracoes.APP_URL + "/parecer/" + Crypto.encryptAES(this.id.toString());
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_JURIDICA);
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
-				.addParam("parecer", this)
+				.addParam("analise", this)
 				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
 		pdf.generate();
