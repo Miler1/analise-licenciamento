@@ -1,0 +1,146 @@
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+table {
+  width: 95%;
+  border: 2px solid transparent;
+  margin: 0px auto;
+}
+tr > td {
+  border: 1px solid black;
+  padding: 3px;
+}
+.transparent-cell {
+  border-color: transparent;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+  line-height: 1.5em;
+}
+.pull-right {
+  float: right !important;
+}
+.indentado {
+  text-indent: 3em;
+}
+.margin-condicionantes {
+  margin-left: 6em;
+}
+.cabecalho {
+  height: 70px;
+}
+.texto-cabecalho {
+  color: white;
+  height: 23px;
+  font-size: 14px;
+}
+.info-cabecalho {
+  color: white;
+  height: 20px;
+  font-size: 10px;
+}
+.estrutura {
+  border: none;
+  border-color: transparent;
+  visibility: hidden;
+  z-index: -1;
+}
+.estrutura td {
+  border: none;
+  border-color: transparent;
+  visibility: hidden;
+}
+.logo {
+  width: 65px;
+}
+.qrcode {
+  width: 100px;
+}
+.logo-brasao {
+  width: 35px;
+}
+.logo-para {
+  width: 50px;
+}
+.descricao-governo {
+  font-size: 8px;
+}
+.mapa {
+  width: 700px;
+  height: 354px;
+}
+.assinatura {
+  font-weight: bold;
+  padding-top: 90px;
+}
+.assinatura hr {
+  width: 80%;
+  margin: 10px auto;
+  border-color: black;
+}
+.assinatura h5 {
+  margin: 0px;
+}
+.upper-roman {
+  list-style: upper-roman;
+}
+.lower-alpha {
+  list-style: lower-alpha;
+}
+li {
+  padding: 0px;
+}
+h4 {
+  margin: 5px;
+}
+.texto-interno {
+  padding-left: 20px;
+}
+h5.menor {
+  font-size: 10px;
+}
+@media print {
+  table {
+    page-break-inside: auto;
+  }
+  .quebra-pagina {
+    page-break-after: always;
+  }
+  .texto-interno {
+    page-break-inside: auto;
+    page-break-after: auto;
+  }
+}
+.legenda {
+  display: block;
+}
+.legenda div {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+}
+.app-legend {
+  background-color: #FFFB00;
+  border: 1px solid #FFFB00;
+}
+.arl-legend {
+  background-color: #339F31;
+  border: 1px solid #A86015;
+}
+.aprt-legend {
+  background-color: #ff6347;
+  border: 1px solid #ff6347;
+}
+.prorrogada {
+  color: white;
+}

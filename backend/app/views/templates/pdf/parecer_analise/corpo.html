@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Análise - Licenciamento Ambiental - Pará</title>
+    <link rel="stylesheet" href="${templatePath}/style/estilo.css">
+    <meta charset="UTF-8">
+</head>
+<body>
+#{if analise instanceof AnaliseJuridica}
+PARECER JURÍDICO referente ao processo abaixo:
+#{/if}
+#{else}
+PARECER TÉCNICO referente ao processo abaixo:
+#{/else}
+
+<br>
+PROCESSO
+Número: <bold> #{analise.analise.processo.numero}</bold>
+CPF/CNPJ: <bold> CPF/CNPJ</bold>
+Empreendimento: <bold> #{analise.analise.processo.empreendimento.denominacao}</bold>
+Município: <bold> #{analise.analise.processo.empreendimento.endereco.municipio.nome}-#{analise.analise.processo.empreendimento.endereco.municipio.estado.codigo}</bold>
+
+<br>
+#{analise.parecer}
+</body>
+</html>
