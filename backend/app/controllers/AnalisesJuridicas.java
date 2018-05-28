@@ -5,15 +5,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import models.AnaliseDocumento;
-import models.AnaliseJuridica;
-import models.AnaliseTecnica;
-import models.AnalisejuridicaPDFBuilder;
+import models.*;
+import models.pdf.PDFGenerator;
 import models.portalSeguranca.Usuario;
+import play.libs.Crypto;
 import security.Acao;
 import security.UsuarioSessao;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
+import utils.Configuracoes;
 import utils.Mensagem;
 
 public class AnalisesJuridicas extends InternalController {
@@ -120,15 +120,35 @@ public class AnalisesJuridicas extends InternalController {
 		
 	}
 
-	public static void generatePDF(Integer idAnalisejuridica) {
+//	public static void generatePDF(Integer idAnalisejuridica) {
+//
+//		AnaliseJuridica analiseJuridica = AnaliseJuridica.findById(idAnalisejuridica);
+//
+//		String fileName = "AnaliseJuridica-Parecer" + analiseJuridica.id + ".pdf";
+//		response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+//		response.setHeader("Content-Transfer-Encoding", "binary");
+//		response.setHeader("Content-Type", "application/download");
+//
+//		renderBinary(async(new AnalisejuridicaPDFBuilder(analiseJuridica)));
+//	}
 
-		AnaliseJuridica analiseJuridica = AnaliseJuridica.findById(idAnalisejuridica);
+	public static void downloadParecer(AnaliseJuridica analiseJuridica) throws Exception {
 
-		String fileName = "AnaliseJuridica-Parecer" + analiseJuridica.id + ".pdf";
-		response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-		response.setHeader("Content-Transfer-Encoding", "binary");
-		response.setHeader("Content-Type", "application/download");
+		String novoParecer = analiseJuridica.parecer;
 
-		renderBinary(async(new AnalisejuridicaPDFBuilder(analiseJuridica)));
+		AnaliseJuridica analiseJuridicaSalva = AnaliseJuridica.findById(analiseJuridica.id);
+
+		analiseJuridicaSalva.parecer = novoParecer;
+
+		Documento pdfParecer = analiseJuridicaSalva.gerarPDFParecer();
+
+		File file = pdfParecer.getFile();
+
+		response.setHeader("Content-Type", "application/x-download");
+		response.setHeader("Content-Disposition", "attachment; filename=DLA.pdf");
+
+		renderBinary(file, file.getName());
+
 	}
+
 }
