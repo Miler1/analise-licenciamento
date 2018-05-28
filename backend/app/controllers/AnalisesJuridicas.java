@@ -120,18 +120,6 @@ public class AnalisesJuridicas extends InternalController {
 		
 	}
 
-//	public static void generatePDF(Integer idAnalisejuridica) {
-//
-//		AnaliseJuridica analiseJuridica = AnaliseJuridica.findById(idAnalisejuridica);
-//
-//		String fileName = "AnaliseJuridica-Parecer" + analiseJuridica.id + ".pdf";
-//		response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-//		response.setHeader("Content-Transfer-Encoding", "binary");
-//		response.setHeader("Content-Type", "application/download");
-//
-//		renderBinary(async(new AnalisejuridicaPDFBuilder(analiseJuridica)));
-//	}
-
 	public static void downloadPDFParecer(AnaliseJuridica analiseJuridica) throws Exception {
 
 		String novoParecer = analiseJuridica.parecer;
@@ -142,12 +130,11 @@ public class AnalisesJuridicas extends InternalController {
 
 		Documento pdfParecer = analiseJuridicaSalva.gerarPDFParecer();
 
-		File file = pdfParecer.getFile();
-
+		String nome = pdfParecer.tipo.nome + ".pdf";
 		response.setHeader("Content-Type", "application/x-download");
-		response.setHeader("Content-Disposition", "attachment; filename=DLA.pdf");
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
 
-		renderBinary(file, file.getName());
+		renderBinary(pdfParecer.arquivo, nome);
 
 	}
 

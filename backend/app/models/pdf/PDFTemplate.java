@@ -3,13 +3,12 @@ package models.pdf;
 import java.io.File;
 
 import models.TipoDocumento;
-import play.Logger;
-import play.Play;
 import utils.Configuracoes;
 
 public enum PDFTemplate {
 
-    DISPENSA_LICENCIAMENTO (TipoDocumento.PARECER);
+    PARECER_ANALISE_JURIDICA (TipoDocumento.PARECER_ANALISE_JURIDICA),
+    PARECER_ANALISE_TECNICA (TipoDocumento.PARECER_ANALISE_TECNICA);
 
     private static final File TEMPLATES_FOLDER = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH);
     private static final String LIBS_PATH = new File(TEMPLATES_FOLDER, "libs").getPath();

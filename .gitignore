@@ -21,7 +21,7 @@ backend/logs
 backend/documentos
 backend/target
 backend/app/views/pdf
-backend/templates/pdf
+backend/templates/pdf/*
 backend/.DS_Store
 
 frontend/node_modules/
