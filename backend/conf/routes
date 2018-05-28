@@ -35,6 +35,7 @@ POST	/analisesJuridicas/validarParecer							AnalisesJuridicas.validarParecer
 GET		/analisesJuridicas/{idAnaliseJuridica}						AnalisesJuridicas.findById
 GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
 POST	/analisesJuridicas/validarParecerAprovador					AnalisesJuridicas.validarParecerAprovador
+GET     /analisesJuridicas/downloadPDFParecer                       AnalisesJuridicas.downloadPDFParecer
 
 # Analise tecnica
 

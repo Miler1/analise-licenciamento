@@ -132,7 +132,7 @@ public class AnalisesJuridicas extends InternalController {
 //		renderBinary(async(new AnalisejuridicaPDFBuilder(analiseJuridica)));
 //	}
 
-	public static void downloadParecer(AnaliseJuridica analiseJuridica) throws Exception {
+	public static void downloadPDFParecer(AnaliseJuridica analiseJuridica) throws Exception {
 
 		String novoParecer = analiseJuridica.parecer;
 
