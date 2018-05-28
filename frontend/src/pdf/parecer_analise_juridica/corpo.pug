@@ -24,10 +24,11 @@ html(lang='en')
         b  ${analise.analise.processo.numero}
         br
         | \#{if analise.consultoresJuridicos.size() > 1}
+        | Consultores jurídicos:
         ul
           | \#{list items:analise.consultoresJuridicos, as:'consultorJuridico' }
           li
-            | Consultor jurídico: ${consultorJuridico.usuario.pessoa.nome}; \#{cpf}${consultorJuridico.usuario.pessoa.cpf}\#{/cpf}\#{if consultorJuridico.getSetor() != null}; ${consultorJuridico.getSetor().nome}\#{/if}
+            | ${consultorJuridico.usuario.pessoa.nome}; \#{cpf}${consultorJuridico.usuario.pessoa.cpf}\#{/cpf}\#{if consultorJuridico.getSetor() != null}; ${consultorJuridico.getSetor().nome}\#{/if}
           | \#{/list}
         | \#{/if}
         | \#{else}
