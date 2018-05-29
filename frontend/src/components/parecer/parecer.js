@@ -68,11 +68,14 @@ var Parecer = {
 
 	   ctrl.downloadPDFParecer = function() {
 
-        documentoAnaliseService.generatePDFParecerTecnico(this.analiseTecnica)
+        var analise = JSON.parse(JSON.stringify(this.analiseTecnica));
+
+        analise.analise.processo.empreendimento = null;
+
+        documentoAnaliseService.generatePDFParecerTecnico(analise)
             .then(
                 function(data, status, headers){
 
-                    console.log(data);
                     var a = document.createElement('a');
                     a.href = URL.createObjectURL(data.data.response.blob);
                     a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
