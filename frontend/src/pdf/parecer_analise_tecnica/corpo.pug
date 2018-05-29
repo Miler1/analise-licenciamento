@@ -15,7 +15,7 @@ html(lang='en')
           h4 SECRETARIA DE MEIO AMBIENTE E SUSTENTABILIDADE - SEMAS/PA
     div
       p
-        | PARECER JURÍDICO referente ao processo abaixo:
+        | PARECER TÉCNICO referente ao processo abaixo:
     div
       p
         | PROCESSO
@@ -23,17 +23,17 @@ html(lang='en')
         | Número:
         b  ${analise.analise.processo.numero}
         br
-        | \#{if analise.consultoresJuridicos.size() > 1}
-        | Consultores jurídicos:
+        | \#{if analise.analistasTecnicos.size() > 1}
+        | Analistas técnicos:
         ul
-          | \#{list items:analise.consultoresJuridicos, as:'consultorJuridico' }
+          | \#{list items:analise.analistasTecnicos, as:'analistaTecnico' }
           li
-            | ${consultorJuridico.usuario.pessoa.nome}; \#{cpf}${consultorJuridico.usuario.pessoa.cpf}\#{/cpf}\#{if consultorJuridico.getSetor() != null}; ${consultorJuridico.getSetor().nome}\#{/if}
+            | ${analistaTecnico.usuario.pessoa.nome}; \#{cpf}${analistaTecnico.usuario.pessoa.cpf}\#{/cpf}\#{if analistaTecnico.getSetor() != null}; ${analistaTecnico.getSetor().nome}\#{/if}
           | \#{/list}
         | \#{/if}
         | \#{else}
-        | Consultor jurídico:
-        b  ${analise.consultoresJuridicos.get(0).usuario.pessoa.nome}; \#{cpf}${analise.consultoresJuridicos.get(0).usuario.pessoa.cpf}\#{/cpf}\#{if analise.consultoresJuridicos.get(0).getSetor() != null}; ${analise.consultoresJuridicos.get(0).getSetor().nome}\#{/if}
+        | Analista técnico:
+        b  ${analise.analistasTecnicos.get(0).usuario.pessoa.nome}; \#{cpf}${analise.analistasTecnicos.get(0).usuario.pessoa.cpf}\#{/cpf}\#{if analise.analistasTecnicos.get(0).getSetor() != null}; ${analise.analistasTecnicos.get(0).getSetor().nome}\#{/if}
         | \#{/else}
         br
         | Empreendimento:
