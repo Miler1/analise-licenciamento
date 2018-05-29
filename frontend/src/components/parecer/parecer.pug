@@ -63,6 +63,11 @@ section.margin-bottom-md
                 | Anexar arquivo ao parecer
             i Tamanho máximo de {{$ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
 
+		.form-group.col-md-3(ng-if="$ctrl.analiseTecnica.parecer", title="Gerar PDF do parecer")
+                div.btn.btn-default(ng-click="$ctrl.downloadPDFParecer()")
+                    i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
+                    | Gerar PDF do parecer
+
 
     table.table.table-condensed(ng-if="$ctrl.analiseTecnica.documentos.length > 0")
 

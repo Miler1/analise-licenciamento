@@ -64,6 +64,26 @@ var Parecer = {
                 parecer: ctrl.formularioParecer,
                 resultado: ctrl.formularioResultado
             };
+	   };
+
+	   ctrl.downloadPDFParecer = function() {
+
+        documentoAnaliseService.generatePDFParecerTecnico(this.analiseTecnica)
+            .then(
+                function(data, status, headers){
+
+                    console.log(data);
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(data.data.response.blob);
+                    a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
+                    a.click();
+                },
+
+                function(error){
+
+                    mensagem.error(error.data.texto);
+                }
+            );
        };
 
         function setAnaliseTecnica(value) {
@@ -193,9 +213,9 @@ var Parecer = {
 
             var instanciaModal;
 
-            if(_.isEmpty(analiseLicenca.condicionantes) && 
-                !analiseLicenca.observacao && 
-                _.isEmpty(analiseLicenca.recomendacoes) && 
+            if(_.isEmpty(analiseLicenca.condicionantes) &&
+                !analiseLicenca.observacao &&
+                _.isEmpty(analiseLicenca.recomendacoes) &&
                 analiseLicenca.validade === analiseLicenca.validadeMaxima) {
 
                 analiseLicenca.emitir = false;
