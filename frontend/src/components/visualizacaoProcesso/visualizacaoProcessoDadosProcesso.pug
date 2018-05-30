@@ -25,7 +25,7 @@
 							span {{atividadeCaracterizacao.atividade.nome}}
 							ul
 								li(ng-repeat='atividadeCnae in atividadeCaracterizacao.atividadesCnae')
-									label CNAE: 
+									label CNAE:
 									span {{atividadeCnae.codigo}} - {{atividadeCnae.nome}}
 
 		.col-xs-12.col-md-4
@@ -39,7 +39,7 @@
 								h5.info {{atividadeCaracterizacao.atividade.nome}}
 								ul
 									li
-										span {{atividadeCaracterizacao.atividade.parametro.codigo}} - {{atividadeCaracterizacao.atividade.parametro.nome}} ({{atividadeCaracterizacao.atividade.parametro.unidade}}): 
+										span {{atividadeCaracterizacao.atividade.parametro.codigo}} - {{atividadeCaracterizacao.atividade.parametro.nome}} ({{atividadeCaracterizacao.atividade.parametro.unidade}}):
 										b {{atividadeCaracterizacao.valorParametro}}
 
 
@@ -58,7 +58,7 @@
 				span {{modalVisualizacaoProcessoCtrl.dateUtil.getTodaysStringDate()}}
 
 				div.panel.panel-success
-					div.panel-body 
+					div.panel-body
 						| Análise do processo em dias
 					div.panel-footer
 						.row
@@ -88,8 +88,10 @@
 						th Data Entrada
 						th Data Saída
 						th Status
-						th Tempo do Status (dias e horas)
+						th Tempo do Status
 						th Responsável
+						th Setor
+						th Notificação
 
 				tbody
 					tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
@@ -98,3 +100,11 @@
 						td {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
 						td {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 						td {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
+						td {{tramitacao.setor.nome ? tramitacao.setor.nome : '-'}}
+						td.text-center(ng-if="tramitacao.hasNotificacoes")
+							i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",
+							title="Gerar PDF da notificação")
+						td.text-center(ng-if="!tramitacao.hasNotificacoes")
+							span.notificacao-sem-icone
+								| -
+
