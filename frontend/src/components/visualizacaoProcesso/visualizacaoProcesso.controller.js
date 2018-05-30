@@ -1,4 +1,4 @@
-var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeout, $uibModalInstance, processo, $scope, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService) {
+var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeout, $uibModalInstance, processo, $scope, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService, notificacaoService) {
 
 	var modalCtrl = this;
 
@@ -169,6 +169,11 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 	};
 
+	this.downloadNotificacao = function(idTramitacao) {
+
+		notificacaoService.downloadNotificacao(idTramitacao);
+	};
+
 	function getDataFimAnalise(dataFimAnalise) {
 
 		if (dataFimAnalise) {
@@ -181,7 +186,7 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 	}
 
 	this.isPrazoAnaliseVencido = function(dataFimAnalise, dataVencimentoAnalise){
-		
+
 		var momentDataFimAnalise = getDataFimAnalise(dataFimAnalise);
 
 		return momentDataFimAnalise.isAfter(moment(dataVencimentoAnalise, 'DD/MM/yyyy').startOf('day'));

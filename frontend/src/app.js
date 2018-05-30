@@ -52,7 +52,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			templateUrl: "features/consultarLicencasEmitidas/consultar-licencas-emitidas.html",
 			controller: controllers.ConsultarLicencasEmitidasController,
 			controllerAs: 'consultarLicencas'
-		})		
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -157,7 +157,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return $rootScope.usuarioSessao.perfilSelecionado.id;
 			}
-		}, 
+		},
 		{
 
 			titulo: 'Em análise',
@@ -255,7 +255,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_APROVADOR;
 			},
             deveFiltrarPorUsuario: true
-		},		 
+		},
 		{
 			titulo: 'Consultar processo',
 			icone: 'glyphicon glyphicon-search',
@@ -394,7 +394,8 @@ utils.services(licenciamento)
 	.add('licencaEmitidaService', services.LicencaEmitidaService)
 	.add('tipoLicencaService', services.TipoLicencaService)
 	.add('licencaService', services.LicencaService)
-	.add('dispensaLicencaService', services.DispensaLicencaService);
+	.add('dispensaLicencaService', services.DispensaLicencaService)
+	.add('notificacaoService', services.NotificacaoService);
 
 
 utils.filters(licenciamento)
