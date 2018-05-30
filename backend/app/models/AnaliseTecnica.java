@@ -24,6 +24,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import models.portalSeguranca.PerfilUsuario;
+import models.portalSeguranca.Setor;
+import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
@@ -204,6 +207,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
+		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}	
 
 	public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {
@@ -405,23 +409,46 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
-			if(this.usuarioValidacaoGerente != null)
+			if(this.usuarioValidacaoGerente != null) {
+
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-			else
+				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			}
+
+			else {
+
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-		
+				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			}
+
 		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 			
-			if(this.usuarioValidacaoGerente != null)
+			if(this.usuarioValidacaoGerente != null) {
+
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-			else
+				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			}
+
+			else {
+
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-		
+				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			}
+
 		} else {
 			
 			Notificacao.criarNotificacoesAnaliseTecnica(analise);
 		
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
+			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+
+			HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
+
+			List<Notificacao> notificacoes = Notificacao.find("analise.id", this.analise.id).fetch();
+			Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
+
+			Setor.setHistoricoTramitacao(historicoTramitacao, usuarioExecutor);
+
 			enviarEmailNotificacao();
 		}
 	}

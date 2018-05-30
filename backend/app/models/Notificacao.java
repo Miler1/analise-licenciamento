@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,6 +18,8 @@ import javax.persistence.TemporalType;
 
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.TipoDocumentoLicenciamento;
+import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ObjetoTramitavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
@@ -60,6 +63,10 @@ public class Notificacao extends GenericModel {
 	@Column(name="data_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
+
+	@OneToOne
+	@JoinColumn(name = "id_historico_tramitacao")
+	public HistoricoTramitacao historicoTramitacao;
 	
 	public static void criarNotificacoesAnaliseJuridica(AnaliseJuridica analiseJuridica) {
 		
@@ -149,6 +156,15 @@ public class Notificacao extends GenericModel {
 		
 		return Notificacao.find("byAnaliseDocumento", analiseDocumento).first();
 		
+	}
+
+	public static void setHistoricoAlteracoes(List<Notificacao> notificacoes, HistoricoTramitacao historicoTramitacao) {
+
+		for (Notificacao notificacao : notificacoes) {
+
+			notificacao.historicoTramitacao = historicoTramitacao;
+			notificacao._save();
+		}
 	}
     
 }

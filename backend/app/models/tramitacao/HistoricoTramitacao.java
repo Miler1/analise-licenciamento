@@ -10,6 +10,8 @@ import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import models.Notificacao;
+import models.portalSeguranca.Setor;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 
@@ -166,6 +168,20 @@ public class HistoricoTramitacao extends GenericModel {
 		
 		return primeiraData;
 		
+	}
+
+	public Long getIdNotificacao() {
+
+		Notificacao notificacao = Notificacao.find("historicoAlteracao.id", this.idHistorico).first();
+
+		return notificacao != null ? notificacao.id : null;
+	}
+
+	public String getNomeSetor() {
+
+		Setor setor = Setor.find(":x in historicosAlteracao.id").setParameter("x", this.idHistorico).first();
+
+		return setor != null ? setor.nome : null;
 	}
 
 }

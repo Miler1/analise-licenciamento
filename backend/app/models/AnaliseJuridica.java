@@ -24,20 +24,19 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import models.portalSeguranca.PerfilUsuario;
+import models.portalSeguranca.Setor;
+import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
-import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.validacaoParecer.Analisavel;
 import models.validacaoParecer.SolicitarAjustesJuridicoAprovador;
-import models.validacaoParecer.SolicitarAjustesTecnicoAprovador;
-import models.validacaoParecer.TipoResultadoAnaliseChain;
-import notifiers.Emails;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -253,6 +252,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_JURIDICA, usuarioExecutor);
+		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 	
 	public void update(AnaliseJuridica novaAnalise) {
@@ -295,7 +295,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		this._save();
 	}
 	
-	public void finalizar(AnaliseJuridica analise, Usuario usuarioExecultor) {
+	public void finalizar(AnaliseJuridica analise, Usuario usuarioExecutor) {
 					
 		this.update(analise);
 		
@@ -308,17 +308,27 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 				
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA, usuarioExecultor);
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA, usuarioExecutor);
+			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		
 		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 			
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_JURIDICA, usuarioExecultor);
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_JURIDICA, usuarioExecutor);
+			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		
 		} else {
 			
 			Notificacao.criarNotificacoesAnaliseJuridica(analise);
 					
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecultor);
+			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
+
+			HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
+
+			List<Notificacao> notificacoes = Notificacao.find("analise.id", this.analise.id).fetch();
+			Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
+
+			Setor.setHistoricoTramitacao(historicoTramitacao, usuarioExecutor);
+
 			enviarEmailNotificacao();
 		}				
 	}
@@ -462,6 +472,8 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
 				
 				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_JURIDICO, usuarioExecutor);
+
+				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 				
 				return;
 			}
@@ -475,7 +487,8 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 				if (usuarioValidacaoAprovador != null) {
 					
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA_COORDENADOR_APROVADOR, usuarioExecutor);
-					
+					Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
+
 				} else {
 					
 					AnaliseTecnica analiseTecnica = new AnaliseTecnica();
@@ -484,6 +497,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 					analiseTecnica.save();
 					
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecutor);
+					Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 				}
 				
 			}
@@ -510,6 +524,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			copia._save();
 			
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_JURIDICO, usuarioExecutor);
+			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 
 		private void validarAnaliseJuridica() {
@@ -538,6 +553,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			criarNovaAnalise(novaAnaliseJuridica.consultoresJuridicos.get(0).usuario, usuarioExecutor);
 			
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_PARECER_JURIDICO, usuarioExecutor);
+			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 
 		private void criarNovaAnalise(Usuario usuarioConsultor, Usuario usuarioValidacao) {

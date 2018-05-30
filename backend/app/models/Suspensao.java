@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import models.portalSeguranca.Setor;
+import models.tramitacao.HistoricoTramitacao;
 import org.hibernate.annotations.Filter;
 
 import exceptions.AppException;
@@ -99,6 +101,7 @@ public class Suspensao extends GenericModel {
 			if(deveSuspenderProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROCESSO, usuarioExecutor);
+				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 			}
 			
 			enviarNotificacaoSuspensaoPorEmail();

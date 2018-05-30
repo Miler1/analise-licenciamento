@@ -8,8 +8,10 @@ import models.AnaliseTecnica;
 import models.AnalistaTecnico;
 import models.ConsultorJuridico;
 import models.TipoResultadoAnalise;
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
 
 public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<AnaliseTecnica> {
@@ -33,6 +35,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.getAnalistaTecnico().usuario, usuarioExecutor);
 		
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
+		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 
 	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista, Usuario usuarioValidacao) {
