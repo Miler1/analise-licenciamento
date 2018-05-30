@@ -1,70 +1,59 @@
 <!DOCTYPE html>
 %{
-  processo = analiseJuridica.analise.processo;
-  empreendimento = analiseJuridica.analise.processo.empreendimento;
-  empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-  atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
-  bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
-  numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
-  cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
-  municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo; 
-  end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
+processo = analiseJuridica.analise.processo;
+datanotificacao = notificacao.dataCadastro;
+numeroNotificacao = notificacao.numero;
+empreendimento = analiseJuridica.analise.processo.empreendimento;
+empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
+bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
+numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
+cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
+municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo;
+end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
 }%
 
 <html>
-  
-  <head>
-  </head>
-  
-  <body>
 
-  	<h1 style="text-align: center">
-		#{embeddedImage src:'conf/images/brasao_pa.png', name:'Pará', alt:'Estado do Pará', height:'100', width:'100' /}
-	</h1>
-    
-	<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
-	
-	<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
-	
-	<p style="text-align: center">Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR</p>
-	
-	<p style="text-align: right">Belém - PA, ${java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, new Locale("pt", "BR")).format(new Date())};</p>
-	
-	<p><strong>Processo N&ordm;:</strong>${processo.numero}</p>
-	
-	<p>${empreendimentoNome}</p>
-	
-	<p>End: ${end} </p>
-	
-	<p>CEP: ${cep}</p>
-	    
-	<p><strong>Referente a pendência</strong></p>
-	    
-	<p>Em atenção ao processo protocolado nesta secretaria, sob o n&ordm; ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
-	 no qual solicita ${licencas} para 
-	 
-	#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
-		${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
-	#{/list}
-	no município de ${empreendimento.endereco.municipio.nome}, esta Gerência notifica V.Sa. 
-	 a atender dentro do prazo, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.</p>
-	    
-	<p><strong>Prazo de 10 (quinze) dias<strong></p>
-   
- 	<ul>
-		#{list items:documentosAnalisados, as:'analiseDocumento'}
-		    <li><strong>${analiseDocumento.documento.tipo.nome}</strong> - ${analiseDocumento.parecer}</li>
-		#{/list}	   
- 	</ul>
-    
-  	#{verbatim}
-	  <p>${analiseJuridica.parecer}</p>
-	#{/verbatim}  
-    
-	<p>Solicito sua especial atenção para as orientações consignadas neste expediente, a fim de que possamos dar continuidade à análise do pleito.</p>
-		
-	<p>Outrossim, informo que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.</p>      
-    
-  </body>
-  
+<head>
+</head>
+
+<body>
+
+<h1 style="text-align: center">
+    #{embeddedImage src:'conf/images/brasao_pa.png', name:'Pará', alt:'Estado do Pará', height:'100', width:'100' /}
+</h1>
+
+<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
+
+<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
+
+<p style="text-align: center">Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR</p>
+
+<p></p>
+
+<p>Informamos que o processo a seguir sofreu movimentação</p>
+
+<p><strong>Processo N&ordm;:</strong>${processo.numero}</p>
+
+<p><strong>Data de Protocolo:</strong>${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}</p>
+
+<p><strong>Interessado ou Requerente/Arrendatario:</strong>${empreendimentoNome}</p>
+
+<p><strong>Assunto:</strong> Informe de notificação ( Movimentação de processo )</p>
+
+<p><strong>Data:</strong> ${dataNotificacao};</p>
+
+<p><strong>Movimentação:</strong> ${numeronotificacao} <strong>SETOR:</strong> GDFLOR ;</p>
+
+<p>Senhor usuário, acesse o sistema de licenciamento Ambiental, para tomar ciência da notificação.</p>
+
+<p>Informamos que após 10 (dez) dias, inexistindo ciência, haverá leitura automática da notificação, passando a contar o prazo para seu respectivo atendimento.</p>
+
+<p>Por oportuno, ressaltamos que, após a data da ciência da Notificação, o interessado possui 10 (dez) dias para atender, integralmente, as solicitações realizadas por esta Secretaria.</p>
+
+<p>Expirado este prazo, em caso de não cumprimento, o processo será ARQUIVADO, nos termos da Instituição Normativa n° 01/2018.</p>
+
+</body>
+
 </html>
