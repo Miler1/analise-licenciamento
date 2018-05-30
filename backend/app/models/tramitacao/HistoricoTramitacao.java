@@ -1,5 +1,6 @@
 package models.tramitacao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -170,18 +171,15 @@ public class HistoricoTramitacao extends GenericModel {
 		
 	}
 
-	public Long getIdNotificacao() {
+	public List<Notificacao> getNotificacoes() {
 
-		Notificacao notificacao = Notificacao.find("historicoAlteracao.id", this.idHistorico).first();
-
-		return notificacao != null ? notificacao.id : null;
+		return Notificacao.find("historicoTramitacao.id", this.idHistorico).fetch();
 	}
 
-	public String getNomeSetor() {
+	public Setor getSetor() {
 
-		Setor setor = Setor.find(":x in historicosAlteracao.id").setParameter("x", this.idHistorico).first();
-
-		return setor != null ? setor.nome : null;
+		return Setor.find("select s from Setor s join s.historicosTramitacao ht where ht.id = :x")
+				.setParameter("x", this.idHistorico).first();
 	}
 
 }

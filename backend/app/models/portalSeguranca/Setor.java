@@ -100,14 +100,15 @@ public class Setor extends GenericModel {
 
 	public static void setHistoricoTramitacao(HistoricoTramitacao historicoTramitacao, Usuario usuarioExecutor) {
 
-		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.id = :y")
-				.setParameter("x", usuarioExecutor.id)
-				.setParameter("y", usuarioExecutor.perfilSelecionado.id)
-				.first();
+		if (usuarioExecutor.setorSelecionado != null) {
 
-		if (perfil.setor != null) {
+			Setor setor = Setor.findById(usuarioExecutor.setorSelecionado.id);
 
-			Setor setor = Setor.findById(perfil.setor.id);
+			if (setor.historicosTramitacao == null) {
+
+				setor.historicosTramitacao = new ArrayList<>();
+			}
+
 			setor.historicosTramitacao.add(historicoTramitacao);
 			setor._save();
 		}

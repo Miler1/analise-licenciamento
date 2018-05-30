@@ -18,15 +18,13 @@ public class Consultores extends InternalController {
 		
 		Usuario consultor = Usuario.findById(idUsuario);				
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);
-		usuarioExecultor.perfilSelecionado = usuarioSessao.perfilSelecionado;
-		usuarioExecultor.setorSelecionado = usuarioSessao.setorSelecionado;
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		for(Long idProcesso : idsProcesso) {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
-				processo.vincularConsultor(consultor, usuarioExecultor);
+				processo.vincularConsultor(consultor, usuarioExecutor);
 			
 		}
 		

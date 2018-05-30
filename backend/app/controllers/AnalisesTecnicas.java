@@ -27,7 +27,7 @@ public class AnalisesTecnicas extends InternalController {
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
@@ -42,7 +42,7 @@ public class AnalisesTecnicas extends InternalController {
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
@@ -106,7 +106,7 @@ public class AnalisesTecnicas extends InternalController {
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAValidar.validaParecer(analise, usuarioExecutor);
 		
@@ -120,7 +120,7 @@ public class AnalisesTecnicas extends InternalController {
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAValidar.validaParecerGerente(analise, usuarioExecutor);
 		
@@ -134,7 +134,7 @@ public class AnalisesTecnicas extends InternalController {
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAValidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		

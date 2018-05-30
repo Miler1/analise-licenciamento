@@ -324,7 +324,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 
 			HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
 
-			List<Notificacao> notificacoes = Notificacao.find("analise.id", this.analise.id).fetch();
+			List<Notificacao> notificacoes = Notificacao.find("analiseJuridica.id", this.id).fetch();
 			Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
 
 			Setor.setHistoricoTramitacao(historicoTramitacao, usuarioExecutor);
