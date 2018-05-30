@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 %{
 processo = analiseJuridica.analise.processo;
-datanotificacao = notificacao.dataCadastro;
-numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
+listaNotificacoes = notificacoes;
 empreendimento = analiseJuridica.analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
@@ -42,9 +41,14 @@ end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAces
 
 <p><strong>Assunto:</strong> Informe de notificação ( Movimentação de processo )</p>
 
-<p><strong>Data:</strong> ${dataNotificacao};</p>
-
-<p><strong>Movimentação:</strong> ${numeroNotificacao} <strong>SETOR:</strong> GDFLOR ;</p>
+<ul>
+    #{list items:listaNotificacoes, as:'notificacao'}
+    <li>
+        <p><strong>Data:</strong> ${notificacao.dataNotificacao};</p>
+        <p><strong>Movimentação:</strong> ${notificacao.codigoSequencia} / ${notificacao.codigoAno} <strong>SETOR:</strong> GDFLOR ;</p>
+    </li>
+    #{/list}
+</ul>
 
 <p>Senhor usuário, acesse o sistema de licenciamento Ambiental, para tomar ciência da notificação.</p>
 

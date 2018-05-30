@@ -42,8 +42,10 @@ public class EmailNotificacaoAnaliseJuridica extends EmailNotificacao {
 					documentosInvalidados.add(analiseDocumento);
 				}
 			}
-		
-			if(!Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseJuridica).get()) {
+
+			List<Notificacao> notificacoes = Notificacao.find("analiseJuridica.id", this.analiseJuridica.id).fetch();
+
+			if(!Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseJuridica, notificacoes).get()) {
 				
 				throw new AppException();
 				
