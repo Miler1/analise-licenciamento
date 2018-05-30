@@ -13,6 +13,7 @@ require:
         exclude:
             - org.hibernate -> hibernate-core
             - postgresql -> postgresql
+    - play -> pdf 0.9
     - org.hibernate -> hibernate-core 4.2.21.Final
     - org.postgresql -> postgresql 9.2-1003-jdbc4
     - com.vividsolutions -> jts 1.13

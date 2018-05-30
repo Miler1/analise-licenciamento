@@ -24,7 +24,8 @@ var config = {
 		all:  "src/**/*",
 		imgs: "src/images/**",
 		less: "src/styles/main.less",
-		fonts: "src/fonts/**"
+		fonts: "src/fonts/**",
+		pdf:  "src/pdf/**/*",
 	},
 
 	libs: {
@@ -100,6 +101,7 @@ var config = {
 	dist: {
 		jsMinFile:  "scripts.min.js",
 		cssMinFile: "styles.min.css",
+		pdfPath:  BACKEND_FOLDER + "/app/views/templates/pdf/",
 
 		rootPath: DIST_FOLDER + "/",
 		jsPath:   DIST_FOLDER + "/js",
@@ -134,6 +136,22 @@ gulp.task("pug", function() {
 	return gulp.src(config.src.all + ".pug")
 		.pipe(pug())
 		.pipe(gulp.dest(config.dist.htmlPath));
+
+});
+
+gulp.task("pdf", function() {
+
+	gulp
+		.src(config.src.pdf + ".pug")
+		.pipe(pug())
+		.pipe(gulp.dest(config.dist.pdfPath));
+
+	gulp.src(config.src.pdf + ".css")
+		.pipe(gulp.dest(config.dist.pdfPath))
+
+	return gulp.src(config.src.pdf + ".less")
+		.pipe(less())
+		.pipe(gulp.dest(config.dist.pdfPath));
 
 });
 
@@ -241,12 +259,12 @@ gulp.task("libs", function() {
 
 gulp.task('dist',['clean-dist'], function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts", "fonts-bootstrap");
+	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts", "fonts-bootstrap", "pdf");
 });
 
 gulp.task('dev', function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap");
+	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap", "pdf");
 });
 
 gulp.task('default', function() {

@@ -1,15 +1,19 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import models.AnaliseDocumento;
-import models.AnaliseJuridica;
-import models.AnaliseTecnica;
+import models.*;
+import models.pdf.PDFGenerator;
 import models.portalSeguranca.Usuario;
+import play.libs.Crypto;
 import security.Acao;
 import security.UsuarioSessao;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
+import utils.Configuracoes;
 import utils.Mensagem;
 
 public class AnalisesJuridicas extends InternalController {
@@ -113,6 +117,26 @@ public class AnalisesJuridicas extends InternalController {
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO);				
 		
-	}	
+	}
+
+	public static void downloadPDFParecer(AnaliseJuridica analiseJuridica) throws Exception {
+
+		String novoParecer = analiseJuridica.parecer;
+
+		AnaliseJuridica analiseJuridicaSalva = AnaliseJuridica.findById(analiseJuridica.id);
+
+		analiseJuridicaSalva.parecer = novoParecer;
+
+		Documento pdfParecer = analiseJuridicaSalva.gerarPDFParecer();
+
+		String nome = pdfParecer.tipo.nome +  "_" + analiseJuridicaSalva.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(pdfParecer.arquivo, nome);
+
+	}
 
 }

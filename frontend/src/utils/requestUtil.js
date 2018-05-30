@@ -20,15 +20,15 @@ Request.prototype._finally = function(http, url) {
 Request.prototype._block = function(requestLoader) {
 
 	if (i === 0) {
-		
+
 		this.preloader = new this.animacao.GSPreloader({
 			parent: requestLoader.elemento,
 		});
-		
+
 		requestLoader.preloader = this.preloader;
-		
+
 		this.requests.unshift(requestLoader);
-		
+
 		this.animacao.openPreloader(requestLoader);
 	}
 	i++;
@@ -37,7 +37,7 @@ Request.prototype._block = function(requestLoader) {
 
 Request.prototype._unBlock = function(url) {
 	i--;
-	
+
 	if (i === 0){
 		var elemPreloader = this.requests[0];
 
@@ -165,6 +165,55 @@ Request.prototype.postAsUrlEncoded = function(url, params, elem, comLoad) {
 	return http;
 
 };
+
+Request.prototype.postArrayBuffer = function(url, params, elem, comLoad) {
+
+	if(comLoad === null || comLoad === undefined)
+		comLoad = true;
+
+	var http = this._$http({
+		url:  url,
+		method: 'POST',
+		cache: false,
+		data: params,
+		headers: {'Content-Type': 'application/json', 'accept': 'application/pdf'},
+		responseType: 'arraybuffer',
+		transformResponse: function (data, headers) {
+			var pdf = null;
+			if (data) {
+				pdf = new Blob([data], {
+					type: 'application/pdf'
+				});
+			}
+
+			var fileName = getFileNameFromHeader(headers('content-disposition'));
+			var result = {
+				blob: pdf,
+				fileName: fileName
+			};
+
+			return {
+				response: result
+			};
+		}
+	});
+
+	if(comLoad) {
+		this.load(url, elem);
+		this._finally(http, url);
+	}
+
+	return http;
+
+};
+
+function getFileNameFromHeader(header) {
+	if (!header) return null;
+
+	var result = header.split(";")[1].trim().split("=")[1];
+
+	return result.replace(/"/g, '');
+}
 
 
 Request.prototype.delete = function(url, params, elem, comLoad) {
