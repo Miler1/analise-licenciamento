@@ -2,7 +2,7 @@
 %{
 processo = analiseJuridica.analise.processo;
 datanotificacao = notificacao.dataCadastro;
-numeroNotificacao = notificacao.numero;
+numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
 empreendimento = analiseJuridica.analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
@@ -44,7 +44,7 @@ end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAces
 
 <p><strong>Data:</strong> ${dataNotificacao};</p>
 
-<p><strong>Movimentação:</strong> ${numeronotificacao} <strong>SETOR:</strong> GDFLOR ;</p>
+<p><strong>Movimentação:</strong> ${numeroNotificacao} <strong>SETOR:</strong> GDFLOR ;</p>
 
 <p>Senhor usuário, acesse o sistema de licenciamento Ambiental, para tomar ciência da notificação.</p>
 
