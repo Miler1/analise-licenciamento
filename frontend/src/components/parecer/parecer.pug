@@ -57,11 +57,16 @@ section.margin-bottom-md
             div(ng-messages='$ctrl.formularioParecer.$submitted && $ctrl.formularioParecer.parecer.$error')
                 p.error-message(ng-message='required') Campo obrigatório.
 
-        .form-group
+        .form-group(ng-class="{'col-md-9': $ctrl.analiseTecnica.parecer, 'col-md-12': !$ctrl.analiseTecnica.parecer}")
             div.btn.btn-default(type="file", name="arquivo", ngf-select="$ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                 i.glyphicon.glyphicon-open.glyphicon--with-right-margin
                 | Anexar arquivo ao parecer
             i Tamanho máximo de {{$ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+
+        .form-group.col-md-3(ng-if="$ctrl.analiseTecnica.parecer", title="Gerar PDF do parecer")
+            div.btn.btn-default(ng-click="$ctrl.downloadPDFParecer()")
+                i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
+                | Gerar PDF do parecer
 
 
     table.table.table-condensed(ng-if="$ctrl.analiseTecnica.documentos.length > 0")

@@ -6,9 +6,14 @@ var DocumentoAnaliseService = function(request, config, $window) {
 
 	};
 
-	this.generatePDFParecer = function(analiseJuridica) {
+	this.generatePDFParecerJuridico = function(analiseJuridica) {
 
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFParecer', analiseJuridica);
+	};
+
+	this.generatePDFParecerTecnico = function(analiseTecnica) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFParecer', analiseTecnica);
 	};
 
 };

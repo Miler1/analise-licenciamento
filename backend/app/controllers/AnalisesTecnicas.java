@@ -3,15 +3,12 @@ package controllers;
 import java.io.File;
 import java.nio.charset.Charset;
 
+import models.Documento;
 import org.apache.commons.io.FileUtils;
-import org.geotools.geometry.jts.WKTReader2;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.geocalculo.Geoserver;
-import models.licenciamento.ImovelEmpreendimento;
 import models.portalSeguranca.Usuario;
 import security.Acao;
 import security.UsuarioSessao;
@@ -139,5 +136,25 @@ public class AnalisesTecnicas extends InternalController {
 		analiseAValidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO);
-	}	
+	}
+
+	public static void downloadPDFParecer(AnaliseTecnica analiseTecnica) throws Exception {
+
+		String novoParecer = analiseTecnica.parecer;
+
+		AnaliseTecnica analiseTecnicaSalva = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnicaSalva.parecer = novoParecer;
+
+		Documento pdfParecer = analiseTecnicaSalva.gerarPDFParecer();
+
+		String nome = pdfParecer.tipo.nome +  "_" + analiseTecnicaSalva.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(pdfParecer.arquivo, nome);
+
+	}
 }

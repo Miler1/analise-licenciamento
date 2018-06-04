@@ -27,6 +27,7 @@ import javax.persistence.TemporalType;
 import models.portalSeguranca.PerfilUsuario;
 import models.portalSeguranca.Setor;
 import models.tramitacao.HistoricoTramitacao;
+import models.pdf.PDFGenerator;
 import org.apache.commons.lang.StringUtils;
 
 import exceptions.ValidacaoException;
@@ -685,5 +686,22 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	public GerenteTecnico getGerenteTecnico() {
 		
 		return this.gerentesTecnicos.get(0);
+	}
+
+	public Documento gerarPDFParecer() throws Exception {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("analise", this)
+				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+
+		pdf.generate();
+
+		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+		return documento;
+
 	}
 }

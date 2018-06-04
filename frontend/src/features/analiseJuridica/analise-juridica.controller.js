@@ -107,11 +107,10 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
     ctrl.downloadPDFParecer = function() {
 
-        documentoAnaliseService.generatePDFParecer(this.analiseJuridica)
+        documentoAnaliseService.generatePDFParecerJuridico(this.analiseJuridica)
             .then(
                 function(data, status, headers){
 
-                    console.log(data);
                     var a = document.createElement('a');
                     a.href = URL.createObjectURL(data.data.response.blob);
                     a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_juridica.pdf';
