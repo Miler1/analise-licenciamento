@@ -128,7 +128,7 @@ GET     /favicon.ico                            404
 POST	/upload/save								Uploads.upload
 
 # Estáticos
-GET    /notificacoes/pdf/{idTramitacao}             Notificacoes.downloadPDF
+GET    /notificacoes/{idTramitacao}/pdf             Notificacoes.downloadPDF
 
 # Estáticos
 GET     /public/									staticDir:public

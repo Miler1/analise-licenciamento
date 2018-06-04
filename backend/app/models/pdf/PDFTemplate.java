@@ -8,7 +8,9 @@ import utils.Configuracoes;
 public enum PDFTemplate {
 
     PARECER_ANALISE_JURIDICA (TipoDocumento.PARECER_ANALISE_JURIDICA),
-    PARECER_ANALISE_TECNICA (TipoDocumento.PARECER_ANALISE_TECNICA);
+    PARECER_ANALISE_TECNICA (TipoDocumento.PARECER_ANALISE_TECNICA),
+    NOTIFICACAO_ANALISE_TECNICA (TipoDocumento.NOTIFICACAO_ANALISE_TECNICA),
+    NOTIFICACAO_ANALISE_JURIDICA (TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
 
     private static final File TEMPLATES_FOLDER = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH);
     private static final String LIBS_PATH = new File(TEMPLATES_FOLDER, "libs").getPath();
