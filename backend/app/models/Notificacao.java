@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.TipoDocumentoLicenciamento;
+import models.pdf.PDFGenerator;
 import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import play.data.validation.Required;
@@ -165,6 +166,23 @@ public class Notificacao extends GenericModel {
 			notificacao.historicoTramitacao = historicoTramitacao;
 			notificacao._save();
 		}
+	}
+
+	public Documento gerarPDFNotificacaoAnaliseJuridica() throws Exception {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("analise", this)
+				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+
+		pdf.generate();
+
+		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+		return documento;
+
 	}
     
 }
