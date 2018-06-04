@@ -168,7 +168,9 @@ public class Notificacao extends GenericModel {
 		}
 	}
 
-	public Documento gerarPDFNotificacaoAnaliseJuridica() throws Exception {
+	public Documento gerarPDF() throws Exception {
+
+
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
 
