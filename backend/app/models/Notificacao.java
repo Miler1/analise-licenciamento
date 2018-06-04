@@ -1,6 +1,8 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -54,7 +56,13 @@ public class Notificacao extends GenericModel {
 	public Boolean resolvido;
 	
 	public Boolean ativo;
-	
+
+	@Column(name="codigo_sequencia")
+	public Long codigoSequencia;
+
+	@Column(name="codigo_ano")
+	public Integer codigoAno;
+
 	public String justificativa;
 	
 	@Column(name="data_cadastro")
@@ -68,7 +76,7 @@ public class Notificacao extends GenericModel {
 			if(analiseDocumento.validado == null || analiseDocumento.validado == true) {
 				continue;
 			}
-			
+
 			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.id);
 				
 			Notificacao notificacao = new Notificacao();
@@ -78,6 +86,13 @@ public class Notificacao extends GenericModel {
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
 			notificacao.dataCadastro = new Date();
+
+			Calendar calendario = new GregorianCalendar();
+			calendario.setTime(notificacao.dataCadastro);
+			int anoDataCadastro = calendario.get(Calendar.YEAR);
+
+			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro, analiseJuridica);
+			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
 			
 		}
@@ -109,6 +124,13 @@ public class Notificacao extends GenericModel {
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
 			notificacao.dataCadastro = new Date();
+
+			Calendar calendario = new GregorianCalendar();
+			calendario.setTime(notificacao.dataCadastro);
+			int anoDataCadastro = calendario.get(Calendar.YEAR);
+
+			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
+			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
 			
 		}
@@ -150,5 +172,48 @@ public class Notificacao extends GenericModel {
 		return Notificacao.find("byAnaliseDocumento", analiseDocumento).first();
 		
 	}
-    
+
+	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseJuridica analiseJuridica) {
+
+		List<Notificacao> notificacoes = Notificacao.find("order by id desc").fetch();
+
+		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
+
+			return 1;
+		}
+
+		if (analiseJuridica.id == notificacoes.get(0).analiseJuridica.id) {
+
+			return notificacoes.get(0).codigoSequencia;
+		}
+
+		if (anoDataCadastro > notificacoes.get(0).codigoAno) {
+
+			return 1;
+		}
+
+		return notificacoes.get(0).codigoSequencia + 1;
+	}
+
+	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseTecnica analiseTecnica) {
+
+		List<Notificacao> notificacoes = Notificacao.find("order by id desc").fetch();
+
+		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
+
+			return 1;
+		}
+
+		if (analiseTecnica.id == notificacoes.get(0).analiseTecnica.id) {
+
+			return notificacoes.get(0).codigoSequencia;
+		}
+
+		if (anoDataCadastro > notificacoes.get(0).codigoAno) {
+
+			return 1;
+		}
+
+		return notificacoes.get(0).codigoSequencia + 1;
+	}
 }
