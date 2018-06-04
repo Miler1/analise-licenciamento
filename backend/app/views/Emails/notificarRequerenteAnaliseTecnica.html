@@ -2,7 +2,7 @@
 %{
   processo = analiseJuridica.analise.processo;
   datanotificacao = notificacao.dataCadastro;
-  numeroNotificacao = notificacao.numero;
+  numeroNotificacao = notificacao.numero + "/" + notificacao.ano;
   empreendimento = analiseJuridica.analise.processo.empreendimento;
   empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
   atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
