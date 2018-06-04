@@ -91,7 +91,7 @@ public class Notificacao extends GenericModel {
 			calendario.setTime(notificacao.dataCadastro);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
-			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro);
+			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro, analiseJuridica);
 			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
 			
@@ -129,7 +129,7 @@ public class Notificacao extends GenericModel {
 			calendario.setTime(notificacao.dataCadastro);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
-			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro);
+			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
 			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
 			
@@ -173,13 +173,40 @@ public class Notificacao extends GenericModel {
 		
 	}
 
-	public static long getProximaSequenciaCodigo(int anoDataCadastro) {
+	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseJuridica analiseJuridica) {
 
 		List<Notificacao> notificacoes = Notificacao.find("order by id desc").fetch();
 
 		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
 
 			return 1;
+		}
+
+		if (analiseJuridica.id == notificacoes.get(0).analiseJuridica.id) {
+
+			return notificacoes.get(0).codigoSequencia;
+		}
+
+		if (anoDataCadastro > notificacoes.get(0).codigoAno) {
+
+			return 1;
+		}
+
+		return notificacoes.get(0).codigoSequencia + 1;
+	}
+
+	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseTecnica analiseTecnica) {
+
+		List<Notificacao> notificacoes = Notificacao.find("order by id desc").fetch();
+
+		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
+
+			return 1;
+		}
+
+		if (analiseTecnica.id == notificacoes.get(0).analiseTecnica.id) {
+
+			return notificacoes.get(0).codigoSequencia;
 		}
 
 		if (anoDataCadastro > notificacoes.get(0).codigoAno) {
