@@ -170,21 +170,37 @@ public class Notificacao extends GenericModel {
 
 	public Documento gerarPDF() throws Exception {
 
+		if (this.analiseTecnica == null) {
 
+			TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
 
-		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
+			PDFGenerator pdf = new PDFGenerator()
+					.setTemplate(tipoDocumento.getPdfTemplate())
+					.addParam("analise", this.analiseJuridica)
+					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
-		PDFGenerator pdf = new PDFGenerator()
-				.setTemplate(tipoDocumento.getPdfTemplate())
-				.addParam("analise", this)
-				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+			pdf.generate();
 
-		pdf.generate();
+			Documento documento = new Documento(tipoDocumento, pdf.getFile());
 
-		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+			return documento;
 
-		return documento;
+		} else {
 
+			TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);
+
+			PDFGenerator pdf = new PDFGenerator()
+					.setTemplate(tipoDocumento.getPdfTemplate())
+					.addParam("analise", this.analiseTecnica)
+					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+
+			pdf.generate();
+
+			Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+			return documento;
+
+		}
 	}
     
 }
