@@ -198,7 +198,7 @@ public class Notificacao extends GenericModel {
 
 			PDFGenerator pdf = new PDFGenerator()
 					.setTemplate(tipoDocumento.getPdfTemplate())
-					.addParam("analise", this.analiseJuridica)
+					.addParam("analiseJuridica", this.analiseJuridica)
 					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
 			pdf.generate();
@@ -213,7 +213,7 @@ public class Notificacao extends GenericModel {
 
 			PDFGenerator pdf = new PDFGenerator()
 					.setTemplate(tipoDocumento.getPdfTemplate())
-					.addParam("analise", this.analiseTecnica)
+					.addParam("analiseTecnica", this.analiseTecnica)
 					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
 			pdf.generate();
