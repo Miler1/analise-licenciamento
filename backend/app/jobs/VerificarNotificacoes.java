@@ -36,7 +36,7 @@ public class VerificarNotificacoes extends GenericJob {
 				
 				DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 
-				if(analise.temNotificacaoAberta && (verificaDiasAnalise.qtdeDiasNotificacao != null && verificaDiasAnalise.qtdeDiasNotificacao > 15)) {
+				if(analise.temNotificacaoAberta && (verificaDiasAnalise.qtdeDiasNotificacao != null && verificaDiasAnalise.qtdeDiasNotificacao > 10)) {
 					
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
 					
