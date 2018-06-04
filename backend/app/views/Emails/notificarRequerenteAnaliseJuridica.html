@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 %{
 processo = analiseJuridica.analise.processo;
-listaNotificacoes = notificacoes;
+dataNotificacao = notificacao.dataCadastro;
+numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
 empreendimento = analiseJuridica.analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
@@ -33,22 +34,17 @@ end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAces
 
 <p>Informamos que o processo a seguir sofreu movimentação</p>
 
-<p><strong>Processo N&ordm;:</strong>${processo.numero}</p>
+<p><strong>Processo N&ordm;:</strong> ${processo.numero}</p>
 
-<p><strong>Data de Protocolo:</strong>${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}</p>
+<p><strong>Data de Protocolo:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}</p>
 
-<p><strong>Interessado ou Requerente/Arrendatario:</strong>${empreendimentoNome}</p>
+<p><strong>Interessado ou Requerente/Arrendatario:</strong> ${empreendimentoNome}</p>
 
 <p><strong>Assunto:</strong> Informe de notificação ( Movimentação de processo )</p>
 
-<ul>
-    #{list items:listaNotificacoes, as:'notificacao'}
-    <li>
-        <p><strong>Data:</strong> ${notificacao.dataNotificacao};</p>
-        <p><strong>Movimentação:</strong> ${notificacao.codigoSequencia} / ${notificacao.codigoAno} <strong>SETOR:</strong> GDFLOR ;</p>
-    </li>
-    #{/list}
-</ul>
+<p><strong>Data:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataNotificacao)}</p>
+
+<p><strong>Movimentação: </strong> Notificação n° ${numeroNotificacao} <strong> SETOR:</strong> GDFLOR</p>
 
 <p>Senhor usuário, acesse o sistema de licenciamento Ambiental, para tomar ciência da notificação.</p>
 

@@ -11,7 +11,7 @@ import play.mvc.Mailer;
 public class Emails extends Mailer {
 	
 	public static Future<Boolean> notificarRequerenteAnaliseJuridica(List<String> destinatarios, String licencas,
-			List<AnaliseDocumento> documentosAnalisados, AnaliseJuridica analiseJuridica, Notificacao notificacacao) {
+			List<AnaliseDocumento> documentosAnalisados, AnaliseJuridica analiseJuridica, Notificacao notificacao) {
 		
 		setSubject("Movimentação do processo %s", analiseJuridica.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -19,11 +19,11 @@ public class Emails extends Mailer {
 			
 			addRecipient(email);
 		}
-		return send(licencas, documentosAnalisados, analiseJuridica, notificacacao);
+		return send(licencas, documentosAnalisados, analiseJuridica, notificacao);
 	}
 	
 	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas, 
-			List<AnaliseDocumento> documentosAnalisados, AnaliseTecnica analiseTecnica, Notificacao notificacacao) {
+			List<AnaliseDocumento> documentosAnalisados, AnaliseTecnica analiseTecnica, Notificacao notificacao) {
 		
 		setSubject("Movimentação do processo %s", analiseTecnica.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -31,7 +31,7 @@ public class Emails extends Mailer {
 			
 			addRecipient(email);
 		}
-		return send(licencas, documentosAnalisados, analiseTecnica, notificacacao);
+		return send(licencas, documentosAnalisados, analiseTecnica, notificacao);
 	}
 	
 	public static Future<Boolean> notificarRequerenteSuspensaoLicenca(List<String> destinatarios, Suspensao suspensao) {

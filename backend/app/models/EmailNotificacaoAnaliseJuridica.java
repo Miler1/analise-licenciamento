@@ -43,7 +43,7 @@ public class EmailNotificacaoAnaliseJuridica extends EmailNotificacao {
 				}
 			}
 
-			Notificacao notificacao = Notificacao.find("analiseJuridica.id", this.analiseJuridica.id).first();
+			Notificacao notificacao = Notificacao.find("id_analise_juridica", this.analiseJuridica.id).first();
 
 			if(!Emails.notificarRequerenteAnaliseJuridica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseJuridica, notificacao).get()) {
 				
