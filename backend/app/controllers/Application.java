@@ -1,10 +1,16 @@
 package controllers;
 
+import models.Notificacao;
+import org.apache.commons.collections.FastHashMap;
 import play.Play;
+import play.libs.Crypto;
 import security.Auth;
 import security.UsuarioSessao;
 import serializers.ApplicationSerializer;
 import utils.Configuracoes;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 public class Application extends GenericController {
 
@@ -48,4 +54,24 @@ public class Application extends GenericController {
 		public String baseURL = Configuracoes.HTTP_PATH;
 	}
 
+
+	public static void qrCodeView(String idNotificacao) throws UnsupportedEncodingException {
+
+		Notificacao notificacao = Notificacao.findById(Crypto.decryptAES(idNotificacao));
+
+		String url = Configuracoes.APP_URL + "/notificacoes/" + Crypto.encryptAES(notificacao.id.toString()) + "/download";
+		String nomeArquivo = notificacao.tipoDocumento + "_" + notificacao.id + ".pdf";
+
+		Map<String, Object> args = new FastHashMap(3);
+		args.put("notificacao", notificacao);
+		args.put("urlDownload", url);
+		args.put("nomeArquivo", nomeArquivo);
+
+		renderTemplate(Configuracoes.PDF_TEMPLATES_FOLDER_PATH + "/qrcode/informacoes.html", args);
+	}
+
+	public static void qrCodeDownload(String idNotificacao) throws Exception {
+
+		Notificacoes.downloadPDF(Integer.parseInt(Crypto.decryptAES(idNotificacao)));
+	}
 }
