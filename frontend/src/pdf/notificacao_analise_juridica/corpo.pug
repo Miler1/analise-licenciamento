@@ -50,9 +50,10 @@ html(lang='en')
         strong Prazo de 10 (dez) dias
       ul
         | \#{list items:notificacoes, as:'notificacao'}
-        li 
-          strong ${notificacao.tipoDocumento.nome}
-          p Justificativa: ${notificacao.justificativa}
+        li ${notificacao.tipoDocumento.nome}
         | \#{/list}
 
       p Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
+
+      p 
+        img.qrcode(src="${qrcode}")

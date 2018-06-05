@@ -17,45 +17,45 @@ import java.io.IOException;
  */
 public class QRCode {
 
-    private String chave;
+	private String chave;
 
-    private QRCodeWriter qrCodeWriter;
+	private QRCodeWriter qrCodeWriter;
 
-    public QRCode(String chave) {
-        this.chave = chave;
-        this.qrCodeWriter = new QRCodeWriter();
-    }
+	public QRCode(String chave) {
+		this.chave = chave;
+		this.qrCodeWriter = new QRCodeWriter();
+	}
 
-    private ByteArrayOutputStream gerarQRcode() throws IOException, WriterException {
-        BitMatrix byteMatrix = qrCodeWriter.encode(chave, BarcodeFormat.QR_CODE, 150, 150);
+	private ByteArrayOutputStream gerarQRcode() throws IOException, WriterException {
+		BitMatrix byteMatrix = qrCodeWriter.encode(chave, BarcodeFormat.QR_CODE, 150, 150);
 
-        BufferedImage image = new BufferedImage(byteMatrix.getWidth(), byteMatrix.getHeight(),
-                BufferedImage.TYPE_INT_RGB);
-        image.createGraphics();
+		BufferedImage image = new BufferedImage(byteMatrix.getWidth(), byteMatrix.getHeight(),
+				BufferedImage.TYPE_INT_RGB);
+		image.createGraphics();
 
-        Graphics2D graphics = (Graphics2D) image.getGraphics();
-        graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, byteMatrix.getWidth(), byteMatrix.getHeight());
-        graphics.setColor(Color.BLACK);
+		Graphics2D graphics = (Graphics2D) image.getGraphics();
+		graphics.setColor(Color.WHITE);
+		graphics.fillRect(0, 0, byteMatrix.getWidth(), byteMatrix.getHeight());
+		graphics.setColor(Color.BLACK);
 
-        for (int i = 0; i < byteMatrix.getWidth(); i++) {
-            for (int j = 0; j < byteMatrix.getHeight(); j++) {
-                if (byteMatrix.get(i, j)) {
-                    graphics.fillRect(i, j, 1, 1);
-                }
-            }
-        }
+		for (int i = 0; i < byteMatrix.getWidth(); i++) {
+			for (int j = 0; j < byteMatrix.getHeight(); j++) {
+				if (byteMatrix.get(i, j)) {
+					graphics.fillRect(i, j, 1, 1);
+				}
+			}
+		}
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        ImageIO.write(image, "PNG", out);
+		ImageIO.write(image, "PNG", out);
 
-        return out;
-    }
+		return out;
+	}
 
-    public String getBase64() throws WriterException, IOException {
+	public String getBase64() throws WriterException, IOException {
 
-        return "data:image/png;base64," + Base64.encodeBase64String(this.gerarQRcode().toByteArray());
+		return "data:image/png;base64," + Base64.encodeBase64String(this.gerarQRcode().toByteArray());
 
-    }
+	}
 }

@@ -17,3 +17,7 @@ body {
 .parecer {
   text-align: justify;
 }
+
+li {
+	padding: 7px 0;
+}
