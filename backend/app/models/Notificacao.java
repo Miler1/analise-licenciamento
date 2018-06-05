@@ -25,6 +25,8 @@ import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
+import utils.Configuracoes;
 import utils.QRCode;
 
 @Entity
@@ -199,8 +201,7 @@ public class Notificacao extends GenericModel {
 
 			List<Notificacao> notificacoes = Notificacao.find("id_analise_juridica", this.analiseJuridica.id).fetch();
 
-			//String url = Configuracoes.APP_URL + "/dla/" + Crypto.encryptAES(this.caracterizacao.id.toString());
-			String url = "Gustavo";
+			String url = Configuracoes.APP_URL + "/analise-juridica/" + this.analiseJuridica.id;
 
 			PDFGenerator pdf = new PDFGenerator()
 					.setTemplate(tipoDocumento.getPdfTemplate())
@@ -221,10 +222,13 @@ public class Notificacao extends GenericModel {
 
 			List<Notificacao> notificacoes = Notificacao.find("id_analise_tecnica", this.analiseTecnica.id).fetch();
 
+			String url = Configuracoes.APP_URL + "/analise-juridica/" + this.analiseTecnica.id;
+
 			PDFGenerator pdf = new PDFGenerator()
 					.setTemplate(tipoDocumento.getPdfTemplate())
 					.addParam("analiseTecnica", this.analiseTecnica)
 					.addParam("notificacoes", notificacoes)
+					.addParam("qrcode", new QRCode(url).getBase64())
 					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
 			pdf.generate();
