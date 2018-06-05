@@ -17,3 +17,12 @@ body {
 .parecer {
   text-align: justify;
 }
+
+li {
+	padding: 7px 0;
+}
+
+.qrcode {
+	padding-top: 20px;
+	width: 100px;
+}
