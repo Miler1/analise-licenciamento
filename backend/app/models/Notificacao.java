@@ -196,9 +196,12 @@ public class Notificacao extends GenericModel {
 
 			TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
 
+			List<Notificacao> notificacoes = Notificacao.find("id_analise_juridica", this.analiseJuridica.id).fetch();
+
 			PDFGenerator pdf = new PDFGenerator()
 					.setTemplate(tipoDocumento.getPdfTemplate())
 					.addParam("analiseJuridica", this.analiseJuridica)
+					.addParam("notificacoes", notificacoes)
 					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
 			pdf.generate();
@@ -211,9 +214,12 @@ public class Notificacao extends GenericModel {
 
 			TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);
 
+			List<Notificacao> notificacoes = Notificacao.find("id_analise_tecnica", this.analiseTecnica.id).fetch();
+
 			PDFGenerator pdf = new PDFGenerator()
 					.setTemplate(tipoDocumento.getPdfTemplate())
 					.addParam("analiseTecnica", this.analiseTecnica)
+					.addParam("notificacoes", notificacoes)
 					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
 			pdf.generate();

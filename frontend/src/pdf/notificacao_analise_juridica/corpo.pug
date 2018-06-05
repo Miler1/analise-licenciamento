@@ -49,13 +49,10 @@ html(lang='en')
       p
         strong Prazo de 10 (dez) dias
       ul
-        | \#{list items:documentosAnalisados, as:'analiseDocumento'}
-        li
-          strong ${analiseDocumento.documento.tipo.nome}
-          |  - ${analiseDocumento.parecer}
+        | \#{list items:notificacoes, as:'notificacao'}
+        li 
+          strong ${notificacao.tipoDocumento.nome}
+          p Justificativa: ${notificacao.justificativa}
         | \#{/list}
-    //- | \#{verbatim}
-    //- p ${analiseJuridica.parecer}
-    //- | \#{/verbatim}
-    //- p
-    //-   | Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
+
+      p Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
