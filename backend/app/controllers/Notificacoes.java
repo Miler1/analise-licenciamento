@@ -29,7 +29,7 @@ public class Notificacoes extends InternalController {
     }
 
 
-    public static void qrcodeView(String idNotificacao) throws UnsupportedEncodingException {
+    public static void qrCodeView(String idNotificacao) throws UnsupportedEncodingException {
 
         Notificacao notificacao = Notificacao.findById(Crypto.decryptAES(idNotificacao));
 

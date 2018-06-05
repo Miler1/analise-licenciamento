@@ -128,10 +128,16 @@ GET     /favicon.ico                            404
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
 
-# Estáticos
-GET    /notificacoes/{idTramitacao}/pdf             Notificacoes.downloadPDF
+# Notificacoes
+
+GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
 
+
+## SERVIÇOS ABERTOS
+
+GET 	/notificacoes/{idTramitacao}                Notificacoes.qrCodeView
+GET 	/notificacoes/{idTramitacao}/download       Notificacoes.qrCodeDownload
