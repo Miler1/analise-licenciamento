@@ -195,49 +195,48 @@ public class Notificacao extends GenericModel {
 
 	public Documento gerarPDF() throws Exception {
 
-		if (this.analiseTecnica == null) {
+		Long analiseId;
+		TipoDocumento tipoDocumento;
+		List<Notificacao> notificacoes;
 
-			TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
+		if (this.analiseJuridica != null) {
 
-			List<Notificacao> notificacoes = Notificacao.find("id_analise_juridica", this.analiseJuridica.id).fetch();
-
-			String url = Configuracoes.APP_URL + "/analise-juridica/" + this.analiseJuridica.id;
-
-			PDFGenerator pdf = new PDFGenerator()
-					.setTemplate(tipoDocumento.getPdfTemplate())
-					.addParam("analiseJuridica", this.analiseJuridica)
-					.addParam("notificacoes", notificacoes)
-					.addParam("qrcode", new QRCode(url).getBase64())
-					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
-
-			pdf.generate();
-
-			Documento documento = new Documento(tipoDocumento, pdf.getFile());
-
-			return documento;
+			analiseId = this.analiseJuridica.id;
+			tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
+			notificacoes = Notificacao.find("id_analise_juridica", analiseId).fetch();
 
 		} else {
 
-			TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);
-
-			List<Notificacao> notificacoes = Notificacao.find("id_analise_tecnica", this.analiseTecnica.id).fetch();
-
-			String url = Configuracoes.APP_URL + "/analise-juridica/" + this.analiseTecnica.id;
-
-			PDFGenerator pdf = new PDFGenerator()
-					.setTemplate(tipoDocumento.getPdfTemplate())
-					.addParam("analiseTecnica", this.analiseTecnica)
-					.addParam("notificacoes", notificacoes)
-					.addParam("qrcode", new QRCode(url).getBase64())
-					.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
-
-			pdf.generate();
-
-			Documento documento = new Documento(tipoDocumento, pdf.getFile());
-
-			return documento;
-
+			analiseId = this.analiseTecnica.id;
+			tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);
+			notificacoes = Notificacao.find("id_analise_tecnica", analiseId).fetch();
 		}
+
+		String url = Configuracoes.APP_URL + "/notificacoes/" + Crypto.encryptAES(String.valueOf(analiseId)) + "/view";
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("notificacoes", notificacoes)
+				.addParam("qrcode", new QRCode(url).getBase64())
+				.addParam("qrcodeLink", url)
+				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+
+		if (this.analiseJuridica != null) {
+
+			pdf.addParam("analiseEspecifica", this.analiseJuridica);
+			pdf.addParam("analiseArea", "ANALISE_JURIDICA");
+
+		} else {
+
+			pdf.addParam("analiseEspecifica", this.analiseTecnica);
+			pdf.addParam("analiseArea", "ANALISE_TECNICA");
+		}
+
+		pdf.generate();
+
+		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+		return documento;
 	}
     
 	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseJuridica analiseJuridica) {

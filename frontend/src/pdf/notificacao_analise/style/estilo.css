@@ -21,3 +21,8 @@ body {
 li {
 	padding: 7px 0;
 }
+
+img.qrcode {
+	padding-top: 90px;
+	width: 100px;
+}
