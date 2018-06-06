@@ -81,7 +81,8 @@ public class Application extends GenericController {
 				.fetch();
 
 		Notificacao notificacao = notificacoes.get(0);
-		String url = Configuracoes.APP_URL + "notificacoes/" + notificacao.historicoTramitacao.idHistorico + "/download";
+		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(notificacao.historicoTramitacao.idHistorico))
+				+ "/download";
 
 		Map<String, Object> args = new HashMap<>(7);
 		args.put("notificacoes", notificacoes);
