@@ -212,7 +212,8 @@ public class Notificacao extends GenericModel {
 			notificacoes = Notificacao.find("id_analise_tecnica", analiseId).fetch();
 		}
 
-		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(analiseId)) + "/view";
+		String idQrCode = String.valueOf(notificacoes.get(0).codigoSequencia) + '/' + notificacoes.get(0).codigoAno;
+		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(idQrCode) + "/view";
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
