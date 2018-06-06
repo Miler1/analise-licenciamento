@@ -1,0 +1,94 @@
+doctype html
+| %{
+| processo = analiseEspecifica.analise.processo;
+| empreendimento = analiseEspecifica.analise.processo.empreendimento;
+| empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+| atividadesCaracerizacao = analiseEspecifica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
+| bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
+| numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
+| cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
+| municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo;
+| endereco = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
+| }%
+html(lang="pt-br")
+// <head>
+// <title>Licenciamento - Pará</title>
+// <link rel="stylesheet" href="../app/libs/bootstrap/css/bootstrap.min.css">
+// <style>body {
+// width: 100%;
+// height: 100%;
+// margin: 15px 0 0 0;
+// padding: 0;
+// background-color: #FFFFFF;
+// font-size: 14px;
+// font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+// }
+// .input-group-addon {
+// background-color: #fff;
+// font-weight: bold;
+// }
+// .form-control[disabled] {
+// background-color: #fbfbfb;
+// }
+// .titulo-jumbotron {
+// margin: -20px 0px 10px 0px;
+// }
+// span {
+// line-height: 0.7em;
+// text-indent: 1em;
+// margin-bottom: 20px;
+// }
+// </style>
+// <meta charset="UTF-8">
+// </head>
+body
+	.cabecalho
+	div
+		img.logo(src="/public/app/images/brasao_pa.png" height="139" width="186")
+	div
+		h3 GOVERNO DO ESTADO DO PARÁ
+	div
+		h4 Secretaria de Estado de Meio Ambiente e Sustentabilidade
+		h4 Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR
+	div
+	p
+		strong Processo Nº:
+		|	${processo.numero}
+	p
+		strong Requerente / Arrendatário:
+		|	${empreendimentoNome}
+	p
+		strong Endereço:
+		br
+		| ${endereco}
+		br
+		| CEP: ${cep}
+	p(ng-if="analiseArea === ANALISE_JURIDICA")
+		strong Referente a pendência:
+		br
+		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}, no qual solicita ${licencas} para
+		span(ng-for="atividadeCaracterizacao in atividadesCaracerizacao")
+			| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+		| no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, a fim de ser dada continuidade à análise do pleito:
+
+	p(ng-if="if analiseArea === ANALISE_TECNICA")
+		strong Referente a pendência:
+		br
+		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}, no qual solicita ${licencas} para
+		span(ng-for="atividadeCaracterizacao in atividadesCaracerizacao")
+			| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+		| no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.
+
+	p
+		strong Prazo de 10 (dez) dias
+	ul
+		li(ng-for="notificacao in notificacoes")
+		| ${notificacao.tipoDocumento.nome}
+	p(ng-if="analiseArea === ANALISE_JURIDICA")
+		| Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
+	p(ng-if="analiseArea === ANALISE_TECNICA")
+		| Outrossim, informo que o não comprimento da solicitação supracitada, noprazo estipulado acima, implicará no arquivamento do referido processo.
+	body
+		.panel-footer
+		.text-center
+			a.btn.btn-success(href="${urlDownload}" type="application/pdf" download="${nomeArquivo}") Baixar PDF
