@@ -139,5 +139,5 @@ GET     /app/										staticDir:public/app
 
 ## SERVIÇOS ABERTOS
 
-GET 	/notificacoes/{idTramitacao}/view           Application.qrCodeView
+GET 	/notificacoes/{idQrCode}/view               Application.qrCodeView
 GET 	/notificacoes/{idTramitacao}/download       Application.qrCodeDownload
