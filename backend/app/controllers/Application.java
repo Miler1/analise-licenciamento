@@ -59,7 +59,7 @@ public class Application extends GenericController {
 
 		Notificacao notificacao = Notificacao.findById(Crypto.decryptAES(idNotificacao));
 
-		String url = Configuracoes.APP_URL + "/notificacoes/" + Crypto.encryptAES(notificacao.id.toString()) + "/download";
+		String url = Configuracoes.APP_URL + "notificacoes/" + idNotificacao + "/download";
 		String nomeArquivo = notificacao.tipoDocumento + "_" + notificacao.id + ".pdf";
 
 		Map<String, Object> args = new FastHashMap(3);

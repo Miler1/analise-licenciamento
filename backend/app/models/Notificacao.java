@@ -212,14 +212,14 @@ public class Notificacao extends GenericModel {
 			notificacoes = Notificacao.find("id_analise_tecnica", analiseId).fetch();
 		}
 
-		String url = Configuracoes.APP_URL + "/notificacoes/" + Crypto.encryptAES(String.valueOf(analiseId)) + "/view";
+		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(analiseId)) + "/view";
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("notificacoes", notificacoes)
 				.addParam("qrcode", new QRCode(url).getBase64())
 				.addParam("qrcodeLink", url)
-				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
 
 		if (this.analiseJuridica != null) {
 
