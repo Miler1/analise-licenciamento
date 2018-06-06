@@ -22,7 +22,28 @@ li {
 	padding: 7px 0;
 }
 
-img.qrcode {
-	padding-top: 90px;
-	width: 100px;
+div.usuario {
+	margin-top: 25px;
+	width: 550px;
+	float: left;
+}
+
+div.qrcode {
+	margin-top: 2px;
+	width: 150px;
+	text-align: right;
+	float: left;
+}
+
+div.qrcode img {
+	width: 150px;
+}
+
+div.assinatura {
+	border-top: 1px solid #000;
+	margin-top: 50px;
+}
+
+p.link {
+	color: #424ae3;
 }
