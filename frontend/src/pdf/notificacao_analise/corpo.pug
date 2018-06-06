@@ -66,6 +66,10 @@ html(lang='en')
 
       p Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
 
-      p 
-        img.qrcode(src="${qrcode}")
-      p ${qrcodeLink}
+    div.assinatura
+      div.usuario
+        p Assinado eletronicamente. A assinatura digital pertence a:
+        p ${analiseEspecifica.usuarioValidacao.pessoa.nome}  (${new java.text.SimpleDateFormat("dd/MM/yyyy HH:MM").format(analiseEspecifica.dataInicio)})
+        p.link ${qrcodeLink}
+      div.qrcode 
+        img(src="${qrcode}")
