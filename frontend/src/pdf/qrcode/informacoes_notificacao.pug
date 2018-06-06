@@ -60,34 +60,44 @@ body
 	p
 		strong Endereço:
 		br
-		| ${endereco}
+		|	${endereco}
 		br
-		| CEP: ${cep}
-	p(ng-if="analiseArea === ANALISE_JURIDICA")
+		|	CEP: ${cep}
+	p
 		strong Referente a pendência:
 		br
-		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}, no qual solicita ${licencas} para
-		span(ng-for="atividadeCaracterizacao in atividadesCaracerizacao")
-			| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+		| \#{if analiseArea == "ANALISE_JURIDICA"}
+		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+		| no qual solicita ${licencas} para
+		| \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
+		| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+		| \#{/list}
 		| no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, a fim de ser dada continuidade à análise do pleito:
+		| \#{/if}
 
-	p(ng-if="analiseArea === ANALISE_TECNICA")
-		strong Referente a pendência:
-		br
-		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}, no qual solicita ${licencas} para
-		span(ng-for="atividadeCaracterizacao in atividadesCaracerizacao")
-			| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+		| \#{else}
+		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+		| no qual solicita ${licencas} para
+		| \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
+		| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+		| \#{/list}
 		| no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.
+		| \#{/else}
 
 	p
 		strong Prazo de 10 (dez) dias
-	ul
-		li(ng-for="notificacao in notificacoes")
-		| ${notificacao.tipoDocumento.nome}
-	p(ng-if="analiseArea === ANALISE_JURIDICA")
+		ul
+			| \#{list items:notificacoes, as:'notificacao'}
+			li ${notificacao.tipoDocumento.nome}
+			| \#{/list}
+
+	p
+		| \#{if analiseArea === ANALISE_JURIDICA};
 		| Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
-	p(ng-if="analiseArea === ANALISE_TECNICA")
+		| \#{/if}
+		| \#{if analiseArea === ANALISE_TECNICA};
 		| Outrossim, informo que o não comprimento da solicitação supracitada, noprazo estipulado acima, implicará no arquivamento do referido processo.
+		| \#{/if}
 	body
 		.panel-footer
 		.text-center
