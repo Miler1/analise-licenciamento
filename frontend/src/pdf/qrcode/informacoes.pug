@@ -92,10 +92,10 @@ body
 			| \#{/list}
 
 	p
-		| \#{if analiseArea === ANALISE_JURIDICA};
+		| \#{if analiseArea == 'ANALISE_JURIDICA'};
 		| Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
 		| \#{/if}
-		| \#{if analiseArea === ANALISE_TECNICA};
+		| \#{if analiseArea == 'ANALISE_TECNICA'};
 		| Outrossim, informo que o não comprimento da solicitação supracitada, noprazo estipulado acima, implicará no arquivamento do referido processo.
 		| \#{/if}
 	body
