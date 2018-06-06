@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Notificacao;
+import models.licenciamento.AtividadeCaracterizacao;
 import org.apache.commons.collections.FastHashMap;
 import play.Play;
 import play.libs.Crypto;
@@ -10,6 +11,7 @@ import serializers.ApplicationSerializer;
 import utils.Configuracoes;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,12 +82,10 @@ public class Application extends GenericController {
 
 		Notificacao notificacao = notificacoes.get(0);
 		String url = Configuracoes.APP_URL + "notificacoes/" + notificacao.historicoTramitacao.idHistorico + "/download";
-		String nomeArquivo = notificacao.tipoDocumento + "_" + notificacao.id + ".pdf";
 
-		Map<String, Object> args = new FastHashMap(7);
+		Map<String, Object> args = new HashMap<>(7);
 		args.put("notificacoes", notificacoes);
 		args.put("urlDownload", url);
-		args.put("nomeArquivo", nomeArquivo);
 
 		if (notificacao.analiseJuridica != null) {
 
