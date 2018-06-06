@@ -70,11 +70,12 @@ public class Application extends GenericController {
 
 	private static Map<String, Object> generateArgs(String idQrCode) {
 
+		idQrCode = Crypto.decryptAES(idQrCode);
 		String[] params = idQrCode.split("/");
 
 		List<Notificacao> notificacoes = Notificacao.find("codigoSequencia = :x AND codigoAno = :y")
-				.setParameter("x", params[0])
-				.setParameter("y", params[1])
+				.setParameter("x", Long.valueOf(params[0]))
+				.setParameter("y", Integer.valueOf(params[1]))
 				.fetch();
 
 		Notificacao notificacao = notificacoes.get(0);
