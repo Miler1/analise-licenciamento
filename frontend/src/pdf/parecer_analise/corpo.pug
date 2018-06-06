@@ -1,0 +1,65 @@
+doctype html
+| %{
+| responsaveis = analiseArea == "ANALISE_JURIDICA" ? analiseEspecifica.consultoresJuridicos : analiseEspecifica.analistasTecnicos
+| }%
+html(lang='en')
+  head
+    title Análise - Licenciamento Ambiental - Pará
+    link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+    meta(charset='UTF-8')
+
+  body
+    div.cabecalho
+      div
+          img.logo(src='/public/app/images/brasao_pa.png' height="139" width="186")
+      div
+          h3 GOVERNO DO ESTADO DO PARÁ
+      div
+          h4 SECRETARIA DE MEIO AMBIENTE E SUSTENTABILIDADE - SEMAS/PA
+    div
+      p
+      | \#{if analiseArea == "ANALISE_JURIDICA"}
+      | PARECER JURÍDICO referente ao processo abaixo:
+      | \#{/if}
+      | \#{else}
+      | PARECER TÉCNICO referente ao processo abaixo:
+      | \#{/else}
+    div
+      p
+        | PROCESSO
+        br
+        | Número:
+        b  ${analiseEspecifica.analise.processo.numero}
+        br
+        | \#{if responsaveis.size() > 1}
+        | \#{if analiseArea == "ANALISE_JURIDICA"}
+        | Consultores jurídicos:
+        | \#{/if}
+        | \#{else}
+        | Analistas técnicos:
+        | \#{/else}
+        ul
+          | \#{list items:responsaveis, as:'responsavel' }
+          li
+          | ${responsavel.usuario.pessoa.nome}; \#{cpf}${responsavel.usuario.pessoa.cpf}\#{/cpf}\#{if responsavel.getSetor() != null}; ${responsavel.getSetor().nome}\#{/if}
+          | \#{/list}
+        | \#{/if}
+        | \#{else}
+
+        | \#{if analiseArea == "ANALISE_JURIDICA"}
+        | Consultor jurídico:
+        | \#{/if}
+        | \#{else}
+        | Analista técnico:
+        | \#{/else}
+        b  ${responsaveis.get(0).usuario.pessoa.nome}; \#{cpf}${responsaveis.get(0).usuario.pessoa.cpf}\#{/cpf}\#{if responsaveis.get(0).getSetor() != null}; ${responsaveis.get(0).getSetor().nome}\#{/if}
+        | \#{/else}
+        br
+        | Empreendimento:
+        b  ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+        br
+        | Municipío:
+        b  ${analiseEspecifica.analise.processo.empreendimento.endereco.municipio.nome}-${analiseEspecifica.analise.processo.empreendimento.endereco.municipio.estado.codigo}
+    div
+      p.parecer
+        | \#{verbatim}${analiseEspecifica.parecer}\#{/verbatim}

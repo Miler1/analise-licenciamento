@@ -28,7 +28,9 @@ public enum PDFTemplate {
     PDFTemplate(Long idTipoDocumento) {
 
         this.idTipoDocumento = idTipoDocumento;
-        this.folder = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH, this.name().toLowerCase());
+        TipoDocumento tipoDocumento = TipoDocumento.findById(idTipoDocumento);
+
+        this.folder = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH, tipoDocumento.caminhoPasta);
     }
 
     public String getRootFolderPath() {

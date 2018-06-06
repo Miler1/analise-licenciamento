@@ -1,9 +1,9 @@
 doctype html
 | %{
-| processo = analiseJuridica.analise.processo;
-| empreendimento = analiseJuridica.analise.processo.empreendimento;
+| processo = analiseEspecifica.analise.processo;
+| empreendimento = analiseEspecifica.analise.processo.empreendimento;
 | empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-| atividadesCaracerizacao = analiseJuridica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
+| atividadesCaracerizacao = analiseEspecifica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
 | bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
 | numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
 | cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
@@ -40,12 +40,23 @@ html(lang='en')
       p
         strong Referente a pendência:
         br
+        | \#{if analiseArea == "ANALISE_JURIDICA"}
         | Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
         | no qual solicita ${licencas} para
         | \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
         | ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
         | \#{/list}
         | no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, a fim de ser dada continuidade à análise do pleito:
+        | \#{/if}
+        
+        | \#{else}
+        | Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+        | no qual solicita ${licencas} para
+        | \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
+        | ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+        | \#{/list}
+        | no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.
+        | \#{/else}
       p
         strong Prazo de 10 (dez) dias
       ul
@@ -57,3 +68,4 @@ html(lang='en')
 
       p 
         img.qrcode(src="${qrcode}")
+      p ${qrcodeLink}

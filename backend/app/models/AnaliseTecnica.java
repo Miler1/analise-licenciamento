@@ -694,7 +694,8 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
-				.addParam("analise", this)
+				.addParam("analiseEspecifica", this)
+				.addParam("analiseArea", "ANALISE_TECNICA")
 				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
 
 		pdf.generate();
