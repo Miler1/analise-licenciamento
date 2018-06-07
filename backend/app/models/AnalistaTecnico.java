@@ -18,6 +18,8 @@ import exceptions.AppException;
 import exceptions.PermissaoNegadaException;
 import exceptions.ValidacaoException;
 import models.portalSeguranca.Perfil;
+import models.portalSeguranca.PerfilUsuario;
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -106,5 +108,15 @@ public class AnalistaTecnico extends GenericModel {
 		copia.dataVinculacao = this.dataVinculacao;
 		
 		return copia;
+	}
+
+	public Setor getSetor() {
+
+		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
+				.setParameter("x", this.usuario.id)
+				.setParameter("y", "Analista TÉCNICO")
+				.first();
+
+		return perfil.setor;
 	}
 }
