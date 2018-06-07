@@ -65,9 +65,9 @@ public class Application extends GenericController {
 		renderTemplate(Configuracoes.PDF_TEMPLATES_FOLDER_PATH + "/qrcode/informacoes.html", args);
 	}
 
-	public static void qrCodeDownload(String idNotificacao) throws Exception {
+	public static void qrCodeDownload(String idTramitacao) throws Exception {
 
-		Notificacoes.downloadPDF(Integer.parseInt(Crypto.decryptAES(idNotificacao)));
+		Notificacoes.downloadPDF(Integer.parseInt(Crypto.decryptAES(idTramitacao)));
 	}
 
 	private static Map<String, Object> generateArgs(String idQrCode) {
@@ -81,7 +81,8 @@ public class Application extends GenericController {
 				.fetch();
 
 		Notificacao notificacao = notificacoes.get(0);
-		String url = Configuracoes.APP_URL + "notificacoes/" + notificacao.historicoTramitacao.idHistorico + "/download";
+		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(notificacao.historicoTramitacao.idHistorico))
+				+ "/download";
 
 		Map<String, Object> args = new HashMap<>(7);
 		args.put("notificacoes", notificacoes);
