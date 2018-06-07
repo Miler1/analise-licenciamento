@@ -6,6 +6,11 @@ var DocumentoAnaliseService = function(request, config, $window) {
 
 	};
 
+	this.generatePDFParecer = function(analiseJuridica) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFParecer', analiseJuridica);
+	};
+
 };
 
 exports.services.DocumentoAnaliseService = DocumentoAnaliseService;

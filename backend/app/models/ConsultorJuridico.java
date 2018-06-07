@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,8 @@ import javax.persistence.TemporalType;
 
 import exceptions.PermissaoNegadaException;
 import models.portalSeguranca.Perfil;
+import models.portalSeguranca.PerfilUsuario;
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -81,5 +84,15 @@ public class ConsultorJuridico extends GenericModel {
 		copia.dataVinculacao = this.dataVinculacao;
 		
 		return copia;
+	}
+
+	public Setor getSetor() {
+
+		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
+				.setParameter("x", this.usuario.id)
+				.setParameter("y", "Consultor JURÍDICO")
+				.first();
+
+		return perfil.setor;
 	}
 }

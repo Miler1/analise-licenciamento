@@ -30,20 +30,19 @@ import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
-import models.portalSeguranca.TipoSetor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.validacaoParecer.Analisavel;
 import models.validacaoParecer.SolicitarAjustesJuridicoAprovador;
-import models.validacaoParecer.SolicitarAjustesTecnicoAprovador;
-import models.validacaoParecer.TipoResultadoAnaliseChain;
-import notifiers.Emails;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
 import utils.Configuracoes;
 import utils.ListUtil;
 import utils.Mensagem;
 import utils.ModelUtil;
+
+import models.pdf.PDFGenerator;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
@@ -438,7 +437,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		protected abstract void validaParecer(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecutor);
 	}
 	
-	private class ParecerValidado extends TipoResultadoAnaliseChain{
+	private class ParecerValidado extends AnaliseJuridica.TipoResultadoAnaliseChain {
 		
 		public ParecerValidado() {
 			super(TipoResultadoAnalise.PARECER_VALIDADO);
@@ -490,7 +489,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		}
 	}
 	
-	private class SolicitarAjustes extends TipoResultadoAnaliseChain{
+	private class SolicitarAjustes extends AnaliseJuridica.TipoResultadoAnaliseChain {
 		
 		public SolicitarAjustes() {
 			super(TipoResultadoAnalise.SOLICITAR_AJUSTES);
@@ -603,5 +602,22 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		
 		models.validacaoParecer.TipoResultadoAnaliseChain<AnaliseJuridica> tiposResultadosAnalise = new SolicitarAjustesJuridicoAprovador();	
 		tiposResultadosAnalise.validarParecer(this, analiseJuridica, usuarioExecutor);		
+	}
+
+	public Documento gerarPDFParecer() throws Exception {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_JURIDICA);
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("analise", this)
+				.setPageSize(21.0D, 30.0D, 0.5D, 0.5D, 1.5D, 1.5D);
+
+		pdf.generate();
+
+		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+		return documento;
+
 	}
 }
