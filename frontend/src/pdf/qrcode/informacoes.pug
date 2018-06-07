@@ -10,20 +10,24 @@ doctype html
 | municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo;
 | endereco = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
 | }%
-html(lang='en')
+html(lang='en' style="height: 100% !important;")
 	head
 		title Análise - Licenciamento Ambiental - Pará
 		meta(charset='UTF-8')
 		style.
 			body {
 				border: 1px solid;
-				padding: 2% 5%;   
+				padding-left: 20% !important;
+				padding-right: 20% !important;
+				padding: 2% 5%;
+				height: 90% !important;
+
 			}
 			button {
-				text-align: center; 
-				margin: 20px 0 0 0; 
+				text-align: center;
+				margin: 5% 0 0 0;
 				background-color: powderblue;
-				height: 36px; 
+				height: 36px;
 				width: 96px;
 			}
 			.rodape {
@@ -88,4 +92,5 @@ body
 		| \#{/if}
 
 	div.rodape
-		button(type="application/pdf" href="${urlDownload}" download="${nomeArquivo}" name='botao-baixar-pdf', value='Baixar PDF') Baixar PDF
+		a(href="${urlDownload}")
+			button() Baixar PDF
