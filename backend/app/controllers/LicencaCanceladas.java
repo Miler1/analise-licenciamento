@@ -16,8 +16,8 @@ public class LicencaCanceladas extends InternalController {
 		returnIfNull(licencaCancelada, "LicencaCancelada");
     	
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-	
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		licencaCancelada.cancelarLicenca(usuarioExecutor);
 		

@@ -12,8 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
 
@@ -42,6 +44,12 @@ public class Setor extends GenericModel {
 	@Column(name="tipo_setor")
 	@Enumerated(EnumType.ORDINAL)
 	public TipoSetor tipoSetor;
+
+	@OneToMany
+	@JoinTable(schema = "portal_seguranca", name = "historico_tramitacao_setor",
+			joinColumns = @JoinColumn(name = "id_setor"),
+			inverseJoinColumns = @JoinColumn(name = "id_historico_tramitacao"))
+	public List<HistoricoTramitacao> historicosTramitacao;
 	
 	/**
 	 * Método para buscar os setores por nível. Por exemplo:
@@ -88,6 +96,22 @@ public class Setor extends GenericModel {
 		}
 		
 		return idsSetoresByNivel;
+	}
+
+	public static void setHistoricoTramitacao(HistoricoTramitacao historicoTramitacao, Usuario usuarioExecutor) {
+
+		if (usuarioExecutor.setorSelecionado != null) {
+
+			Setor setor = Setor.findById(usuarioExecutor.setorSelecionado.id);
+
+			if (setor.historicosTramitacao == null) {
+
+				setor.historicosTramitacao = new ArrayList<>();
+			}
+
+			setor.historicosTramitacao.add(historicoTramitacao);
+			setor._save();
+		}
 	}
 
 }

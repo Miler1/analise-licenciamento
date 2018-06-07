@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -19,8 +20,14 @@ import javax.persistence.TemporalType;
 
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.TipoDocumentoLicenciamento;
+import models.pdf.PDFGenerator;
+import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ObjetoTramitavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
+import utils.Configuracoes;
+import utils.QRCode;
 
 @Entity
 @Table(schema="analise", name="notificacao")
@@ -68,6 +75,10 @@ public class Notificacao extends GenericModel {
 	@Column(name="data_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
+
+	@OneToOne
+	@JoinColumn(name = "id_historico_tramitacao")
+	public HistoricoTramitacao historicoTramitacao;
 	
 	public static void criarNotificacoesAnaliseJuridica(AnaliseJuridica analiseJuridica) {
 		
@@ -173,6 +184,62 @@ public class Notificacao extends GenericModel {
 		
 	}
 
+	public static void setHistoricoAlteracoes(List<Notificacao> notificacoes, HistoricoTramitacao historicoTramitacao) {
+
+		for (Notificacao notificacao : notificacoes) {
+
+			notificacao.historicoTramitacao = historicoTramitacao;
+			notificacao._save();
+		}
+	}
+
+	public Documento gerarPDF() throws Exception {
+
+		Long analiseId;
+		TipoDocumento tipoDocumento;
+		List<Notificacao> notificacoes;
+
+		if (this.analiseJuridica != null) {
+
+			analiseId = this.analiseJuridica.id;
+			tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
+			notificacoes = Notificacao.find("id_analise_juridica", analiseId).fetch();
+
+		} else {
+
+			analiseId = this.analiseTecnica.id;
+			tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);
+			notificacoes = Notificacao.find("id_analise_tecnica", analiseId).fetch();
+		}
+
+		String idQrCode = String.valueOf(notificacoes.get(0).codigoSequencia) + '/' + notificacoes.get(0).codigoAno;
+		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(idQrCode) + "/view";
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("notificacoes", notificacoes)
+				.addParam("qrcode", new QRCode(url).getBase64())
+				.addParam("qrcodeLink", url)
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+
+		if (this.analiseJuridica != null) {
+
+			pdf.addParam("analiseEspecifica", this.analiseJuridica);
+			pdf.addParam("analiseArea", "ANALISE_JURIDICA");
+
+		} else {
+
+			pdf.addParam("analiseEspecifica", this.analiseTecnica);
+			pdf.addParam("analiseArea", "ANALISE_TECNICA");
+		}
+
+		pdf.generate();
+
+		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+		return documento;
+	}
+    
 	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseJuridica analiseJuridica) {
 
 		List<Notificacao> notificacoes = Notificacao.find("order by id desc").fetch();

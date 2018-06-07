@@ -7,8 +7,10 @@ import models.AnaliseTecnica;
 import models.LicencaAnalise;
 import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 
 public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
@@ -50,5 +52,6 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 		copia.updatePareceresTecnicosRestricoes(pareceresTecnicosRestricoesSalvar);
 			
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
+		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 }

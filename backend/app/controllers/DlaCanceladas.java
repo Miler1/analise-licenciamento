@@ -15,8 +15,8 @@ public class DlaCanceladas extends InternalController {
 		returnIfNull(dlaCancelada, "DlaCancelada");
     	
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-	
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		dlaCancelada.cancelarDla(usuarioExecutor);
 		
