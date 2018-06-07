@@ -15,7 +15,7 @@ html(lang='en')
 		title Análise - Licenciamento Ambiental - Pará
 		link(rel='stylesheet' href='${templatePath}/style/estilo.css')
 		meta(charset='UTF-8')
-body(style="padding-left: 20%; padding-right: 20%; border: 1px solid;")
+body
 	div(style="text-align: center; margin-bottom: 20px")
 		div
 			img.logo(src='/public/app/images/brasao_pa.png' height="139" width="186")
@@ -73,5 +73,5 @@ body(style="padding-left: 20%; padding-right: 20%; border: 1px solid;")
 		| \#{/if}
 	body
 		br
-		div(style="text-align: center; margin-bottom: 20px;")
-			button(type="application/pdf" style="text-align: center; margin-bottom: 20px; background-color: powderblue; height: 36px; width: 96px;" href="${urlDownload}" download="${nomeArquivo}" name='botao-baixar-pdf', value='Baixar PDF') Baixar PDF
+		div(style="text-align: center")
+			button(type="application/pdf" style="text-align: center" href="${urlDownload}" download="${nomeArquivo}" name='botao-baixar-pdf', value='Baixar PDF') Baixar PDF
