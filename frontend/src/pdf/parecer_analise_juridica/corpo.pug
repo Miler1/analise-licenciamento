@@ -40,8 +40,7 @@ html(lang='en')
         b  ${analise.analise.processo.empreendimento.denominacao}
         br
         | Municipío:
-        b
-          | ${analise.analise.processo.empreendimento.endereco.municipio.nome}-${analise.analise.processo.empreendimento.endereco.municipio.estado.codigo}
+        b  ${analise.analise.processo.empreendimento.municipio.nome}-${analise.analise.processo.empreendimento.municipio.estado.codigo}
     div
       p.parecer
         | \#{verbatim}${analise.parecer}\#{/verbatim}
