@@ -102,7 +102,7 @@ public class Notificacao extends GenericModel {
 			calendario.setTime(notificacao.dataCadastro);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
-			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro, analiseJuridica);
+			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseJuridica);
 			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
 			
@@ -140,7 +140,7 @@ public class Notificacao extends GenericModel {
 			calendario.setTime(notificacao.dataCadastro);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
-			notificacao.codigoSequencia = notificacao.getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
+			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
 			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
 			
@@ -246,17 +246,20 @@ public class Notificacao extends GenericModel {
 				.setParameter("x", anoDataCadastro)
 				.fetch();
 
-		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
+		Notificacao notificacao = notificacoes.get(0);
+		AnaliseJuridica analiseNotificacao = notificacao.analiseJuridica;
+
+		if (notificacoes.size() == 0 || notificacao.codigoSequencia == null) {
 
 			return 1;
 		}
 
-		if (analiseJuridica.id.equals(notificacoes.get(0).analiseJuridica.id)) {
+		if (analiseNotificacao != null && analiseJuridica.id.equals(analiseNotificacao.id)) {
 
-			return notificacoes.get(0).codigoSequencia;
+			return notificacao.codigoSequencia;
 		}
 
-		return notificacoes.get(0).codigoSequencia + 1;
+		return notificacao.codigoSequencia + 1;
 	}
 
 	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseTecnica analiseTecnica) {
@@ -265,16 +268,19 @@ public class Notificacao extends GenericModel {
 				.setParameter("x", anoDataCadastro)
 				.fetch();
 
-		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
+		Notificacao notificacao = notificacoes.get(0);
+		AnaliseTecnica analiseNotificacao = notificacao.analiseTecnica;
+
+		if (notificacoes.size() == 0 || notificacao.codigoSequencia == null) {
 
 			return 1;
 		}
 
-		if (analiseTecnica.id.equals(notificacoes.get(0).analiseTecnica.id)) {
+		if (analiseNotificacao != null && analiseTecnica.id.equals(analiseNotificacao.id)) {
 
-			return notificacoes.get(0).codigoSequencia;
+			return notificacao.codigoSequencia;
 		}
 
-		return notificacoes.get(0).codigoSequencia + 1;
+		return notificacao.codigoSequencia + 1;
 	}
 }
