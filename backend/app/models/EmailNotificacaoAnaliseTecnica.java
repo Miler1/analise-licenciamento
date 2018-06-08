@@ -42,8 +42,10 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 					documentosInvalidados.add(analiseDocumento);
 				}
 			}
-			
-			if(!Emails.notificarRequerenteAnaliseTecnica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseTecnica).get()) {
+
+			Notificacao notificacao = Notificacao.find("id_analise_tecnica", this.analiseTecnica.id).first();
+
+			if(!Emails.notificarRequerenteAnaliseTecnica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseTecnica, notificacao).get()) {
 				
 				throw new AppException();
 				
