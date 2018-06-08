@@ -6,6 +6,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -75,6 +78,12 @@ public class HistoricoTramitacao extends GenericModel {
 
 	@Column(name = "DT_CADASTRO")
 	public Date dataInicial;
+
+	@ManyToOne
+	@JoinTable(schema = "portal_seguranca", name = "historico_tramitacao_setor",
+			joinColumns = @JoinColumn(name = "id_setor"),
+			inverseJoinColumns = @JoinColumn(name = "id_historico_tramitacao"))
+	public Setor setor;
 
 	@Transient
 	public String tempoPermanencia;
