@@ -109,9 +109,25 @@ public class Setor extends GenericModel {
 				setor.historicosTramitacao = new ArrayList<>();
 			}
 
-			setor.historicosTramitacao.add(historicoTramitacao);
-			setor._save();
+			if (!containsHistoricoSetor(setor.historicosTramitacao, historicoTramitacao)) {
+
+				setor.historicosTramitacao.add(historicoTramitacao);
+				setor._save();
+			}
 		}
+	}
+
+	private static boolean containsHistoricoSetor (List<HistoricoTramitacao> historicos, HistoricoTramitacao historicoAlvo) {
+
+		for (HistoricoTramitacao historico : historicos) {
+
+			if (historico.idHistorico.equals(historicoAlvo.idHistorico) && historico.setor.id.equals(historicoAlvo.setor.id)) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
