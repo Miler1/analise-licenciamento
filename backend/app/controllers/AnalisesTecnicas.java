@@ -84,17 +84,24 @@ public class AnalisesTecnicas extends InternalController {
 	public static void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
 		
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
-		
-		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
-		
-		File file = Geoserver.verificarRestricoes(
-				analiseTecnica.analise.processo.empreendimento.coordenadas,
-				analiseTecnica.analise.processo.empreendimento.imovel,
-				"analise-geo-id-" + idAnaliseTecnica
-		);
 
-		renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
+		renderJSON("");
 	}
+
+//	public static void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
+//
+//		verificarPermissao(Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
+//
+//		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
+//
+//		File file = Geoserver.verificarRestricoes(
+//				analiseTecnica.analise.processo.empreendimento.coordenadas,
+//				analiseTecnica.analise.processo.empreendimento.imovel,
+//				"analise-geo-id-" + idAnaliseTecnica
+//		);
+//
+//		renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
+//	}
 	
 	public static void validarParecer(AnaliseTecnica analise) {
 		
