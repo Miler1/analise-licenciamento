@@ -1,0 +1,22 @@
+<!DOCTYPE html>%{
+responsaveis = analiseArea == "ANALISE_JURIDICA" ? analiseEspecifica.consultoresJuridicos : analiseEspecifica.analistasTecnicos
+}%<html lang="en"><head><title>Análise - Licenciamento Ambiental - Pará</title><link rel="stylesheet" href="${templatePath}/style/estilo.css"><meta charset="UTF-8"></head><body><div class="cabecalho"><div><img class="logo" src="/public/app/images/brasao_pa.png" height="139" width="186"></div><div><h3>GOVERNO DO ESTADO DO PARÁ</h3></div><div><h4>SECRETARIA DE MEIO AMBIENTE E SUSTENTABILIDADE - SEMAS/PA</h4></div></div><div><p></p>#{if analiseArea == "ANALISE_JURIDICA"}
+PARECER JURÍDICO referente ao processo abaixo:
+#{/if}
+#{else}
+PARECER TÉCNICO referente ao processo abaixo:
+#{/else}</div><div><p>PROCESSO<br>Número:<b> ${analiseEspecifica.analise.processo.numero}</b><br>#{if responsaveis.size() > 1}
+#{if analiseArea == "ANALISE_JURIDICA"}
+Consultores jurídicos:
+#{/if}
+#{else}
+Analistas técnicos:
+#{/else}<ul>#{list items:responsaveis, as:'responsavel' }<li></li>${responsavel.usuario.pessoa.nome}; #{cpf}${responsavel.usuario.pessoa.cpf}#{/cpf}#{if responsavel.getSetor() != null}; ${responsavel.getSetor().nome}#{/if}
+#{/list}</ul>#{/if}
+#{else}
+#{if analiseArea == "ANALISE_JURIDICA"}
+Consultor jurídico:
+#{/if}
+#{else}
+Analista técnico:
+#{/else}<b> ${responsaveis.get(0).usuario.pessoa.nome}; #{cpf}${responsaveis.get(0).usuario.pessoa.cpf}#{/cpf}#{if responsaveis.get(0).getSetor() != null}; ${responsaveis.get(0).getSetor().nome}#{/if}</b>#{/else}<br>Empreendimento:<b> ${analiseEspecifica.analise.processo.empreendimento.denominacao}</b><br>Municipío:<b> ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}-${analiseEspecifica.analise.processo.empreendimento.municipio.estado.codigo}</b></p></div><div><p class="parecer">#{verbatim}${analiseEspecifica.parecer}#{/verbatim}</p></div></body></html>
