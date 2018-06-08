@@ -242,21 +242,18 @@ public class Notificacao extends GenericModel {
     
 	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseJuridica analiseJuridica) {
 
-		List<Notificacao> notificacoes = Notificacao.find("order by id desc").fetch();
+		List<Notificacao> notificacoes = Notificacao.find("codigoAno = :x order by codigoSequencia desc")
+				.setParameter("x", anoDataCadastro)
+				.fetch();
 
 		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
 
 			return 1;
 		}
 
-		if (analiseJuridica.id == notificacoes.get(0).analiseJuridica.id) {
+		if (analiseJuridica.id.equals(notificacoes.get(0).analiseJuridica.id)) {
 
 			return notificacoes.get(0).codigoSequencia;
-		}
-
-		if (anoDataCadastro > notificacoes.get(0).codigoAno) {
-
-			return 1;
 		}
 
 		return notificacoes.get(0).codigoSequencia + 1;
@@ -264,21 +261,18 @@ public class Notificacao extends GenericModel {
 
 	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseTecnica analiseTecnica) {
 
-		List<Notificacao> notificacoes = Notificacao.find("order by id desc").fetch();
+		List<Notificacao> notificacoes = Notificacao.find("codigoAno = :x order by codigoSequencia desc")
+				.setParameter("x", anoDataCadastro)
+				.fetch();
 
 		if (notificacoes.size() == 0 || notificacoes.get(0).codigoSequencia == null) {
 
 			return 1;
 		}
 
-		if (analiseTecnica.id == notificacoes.get(0).analiseTecnica.id) {
+		if (analiseTecnica.id.equals(notificacoes.get(0).analiseTecnica.id)) {
 
 			return notificacoes.get(0).codigoSequencia;
-		}
-
-		if (anoDataCadastro > notificacoes.get(0).codigoAno) {
-
-			return 1;
 		}
 
 		return notificacoes.get(0).codigoSequencia + 1;
