@@ -24,42 +24,47 @@ html(lang='en')
       | \#{else}
       | PARECER TÉCNICO referente ao processo abaixo:
       | \#{/else}
-    div
-      p
+      
+      p 
         | PROCESSO
-        br
+      p
         | Número:
         b  ${analiseEspecifica.analise.processo.numero}
-        br
+      p
         | \#{if responsaveis.size() > 1}
-        | \#{if analiseArea == "ANALISE_JURIDICA"}
-        | Consultores jurídicos:
+        |   \#{if analiseArea == "ANALISE_JURIDICA"}
+        |     Consultores jurídicos:
+        |   \#{/if}
+        |   \#{else}
+        |     Analistas técnicos:
+        |   \#{/else}
         | \#{/if}
         | \#{else}
-        | Analistas técnicos:
+        |   \#{if analiseArea == "ANALISE_JURIDICA"}
+        |     Consultor jurídico:
+        |   \#{/if}
+        |   \#{else}
+        |     Analista técnico:
+        |   \#{/else}
         | \#{/else}
-        ul
-          | \#{list items:responsaveis, as:'responsavel' }
-          li
-          | ${responsavel.usuario.pessoa.nome}; \#{cpf}${responsavel.usuario.pessoa.cpf}\#{/cpf}\#{if responsavel.getSetor() != null}; ${responsavel.getSetor().nome}\#{/if}
-          | \#{/list}
-        | \#{/if}
-        | \#{else}
 
-        | \#{if analiseArea == "ANALISE_JURIDICA"}
-        | Consultor jurídico:
-        | \#{/if}
-        | \#{else}
-        | Analista técnico:
-        | \#{/else}
-        b  ${responsaveis.get(0).usuario.pessoa.nome}; \#{cpf}${responsaveis.get(0).usuario.pessoa.cpf}\#{/cpf}\#{if responsaveis.get(0).getSetor() != null}; ${responsaveis.get(0).getSetor().nome}\#{/if}
-        | \#{/else}
-        br
+      ul
+        | \#{list items:responsaveis, as:'responsavel' }
+        li
+          | ${responsavel.usuario.pessoa.nome}
+          br
+          | CPF:  \#{cpf}${responsavel.usuario.pessoa.cpf}\#{/cpf}
+          | \#{if responsavel.getSetor() != null}
+          br
+          | Setor:  ${responsavel.getSetor().nome}
+          | \#{/if}
+        | \#{/list}
+      p
         | Empreendimento:
         b  ${analiseEspecifica.analise.processo.empreendimento.denominacao}
-        br
+      p
         | Municipío:
         b  ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}-${analiseEspecifica.analise.processo.empreendimento.municipio.estado.codigo}
-    div
-      p.parecer
+    div.parecer
+      p
         | \#{verbatim}${analiseEspecifica.parecer}\#{/verbatim}
