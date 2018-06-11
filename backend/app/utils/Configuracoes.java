@@ -13,7 +13,7 @@ import play.Play;
 public class Configuracoes {
 
 	public static String HTTP_PATH = getConfig("http.path", null);
-	public static String APP_URL = getConfig("application.baseURL", null) + HTTP_PATH;
+	public static String APP_URL = getConfig("application.baseURL", null) + (HTTP_PATH.compareTo("/") == 0 ? HTTP_PATH : HTTP_PATH + "/");
 	
 	private static String DEFAULT_LOGIN_URL = "/login";
 

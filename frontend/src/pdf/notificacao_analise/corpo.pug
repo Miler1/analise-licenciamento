@@ -69,7 +69,7 @@ html(lang='en')
     div.assinatura
       div.usuario
         p Assinado eletronicamente. A assinatura digital pertence a:
-        p ${analiseEspecifica.usuarioValidacao.pessoa.nome}  (${new java.text.SimpleDateFormat("dd/MM/yyyy HH:MM").format(analiseEspecifica.dataInicio)})
+        p ${analiseEspecifica.usuarioValidacao.pessoa.nome}  (${new java.text.SimpleDateFormat("dd/MM/yyyy HH:MM").format(notificacoes.get(0).dataCadastro)})
         p.link ${qrcodeLink}
       div.qrcode 
         img(src="${qrcode}")

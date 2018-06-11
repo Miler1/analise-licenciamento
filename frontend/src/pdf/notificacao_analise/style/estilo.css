@@ -24,15 +24,12 @@ li {
 
 div.usuario {
 	margin-top: 25px;
-	width: 550px;
-	float: left;
+	display: block;
 }
 
 div.qrcode {
 	margin-top: 2px;
-	width: 150px;
-	text-align: right;
-	float: left;
+	display: block;
 }
 
 div.qrcode img {
@@ -42,6 +39,7 @@ div.qrcode img {
 div.assinatura {
 	border-top: 1px solid #000;
 	margin-top: 50px;
+	text-align: center
 }
 
 p.link {
