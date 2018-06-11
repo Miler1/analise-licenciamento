@@ -95,16 +95,16 @@
 
 				tbody
 					tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
-						td {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
-						td {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
-						td {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
-						td {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
-						td {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
-						td {{tramitacao.setor.nome ? tramitacao.setor.nome : '-'}}
-						td.text-center(ng-if="tramitacao.hasNotificacoes")
+						td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
+						td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
+						td.col-md-3 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
+						td.col-md-2 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+						td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
+						td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
+						td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
 							i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",
 							title="Gerar PDF da notificação")
-						td.text-center(ng-if="!tramitacao.hasNotificacoes")
+						td.col-md-1.text-center(ng-if="!tramitacao.hasNotificacoes")
 							span.notificacao-sem-icone
 								| -
 
