@@ -84,9 +84,12 @@ public class Application extends GenericController {
 		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(notificacao.historicoTramitacao.idHistorico))
 				+ "/download";
 
+		String urlImageLogo = Configuracoes.APP_URL + "app/images/brasao_pa.png";
+
 		Map<String, Object> args = new HashMap<>(7);
 		args.put("notificacoes", notificacoes);
 		args.put("urlDownload", url);
+		args.put("urlImageLogo", urlImageLogo);
 
 		if (notificacao.analiseJuridica != null) {
 
