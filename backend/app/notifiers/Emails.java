@@ -1,10 +1,12 @@
 package notifiers;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
 import models.*;
 import models.licenciamento.Licenca;
+import models.portalSeguranca.Setor;
 import play.Play;
 import play.mvc.Mailer;
 
@@ -67,5 +69,20 @@ public class Emails extends Mailer {
 		}
 		return send(dlaCancelada);
 		
+	}
+
+	public static Future<Boolean> notificarRequerenteArquivamentoProcesso(List<String> destinatarios, Processo processo,
+	                                                                      Date arquivamento, List<Notificacao> notificacoes,
+	                                                                      Setor setor) {
+
+		setSubject("Notificacao referente ao arquivamento do processo: " + processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") + ">");
+
+		for(String email:destinatarios) {
+
+			addRecipient(email);
+		}
+
+		return send(processo, arquivamento, notificacoes, setor);
 	}
 }

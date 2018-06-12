@@ -25,7 +25,8 @@ public class ReenvioEmail extends GenericModel {
 		NOTIFICACAO_ANALISE_TECNICA,
 		CANCELAMENTO_DLA,
 		CANCELAMENTO_LICENCA,
-		SUSPENSAO_LICENCA
+		SUSPENSAO_LICENCA,
+		ARQUIVAMENTO_PROCESSO
 	}
 	
 	public static final String SEQ = "analise.reenvio_email_id_seq";
