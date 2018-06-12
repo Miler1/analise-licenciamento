@@ -4,6 +4,8 @@ package jobs;
 import java.util.Arrays;
 import java.util.List;
 
+import models.EmailNotificacaoArquivamentoProcesso;
+import models.Processo;
 import org.apache.commons.lang.StringUtils;
 
 import models.AnaliseJuridica;
@@ -80,6 +82,13 @@ public class ReenvioEmailJob extends GenericJob {
 					Suspensao suspensao = Suspensao.findById(reenvioEmail.idItensEmail);
 					new EmailNotificacaoSuspensaoLicenca(suspensao, emailsDestinatarios).enviar();
 					
+					break;
+
+				case ARQUIVAMENTO_PROCESSO:
+
+					Processo processo = Processo.findById(reenvioEmail.idItensEmail);
+					new EmailNotificacaoArquivamentoProcesso(processo, emailsDestinatarios).enviar();
+
 					break;
 
 			}

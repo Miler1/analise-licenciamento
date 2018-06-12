@@ -1,12 +1,14 @@
 package jobs;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Analise;
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.DiasAnalise;
+import models.EmailNotificacaoArquivamentoProcesso;
 import models.LicencaAnalise;
 import models.Notificacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
@@ -42,7 +44,12 @@ public class VerificarNotificacoes extends GenericJob {
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
 					analise.temNotificacaoAberta = false;
 					analise._save();
-					
+
+					List<String> destinatarios = new ArrayList<>();
+					destinatarios.addAll(analise.processo.empreendimento.emailsProprietarios());
+					destinatarios.addAll(analise.processo.empreendimento.emailsResponsaveis());
+					new EmailNotificacaoArquivamentoProcesso(analise.processo, destinatarios).enviar();
+
 				} else if(!analise.hasNotificacaoNaoResolvida()) {
 
 					List<Notificacao> notificacoes = Notificacao.getByAnalise(analise);

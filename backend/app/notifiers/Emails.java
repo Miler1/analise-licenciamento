@@ -68,4 +68,17 @@ public class Emails extends Mailer {
 		return send(dlaCancelada);
 		
 	}
+
+	public static Future<Boolean> notificarRequerenteArquivamentoProcesso(List<String> destinatarios, Processo processo) {
+
+		setSubject("Notificacao referente ao arquivamento do processo: " + processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") + ">");
+
+		for(String email:destinatarios) {
+
+			addRecipient(email);
+		}
+
+		return send(processo);
+	}
 }
