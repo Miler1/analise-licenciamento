@@ -5,6 +5,7 @@ notificacao = notificacoes.get(0);
 empreendimento = processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
+setorFormatado = setor != null ? setor.sigla : "GDFLOR";
 }%
 
 <html>
@@ -28,11 +29,11 @@ numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
 
 <p><strong>Processo N&ordm;:</strong> ${processo.numero}</p>
 
-<p><strong>Data de Protocolo:</strong> #{dataFormatada}arquivamento #{/dataFormatada}</p>
+<p><strong>Data de Protocolo:</strong> #{dataFormatada} ${arquivamento} #{/dataFormatada}</p>
 
 <p><strong>Interessado ou Requerente/Arrendatario:</strong> ${empreendimentoNome}</p>
 
-<p><strong>Movimentação: </strong> Notificação n° ${numeroNotificacao} <strong> SETOR:</strong> ${setor.sigla}</p>
+<p><strong>Movimentação: </strong> Notificação n° ${numeroNotificacao} <strong> SETOR:</strong> ${setorFormatado}</p>
 
 <p>Senhor usuário, a notificação número ${numeroNotificacao} não foi atendida no prazo estipulado e o processo número ${processo.numero} será arquivado.</p>
 
