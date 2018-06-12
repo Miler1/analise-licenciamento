@@ -32,7 +32,7 @@ public class TagPDF extends FastTags {
 		Date data = null;
 		try {
 
-			data = new SimpleDateFormat("EEE MMM d HH:mm:ss z y").parse(dataString);
+			data = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(dataString);
 			out.println(new java.text.SimpleDateFormat("dd/MM/yyyy").format(data));
 
 		} catch (ParseException e) {
