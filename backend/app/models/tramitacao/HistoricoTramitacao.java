@@ -6,10 +6,15 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import models.Notificacao;
+import models.portalSeguranca.Setor;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 
@@ -73,6 +78,12 @@ public class HistoricoTramitacao extends GenericModel {
 
 	@Column(name = "DT_CADASTRO")
 	public Date dataInicial;
+
+	@ManyToOne
+	@JoinTable(schema = "portal_seguranca", name = "historico_tramitacao_setor",
+			joinColumns = @JoinColumn(name = "id_setor"),
+			inverseJoinColumns = @JoinColumn(name = "id_historico_tramitacao"))
+	public Setor setor;
 
 	@Transient
 	public String tempoPermanencia;
@@ -166,6 +177,19 @@ public class HistoricoTramitacao extends GenericModel {
 		
 		return primeiraData;
 		
+	}
+
+	public boolean getHasNotificacoes() {
+
+		List<Notificacao> notificacoes = Notificacao.find("historicoTramitacao.id", this.idHistorico).fetch();
+
+		return notificacoes != null && notificacoes.size() > 0;
+	}
+
+	public Setor getSetor() {
+
+		return Setor.find("select s from Setor s join s.historicosTramitacao ht where ht.id = :x")
+				.setParameter("x", this.idHistorico).first();
 	}
 
 }

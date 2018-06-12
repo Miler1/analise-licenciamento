@@ -1,0 +1,75 @@
+doctype html
+| %{
+| processo = analiseEspecifica.analise.processo;
+| empreendimento = analiseEspecifica.analise.processo.empreendimento;
+| empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+| atividadesCaracerizacao = analiseEspecifica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
+| bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
+| numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
+| cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
+| municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo;
+| endereco = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
+| }%
+html(lang='en')
+  head
+    title Análise - Licenciamento Ambiental - Pará
+      link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+      meta(charset='UTF-8')
+  body
+    div.cabecalho
+        div
+            img.logo(src='/public/app/images/brasao_pa.png' height="139" width="186")
+        div
+            h3 GOVERNO DO ESTADO DO PARÁ
+        div
+            h4 Secretaria de Estado de Meio Ambiente e Sustentabilidade
+            h4 Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR
+    div
+      p
+        strong Processo Nº:
+        |  ${processo.numero}
+      p
+        strong Requerente / Arrendatário:
+        |  ${empreendimentoNome}
+      p 
+        strong Endereço:
+        br 
+        | ${endereco}
+        br
+        | CEP: ${cep}
+      p
+        strong Referente a pendência:
+        br
+        | \#{if analiseArea == "ANALISE_JURIDICA"}
+        | Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+        | no qual solicita ${licencas} para
+        | \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
+        | ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+        | \#{/list}
+        | no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, a fim de ser dada continuidade à análise do pleito:
+        | \#{/if}
+        
+        | \#{else}
+        | Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+        | no qual solicita ${licencas} para
+        | \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
+        | ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
+        | \#{/list}
+        | no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.
+        | \#{/else}
+      p
+        strong Prazo de 10 (dez) dias
+      ul
+        | \#{list items:notificacoes, as:'notificacao'}
+        li ${notificacao.tipoDocumento.nome}
+        | \#{/list}
+
+      p Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
+
+    div.assinatura
+      div.usuario
+        p Assinado eletronicamente. A assinatura digital pertence a:
+        p ${analiseEspecifica.usuarioValidacao.pessoa.nome}  (${new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(notificacoes.get(0).dataCadastro)})
+        p.link ${qrcodeLink}
+      div.qrcode 
+        img(src="${qrcode}")

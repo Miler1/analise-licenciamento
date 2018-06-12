@@ -131,4 +131,13 @@ public class Usuario extends GenericModel  {
 		
 		return false;
 	}
+
+	public static Usuario findById(Object id, Perfil perfilSelecionado, Setor setorSelecionado) {
+
+		Usuario usuario = Usuario.findById(id);
+		usuario.setorSelecionado = setorSelecionado;
+		usuario.perfilSelecionado = perfilSelecionado;
+
+		return usuario;
+	}
 }

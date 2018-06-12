@@ -106,7 +106,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analise.processo = processo;
 		analise.dataCadastro = new Date();
 		analise.ativo = true;
-		
+		analise.temNotificacaoAberta = false;
+
 		analise.save();
 		
 		return analise;

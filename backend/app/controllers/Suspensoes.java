@@ -15,8 +15,8 @@ public class Suspensoes extends InternalController {
     	returnIfNull(suspensao, "Suspensao");
     	
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-	
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);
+
+	    Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
     	
     	suspensao.suspenderLicenca(usuarioExecutor);
     	

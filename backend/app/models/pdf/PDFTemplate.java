@@ -8,7 +8,9 @@ import utils.Configuracoes;
 public enum PDFTemplate {
 
     PARECER_ANALISE_JURIDICA (TipoDocumento.PARECER_ANALISE_JURIDICA),
-    PARECER_ANALISE_TECNICA (TipoDocumento.PARECER_ANALISE_TECNICA);
+    PARECER_ANALISE_TECNICA (TipoDocumento.PARECER_ANALISE_TECNICA),
+    NOTIFICACAO_ANALISE_TECNICA (TipoDocumento.NOTIFICACAO_ANALISE_TECNICA),
+    NOTIFICACAO_ANALISE_JURIDICA (TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
 
     private static final File TEMPLATES_FOLDER = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH);
     private static final String LIBS_PATH = new File(TEMPLATES_FOLDER, "libs").getPath();
@@ -26,7 +28,9 @@ public enum PDFTemplate {
     PDFTemplate(Long idTipoDocumento) {
 
         this.idTipoDocumento = idTipoDocumento;
-        this.folder = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH, this.name().toLowerCase());
+        TipoDocumento tipoDocumento = TipoDocumento.findById(idTipoDocumento);
+
+        this.folder = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH, tipoDocumento.caminhoPasta);
     }
 
     public String getRootFolderPath() {

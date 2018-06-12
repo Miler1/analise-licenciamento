@@ -138,6 +138,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
+		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 		
 	}
 	
@@ -146,6 +147,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
+		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 		
 	}
 	
@@ -153,7 +155,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		GerenteTecnico.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		
-		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);		
+		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
+		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 	}	
 
 	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {

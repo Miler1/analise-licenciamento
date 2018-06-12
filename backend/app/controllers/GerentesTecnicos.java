@@ -20,13 +20,13 @@ public class GerentesTecnicos extends InternalController {
 		
 		Usuario gerente = Usuario.findById(idUsuario);				
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		for(Long idProcesso : idsProcesso) {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
-			processo.vincularGerenteTecnico(gerente, usuarioExecultor);
+			processo.vincularGerenteTecnico(gerente, usuarioExecutor);
 			
 		}
 		

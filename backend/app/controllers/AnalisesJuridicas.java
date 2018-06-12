@@ -55,8 +55,7 @@ public class AnalisesJuridicas extends InternalController {
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
-		
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);				
@@ -70,7 +69,7 @@ public class AnalisesJuridicas extends InternalController {
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
@@ -97,7 +96,7 @@ public class AnalisesJuridicas extends InternalController {
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAvalidar.validaParecer(analise, usuarioExecutor);
 		
@@ -112,7 +111,7 @@ public class AnalisesJuridicas extends InternalController {
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 		
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id);		
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAvalidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		

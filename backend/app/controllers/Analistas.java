@@ -23,14 +23,13 @@ public class Analistas extends InternalController {
 		
 		Usuario analista = Usuario.findById(idUsuario);				
 		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecultor = Usuario.findById(usuarioSessao.id);
-		usuarioExecultor.perfilSelecionado = usuarioSessao.perfilSelecionado;
+		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		for(Long idProcesso : idsProcesso) {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
-			processo.vincularAnalista(analista, usuarioExecultor, justificativaCoordenador);
+			processo.vincularAnalista(analista, usuarioExecutor, justificativaCoordenador);
 			
 		}
 		
