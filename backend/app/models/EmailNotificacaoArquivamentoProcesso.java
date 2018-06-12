@@ -1,6 +1,7 @@
 package models;
 
 import exceptions.AppException;
+import models.portalSeguranca.Setor;
 import notifiers.Emails;
 
 import java.util.Date;
@@ -12,14 +13,16 @@ public class EmailNotificacaoArquivamentoProcesso extends EmailNotificacao {
 	private Processo processo;
 	private Date arquivamento;
 	private List<Notificacao> notificacoes;
+	private Setor setor;
 
 	public EmailNotificacaoArquivamentoProcesso(Processo processo, List<String> emailsDestinatarios, Date arquivamento,
-	                                            List<Notificacao> notificacoes) {
+	                                            List<Notificacao> notificacoes, Setor setor) {
 
 		super(emailsDestinatarios);
 		this.processo = processo;
 		this.arquivamento = arquivamento;
 		this.notificacoes = notificacoes;
+		this.setor = setor;
 	}
 
 	@Override
@@ -28,7 +31,7 @@ public class EmailNotificacaoArquivamentoProcesso extends EmailNotificacao {
 		try {
 
 			if(!Emails.notificarRequerenteArquivamentoProcesso(this.emailsDestinatarios, this.processo, this.arquivamento,
-					this.notificacoes).get()) {
+					this.notificacoes, this.setor).get()) {
 
 				throw new AppException();
 

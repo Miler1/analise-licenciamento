@@ -126,7 +126,8 @@ public class VerificarNotificacoes extends GenericJob {
 
 		List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
 
-		new EmailNotificacaoArquivamentoProcesso(analise.processo, destinatarios, arquivamento.dataInicial, notificacoes).enviar();
+		new EmailNotificacaoArquivamentoProcesso(analise.processo, destinatarios, arquivamento.dataInicial, notificacoes,
+				historicoAnalise.setor).enviar();
 	}
 	
 }

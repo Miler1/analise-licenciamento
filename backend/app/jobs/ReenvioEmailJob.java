@@ -95,7 +95,8 @@ public class ReenvioEmailJob extends GenericJob {
 
 					List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
 
-					new EmailNotificacaoArquivamentoProcesso(processo, emailsDestinatarios, arquivamento.dataInicial, notificacoes).enviar();
+					new EmailNotificacaoArquivamentoProcesso(processo, emailsDestinatarios, arquivamento.dataInicial, notificacoes,
+							historicoAnalise.setor).enviar();
 
 					break;
 
