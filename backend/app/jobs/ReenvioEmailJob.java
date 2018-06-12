@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import models.EmailNotificacaoArquivamentoProcesso;
+import models.Notificacao;
 import models.Processo;
+import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 
 import models.AnaliseJuridica;
@@ -87,7 +89,14 @@ public class ReenvioEmailJob extends GenericJob {
 				case ARQUIVAMENTO_PROCESSO:
 
 					Processo processo = Processo.findById(reenvioEmail.idItensEmail);
-					new EmailNotificacaoArquivamentoProcesso(processo, emailsDestinatarios).enviar();
+
+					HistoricoTramitacao arquivamento = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
+					HistoricoTramitacao historicoAnalise = HistoricoTramitacao.getPenultimaTramitacao(processo.idObjetoTramitavel);
+
+					List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
+
+					new EmailNotificacaoArquivamentoProcesso(processo, emailsDestinatarios, arquivamento.dataInicial, notificacoes,
+							historicoAnalise.setor).enviar();
 
 					break;
 
