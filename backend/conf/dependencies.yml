@@ -26,8 +26,6 @@ require:
     - org.junit -> com.springsource.org.junit 4.7.0
     - br.ufla.lemaf -> InterfaceTramitacao 0.3.5-SNAPSHOT
     - org.apache.tika -> tika-core 1.7
-    - com.google.zxing -> core 2.2
-    - com.google.zxing -> javase 2.2
 
 repositories:
 
