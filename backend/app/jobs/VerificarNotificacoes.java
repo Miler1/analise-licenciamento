@@ -1,16 +1,20 @@
 package jobs;
 
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import models.Analise;
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.DiasAnalise;
+import models.EmailNotificacaoArquivamentoProcesso;
 import models.LicencaAnalise;
 import models.Notificacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
 import play.jobs.On;
 
@@ -42,7 +46,9 @@ public class VerificarNotificacoes extends GenericJob {
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
 					analise.temNotificacaoAberta = false;
 					analise._save();
-					
+
+					enviarEmailArquivamento(analise);
+
 				} else if(!analise.hasNotificacaoNaoResolvida()) {
 
 					List<Notificacao> notificacoes = Notificacao.getByAnalise(analise);
@@ -107,6 +113,21 @@ public class VerificarNotificacoes extends GenericJob {
 		}
 		
 		
+	}
+
+	private void enviarEmailArquivamento(Analise analise) {
+
+		List<String> destinatarios = new ArrayList<>();
+		destinatarios.addAll(analise.processo.empreendimento.emailsProprietarios());
+		destinatarios.addAll(analise.processo.empreendimento.emailsResponsaveis());
+
+		HistoricoTramitacao arquivamento = HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel);
+		HistoricoTramitacao historicoAnalise = HistoricoTramitacao.getPenultimaTramitacao(analise.processo.idObjetoTramitavel);
+
+		List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
+
+		new EmailNotificacaoArquivamentoProcesso(analise.processo, destinatarios, arquivamento.dataInicial, notificacoes,
+				historicoAnalise.setor).enviar();
 	}
 	
 }

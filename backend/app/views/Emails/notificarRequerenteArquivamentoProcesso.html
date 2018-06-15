@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+%{
+
+notificacao = notificacoes.get(0);
+empreendimento = processo.empreendimento;
+empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
+setorFormatado = setor != null ? setor.sigla : "GDFLOR";
+}%
+
+<html>
+
+<head>
+</head>
+
+<body>
+
+<h1 style="text-align: center">
+	#{embeddedImage src:'conf/images/brasao_pa.png', name:'Pará', alt:'Estado do Pará', height:'100', width:'100' /}
+</h1>
+
+<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
+
+<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
+
+<p style="text-align: center">Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR</p>
+
+<p>Informamos que o processo a seguir sofreu movimentação</p>
+
+<p><strong>Processo N&ordm;:</strong> ${processo.numero}</p>
+
+<p><strong>Data de Protocolo:</strong> #{dataFormatada}${arquivamento}#{/dataFormatada}</p>
+
+<p><strong>Interessado ou Requerente/Arrendatario:</strong> ${empreendimentoNome}</p>
+
+<p><strong>Movimentação: </strong> Notificação n° ${numeroNotificacao} <strong> SETOR:</strong> ${setorFormatado}</p>
+
+<p>Senhor usuário, a notificação número ${numeroNotificacao} não foi atendida no prazo estipulado e o processo número ${processo.numero} será arquivado.</p>
+
+<p>Qualquer dúvida, procure a SEMAS para maiores esclarecimentos.</p>
+</body>
+
+</html>

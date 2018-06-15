@@ -123,6 +123,12 @@ public class HistoricoTramitacao extends GenericModel {
 
 	}
 
+	public static HistoricoTramitacao getPenultimaTramitacao (Long idObjetoTramitavel){
+
+		List<HistoricoTramitacao> historicosTramitacao = HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel and idCondicaoInicial != idCondicaoFinal order by dataInicial desc").setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch();
+		return historicosTramitacao.get(1);
+	}
+
 	public static List<HistoricoTramitacao> getByObjetoTramitavel (Long idObjetoTramitavel){
 
 		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by dataInicial desc, idHistorico desc")
