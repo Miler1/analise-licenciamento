@@ -79,7 +79,11 @@ public class Notificacao extends GenericModel {
 	@OneToOne
 	@JoinColumn(name = "id_historico_tramitacao")
 	public HistoricoTramitacao historicoTramitacao;
-	
+
+	@Column(name="data_leitura")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataLeitura;
+
 	public static void criarNotificacoesAnaliseJuridica(AnaliseJuridica analiseJuridica) {
 		
 		for(AnaliseDocumento analiseDocumento : analiseJuridica.analisesDocumentos) {
