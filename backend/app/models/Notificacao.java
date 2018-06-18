@@ -110,7 +110,7 @@ public class Notificacao extends GenericModel {
 		
 		Analise analise = Analise.findById(analiseJuridica.analise.id);
 		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
-		verificaDiasAnalise.qtdeDiasNotificacao = 1;
+		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
 
 		analise.temNotificacaoAberta = true;
@@ -148,7 +148,7 @@ public class Notificacao extends GenericModel {
 		
 		Analise analise = Analise.findById(analiseTecnica.analise.id);
 		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
-		verificaDiasAnalise.qtdeDiasNotificacao = 1;
+		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
 
 		analise.temNotificacaoAberta = true;
