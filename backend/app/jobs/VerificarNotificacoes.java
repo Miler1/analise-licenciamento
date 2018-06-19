@@ -15,6 +15,8 @@ import models.Notificacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
 
@@ -40,14 +42,27 @@ public class VerificarNotificacoes extends GenericJob {
 				
 				DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 
-				if(analise.temNotificacaoAberta && (verificaDiasAnalise.qtdeDiasNotificacao != null
-						&& verificaDiasAnalise.qtdeDiasNotificacao > 10)) {
-					
-					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
-					analise.temNotificacaoAberta = false;
-					analise._save();
+				if (analise.temNotificacaoAberta && verificaDiasAnalise.qtdeDiasNotificacao != null && verificaDiasAnalise.qtdeDiasNotificacao > 10) {
 
-					enviarEmailArquivamento(analise);
+					Notificacao notificacao = null;
+
+					if (analise.analiseTecnica != null) {
+
+						notificacao = Notificacao.find("analiseTecnica.id", analise.analiseTecnica.id).first();
+
+					} else if (analise.analiseJuridica != null) {
+
+						notificacao = Notificacao.find("analiseJuridica.id", analise.analiseJuridica.id).first();
+					}
+
+					if (verificaDiasAnalise.qtdeDiasNotificacao > 20 || CalculaDiferencaDias(notificacao.dataLeitura, new Date()) > 10) {
+
+						analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
+						analise.temNotificacaoAberta = false;
+						analise._save();
+
+						enviarEmailArquivamento(analise);
+					}
 
 				} else if(!analise.hasNotificacaoNaoResolvida()) {
 
@@ -129,5 +144,18 @@ public class VerificarNotificacoes extends GenericJob {
 		new EmailNotificacaoArquivamentoProcesso(analise.processo, destinatarios, arquivamento.dataInicial, notificacoes,
 				historicoAnalise.setor).enviar();
 	}
-	
+
+
+	public int CalculaDiferencaDias(Date dataInicial, Date dataFinal) {
+
+		if (dataInicial == null || dataFinal == null) {
+
+			return 0;
+		}
+
+		LocalDate dataInicio = new LocalDate(dataInicial.getTime());
+		LocalDate dataFim = new LocalDate(dataFinal.getTime());
+
+		return Days.daysBetween(dataInicio, dataFim).getDays();
+	}
 }
