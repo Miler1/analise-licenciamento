@@ -21,6 +21,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
+import utils.ListUtil;
 
 @On("cron.vetificarNotificacoes")
 public class VerificarNotificacoes extends GenericJob {
@@ -65,11 +66,9 @@ public class VerificarNotificacoes extends GenericJob {
 					analise.temNotificacaoAberta = false;
 					analise._save();
 
-					for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+					List<Long> idsCaracterizacoes = ListUtil.getIds(analise.processo.caracterizacoes);
 
-						caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.ARQUIVADO);
-						caracterizacao._save();
-					}
+					Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
 
 					enviarEmailArquivamento(analise);
 
