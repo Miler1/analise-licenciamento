@@ -42,27 +42,27 @@ public class VerificarNotificacoes extends GenericJob {
 				
 				DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 
-				if (analise.temNotificacaoAberta && verificaDiasAnalise.qtdeDiasNotificacao != null && verificaDiasAnalise.qtdeDiasNotificacao > 10) {
+				Notificacao notificacaoArquivamento = null;
 
-					Notificacao notificacao = null;
+				if (verificaDiasAnalise.qtdeDiasNotificacao != null && verificaDiasAnalise.qtdeDiasNotificacao > 10) {
 
 					if (analise.analiseTecnica != null) {
 
-						notificacao = Notificacao.find("analiseTecnica.id", analise.analiseTecnica.id).first();
+						notificacaoArquivamento = Notificacao.find("analiseTecnica.id", analise.analiseTecnica.id).first();
 
 					} else if (analise.analiseJuridica != null) {
 
-						notificacao = Notificacao.find("analiseJuridica.id", analise.analiseJuridica.id).first();
+						notificacaoArquivamento = Notificacao.find("analiseJuridica.id", analise.analiseJuridica.id).first();
 					}
+				}
 
-					if (verificaDiasAnalise.qtdeDiasNotificacao > 20 || CalculaDiferencaDias(notificacao.dataLeitura, new Date()) > 10) {
+				if (notificacaoArquivamento != null && verificaDiasAnalise.qtdeDiasNotificacao > 20 || CalculaDiferencaDias(notificacaoArquivamento.dataLeitura, new Date()) > 10) {
 
-						analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
-						analise.temNotificacaoAberta = false;
-						analise._save();
+					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
+					analise.temNotificacaoAberta = false;
+					analise._save();
 
-						enviarEmailArquivamento(analise);
-					}
+					enviarEmailArquivamento(analise);
 
 				} else if(!analise.hasNotificacaoNaoResolvida()) {
 
