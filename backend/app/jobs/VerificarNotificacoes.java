@@ -56,7 +56,8 @@ public class VerificarNotificacoes extends GenericJob {
 					}
 				}
 
-				if (notificacaoArquivamento != null && verificaDiasAnalise.qtdeDiasNotificacao > 20 || CalculaDiferencaDias(notificacaoArquivamento.dataLeitura, new Date()) > 10) {
+				if (verificaDiasAnalise.qtdeDiasNotificacao > 20 || (notificacaoArquivamento != null
+						&& CalculaDiferencaDias(notificacaoArquivamento.dataLeitura, new Date()) > 10)) {
 
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
 					analise.temNotificacaoAberta = false;
