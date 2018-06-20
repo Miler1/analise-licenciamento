@@ -12,7 +12,9 @@ import models.DiasAnalise;
 import models.EmailNotificacaoArquivamentoProcesso;
 import models.LicencaAnalise;
 import models.Notificacao;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
+import models.licenciamento.StatusCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.joda.time.Days;
@@ -62,6 +64,12 @@ public class VerificarNotificacoes extends GenericJob {
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
 					analise.temNotificacaoAberta = false;
 					analise._save();
+
+					for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+						caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.ARQUIVADO);
+						caracterizacao._save();
+					}
 
 					enviarEmailArquivamento(analise);
 
