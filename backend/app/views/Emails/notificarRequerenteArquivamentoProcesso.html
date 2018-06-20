@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 %{
 
-notificacao = notificacoes.get(0);
+notificacao = notificacoes.size() != 0 ? notificacoes.get(0) : null;
 empreendimento = processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
+numeroNotificacao = notificacao != null ? notificacao.codigoSequencia + "/" + notificacao.codigoAno : "N/A";
 setorFormatado = setor != null ? setor.sigla : "GDFLOR";
 }%
 
