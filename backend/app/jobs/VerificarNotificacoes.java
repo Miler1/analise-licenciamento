@@ -12,13 +12,16 @@ import models.DiasAnalise;
 import models.EmailNotificacaoArquivamentoProcesso;
 import models.LicencaAnalise;
 import models.Notificacao;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
+import models.licenciamento.StatusCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
+import utils.ListUtil;
 
 @On("cron.vetificarNotificacoes")
 public class VerificarNotificacoes extends GenericJob {
@@ -62,6 +65,10 @@ public class VerificarNotificacoes extends GenericJob {
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
 					analise.temNotificacaoAberta = false;
 					analise._save();
+
+					List<Long> idsCaracterizacoes = ListUtil.getIds(analise.processo.caracterizacoes);
+
+					Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
 
 					enviarEmailArquivamento(analise);
 
