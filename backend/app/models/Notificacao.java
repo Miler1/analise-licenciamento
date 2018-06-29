@@ -250,10 +250,15 @@ public class Notificacao extends GenericModel {
 				.setParameter("x", anoDataCadastro)
 				.fetch();
 
+		if (notificacoes.size() == 0) {
+
+			return 1;
+		}
+
 		Notificacao notificacao = notificacoes.get(0);
 		AnaliseJuridica analiseNotificacao = notificacao.analiseJuridica;
 
-		if (notificacoes.size() == 0 || notificacao.codigoSequencia == null) {
+		if (notificacao.codigoSequencia == null) {
 
 			return 1;
 		}
@@ -272,10 +277,15 @@ public class Notificacao extends GenericModel {
 				.setParameter("x", anoDataCadastro)
 				.fetch();
 
+		if (notificacoes.size() == 0) {
+
+			return 1;
+		}
+
 		Notificacao notificacao = notificacoes.get(0);
 		AnaliseTecnica analiseNotificacao = notificacao.analiseTecnica;
 
-		if (notificacoes.size() == 0 || notificacao.codigoSequencia == null) {
+		if (notificacao.codigoSequencia == null) {
 
 			return 1;
 		}
