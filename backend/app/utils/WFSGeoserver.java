@@ -10,11 +10,11 @@ import org.geotools.factory.GeoTools;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.Intersects;
+import play.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -63,16 +63,22 @@ public class WFSGeoserver {
 
 		FeatureIterator<SimpleFeature> iterator = source.getFeatures(filter).features();
 
-		while (iterator.hasNext()){
+		try {
 
-			SimpleFeature featureTestada = iterator.next();
+			while (iterator.hasNext()) {
 
-			if(geometry.intersects((Geometry) featureTestada.getDefaultGeometry())){
+				SimpleFeature featureTestada = iterator.next();
 
-				featureCollectionRetorno.add(featureTestada);
+				if (geometry.intersects((Geometry) featureTestada.getDefaultGeometry())) {
 
+					featureCollectionRetorno.add(featureTestada);
+
+				}
 			}
 
+		} catch (Exception e) {
+
+			Logger.error(e, e.getMessage());
 		}
 
 		return featureCollectionRetorno;
