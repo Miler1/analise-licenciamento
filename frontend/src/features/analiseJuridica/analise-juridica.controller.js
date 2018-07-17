@@ -95,6 +95,25 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             });
     };
 
+    ctrl.visualisarNotificacao = function() {
+
+        documentoAnaliseService.generatePDFParecerJuridico(this.analiseJuridica)
+            .then(
+                function(data, status, headers){
+
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(data.data.response.blob);
+                    a.download = data.data.response.fileName ? data.data.response.fileName : 'previa_notificacao.pdf';
+                    a.click();
+                },
+
+                function(error){
+
+                    mensagem.error(error.data.texto);
+                }
+            );
+    };
+
     ctrl.downloadDocumentoLicenciamento = function(idDocumento) {
 
         documentoLicenciamentoService.download(idDocumento);
@@ -175,6 +194,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
     ctrl.invalidarDocumento = function(indice) {
 
+    };
+
+    ctrl.validarAnalise = function() {
+
+        return analiseValida();
     };
 
     function montarAnaliseJuridica() {
