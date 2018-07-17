@@ -95,9 +95,9 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             });
     };
 
-    ctrl.visualisarNotificacao = function() {
+    ctrl.downloadPDFNotificacao = function() {
 
-        documentoAnaliseService.generatePDFParecerJuridico(this.analiseJuridica)
+        documentoAnaliseService.generatePDFNotificacaoParecerJuridico(this.analiseJuridica)
             .then(
                 function(data, status, headers){
 

@@ -16,14 +16,9 @@ var DocumentoAnaliseService = function(request, config, $window) {
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFParecer', analiseTecnica);
 	};
 
-	this.previaNotificacaoParecerJuridico = function(analiseJuridica) {
+	this.generatePDFNotificacaoParecerJuridico = function(analiseJuridica) {
 
-		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFParecer', analiseJuridica);
-	};
-
-	this.previaNotificacaoParecerTecnico = function(analiseJuridica) {
-
-		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFParecer', analiseJuridica);
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFNotificacao', analiseJuridica);
 	};
 
 };

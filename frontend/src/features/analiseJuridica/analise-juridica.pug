@@ -127,7 +127,7 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
             | Salvar
 
-        button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO && ctrl.validarAnalise()" ng-click="ctrl.visualisarNotificacao()")
+        button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO && ctrl.validarAnalise()" ng-click="ctrl.downloadPDFNotificacao()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
             | Visualisar notificação
 
