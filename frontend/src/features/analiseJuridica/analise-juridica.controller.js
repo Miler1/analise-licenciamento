@@ -97,7 +97,12 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
     ctrl.downloadPDFNotificacao = function() {
 
-        documentoAnaliseService.generatePDFNotificacaoParecerJuridico(this.analiseJuridica)
+        var analiseJuridicaNotificacao = JSON.parse(JSON.stringify(this.analiseJuridica));
+
+        analiseJuridicaNotificacao.documentos = JSON.parse(JSON.stringify(ctrl.documentosParecer));
+        analiseJuridicaNotificacao.analisesDocumentos = JSON.parse(JSON.stringify(ctrl.analisesDocumentos));
+
+        documentoAnaliseService.generatePDFNotificacaoParecerJuridico(analiseJuridicaNotificacao)
             .then(
                 function(data, status, headers){
 
