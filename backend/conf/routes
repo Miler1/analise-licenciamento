@@ -50,6 +50,7 @@ POST	/analisesTecnicas/validarParecer					AnalisesTecnicas.validarParecer
 POST	/analisesTecnicas/validarParecerGerente				AnalisesTecnicas.validarParecerGerente
 POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecerAprovador
 POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.downloadPDFParecer
+POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.downloadPDFNotificacao
 
 
 # Documentos licenciamento
