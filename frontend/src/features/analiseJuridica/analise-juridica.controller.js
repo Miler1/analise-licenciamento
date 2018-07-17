@@ -108,7 +108,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
                     var a = document.createElement('a');
                     a.href = URL.createObjectURL(data.data.response.blob);
-                    a.download = data.data.response.fileName ? data.data.response.fileName : 'previa_notificacao.pdf';
+                    a.download = data.data.response.fileName ? data.data.response.fileName : 'previa_notificacao_analise_juridica.pdf';
                     a.click();
                 },
 
