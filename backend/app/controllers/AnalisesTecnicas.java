@@ -9,7 +9,6 @@ import models.Documento;
 import models.Notificacao;
 import org.apache.commons.io.FileUtils;
 
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.geocalculo.Geoserver;
 import models.portalSeguranca.Usuario;
