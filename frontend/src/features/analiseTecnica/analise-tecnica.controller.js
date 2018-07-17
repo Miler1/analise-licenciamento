@@ -32,7 +32,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
         return analiseValida();
     };
 
-    function downloadPDFNotificacao() {
+    ctrl.downloadPDFNotificacao = function() {
 
         var analise = JSON.parse(JSON.stringify(this.analiseTecnica));
 
@@ -53,7 +53,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
                     mensagem.error(error.data.texto);
                 }
             );
-    }
+    };
 
     function verificarEmissoes() {
 
