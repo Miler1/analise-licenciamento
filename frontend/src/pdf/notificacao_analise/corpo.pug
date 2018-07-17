@@ -31,9 +31,9 @@ html(lang='en')
       p
         strong Requerente / Arrendatário:
         |  ${empreendimentoNome}
-      p 
+      p
         strong Endereço:
-        br 
+        br
         | ${endereco}
         br
         | CEP: ${cep}
@@ -48,7 +48,7 @@ html(lang='en')
         | \#{/list}
         | no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, a fim de ser dada continuidade à análise do pleito:
         | \#{/if}
-        
+
         | \#{else}
         | Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
         | no qual solicita ${licencas} para
@@ -66,10 +66,12 @@ html(lang='en')
 
       p Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
 
+    | \#{if qrcodeLink != null && qrcode != null}
     div.assinatura
       div.usuario
         p Assinado eletronicamente. A assinatura digital pertence a:
         p ${analiseEspecifica.usuarioValidacao.pessoa.nome}  (${new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(notificacoes.get(0).dataCadastro)})
         p.link ${qrcodeLink}
-      div.qrcode 
+      div.qrcode
         img(src="${qrcode}")
+    | \#{/if}
