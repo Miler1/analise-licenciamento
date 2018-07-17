@@ -145,6 +145,8 @@ public class AnalisesJuridicas extends InternalController {
 
 		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
 
+		analiseJuridica.analise = Analise.findById(analiseJuridica.analise.id);
+
 		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseJuridica);
 
 		Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseJuridica);
