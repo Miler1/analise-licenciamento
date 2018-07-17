@@ -16,6 +16,10 @@ var DocumentoAnaliseService = function(request, config, $window) {
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFParecer', analiseTecnica);
 	};
 
+	this.generatePDFNotificacaoParecerTecnico = function(analiseTecnica) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFNotificacao', analiseTecnica);
+	};
 };
 
 exports.services.DocumentoAnaliseService = DocumentoAnaliseService;

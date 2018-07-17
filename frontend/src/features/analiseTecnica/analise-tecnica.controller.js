@@ -27,6 +27,34 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
         
     };
 
+    ctrl.validarAnalise = function() {
+
+        return analiseValida();
+    };
+
+    function downloadPDFNotificacao() {
+
+        var analise = JSON.parse(JSON.stringify(this.analiseTecnica));
+
+        analise.analise.processo.empreendimento = null;
+
+        documentoAnaliseService.generatePDFNotificacaoParecerTecnico(analise)
+            .then(
+                function(data, status, headers){
+
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(data.data.response.blob);
+                    a.download = data.data.response.fileName ? data.data.response.fileName : 'previa_notificacao_analise_tecnica.pdf';
+                    a.click();
+                },
+
+                function(error){
+
+                    mensagem.error(error.data.texto);
+                }
+            );
+    }
+
     function verificarEmissoes() {
 
         if(ctrl.analiseTecnica.tipoResultadoAnalise.id !== ctrl.DEFERIDO)
