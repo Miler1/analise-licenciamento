@@ -284,6 +284,10 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 	}
 
+	function downloadDocumentoLicenciamento(idDocumento) {
+		documentoLicenciamentoService.download(idDocumento);
+	}
+
 };
 
 exports.controllers.VisualizacaoProcessoController = VisualizacaoProcessoController;
