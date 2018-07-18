@@ -1,5 +1,6 @@
 package models.tramitacao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import models.Notificacao;
+import models.licenciamento.DocumentoLicenciamento;
 import models.portalSeguranca.Setor;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -196,6 +198,23 @@ public class HistoricoTramitacao extends GenericModel {
 
 		return Setor.find("select s from Setor s join s.historicosTramitacao ht where ht.id = :x")
 				.setParameter("x", this.idHistorico).first();
+	}
+
+	public List<DocumentoLicenciamento> getDocumentosLicenciamento() {
+
+		ArrayList<DocumentoLicenciamento> documentos = new ArrayList<>();
+
+		List<Notificacao> notificacoes = Notificacao.find("historicoTramitacao.id", this.idHistorico).fetch();
+
+		if (notificacoes != null && notificacoes.size() > 0) {
+
+			for(Notificacao notificacao : notificacoes) {
+
+				documentos.add(notificacao.analiseDocumento.documento);
+			}
+		}
+
+		return documentos;
 	}
 
 }
