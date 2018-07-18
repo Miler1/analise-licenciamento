@@ -36,6 +36,10 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 		$uibModalInstance.dismiss('cancel');
 	};
 
+	modalCtrl.downloadDocumentoLicenciamento = function (idDocumento) {
+		documentoLicenciamentoService.download(idDocumento);
+	};
+
 
 	function baixarDocumento(idDocumento) {
 
@@ -282,10 +286,6 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 
 		return maiorPotencialPoluidor;
 
-	}
-
-	function downloadDocumentoLicenciamento(idDocumento) {
-		documentoLicenciamentoService.download(idDocumento);
 	}
 
 };
