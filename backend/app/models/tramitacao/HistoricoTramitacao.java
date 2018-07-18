@@ -200,7 +200,7 @@ public class HistoricoTramitacao extends GenericModel {
 				.setParameter("x", this.idHistorico).first();
 	}
 
-	public List<DocumentoLicenciamento> getDocumentosLicenciamento() {
+	public List<DocumentoLicenciamento> getDocumentosCorrigidos() {
 
 		ArrayList<DocumentoLicenciamento> documentos = new ArrayList<>();
 
@@ -210,11 +210,15 @@ public class HistoricoTramitacao extends GenericModel {
 
 			for(Notificacao notificacao : notificacoes) {
 
-				documentos.add(notificacao.analiseDocumento.documento);
+				if (notificacao.documentoCorrigido != null) {
+
+					documentos.add(notificacao.documentoCorrigido);
+				}
 			}
 		}
 
-		return documentos;
+		return documentos.size() > 0 ? documentos : null;
+
 	}
 
 }
