@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -88,7 +89,7 @@ public class Notificacao extends GenericModel {
 		
 		for(AnaliseDocumento analiseDocumento : analiseJuridica.analisesDocumentos) {
 			
-			if(analiseDocumento.validado == null || analiseDocumento.validado == true) {
+			if(analiseDocumento.validado == null || analiseDocumento.validado) {
 				continue;
 			}
 
@@ -121,12 +122,47 @@ public class Notificacao extends GenericModel {
 		analise._save();
 		
 	}
-	
+
+	public static List<Notificacao> gerarNotificacoesTemporarias(AnaliseJuridica analiseJuridica) {
+
+		List<Notificacao> notificacoes = new ArrayList<>();
+
+		for(AnaliseDocumento analiseDocumento : analiseJuridica.analisesDocumentos) {
+
+			if(analiseDocumento.validado == null || analiseDocumento.validado) {
+				continue;
+			}
+
+			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
+
+			Notificacao notificacao = new Notificacao();
+			notificacao.analiseJuridica = analiseJuridica;
+			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
+			notificacao.analiseDocumento = analiseDocumento;
+			notificacao.resolvido = false;
+			notificacao.ativo = true;
+			notificacao.dataCadastro = new Date();
+
+			Calendar calendario = new GregorianCalendar();
+			calendario.setTime(notificacao.dataCadastro);
+			int anoDataCadastro = calendario.get(Calendar.YEAR);
+
+			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseJuridica);
+			notificacao.codigoAno = anoDataCadastro;
+
+			notificacoes.add(notificacao);
+
+		}
+
+		return notificacoes;
+
+	}
+
 	public static void criarNotificacoesAnaliseTecnica(AnaliseTecnica analiseTecnica) {
 		
 		for(AnaliseDocumento analiseDocumento : analiseTecnica.analisesDocumentos) {
 			
-			if(analiseDocumento.validado == null || analiseDocumento.validado == true) {
+			if(analiseDocumento.validado == null || analiseDocumento.validado) {
 				continue;
 			}
 			
@@ -242,6 +278,22 @@ public class Notificacao extends GenericModel {
 		Documento documento = new Documento(tipoDocumento, pdf.getFile());
 
 		return documento;
+	}
+
+	public static Documento gerarPDF(List<Notificacao> notificacoes, AnaliseJuridica analiseJuridica) throws Exception {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("notificacoes", notificacoes)
+				.addParam("analiseEspecifica", analiseJuridica)
+				.addParam("analiseArea", "ANALISE_JURIDICA")
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+
+		pdf.generate();
+
+		return new Documento(tipoDocumento, pdf.getFile());
 	}
     
 	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseJuridica analiseJuridica) {

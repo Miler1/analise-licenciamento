@@ -95,6 +95,30 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             });
     };
 
+    ctrl.downloadPDFNotificacao = function() {
+
+        var analiseJuridicaNotificacao = JSON.parse(JSON.stringify(this.analiseJuridica));
+
+        analiseJuridicaNotificacao.documentos = JSON.parse(JSON.stringify(ctrl.documentosParecer));
+        analiseJuridicaNotificacao.analisesDocumentos = JSON.parse(JSON.stringify(ctrl.analisesDocumentos));
+
+        documentoAnaliseService.generatePDFNotificacaoParecerJuridico(analiseJuridicaNotificacao)
+            .then(
+                function(data, status, headers){
+
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(data.data.response.blob);
+                    a.download = data.data.response.fileName ? data.data.response.fileName : 'previa_notificacao_analise_juridica.pdf';
+                    a.click();
+                },
+
+                function(error){
+
+                    mensagem.error(error.data.texto);
+                }
+            );
+    };
+
     ctrl.downloadDocumentoLicenciamento = function(idDocumento) {
 
         documentoLicenciamentoService.download(idDocumento);
@@ -175,6 +199,11 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
 
     ctrl.invalidarDocumento = function(indice) {
 
+    };
+
+    ctrl.validarAnalise = function() {
+
+        return analiseValida();
     };
 
     function montarAnaliseJuridica() {

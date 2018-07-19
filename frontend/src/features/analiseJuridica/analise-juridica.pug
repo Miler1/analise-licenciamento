@@ -119,13 +119,17 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
 
-        button.btn.btn-success.col-md-2.col-md-offset-5(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseJuridica.dataFim")
+        button.btn.btn-success.pull-right.col-md-2(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseJuridica.dataFim")
+            i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+            | Concluir
+
+        button.btn.btn-success.pull-right.col-md-2.margin-right-xs(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseJuridica.dataFim")
             i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
             | Salvar
 
-        button.btn.btn-success.col-md-2.col-md-offset-1(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseJuridica.dataFim")
-            i.glyphicon.glyphicon-check.glyphicon--with-right-margin
-            | Concluir
+        button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseJuridica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO && ctrl.validarAnalise()" ng-click="ctrl.downloadPDFNotificacao()")
+            i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
+            | Visualisar notificação
 
         i.pull-right(ng-if="ctrl.analiseJuridica.dataFim") Esta análise foi concluida em {{ctrl.analiseJuridica.dataFim}} e não pode mais ser alterada.
 
