@@ -119,9 +119,11 @@ public class Notificacao extends GenericModel {
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
 
-		Caracterizacao caracterizacao = analise.processo.caracterizacoes.get(0);
-		caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
-		caracterizacao._save();
+		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
+			caracterizacao._save();
+		}
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
@@ -161,9 +163,11 @@ public class Notificacao extends GenericModel {
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
 
-		Caracterizacao caracterizacao = analise.processo.caracterizacoes.get(0);
-		caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
-		caracterizacao._save();
+		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
+			caracterizacao._save();
+		}
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
