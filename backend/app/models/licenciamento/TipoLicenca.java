@@ -37,6 +37,8 @@ public class TipoLicenca extends GenericModel {
 
 	public String nome;
 
+	public String sigla;
+
 	@Column(name = "codigo_receita_dae")
 	public Integer codigoReceitaDae;
 	
