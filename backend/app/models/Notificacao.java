@@ -19,7 +19,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.DocumentoLicenciamento;
+import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoDocumentoLicenciamento;
 import models.pdf.PDFGenerator;
 import models.tramitacao.HistoricoTramitacao;
@@ -117,6 +119,12 @@ public class Notificacao extends GenericModel {
 		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
+
+		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
+			caracterizacao._save();
+		}
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
@@ -225,6 +233,12 @@ public class Notificacao extends GenericModel {
 		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
+
+		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
+			caracterizacao._save();
+		}
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
