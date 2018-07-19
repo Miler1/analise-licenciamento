@@ -94,11 +94,11 @@ public class Notificacao extends GenericModel {
 				continue;
 			}
 
-			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.id);
+			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
 				
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseJuridica = analiseJuridica;
-			notificacao.tipoDocumento = tipoDoc;
+			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
@@ -135,12 +135,12 @@ public class Notificacao extends GenericModel {
 			if(analiseDocumento.validado == null || analiseDocumento.validado == true) {
 				continue;
 			}
-			
-			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.id);
+
+			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
 				
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseTecnica = analiseTecnica;
-			notificacao.tipoDocumento = tipoDoc;
+			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
