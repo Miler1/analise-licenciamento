@@ -75,7 +75,11 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Required
 	@Column(name="revisao_solicitada")
 	public Boolean revisaoSolicitada;
-	
+
+	@Required
+	@Column(name="notificacao_atendida")
+	public Boolean notificacaoAtendida;
+
 	public Boolean ativo;
 	
 	@OneToOne
@@ -595,7 +599,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}		
 	}	
 
-	public AnaliseTecnica gerarCopia() {
+	public AnaliseTecnica gerarCopia(boolean notificacao) {
 		
 		AnaliseTecnica copia = new AnaliseTecnica();
 		
@@ -603,7 +607,8 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		copia.parecer = this.parecer;
 		copia.dataCadastro = this.dataCadastro;
 		copia.dataVencimentoPrazo = this.dataVencimentoPrazo;
-		copia.revisaoSolicitada = true;
+		copia.revisaoSolicitada = !notificacao;
+		copia.notificacaoAtendida = notificacao;
 		copia.ativo = true;
 		copia.analiseTecnicaRevisada = this;
 		copia.dataInicio = this.dataInicio;
