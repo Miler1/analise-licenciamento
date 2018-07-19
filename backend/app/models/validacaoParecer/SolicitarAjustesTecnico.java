@@ -32,7 +32,7 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 			
 		analiseTecnica._save();
 		
-		AnaliseTecnica copia = analiseTecnica.gerarCopia();
+		AnaliseTecnica copia = analiseTecnica.gerarCopia(false);
 		
 		/**
 		 * Quando o ajuste for do coordenador para o gerente deve-se manter a validação do gerente

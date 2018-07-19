@@ -101,7 +101,7 @@ public class VerificarNotificacoes extends GenericJob {
 						analise.analiseJuridica.ativo = false;
 						analise.analiseJuridica._save();
 						
-						AnaliseJuridica novaAnaliseJuridica = analise.analiseJuridica.gerarCopia();
+						AnaliseJuridica novaAnaliseJuridica = analise.analiseJuridica.gerarCopia(true);
 						novaAnaliseJuridica._save();
 						
 						analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.RESOLVER_NOTIFICACAO_JURIDICA);
@@ -111,7 +111,7 @@ public class VerificarNotificacoes extends GenericJob {
 						analise.analiseTecnica.ativo = false;
 						analise.analiseTecnica._save();
 						
-						AnaliseTecnica novaAnaliseTecnica = analise.analiseTecnica.gerarCopia();
+						AnaliseTecnica novaAnaliseTecnica = analise.analiseTecnica.gerarCopia(true);
 						novaAnaliseTecnica._save();
 						
 						/**
