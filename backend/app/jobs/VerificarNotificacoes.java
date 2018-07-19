@@ -103,7 +103,13 @@ public class VerificarNotificacoes extends GenericJob {
 						
 						AnaliseJuridica novaAnaliseJuridica = analise.analiseJuridica.gerarCopia(true);
 						novaAnaliseJuridica._save();
-						
+
+						for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+							caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
+							caracterizacao._save();
+						}
+
 						analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.RESOLVER_NOTIFICACAO_JURIDICA);
 						
 					} else if(notificacoes.get(0).analiseTecnica != null) {
@@ -113,6 +119,12 @@ public class VerificarNotificacoes extends GenericJob {
 						
 						AnaliseTecnica novaAnaliseTecnica = analise.analiseTecnica.gerarCopia(true);
 						novaAnaliseTecnica._save();
+
+						for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+							caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
+							caracterizacao._save();
+						}
 						
 						/**
 						 * Workaround para persistir as licenças e os pareceres técnicos restrições
