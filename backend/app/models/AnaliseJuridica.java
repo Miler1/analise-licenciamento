@@ -71,7 +71,11 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 	@Required
 	@Column(name="revisao_solicitada")
 	public Boolean revisaoSolicitada;
-	
+
+	@Required
+	@Column(name="notificacao_atendida")
+	public Boolean notificacaoAtendida;
+
 	public Boolean ativo;
 	
 	@OneToOne
