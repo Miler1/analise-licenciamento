@@ -31,12 +31,13 @@ div
 						tr(ng-repeat="processo in listagem.processos")
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
+								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero  | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{listagem.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, listagem.PrazoAnalise.ANALISE)}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,listagem.PrazoAnalise.ANALISE_TECNICA)}}
@@ -54,10 +55,11 @@ div
 													span Validar análise
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
-													i.glyphicon.glyphicon-eye-open 
+													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
 					span.icone-revisao-solicitada.legenda revisão solicitada
+					span.icone-revisao-atendida.legenda Revisão Atendida
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 
