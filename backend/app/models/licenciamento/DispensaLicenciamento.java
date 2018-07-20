@@ -13,7 +13,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import models.Documento;
 import play.db.jpa.GenericModel;
 
 @Entity

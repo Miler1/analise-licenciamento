@@ -51,4 +51,16 @@ public class LicenciamentoWebService {
 		
 	}
 
+	public void reemitirPDFDla(Long idDla) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("idDla", idDla);
+
+		HttpResponse response = new WebService().post(Configuracoes.URL_LICENCIAMENTO_REEMITIR_PDFS_DLA, params);
+
+		if(!response.success()) {
+			throw new WebServiceException("Erro ao reemitir DLA.");
+		}
+	}
+
 }

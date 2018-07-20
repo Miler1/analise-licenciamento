@@ -20,6 +20,7 @@ import exceptions.AppException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.DispensaLicenciamento;
 import models.licenciamento.Licenca;
+import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.Usuario;
 import play.Logger;
@@ -75,6 +76,9 @@ public class DlaCancelada extends GenericModel {
 			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.dispensaLicenciamento.caracterizacao.id), StatusCaracterizacao.CANCELADO);
 			
 			enviarNotificacaoCanceladoPorEmail();
+
+			LicenciamentoWebService webService = new LicenciamentoWebService();
+			webService.reemitirPDFDla(dispensaLicenciamento.id);
 			
 		} catch(Exception e) {
 			
