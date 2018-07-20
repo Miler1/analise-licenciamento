@@ -121,6 +121,8 @@ public class AnalisesJuridicas extends InternalController {
 
 	public static void downloadPDFParecer(AnaliseJuridica analiseJuridica) throws Exception {
 
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+
 		String novoParecer = analiseJuridica.parecer;
 
 		AnaliseJuridica analiseJuridicaSalva = AnaliseJuridica.findById(analiseJuridica.id);
@@ -136,6 +138,26 @@ public class AnalisesJuridicas extends InternalController {
 		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfParecer.arquivo, nome);
+
+	}
+
+	public static void downloadPDFNotificacao(AnaliseJuridica analiseJuridica) throws Exception {
+
+		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
+
+		analiseJuridica.analise = Analise.findById(analiseJuridica.analise.id);
+
+		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseJuridica);
+
+		Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseJuridica);
+
+		String nome = pdfNotificacao.tipo.nome +  "_" + analiseJuridica.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(pdfNotificacao.arquivo, nome);
 
 	}
 
