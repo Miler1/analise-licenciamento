@@ -102,8 +102,19 @@
 						td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 						td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
 						td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
+							
 							i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",
 							title="Gerar PDF da notificação")
+
+							.dropdown.action-table.pull-right.margin-right-xs.margin-left-xs(ng-if="tramitacao.documentosCorrigidos !== null")
+								i.notificacao-icone.glyphicon.glyphicon-duplicate(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true', 
+								title="Documentos recebidos após notificação")
+								ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+									li(ng-repeat="documentoCorrigido in tramitacao.documentosCorrigidos")
+										a(ng-click="modalVisualizacaoProcessoCtrl.downloadDocumentoLicenciamento(documentoCorrigido.id)")
+											i.glyphicon.glyphicon-save-file
+											span(title="{{ documentoCorrigido.tipo.nome }}") {{ (documentoCorrigido.tipo.nome.length > 80 ? documentoCorrigido.tipo.nome.substring(0, 70) + '...' : documentoCorrigido.tipo.nome) }}
+						
 						td.col-md-1.text-center(ng-if="!tramitacao.hasNotificacoes")
 							span.notificacao-sem-icone
 								| -
