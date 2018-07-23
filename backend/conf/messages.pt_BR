@@ -103,6 +103,11 @@ LICENCA_CANCELADA_OU_SUSPENSA=A Licença informada não pode ser baixada.
 LICENCA_CANCELADA_SUCESSO=Licença cancelada com sucesso.
 
 #
+# Dlas
+#
+ERRO_CANCELAR_DLA=Erro ao cancelar DLA, contate a SEMAS ou tente novamente mais tarde.
+
+#
 # Emails
 #
 ERRO_ENVIAR_EMAIL=O seguinte erro ocorreu ao tentar enviar o email: %s

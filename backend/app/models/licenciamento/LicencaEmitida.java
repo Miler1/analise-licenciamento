@@ -53,7 +53,9 @@ public class LicencaEmitida extends GenericModel {
 
 	@Column(name = "tipo_dispensa")
 	public Integer tipoDispensa;
-	
+
+	@Column
+	public boolean ativo;
 	
 	private static List groupByLicenca(LicencaEmitidaBuilder licencaBuilder, FiltroLicenca filtro) {
 		
@@ -66,7 +68,8 @@ public class LicencaEmitida extends GenericModel {
 			.groupByMunicipioEmpreendimento()
 			.groupByLicenca()
 			.groupByOrigemLicenca()
-			.groupByTipoCaracterizacao();
+			.groupByTipoCaracterizacao()
+			.groupByAtivo();
 				
 	return licencaBuilder
 		.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())				

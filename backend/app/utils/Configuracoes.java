@@ -45,7 +45,7 @@ public class Configuracoes {
 	public static String URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacoes.andamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.adicionar.analise", null);
 	public static String URL_LICENCIAMENTO_GERAR_PDFS_LICENCA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.gerar.pdf", null);
-	public static String URL_LICENCIAMENTO_REEMITIR_PDFS_DLA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.reemitir.dla", null);
+	public static String URL_LICENCIAMENTO_CANCELAR_DLA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.cancelar.dla", null);
 
 	public static String PDF_TEMPLATES_FOLDER_PATH = "templates" + File.separator + "pdf";
 	public static String PDF_TEMPLATES_FOLDER_ABSOLUTE = Play.applicationPath.getAbsolutePath() + File.separator + "app" + File.separator + "views" + File.separator;

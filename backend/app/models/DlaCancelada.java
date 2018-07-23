@@ -57,33 +57,20 @@ public class DlaCancelada extends GenericModel {
 	}
 	
 	public void cancelarDla(Usuario usuarioExecutor) {
-		
-		Calendar c = Calendar.getInstance();
-		Date dataAtual = c.getTime();
-		
-		DispensaLicenciamento dispensaLicenciamento = DispensaLicenciamento.findById(this.dispensaLicenciamento.id);
-		dispensaLicenciamento.ativo = false;
-		
-		this.dispensaLicenciamento = dispensaLicenciamento;
-		this.usuario = usuarioExecutor;
-		this.dataCancelada = dataAtual;
-		
-		try {
-			
-			dispensaLicenciamento.save();
-			this.save();
-			
-			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.dispensaLicenciamento.caracterizacao.id), StatusCaracterizacao.CANCELADO);
-			
-			enviarNotificacaoCanceladoPorEmail();
 
-			LicenciamentoWebService webService = new LicenciamentoWebService();
-			webService.reemitirPDFDla(dispensaLicenciamento.id);
-			
-		} catch(Exception e) {
-			
+		this.usuario = new Usuario();
+		this.usuario.id = usuarioExecutor.id;
+
+		LicenciamentoWebService webService = new LicenciamentoWebService();
+
+		try {
+
+			webService.cancelarDla(this);
+
+		} catch (Exception e) {
+
 			Logger.error(e, e.getMessage());
-			throw new AppException(Mensagem.ERRO_ENVIAR_EMAIL, e.getMessage());
+			throw new AppException(Mensagem.ERRO_CANCELAR_DLA, e.getMessage());
 		}
 	}
 	

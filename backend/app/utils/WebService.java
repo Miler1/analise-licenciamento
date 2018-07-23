@@ -244,6 +244,22 @@ public class WebService {
 		
 		return null;
 	}
+
+	public void postJSON(String url, Object data) {
+
+		WSRequest request = createRequest(url);
+		request.setHeader("Content-Type","application/json");
+
+		if (data != null) {
+			String jsonData = gson.toJson(data);
+			request.body(jsonData);
+		}
+
+		HttpResponse response = request.post();
+
+		if (!response.success())
+			throw new WebServiceException(response);
+	}
 	
 	public void setDefaultHeader(String header, String value) {
 		

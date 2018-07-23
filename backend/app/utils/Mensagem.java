@@ -67,7 +67,9 @@ public enum Mensagem {
 	ERRO_ENVIAR_EMAIL,
 	LICENCA_CANCELADA_OU_SUSPENSA,
 	
-	LICENCA_CANCELADA_SUCESSO;
+	LICENCA_CANCELADA_SUCESSO,
+
+	ERRO_CANCELAR_DLA;
 	
 	public String getTexto(Object ... args) {
 		

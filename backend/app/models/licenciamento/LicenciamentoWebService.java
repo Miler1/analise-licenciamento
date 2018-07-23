@@ -7,10 +7,9 @@ import java.util.Map;
 
 import javax.xml.ws.WebServiceException;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import deserializers.DateDeserializer;
+import models.DlaCancelada;
 import play.libs.WS.HttpResponse;
 import utils.Configuracoes;
 import utils.WebService;
@@ -51,16 +50,9 @@ public class LicenciamentoWebService {
 		
 	}
 
-	public void reemitirPDFDla(Long idDla) {
+	public void cancelarDla(DlaCancelada dla) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("idDla", idDla);
-
-		HttpResponse response = new WebService().post(Configuracoes.URL_LICENCIAMENTO_REEMITIR_PDFS_DLA, params);
-
-		if(!response.success()) {
-			throw new WebServiceException("Erro ao reemitir DLA.");
-		}
+		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_CANCELAR_DLA, dla);
 	}
 
 }

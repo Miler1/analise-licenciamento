@@ -195,7 +195,14 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return this;
 	}
-	
+
+	public LicencaEmitidaBuilder groupByAtivo() {
+
+		addProjection(Projections.groupProperty("ativo").as("ativo"));
+
+		return this;
+	}
+
 	public LicencaEmitidaBuilder filtrarPorNumeroLicenca(String numeroLicenca) {
 		
 		if (StringUtils.isNotEmpty(numeroLicenca)) {
