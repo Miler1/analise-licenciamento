@@ -73,15 +73,4 @@ public class DlaCancelada extends GenericModel {
 			throw new AppException(Mensagem.ERRO_CANCELAR_DLA, e.getMessage());
 		}
 	}
-	
-	private void enviarNotificacaoCanceladoPorEmail() {
-		
-		List<String> destinatarios = new ArrayList<String>();
-		destinatarios.addAll(this.dispensaLicenciamento.caracterizacao.empreendimento.emailsProprietarios());
-		destinatarios.addAll(this.dispensaLicenciamento.caracterizacao.empreendimento.emailsResponsaveis());
-		
-		EmailNotificacaoCancelamentoDla emailNotificacao = new EmailNotificacaoCancelamentoDla(this, destinatarios);
-		emailNotificacao.enviar();
-	}
-	
 }
