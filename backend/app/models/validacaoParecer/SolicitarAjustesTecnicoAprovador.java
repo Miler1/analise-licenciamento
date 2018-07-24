@@ -32,7 +32,7 @@ public class SolicitarAjustesTecnicoAprovador extends TipoResultadoAnaliseChain<
 			
 		analiseTecnica._save();
 		
-		AnaliseTecnica copia = analiseTecnica.gerarCopia();
+		AnaliseTecnica copia = analiseTecnica.gerarCopia(false);
 		
 		/**
 		 * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador e gerente

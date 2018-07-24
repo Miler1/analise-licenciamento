@@ -35,14 +35,15 @@ div
 						tr(ng-repeat="processo in cxEntGerenteTecnico.processos")
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
-							td 
+								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
+							td
 								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntGerenteTecnico.verificarTodosProcessosMarcados()")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{cxEntGerenteTecnico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntGerenteTecnico.PrazoAnalise.ANALISE)}}
 							td(ng-class="{'error-message': cxEntGerenteTecnico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntGerenteTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{cxEntGerenteTecnico.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,cxEntGerenteTecnico.PrazoAnalise.ANALISE_TECNICA)}}
@@ -64,11 +65,12 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
-					span.icone-revisao-solicitada.legenda revisão solicitada
+					span.icone-revisao-solicitada.legenda Revisão Solicitada
+					span.icone-revisao-atendida.legenda Notificação Atendida
 				div
-					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntGerenteTecnico.vincularAnalista()", 
+					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntGerenteTecnico.vincularAnalista()",
 																  ng-disabled="!cxEntGerenteTecnico.hasAtLeastOneProcessoSelected()",
-																  ng-attr-title="{{!cxEntGerenteTecnico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao analista.' : ''}}" 
+																  ng-attr-title="{{!cxEntGerenteTecnico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao analista.' : ''}}"
 																  tabindex="0")
 						span.glyphicon.glyphicon-share
 						| &nbsp; Vincular analista
