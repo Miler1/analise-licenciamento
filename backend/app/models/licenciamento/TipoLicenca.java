@@ -42,6 +42,8 @@ public class TipoLicenca extends GenericModel {
 	
 	@Column(name = "validade_em_anos")
 	public Integer validadeEmAnos;
+
+	public String sigla;
 	
 	@Transient
 	public Double taxaAdministrativa;

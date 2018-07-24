@@ -46,6 +46,8 @@ public class ProcessoSerializer {
 			"historicoTramitacao.nomeCondicaoFinal",
 			"historicoTramitacao.tempoPermanencia",
 			"historicoTramitacao.hasNotificacoes",
+			"historicoTramitacao.documentosCorrigidos.id",
+			"historicoTramitacao.documentosCorrigidos.tipo.nome",
 			"historicoTramitacao.setor.nome",
 			"historicoTramitacao.setor.sigla",
 			"empreendimento.id",

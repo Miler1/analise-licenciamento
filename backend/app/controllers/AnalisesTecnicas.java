@@ -2,11 +2,13 @@ package controllers;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.List;
 
+import models.Analise;
 import models.Documento;
+import models.Notificacao;
 import org.apache.commons.io.FileUtils;
 
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.geocalculo.Geoserver;
 import models.portalSeguranca.Usuario;
@@ -139,6 +141,8 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void downloadPDFParecer(AnaliseTecnica analiseTecnica) throws Exception {
 
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+
 		String novoParecer = analiseTecnica.parecer;
 
 		AnaliseTecnica analiseTecnicaSalva = AnaliseTecnica.findById(analiseTecnica.id);
@@ -156,4 +160,25 @@ public class AnalisesTecnicas extends InternalController {
 		renderBinary(pdfParecer.arquivo, nome);
 
 	}
+
+	public static void downloadPDFNotificacao(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
+
+		Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseTecnica);
+
+		String nome = pdfNotificacao.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(pdfNotificacao.arquivo, nome);
+
+	}
+
 }
