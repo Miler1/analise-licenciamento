@@ -71,7 +71,11 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 	@Required
 	@Column(name="revisao_solicitada")
 	public Boolean revisaoSolicitada;
-	
+
+	@Required
+	@Column(name="notificacao_atendida")
+	public Boolean notificacaoAtendida;
+
 	public Boolean ativo;
 	
 	@OneToOne
@@ -109,8 +113,8 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;
 	
- 	@ManyToOne(fetch=FetchType.LAZY)
- 	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
 	public Usuario usuarioValidacao;
 	
 	@ManyToOne
@@ -120,10 +124,10 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 	@Column(name="parecer_validacao_aprovador")
 	public String parecerValidacaoAprovador;
 	
- 	@ManyToOne(fetch=FetchType.LAZY)
- 	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
 	public Usuario usuarioValidacaoAprovador;
- 	
+
 	private void validarParecer() {
 		
 		if(StringUtils.isBlank(this.parecer)) 
@@ -368,14 +372,15 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.validarParecer(analiseJuridica, usuarioExecultor);		
 	}
 	
-	public AnaliseJuridica gerarCopia(){
+	public AnaliseJuridica gerarCopia(boolean notificacao){
 		
 		AnaliseJuridica copia = new AnaliseJuridica();
 		
 		copia.analise = this.analise;
 		copia.parecer = this.parecer;
 		copia.dataVencimentoPrazo = this.dataVencimentoPrazo;
-		copia.revisaoSolicitada = true;
+		copia.revisaoSolicitada = !notificacao;
+		copia.notificacaoAtendida = notificacao;
 		copia.ativo = true;
 		copia.analiseJuridicaRevisada = this;
 		copia.dataInicio = this.dataInicio;
@@ -422,12 +427,12 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 		}
 		
 		public void setNext(TipoResultadoAnaliseChain tipoResultadoAnalise) {
-	        if (next == null) {
-	            next = tipoResultadoAnalise;
-	        } else {
-	            next.setNext(tipoResultadoAnalise);
-	        }
-	    }
+			if (next == null) {
+				next = tipoResultadoAnalise;
+			} else {
+				next.setNext(tipoResultadoAnalise);
+			}
+		}
 		
 		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica, Usuario usuarioExecutor) {
 			
@@ -522,7 +527,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 			
 			_save();
 			
-			AnaliseJuridica copia = gerarCopia();
+			AnaliseJuridica copia = gerarCopia(false);
 			
 			copia._save();
 			

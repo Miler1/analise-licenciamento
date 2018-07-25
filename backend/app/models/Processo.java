@@ -349,6 +349,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDataVencimentoPrazoAnaliseJuridica()
 			.groupByRevisaoSolicitadaAnaliseJuridica()	
 			.groupByDiasAnaliseJuridica()
+			.groupByNotificacaoAtendidaAnaliseJuridica()
 			.orderByDataVencimentoPrazoAnaliseJuridica();
 	}
 	
@@ -365,6 +366,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 			.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 			.groupByDiasAnaliseTecnica()
+			.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 			.orderByDataVencimentoPrazoAnaliseTecnica();
 	}
 	

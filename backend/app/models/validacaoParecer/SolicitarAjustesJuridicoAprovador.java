@@ -32,7 +32,7 @@ public class SolicitarAjustesJuridicoAprovador extends TipoResultadoAnaliseChain
 			
 		analiseJuridica._save();
 		
-		AnaliseJuridica copia = analiseJuridica.gerarCopia();
+		AnaliseJuridica copia = analiseJuridica.gerarCopia(false);
 		
 		/**
 		 * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador

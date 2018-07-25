@@ -30,7 +30,7 @@
 form{
 
   &.ng-submitted{
-    
+
     .form-control{
 
       &.ng-invalid {
@@ -124,7 +124,7 @@ form{
     outline-color: @vermelho-erro;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(113,0,0,.2);
     height: 34px;
-    border-radius: 4px;  
+    border-radius: 4px;
 }
 
 .button-error {
@@ -135,13 +135,13 @@ form{
     &:hover {
       border-color: @vermelho-erro;
       outline-color: @vermelho-erro;
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(113,0,0,.2);      
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(113,0,0,.2);
     }
 
     &:focus {
       border-color: @vermelho-erro;
       outline-color: @vermelho-erro;
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(113,0,0,.2);      
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(113,0,0,.2);
     }
 
     &:active {
@@ -154,7 +154,7 @@ form{
         outline-color: @vermelho-erro;
         box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(113,0,0,.2);
       }
-    }    
+    }
 }
 
 .dropdown-submenu:hover>.dropdown-menu {
@@ -199,6 +199,30 @@ form{
   }
 }
 
+.icone-revisao-atendida {
+    color: #757575;
+	font-style: italic;
+
+  &:before {
+    content: "";
+    background-color: #80A413;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+  }
+
+  &.legenda {
+    margin-left: 5px;
+
+    &:before {
+      margin-right: 5px;
+    }
+  }
+}
+
 .no-margin {
 	margin:0px !important;
 }
@@ -223,7 +247,7 @@ form{
     border-color: @vermelho-erro;
     outline-color: @vermelho-erro;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(113,0,0,.2);
-    border-radius: 4px;  
+    border-radius: 4px;
 }
 
 .capitalize:first-letter {
@@ -273,6 +297,8 @@ form{
     }
   }
 }
+
+
 
 .input-dias {
   width: 250%;

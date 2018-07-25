@@ -32,12 +32,13 @@ div
 						tr(ng-repeat="processo in cxEntConsultorJuridico.processos")
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseJuridica}")
+								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{cxEntConsultorJuridico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntConsultorJuridico.PrazoAnalise.ANALISE)}}
 							td(ng-class="{'error-message': cxEntConsultorJuridico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseJuridica, cxEntConsultorJuridico.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
 								| {{cxEntConsultorJuridico.dateUtil.getContaDiasRestantes(processo.diasAnaliseJuridica,cxEntConsultorJuridico.PrazoAnalise.ANALISE_JURIDICA)}}
@@ -55,13 +56,14 @@ div
 													span Iniciar análise
 											li
 												a(ng-click="cxEntConsultorJuridico.visualizarProcesso(processo)")
-													i.glyphicon.glyphicon-eye-open 
+													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
-					span.icone-revisao-solicitada.legenda revisão solicitada
+					span.icone-revisao-solicitada.legenda Revisão Solicitada
+					span.icone-revisao-atendida.legenda Notificação Atendida
 
 				+paginacao('cxEntConsultorJuridico.paginacao', 'cxEntConsultorJuridico.onPaginaAlterada')
 
 		.row(ng-show="!cxEntConsultorJuridico.processos || cxEntConsultorJuridico.processos.length == 0")
 			.col-md-12
-				p.empty-result Não existem dados a serem exibidos.    
+				p.empty-result Não existem dados a serem exibidos.

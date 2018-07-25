@@ -31,12 +31,13 @@ div
 						tr(ng-repeat="processo in cxEntAnalistaTecnico.processos")
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
+								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{cxEntAnalistaTecnico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntAnalistaTecnico.PrazoAnalise.ANALISE)}}
 							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{cxEntAnalistaTecnico.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,cxEntAnalistaTecnico.PrazoAnalise.ANALISE_TECNICA)}}
@@ -54,13 +55,14 @@ div
 													span Iniciar análise
 											li
 												a(ng-click="cxEntAnalistaTecnico.visualizarProcesso(processo)")
-													i.glyphicon.glyphicon-eye-open 
+													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
-					span.icone-revisao-solicitada.legenda revisão solicitada
+					span.icone-revisao-solicitada.legenda Revisão Solicitada
+					span.icone-revisao-atendida.legenda Notificação Atendida
 
 				+paginacao('cxEntAnalistaTecnico.paginacao', 'cxEntAnalistaTecnico.onPaginaAlterada')
 
 		.row(ng-show="!cxEntAnalistaTecnico.processos || cxEntAnalistaTecnico.processos.length == 0")
 			.col-md-12
-				p.empty-result Não existem dados a serem exibidos.            
+				p.empty-result Não existem dados a serem exibidos.

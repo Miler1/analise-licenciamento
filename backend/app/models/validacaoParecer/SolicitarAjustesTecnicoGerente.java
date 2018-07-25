@@ -32,7 +32,7 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 			
 		analiseTecnica._save();
 		
-		AnaliseTecnica copia = analiseTecnica.gerarCopia();
+		AnaliseTecnica copia = analiseTecnica.gerarCopia(false);
 		
 		copia._save();
 		
