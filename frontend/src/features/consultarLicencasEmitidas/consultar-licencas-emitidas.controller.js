@@ -12,7 +12,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.downloadLicenca = downloadLicenca;
 	consultarLicencas.recuperarInfoLicenca = recuperarInfoLicenca;
 	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
-	consultarLicencas.isCancelamentoVisivel = isCancelamentoVisivel;	
+	consultarLicencas.isCancelamentoVisivel = isCancelamentoVisivel;
 	consultarLicencas.ajustarTamanhoContainer = ajustarTamanhoContainer;
 
 	consultarLicencas.licencas = [];
@@ -138,7 +138,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	function isCancelamentoVisivel(licenca) {
 
 		if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR &&
-			LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken) {
+			LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken && licenca.ativo) {
 			return true;
 		}
 
@@ -146,7 +146,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	}
 
 	function openModalInfoSuspensao(licencaRecuperada) {
-		
+
 		var modalInstance = $uibModal.open({
 
 			component: 'modalVisualizarLicenca',
@@ -167,7 +167,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	function openModalInfoCancelamento(licencaRecuperada) {
 
 		var modalInstance = $uibModal.open({
-			
+
 			component: 'modalVisualizarLicenca',
 			size: 'lg',
 			resolve: {

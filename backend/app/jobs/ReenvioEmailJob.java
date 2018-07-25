@@ -12,10 +12,8 @@ import org.apache.commons.lang.StringUtils;
 
 import models.AnaliseJuridica;
 import models.AnaliseTecnica;
-import models.DlaCancelada;
 import models.EmailNotificacaoAnaliseJuridica;
 import models.EmailNotificacaoAnaliseTecnica;
-import models.EmailNotificacaoCancelamentoDla;
 import models.EmailNotificacaoCancelamentoLicenca;
 import models.EmailNotificacaoSuspensaoLicenca;
 import models.LicencaCancelada;
@@ -62,13 +60,6 @@ public class ReenvioEmailJob extends GenericJob {
 
 					AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(reenvioEmail.idItensEmail);
 					new EmailNotificacaoAnaliseTecnica(analiseTecnica, emailsDestinatarios).enviar();
-					
-					break;
-
-				case CANCELAMENTO_DLA:
-
-					DlaCancelada dlaCancelada = DlaCancelada.findById(reenvioEmail.idItensEmail);
-					new EmailNotificacaoCancelamentoDla(dlaCancelada, emailsDestinatarios).enviar();
 					
 					break;
 

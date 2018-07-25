@@ -7,10 +7,9 @@ import java.util.Map;
 
 import javax.xml.ws.WebServiceException;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import deserializers.DateDeserializer;
+import models.DlaCancelada;
 import play.libs.WS.HttpResponse;
 import utils.Configuracoes;
 import utils.WebService;
@@ -49,6 +48,11 @@ public class LicenciamentoWebService {
 			throw new WebServiceException("Erro ao gerar os PDFs.");
 		}
 		
+	}
+
+	public void cancelarDla(DlaCancelada dla) {
+
+		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_CANCELAR_DLA, dla);
 	}
 
 }
