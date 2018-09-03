@@ -166,41 +166,6 @@ public class Notificacao extends GenericModel {
 
 	}
 
-	public static List<Notificacao> gerarNotificacoesTemporarias(AnaliseTecnica analiseTecnica) {
-
-		List<Notificacao> notificacoes = new ArrayList<>();
-
-		for(AnaliseDocumento analiseDocumento : analiseTecnica.analisesDocumentos) {
-
-			if(analiseDocumento.validado == null || analiseDocumento.validado) {
-				continue;
-			}
-
-			TipoDocumentoLicenciamento tipoDoc = TipoDocumentoLicenciamento.findById(analiseDocumento.documento.tipo.id);
-
-			Notificacao notificacao = new Notificacao();
-			notificacao.analiseTecnica = analiseTecnica;
-			notificacao.tipoDocumento = tipoDoc;
-			notificacao.analiseDocumento = analiseDocumento;
-			notificacao.resolvido = false;
-			notificacao.ativo = true;
-			notificacao.dataCadastro = new Date();
-
-			Calendar calendario = new GregorianCalendar();
-			calendario.setTime(notificacao.dataCadastro);
-			int anoDataCadastro = calendario.get(Calendar.YEAR);
-
-			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
-			notificacao.codigoAno = anoDataCadastro;
-
-			notificacoes.add(notificacao);
-
-		}
-
-		return notificacoes;
-
-	}
-
 	public static void criarNotificacoesAnaliseTecnica(AnaliseTecnica analiseTecnica) {
 		
 		for(AnaliseDocumento analiseDocumento : analiseTecnica.analisesDocumentos) {
@@ -244,7 +209,42 @@ public class Notificacao extends GenericModel {
 		analise._save();
 		
 	}
-	
+
+	public static List<Notificacao> gerarNotificacoesTemporarias(AnaliseTecnica analiseTecnica) {
+
+		List<Notificacao> notificacoes = new ArrayList<>();
+
+		for(AnaliseDocumento analiseDocumento : analiseTecnica.analisesDocumentos) {
+
+			if(analiseDocumento.validado == null || analiseDocumento.validado) {
+				continue;
+			}
+
+			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
+
+			Notificacao notificacao = new Notificacao();
+			notificacao.analiseTecnica = analiseTecnica;
+			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
+			notificacao.analiseDocumento = analiseDocumento;
+			notificacao.resolvido = false;
+			notificacao.ativo = true;
+			notificacao.dataCadastro = new Date();
+
+			Calendar calendario = new GregorianCalendar();
+			calendario.setTime(notificacao.dataCadastro);
+			int anoDataCadastro = calendario.get(Calendar.YEAR);
+
+			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
+			notificacao.codigoAno = anoDataCadastro;
+
+			notificacoes.add(notificacao);
+
+		}
+
+		return notificacoes;
+
+	}
+
 	public static List<Notificacao> getByAnalise(Analise analise) {
 		
 		List<Notificacao> notificacoes;
@@ -360,7 +360,7 @@ public class Notificacao extends GenericModel {
 
 		return new Documento(tipoDocumento, pdf.getFile());
 	}
-    
+
 	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseJuridica analiseJuridica) {
 
 		List<Notificacao> notificacoes = Notificacao.find("codigoAno = :x order by codigoSequencia desc")

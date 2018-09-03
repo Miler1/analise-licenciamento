@@ -1,16 +1,16 @@
 include ../../components/resumoProcesso/resumo-processo
 
 div(ng-init="ctrl.init()")
-    
-    section
-        
-        +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()')     
 
-    section(ng-if="ctrl.analiseTecnica.analiseTecnicaRevisada && ctrl.analiseTecnica.parecerValidacao")   
+    section
+
+        +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()')
+
+    section(ng-if="ctrl.analiseTecnica.analiseTecnicaRevisada && ctrl.analiseTecnica.parecerValidacao")
         label Parecer da validação:
 
         div(class="alert alert-warning", ng-bind-html="ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacaoGerente || ctrl.analiseTecnica.analiseTecnicaRevisada.parecerValidacao")
-           
+
 
     section.margin-bottom-md
 
@@ -27,7 +27,7 @@ div(ng-init="ctrl.init()")
 
 
     section.margin-bottom-xl.alone
-    
+
         button.btn.btn-default.col-md-2.col-md-offset-0(ng-click="ctrl.cancelar()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
@@ -42,11 +42,11 @@ div(ng-init="ctrl.init()")
 
         button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO && ctrl.validarAnalise()" ng-click="ctrl.downloadPDFNotificacao()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
-            | Visualisar notificação
+            | Visualizar notificação
 
         button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.tabAtiva = 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 0")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
-            | Próxima etapa 
+            | Próxima etapa
 
         i.pull-right(ng-if="ctrl.analiseTecnica.dataFim") Esta análise foi concluida em {{ctrl.analiseTecnica.dataFim}} e não pode mais ser alterada.
 
