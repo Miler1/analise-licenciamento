@@ -273,7 +273,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			}
 		},
 		{
-			titulo: 'Consultar licenças emitidas',
+			titulo: 'Consultar títulos emitidos',
 			icone: 'glyphicon glyphicon-list-alt',
 			url: function() {
 
