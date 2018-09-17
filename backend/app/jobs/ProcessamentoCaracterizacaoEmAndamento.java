@@ -5,12 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import models.*;
 import org.hibernate.Session;
 
-import models.Analise;
-import models.AnaliseJuridica;
-import models.DiasAnalise;
-import models.Processo;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
 import play.Logger;
@@ -28,7 +25,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Logger.info("[INICIO-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [INICIO-JOB]");
 		
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
-		
+
+		// Licenças com status EM_ANALISE
 		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 		
 		for(Caracterizacao caracterizacao : caracterizacoes) {
@@ -50,15 +48,23 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
 		
 		boolean deveTramitar = false;
-		
+
+
 		if(processo == null) {
 			
 			processo = criarNovoProcesso(caracterizacao);
-			
+
 			Analise analise = criarNovaAnalise(processo);
-			
-			criarNovaAnaliseJuridica(analise);
-			
+
+			if (caracterizacao.renovacao) {
+
+				clonarAnaliseJuridica(analise, caracterizacao);
+
+			} else {
+
+				criarNovaAnaliseJuridica(analise);
+			}
+
 			criarNovoDiasAnalise(analise);
 			
 			deveTramitar = true;
@@ -113,7 +119,38 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		return analise;
 		
 	}
-	
+
+	private AnaliseJuridica clonarAnaliseJuridica(Analise analise, Caracterizacao caracterizacao) {
+
+		Processo processoAntigo = Processo.find("byIdCaracterizacao", caracterizacao.id).first();
+
+		AnaliseJuridica AnaliseJuridicaAntiga = processoAntigo.getAnalise().getAnaliseJuridica();
+
+		AnaliseJuridica analiseJuridica = new AnaliseJuridica();
+
+		try {
+
+			analiseJuridica = AnaliseJuridicaAntiga.clone();
+
+		} catch (CloneNotSupportedException e) {
+
+			e.printStackTrace();
+		}
+
+		analiseJuridica.analise = analise;
+		analiseJuridica.dataVencimentoPrazo = new Date();
+		analiseJuridica.revisaoSolicitada = false;
+		analiseJuridica.notificacaoAtendida = false;
+		analiseJuridica.ativo = true;
+		analiseJuridica.analiseJuridicaRevisada = null;
+		analiseJuridica.dataInicio = new Date();
+		analiseJuridica.dataFim = new Date();
+
+		analiseJuridica._save();
+
+		return analiseJuridica;
+	}
+
 	private AnaliseJuridica criarNovaAnaliseJuridica(Analise analise) {
 
 		AnaliseJuridica analiseJuridica = new AnaliseJuridica();

@@ -49,7 +49,7 @@ import models.pdf.PDFGenerator;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
-public class AnaliseJuridica extends GenericModel implements Analisavel {
+public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneable {
 
 	public static final String SEQ = "analise.analise_juridica_id_seq";
 	
@@ -127,6 +127,11 @@ public class AnaliseJuridica extends GenericModel implements Analisavel {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
 	public Usuario usuarioValidacaoAprovador;
+
+	@Override
+	public AnaliseJuridica clone() throws CloneNotSupportedException {
+		return (AnaliseJuridica) super.clone();
+	}
 
 	private void validarParecer() {
 		

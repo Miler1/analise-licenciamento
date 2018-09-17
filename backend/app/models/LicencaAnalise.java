@@ -319,6 +319,8 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			
 			if(!idsCaracterizacoesDeferidas.isEmpty())
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
+				Caracterizacao.setCaracterizacaoEmAnalise(idsCaracterizacoesDeferidas, false);
+
 			if(!idsCaracterizacoesArquivadas.isEmpty())
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
 			

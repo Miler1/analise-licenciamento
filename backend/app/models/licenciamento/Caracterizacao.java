@@ -97,7 +97,10 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	
 	@OneToMany(mappedBy="caracterizacao")
 	public List<Licenca> licencas;
-	
+
+	@Column
+	public boolean renovacao;
+
 	@Transient
 	public Dae dae;
 	
@@ -134,6 +137,14 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 			.setParameter("status", newStatus)
 			.setParameter("idsCaracterizacoes", idsCaracterizacoes)
 			.executeUpdate();
+	}
+
+	public static void setCaracterizacaoEmAnalise(List<Long> idsCaracterizacoes, boolean status) {
+
+		JPA.em().createQuery("UPDATE Caracterizacao SET analise = :status WHERE id IN :idsCaracterizacoes")
+				.setParameter("status", status)
+				.setParameter("idsCaracterizacoes", idsCaracterizacoes)
+				.executeUpdate();
 	}
 	
 	public Licenca getLicenca() {
