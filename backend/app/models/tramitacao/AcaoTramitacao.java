@@ -45,6 +45,8 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long RESOLVER_NOTIFICACAO_JURIDICA = 35l;
 	public static final Long RESOLVER_NOTIFICACAO_TECNICA = 36l;
 	public static final Long ARQUIVAR_PROCESSO = 37l;
+	public static final Long ARQUIVAR_POR_RENOVACAO = 38l;
+	public static final Long RENOVAR_SEM_ALTERACAO = 39l;
 
 }
 
