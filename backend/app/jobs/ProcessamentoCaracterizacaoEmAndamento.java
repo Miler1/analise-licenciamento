@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.*;
+import models.licenciamento.DocumentoLicenciamento;
 import org.hibernate.Session;
 
 import models.licenciamento.Caracterizacao;
@@ -46,19 +47,22 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numeroProcesso);
 		
 		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
-		
+		Processo processoAntigo = null;
+
 		boolean deveTramitar = false;
 
 
-		if(processo == null) {
+		if (processo == null) {
 			
 			processo = criarNovoProcesso(caracterizacao);
 
 			Analise analise = criarNovaAnalise(processo);
 
+
 			if (caracterizacao.renovacao) {
 
-				clonarAnaliseJuridica(analise, caracterizacao);
+				processoAntigo = Processo.find("numero", caracterizacao.numeroProcessoAntigo).first();
+				clonarAnaliseJuridica(analise, processoAntigo);
 
 			} else {
 
@@ -85,7 +89,12 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 		if(deveTramitar)
 			processo.save();
-		
+
+		if (caracterizacao.renovacao) {
+//			processoAntigo
+//			processo.tramitacaoRenovacaoLicenca();
+		}
+
 		commitTransaction();
 		
 	}
@@ -120,24 +129,17 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 	}
 
-	private AnaliseJuridica clonarAnaliseJuridica(Analise analise, Caracterizacao caracterizacao) {
+	private AnaliseJuridica clonarAnaliseJuridica(Analise analise, Processo processoAntigo) {
 
-		Processo processoAntigo = Processo.find("byIdCaracterizacao", caracterizacao.id).first();
-
-		AnaliseJuridica AnaliseJuridicaAntiga = processoAntigo.getAnalise().getAnaliseJuridica();
-
+		AnaliseJuridica analiseJuridicaAntiga = processoAntigo.getAnalise().getAnaliseJuridica();
 		AnaliseJuridica analiseJuridica = new AnaliseJuridica();
 
-		try {
+		List<AnaliseDocumento> analisesDocumentos = new ArrayList<>();
+		List<ConsultorJuridico> consultoresJuridicos = new ArrayList<>();
 
-			analiseJuridica = AnaliseJuridicaAntiga.clone();
-
-		} catch (CloneNotSupportedException e) {
-
-			e.printStackTrace();
-		}
-
+		analiseJuridica.id = null;
 		analiseJuridica.analise = analise;
+		analiseJuridica.parecer = analiseJuridicaAntiga.parecer;
 		analiseJuridica.dataVencimentoPrazo = new Date();
 		analiseJuridica.revisaoSolicitada = false;
 		analiseJuridica.notificacaoAtendida = false;
@@ -145,7 +147,51 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analiseJuridica.analiseJuridicaRevisada = null;
 		analiseJuridica.dataInicio = new Date();
 		analiseJuridica.dataFim = new Date();
+		analiseJuridica.tipoResultadoAnalise = analiseJuridicaAntiga.tipoResultadoAnalise;
+		analiseJuridica.tipoResultadoValidacao = analiseJuridicaAntiga.tipoResultadoValidacao;
+		analiseJuridica.parecerValidacao = analiseJuridicaAntiga.parecerValidacao;
+		analiseJuridica.usuarioValidacao = analiseJuridicaAntiga.usuarioValidacao;
+		analiseJuridica.tipoResultadoValidacaoAprovador = analiseJuridicaAntiga.tipoResultadoValidacaoAprovador;
+		analiseJuridica.parecerValidacaoAprovador = analiseJuridicaAntiga.parecerValidacaoAprovador;
+		analiseJuridica.usuarioValidacaoAprovador = analiseJuridicaAntiga.usuarioValidacaoAprovador;
 
+		for (AnaliseDocumento analiseDocumentoAntigo : analiseJuridicaAntiga.analisesDocumentos) {
+
+			AnaliseDocumento analiseDocumento = new AnaliseDocumento();
+			analiseDocumento.id = null;
+			analiseDocumento.analiseJuridica = analiseJuridica;
+			analiseDocumento.validado = analiseDocumentoAntigo.validado;
+			analiseDocumento.parecer = analiseDocumentoAntigo.parecer;
+			analiseDocumento.analiseTecnica = null;
+			analiseDocumento.documento = analiseDocumentoAntigo.documento;
+			analiseDocumento.analiseDocumentoAnterior = null;
+
+			if (analiseDocumentoAntigo.analiseDocumentoAnterior != null) {
+
+				analiseDocumento.analiseDocumentoAnterior = new AnaliseDocumento();
+				analiseDocumento.analiseDocumentoAnterior.id = null;
+				analiseDocumento.analiseDocumentoAnterior.validado = analiseDocumentoAntigo.analiseDocumentoAnterior.validado;
+				analiseDocumento.analiseDocumentoAnterior.parecer = analiseDocumentoAntigo.analiseDocumentoAnterior.parecer;
+				analiseDocumento.analiseDocumentoAnterior.analiseJuridica = analiseJuridica;
+				analiseDocumento.analiseDocumentoAnterior.analiseTecnica = analiseDocumentoAntigo.analiseDocumentoAnterior.analiseTecnica;
+				analiseDocumento.analiseDocumentoAnterior.analiseDocumentoAnterior = analiseDocumentoAntigo.analiseDocumentoAnterior.analiseDocumentoAnterior;
+			}
+
+			analisesDocumentos.add(analiseDocumento);
+		}
+
+		for (ConsultorJuridico consultorJuridicoAntigo : analiseJuridicaAntiga.consultoresJuridicos) {
+
+			ConsultorJuridico consultorJuridico = new ConsultorJuridico();
+			consultorJuridico.id = null;
+			consultorJuridico.analiseJuridica = analiseJuridica;
+			consultorJuridico.usuario = consultorJuridicoAntigo.usuario;
+			consultorJuridico.dataVinculacao = consultorJuridicoAntigo.dataVinculacao;
+			consultoresJuridicos.add(consultorJuridico);
+		}
+
+		analiseJuridica.analisesDocumentos = analisesDocumentos;
+		analiseJuridica.consultoresJuridicos = consultoresJuridicos;
 		analiseJuridica._save();
 
 		return analiseJuridica;
