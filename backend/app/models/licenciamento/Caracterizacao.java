@@ -101,6 +101,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@Column
 	public boolean renovacao;
 
+	@Column(name = "numero_processo_antigo")
+	public String numeroProcessoAntigo;
+
 	@Transient
 	public Dae dae;
 	

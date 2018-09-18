@@ -44,7 +44,7 @@ public class AnaliseDocumento extends GenericModel implements Identificavel {
 	@OneToOne
 	@JoinColumn(name="id_analise_documento_anterior", referencedColumnName="id")
 	public AnaliseDocumento analiseDocumentoAnterior;
-	
+
 	public void update(AnaliseDocumento novaAnalise) {
 		
 		this.parecer = novaAnalise.parecer;
