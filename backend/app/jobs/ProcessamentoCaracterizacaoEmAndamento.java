@@ -1,27 +1,22 @@
 package jobs;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import models.*;
-import models.licenciamento.DocumentoLicenciamento;
-import org.hibernate.Session;
-
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
+import models.tramitacao.AcaoTramitacao;
 import play.Logger;
-import play.db.jpa.JPA;
 import play.jobs.On;
-import utils.Configuracoes;
 import utils.ListUtil;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 	@Override
-	public void executar() throws Exception {
+	public void executar() {
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [INICIO-JOB]");
 		
@@ -48,6 +43,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
 		Processo processoAntigo = null;
+		Analise analise = null;
 
 		boolean deveTramitar = false;
 
@@ -56,7 +52,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 			processo = criarNovoProcesso(caracterizacao);
 
-			Analise analise = criarNovaAnalise(processo);
+			analise = criarNovaAnalise(processo);
 
 
 			if (caracterizacao.renovacao) {
@@ -87,16 +83,22 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			processo._save();
 		}
 		
-		if(deveTramitar)
+		if (deveTramitar) {
+
 			processo.save();
 
-		if (caracterizacao.renovacao) {
-//			processoAntigo
-//			processo.tramitacaoRenovacaoLicenca();
+			if (caracterizacao.renovacao) {
+
+				processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
+				processo.tramitacao.tramitar(processo, AcaoTramitacao.RENOVAR_SEM_ALTERACAO);
+
+				AnaliseTecnica analiseTecnica = new AnaliseTecnica();
+				analiseTecnica.analise = analise;
+				analiseTecnica.save();
+			}
 		}
 
 		commitTransaction();
-		
 	}
 	
 	private Processo criarNovoProcesso(Caracterizacao caracterizacao) {

@@ -6,7 +6,7 @@ INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALU
 INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (38, 14, 6, NULL, NULL);
 
 INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (39, 'Renovar licença sem alterações', 1, 1);
-INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (39, 0, 12, NULL, NULL);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (39, 1, 12, NULL, NULL);
 
 # --- !Downs
 

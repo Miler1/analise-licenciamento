@@ -145,9 +145,17 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public static void setCaracterizacaoEmAnalise(List<Long> idsCaracterizacoes, boolean status) {
 
 		JPA.em().createQuery("UPDATE Caracterizacao SET analise = :status WHERE id IN :idsCaracterizacoes")
-				.setParameter("status", status)
-				.setParameter("idsCaracterizacoes", idsCaracterizacoes)
-				.executeUpdate();
+			.setParameter("status", status)
+			.setParameter("idsCaracterizacoes", idsCaracterizacoes)
+			.executeUpdate();
+	}
+
+	public static void setCaracterizacaoEmRenovacao(List<Long> idsCaracterizacoes, boolean status) {
+
+		JPA.em().createQuery("UPDATE Caracterizacao SET renovacao = :status WHERE id IN :idsCaracterizacoes")
+			.setParameter("status", status)
+			.setParameter("idsCaracterizacoes", idsCaracterizacoes)
+			.executeUpdate();
 	}
 	
 	public Licenca getLicenca() {
