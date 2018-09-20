@@ -93,6 +93,7 @@
 								th Data Entrada
 								th Data Saída
 								th Status
+								th Ação
 								th Tempo do Status
 								th Responsável
 								th Setor
@@ -102,8 +103,9 @@
 							tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
 								td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
 								td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
-								td.col-md-3 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
-								td.col-md-2 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+								td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
+								td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
+								td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 								td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 								td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
 								td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
@@ -140,6 +142,7 @@
 								th Data Entrada
 								th Data Saída
 								th Status
+								th Ação
 								th Tempo do Status
 								th Responsável
 								th Setor
@@ -149,8 +152,9 @@
 							tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacaoAnterior")
 								td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
 								td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
-								td.col-md-3 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
-								td.col-md-2 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+								td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
+								td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
+								td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 								td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 								td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
 								td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
