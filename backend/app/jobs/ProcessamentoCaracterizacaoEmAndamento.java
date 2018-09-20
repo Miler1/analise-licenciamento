@@ -58,6 +58,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			if (caracterizacao.renovacao) {
 
 				processoAntigo = Processo.find("numero", caracterizacao.numeroProcessoAntigo).first();
+				processo.processoAnterior = processoAntigo;
+
 				clonarAnaliseJuridica(analise, processoAntigo);
 
 			} else {
