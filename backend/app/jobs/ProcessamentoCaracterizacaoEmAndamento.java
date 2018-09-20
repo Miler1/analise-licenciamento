@@ -168,19 +168,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			analiseDocumento.parecer = analiseDocumentoAntigo.parecer;
 			analiseDocumento.analiseTecnica = null;
 			analiseDocumento.documento = analiseDocumentoAntigo.documento;
-			analiseDocumento.analiseDocumentoAnterior = null;
-
-			if (analiseDocumentoAntigo.analiseDocumentoAnterior != null) {
-
-				analiseDocumento.analiseDocumentoAnterior = new AnaliseDocumento();
-				analiseDocumento.analiseDocumentoAnterior.id = null;
-				analiseDocumento.analiseDocumentoAnterior.validado = analiseDocumentoAntigo.analiseDocumentoAnterior.validado;
-				analiseDocumento.analiseDocumentoAnterior.parecer = analiseDocumentoAntigo.analiseDocumentoAnterior.parecer;
-				analiseDocumento.analiseDocumentoAnterior.analiseJuridica = analiseJuridica;
-				analiseDocumento.analiseDocumentoAnterior.analiseTecnica = analiseDocumentoAntigo.analiseDocumentoAnterior.analiseTecnica;
-				analiseDocumento.analiseDocumentoAnterior.analiseDocumentoAnterior = analiseDocumentoAntigo.analiseDocumentoAnterior.analiseDocumentoAnterior;
-			}
-
+			analiseDocumento.analiseDocumentoAnterior = analiseDocumentoAntigo.analiseDocumentoAnterior;
 			analisesDocumentos.add(analiseDocumento);
 		}
 
