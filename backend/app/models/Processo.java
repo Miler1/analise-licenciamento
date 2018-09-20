@@ -458,6 +458,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	//Retorna o historico da tramitação com o tempo que o objeto tramitavel anterior permaneceu na condição
 	public List<HistoricoTramitacao> getHistoricoTramitacaoAnterior() {
 
+		if (this.processoAnterior == null) {
+
+			return null;
+		}
+
 		Processo processoAnterior = Processo.findById(this.processoAnterior.id);
 		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(processoAnterior.idObjetoTramitavel);
 
@@ -482,7 +487,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		return historicosTramitacoes;
-
 	}
 	
 	public List<String> getTiposLicenca() {
