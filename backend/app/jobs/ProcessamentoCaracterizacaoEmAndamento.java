@@ -60,7 +60,14 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 				processoAntigo = Processo.find("numero", caracterizacao.numeroProcessoAntigo).first();
 				processo.processoAnterior = processoAntigo;
 
-				clonarAnaliseJuridica(analise, processoAntigo);
+				if (!caracterizacao.empreendimento.houveAlteracoes) {
+
+					clonarAnaliseJuridica(analise, processoAntigo);
+
+				} else {
+
+					criarNovaAnaliseJuridica(analise);
+				}
 
 			} else {
 
@@ -92,11 +99,15 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			if (caracterizacao.renovacao) {
 
 				processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
-				processo.tramitacao.tramitar(processo, AcaoTramitacao.RENOVAR_SEM_ALTERACAO);
 
-				AnaliseTecnica analiseTecnica = new AnaliseTecnica();
-				analiseTecnica.analise = analise;
-				analiseTecnica.save();
+				if (!caracterizacao.empreendimento.houveAlteracoes) {
+
+					processo.tramitacao.tramitar(processo, AcaoTramitacao.RENOVAR_SEM_ALTERACAO);
+
+					AnaliseTecnica analiseTecnica = new AnaliseTecnica();
+					analiseTecnica.analise = analise;
+					analiseTecnica.save();
+				}
 			}
 		}
 
