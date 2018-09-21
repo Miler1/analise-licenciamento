@@ -14,18 +14,6 @@ SELECT pg_catalog.setval('tramitacao.acao_id_acao_seq', 39, TRUE);
 
 -- Remover ações que eram para renovação de licencas simples
 
--- Down Antiga v1
--- Remover depois
--- UPDATE tramitacao.historico_objeto_tramitavel SET id_acao = 31 WHERE id_acao in (38, 39);
--- DELETE FROM tramitacao.transicao WHERE id_acao in (38, 39);
--- DELETE FROM tramitacao.acao WHERE id_acao in (38, 39);
-
--- Down Antiga v2
--- Remover depois
--- UPDATE tramitacao.historico_objeto_tramitavel SET id_acao = 31 WHERE id_acao = 38;
--- DELETE FROM tramitacao.transicao WHERE id_acao = 38;
--- DELETE FROM tramitacao.acao WHERE id_acao = 38;
-
 UPDATE tramitacao.historico_objeto_tramitavel SET id_acao = 31 WHERE id_acao in (38, 39);
 DELETE FROM tramitacao.transicao WHERE id_acao in (38, 39);
 DELETE FROM tramitacao.acao WHERE id_acao in (38, 39);
