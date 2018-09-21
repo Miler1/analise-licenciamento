@@ -10,6 +10,8 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 	modalCtrl.getMaiorPotencialPoluidor = getMaiorPotencialPoluidor;
 
 	modalCtrl.abreDocumentacao = true;
+	modalCtrl.abreTramitacaoProcessoAtual = true;
+	modalCtrl.abreTramitacaoProcessoAnterior = false;
 
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 

@@ -5,24 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Query;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import builders.CriteriaBuilder;
 import builders.ProcessoBuilder;
@@ -92,6 +75,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_processo_anterior")
+	public Processo processoAnterior;
+
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
 	
@@ -132,7 +119,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public void salvaObjetoTramitavel() {
 		super.save();
 	}
-	
+
 	public void vincularConsultor(Usuario consultor, Usuario usuarioExecutor) {
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
@@ -466,6 +453,40 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return historicosTramitacoes;
 
+	}
+
+	//Retorna o historico da tramitação com o tempo que o objeto tramitavel anterior permaneceu na condição
+	public List<HistoricoTramitacao> getHistoricoTramitacaoAnterior() {
+
+		if (this.processoAnterior == null) {
+
+			return null;
+		}
+
+		Processo processoAnterior = Processo.findById(this.processoAnterior.id);
+		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(processoAnterior.idObjetoTramitavel);
+
+		Date dataAtual = new Date();
+
+		//Lógica que verifica os dias que ficou na condição
+		for (int i = 0; i < historicosTramitacoes.size(); i++) {
+
+			if(i == 0)
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, dataAtual);
+			else
+				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, historicosTramitacoes.get(i - 1).dataInicial);
+		}
+
+		//Lógica que adiciona a data final da condição
+		for (int i = historicosTramitacoes.size() - 1; i >= 0; i--) {
+
+			if(i == 0)
+				historicosTramitacoes.get(i).dataFinal = null;
+			else
+				historicosTramitacoes.get(i).dataFinal = historicosTramitacoes.get(i - 1).dataInicial;
+		}
+
+		return historicosTramitacoes;
 	}
 	
 	public List<String> getTiposLicenca() {
