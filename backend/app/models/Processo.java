@@ -5,24 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Query;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import builders.CriteriaBuilder;
 import builders.ProcessoBuilder;
@@ -92,6 +75,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_processo_anterior")
+	public Processo processoAnterior;
+
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
 	
@@ -132,7 +119,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public void salvaObjetoTramitavel() {
 		super.save();
 	}
-	
+
 	public void vincularConsultor(Usuario consultor, Usuario usuarioExecutor) {
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
