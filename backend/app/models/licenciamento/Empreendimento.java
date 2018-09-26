@@ -101,6 +101,9 @@ public class Empreendimento extends GenericModel {
 	
 	@OneToMany(mappedBy = "empreendimento", targetEntity = Proprietario.class, orphanRemoval=true)
 	public List<Proprietario> proprietarios;
+
+	@Column(name = "houve_alteracoes")
+	public boolean houveAlteracoes;
 	
 	@Transient
 	public boolean possuiCaracterizacoes;
