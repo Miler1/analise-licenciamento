@@ -53,10 +53,10 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ConsultarLicencasEmitidasController,
 			controllerAs: 'consultarLicencas'
 		})
-		.when("/consultar-licencas-emitidas", {
-			templateUrl: "features/manejoDigital/manejo-digital.html",
-			controller: controllers.ManejoDigitalController,
-			controllerAs: 'manejoDigital'
+		.when("/consultar-processo-manejo", {
+			templateUrl: "features/consultarProcessoManejo/consultar-processo-manejo.html",
+			controller: controllers.ConsultarProcessoManejoController,
+			controllerAs: 'consultarProcessoManejoController'
 		})
 		.otherwise({
 			redirectTo: "/"
@@ -295,6 +295,30 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			estaSelecionado: function () {
 
 				return $location.path() === '/consultar-licencas-emitidas';
+			},
+			visivel: function(){
+
+				return [
+					app.utils.Perfis.COORDENADOR_JURIDICO,
+					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
+					app.utils.Perfis.CONSULTOR_JURIDICO,
+					app.utils.Perfis.COORDENADOR_TECNICO,
+					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_TECNICO,
+					app.utils.Perfis.APROVADOR
+				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
+			}
+		},
+		{
+			titulo: 'Consultar processos Manejo Digital',
+			icone: 'glyphicon glyphicon-list-alt',
+			url: function() {
+
+				return '/consultar-processo-manejo';
+			},
+			estaSelecionado: function () {
+
+				return $location.path() === '/consultar-processo-manejo';
 			},
 			visivel: function(){
 
