@@ -274,7 +274,15 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return true;
+				return [
+					app.utils.Perfis.COORDENADOR_JURIDICO,
+					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
+					app.utils.Perfis.CONSULTOR_JURIDICO,
+					app.utils.Perfis.COORDENADOR_TECNICO,
+					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_TECNICO,
+					app.utils.Perfis.APROVADOR
+				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
 			}
 		},
 		{
@@ -290,7 +298,15 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return true;
+				return [
+					app.utils.Perfis.COORDENADOR_JURIDICO,
+					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
+					app.utils.Perfis.CONSULTOR_JURIDICO,
+					app.utils.Perfis.COORDENADOR_TECNICO,
+					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_TECNICO,
+					app.utils.Perfis.APROVADOR
+				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
 			}
 		}];
 
