@@ -330,7 +330,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.GERENTE_TECNICO,
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.APROVADOR
-				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
+				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) === -1;
 			}
 		}];
 
