@@ -53,6 +53,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ConsultarLicencasEmitidasController,
 			controllerAs: 'consultarLicencas'
 		})
+		.when("/consultar-licencas-emitidas", {
+			templateUrl: "features/manejoDigital/manejo-digital.html",
+			controller: controllers.ManejoDigitalController,
+			controllerAs: 'manejoDigital'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
