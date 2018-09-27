@@ -20,8 +20,8 @@ public class StatusProcessoManejo extends GenericModel {
 	public static final long INDEFERIDO = 4l;
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.status_processo_manejo_id_seq")
-	@SequenceGenerator(name="analise.tipo_licenca_manejo_id_seq", sequenceName="analise.status_processo_manejo_id_seq", allocationSize=1)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="status_processo_manejo_id_seq")
+	@SequenceGenerator(name="status_processo_manejo_id_seq", sequenceName="analise.status_processo_manejo_id_seq", allocationSize=1)
 	public Long id;
 
 	@Column
