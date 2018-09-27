@@ -318,7 +318,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			estaSelecionado: function () {
 
-				return $location.path() === '/consultar-processo-manejo';
+				return true;
 			},
 			visivel: function(){
 
