@@ -134,6 +134,12 @@ POST	/upload/save								Uploads.upload
 
 GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 
+# Tipos licença manejo
+GET     /tiposLicençaManejo                         TiposLicencaManejo.findAll
+
+# Status processo manejo
+GET     /statusProcessoManejo                       StatusesProcessoManejo.findAll
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
