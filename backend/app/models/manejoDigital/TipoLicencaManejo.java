@@ -19,8 +19,8 @@ public class TipoLicencaManejo extends GenericModel {
 	public static final long LAR = 3l;
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.tipo_licenca_manejo_id_seq")
-	@SequenceGenerator(name="analise.tipo_licenca_manejo_id_seq", sequenceName="analise.tipo_licenca_manejo_id_seq", allocationSize=1)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="tipo_licenca_manejo_id_seq")
+	@SequenceGenerator(name="tipo_licenca_manejo_id_seq", sequenceName="analise.tipo_licenca_manejo_id_seq", allocationSize=1)
 	public Long id;
 
 	@Column
