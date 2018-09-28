@@ -14,6 +14,7 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
+	"analiseManejo",
 	"ui.bootstrap",
 	"textAngular",
 	"analiseTecnica",
@@ -53,10 +54,10 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ConsultarLicencasEmitidasController,
 			controllerAs: 'consultarLicencas'
 		})
-		.when("/consultar-processo-manejo", {
-			templateUrl: "features/consultarProcessoManejo/consultar-processo-manejo.html",
-			controller: controllers.ConsultarProcessoManejoController,
-			controllerAs: 'consultarProcessoManejoController'
+		.when("/listagem-processo-manejo", {
+			templateUrl: "features/analiseManejo/listagem/listagem-processo-manejo.html",
+			controller: controllers.ListagemProcessoManejoController,
+			controllerAs: 'listagemProcessoManejo'
 		})
 		.otherwise({
 			redirectTo: "/"
@@ -314,23 +315,25 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			icone: 'glyphicon glyphicon-list-alt',
 			url: function() {
 
-				return '/consultar-processo-manejo';
+				return '/listagem-processo-manejo';
 			},
 			estaSelecionado: function () {
 
-				return $location.path() === '/consultar-processo-manejo';
+				return true;
 			},
 			visivel: function(){
 
-				return [
-					app.utils.Perfis.COORDENADOR_JURIDICO,
-					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
-					app.utils.Perfis.CONSULTOR_JURIDICO,
-					app.utils.Perfis.COORDENADOR_TECNICO,
-					app.utils.Perfis.GERENTE_TECNICO,
-					app.utils.Perfis.ANALISTA_TECNICO,
-					app.utils.Perfis.APROVADOR
-				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) === -1;
+				var result = false;
+
+				_.forEach($rootScope.usuarioSessao.permissoes, function(permissao) {
+
+					if(permissao === 'LISTAR_PROCESSO_MANEJO') {
+
+						result = true;
+					}
+				});
+
+				return result;
 			}
 		}];
 
