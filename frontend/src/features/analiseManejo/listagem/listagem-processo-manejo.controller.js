@@ -21,29 +21,6 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope) {
 		listagemProcessoManejo.processosManejo = processos;
 	}
 
-	this.$postLink = function(){
-
-		listagemProcessoManejo.processosManejo = [
-
-			{
-				processo: "1",
-				cpfCnpj: "1",
-				empreendimento: "1",
-				municipioEmpreendimento: "1",
-				siglaEstadoEmpreendimento: "1",
-				licencas: "1",
-			},
-			{
-				processo: "2",
-				cpfCnpj: "2",
-				empreendimento: "2",
-				municipioEmpreendimento: "2",
-				siglaEstadoEmpreendimento: "2",
-				licencas: "2",
-			}
-		];
-	};
-
 };
 
 exports.controllers.ListagemProcessoManejoController = ListagemProcessoManejoController;
