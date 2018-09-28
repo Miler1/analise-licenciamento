@@ -14,6 +14,7 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
+	"analiseManejo",
 	"ui.bootstrap",
 	"textAngular",
 	"analiseTecnica",
@@ -53,10 +54,10 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ConsultarLicencasEmitidasController,
 			controllerAs: 'consultarLicencas'
 		})
-		.when("/consultar-processo-manejo", {
-			templateUrl: "features/consultarProcessoManejo/consultar-processo-manejo.html",
-			controller: controllers.ConsultarProcessoManejoController,
-			controllerAs: 'consultarProcessoManejoController'
+		.when("/listagem-processo-manejo", {
+			templateUrl: "features/analiseManejo/listagem/listagem-processo-manejo.html",
+			controller: controllers.ListagemProcessoManejoController,
+			controllerAs: 'listagemProcessoManejo'
 		})
 		.otherwise({
 			redirectTo: "/"
@@ -314,7 +315,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			icone: 'glyphicon glyphicon-list-alt',
 			url: function() {
 
-				return '/consultar-processo-manejo';
+				return '/listagem-processo-manejo';
 			},
 			estaSelecionado: function () {
 

@@ -1,0 +1,9 @@
+include ../../../layout/components/paginacao
+
+div
+	filtro-processos-manejo(paginacao="consultarProcesso.paginacao",
+		atualizar-lista="consultarProcesso.atualizarListaProcessos",
+		atualizar-paginacao="consultarProcesso.atualizarPaginacao",
+		pesquisar-ao-inicializar="true")
+
+	h4 Lista de processos
