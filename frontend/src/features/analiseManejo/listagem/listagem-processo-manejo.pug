@@ -19,12 +19,12 @@ div
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-1 Município
-							th.col-md-1 Licenças
+							th.col-md-1 Licença
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processoManejo in listagemProcessoManejo.processosManejo")
 							td {{processoManejo.numProcesso}}
-							td {{processoManejo.cpfCnpjEmpreendimento}}
+							td {{processoManejo.cpfCnpjEmpreendimento | brCpfCnpj}}
 							td {{processoManejo.denominacaoEmpreendimento}}
 							td {{processoManejo.nomeMunicipio}}/{{processoManejo.siglaEstadoMunicipio}}
 							td {{processoManejo.nomeTipoLicenca}}
