@@ -31,8 +31,36 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken){
 
 					return "/aguardando-assinatura";
+
 				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR) {
+
 					return "/consultar-processo";
+
+				} else if (
+					[
+						app.utils.Perfis.COORDENADOR_JURIDICO,
+						app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
+						app.utils.Perfis.CONSULTOR_JURIDICO,
+						app.utils.Perfis.COORDENADOR_TECNICO,
+						app.utils.Perfis.GERENTE_TECNICO,
+						app.utils.Perfis.ANALISTA_TECNICO,
+						app.utils.Perfis.APROVADOR
+					].indexOf(LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id) === -1) {
+
+					var result = false;
+
+					_.forEach(LICENCIAMENTO_CONFIG.usuarioSessao.permissoes, function(permissao) {
+
+						if(permissao === 'LISTAR_PROCESSO_MANEJO') {
+
+							result = true;
+						}
+					});
+
+					if (result) {
+
+						return '/listagem-processo-manejo';
+					}
 				}
 
 				return "/caixa-entrada";
@@ -319,7 +347,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			estaSelecionado: function () {
 
-				return true;
+				return $location.path() === '/listagem-processo-manejo';
 			},
 			visivel: function(){
 
