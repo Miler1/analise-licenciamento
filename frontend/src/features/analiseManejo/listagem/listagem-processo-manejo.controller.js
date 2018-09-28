@@ -1,4 +1,4 @@
-var ListagemProcessoManejoController = function($scope, config, $rootScope) {
+var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO FLORESTAL';
 
@@ -8,7 +8,27 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope) {
 	listagemProcessoManejo.atualizarPaginacao = atualizarPaginacao;
 	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
 	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
-	listagemProcessoManejo.iniciarAnalise = null;
+
+	listagemProcessoManejo.iniciarAnalise = function (processo) {
+
+		processoManejoService.salvarProcesso(processo)
+			.then(function(response){
+
+				var idProcesso = response.data;
+
+				$location.path('/analise-geo-manejo/' + idProcesso);
+
+			})
+			.catch(function(response){
+
+				if(!!response.data.texto)
+					mensagem.warning(response.data.texto);
+
+				else
+					mensagem.error("Ocorreu um erro ao salvar o processo.");
+			});
+	};
+
 	listagemProcessoManejo.visualizarProcesso = null;
 	listagemProcessoManejo.processosManejo = [
 		{
