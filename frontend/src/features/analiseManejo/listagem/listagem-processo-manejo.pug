@@ -23,11 +23,11 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processoManejo in listagemProcessoManejo.processosManejo")
-							td {{processoManejo.processo}}
-							td {{processoManejo.cpfCnpj}}
-							td {{processoManejo.empreendimento}}
-							td {{processoManejo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
-							td {{processoManejo.licencas}}
+							td {{processoManejo.numProcesso}}
+							td {{processoManejo.cpfCnpjEmpreendimento}}
+							td {{processoManejo.idEmpreendimento}}
+							td {{processoManejo.nomeMunicipio}}/{{processoManejo.siglaEstadoMunicipio}}
+							td {{processoManejo.nomeTipoLicenca}}
 							td
 								span.pull-right
 
