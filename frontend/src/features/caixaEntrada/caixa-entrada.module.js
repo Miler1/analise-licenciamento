@@ -26,5 +26,4 @@ caixasEntrada
 	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteTecnicoController);
 
 caixasEntrada
-	.component('filtroProcessos', directives.FiltroProcessos)
-	.component('filtroProcessosManejo', directives.FiltroProcessosManejo);
+	.component('filtroProcessos', directives.FiltroProcessos);
