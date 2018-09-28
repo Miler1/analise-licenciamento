@@ -15,29 +15,36 @@ public class ProcessoManejo extends GenericModel {
     public Long id;
 
     @Required
-    @Column(name="numero_processo")
+    @Column(name="num_processo")
     public String numeroProcesso;
 
     @Required
-    @Column(name="cpf_cnpj")
+    @Column(name="cpf_cnpj_empreendimento")
     public String cpfCnpj;
 
     @Required
-    @Column(name="id_empreendimento")
-    public Long idEmpreendimento;
+    @Column(name="denominacao_empreendimento_simlam")
+    public String denominacaoEmpreendimentoSimlam;
 
     @Required
-    @Column(name="id_municipio")
-    public Long idMunicipio;
+    @Column(name="id_empreendimento_simlam")
+    public Integer idEmpreendimento;
 
     @Required
-    @JoinColumn(name="id_tipo_licensa_manejo")
-    public TipoLicencaManejo tipoLicensaManejo;
+    @Column(name="id_municipio_simlam")
+    public Integer idMunicipio;
 
     @Required
-    @JoinColumn(name="id_analise_manejo")
-    public AnaliseManejo analiseManejo;
+    @Column(name="nome_municipio_simlam")
+    public String nomeMunicipioSimlam;
 
+    @Required
+    @Column(name="id_tipo_licenca")
+    public Integer idTipoLicenca;
 
+    @Required
+    @Column(name="id_analise_manejo")
+    public Integer idAnaliseManejo;
 
+    public DadosAmf dadosAmf;
 }
