@@ -26,6 +26,38 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.base_vetorial TO licenciam
 GRANT SELECT, USAGE ON SEQUENCE analise.base_vetorial_id_seq TO licenciamento_pa;
 
 
+-- Criação da tabela imovel_manejo
+
+CREATE TABLE analise.imovel_manejo (
+ id SERIAL NOT NULL,
+ registro_car VARCHAR(500) NOT NULL,
+ area_total_imovel_documentado DOUBLE PRECISION NOT NULL,
+ area_liquida_imovel DOUBLE PRECISION NOT NULL,
+ area_reserva_legal DOUBLE PRECISION,
+ area_preservacao_permanente DOUBLE PRECISION,
+ area_remanescente_vegetacao_nativa DOUBLE PRECISION,
+ area_corpos_agua DOUBLE PRECISION,
+ area_uso_consolidado DOUBLE PRECISION,
+ CONSTRAINT pk_imovel_manejo PRIMARY KEY(id)
+);
+
+COMMENT ON TABLE analise.imovel_manejo IS 'Entidade responsável por armazenas o imóvel de uma análise de manejo.';
+COMMENT ON COLUMN analise.imovel_manejo.id IS 'Identificador único da entidade.';
+COMMENT ON COLUMN analise.imovel_manejo.registro_car IS 'Registro do imóvel no CAR/PA.';
+COMMENT ON COLUMN analise.imovel_manejo.area_total_imovel_documentado IS 'Área total documentada do imóvel.';
+COMMENT ON COLUMN analise.imovel_manejo.area_liquida_imovel IS 'Área liquida do imóvel.';
+COMMENT ON COLUMN analise.imovel_manejo.area_reserva_legal IS 'Área de reserva legal do imóvel.';
+COMMENT ON COLUMN analise.imovel_manejo.area_preservacao_permanente IS 'Área de preservação permanente do imóvel.';
+COMMENT ON COLUMN analise.imovel_manejo.area_remanescente_vegetacao_nativa IS 'Área de remanescente de vegetação nativa do imóvel.';
+COMMENT ON COLUMN analise.imovel_manejo.area_corpos_agua IS 'Área de corpos de agua do imóvel.';
+COMMENT ON COLUMN analise.imovel_manejo.area_uso_consolidado IS 'Área de uso consolidado do imóvel.';
+
+ALTER TABLE analise.imovel_manejo OWNER TO postgres;
+GRANT ALL ON TABLE analise.imovel_manejo TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.imovel_manejo TO licenciamento_pa;
+GRANT SELECT, USAGE ON SEQUENCE analise.imovel_manejo_id_seq TO licenciamento_pa;
+
+
 -- Criação da tabela analise_manejo
 
 CREATE TABLE analise.analise_manejo (
@@ -53,8 +85,10 @@ CREATE TABLE analise.analise_manejo (
  consideracoes TEXT NOT NULL,
  conclusao TEXT NOT NULL,
  id_usuario INTEGER NOT NULL,
+ id_imovel_manejo INTEGER NOT NULL,
  CONSTRAINT pk_analise_manejo PRIMARY KEY(id),
- CONSTRAINT fk_am_u FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario (id)
+ CONSTRAINT fk_am_u FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario (id),
+ CONSTRAINT fk_am_im FOREIGN KEY (id_imovel_manejo) REFERENCES analise.imovel_manejo (id)
 );
 
 COMMENT ON TABLE analise.analise_manejo IS 'Entidade responsável por armazenas uma análise de manejo.';
@@ -81,46 +115,12 @@ COMMENT ON COLUMN analise.analise_manejo.area_sem_previa_exploracao IS 'Área se
 COMMENT ON COLUMN analise.analise_manejo.consideracoes IS 'Considerações da análise.';
 COMMENT ON COLUMN analise.analise_manejo.conclusao IS 'Notas de conclusão da análise.';
 COMMENT ON COLUMN analise.analise_manejo.id_usuario IS 'Identificador da entidade usuário que denota o usuário responsável por fazer a análise.';
+COMMENT ON COLUMN analise.analise_manejo.id_imovel_manejo IS 'Identificador da imóvelo do manejo.';
 
 ALTER TABLE analise.analise_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_manejo TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_manejo TO licenciamento_pa;
 GRANT SELECT, USAGE ON SEQUENCE analise.analise_manejo_id_seq TO licenciamento_pa;
-
-
--- Criação da tabela imovel_manejo
-
-CREATE TABLE analise.imovel_manejo (
- id SERIAL NOT NULL,
- registro_car VARCHAR(500) NOT NULL,
- area_total_imovel_documentado DOUBLE PRECISION NOT NULL,
- area_liquida_imovel DOUBLE PRECISION NOT NULL,
- area_reserva_legal DOUBLE PRECISION,
- area_preservacao_permanente DOUBLE PRECISION,
- area_remanescente_vegetacao_nativa DOUBLE PRECISION,
- area_corpos_agua DOUBLE PRECISION,
- area_uso_consolidado DOUBLE PRECISION,
- id_analise_manejo INTEGER NOT NULL,
- CONSTRAINT pk_imovel_manejo PRIMARY KEY(id),
- CONSTRAINT fk_im_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
-);
-
-COMMENT ON TABLE analise.imovel_manejo IS 'Entidade responsável por armazenas o imóvel de uma análise de manejo.';
-COMMENT ON COLUMN analise.imovel_manejo.id IS 'Identificador único da entidade.';
-COMMENT ON COLUMN analise.imovel_manejo.registro_car IS 'Registro do imóvel no CAR/PA.';
-COMMENT ON COLUMN analise.imovel_manejo.area_total_imovel_documentado IS 'Área total documentada do imóvel.';
-COMMENT ON COLUMN analise.imovel_manejo.area_liquida_imovel IS 'Área liquida do imóvel.';
-COMMENT ON COLUMN analise.imovel_manejo.area_reserva_legal IS 'Área de reserva legal do imóvel.';
-COMMENT ON COLUMN analise.imovel_manejo.area_preservacao_permanente IS 'Área de preservação permanente do imóvel.';
-COMMENT ON COLUMN analise.imovel_manejo.area_remanescente_vegetacao_nativa IS 'Área de remanescente de vegetação nativa do imóvel.';
-COMMENT ON COLUMN analise.imovel_manejo.area_corpos_agua IS 'Área de corpos de agua do imóvel.';
-COMMENT ON COLUMN analise.imovel_manejo.area_uso_consolidado IS 'Área de uso consolidado do imóvel.';
-COMMENT ON COLUMN analise.imovel_manejo.id_analise_manejo IS 'Identificador da análise manejo.';
-
-ALTER TABLE analise.imovel_manejo OWNER TO postgres;
-GRANT ALL ON TABLE analise.imovel_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.imovel_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.imovel_manejo_id_seq TO licenciamento_pa;
 
 
 -- Criação da tabela rel_base_vetorial_analise_manejo
@@ -275,6 +275,6 @@ DROP TABLE analise.observacao;
 DROP TABLE analise.analise_ndfi;
 DROP TABLE analise.analise_vetorial;
 DROP TABLE analise.rel_base_vetorial_analise_manejo;
-DROP TABLE analise.imovel_manejo;
 DROP TABLE analise.analise_manejo;
+DROP TABLE analise.imovel_manejo;
 DROP TABLE analise.base_vetorial;
