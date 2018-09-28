@@ -7,6 +7,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope) {
 	listagemProcessoManejo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagemProcessoManejo.atualizarPaginacao = atualizarPaginacao;
 	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
+	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
 	listagemProcessoManejo.iniciarAnalise = null;
 	listagemProcessoManejo.visualizarProcesso = null;
 	listagemProcessoManejo.processosManejo = [
@@ -121,6 +122,11 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope) {
 			nomeTipoLicenca: "APAT"
 		},
 	];
+
+	function onPaginaAlterada(){
+
+		$scope.$broadcast('pesquisarProcessosManejo');
+	}
 
 	function atualizarPaginacao(totalItens, paginaAtual) {
 
