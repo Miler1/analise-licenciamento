@@ -43,8 +43,12 @@ public class ProcessoManejo extends GenericModel {
     public Integer idTipoLicenca;
 
     @Required
-    @Column(name="id_analise_manejo")
+    @Column(name="nome_tipo_licenca")
+    public String nomeTipoLicenca;
+
+    @Required
+    @ManyToOne
+    @JoinColumn(name="id_analise_manejo")
     public Integer idAnaliseManejo;
 
-    public DadosAmf dadosAmf;
 }

@@ -42,7 +42,8 @@ public class AnaliseNdfi extends GenericModel {
     public Double area;
 
     @Required
-    @Column(name="id_analise_manejo")
+    @ManyToOne
+    @JoinColumn(name="id_analise_manejo")
     public Integer idAnaliseManejo;
 
 }
