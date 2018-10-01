@@ -339,7 +339,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			}
 		},
 		{
-			titulo: 'Consultar processos Manejo Digital',
+			titulo: 'Manejo Digital',
 			icone: 'glyphicon glyphicon-list-alt',
 			url: function() {
 
