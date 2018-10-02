@@ -7,27 +7,25 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.visualizarProcesso = null;
 	analiseGeoManejo.processo = null;
 	analiseGeoManejo.files = [];
+	analiseGeoManejo.nomeArquivoShape = undefined;
 
-	//analiseGeoManejo.init = function () {
+	analiseGeoManejo.init = function() {
 
 		processoManejoService.getProcesso($routeParams.idProcesso)
-			.then(function(response){
+			.then(function (response) {
 
 				analiseGeoManejo.processo = response.data;
 
 			})
-			.catch(function(response){
+			.catch(function (response) {
 
-				if(!!response.data.texto)
+				if (!!response.data.texto)
 					mensagem.warning(response.data.texto);
 
 				else
 					mensagem.error("Ocorreu um erro obter dados do processo.");
 			});
-
-	//};
-
-	analiseGeoManejo.nomeArquivoShape = undefined;
+	};
 
 	$scope.log = '';
 
