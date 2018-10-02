@@ -1,11 +1,15 @@
 package models.manejoDigital;
 
+import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
+@Entity
+@Table(schema = "analise", name = "analise_manejo")
 public class AnaliseManejo  extends GenericModel {
 
     @Id
@@ -25,7 +29,6 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="path_arquivo_shape")
     public String pathShape;
 
-    @Required
     @Column(name="path_anexo")
     public String pathAnexo;
 
@@ -37,108 +40,81 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="area_manejo_florestal_solicitada")
     public Double areaManejoFlorestalSolicitada;
 
-    @Required
     @Column(name="area_preservacao_permanente")
     public Double areaPreservacaoPermanente;
 
-    @Required
     @Column(name="area_servidao")
     public Double areaServidao;
 
-    @Required
     @Column(name="area_antropizada_nao_consolidada")
     public Double areaAntropizadaNaoConsolidada;
 
-    @Required
     @Column(name="area_uso_restrito")
     public Double areaUsoRestrito;
 
-    @Required
     @Column(name="area_sem_potencial")
     public Double areaSemPotencial;
 
-    @Required
     @Column(name="area_corpos_agua")
     public Double areaCorposAgua;
 
-    @Required
     @Column(name="area_embargada_ibama")
     public Double areaEmbargadaIbama;
 
-    @Required
     @Column(name="area_embargada_ldi")
     public Double areaEmbargadaLdi;
 
-    @Required
-    @Column(name="prazo_analise")
-    public Integer prazoAnalise;
+    @Column(name="area_seletiva_ndfi")
+    public Double areaSeletivaNdfi;
 
-    @JoinColumn(name="id_observacao")
-    public Observacao observacao;
+    @Column(name="area_efetivo_ndfi")
+    public Double areaEfetivoNdfi;
 
-    @Required
-    @Column(name="registro_car")
-    public String registroCar;
-
-    @Required
-    @Column(name="area_total_imovel")
-    public Double areaTotalImovel;
-
-    @Required
-    @Column(name="area_liquida_imovel")
-    public Double areaLiquidaImovel;
-
-    @Required
-    @Column(name="reserva_legal")
-    public Double reservaLegal;
-
-    @Required
-    @Column(name="remanescente_da_vegetacao_nativa")
-    public Double remanescenteDaVegetacaoNativa;
-
-    @Required
-    @Column(name="area_de_uso_consolidado")
-    public Double areaUsoConsolidado;
-
-    @Required
-    @JoinColumn(name="area_seletiva_ndfi")
-    public AnaliseNdfi areaSeletivaNdfi;
-
-    @Required
-    @Column(name="area_efetivo_manejo")
-    public Double areaEfetivoManejo;
-
-    @Required
     @Column(name="area_com_exploraca_ndfi_baixo")
     public Double areaExploracaoNdfiBaixo;
 
-    @Required
     @Column(name="area_com_exploraca_ndfi_medio")
     public Double areaExploracaoNdfiMedio;
 
-    @Required
     @Column(name="area_sem_previa_exploracao")
     public Double areaSemPreviaExploracao;
 
     @Required
-    @Column(name="consideracoes")
+    @Column
     public String consideracoes;
 
     @Required
-    @Column(name="conclusao")
+    @Column
     public String conclusao;
 
     @Required
-    @Column(name="id_usuario")
-    public Integer idusuario;
+    @JoinColumn(name="id_usuario")
+    public Usuario usuario;
 
     @Required
-    @Column(name="id_imovel_manejo")
-    public Integer idImovelManjeo;
+    @JoinColumn(name="id_imovel_manejo")
+    public ImovelManejo imovelManejo;
 
     @Required
-    @Column(name="area_consolidada")
-    public Double areaConsolidada;
+    @OneToMany(mappedBy = "analiseManejo")
+    public List<Observacao> observacoes;
 
+    @Required
+    @ManyToOne
+    @JoinColumn(name = "id_processo_manejo")
+    public ProcessoManejo processoManejo;
 
+    @Required
+    @OneToMany(mappedBy = "analiseManejo")
+    public List<AnaliseNdfi> analiseNdfi;
+
+    @Required
+    @OneToMany(mappedBy = "analiseManejo")
+    public List<AnaliseVetorial> analiseVetorial;
+
+    @ManyToMany
+    @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo",
+            joinColumns = @JoinColumn(name = "id_analise_manejo"),
+            inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
+    public List<BaseVetorial> baseVetorial;
 }

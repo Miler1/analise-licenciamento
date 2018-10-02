@@ -6,6 +6,8 @@ import play.db.jpa.GenericModel;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(schema = "analise", name = "analise_ndfi")
 public class AnaliseNdfi extends GenericModel {
 
     @Id
@@ -15,7 +17,7 @@ public class AnaliseNdfi extends GenericModel {
 
     @Required
     @Column(name="data")
-    public Date dataAnaliseNdfi;
+    public Date dataAnalise;
 
     @Required
     @Column(name="orbita")
@@ -35,14 +37,14 @@ public class AnaliseNdfi extends GenericModel {
 
     @Required
     @Column(name="valor_ndfi")
-    public Double valorNdfi;
+    public Double valor;
 
     @Required
     @Column(name="area")
     public Double area;
 
     @Required
-    @Column(name="id_analise_manejo")
-    public Integer idAnaliseManejo;
-
+    @ManyToOne
+    @JoinColumn(name="id_analise_manejo")
+    public AnaliseManejo analiseManejo;
 }

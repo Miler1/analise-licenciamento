@@ -5,6 +5,8 @@ import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 
+@Entity
+@Table(schema = "analise", name = "observacao")
 public class Observacao  extends GenericModel {
 
     @Id
@@ -13,13 +15,16 @@ public class Observacao  extends GenericModel {
     public Long id;
 
     @Required
-    @Column(name="descricao")
-    public String descricao;
+    @Column(name="texto")
+    public String texto;
 
     @Required
-    @Column(name="etapa")
-    public Integer etapa;
+    @ManyToOne
+    @JoinColumn(name="id_analise_manejo")
+    public AnaliseManejo analiseManejo;
 
-
-
+    @Required
+    @Column(name="num_passo")
+    @Enumerated(EnumType.ORDINAL)
+    public PassoAnaliseManejo passoAnalise;
 }

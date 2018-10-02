@@ -4,6 +4,7 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "analise", name = "processo_manejo")
@@ -43,8 +44,10 @@ public class ProcessoManejo extends GenericModel {
     public Integer idTipoLicenca;
 
     @Required
-    @Column(name="id_analise_manejo")
-    public Integer idAnaliseManejo;
+    @Column(name="nome_tipo_licenca")
+    public String nomeTipoLicenca;
 
-    public DadosAmf dadosAmf;
+    @Required
+    @OneToMany(mappedBy = "processoManejo")
+    public List<AnaliseManejo> analiseManejo;
 }
