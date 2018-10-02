@@ -26,4 +26,15 @@ public class ProcessosManejo extends InternalController {
 
 		renderJSON(processo, ProcessoManejoSerializer.save);
 	}
+
+	public static void findById(Long id) {
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO, Acao.VISUALIZAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(id);
+
+		ProcessoManejo processo = ProcessoManejo.findById(id);
+
+		renderJSON(processo, ProcessoManejoSerializer.findById);
+	}
 }

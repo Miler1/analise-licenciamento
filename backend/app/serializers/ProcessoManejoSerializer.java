@@ -8,4 +8,12 @@ public class ProcessoManejoSerializer {
 	public static JSONSerializer save = SerializerUtil.create(
 			"id"
 	);
+
+	public static JSONSerializer findById = SerializerUtil.create(
+			"id",
+			"numeroProcesso",
+			"cpfCnpj",
+			"denominacaoEmpreendimentoSimlam",
+			"nomeMunicipioSimlam"
+	);
 }
