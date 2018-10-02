@@ -92,10 +92,6 @@ public class AnaliseManejo  extends GenericModel {
     public Usuario usuario;
 
     @Required
-    @JoinColumn(name="id_imovel_manejo")
-    public ImovelManejo imovelManejo;
-
-    @Required
     @OneToMany(mappedBy = "analiseManejo")
     public List<Observacao> observacoes;
 

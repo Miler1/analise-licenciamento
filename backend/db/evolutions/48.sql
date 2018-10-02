@@ -85,10 +85,8 @@ CREATE TABLE analise.analise_manejo (
  consideracoes TEXT NOT NULL,
  conclusao TEXT NOT NULL,
  id_usuario INTEGER NOT NULL,
- id_imovel_manejo INTEGER NOT NULL,
  CONSTRAINT pk_analise_manejo PRIMARY KEY(id),
- CONSTRAINT fk_am_u FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario (id),
- CONSTRAINT fk_am_im FOREIGN KEY (id_imovel_manejo) REFERENCES analise.imovel_manejo (id)
+ CONSTRAINT fk_am_u FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario (id)
 );
 
 COMMENT ON TABLE analise.analise_manejo IS 'Entidade responsável por armazenas uma análise de manejo.';
@@ -115,7 +113,6 @@ COMMENT ON COLUMN analise.analise_manejo.area_sem_previa_exploracao IS 'Área se
 COMMENT ON COLUMN analise.analise_manejo.consideracoes IS 'Considerações da análise.';
 COMMENT ON COLUMN analise.analise_manejo.conclusao IS 'Notas de conclusão da análise.';
 COMMENT ON COLUMN analise.analise_manejo.id_usuario IS 'Identificador da entidade usuário que denota o usuário responsável por fazer a análise.';
-COMMENT ON COLUMN analise.analise_manejo.id_imovel_manejo IS 'Identificador da imóvelo do manejo.';
 
 ALTER TABLE analise.analise_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_manejo TO postgres;
@@ -245,8 +242,10 @@ CREATE TABLE analise.processo_manejo (
  nome_municipio_simlam VARCHAR(1000) NOT NULL,
  id_tipo_licenca INTEGER NOT NULL,
  nome_tipo_licenca VARCHAR(200) NOT NULL,
+ id_imovel_manejo INTEGER NOT NULL,
  id_analise_manejo INTEGER,
  CONSTRAINT pk_processo_manejo PRIMARY KEY(id),
+ CONSTRAINT fk_pm_im FOREIGN KEY (id_imovel_manejo) REFERENCES analise.imovel_manejo (id),
  CONSTRAINT fk_pm_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
 );
 
@@ -260,6 +259,7 @@ COMMENT ON COLUMN analise.processo_manejo.id_municipio_simlam IS 'Identificador 
 COMMENT ON COLUMN analise.processo_manejo.nome_municipio_simlam IS 'Nome do município no SIMLAM.';
 COMMENT ON COLUMN analise.processo_manejo.id_tipo_licenca IS 'Identificador do tipo de licença de manejo do SIMLAM.';
 COMMENT ON COLUMN analise.processo_manejo.nome_tipo_licenca IS 'Nome do tipo de licença de manejo do SIMLAM.';
+COMMENT ON COLUMN analise.processo_manejo.id_imovel_manejo IS 'Identificador da imóvelo do manejo.';
 COMMENT ON COLUMN analise.processo_manejo.id_analise_manejo IS 'Identificador da análise manejo.';
 
 ALTER TABLE analise.processo_manejo OWNER TO postgres;

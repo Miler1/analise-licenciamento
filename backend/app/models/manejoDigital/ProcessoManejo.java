@@ -46,6 +46,10 @@ public class ProcessoManejo extends GenericModel {
     @Column(name="nome_tipo_licenca")
     public String nomeTipoLicenca;
 
+    @Required
+    @JoinColumn(name="id_imovel_manejo")
+    public ImovelManejo imovelManejo;
+
     @OneToOne
     @JoinColumn(name = "id_analise_manejo")
     public AnaliseManejo analiseManejo;
