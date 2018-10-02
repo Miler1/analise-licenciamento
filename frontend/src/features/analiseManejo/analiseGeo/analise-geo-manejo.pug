@@ -1,7 +1,7 @@
 h4 Parecer Técnico
 
 	hr
-	div.row#dadosProcesso
+	div.row#dadosProcesso(ng-init="analiseGeoManejo.init()")
 		.col-xs-12.col-md-8
 			blockquote.success
 
@@ -16,19 +16,18 @@ h4 Parecer Técnico
 				div.row
 					label.col-sm-4 Nome/Razão Social:
 					span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimentoSimlam}}
-					span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimento}}
+	hr
+	div
+		.col-xs-12
+			h4 Análise Geo
+		.col-xs-12
+			h5 Upload do shape
 
-		hr
-
-		div
-			.col-xs-12
-				span ANÁLISE GEO
-			.col-xs-12
-				span.h6 Upload de shape
+		.col-xs-12.text-center(ng-if="!analiseGeoManejo.nomeArquivoShape")
+			div(ngf-drop, ngf-select, ng-model="file", class="drop-box", ngf-drag-over-class="'dragover'", ngf-multiple="false",
+			ngf-allow-dir="false", ngf-change="upload($file)", accept="image/*,application/pdf", ngf-pattern="'image/*, application/zip'") Arraste o arquivo ou clique para realizar o upload
 
 			.col-xs-12.text-center(ng-if="!analiseGeoManejo.nomeArquivoShape")
 				div(ngf-drop, ngf-select, ng-model="file", class="drop-box", ngf-drag-over-class="'dragover'", ngf-multiple="false",
 				ngf-allow-dir="false", ngf-change="upload($file)", accept="application/zip", ngf-pattern="'application/zip'") Arraste o arquivo ou clique para realizar o upload
 
-			.col-xs-12.text-center(ng-if="analiseGeoManejo.nomeArquivoShape")
-				span Upload Feito
