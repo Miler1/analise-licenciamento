@@ -135,6 +135,9 @@ POST    /upload/shape                               Uploads.uploadShape
 
 GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 
+# Processos Manejo
+POST    /processoManejo                             ProcessosManejo.save
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
