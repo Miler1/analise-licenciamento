@@ -100,8 +100,7 @@ public class AnaliseManejo  extends GenericModel {
     public List<Observacao> observacoes;
 
     @Required
-    @ManyToOne
-    @JoinColumn(name = "id_processo_manejo")
+    @OneToOne(mappedBy = "analiseManejo")
     public ProcessoManejo processoManejo;
 
     @Required

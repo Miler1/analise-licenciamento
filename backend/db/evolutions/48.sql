@@ -245,7 +245,7 @@ CREATE TABLE analise.processo_manejo (
  nome_municipio_simlam VARCHAR(1000) NOT NULL,
  id_tipo_licenca INTEGER NOT NULL,
  nome_tipo_licenca VARCHAR(200) NOT NULL,
- id_analise_manejo INTEGER NOT NULL,
+ id_analise_manejo INTEGER,
  CONSTRAINT pk_processo_manejo PRIMARY KEY(id),
  CONSTRAINT fk_pm_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
 );
