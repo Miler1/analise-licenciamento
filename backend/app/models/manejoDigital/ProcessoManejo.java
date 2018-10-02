@@ -47,7 +47,7 @@ public class ProcessoManejo extends GenericModel {
     @Column(name="nome_tipo_licenca")
     public String nomeTipoLicenca;
 
-    @Required
-    @OneToMany(mappedBy = "processoManejo")
-    public List<AnaliseManejo> analiseManejo;
+    @OneToOne
+    @JoinColumn(name = "id_analise_manejo")
+    public AnaliseManejo analiseManejo;
 }
