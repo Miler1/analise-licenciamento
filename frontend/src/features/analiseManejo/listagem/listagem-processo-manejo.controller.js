@@ -1,6 +1,6 @@
 var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location) {
 
-	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO FLORESTAL';
+	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO DIGITAL';
 
 	var listagemProcessoManejo = this;
 
@@ -16,7 +16,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 				var idProcesso = response.data;
 
-				$location.path('/analise-geo-manejo/' + idProcesso);
+				$location.path('/analise-manejo/' + idProcesso + '/analise-geo');
 
 			})
 			.catch(function(response){

@@ -12,6 +12,11 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ListagemProcessoManejoController,
 			controllerAs: 'listagemProcessoManejo'
 		})
+		.when("/analise-manejo/:idProcesso/analise-geo", {
+			templateUrl: "features/analiseManejo/analiseGeo/analise-geo-manejo.html",
+			controller: controllers.AnaliseGeoManejoController,
+			controllerAs: 'analiseGeoManejo'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});

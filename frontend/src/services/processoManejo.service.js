@@ -3,7 +3,7 @@ var ProcessoManejoService = function(request, config) {
 	this.salvarProcesso = function(processo) {
 
 		return request
-			.post(config.BASE_URL() + "processo/manejo", processo);
+			.post(config.BASE_URL() + "processoManejo", processo);
 	};
 };
 
