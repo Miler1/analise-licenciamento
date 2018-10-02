@@ -67,7 +67,7 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="area_seletiva_ndfi")
     public Double areaSeletivaNdfi;
 
-    @Column(name="area_efetivo_ndfi")
+    @Column(name="area_efetivo_manejo")
     public Double areaEfetivoNdfi;
 
     @Column(name="area_com_exploraca_ndfi_baixo")
@@ -88,6 +88,7 @@ public class AnaliseManejo  extends GenericModel {
     public String conclusao;
 
     @Required
+    @OneToOne
     @JoinColumn(name="id_usuario")
     public Usuario usuario;
 
