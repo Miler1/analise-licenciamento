@@ -69,7 +69,9 @@ public enum Mensagem {
 	
 	LICENCA_CANCELADA_SUCESSO,
 
-	ERRO_CANCELAR_DLA;
+	ERRO_CANCELAR_DLA,
+
+	SHAPE_REMOVIDO_SUCESSO;
 	
 	public String getTexto(Object ... args) {
 		

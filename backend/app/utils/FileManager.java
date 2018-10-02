@@ -161,6 +161,16 @@ public class FileManager {
             file.delete();
         }
     }
+
+	public void deleteShape(String path) {
+
+		File file = new File (path);
+
+		if (file != null && file.exists()) {
+
+			file.delete();
+		}
+	}
     
     public Map<String,File> createEmptyFiles(int numberOfFiles, String extension) throws IOException {
         

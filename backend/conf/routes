@@ -130,6 +130,7 @@ GET     /favicon.ico                            404
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
 POST    /upload/shape                               Uploads.uploadShape
+DELETE  /upload/shape/{path}                        Uploads.deleteShape
 
 # Notificacoes
 

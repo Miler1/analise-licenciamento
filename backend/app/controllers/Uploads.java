@@ -96,4 +96,13 @@ public class Uploads extends InternalController {
 			renderMensagem(Mensagem.UPLOAD_ERRO);
 		}
 	}
+
+	public static void deleteShape(String path) {
+
+		returnIfNull(path, "String");
+
+		FileManager.getInstance().deleteShape(path);
+
+		renderMensagem(Mensagem.SHAPE_REMOVIDO_SUCESSO);
+	}
 }
