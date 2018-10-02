@@ -47,6 +47,7 @@ public class ProcessoManejo extends GenericModel {
     public String nomeTipoLicenca;
 
     @Required
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="id_imovel_manejo")
     public ImovelManejo imovelManejo;
 

@@ -5,11 +5,13 @@ import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 
+@Entity
+@Table(schema = "analise", name = "imovel_manejo")
 public class ImovelManejo extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.base_vetorial_id_seq")
-    @SequenceGenerator(name="analise.analise_manejo_id_seq", sequenceName="analise.base_vetorial_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.imovel_manejo_id_seq")
+    @SequenceGenerator(name="analise.imovel_manejo_id_seq", sequenceName="analise.imovel_manejo_id_seq", allocationSize=1)
     public Long id;
 
     @Required

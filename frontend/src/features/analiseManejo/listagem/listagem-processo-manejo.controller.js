@@ -40,7 +40,12 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Bagre",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 100.0,
+				areaLiquidaImovel: 80.0
+			}
 		},
 		{
 			numeroProcesso: "2018/002",
@@ -51,7 +56,13 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Page",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 80.0,
+				areaLiquidaImovel: 60.0,
+				areaReservaLegal: 20.0
+			}
 		},
 		{
 			numeroProcesso: "2018/003",
@@ -62,7 +73,13 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Belém",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 60.0,
+				areaLiquidaImovel: 40.0,
+				areaPreservacaoPermanente: 17.0
+			}
 		},
 		{
 			numeroProcesso: "2018/004",
@@ -73,7 +90,13 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Ananindeua",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 40.0,
+				areaLiquidaImovel: 20.0,
+				areaRemanescenteVegetacaoNativa: 5.0
+			}
 		},
 		{
 			numeroProcesso: "2018/005",
@@ -84,7 +107,13 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Marabá",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 20.0,
+				areaLiquidaImovel: 1.0,
+				areaCorposAgua: 1.0
+			}
 		},
 		{
 			numeroProcesso: "2018/006",
@@ -95,7 +124,13 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Belém",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 20.0,
+				areaLiquidaImovel: 10.0,
+				areaUsoConsolidado: 10.0
+			}
 		},
 		{
 			numeroProcesso: "2018/007",
@@ -106,7 +141,17 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Belém",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 20.0,
+				areaLiquidaImovel: 10.0,
+				areaReservaLegal: 0.0,
+				areaPreservacaoPermanente: 0.0,
+				areaRemanescenteVegetacaoNativa: 0.0,
+				areaCorposAgua: 0.0,
+				areaUsoConsolidado: 0.0
+			}
 		},
 		{
 			numeroProcesso: "2018/008",
@@ -117,7 +162,17 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Santarém",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 30.0,
+				areaLiquidaImovel: 15.0,
+				areaReservaLegal: 1.0,
+				areaPreservacaoPermanente: 0.0,
+				areaRemanescenteVegetacaoNativa: 2.0,
+				areaCorposAgua: 0.0,
+				areaUsoConsolidado: 0.0
+			}
 		},
 		{
 			numeroProcesso: "2018/009",
@@ -128,7 +183,17 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Ananindeua",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 804.0,
+				areaLiquidaImovel: 158.0,
+				areaReservaLegal: 1.0,
+				areaPreservacaoPermanente: 30.0,
+				areaRemanescenteVegetacaoNativa: 20.0,
+				areaCorposAgua: 1.0,
+				areaUsoConsolidado: 150.0
+			}
 		},
 		{
 			numeroProcesso: "2018/010",
@@ -139,7 +204,15 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			nomeMunicipioSimlam: "Belém",
 			siglaEstadoMunicipio: "PA",
 			idTipoLicenca: "1",
-			nomeTipoLicenca: "APAT"
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 1048.0,
+				areaLiquidaImovel: 642.0,
+				areaPreservacaoPermanente: 30.0,
+				areaRemanescenteVegetacaoNativa: 20.0,
+				areaUsoConsolidado: 150.0
+			}
 		},
 	];
 
