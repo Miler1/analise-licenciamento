@@ -76,7 +76,7 @@ CREATE TABLE analise.analise_manejo (
  area_sem_potencial DOUBLE PRECISION,
  area_corpos_agua DOUBLE PRECISION,
  area_embargada_ibama DOUBLE PRECISION,
- area_embardada_ldi DOUBLE PRECISION,
+ area_embargada_ldi DOUBLE PRECISION,
  area_seletiva_ndfi DOUBLE PRECISION,
  area_efetivo_manejo DOUBLE PRECISION,
  area_com_exploraca_ndfi_baixo DOUBLE PRECISION,
@@ -105,7 +105,7 @@ COMMENT ON COLUMN analise.analise_manejo.area_uso_restrito IS 'Área de uso rest
 COMMENT ON COLUMN analise.analise_manejo.area_sem_potencial IS 'Área sem potencial em hectares definida pela análise.';
 COMMENT ON COLUMN analise.analise_manejo.area_corpos_agua IS 'Área dos corpos de agua em hectares defindos pela análise.';
 COMMENT ON COLUMN analise.analise_manejo.area_embargada_ibama IS 'Área embargada pelo IBAMA em hectares.';
-COMMENT ON COLUMN analise.analise_manejo.area_embardada_ldi IS 'Área embardada pelo LDI em hectares.';
+COMMENT ON COLUMN analise.analise_manejo.area_embargada_ldi IS 'Área embargada pelo LDI em hectares.';
 COMMENT ON COLUMN analise.analise_manejo.area_efetivo_manejo IS 'Área de efetivo manejo em hectares definida pela análise.';
 COMMENT ON COLUMN analise.analise_manejo.area_com_exploraca_ndfi_baixo IS 'Área com exploração NDFI (Baixo) em hectares.';
 COMMENT ON COLUMN analise.analise_manejo.area_com_exploraca_ndfi_medio IS 'Área com exploração NDFI (Médio) em hectares.';
