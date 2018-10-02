@@ -1,4 +1,4 @@
-var analiseManejo = angular.module("analiseManejo", ["ngRoute"]);
+var analiseManejo = angular.module("analiseManejo", ["ngRoute", 'ngFileUpload']);
 
 var utils = app.utils,
 	controllers = app.controllers,

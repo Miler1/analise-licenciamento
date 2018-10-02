@@ -7,7 +7,16 @@ var UploadService = function(request, config, Upload) {
             url: config.BASE_URL() + "upload/save",
             data: { file : file }
         });
-	};
+    };
+
+    this.shape = function(file) {
+
+        return Upload.upload({
+
+            url: config.BASE_URL() + 'upload/shape',
+            data: { file: file }
+        });
+    };
 
 };
 
