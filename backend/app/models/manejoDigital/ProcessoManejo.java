@@ -47,8 +47,7 @@ public class ProcessoManejo extends GenericModel {
     public String nomeTipoLicenca;
 
     @Required
-    @ManyToOne
-    @JoinColumn(name="id_analise_manejo")
-    public Integer idAnaliseManejo;
+    @OneToOne(mappedBy = "processoManejo")
+    public AnaliseManejo analiseManejo;
 
 }

@@ -5,7 +5,10 @@ import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
+@Entity
+@Table(schema = "analise", name = "analise_manejo")
 public class AnaliseManejo  extends GenericModel {
 
     @Id
@@ -90,5 +93,26 @@ public class AnaliseManejo  extends GenericModel {
     @Required
     @Column(name="id_imovel_manejo")
     public Integer idImovelManjeo;
+
+    @Required
+    @OneToMany(mappedBy = "analiseManejo")
+    public List<Observacao> observacoes;
+
+    @Required
+    @OneToOne
+    @JoinColumn(name = "id_processo_manejo")
+    public ProcessoManejo processoManejo;
+
+    @Required
+    @OneToOne(mappedBy = "analiseManejo")
+    public AnaliseNdfi analiseNdfi;
+
+    @Required
+    @OneToMany(mappedBy = "analiseManejo")
+    public AnaliseVetorial analiseVetorial;
+
+    @ManyToMany
+    @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo", joinColumns = @JoinColumn(name = "id_analise_manejo"), inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
+    public List<BaseVetorial> baseVetorial;
 
 }

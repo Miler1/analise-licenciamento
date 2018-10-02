@@ -5,6 +5,8 @@ import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 
+@Entity
+@Table(schema = "analise", name = "analise_vetorial")
 public class AnaliseVetorial extends GenericModel {
 
     @Id
@@ -43,5 +45,5 @@ public class AnaliseVetorial extends GenericModel {
     @Required
     @ManyToOne
     @JoinColumn(name="id_analise_manejo")
-    public Integer idAnaliseManejo;
+    public AnaliseManejo analiseManejo;
 }
