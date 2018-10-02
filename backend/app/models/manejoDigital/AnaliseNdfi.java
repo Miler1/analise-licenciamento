@@ -17,7 +17,7 @@ public class AnaliseNdfi extends GenericModel {
 
     @Required
     @Column(name="data")
-    public Date dataAnaliseNdfi;
+    public Date dataAnalise;
 
     @Required
     @Column(name="orbita")
@@ -37,15 +37,14 @@ public class AnaliseNdfi extends GenericModel {
 
     @Required
     @Column(name="valor_ndfi")
-    public Double valorNdfi;
+    public Double valor;
 
     @Required
     @Column(name="area")
     public Double area;
 
     @Required
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="id_analise_manejo")
     public AnaliseManejo analiseManejo;
-
 }

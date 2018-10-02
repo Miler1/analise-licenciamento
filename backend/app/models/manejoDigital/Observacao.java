@@ -25,8 +25,6 @@ public class Observacao  extends GenericModel {
 
     @Required
     @Column(name="num_passo")
-    public Integer numPasso;
-
-
-
+    @Enumerated(EnumType.ORDINAL)
+    public PassoAnaliseManejo passoAnalise;
 }

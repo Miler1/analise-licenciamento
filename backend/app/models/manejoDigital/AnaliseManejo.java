@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
@@ -79,40 +80,41 @@ public class AnaliseManejo  extends GenericModel {
     public Double areaSemPreviaExploracao;
 
     @Required
-    @Column(name="consideracoes")
+    @Column
     public String consideracoes;
 
     @Required
-    @Column(name="conclusao")
+    @Column
     public String conclusao;
 
     @Required
-    @Column(name="id_usuario")
-    public Integer idUsuario;
+    @JoinColumn(name="id_usuario")
+    public Usuario usuario;
 
     @Required
-    @Column(name="id_imovel_manejo")
-    public Integer idImovelManjeo;
+    @JoinColumn(name="id_imovel_manejo")
+    public ImovelManejo imovelManejo;
 
     @Required
     @OneToMany(mappedBy = "analiseManejo")
     public List<Observacao> observacoes;
 
     @Required
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_processo_manejo")
     public ProcessoManejo processoManejo;
 
     @Required
-    @OneToOne(mappedBy = "analiseManejo")
-    public AnaliseNdfi analiseNdfi;
+    @OneToMany(mappedBy = "analiseManejo")
+    public List<AnaliseNdfi> analiseNdfi;
 
     @Required
     @OneToMany(mappedBy = "analiseManejo")
-    public AnaliseVetorial analiseVetorial;
+    public List<AnaliseVetorial> analiseVetorial;
 
     @ManyToMany
-    @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo", joinColumns = @JoinColumn(name = "id_analise_manejo"), inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
+    @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo",
+            joinColumns = @JoinColumn(name = "id_analise_manejo"),
+            inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> baseVetorial;
-
 }
