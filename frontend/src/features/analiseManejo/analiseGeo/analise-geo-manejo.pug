@@ -23,10 +23,20 @@ h4 Parecer Técnico
 		.col-xs-12
 			h5 Upload do shape
 
-		.col-xs-12.text-center(ng-if="!analiseGeoManejo.nomeArquivoShape")
-			div(ngf-drop, ngf-select, ng-model="file", class="drop-box", ngf-drag-over-class="'dragover'", ngf-multiple="false",
-			ngf-allow-dir="false", ngf-change="upload($file)", accept="image/*,application/pdf", ngf-pattern="'image/*, application/zip'") Arraste o arquivo ou clique para realizar o upload
+	div
+		form#formulario_parecer(name="analiseGeoManejo.formularioAnaliseGeo", novalidate)
 
-		.col-xs-12.text-center(ng-if="analiseGeoManejo.nomeArquivoShape")
-			span Upload Feito
+		.form-group(ng-class="{'col-md-9': ctrl.analiseJuridica.parecer, 'col-md-12': !ctrl.analiseJuridica.parecer}")
+			div.btn.btn-default(type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+				| Anexar arquivo ao parecer
+			i   Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+
+
+		//.col-xs-12.text-center(ng-if="!analiseGeoManejo.nomeArquivoShape")
+		//	div(ngf-drop, ngf-select, ng-model="file", class="drop-box", ngf-drag-over-class="'dragover'", ngf-multiple="false",
+		//	ngf-allow-dir="false", ngf-change="upload($file)", accept="image/*,application/pdf", ngf-pattern="'image/*, application/zip'") Arraste o arquivo ou clique para realizar o upload
+		//
+		//.col-xs-12.text-center(ng-if="analiseGeoManejo.nomeArquivoShape")
+		//	span Upload Feito
 

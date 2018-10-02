@@ -6,6 +6,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.visualizarProcesso = null;
 	analiseGeoManejo.processo = null;
+	analiseGeoManejo.formularioAnaliseGeo = null;
 	analiseGeoManejo.files = [];
 	analiseGeoManejo.nomeArquivoShape = undefined;
 
@@ -26,6 +27,11 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 					mensagem.error("Ocorreu um erro obter dados do processo.");
 			});
 	};
+
+	function analiseGeoValida() {
+
+		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
+	}
 
 	$scope.log = '';
 
