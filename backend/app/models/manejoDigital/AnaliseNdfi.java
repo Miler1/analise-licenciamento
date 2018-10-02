@@ -11,8 +11,8 @@ import java.util.Date;
 public class AnaliseNdfi extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise_ndfi_id_seq")
-    @SequenceGenerator(name="analise_ndfi_id_seq", sequenceName="analise_ndfi_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.analise_ndfi_id_seq")
+    @SequenceGenerator(name="analise.analise_ndfi_id_seq", sequenceName="analise.analise_ndfi_id_seq", allocationSize=1)
     public Long id;
 
     @Required

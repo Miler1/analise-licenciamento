@@ -10,8 +10,8 @@ import javax.persistence.*;
 public class AnaliseVetorial extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise_vetorial_id_seq")
-    @SequenceGenerator(name="analise_vetorial_id_seq", sequenceName="analise_vetorial_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.analise_vetorial_id_seq")
+    @SequenceGenerator(name="analise.analise_vetorial_id_seq", sequenceName="analise.analise_vetorial_id_seq", allocationSize=1)
     public Long id;
 
     @Required

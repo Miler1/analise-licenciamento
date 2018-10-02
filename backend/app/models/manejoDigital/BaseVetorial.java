@@ -11,8 +11,8 @@ import java.util.Date;
 public class BaseVetorial extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="base_vetorial_id_seq")
-    @SequenceGenerator(name="base_vetorial_id_seq", sequenceName="base_vetorial_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.base_vetorial_id_seq")
+    @SequenceGenerator(name="analise.base_vetorial_id_seq", sequenceName="analise.base_vetorial_id_seq", allocationSize=1)
     public Long id;
 
     @Required

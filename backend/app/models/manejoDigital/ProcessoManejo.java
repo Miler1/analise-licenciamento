@@ -4,15 +4,14 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(schema = "analise", name = "processo_manejo")
 public class ProcessoManejo extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="processo_manejo_id_seq")
-    @SequenceGenerator(name="processo_manejo_id_seq", sequenceName="processo_manejo_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.processo_manejo_id_seq")
+    @SequenceGenerator(name="analise.processo_manejo_id_seq", sequenceName="analise.processo_manejo_id_seq", allocationSize=1)
     public Long id;
 
     @Required
