@@ -70,8 +70,8 @@ public class FileManager {
     }
     
     public String createFile(String pathFileGenerated, byte [] fileBytes, String extension) throws IOException {
-    	
-    	String fileName = generateFileName(extension);
+
+        String fileName = generateFileName(extension);
         
         File file = new File(pathFileGenerated, fileName);
 

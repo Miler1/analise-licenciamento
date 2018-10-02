@@ -81,12 +81,11 @@ public class Uploads extends InternalController {
 			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
 		}
 
-		if(realType.contains("application/shape") || realType.contains("application/zip")) {
+		if(realType.contains("application/zip")) {
 
 			byte[] data = IO.readContent(file.asFile());
 			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_SHAPE_FOLDER +
-					file.getFileName(), data, extension);
+			String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_SHAPE_FOLDER, data, extension);
 
 			renderText(path);
 		}

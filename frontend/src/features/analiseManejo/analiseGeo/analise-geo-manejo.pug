@@ -28,7 +28,7 @@ h4 Parecer Técnico
 
 			.col-xs-12.text-center(ng-if="!analiseGeoManejo.nomeArquivoShape")
 				div(ngf-drop, ngf-select, ng-model="file", class="drop-box", ngf-drag-over-class="'dragover'", ngf-multiple="false",
-				ngf-allow-dir="false", ngf-change="upload($file)", accept="image/*,application/pdf", ngf-pattern="'image/*, application/zip'") Arraste o arquivo ou clique para realizar o upload
+				ngf-allow-dir="false", ngf-change="upload($file)", accept="application/zip", ngf-pattern="'application/zip'") Arraste o arquivo ou clique para realizar o upload
 
 			.col-xs-12.text-center(ng-if="analiseGeoManejo.nomeArquivoShape")
 				span Upload Feito
