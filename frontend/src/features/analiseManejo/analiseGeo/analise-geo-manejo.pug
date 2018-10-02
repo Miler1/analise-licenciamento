@@ -7,12 +7,12 @@ h4 Parecer Técnico
 
 				div.row
 					label.col-sm-4 Processo:
-					span.col-sm-8 {{analiseGeoManejo.processo.numero ? analiseGeoManejo.processo.numero : analiseGeoManejo.processo.numeroProcesso}}
+					span.col-sm-8 {{analiseGeoManejo.processo.numeroProcesso}}
 
 				div.row
 					label.col-sm-4 CPF/CNPJ:
-					span.col-sm-8 {{analiseGeoManejo.processo.cpfEmpreendimento ? analiseGeoManejo.processo.cpfEmpreendimento : analiseGeoManejo.processo.cnpjEmpreendimento | brCpfCnpj}}
+					span.col-sm-8 {{analiseGeoManejo.processo.cpfCnpj | brCpfCnpj}}
 
 				div.row
 					label.col-sm-4 Nome/Razão Social:
-					span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimento}}
+					span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimentoSimlam}}

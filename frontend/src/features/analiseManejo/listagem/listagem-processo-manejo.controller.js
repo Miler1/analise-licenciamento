@@ -14,7 +14,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		processoManejoService.salvarProcesso(processo)
 			.then(function(response){
 
-				var idProcesso = response.data;
+				var idProcesso = response.data.id;
 
 				$location.path('/analise-manejo/' + idProcesso + '/analise-geo');
 
