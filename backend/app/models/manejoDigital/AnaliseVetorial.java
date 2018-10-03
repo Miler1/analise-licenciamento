@@ -4,6 +4,11 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(schema = "analise", name = "analise_vetorial")
@@ -46,4 +51,43 @@ public class AnaliseVetorial extends GenericModel {
     @ManyToOne
     @JoinColumn(name="id_analise_manejo")
     public AnaliseManejo analiseManejo;
+
+    public static List<AnaliseVetorial> gerarAnalisesVetoriais(AnaliseManejo analise) {
+
+        Random rand = new Random();
+        int numeroRandomico = rand.nextInt(20) + 1;
+
+        List<AnaliseVetorial> listaAnalise = new ArrayList<>();
+
+        for(int i = 0; i < numeroRandomico; i++) {
+
+            AnaliseVetorial analiseVetorial = new AnaliseVetorial();
+
+            byte[] array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            analiseVetorial.tipo = new String(array, Charset.forName("UTF-8"));
+
+            array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            analiseVetorial.nome = new String(array, Charset.forName("UTF-8"));
+
+            analiseVetorial.distanciaPropriedade = Math.random();
+
+            analiseVetorial.sobreposicaoPropriedade = Math.random();
+
+            analiseVetorial.distanciaAmf = Math.random();
+
+            analiseVetorial.sobreposicaoAmf = Math.random();
+
+            array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            analiseVetorial.observacao = new String(array, Charset.forName("UTF-8"));
+
+            analiseVetorial.analiseManejo = analise;
+
+            listaAnalise.add(analiseVetorial);
+        }
+
+        return listaAnalise;
+    }
 }
