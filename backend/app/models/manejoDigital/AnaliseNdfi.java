@@ -4,7 +4,11 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(schema = "analise", name = "analise_ndfi")
@@ -47,4 +51,41 @@ public class AnaliseNdfi extends GenericModel {
     @ManyToOne
     @JoinColumn(name="id_analise_manejo")
     public AnaliseManejo analiseManejo;
+
+    public static List<AnaliseNdfi> gerarAnaliseNfid(AnaliseManejo analise) {
+
+        Random rand = new Random();
+        int numeroRandomico = rand.nextInt(20) + 1;
+
+        List<AnaliseNdfi> listaAnalise = new ArrayList<>();
+
+        for(int i = 0; i < numeroRandomico; i++) {
+
+            AnaliseNdfi analiseNdfi = new AnaliseNdfi();
+
+            analiseNdfi.dataAnalise = new Date();
+
+            analiseNdfi.orbita = rand.nextInt(2000 ) + 1;
+
+            analiseNdfi.ponto = rand.nextInt(2000 ) + 1;
+
+            byte[] array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            analiseNdfi.satelite = new String(array, Charset.forName("UTF-8"));
+
+            array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            analiseNdfi.nivelExploracao = new String(array, Charset.forName("UTF-8"));
+
+            analiseNdfi.valor = Math.random();
+
+            analiseNdfi.area = Math.random();
+
+            analiseNdfi.analiseManejo = analise;
+
+            listaAnalise.add(analiseNdfi);
+        }
+
+        return listaAnalise;
+    }
 }

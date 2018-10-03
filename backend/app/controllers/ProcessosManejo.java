@@ -1,8 +1,15 @@
 package controllers;
 
+import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
+import models.portalSeguranca.Usuario;
 import security.Acao;
 import serializers.ProcessoManejoSerializer;
+import utils.Mensagem;
+
+import java.nio.charset.Charset;
+import java.util.Date;
+import java.util.Random;
 
 public class ProcessosManejo extends InternalController {
 
@@ -37,4 +44,22 @@ public class ProcessosManejo extends InternalController {
 
 		renderJSON(processo, ProcessoManejoSerializer.findById);
 	}
+
+	public static void iniciarAnalise(ProcessoManejo processo) {
+
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(processo);
+
+		// TODO enviar processo para analise na imagem
+		processo.analiseManejo = AnaliseManejo.gerarAnalise(processo);
+
+		ProcessoManejo processoAntigo = ProcessoManejo.findById(processo.id);
+		processoAntigo.iniciarAnalise(processo);
+
+		renderMensagem(Mensagem.ANALISE_MANEJO_INICIADA_COM_SUCESSO);
+	}
+
+
 }
