@@ -2,14 +2,9 @@ package controllers;
 
 import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
-import models.portalSeguranca.Usuario;
 import security.Acao;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
-
-import java.nio.charset.Charset;
-import java.util.Date;
-import java.util.Random;
 
 public class ProcessosManejo extends InternalController {
 

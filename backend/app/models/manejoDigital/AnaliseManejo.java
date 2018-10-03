@@ -103,14 +103,14 @@ public class AnaliseManejo  extends GenericModel {
     public ProcessoManejo processoManejo;
 
     @Required
-    @OneToMany(mappedBy = "analiseManejo")
+    @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseNdfi> analisesNdfi;
 
     @Required
-    @OneToMany(mappedBy = "analiseManejo")
+    @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseVetorial> analisesVetorial;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo",
             joinColumns = @JoinColumn(name = "id_analise_manejo"),
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
@@ -158,17 +158,17 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.areaSemPreviaExploracao = Math.random();
 
-        array = new byte[7]; // length is bounded by 7
         new Random().nextBytes(array);
         analiseManejo.consideracoes =  new String(array, Charset.forName("UTF-8"));
 
-        array = new byte[7]; // length is bounded by 7
         new Random().nextBytes(array);
         analiseManejo.conclusao =  new String(array, Charset.forName("UTF-8"));
 
         analiseManejo.usuario = Usuario.findById(22);
 
         analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
+
+        analiseManejo.basesVetorial = BaseVetorial.gerarBaseVetorial(analiseManejo);
 
 
 

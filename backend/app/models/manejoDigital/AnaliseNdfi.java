@@ -73,7 +73,6 @@ public class AnaliseNdfi extends GenericModel {
             new Random().nextBytes(array);
             analiseNdfi.satelite = new String(array, Charset.forName("UTF-8"));
 
-            array = new byte[7]; // length is bounded by 7
             new Random().nextBytes(array);
             analiseNdfi.nivelExploracao = new String(array, Charset.forName("UTF-8"));
 

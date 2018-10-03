@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.Tramitacao;
@@ -104,5 +105,21 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public void salvaObjetoTramitavel() {
 
         super.save();
+    }
+
+    public void iniciarAnalise(ProcessoManejo processo) {
+
+        this.analiseManejo = processo.analiseManejo;
+
+        this._save();
+
+        tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.analiseManejo.usuario);
+    }
+
+    public String getNomeCondicao() {
+
+        ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.idObjetoTramitavel);
+
+        return objetoTramitavel.condicao.nomeCondicao;
     }
 }
