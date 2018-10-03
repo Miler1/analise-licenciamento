@@ -130,6 +130,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	function analiseValida() {
 
+		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
 		return (analiseGeoManejo.processo.analiseManejo.pathShape);
 	}
 
