@@ -171,5 +171,7 @@ public class AnaliseManejo  extends GenericModel {
         analiseManejo.basesVetorial = BaseVetorial.gerarBaseVetorial(analiseManejo);
 
         analiseManejo.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(analiseManejo);
+
+        return analiseManejo;
     }
 }

@@ -71,7 +71,9 @@ public enum Mensagem {
 
 	ERRO_CANCELAR_DLA,
 
-	SHAPE_REMOVIDO_SUCESSO;
+	SHAPE_REMOVIDO_SUCESSO,
+
+	ANALISE_MANEJO_INICIADA_COM_SUCESSO;
 	
 	public String getTexto(Object ... args) {
 		

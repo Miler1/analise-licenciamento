@@ -57,7 +57,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @JoinColumn(name="id_imovel_manejo")
     public ImovelManejo imovelManejo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_analise_manejo")
     public AnaliseManejo analiseManejo;
 
