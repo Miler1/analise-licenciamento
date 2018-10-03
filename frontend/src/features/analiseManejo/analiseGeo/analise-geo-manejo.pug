@@ -31,7 +31,7 @@ div
 			.form-group
 				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-accept="'application/zip'",
 				 ngf-pattern="'application/zip'", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
-				 ng-class="{'error-message': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape}")
+				 ng-class="{'error-button': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape}")
 					i.glyphicon.glyphicon-open.glyphicon--with-right-margin
 					| Anexar arquivo zip à análise
 
@@ -53,6 +53,7 @@ div
 						i.glyphicon.glyphicon-trash
 			tr(ng-if="!analiseGeoManejo.processo.analiseManejo.pathShape")
 				td.col-xs-12.text-center Nenhum arquivo anexado
+	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape") Campo obrigatório.
 
 div.botoes-analise-geo
 	button.btn.btn-default.col-md-2(ng-click="analiseGeoManejo.cancelar()", tabindex="0")
