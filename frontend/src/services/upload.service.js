@@ -18,10 +18,10 @@ var UploadService = function(request, config, Upload) {
         });
     };
 
-	this.removeShape = function(path) {
+	this.removeShape = function(nameFile) {
 
 		return request
-			.delete(config.BASE_URL() + "upload/shape", path);
+			.get(config.BASE_URL() + "upload/shape/" + nameFile);
 	};
 
 };

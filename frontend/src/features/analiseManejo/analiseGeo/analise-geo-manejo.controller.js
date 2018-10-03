@@ -44,9 +44,9 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 				if (analiseGeoManejo.processo.analiseManejo.pathShape) {
 
-					var pathShape = {path: analiseGeoManejo.processo.analiseManejo.pathShape};
+					var nameFile = analiseGeoManejo.processo.analiseManejo.pathShape.replace(/^.*[\\\/]/, '');
 
-					uploadService.removeShape(pathShape)
+					uploadService.removeShape(nameFile)
 
 						.then(function(response) {
 
@@ -67,7 +67,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		}
 	};
 
-
 	analiseGeoManejo.saveShape = function (file) {
 
 		uploadService.saveShape(file)
@@ -76,6 +75,23 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 				analiseGeoManejo.processo.analiseManejo.pathShape = response.data;
 				analiseGeoManejo.arquivoShape = file;
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	};
+
+	analiseGeoManejo.removeUpload = function () {
+
+		var nameFile = analiseGeoManejo.processo.analiseManejo.pathShape.replace(/^.*[\\\/]/, '');
+
+		uploadService.removeShape(nameFile)
+
+			.then(function(response) {
+
+				analiseGeoManejo.processo.analiseManejo.pathShape = null;
+				analiseGeoManejo.arquivoShape = null;
 
 			}, function(error){
 
