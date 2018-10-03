@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Entity
 @Table(schema = "analise", name = "analise_ndfi")
@@ -69,12 +70,9 @@ public class AnaliseNdfi extends GenericModel {
 
             analiseNdfi.ponto = rand.nextInt(2000 ) + 1;
 
-            byte[] array = new byte[7]; // length is bounded by 7
-            new Random().nextBytes(array);
-            analiseNdfi.satelite = new String(array, Charset.forName("UTF-8"));
+            analiseNdfi.satelite = UUID.randomUUID().toString();
 
-            new Random().nextBytes(array);
-            analiseNdfi.nivelExploracao = new String(array, Charset.forName("UTF-8"));
+            analiseNdfi.nivelExploracao = UUID.randomUUID().toString();
 
             analiseNdfi.valor = Math.random();
 
