@@ -97,11 +97,11 @@ public class Uploads extends InternalController {
 		}
 	}
 
-	public static void deleteShape(String path) {
+	public static void deleteShape(String token) {
 
-		returnIfNull(path, "String");
+		returnIfNull(token, "String");
 
-		FileManager.getInstance().deleteShape(path);
+		FileManager.getInstance().deleteShape(token);
 
 		renderMensagem(Mensagem.SHAPE_REMOVIDO_SUCESSO);
 	}

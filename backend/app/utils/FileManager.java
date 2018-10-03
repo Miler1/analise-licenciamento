@@ -164,7 +164,7 @@ public class FileManager {
 
 	public void deleteShape(String path) {
 
-		File file = new File (path);
+		File file = new File (Configuracoes.APPLICATION_SHAPE_FOLDER + path);
 
 		if (file != null && file.exists()) {
 
