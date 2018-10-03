@@ -14,6 +14,7 @@ public class ProcessoManejoSerializer {
 			"numeroProcesso",
 			"cpfCnpj",
 			"denominacaoEmpreendimentoSimlam",
-			"nomeMunicipioSimlam"
+			"nomeMunicipioSimlam",
+			"nomeCondicao"
 	);
 }
