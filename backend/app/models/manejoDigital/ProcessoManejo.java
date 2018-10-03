@@ -1,14 +1,18 @@
 package models.manejoDigital;
 
 import models.tramitacao.ObjetoTramitavel;
+import models.tramitacao.AcaoDisponivelObjetoTramitavel;
+import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.InterfaceTramitavel;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "analise", name = "processo_manejo")
-public class ProcessoManejo extends GenericModel {
+public class ProcessoManejo extends GenericModel implements InterfaceTramitavel {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.processo_manejo_id_seq")
@@ -62,4 +66,43 @@ public class ProcessoManejo extends GenericModel {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
     public ObjetoTramitavel objetoTramitavel;
+    @Transient
+    public transient Tramitacao tramitacao = new Tramitacao();
+
+
+    @Override
+    public ProcessoManejo save() {
+
+        tramitacao.iniciar(this, null, Tramitacao.MANEJO_DIGITAL);
+
+        return this;
+    }
+
+    @Override
+    public Long getIdObjetoTramitavel() {
+
+        return this.idObjetoTramitavel;
+    }
+
+    @Override
+    public void setIdObjetoTramitavel(Long idObjetoTramitavel) {
+
+        this.idObjetoTramitavel = idObjetoTramitavel;
+    }
+
+    @Override
+    public List<AcaoDisponivelObjetoTramitavel> getAcoesDisponiveisTramitacao() {
+
+        if (this.idObjetoTramitavel == null)
+            return null;
+
+        ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.idObjetoTramitavel);
+        return objetoTramitavel.acoesDisponiveis;
+    }
+
+    @Override
+    public void salvaObjetoTramitavel() {
+
+        super.save();
+    }
 }

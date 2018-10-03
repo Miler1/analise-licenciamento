@@ -24,14 +24,16 @@ public class ProcessosManejo extends InternalController {
 
 		if (processoAntigo != null) {
 
-			processoAntigo.delete();
+			renderJSON(processoAntigo, ProcessoManejoSerializer.save);
+
+		} else {
+
+			processo.save();
+
+			// TODO Enviar requisição de alteração de status de EM_ANALISE para o SIMLAM
+
+			renderJSON(processo, ProcessoManejoSerializer.save);
 		}
-
-		processo.save();
-
-		// TODO Enviar requisição de alteração de status de EM_ANALISE para o SIMLAM
-
-		renderJSON(processo, ProcessoManejoSerializer.save);
 	}
 
 	public static void findById(Long id) {

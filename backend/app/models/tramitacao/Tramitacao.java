@@ -27,7 +27,7 @@ public class Tramitacao {
 	
 	//Ao inserir um fluxo tambem inserir um array com os seguintes valores: id fluxo tramitação, id ação inicial do fluxo e id do tipo objeto tramitavel na respectiva ordem.
 	public static final Long []LICENCIAMENTO_AMBIENTAL = {FluxoTramitacao.PROCESSO_ANALISE_LICENCIAMENTO.getId(), AcaoTramitacao.VINCULAR_CONSULTOR, TipoObjetoTramitavel.LICENCIAMENTO_AMBIENTAL.getId()};
-
+	public static final Long []MANEJO_DIGITAL = {FluxoTramitacao.PROCESSO_MANEJO_DIGITAL.getId(), AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, TipoObjetoTramitavel.MANEJO_DIGITAL.getId()};
 	
 	/*Método que inicia o fluxo de tramitação recebendo o objeto tramitavel 
 	(Que implementa a interface Tramitavel e o usuario destino do objeto tramitavel) */
