@@ -1,4 +1,4 @@
-var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, Upload, $timeout, uploadService) {
+var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, Upload, $timeout, uploadService, mensagem) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -101,6 +101,12 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.analisar = function() {
 
+		if(!analiseValida()) {
+
+			mensagem.error('O arquivo do shape não foi selecionado', { ttl: 10000 });
+			return;
+		}
+
 		processoManejoService.iniciarAnalise(analiseGeoManejo.processo)
 			.then(function(response) {
 
@@ -111,6 +117,11 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 				mensagem.error(error.data.texto);
 			});
 	};
+
+	function analiseValida() {
+
+		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
+	}
 
 
 };
