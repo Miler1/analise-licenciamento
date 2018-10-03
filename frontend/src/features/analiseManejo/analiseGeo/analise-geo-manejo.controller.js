@@ -1,4 +1,4 @@
-var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, uploadService, $location) {
+var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, uploadService, $location, mensagem) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -18,6 +18,11 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 				analiseGeoManejo.processo = response.data;
 				analiseGeoManejo.processo.analiseManejo = {pathShape: null};
+
+				if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital em análise técnica' ) {
+
+					mensagem.warning('Ops... Você não deveria estar aqui, que constrangedor...');
+				}
 
 			})
 			.catch(function (response) {
