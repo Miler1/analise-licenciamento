@@ -9,7 +9,7 @@ var UploadService = function(request, config, Upload) {
         });
     };
 
-    this.shape = function(file) {
+    this.saveShape = function(file) {
 
         return Upload.upload({
 
@@ -17,6 +17,12 @@ var UploadService = function(request, config, Upload) {
             data: { file: file }
         });
     };
+
+	this.removeShape = function(path) {
+
+		return request
+			.delete(config.BASE_URL() + "upload/shape/" + path);
+	};
 
 };
 

@@ -1,45 +1,52 @@
 h4 Parecer Técnico
 
-	hr
-	div.row#dadosProcesso(ng-init="analiseGeoManejo.init()")
-		.col-xs-12.col-md-8
-			blockquote.success
+hr
+div.row#dadosProcesso(ng-init="analiseGeoManejo.init()")
+	.col-xs-12.col-md-8
+		blockquote.success
 
-				div.row
-					label.col-sm-4 Processo:
-					span.col-sm-8 {{analiseGeoManejo.processo.numeroProcesso}}
+			div.row
+				label.col-sm-4 Processo:
+				span.col-sm-8 {{analiseGeoManejo.processo.numeroProcesso}}
 
-				div.row
-					label.col-sm-4 CPF/CNPJ:
-					span.col-sm-8 {{analiseGeoManejo.processo.cpfCnpj | brCpfCnpj}}
+			div.row
+				label.col-sm-4 CPF/CNPJ:
+				span.col-sm-8 {{analiseGeoManejo.processo.cpfCnpj | brCpfCnpj}}
 
-				div.row
-					label.col-sm-4 Nome/Razão Social:
-					span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimentoSimlam}}
-	hr
-	div
-		.col-xs-12
-			h4 Análise Geo
-		.col-xs-12
-			h5 Upload do shape
+			div.row
+				label.col-sm-4 Nome/Razão Social:
+				span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimentoSimlam}}
+hr
+div
+	.col-xs-12
+		h4 Análise Geo
+	.col-xs-12
+		h5 Upload do shape
 
-	div
-		form#formulario_parecer(name="analiseGeoManejo.formularioAnaliseGeo", novalidate)
-
-		.form-group(ng-class="{'col-md-9': ctrl.analiseJuridica.parecer, 'col-md-12': !ctrl.analiseJuridica.parecer}")
-			div.btn.btn-default(type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+div
+	form(name="analiseGeoManejo.formularioAnaliseGeo", novalidate)
+		.form-group
+			div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-accept="'application/zip'", ngf-pattern="'application/zip'", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
 				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-				| Anexar arquivo ao parecer
-			i   Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+				| Anexar arquivo zip à análise
+			i Tamanho máximo de {{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
 
-		//
-		//.col-xs-12.text-center(ng-if="analiseGeoManejo.nomeArquivoShape")
-		//	span Upload Feito
-		//
-		//	.col-xs-12.text-center(ng-if="!analiseGeoManejo.nomeArquivoShape")
-		//		div(ngf-drop, ngf-select, ng-model="file", class="drop-box", ngf-drag-over-class="'dragover'", ngf-multiple="false",
-		//		ngf-allow-dir="false", ngf-change="upload($file)", accept="image/*,application/pdf", ngf-pattern="'image/*, application/zip'") Arraste o arquivo ou clique para realizar o upload
-		//
-		//		.col-xs-12.text-center(ng-if="!analiseGeoManejo.nomeArquivoShape")
-		//			div(ngf-drop, ngf-select, ng-model="file", class="drop-box", ngf-drag-over-class="'dragover'", ngf-multiple="false",
-		//			ngf-allow-dir="false", ngf-change="upload($file)", accept="application/zip", ngf-pattern="'application/zip'") Arraste o arquivo ou clique para realizar o upload
+	table.table.table-condensed(ng-if="ctrl.documentosParecer.length > 0")
+
+		thead
+
+			tr
+				th.col-md-10 Arquivo anexado
+				th.col-md-2.text-right Ações
+
+		tbody
+
+			tr(ng-repeat="documento in ctrl.documentosParecer")
+
+				td.col-md-10 {{documento.nome}}
+				td.col-md-2.text-right
+					a.d-inline.margin-right-xs(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
+						i.glyphicon.glyphicon-save
+
+					a.d-inline.margin-right-xs(title="Remover documento", ng-click="ctrl.removerDocumento($index)")
+						i.glyphicon.glyphicon-trash

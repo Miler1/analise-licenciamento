@@ -2,13 +2,13 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
-	var analiseGeoManejo = this;
+	var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
 
+	var analiseGeoManejo = this;
 	analiseGeoManejo.visualizarProcesso = null;
-	analiseGeoManejo.processo = null;
 	analiseGeoManejo.formularioAnaliseGeo = null;
-	analiseGeoManejo.files = [];
-	analiseGeoManejo.nomeArquivoShape = undefined;
+	analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
+	analiseGeoManejo.processo = null;
 
 	analiseGeoManejo.init = function() {
 
@@ -16,6 +16,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			.then(function (response) {
 
 				analiseGeoManejo.processo = response.data;
+				analiseGeoManejo.processo.analiseManejo = {pathShape: null};
 
 			})
 			.catch(function (response) {
@@ -35,28 +36,48 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	$scope.log = '';
 
-	$scope.upload = function (file) {
+	analiseGeoManejo.upload = function (file) {
 		if (file) {
+
 			if (!file.$error) {
 
-				uploadService.shape(file)
-				.then(function (resp) {
-					$timeout(function() {
-						$scope.log = 'file: ' +
-						resp.config.data.file.name +
-						', Response: ' + JSON.stringify(resp.data) +
-						'\n' + $scope.log;
-					});
-				}, null, function (evt) {
-					var progressPercentage = parseInt(100.0 *
-							evt.loaded / evt.total);
-					$scope.log = 'progress: ' + progressPercentage +
-						'% ' + evt.config.data.file.name + '\n' +
-					  $scope.log;
-				});
+				if (!analiseGeoManejo.processo.analiseManejo.pathShape) {
+
+					uploadService.removeShape(analiseGeoManejo.processo.analiseManejo.pathShape)
+
+						.then(function(response) {
+
+							analiseGeoManejo.processo.analiseManejo.pathShape = null;
+
+							analiseGeoManejo.saveShape(file);
+
+						}, function(error){
+
+							mensagem.error(error.data.texto);
+						});
+
+				} else {
+
+					analiseGeoManejo.saveShape(file);
+				}
 			}
 		}
 	};
+
+
+	analiseGeoManejo.getPath = function (file) {
+
+		uploadService.saveShape(file)
+
+			.then(function(response) {
+
+				analiseGeoManejo.processo.analiseManejo.pathShape = response.data;
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	}
 
 };
 
