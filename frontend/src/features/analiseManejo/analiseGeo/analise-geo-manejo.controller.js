@@ -44,7 +44,9 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 				if (analiseGeoManejo.processo.analiseManejo.pathShape) {
 
-					uploadService.removeShape(analiseGeoManejo.processo.analiseManejo.pathShape)
+					var pathShape = {path: analiseGeoManejo.processo.analiseManejo.pathShape};
+
+					uploadService.removeShape(pathShape)
 
 						.then(function(response) {
 
