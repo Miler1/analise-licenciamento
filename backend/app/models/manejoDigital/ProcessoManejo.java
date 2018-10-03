@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import models.tramitacao.ObjetoTramitavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
@@ -54,4 +55,11 @@ public class ProcessoManejo extends GenericModel {
     @OneToOne
     @JoinColumn(name = "id_analise_manejo")
     public AnaliseManejo analiseManejo;
+
+    @Column(name = "id_objeto_tramitavel")
+    public Long idObjetoTramitavel;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
+    public ObjetoTramitavel objetoTramitavel;
 }
