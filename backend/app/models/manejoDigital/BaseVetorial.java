@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Entity
 @Table(schema = "analise", name = "base_vetorial")
@@ -50,20 +51,15 @@ public class BaseVetorial extends GenericModel {
 
             BaseVetorial baseVetorial = new BaseVetorial();
 
-            byte[] array = new byte[7]; // length is bounded by 7
-            new Random().nextBytes(array);
-            baseVetorial.nome = new String(array, Charset.forName("UTF-8"));
+            baseVetorial.nome = UUID.randomUUID().toString();
 
-            new Random().nextBytes(array);
-            baseVetorial.fonte = new String(array, Charset.forName("UTF-8"));
+            baseVetorial.fonte = UUID.randomUUID().toString();
 
             baseVetorial.ultimaAtualizacao = new Date();
 
-            new Random().nextBytes(array);
-            baseVetorial.escala = new String(array, Charset.forName("UTF-8"));
+            baseVetorial.escala = UUID.randomUUID().toString();
 
-            new Random().nextBytes(array);
-            baseVetorial.observacao = new String(array, Charset.forName("UTF-8"));
+            baseVetorial.observacao = UUID.randomUUID().toString();
 
             lista.add(baseVetorial);
         }

@@ -12,6 +12,12 @@ var ProcessoManejoService = function(request, config) {
 			.get(config.BASE_URL() + "processoManejo/" + id);
 	};
 
+	this.iniciarAnalise = function(processo) {
+
+		return request
+			.post(config.BASE_URL() + "processoManejo/iniciar", processo);
+	};
+
 };
 
 exports.services.ProcessoManejoService = ProcessoManejoService;

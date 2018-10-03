@@ -81,6 +81,20 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			});
 	};
 
+	analiseGeoManejo.analisar = function() {
+
+		processoManejoService.iniciarAnalise(analiseGeoManejo.processo)
+			.then(function(response) {
+
+				mensagem.sucess(response.data.texto);
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	};
+
+
 };
 
 exports.controllers.AnaliseGeoManejoController = AnaliseGeoManejoController;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Entity
 @Table(schema = "analise", name = "analise_vetorial")
@@ -63,13 +64,9 @@ public class AnaliseVetorial extends GenericModel {
 
             AnaliseVetorial analiseVetorial = new AnaliseVetorial();
 
-            byte[] array = new byte[7]; // length is bounded by 7
-            new Random().nextBytes(array);
-            analiseVetorial.tipo = new String(array, Charset.forName("UTF-8"));
+            analiseVetorial.tipo = UUID.randomUUID().toString();
 
-            array = new byte[7]; // length is bounded by 7
-            new Random().nextBytes(array);
-            analiseVetorial.nome = new String(array, Charset.forName("UTF-8"));
+            analiseVetorial.nome = UUID.randomUUID().toString();
 
             analiseVetorial.distanciaPropriedade = Math.random();
 
@@ -79,9 +76,7 @@ public class AnaliseVetorial extends GenericModel {
 
             analiseVetorial.sobreposicaoAmf = Math.random();
 
-            array = new byte[7]; // length is bounded by 7
-            new Random().nextBytes(array);
-            analiseVetorial.observacao = new String(array, Charset.forName("UTF-8"));
+            analiseVetorial.observacao = UUID.randomUUID().toString();
 
             analiseVetorial.analiseManejo = analise;
 

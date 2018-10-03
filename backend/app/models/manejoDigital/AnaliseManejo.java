@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Entity
 @Table(schema = "analise", name = "analise_manejo")
@@ -126,9 +127,7 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.pathShape = processo.analiseManejo.pathShape;
 
-        byte[] array = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(array);
-        analiseManejo.analiseTemporal = new String(array, Charset.forName("UTF-8"));
+        analiseManejo.analiseTemporal = UUID.randomUUID().toString();;
 
         analiseManejo.areaManejoFlorestalSolicitada = Math.random();
 
@@ -158,13 +157,11 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.areaSemPreviaExploracao = Math.random();
 
-        new Random().nextBytes(array);
-        analiseManejo.consideracoes =  new String(array, Charset.forName("UTF-8"));
+        analiseManejo.consideracoes =  UUID.randomUUID().toString();
 
-        new Random().nextBytes(array);
-        analiseManejo.conclusao =  new String(array, Charset.forName("UTF-8"));
+        analiseManejo.conclusao =  UUID.randomUUID().toString();
 
-        analiseManejo.usuario = Usuario.findById(22);
+        analiseManejo.usuario = Usuario.findById(22l);
 
         analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
 
