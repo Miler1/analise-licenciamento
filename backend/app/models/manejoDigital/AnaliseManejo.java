@@ -170,7 +170,6 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
 
-
-
+        analiseManejo.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(analiseManejo);
     }
 }
