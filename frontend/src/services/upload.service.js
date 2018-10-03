@@ -21,7 +21,7 @@ var UploadService = function(request, config, Upload) {
 	this.removeShape = function(path) {
 
 		return request
-			.delete(config.BASE_URL() + "upload/shape/" + path);
+			.delete(config.BASE_URL() + "upload/shape", path);
 	};
 
 };

@@ -9,6 +9,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.formularioAnaliseGeo = null;
 	analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 	analiseGeoManejo.processo = null;
+	analiseGeoManejo.arquivoShape = null;
 
 	analiseGeoManejo.init = function() {
 
@@ -41,14 +42,14 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 			if (!file.$error) {
 
-				if (!analiseGeoManejo.processo.analiseManejo.pathShape) {
+				if (analiseGeoManejo.processo.analiseManejo.pathShape) {
 
 					uploadService.removeShape(analiseGeoManejo.processo.analiseManejo.pathShape)
 
 						.then(function(response) {
 
 							analiseGeoManejo.processo.analiseManejo.pathShape = null;
-
+							analiseGeoManejo.arquivoShape = null;
 							analiseGeoManejo.saveShape(file);
 
 						}, function(error){
@@ -65,19 +66,20 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	};
 
 
-	analiseGeoManejo.getPath = function (file) {
+	analiseGeoManejo.saveShape = function (file) {
 
 		uploadService.saveShape(file)
 
 			.then(function(response) {
 
 				analiseGeoManejo.processo.analiseManejo.pathShape = response.data;
+				analiseGeoManejo.arquivoShape = file;
 
 			}, function(error){
 
 				mensagem.error(error.data.texto);
 			});
-	}
+	};
 
 };
 

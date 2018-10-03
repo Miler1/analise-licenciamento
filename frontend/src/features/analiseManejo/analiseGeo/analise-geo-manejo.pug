@@ -41,12 +41,10 @@ div
 
 		tbody
 
-			tr(ng-repeat="documento in ctrl.documentosParecer")
+			tr(ng-if="analiseGeoManejo.processo.analiseManejo.pathShape")
 
-				td.col-md-10 {{documento.nome}}
+				td.col-md-10 {{analiseGeoManejo.arquivoShape}}
 				td.col-md-2.text-right
-					a.d-inline.margin-right-xs(ng-if="documento.id", title="Baixar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
-						i.glyphicon.glyphicon-save
 
-					a.d-inline.margin-right-xs(title="Remover documento", ng-click="ctrl.removerDocumento($index)")
+					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeUpload()")
 						i.glyphicon.glyphicon-trash
