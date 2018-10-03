@@ -1,4 +1,4 @@
-var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, Upload, $timeout, uploadService) {
+var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, uploadService, $location) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -110,6 +110,11 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 				mensagem.error(error.data.texto);
 			});
+	};
+
+	analiseGeoManejo.cancelar = function() {
+
+		$location.path('/analise-manejo');
 	};
 
 
