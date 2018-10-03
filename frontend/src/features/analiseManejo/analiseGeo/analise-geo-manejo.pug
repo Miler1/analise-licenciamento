@@ -26,28 +26,29 @@ hr
 div
 	.col-xs-12.col-md-6.no-padding
 		h4 Análise Geo - Upload do shape
-	.col-xs-6.col-md-6.text-right.no-padding
-		form(name="analiseGeoManejo.formularioAnaliseGeo", novalidate)
+	.col-xs-6.col-md-6.text-right.no-padding.margin-bottom-md
+		form(name="analiseGeoManejo.formularioAnaliseGeo")
 			.form-group
-				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-accept="'application/zip'", ngf-pattern="'application/zip'", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-accept="'application/zip'",
+				 ngf-pattern="'application/zip'", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
+				 ng-class="{'error-message': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape}")
 					i.glyphicon.glyphicon-open.glyphicon--with-right-margin
 					| Anexar arquivo zip à análise
 
 div
-	table.table.table-condensed.tabela-anexo
+	table.table.table-condensed
 
 		thead
 
 			tr
-				th.col-md-10 Arquivo anexado
-				th.col-md-2.text-right Ações
+				th.col-xs-10 Arquivo anexado
+				th.col-xs-2.text-right Ações
 
 		tbody
 
 			tr(ng-if="analiseGeoManejo.processo.analiseManejo.pathShape")
-				td.col-md-10 {{analiseGeoManejo.arquivoShape.name}}
-				td.col-md-2.text-right
-
+				td.col-xs-10 {{analiseGeoManejo.arquivoShape.name}}
+				td.col-xs-2.text-right
 					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeUpload()")
 						i.glyphicon.glyphicon-trash
 			tr(ng-if="!analiseGeoManejo.processo.analiseManejo.pathShape")
