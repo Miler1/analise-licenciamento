@@ -4,7 +4,7 @@
 
 ALTER TABLE analise.processo_manejo  ADD COLUMN id_objeto_tramitavel INTEGER;
 
-COMMENT ON COLUMN processo_manejo.id_objeto_tramitavel IS 'Identificador único da entidade objeto_tramitavel.';
+COMMENT ON COLUMN analise.processo_manejo.id_objeto_tramitavel IS 'Identificador único da entidade objeto_tramitavel.';
 
 # --- !Downs
 

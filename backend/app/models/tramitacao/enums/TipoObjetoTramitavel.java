@@ -6,7 +6,8 @@ package models.tramitacao.enums;
 
 public enum TipoObjetoTramitavel {
 	
-	LICENCIAMENTO_AMBIENTAL( 1L );
+	LICENCIAMENTO_AMBIENTAL( 1L ),
+	MANEJO_DIGITAL( 2L );
 
 	private Long id;
 
