@@ -81,7 +81,12 @@ public class Uploads extends InternalController {
 			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
 		}
 
-		if(realType.contains("application/zip")) {
+		if(realType.contains("application/zip") ||
+				realType.contains("application/x-rar-compressed") ||
+				realType.contains("application/octet-stream") ||
+				realType.contains("application/x-zip-compressed") ||
+				realType.contains("multipart/x-zip") ||
+				realType.contains("application/vnd.rar")) {
 
 			byte[] data = IO.readContent(file.asFile());
 			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
