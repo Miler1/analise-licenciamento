@@ -34,36 +34,34 @@ div
 				td.col-md-1 Área de uso consolidado
 				td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.imovelManejo.areaUsoConsolidado ? analiseTecnicaManejo.analiseTecnica.processoManejo.imovelManejo.areaUsoConsolidado : '-'}}
 
-//- div
-//- 	.col-xs-12.col-md-6.no-padding
-//- 		h5 Anexos
-//- 	.col-xs-6.col-md-6.text-right.no-padding.margin-bottom-md
-//- 		form(name="analiseTecnicaManejo.formularioAnaliseTecnica")
-//- 			.form-group
-//- 				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseTecnicaManejo.upload($file)", ngf-max-size="{{analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
-//- 				ngf-before-model-change="analiseTecnicaManejo.validarArquivo($file)")
-//- 					i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-//- 					| Anexar arquivo à análise
+div
+	.col-xs-12.col-md-12.text-right.no-padding.margin-bottom-md
+		form(name="analiseTecnicaManejo.formularioAnaliseTecnica")
+			.form-group
+				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseTecnicaManejo.upload($file)", ngf-max-size="{{analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
+				ngf-before-model-change="analiseTecnicaManejo.validarArquivo($file)")
+					i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+					| Anexar arquivo à análise
 
-//- div
-//- 	table.table.table-condensed
+div
+	table.table.table-condensed
 
-//- 		thead
+		thead
 
-//- 			tr
-//- 				th.col-xs-10 Arquivo anexado
-//- 				th.col-xs-2.text-right Ações
+			tr
+				th.col-xs-10 Arquivo anexado
+				th.col-xs-2.text-right Ações
 
-//- 		tbody
+		tbody
 
-//- 			tr(ng-if="analiseGeoManejo.processo.analiseManejo.pathShape")
-//- 				td.col-xs-10 {{analiseGeoManejo.arquivoShape.name}}
-//- 				td.col-xs-2.text-right
-//- 					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeUpload()")
-//- 						i.glyphicon.glyphicon-trash
-//- 			tr(ng-if="!analiseGeoManejo.processo.analiseManejo.pathShape")
-//- 				td.col-xs-12.text-center Nenhum arquivo anexado
-//- 	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape") Campo obrigatório.
+			tr(ng-if="analiseGeoManejo.processo.analiseManejo.pathShape")
+				td.col-xs-10 {{analiseGeoManejo.arquivoShape.name}}
+				td.col-xs-2.text-right
+					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeUpload()")
+						i.glyphicon.glyphicon-trash
+			tr(ng-if="!analiseGeoManejo.processo.analiseManejo.pathShape")
+				td.col-xs-12.text-center Nenhum arquivo anexado
+	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape") Campo obrigatório.
 
 .col-xs-12
 	include observacoes
