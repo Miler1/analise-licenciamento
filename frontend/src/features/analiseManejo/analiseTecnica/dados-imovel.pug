@@ -1,8 +1,21 @@
-#dadosDoImovel
 
-	div.row
+h5 Informações declaradas no CAR
 
-		.col-xs-12.col-md-8
+div
+	table.table.table-striped.table-condensed
 
-		.col-xs-12
-			include observacoes
+		thead
+			tr
+				th Dados
+				th Valores
+
+		tbody
+			tr
+				td.col-md-1 Registro no CAR
+				td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.imovelManejo.registroCar ? analiseTecnicaManejo.analiseTecnica.processoManejo.imovelManejo.registroCar : '-'}}
+			tr
+				td.col-md-1 Registro no CAR
+				td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.imovelManejo.areaLiquidaImovel ? analiseTecnicaManejo.analiseTecnica.processoManejo.imovelManejo.areaLiquidaImovel : '-'}}
+
+.col-xs-12
+	include observacoes
