@@ -21,64 +21,58 @@ div.row#dadosProcesso(ng-init="analiseTecnicaManejo.init()")
 				label.col-sm-4 Município:
 				span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.nomeMunicipioSimlam}}
 
-//div.modal-header
-//	h4.modal-title Parecer Técnico
-//
-//div.modal-body
-//
-//	ul.nav.nav-tabs(role="tablist")
-//		li.active(role="presentation")
-//			a(data-toggle="tab", data-target="#tabDadosDoImovel") Dados do Imóvel
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabMetodosDaBaseVetorial") Metodos da base vetorial oficial utilizada
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabAnaliseVetorialSobreBaseDeDadosOficiais") Analise vetorial sobre a base de dados oficiais
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabAnaliseTemporalDeImagensDeSatelite") Analise temporal de imagens de satélite
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabInsumosUtilizadosParaAnaliseTemporal") Insumos utilizados para analise temporal
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabCalculoDoNdfi") Cálculo do NDFI
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabCalculoDaAreaEfetivaDeManejo") Cálculo da área efetiva de manejo
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabDetalhamentoDaAreaEfetivaDeManejo") Detalhamento da área efetiva de manejo
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabConsideracoes") Considerações
-//		li(role="tab")
-//			a(data-toggle="tab", data-target="#tabConclusao") Conclusão
-//
-//	div#dadosProcesso
-//		resumo-empreendimento(empreendimento='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento')
-//
-//	.tab-content
-//
-//		#tabDadosDoImovel.tab-pane.fade.in.active
-//			include dadosDoImovel
-//
-//		#tabMetodosDaBaseVetorial.tab-pane.fade
-//			include metodosDaBaseVetorial
-//
-//		#tabAnaliseVetorialSobreBaseDeDadosOficiais.tab-pane.fade
-//			include analiseVetorialSobreBaseDeDadosOficiais
-//
-//		#tabAnaliseTemporalDeImagensDeSatelite.tab-pane.fade
-//			include analiseTemporalDeImagensDeSatelite
-//
-//		#tabInsumosUtilizadosParaAnaliseTemporal.tab-pane.fade
-//			include insumosUtilizadosParaAnaliseTemporal
-//
-//		#tabCalculoDoNdfi.tab-pane.fade
-//			include calculoDoNdfi
-//
-//		#tabCalculoDaAreaEfetivaDeManejo.tab-pane.fade
-//			include calculoDaAreaEfetivaDeManejo
-//
-//		#tabDetalhamentoDaAreaEfetivaDeManejo.tab-pane.fade
-//			include detalhamentoDaAreaEfetivaDeManejo
-//
-//		#tabConsideracoes.tab-pane.fade
-//			include consideracoes
-//
-//		#tabConclusao.tab-pane.fade
-//			include conclusao
+div
+
+	ul.nav.nav-tabs(role="tablist")
+		li.active(role="presentation")
+			a(data-toggle="tab", data-target="#dados-imovel") Dados do Imóvel
+		li(role="tab")
+			a(data-toggle="tab", data-target="#metodos-base-vetorial") Metodos da base vetorial oficial utilizada
+		li(role="tab")
+			a(data-toggle="tab", data-target="#analise-vetorial-base-oficiais") Analise vetorial sobre a base de dados oficiais
+		li(role="tab")
+			a(data-toggle="tab", data-target="#analise-temporal-imagens-satelite") Analise temporal de imagens de satélite
+		li(role="tab")
+			a(data-toggle="tab", data-target="#insumos-utilizados-analise-temporal") Insumos utilizados para analise temporal
+		li(role="tab")
+			a(data-toggle="tab", data-target="#calculo-ndfi") Cálculo do NDFI
+		li(role="tab")
+			a(data-toggle="tab", data-target="#calculo-area-efetiva-manejo") Cálculo da área efetiva de manejo
+		li(role="tab")
+			a(data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo") Detalhamento da área efetiva de manejo
+		li(role="tab")
+			a(data-toggle="tab", data-target="#consideracoes") Considerações
+		li(role="tab")
+			a(data-toggle="tab", data-target="#conclusao") Conclusão
+
+	.tab-content
+
+		#dados-imovel.tab-pane.fade.in.active
+			include dados-imovel
+
+		#metodos-base-vetorial.tab-pane.fade
+			include metodos-base-vetorial
+
+		#analise-vetorial-base-oficiais.tab-pane.fade
+			include analise-vetorial-base-oficiais
+
+		#analise-temporal-imagens-satelite.tab-pane.fade
+			include analise-temporal-imagens-satelite
+
+		#insumos-utilizados-analise-temporal.tab-pane.fade
+			include insumos-utilizados-analise-temporal
+
+		#calculo-ndfi.tab-pane.fade
+			include calculo-ndfi
+
+		#calculo-area-efetiva-manejo.tab-pane.fade
+			include calculo-area-efetiva-manejo
+
+		#detalhamento-area-efetiva-manejo.tab-pane.fade
+			include detalhamento-area-efetiva-manejo
+
+		#consideracoes.tab-pane.fade
+			include consideracoes
+
+		#conclusao.tab-pane.fade
+			include conclusao
