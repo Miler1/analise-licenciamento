@@ -11,6 +11,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.processo = null;
 	analiseGeoManejo.arquivoShape = null;
 	analiseGeoManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
+	analiseGeoManejo.validacaoErro = false;
 
 	analiseGeoManejo.init = function() {
 
@@ -44,7 +45,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	$scope.log = '';
 
 	analiseGeoManejo.upload = function (file) {
-		if (file) {
+		if (file && !analiseGeoManejo.validacaoErro) {
 
 			if (!file.$error) {
 
@@ -70,6 +71,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 					analiseGeoManejo.saveShape(file);
 				}
 			}
+
 		}
 	};
 
@@ -79,6 +81,11 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		if (file && (analiseGeoManejo.tipos.indexOf(file.type) === -1 && file.name.substring(file.name.lastIndexOf('.')) !== '.rar')) {
 
 			mensagem.error("Extensão de arquivo inválida.");
+			analiseGeoManejo.validacaoErro = true;
+
+		} else {
+
+			analiseGeoManejo.validacaoErro = false;
 		}
 	};
 
