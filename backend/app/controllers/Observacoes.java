@@ -18,7 +18,7 @@ public class Observacoes extends InternalController {
 		renderJSON(observacao, ObeservacoesSerializer.save);
 	}
 
-	public static void delete(String id) {
+	public static void delete(Long id) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 

@@ -1,8 +1,19 @@
-.col-xs-12
-    button.btn.btn-default.pull-right(ng-click="analiseTecnicaManejo.abrirModal()", tabindex="0")
-        span.glyphicon.glyphicon-plus.glyphicon--with-right-margin
-        | &nbsp;Adicionar observação
+mixin observacoes(lista)
 
-.col-xs-12(ng-if="analiseTecnicaManejo.analiseTecnica.observacoesDadosImovel.length > 0 && analiseTecnicaManejo.passoAtual === analiseTecnicaManejo.passos.DADOS_IMOVEL ")
-    span Tem observação
+    .col-xs-12
+        button.btn.btn-default.pull-right(ng-click="analiseTecnicaManejo.abrirModal()", tabindex="0")
+            span.glyphicon.glyphicon-plus.glyphicon--with-right-margin
+            | &nbsp;Adicionar observação
+
+    .col-xs-12(ng-if=`${lista}.length > 0`)
+        h4 Observações
+
+        div.row.card-observacao(ng-repeat=`observacao in ${lista}`)
+
+            .col-xs-12.text-right.icone-excluir
+                a.d-inline.margin-right-xs(title="Excluir observação", ng-click="analiseTecnicaManejo.removerObservacao(observacao)")
+                    i.glyphicon.glyphicon-trash.icone
+
+            .col-xs-12
+                p.observacao {{ observacao.texto }}
 

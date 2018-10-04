@@ -1,3 +1,5 @@
+include ./observacoes
+
 h5 Informações declaradas no CAR
 
 div
@@ -64,4 +66,4 @@ div
 	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape") Campo obrigatório.
 
 .col-xs-12
-	include observacoes
+	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesDadosImovel')

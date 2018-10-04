@@ -7,16 +7,16 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.anexo = null;
 	analiseTecnicaManejo.passos = {
-		DADOS_IMOVEL: 'DADOS_IMOVEL',
-		BASE_VETORIAL: 'BASE_VETORIAL',
-		ANALISE_VETORIAL: 'ANALISE_VETORIAL',
-		ANALISE_TEMPORAL: 'ANALISE_TEMPORAL',
-		INSUMOS_UTILIZADOS: 'INSUMOS_UTILIZADOS',
-		CALCULO_NDFI: 'CALCULO_NDFI',
-		CALCULO_AREA_EFETIVA: 'CALCULO_AREA_EFETIVA',
-		DETALHAMENTO_AREA_EFETIVA: 'DETALHAMENTO_AREA_EFETIVA',
-		CONSIDERACOES: 'CONSIDERACOES',
-		CONCLUSAO: 'CONCLUSAO'
+		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel'],
+		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial'],
+		ANALISE_VETORIAL: ['ANALISE_VETORIAL', 'observacoesAnaliseVetorial'],
+		ANALISE_TEMPORAL: ['ANALISE_TEMPORAL', 'observacoesAnaliseTemporal'],
+		INSUMOS_UTILIZADOS: ['INSUMOS_UTILIZADOS', 'observacoesInsumosUtilizados'],
+		CALCULO_NDFI: ['CALCULO_NDFI', 'observacoesCalculoNDFI'],
+		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva'],
+		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva'],
+		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes'],
+		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao']
 	};
 
 	analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.passos.DADOS_IMOVEL;
@@ -53,52 +53,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		modalInstance.result.then(function (observacao) {
 
 			observacao.analiseManejo = { id: analiseTecnicaManejo.analiseTecnica.id };
-			observacao.passoAnalise = analiseTecnicaManejo.passoAtual;
+			observacao.passoAnalise = analiseTecnicaManejo.passoAtual[0];
 
 			observacaoService.save(observacao).then(function (response) {
 
-				switch(analiseTecnicaManejo.passoAtual) {
-
-					case analiseTecnicaManejo.passos.DADOS_IMOVEL:
-						analiseTecnicaManejo.analiseTecnica.observacoesDadosImovel.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.BASE_VETORIAL:
-						analiseTecnicaManejo.analiseTecnica.observacoesBaseVetorial.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.ANALISE_VETORIAL:
-						analiseTecnicaManejo.analiseTecnica.observacoesAnaliseVetorial.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.ANALISE_TEMPORAL:
-						analiseTecnicaManejo.analiseTecnica.observacoesAnaliseTemporal.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.INSUMOS_UTILIZADOS:
-						analiseTecnicaManejo.analiseTecnica.observacoesInsumosUtilizados.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.CALCULO_NDFI:
-						analiseTecnicaManejo.analiseTecnica.observacoesCalculoNDFI.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.CALCULO_AREA_EFETIVA:
-						analiseTecnicaManejo.analiseTecnica.observacoesCalculoAreaEfetiva.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA:
-						analiseTecnicaManejo.analiseTecnica.observacoesDetalhamentoAreaEfetiva.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.CONSIDERACOES:
-						analiseTecnicaManejo.analiseTecnica.observacoesConsideracoes.push(response.data);
-						break;
-
-					case analiseTecnicaManejo.passos.CONCLUSAO:
-						analiseTecnicaManejo.analiseTecnica.observacoesConclusao.push(response.data);
-						break;
-				}
+				analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].push(response.data);
 
 			})
 			.catch(function (response) {
@@ -155,6 +114,23 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				mensagem.error(error.data.texto);
 			});
+	};
+
+	analiseTecnicaManejo.removerObservacao = function(observacao) {
+
+		observacaoService.delete(observacao.id).then(function (response) {
+
+			analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].splice(analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].indexOf(observacao), 1);
+
+		})
+		.catch(function (response) {
+
+			if (!!response.data.texto)
+				mensagem.warning(response.data.texto);
+
+			else
+				mensagem.error("Ocorreu um erro ao excluir a observacao.");
+		});
 	};
 
 };
