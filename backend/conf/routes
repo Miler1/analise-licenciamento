@@ -134,6 +134,15 @@ POST	/upload/save								Uploads.upload
 
 GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 
+# Processos Manejo
+POST    /processoManejo                             ProcessosManejo.save
+GET     /processoManejo/{id}                        ProcessosManejo.findById
+POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
+
+# Analises Manejo
+POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
+DELETE  /analiseManejo/anexo/{token}                AnalisesManejo.deleteAnexo
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
