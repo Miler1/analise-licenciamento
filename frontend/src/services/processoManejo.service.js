@@ -1,4 +1,4 @@
-var ProcessoManejoService = function(request, config) {
+var ProcessoManejoService = function(request, config, Upload) {
 
 	this.salvarProcesso = function(processo) {
 
@@ -22,6 +22,21 @@ var ProcessoManejoService = function(request, config) {
 
 		return request
 			.get(config.BASE_URL() + "analiseManejo/" + id);
+	};
+
+	this.saveAnexo = function(id, file) {
+
+		return Upload.upload({
+
+			url: config.BASE_URL() + 'analiseManejo/' + id + '/anexo',
+			data: { file: file }
+		});
+	};
+
+	this.removeAnexo = function(nameFile) {
+
+		return request
+			.delete(config.BASE_URL() + "analiseManejo/anexo" + nameFile);
 	};
 
 };
