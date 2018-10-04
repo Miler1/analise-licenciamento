@@ -25,25 +25,25 @@ div
 
 	ul.nav.nav-tabs(role="tablist")
 		li.active(role="presentation")
-			a(data-toggle="tab", data-target="#dados-imovel") Dados do Imóvel
+			a(id="dados-imovel", data-toggle="tab", data-target="#dados-imovel") Dados do Imóvel
 		li(role="tab")
-			a(data-toggle="tab", data-target="#metodos-base-vetorial") Metodos da base vetorial oficial utilizada
+			a(id="metodos-base-vetorial", data-toggle="tab", data-target="#metodos-base-vetorial") Metodos da base vetorial oficial utilizada
 		li(role="tab")
-			a(data-toggle="tab", data-target="#analise-vetorial-base-oficiais") Analise vetorial sobre a base de dados oficiais
+			a(id="analise-vetorial-base-oficiais", data-toggle="tab", data-target="#analise-vetorial-base-oficiais") Analise vetorial sobre a base de dados oficiais
 		li(role="tab")
-			a(data-toggle="tab", data-target="#analise-temporal-imagens-satelite") Analise temporal de imagens de satélite
+			a(id="analise-temporal-imagens-satelite", data-toggle="tab", data-target="#analise-temporal-imagens-satelite") Analise temporal de imagens de satélite
 		li(role="tab")
-			a(data-toggle="tab", data-target="#insumos-utilizados-analise-temporal") Insumos utilizados para analise temporal
+			a(id="insumos-utilizados-analise-temporal", data-toggle="tab", data-target="#insumos-utilizados-analise-temporal") Insumos utilizados para analise temporal
 		li(role="tab")
-			a(data-toggle="tab", data-target="#calculo-ndfi") Cálculo do NDFI
+			a(id="calculo-ndfi", data-toggle="tab", data-target="#calculo-ndfi") Cálculo do NDFI
 		li(role="tab")
-			a(data-toggle="tab", data-target="#calculo-area-efetiva-manejo") Cálculo da área efetiva de manejo
+			a(id="calculo-area-efetiva-manejo", data-toggle="tab", data-target="#calculo-area-efetiva-manejo") Cálculo da área efetiva de manejo
 		li(role="tab")
-			a(data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo") Detalhamento da área efetiva de manejo
+			a(id="detalhamento-area-efetiva-manejo", data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo") Detalhamento da área efetiva de manejo
 		li(role="tab")
-			a(data-toggle="tab", data-target="#consideracoes") Considerações
+			a(id="consideracoes", data-toggle="tab", data-target="#consideracoes") Considerações
 		li(role="tab")
-			a(data-toggle="tab", data-target="#conclusao") Conclusão
+			a(id="conclusao", data-toggle="tab", data-target="#conclusao") Conclusão
 
 	.tab-content
 
@@ -76,3 +76,17 @@ div
 
 		#conclusao.tab-pane.fade
 			include conclusao
+
+.col-xs-12.col-md-6.rodape-analise
+	button.btn.btn-default.margin-right-xs(ng-click="analiseTecnicaManejo.sair()", tabindex="0")
+			span.glyphicon.glyphicon-remove.glyphicon--with-right-margin
+			| &nbsp;Sair
+
+	button.btn.btn-default(ng-click="analiseTecnicaManejo.voltar()", tabindex="0", ng-if="analiseTecnicaManejo.index !== 0")
+		span.glyphicon.glyphicon-chevron-left.glyphicon--with-right-margin
+		| &nbsp;Voltar
+
+.col-xs-12.col-md-6.text-right.rodape-analise
+	button.btn.btn-success.pull-right(ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
+			span.glyphicon.glyphicon-ok.glyphicon--with-right-margin
+			| &nbsp;Confirmar parecer

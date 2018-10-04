@@ -10,17 +10,31 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 	analiseTecnicaManejo.anexo = null;
 	analiseTecnicaManejo.passos = {
-		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel'],
-		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial'],
-		ANALISE_VETORIAL: ['ANALISE_VETORIAL', 'observacoesAnaliseVetorial'],
-		ANALISE_TEMPORAL: ['ANALISE_TEMPORAL', 'observacoesAnaliseTemporal'],
-		INSUMOS_UTILIZADOS: ['INSUMOS_UTILIZADOS', 'observacoesInsumosUtilizados'],
-		CALCULO_NDFI: ['CALCULO_NDFI', 'observacoesCalculoNDFI'],
-		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva'],
-		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva'],
-		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes'],
-		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao']
+		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel', 'dados-imovel'],
+		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial', 'metodos-base-vetorial'],
+		ANALISE_VETORIAL: ['ANALISE_VETORIAL', 'observacoesAnaliseVetorial', 'analise-vetorial-base-oficiais'],
+		ANALISE_TEMPORAL: ['ANALISE_TEMPORAL', 'observacoesAnaliseTemporal', 'analise-temporal-imagens-satelite'],
+		INSUMOS_UTILIZADOS: ['INSUMOS_UTILIZADOS', 'observacoesInsumosUtilizados', 'insumos-utilizados-analise-temporal'],
+		CALCULO_NDFI: ['CALCULO_NDFI', 'observacoesCalculoNDFI', 'calculo-ndfi'],
+		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva', 'calculo-area-efetiva-manejo'],
+		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva', 'detalhamento-area-efetiva-manejo'],
+		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes', 'consideracoes'],
+		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao', 'conclusao']
 	};
+	analiseTecnicaManejo.listaPassos = [
+		analiseTecnicaManejo.passos.DADOS_IMOVEL,
+		analiseTecnicaManejo.passos.BASE_VETORIAL,
+		analiseTecnicaManejo.passos.ANALISE_VETORIAL,
+		analiseTecnicaManejo.passos.ANALISE_TEMPORAL,
+		analiseTecnicaManejo.passos.INSUMOS_UTILIZADOS,
+		analiseTecnicaManejo.passos.CALCULO_NDFI,
+		analiseTecnicaManejo.passos.CALCULO_AREA_EFETIVA,
+		analiseTecnicaManejo.passos.CALCULO_AREA_EFETIVA,
+		analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA,
+		analiseTecnicaManejo.passos.CONSIDERACOES,
+		analiseTecnicaManejo.passos.CONCLUSAO
+	];
+	analiseTecnicaManejo.index = 0;
 
 	analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.passos.DADOS_IMOVEL;
 
@@ -148,6 +162,25 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			else
 				mensagem.error("Ocorreu um erro ao excluir a observacao.");
 		});
+	};
+
+	analiseTecnicaManejo.sair = function() {
+
+		$location.path('/analise-manejo');
+	};
+
+	analiseTecnicaManejo.voltar = function() {
+
+		analiseTecnicaManejo.index -= 1;
+		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
+		document.getElementById(analiseTecnicaManejo.passoAtual[2]).click();
+	};
+
+	analiseTecnicaManejo.confirmar = function() {
+
+		analiseTecnicaManejo.index += 1;
+		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
+		document.getElementById(analiseTecnicaManejo.passoAtual[2]).click();
 	};
 
 };
