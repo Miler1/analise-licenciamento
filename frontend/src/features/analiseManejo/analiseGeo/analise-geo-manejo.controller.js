@@ -12,6 +12,20 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.arquivoShape = null;
 	analiseGeoManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
 	analiseGeoManejo.validacaoErro = false;
+	analiseTecnicaManejo.passos = {
+		DADOS_IMOVEL: 0,
+		BASE_VETORIAL:1,
+		ANALISE_VETORIAL: 2,
+		ANALISE_TEMPORAL: 3,
+		INSUMOS_UTILIZADOS: 4,
+		CALCULO_NDFI: 5,
+		CALCULO_AREA_EFETIVA: 6,
+		DETALHAMENTO_AREA_EFETIVA: 7,
+		CONSIDERACOES: 8,
+		CONCLUSAO: 9
+	};
+
+	analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.passos.DADOS_IMOVEL;
 
 	analiseGeoManejo.init = function() {
 
