@@ -14,6 +14,7 @@ var licenciamento = angular.module("licenciamento", [
 	"ngSanitize",
 	"analiseJuridica",
 	"analiseEmAndamento",
+	"analiseManejo",
 	"ui.bootstrap",
 	"textAngular",
 	"analiseTecnica",
@@ -30,8 +31,36 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken){
 
 					return "/aguardando-assinatura";
+
 				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR) {
+
 					return "/consultar-processo";
+
+				} else if (
+					[
+						app.utils.Perfis.COORDENADOR_JURIDICO,
+						app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
+						app.utils.Perfis.CONSULTOR_JURIDICO,
+						app.utils.Perfis.COORDENADOR_TECNICO,
+						app.utils.Perfis.GERENTE_TECNICO,
+						app.utils.Perfis.ANALISTA_TECNICO,
+						app.utils.Perfis.APROVADOR
+					].indexOf(LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id) === -1) {
+
+					var result = false;
+
+					_.forEach(LICENCIAMENTO_CONFIG.usuarioSessao.permissoes, function(permissao) {
+
+						if(permissao === 'LISTAR_PROCESSO_MANEJO') {
+
+							result = true;
+						}
+					});
+
+					if (result) {
+
+						return '/listagem-processo-manejo';
+					}
 				}
 
 				return "/caixa-entrada";
@@ -52,6 +81,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			templateUrl: "features/consultarLicencasEmitidas/consultar-licencas-emitidas.html",
 			controller: controllers.ConsultarLicencasEmitidasController,
 			controllerAs: 'consultarLicencas'
+		})
+		.when("/listagem-processo-manejo", {
+			templateUrl: "features/analiseManejo/listagem/listagem-processo-manejo.html",
+			controller: controllers.ListagemProcessoManejoController,
+			controllerAs: 'listagemProcessoManejo'
 		})
 		.otherwise({
 			redirectTo: "/"
@@ -269,7 +303,15 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return true;
+				return [
+					app.utils.Perfis.COORDENADOR_JURIDICO,
+					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
+					app.utils.Perfis.CONSULTOR_JURIDICO,
+					app.utils.Perfis.COORDENADOR_TECNICO,
+					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_TECNICO,
+					app.utils.Perfis.APROVADOR
+				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
 			}
 		},
 		{
@@ -285,7 +327,41 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return true;
+				return [
+					app.utils.Perfis.COORDENADOR_JURIDICO,
+					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
+					app.utils.Perfis.CONSULTOR_JURIDICO,
+					app.utils.Perfis.COORDENADOR_TECNICO,
+					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_TECNICO,
+					app.utils.Perfis.APROVADOR
+				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
+			}
+		},
+		{
+			titulo: 'Manejo Digital',
+			icone: 'glyphicon glyphicon-list-alt',
+			url: function() {
+
+				return '/listagem-processo-manejo';
+			},
+			estaSelecionado: function () {
+
+				return $location.path() === '/listagem-processo-manejo';
+			},
+			visivel: function(){
+
+				var result = false;
+
+				_.forEach($rootScope.usuarioSessao.permissoes, function(permissao) {
+
+					if(permissao === 'LISTAR_PROCESSO_MANEJO') {
+
+						result = true;
+					}
+				});
+
+				return result;
 			}
 		}];
 
@@ -395,7 +471,8 @@ utils.services(licenciamento)
 	.add('tipoLicencaService', services.TipoLicencaService)
 	.add('licencaService', services.LicencaService)
 	.add('dispensaLicencaService', services.DispensaLicencaService)
-	.add('notificacaoService', services.NotificacaoService);
+	.add('notificacaoService', services.NotificacaoService)
+	.add('processoManejoService', services.ProcessoManejoService);
 
 
 utils.filters(licenciamento)

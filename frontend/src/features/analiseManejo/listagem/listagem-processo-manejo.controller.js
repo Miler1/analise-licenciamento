@@ -1,0 +1,236 @@
+var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location) {
+
+	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO DIGITAL';
+
+	var listagemProcessoManejo = this;
+
+	listagemProcessoManejo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
+	listagemProcessoManejo.atualizarPaginacao = atualizarPaginacao;
+	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
+	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
+
+	listagemProcessoManejo.iniciarAnalise = function (processo) {
+
+		processoManejoService.salvarProcesso(processo)
+			.then(function(response){
+
+				var idProcesso = response.data.id;
+
+				$location.path('/analise-manejo/' + idProcesso + '/analise-geo');
+
+			})
+			.catch(function(response){
+
+				if(!!response.data.texto)
+					mensagem.warning(response.data.texto);
+
+				else
+					mensagem.error("Ocorreu um erro ao salvar o processo.");
+			});
+	};
+
+	listagemProcessoManejo.visualizarProcesso = null;
+	listagemProcessoManejo.processosManejo = [
+		{
+			numeroProcesso: "2018/001",
+			idEmpreendimento: "1",
+			cpfCnpj: "76579607000130",
+			denominacaoEmpreendimentoSimlam: "Empreendimento industrial",
+			idMunicipio: "1",
+			nomeMunicipioSimlam: "Bagre",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 100.0,
+				areaLiquidaImovel: 80.0
+			}
+		},
+		{
+			numeroProcesso: "2018/002",
+			idEmpreendimento: "2",
+			cpfCnpj: "81836353000128",
+			denominacaoEmpreendimentoSimlam: "Sitio do Kustavinho amarelooo",
+			idMunicipio: "2",
+			nomeMunicipioSimlam: "Page",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 80.0,
+				areaLiquidaImovel: 60.0,
+				areaReservaLegal: 20.0
+			}
+		},
+		{
+			numeroProcesso: "2018/003",
+			idEmpreendimento: "3",
+			cpfCnpj: "50081340000162",
+			denominacaoEmpreendimentoSimlam: "Mariane e César Limpeza ME",
+			idMunicipio: "3",
+			nomeMunicipioSimlam: "Belém",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 60.0,
+				areaLiquidaImovel: 40.0,
+				areaPreservacaoPermanente: 17.0
+			}
+		},
+		{
+			numeroProcesso: "2018/004",
+			idEmpreendimento: "4",
+			cpfCnpj: "13113652000184",
+			denominacaoEmpreendimentoSimlam: "Julia e Fernando Doces & Salgados ME",
+			idMunicipio: "4",
+			nomeMunicipioSimlam: "Ananindeua",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 40.0,
+				areaLiquidaImovel: 20.0,
+				areaRemanescenteVegetacaoNativa: 5.0
+			}
+		},
+		{
+			numeroProcesso: "2018/005",
+			idEmpreendimento: "5",
+			cpfCnpj: "96070128000109",
+			denominacaoEmpreendimentoSimlam: "Fernanda e Malu Entregas Expressas ME",
+			idMunicipio: "5",
+			nomeMunicipioSimlam: "Marabá",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 20.0,
+				areaLiquidaImovel: 1.0,
+				areaCorposAgua: 1.0
+			}
+		},
+		{
+			numeroProcesso: "2018/006",
+			idEmpreendimento: "6",
+			cpfCnpj: "87839177000164",
+			denominacaoEmpreendimentoSimlam: "Elias e Ana Marcenaria Ltda",
+			idMunicipio: "3",
+			nomeMunicipioSimlam: "Belém",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 20.0,
+				areaLiquidaImovel: 10.0,
+				areaUsoConsolidado: 10.0
+			}
+		},
+		{
+			numeroProcesso: "2018/007",
+			idEmpreendimento: "7",
+			cpfCnpj: "93133609000110",
+			denominacaoEmpreendimentoSimlam: "Leandro e Alexandre Padaria ME",
+			idMunicipio: "3",
+			nomeMunicipioSimlam: "Belém",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 20.0,
+				areaLiquidaImovel: 10.0,
+				areaReservaLegal: 0.0,
+				areaPreservacaoPermanente: 0.0,
+				areaRemanescenteVegetacaoNativa: 0.0,
+				areaCorposAgua: 0.0,
+				areaUsoConsolidado: 0.0
+			}
+		},
+		{
+			numeroProcesso: "2018/008",
+			idEmpreendimento: "8",
+			cpfCnpj: "46847458000181",
+			denominacaoEmpreendimentoSimlam: "Rafael e Larissa Marketing ME",
+			idMunicipio: "8",
+			nomeMunicipioSimlam: "Santarém",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 30.0,
+				areaLiquidaImovel: 15.0,
+				areaReservaLegal: 1.0,
+				areaPreservacaoPermanente: 0.0,
+				areaRemanescenteVegetacaoNativa: 2.0,
+				areaCorposAgua: 0.0,
+				areaUsoConsolidado: 0.0
+			}
+		},
+		{
+			numeroProcesso: "2018/009",
+			idEmpreendimento: "9",
+			cpfCnpj: "07101336000190",
+			denominacaoEmpreendimentoSimlam: "Allana e Nicolas Lavanderia ME",
+			idMunicipio: "4",
+			nomeMunicipioSimlam: "Ananindeua",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 804.0,
+				areaLiquidaImovel: 158.0,
+				areaReservaLegal: 1.0,
+				areaPreservacaoPermanente: 30.0,
+				areaRemanescenteVegetacaoNativa: 20.0,
+				areaCorposAgua: 1.0,
+				areaUsoConsolidado: 150.0
+			}
+		},
+		{
+			numeroProcesso: "2018/010",
+			idEmpreendimento: "10",
+			cpfCnpj: "75993724000182",
+			denominacaoEmpreendimentoSimlam: "Luan e Ana Padaria Ltda",
+			idMunicipio: "3",
+			nomeMunicipioSimlam: "Belém",
+			siglaEstadoMunicipio: "PA",
+			idTipoLicenca: "1",
+			nomeTipoLicenca: "APAT",
+			imovelManejo: {
+				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
+				areaTotalImovelDocumentado: 1048.0,
+				areaLiquidaImovel: 642.0,
+				areaPreservacaoPermanente: 30.0,
+				areaRemanescenteVegetacaoNativa: 20.0,
+				areaUsoConsolidado: 150.0
+			}
+		},
+	];
+
+	function onPaginaAlterada(){
+
+		$scope.$broadcast('pesquisarProcessosManejo');
+	}
+
+	function atualizarPaginacao(totalItens, paginaAtual) {
+
+		listagemProcessoManejo.paginacao.update(totalItens, paginaAtual);
+	}
+
+	function atualizarListaProcessos(processos) {
+
+		listagemProcessoManejo.processosManejo = processos;
+	}
+
+};
+
+exports.controllers.ListagemProcessoManejoController = ListagemProcessoManejoController;

@@ -4,13 +4,30 @@ var MenuPrincipal = {
 
 		itens: '<'
 	},
-	controller: function($location, mensagem, processoService, $timeout, $scope) {
+	controller: function($location, mensagem, processoService, $timeout, $scope, $rootScope) {
 
 		var ctrl = this;
 
+		ctrl.isPerfilLicenciamento = false;
+
+		var permissoes = ['LISTAR_PROCESSO_JURIDICO', 'VINCULAR_PROCESSO_JURIDICO', 'CONSULTAR_PROCESSO', 'VALIDAR_PARECER_JURIDICO',
+			'VINCULAR_PROCESSO_TECNICO', 'INICIAR_PARECER_JURIDICO', 'INICIAR_PARECER_TECNICO', 'APROVAR_ANALISE', 'VALIDAR_PARECER_TECNICO',
+			'VALIDAR_PARECERES_JURIDICO_TECNICO', 'CONSULTAR_LICENCAS_EMITIDAS', 'SUSPENDER_LICENCA_EMITIDA', 'CANCELAR_LICENCA_EMITIDA'];
+
+		_.forEach($rootScope.usuarioSessao.permissoes, function(permissao) {
+
+			if(permissoes.includes(permissao)) {
+
+				ctrl.isPerfilLicenciamento = true;
+			}
+		});
+
 		this.$onInit = function() {
 
-			atualizarContagemProcessos();
+			if (ctrl.isPerfilLicenciamento) {
+
+				atualizarContagemProcessos();
+			}
 		};
 
 		this.irPara = function(url) {
@@ -19,7 +36,7 @@ var MenuPrincipal = {
 		};
 
 		function atualizarContagemProcessos() {
-			
+
 			for (var i = 0; i < ctrl.itens.length; i++) {
 				if(ctrl.itens[i].condicaoTramitacao)
 					countProcessos(ctrl.itens[i]);
@@ -62,13 +79,13 @@ var MenuPrincipal = {
 
 		function isAnaliseJuridica(idPerfilSelecionado) {
 
-			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_JURIDICO || 
+			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_JURIDICO ||
 				   idPerfilSelecionado === app.utils.Perfis.CONSULTOR_JURIDICO;
 		}
 
 		function isAnaliseTecnica(idPerfilSelecionado) {
 
-			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO || 
+			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO ||
 				   idPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO ||
 				   idPerfilSelecionado === app.utils.Perfis.GERENTE_TECNICO;
 		}
@@ -76,7 +93,7 @@ var MenuPrincipal = {
 		$scope.$on('atualizarContagemProcessos', function(event){
 
 			atualizarContagemProcessos();
-		});  
+		});
 	},
 	templateUrl: 'components/menuPrincipal/menuPrincipal.html'
 };

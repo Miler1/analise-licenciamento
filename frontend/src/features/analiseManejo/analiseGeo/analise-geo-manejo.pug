@@ -1,0 +1,64 @@
+include ../../../layout/components/inputErrors
+
+h4 Parecer Técnico
+
+hr
+div.row#dadosProcesso(ng-init="analiseGeoManejo.init()")
+	.col-xs-12.col-md-8
+		blockquote.success
+
+			div.row
+				label.col-sm-4 Processo:
+				span.col-sm-8 {{analiseGeoManejo.processo.numeroProcesso}}
+
+			div.row
+				label.col-sm-4 CPF/CNPJ:
+				span.col-sm-8 {{analiseGeoManejo.processo.cpfCnpj | brCpfCnpj}}
+
+			div.row
+				label.col-sm-4 Nome/Razão Social:
+				span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimentoSimlam}}
+
+			div.row
+				label.col-sm-4 Município:
+				span.col-sm-8 {{analiseGeoManejo.processo.nomeMunicipioSimlam}}
+hr
+div
+	.col-xs-12.col-md-6.no-padding
+		h4 Análise Geo - Upload do shape
+	.col-xs-6.col-md-6.text-right.no-padding.margin-bottom-md
+		form(name="analiseGeoManejo.formularioAnaliseGeo")
+			.form-group
+				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-accept="'application/zip'",
+				 ngf-pattern="'application/zip'", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
+				 ng-class="{'error-button': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape}")
+					i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+					| Anexar arquivo zip à análise
+div
+	table.table.table-condensed
+
+		thead
+
+			tr
+				th.col-xs-10 Arquivo anexado
+				th.col-xs-2.text-right Ações
+
+		tbody
+
+			tr(ng-if="analiseGeoManejo.processo.analiseManejo.pathShape")
+				td.col-xs-10 {{analiseGeoManejo.arquivoShape.name}}
+				td.col-xs-2.text-right
+					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeUpload()")
+						i.glyphicon.glyphicon-trash
+			tr(ng-if="!analiseGeoManejo.processo.analiseManejo.pathShape")
+				td.col-xs-12.text-center Nenhum arquivo anexado
+	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape") Campo obrigatório.
+
+div.botoes-analise-geo
+	button.btn.btn-default.col-md-2(ng-click="analiseGeoManejo.cancelar()", tabindex="0")
+		span.glyphicon.glyphicon-remove.glyphicon--with-right-margin
+		| &nbsp;Cancelar
+
+	button.btn.btn-success.pull-right.col-md-2(ng-click="analiseGeoManejo.analisar()", tabindex="0")
+		span.glyphicon.glyphicon-check.glyphicon--with-right-margin
+		| &nbsp;Analisar
