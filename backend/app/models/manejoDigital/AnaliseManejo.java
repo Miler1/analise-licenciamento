@@ -10,10 +10,8 @@ import utils.FileManager;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @Entity
@@ -122,7 +120,7 @@ public class AnaliseManejo  extends GenericModel {
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 
-    public static AnaliseManejo	gerarAnalise(ProcessoManejo processo) {
+    public static AnaliseManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
 
         AnaliseManejo analiseManejo = new AnaliseManejo();
 
@@ -166,7 +164,7 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.conclusao =  UUID.randomUUID().toString();
 
-        analiseManejo.usuario = Usuario.findById(22l);
+        analiseManejo.usuario = usuario;
 
         analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
 
@@ -188,5 +186,75 @@ public class AnaliseManejo  extends GenericModel {
         this._save();
 
         return path;
+    }
+
+    public List<Observacao> getObservacoesDadosImovel() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 0")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesBaseVetorial() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 1")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesAnaliseVetorial() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 2")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesAnaliseTemporal() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 3")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesInsumosUtilizados() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 4")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesCalculoNDFI() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 5")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesCalculoAreaEfetiva() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 6")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesDetalhamentoAreaEfetiva() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 7")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesConsideracoes() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 8")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesConclusao() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 9")
+                .setParameter("x", this.id)
+                .fetch();
     }
 }

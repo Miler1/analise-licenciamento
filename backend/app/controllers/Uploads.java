@@ -7,6 +7,7 @@ import org.apache.tika.Tika;
 import play.data.Upload;
 import play.libs.IO;
 import play.mvc.Http;
+import security.Acao;
 import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
@@ -68,6 +69,8 @@ public class Uploads extends InternalController {
 
 	public static void uploadShape(Upload file) throws IOException {
 
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
 		returnIfNull(file, "Upload");
 
 		String realType = null;
@@ -81,7 +84,12 @@ public class Uploads extends InternalController {
 			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
 		}
 
-		if(realType.contains("application/zip")) {
+		if(realType.contains("application/zip") ||
+				realType.contains("application/x-rar-compressed") ||
+				realType.contains("application/octet-stream") ||
+				realType.contains("application/x-zip-compressed") ||
+				realType.contains("multipart/x-zip") ||
+				realType.contains("application/vnd.rar")) {
 
 			byte[] data = IO.readContent(file.asFile());
 			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
@@ -99,6 +107,8 @@ public class Uploads extends InternalController {
 	}
 
 	public static void deleteShape(String token) {
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
 		returnIfNull(token, "String");
 
