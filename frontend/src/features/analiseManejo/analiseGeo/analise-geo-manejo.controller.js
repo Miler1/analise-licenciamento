@@ -69,6 +69,9 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 					analiseGeoManejo.saveShape(file);
 				}
 			}
+		} else {
+
+			mensagem.error("Extensão de arquivo inválida.");
 		}
 	};
 
