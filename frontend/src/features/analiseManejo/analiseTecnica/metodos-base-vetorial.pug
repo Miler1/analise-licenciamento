@@ -1,0 +1,23 @@
+h5 Dados analisados da AMF pela GEOTEC
+
+div
+	table.table.table-striped.table-condensed
+
+		thead
+			tr
+				th Dados oficiais
+				th Fonte
+				th Última atualização
+				th Escala
+				th OBS
+
+		tbody
+			tr(ng-repeat="baseVetorial in analiseTecnicaManejo.analiseTecnica.basesVetorial")
+				td.col-md-4 {{baseVetorial.nome ? baseVetorial.nome : '-'}}
+				td.col-md-2 {{baseVetorial.fonte ? baseVetorial.fonte : '-'}}
+				td.col-md-2 {{baseVetorial.ultimaAtualizacao ? baseVetorial.ultimaAtualizacao : '-'}}
+				td.col-md-1 {{baseVetorial.escala ? baseVetorial.escala : '-'}}
+				td.col-md-3 {{baseVetorial.observacao ? baseVetorial.observacao : '-'}}
+
+.col-xs-12
+	include observacoes
