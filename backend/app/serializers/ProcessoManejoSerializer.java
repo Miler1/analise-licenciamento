@@ -15,7 +15,8 @@ public class ProcessoManejoSerializer {
 			"cpfCnpj",
 			"denominacaoEmpreendimentoSimlam",
 			"nomeMunicipioSimlam",
-			"nomeCondicao"
+			"nomeCondicao",
+			"analiseManejo.id"
 	);
 
 	public static JSONSerializer iniciarAnalise = SerializerUtil.create(
