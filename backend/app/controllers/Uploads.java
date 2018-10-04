@@ -21,7 +21,7 @@ public class Uploads extends InternalController {
 	 * @throws IOException
 	 */
 	public static void upload(Upload file) throws IOException {
-		
+
 		returnIfNull(file, "Upload");
 
 		String realType = null;
@@ -62,8 +62,8 @@ public class Uploads extends InternalController {
 			response.status = Http.StatusCode.INTERNAL_ERROR;
 			renderMensagem(Mensagem.UPLOAD_ERRO);
 
-		}		
-	
+		}
+
 	}
 
 	public static void uploadShape(Upload file) throws IOException {
@@ -85,7 +85,8 @@ public class Uploads extends InternalController {
 
 			byte[] data = IO.readContent(file.asFile());
 			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_SHAPE_FOLDER, data, extension);
+			String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_SHAPE_FOLDER, file.getFileName(),
+					data, extension);
 
 			renderText(path);
 		}
@@ -101,7 +102,7 @@ public class Uploads extends InternalController {
 
 		returnIfNull(token, "String");
 
-		FileManager.getInstance().deleteShape(token);
+		FileManager.getInstance().deleteFile(Configuracoes.APPLICATION_SHAPE_FOLDER, token);
 
 		renderMensagem(Mensagem.SHAPE_REMOVIDO_SUCESSO);
 	}

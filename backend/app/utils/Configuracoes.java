@@ -14,7 +14,7 @@ public class Configuracoes {
 
 	public static String HTTP_PATH = getConfig("http.path", null);
 	public static String APP_URL = getConfig("application.baseURL", null) + (HTTP_PATH.compareTo("/") == 0 ? HTTP_PATH : HTTP_PATH + "/");
-	
+
 	private static String DEFAULT_LOGIN_URL = "/login";
 
 	public static String AUTH_SERVICE = getConfig("auth.service", null);
@@ -24,6 +24,7 @@ public class Configuracoes {
 
 	public static String APPLICATION_TEMP_FOLDER = getConfig("application.tempFolder", Play.applicationPath + "/tmp/");
 	public static String APPLICATION_SHAPE_FOLDER = getConfig("application.shapeFolder", "/home/licenciamento-pa/documentos/shape");
+	public static String APPLICATION_ANEXO_MANEJO_FOLDER = getConfig("application.anexoManejoFolder", "/home/licenciamento-pa/documentos/anexo_manejo");
 
 	public static long TAMANHO_MAXIMO_ARQUIVO = getLongConfig("sistema.tamanhoMaximoArquivoUpload");
 
@@ -35,14 +36,14 @@ public class Configuracoes {
 	public static String ESTADO = "PA";
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
-	
+
 	public static final String DATABASE_SCHEMA = getConfig("database.schema", null);
-	
+
 	public static Integer PRAZO_ANALISE = getIntConfig("analise.prazo");
 	public static Integer PRAZO_ANALISE_JURIDICA = getIntConfig("analise.juridica.prazo");
 	public static Integer PRAZO_ANALISE_TECNICA = getIntConfig("analise.tecnica.prazo");
-	
-	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);	
+
+	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacoes.andamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.adicionar.analise", null);
 	public static String URL_LICENCIAMENTO_GERAR_PDFS_LICENCA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.gerar.pdf", null);
@@ -50,7 +51,7 @@ public class Configuracoes {
 
 	public static String PDF_TEMPLATES_FOLDER_PATH = "templates" + File.separator + "pdf";
 	public static String PDF_TEMPLATES_FOLDER_ABSOLUTE = Play.applicationPath.getAbsolutePath() + File.separator + "app" + File.separator + "views" + File.separator;
-	
+
 	public static final String URL_SICAR_SITE = getConfig("sicar.site.url", null);
 
 	public static CoordinateReferenceSystem CRS_DEFAULT = null;
@@ -80,75 +81,75 @@ public class Configuracoes {
 	/*
 	 * Métodos utilitários
 	 */
-	
+
 	private static String getConfig(String configKey, Object defaultValue) {
-		
+
 		String defaultTextValue = defaultValue != null ? defaultValue.toString() : null;
-		
+
 		String configValue = Play.configuration.getProperty(configKey, defaultTextValue);
-		
+
 		/* Fix para configurações deixadas em branco no application.conf */
 		return configValue.isEmpty() ? defaultValue.toString() : configValue;
 
 	}
-	
-	
+
+
 	private static Integer getIntConfig(String configKey) {
-		
+
 		String config = Play.configuration.getProperty(configKey);
-		
+
 		return config != null ? Integer.parseInt(config) : null;
 	}
-	
+
 	private static Double getDoubleConfig(String configKey) {
-		
+
 		String config = Play.configuration.getProperty(configKey);
-		
+
 		return config != null ? Double.parseDouble(config) : null;
 	}
-	
+
 	private static boolean getBooleanConfig(String configKey) {
-		
+
 		String config = Play.configuration.getProperty(configKey);
-		
+
 		return config != null ? Boolean.parseBoolean(config) : null;
 	}
-	
+
 	private static List<String> getStringListConfig(String configKey, String separator, String defaultValue) {
-		
+
 		String config = Play.configuration.getProperty(configKey);
-		
+
 		if (config == null || config.isEmpty())
 			config = defaultValue;
-		
+
 		if (config != null && !config.isEmpty()) {
-			
+
 			String [] values = config.split(separator);
-			
+
 			return Arrays.asList(values);
 		}
-		
+
 		return null;
-		
+
 	}
-	
+
 	private static File getFileConfig(String property, String defaultPath) {
-		
+
 		String path = getConfig(property, null);
-		
+
 		if (path != null)
 			return new File(path);
-		
+
 		if (defaultPath != null)
 			return new File(defaultPath);
-		
+
 		return null;
 	}
-	
+
 	private static Long getLongConfig(String configKey) {
-		
+
 		String config = Play.configuration.getProperty(configKey);
-		
+
 		if (config != null && !config.isEmpty())
 			return Long.parseLong(config);
 		else
