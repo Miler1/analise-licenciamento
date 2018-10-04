@@ -7,19 +7,19 @@ div.row#dadosProcesso(ng-init="analiseTecnicaManejo.init()")
 
 			div.row
 				label.col-sm-4 Processo:
-				span.col-sm-8 {{analiseTecnicaManejo.processo.numeroProcesso}}
+				span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.numeroProcesso}}
 
 			div.row
 				label.col-sm-4 CPF/CNPJ:
-				span.col-sm-8 {{analiseTecnicaManejo.processo.cpfCnpj | brCpfCnpj}}
+				span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.cpfCnpj | brCpfCnpj}}
 
 			div.row
 				label.col-sm-4 Nome/Razão Social:
-				span.col-sm-8 {{analiseTecnicaManejo.processo.denominacaoEmpreendimentoSimlam}}
+				span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.denominacaoEmpreendimentoSimlam}}
 
 			div.row
 				label.col-sm-4 Município:
-				span.col-sm-8 {{analiseTecnicaManejo.processo.nomeMunicipioSimlam}}
+				span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.nomeMunicipioSimlam}}
 
 //div.modal-header
 //	h4.modal-title Parecer Técnico
