@@ -10,10 +10,8 @@ import utils.FileManager;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @Entity
@@ -122,7 +120,7 @@ public class AnaliseManejo  extends GenericModel {
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 
-    public static AnaliseManejo	gerarAnalise(ProcessoManejo processo) {
+    public static AnaliseManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
 
         AnaliseManejo analiseManejo = new AnaliseManejo();
 
@@ -166,7 +164,7 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.conclusao =  UUID.randomUUID().toString();
 
-        analiseManejo.usuario = Usuario.findById(22l);
+        analiseManejo.usuario = usuario;
 
         analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
 

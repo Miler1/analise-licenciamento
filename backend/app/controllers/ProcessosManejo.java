@@ -2,6 +2,7 @@ package controllers;
 
 import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
+import models.portalSeguranca.Usuario;
 import security.Acao;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
@@ -50,7 +51,8 @@ public class ProcessosManejo extends InternalController {
 		notFoundIfNull(processo);
 
 		// TODO enviar processo para analise na imagem
-		processo.analiseManejo = AnaliseManejo.gerarAnalise(processo);
+		processo.analiseManejo = AnaliseManejo.gerarAnalise(processo,
+				(Usuario) Usuario.find("login", getUsuarioSessao().cpfCnpj).first());
 
 		ProcessoManejo processoAntigo = ProcessoManejo.findById(processo.id);
 		processoAntigo = processoAntigo.iniciarAnalise(processo);

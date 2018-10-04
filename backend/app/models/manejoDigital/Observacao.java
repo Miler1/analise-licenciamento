@@ -27,4 +27,14 @@ public class Observacao  extends GenericModel {
     @Column(name="num_passo")
     @Enumerated(EnumType.ORDINAL)
     public PassoAnaliseManejo passoAnalise;
+
+    @Override
+    public Observacao save() {
+
+        this.analiseManejo = AnaliseManejo.findById(this.analiseManejo.id);
+
+        this._save();
+
+        return this.refresh();
+    }
 }

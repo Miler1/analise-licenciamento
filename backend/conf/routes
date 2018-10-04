@@ -146,6 +146,10 @@ POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
 DELETE  /analiseManejo/anexo/{token}                AnalisesManejo.deleteAnexo
 GET     /analiseManejo/{id}                         AnalisesManejo.findById
 
+# Observações
+POST    /observacao                                 Observacoes.save
+DELETE  /observacao/{id}                            Observacoes.delete
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
