@@ -1,4 +1,4 @@
-var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, uploadService, $location, mensagem, $uibModal, observacaoService) {
+var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -121,7 +121,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 					var nameFile = analiseTecnicaManejo.processo.analiseManejo.pathShape.replace(/^.*[\\\/]/, '');
 
-					uploadService.removeShape(nameFile)
+					processoManejoService.removeAnexo(nameFile)
 
 						.then(function(response) {
 
@@ -142,9 +142,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		}
 	};
 
-	analiseGeoManejo.saveAnexo = function (file) {
+	analiseTecnicaManejo.saveAnexo = function (file) {
 
-		uploadService.saveAnexo(file)
+		processoManejoService.saveAnexo($routeParams.idAnaliseManejo, file)
 
 			.then(function(response) {
 
