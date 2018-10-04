@@ -28,7 +28,8 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 }]);
 
 analiseManejo
-	.controller('listagemProcessoManejoController', controllers.ListagemProcessoManejoController);
+	.controller('listagemProcessoManejoController', controllers.ListagemProcessoManejoController)
+	.controller('modalObservacaoController', controllers.ModalObservacaoController);
 
 analiseManejo
 	.component('filtroProcessosManejo', directives.FiltroProcessosManejo);
