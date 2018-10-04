@@ -43,8 +43,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
 	}
 
-	$scope.log = '';
-
 	analiseGeoManejo.upload = function (file) {
 		if (file && !analiseGeoManejo.validacaoErro) {
 
