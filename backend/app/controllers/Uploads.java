@@ -7,6 +7,7 @@ import org.apache.tika.Tika;
 import play.data.Upload;
 import play.libs.IO;
 import play.mvc.Http;
+import security.Acao;
 import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
@@ -68,6 +69,8 @@ public class Uploads extends InternalController {
 
 	public static void uploadShape(Upload file) throws IOException {
 
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
 		returnIfNull(file, "Upload");
 
 		String realType = null;
@@ -104,6 +107,8 @@ public class Uploads extends InternalController {
 	}
 
 	public static void deleteShape(String token) {
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
 		returnIfNull(token, "String");
 
