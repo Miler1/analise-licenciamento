@@ -76,7 +76,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.validarArquivo = function (file) {
 
 		// Para funcionar no windows (não é enviado o type quando o arquivo é rar)
-		if (file && (analiseGeoManejo.tipos.indexOf(file.type) === -1 || file.name.substring(file.name.lastIndexOf('.')) === '.rar')) {
+		if (file && (analiseGeoManejo.tipos.indexOf(file.type) === -1 && file.name.substring(file.name.lastIndexOf('.')) !== '.rar')) {
 
 			mensagem.error("Extensão de arquivo inválida.");
 		}
