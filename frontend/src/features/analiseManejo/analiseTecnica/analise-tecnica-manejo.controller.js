@@ -6,6 +6,20 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.anexo = null;
+	analiseTecnicaManejo.passos = {
+		DADOS_IMOVEL: 0,
+		BASE_VETORIAL:1,
+		ANALISE_VETORIAL: 2,
+		ANALISE_TEMPORAL: 3,
+		INSUMOS_UTILIZADOS: 4,
+		CALCULO_NDFI: 5,
+		CALCULO_AREA_EFETIVA: 6,
+		DETALHAMENTO_AREA_EFETIVA: 7,
+		CONSIDERACOES: 8,
+		CONCLUSAO: 9
+	};
+
+	analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.passos.DADOS_IMOVEL;
 
 	analiseTecnicaManejo.init = function() {
 
