@@ -107,13 +107,15 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public void iniciarAnalise(ProcessoManejo processo) {
+    public ProcessoManejo iniciarAnalise(ProcessoManejo processo) {
 
         this.analiseManejo = processo.analiseManejo;
 
         this._save();
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.analiseManejo.usuario);
+
+        return this.refresh();
     }
 
     public String getNomeCondicao() {

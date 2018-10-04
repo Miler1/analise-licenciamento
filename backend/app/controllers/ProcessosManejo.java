@@ -53,9 +53,9 @@ public class ProcessosManejo extends InternalController {
 		processo.analiseManejo = AnaliseManejo.gerarAnalise(processo);
 
 		ProcessoManejo processoAntigo = ProcessoManejo.findById(processo.id);
-		processoAntigo.iniciarAnalise(processo);
+		processoAntigo = processoAntigo.iniciarAnalise(processo);
 
-		renderMensagem(Mensagem.ANALISE_MANEJO_INICIADA_COM_SUCESSO);
+		renderJSON(processoAntigo, ProcessoManejoSerializer.iniciarAnalise);
 	}
 
 

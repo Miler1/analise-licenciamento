@@ -17,4 +17,9 @@ public class ProcessoManejoSerializer {
 			"nomeMunicipioSimlam",
 			"nomeCondicao"
 	);
+
+	public static JSONSerializer iniciarAnalise = SerializerUtil.create(
+			"id",
+			"analiseManejo.id"
+	);
 }
