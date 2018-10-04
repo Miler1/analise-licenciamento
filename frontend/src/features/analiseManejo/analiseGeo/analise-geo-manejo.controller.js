@@ -10,6 +10,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 	analiseGeoManejo.processo = null;
 	analiseGeoManejo.arquivoShape = null;
+	analiseGeoManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
 
 	analiseGeoManejo.init = function() {
 
@@ -69,7 +70,12 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 					analiseGeoManejo.saveShape(file);
 				}
 			}
-		} else {
+		}
+	};
+
+	analiseGeoManejo.validarArquivo = function (file) {
+
+		if (file && analiseGeoManejo.tipos.indexOf(file.type) === -1) {
 
 			mensagem.error("Extensão de arquivo inválida.");
 		}
