@@ -1,10 +1,15 @@
 package models.manejoDigital;
 
 import models.portalSeguranca.Usuario;
+import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.IO;
+import utils.Configuracoes;
+import utils.FileManager;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
@@ -170,5 +175,18 @@ public class AnaliseManejo  extends GenericModel {
         analiseManejo.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(analiseManejo);
 
         return analiseManejo;
+    }
+
+    public String saveAnexo(Upload file) throws IOException {
+
+        byte[] data = IO.readContent(file.asFile());
+        String extension = FileManager.getInstance().getFileExtention(file.getFileName());
+        String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_ANEXO_MANEJO_FOLDER, file.getFileName(),
+                data, extension);
+
+        this.pathAnexo = path;
+        this._save();
+
+        return path;
     }
 }

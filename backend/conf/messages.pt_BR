@@ -117,3 +117,4 @@ ERRO_ENVIAR_EMAIL=O seguinte erro ocorreu ao tentar enviar o email: %s
 # Analises Manejo
 #
 ANALISE_MANEJO_INICIADA_COM_SUCESSO=Análise manejo iniciada.
+ANEXO_REMOVIDO_SUCESSO=Anexo removido com sucesso.

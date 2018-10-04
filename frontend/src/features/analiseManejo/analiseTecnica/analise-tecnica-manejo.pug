@@ -1,61 +1,84 @@
-div.modal-header
-	h4.modal-title Parecer Técnico
+h4 Parecer Técnico
 
-div.modal-body
+hr
+div.row#dadosProcesso(ng-init="analiseTecnicaManejo.init()")
+	.col-xs-12.col-md-8
+		blockquote.success
 
-	ul.nav.nav-tabs(role="tablist")
-		li.active(role="presentation")
-			a(data-toggle="tab", data-target="#tabDadosDoImovel") Dados do Imóvel
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabMetodosDaBaseVetorial") Metodos da base vetorial oficial utilizada
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabAnaliseVetorialSobreBaseDeDadosOficiais") Analise vetorial sobre a base de dados oficiais
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabAnaliseTemporalDeImagensDeSatelite") Analise temporal de imagens de satélite
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabInsumosUtilizadosParaAnaliseTemporal") Insumos utilizados para analise temporal
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabCalculoDoNdfi") Cálculo do NDFI
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabCalculoDaAreaEfetivaDeManejo") Cálculo da área efetiva de manejo
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabDetalhamentoDaAreaEfetivaDeManejo") Detalhamento da área efetiva de manejo
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabConsideracoes") Considerações
-		li(role="tab")
-			a(data-toggle="tab", data-target="#tabConclusao") Conclusão
+			div.row
+				label.col-sm-4 Processo:
+				span.col-sm-8 {{analiseTecnicaManejo.processo.numeroProcesso}}
 
-	div#dadosProcesso
-		resumo-empreendimento(empreendimento='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento')
+			div.row
+				label.col-sm-4 CPF/CNPJ:
+				span.col-sm-8 {{analiseTecnicaManejo.processo.cpfCnpj | brCpfCnpj}}
 
-	.tab-content
+			div.row
+				label.col-sm-4 Nome/Razão Social:
+				span.col-sm-8 {{analiseTecnicaManejo.processo.denominacaoEmpreendimentoSimlam}}
 
-		#tabDadosDoImovel.tab-pane.fade.in.active
-			include dadosDoImovel
+			div.row
+				label.col-sm-4 Município:
+				span.col-sm-8 {{analiseTecnicaManejo.processo.nomeMunicipioSimlam}}
 
-		#tabMetodosDaBaseVetorial.tab-pane.fade
-			include metodosDaBaseVetorial
-
-		#tabAnaliseVetorialSobreBaseDeDadosOficiais.tab-pane.fade
-			include analiseVetorialSobreBaseDeDadosOficiais
-
-		#tabAnaliseTemporalDeImagensDeSatelite.tab-pane.fade
-			include analiseTemporalDeImagensDeSatelite
-
-		#tabInsumosUtilizadosParaAnaliseTemporal.tab-pane.fade
-			include insumosUtilizadosParaAnaliseTemporal
-
-		#tabCalculoDoNdfi.tab-pane.fade
-			include calculoDoNdfi
-
-		#tabCalculoDaAreaEfetivaDeManejo.tab-pane.fade
-			include calculoDaAreaEfetivaDeManejo
-
-		#tabDetalhamentoDaAreaEfetivaDeManejo.tab-pane.fade
-			include detalhamentoDaAreaEfetivaDeManejo
-
-		#tabConsideracoes.tab-pane.fade
-			include consideracoes
-
-		#tabConclusao.tab-pane.fade
-			include conclusao
+//div.modal-header
+//	h4.modal-title Parecer Técnico
+//
+//div.modal-body
+//
+//	ul.nav.nav-tabs(role="tablist")
+//		li.active(role="presentation")
+//			a(data-toggle="tab", data-target="#tabDadosDoImovel") Dados do Imóvel
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabMetodosDaBaseVetorial") Metodos da base vetorial oficial utilizada
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabAnaliseVetorialSobreBaseDeDadosOficiais") Analise vetorial sobre a base de dados oficiais
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabAnaliseTemporalDeImagensDeSatelite") Analise temporal de imagens de satélite
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabInsumosUtilizadosParaAnaliseTemporal") Insumos utilizados para analise temporal
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabCalculoDoNdfi") Cálculo do NDFI
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabCalculoDaAreaEfetivaDeManejo") Cálculo da área efetiva de manejo
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabDetalhamentoDaAreaEfetivaDeManejo") Detalhamento da área efetiva de manejo
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabConsideracoes") Considerações
+//		li(role="tab")
+//			a(data-toggle="tab", data-target="#tabConclusao") Conclusão
+//
+//	div#dadosProcesso
+//		resumo-empreendimento(empreendimento='modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento')
+//
+//	.tab-content
+//
+//		#tabDadosDoImovel.tab-pane.fade.in.active
+//			include dadosDoImovel
+//
+//		#tabMetodosDaBaseVetorial.tab-pane.fade
+//			include metodosDaBaseVetorial
+//
+//		#tabAnaliseVetorialSobreBaseDeDadosOficiais.tab-pane.fade
+//			include analiseVetorialSobreBaseDeDadosOficiais
+//
+//		#tabAnaliseTemporalDeImagensDeSatelite.tab-pane.fade
+//			include analiseTemporalDeImagensDeSatelite
+//
+//		#tabInsumosUtilizadosParaAnaliseTemporal.tab-pane.fade
+//			include insumosUtilizadosParaAnaliseTemporal
+//
+//		#tabCalculoDoNdfi.tab-pane.fade
+//			include calculoDoNdfi
+//
+//		#tabCalculoDaAreaEfetivaDeManejo.tab-pane.fade
+//			include calculoDaAreaEfetivaDeManejo
+//
+//		#tabDetalhamentoDaAreaEfetivaDeManejo.tab-pane.fade
+//			include detalhamentoDaAreaEfetivaDeManejo
+//
+//		#tabConsideracoes.tab-pane.fade
+//			include consideracoes
+//
+//		#tabConclusao.tab-pane.fade
+//			include conclusao
