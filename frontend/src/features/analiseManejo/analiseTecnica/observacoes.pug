@@ -10,10 +10,10 @@ mixin observacoes(lista)
 
         div.row.card-observacao(ng-repeat=`observacao in ${lista}`)
 
+            .col-xs-12
+                p.observacao {{ observacao.texto }}
+
             .col-xs-12.text-right.icone-excluir
                 a.d-inline.margin-right-xs(title="Excluir observação", ng-click="analiseTecnicaManejo.removerObservacao(observacao)")
                     i.glyphicon.glyphicon-trash.icone
-
-            .col-xs-12
-                p.observacao {{ observacao.texto }}
 
