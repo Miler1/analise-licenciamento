@@ -144,6 +144,7 @@ POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnali
 # Analises Manejo
 POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
 DELETE  /analiseManejo/anexo/{token}                AnalisesManejo.deleteAnexo
+GET     /analiseManejo/{id}                         AnalisesManejo.findById
 
 # Estáticos
 GET     /public/									staticDir:public
