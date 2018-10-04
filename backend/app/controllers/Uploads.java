@@ -7,6 +7,7 @@ import org.apache.tika.Tika;
 import play.data.Upload;
 import play.libs.IO;
 import play.mvc.Http;
+import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
 
