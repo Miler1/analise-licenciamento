@@ -70,14 +70,14 @@ public class FileManager {
     }
     
     public String createFile(String pathFileGenerated, byte [] fileBytes, String extension) throws IOException {
-    	
-    	String fileName = generateFileName(extension);
+
+        String fileName = generateFileName(extension);
         
         File file = new File(pathFileGenerated, fileName);
 
         writeFile(file, fileBytes);
         
-        return removerExtension(fileName);
+        return file.getPath();
     }
     
     public String createFile(byte [] fileBytes, String extension) throws IOException {
@@ -161,6 +161,16 @@ public class FileManager {
             file.delete();
         }
     }
+
+	public void deleteShape(String path) {
+
+		File file = new File (Configuracoes.APPLICATION_SHAPE_FOLDER + path);
+
+		if (file != null && file.exists()) {
+
+			file.delete();
+		}
+	}
     
     public Map<String,File> createEmptyFiles(int numberOfFiles, String extension) throws IOException {
         

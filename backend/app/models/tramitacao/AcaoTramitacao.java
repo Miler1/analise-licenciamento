@@ -47,6 +47,8 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long ARQUIVAR_PROCESSO = 37l;
 	public static final Long ARQUIVAR_POR_RENOVACAO = 38l;
 	public static final Long RENOVAR_SEM_ALTERACAO = 39l;
-
+	public static final Long INICIAR_ANALISE_TECNICA_MANEJO = 40l;
+	public static final Long DEFERIR_ANALISE_TECNICA_MANEJO = 41l;
+	public static final Long INDEFERIR_ANALISE_TECNICA_MANEJO = 42l;
 }
 
