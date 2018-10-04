@@ -7,6 +7,7 @@ import org.apache.tika.Tika;
 import play.data.Upload;
 import play.libs.IO;
 import play.mvc.Http;
+import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
 
@@ -65,4 +66,43 @@ public class Uploads extends InternalController {
 	
 	}
 
+	public static void uploadShape(Upload file) throws IOException {
+
+		returnIfNull(file, "Upload");
+
+		String realType = null;
+
+		// Detecta o tipo de arquivo pela assinatura (Magic)
+		Tika tika = new Tika();
+		realType = tika.detect(file.asFile());
+
+		if(realType == null){
+			response.status = Http.StatusCode.INTERNAL_ERROR;
+			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
+		}
+
+		if(realType.contains("application/zip")) {
+
+			byte[] data = IO.readContent(file.asFile());
+			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
+			String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_SHAPE_FOLDER, data, extension);
+
+			renderText(path);
+		}
+
+		else {
+
+			response.status = Http.StatusCode.INTERNAL_ERROR;
+			renderMensagem(Mensagem.UPLOAD_ERRO);
+		}
+	}
+
+	public static void deleteShape(String token) {
+
+		returnIfNull(token, "String");
+
+		FileManager.getInstance().deleteShape(token);
+
+		renderMensagem(Mensagem.SHAPE_REMOVIDO_SUCESSO);
+	}
 }

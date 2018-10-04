@@ -5,16 +5,19 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 @Entity
 @Table(schema = "analise", name = "analise_manejo")
 public class AnaliseManejo  extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise_manejo_id_seq")
-    @SequenceGenerator(name="analise_manejo_id_seq", sequenceName="analise_manejo_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.analise_manejo_id_seq")
+    @SequenceGenerator(name="analise.analise_manejo_id_seq", sequenceName="analise.analise_manejo_id_seq", allocationSize=1)
     public Long id;
 
     @Required
@@ -67,7 +70,7 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="area_seletiva_ndfi")
     public Double areaSeletivaNdfi;
 
-    @Column(name="area_efetivo_ndfi")
+    @Column(name="area_efetivo_manejo")
     public Double areaEfetivoNdfi;
 
     @Column(name="area_com_exploraca_ndfi_baixo")
@@ -88,6 +91,7 @@ public class AnaliseManejo  extends GenericModel {
     public String conclusao;
 
     @Required
+    @OneToOne
     @JoinColumn(name="id_usuario")
     public Usuario usuario;
 
@@ -100,16 +104,71 @@ public class AnaliseManejo  extends GenericModel {
     public ProcessoManejo processoManejo;
 
     @Required
-    @OneToMany(mappedBy = "analiseManejo")
-    public List<AnaliseNdfi> analiseNdfi;
+    @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<AnaliseNdfi> analisesNdfi;
 
     @Required
-    @OneToMany(mappedBy = "analiseManejo")
-    public List<AnaliseVetorial> analiseVetorial;
+    @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<AnaliseVetorial> analisesVetorial;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo",
             joinColumns = @JoinColumn(name = "id_analise_manejo"),
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
-    public List<BaseVetorial> baseVetorial;
+    public List<BaseVetorial> basesVetorial;
+
+    public static AnaliseManejo	gerarAnalise(ProcessoManejo processo) {
+
+        AnaliseManejo analiseManejo = new AnaliseManejo();
+
+        analiseManejo.dataAnalise = new Date();
+
+        analiseManejo.diasAnalise = 0;
+
+        analiseManejo.pathShape = processo.analiseManejo.pathShape;
+
+        analiseManejo.analiseTemporal = UUID.randomUUID().toString();;
+
+        analiseManejo.areaManejoFlorestalSolicitada = Math.random();
+
+        analiseManejo.areaPreservacaoPermanente = Math.random();
+
+        analiseManejo.areaServidao = Math.random();
+
+        analiseManejo.areaAntropizadaNaoConsolidada = Math.random();
+
+        analiseManejo.areaUsoRestrito = Math.random();
+
+        analiseManejo.areaSemPotencial = Math.random();
+
+        analiseManejo.areaCorposAgua = Math.random();
+
+        analiseManejo.areaEmbargadaIbama = Math.random();
+
+        analiseManejo.areaEfetivoNdfi = Math.random();
+
+        analiseManejo.areaEmbargadaLdi = Math.random();
+
+        analiseManejo.areaSeletivaNdfi = Math.random();
+
+        analiseManejo.areaExploracaoNdfiBaixo = Math.random();
+
+        analiseManejo.areaExploracaoNdfiMedio = Math.random();
+
+        analiseManejo.areaSemPreviaExploracao = Math.random();
+
+        analiseManejo.consideracoes =  UUID.randomUUID().toString();
+
+        analiseManejo.conclusao =  UUID.randomUUID().toString();
+
+        analiseManejo.usuario = Usuario.findById(22l);
+
+        analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
+
+        analiseManejo.basesVetorial = BaseVetorial.gerarBaseVetorial(analiseManejo);
+
+        analiseManejo.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(analiseManejo);
+
+        return analiseManejo;
+    }
 }

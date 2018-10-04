@@ -47,6 +47,7 @@ GERENTE_VINCULADO_SUCESSO=Gerente vinculado com sucesso.
 #
 UPLOAD_ERRO=Ocorreu um erro ao realizar o upload do arquivo.
 UPLOAD_EXTENSAO_NAO_SUPORTADA=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos nos seguintes formatos: .pdf, .jpg, .jpeg, .png, .bmp ou .zip
+SHAPE_REMOVIDO_SUCESSO=Shape removido com sucesso;
 
 #
 # Documentos
@@ -111,3 +112,8 @@ ERRO_CANCELAR_DLA=Erro ao cancelar DLA, contate a SEMAS ou tente novamente mais 
 # Emails
 #
 ERRO_ENVIAR_EMAIL=O seguinte erro ocorreu ao tentar enviar o email: %s
+
+#
+# Analises Manejo
+#
+ANALISE_MANEJO_INICIADA_COM_SUCESSO=Análise manejo iniciada.

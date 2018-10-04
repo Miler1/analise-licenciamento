@@ -10,8 +10,8 @@ import javax.persistence.*;
 public class Observacao  extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="observacao_id_seq")
-    @SequenceGenerator(name="observacao_id_seq", sequenceName="observacao_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.observacao_id_seq")
+    @SequenceGenerator(name="analise.observacao_id_seq", sequenceName="analise.observacao_id_seq", allocationSize=1)
     public Long id;
 
     @Required

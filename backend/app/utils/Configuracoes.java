@@ -23,6 +23,7 @@ public class Configuracoes {
 	public static String INDEX_URL = "app/index.html";
 
 	public static String APPLICATION_TEMP_FOLDER = getConfig("application.tempFolder", Play.applicationPath + "/tmp/");
+	public static String APPLICATION_SHAPE_FOLDER = getConfig("application.shapeFolder", "/home/licenciamento-pa/documentos/shape");
 
 	public static long TAMANHO_MAXIMO_ARQUIVO = getLongConfig("sistema.tamanhoMaximoArquivoUpload");
 
