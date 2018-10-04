@@ -110,6 +110,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.error("Ocorreu um erro ao salvar a observacao.");
 			});
 		});
+	};
 
 	analiseTecnicaManejo.upload = function (file) {
 		if (file && !analiseTecnicaManejo.validacaoErro) {
