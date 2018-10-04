@@ -33,10 +33,10 @@ var ProcessoManejoService = function(request, config, Upload) {
 		});
 	};
 
-	this.removeAnexo = function(nameFile) {
+	this.removeAnexo = function(token) {
 
 		return request
-			.delete(config.BASE_URL() + "analiseManejo/anexo" + nameFile);
+			.delete(config.BASE_URL() + "analiseManejo/anexo/" + token);
 	};
 
 };
