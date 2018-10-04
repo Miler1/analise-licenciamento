@@ -56,14 +56,12 @@ div
 
 		tbody
 
-			tr(ng-if="analiseGeoManejo.processo.analiseManejo.pathShape")
-				td.col-xs-10 {{analiseGeoManejo.arquivoShape.name}}
+			tr(ng-if="analiseTecnicaManejo.anexo")
+				td.col-xs-10 {{analiseTecnicaManejo.anexo.file.name}}
 				td.col-xs-2.text-right
-					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeUpload()")
+					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseTecnicaManejo.removeAnexo()")
 						i.glyphicon.glyphicon-trash
-			tr(ng-if="!analiseGeoManejo.processo.analiseManejo.pathShape")
+			tr(ng-if="!analiseTecnicaManejo.anexo")
 				td.col-xs-12.text-center Nenhum arquivo anexado
-	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape") Campo obrigatório.
-
 .col-xs-12
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesDadosImovel')

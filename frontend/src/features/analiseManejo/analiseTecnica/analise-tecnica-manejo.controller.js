@@ -2,9 +2,12 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
+	var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
+
 	var analiseTecnicaManejo = this;
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
 	analiseTecnicaManejo.analiseTecnica = null;
+	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 	analiseTecnicaManejo.anexo = null;
 	analiseTecnicaManejo.passos = {
 		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel'],
@@ -78,9 +81,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				if (analiseTecnicaManejo.anexo) {
 
-					var nameFile = analiseTecnicaManejo.processo.analiseManejo.pathShape.replace(/^.*[\\\/]/, '');
-
-					processoManejoService.removeAnexo(nameFile)
+					processoManejoService.removeAnexo(analiseTecnicaManejo.anexo.token)
 
 						.then(function(response) {
 
@@ -107,8 +108,24 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			.then(function(response) {
 
-				analiseTecnicaManejo.anexo = response.data;
-				analiseTecnicaManejo.anexo.arquivo = file;
+				analiseTecnicaManejo.anexo = {
+					token: response.data,
+					file: file
+				};
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	};
+
+	analiseTecnicaManejo.removeAnexo = function () {
+
+		processoManejoService.removeAnexo(analiseTecnicaManejo.anexo.token)
+
+			.then(function(response) {
+
+				analiseTecnicaManejo.anexo = null;
 
 			}, function(error){
 
