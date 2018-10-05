@@ -17,13 +17,19 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.AnaliseGeoManejoController,
 			controllerAs: 'analiseGeoManejo'
 		})
+		.when("/analise-manejo/:idAnaliseManejo/analise-tecnica", {
+			templateUrl: "features/analiseManejo/analiseTecnica/analise-tecnica-manejo.html",
+			controller: controllers.AnaliseTecnicaManejoController,
+			controllerAs: 'analiseTecnicaManejo'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
 }]);
 
 analiseManejo
-	.controller('listagemProcessoManejoController', controllers.ListagemProcessoManejoController);
+	.controller('listagemProcessoManejoController', controllers.ListagemProcessoManejoController)
+	.controller('modalObservacaoController', controllers.ModalObservacaoController);
 
 analiseManejo
 	.component('filtroProcessosManejo', directives.FiltroProcessosManejo);
