@@ -1,4 +1,4 @@
-var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService) {
+var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService, $timeout) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -172,15 +172,23 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		analiseTecnicaManejo.index -= 1;
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
-		document.getElementById(analiseTecnicaManejo.passoAtual[2]).click();
+		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
 
 	analiseTecnicaManejo.confirmar = function() {
 
 		analiseTecnicaManejo.index += 1;
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
-		document.getElementById(analiseTecnicaManejo.passoAtual[2]).click();
+		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
+
+	// Função usada para impedir o erro '$apply already in progress'
+	function click(elemento) {
+
+		$timeout(function(){
+			elemento.click();
+		});
+	}
 
 	analiseTecnicaManejo.changeTab = function(index) {
 
