@@ -1,0 +1,35 @@
+include ./observacoes
+
+h5 Dados analisados da AMF pelo GEOTEC
+
+div
+	blockquote.analise-manejo
+		table.table-striped.table-condensed.table-bordas
+
+			thead
+				tr
+					th.text-center(colspan="2") Vetores
+					th.text-center(colspan="2") Propriedade
+					th.text-center(colspan="2") AMF
+					th.text-center(rowspan="2") OBS
+				tr
+					th Tipo
+					th Nome
+					th Distância (km)
+					th Sobreposição (ha)
+					th Distância (km)
+					th Sobreposição (ha)
+
+			tbody
+				tr(ng-repeat="analise in analiseTecnicaManejo.analiseTecnica.analisesVetorial")
+					td {{analise.tipo || '-'}}
+					td {{analise.nome || '-'}}
+					td(style='max-width: 90px; word-wrap: break-word;') {{analise.distanciaPropriedade || '-'}}
+					td(style='max-width: 90px; word-wrap: break-word;') {{analise.sobreposicaoPropriedade || '-'}}
+					td(style='max-width: 90px; word-wrap: break-word;') {{analise.distanciaAmf || '-'}}
+					td(style='max-width: 90px; word-wrap: break-word;') {{analise.sobreposicaoAmf || '-'}}
+					td {{analise.observacao || '-'}}
+
+
+div
+	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesAnaliseVetorial')
