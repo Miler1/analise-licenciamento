@@ -188,6 +188,13 @@ public class AnaliseManejo  extends GenericModel {
         return path;
     }
 
+    public void deleteAnexo() {
+
+        FileManager.getInstance().deleteFileFromPath(this.pathAnexo);
+        this.pathAnexo = null;
+        this._save();
+    }
+
     public List<Observacao> getObservacoesDadosImovel() {
 
         return Observacao.find("analiseManejo.id = :x AND passoAnalise = 0 ORDER BY id")

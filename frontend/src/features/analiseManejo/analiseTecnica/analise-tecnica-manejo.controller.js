@@ -44,6 +44,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
+				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {
+
+					analiseTecnicaManejo.anexo = {file: { name: analiseTecnicaManejo.analiseTecnica.pathAnexo.substring(analiseTecnicaManejo.analiseTecnica.pathAnexo.lastIndexOf('/') + 1) } };
+				}
+
 			})
 			.catch(function (response) {
 
@@ -122,7 +127,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			.then(function(response) {
 
 				analiseTecnicaManejo.anexo = {
-					token: response.data,
 					file: file
 				};
 
@@ -134,7 +138,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.removeAnexo = function () {
 
-		processoManejoService.removeAnexo(analiseTecnicaManejo.anexo.token)
+		processoManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
 
 			.then(function(response) {
 
