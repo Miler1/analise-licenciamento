@@ -11,7 +11,7 @@ div
 					th.text-center(colspan="2") Vetores
 					th.text-center(colspan="2") Propriedade
 					th.text-center(colspan="2") AMF
-					th.text-center(rowspan="2") OBS
+					th.text-center(rowspan="2") Observação
 				tr
 					th Tipo
 					th Nome
@@ -22,13 +22,13 @@ div
 
 			tbody
 				tr(ng-repeat="analise in analiseTecnicaManejo.analiseTecnica.analisesVetorial")
-					td {{analise.tipo || '-'}}
+					td(style='max-width: 100px;') {{analise.tipo || '-'}}
 					td {{analise.nome || '-'}}
 					td(style='max-width: 90px; word-wrap: break-word;') {{analise.distanciaPropriedade || '-'}}
 					td(style='max-width: 90px; word-wrap: break-word;') {{analise.sobreposicaoPropriedade || '-'}}
 					td(style='max-width: 90px; word-wrap: break-word;') {{analise.distanciaAmf || '-'}}
 					td(style='max-width: 90px; word-wrap: break-word;') {{analise.sobreposicaoAmf || '-'}}
-					td {{analise.observacao || '-'}}
+					td(style='min-width: 140px;') {{analise.observacao || '-'}}
 
 
 div
