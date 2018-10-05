@@ -20,18 +20,19 @@ public class AnalisesManejo extends InternalController {
 		returnIfNull(file, "Upload");
 
 		AnaliseManejo analise = AnaliseManejo.findById(id);
-		String path = analise.saveAnexo(file);
+		analise.saveAnexo(file);
 
-		renderText(path);
+		renderMensagem(Mensagem.ANEXO_SALVO_SUCESSO);
 	}
 
-	public static void deleteAnexo(String token) {
+	public static void deleteAnexo(Long id) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		returnIfNull(token, "String");
+		returnIfNull(id, "Long");
 
-		FileManager.getInstance().deleteFile(Configuracoes.APPLICATION_ANEXO_MANEJO_FOLDER, token);
+		AnaliseManejo analiseManejo = AnaliseManejo.findById(id);
+		analiseManejo.deleteAnexo();
 
 		renderMensagem(Mensagem.ANEXO_REMOVIDO_SUCESSO);
 	}

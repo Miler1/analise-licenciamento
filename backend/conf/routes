@@ -143,7 +143,7 @@ POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnali
 
 # Analises Manejo
 POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
-DELETE  /analiseManejo/anexo/{token}                AnalisesManejo.deleteAnexo
+DELETE  /analiseManejo/anexo/{id}                   AnalisesManejo.deleteAnexo
 GET     /analiseManejo/{id}                         AnalisesManejo.findById
 
 # Observações

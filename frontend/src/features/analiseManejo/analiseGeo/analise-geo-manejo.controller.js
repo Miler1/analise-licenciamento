@@ -131,7 +131,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		processoManejoService.iniciarAnalise(analiseGeoManejo.processo)
 			.then(function(response) {
 
-				mensagem.success(response.data.texto);
 				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
 
 			}, function(error){

@@ -77,7 +77,7 @@ public class FileManager {
 
         writeFile(file, fileBytes);
 
-        return removerExtension(fileName);
+        return file.getPath();
     }
 
     public String createFile(byte [] fileBytes, String extension) throws IOException {
@@ -168,6 +168,15 @@ public class FileManager {
 
 		if (file != null && file.exists()) {
 
+			file.delete();
+		}
+	}
+
+	public void deleteFileFromPath(String path) {
+
+		File file = getFile(path);
+
+		if (file != null && file.exists()) {
 			file.delete();
 		}
 	}

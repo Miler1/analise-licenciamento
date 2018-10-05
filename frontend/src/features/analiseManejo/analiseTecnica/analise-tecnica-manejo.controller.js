@@ -1,4 +1,4 @@
-var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService) {
+var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService, $timeout) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -10,17 +10,30 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 	analiseTecnicaManejo.anexo = null;
 	analiseTecnicaManejo.passos = {
-		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel'],
-		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial'],
-		ANALISE_VETORIAL: ['ANALISE_VETORIAL', 'observacoesAnaliseVetorial'],
-		ANALISE_TEMPORAL: ['ANALISE_TEMPORAL', 'observacoesAnaliseTemporal'],
-		INSUMOS_UTILIZADOS: ['INSUMOS_UTILIZADOS', 'observacoesInsumosUtilizados'],
-		CALCULO_NDFI: ['CALCULO_NDFI', 'observacoesCalculoNDFI'],
-		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva'],
-		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva'],
-		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes'],
-		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao']
+		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel', 'id-dados-imovel'],
+		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial', 'id-metodos-base-vetorial'],
+		ANALISE_VETORIAL: ['ANALISE_VETORIAL', 'observacoesAnaliseVetorial', 'id-analise-vetorial-base-oficiais'],
+		ANALISE_TEMPORAL: ['ANALISE_TEMPORAL', 'observacoesAnaliseTemporal', 'id-analise-temporal-imagens-satelite'],
+		INSUMOS_UTILIZADOS: ['INSUMOS_UTILIZADOS', 'observacoesInsumosUtilizados', 'id-insumos-utilizados-analise-temporal'],
+		CALCULO_NDFI: ['CALCULO_NDFI', 'observacoesCalculoNDFI', 'id-calculo-ndfi'],
+		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva', 'id-calculo-area-efetiva-manejo'],
+		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva', 'id-detalhamento-area-efetiva-manejo'],
+		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes', 'id-consideracoes'],
+		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao', 'id-conclusao']
 	};
+	analiseTecnicaManejo.listaPassos = [
+		analiseTecnicaManejo.passos.DADOS_IMOVEL,
+		analiseTecnicaManejo.passos.BASE_VETORIAL,
+		analiseTecnicaManejo.passos.ANALISE_VETORIAL,
+		analiseTecnicaManejo.passos.ANALISE_TEMPORAL,
+		analiseTecnicaManejo.passos.INSUMOS_UTILIZADOS,
+		analiseTecnicaManejo.passos.CALCULO_NDFI,
+		analiseTecnicaManejo.passos.CALCULO_AREA_EFETIVA,
+		analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA,
+		analiseTecnicaManejo.passos.CONSIDERACOES,
+		analiseTecnicaManejo.passos.CONCLUSAO
+	];
+	analiseTecnicaManejo.index = 0;
 
 	analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.passos.DADOS_IMOVEL;
 
@@ -30,6 +43,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			.then(function (response) {
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
+
+				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {
+
+					analiseTecnicaManejo.anexo = {file: { name: analiseTecnicaManejo.analiseTecnica.pathAnexo.substring(analiseTecnicaManejo.analiseTecnica.pathAnexo.lastIndexOf('/') + 1) } };
+				}
 
 			})
 			.catch(function (response) {
@@ -109,7 +127,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			.then(function(response) {
 
 				analiseTecnicaManejo.anexo = {
-					token: response.data,
 					file: file
 				};
 
@@ -121,7 +138,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.removeAnexo = function () {
 
-		processoManejoService.removeAnexo(analiseTecnicaManejo.anexo.token)
+		processoManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
 
 			.then(function(response) {
 
@@ -148,6 +165,39 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			else
 				mensagem.error("Ocorreu um erro ao excluir a observacao.");
 		});
+	};
+
+	analiseTecnicaManejo.sair = function() {
+
+		$location.path('/analise-manejo');
+	};
+
+	analiseTecnicaManejo.voltar = function() {
+
+		analiseTecnicaManejo.index -= 1;
+		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
+		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
+	};
+
+	analiseTecnicaManejo.confirmar = function() {
+
+		analiseTecnicaManejo.index += 1;
+		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
+		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
+	};
+
+	// Função usada para impedir o erro '$apply already in progress'
+	function click(elemento) {
+
+		$timeout(function(){
+			elemento.click();
+		});
+	}
+
+	analiseTecnicaManejo.changeTab = function(index) {
+
+		analiseTecnicaManejo.index = index;
+		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[index];
 	};
 
 };
