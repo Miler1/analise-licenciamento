@@ -25,25 +25,25 @@ div
 
 	ul.nav.nav-tabs(role="tablist")
 		li.abas.active(role="presentation")
-			a.link(id="dados-imovel", data-toggle="tab", data-target="#dados-imovel") Imóvel
+			a.link(id="id-dados-imovel", data-toggle="tab", data-target="#dados-imovel", ng-click="analiseTecnicaManejo.changeTab(0)") Imóvel
 		li.abas(role="tab")
-			a.link(id="metodos-base-vetorial", data-toggle="tab", data-target="#metodos-base-vetorial") Metadados
+			a.link(id="id-metodos-base-vetorial", data-toggle="tab", data-target="#metodos-base-vetorial", ng-click="analiseTecnicaManejo.changeTab(1)") Metadados
 		li.abas(role="tab")
-			a.link(id="analise-vetorial-base-oficiais", data-toggle="tab", data-target="#analise-vetorial-base-oficiais") Análise Vetorial
+			a.link(id="id-analise-vetorial-base-oficiais", data-toggle="tab", data-target="#analise-vetorial-base-oficiais", ng-click="analiseTecnicaManejo.changeTab(2)") Análise Vetorial
 		li.abas(role="tab")
-			a.link(id="analise-temporal-imagens-satelite", data-toggle="tab", data-target="#analise-temporal-imagens-satelite") Análise Temporal
+			a.link(id="id-analise-temporal-imagens-satelite", data-toggle="tab", data-target="#analise-temporal-imagens-satelite", ng-click="analiseTecnicaManejo.changeTab(3)") Análise Temporal
 		li.abas(role="tab")
-			a.link(id="insumos-utilizados-analise-temporal", data-toggle="tab", data-target="#insumos-utilizados-analise-temporal") Insumos
+			a.link(id="id-insumos-utilizados-analise-temporal", data-toggle="tab", data-target="#insumos-utilizados-analise-temporal", ng-click="analiseTecnicaManejo.changeTab(4)") Insumos
 		li.abas(role="tab")
-			a.link(id="calculo-ndfi", data-toggle="tab", data-target="#calculo-ndfi") NDFI
+			a.link(id="id-calculo-ndfi", data-toggle="tab", data-target="#calculo-ndfi", ng-click="analiseTecnicaManejo.changeTab(5)") NDFI
 		li.abas(role="tab")
-			a.link(id="calculo-area-efetiva-manejo", data-toggle="tab", data-target="#calculo-area-efetiva-manejo") Área Efetiva
+			a.link(id="id-calculo-area-efetiva-manejo", data-toggle="tab", data-target="#calculo-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(6)") Área Efetiva
 		li.abas(role="tab")
-			a.link(id="detalhamento-area-efetiva-manejo", data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo") Detalhamento
+			a.link(id="id-detalhamento-area-efetiva-manejo", data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(7)") Detalhamento NDFI
 		li.abas(role="tab")
-			a.link(id="consideracoes", data-toggle="tab", data-target="#consideracoes") Considerações
+			a.link(id="id-consideracoes", data-toggle="tab", data-target="#consideracoes", ng-click="analiseTecnicaManejo.changeTab(8)") Considerações
 		li.abas(role="tab")
-			a.link(id="conclusao", data-toggle="tab", data-target="#conclusao") Conclusão
+			a.link(id="id-conclusao", data-toggle="tab", data-target="#conclusao", ng-click="analiseTecnicaManejo.changeTab(9)") Conclusão
 
 	.tab-content
 
