@@ -129,10 +129,17 @@ GET     /favicon.ico                            404
 
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
+POST    /upload/shape                               Uploads.uploadShape
+DELETE  /upload/shape/{token}                       Uploads.deleteShape
 
 # Notificacoes
 
 GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
+
+# Processos Manejo
+POST    /processoManejo                             ProcessosManejo.save
+GET     /processoManejo/{id}                        ProcessosManejo.findById
+POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
 
 # Estáticos
 GET     /public/									staticDir:public

@@ -1,4 +1,4 @@
-var analiseManejo = angular.module("analiseManejo", ["ngRoute"]);
+var analiseManejo = angular.module("analiseManejo", ["ngRoute", 'ngFileUpload']);
 
 var utils = app.utils,
 	controllers = app.controllers,
@@ -11,6 +11,11 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 			templateUrl: "features/analiseManejo/listagem/listagem-processo-manejo.html",
 			controller: controllers.ListagemProcessoManejoController,
 			controllerAs: 'listagemProcessoManejo'
+		})
+		.when("/analise-manejo/:idProcesso/analise-geo", {
+			templateUrl: "features/analiseManejo/analiseGeo/analise-geo-manejo.html",
+			controller: controllers.AnaliseGeoManejoController,
+			controllerAs: 'analiseGeoManejo'
 		})
 		.otherwise({
 			redirectTo: "/"
