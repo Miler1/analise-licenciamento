@@ -1,0 +1,13 @@
+include ./observacoes
+
+h5 Análise temporal de imagens de satélite
+
+div
+    blockquote.analise-manejo
+        div.row.card-analise-manejo
+
+            .col-xs-12
+                p.analise-temporal {{ analiseTecnicaManejo.analiseTecnica.analiseTemporal }}
+
+div
+    +observacoes('analiseTecnicaManejo.analiseTecnica.observacoesAnaliseTemporal')

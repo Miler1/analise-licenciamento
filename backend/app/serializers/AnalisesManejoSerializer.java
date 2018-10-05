@@ -61,6 +61,8 @@ public class AnalisesManejoSerializer {
 			"observacoesAnaliseVetorial",
 			"observacoesAnaliseVetorial.id",
 			"observacoesAnaliseVetorial.texto",
+			"observacoesAnaliseTemporal.id",
+			"observacoesAnaliseTemporal.texto",
 			"observacoesAnaliseTemporal.passoAnalise.id",
 			"observacoesInsumosUtilizados.id",
 			"observacoesInsumosUtilizados.texto",
