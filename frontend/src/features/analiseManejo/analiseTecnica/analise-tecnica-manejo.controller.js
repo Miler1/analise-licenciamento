@@ -1,4 +1,4 @@
-var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService) {
+var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService, $timeout) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -43,6 +43,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			.then(function (response) {
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
+
+				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {
+
+					analiseTecnicaManejo.anexo = {file: { name: analiseTecnicaManejo.analiseTecnica.pathAnexo.substring(analiseTecnicaManejo.analiseTecnica.pathAnexo.lastIndexOf('/') + 1) } };
+				}
 
 			})
 			.catch(function (response) {
@@ -122,7 +127,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			.then(function(response) {
 
 				analiseTecnicaManejo.anexo = {
-					token: response.data,
 					file: file
 				};
 
@@ -134,7 +138,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.removeAnexo = function () {
 
-		processoManejoService.removeAnexo(analiseTecnicaManejo.anexo.token)
+		processoManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
 
 			.then(function(response) {
 
@@ -172,15 +176,23 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		analiseTecnicaManejo.index -= 1;
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
-		document.getElementById(analiseTecnicaManejo.passoAtual[2]).click();
+		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
 
 	analiseTecnicaManejo.confirmar = function() {
 
 		analiseTecnicaManejo.index += 1;
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
-		document.getElementById(analiseTecnicaManejo.passoAtual[2]).click();
+		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
+
+	// Função usada para impedir o erro '$apply already in progress'
+	function click(elemento) {
+
+		$timeout(function(){
+			elemento.click();
+		});
+	}
 
 	analiseTecnicaManejo.changeTab = function(index) {
 

@@ -37,13 +37,13 @@ public class TipoLicenca extends GenericModel {
 
 	public String nome;
 
+	public String sigla;
+
 	@Column(name = "codigo_receita_dae")
 	public Integer codigoReceitaDae;
 	
 	@Column(name = "validade_em_anos")
 	public Integer validadeEmAnos;
-
-	public String sigla;
 	
 	@Transient
 	public Double taxaAdministrativa;
