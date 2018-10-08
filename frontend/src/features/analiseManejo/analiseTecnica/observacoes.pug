@@ -14,6 +14,6 @@ mixin observacoes(lista)
                 p.observacao {{ observacao.texto }}
 
             .col-xs-12.text-right.icone-excluir
-                a.d-inline.margin-right-xs(title="Excluir observação", ng-click="analiseTecnicaManejo.removerObservacao(observacao)")
+                a(title="Excluir observação", ng-click="analiseTecnicaManejo.removerObservacao(observacao)")
                     i.glyphicon.glyphicon-trash.icone
 

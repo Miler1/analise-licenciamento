@@ -35,8 +35,10 @@ public class TipoLicenca extends GenericModel {
 	@Id
 	public Long id;
 
+	@Column
 	public String nome;
 
+	@Column
 	public String sigla;
 
 	@Column(name = "codigo_receita_dae")
