@@ -1,0 +1,29 @@
+include ./observacoes
+
+include ./observacoes
+
+div
+	blockquote.analise-manejo
+		div.row.card-analise-manejo
+
+			.col-xs-12
+				p.insumos-utilizados Para elaboração deste laudo técnico foi realizada a análise multitemperamental de imagens de satélites, referente aos ultimos 24 anos, onde foram verificadas as feições da cobertura do solo dentro da área de manejo florestal - AMF. As informações das imagens de satélites utilizadas são descritas na tabela abaixo.
+
+
+	blockquote.analise-manejo
+		table.table.table-striped.table-condensed
+			thead
+				tr
+					th Ano da imagem
+					th Satélite
+					th Órbita/ponto
+					th Data
+
+			tbody
+				tr(ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]")
+					td 1993
+					td Landsat
+					td 228_062
+					td 23/07/1993
+div
+	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesInsumosUtilizados')
