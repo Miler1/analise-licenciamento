@@ -2,9 +2,11 @@ include ./observacoes
 
 h5 Considerações
 
-div.row.card-analise-manejo
-    .col-xs-12
-        p.margin-top-xs {{ analiseTecnicaManejo.analiseTecnica.consideracoes }}
+div
+    blockquote.analise-manejo
+        div.row.card-analise-manejo
+            .col-xs-12
+                p.margin-top-xs {{ analiseTecnicaManejo.analiseTecnica.consideracoes }}
 
 div
     +observacoes('analiseTecnicaManejo.analiseTecnica.observacoesConsideracoes')
