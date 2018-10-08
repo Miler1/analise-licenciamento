@@ -1,0 +1,31 @@
+include ./observacoes
+
+h5 Detalhamento do NDFI
+
+div.row.card-analise-manejo
+    .col-xs-12
+        p.margin-top-xs A seguir são apresentadas as áreas efetiva de manejo, detalhadas pelo nível prévio de exploração.
+
+div.margin-top-lg
+    blockquote.analise-manejo
+        table.table.table-condensed
+            thead
+                tr
+                    th(colspan="2").text-center Resultados (hectares)
+
+            tbody
+                tr
+                    td.col-md-1 Área com exploração NDFI (Baixo)
+                    td.col-md-1.text-right {{ analiseTecnicaManejo.analiseTecnica.areaExploracaoNdfiBaixo ? analiseTecnicaManejo.analiseTecnica.areaExploracaoNdfiBaixo : '-' }}
+                tr
+                    td.col-md-1 Área com exploração NDFI (Médio)
+                    td.col-md-1.text-right {{ analiseTecnicaManejo.analiseTecnica.areaExploracaoNdfiMedio ? analiseTecnicaManejo.analiseTecnica.areaExploracaoNdfiMedio : '-' }}
+                tr
+                    td.col-md-1 Área sem previa de exploração
+                    td.col-md-1.text-right {{ analiseTecnicaManejo.analiseTecnica.areaSemPreviaExploracao ? analiseTecnicaManejo.analiseTecnica.areaSemPreviaExploracao : '-' }}
+                tr.linha-destaque
+                    td.col-md-1 Área de efetivo manejo - AMF
+                    td.col-md-1.text-right {{ analiseTecnicaManejo.analiseTecnica.areaEfetivoNdfi ? analiseTecnicaManejo.analiseTecnica.areaEfetivoNdfi : '-' }}
+
+div
+    +observacoes('analiseTecnicaManejo.analiseTecnica.observacoesDetalhamentoAreaEfetiva')
