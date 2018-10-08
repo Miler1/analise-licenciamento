@@ -79,7 +79,9 @@ public enum Mensagem {
 
 	OBSERVACAO_EXCLUIDA_SUCESSO,
 
-	ANEXO_SALVO_SUCESSO;
+	ANEXO_SALVO_SUCESSO,
+
+	ANALISE_FINALIZADA_SUCESSO;
 
 	public String getTexto(Object ... args) {
 
