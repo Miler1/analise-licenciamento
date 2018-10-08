@@ -1,14 +1,17 @@
 package models.manejoDigital;
 
 import models.portalSeguranca.Usuario;
+import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.IO;
+import utils.Configuracoes;
+import utils.FileManager;
 
 import javax.persistence.*;
-import java.nio.charset.Charset;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @Entity
@@ -117,7 +120,7 @@ public class AnaliseManejo  extends GenericModel {
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 
-    public static AnaliseManejo	gerarAnalise(ProcessoManejo processo) {
+    public static AnaliseManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
 
         AnaliseManejo analiseManejo = new AnaliseManejo();
 
@@ -161,7 +164,7 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.conclusao =  UUID.randomUUID().toString();
 
-        analiseManejo.usuario = Usuario.findById(22l);
+        analiseManejo.usuario = usuario;
 
         analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
 
@@ -170,5 +173,95 @@ public class AnaliseManejo  extends GenericModel {
         analiseManejo.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(analiseManejo);
 
         return analiseManejo;
+    }
+
+    public String saveAnexo(Upload file) throws IOException {
+
+        byte[] data = IO.readContent(file.asFile());
+        String extension = FileManager.getInstance().getFileExtention(file.getFileName());
+        String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_ANEXO_MANEJO_FOLDER, file.getFileName(),
+                data, extension);
+
+        this.pathAnexo = path;
+        this._save();
+
+        return path;
+    }
+
+    public void deleteAnexo() {
+
+        FileManager.getInstance().deleteFileFromPath(this.pathAnexo);
+        this.pathAnexo = null;
+        this._save();
+    }
+
+    public List<Observacao> getObservacoesDadosImovel() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 0 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesBaseVetorial() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 1 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesAnaliseVetorial() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 2 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesAnaliseTemporal() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 3 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesInsumosUtilizados() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 4 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesCalculoNDFI() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 5 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesCalculoAreaEfetiva() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 6 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesDetalhamentoAreaEfetiva() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 7 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesConsideracoes() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 8 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesConclusao() {
+
+        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 9 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
     }
 }

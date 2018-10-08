@@ -19,13 +19,14 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			.then(function (response) {
 
 				analiseGeoManejo.processo = response.data;
-				analiseGeoManejo.processo.analiseManejo = {pathShape: null};
 
 				if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital em análise técnica' ) {
 
-					mensagem.warning('Ops... Você não deveria estar aqui, que constrangedor...');
+					$location.path('/analise-manejo/' + analiseGeoManejo.processo.analiseManejo.id + '/analise-tecnica');
+					return;
 				}
 
+				analiseGeoManejo.processo.analiseManejo = {pathShape: null};
 			})
 			.catch(function (response) {
 
@@ -41,8 +42,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
 	}
-
-	$scope.log = '';
 
 	analiseGeoManejo.upload = function (file) {
 		if (file && !analiseGeoManejo.validacaoErro) {
@@ -132,7 +131,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		processoManejoService.iniciarAnalise(analiseGeoManejo.processo)
 			.then(function(response) {
 
-				mensagem.success(response.data.texto);
+				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
 
 			}, function(error){
 
