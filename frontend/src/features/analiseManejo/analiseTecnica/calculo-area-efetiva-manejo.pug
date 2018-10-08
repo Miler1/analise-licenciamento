@@ -1,0 +1,68 @@
+include ./observacoes
+
+h5 Cálculo da área efetiva de manejo
+
+div
+	blockquote.analise-manejo
+		div.row.card-analise-manejo
+
+			.col-xs-12
+				p.analise-temporal A tabela a seguir, apresenta a área total de manejo florestal solicitada para análise, e a área efetiva a ser explorada (área líquida), após desconto das áreas sem permissão para exploração.
+
+
+div
+	blockquote.analise-manejo
+		table.table.table-condensed
+
+			tbody
+				tr.linha-destaque
+					td Área de manejo florestal solicitada - AMF (hectares)
+					td {{ analiseTecnicaManejo.analiseTecnica.areaManejoFlorestalSolicitada }}
+
+div
+	blockquote.analise-manejo
+		table.table.table-condensed
+
+			thead
+				tr
+					th.text-center(colspan="2") Áreas descontadas da AMF (hectares)
+
+			tbody
+				tr
+					td Área de preservação permanente - APP
+					td {{analiseTecnicaManejo.analiseTecnica.areaPreservacaoPermanente || '-'}}
+				tr
+					td Área de servidão
+					td {{analiseTecnicaManejo.analiseTecnica.areaServidao || '-'}}
+				tr
+					td Área antropizada não consolidada
+					td {{analiseTecnicaManejo.analiseTecnica.areaAntropizadaNaoConsolidada || '-'}}
+				tr
+					td Área consolidada
+					td {{analiseTecnicaManejo.analiseTecnica.areaConsolidada || '-'}}
+				tr
+					td Uso restrito
+					td {{analiseTecnicaManejo.analiseTecnica.areaUsoRestrito || '-'}}
+				tr
+					td Área sem potencial (cipoalica, rochoso e etc)
+					td {{analiseTecnicaManejo.analiseTecnica.areaSemPotencial || '-'}}
+				tr
+					td Corpo d'Água
+					td {{analiseTecnicaManejo.analiseTecnica.areaCorposAgua || '-'}}
+				tr
+					td Área embargada IBAMA
+					td {{analiseTecnicaManejo.analiseTecnica.areaEmbargadaIbama || '-'}}
+				tr
+					td Área embargada LDI
+					td {{analiseTecnicaManejo.analiseTecnica.areaEmbargadaLdi || '-'}}
+				tr
+					td Exploração seletiva - NDFI (índice alto/reentrada)
+					td {{analiseTecnicaManejo.analiseTecnica.areaSeletivaNdfi || '-'}}
+
+			tfoot
+				tr.linha-destaque
+					td Área de efetivo manejo - AMF
+					td {{analiseTecnicaManejo.analiseTecnica.areaEfetivoNdfi || '-'}}
+
+div
+	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesCalculoAreaEfetiva')

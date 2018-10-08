@@ -24,6 +24,7 @@ public class AnalisesManejoSerializer {
 			"areaExploracaoNdfiBaixo",
 			"areaExploracaoNdfiMedio",
 			"areaSemPreviaExploracao",
+			"areaConsolidada",
 			"consideracoes",
 			"conclusao",
 			"processoManejo.numeroProcesso",

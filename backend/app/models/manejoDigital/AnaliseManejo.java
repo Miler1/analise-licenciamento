@@ -55,6 +55,9 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="area_antropizada_nao_consolidada")
     public Double areaAntropizadaNaoConsolidada;
 
+    @Column(name="area_consolidada")
+    public Double areaConsolidada;
+
     @Column(name="area_uso_restrito")
     public Double areaUsoRestrito;
 
@@ -137,6 +140,8 @@ public class AnaliseManejo  extends GenericModel {
         analiseManejo.areaPreservacaoPermanente = Math.random();
 
         analiseManejo.areaServidao = Math.random();
+
+        analiseManejo.areaConsolidada = Math.random();
 
         analiseManejo.areaAntropizadaNaoConsolidada = Math.random();
 
