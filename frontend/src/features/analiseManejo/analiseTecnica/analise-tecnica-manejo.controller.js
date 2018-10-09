@@ -103,9 +103,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			if (!file.$error) {
 
-				if (analiseTecnicaManejo.anexo) {
+				if (analiseTecnicaManejo.analiseTecnica.id) {
 
-					processoManejoService.removeAnexo(analiseTecnicaManejo.anexo.token)
+					processoManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
 
 						.then(function(response) {
 
