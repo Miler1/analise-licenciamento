@@ -22,7 +22,7 @@ public class ProcessosManejo extends InternalController {
 		if (processoAntigo != null) {
 
 			if (processoAntigo.analiseManejo != null &&
-					processoAntigo.analiseManejo.usuario.login.compareTo(getUsuarioSessao().cpfCnpj) != 0) {
+					!processoAntigo.analiseManejo.usuario.id.equals(getUsuarioSessao().id)) {
 
 				throw new ValidacaoException(Mensagem.PROCESSO_ANALISE_USUARIO_DIFERENTE);
 			}
@@ -59,7 +59,7 @@ public class ProcessosManejo extends InternalController {
 
 		// TODO enviar processo para analise na imagem
 		processo.analiseManejo = AnaliseManejo.gerarAnalise(processo,
-				(Usuario) Usuario.find("login", getUsuarioSessao().cpfCnpj).first());
+				(Usuario) Usuario.findById(getUsuarioSessao().id));
 
 		ProcessoManejo processoAntigo = ProcessoManejo.findById(processo.id);
 		processoAntigo = processoAntigo.iniciarAnalise(processo);
