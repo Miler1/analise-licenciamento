@@ -219,14 +219,21 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
 
 		processoManejoService.downloadPdfAnaliseTecnica(processo)
-			.then(function(response){
+			.then(
+				function(data, status, headers){
 
-			})
-			.catch(function(response){
+					var a = document.createElement('a');
+					a.href = URL.createObjectURL(data.data.response.blob);
+					a.download = data.data.response.fileName ? data.data.response.fileName : 'previa_notificacao_analise_juridica.pdf';
+					a.click();
+				},
+				function(error){
 
-				mensagem.error("Ocorreu um erro realizar download do pdf da análise manejo.");
-			});
+					mensagem.error(error.data.texto);
+				}
+		);
 	};
+
 
 	function onPaginaAlterada(){
 

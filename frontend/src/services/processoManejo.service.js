@@ -20,8 +20,7 @@ var ProcessoManejoService = function(request, config, Upload) {
 
 	this.downloadPdfAnaliseTecnica = function(processo) {
 
-		return request
-			.post(config.BASE_URL() + "processoManejo/downloadPdfAnalise", processo);
+		return request.postArrayBuffer(config.BASE_URL() + "processoManejo/downloadPdfAnalise", processo);
 	};
 
 };
