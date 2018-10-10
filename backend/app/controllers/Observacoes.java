@@ -2,7 +2,7 @@ package controllers;
 
 import models.manejoDigital.Observacao;
 import security.Acao;
-import serializers.ObeservacoesSerializer;
+import serializers.ObservacoesSerializer;
 import utils.Mensagem;
 
 public class Observacoes extends InternalController {
@@ -15,7 +15,7 @@ public class Observacoes extends InternalController {
 
 		observacao.save();
 
-		renderJSON(observacao, ObeservacoesSerializer.save);
+		renderJSON(observacao, ObservacoesSerializer.save);
 	}
 
 	public static void delete(Long id) {
