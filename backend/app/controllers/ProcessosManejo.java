@@ -8,6 +8,8 @@ import security.Acao;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
 
+import java.io.File;
+
 public class ProcessosManejo extends InternalController {
 
 	public static void save(ProcessoManejo processo) {
@@ -66,6 +68,19 @@ public class ProcessosManejo extends InternalController {
 
 		renderJSON(processoAntigo, ProcessoManejoSerializer.iniciarAnalise);
 	}
+
+	public static void downloadPdfAnalise(ProcessoManejo processoManejo) {
+
+	    verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
+	    notFoundIfNull(processoManejo);
+
+	    ProcessoManejo processoManejoSalvo = ProcessoManejo.find("numeroProcesso", processoManejo.numeroProcesso).first();
+
+	    File documentBinary = processoManejoSalvo.analiseManejo.documentoAnalise.getFile();
+
+	    renderBinary(documentBinary, documentBinary.getName());
+    }
 
 
 }

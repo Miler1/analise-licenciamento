@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import exceptions.AppException;
 import models.Documento;
 import models.TipoDocumento;
 import models.pdf.PDFGenerator;
@@ -11,6 +12,7 @@ import play.db.jpa.GenericModel;
 import play.libs.IO;
 import utils.Configuracoes;
 import utils.FileManager;
+import utils.Mensagem;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -105,6 +107,10 @@ public class AnaliseManejo  extends GenericModel {
     @OneToOne
     @JoinColumn(name="id_usuario")
     public Usuario usuario;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="id_documento")
+    public Documento documentoAnalise;
 
     @Required
     @OneToMany(mappedBy = "analiseManejo")
@@ -278,6 +284,21 @@ public class AnaliseManejo  extends GenericModel {
     public void finalizar() {
 
         Random random = new Random();
+
+        try {
+
+            this.documentoAnalise = this.gerarPDFAnalise();
+
+            this.documentoAnalise.caminho = this.documentoAnalise.arquivo.getPath();
+
+            this.documentoAnalise.dataCadastro = new Date();
+
+            this._save();
+
+        } catch (Exception e) {
+
+            throw new AppException(Mensagem.ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO);
+        }
 
         // Simulação do resultado da análise feita pela Vega
         if (random.nextBoolean()) {
