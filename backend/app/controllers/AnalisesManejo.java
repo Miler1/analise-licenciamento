@@ -1,5 +1,7 @@
 package controllers;
 
+import models.AnaliseJuridica;
+import models.Documento;
 import models.manejoDigital.AnaliseManejo;
 import play.data.Upload;
 import security.Acao;
@@ -46,5 +48,21 @@ public class AnalisesManejo extends InternalController {
 		AnaliseManejo analise = AnaliseManejo.findById(id);
 
 		renderJSON(analise, AnalisesManejoSerializer.findById);
+	}
+
+	public static void downloadPDFAnalise(AnaliseManejo analiseManejo) throws Exception {
+
+		verificarPermissao(Acao.VISUALIZAR_PROCESSO_MANEJO);
+
+		Documento pdfParecer = analiseManejo.gerarPDFAnalise();
+
+		String nome = pdfParecer.tipo.nome +  "_" + analiseManejo.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(pdfParecer.arquivo, nome);
+
 	}
 }

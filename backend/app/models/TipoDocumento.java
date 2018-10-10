@@ -18,6 +18,7 @@ public class TipoDocumento extends Model {
 	public static Long PARECER_ANALISE_TECNICA = 4l;
 	public static Long NOTIFICACAO_ANALISE_JURIDICA = 5l;
 	public static Long NOTIFICACAO_ANALISE_TECNICA = 6l;
+	public static Long NOTIFICACAO_ANALISE_MANEJO = 7l;
 
 
 	@Required

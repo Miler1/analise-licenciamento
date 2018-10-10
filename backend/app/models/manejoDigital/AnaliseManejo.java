@@ -1,5 +1,8 @@
 package models.manejoDigital;
 
+import models.Documento;
+import models.TipoDocumento;
+import models.pdf.PDFGenerator;
 import models.portalSeguranca.Usuario;
 import play.data.Upload;
 import play.data.validation.Required;
@@ -268,5 +271,22 @@ public class AnaliseManejo  extends GenericModel {
         return Observacao.find("analiseManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
+    }
+
+    public Documento gerarPDFAnalise() throws Exception {
+
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_MANEJO);
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("analiseManejo", this)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+
+        pdf.generate();
+
+        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+
     }
 }
