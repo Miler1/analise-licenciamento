@@ -17,7 +17,7 @@ div
 			tbody
 				tr.linha-destaque
 					td Área de manejo florestal solicitada - AMF (hectares)
-					td {{ analiseTecnicaManejo.analiseTecnica.areaManejoFlorestalSolicitada }}
+					td.text-right {{ analiseTecnicaManejo.analiseTecnica.areaManejoFlorestalSolicitada }}
 
 div
 	blockquote.analise-manejo
@@ -30,39 +30,39 @@ div
 			tbody
 				tr
 					td Área de preservação permanente - APP
-					td {{analiseTecnicaManejo.analiseTecnica.areaPreservacaoPermanente || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaPreservacaoPermanente || '-'}}
 				tr
 					td Área de servidão
-					td {{analiseTecnicaManejo.analiseTecnica.areaServidao || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaServidao || '-'}}
 				tr
 					td Área antropizada não consolidada
-					td {{analiseTecnicaManejo.analiseTecnica.areaAntropizadaNaoConsolidada || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaAntropizadaNaoConsolidada || '-'}}
 				tr
 					td Área consolidada
-					td {{analiseTecnicaManejo.analiseTecnica.areaConsolidada || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaConsolidada || '-'}}
 				tr
 					td Uso restrito
-					td {{analiseTecnicaManejo.analiseTecnica.areaUsoRestrito || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaUsoRestrito || '-'}}
 				tr
 					td Área sem potencial (cipoalica, rochoso e etc)
-					td {{analiseTecnicaManejo.analiseTecnica.areaSemPotencial || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaSemPotencial || '-'}}
 				tr
 					td Corpo d'Água
-					td {{analiseTecnicaManejo.analiseTecnica.areaCorposAgua || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaCorposAgua || '-'}}
 				tr
 					td Área embargada IBAMA
-					td {{analiseTecnicaManejo.analiseTecnica.areaEmbargadaIbama || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaEmbargadaIbama || '-'}}
 				tr
 					td Área embargada LDI
-					td {{analiseTecnicaManejo.analiseTecnica.areaEmbargadaLdi || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaEmbargadaLdi || '-'}}
 				tr
 					td Exploração seletiva - NDFI (índice alto/reentrada)
-					td {{analiseTecnicaManejo.analiseTecnica.areaSeletivaNdfi || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaSeletivaNdfi || '-'}}
 
 			tfoot
 				tr.linha-destaque
 					td Área de efetivo manejo - AMF
-					td {{analiseTecnicaManejo.analiseTecnica.areaEfetivoNdfi || '-'}}
+					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaEfetivoNdfi || '-'}}
 
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesCalculoAreaEfetiva')
