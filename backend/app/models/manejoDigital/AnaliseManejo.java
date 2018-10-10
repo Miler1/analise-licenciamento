@@ -4,6 +4,7 @@ import models.Documento;
 import models.TipoDocumento;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
 import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Entity
@@ -271,6 +273,21 @@ public class AnaliseManejo  extends GenericModel {
         return Observacao.find("analiseManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
+    }
+
+    public void finalizar() {
+
+        Random random = new Random();
+
+        // Simulação do resultado da análise feita pela Vega
+        if (random.nextBoolean()) {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
+
+        } else {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
+        }
     }
 
     public Documento gerarPDFAnalise() throws Exception {

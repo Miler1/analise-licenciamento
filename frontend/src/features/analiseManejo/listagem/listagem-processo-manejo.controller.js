@@ -216,6 +216,18 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		},
 	];
 
+	listagemProcessoManejo.downloadPdf = function (processo) {
+
+		processoManejoService.downloadPdf(processo)
+			.then(function(response){
+
+			})
+			.catch(function(response){
+
+				mensagem.error("Ocorreu um erro realizar download do pdf da análise manejo.");
+			});
+	};
+
 	function onPaginaAlterada(){
 
 		$scope.$broadcast('pesquisarProcessosManejo');

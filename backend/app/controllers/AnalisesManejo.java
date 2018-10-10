@@ -6,8 +6,6 @@ import models.manejoDigital.AnaliseManejo;
 import play.data.Upload;
 import security.Acao;
 import serializers.AnalisesManejoSerializer;
-import utils.Configuracoes;
-import utils.FileManager;
 import utils.Mensagem;
 
 import java.io.IOException;
@@ -48,6 +46,21 @@ public class AnalisesManejo extends InternalController {
 		AnaliseManejo analise = AnaliseManejo.findById(id);
 
 		renderJSON(analise, AnalisesManejoSerializer.findById);
+	}
+
+	public static void finalizar(Long id) {
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
+		returnIfNull(id, "Long");
+
+		AnaliseManejo analise = AnaliseManejo.findById(id);
+
+		analise.finalizar();
+
+		//TODO ENVIAR REQUISIÇÃO DE CONCLUSÃO DA ANÁLISE NO SIMLAM
+
+		renderMensagem(Mensagem.ANALISE_FINALIZADA_SUCESSO);
 	}
 
 	public static void downloadPDFAnalise(AnaliseManejo analiseManejo) throws Exception {

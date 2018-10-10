@@ -17,8 +17,8 @@ div.margin-top-lg
                     th Órbita/Ponto
                     th Satélite
                     th Nível de exploração
-                    th Valor do NDFI
-                    th Área (ha)
+                    th.text-center Valor do NDFI
+                    th.text-center Área (ha)
 
             tbody
                 tr(ng-repeat="analisendfi in analiseTecnicaManejo.analiseTecnica.analisesNdfi")
@@ -26,8 +26,8 @@ div.margin-top-lg
                     td.col-md-1 {{ analisendfi.orbita + '/' + analisendfi.ponto }}
                     td.col-md-1 {{ analisendfi.satelite }}
                     td.col-md-1 {{ analisendfi.nivelExploracao }}
-                    td.col-md-1 {{ analisendfi.valor }}
-                    td.col-md-1 {{ analisendfi.area }}
+                    td.col-md-1.text-right {{ analisendfi.valor }}
+                    td.col-md-1.text-right {{ analisendfi.area }}
 
                 tr
                     td(colspan="5").text-right Total

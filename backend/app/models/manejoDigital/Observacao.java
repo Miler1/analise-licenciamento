@@ -4,6 +4,7 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(schema = "analise", name = "observacao")
@@ -28,10 +29,16 @@ public class Observacao  extends GenericModel {
     @Enumerated(EnumType.ORDINAL)
     public PassoAnaliseManejo passoAnalise;
 
+    @Required
+    @Column
+    public Date data;
+
     @Override
     public Observacao save() {
 
         this.analiseManejo = AnaliseManejo.findById(this.analiseManejo.id);
+
+        this.data = new Date();
 
         this._save();
 
