@@ -11,10 +11,9 @@ div.modal-header
 div.modal-body
 
 	form(name="modalCtrl.formObservacao", novalidate)
-		blockquote.success
-			.form-group
-				textarea.form-control(name='texto', rows='6', ng-model="modalCtrl.texto", required)
-				+inputErrors('modalCtrl.formObservacao', 'texto', 'required')
+		.form-group
+			textarea.form-control(name='texto', rows='6', ng-model="modalCtrl.texto", required)
+			+inputErrors('modalCtrl.formObservacao', 'texto', 'required')
 
 div.modal-footer#footer-modal
 
