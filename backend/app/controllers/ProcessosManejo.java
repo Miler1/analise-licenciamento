@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.ValidacaoException;
 import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
 import models.portalSeguranca.Usuario;
@@ -19,6 +20,12 @@ public class ProcessosManejo extends InternalController {
 		ProcessoManejo processoAntigo = ProcessoManejo.find("numeroProcesso", processo.numeroProcesso).first();
 
 		if (processoAntigo != null) {
+
+			if (processoAntigo.analiseManejo != null &&
+					processoAntigo.analiseManejo.usuario.login.compareTo(getUsuarioSessao().cpfCnpj) != 0) {
+
+				throw new ValidacaoException(Mensagem.PROCESSO_ANALISE_USUARIO_DIFERENTE);
+			}
 
 			renderJSON(processoAntigo, ProcessoManejoSerializer.save);
 

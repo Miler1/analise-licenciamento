@@ -24,6 +24,13 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 					$location.path('/analise-manejo/' + analiseGeoManejo.processo.analiseManejo.id + '/analise-tecnica');
 					return;
+
+				// Como ainda não existe a integração com o SIMLAM, esse bloco é necessário para manter a integridade do sistema
+				} else if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital deferido' || analiseGeoManejo.processo.nomeCondicao == 'Manejo digital indeferido') {
+
+					mensagem.warning("Processo já análisado.");
+					$location.path('/analise-manejo');
+					return;
 				}
 
 				analiseGeoManejo.processo.analiseManejo = {pathShape: null};

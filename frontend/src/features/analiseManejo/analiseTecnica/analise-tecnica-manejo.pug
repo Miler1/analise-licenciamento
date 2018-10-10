@@ -87,6 +87,10 @@ div
 			span.glyphicon.glyphicon-chevron-left.glyphicon--with-right-margin
 			| &nbsp;Voltar
 
-		button.btn.btn-success.pull-right(ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
-				span.glyphicon.glyphicon-ok.glyphicon--with-right-margin
-				| &nbsp;Confirmar parecer
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index !== 9", ng-click="analiseTecnicaManejo.proximo()", tabindex="0")
+			| &nbsp;Próximo&nbsp;
+			span.glyphicon.glyphicon-chevron-right.glyphicon--with-left-margin
+
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index === 9", ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
+			span.glyphicon.glyphicon-ok.glyphicon--with-right-margin()
+			| &nbsp;Confirmar parecer
