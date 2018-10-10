@@ -216,9 +216,9 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		},
 	];
 
-	listagemProcessoManejo.downloadPdf = function (processo) {
+	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
 
-		processoManejoService.downloadPdf(processo)
+		processoManejoService.downloadPdfAnaliseTecnica(processo)
 			.then(function(response){
 
 			})
