@@ -285,21 +285,6 @@ public class AnaliseManejo  extends GenericModel {
 
         Random random = new Random();
 
-        try {
-
-            this.documentoAnalise = this.gerarPDFAnalise();
-
-            this.documentoAnalise.caminho = this.documentoAnalise.arquivo.getPath();
-
-            this.documentoAnalise.dataCadastro = new Date();
-
-            this._save();
-
-        } catch (Exception e) {
-
-            throw new AppException(Mensagem.ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO);
-        }
-
         // Simulação do resultado da análise feita pela Vega
         if (random.nextBoolean()) {
 
