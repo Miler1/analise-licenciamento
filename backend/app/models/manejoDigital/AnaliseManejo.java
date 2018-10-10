@@ -280,6 +280,7 @@ public class AnaliseManejo  extends GenericModel {
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseManejo", this)
+                .addParam("processoManejo", this.processoManejo)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
 
         pdf.generate();

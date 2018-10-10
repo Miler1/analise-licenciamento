@@ -54,15 +54,15 @@ public class AnalisesManejo extends InternalController {
 
 		verificarPermissao(Acao.VISUALIZAR_PROCESSO_MANEJO);
 
-		Documento pdfParecer = analiseManejo.gerarPDFAnalise();
+		Documento pdfAnalise = analiseManejo.gerarPDFAnalise();
 
-		String nome = pdfParecer.tipo.nome +  "_" + analiseManejo.id + ".pdf";
+		String nome = pdfAnalise.tipo.nome +  "_" + analiseManejo.id + ".pdf";
 		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Content-Type", "application/pdf");
 
-		renderBinary(pdfParecer.arquivo, nome);
+		renderBinary(pdfAnalise.arquivo, nome);
 
 	}
 }
