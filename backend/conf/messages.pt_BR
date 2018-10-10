@@ -122,6 +122,11 @@ ANEXO_SALVO_SUCESSO=Anexo salvo com sucesso.
 ANALISE_FINALIZADA_SUCESSO=Análise finalizada com sucesso.
 
 #
+# Processo Manejo
+#
+PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
+
+#
 # Observações
 #
 OBSERVACAO_EXCLUIDA_SUCESSO=Observação removida com sucesso.

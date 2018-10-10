@@ -81,7 +81,9 @@ public enum Mensagem {
 
 	ANEXO_SALVO_SUCESSO,
 
-	ANALISE_FINALIZADA_SUCESSO;
+	ANALISE_FINALIZADA_SUCESSO,
+
+	PROCESSO_ANALISE_USUARIO_DIFERENTE;
 
 	public String getTexto(Object ... args) {
 
