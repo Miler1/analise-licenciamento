@@ -19,4 +19,15 @@ public class SerializerUtil {
 			.prettyPrint(prettyPrint)
 			.transform(DateSerializer.getTransformer(), Date.class);
 	}
+
+	public static JSONSerializer createWithDateTime(String ... includes) {
+
+		boolean prettyPrint = Play.mode == Mode.DEV;
+
+		return new JSONSerializer()
+				.include(includes)
+				.exclude("*")
+				.prettyPrint(prettyPrint)
+				.transform(DateSerializer.getTransformerWithDateTime(), Date.class);
+	}
 }
