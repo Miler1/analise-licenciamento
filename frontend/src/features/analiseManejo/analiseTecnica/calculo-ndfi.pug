@@ -1,0 +1,37 @@
+include ./observacoes
+
+h5 Cálculo do NDFI
+
+div.row.card-analise-manejo
+    .col-xs-12
+        p.margin-top-xs A seguir são apresentados os resultados das análises de área com intervenção, identificadas por meio do índice normalizado da diferença da fração - NDFI, de acordo com a portaria Nº 063/2014-GAB/SEMAS de 15/01/2014.
+
+div.margin-top-lg
+    blockquote.analise-manejo
+        table.table.table-striped.table-condensed
+            thead
+                tr
+                    th(colspan="6").text-center Tabela resumo análise NDFI
+                tr
+                    th Data
+                    th Órbita/Ponto
+                    th Satélite
+                    th Nível de exploração
+                    th.text-center Valor do NDFI
+                    th.text-center Área (ha)
+
+            tbody
+                tr(ng-repeat="analisendfi in analiseTecnicaManejo.analiseTecnica.analisesNdfi")
+                    td.col-md-1 {{ analisendfi.dataAnalise }}
+                    td.col-md-1 {{ analisendfi.orbita + '/' + analisendfi.ponto }}
+                    td.col-md-1 {{ analisendfi.satelite }}
+                    td.col-md-1 {{ analisendfi.nivelExploracao }}
+                    td.col-md-1.text-right {{ analisendfi.valor }}
+                    td.col-md-1.text-right {{ analisendfi.area }}
+
+                tr
+                    td(colspan="5").text-right Total
+                    td {{ analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI }}
+
+div
+    +observacoes('analiseTecnicaManejo.analiseTecnica.observacoesCalculoNDFI')

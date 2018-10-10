@@ -44,11 +44,17 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
+				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = 0;
+
 				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {
 
 					analiseTecnicaManejo.anexo = {file: { name: analiseTecnicaManejo.analiseTecnica.pathAnexo.substring(analiseTecnicaManejo.analiseTecnica.pathAnexo.lastIndexOf('/') + 1) } };
 				}
 
+				_.forEach(analiseTecnicaManejo.analiseTecnica.analisesNdfi, function(analise) {
+
+					analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI += analise.area;
+				});
 			})
 			.catch(function (response) {
 
@@ -97,9 +103,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			if (!file.$error) {
 
-				if (analiseTecnicaManejo.anexo) {
+				if (analiseTecnicaManejo.analiseTecnica.id) {
 
-					processoManejoService.removeAnexo(analiseTecnicaManejo.anexo.token)
+					processoManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
 
 						.then(function(response) {
 
