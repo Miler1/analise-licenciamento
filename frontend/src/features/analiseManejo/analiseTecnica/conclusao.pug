@@ -1,10 +1,12 @@
 include ./observacoes
 
+h5 Conclusão
+
 div
 	blockquote.analise-manejo
 		div.row.card-analise-manejo
 			.col-xs-12
-				p.conclusao {{analiseTecnicaManejo.analiseTecnica.conclusao}}
+				p.margin-top-xs {{analiseTecnicaManejo.analiseTecnica.conclusao}}
 
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesConclusao')

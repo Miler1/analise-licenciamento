@@ -52,6 +52,10 @@ public class AnalisesManejo extends InternalController {
 
 		returnIfNull(id, "Long");
 
+		AnaliseManejo analise = AnaliseManejo.findById(id);
+
+		analise.finalizar();
+
 		//TODO ENVIAR REQUISIÇÃO DE CONCLUSÃO DA ANÁLISE NO SIMLAM
 
 		renderMensagem(Mensagem.ANALISE_FINALIZADA_SUCESSO);
