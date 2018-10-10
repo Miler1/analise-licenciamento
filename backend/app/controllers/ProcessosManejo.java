@@ -1,6 +1,7 @@
 package controllers;
 
 import exceptions.ValidacaoException;
+import models.Documento;
 import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
 import models.portalSeguranca.Usuario;
@@ -69,18 +70,22 @@ public class ProcessosManejo extends InternalController {
 		renderJSON(processoAntigo, ProcessoManejoSerializer.iniciarAnalise);
 	}
 
-	public static void downloadPdfAnalise(ProcessoManejo processoManejo) {
+	public static void downloadPdfAnalise(ProcessoManejo processoManejo) throws Exception {
 
-	    verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+		verificarPermissao(Acao.VISUALIZAR_PROCESSO_MANEJO);
 
-	    notFoundIfNull(processoManejo);
+		notFoundIfNull(processoManejo);
 
-	    ProcessoManejo processoManejoSalvo = ProcessoManejo.find("numeroProcesso", processoManejo.numeroProcesso).first();
+		ProcessoManejo processoManejoSalvo = ProcessoManejo.find("numeroProcesso", processoManejo.numeroProcesso).first();
 
-	    File documentBinary = processoManejoSalvo.analiseManejo.documentoAnalise.getFile();
+		Documento pdfAnalise = processoManejoSalvo.analiseManejo.gerarPDFAnalise();
 
-	    renderBinary(documentBinary, documentBinary.getName());
-    }
+		String nome = pdfAnalise.tipo.nome +  "_" + processoManejoSalvo.analiseManejo.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
 
-
+		renderBinary(pdfAnalise.arquivo, nome);
+	}
 }

@@ -62,20 +62,4 @@ public class AnalisesManejo extends InternalController {
 
 		renderMensagem(Mensagem.ANALISE_FINALIZADA_SUCESSO);
 	}
-
-	public static void downloadPDFAnalise(AnaliseManejo analiseManejo) throws Exception {
-
-		verificarPermissao(Acao.VISUALIZAR_PROCESSO_MANEJO);
-
-		Documento pdfAnalise = analiseManejo.gerarPDFAnalise();
-
-		String nome = pdfAnalise.tipo.nome +  "_" + analiseManejo.id + ".pdf";
-		nome = nome.replace(' ', '_');
-		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
-		response.setHeader("Content-Transfer-Encoding", "binary");
-		response.setHeader("Content-Type", "application/pdf");
-
-		renderBinary(pdfAnalise.arquivo, nome);
-
-	}
 }
