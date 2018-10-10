@@ -1,7 +1,5 @@
 package controllers;
 
-import models.AnaliseJuridica;
-import models.Documento;
 import models.manejoDigital.AnaliseManejo;
 import play.data.Upload;
 import security.Acao;
