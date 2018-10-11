@@ -8,50 +8,18 @@ body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.cabecalho {
-	margin: 10px;
-	padding-bottom: 50px;
-	text-align: center;
-}
-
-.parecer {
-	text-align: justify;
-}
-
-li {
-	padding: 7px 0;
-}
-
-div.usuario {
-	margin-top: 25px;
-	display: block;
-}
-
-div.qrcode {
-	margin-top: 2px;
-	display: block;
-}
-
-div.qrcode img {
-	width: 150px;
-}
-
-div.assinatura {
-	border-top: 1px solid #000;
-	margin-top: 50px;
-	text-align: center
-}
-
-p.link {
-	color: #424ae3;
-}
-
 div.header {
 	display: block; text-align: center;
 	position: running(header);
 	background-color: #bfbfbf;
 	border: solid 1px #000;
 }
+
+.titulo-tabela {
+	background-color: red;
+	text-align: center;
+}
+
 
 @page {
 	@top-center { content: element(header) }
