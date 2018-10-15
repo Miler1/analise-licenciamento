@@ -300,11 +300,20 @@ public class AnaliseManejo  extends GenericModel {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_MANEJO);
 
+        Double totalAnaliseNDFI = Double.valueOf(0);
+
+        for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
+
+            totalAnaliseNDFI += analiseNdfi.area;
+        }
+
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
                 .addParam("analiseManejo", this)
                 .addParam("processoManejo", this.processoManejo)
-                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 
         pdf.generate();
 
