@@ -45,13 +45,18 @@ html(lang='en')
                 tr
                     td(colspan="1")
                      strong Endereço:
-                    td(colspan="5") Antonio Benedito dos santos 206
+                    td(colspan="5") ${imovelManejo.endereco ? imovelManejo.endereco : "-"}
                     td(colspan="1")
                      strong Bairro:
-                    td(colspan="2") Nova Lavras
+                    td(colspan="2") ${imovelManejo.bairro ? imovelManejo.bairro : "-"}
                     td(colspan="1")
                      strong CEP:
-                    td(colspan="2") 37200-000
+                    td(colspan="2") ${imovelManejo.cep ? imovelManejo.cep : "-"}
+                tr
+                    td(colspan="1")
+                        strong Municipío:
+                    td(colspan="11")
+                        | ${processoManejo.nomeMunicipioSimlam ? processoManejo.nomeMunicipioSimlam : "-"}
 
     div
       p
