@@ -18,25 +18,9 @@ var ProcessoManejoService = function(request, config, Upload) {
 			.post(config.BASE_URL() + "processoManejo/iniciar", processo);
 	};
 
-	this.getAnalise = function(id) {
+	this.downloadPdfAnaliseTecnica = function(processo) {
 
-		return request
-			.get(config.BASE_URL() + "analiseManejo/" + id);
-	};
-
-	this.saveAnexo = function(id, file) {
-
-		return Upload.upload({
-
-			url: config.BASE_URL() + 'analiseManejo/' + id + '/anexo',
-			data: { file: file }
-		});
-	};
-
-	this.removeAnexo = function(token) {
-
-		return request
-			.delete(config.BASE_URL() + "analiseManejo/anexo/" + token);
+		return request.postArrayBuffer(config.BASE_URL() + "processoManejo/downloadPdfAnalise", processo);
 	};
 
 };
