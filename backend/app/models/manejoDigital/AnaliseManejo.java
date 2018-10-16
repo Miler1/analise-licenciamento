@@ -1,5 +1,9 @@
 package models.manejoDigital;
 
+import exceptions.AppException;
+import models.Documento;
+import models.TipoDocumento;
+import models.pdf.PDFGenerator;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import play.data.Upload;
@@ -8,6 +12,7 @@ import play.db.jpa.GenericModel;
 import play.libs.IO;
 import utils.Configuracoes;
 import utils.FileManager;
+import utils.Mensagem;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -102,6 +107,10 @@ public class AnaliseManejo  extends GenericModel {
     @OneToOne
     @JoinColumn(name="id_usuario")
     public Usuario usuario;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="id_documento")
+    public Documento documentoAnalise;
 
     @Required
     @OneToMany(mappedBy = "analiseManejo")
@@ -285,5 +294,40 @@ public class AnaliseManejo  extends GenericModel {
 
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
         }
+    }
+
+    public Documento gerarPDFAnalise() throws Exception {
+
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_MANEJO);
+
+        Double totalAnaliseNDFI = Double.valueOf(0);
+
+        String nomeAnexo = null;
+
+        if(this.pathAnexo != null){
+
+            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
+        }
+
+        for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
+
+            totalAnaliseNDFI += analiseNdfi.area;
+        }
+
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("nomeAnexo", nomeAnexo)
+                .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
+                .addParam("analiseManejo", this)
+                .addParam("processoManejo", this.processoManejo)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
+
+        pdf.generate();
+
+        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+
     }
 }

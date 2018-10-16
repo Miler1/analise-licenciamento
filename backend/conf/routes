@@ -140,6 +140,7 @@ GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 POST    /processoManejo                             ProcessosManejo.save
 GET     /processoManejo/{id}                        ProcessosManejo.findById
 POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
+POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
 
 # Analises Manejo
 POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo

@@ -1,0 +1,518 @@
+doctype html
+| %{
+| processoManejo = analiseManejo.processoManejo;
+| imovelManejo = analiseManejo.processoManejo.imovelManejo;
+| basesVetoriais = analiseManejo.basesVetorial;
+| analisesVetoriais = analiseManejo.analisesVetorial;
+| analisesNdfi = analiseManejo.analisesNdfi;
+| }%
+
+html(lang='en')
+  head
+    title Análise - Licenciamento Ambiental - Pará
+      link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+      meta(charset='UTF-8')
+
+  body
+    div.header
+        div.header-item-medium
+            h4 Secretaria de Meio Ambiente e Sustentabilidade
+        div.header-item-small-padding
+            center
+                img.logo(src='/public/app/images/brasao_pa.png' height="63" width="83")
+        div.header-item-large
+            h3 LAUDO TÉCNICO DE APAT
+        div.header-item-small
+            center
+                img.logo(src='/public/app/images/logo_digeo.png' height="73" width="93")
+
+    div.div-centro
+        table(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela(colspan="12") Informações gerais do processo
+            tbody
+                tr
+                    td(colspan="1")
+                        strong Nome:
+                    td(colspan="11")
+                        | ${processoManejo.denominacaoEmpreendimentoSimlam ? processoManejo.denominacaoEmpreendimentoSimlam : "-"}
+                tr
+                    td(colspan="1")
+                        strong Tipologia do licenciamento:
+                    td(colspan="11")
+                        | ${processoManejo.nomeTipoLicenca ? processoManejo.nomeTipoLicenca : "-"}
+                tr
+                    td(colspan="1")
+                     strong Endereço:
+                    td(colspan="5") ${imovelManejo.endereco ? imovelManejo.endereco : "-"}
+                    td(colspan="1")
+                     strong Bairro:
+                    td(colspan="2") ${imovelManejo.bairro ? imovelManejo.bairro : "-"}
+                    td(colspan="1")
+                     strong CEP:
+                    td(colspan="2") ${imovelManejo.cep ? imovelManejo.cep : "-"}
+                tr
+                    td(colspan="1")
+                        strong Municipío:
+                    td(colspan="11")
+                        | ${processoManejo.nomeMunicipioSimlam ? processoManejo.nomeMunicipioSimlam : "-"}
+
+    div
+      p
+        | O presente Laudo Técnico tem como objetivo demonstrar o resultado da análise da Área de Manejo Florestal, para subsidiar a decisão sobre a emissão da Autorização Previa á Analise Técnica de Plano de Manejo Florestal Sustentável – APAT
+
+    div
+      p
+       strong 1 - Dados do imóvel.
+
+    div.div-centro
+        table(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela(colspan="12") Informações declaradas no car
+            tbody
+                tr
+                    td(colspan="2")
+                        strong Registro no CAR
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.registroCar ? imovelManejo.registroCar : "-"}
+                tr
+                    td(colspan="2")
+                        strong Área total do imóvel documental
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.areaTotalImovelDocumentado ? imovelManejo.areaTotalImovelDocumentado : "-"}
+                tr
+                    td(colspan="2")
+                        strong Área líquida do imóvel
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.areaLiquidaImovel ? imovelManejo.areaLiquidaImovel : "-"}
+                tr
+                    td(colspan="2")
+                        strong Reserva legal - RL
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.areaReservaLegal ? imovelManejo.areaReservaLegal : "-"}
+                tr
+                    td(colspan="2")
+                        strong Área de preservação permanente - APP
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.areaPreservacaoPermanente ? imovelManejo.areaPreservacaoPermanente : "-"}
+                tr
+                    td(colspan="2")
+                        strong Remanescente de vegetação nativa
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.areaRemanescenteVegetacaoNativa ? imovelManejo.areaRemanescenteVegetacaoNativa : "-"}
+                tr
+                    td(colspan="2")
+                        strong Corpos d'água
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.areaCorposAgua ? imovelManejo.areaCorposAgua : "-"}
+                tr
+                    td(colspan="2")
+                        strong Área de uso consolidado
+                    td.coluna-valor(colspan="10")
+                        | ${imovelManejo.areaUsoConsolidado ? imovelManejo.areaUsoConsolidado : "-"}
+
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 0}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+    div
+        p OBS: P limite de sobreposição de imóveis rurais possui tolerância aceitável pelo sistema de 5% conforme (IN 14/2011 e decreto 216/2011).
+    div.div-list
+        p
+            strong 1.1. Segue no anexo 1 o termo de Delimitação da área de reserva legal aprovada para fins de averbação cartorial.
+        p
+            strong 1.2. Segue no anexo 2 o termo de ajustamento da conduta - TAC com as coordenadas do passivo a ser regularizado, de acordo com a análise cadastro ambiental rual.
+    div
+        p
+            strong 2 - Dados analisados da AMF pelo GEOTEC.
+
+        p.div-list   Nesta seção é apresentada as etapas de avaliação da AMF realizada através de técnica de geoprocessamento e informações obtidas em imagens de satélite, de modo a comprovar a existência de cobertura florestal e a situação ambiental da área.
+
+    div
+        p
+            strong 1.3.Metadados da base vetorial oficial utilizada.
+        p.div-list   A tabela abaixo apresenta os metadados dos dados oficiais utilizados na avaliação da AMF.
+
+    div.div-centro
+        table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela Dados oficiais
+                    th.titulo-tabela Fonte
+                    th.titulo-tabela Última atualização
+                    th.titulo-tabela Escala
+                    th.titulo-tabela OBS
+            tbody
+                | \#{list basesVetoriais, as:'baseVetorial'}
+                tr
+                    td ${baseVetorial.nome ? baseVetorial.nome : "-"}
+                    td ${baseVetorial.fonte ? baseVetorial.fonte : "-"}
+                    td ${baseVetorial.ultimaAtualizacao ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(baseVetorial.ultimaAtualizacao) : "-"}
+                    td ${baseVetorial.escala ? baseVetorial.escala : "-"}
+                    td ${baseVetorial.observacao ? baseVetorial.observacao : "-"}
+                | \#{/list}
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 1}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+
+    div
+        p
+            strong 1.4.Analise vetorial sobre a base de dados oficiais.
+    div.div-list
+        p A tabela abaixo apresenta a descrição da distância e sobreposições extraídas na avaliação das sobreposições com os dados oficiais. As cartas imagens referentes a estas análises são apresentadas no anexo 3.
+
+    div.div-centro
+        table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela(colspan="2") Vetores
+                    th.titulo-tabela.coluna-dupla-divisao(colspan="2") Propriedade
+                    th.titulo-tabela.coluna-dupla-divisao(colspan="2") AMF
+                    th.titulo-tabela.coluna-dupla.coluna-dupla-divisao(rowspan="2") Observação
+                tr
+                    th.titulo-tabela Tipo
+                    th.titulo-tabela Nome
+                    th.titulo-tabela.coluna-dupla-divisao Distância (km)
+                    th.titulo-tabela Sobreposição (ha)
+                    th.titulo-tabela.coluna-dupla-divisao Distância (km)
+                    th.titulo-tabela Sobreposição (ha)
+            tbody
+                | \#{list analisesVetoriais, as:'analiseVetorial'}
+                tr
+                    td ${analiseVetorial.tipo ? analiseVetorial.tipo : "-"}
+                    td ${analiseVetorial.nome ? analiseVetorial.nome : "-"}
+                    td ${ analiseVetorial.distanciaPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.distanciaPropriedade) : "-"}
+                    td ${ analiseVetorial.sobreposicaoPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.sobreposicaoPropriedade) : "-"}
+                    td ${ analiseVetorial.distanciaAmf ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.distanciaAmf) : "-"}
+                    td ${ analiseVetorial.sobreposicaoAmf ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.sobreposicaoAmf) : "-"}
+                    td ${analiseVetorial.observacao ? analiseVetorial.observacao : "-"}
+                | \#{/list}
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 2}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+    div
+        p
+            strong 1.5.Analise temporal de imagens de satélite
+    div.div-list
+        p Para comprovação da existência de cobertura florestal e verificação da não ocorrência de áreas com exploração florestal, foi realizada através de análise de imagens de satélite, referente aos ultimos 24 anos. Esta análise está baseada na determinação do índice Normalizado de Diferença de fração - NDFI, cujo objetivo medir as alterações na cobertura vegetal e no solo, conforme determina a IN 05 de 10/09/2015.
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 3}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+    div
+        p
+            strong 1.5.1.Insulmos utilizados para análise temporal.
+    div.div-list
+        p Para elaboração deste laudo técnico foi realizada a análise multitemporal de imagens de satélites, referente aos últimos 24 anos, onde foram verificadas as feições da cobertura do solo dentro da área de manejo florestal – AMF. As informações das imagens de satélites utilizados são descritas na tabela abaixo:
+
+    div.div-centro
+        table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela Ano da imagem
+                    th.titulo-tabela Satélite
+                    th.titulo-tabela Órbita/Ponto
+                    th.titulo-tabela Data
+            tbody
+                tr
+                    td 1993
+                    td Landsat
+                    td 228_062
+                    td 23/07/1993
+                tr
+                    td 1993
+                    td Landsat
+                    td 228_062
+                    td 23/07/1993
+                tr
+                    td 1993
+                    td Landsat
+                    td 228_062
+                    td 23/07/1993
+                tr
+                    td 1993
+                    td Landsat
+                    td 228_062
+                    td 23/07/1993
+                tr
+                    td 1993
+                    td Landsat
+                    td 228_062
+                    td 23/07/1993
+                tr
+                    td 1993
+                    td Landsat
+                    td 228_062
+                    td 23/07/1993
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 4}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+    div
+        p
+            strong 1.5.2.Cálculo do NDFI.
+    div.div-list
+        p A seguir são apresentados os resultados das análises de áreas com intervenção, identificadas por meio do índice normalizado da diferença de fração - NDFI, de acordo com a Portaria N 063/2014-GAB/SEMA de 15/01/2014. Os mapas com os resultados da análise, são apresentados no anexo 4.
+
+    div.div-centro
+        table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela.text-center(colspan="6") Tabela Resumo Analise NDFI
+                tr
+                    th.titulo-tabela Data
+                    th.titulo-tabela Órbita/Ponto
+                    th.titulo-tabela Satélite
+                    th.titulo-tabela Nível de exploração
+                    th.titulo-tabela Valor do NDFI
+                    th.titulo-tabela Área (ha)
+            tbody
+                | \#{list analisesNdfi, as:'analiseNdfi'}
+                tr
+                    td ${ analiseNdfi.dataAnalise ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(analiseNdfi.dataAnalise) : "-"}
+                    td ${ analiseNdfi.orbita + '/' + analiseNdfi.ponto ? analiseNdfi.orbita : "-" }
+                    td ${ analiseNdfi.satelite ? analiseNdfi.satelite : "-"}
+                    td ${ analiseNdfi.nivelExploracao ? analiseNdfi.nivelExploracao : "-"}
+                    td.coluna-valor ${ analiseNdfi.valor ? analiseNdfi.valor : "-"}
+                    td.coluna-valor ${ analiseNdfi.area ? new java.text.DecimalFormat("##########.##").format(analiseNdfi.area) : "-"}
+                | \#{/list}
+                tr
+                    td.coluna-valor(colspan="5") Total
+                    td.coluna-valor(type="number" placeholder="1.00" step="0.01") ${ totalAnaliseNDFI ? new java.text.DecimalFormat("##########.##").format(totalAnaliseNDFI) : "-"}
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 5}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+    div
+        p
+            strong 1.6.Cálculo da área efetiva de manejo.
+    div.div-list
+        p A Tabela a seguir, apresenta a área total de Manejo Florestal solicitada para análise, e a área efetiva a ser explorada (área liquida), após desconto das áreas sem permissão para exploração.
+
+    div.div-tabela.div-centro
+        table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.linha-destaque(colspan="5")
+                        strong Área de manejo florestal solicitada - AMF (hectares)
+                    th.linha-destaque
+                        strong ${ analiseManejo.areaManejoFlorestalSolicitada ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaManejoFlorestalSolicitada) : "-"}
+
+
+    div.div-centro
+        table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela.text-center(colspan="6") Área descontadas da AMF (hectares)
+            tbody
+                tr
+                    td(colspan="5")
+                        strong Área de preservação permanente - APP
+                    td(colspan="1") ${ analiseManejo.areaPreservacaoPermanente ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaPreservacaoPermanente) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área de servidão
+                    td(colspan="1") ${ analiseManejo.areaServidao ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaServidao) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área antopropizada não consolidada
+                    td(colspan="1") ${ analiseManejo.areaAntropizadaNaoConsolidada ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaAntropizadaNaoConsolidada) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área consolidada
+                    td(colspan="1") ${ analiseManejo.areaConsolidada ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaConsolidada) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Uso restrito
+                    td(colspan="1") ${ analiseManejo.areaUsoRestrito ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaUsoRestrito) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área sem potencial (Cipoalica, Rochoso e etc.)
+                    td(colspan="1") ${ analiseManejo.areaSemPotencial ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaSemPotencial) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Corpo d'água
+                    td(colspan="1") ${ analiseManejo.areaCorposAgua ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaCorposAgua) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área embargada IBAMA
+                    td(colspan="1") ${ analiseManejo.areaEmbargadaIbama ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEmbargadaIbama) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área embargada LDI
+                    td(colspan="1") ${ analiseManejo.areaEmbargadaLdi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEmbargadaLdi) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Exploração seletiva - NDFI (Índice Alto/Reentrada)
+                    td(colspan="1") ${ analiseManejo.areaSeletivaNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaSeletivaNdfi) : "-"}
+                tr
+                    td.linha-destaque(colspan="5")
+                        strong Área de efetivo manejo - AMF
+                    td.linha-destaque(colspan="1") ${ analiseManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEfetivoNdfi) : "-"}
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 6}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+
+    div
+        p
+            strong 1.6.1.Detalhamento da área efetiva de manejo.
+    div.div-list
+        p A seguir são apresentadas as áreas efetivas de manejo, detalhada pelo nivel prévio de exploração.
+
+    div.div-centro
+        table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
+            thead
+                tr
+                    th.titulo-tabela.text-center(colspan="6") Resultados (hectares)
+            tbody
+                tr
+                    td(colspan="5")
+                        strong Área com exploração NDFI (Baixo)
+                    td(colspan="1") ${ analiseManejo.areaExploracaoNdfiBaixo ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaExploracaoNdfiBaixo) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área com exploração NDFI (Médio)
+                    td(colspan="1") ${ analiseManejo.areaExploracaoNdfiMedio ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaExploracaoNdfiMedio) : "-"}
+                tr
+                    td(colspan="5")
+                        strong Área sem previa exploração
+                    td(colspan="1") ${ analiseManejo.areaSemPreviaExploracao ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaSemPreviaExploracao) : "-"}
+                tr
+                    td.linha-destaque(colspan="5")
+                        strong Área de efetivo manejo - AMF
+                    td.linha-destaque(colspan="1") ${ analiseManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEfetivoNdfi) : "-"}
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id == 7}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+    div
+        p
+            strong 2. Considerações:
+
+    div.div-list
+            p
+                strong 3.1.Toda a análise de GEOTEC foi realizada com base em dados apresentados pelo próprio técnico responsável, passível de sansões administrativas conforme art. 66 da lei n° 9605 de 12/02/1998 e art. 82 do decreto n° 6514 de 22/07/2008.
+            p
+                strong 3.2.As informações utilizadas, até a presente data, para analise do processo da GEOTEC, foram disponibilizadas do Banco de Dados de Raster e Vetores pela gerencia GTDI.
+            p
+                strong 3.3.No processo CONSTA o Relatório Técnico de Georreferenciamento do Imóvel, em meio analógico e digital, conforme as normas técnicas do INCRA (Lei 10.267/01).
+            p
+                strong 3.4.De acordo com a INSTRUÇÃO NORMATIVA No 001, de 14 de janeiro de 2014, a APAT não permite o início das atividades de manejo, não autoriza a exploração florestal e nem se constitui em prova de posse ou propriedade para fins de regularização fundiários, de autorização de desmatamento ou de obtenção de financiamento junto às instituições de crédito públicas ou privados;
+
+    div
+        p
+            strong 3. Embasamentos legais
+    div.div-list
+        p
+            strong . Código Florestal - Lei n°12651/2012
+        p
+            strong . Instrução Normativa n°02/2014
+        p
+            strong . Decreto n°7830/2012
+        p
+            strong . Instrução Normativa n° 01/2014
+        p
+            strong . Portaria n° 63/2014
+        p
+            strong . Instrução Normativa n°14/2011
+        p
+            strong . Decreto n° 216/2011
+        p
+            strong . Lei Federal 10.267/01
+        p
+            strong . Lei n° 9605 de 12/02/1998
+        p
+            strong . Decreto n° 6514 de 22/07/2008
+        p
+            strong . Resolução CONAMA no 378/2006
+
+    div
+        p
+            strong 4.Conclusão
+
+    div.div-list
+        p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMS APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
+
+    div
+        | \#{if nomeAnexo != null}
+        p
+            strong Anexo
+        p ${ nomeAnexo }
+        | \#{/if}

@@ -18,6 +18,11 @@ var ProcessoManejoService = function(request, config, Upload) {
 			.post(config.BASE_URL() + "processoManejo/iniciar", processo);
 	};
 
+	this.downloadPdfAnaliseTecnica = function(processo) {
+
+		return request.postArrayBuffer(config.BASE_URL() + "processoManejo/downloadPdfAnalise", processo);
+	};
+
 };
 
 exports.services.ProcessoManejoService = ProcessoManejoService;
