@@ -44,7 +44,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			imovelManejo: {
 				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
 				areaTotalImovelDocumentado: 100.0,
-				areaLiquidaImovel: 80.0
+				areaLiquidaImovel: 80.0,
+				endereco: "Rua E, 189",
+				bairro: "Serraria",
+				cep: "57046-805"
 			}
 		},
 		{
@@ -61,7 +64,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
 				areaTotalImovelDocumentado: 80.0,
 				areaLiquidaImovel: 60.0,
-				areaReservaLegal: 20.0
+				areaReservaLegal: 20.0,
+				endereco: "Rua Santa Catarina, 293",
+				bairro: "Habitasa",
+				cep: "69905-084"
 			}
 		},
 		{
@@ -78,7 +84,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
 				areaTotalImovelDocumentado: 60.0,
 				areaLiquidaImovel: 40.0,
-				areaPreservacaoPermanente: 17.0
+				areaPreservacaoPermanente: 17.0,
+				endereco: "Rua da Alegria, 939",
+				bairro: "Rio Grande",
+				cep: "65091-773"
 			}
 		},
 		{
@@ -95,7 +104,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
 				areaTotalImovelDocumentado: 40.0,
 				areaLiquidaImovel: 20.0,
-				areaRemanescenteVegetacaoNativa: 5.0
+				areaRemanescenteVegetacaoNativa: 5.0,
+				endereco: "Avenida Vinte e Cinco de Maio, 980",
+				bairro: "IAPI",
+				cep: "40323-340"
 			}
 		},
 		{
@@ -112,7 +124,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
 				areaTotalImovelDocumentado: 20.0,
 				areaLiquidaImovel: 1.0,
-				areaCorposAgua: 1.0
+				areaCorposAgua: 1.0,
+				endereco: "Rua José Maciel, 552",
+				bairro: "Jardim Floresta",
+				cep: "69312-062"
 			}
 		},
 		{
@@ -129,7 +144,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				registroCar: "PA-1508407-327A45061DA64D23866C811111DC44E0",
 				areaTotalImovelDocumentado: 20.0,
 				areaLiquidaImovel: 10.0,
-				areaUsoConsolidado: 10.0
+				areaUsoConsolidado: 10.0,
+				endereco: "Rua Emília Michalski Ubá, 258",
+				bairro: "Cachoeira",
+				cep: "82710-450"
 			}
 		},
 		{
@@ -150,7 +168,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				areaPreservacaoPermanente: 0.0,
 				areaRemanescenteVegetacaoNativa: 0.0,
 				areaCorposAgua: 0.0,
-				areaUsoConsolidado: 0.0
+				areaUsoConsolidado: 0.0,
+				endereco: "Área Isolada 14, 417",
+				bairro: "Núcleo Rural Vargem Bonita (Núcleo Bandeirante)",
+				cep: "71750-542"
 			}
 		},
 		{
@@ -171,7 +192,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				areaPreservacaoPermanente: 0.0,
 				areaRemanescenteVegetacaoNativa: 2.0,
 				areaCorposAgua: 0.0,
-				areaUsoConsolidado: 0.0
+				areaUsoConsolidado: 0.0,
+				endereco: "Rua Regeneração, 493",
+				bairro: "São José",
+				cep: "64218-300"
 			}
 		},
 		{
@@ -192,7 +216,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				areaPreservacaoPermanente: 30.0,
 				areaRemanescenteVegetacaoNativa: 20.0,
 				areaCorposAgua: 1.0,
-				areaUsoConsolidado: 150.0
+				areaUsoConsolidado: 150.0,
+				endereco: "Rua Carmelita Lobo Siqueira, 764",
+				bairro: "Fazendinha",
+				cep: "68911-032"
 			}
 		},
 		{
@@ -211,7 +238,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				areaLiquidaImovel: 642.0,
 				areaPreservacaoPermanente: 30.0,
 				areaRemanescenteVegetacaoNativa: 20.0,
-				areaUsoConsolidado: 150.0
+				areaUsoConsolidado: 150.0,
+				endereco: "Rua Dominicana, 598",
+				bairro: "Parque das Estrelas",
+				cep: "65911-303"
 			}
 		},
 	];
