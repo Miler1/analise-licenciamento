@@ -144,7 +144,7 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.pathShape = processo.analiseManejo.pathShape;
 
-        analiseManejo.analiseTemporal = UUID.randomUUID().toString();;
+        analiseManejo.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
 
         analiseManejo.areaManejoFlorestalSolicitada = Math.random();
 
@@ -176,9 +176,9 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.areaSemPreviaExploracao = Math.random();
 
-        analiseManejo.consideracoes =  UUID.randomUUID().toString();
+        analiseManejo.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseManejo.conclusao =  UUID.randomUUID().toString();
+        analiseManejo.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
 
         analiseManejo.usuario = usuario;
 
