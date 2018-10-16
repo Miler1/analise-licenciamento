@@ -302,6 +302,13 @@ public class AnaliseManejo  extends GenericModel {
 
         Double totalAnaliseNDFI = Double.valueOf(0);
 
+        String nomeAnexo = null;
+
+        if(this.pathAnexo != null){
+
+            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
+        }
+
         for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
 
             totalAnaliseNDFI += analiseNdfi.area;
@@ -310,6 +317,7 @@ public class AnaliseManejo  extends GenericModel {
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("nomeAnexo", nomeAnexo)
                 .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
                 .addParam("analiseManejo", this)
                 .addParam("processoManejo", this.processoManejo)
