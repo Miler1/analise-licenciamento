@@ -107,6 +107,20 @@ html(lang='en')
                         strong Área de uso consolidado
                     td.coluna-valor(colspan="10")
                         | ${imovelManejo.areaUsoConsolidado ? imovelManejo.areaUsoConsolidado : "-"}
+
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 0}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
     div
         p OBS: P limite de sobreposição de imóveis rurais possui tolerância aceitável pelo sistema de 5% conforme (IN 14/2011 e decreto 216/2011).
     div.div-list
@@ -143,6 +157,20 @@ html(lang='en')
                     td ${baseVetorial.escala ? baseVetorial.escala : "-"}
                     td ${baseVetorial.observacao ? baseVetorial.observacao : "-"}
                 | \#{/list}
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 1}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+
     div
         p
             strong 1.4.Analise vetorial sobre a base de dados oficiais.
@@ -176,11 +204,35 @@ html(lang='en')
                     td ${analiseVetorial.observacao ? analiseVetorial.observacao : "-"}
                 | \#{/list}
 
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 2}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
     div
         p
             strong 1.5.Analise temporal de imagens de satélite
     div.div-list
         p Para comprovação da existência de cobertura florestal e verificação da não ocorrência de áreas com exploração florestal, foi realizada através de análise de imagens de satélite, referente aos ultimos 24 anos. Esta análise está baseada na determinação do índice Normalizado de Diferença de fração - NDFI, cujo objetivo medir as alterações na cobertura vegetal e no solo, conforme determina a IN 05 de 10/09/2015.
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 3}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
 
     div
         p
@@ -228,6 +280,18 @@ html(lang='en')
                     td 228_062
                     td 23/07/1993
 
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 4}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
     div
         p
             strong 1.5.2.Cálculo do NDFI.
@@ -259,6 +323,18 @@ html(lang='en')
                 tr
                     td.coluna-valor(colspan="5") Total
                     td.coluna-valor(type="number" placeholder="1.00" step="0.01") ${ totalAnaliseNDFI ? new java.text.DecimalFormat("##########.##").format(totalAnaliseNDFI) : "-"}
+
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 5}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
 
     div
         p
@@ -327,6 +403,19 @@ html(lang='en')
                         strong Área de efetivo manejo - AMF
                     td.linha-destaque(colspan="1") ${ analiseManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEfetivoNdfi) : "-"}
 
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 6}
+    div
+        p
+            strong Observações.
+    div.div-list
+        p . ${ observacao.texto }
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
+
+
     div
         p
             strong 1.6.1.Detalhamento da área efetiva de manejo.
@@ -356,19 +445,21 @@ html(lang='en')
                         strong Área de efetivo manejo - AMF
                     td.linha-destaque(colspan="1") ${ analiseManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEfetivoNdfi) : "-"}
 
+    | \#{if analiseManejo.observacoes}
+    | \#{list analiseManejo.observacoes, as:'observacao'}
+    | \#{if observacao.passoAnalise.id === 7}
     div
         p
-            strong 2. Observações.
+            strong Observações.
     div.div-list
-        | \#{if analiseManejo.observacoes}
-        | \#{list analiseManejo.observacoes, as:'observacao'}
         p . ${ observacao.texto }
-        | \#{/list}
-        | \#{/if}
+    | \#{/if}
+    | \#{/list}
+    | \#{/if}
 
     div
         p
-            strong 3. Considerações:
+            strong 2. Considerações:
 
     div.div-list
             p
@@ -382,7 +473,7 @@ html(lang='en')
 
     div
         p
-            strong 4. Embasamentos legais
+            strong 3. Embasamentos legais
     div.div-list
         p
             strong . Código Florestal - Lei n°12651/2012
@@ -409,91 +500,7 @@ html(lang='en')
 
     div
         p
-            strong 5.Conclusão
+            strong 4.Conclusão
 
     div.div-list
         p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMS APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //- div.header
-    //-     div
-    //-         h4 Secretaria de Meio Ambiente e Sustentabilidade
-    //-     div
-    //-         img.logo(src='/public/app/images/brasao_pa.png' height="139" width="186")
-    //-     div
-    //-         h3 LAUDO TÉCNICO DE APAT
-    //-     div
-    //-         img.logo(src='/public/app/images/logo_digeo.png' height="139" width="186")
-    //- div
-    //-   p
-    //-     strong Processo Nº:
-    //-     |  ${processo.numero}
-    //-   p
-    //-     strong Requerente / Arrendatário:
-    //-     |  ${empreendimentoNome}
-    //-   p
-    //-     strong Endereço:
-    //-     br
-    //-     | ${endereco}
-    //-     br
-    //-     | CEP: ${cep}
-    //-   p
-    //-     strong Referente a pendência:
-    //-     br
-    //-     | \#{if analiseArea == "ANALISE_JURIDICA"}
-    //-     | Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
-    //-     | no qual solicita ${licencas} para
-    //-     | \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
-    //-     | ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
-    //-     | \#{/list}
-    //-     | no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, a fim de ser dada continuidade à análise do pleito:
-    //-     | \#{/if}
-
-    //-     | \#{else}
-    //-     | Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
-    //-     | no qual solicita ${licencas} para
-    //-     | \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
-    //-     | ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
-    //-     | \#{/list}
-    //-     | no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.
-    //-     | \#{/else}
-    //-   p
-    //-     strong Prazo de 10 (dez) dias
-    //-   ul
-    //-     | \#{list items:notificacoes, as:'notificacao'}
-    //-     li ${notificacao.tipoDocumento.nome}
-    //-     | \#{/list}
-
-    //-   p Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
-
-    //- | \#{if qrcodeLink != null && qrcode != null}
-    //- div.assinatura
-    //-   div.usuario
-    //-     p Assinado eletronicamente. A assinatura digital pertence a:
-    //-     p ${analiseEspecifica.usuarioValidacao.pessoa.nome}  (${new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(notificacoes.get(0).dataCadastro)})
-    //-     p.link ${qrcodeLink}
-    //-   div.qrcode
-    //-     img(src="${qrcode}")
-    //- | \#{/if}
