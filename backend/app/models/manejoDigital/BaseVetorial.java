@@ -51,15 +51,15 @@ public class BaseVetorial extends GenericModel {
 
             BaseVetorial baseVetorial = new BaseVetorial();
 
-            baseVetorial.nome = UUID.randomUUID().toString();
+            baseVetorial.nome = UUID.randomUUID().toString().replace('-', ' ');
 
-            baseVetorial.fonte = UUID.randomUUID().toString();
+            baseVetorial.fonte = UUID.randomUUID().toString().replace('-', ' ');
 
             baseVetorial.ultimaAtualizacao = new Date();
 
-            baseVetorial.escala = UUID.randomUUID().toString();
+            baseVetorial.escala = UUID.randomUUID().toString().replace('-', ' ');
 
-            baseVetorial.observacao = UUID.randomUUID().toString();
+            baseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
 
             lista.add(baseVetorial);
         }
