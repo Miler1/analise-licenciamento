@@ -111,7 +111,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 0}
+    | \#{if observacao.passoAnalise.id == 0}
     div
         p
             strong Observações.
@@ -160,7 +160,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 1}
+    | \#{if observacao.passoAnalise.id == 1}
     div
         p
             strong Observações.
@@ -206,7 +206,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 2}
+    | \#{if observacao.passoAnalise.id == 2}
     div
         p
             strong Observações.
@@ -224,7 +224,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 3}
+    | \#{if observacao.passoAnalise.id == 3}
     div
         p
             strong Observações.
@@ -282,7 +282,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 4}
+    | \#{if observacao.passoAnalise.id == 4}
     div
         p
             strong Observações.
@@ -326,7 +326,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 5}
+    | \#{if observacao.passoAnalise.id == 5}
     div
         p
             strong Observações.
@@ -405,7 +405,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 6}
+    | \#{if observacao.passoAnalise.id == 6}
     div
         p
             strong Observações.
@@ -447,7 +447,7 @@ html(lang='en')
 
     | \#{if analiseManejo.observacoes}
     | \#{list analiseManejo.observacoes, as:'observacao'}
-    | \#{if observacao.passoAnalise.id === 7}
+    | \#{if observacao.passoAnalise.id == 7}
     div
         p
             strong Observações.
@@ -504,3 +504,10 @@ html(lang='en')
 
     div.div-list
         p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMS APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
+
+    div
+        | \#{if nomeAnexo != null}
+        p
+            strong Anexo
+        p ${ nomeAnexo }
+        | \#{/if}
