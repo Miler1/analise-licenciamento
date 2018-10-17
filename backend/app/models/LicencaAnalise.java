@@ -317,10 +317,12 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			LicenciamentoWebService webService = new LicenciamentoWebService();
 			webService.gerarPDFLicencas(idsLicencas);
 			
-			if(!idsCaracterizacoesDeferidas.isEmpty())
+			if(!idsCaracterizacoesDeferidas.isEmpty()) {
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
 				Caracterizacao.setCaracterizacaoEmAnalise(idsCaracterizacoesDeferidas, false);
 				Caracterizacao.setCaracterizacaoEmRenovacao(idsCaracterizacoesDeferidas, false);
+			}
+
 
 			if(!idsCaracterizacoesArquivadas.isEmpty())
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
@@ -330,12 +332,22 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 
 			if (processo.processoAnterior != null) {
 
+				if (processo.getCaracterizacao().getLicenca().prorrogacao) {
+
+					if (processo.processoAnterior.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO, processo)) {
+
+						processo.processoAnterior.tramitacao.tramitar(processo, AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO);
+					}
+
+					Caracterizacao.setLicencaFimProrrogacao(processo.getCaracterizacao());
+				}
+
 				Caracterizacao.setLicencaAnteriorInativa(processo.getCaracterizacao());
 			}
 			
 			lAnalise.analiseTecnica.dataFimValidacaoAprovador = new Date();
 			lAnalise.analiseTecnica._save();
-			
+
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
 			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 

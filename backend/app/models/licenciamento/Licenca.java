@@ -62,6 +62,8 @@ public class Licenca extends GenericModel implements Identificavel {
 	
 	public Boolean ativo;
 
+	public Boolean prorrogacao;
+
 	public Licenca(Caracterizacao caracterizacao) {
 		
 		this.caracterizacao = caracterizacao;
