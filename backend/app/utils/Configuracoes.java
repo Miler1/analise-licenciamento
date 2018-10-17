@@ -62,6 +62,8 @@ public class Configuracoes {
 	//Prazo da condicionante deverá ser menor ou igual a 1900 (5 anos) conforme regra.
 	public static Integer PRAZO_MAXIMO_CONDICIONANTE = 1900;
 
+	public static long DIAS_PRORROGACAO = getLongConfig("dias.prorrogacao");
+
 	static {
 
 		try {

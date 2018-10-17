@@ -7,6 +7,7 @@ import java.util.List;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
+import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
