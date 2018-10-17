@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.*;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
@@ -104,9 +105,11 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)) {
 
 						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
-						caracterizacao.getLicenca().prorrogacao = true;
-						caracterizacao.getLicenca()._save();
 					}
+
+					Licenca licenca = Licenca.findById(caracterizacao.getLicenca().id);
+					licenca.prorrogacao = true;
+					licenca._save();
 
 				} else {
 
