@@ -1,7 +1,9 @@
 package models.manejoDigital;
 
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -280,10 +282,12 @@ public class AnaliseManejo  extends GenericModel {
         if (random.nextBoolean()) {
 
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.usuario);
 
         } else {
 
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.usuario);
         }
     }
 }
