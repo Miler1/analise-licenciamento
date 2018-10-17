@@ -170,6 +170,22 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 		return this.licenca;
 	}
+
+	public static void setLicencaAnteriorInativa(Caracterizacao caracterizacao) {
+
+		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", caracterizacao.id).fetch();
+
+		if (licencasAntigas.size() > 0) {
+
+			licencasAntigas.remove(licencasAntigas.size() - 1);
+
+			for (Licenca licenca : licencasAntigas) {
+
+				licenca.ativo = false;
+				licenca._save();
+			}
+		}
+	}
 	
 	public boolean isSuspensa() {
 		return this.status.id.equals(StatusCaracterizacao.SUSPENSO);
