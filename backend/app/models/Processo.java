@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.*;
 
@@ -514,6 +515,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		return caracterizacoes;
 		
+	}
+
+	public boolean isProrrogacao() {
+
+		long diff = Math.abs(this.caracterizacoes.get(0).getLicenca().dataValidade.getTime() - new Date().getTime());
+		long dias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 5l;
+
+		return Configuracoes.DIAS_PRORROGACAO < dias;
 	}
 
 }

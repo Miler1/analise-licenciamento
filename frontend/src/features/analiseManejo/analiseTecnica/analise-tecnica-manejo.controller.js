@@ -1,4 +1,4 @@
-var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, processoManejoService, $location, mensagem, $uibModal, observacaoService, $timeout) {
+var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, analiseManejoService, $location, mensagem, $uibModal, observacaoService, $timeout) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -39,7 +39,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.init = function() {
 
-		processoManejoService.getAnalise($routeParams.idAnaliseManejo)
+		analiseManejoService.getById($routeParams.idAnaliseManejo)
 			.then(function (response) {
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
@@ -62,9 +62,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro obter ao dados do processo.");
+					mensagem.error("Ocorreu um erro ao obter dados do processo.");
 			});
-
 	};
 
 	analiseTecnicaManejo.abrirModal = function() {
@@ -105,7 +104,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				if (analiseTecnicaManejo.analiseTecnica.id) {
 
-					processoManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
+					analiseManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
 
 						.then(function(response) {
 
@@ -122,13 +121,12 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					analiseTecnicaManejo.saveAnexo(file);
 				}
 			}
-
 		}
 	};
 
 	analiseTecnicaManejo.saveAnexo = function (file) {
 
-		processoManejoService.saveAnexo($routeParams.idAnaliseManejo, file)
+		analiseManejoService.saveAnexo($routeParams.idAnaliseManejo, file)
 
 			.then(function(response) {
 
@@ -144,7 +142,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.removeAnexo = function () {
 
-		processoManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
+		analiseManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
 
 			.then(function(response) {
 
@@ -161,7 +159,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		observacaoService.delete(observacao.id).then(function (response) {
 
 			analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].splice(analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].indexOf(observacao), 1);
-
 		})
 		.catch(function (response) {
 
@@ -185,7 +182,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
 
-	analiseTecnicaManejo.confirmar = function() {
+	analiseTecnicaManejo.proximo = function() {
 
 		analiseTecnicaManejo.index += 1;
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
@@ -204,6 +201,25 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		analiseTecnicaManejo.index = index;
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[index];
+	};
+
+	analiseTecnicaManejo.confirmar = function() {
+
+		analiseManejoService.finalizar($routeParams.idAnaliseManejo)
+			.then(function (response) {
+
+				mensagem.success(response.data.texto);
+				$location.path('/analise-manejo');
+
+			})
+			.catch(function (response) {
+
+				if (!!response.data.texto)
+					mensagem.warning(response.data.texto);
+
+				else
+					mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
+			});
 	};
 
 };

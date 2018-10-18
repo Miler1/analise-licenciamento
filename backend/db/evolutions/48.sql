@@ -127,8 +127,8 @@ CREATE TABLE analise.rel_base_vetorial_analise_manejo (
  id_base_vetorial INTEGER NOT NULL,
  id_analise_manejo INTEGER NOT NULL,
  CONSTRAINT pk_rel_base_vetorial_analise_manejo PRIMARY KEY(id),
- CONSTRAINT fk_rbvam_bv FOREIGN KEY (id_base_vetorial) REFERENCES analise.base_vetorial (id),
- CONSTRAINT fk_rbvam_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
+ CONSTRAINT fk_rbvam_base_vetorial FOREIGN KEY (id_base_vetorial) REFERENCES analise.base_vetorial (id),
+ CONSTRAINT fk_rbvam_analise_manejo FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
 );
 
 COMMENT ON TABLE analise.rel_base_vetorial_analise_manejo IS 'Entidade responsável por armazenas o relacionamento entre análise manejo e a base vetorial.';
@@ -155,7 +155,7 @@ CREATE TABLE analise.analise_vetorial (
  observacao TEXT NOT NULL,
  id_analise_manejo INTEGER NOT NULL,
  CONSTRAINT pk_analise_vetorial PRIMARY KEY(id),
- CONSTRAINT fk_av_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
+ CONSTRAINT fk_av_analise_manejo FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
 );
 
 COMMENT ON TABLE analise.analise_vetorial IS 'Entidade responsável por armazenas os dados de uma análise vetorial.';
@@ -188,7 +188,7 @@ CREATE TABLE analise.analise_ndfi (
  area DOUBLE PRECISION NOT NULL,
  id_analise_manejo INTEGER NOT NULL,
  CONSTRAINT pk_analise_ndfi PRIMARY KEY(id),
- CONSTRAINT fk_an_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
+ CONSTRAINT fk_an_analise_manejo FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
 );
 
 COMMENT ON TABLE analise.analise_ndfi IS 'Entidade responsável por armazenas os dados de uma análise NDFI.';
@@ -215,7 +215,7 @@ CREATE TABLE analise.observacao (
  id_analise_manejo INTEGER NOT NULL,
  num_passo SMALLINT NOT NULL,
  CONSTRAINT pk_observacao PRIMARY KEY(id),
- CONSTRAINT fk_obs_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
+ CONSTRAINT fk_o_analise_manejo FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
 );
 
 COMMENT ON TABLE analise.observacao IS 'Entidade responsável por armazenas as observações de uma análise de manejo.';
@@ -245,8 +245,8 @@ CREATE TABLE analise.processo_manejo (
  id_imovel_manejo INTEGER NOT NULL,
  id_analise_manejo INTEGER,
  CONSTRAINT pk_processo_manejo PRIMARY KEY(id),
- CONSTRAINT fk_pm_im FOREIGN KEY (id_imovel_manejo) REFERENCES analise.imovel_manejo (id),
- CONSTRAINT fk_pm_am FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
+ CONSTRAINT fk_pm_imovel_manejo FOREIGN KEY (id_imovel_manejo) REFERENCES analise.imovel_manejo (id),
+ CONSTRAINT fk_pm_analise_manejo FOREIGN KEY (id_analise_manejo) REFERENCES analise.analise_manejo (id)
 );
 
 COMMENT ON TABLE analise.processo_manejo IS 'Entidade responsável por armazenas os dados de um processo de manejo do SIMLAM.';

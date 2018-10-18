@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -317,20 +316,37 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			LicenciamentoWebService webService = new LicenciamentoWebService();
 			webService.gerarPDFLicencas(idsLicencas);
 			
-			if(!idsCaracterizacoesDeferidas.isEmpty())
+			if(!idsCaracterizacoesDeferidas.isEmpty()) {
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
 				Caracterizacao.setCaracterizacaoEmAnalise(idsCaracterizacoesDeferidas, false);
 				Caracterizacao.setCaracterizacaoEmRenovacao(idsCaracterizacoesDeferidas, false);
+			}
+
 
 			if(!idsCaracterizacoesArquivadas.isEmpty())
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
 			
 			LicencaAnalise lAnalise = LicencaAnalise.findById(licencasAnalise[0].id);
 			Processo processo = lAnalise.analiseTecnica.analise.processo;
+
+			if (processo.processoAnterior != null) {
+
+				if (processo.getCaracterizacao().getLicencaAnterior().prorrogacao) {
+
+					if (processo.processoAnterior.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO, processo)) {
+
+						processo.processoAnterior.tramitacao.tramitar(processo, AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO);
+					}
+
+					Licenca.finalizarProrrogacao(processo.getCaracterizacao().id);
+				}
+
+				Licenca.setAnteriorInativa(processo.getCaracterizacao().id);
+			}
 			
 			lAnalise.analiseTecnica.dataFimValidacaoAprovador = new Date();
 			lAnalise.analiseTecnica._save();
-			
+
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
 			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 

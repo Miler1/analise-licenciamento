@@ -1,6 +1,8 @@
 package models.manejoDigital;
 
+import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.Tramitacao;
@@ -114,6 +116,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this._save();
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.analiseManejo.usuario);
+        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.analiseManejo.usuario);
 
         return this.refresh();
     }

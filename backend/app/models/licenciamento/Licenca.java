@@ -21,7 +21,9 @@ import models.EmailNotificacaoProrrogacaoLicenca;
 import models.LicencaAnalise;
 import models.Suspensao;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 import utils.Identificavel;
+import utils.ListUtil;
 
 @Entity
 @Table(schema = "licenciamento", name = "licenca")
@@ -65,6 +67,8 @@ public class Licenca extends GenericModel implements Identificavel {
 	public Suspensao suspensao;
 	
 	public Boolean ativo;
+
+	public Boolean prorrogacao;
 
 	public Licenca(Caracterizacao caracterizacao) {
 		
@@ -118,7 +122,38 @@ public class Licenca extends GenericModel implements Identificavel {
 		return this.licencaAnalise;
 	}
 
-	private void enviarNotificacaoProrrogadaPorEmail() {
+	public static void setAnteriorInativa(Long idCaracterizacao) {
+
+		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", idCaracterizacao).fetch();
+
+		licencasAntigas.remove(licencasAntigas.size() - 1);
+
+		List<Long> ids = ListUtil.getIds(licencasAntigas);
+
+		JPA.em().createQuery("UPDATE Licenca SET ativo = FALSE WHERE id IN :idsCaracterizacoes")
+				.setParameter("idsCaracterizacoes", ids)
+				.executeUpdate();
+	}
+
+	public static void finalizarProrrogacao(Long idCaracterizacao) {
+
+		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", idCaracterizacao).fetch();
+
+		licencasAntigas.remove(licencasAntigas.size() - 1);
+
+		List<Long> ids = ListUtil.getIds(licencasAntigas);
+
+		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
+		licenciamentoWS.finalizarProrrogacao(ids);
+	}
+
+	public static void prorrogar(Long id) {
+
+		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
+		licenciamentoWS.prorrogarLicenca(id);
+	}
+
+	public void enviarNotificacaoProrrogadaPorEmail() {
 
 		List<String> destinatarios = new ArrayList<String>();
 		destinatarios.addAll(this.caracterizacao.empreendimento.emailsProprietarios());
