@@ -1,0 +1,92 @@
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: #FFFFFF;
+	font-size: 12px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.header {
+	margin-top: 20px;
+	text-align: center;
+	position: running(header);
+	background-color: #bfbfbf;
+	border: solid 1px #000;
+	border-style: double;
+	display: block;
+	margin-bottom: 50px
+}
+
+@page {
+	@top-center { content: element(header) };
+	margin-top: 3.0in;
+	margin-bottom: 1.0in;
+}
+
+.header-item-large {
+	padding-top: 23px;
+	float: left;
+	width: 50%;
+}
+
+.header-item-small {
+	float: left;
+	width: 20%;
+}
+
+.header-item-small-padding {
+	padding-top: 8px;
+	float: left;
+	width: 10%;
+}
+
+.header-item-medium {
+	padding-top: 8px;
+	float: left;
+	width: 20%;
+	color: #00681b;
+}
+
+.header:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.tabela {
+
+	table-layout:fixed;
+}
+
+.titulo-tabela {
+	background-color: #bfbfbf;
+	text-align: center;
+}
+
+.div-centro {
+	align:"center"
+}
+
+.coluna-valor {
+	text-align: right;
+}
+
+.div-list {
+	margin-left: 40px
+}
+
+.coluna-dupla-divisao {
+	border-left: solid 2px #ddd;
+}
+
+.linha-destaque {
+
+	background-color: #bfbfbf;
+}
+
+.div-tabela {
+
+	margin-bottom: 50px
+}

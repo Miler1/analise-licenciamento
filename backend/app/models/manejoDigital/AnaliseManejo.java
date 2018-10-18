@@ -1,5 +1,8 @@
 package models.manejoDigital;
 
+import models.Documento;
+import models.TipoDocumento;
+import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
@@ -105,6 +108,10 @@ public class AnaliseManejo  extends GenericModel {
     @JoinColumn(name="id_usuario")
     public Usuario usuario;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="id_documento")
+    public Documento documentoAnalise;
+
     @Required
     @OneToMany(mappedBy = "analiseManejo")
     public List<Observacao> observacoes;
@@ -137,7 +144,7 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.pathShape = processo.analiseManejo.pathShape;
 
-        analiseManejo.analiseTemporal = UUID.randomUUID().toString();;
+        analiseManejo.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
 
         analiseManejo.areaManejoFlorestalSolicitada = Math.random();
 
@@ -169,9 +176,9 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.areaSemPreviaExploracao = Math.random();
 
-        analiseManejo.consideracoes =  UUID.randomUUID().toString();
+        analiseManejo.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseManejo.conclusao =  UUID.randomUUID().toString();
+        analiseManejo.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
 
         analiseManejo.usuario = usuario;
 
@@ -289,5 +296,40 @@ public class AnaliseManejo  extends GenericModel {
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
             Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.usuario);
         }
+    }
+
+    public Documento gerarPDFAnalise() throws Exception {
+
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_MANEJO);
+
+        Double totalAnaliseNDFI = Double.valueOf(0);
+
+        String nomeAnexo = null;
+
+        if(this.pathAnexo != null){
+
+            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
+        }
+
+        for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
+
+            totalAnaliseNDFI += analiseNdfi.area;
+        }
+
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("nomeAnexo", nomeAnexo)
+                .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
+                .addParam("analiseManejo", this)
+                .addParam("processoManejo", this.processoManejo)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
+
+        pdf.generate();
+
+        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+
     }
 }

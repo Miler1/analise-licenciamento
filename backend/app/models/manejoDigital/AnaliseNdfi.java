@@ -70,9 +70,9 @@ public class AnaliseNdfi extends GenericModel {
 
             analiseNdfi.ponto = rand.nextInt(2000 ) + 1;
 
-            analiseNdfi.satelite = UUID.randomUUID().toString();
+            analiseNdfi.satelite = UUID.randomUUID().toString().replace('-', ' ');
 
-            analiseNdfi.nivelExploracao = UUID.randomUUID().toString();
+            analiseNdfi.nivelExploracao = UUID.randomUUID().toString().replace('-', ' ');
 
             analiseNdfi.valor = Math.random();
 

@@ -40,4 +40,13 @@ public class ImovelManejo extends GenericModel {
 
     @Column(name="area_uso_consolidado")
     public Double areaUsoConsolidado;
+
+    @Column
+    public String endereco;
+
+    @Column
+    public String bairro;
+
+    @Column
+    public String cep;
 }

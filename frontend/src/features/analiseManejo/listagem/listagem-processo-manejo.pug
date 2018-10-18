@@ -44,6 +44,10 @@ div
 												a(ng-click="listagemProcessoManejo.visualizarProcesso(processoManejo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
+											li
+												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)")
+													i.glyphicon.glyphicon-save-file
+													span Gerar PDF
 
 				+paginacao('listagemProcessoManejo.paginacao', 'listagemProcessoManejo.onPaginaAlterada')
 
