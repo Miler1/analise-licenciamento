@@ -8,7 +8,6 @@ import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
-import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
@@ -107,9 +106,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
 					}
 
-					Licenca licenca = Licenca.findById(caracterizacao.getLicenca().id);
-					licenca.prorrogacao = true;
-					licenca._save();
+					Licenca.prorrogar(caracterizacao.getLicenca().id);
 
 				} else {
 

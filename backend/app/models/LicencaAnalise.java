@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -332,17 +331,17 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 
 			if (processo.processoAnterior != null) {
 
-				if (processo.getCaracterizacao().getLicenca().prorrogacao) {
+				if (processo.getCaracterizacao().getLicencaAnterior().prorrogacao) {
 
 					if (processo.processoAnterior.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO, processo)) {
 
 						processo.processoAnterior.tramitacao.tramitar(processo, AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO);
 					}
 
-					Caracterizacao.setLicencaFimProrrogacao(processo.getCaracterizacao());
+					Licenca.finalizarProrrogacao(processo.getCaracterizacao().id);
 				}
 
-				Caracterizacao.setLicencaAnteriorInativa(processo.getCaracterizacao());
+				Licenca.setAnteriorInativa(processo.getCaracterizacao().id);
 			}
 			
 			lAnalise.analiseTecnica.dataFimValidacaoAprovador = new Date();

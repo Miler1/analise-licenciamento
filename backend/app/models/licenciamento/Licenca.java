@@ -2,6 +2,7 @@ package models.licenciamento;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,9 @@ import javax.persistence.Table;
 import models.LicencaAnalise;
 import models.Suspensao;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 import utils.Identificavel;
+import utils.ListUtil;
 
 @Entity
 @Table(schema = "licenciamento", name = "licenca")
@@ -114,5 +117,36 @@ public class Licenca extends GenericModel implements Identificavel {
 
 	public LicencaAnalise getLicencaAnalise() {
 		return this.licencaAnalise;
+	}
+
+	public static void setAnteriorInativa(Long idCaracterizacao) {
+
+		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", idCaracterizacao).fetch();
+
+		licencasAntigas.remove(licencasAntigas.size() - 1);
+
+		List<Long> ids = ListUtil.getIds(licencasAntigas);
+
+		JPA.em().createQuery("UPDATE Licenca SET ativo = FALSE WHERE id IN :idsCaracterizacoes")
+				.setParameter("idsCaracterizacoes", ids)
+				.executeUpdate();
+	}
+
+	public static void finalizarProrrogacao(Long idCaracterizacao) {
+
+		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", idCaracterizacao).fetch();
+
+		licencasAntigas.remove(licencasAntigas.size() - 1);
+
+		List<Long> ids = ListUtil.getIds(licencasAntigas);
+
+		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
+		licenciamentoWS.finalizarProrrogacao(ids);
+	}
+
+	public static void prorrogar(Long id) {
+
+		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
+		licenciamentoWS.prorrogarLicenca(id);
 	}
 }

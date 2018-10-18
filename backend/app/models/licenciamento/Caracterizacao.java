@@ -24,6 +24,7 @@ import models.Processo;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import utils.Identificavel;
+import utils.ListUtil;
 
 @Entity
 @Table(schema = "licenciamento", name = "caracterizacao")
@@ -171,36 +172,19 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		return this.licenca;
 	}
 
-	public static void setLicencaAnteriorInativa(Caracterizacao caracterizacao) {
+	public Licenca getLicencaAnterior() {
 
-		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", caracterizacao.id).fetch();
+		if (this.licencas != null) {
 
-		if (licencasAntigas.size() > 0) {
+			if (this.licencas.size() > 1) {
 
-			licencasAntigas.remove(licencasAntigas.size() - 1);
-
-			for (Licenca licenca : licencasAntigas) {
-
-				licenca.ativo = false;
-				licenca._save();
+				return this.licencas.get(this.licencas.size() - 2);
 			}
+
+			return this.licencas.get(0);
 		}
-	}
 
-	public static void setLicencaFimProrrogacao(Caracterizacao caracterizacao) {
-
-		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", caracterizacao.id).fetch();
-
-		if (licencasAntigas.size() > 0) {
-
-			licencasAntigas.remove(licencasAntigas.size() - 1);
-
-			for (Licenca licenca : licencasAntigas) {
-
-				licenca.prorrogacao = false;
-				licenca._save();
-			}
-		}
+		return null;
 	}
 	
 	public boolean isSuspensa() {
