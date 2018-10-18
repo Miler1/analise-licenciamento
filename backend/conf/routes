@@ -145,6 +145,7 @@ POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnali
 POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
 DELETE  /analiseManejo/anexo/{id}                   AnalisesManejo.deleteAnexo
 GET     /analiseManejo/{id}                         AnalisesManejo.findById
+PUT     /analiseManejo/{id}                         AnalisesManejo.finalizar
 
 # Observações
 POST    /observacao                                 Observacoes.save
