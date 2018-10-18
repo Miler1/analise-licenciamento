@@ -218,7 +218,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro obter ao finalizar a análise do manejo.");
+					mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
 			});
 	};
 
