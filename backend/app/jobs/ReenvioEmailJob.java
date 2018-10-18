@@ -4,21 +4,11 @@ package jobs;
 import java.util.Arrays;
 import java.util.List;
 
-import models.EmailNotificacaoArquivamentoProcesso;
-import models.Notificacao;
-import models.Processo;
+import models.*;
+import models.licenciamento.Licenca;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 
-import models.AnaliseJuridica;
-import models.AnaliseTecnica;
-import models.EmailNotificacaoAnaliseJuridica;
-import models.EmailNotificacaoAnaliseTecnica;
-import models.EmailNotificacaoCancelamentoLicenca;
-import models.EmailNotificacaoSuspensaoLicenca;
-import models.LicencaCancelada;
-import models.ReenvioEmail;
-import models.Suspensao;
 import play.Logger;
 import play.jobs.On;
 
@@ -90,6 +80,13 @@ public class ReenvioEmailJob extends GenericJob {
 							historicoAnalise.setor).enviar();
 
 					break;
+
+				case PRORROGACAO_LICENCA:
+
+				Licenca licenca = Suspensao.findById(reenvioEmail.idItensEmail);
+				new EmailNotificacaoProrrogacaoLicenca(licenca, emailsDestinatarios).enviar();
+
+				break;
 
 			}
 
