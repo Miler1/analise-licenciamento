@@ -11,13 +11,14 @@ import play.db.jpa.Model;
 @Entity
 @Table(schema = "analise", name = "tipo_documento")
 public class TipoDocumento extends Model {
-	
+
 	public static Long DOCUMENTO_ANALISE_JURIDICA = 1l;
 	public static Long DOCUMENTO_ANALISE_TECNICA = 2l;
 	public static Long PARECER_ANALISE_JURIDICA = 3l;
 	public static Long PARECER_ANALISE_TECNICA = 4l;
 	public static Long NOTIFICACAO_ANALISE_JURIDICA = 5l;
 	public static Long NOTIFICACAO_ANALISE_TECNICA = 6l;
+	public static Long DOCUMENTO_ANALISE_MANEJO = 7l;
 
 
 	@Required

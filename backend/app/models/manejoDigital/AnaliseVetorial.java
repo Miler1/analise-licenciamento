@@ -64,9 +64,9 @@ public class AnaliseVetorial extends GenericModel {
 
             AnaliseVetorial analiseVetorial = new AnaliseVetorial();
 
-            analiseVetorial.tipo = UUID.randomUUID().toString();
+            analiseVetorial.tipo = UUID.randomUUID().toString().replace('-', ' ');
 
-            analiseVetorial.nome = UUID.randomUUID().toString();
+            analiseVetorial.nome = UUID.randomUUID().toString().replace('-', ' ');
 
             analiseVetorial.distanciaPropriedade = Math.random();
 
@@ -76,7 +76,7 @@ public class AnaliseVetorial extends GenericModel {
 
             analiseVetorial.sobreposicaoAmf = Math.random();
 
-            analiseVetorial.observacao = UUID.randomUUID().toString();
+            analiseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
 
             analiseVetorial.analiseManejo = analise;
 

@@ -1,6 +1,12 @@
 package models.manejoDigital;
 
+import models.Documento;
+import models.TipoDocumento;
+import models.pdf.PDFGenerator;
+import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -12,6 +18,7 @@ import javax.persistence.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Entity
@@ -101,6 +108,10 @@ public class AnaliseManejo  extends GenericModel {
     @JoinColumn(name="id_usuario")
     public Usuario usuario;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="id_documento")
+    public Documento documentoAnalise;
+
     @Required
     @OneToMany(mappedBy = "analiseManejo")
     public List<Observacao> observacoes;
@@ -133,7 +144,7 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.pathShape = processo.analiseManejo.pathShape;
 
-        analiseManejo.analiseTemporal = UUID.randomUUID().toString();;
+        analiseManejo.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
 
         analiseManejo.areaManejoFlorestalSolicitada = Math.random();
 
@@ -165,9 +176,9 @@ public class AnaliseManejo  extends GenericModel {
 
         analiseManejo.areaSemPreviaExploracao = Math.random();
 
-        analiseManejo.consideracoes =  UUID.randomUUID().toString();
+        analiseManejo.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseManejo.conclusao =  UUID.randomUUID().toString();
+        analiseManejo.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
 
         analiseManejo.usuario = usuario;
 
@@ -268,5 +279,57 @@ public class AnaliseManejo  extends GenericModel {
         return Observacao.find("analiseManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
+    }
+
+    public void finalizar() {
+
+        Random random = new Random();
+
+        // Simulação do resultado da análise feita pela Vega
+        if (random.nextBoolean()) {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.usuario);
+
+        } else {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.usuario);
+        }
+    }
+
+    public Documento gerarPDFAnalise() throws Exception {
+
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_MANEJO);
+
+        Double totalAnaliseNDFI = Double.valueOf(0);
+
+        String nomeAnexo = null;
+
+        if(this.pathAnexo != null){
+
+            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
+        }
+
+        for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
+
+            totalAnaliseNDFI += analiseNdfi.area;
+        }
+
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("nomeAnexo", nomeAnexo)
+                .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
+                .addParam("analiseManejo", this)
+                .addParam("processoManejo", this.processoManejo)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
+
+        pdf.generate();
+
+        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+
     }
 }
