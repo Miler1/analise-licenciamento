@@ -151,6 +151,10 @@ public class Licenca extends GenericModel implements Identificavel {
 
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 		licenciamentoWS.prorrogarLicenca(id);
+
+		Licenca licenca = Licenca.findById(id);
+
+		licenca.enviarNotificacaoProrrogadaPorEmail();
 	}
 
 	public void enviarNotificacaoProrrogadaPorEmail() {

@@ -109,10 +109,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 					Licenca.prorrogar(caracterizacao.getLicenca().id);
 
-					Licenca licenca = processo.getCaracterizacao().getLicenca();
-
-					licenca.enviarNotificacaoProrrogadaPorEmail();
-
 				} else {
 
 					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
