@@ -33,6 +33,7 @@ DELETE FROM analise.dispensa_licencamento_cancelada;
 DELETE FROM analise.documento;
 
 -- Limpar licenciamento
+-- caracterização
 DELETE FROM licenciamento.geometria_atividade;
 DELETE FROM licenciamento.rel_atividade_caracterizacao_cnae;
 DELETE FROM licenciamento.atividade_caracterizacao;
@@ -43,24 +44,24 @@ DELETE FROM licenciamento.rel_tipo_licenca_caracterizacao_andamento;
 DELETE FROM licenciamento.dispensa_licenciamento;
 DELETE FROM licenciamento.rel_caracterizacao_municipio;
 DELETE FROM licenciamento.caracterizacao;
--- até aqui limpar caracterizacao
+-- empreendimento
 DELETE FROM licenciamento.imovel_empreendimento;
 DELETE FROM licenciamento.proprietario;
 DELETE FROM licenciamento.documento_responsavel_empreendimento;
 DELETE FROM licenciamento.responsavel_empreendimento;
 DELETE FROM licenciamento.empreendimento;
--- até aqui limpar empreendimento
+DELETE FROM licenciamento.documento;
+-- empreendedor
 DELETE FROM licenciamento.representante_legal;
 DELETE FROM licenciamento.empreendedor;
--- até aqui limpar empreendedor
+-- pessoa
 DELETE FROM licenciamento.endereco_pessoa;
 DELETE FROM licenciamento.pessoa_fisica;
 DELETE FROM licenciamento.pessoa_juridica;
 DELETE FROM licenciamento.pessoa;
 DELETE FROM licenciamento.contato;
--- até aqui limpar pessoas
-DELETE FROM licenciamento.documento;
 DELETE FROM licenciamento.endereco;
+
 
 -- Limpar tramitacao
 DELETE FROM tramitacao.historico_objeto_tramitavel;
