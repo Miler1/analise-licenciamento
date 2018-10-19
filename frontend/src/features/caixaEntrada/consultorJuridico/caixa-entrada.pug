@@ -33,6 +33,7 @@ div
 							td
 								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseJuridica}")
 								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
+								span(ng-class="{'icone-renovacao': processo.renovacao}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
