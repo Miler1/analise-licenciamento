@@ -32,6 +32,7 @@ DELETE FROM analise.analise_manejo;
 DELETE FROM analise.dispensa_licencamento_cancelada;
 DELETE FROM analise.documento;
 
+
 -- Limpar licenciamento
 -- caracterização
 DELETE FROM licenciamento.geometria_atividade;
@@ -67,6 +68,7 @@ DELETE FROM licenciamento.endereco;
 DELETE FROM tramitacao.historico_objeto_tramitavel;
 DELETE FROM tramitacao.rel_objeto_tramitavel_situacao;
 DELETE FROM tramitacao.objeto_tramitavel;
+
 
 -- Limpar porta de seguranca
 DELETE FROM portal_seguranca.perfil_usuario;
