@@ -69,7 +69,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	
 	@OneToMany(mappedBy="processo")
 	public List<Analise> analises;
-	
+
+	public Boolean renovacao;
+
 	@Required
 	@Column(name="data_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
