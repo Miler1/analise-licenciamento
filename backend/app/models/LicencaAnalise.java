@@ -333,9 +333,9 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 
 				if (processo.getCaracterizacao().getLicencaAnterior().prorrogacao) {
 
-					if (processo.processoAnterior.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO, processo)) {
+					if (processo.processoAnterior.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO, processo.processoAnterior)) {
 
-						processo.processoAnterior.tramitacao.tramitar(processo, AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO);
+						processo.processoAnterior.tramitacao.tramitar(processo.processoAnterior, AcaoTramitacao.ARQUIVAR_PRORROGACAO_POR_RENOVACAO);
 					}
 
 					Licenca.finalizarProrrogacao(processo.getCaracterizacao().id);

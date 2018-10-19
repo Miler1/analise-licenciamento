@@ -76,7 +76,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "id_processo_anterior")
 	public Processo processoAnterior;
 
