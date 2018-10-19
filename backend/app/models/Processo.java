@@ -540,4 +540,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return true;
 	}
 
+	public static Processo findByNumProcesso(String numProcesso) {
+
+		return Processo.find("numero", numProcesso).first();
+	}
+
 }
