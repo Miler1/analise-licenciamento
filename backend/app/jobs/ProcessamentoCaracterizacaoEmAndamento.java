@@ -101,7 +101,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 				if (processo.isProrrogacao()) {
 
-					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)) {
+					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)
+							&& processoAntigo.isArquivavel()) {
 
 						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
 					}
@@ -114,7 +115,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 				} else {
 
-					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)) {
+					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
+							&& processoAntigo.isArquivavel()) {
 
 						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
 					}
