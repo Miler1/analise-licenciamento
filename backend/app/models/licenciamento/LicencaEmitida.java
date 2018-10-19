@@ -60,7 +60,6 @@ public class LicencaEmitida extends GenericModel {
 	private static List groupByLicenca(LicencaEmitidaBuilder licencaBuilder, FiltroLicenca filtro) {
 		
 		licencaBuilder.groupByNumeroProcesso()
-			.groupByIdProcesso()
 			.groupByNumeroLicenca()
 			.groupByIdLicenca()
 			.groupByCpfCnpjEmpreendimento()

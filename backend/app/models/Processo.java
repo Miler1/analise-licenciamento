@@ -14,6 +14,7 @@ import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
+import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
@@ -514,6 +515,25 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		return caracterizacoes;
 		
+	}
+
+	public boolean isArquivavel() {
+
+		for (Caracterizacao caracterizacao : this.caracterizacoes) {
+
+			if (caracterizacao.numeroProcessoAntigo == null && !caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
+					&& !caracterizacao.status.nome.equals(StatusCaracterizacao.CANCELADO)) {
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static Processo findByNumProcesso(String numProcesso) {
+
+		return Processo.find("numero", numProcesso).first();
 	}
 
 }

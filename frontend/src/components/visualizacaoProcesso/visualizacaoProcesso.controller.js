@@ -22,17 +22,31 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 		fillOpacity: 0.2
 	};
 
-	processoService.getInfoProcesso(processo.idProcesso)
+	if (processo.idProcesso) {
+
+		processoService.getInfoProcesso(processo.idProcesso)
+			.then(function(response){
+
+				modalCtrl.dadosProcesso = response.data;
+				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
+				modalCtrl.inicializarMapa();
+
+			})
+			.catch(function(){
+				mensagem.error("Ocorreu um erro ao buscar dados do processo.");
+			});
+
+	} else {
+
+		processoService.getInfoProcessoByNumero(processo.numeroProcesso)
 		.then(function(response){
 
 			modalCtrl.dadosProcesso = response.data;
-			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-			modalCtrl.inicializarMapa();
-
 		})
 		.catch(function(){
 			mensagem.error("Ocorreu um erro ao buscar dados do processo.");
 		});
+	}
 
 	modalCtrl.fechar = function () {
 		$uibModalInstance.dismiss('cancel');

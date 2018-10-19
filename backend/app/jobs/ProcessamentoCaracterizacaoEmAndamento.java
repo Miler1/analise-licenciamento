@@ -98,7 +98,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			if (caracterizacao.renovacao) {
 
-				if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)) {
+				if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
+						&& processoAntigo.isArquivavel()) {
 
 					processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
 				}
