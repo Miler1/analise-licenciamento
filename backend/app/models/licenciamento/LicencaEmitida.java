@@ -59,8 +59,8 @@ public class LicencaEmitida extends GenericModel {
 	
 	private static List groupByLicenca(LicencaEmitidaBuilder licencaBuilder, FiltroLicenca filtro) {
 		
-		licencaBuilder.groupByNumeroProcesso()
-			.groupByIdProcesso()
+		licencaBuilder
+			.groupByNumeroProcesso()
 			.groupByNumeroLicenca()
 			.groupByIdLicenca()
 			.groupByCpfCnpjEmpreendimento()
@@ -72,8 +72,8 @@ public class LicencaEmitida extends GenericModel {
 			.groupByAtivo();
 				
 	return licencaBuilder
-		.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())				
-		.list();		
+		.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
+		.list();
 	}
 	
 	/**

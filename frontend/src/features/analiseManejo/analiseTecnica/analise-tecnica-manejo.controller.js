@@ -62,9 +62,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro obter ao dados do processo.");
+					mensagem.error("Ocorreu um erro ao obter dados do processo.");
 			});
-
 	};
 
 	analiseTecnicaManejo.abrirModal = function() {
@@ -122,7 +121,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					analiseTecnicaManejo.saveAnexo(file);
 				}
 			}
-
 		}
 	};
 
@@ -161,7 +159,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		observacaoService.delete(observacao.id).then(function (response) {
 
 			analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].splice(analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].indexOf(observacao), 1);
-
 		})
 		.catch(function (response) {
 
@@ -221,7 +218,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro obter ao finalizar a análise do manejo.");
+					mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
 			});
 	};
 
