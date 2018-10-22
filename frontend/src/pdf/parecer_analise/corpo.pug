@@ -24,8 +24,8 @@ html(lang='en')
       | \#{else}
       | PARECER TÉCNICO referente ao processo abaixo:
       | \#{/else}
-      
-      p 
+
+      p
         | PROCESSO
       p
         | Número:
@@ -68,3 +68,18 @@ html(lang='en')
     div.parecer
       p
         | \#{verbatim}${analiseEspecifica.parecer}\#{/verbatim}
+
+    .assinatura
+      div
+        span _______________________________________________________
+      .dado-assinatura
+        span
+          |   \#{if analiseArea == "ANALISE_JURIDICA"}
+          |     Consultor jurídico
+          |   \#{/if}
+          |   \#{else}
+          |     Analista técnico
+          |   \#{/else}
+      .dado-assinatura
+        span
+          | ${responsavel.usuario.pessoa.nome}
