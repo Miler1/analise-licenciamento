@@ -70,6 +70,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@OneToMany(mappedBy="processo")
 	public List<Analise> analises;
 
+	@Column
 	public Boolean renovacao;
 
 	@Required
@@ -312,7 +313,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDataVencimentoPrazoAnalise()
 			.groupByIdAnalise()
 			.groupByDiasAnalise()
-			.groupByDataCadastroAnalise();
+			.groupByDataCadastroAnalise()
+			.groupByRenovacao();
 									
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
 		
