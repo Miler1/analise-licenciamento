@@ -20,7 +20,7 @@ div
 							th.col-md-2 CPF/CNPJ
 							th.col-md-3 Empreendimento
 							th.col-md-1 Município
-							th.col-md-1 Licenças
+							th.col-md-1 Títulos
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="licenca in consultarLicencas.licencas")
@@ -46,15 +46,15 @@ div
 											li(ng-if="consultarLicencas.isSuspensaoVisivel(licenca)")
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
 													i.glyphicon.glyphicon-lock
-													span Suspender licença
+													span Suspender título
 											li
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)", ng-if="consultarLicencas.isCancelamentoVisivel(licenca)")
 													i.glyphicon.glyphicon-remove
-													span Cancelar licença
+													span Cancelar título
 											li
 												a(ng-click="consultarLicencas.downloadLicenca(licenca)")
 													i.glyphicon.glyphicon-download-alt
-													span Baixar licença
+													span Baixar título
 
 				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
 
