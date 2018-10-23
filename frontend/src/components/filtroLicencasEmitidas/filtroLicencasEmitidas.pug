@@ -92,8 +92,8 @@ div(uib-accordion class="accordion")
 
             .col-md-6
                 label.control-label Status da Licença:
-                select.form-control(ng-model="$ctrl.filtro.idStatusLicenca", name="selectStatusLicenca",
-                ng-options="statusLicenca.id as statusLicenca.nome for statusLicenca in $ctrl.statusLicenca | orderBy:'nome' track by statusLicenca.id")
+                select.form-control(ng-model="$ctrl.filtro.statusLicenca", name="statusLicenca",
+                ng-options="listaStatusLicencas.codigo as listaStatusLicencas.nome for listaStatusLicencas in $ctrl.listaStatusLicencas")
                     option(value="") Selecione o status da licença
 
         div.pull-right

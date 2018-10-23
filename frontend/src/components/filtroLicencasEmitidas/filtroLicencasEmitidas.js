@@ -19,8 +19,13 @@ var FiltroLicencasEmitidas = {
 		ctrl.municipios = [];
 		ctrl.atividades = [];
 		ctrl.tiposLicencas = [];
-		ctrl.statusLicenca = [];
-
+		ctrl.listaStatusLicencas = [
+			{nome: 'Ativa', codigo: 'ATIVA'},
+			{nome: 'Cancelada', codigo: 'CANCELADA'},
+			{nome: 'Renovada', codigo: 'RENOVADA'},
+			{nome: 'Suspensa', codigo: 'SUSPENSA'}
+		];
+		ctrl.statusLicenca = null;
 		ctrl.maxDataInicio = new Date();
 
 		this.pesquisaRapida = function(pagina){
@@ -153,14 +158,6 @@ var FiltroLicencasEmitidas = {
 					mensagem.warning('Não foi possível obter a lista de licencas.');
 				});
 
-			tipoLicencaService.getStatusLicenca().then(
-				function(response){
-
-					ctrl.statusLicenca = response.data;
-				})
-				.catch(function(){
-					mensagem.warning('Não foi possível obter a lista de status.');
-				});
 
 			if (ctrl.pesquisarAoInicializar){
 
