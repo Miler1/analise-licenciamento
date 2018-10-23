@@ -9,7 +9,7 @@ var FiltroLicencasEmitidas = {
 		isAprovadorLogado: '<'
 	},
 
-	controller: function(mensagem, licencaEmitidaService, municipioService, atividadeService, 
+	controller: function(mensagem, licencaEmitidaService, municipioService, atividadeService,
 		$scope, $rootScope, tipoLicencaService) {
 
 		var ctrl = this;
@@ -19,11 +19,12 @@ var FiltroLicencasEmitidas = {
 		ctrl.municipios = [];
 		ctrl.atividades = [];
 		ctrl.tiposLicencas = [];
+		ctrl.statusLicenca = [];
 
 		ctrl.maxDataInicio = new Date();
 
 		this.pesquisaRapida = function(pagina){
-			
+
 			licencaEmitidaService.getLicencasEmitidasPesquisaRapida(ctrl.filtro)
 				.then(function(response){
 
@@ -85,9 +86,9 @@ var FiltroLicencasEmitidas = {
 		};
 
 		this.pesquisar = function(pagina) {
-			
+
 			if (ctrl.filtro.periodoInicial && ctrl.filtro.periodoInicial) {
-				
+
 				var diff = moment(ctrl.filtro.periodoFinal, 'DD/MM/yyyy')
 					.diff(moment(ctrl.filtro.periodoInicial, 'DD/MM/yyyy'), 'days');
 
@@ -127,8 +128,8 @@ var FiltroLicencasEmitidas = {
 
 			municipioService.getMunicipiosByUf('PA').then(
 				function(response){
-					
-					ctrl.municipios = response.data; 
+
+					ctrl.municipios = response.data;
 				})
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de municípios.');
@@ -136,20 +137,29 @@ var FiltroLicencasEmitidas = {
 
 			atividadeService.getAtividades().then(
 				function(response){
-					
+
 					ctrl.atividades = response.data;
 				})
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
 
-				tipoLicencaService.getTiposLicencas().then(
+			tipoLicencaService.getTiposLicencas().then(
 				function(response){
-					
+
 					ctrl.tiposLicencas = response.data;
 				})
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de licencas.');
+				});
+
+			tipoLicencaService.getStatusLicenca().then(
+				function(response){
+
+					ctrl.statusLicenca = response.data;
+				})
+				.catch(function(){
+					mensagem.warning('Não foi possível obter a lista de status.');
 				});
 
 			if (ctrl.pesquisarAoInicializar){
