@@ -1,5 +1,6 @@
 package models.licenciamento;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import models.EmailNotificacaoCancelamentoLicenca;
+import models.EmailNotificacaoProrrogacaoLicenca;
 import models.LicencaAnalise;
 import models.Suspensao;
 import play.db.jpa.GenericModel;
@@ -148,5 +151,19 @@ public class Licenca extends GenericModel implements Identificavel {
 
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 		licenciamentoWS.prorrogarLicenca(id);
+
+		Licenca licenca = Licenca.findById(id);
+
+		licenca.enviarNotificacaoProrrogadaPorEmail();
+	}
+
+	public void enviarNotificacaoProrrogadaPorEmail() {
+
+		List<String> destinatarios = new ArrayList<String>();
+		destinatarios.addAll(this.caracterizacao.empreendimento.emailsProprietarios());
+		destinatarios.addAll(this.caracterizacao.empreendimento.emailsResponsaveis());
+
+		EmailNotificacaoProrrogacaoLicenca emailNotificacao = new EmailNotificacaoProrrogacaoLicenca(this, destinatarios);
+		emailNotificacao.enviar();
 	}
 }

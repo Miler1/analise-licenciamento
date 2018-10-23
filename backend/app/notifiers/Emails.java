@@ -85,4 +85,15 @@ public class Emails extends Mailer {
 
 		return send(processo, arquivamento, notificacoes, setor);
 	}
+
+	public static Future<Boolean> notificarRequerenteProrrogacaoLicenca(List<String> destinatarios, Licenca licenca) {
+
+		setSubject("Notificação referente a prorrogacao da licença %s(%s)", licenca.caracterizacao.tipoLicenca.nome, licenca.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+		return send(licenca);
+	}
 }
