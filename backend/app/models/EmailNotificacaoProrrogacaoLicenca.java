@@ -16,7 +16,6 @@ public class EmailNotificacaoProrrogacaoLicenca extends EmailNotificacao {
 
         super(emailsDestinatarios);
         this.licenca = licenca;
-
     }
 
     @Override
