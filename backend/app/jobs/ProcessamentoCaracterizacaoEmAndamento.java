@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.*;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
@@ -98,9 +99,23 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			if (caracterizacao.renovacao) {
 
-				if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)) {
+				if (processo.isProrrogacao()) {
 
-					processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
+					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)
+							&& processoAntigo.isArquivavel()) {
+
+						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
+					}
+
+					Licenca.prorrogar(caracterizacao.getLicenca().id);
+
+				} else {
+
+					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
+							&& processoAntigo.isArquivavel()) {
+
+						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
+					}
 				}
 
 				if (!caracterizacao.empreendimento.houveAlteracoes) {

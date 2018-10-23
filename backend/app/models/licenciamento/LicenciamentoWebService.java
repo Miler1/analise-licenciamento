@@ -34,20 +34,18 @@ public class LicenciamentoWebService {
 		if(!response.success()) {
 			throw new WebServiceException("Erro ao definir o status da Caracterização.");
 		}
-		
 	}
-	
+
 	public void gerarPDFLicencas(List<Long> idsLicencas) {
-		
+
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("idsLicencas", idsLicencas);
-		
+
 		HttpResponse response = new WebService().post(Configuracoes.URL_LICENCIAMENTO_GERAR_PDFS_LICENCA, params);
-		
+
 		if(!response.success()) {
 			throw new WebServiceException("Erro ao gerar os PDFs.");
 		}
-		
 	}
 
 	public void cancelarDla(DlaCancelada dla) {
@@ -55,4 +53,27 @@ public class LicenciamentoWebService {
 		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_CANCELAR_DLA, dla);
 	}
 
+	public void prorrogarLicenca(Long id) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+
+		HttpResponse response = new WebService().post(Configuracoes.URL_LICENCIAMENTO_PRORROGAR_LICENCA, params);
+
+		if(!response.success()) {
+			throw new WebServiceException("Erro ao prorrogar licenças.");
+		}
+	}
+
+	public void finalizarProrrogacao(List<Long> idsLicencas) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("ids", idsLicencas);
+
+		HttpResponse response = new WebService().post(Configuracoes.URL_LICENCIAMENTO_FINALIZAR_PRORROGACAO_LICENCAS, params);
+
+		if(!response.success()) {
+			throw new WebServiceException("Erro ao finalizar prorrogações de licenças.");
+		}
+	}
 }
