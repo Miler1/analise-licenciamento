@@ -39,5 +39,4 @@ public class EmailNotificacaoProrrogacaoLicenca extends EmailNotificacao {
 
         }
     }
-
 }
