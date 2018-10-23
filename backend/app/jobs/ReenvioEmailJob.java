@@ -29,8 +29,8 @@ public class ReenvioEmailJob extends GenericJob {
 		}
 		
 		Logger.info("[FIM-JOB] ::ReenvioEmail:: [FIM-JOB]");
-		
 	}
+	
 	private void sendMail(ReenvioEmail reenvioEmail) {
 
 		try {
@@ -87,7 +87,6 @@ public class ReenvioEmailJob extends GenericJob {
 				new EmailNotificacaoProrrogacaoLicenca(licenca, emailsDestinatarios).enviar();
 
 				break;
-
 			}
 
 			reenvioEmail.delete();
@@ -97,9 +96,6 @@ public class ReenvioEmailJob extends GenericJob {
 			reenvioEmail.log = e.getMessage();
 
 			reenvioEmail.save();
-
 		}
-
 	}
-	
 }
