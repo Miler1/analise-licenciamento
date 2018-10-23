@@ -40,7 +40,6 @@ public class Processos extends InternalController {
 		renderJSON(Processo.findByNumProcesso(numProcesso.replace('-','/')), ProcessoSerializer.getInfo);
 	}
 
-
 	public static void getInfoProcesso(Long id) {
 		
 		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO, Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
@@ -48,7 +47,6 @@ public class Processos extends InternalController {
 		Processo processo = Processo.findById(id);
 		
 		renderJSON(processo, ProcessoSerializer.getInfo);
-		
 	}
 
 	public static void findAnaliseJuridica(Long idProcesso) {
@@ -60,6 +58,5 @@ public class Processos extends InternalController {
 		AnaliseJuridica analise = AnaliseJuridica.findByProcesso(processo);
 		
 		renderJSON(analise, AnaliseJuridicaSerializer.findInfo);
-	
 	}
 }
