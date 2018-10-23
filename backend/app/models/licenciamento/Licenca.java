@@ -165,6 +165,5 @@ public class Licenca extends GenericModel implements Identificavel {
 
 		EmailNotificacaoProrrogacaoLicenca emailNotificacao = new EmailNotificacaoProrrogacaoLicenca(this, destinatarios);
 		emailNotificacao.enviar();
-
 	}
 }
