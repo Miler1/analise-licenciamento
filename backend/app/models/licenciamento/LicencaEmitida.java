@@ -91,6 +91,7 @@ public class LicencaEmitida extends GenericModel {
 				.filtrarPorDenominacaoEmpreendimento(filtro.denominacaoEmpreendimento)
 				.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
 				.filtrarPorIdTipoLicenca(filtro.idLicenca)
+				.filtrarPorStatusLicenca(filtro.statusLicenca)
 				.filtrarPorPeriodoVencimento(filtro.periodoInicial, filtro.periodoFinal);
 	}
 	

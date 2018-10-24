@@ -1,9 +1,9 @@
 package builders;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import models.StatusLicenca;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
@@ -11,10 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
-import org.hibernate.type.StringType;
 
-import models.Processo;
-import models.licenciamento.Licenca;
 import models.licenciamento.LicencaEmitida;
 import utils.IlikeNoAccents;
 
@@ -36,14 +33,14 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return this;
 	}
-	
+
 	public LicencaEmitidaBuilder addEmpreendimentoAlias() {
-		
+
 		addCaracterizacaoAlias();
-		
+
 		addAlias(CARACTERIZACAO_ALIAS+".empreendimento", EMPREENDIMENTO_ALIAS);
-		
-		return this;		
+
+		return this;
 	}
 	
 	public LicencaEmitidaBuilder addProcessoAlias() {
@@ -217,6 +214,11 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return Restrictions.ilike("numero", numeroLicenca, MatchMode.ANYWHERE);
 	}
+
+	private Criterion getStatusAtivoLicencaRestricao(Boolean ativo) {
+
+		return Restrictions.eq("ativo", ativo);
+	}
 	
 	public LicencaEmitidaBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
@@ -308,6 +310,34 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return this;
 	}
+
+	public LicencaEmitidaBuilder filtrarPorStatusLicenca(StatusLicenca statusLicenca) {
+
+		if (statusLicenca != null) {
+
+			switch (statusLicenca) {
+
+				case ATIVA:
+					addRestriction(this.getStatusAtivoLicencaRestricao(true));
+					break;
+
+				case CANCELADA:
+					//addRestriction(Restrictions.eq());
+					break;
+
+				case RENOVADA:
+					//addRestriction(Restrictions.eq());
+					break;
+
+				case SUSPENSA:
+					//addRestriction(Restrictions.eq());
+					break;
+			}
+		}
+
+		return this;
+	}
+
 	
 	//TODO Adicionar filtro por situação da licença
 	
@@ -330,7 +360,9 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	}
 	
 	public LicencaEmitidaBuilder filtrarPorCamposPesquisaRapida(String pesquisa) {
-		
+
+		criteria.add(Restrictions.and(getStatusAtivoLicencaRestricao(true)));
+
 		if (StringUtils.isNotEmpty(pesquisa)) {
 
 			addPessoaEmpreendimentoAlias();
@@ -377,6 +409,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		public Long paginaAtual;
 		public Long itensPorPagina;
 		public String pesquisa;
+		public StatusLicenca statusLicenca;
 		
 		public FiltroLicenca() {
 	
