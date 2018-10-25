@@ -183,23 +183,23 @@ html(lang='en')
         p A tabela abaixo apresenta a descrição da distância e sobreposições extraídas na avaliação
     div.div-centro
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela(colspan="2") Vetores
                     th.titulo-tabela.coluna-dupla-divisao(colspan="2") Propriedade
                     th.titulo-tabela.coluna-dupla-divisao(colspan="2") AMF
                     th.titulo-tabela.coluna-dupla.coluna-dupla-divisao(rowspan="2") Observação
-                tr(style="page-break-before: avoid;")
+                tr
                     th.titulo-tabela Tipo
                     th.titulo-tabela Nome
                     th.titulo-tabela.coluna-dupla-divisao Distância (km)
                     th.titulo-tabela Sobreposição (ha)
                     th.titulo-tabela.coluna-dupla-divisao Distância (km)
                     th.titulo-tabela Sobreposição (ha)
-            tbody
+            tbody(style="page-break-before: avoid;")
                 | \#{list analisesVetoriais, as:'analiseVetorial'}
-                tr(style="page-break-before: avoid;")
-                    td(style="page-break-before: avoid;") ${analiseVetorial.tipo ? analiseVetorial.tipo : "-"}
+                tr
+                    td ${analiseVetorial.tipo ? analiseVetorial.tipo : "-"}
                     td ${analiseVetorial.nome ? analiseVetorial.nome : "-"}
                     td ${ analiseVetorial.distanciaPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.distanciaPropriedade) : "-"}
                     td ${ analiseVetorial.sobreposicaoPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.sobreposicaoPropriedade) : "-"}
