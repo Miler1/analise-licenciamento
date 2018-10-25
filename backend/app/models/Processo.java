@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
+import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
@@ -75,7 +77,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "id_processo_anterior")
 	public Processo processoAnterior;
 
@@ -514,6 +516,33 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		return caracterizacoes;
 		
+	}
+
+	public boolean isProrrogacao() {
+
+		long diff = Math.abs(this.caracterizacoes.get(0).getLicenca().dataValidade.getTime() - new Date().getTime());
+		long dias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 5l;
+
+		return Configuracoes.DIAS_PRORROGACAO < dias;
+	}
+
+	public boolean isArquivavel() {
+
+		for (Caracterizacao caracterizacao : this.caracterizacoes) {
+
+			if (caracterizacao.numeroProcessoAntigo == null && !caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
+					&& !caracterizacao.status.nome.equals(StatusCaracterizacao.CANCELADO)) {
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static Processo findByNumProcesso(String numProcesso) {
+
+		return Processo.find("numero", numProcesso).first();
 	}
 
 }

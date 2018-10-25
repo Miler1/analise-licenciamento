@@ -8,11 +8,7 @@ var AnaliseManejoService = function(request, config, Upload) {
 
     this.saveAnexo = function(id, file) {
 
-        return Upload.upload({
-
-            url: config.BASE_URL() + 'analiseManejo/' + id + '/anexo',
-            data: { file: file }
-        });
+        return request.upload(config.BASE_URL() + 'analiseManejo/' + id + '/anexo', file, Upload);
     };
 
     this.removeAnexo = function(token) {
