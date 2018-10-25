@@ -32,7 +32,7 @@ html(lang='en')
                 tr
                     th.titulo-tabela(colspan="12") Informações gerais do processo
             tbody
-                tr
+                tr(style="page-break-before: avoid;")
                     td(colspan="1")
                         strong Nome:
                     td(colspan="11")
@@ -72,7 +72,7 @@ html(lang='en')
                 tr
                     th.titulo-tabela(colspan="12") Informações declaradas no car
             tbody
-                tr
+                tr(style="page-break-before: avoid;")
                     td(colspan="2")
                         strong Registro no CAR
                     td.coluna-valor(colspan="10")
@@ -155,7 +155,7 @@ html(lang='en')
                     th.titulo-tabela OBS
             tbody
                 | \#{list basesVetoriais, as:'baseVetorial'}
-                tr
+                tr(style="page-break-before: avoid;")
                     td ${baseVetorial.nome ? baseVetorial.nome : "-"}
                     td ${baseVetorial.fonte ? baseVetorial.fonte : "-"}
                     td ${baseVetorial.ultimaAtualizacao ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(baseVetorial.ultimaAtualizacao) : "-"}
@@ -190,7 +190,7 @@ html(lang='en')
                     th.titulo-tabela.coluna-dupla-divisao(colspan="2") Propriedade
                     th.titulo-tabela.coluna-dupla-divisao(colspan="2") AMF
                     th.titulo-tabela.coluna-dupla.coluna-dupla-divisao(rowspan="2") Observação
-                tr
+                tr(style="page-break-before: avoid;")
                     th.titulo-tabela Tipo
                     th.titulo-tabela Nome
                     th.titulo-tabela.coluna-dupla-divisao Distância (km)
@@ -199,8 +199,8 @@ html(lang='en')
                     th.titulo-tabela Sobreposição (ha)
             tbody
                 | \#{list analisesVetoriais, as:'analiseVetorial'}
-                tr
-                    td ${analiseVetorial.tipo ? analiseVetorial.tipo : "-"}
+                tr(style="page-break-before: avoid;")
+                    td(style="page-break-before: avoid;") ${analiseVetorial.tipo ? analiseVetorial.tipo : "-"}
                     td ${analiseVetorial.nome ? analiseVetorial.nome : "-"}
                     td ${ analiseVetorial.distanciaPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.distanciaPropriedade) : "-"}
                     td ${ analiseVetorial.sobreposicaoPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.sobreposicaoPropriedade) : "-"}
@@ -254,7 +254,7 @@ html(lang='en')
                     th.titulo-tabela Órbita/Ponto
                     th.titulo-tabela Data
             tbody
-                tr
+                tr(style="page-break-before: avoid;")
                     td 1993
                     td Landsat
                     td 228_062
@@ -308,7 +308,7 @@ html(lang='en')
             thead
                 tr
                     th.titulo-tabela.text-center(colspan="6") Tabela Resumo Analise NDFI
-                tr
+                tr(style="page-break-before: avoid;")
                     th.titulo-tabela Data
                     th.titulo-tabela Órbita/Ponto
                     th.titulo-tabela Satélite
@@ -325,7 +325,7 @@ html(lang='en')
                     td.coluna-valor ${ analiseNdfi.valor ? analiseNdfi.valor : "-"}
                     td.coluna-valor ${ analiseNdfi.area ? new java.text.DecimalFormat("##########.##").format(analiseNdfi.area) : "-"}
                 | \#{/list}
-                tr
+                tr(style="page-break-before: avoid;")
                     td.coluna-valor(colspan="5") Total
                     td.coluna-valor(type="number" placeholder="1.00" step="0.01") ${ totalAnaliseNDFI ? new java.text.DecimalFormat("##########.##").format(totalAnaliseNDFI) : "-"}
 
@@ -363,7 +363,7 @@ html(lang='en')
                 tr
                     th.titulo-tabela.text-center(colspan="6") Área descontadas da AMF (hectares)
             tbody
-                tr
+                tr(style="page-break-before: avoid;")
                     td(colspan="5")
                         strong Área de preservação permanente - APP
                     td(colspan="1") ${ analiseManejo.areaPreservacaoPermanente ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaPreservacaoPermanente) : "-"}
@@ -433,7 +433,7 @@ html(lang='en')
                 tr
                     th.titulo-tabela.text-center(colspan="6") Resultados (hectares)
             tbody
-                tr
+                tr(style="page-break-before: avoid;")
                     td(colspan="5")
                         strong Área com exploração NDFI (Baixo)
                     td(colspan="1") ${ analiseManejo.areaExploracaoNdfiBaixo ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaExploracaoNdfiBaixo) : "-"}
