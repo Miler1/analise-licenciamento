@@ -5,11 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import models.StatusLicenca;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
 
 import models.licenciamento.LicencaEmitida;
@@ -19,6 +15,9 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	private static final String CARACTERIZACAO_ALIAS = "carac";
 	private static final String PROCESSO_ALIAS = "proc";
+	private static final String LICENCA_ALIAS = "lic";
+	private static final String LICENCA_SUSPENSAO_ALIAS = "lsus";
+	private static final String LICENCA_CANCELADA_ALIAS = "lca";
 	private static final String EMPREENDIMENTO_ALIAS = "emp";
 	private static final String PESSOA_EMPREENDIMENTO_ALIAS = "pes";
 	private static final String MUNICIPIO_EMPREENDIMENTO_ALIAS = "mun";
@@ -50,7 +49,23 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		addAlias(CARACTERIZACAO_ALIAS+".processos", PROCESSO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 		
 		return this;
-	}	
+	}
+
+	public LicencaEmitidaBuilder addLicencaAlias() {
+
+		addAlias("licenca", LICENCA_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
+	public LicencaEmitidaBuilder addLicencaSuspensaoAlias() {
+
+		addLicencaAlias();
+
+		addAlias(LICENCA_ALIAS+".suspensao", LICENCA_SUSPENSAO_ALIAS);
+
+		return this;
+	}
 	
 	public LicencaEmitidaBuilder addPessoaEmpreendimentoAlias() {
 		
@@ -219,6 +234,29 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 
 		return Restrictions.eq("ativo", ativo);
 	}
+
+	private Criterion getStatusSuspensaLicencaRestricao(Boolean suspenso) {
+
+		addLicencaSuspensaoAlias();
+
+		return Restrictions.eq(LICENCA_SUSPENSAO_ALIAS+".ativo", suspenso);
+	}
+
+	private Criterion getStatusCanceladaLicencaRestricao() {
+
+		addLicencaAlias();
+
+		addAlias(LICENCA_ALIAS+".licencaCancelada", LICENCA_CANCELADA_ALIAS, JoinType.INNER_JOIN);
+
+		return Restrictions.eq("ativo", false);
+	}
+
+	private Criterion getStatusRenovacaoLicencaRestricao(boolean renovado) {
+
+		addCaracterizacaoAlias();
+
+		return Restrictions.eq(CARACTERIZACAO_ALIAS+".renovacao", renovado);
+	}
 	
 	public LicencaEmitidaBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
@@ -322,15 +360,15 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 					break;
 
 				case CANCELADA:
-					//addRestriction(Restrictions.eq());
+					addRestriction(this.getStatusCanceladaLicencaRestricao());
 					break;
 
 				case RENOVADA:
-					//addRestriction(Restrictions.eq());
+					addRestriction(this.getStatusRenovacaoLicencaRestricao(true));
 					break;
 
 				case SUSPENSA:
-					//addRestriction(Restrictions.eq());
+					addRestriction(this.getStatusSuspensaLicencaRestricao(true));
 					break;
 			}
 		}
