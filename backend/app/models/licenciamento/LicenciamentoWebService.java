@@ -34,7 +34,6 @@ public class LicenciamentoWebService {
 		if(!response.success()) {
 			throw new WebServiceException("Erro ao definir o status da Caracterização.");
 		}
-		
 	}
 
 	public void gerarPDFLicencas(List<Long> idsLicencas) {
@@ -47,7 +46,6 @@ public class LicenciamentoWebService {
 		if(!response.success()) {
 			throw new WebServiceException("Erro ao gerar os PDFs.");
 		}
-
 	}
 
 	public void cancelarDla(DlaCancelada dla) {
@@ -65,7 +63,6 @@ public class LicenciamentoWebService {
 		if(!response.success()) {
 			throw new WebServiceException("Erro ao prorrogar licenças.");
 		}
-
 	}
 
 	public void finalizarProrrogacao(List<Long> idsLicencas) {
@@ -78,7 +75,5 @@ public class LicenciamentoWebService {
 		if(!response.success()) {
 			throw new WebServiceException("Erro ao finalizar prorrogações de licenças.");
 		}
-
 	}
-
 }

@@ -80,9 +80,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			
 			JPA.em().getTransaction().commit();
 			JPA.em().getTransaction().begin();
-			
 		}
-		
 	}
 	
 	private static void rollbackTransaction() {
@@ -213,6 +211,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	}
 	
 	public Integer getValidadeMaxima() {
+	    
 		return caracterizacao.tipoLicenca.validadeEmAnos;
 	}
 
@@ -251,7 +250,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}			
 		
 		return copia;
-		
 	}
 	
 	public LicencaAnalise gerarCopia() {
@@ -322,7 +320,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 				Caracterizacao.setCaracterizacaoEmRenovacao(idsCaracterizacoesDeferidas, false);
 			}
 
-
 			if(!idsCaracterizacoesArquivadas.isEmpty())
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesArquivadas, StatusCaracterizacao.ARQUIVADO);
 			
@@ -369,9 +366,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			commit();
 			
 			throw new AppException(Mensagem.ERRO_EMITIR_LICENCAS);
-			
 		}
-		
 	}
 	
 	private Licenca emitirLicenca() {

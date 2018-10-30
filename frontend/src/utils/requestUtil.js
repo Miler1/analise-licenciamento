@@ -259,4 +259,23 @@ Request.prototype.put = function(url, params, elem, comLoad) {
 
 };
 
+Request.prototype.upload = function(url, file, Upload, elem, comLoad) {
+
+	if(comLoad === null || comLoad === undefined)
+		comLoad = true;
+
+	var upload = Upload.upload({
+
+		url: url,
+		data: { file: file }
+	});
+
+	if(comLoad) {
+		this.load(url, elem);
+		this._finally(upload, url);
+	}
+
+	return upload;
+};
+
 exports.services.Request = Request;
