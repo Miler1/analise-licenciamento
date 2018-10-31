@@ -24,7 +24,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import models.portalSeguranca.PerfilUsuario;
 import models.portalSeguranca.Setor;
 import models.tramitacao.HistoricoTramitacao;
 import models.pdf.PDFGenerator;
@@ -33,7 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.validacaoParecer.Analisavel;
 import models.validacaoParecer.ParecerNaoValidadoTecnico;
@@ -119,7 +118,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-	public Usuario usuarioValidacao;
+	public UsuarioLicenciamento usuarioValidacao;
 	
 	@OneToMany(mappedBy="analiseTecnica", orphanRemoval = true)
 	public List<LicencaAnalise> licencasAnalise;
@@ -139,7 +138,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
-	public Usuario usuarioValidacaoGerente;	
+	public UsuarioLicenciamento usuarioValidacaoGerente;
  	
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<GerenteTecnico> gerentesTecnicos;
@@ -158,7 +157,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
-	public Usuario usuarioValidacaoAprovador;
+	public UsuarioLicenciamento usuarioValidacaoAprovador;
  	
  	@Column(name="data_fim_validacao_aprovador")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -197,7 +196,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return super.save();
 	}
 	
-	public void iniciar(Usuario usuarioExecutor) {
+	public void iniciar(UsuarioLicenciamento usuarioExecutor) {
 		
 		if(this.dataInicio == null) {
 			
@@ -390,7 +389,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return AnaliseTecnica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
 	}
 	
-	public void finalizar(AnaliseTecnica analise, Usuario usuarioExecutor) {
+	public void finalizar(AnaliseTecnica analise, UsuarioLicenciamento usuarioExecutor) {
 		
 		this.update(analise);
 		
@@ -468,7 +467,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		notificacao.enviar();				
 	}	
 	
-	public void validaParecer(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+	public void validaParecer(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnico();		
 		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnico());
@@ -477,7 +476,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
 	
-	public void validaParecerGerente(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+	public void validaParecerGerente(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnicoGerente();		
 		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnicoGerente());
@@ -486,7 +485,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
 	
-	public void validarParecerValidacaoAprovador(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+	public void validarParecerValidacaoAprovador(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new SolicitarAjustesTecnicoAprovador();	
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		

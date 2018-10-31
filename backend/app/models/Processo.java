@@ -8,17 +8,15 @@ import java.util.concurrent.TimeUnit;
 
 import javax.persistence.*;
 
-import builders.CriteriaBuilder;
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
-import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
@@ -27,14 +25,9 @@ import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
-import play.db.jpa.JPABase;
-import security.Auth;
 import security.InterfaceTramitavel;
-import security.UsuarioSessao;
 import utils.Configuracoes;
 import utils.DateUtil;
-import utils.ListUtil;
 import utils.Mensagem;
 
 @Entity
@@ -125,7 +118,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		super.save();
 	}
 
-	public void vincularConsultor(Usuario consultor, Usuario usuarioExecutor) {
+	public void vincularConsultor(UsuarioLicenciamento consultor, UsuarioLicenciamento usuarioExecutor) {
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
 		
@@ -134,7 +127,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 	
-	public void vincularAnalista(Usuario analista, Usuario usuarioExecutor, String justificativaCoordenador) {
+	public void vincularAnalista(UsuarioLicenciamento analista, UsuarioLicenciamento usuarioExecutor, String justificativaCoordenador) {
 		
 		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
 		
@@ -143,7 +136,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 	
-	public void vincularGerenteTecnico(Usuario gerente, Usuario usuarioExecutor) {
+	public void vincularGerenteTecnico(UsuarioLicenciamento gerente, UsuarioLicenciamento usuarioExecutor) {
 		
 		GerenteTecnico.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		
@@ -151,7 +144,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 	}	
 
-	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
+	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
 		
 		ProcessoBuilder processoBuilder = new ProcessoBuilder()
 			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
@@ -172,8 +165,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return processoBuilder;
 	}
 
-	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro, 
-			UsuarioSessao usuarioSessao) {
+	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+	                                                  UsuarioLicenciamento usuarioSessao) {
 		
 		if (usuarioSessao.perfilSelecionado.id != Perfil.APROVADOR) {
 			return;
@@ -238,7 +231,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 	
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
-			UsuarioSessao usuarioSessao) {
+	                                                       UsuarioLicenciamento usuarioSessao) {
 		
 		if (!filtro.isAnaliseTecnica) {
 			
@@ -303,7 +296,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}		
 	}
 
-	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
+	public static List listWithFilter(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
 				
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.comTiposLicencas()
@@ -363,7 +356,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.orderByDataVencimentoPrazoAnaliseTecnica();
 	}
 	
-	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioSessao usuarioSessao) {
+	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioLicenciamento usuarioSessao) {
 		
 		if (usuarioSessao.perfilSelecionado.id != Perfil.APROVADOR) {
 			
@@ -374,7 +367,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDiasAprovador();
 	}
 
-	public static Long countWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
+	public static Long countWithFilter(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
 		
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.addPessoaEmpreendimentoAlias()

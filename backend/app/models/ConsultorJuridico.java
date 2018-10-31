@@ -1,7 +1,6 @@
 package models;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,7 @@ import exceptions.PermissaoNegadaException;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.PerfilUsuario;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -43,7 +42,7 @@ public class ConsultorJuridico extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public Usuario usuario;
+	public UsuarioLicenciamento usuario;
 	
 	@Required
 	@Column(name="data_vinculacao")
@@ -54,7 +53,7 @@ public class ConsultorJuridico extends GenericModel {
 		super();
 	}
 	
-	public ConsultorJuridico(AnaliseJuridica analiseJuridica, Usuario usuario) {
+	public ConsultorJuridico(AnaliseJuridica analiseJuridica, UsuarioLicenciamento usuario) {
 		
 		super();
 		this.analiseJuridica = analiseJuridica;
@@ -63,7 +62,7 @@ public class ConsultorJuridico extends GenericModel {
 		
 	}
 	
-	public static void vincularAnalise(Usuario usuario, AnaliseJuridica analiseJuridica, Usuario usuarioExecutor) {
+	public static void vincularAnalise(UsuarioLicenciamento usuario, AnaliseJuridica analiseJuridica, UsuarioLicenciamento usuarioExecutor) {
 		
 		if (!usuario.hasPerfil(Perfil.CONSULTOR_JURIDICO))
 			throw new PermissaoNegadaException(Mensagem.CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO);		

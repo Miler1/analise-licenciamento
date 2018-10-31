@@ -17,7 +17,6 @@ import javax.persistence.Table;
 
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
-import utils.Identificavel;
 
 @Entity
 @Table(schema = "portal_seguranca", name = "setor")
@@ -98,7 +97,7 @@ public class Setor extends GenericModel {
 		return idsSetoresByNivel;
 	}
 
-	public static void setHistoricoTramitacao(HistoricoTramitacao historicoTramitacao, Usuario usuarioExecutor) {
+	public static void setHistoricoTramitacao(HistoricoTramitacao historicoTramitacao, UsuarioLicenciamento usuarioExecutor) {
 
 		if (usuarioExecutor.setorSelecionado != null) {
 

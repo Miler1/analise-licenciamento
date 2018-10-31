@@ -1,12 +1,9 @@
 package controllers;
 
 import models.Notificacao;
-import models.licenciamento.AtividadeCaracterizacao;
-import org.apache.commons.collections.FastHashMap;
-import play.Play;
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.libs.Crypto;
 import security.Auth;
-import security.UsuarioSessao;
 import serializers.ApplicationSerializer;
 import utils.Configuracoes;
 
@@ -19,7 +16,7 @@ public class Application extends GenericController {
 
 	public static void index() {
 
-		UsuarioSessao usuarioSessao = Auth.getUsuarioSessao(session.current());
+		UsuarioLicenciamento usuarioSessao = Auth.getAuthenticatedUser(session.current());
 		
 		if (usuarioSessao != null)
 			redirect(Configuracoes.INDEX_URL);
@@ -31,10 +28,10 @@ public class Application extends GenericController {
 	public static void findInfo() {
 		
 		DadosApp dados = new DadosApp();
-		dados.usuarioSessao = Auth.getUsuarioSessao(session.current());
+		dados.usuarioSessao = Auth.getAuthenticatedUser(session.current());
 		
-		if(Play.mode == Play.Mode.DEV)
-			dados.usuarioSessao.autenticadoViaToken = true;
+//		if(Play.mode == Play.Mode.DEV)
+//			dados.usuarioSessao.autenticadoViaToken = true;
 		
 		String jsonConfig = ApplicationSerializer.findInfo.serialize(dados);
 		
@@ -48,7 +45,7 @@ public class Application extends GenericController {
 	
 	public static class DadosApp {
 		
-		public UsuarioSessao usuarioSessao;
+		public UsuarioLicenciamento usuarioSessao;
 		public ConfiguracoesApp configuracoes = new ConfiguracoesApp();
 	}
 	

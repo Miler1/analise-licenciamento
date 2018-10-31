@@ -4,7 +4,7 @@ import models.Documento;
 import models.TipoDocumento;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.Upload;
@@ -106,7 +106,7 @@ public class AnaliseManejo  extends GenericModel {
     @Required
     @OneToOne
     @JoinColumn(name="id_usuario")
-    public Usuario usuario;
+    public UsuarioLicenciamento usuario;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="id_documento")
@@ -134,7 +134,7 @@ public class AnaliseManejo  extends GenericModel {
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 
-    public static AnaliseManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
+    public static AnaliseManejo gerarAnalise(ProcessoManejo processo, UsuarioLicenciamento usuario) {
 
         AnaliseManejo analiseManejo = new AnaliseManejo();
 

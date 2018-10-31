@@ -2,13 +2,12 @@ package models.validacaoParecer;
 
 import java.util.ArrayList;
 
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.LicencaAnalise;
 import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 
@@ -20,7 +19,7 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 	}
 	
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		   
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;

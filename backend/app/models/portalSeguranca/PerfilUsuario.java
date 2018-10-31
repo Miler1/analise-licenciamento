@@ -11,7 +11,6 @@ import javax.persistence.Table;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Identificavel;
 
 @Entity
 @Table(schema="portal_seguranca", name="perfil_usuario")
@@ -27,7 +26,7 @@ public class PerfilUsuario extends GenericModel {
 	@Required(message = "perfisUsuarios.validacao.usuario.req")
 	@ManyToOne
 	@JoinColumn(name="id_usuario", referencedColumnName="id")
-	public Usuario usuario;
+	public UsuarioLicenciamento usuario;
 	
 	@Required(message = "perfisUsuarios.validacao.perfil.req")
 	@ManyToOne

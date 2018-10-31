@@ -4,12 +4,10 @@ import exceptions.ValidacaoException;
 import models.Documento;
 import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
-
-import java.io.File;
 
 public class ProcessosManejo extends InternalController {
 
@@ -62,7 +60,7 @@ public class ProcessosManejo extends InternalController {
 
 		// TODO enviar processo para analise na imagem
 		processo.analiseManejo = AnaliseManejo.gerarAnalise(processo,
-				(Usuario) Usuario.findById(getUsuarioSessao().id));
+				(UsuarioLicenciamento) UsuarioLicenciamento.findById(getUsuarioSessao().id));
 
 		ProcessoManejo processoAntigo = ProcessoManejo.findById(processo.id);
 		processoAntigo = processoAntigo.iniciarAnalise(processo);

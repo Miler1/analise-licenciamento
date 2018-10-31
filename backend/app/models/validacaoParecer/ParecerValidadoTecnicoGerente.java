@@ -1,13 +1,9 @@
 package models.validacaoParecer;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.TipoResultadoAnalise;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 
@@ -18,7 +14,7 @@ public class ParecerValidadoTecnicoGerente extends TipoResultadoAnaliseChain<Ana
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
 
 		analiseTecnica.tipoResultadoValidacaoGerente = novaAnaliseTecnica.tipoResultadoValidacaoGerente;
 		analiseTecnica.parecerValidacaoGerente = novaAnaliseTecnica.parecerValidacaoGerente;

@@ -1,10 +1,10 @@
 package controllers;
 
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.mvc.Before;
 import play.mvc.Http;
 import security.Acao;
 import security.Auth;
-import security.UsuarioSessao;
 import utils.JPACallable;
 import utils.Mensagem;
 import utils.Pool;
@@ -17,16 +17,16 @@ public class InternalController extends GenericController {
 	@Before
 	public static void verificarAutenticacao() {
 		
-		UsuarioSessao usuario = Auth.getUsuarioSessao(session.current());
+		UsuarioLicenciamento usuario = Auth.getAuthenticatedUser(session.current());
 		
 		if (usuario == null)
 			unauthorized();
 			
 	}
 	
-	protected static UsuarioSessao getUsuarioSessao() {
+	protected static UsuarioLicenciamento getUsuarioSessao() {
 		
-		return Auth.getUsuarioSessao(session.current());
+		return Auth.getAuthenticatedUser(session.current());
 	}
 
 	protected static <T> T async(Callable<T> callable) {
@@ -39,12 +39,12 @@ public class InternalController extends GenericController {
 	
 	protected static void verificarPermissao(Acao ... acoes) {
 		
-		UsuarioSessao usuario = getUsuarioSessao();
+		UsuarioLicenciamento usuario = getUsuarioSessao();
 		
 		boolean permitido = false;
 		
 		for (Acao acao : acoes)
-			permitido = permitido || usuario.possuiPermissao(acao);
+			permitido = permitido; //|| usuario.possuiPermissao(acao);
 		
 		if (!permitido) {
 			

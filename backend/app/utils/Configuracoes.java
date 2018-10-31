@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import main.java.br.ufla.lemaf.services.CadastroUnificadoPessoaService;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
@@ -65,6 +66,13 @@ public class Configuracoes {
 	public static Integer PRAZO_MAXIMO_CONDICIONANTE = 1900;
 
 	public static long DIAS_PRORROGACAO = getLongConfig("dias.prorrogacao");
+
+	public static String CLIENTE_ID = getConfig("cliente.id", null);
+	public static String CLIENTE_SECRET = getConfig("cliente.secret", null);
+	public static String URL_PORTAL_SEGURANCA = getConfig("url.portal.seguranca", null);
+	public static String URL_CADASTRO_UNIFICADO = getConfig("url.cadastro.unificado", null);
+
+	public static final CadastroUnificadoPessoaService oAuthClient = new CadastroUnificadoPessoaService(CLIENTE_ID, CLIENTE_SECRET, URL_PORTAL_SEGURANCA, URL_CADASTRO_UNIFICADO);
 
 	static {
 

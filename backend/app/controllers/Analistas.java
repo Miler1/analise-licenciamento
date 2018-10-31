@@ -4,14 +4,10 @@ import java.util.List;
 
 import models.Processo;
 import models.licenciamento.AtividadeCaracterizacao;
-import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
-import play.db.jpa.JPABase;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import security.UsuarioSessao;
 import serializers.UsuarioSerializer;
 import utils.Mensagem;
 
@@ -21,9 +17,9 @@ public class Analistas extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		Usuario analista = Usuario.findById(idUsuario);				
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento analista = UsuarioLicenciamento.findById(idUsuario);
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
+		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		for(Long idProcesso : idsProcesso) {
 			
@@ -48,7 +44,7 @@ public class Analistas extends InternalController {
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO,tipoAtividadeCaracterizacao.setor.id);
+		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO,tipoAtividadeCaracterizacao.setor.id);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
@@ -57,7 +53,7 @@ public class Analistas extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.CONSULTAR_PROCESSO);
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
+		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfil(Perfil.ANALISTA_TECNICO);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);		
 		
@@ -66,11 +62,11 @@ public class Analistas extends InternalController {
 	public static void getAnalistaTecnicoPerfilSetores(boolean isGerente) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
-		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
+
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
 		
 		List<Integer> idsSetoresFilhos = null;
-		List<Usuario> pessoas = null;
+		List<UsuarioLicenciamento> pessoas = null;
 		switch (usuarioSessao.perfilSelecionado.id) {
 		/**
 		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
@@ -79,7 +75,7 @@ public class Analistas extends InternalController {
 		 */
 		case Perfil.APROVADOR:
 			idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresByNivel(2);
-			pessoas = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
+			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
 			break;
 		/**
 		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
@@ -88,13 +84,13 @@ public class Analistas extends InternalController {
 		 */			
 		case Perfil.COORDENADOR_TECNICO:
 			idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1);
-			pessoas = Usuario.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
+			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetores(Perfil.ANALISTA_TECNICO, idsSetoresFilhos);
 			break;
 		/**
 		 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
 		 */
 		default:
-			pessoas = Usuario.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO, usuarioSessao.setorSelecionado.id);
+			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetor(Perfil.ANALISTA_TECNICO, usuarioSessao.setorSelecionado.id);
 			break;
 		}
 		

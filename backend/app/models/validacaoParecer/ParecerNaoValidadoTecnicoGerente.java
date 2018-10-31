@@ -3,13 +3,11 @@ package models.validacaoParecer;
 import java.util.ArrayList;
 
 import exceptions.ValidacaoException;
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.AnalistaTecnico;
-import models.ConsultorJuridico;
 import models.TipoResultadoAnalise;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
@@ -21,7 +19,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		analiseTecnica.tipoResultadoValidacaoGerente = novaAnaliseTecnica.tipoResultadoValidacaoGerente;
 		analiseTecnica.parecerValidacaoGerente = novaAnaliseTecnica.parecerValidacaoGerente;
@@ -38,7 +36,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 
-	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista, Usuario usuarioValidacao) {
+	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioAnalista, UsuarioLicenciamento usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		

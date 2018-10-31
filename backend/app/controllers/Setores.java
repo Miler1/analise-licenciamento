@@ -1,15 +1,12 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.AppException;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.TipoSetor;
-import models.portalSeguranca.Usuario;
-import play.db.jpa.JPABase;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import security.UsuarioSessao;
 import serializers.SetoresSerializer;
 import utils.Mensagem;
 
@@ -19,7 +16,7 @@ public class Setores extends InternalController {
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
 		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
 		
 		if (usuarioSessao.setorSelecionado == null) {
 			throw new AppException(Mensagem.SETOR_OBRIGATORIO_ANALISE);

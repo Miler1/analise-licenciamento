@@ -3,14 +3,12 @@ package models.validacaoParecer;
 import java.util.ArrayList;
 
 import exceptions.ValidacaoException;
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.AnalistaTecnico;
-import models.ConsultorJuridico;
 import models.GerenteTecnico;
 import models.TipoResultadoAnalise;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
@@ -22,7 +20,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;		
@@ -49,7 +47,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		}
 	}
 
-	private void salvarNovaAnalise(AnaliseTecnica novaAnalise, AnaliseTecnica analiseTecnica, Usuario usuarioValidacao) {
+	private void salvarNovaAnalise(AnaliseTecnica novaAnalise, AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioValidacao) {
 			
 		novaAnalise.analise = analiseTecnica.analise;
 		novaAnalise.dataCadastro = analiseTecnica.dataCadastro;
@@ -61,7 +59,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		novaAnalise._save();
 	}
 	
-	private void criarNovaAnaliseComGerente(AnaliseTecnica analiseTecnica, Usuario usuarioGerente, Usuario usuarioValidacao) {
+	private void criarNovaAnaliseComGerente(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioGerente, UsuarioLicenciamento usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		
@@ -72,7 +70,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		salvarNovaAnalise(novaAnalise, analiseTecnica, usuarioValidacao);
 	}
 	
-	private void criarNovaAnaliseComAnalista(AnaliseTecnica analiseTecnica, Usuario usuarioAnalista, Usuario usuarioValidacao) {
+	private void criarNovaAnaliseComAnalista(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioAnalista, UsuarioLicenciamento usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		

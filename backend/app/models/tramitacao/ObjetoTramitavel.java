@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.db.jpa.GenericModel;
 
 //  View com informações do objeto tramitavel
@@ -31,7 +31,7 @@ public class ObjetoTramitavel extends GenericModel {
 
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "ID_USUARIO", referencedColumnName = "id")
-	public Usuario usuarioResponsavel;
+	public UsuarioLicenciamento usuarioResponsavel;
 	
  	@ManyToOne
  	@JoinColumn(name = "ID_PAI", referencedColumnName = "ID_OBJETO_TRAMITAVEL")
@@ -45,13 +45,13 @@ public class ObjetoTramitavel extends GenericModel {
  	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "ID_RESPONSAVEL_ANTERIOR", referencedColumnName = "id")
-	public Usuario responsavelAnterior;
+	public UsuarioLicenciamento responsavelAnterior;
 	
  	@OneToMany
  	@JoinColumn(name = "ID_OBJETO_TRAMITAVEL", referencedColumnName = "ID_OBJETO_TRAMITAVEL")
 	public List<AcaoDisponivelObjetoTramitavel> acoesDisponiveis;
 	
-	public Usuario getResponsavel() {
+	public UsuarioLicenciamento getResponsavel() {
 		return this.usuarioResponsavel;
 	}
 	
@@ -80,8 +80,8 @@ public class ObjetoTramitavel extends GenericModel {
 	
 	public String getNomeUsuarioResponsavel() {
 		
-		return (this.usuarioResponsavel != null && this.usuarioResponsavel.pessoa != null)
-				? this.usuarioResponsavel.pessoa.nome : null;
+		return (this.usuarioResponsavel != null && this.usuarioResponsavel.usuarioEntradaUnica != null)
+				? this.usuarioResponsavel.usuarioEntradaUnica.nome : null;
 	}
 
 	public Long getIdResponsavelAnterior() {
@@ -91,8 +91,8 @@ public class ObjetoTramitavel extends GenericModel {
 	
 	public String getNomeResponsavelAnterior() {
 		
-		return (this.responsavelAnterior != null && this.responsavelAnterior.pessoa != null)
-				? this.responsavelAnterior.pessoa.nome : null;
+		return (this.responsavelAnterior != null && this.responsavelAnterior.usuarioEntradaUnica != null)
+				? this.responsavelAnterior.usuarioEntradaUnica.nome : null;
 	}
 		
 	

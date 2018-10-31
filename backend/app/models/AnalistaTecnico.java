@@ -14,13 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import exceptions.AppException;
-import exceptions.PermissaoNegadaException;
 import exceptions.ValidacaoException;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.PerfilUsuario;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -44,7 +42,7 @@ public class AnalistaTecnico extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public Usuario usuario;
+	public UsuarioLicenciamento usuario;
 	
 	@Required
 	@Column(name="data_vinculacao")
@@ -55,7 +53,7 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}
 	
-	public AnalistaTecnico(AnaliseTecnica analiseTecnica, Usuario usuario) {
+	public AnalistaTecnico(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuario) {
 		
 		super();
 		this.analiseTecnica = analiseTecnica;
@@ -64,7 +62,7 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}	
 	
-	public static void vincularAnalise(Usuario usuario, AnaliseTecnica analiseTecnica, Usuario usuarioExecutor, String justificativaCoordenador) {
+	public static void vincularAnalise(UsuarioLicenciamento usuario, AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor, String justificativaCoordenador) {
 		
 		if (!usuario.hasPerfil(Perfil.ANALISTA_TECNICO))
 			throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);

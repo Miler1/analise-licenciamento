@@ -1,9 +1,8 @@
 package controllers;
 
 import models.DlaCancelada;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import security.UsuarioSessao;
 import utils.Mensagem;
 
 public class DlaCanceladas extends InternalController {
@@ -13,10 +12,10 @@ public class DlaCanceladas extends InternalController {
 		verificarPermissao(Acao.CANCELAR_LICENCA_EMITIDA);
 		
 		returnIfNull(dlaCancelada, "DlaCancelada");
-    	
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
 
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
+
+		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		dlaCancelada.cancelarDla(usuarioExecutor);
 		

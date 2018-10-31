@@ -1,19 +1,12 @@
 package controllers;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import models.*;
-import models.pdf.PDFGenerator;
-import models.portalSeguranca.Usuario;
-import play.libs.Crypto;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import security.UsuarioSessao;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
-import utils.Configuracoes;
 import utils.Mensagem;
 
 public class AnalisesJuridicas extends InternalController {
@@ -54,8 +47,8 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
+		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);				
@@ -68,8 +61,8 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
+		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
@@ -95,8 +88,8 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
+		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAvalidar.validaParecer(analise, usuarioExecutor);
 		
@@ -110,8 +103,8 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
+		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
 		
 		analiseAvalidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		

@@ -20,7 +20,6 @@ import builders.LicencaEmitidaBuilder.FiltroLicenca;
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.Documento;
 import play.db.jpa.GenericModel;
-import security.UsuarioSessao;
 
 @Entity
 @Table(schema = "licenciamento", name = "licenca_emitida")

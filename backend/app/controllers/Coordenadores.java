@@ -8,7 +8,7 @@ import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.Perfil;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.TipoSetor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
 import serializers.UsuarioSerializer;
 
@@ -34,11 +34,11 @@ public class Coordenadores extends InternalController {
 			}
 			
 			
-			renderJSON(Usuario.getUsuariosByPerfilSetor(idPerfil, setor.id), 
+			renderJSON(UsuarioLicenciamento.getUsuariosByPerfilSetor(idPerfil, setor.id),
 					UsuarioSerializer.getConsultoresAnalistasGerentes);
 		}
 		
-		renderJSON(Usuario.getUsuariosByPerfil(idPerfil), 
+		renderJSON(UsuarioLicenciamento.getUsuariosByPerfil(idPerfil),
 				UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 

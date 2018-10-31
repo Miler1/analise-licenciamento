@@ -4,13 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.TipoResultadoAnalise;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.ListUtil;
@@ -22,7 +21,7 @@ public class ParecerValidadoTecnico extends TipoResultadoAnaliseChain<AnaliseTec
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
 
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;

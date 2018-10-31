@@ -68,8 +68,8 @@ GET		/atividades									Atividades.list
 GET		/tipologias									Tipologias.list
 
 # Login
-GET		/login										Login.showLogin
-GET		/authenticate								Login.login
+GET		/login										Login.login
+GET		/authenticate								Login.autenticar
 GET		/logout										Login.logout
 
 # Consultores
