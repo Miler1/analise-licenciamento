@@ -5,9 +5,9 @@ import utils.Configuracoes;
 
 public class Login extends GenericController {
 
-	public static void autenticar() {
+	public static void autenticar(String sessionKey) {
 
-		if (Auth.autenticar(session.current()))
+		if (Auth.autenticarEntradaUnica(sessionKey, session.current()))
 			redirect(Configuracoes.HTTP_PATH);
 		else if(Configuracoes.EXTERNAL_LOGIN)
 			redirect(Configuracoes.LOGIN_URL);
