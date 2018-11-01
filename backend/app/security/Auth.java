@@ -69,7 +69,7 @@ public class Auth {
 
 		Usuario usuario = oAuthClient.searchBySessionKey(sessionKeyEntradaUnica);
 
-		if (usuario == null || usuario.id == null) {
+		if (usuario == null) {
 
 			return false;
 		}

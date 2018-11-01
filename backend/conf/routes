@@ -68,7 +68,7 @@ GET		/atividades									Atividades.list
 GET		/tipologias									Tipologias.list
 
 # Login
-GET		/login										Login.login
+GET     /login/{sessionKeyEntradaUnica}             Login.login
 GET		/authenticate								Login.autenticar
 GET		/logout										Login.logout
 
