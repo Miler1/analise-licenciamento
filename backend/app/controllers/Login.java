@@ -1,19 +1,18 @@
 package controllers;
 
+import play.mvc.Http;
 import security.Auth;
 import utils.Configuracoes;
 
 public class Login extends GenericController {
 
-	public static void autenticar(String sessionKey) {
+	public static void autenticar() {
 
-		if (Auth.autenticarEntradaUnica(sessionKey, session.current()))
+		if (Auth.autenticarPortalSeguranca(Http.Request.current(), session.current()))
 			redirect(Configuracoes.HTTP_PATH);
 		else if(Configuracoes.EXTERNAL_LOGIN)
 			redirect(Configuracoes.LOGIN_URL);
-
 	}
-
 
 	public static void logout() {
 
