@@ -79,7 +79,7 @@ public class Auth {
 
 		Logger.debug("ID da Sessão: %s", new Object[]{session.getId()});
 
-		Cache.set(session.getId(), usuarioLicenciamento, Play.configuration.getProperty("application.session.maxAge"));
+		Cache.set(CACHE_PREFIX + session.getId(), usuarioLicenciamento, Play.configuration.getProperty("application.session.maxAge"));
 
 		return true;
 	}
