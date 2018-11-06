@@ -97,7 +97,7 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.empreendimento_manejo TO l
 COMMENT ON TABLE analise.empreendimento_manejo IS 'Entidade responsavel por armazenar o empreendimento do manejo.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id IS 'Identificado único da entidade.';
 COMMENT ON COLUMN analise.empreendimento_manejo.denominacao IS 'Denominação do empreendimento.';
-COMMENT ON COLUMN analise.empreendimento_manejo.cpfCnpj IS 'Denominação do empreendimento.';
+COMMENT ON COLUMN analise.empreendimento_manejo.cpfCnpj IS 'CPF/CNPJ do empreendimento.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id_imovel IS 'Identificador da tabela imóvel.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id_municipio IS 'Identificador da tabela município.';
 
@@ -110,12 +110,13 @@ ALTER TABLE analise.imovel_manejo DROP COLUMN cep;
 
 DELETE FROM analise.imovel_manejo;
 
+ALTER TABLE analise.imovel_manejo ADD COLUMN  descricao_acesso TEXT;
 ALTER TABLE analise.imovel_manejo ADD COLUMN id_municipio integer NOT NULL;
 ALTER TABLE analise.imovel_manejo ADD CONSTRAINT fk_i_municipio FOREIGN KEY (id_municipio)
       REFERENCES licenciamento.municipio (id_municipio);
 
 COMMENT ON COLUMN analise.imovel_manejo.id_municipio IS 'Identificador da tabela município.';
-
+COMMENT ON COLUMN analise.imovel_manejo.descricao_acesso IS 'Descrição de acesso (endereço) do imóvel.';
 
 -- Adicionando constraints a entidade processo_manejo
 
