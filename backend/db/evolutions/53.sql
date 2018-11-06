@@ -29,6 +29,23 @@ COMMENT ON COLUMN analise.empreendimento_manejo.cpfCnpj IS 'Denominação do emp
 COMMENT ON COLUMN analise.empreendimento_manejo.id_imovel IS 'Identificador da tabela imóvel.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id_municipio IS 'Identificador da tabela município.';
 
+
+-- alteração imóvel manejo
+
+ALTER TABLE analise.imovel_manejo DROP COLUMN endereco;
+ALTER TABLE analise.imovel_manejo DROP COLUMN bairro;
+ALTER TABLE analise.imovel_manejo DROP COLUMN cep;
+
+DELETE FROM analise.imovel_manejo;
+
+ALTER TABLE analise.imovel_manejo ADD COLUMN id_municipio integer NOT NULL;
+ALTER TABLE analise.imovel_manejo ADD CONSTRAINT fk_i_municipio FOREIGN KEY (id_municipio)
+      REFERENCES licenciamento.municipio (id_municipio);
+
+COMMENT ON COLUMN analise.imovel_manejo.id_municipio IS 'Identificador da tabela município.';
+
+
+
 # --- !Downs
 
 DROP TABLE analise.empreendimento_manejo;
