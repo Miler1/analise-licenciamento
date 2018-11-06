@@ -33,6 +33,12 @@ public class ImovelSicar {
 	
 	public Double areaUsoAlternativoSolo;
 
+	public String descricaoAcesso;
+
+	public String nomeMunicipio;
+
+	public String siglaEstado;
+
 	public ImovelSicar() { }
 	
 	public ImovelSicar(Long id, String nome, String codigo, String geo, 

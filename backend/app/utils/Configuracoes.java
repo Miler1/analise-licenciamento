@@ -68,6 +68,7 @@ public class Configuracoes {
 
 	public static String URL_SICAR = getConfig("sicar.url", null);
 	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
+	public static String URL_SICAR_IMOVEL_FICHA = URL_SICAR + getConfig("url.sicar.imovel.ficha", null);
 
 	static {
 

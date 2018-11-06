@@ -36,6 +36,27 @@ public class SicarWebService {
 		
 	}
 
+	public FichaSicar getImovelById(String idImovel) {
+
+		String url = Configuracoes.URL_SICAR_IMOVEL_FICHA.replace("{idImove}", idImovel);
+
+		HttpResponse response = new WebService().post(url);
+
+		if(!response.success()){
+			throw new WebServiceException("Erro ao consultar imóveis no CAR/PA");
+		}
+
+		Type type = new TypeToken<MensagemSicar<FichaSicar>>(){}.getType();
+
+		MensagemSicar<FichaSicar> retorno = gsonBuilder.create().fromJson(response.getJson(), type);
+
+		if(!retorno.status.equals(StatusSiCAR.SUCESSO.sigla)){
+			throw new WebServiceException(String.format("Erro ao consultar imóveis no CAR/PA: %s", retorno.mensagem));
+		}
+
+		return retorno.dados;
+	}
+
 	public enum StatusSiCAR {
 		
 		SUCESSO("s"),

@@ -1,5 +1,6 @@
 package controllers;
 
+import models.sicar.ImovelSicar;
 import models.sicar.SicarWebService;
 import play.libs.WS;
 import security.Acao;
@@ -57,6 +58,10 @@ public class Imoveis extends InternalController {
 
 		notFoundIfNull(codigoImovel);
 
-		renderJSON(new SicarWebService().getImovelByCodigo(codigoImovel));
+		SicarWebService sicarWebService = new SicarWebService();
+
+		ImovelSicar imovelSicar = sicarWebService.getImovelByCodigo(codigoImovel);
+
+		renderJSON(sicarWebService.getImovelById(imovelSicar.id.toString()));
 	}
 }
