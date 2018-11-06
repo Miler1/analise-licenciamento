@@ -30,6 +30,11 @@ var ProcessoService = function(request, config, $uibModal) {
 			.get(config.BASE_URL() + 'processos/' + idProcesso + '/completo');
 	};
 
+	this.getInfoProcessoByNumero = function(numeroProcesso) {
+
+		return request
+			.get(config.BASE_URL() + 'processos/numero/' + numeroProcesso.replace('/','-') + '/completo');
+	};
 
 	this.visualizarProcesso = function(processo) {
 

@@ -29,8 +29,10 @@ public class LicencaEmitida extends GenericModel {
 	@Id
 	@Column(name = "id_sequencial")
 	public Long idSequencial;
-	
-	public Long id;	
+
+	@OneToOne
+	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
+	public Licenca licenca;
 	
 	@OneToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id", nullable = false)
@@ -49,7 +51,7 @@ public class LicencaEmitida extends GenericModel {
 	public Date dataValidade;
 
 	@Column(name = "informacao_adicional")
-	public String informacaoAdicional;	
+	public String informacaoAdicional;
 
 	@Column(name = "tipo_dispensa")
 	public Integer tipoDispensa;
@@ -59,8 +61,8 @@ public class LicencaEmitida extends GenericModel {
 	
 	private static List groupByLicenca(LicencaEmitidaBuilder licencaBuilder, FiltroLicenca filtro) {
 		
-		licencaBuilder.groupByNumeroProcesso()
-			.groupByIdProcesso()
+		licencaBuilder
+			.groupByNumeroProcesso()
 			.groupByNumeroLicenca()
 			.groupByIdLicenca()
 			.groupByCpfCnpjEmpreendimento()
@@ -72,8 +74,8 @@ public class LicencaEmitida extends GenericModel {
 			.groupByAtivo();
 				
 	return licencaBuilder
-		.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())				
-		.list();		
+		.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
+		.list();
 	}
 	
 	/**
@@ -91,6 +93,7 @@ public class LicencaEmitida extends GenericModel {
 				.filtrarPorDenominacaoEmpreendimento(filtro.denominacaoEmpreendimento)
 				.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
 				.filtrarPorIdTipoLicenca(filtro.idLicenca)
+				.filtrarPorStatusLicenca(filtro.statusLicenca)
 				.filtrarPorPeriodoVencimento(filtro.periodoInicial, filtro.periodoFinal);
 	}
 	
@@ -105,7 +108,7 @@ public class LicencaEmitida extends GenericModel {
 			.addPessoaEmpreendimentoAlias()
 			.addEstadoEmpreendimentoAlias()
 			.addMunicipioEmpreendimentoAlias()
-			.addTipoLicencaAlias()				
+			.addTipoLicencaAlias()
 			.count();
 			
 		Object qtdeTotalItens = licencaBuilder.unique();

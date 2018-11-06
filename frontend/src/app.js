@@ -351,17 +351,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				var result = false;
-
-				_.forEach($rootScope.usuarioSessao.permissoes, function(permissao) {
-
-					if(permissao === 'LISTAR_PROCESSO_MANEJO') {
-
-						result = true;
-					}
-				});
-
-				return result;
+				return [
+					app.utils.Perfis.VISUALIZAR_PROCESSO_MANEJO,
+					app.utils.Perfis.ANALISAR_PROCESSO_MANEJO,
+					app.utils.Perfis.LISTAR_PROCESSO_MANEJO
+				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
 			}
 		}];
 

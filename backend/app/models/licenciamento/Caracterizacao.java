@@ -24,6 +24,7 @@ import models.Processo;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import utils.Identificavel;
+import utils.ListUtil;
 
 @Entity
 @Table(schema = "licenciamento", name = "caracterizacao")
@@ -169,6 +170,21 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 					this.licenca = licenca;
 
 		return this.licenca;
+	}
+
+	public Licenca getLicencaAnterior() {
+
+		if (this.licencas != null) {
+
+			if (this.licencas.size() > 1) {
+
+				return this.licencas.get(this.licencas.size() - 2);
+			}
+
+			return this.licencas.get(0);
+		}
+
+		return null;
 	}
 	
 	public boolean isSuspensa() {
