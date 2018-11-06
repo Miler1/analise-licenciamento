@@ -102,7 +102,7 @@ COMMENT ON COLUMN analise.empreendimento_manejo.id_imovel IS 'Identificador da t
 COMMENT ON COLUMN analise.empreendimento_manejo.id_municipio IS 'Identificador da tabela município.';
 
 
--- alteração imóvel manejo
+-- Alteração imóvel manejo
 
 ALTER TABLE analise.imovel_manejo DROP COLUMN endereco;
 ALTER TABLE analise.imovel_manejo DROP COLUMN bairro;
@@ -132,14 +132,37 @@ COMMENT ON COLUMN analise.processo_manejo.id_antividade_manejo IS 'Identificador
 
 # --- !Downs
 
+-- Removendo constraints a entidade processo_manejo
+
 ALTER TABLE analise.processo_manejo DROP COLUMN id_antividade_manejo;
 ALTER TABLE analise.processo_manejo DROP CONSTRAINT fk_pm_tlm;
 ALTER TABLE analise.processo_manejo DROP CONSTRAINT fk_pm_em;
 
+-- Alteração imóvel manejo
+
+ALTER TABLE analise.imovel_manejo ADD COLUMN endereco TEXT;
+ALTER TABLE analise.imovel_manejo ADD COLUMN bairro VARCHAR(250);
+ALTER TABLE analise.imovel_manejo ADD COLUMN cep VARCHAR(10);
+ALTER TABLE analise.imovel_manejo DROP COLUMN id_municipio;
+
+
+-- tabela empreendimento_manejo
+
 DROP TABLE analise.empreendimento_manejo;
+
+-- tabela atividade_manejo
+
 DROP TABLE analise.atividade_manejo;
+
+-- tabela tipologia_manejo
+
 DROP TABLE analise.tipologia_manejo;
+
+-- tabela tipo_licenca_manejo
+
 DROP TABLE analise.tipo_licenca_manejo;
+
+-- Alterando entidade de processo_manejo
 
 ALTER TABLE analise.processo_manejo ADD COLUMN id_imovel_manejo INTEGER NOT NULL;
 ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_imovel_manejo FOREIGN KEY (id_imovel_manejo) REFERENCES analise.imovel_manejo (id);
