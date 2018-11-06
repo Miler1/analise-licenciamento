@@ -26,13 +26,13 @@ html(lang='en')
             center
                 img.logo(src='/public/app/images/logo_digeo.png' height="73" width="93")
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela(colspan="12") Informações gerais do processo
             tbody
-                tr
+                tr(style="page-break-before: avoid;")
                     td(colspan="1")
                         strong Nome:
                     td(colspan="11")
@@ -66,13 +66,13 @@ html(lang='en')
       p
        strong 1 - Dados do imóvel.
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela(colspan="12") Informações declaradas no car
             tbody
-                tr
+                tr(style="page-break-before: avoid;")
                     td(colspan="2")
                         strong Registro no CAR
                     td.coluna-valor(colspan="10")
@@ -144,18 +144,18 @@ html(lang='en')
             strong 1.3.Metadados da base vetorial oficial utilizada.
         p.div-list   A tabela abaixo apresenta os metadados dos dados oficiais utilizados na avaliação da AMF.
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela Dados oficiais
                     th.titulo-tabela Fonte
                     th.titulo-tabela Última atualização
                     th.titulo-tabela Escala
                     th.titulo-tabela OBS
-            tbody
+            tbody(style="page-break-before: avoid;")
                 | \#{list basesVetoriais, as:'baseVetorial'}
-                tr
+                tr(style="page-break-before: avoid;")
                     td ${baseVetorial.nome ? baseVetorial.nome : "-"}
                     td ${baseVetorial.fonte ? baseVetorial.fonte : "-"}
                     td ${baseVetorial.ultimaAtualizacao ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(baseVetorial.ultimaAtualizacao) : "-"}
@@ -182,15 +182,15 @@ html(lang='en')
     div.div-list
         p A tabela abaixo apresenta a descrição da distância e sobreposições extraídas na avaliação das sobreposições com os dados oficiais. As cartas imagens referentes a estas análises são apresentadas no anexo 3.
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela(colspan="2") Vetores
                     th.titulo-tabela.coluna-dupla-divisao(colspan="2") Propriedade
                     th.titulo-tabela.coluna-dupla-divisao(colspan="2") AMF
                     th.titulo-tabela.coluna-dupla.coluna-dupla-divisao(rowspan="2") Observação
-                tr
+                tr(style="page-break-before: avoid;")
                     th.titulo-tabela Tipo
                     th.titulo-tabela Nome
                     th.titulo-tabela.coluna-dupla-divisao Distância (km)
@@ -199,8 +199,8 @@ html(lang='en')
                     th.titulo-tabela Sobreposição (ha)
             tbody
                 | \#{list analisesVetoriais, as:'analiseVetorial'}
-                tr
-                    td ${analiseVetorial.tipo ? analiseVetorial.tipo : "-"}
+                tr(style="page-break-before: avoid;")
+                    td(style="page-break-before: avoid;") ${analiseVetorial.tipo ? analiseVetorial.tipo : "-"}
                     td ${analiseVetorial.nome ? analiseVetorial.nome : "-"}
                     td ${ analiseVetorial.distanciaPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.distanciaPropriedade) : "-"}
                     td ${ analiseVetorial.sobreposicaoPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.sobreposicaoPropriedade) : "-"}
@@ -245,16 +245,16 @@ html(lang='en')
     div.div-list
         p Para elaboração deste laudo técnico foi realizada a análise multitemporal de imagens de satélites, referente aos últimos 24 anos, onde foram verificadas as feições da cobertura do solo dentro da área de manejo florestal – AMF. As informações das imagens de satélites utilizados são descritas na tabela abaixo:
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela Ano da imagem
                     th.titulo-tabela Satélite
                     th.titulo-tabela Órbita/Ponto
                     th.titulo-tabela Data
-            tbody
-                tr
+            tbody(style="page-break-before: avoid;")
+                tr(style="page-break-before: avoid;")
                     td 1993
                     td Landsat
                     td 228_062
@@ -303,21 +303,21 @@ html(lang='en')
     div.div-list
         p A seguir são apresentados os resultados das análises de áreas com intervenção, identificadas por meio do índice normalizado da diferença de fração - NDFI, de acordo com a Portaria N 063/2014-GAB/SEMA de 15/01/2014. Os mapas com os resultados da análise, são apresentados no anexo 4.
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela.text-center(colspan="6") Tabela Resumo Analise NDFI
-                tr
+                tr(style="page-break-before: avoid;")
                     th.titulo-tabela Data
                     th.titulo-tabela Órbita/Ponto
                     th.titulo-tabela Satélite
                     th.titulo-tabela Nível de exploração
                     th.titulo-tabela Valor do NDFI
                     th.titulo-tabela Área (ha)
-            tbody
+            tbody(style="page-break-before: avoid;")
                 | \#{list analisesNdfi, as:'analiseNdfi'}
-                tr
+                tr(style="page-break-before: avoid;")
                     td ${ analiseNdfi.dataAnalise ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(analiseNdfi.dataAnalise) : "-"}
                     td ${ analiseNdfi.orbita + '/' + analiseNdfi.ponto ? analiseNdfi.orbita : "-" }
                     td ${ analiseNdfi.satelite ? analiseNdfi.satelite : "-"}
@@ -325,7 +325,7 @@ html(lang='en')
                     td.coluna-valor ${ analiseNdfi.valor ? analiseNdfi.valor : "-"}
                     td.coluna-valor ${ analiseNdfi.area ? new java.text.DecimalFormat("##########.##").format(analiseNdfi.area) : "-"}
                 | \#{/list}
-                tr
+                tr(style="page-break-before: avoid;")
                     td.coluna-valor(colspan="5") Total
                     td.coluna-valor(type="number" placeholder="1.00" step="0.01") ${ totalAnaliseNDFI ? new java.text.DecimalFormat("##########.##").format(totalAnaliseNDFI) : "-"}
 
@@ -347,7 +347,7 @@ html(lang='en')
     div.div-list
         p A Tabela a seguir, apresenta a área total de Manejo Florestal solicitada para análise, e a área efetiva a ser explorada (área liquida), após desconto das áreas sem permissão para exploração.
 
-    div.div-tabela.div-centro
+    div.div-tabela.div-centro(style="page-break-before: avoid;")
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
             thead
                 tr
@@ -357,13 +357,13 @@ html(lang='en')
                         strong ${ analiseManejo.areaManejoFlorestalSolicitada ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaManejoFlorestalSolicitada) : "-"}
 
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela.text-center(colspan="6") Área descontadas da AMF (hectares)
-            tbody
-                tr
+            tbody(style="page-break-before: avoid;")
+                tr(style="page-break-before: avoid;")
                     td(colspan="5")
                         strong Área de preservação permanente - APP
                     td(colspan="1") ${ analiseManejo.areaPreservacaoPermanente ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaPreservacaoPermanente) : "-"}
@@ -427,13 +427,13 @@ html(lang='en')
     div.div-list
         p A seguir são apresentadas as áreas efetivas de manejo, detalhada pelo nivel prévio de exploração.
 
-    div.div-centro
+    div.div-centro(style="page-break-before: avoid;")
         table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
-            thead
+            thead(style="page-break-before: avoid;")
                 tr
                     th.titulo-tabela.text-center(colspan="6") Resultados (hectares)
-            tbody
-                tr
+            tbody(style="page-break-before: avoid;")
+                tr(style="page-break-before: avoid;")
                     td(colspan="5")
                         strong Área com exploração NDFI (Baixo)
                     td(colspan="1") ${ analiseManejo.areaExploracaoNdfiBaixo ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaExploracaoNdfiBaixo) : "-"}
