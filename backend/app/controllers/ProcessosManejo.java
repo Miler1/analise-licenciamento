@@ -1,5 +1,6 @@
 package controllers;
 
+import builders.ProcessoManejoBuilder.FiltroProcessoManejo;
 import exceptions.ValidacaoException;
 import models.Documento;
 import models.manejoDigital.AnaliseManejo;
@@ -9,7 +10,7 @@ import security.Acao;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
 
-import java.io.File;
+import java.util.List;
 
 public class ProcessosManejo extends InternalController {
 
@@ -72,5 +73,14 @@ public class ProcessosManejo extends InternalController {
 		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfAnalise.arquivo, nome);
+	}
+
+	public static void listWithFilter(FiltroProcessoManejo filtro){
+
+		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
+
+		List processosList = ProcessoManejo.listWithFilter(filtro);
+
+		renderJSON(processosList);
 	}
 }

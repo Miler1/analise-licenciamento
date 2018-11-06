@@ -95,6 +95,7 @@ GET		/coordenadoresAprovacao						Coordenadores.getCoordenadoresAprovacao
 
 # Condições
 GET		/condicoes									Condicoes.list
+GET     /condicoes/manejo                           Condicoes.listManejo
 
 # Documentos
 GET		/documentos/{id}/download					Documentos.download
@@ -154,6 +155,15 @@ PUT     /analiseManejo/{id}                         AnalisesManejo.finalizar
 # Observações
 POST    /observacao                                 Observacoes.save
 DELETE  /observacao/{id}                            Observacoes.delete
+
+# Tipologias Manejo
+GET     /tipologiasManejo                           TipologiasManejo.list
+
+# Atividades Manejo
+GET     /atividadesManejo                           AtividadesManejo.list
+
+# Tipos licença manejo
+GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
 # Estáticos
 GET     /public/									staticDir:public

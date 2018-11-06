@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import builders.ProcessoManejoBuilder;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -112,5 +113,33 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.idObjetoTramitavel);
 
         return objetoTramitavel.condicao.nomeCondicao;
+    }
+
+    public static List listWithFilter(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {
+
+        ProcessoManejoBuilder processoBuilder = commonFilterProcesso(filtro)
+                .groupByIdProcesso()
+                .groupByNumeroProcesso()
+                .groupByDenominacaoEmpreendimento()
+                .groupByMunicipioEmpreendimento()
+                .groupByTipoLicencaManejo();
+
+        return processoBuilder
+                .fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
+                .list();
+    }
+
+    private static ProcessoManejoBuilder commonFilterProcesso(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {
+
+        ProcessoManejoBuilder processoBuilder = new ProcessoManejoBuilder()
+                .filtrarPorNumeroProcesso(filtro.numeroProcesso)
+                .filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
+                .filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
+                .filtrarPorIdTipologia(filtro.idTipologia)
+                .filtrarPorIdAtividade(filtro.idAtividade)
+                .filtrarPorIdCondicao(filtro.idStatusLicenca)
+                .filtrarPorIdTipoLicenca(filtro.idManejoDigital);
+
+        return processoBuilder;
     }
 }
