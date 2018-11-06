@@ -49,4 +49,12 @@ public class ImovelManejo extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_municipio", referencedColumnName="id_municipio")
 	public Municipio municipio;
+
+    @Override
+    public ImovelManejo save() {
+
+        this.municipio = Municipio.findById(this.municipio.id);
+
+        return this;
+    }
 }
