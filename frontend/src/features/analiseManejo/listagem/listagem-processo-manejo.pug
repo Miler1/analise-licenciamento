@@ -10,7 +10,7 @@ div(style="margin-top: 30px;")
 	h4.col-md-6 Lista de processos
 
 	.col-md-6.pull-right(style="padding-right: 0px;")
-		button.pull-right.btn.btn-default.btn-success(ng-click="$ctrl.cadastrarProcessoManejo()" tabindex="0")
+		button.pull-right.btn.btn-default.btn-success(ng-click="$ctrl.cadastrarProcessoManejo()" tabindex="0", ng-if="listagemProcessoManejo.permissaoCadastrar")
 			span.glyphicon.glyphicon-search
 			| &nbsp; Cadastrar Processo
 
@@ -26,7 +26,7 @@ div(style="margin-top: 30px;")
 							th.col-md-2 Empreendimento
 							th.col-md-1 Município
 							th.col-md-1 Licença
-							th.col-md-1.text-right Ações
+							th.col-md-1.text-right(ng-if="listagemProcessoManejo.permissaoAnalisar || listagemProcessoManejo.permissaoVisualizar") Ações
 					tbody
 						tr(ng-repeat="processoManejo in listagemProcessoManejo.processosManejo")
 							td {{processoManejo.numeroProcesso}}
@@ -34,7 +34,7 @@ div(style="margin-top: 30px;")
 							td {{processoManejo.denominacaoEmpreendimentoSimlam}}
 							td {{processoManejo.nomeMunicipioSimlam}}/{{processoManejo.siglaEstadoMunicipio}}
 							td {{processoManejo.nomeTipoLicenca}}
-							td
+							td(ng-if="listagemProcessoManejo.permissaoAnalisar || listagemProcessoManejo.permissaoVisualizar")
 								span.pull-right
 
 									.dropdown.action-table
@@ -43,15 +43,15 @@ div(style="margin-top: 30px;")
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="listagemProcessoManejo.iniciarAnalise(processoManejo)")
+												a(ng-click="listagemProcessoManejo.iniciarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar")
 													i.glyphicon.glyphicon-check
 													span Analisar
 											li
-												a(ng-click="listagemProcessoManejo.visualizarProcesso(processoManejo)")
+												a(ng-click="listagemProcessoManejo.visualizarProcesso(processoManejo)", ng-if="listagemProcessoManejo.permissaoVisualizar")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 											li
-												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)")
+												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar")
 													i.glyphicon.glyphicon-save-file
 													span Gerar PDF
 
