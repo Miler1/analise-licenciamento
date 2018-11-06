@@ -66,6 +66,8 @@ public class Configuracoes {
 
 	public static long DIAS_PRORROGACAO = getLongConfig("dias.prorrogacao");
 
+	public static Integer TRAMITACAO_ETAPA_MANEJO = getIntConfig("tramitacao.etapa.manejo");
+
 	static {
 
 		try {

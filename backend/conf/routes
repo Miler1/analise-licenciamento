@@ -94,6 +94,7 @@ GET		/coordenadoresAprovacao						Coordenadores.getCoordenadoresAprovacao
 
 # Condições
 GET		/condicoes									Condicoes.list
+GET     /condicoes/manejo                           Condicoes.listManejo
 
 # Documentos
 GET		/documentos/{id}/download					Documentos.download
