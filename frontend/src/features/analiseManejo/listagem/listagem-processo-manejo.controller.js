@@ -8,6 +8,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.atualizarPaginacao = atualizarPaginacao;
 	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
 	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
+	listagemProcessoManejo.cadastrarProcessoManejo = cadastrarProcessoManejo;
 
 	listagemProcessoManejo.permissaoCadastrar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('CADASTRAR_PROCESSO_MANEJO') !== -1;
 	listagemProcessoManejo.permissaoAnalisar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('ANALISAR_PROCESSO_MANEJO') !== -1;
@@ -284,9 +285,9 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		listagemProcessoManejo.processosManejo = processos;
 	}
 
-	function cadastrar(processos) {
+	function cadastrarProcessoManejo() {
 
-		$location.path('/analise-manejo/processo/cadastrar');
+		$location.path('/cadastro-processo-manejo');
 
 	}
 };
