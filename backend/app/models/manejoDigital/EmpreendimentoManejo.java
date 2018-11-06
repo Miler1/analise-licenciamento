@@ -25,7 +25,7 @@ public class EmpreendimentoManejo extends GenericModel {
 
 	@Required
 	@ManyToOne
-	@JoinColumn(name="id_imovel", referencedColumnName="id_imovel")
+	@JoinColumn(name="id_imovel", referencedColumnName="id")
 	public ImovelManejo imovel;
 
 	@Required
