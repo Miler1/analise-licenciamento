@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import models.licenciamento.Municipio;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
@@ -41,12 +42,19 @@ public class ImovelManejo extends GenericModel {
     @Column(name="area_uso_consolidado")
     public Double areaUsoConsolidado;
 
-    @Column
-    public String endereco;
+	@Column(name="descricao_acesso")
+    public String descricaoAcesso;
 
-    @Column
-    public String bairro;
+	@Required
+	@ManyToOne
+	@JoinColumn(name="id_municipio", referencedColumnName="id_municipio")
+	public Municipio municipio;
 
-    @Column
-    public String cep;
+    @Override
+    public ImovelManejo save() {
+
+        this.municipio = Municipio.findById(this.municipio.id);
+
+        return this;
+    }
 }

@@ -33,4 +33,12 @@ public class EmpreendimentoManejo extends GenericModel {
 	@JoinColumn(name="id_municipio", referencedColumnName="id_municipio")
 	public Municipio municipio;
 
+	@Override
+	public EmpreendimentoManejo save() {
+
+		this.municipio = Municipio.findById(this.municipio.id);
+
+		return this;
+	}
+
 }
