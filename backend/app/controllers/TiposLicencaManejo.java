@@ -1,6 +1,6 @@
 package controllers;
 
-import models.licenciamento.TipoLicenca;
+import models.manejoDigital.TipoLicencaManejo;
 import security.Acao;
 import serializers.TiposLicencaManejoSerializer;
 
@@ -10,6 +10,6 @@ public class TiposLicencaManejo extends InternalController {
 
 		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
 
-		renderJSON(TipoLicenca.findAll(), TiposLicencaManejoSerializer.list);
+		renderJSON(TipoLicencaManejo.findAll(), TiposLicencaManejoSerializer.list);
 	}
 }

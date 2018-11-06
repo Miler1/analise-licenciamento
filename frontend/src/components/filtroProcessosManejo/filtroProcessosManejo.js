@@ -7,7 +7,7 @@ var FiltroProcessosManejo = {
 		pesquisarAoInicializar: '<'
 	},
 
-	controller: function() {
+	controller: function(municipioService, tipologiaManejoService, atividadeManejoService, tipoLicencaManejoService, condicaoService) {
 
 		var ctrl = this;
 
@@ -15,11 +15,59 @@ var FiltroProcessosManejo = {
 		ctrl.municipios = [];
 		ctrl.tipologias = [];
 		ctrl.atividades = [];
-		ctrl.gerentesTecnicos = [];
-		ctrl.analistasTecnicos = [];
 		ctrl.manejosDigitais = [];
 		ctrl.statusLicenca = [];
 
+
+		municipioService.getMunicipiosByUf('PA').then(
+
+			function(response){
+
+				ctrl.municipios = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de municípios.');
+			});
+
+		tipologiaManejoService.findAll().then(
+
+			function(response){
+
+				ctrl.tipologias = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de tipologias do manejo.');
+			});
+
+		atividadeManejoService.findAll().then(
+
+			function(response){
+
+				ctrl.atividades = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de atividades do manejo.');
+			});
+
+		tipoLicencaManejoService.findAll().then(
+
+			function(response){
+
+				ctrl.manejosDigitais = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de tipos de licença do manejo.');
+			});
+
+		condicaoService.findManejo().then(
+
+			function(response){
+
+				ctrl.statusLicenca = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de status do processo do manejo.');
+			});
 
 		this.pesquisar = function(pagina){
 
