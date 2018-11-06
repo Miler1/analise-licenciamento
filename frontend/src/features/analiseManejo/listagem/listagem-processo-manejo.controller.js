@@ -8,6 +8,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.atualizarPaginacao = atualizarPaginacao;
 	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
 	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
+	listagemProcessoManejo.cadastrarProcessoManejo = cadastrarProcessoManejo;
 
 	listagemProcessoManejo.iniciarAnalise = function (processo) {
 
@@ -280,9 +281,9 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		listagemProcessoManejo.processosManejo = processos;
 	}
 
-	function atualizarListaProcessos(processos) {
+	function cadastrarProcessoManejo() {
 
-		$location.path('/analise-manejo/processo/cadastrar')
+		$location.path('/cadastro-processo-manejo')
 
 	}
 };
