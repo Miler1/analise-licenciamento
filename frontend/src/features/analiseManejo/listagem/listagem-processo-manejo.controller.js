@@ -11,27 +11,14 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 	listagemProcessoManejo.iniciarAnalise = function (processo) {
 
-		processoManejoService.salvarProcesso(processo)
-			.then(function(response){
+		$location.path('/analise-manejo/' + processo.id + '/analise-geo');
 
-				var idProcesso = response.data.id;
-
-				$location.path('/analise-manejo/' + idProcesso + '/analise-geo');
-
-			})
-			.catch(function(response){
-
-				if(!!response.data.texto)
-					mensagem.warning(response.data.texto);
-
-				else
-					mensagem.error("Ocorreu um erro ao salvar o processo.");
-			});
 	};
 
 	listagemProcessoManejo.visualizarProcesso = null;
 	listagemProcessoManejo.processosManejo = [
 		{
+			id: 1,
 			numeroProcesso: "2019/001",
 			idEmpreendimento: "1",
 			cpfCnpj: "76579607000130",
@@ -261,7 +248,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 					mensagem.error(error.data.texto);
 				}
-		);
+			);
 	};
 
 
