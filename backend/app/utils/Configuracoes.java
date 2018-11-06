@@ -66,6 +66,9 @@ public class Configuracoes {
 
 	public static long DIAS_PRORROGACAO = getLongConfig("dias.prorrogacao");
 
+	public static String URL_SICAR = getConfig("sicar.url", null);
+	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
+
 	static {
 
 		try {

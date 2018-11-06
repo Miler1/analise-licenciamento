@@ -20,6 +20,7 @@ GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
 GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
 GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
 GET		/baixarShapefile							Imoveis.baixarShapefile
+GET     /imoveis/{codigoImovel}/completo            Imoveis.getImovelByCodigo
 
 # Analise
 

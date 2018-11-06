@@ -19,27 +19,9 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processo);
 
-		// Para não replicar processos enquanto o serviço de alteração de status não existe no SIMLAM
-		ProcessoManejo processoAntigo = ProcessoManejo.find("numeroProcesso", processo.numeroProcesso).first();
+		processo.save();
 
-		if (processoAntigo != null) {
-
-			if (processoAntigo.analiseManejo != null &&
-					!processoAntigo.analiseManejo.usuario.id.equals(getUsuarioSessao().id)) {
-
-				throw new ValidacaoException(Mensagem.PROCESSO_ANALISE_USUARIO_DIFERENTE);
-			}
-
-			renderJSON(processoAntigo, ProcessoManejoSerializer.save);
-
-		} else {
-
-			processo.save();
-
-			// TODO Enviar requisição de alteração de status de EM_ANALISE para o SIMLAM
-
-			renderJSON(processo, ProcessoManejoSerializer.save);
-		}
+		renderMensagem(Mensagem.PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO);
 	}
 
 	public static void findById(Long id) {

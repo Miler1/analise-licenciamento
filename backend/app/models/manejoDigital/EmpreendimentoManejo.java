@@ -24,7 +24,7 @@ public class EmpreendimentoManejo extends GenericModel {
 	public String cpfCnpj;
 
 	@Required
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_imovel", referencedColumnName="id_imovel")
 	public ImovelManejo imovel;
 

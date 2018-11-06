@@ -59,6 +59,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @Override
     public ProcessoManejo save() {
 
+        this.tipoLicenca = TipoLicencaManejo.findById(this.tipoLicenca.id);
+        this.atividadeManejo = AtividadeManejo.findById(this.analiseManejo.id);
+
         tramitacao.iniciar(this, null, Tramitacao.MANEJO_DIGITAL);
 
         return this;

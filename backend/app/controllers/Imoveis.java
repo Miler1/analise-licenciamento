@@ -1,6 +1,8 @@
 package controllers;
 
+import models.sicar.SicarWebService;
 import play.libs.WS;
+import security.Acao;
 import utils.Configuracoes;
 
 public class Imoveis extends InternalController {
@@ -47,5 +49,14 @@ public class Imoveis extends InternalController {
 		response.setHeader("Content-Type", "application/download");
 
 		renderBinary(demonstrativo.getStream());
+	}
+
+	public static void getImovelByCodigo(String codigoImovel) {
+
+		verificarPermissao(Acao.CADASTRAR_PROCESSO_MANEJO, Acao.VISUALIZAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(codigoImovel);
+
+		renderJSON(new SicarWebService().getImovelByCodigo(codigoImovel));
 	}
 }
