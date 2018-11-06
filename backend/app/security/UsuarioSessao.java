@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.licenciamento.PessoaFisica;
 import models.portalSeguranca.Perfil;
+import models.portalSeguranca.Permissao;
 import models.portalSeguranca.Setor;
 
 public class UsuarioSessao implements Serializable {
@@ -41,7 +42,7 @@ public class UsuarioSessao implements Serializable {
 	}
 	
 	public List<Acao> getPermissoes() {
-		
+
 		return this.acoesPermitidas;
 	}
 

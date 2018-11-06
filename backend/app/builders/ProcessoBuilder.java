@@ -627,6 +627,13 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		return this;
 	}
+
+	public ProcessoBuilder groupByRenovacao() {
+
+		addProjection(Projections.groupProperty("renovacao").as("renovacao"));
+
+		return this;
+	}
 	
 	public static class FiltroProcesso {
 		

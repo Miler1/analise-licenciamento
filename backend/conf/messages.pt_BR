@@ -77,7 +77,7 @@ ANALISE_SEM_PARECER_VALIDACAO=O parecer da validação não foi informado.
 ANALISE_TECNICA_INICIADA_SUCESSO=Análise técnica iniciada.
 ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO=A validade da licença está maior que o máximo permitido.
 ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO=A validade da condicionante está maior que o máximo permitido.
-ANALISE_TECNICA_LICENCA_SEM_VALIDACAO=As licenças não foram todas validadas.
+ANALISE_TECNICA_LICENCA_SEM_VALIDACAO=Os títulos não foram todos validados.
 ANALISE_TECNICA_USUARIO_SEM_SETOR=Para a análise técnica o usuário logado precisa ter um setor.
 ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO=O gerente ou analista técnico não foi informado.
 ERRO_NENHUMA_LICENCA_EMITIDA=Para o status Deferido, ao menos uma licença deve ser emitida.
@@ -96,8 +96,8 @@ VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO=Validação do parecer das anális
 #
 # Licenças
 #
-ERRO_EMITIR_LICENCAS=Erro ao emitir as licenças, contate a SEMAS ou tente novamente mais tarde.
-LICENCAS_EMITIDAS_SUCESSO=Licenças emitidas com sucesso! Para visualiza-las acesse a aba "Consultar licenças emitidas".
+ERRO_EMITIR_LICENCAS=Erro ao emitir os títulos, contate a SEMAS ou tente novamente mais tarde.
+LICENCAS_EMITIDAS_SUCESSO=Títulos emitidas com sucesso! Para visualiza-las acesse a aba "Consultar títulos emitidos".
 PRAZO_MAXIMO_SUSPENSAO_EXCEDIDO=O prazo máximo para suspensão da licença é de %s dias.
 LICENCA_SUSPENSA_SUCESSO=Licença suspendida com sucesso.
 LICENCA_CANCELADA_OU_SUSPENSA=A Licença informada não pode ser baixada.
@@ -126,6 +126,7 @@ ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO=Erro ao criar documento da análise técnica
 # Processo Manejo
 #
 PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
+PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
 
 #
 # Observações

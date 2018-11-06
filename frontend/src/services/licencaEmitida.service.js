@@ -13,7 +13,7 @@ var LicencaEmitidaService = function(request, config) {
 	};
 
 	this.getLicencasEmitidasPesquisaAvancada = function(filtro) {
-		
+
 		return request
 			.post(config.BASE_URL() + "licencasEmitidas/pesquisaAvancada", filtro);
 	};
@@ -25,12 +25,12 @@ var LicencaEmitidaService = function(request, config) {
 	};
 
 	this.downloadDla = function(idLicenca) {
-		
+
 		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/downloadDla";
 	};
 
 	this.downloadLicenca = function(idLicenca) {
-		
+
 		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/download";
 	};
 

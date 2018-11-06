@@ -48,6 +48,8 @@ public class Configuracoes {
 	public static String URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.adicionar.analise", null);
 	public static String URL_LICENCIAMENTO_GERAR_PDFS_LICENCA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.gerar.pdf", null);
 	public static String URL_LICENCIAMENTO_CANCELAR_DLA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.cancelar.dla", null);
+	public static String URL_LICENCIAMENTO_PRORROGAR_LICENCA = URL_LICENCIAMENTO + getConfig("licenciamento.prorrogar.licenca", null);
+	public static String URL_LICENCIAMENTO_FINALIZAR_PRORROGACAO_LICENCAS = URL_LICENCIAMENTO + getConfig("licenciamento.finalizar.prorrogacao.licencas", null);
 
 	public static String PDF_TEMPLATES_FOLDER_PATH = "templates" + File.separator + "pdf";
 	public static String PDF_TEMPLATES_FOLDER_ABSOLUTE = Play.applicationPath.getAbsolutePath() + File.separator + "app" + File.separator + "views" + File.separator;
@@ -61,6 +63,11 @@ public class Configuracoes {
 
 	//Prazo da condicionante deverá ser menor ou igual a 1900 (5 anos) conforme regra.
 	public static Integer PRAZO_MAXIMO_CONDICIONANTE = 1900;
+
+	public static long DIAS_PRORROGACAO = getLongConfig("dias.prorrogacao");
+
+	public static String URL_SICAR = getConfig("sicar.url", null);
+	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
 
 	static {
 

@@ -13,12 +13,14 @@ POST	/processos/count							Processos.countWithFilter
 GET		/processos/{id}/completo					Processos.getInfoProcesso
 GET		/processos/{idProcesso}						Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
+GET     /processos/numero/{numProcesso}/completo    Processos.findByNumProcesso
 
 # Ficha do Imovel
 GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
 GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
 GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
 GET		/baixarShapefile							Imoveis.baixarShapefile
+GET     /imoveis/{codigoImovel}/completo            Imoveis.getImovelByCodigo
 
 # Analise
 
@@ -110,6 +112,7 @@ GET		/licencasEmitidas/{id}/downloadDla			LicencasEmitidas.downloadDla
 GET		/licencasEmitidas/{id}/download				LicencasEmitidas.downloadLicencas
 POST	/licencasAnalise/emitir						LicencasAnalise.emitirLicencaAnalise
 GET		/licencas/{idLicenca}						Licencas.findByIdLicenca
+GET		/licencas/status    						Licencas.getStatus
 
 # Dispensa Licenciamento
 GET		/dla/{idDLA}								DLAs.findById
