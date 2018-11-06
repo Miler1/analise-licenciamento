@@ -280,6 +280,11 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		listagemProcessoManejo.processosManejo = processos;
 	}
 
+	function atualizarListaProcessos(processos) {
+
+		$location.path('/analise-manejo/processo/cadastrar')
+
+	}
 };
 
 exports.controllers.ListagemProcessoManejoController = ListagemProcessoManejoController;
