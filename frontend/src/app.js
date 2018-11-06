@@ -468,7 +468,10 @@ utils.services(licenciamento)
 	.add('notificacaoService', services.NotificacaoService)
 	.add('processoManejoService', services.ProcessoManejoService)
 	.add('analiseManejoService', services.AnaliseManejoService)
-	.add('observacaoService', services.ObservacaoService);
+	.add('observacaoService', services.ObservacaoService)
+	.add('tipologiaManejoService', services.TipologiaManejoService)
+	.add('atividadeManejoService', services.AtividadeManejoService)
+	.add('tipoLicencaManejoService', services.TipoLicencaManejoService);
 
 
 utils.filters(licenciamento)

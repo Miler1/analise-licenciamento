@@ -7,6 +7,8 @@ import security.Acao;
 import serializers.CondicaoSerializer;
 import utils.Configuracoes;
 
+import java.util.List;
+
 public class Condicoes extends InternalController {
 	
 	public static void list() {
@@ -20,6 +22,8 @@ public class Condicoes extends InternalController {
 
 		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
 
-		renderJSON(Condicao.find("idEtapa", Configuracoes.TRAMITACAO_ETAPA_MANEJO).fetch() ,CondicaoSerializer.list);
+		List<Condicao> condicoes = Condicao.find("idEtapa", Configuracoes.TRAMITACAO_ETAPA_MANEJO).fetch();
+
+		renderJSON(condicoes, CondicaoSerializer.list);
 	}
 }
