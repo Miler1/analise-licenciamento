@@ -27,37 +27,19 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public String numeroProcesso;
 
     @Required
-    @Column(name="cpf_cnpj_empreendimento")
-    public String cpfCnpj;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_empreendimento")
+    public EmpreendimentoManejo empreendimento;
 
     @Required
-    @Column(name="denominacao_empreendimento_simlam")
-    public String denominacaoEmpreendimentoSimlam;
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_licenca")
+    public TipoLicencaManejo tipoLicenca;
 
     @Required
-    @Column(name="id_empreendimento_simlam")
-    public Integer idEmpreendimento;
-
-    @Required
-    @Column(name="id_municipio_simlam")
-    public Integer idMunicipio;
-
-    @Required
-    @Column(name="nome_municipio_simlam")
-    public String nomeMunicipioSimlam;
-
-    @Required
-    @Column(name="id_tipo_licenca")
-    public Integer idTipoLicenca;
-
-    @Required
-    @Column(name="nome_tipo_licenca")
-    public String nomeTipoLicenca;
-
-    @Required
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name="id_imovel_manejo")
-    public ImovelManejo imovelManejo;
+    @ManyToOne
+    @JoinColumn(name = "id_antividade_manejo")
+    public AtividadeManejo atividadeManejo;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_analise_manejo")
@@ -69,6 +51,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
     public ObjetoTramitavel objetoTramitavel;
+
     @Transient
     public transient Tramitacao tramitacao = new Tramitacao();
 
