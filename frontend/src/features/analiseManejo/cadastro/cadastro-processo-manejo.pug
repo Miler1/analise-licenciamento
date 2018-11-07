@@ -8,57 +8,57 @@ div
 	.row.form-group
 		.col-md-12.col-sm-12
 			label.control-label Número do processo: *
-			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejoController.processo', placeholder='Número do processo', maxlength="15", required)
+			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo', placeholder='Número do processo', maxlength="15", required)
 
 	.row.form-group
 
-		.col-md-6.col-sm-6
-			label.control-label Tipologia: *
-			select.form-control(ng-model="cadastroProcessoManejoController.tipologia", name="selectTipologia",
-							ng-options="", required)
-				option(value="") Selecione a tipologia do processo
+	//- 	.col-md-6.col-sm-6
+	//- 		label.control-label Tipologia: *
+	//- 		select.form-control(ng-model="cadastroProcessoManejo.tipologia", name="selectTipologia",
+	//- 						ng-options="", required)
+	//- 			option(value="") Selecione a tipologia do processo
 
-		.col-md-6.col-sm-6
-			label.control-label Atividade: *
-			select.form-control(ng-model="cadastroProcessoManejoController.atividade", name="selectMunicipio",
-								ng-options="", required)
-				option(value="") Selecione a atividade do processo
+	//- 	.col-md-6.col-sm-6
+	//- 		label.control-label Atividade: *
+	//- 		select.form-control(ng-model="cadastroProcessoManejo.atividade", name="selectMunicipio",
+	//- 							ng-options="", required)
+	//- 			option(value="") Selecione a atividade do processo
 
-	.row.form-group
+	//- .row.form-group
 
-		.col-md-6.col-sm-6
-			label.control-label Município: *
-			select.form-control(ng-model="cadastroProcessoManejoController.municipio", name="selectMunicipio",
-								ng-options="", required)
-				option(value="") Selecione o municipio
+	//- 	.col-md-6.col-sm-6
+	//- 		label.control-label Município: *
+	//- 		select.form-control(ng-model="cadastroProcessoManejo.municipio", name="selectMunicipio",
+	//- 							ng-options="", required)
+	//- 			option(value="") Selecione o municipio
 
 		.col-md-6.col-sm-6
 			label.control-label Licença:
 			.col-md-12.div-checkbox-manejo
-				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-click="")
 				|  APAT
-				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-click="")
 				|  AUTEF
-				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-click="")
 				|  LAR
 
 	hr
 
 	div.form-group
 
-		label.required.control-label(for='cpf') Informe o CAR: *
+		label.required.control-label(for='codigoCar') Informe o CAR: *
 
 		div.input-group
 
-			input.form-control(type='text',,
-								ng-model='cadastroProcessoManejoController.car.numero',
-								enter='',
+			input.form-control(type='text',
+								ng-model='cadastroProcessoManejo.car.numero',
+								enter='cadastroProcessoManejo.buscarImovel()',
 								placeholder='Informe o CAR do processo.',
-								name='car',
+								name='car'
 							)
 
 			span.input-group-btn
-				button.btn.btn-default(type='button', ng-click='', ng-disabled="")
+				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()', ng-disabled="")
 					span.glyphicon.glyphicon-search
 
 	.row
@@ -66,17 +66,17 @@ div
 	.row
 		label.col-sm-3 CPF/CNPJ:
 		.col-sm-3
-			span {{cadastroProcessoManejoController.car.proprietario.cpfCnpj}}
+			span {{cadastroProcessoManejo.car.proprietario.cpfCnpj}}
 		label.col-sm-3 Nome:
 		.col-sm-3
-			span {{cadastroProcessoManejoController.car.proprietario.nome}}
+			span {{cadastroProcessoManejo.car.proprietario.nome}}
 	.row
 		label.col-sm-3 Endereço:
 		.col-sm-3
-			span {{cadastroProcessoManejoController.car.proprietario.endereco}}
+			span {{cadastroProcessoManejo.car.proprietario.endereco}}
 		label.col-sm-3 Município / UF:
 		.col-sm-3
-			span {{cadastroProcessoManejoController.car.proprietario.municipio}}
+			span {{cadastroProcessoManejo.car.proprietario.municipio}}
 	.row
 		label.subtitulos.col-sm-3 Descrição de acesso:
 	.row

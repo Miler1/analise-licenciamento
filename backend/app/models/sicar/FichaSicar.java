@@ -3,5 +3,5 @@ package models.sicar;
 public class FichaSicar {
 
 	public Cadastrante cadastrante;
-	public ImovelSicar imovelSicar;
+	public ImovelSicar imovel;
 }

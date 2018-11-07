@@ -87,11 +87,6 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ListagemProcessoManejoController,
 			controllerAs: 'listagemProcessoManejo'
 		})
-		.when("/cadastro-processo-manejo", {
-			templateUrl: "features/analiseManejo/cadastro/cadastro-processo-manejo.html",
-			controller: controllers.CadastroProcessoManejoController,
-			controllerAs: 'CadastroProcessoManejo'
-		})
 		.otherwise({
 			redirectTo: "/"
 		});

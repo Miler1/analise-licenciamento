@@ -274,7 +274,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 	function cadastrarProcessoManejo() {
 
-		$location.path('/cadastro-processo-manejo');
+		$location.path('/analise-manejo/cadastro');
 
 	}
 };
