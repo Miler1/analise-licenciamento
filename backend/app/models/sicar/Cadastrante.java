@@ -7,4 +7,6 @@ public class Cadastrante {
 
 	public String cpf;
 	public String cnpj;
+
+	public EnderecoSicar endereco;
 }

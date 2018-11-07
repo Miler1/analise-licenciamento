@@ -44,7 +44,7 @@ div
 
 	hr
 
-	div.form-group
+	div.form-group(ng-if="!cadastroProcessoManejo.processo.empreendimento.denominacao")
 
 		label.required.control-label(for='codigoCar') Informe o CAR: *
 
@@ -58,27 +58,37 @@ div
 							)
 
 			span.input-group-btn
-				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()', ng-disabled="")
+				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()')
 					span.glyphicon.glyphicon-search
 
-	.row
-		label.subtitulo.col-sm-3 Proprietário
-	.row
-		label.col-sm-3 CPF/CNPJ:
-		.col-sm-3
-			span
-		label.col-sm-3 Nome:
-		.col-sm-3
-			span
-	.row
-		label.col-sm-3 Endereço:
-		.col-sm-3
-			span
-		label.col-sm-3 Município / UF:
-		.col-sm-3
-			span
-	.row
-		label.subtitulos.col-sm-3 Descrição de acesso:
-	.row
-		.col-sm-3
-			label
+	div(ng-if="cadastroProcessoManejo.processo.empreendimento.denominacao")
+		fieldset.panel.panel-default
+			div.panel-heading
+				h3.panel-title Dados do imóvel
+			div.panel-body
+				.row
+					label.col-xs-2 Recibo do CAR:
+					.col-xs-8
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.registroCar }}
+				.row.margin-top-sm
+					label.col-xs-2 Proprietário:
+					.col-xs-4
+						span {{ cadastroProcessoManejo.processo.empreendimento.denominacao }}
+					label.col-xs-2 Nome do imóvel:
+					.col-xs-4
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.nome }}
+				.row.margin-top-sm
+					label.col-xs-2 CPF / CNPJ:
+					.col-xs-4
+						span {{ cadastroProcessoManejo.processo.empreendimento.cpfCnpj | brCpfCnpj}}
+					label.col-xs-2 Município / UF:
+					.col-xs-4
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.nomeSiglaMunicipio }}
+				.row.margin-top-sm
+					label.subtitulos.col-xs-3 Descrição de acesso:
+				.row
+					.col-xs-12
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.descricaoAcesso }}
+				.row.margin-top-sm.pull-right.margin-right-sm
+					button.btn.btn-default(ng-click="cadastroProcessoManejo.excluirProcesso()")
+						i.glyphicon.glyphicon-trash.icone
