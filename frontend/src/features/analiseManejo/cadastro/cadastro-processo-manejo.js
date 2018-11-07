@@ -1,14 +1,15 @@
-var CadastroProcessoManejoController = function($scope, config, $rootScope, processoManejoService, tipoLicencaService, atividadeService, mensagem, $location, imovelService) {
+var CadastroProcessoManejoController = function($scope, config, $rootScope, tipoLicencaManejoService, atividadeManejoService, municipioService, tipologiaManejoService, mensagem, $location, imovelService) {
 
 	$rootScope.tituloPagina = 'CADASTRAR PROCESSO MANEJO DIGITAL';
 
 	var cadastroProcessoManejoController = this;
 
 	cadastroProcessoManejoController.processo = criarProcesso();
-	cadastroProcessoManejoController.tipologia = [];
-	cadastroProcessoManejoController.atividade = [];
-	cadastroProcessoManejoController.municipio = [];
-	cadastroProcessoManejoController.licenca = [];
+	cadastroProcessoManejoController.tipologias = [];
+	cadastroProcessoManejoController.tipologia = undefined;
+	cadastroProcessoManejoController.atividades = [];
+	cadastroProcessoManejoController.municipios = [];
+	cadastroProcessoManejoController.licencas = [];
 
 	function criarProcesso() {
 
@@ -62,44 +63,37 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 			});
 	};
 
-	this.$postLink = function(){
+	function init(){
 
-		cadastroProcessoManejoService.getMunicipiosByUf('PA').then(
+		municipioService.getMunicipiosByUf('PA').then(
 			function(response){
 
-				cadastroProcessoManejoController.municipio = response.data;
+				cadastroProcessoManejoController.municipios = response.data;
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de municípios.');
 			});
 
-		cadastroProcessoManejoService.findTipologias().then(
+		tipologiaManejoService.findAll().then(
 			function(response){
 
-				cadastroProcessoManejoController.tipologia = response.data;
+				cadastroProcessoManejoController.tipologias = response.data;
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de tipologias.');
 			});
 
-		atividadeService.getAtividades().then(
+		tipoLicencaManejoService.findAll().then(
 			function(response){
 
-				cadastroProcessoManejoController.atividade = response.data;
-			})
-			.catch(function(){
-				mensagem.warning('Não foi possível obter a lista de atividades.');
-			});
-
-		tipoLicencaService.getTiposLicencas().then(
-			function(response){
-
-				cadastroProcessoManejoController.licenca = response.data;
+				cadastroProcessoManejoController.licencas = response.data;
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de licencas.');
 			});
 	};
+
+	init();
 
 	cadastroProcessoManejoController.excluirProcesso = function() {
 
@@ -124,6 +118,21 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 	function formValido() {
 
 		return false;
+	}
+
+	cadastroProcessoManejoController.buscarAtividades = function () {
+
+		if (cadastroProcessoManejoController.tipologia) {
+
+			atividadeManejoService.findByTipologia(cadastroProcessoManejoController.tipologia).then(
+				function(response){
+
+					cadastroProcessoManejoController.atividades = response.data;
+				})
+				.catch(function(){
+					mensagem.warning('Não foi possível obter a lista de atividades.');
+				});
+		}
 	}
 };
 

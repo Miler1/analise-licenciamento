@@ -10,60 +10,61 @@ div
 	.row.form-group
 		.col-md-12.col-sm-12
 			label.control-label Número do processo: *
-			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required)
+			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required)
 
 	.row.form-group
 
 		.col-md-6.col-sm-6
 			label.control-label Tipologia: *
-			select.form-control(ng-model="cadastroProcessoManejoController.tipologias", name="selectTipologia",
-							ng-options="tipologia.id as tipologia.nome for tipologia in cadastroProcessoManejoController.tipologia | orderBy:'nome' track by tipologia.id", required)
+			select.form-control(ng-model="cadastroProcessoManejo.tipologia", name="selectTipologia"
+							ng-options="tipologia.id as tipologia.nome for tipologia in cadastroProcessoManejo.tipologias | orderBy:'nome' track by tipologia.id",
+			ng-change="cadastroProcessoManejo.buscarAtividades()", required)
 				option(value="") Selecione a tipologia do processo
 
 		.col-md-6.col-sm-6
 			label.control-label Atividade: *
-			select.form-control(ng-model="cadastroProcessoManejoController.atividade", name="selectAtividade",
-								ng-options="", required)
+			select.form-control(ng-model="cadastroProcessoManejo.processo.atividadeManejo.id", ng-disabled="!cadastroProcessoManejo.tipologia", name="selectAtividade",
+								ng-options="atividade.id as atividade.nome for atividade in cadastroProcessoManejo.atividades | orderBy:'nome' track by atividade.id", required)
 				option(value="") Selecione a atividade do processo
 
 	.row.form-group
 
 		.col-md-6.col-sm-6
 			label.control-label Município: *
-			select.form-control(ng-model="cadastroProcessoManejoController.municipio", name="selectMunicipio",
-								ng-options="", required)
+			select.form-control(ng-model="cadastroProcessoManejo.processo.empreendimento.municipio.id", name="selectMunicipio",
+								ng-options="municipio.id as municipio.nome for municipio in cadastroProcessoManejo.municipios track by municipio.id", required)
 				option(value="") Selecione o municipio
 
 		.col-md-6.col-sm-6
 			label.control-label Licença:
 			.col-md-12.div-checkbox-manejo
-				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-checked="true")
 				|  APAT
-				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejo.licenca')
 				|  AUTEF
-				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejo.licenca')
 				|  LAR
 
 	hr
 
-	div.form-group(ng-if="!cadastroProcessoManejo.processo.empreendimento.denominacao")
+	div.form-group(ng-if="!cadastroProcessoManejoManejo.processo.empreendimento.denominacao")
 
-		label.required.control-label(for='codigoCar') Informe o CAR: *
+		label.required.control-label Informe o CAR: *
 
 		div.input-group
 
 			input.form-control(type='text',
-								ng-model='cadastroProcessoManejo.processo.empreendimento.imovel.registroCar',
-								enter='cadastroProcessoManejo.buscarImovel()',
+								ng-model='cadastroProcessoManejoManejo.processo.empreendimento.imovel.registroCar',
+								enter='cadastroProcessoManejoManejo.buscarImovel()',
 								placeholder='Informe o CAR do processo.',
 								name='car'
 							)
 
 			span.input-group-btn
-				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()')
+				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejoManejo.buscarImovel()')
 					span.glyphicon.glyphicon-search
 
-	div(ng-if="cadastroProcessoManejo.processo.empreendimento.denominacao")
+	div(ng-if="cadastroProcessoManejoManejo.processo.empreendimento.denominacao")
 		fieldset.panel.panel-default
 			div.panel-heading
 				h3.panel-title Dados do imóvel
@@ -71,37 +72,37 @@ div
 				.row
 					label.col-xs-2 Recibo do CAR:
 					.col-xs-8
-						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.registroCar }}
+						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.registroCar }}
 				.row.margin-top-sm
 					label.col-xs-2 Proprietário:
 					.col-xs-4
-						span {{ cadastroProcessoManejo.processo.empreendimento.denominacao }}
+						span {{ cadastroProcessoManejoManejo.processo.empreendimento.denominacao }}
 					label.col-xs-2 Nome do imóvel:
 					.col-xs-4
-						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.nome }}
+						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.nome }}
 				.row.margin-top-sm
 					label.col-xs-2 CPF / CNPJ:
 					.col-xs-4
-						span {{ cadastroProcessoManejo.processo.empreendimento.cpfCnpj | brCpfCnpj}}
+						span {{ cadastroProcessoManejoManejo.processo.empreendimento.cpfCnpj | brCpfCnpj}}
 					label.col-xs-2 Município / UF:
 					.col-xs-4
-						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.nomeSiglaMunicipio }}
+						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.nomeSiglaMunicipio }}
 				.row.margin-top-sm
 					label.subtitulos.col-xs-3 Descrição de acesso:
 				.row
 					.col-xs-12
-						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.descricaoAcesso }}
+						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.descricaoAcesso }}
 				.row.margin-top-sm.pull-right.margin-right-sm
-					button.btn.btn-default(ng-click="cadastroProcessoManejo.excluirProcesso()")
+					button.btn.btn-default(ng-click="cadastroProcessoManejoManejo.excluirProcesso()")
 						i.glyphicon.glyphicon-trash
 
 	div.botoes-cadastro-manejo
 		.col-xs-6
-			button.btn.btn-default(ng-click="cadastroProcessoManejo.voltar()")
+			button.btn.btn-default(ng-click="cadastroProcessoManejoManejo.voltar()")
 				i.glyphicon.glyphicon-remove.glyphicon--with-right-margin
 				| Cancelar
 
 		.col-xs-6
-			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejo.cadastrar()")
+			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejoManejo.cadastrar()")
 				i.glyphicon.glyphicon-ok.glyphicon--with-right-margin
 				| Finalizar
