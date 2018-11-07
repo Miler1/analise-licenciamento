@@ -19,6 +19,24 @@ public class ProcessoManejoSerializer {
 			"analiseManejo.id"
 	);
 
+	public static JSONSerializer findCompletoById = SerializerUtil.create(
+			"id",
+			"numeroProcesso",
+			"atividadeManejo.tipologiaManejo.nome",
+			"empreendimento.cpfCnpj",
+			"empreendimento.denominacao",
+			"empreendimento.municipio.nome",
+			"empreendimento.municipio.estado.nome",
+			"atividadeManejo.nome",
+			"tipoLicenca.nome",
+			"atividadeManejo.nome",
+			"empreendimento.imovel.registroCar",
+			"empreendimento.imovel.nome",
+			"empreendimento.imovel.municipio.nome",
+			"empreendimento.imovel.municipio.estado.nome",
+			"empreendimento.imovel.descricaoAcesso"
+	);
+
 	public static JSONSerializer iniciarAnalise = SerializerUtil.create(
 			"id",
 			"analiseManejo.id"
