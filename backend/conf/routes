@@ -161,6 +161,7 @@ GET     /tipologiasManejo                           TipologiasManejo.list
 
 # Atividades Manejo
 GET     /atividadesManejo                           AtividadesManejo.list
+GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTipologia
 
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
