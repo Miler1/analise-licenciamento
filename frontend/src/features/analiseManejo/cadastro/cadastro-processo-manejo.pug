@@ -1,6 +1,6 @@
 include ../../../layout/components/inputErrors
 
-div
+form(name="formularioCadastroProcessoManejo", novalidate)
 	h4.titulo.col-md-12 Cadastro de Manejo Digital.
 
 	.row
@@ -10,8 +10,7 @@ div
 	.row.form-group
 		.col-md-12.col-sm-12
 			label.control-label Número do processo: *
-			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required)
-
+			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required)
 	.row.form-group
 
 		.col-md-6.col-sm-6
@@ -47,24 +46,26 @@ div
 
 	hr
 
-	div.form-group(ng-if="!cadastroProcessoManejoManejo.processo.empreendimento.denominacao")
+	div.form-group(ng-if="!cadastroProcessoManejo.processo.empreendimento.denominacao")
 
 		label.required.control-label Informe o CAR: *
 
 		div.input-group
 
 			input.form-control(type='text',
-								ng-model='cadastroProcessoManejoManejo.processo.empreendimento.imovel.registroCar',
-								enter='cadastroProcessoManejoManejo.buscarImovel()',
+								ng-model='cadastroProcessoManejo.processo.empreendimento.imovel.registroCar',
+								enter='cadastroProcessoManejo.buscarImovel()',
 								placeholder='Informe o CAR do processo.',
-								name='car'
+								name='car',
+								required
 							)
 
 			span.input-group-btn
-				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejoManejo.buscarImovel()')
+				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()')
 					span.glyphicon.glyphicon-search
+			+inputErrors('formularioCadastroProcessoManejo', 'formularioCadastroProcessoManejo', 'required')
 
-	div(ng-if="cadastroProcessoManejoManejo.processo.empreendimento.denominacao")
+	div(ng-if="cadastroProcessoManejo.processo.empreendimento.denominacao")
 		fieldset.panel.panel-default
 			div.panel-heading
 				h3.panel-title Dados do imóvel
@@ -72,37 +73,37 @@ div
 				.row
 					label.col-xs-2 Recibo do CAR:
 					.col-xs-8
-						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.registroCar }}
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.registroCar }}
 				.row.margin-top-sm
 					label.col-xs-2 Proprietário:
 					.col-xs-4
-						span {{ cadastroProcessoManejoManejo.processo.empreendimento.denominacao }}
+						span {{ cadastroProcessoManejo.processo.empreendimento.denominacao }}
 					label.col-xs-2 Nome do imóvel:
 					.col-xs-4
-						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.nome }}
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.nome }}
 				.row.margin-top-sm
 					label.col-xs-2 CPF / CNPJ:
 					.col-xs-4
-						span {{ cadastroProcessoManejoManejo.processo.empreendimento.cpfCnpj | brCpfCnpj}}
+						span {{ cadastroProcessoManejo.processo.empreendimento.cpfCnpj | brCpfCnpj}}
 					label.col-xs-2 Município / UF:
 					.col-xs-4
-						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.nomeSiglaMunicipio }}
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.nomeSiglaMunicipio }}
 				.row.margin-top-sm
 					label.subtitulos.col-xs-3 Descrição de acesso:
 				.row
 					.col-xs-12
-						span {{ cadastroProcessoManejoManejo.processo.empreendimento.imovel.descricaoAcesso }}
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.descricaoAcesso }}
 				.row.margin-top-sm.pull-right.margin-right-sm
-					button.btn.btn-default(ng-click="cadastroProcessoManejoManejo.excluirProcesso()")
+					button.btn.btn-default(ng-click="cadastroProcessoManejo.excluirProcesso()")
 						i.glyphicon.glyphicon-trash
 
 	div.botoes-cadastro-manejo
 		.col-xs-6
-			button.btn.btn-default(ng-click="cadastroProcessoManejoManejo.voltar()")
+			button.btn.btn-default(ng-click="cadastroProcessoManejo.voltar()")
 				i.glyphicon.glyphicon-remove.glyphicon--with-right-margin
 				| Cancelar
 
 		.col-xs-6
-			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejoManejo.cadastrar()")
+			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejo.cadastrar()")
 				i.glyphicon.glyphicon-ok.glyphicon--with-right-margin
 				| Finalizar

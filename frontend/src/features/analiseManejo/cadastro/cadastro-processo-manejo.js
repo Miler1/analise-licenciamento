@@ -71,7 +71,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				cadastroProcessoManejoController.municipios = response.data;
 			})
 			.catch(function(){
-				mensagem.warning('Não foi possível obter a lista de municípios.');
+				mensagem.error('Não foi possível obter a lista de municípios.');
 			});
 
 		tipologiaManejoService.findAll().then(
@@ -80,7 +80,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				cadastroProcessoManejoController.tipologias = response.data;
 			})
 			.catch(function(){
-				mensagem.warning('Não foi possível obter a lista de tipologias.');
+				mensagem.error('Não foi possível obter a lista de tipologias.');
 			});
 
 		tipoLicencaManejoService.findAll().then(
@@ -89,7 +89,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				cadastroProcessoManejoController.licencas = response.data;
 			})
 			.catch(function(){
-				mensagem.warning('Não foi possível obter a lista de licencas.');
+				mensagem.error('Não foi possível obter a lista de licencas.');
 			});
 	}
 
@@ -117,7 +117,8 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	function formValido() {
 
-		return false;
+		$scope.formularioCadastroProcessoManejo.$setSubmitted();
+		return $scope.formularioCadastroProcessoManejo.$valid && cadastroProcessoManejoController.processo.empreendimento.denominacao;
 	}
 
 	cadastroProcessoManejoController.buscarAtividades = function () {
@@ -130,7 +131,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 					cadastroProcessoManejoController.atividades = response.data;
 				})
 				.catch(function(){
-					mensagem.warning('Não foi possível obter a lista de atividades.');
+					mensagem.error('Não foi possível obter a lista de atividades.');
 				});
 		}
 	};
