@@ -1,29 +1,55 @@
-var CadastroProcessoManejoController = function($scope, config, $rootScope, cadastroProcessoManejoService, cadastroManejoService, tipoLicencaService, atividadeService,  mensagem, $location) {
+var CadastroProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location, imovelService) {
 
 	$rootScope.tituloPagina = 'CADASTRAR PROCESSO MANEJO DIGITAL';
 
 	var cadastroProcessoManejoController = this;
 
-	cadastroProcessoManejoController.processo = null;
-	cadastroProcessoManejoController.tipologias = [];
-	cadastroProcessoManejoController.atividades = [];
-	cadastroProcessoManejoController.municipios = [];
-	cadastroProcessoManejoController.licencas = [];
-	cadastroProcessoManejoController.car = null;
-	cadastroProcessoManejoController.car.numero = null;
-	cadastroProcessoManejoController.car.proprietario.cpfCnpj = null;
-	cadastroProcessoManejoController.car.proprietario.nome = null;
-	cadastroProcessoManejoController.car.proprietario.endereco = null;
-	cadastroProcessoManejoController.car.proprietario.municipio = null;
+	cadastroProcessoManejoController.processo = {
+		numeroProcesso: undefined,
+		empreendimento: {
+			denominacao: undefined,
+			cpfCnpj: undefined,
+			municipio: {
+				id: undefined
+			},
+			imovel: {
+				registroCar: undefined,
+				municipio: {
+					id: undefined
+				},
+			}
+		},
+		tipoLicenca: {
+			id: undefined
+		},
+		atividadeManejo: {
+			id: undefined
+		}
+	};
+	cadastroProcessoManejoController.tipologia = [];
+	cadastroProcessoManejoController.atividade = [];
+	cadastroProcessoManejoController.municipio = [];
+	cadastroProcessoManejoController.licenca = [];
 
+	cadastroProcessoManejoController.buscarImovel = function() {
 
+		imovelService.getImovelByCodigo(cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar)
+			.then(function(response) {
+
+				console.log(response);
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	};
 
 	this.$postLink = function(){
 
 		cadastroProcessoManejoService.getMunicipiosByUf('PA').then(
 			function(response){
 
-				cadastroProcessoManejoController.municipios = response.data;
+				cadastroProcessoManejoController.municipio = response.data;
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de municípios.');
@@ -32,7 +58,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, cada
 		cadastroProcessoManejoService.findTipologias().then(
 			function(response){
 
-				cadastroProcessoManejoController.tipologias = response.data;
+				cadastroProcessoManejoController.tipologia = response.data;
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de tipologias.');
@@ -41,7 +67,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, cada
 		atividadeService.getAtividades().then(
 			function(response){
 
-				cadastroProcessoManejoController.atividades = response.data;
+				cadastroProcessoManejoController.atividade = response.data;
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de atividades.');
@@ -50,7 +76,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, cada
 		tipoLicencaService.getTiposLicencas().then(
 			function(response){
 
-				cadastroProcessoManejoController.licencas = response.data;
+				cadastroProcessoManejoController.licenca = response.data;
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de licencas.');
@@ -58,7 +84,6 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, cada
 	};
 
 	templateUrl: 'components/features/analiseManejo/cadastro/cadastro-processo-manejo.html'
-
 };
 
 exports.controllers.CadastroProcessoManejoController = CadastroProcessoManejoController;

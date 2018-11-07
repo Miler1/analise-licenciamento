@@ -40,7 +40,7 @@ public class SicarWebService {
 
 		String url = Configuracoes.URL_SICAR_IMOVEL_FICHA.replace("{idImove}", idImovel);
 
-		HttpResponse response = new WebService().post(url);
+		HttpResponse response = new WebService().get(url);
 
 		if(!response.success()){
 			throw new WebServiceException("Erro ao consultar imóveis no CAR/PA");

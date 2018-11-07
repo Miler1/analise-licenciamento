@@ -25,7 +25,7 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 		.when("/analise-manejo/cadastro", {
 			templateUrl: "features/analiseManejo/cadastro/cadastro-processo-manejo.html",
 			controller: controllers.CadastroProcessoManejoController,
-			controllerAs: 'CadastroProcessoManejo'
+			controllerAs: 'cadastroProcessoManejo'
 		})
 		.otherwise({
 			redirectTo: "/"
