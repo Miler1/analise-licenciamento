@@ -1,0 +1,32 @@
+#modalProcesso
+
+	div.modal-header
+
+		button.close(type='button', ng-click="modalVisualizacaoProcessoManejoCtrl.fechar()")
+			span(aria-hidden='true') ×
+			span.sr-only Fechar
+
+		h4.modal-title Visualizar Processo Manejo
+
+	div.modal-body
+
+
+		div.row#dadosProcessoManejo
+			.col-xs-12.col-md-8
+				blockquote.success
+
+					div.row
+						label.col-sm-4 Processo:
+						span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.processo.numero ? modalVisualizacaoProcessoManejoCtrl.processo.numero : modalVisualizacaoProcessoManejoCtrl.processo.numeroProcesso}}
+
+					//div.row
+					//	label.col-sm-4 CPF/CNPJ:
+					//	span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento ? modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento : modalVisualizacaoProcessoCtrl.processo.cnpjEmpreendimento | brCpfCnpj}}
+					//
+
+
+	div.modal-footer#footer-modal
+
+		button.btn.btn-default.pull-left(ng-click="modalVisualizacaoProcessoCtrl.fechar()")
+			i.glyphicon.glyphicon-arrow-left
+			| &nbsp;Fechar

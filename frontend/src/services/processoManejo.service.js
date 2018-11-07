@@ -29,6 +29,23 @@ var ProcessoManejoService = function(request, config, Upload) {
 			.post(config.BASE_URL() + "processosManejo", filtro);
 	};
 
+	this.visualizarProcessoManejo = function(processo) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'visualizacaoProcessoManejoController',
+			controllerAs: 'modalVisualizacaoProcessoManejoCtrl',
+			templateUrl: 'components/visualizacaoProcessoManejo/visualizacaoProcessoManejo.html',
+			windowClass: 'modalVisualizarProcessoManejo',
+			size: 'lg',
+			resolve: {
+				processo: function() {
+					return processo;
+				}
+			}
+		});
+
+	};
+
 };
 
 exports.services.ProcessoManejoService = ProcessoManejoService;

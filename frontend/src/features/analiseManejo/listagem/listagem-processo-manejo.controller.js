@@ -8,15 +8,17 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.atualizarPaginacao = atualizarPaginacao;
 	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
 	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
+	listagemProcessoManejo.processosManejo = [];
 
 	listagemProcessoManejo.iniciarAnalise = function (processo) {
 
 		$location.path('/analise-manejo/' + processo.id + '/analise-geo');
-
 	};
 
-	listagemProcessoManejo.visualizarProcesso = null;
-	listagemProcessoManejo.processosManejo = [];
+	listagemProcessoManejo.visualizarProcesso = function (processo) {
+
+		return processoManejoService.visualizarProcessoManejo(processo);
+	};
 
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
 
