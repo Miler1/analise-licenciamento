@@ -23,6 +23,12 @@ var ProcessoManejoService = function(request, config, Upload) {
 		return request.postArrayBuffer(config.BASE_URL() + "processoManejo/downloadPdfAnalise", processo);
 	};
 
+	this.getProcessos = function(filtro) {
+
+		return request
+			.post(config.BASE_URL() + "processosManejo", filtro);
+	};
+
 };
 
 exports.services.ProcessoManejoService = ProcessoManejoService;

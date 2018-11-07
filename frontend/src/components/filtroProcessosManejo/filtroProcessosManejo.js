@@ -7,7 +7,7 @@ var FiltroProcessosManejo = {
 		pesquisarAoInicializar: '<'
 	},
 
-	controller: function(municipioService, tipologiaManejoService, atividadeManejoService, tipoLicencaManejoService, condicaoService) {
+	controller: function(municipioService, tipologiaManejoService, atividadeManejoService, tipoLicencaManejoService, processoManejoService, condicaoService) {
 
 		var ctrl = this;
 
@@ -73,6 +73,22 @@ var FiltroProcessosManejo = {
 
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
 			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
+
+			processoManejoService.getProcessos(ctrl.filtro)
+				.then(function(response){
+
+					ctrl.atualizarLista(response.data);
+
+					if (_.isFunction(ctrl.onAfterUpdate))
+						ctrl.onAfterUpdate(ctrl.filtro);
+
+				})
+				.catch(function(response){
+					if(!!response.data.texto)
+						mensagem.warning(response.data.texto);
+					else
+						mensagem.error("Ocorreu um erro ao buscar a lista de processos do manejo.");
+				});
 		};
 
 
