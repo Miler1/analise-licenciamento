@@ -11,17 +11,20 @@
 	div.modal-body
 
 		div.row#dadosProcessoManejo
-			.col-xs-12.col-md-8
-				blockquote.success
+			.col-xs-12.col-md-6
+				div.row
+					label.col-sm-4 Número processo:
+					span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.numeroProcesso}}
 
-					div.row
-						label.col-sm-4 Processo:
-						span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.numeroProcesso ? modalVisualizacaoProcessoManejoCtrl.dadosProcesso.numeroProcesso : modalVisualizacaoProcessoManejoCtrl.dadosProcesso.numeroProcesso}}
+			.col-xs-12.col-md-6
+				div.row
+					label.col-sm-4 Tipologia:
+					span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.atividadeManejo.tipologiaManejo.nome}}
 
-					//div.row
-					//	label.col-sm-4 CPF/CNPJ:
-					//	span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento ? modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento : modalVisualizacaoProcessoCtrl.processo.cnpjEmpreendimento | brCpfCnpj}}
-					//
+			.col-xs-12.col-md-6
+				div.row
+					label.col-sm-4 Município:
+					span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.empreendimento.municipio.nome}}/{{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.empreendimento.municipio.estado.nome}}
 
 
 	div.modal-footer#footer-modal
