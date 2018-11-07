@@ -37,12 +37,14 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 		.col-md-6.col-sm-6
 			label.control-label Licença:
 			.col-md-12.div-checkbox-manejo
-				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-checked="true")
-				|  APAT
-				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejo.licenca')
-				|  AUTEF
-				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejo.licenca')
-				|  LAR
+				div
+					input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-checked="true")
+					|  APAT
+				div.checkbox-manejo-disabled
+					input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejo.licenca')
+					|  AUTEF
+					input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejo.licenca')
+					|  LAR
 
 	hr
 
@@ -97,6 +99,7 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 					button.btn.btn-default(ng-click="cadastroProcessoManejo.excluirProcesso()")
 						i.glyphicon.glyphicon-trash
 
+<<<<<<< HEAD
 	div.botoes-cadastro-manejo
 		.col-xs-6
 			button.btn.btn-default(ng-click="cadastroProcessoManejo.voltar()")
@@ -105,5 +108,15 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 		.col-xs-6
 			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejo.cadastrar()")
+=======
+	div.margin-top-md
+
+			button.btn.btn-default.pull-left(ng-click="cadastroProcessoManejoManejo.voltar()")
+				i.glyphicon.glyphicon-remove.glyphicon--with-right-margin
+				| Cancelar
+
+
+			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejoManejo.cadastrar()")
+>>>>>>> 41c620f2bd22b351bb58a33c22a5902311358be6
 				i.glyphicon.glyphicon-ok.glyphicon--with-right-margin
 				| Finalizar
