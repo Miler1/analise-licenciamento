@@ -66,6 +66,26 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 
 		cadastroProcessoManejoController.processo = criarProcesso();
 	};
+
+
+	cadastroProcessoManejoController.voltar = function() {
+
+		$location.path('/analise-manejo');
+	};
+
+	cadastroProcessoManejoController.cadastrar = function() {
+
+		if(!formValido()) {
+
+			mensagem.error('Verifique os campos obrigatórios.', { ttl: 10000 });
+			return;
+		}
+	};
+
+	function formValido() {
+
+		return false;
+	}
 };
 
 exports.controllers.CadastroProcessoManejoController = CadastroProcessoManejoController;
