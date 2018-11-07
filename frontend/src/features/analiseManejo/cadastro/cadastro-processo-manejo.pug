@@ -38,12 +38,14 @@ div
 		.col-md-6.col-sm-6
 			label.control-label Licença:
 			.col-md-12.div-checkbox-manejo
-				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-checked="true")
-				|  APAT
-				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejo.licenca')
-				|  AUTEF
-				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejo.licenca')
-				|  LAR
+				div
+					input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-checked="true")
+					|  APAT
+				div.checkbox-manejo-disabled
+					input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejo.licenca')
+					|  AUTEF
+					input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejo.licenca')
+					|  LAR
 
 	hr
 
