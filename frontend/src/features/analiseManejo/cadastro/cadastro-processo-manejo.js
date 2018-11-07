@@ -91,7 +91,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de licencas.');
 			});
-	};
+	}
 
 	init();
 
@@ -133,7 +133,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
 		}
-	}
+	};
 };
 
 exports.controllers.CadastroProcessoManejoController = CadastroProcessoManejoController;
