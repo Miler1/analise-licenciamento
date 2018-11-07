@@ -46,6 +46,12 @@ var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 
 	};
 
+	this.getProcessosCount = function(filtro) {
+
+		return request
+		.post(config.BASE_URL() + "processoManejo/count", filtro);
+	};
+
 };
 
 exports.services.ProcessoManejoService = ProcessoManejoService;

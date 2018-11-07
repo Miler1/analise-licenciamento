@@ -25,6 +25,15 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		return processoManejoService.visualizarProcessoManejo(processo);
 	};
 
+	listagemProcessoManejo.status = {
+		'17': 'Aguardando análise técnica',
+		'18': 'Em análise técnica',
+		'19': 'Deferido',
+		'20': 'Indeferido'
+	};
+
+	listagemProcessoManejo.visualizarProcesso = null;
+	listagemProcessoManejo.processosManejo = [];
 
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
 
@@ -64,7 +73,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 	function onPaginaAlterada(){
 
-		$scope.$broadcast('pesquisarProcessosManejo');
+		$scope.$broadcast('pesquisarProcessos');
 	}
 
 	function atualizarPaginacao(totalItens, paginaAtual) {

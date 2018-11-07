@@ -70,7 +70,6 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 				cadastroProcessoManejoController.processo.empreendimento.denominacao = response.data.cadastrante.denominacao ? response.data.cadastrante.denominacao : response.data.cadastrante.nome;
 				cadastroProcessoManejoController.processo.empreendimento.cpfCnpj = response.data.cadastrante.cnpj ? response.data.cadastrante.cnpj : response.data.cadastrante.cpf;
-				cadastroProcessoManejoController.processo.empreendimento.municipio.id = response.data.cadastrante.endereco.municipio;
 
 				cadastroProcessoManejoController.processo.empreendimento.imovel.descricaoAcesso = response.data.imovel.descricaoAcesso;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.nome = response.data.imovel.nome;
