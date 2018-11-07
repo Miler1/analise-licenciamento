@@ -69,7 +69,7 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 
 		addAtividadeAlias();
 
-		addAlias(ATIVIDADE_ALIAS+".tipologia", TIPOLOGIA_ATIVIDADE_ALIAS);
+		addAlias(ATIVIDADE_ALIAS+".tipologiaManejo", TIPOLOGIA_ATIVIDADE_ALIAS);
 
 		return this;
 	}
@@ -224,6 +224,13 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 		addObjetoTramitavelAlias();
 
 		addProjection(Projections.groupProperty(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao").as("idCondicao"));
+
+		return this;
+	}
+
+	public ProcessoManejoBuilder count() {
+
+		addProjection(Projections.countDistinct("id").as("total"));
 
 		return this;
 	}

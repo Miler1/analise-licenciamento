@@ -21,6 +21,7 @@ div(style="margin-top: 30px;")
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
+							th.col-md-2 Status
 							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
@@ -29,6 +30,7 @@ div(style="margin-top: 30px;")
 							th.col-md-1.text-right(ng-if="listagemProcessoManejo.permissaoAnalisar || listagemProcessoManejo.permissaoVisualizar") Ações
 					tbody
 						tr(ng-repeat="processoManejo in listagemProcessoManejo.processosManejo")
+							td {{listagemProcessoManejo.status[processoManejo.idCondicao]}}
 							td {{processoManejo.numeroProcesso}}
 							td {{processoManejo.cpfCnpjEmpreendimento | brCpfCnpj}}
 							td {{processoManejo.denominacaoEmpreendimento}}

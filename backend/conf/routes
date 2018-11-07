@@ -147,6 +147,7 @@ GET     /processoManejo/{id}                        ProcessosManejo.findById
 GET     /processoManejo/visualizar/{id}             ProcessosManejo.findProcessoCompletoById
 POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
 POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
+POST    /processoManejo/count                       ProcessosManejo.countWithFilter
 
 # Analises Manejo
 POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo

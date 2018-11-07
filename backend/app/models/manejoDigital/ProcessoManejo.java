@@ -13,6 +13,7 @@ import security.InterfaceTramitavel;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(schema = "analise", name = "processo_manejo")
@@ -129,6 +130,20 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return processoBuilder
                 .fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
                 .list();
+    }
+
+    public static Long countWithFilter(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {
+
+        ProcessoManejoBuilder processoBuilder = commonFilterProcesso(filtro)
+                .addEstadoEmpreendimentoAlias()
+                .addTipologiaAtividadeAlias()
+                .addObjetoTramitavelAlias()
+                .addTipoLicencaAlias()
+                .count();
+
+        Object qtdeTotalItens = processoBuilder.unique();
+
+        return ((Map<String, Long>) qtdeTotalItens).get("total");
     }
 
     private static ProcessoManejoBuilder commonFilterProcesso(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {

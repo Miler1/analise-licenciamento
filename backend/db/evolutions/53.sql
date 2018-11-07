@@ -128,7 +128,7 @@ ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_tlm FOREIGN KEY (id_tip
 COMMENT ON COLUMN analise.processo_manejo.id_tipo_licenca IS 'Identificador da entidade tipo_licenca_manejo que faz o relacionamento entre tipo licença manejo e processo manejo.';
 
 ALTER TABLE analise.processo_manejo ADD COLUMN id_atividade_manejo INTEGER NOT NULL;
-ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_am FOREIGN KEY (id_atividade_manejo) REFERENCES analise.atividade_manejo(id);
+ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_atm FOREIGN KEY (id_atividade_manejo) REFERENCES analise.atividade_manejo(id);
 COMMENT ON COLUMN analise.processo_manejo.id_atividade_manejo IS 'Identificador da entidade atividade_manejo que faz o relacionamento entre atividade manejo e processo manejo.';
 
 
