@@ -1,7 +1,7 @@
 doctype html
 | %{
 | processoManejo = analiseManejo.processoManejo;
-| imovelManejo = analiseManejo.processoManejo.imovelManejo;
+| imovelManejo = analiseManejo.processoManejo.empreendimento.imovel;
 | basesVetoriais = analiseManejo.basesVetorial;
 | analisesVetoriais = analiseManejo.analisesVetorial;
 | analisesNdfi = analiseManejo.analisesNdfi;
@@ -36,27 +36,21 @@ html(lang='en')
                     td(colspan="1")
                         strong Nome:
                     td(colspan="11")
-                        | ${processoManejo.denominacaoEmpreendimentoSimlam ? processoManejo.denominacaoEmpreendimentoSimlam : "-"}
+                        | ${processoManejo.empreendimento.denominacao ? processoManejo.empreendimento.denominacao : "-"}
                 tr
                     td(colspan="1")
                         strong Tipologia do licenciamento:
                     td(colspan="11")
-                        | ${processoManejo.nomeTipoLicenca ? processoManejo.nomeTipoLicenca : "-"}
+                        | ${processoManejo.tipoLicenca.nome ? processoManejo.tipoLicenca.nome : "-"}
                 tr
                     td(colspan="1")
-                     strong Endereço:
-                    td(colspan="5") ${imovelManejo.endereco ? imovelManejo.endereco : "-"}
-                    td(colspan="1")
-                     strong Bairro:
-                    td(colspan="2") ${imovelManejo.bairro ? imovelManejo.bairro : "-"}
-                    td(colspan="1")
-                     strong CEP:
-                    td(colspan="2") ${imovelManejo.cep ? imovelManejo.cep : "-"}
+                     strong Descrição de acesso:
+                    td(colspan="5") ${imovelManejo.descricaoAcesso ? imovelManejo.descricaoAcesso : "-"}
                 tr
                     td(colspan="1")
                         strong Município:
                     td(colspan="11")
-                        | ${processoManejo.nomeMunicipioSimlam ? processoManejo.nomeMunicipioSimlam : "-"}
+                        | ${imovelManejo.municipio.nome ? imovelManejo.municipio.nome : "-"}
 
     div
       p

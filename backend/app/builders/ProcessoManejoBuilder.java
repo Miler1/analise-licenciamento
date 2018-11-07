@@ -214,7 +214,7 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 
 		addTipoLicencaAlias();
 
-		addProjection(Projections.groupProperty(TIPO_LICENCA_ALIAS+".codigo").as("tipoLicenca"));
+		addProjection(Projections.groupProperty(TIPO_LICENCA_ALIAS+".codigo").as("tipoLicencaManejo"));
 
 		return this;
 	}
