@@ -141,6 +141,7 @@ DELETE  /upload/shape/{token}                       Uploads.deleteShape
 GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 
 # Processos Manejo
+POST    /processosManejo                            ProcessosManejo.listWithFilter
 POST    /processoManejo                             ProcessosManejo.save
 GET     /processoManejo/{id}                        ProcessosManejo.findById
 POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
