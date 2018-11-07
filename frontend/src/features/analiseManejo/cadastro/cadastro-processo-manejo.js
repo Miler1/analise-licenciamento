@@ -1,4 +1,4 @@
-var CadastroProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location, imovelService) {
+var CadastroProcessoManejoController = function($scope, config, $rootScope, processoManejoService, tipoLicencaService, atividadeService, mensagem, $location, imovelService) {
 
 	$rootScope.tituloPagina = 'CADASTRAR PROCESSO MANEJO DIGITAL';
 
@@ -83,7 +83,6 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 			});
 	};
 
-	templateUrl: 'components/features/analiseManejo/cadastro/cadastro-processo-manejo.html'
 };
 
 exports.controllers.CadastroProcessoManejoController = CadastroProcessoManejoController;
