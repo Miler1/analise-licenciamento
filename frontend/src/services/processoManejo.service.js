@@ -1,4 +1,4 @@
-var ProcessoManejoService = function(request, config, Upload) {
+var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 
 	this.salvarProcesso = function(processo) {
 

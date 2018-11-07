@@ -25,8 +25,6 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		return processoManejoService.visualizarProcessoManejo(processo);
 	};
 
-	listagemProcessoManejo.visualizarProcesso = null;
-	listagemProcessoManejo.processosManejo = [];
 
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
 

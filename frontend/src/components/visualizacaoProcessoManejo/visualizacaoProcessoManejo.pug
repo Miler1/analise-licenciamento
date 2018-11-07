@@ -10,14 +10,13 @@
 
 	div.modal-body
 
-
 		div.row#dadosProcessoManejo
 			.col-xs-12.col-md-8
 				blockquote.success
 
 					div.row
 						label.col-sm-4 Processo:
-						span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.processo.numero ? modalVisualizacaoProcessoManejoCtrl.processo.numero : modalVisualizacaoProcessoManejoCtrl.processo.numeroProcesso}}
+						span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.numeroProcesso ? modalVisualizacaoProcessoManejoCtrl.dadosProcesso.numeroProcesso : modalVisualizacaoProcessoManejoCtrl.dadosProcesso.numeroProcesso}}
 
 					//div.row
 					//	label.col-sm-4 CPF/CNPJ:
@@ -27,6 +26,6 @@
 
 	div.modal-footer#footer-modal
 
-		button.btn.btn-default.pull-left(ng-click="modalVisualizacaoProcessoCtrl.fechar()")
+		button.btn.btn-default.pull-left(ng-click="modalVisualizacaoProcessoManejoCtrl.fechar()")
 			i.glyphicon.glyphicon-arrow-left
 			| &nbsp;Fechar
