@@ -29,6 +29,12 @@ var ProcessoManejoService = function(request, config, Upload) {
 			.post(config.BASE_URL() + "processosManejo", filtro);
 	};
 
+	this.getProcessosCount = function(filtro) {
+
+		return request
+		.post(config.BASE_URL() + "processoManejo/count", filtro);
+	};
+
 };
 
 exports.services.ProcessoManejoService = ProcessoManejoService;

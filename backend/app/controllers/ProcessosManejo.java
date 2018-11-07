@@ -83,4 +83,11 @@ public class ProcessosManejo extends InternalController {
 
 		renderJSON(processosList);
 	}
+
+	public static void countWithFilter(FiltroProcessoManejo filtro){
+
+		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
+
+		renderJSON(ProcessoManejo.countWithFilter(filtro));
+	}
 }
