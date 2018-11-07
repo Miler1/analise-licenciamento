@@ -20,6 +20,7 @@ GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
 GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
 GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
 GET		/baixarShapefile							Imoveis.baixarShapefile
+GET     /imoveis/{codigoImovel}/completo            Imoveis.getImovelByCodigo
 
 # Analise
 
@@ -161,6 +162,7 @@ GET     /tipologiasManejo                           TipologiasManejo.list
 
 # Atividades Manejo
 GET     /atividadesManejo                           AtividadesManejo.list
+GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTipologia
 
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list

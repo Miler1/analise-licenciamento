@@ -1,7 +1,13 @@
 package controllers;
 
+import exceptions.AppException;
+import exceptions.WebServiceException;
+import models.sicar.ImovelSicar;
+import models.sicar.SicarWebService;
 import play.libs.WS;
+import security.Acao;
 import utils.Configuracoes;
+import utils.Mensagem;
 
 public class Imoveis extends InternalController {
 
@@ -47,5 +53,23 @@ public class Imoveis extends InternalController {
 		response.setHeader("Content-Type", "application/download");
 
 		renderBinary(demonstrativo.getStream());
+	}
+
+	public static void getImovelByCodigo(String codigoImovel) {
+
+		verificarPermissao(Acao.CADASTRAR_PROCESSO_MANEJO, Acao.VISUALIZAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(codigoImovel);
+
+		SicarWebService sicarWebService = new SicarWebService();
+
+		ImovelSicar imovelSicar = sicarWebService.getImovelByCodigo(codigoImovel);
+
+		if (imovelSicar == null) {
+
+			throw new AppException(Mensagem.IMOVEL_NAO_ENCONTRADO);
+		}
+
+		renderJSON(sicarWebService.getImovelById(imovelSicar.id.toString()));
 	}
 }

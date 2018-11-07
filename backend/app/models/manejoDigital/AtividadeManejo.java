@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(schema = "analise", name = "atividade_manejo")
@@ -33,5 +34,10 @@ public class AtividadeManejo extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name = "id_tipologia")
-	public AtividadeManejo atividadeManejo;
+	public TipologiaManejo tipologiaManejo;
+
+	public static List<AtividadeManejo> findByTipologia(Long idTipologia) {
+
+		return find("tipologiaManejo.id", idTipologia).fetch();
+	}
 }

@@ -24,7 +24,7 @@ public class EmpreendimentoManejo extends GenericModel {
 	public String cpfCnpj;
 
 	@Required
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_imovel", referencedColumnName="id")
 	public ImovelManejo imovel;
 
@@ -32,5 +32,13 @@ public class EmpreendimentoManejo extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_municipio", referencedColumnName="id_municipio")
 	public Municipio municipio;
+
+	@Override
+	public EmpreendimentoManejo save() {
+
+		this.municipio = Municipio.findById(this.municipio.id);
+
+		return this;
+	}
 
 }

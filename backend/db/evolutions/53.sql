@@ -76,11 +76,11 @@ GRANT SELECT, USAGE ON SEQUENCE analise.atividade_manejo_id_seq TO licenciamento
 
 CREATE TABLE analise.empreendimento_manejo
 (
-  id integer NOT NULL,
-  denominacao varchar(500) NOT NULL,
-  cpfCnpj varchar(14) NOT NULL,
-  id_imovel integer NOT NULL,
-  id_municipio integer NOT NULL,
+  id SERIAL NOT NULL,
+  denominacao VARCHAR(500) NOT NULL,
+  cpf_cnpj VARCHAR(14) NOT NULL,
+  id_imovel INTEGER NOT NULL,
+  id_municipio INTEGER NOT NULL,
 
   CONSTRAINT pk_empreendimento_manejo PRIMARY KEY (id),
   CONSTRAINT fk_e_imovel FOREIGN KEY (id_imovel)
@@ -93,11 +93,12 @@ ALTER TABLE analise.empreendimento_manejo
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.empreendimento_manejo TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.empreendimento_manejo TO licenciamento_pa;
+GRANT SELECT, USAGE ON SEQUENCE analise.empreendimento_manejo_id_seq TO licenciamento_pa;
 
 COMMENT ON TABLE analise.empreendimento_manejo IS 'Entidade responsavel por armazenar o empreendimento do manejo.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id IS 'Identificado único da entidade.';
 COMMENT ON COLUMN analise.empreendimento_manejo.denominacao IS 'Denominação do empreendimento.';
-COMMENT ON COLUMN analise.empreendimento_manejo.cpfCnpj IS 'CPF/CNPJ do empreendimento.';
+COMMENT ON COLUMN analise.empreendimento_manejo.cpf_cnpj IS 'CPF/CNPJ do empreendimento.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id_imovel IS 'Identificador da tabela imóvel.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id_municipio IS 'Identificador da tabela município.';
 
@@ -126,16 +127,16 @@ COMMENT ON COLUMN analise.processo_manejo.id_empreendimento IS 'Identificador da
 ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_tlm FOREIGN KEY (id_tipo_licenca) REFERENCES analise.tipo_licenca_manejo(id);
 COMMENT ON COLUMN analise.processo_manejo.id_tipo_licenca IS 'Identificador da entidade tipo_licenca_manejo que faz o relacionamento entre tipo licença manejo e processo manejo.';
 
-ALTER TABLE analise.processo_manejo ADD COLUMN id_antividade_manejo INTEGER NOT NULL;
-ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_am FOREIGN KEY (id_antividade_manejo) REFERENCES analise.atividade_manejo(id);
-COMMENT ON COLUMN analise.processo_manejo.id_antividade_manejo IS 'Identificador da entidade atividade_manejo que faz o relacionamento entre atividade manejo e processo manejo.';
+ALTER TABLE analise.processo_manejo ADD COLUMN id_atividade_manejo INTEGER NOT NULL;
+ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_am FOREIGN KEY (id_atividade_manejo) REFERENCES analise.atividade_manejo(id);
+COMMENT ON COLUMN analise.processo_manejo.id_atividade_manejo IS 'Identificador da entidade atividade_manejo que faz o relacionamento entre atividade manejo e processo manejo.';
 
 
 # --- !Downs
 
 -- Removendo constraints a entidade processo_manejo
 
-ALTER TABLE analise.processo_manejo DROP COLUMN id_antividade_manejo;
+ALTER TABLE analise.processo_manejo DROP COLUMN id_atividade_manejo;
 ALTER TABLE analise.processo_manejo DROP CONSTRAINT fk_pm_tlm;
 ALTER TABLE analise.processo_manejo DROP CONSTRAINT fk_pm_em;
 

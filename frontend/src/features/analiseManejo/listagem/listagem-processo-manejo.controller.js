@@ -9,6 +9,11 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
 	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
 	listagemProcessoManejo.processosManejo = [];
+	listagemProcessoManejo.cadastrarProcessoManejo = cadastrarProcessoManejo;
+
+	listagemProcessoManejo.permissaoCadastrar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('CADASTRAR_PROCESSO_MANEJO') !== -1;
+	listagemProcessoManejo.permissaoAnalisar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('ANALISAR_PROCESSO_MANEJO') !== -1;
+	listagemProcessoManejo.permissaoVisualizar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('VISUALIZAR_PROCESSO_MANEJO') !== -1;
 
 	listagemProcessoManejo.iniciarAnalise = function (processo) {
 
@@ -19,6 +24,9 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 		return processoManejoService.visualizarProcessoManejo(processo);
 	};
+
+	listagemProcessoManejo.visualizarProcesso = null;
+	listagemProcessoManejo.processosManejo = [];
 
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
 
@@ -38,6 +46,23 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			);
 	};
 
+	listagemProcessoManejo.continuarAnalise = function(processo) {
+
+		processoManejoService.getProcesso(processo.id)
+			.then(function (response) {
+
+				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
+			})
+			.catch(function (response) {
+
+				if (!!response.data.texto)
+					mensagem.warning(response.data.texto);
+
+				else
+					mensagem.error("Ocorreu um erro obter dados do processo.");
+			});
+	};
+
 
 	function onPaginaAlterada(){
 
@@ -54,6 +79,11 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		listagemProcessoManejo.processosManejo = processos;
 	}
 
+	function cadastrarProcessoManejo() {
+
+		$location.path('/analise-manejo/cadastro');
+
+	}
 };
 
 exports.controllers.ListagemProcessoManejoController = ListagemProcessoManejoController;

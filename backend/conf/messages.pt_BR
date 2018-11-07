@@ -126,8 +126,14 @@ ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO=Erro ao criar documento da análise técnica
 # Processo Manejo
 #
 PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
+PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
 
 #
 # Observações
 #
 OBSERVACAO_EXCLUIDA_SUCESSO=Observação removida com sucesso.
+
+#
+# Imóvel
+#
+IMOVEL_NAO_ENCONTRADO=Imóvel não encontrado.

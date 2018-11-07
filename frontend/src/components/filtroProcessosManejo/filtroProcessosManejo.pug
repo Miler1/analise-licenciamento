@@ -31,7 +31,7 @@ div(uib-accordion class="accordion")
 		.row.form-group
 			.col-md-12
 				label.control-label Atividade do empreendimento:
-				select.form-control(ng-model="$ctrl.filtro.idAtividadeEmpreendimento", name="selectAtividade",
+				select.form-control(ng-model="$ctrl.filtro.idAtividade", name="selectAtividade",
 									ng-options="atividade.id as atividade.nome for atividade in $ctrl.atividades | orderBy:'nome' track by atividade.id")
 					option(value="") Selecione a atividade do empreendimento
 

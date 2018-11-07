@@ -39,7 +39,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     @Required
     @ManyToOne
-    @JoinColumn(name = "id_antividade_manejo")
+    @JoinColumn(name = "id_atividade_manejo")
     public AtividadeManejo atividadeManejo;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -59,6 +59,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     @Override
     public ProcessoManejo save() {
+
+        this.tipoLicenca = TipoLicencaManejo.findById(this.tipoLicenca.id);
+        this.atividadeManejo = AtividadeManejo.findById(this.atividadeManejo.id);
 
         tramitacao.iniciar(this, null, Tramitacao.MANEJO_DIGITAL);
 
@@ -119,7 +122,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .groupByNumeroProcesso()
                 .groupByDenominacaoEmpreendimento()
                 .groupByMunicipioEmpreendimento()
-                .groupByTipoLicencaManejo();
+                .groupByTipoLicencaManejo()
+                .groupByCpfCnpjEmpreendimento()
+                .groupByCondicao();
 
         return processoBuilder
                 .fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())

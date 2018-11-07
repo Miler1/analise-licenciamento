@@ -12,4 +12,11 @@ public class AtividadesManejo extends InternalController {
 
 		renderJSON(AtividadeManejo.findAll(), AtividadesManejoSerializer.list);
 	}
+
+	public static void listWithTipologia(Long idTipologia) {
+
+		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
+
+		renderJSON(AtividadeManejo.findByTipologia(idTipologia), AtividadesManejoSerializer.list);
+	}
 }
