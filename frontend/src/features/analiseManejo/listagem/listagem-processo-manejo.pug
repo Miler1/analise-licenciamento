@@ -30,10 +30,10 @@ div(style="margin-top: 30px;")
 					tbody
 						tr(ng-repeat="processoManejo in listagemProcessoManejo.processosManejo")
 							td {{processoManejo.numeroProcesso}}
-							td {{processoManejo.cpfCnpj | brCpfCnpj}}
-							td {{processoManejo.denominacaoEmpreendimentoSimlam}}
-							td {{processoManejo.nomeMunicipioSimlam}}/{{processoManejo.siglaEstadoMunicipio}}
-							td {{processoManejo.nomeTipoLicenca}}
+							td {{processoManejo.cpfCnpjEmpreendimento | brCpfCnpj}}
+							td {{processoManejo.denominacaoEmpreendimento}}
+							td {{processoManejo.municipioEmpreendimento}}/{{processoManejo.siglaEstadoEmpreendimento}}
+							td {{processoManejo.tipoLicenca}}
 							td(ng-if="listagemProcessoManejo.permissaoAnalisar || listagemProcessoManejo.permissaoVisualizar")
 								span.pull-right
 
@@ -43,15 +43,19 @@ div(style="margin-top: 30px;")
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="listagemProcessoManejo.iniciarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar")
+												a(ng-click="listagemProcessoManejo.iniciarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 17")
 													i.glyphicon.glyphicon-check
 													span Analisar
+											li
+												a(ng-click="listagemProcessoManejo.continuarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 18")
+													i.glyphicon.glyphicon-check
+													span Continuar análise
 											li
 												a(ng-click="listagemProcessoManejo.visualizarProcesso(processoManejo)", ng-if="listagemProcessoManejo.permissaoVisualizar")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 											li
-												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar")
+												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 19")
 													i.glyphicon.glyphicon-save-file
 													span Gerar PDF
 

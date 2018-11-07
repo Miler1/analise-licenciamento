@@ -19,11 +19,12 @@ public class ImovelManejo extends GenericModel {
     @Column(name="registro_car")
     public String registroCar;
 
-    @Required
+    @Column
+    public String nome;
+
     @Column(name="area_total_imovel_documentado")
     public Double areaTotalImovelDocumentado;
 
-    @Required
     @Column(name="area_liquida_imovel")
     public Double areaLiquidaImovel;
 

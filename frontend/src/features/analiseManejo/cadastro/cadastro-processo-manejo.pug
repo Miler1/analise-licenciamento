@@ -50,6 +50,8 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 	div.form-group(ng-if="!cadastroProcessoManejo.processo.empreendimento.denominacao")
 
+		h5 Busca de imóvel
+
 		label.required.control-label Informe o CAR: *
 
 		div.input-group
@@ -63,7 +65,7 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 							)
 
 			span.input-group-btn
-				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()')
+				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()', ng-class="{'error-botao' : cadastroProcessoManejo.necessarioBuscarEmpreendimento === true}")
 					span.glyphicon.glyphicon-search
 			+inputErrors('formularioCadastroProcessoManejo', 'formularioCadastroProcessoManejo', 'required')
 
@@ -101,10 +103,10 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 	section.margin-top-md.margin-bottom-xl
 
-			button.btn.btn-default.pull-left(ng-click="cadastroProcessoManejoManejo.voltar()")
+			button.btn.btn-default.pull-left(ng-click="cadastroProcessoManejo.voltar()")
 				i.glyphicon.glyphicon-remove.glyphicon--with-right-margin
 				| Cancelar
 
-			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejoManejo.cadastrar()")
+			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejo.cadastrar()")
 				i.glyphicon.glyphicon-ok.glyphicon--with-right-margin
 				| Finalizar

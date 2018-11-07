@@ -185,7 +185,7 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 
 		addEmpreendimentoAlias();
 
-		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".cpfCnpj").as("cpfEmpreendimento"));
+		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".cpfCnpj").as("cpfCnpjEmpreendimento"));
 
 		return this;
 	}
@@ -215,6 +215,15 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 		addTipoLicencaAlias();
 
 		addProjection(Projections.groupProperty(TIPO_LICENCA_ALIAS+".codigo").as("tipoLicenca"));
+
+		return this;
+	}
+
+	public ProcessoManejoBuilder groupByCondicao() {
+
+		addObjetoTramitavelAlias();
+
+		addProjection(Projections.groupProperty(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao").as("idCondicao"));
 
 		return this;
 	}

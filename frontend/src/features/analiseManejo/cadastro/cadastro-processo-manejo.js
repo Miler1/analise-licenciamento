@@ -1,4 +1,4 @@
-var CadastroProcessoManejoController = function($scope, config, $rootScope, tipoLicencaManejoService, atividadeManejoService, municipioService, tipologiaManejoService, mensagem, $location, imovelService) {
+var CadastroProcessoManejoController = function($scope, config, $rootScope, tipoLicencaManejoService, atividadeManejoService, municipioService, tipologiaManejoService, mensagem, $location, imovelService, processoManejoService) {
 
 	$rootScope.tituloPagina = 'CADASTRAR PROCESSO MANEJO DIGITAL';
 
@@ -10,6 +10,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 	cadastroProcessoManejoController.atividades = [];
 	cadastroProcessoManejoController.municipios = [];
 	cadastroProcessoManejoController.licencas = [];
+	cadastroProcessoManejoController.necessarioBuscarEmpreendimento = false;
 
 	function criarProcesso() {
 
@@ -42,7 +43,27 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 		return processo;
 	}
 
+	function apagarEmpreendimento() {
+
+		cadastroProcessoManejoController.processo.empreendimento = {
+			denominacao: undefined,
+			cpfCnpj: undefined,
+			municipio: cadastroProcessoManejoController.processo.empreendimento.municipio,
+			imovel: {
+				registroCar: undefined,
+				municipio: {
+					id: undefined
+				},
+				descricaoAcesso: undefined,
+				nome: undefined,
+				nomeSiglaMunicipio: undefined
+			}
+		};
+	}
+
 	cadastroProcessoManejoController.buscarImovel = function() {
+
+		cadastroProcessoManejoController.necessarioBuscarEmpreendimento = false;
 
 		imovelService.getImovelByCodigo(cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar)
 			.then(function(response) {
@@ -58,7 +79,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 			}, function(error){
 
-				cadastroProcessoManejoController.processo = criarProcesso();
+				apagarEmpreendimento();
 				mensagem.error(error.data.texto);
 			});
 	};
@@ -97,7 +118,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	cadastroProcessoManejoController.excluirProcesso = function() {
 
-		cadastroProcessoManejoController.processo = criarProcesso();
+		apagarEmpreendimento();
 	};
 
 
@@ -110,9 +131,33 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 		if(!formValido()) {
 
+			if (cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar && !cadastroProcessoManejoController.processo.empreendimento.denominacao) {
+
+				cadastroProcessoManejoController.necessarioBuscarEmpreendimento = true;
+				mensagem.error('É necessário buscar um imóvel no CAR.', { ttl: 10000 });
+				return;
+			}
+
 			mensagem.error('Verifique os campos obrigatórios.', { ttl: 10000 });
 			return;
 		}
+
+		cadastroProcessoManejoController.processo.tipoLicenca.id = 1;
+
+		processoManejoService.salvarProcesso(cadastroProcessoManejoController.processo)
+			.then(function(response){
+
+				$location.path('/analise-manejo');
+
+			})
+			.catch(function(response){
+
+				if(!!response.data.texto)
+					mensagem.warning(response.data.texto);
+
+				else
+					mensagem.error("Ocorreu um erro ao salvar o processo.");
+			});
 	};
 
 	function formValido() {

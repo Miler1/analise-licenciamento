@@ -41,6 +41,23 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 			);
 	};
 
+	listagemProcessoManejo.continuarAnalise = function(processo) {
+
+		processoManejoService.getProcesso(processo.id)
+			.then(function (response) {
+
+				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
+			})
+			.catch(function (response) {
+
+				if (!!response.data.texto)
+					mensagem.warning(response.data.texto);
+
+				else
+					mensagem.error("Ocorreu um erro obter dados do processo.");
+			});
+	};
+
 
 	function onPaginaAlterada(){
 

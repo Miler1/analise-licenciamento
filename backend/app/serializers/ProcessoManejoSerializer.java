@@ -12,9 +12,9 @@ public class ProcessoManejoSerializer {
 	public static JSONSerializer findById = SerializerUtil.create(
 			"id",
 			"numeroProcesso",
-			"cpfCnpj",
-			"denominacaoEmpreendimentoSimlam",
-			"nomeMunicipioSimlam",
+			"empreendimento.cpfCnpj",
+			"empreendimento.denominacao",
+			"empreendimento.municipio.nome",
 			"nomeCondicao",
 			"analiseManejo.id"
 	);
