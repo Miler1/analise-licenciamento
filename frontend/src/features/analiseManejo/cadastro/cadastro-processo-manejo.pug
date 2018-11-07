@@ -8,7 +8,7 @@ div
 	.row.form-group
 		.col-md-12.col-sm-12
 			label.control-label Número do processo: *
-			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo', placeholder='Número do processo', maxlength="15", required)
+			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required)
 
 	.row.form-group
 
@@ -51,7 +51,7 @@ div
 		div.input-group
 
 			input.form-control(type='text',
-								ng-model='cadastroProcessoManejo.car.numero',
+								ng-model='cadastroProcessoManejo.processo.empreendimento.imovel.registroCar',
 								enter='cadastroProcessoManejo.buscarImovel()',
 								placeholder='Informe o CAR do processo.',
 								name='car'
@@ -66,19 +66,19 @@ div
 	.row
 		label.col-sm-3 CPF/CNPJ:
 		.col-sm-3
-			span {{cadastroProcessoManejo.car.proprietario.cpfCnpj}}
+			span
 		label.col-sm-3 Nome:
 		.col-sm-3
-			span {{cadastroProcessoManejo.car.proprietario.nome}}
+			span
 	.row
 		label.col-sm-3 Endereço:
 		.col-sm-3
-			span {{cadastroProcessoManejo.car.proprietario.endereco}}
+			span
 		label.col-sm-3 Município / UF:
 		.col-sm-3
-			span {{cadastroProcessoManejo.car.proprietario.municipio}}
+			span
 	.row
 		label.subtitulos.col-sm-3 Descrição de acesso:
 	.row
 		.col-sm-3
-			label khavgsdkjbahsvdasbndjgavsdkjbajgvsdkajsbdkivaskjdhbvjagsdvbvasjdahsdgvjagsvdkajsbdjgavskdjbahjsdvhkasbdjgvasdkjbasghdvkasbdvjgavsdkhabvsjdhbaksd
+			label

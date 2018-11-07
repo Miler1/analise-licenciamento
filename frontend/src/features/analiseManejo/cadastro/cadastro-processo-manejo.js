@@ -4,22 +4,36 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 
 	var cadastroProcessoManejoController = this;
 
-	cadastroProcessoManejoController.processo = null;
+	cadastroProcessoManejoController.processo = {
+		numeroProcesso: undefined,
+		empreendimento: {
+			denominacao: undefined,
+			cpfCnpj: undefined,
+			municipio: {
+				id: undefined
+			},
+			imovel: {
+				registroCar: undefined,
+				municipio: {
+					id: undefined
+				},
+			}
+		},
+		tipoLicenca: {
+			id: undefined
+		},
+		atividadeManejo: {
+			id: undefined
+		}
+	};
 	cadastroProcessoManejoController.tipologia = [];
 	cadastroProcessoManejoController.atividade = [];
 	cadastroProcessoManejoController.municipio = [];
 	cadastroProcessoManejoController.licenca = [];
-	cadastroProcessoManejoController.car = {};
-	cadastroProcessoManejoController.car.numero = null;
-	cadastroProcessoManejoController.car.proprietario = {};
-	cadastroProcessoManejoController.car.proprietario.cpfCnpj = null;
-	cadastroProcessoManejoController.car.proprietario.nome = null;
-	cadastroProcessoManejoController.car.proprietario.endereco = null;
-	cadastroProcessoManejoController.car.proprietario.municipio = null;
 
 	cadastroProcessoManejoController.buscarImovel = function() {
 
-		imovelService.getImovelByCodigo(cadastroProcessoManejoController.car.numero)
+		imovelService.getImovelByCodigo(cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar)
 			.then(function(response) {
 
 				console.log(response);
