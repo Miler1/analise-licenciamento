@@ -84,6 +84,16 @@ public class ProcessosManejo extends InternalController {
 		renderJSON(processosList);
 	}
 
+	public static void findProcessoCompletoById(Long id) {
+
+		verificarPermissao(Acao.VISUALIZAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(id);
+
+		ProcessoManejo processo = ProcessoManejo.findById(id);
+
+		renderJSON(processo, ProcessoManejoSerializer.findCompletoById);
+
 	public static void countWithFilter(FiltroProcessoManejo filtro){
 
 		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
