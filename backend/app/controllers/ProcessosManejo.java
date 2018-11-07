@@ -93,6 +93,7 @@ public class ProcessosManejo extends InternalController {
 		ProcessoManejo processo = ProcessoManejo.findById(id);
 
 		renderJSON(processo, ProcessoManejoSerializer.findCompletoById);
+	}
 
 	public static void countWithFilter(FiltroProcessoManejo filtro){
 
