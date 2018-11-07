@@ -62,7 +62,6 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 			});
 	};
 
-<<<<<<< HEAD
 	this.$postLink = function(){
 
 		cadastroProcessoManejoService.getMunicipiosByUf('PA').then(
@@ -102,12 +101,10 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 			});
 	};
 
-=======
 	cadastroProcessoManejoController.excluirProcesso = function() {
 
 		cadastroProcessoManejoController.processo = criarProcesso();
 	};
->>>>>>> 381b9664c0f3d63ea99d8e4a8f974e1620840fbb
 };
 
 exports.controllers.CadastroProcessoManejoController = CadastroProcessoManejoController;
