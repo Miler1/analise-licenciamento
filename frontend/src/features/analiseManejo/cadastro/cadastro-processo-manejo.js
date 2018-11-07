@@ -1,4 +1,4 @@
-var CadastroProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location, imovelService) {
+var CadastroProcessoManejoController = function($scope, config, $rootScope, processoManejoService, tipoLicencaService, atividadeService, mensagem, $location, imovelService) {
 
 	$rootScope.tituloPagina = 'CADASTRAR PROCESSO MANEJO DIGITAL';
 
@@ -59,6 +59,45 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, proc
 
 				cadastroProcessoManejoController.processo = criarProcesso();
 				mensagem.error(error.data.texto);
+			});
+	};
+
+	this.$postLink = function(){
+
+		cadastroProcessoManejoService.getMunicipiosByUf('PA').then(
+			function(response){
+
+				cadastroProcessoManejoController.municipio = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de municípios.');
+			});
+
+		cadastroProcessoManejoService.findTipologias().then(
+			function(response){
+
+				cadastroProcessoManejoController.tipologia = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de tipologias.');
+			});
+
+		atividadeService.getAtividades().then(
+			function(response){
+
+				cadastroProcessoManejoController.atividade = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de atividades.');
+			});
+
+		tipoLicencaService.getTiposLicencas().then(
+			function(response){
+
+				cadastroProcessoManejoController.licenca = response.data;
+			})
+			.catch(function(){
+				mensagem.warning('Não foi possível obter a lista de licencas.');
 			});
 	};
 

@@ -14,34 +14,34 @@ div
 
 	.row.form-group
 
-	//- 	.col-md-6.col-sm-6
-	//- 		label.control-label Tipologia: *
-	//- 		select.form-control(ng-model="cadastroProcessoManejo.tipologia", name="selectTipologia",
-	//- 						ng-options="", required)
-	//- 			option(value="") Selecione a tipologia do processo
+		.col-md-6.col-sm-6
+			label.control-label Tipologia: *
+			select.form-control(ng-model="cadastroProcessoManejoController.tipologias", name="selectTipologia",
+							ng-options="tipologia.id as tipologia.nome for tipologia in cadastroProcessoManejoController.tipologia | orderBy:'nome' track by tipologia.id", required)
+				option(value="") Selecione a tipologia do processo
 
-	//- 	.col-md-6.col-sm-6
-	//- 		label.control-label Atividade: *
-	//- 		select.form-control(ng-model="cadastroProcessoManejo.atividade", name="selectMunicipio",
-	//- 							ng-options="", required)
-	//- 			option(value="") Selecione a atividade do processo
+		.col-md-6.col-sm-6
+			label.control-label Atividade: *
+			select.form-control(ng-model="cadastroProcessoManejoController.atividade", name="selectAtividade",
+								ng-options="", required)
+				option(value="") Selecione a atividade do processo
 
-	//- .row.form-group
+	.row.form-group
 
-	//- 	.col-md-6.col-sm-6
-	//- 		label.control-label Município: *
-	//- 		select.form-control(ng-model="cadastroProcessoManejo.municipio", name="selectMunicipio",
-	//- 							ng-options="", required)
-	//- 			option(value="") Selecione o municipio
+		.col-md-6.col-sm-6
+			label.control-label Município: *
+			select.form-control(ng-model="cadastroProcessoManejoController.municipio", name="selectMunicipio",
+								ng-options="", required)
+				option(value="") Selecione o municipio
 
 		.col-md-6.col-sm-6
 			label.control-label Licença:
 			.col-md-12.div-checkbox-manejo
-				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='APAT', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
 				|  APAT
-				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='AUTEF', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
 				|  AUTEF
-				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejo.licenca', ng-click="")
+				input.checkbox-manejo(type='checkbox', placeholder='LAR', disabled="true", ng-model='cadastroProcessoManejoController.licenca', ng-click="")
 				|  LAR
 
 	hr
