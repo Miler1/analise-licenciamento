@@ -1,7 +1,7 @@
 include ../../../layout/components/inputErrors
 
 div
-	h4.titulo.col-md-12 Cadastro de Manejo Digital.
+	h4.titulo.col-md-12 Cadastro de Manejo Digital
 
 	.row
 
@@ -98,13 +98,13 @@ div
 					button.btn.btn-default(ng-click="cadastroProcessoManejoManejo.excluirProcesso()")
 						i.glyphicon.glyphicon-trash
 
-	div.botoes-cadastro-manejo
-		.col-xs-6
-			button.btn.btn-default(ng-click="cadastroProcessoManejoManejo.voltar()")
+	div.margin-top-md
+
+			button.btn.btn-default.pull-left(ng-click="cadastroProcessoManejoManejo.voltar()")
 				i.glyphicon.glyphicon-remove.glyphicon--with-right-margin
 				| Cancelar
 
-		.col-xs-6
+
 			button.btn.btn-success.pull-right(ng-click="cadastroProcessoManejoManejo.cadastrar()")
 				i.glyphicon.glyphicon-ok.glyphicon--with-right-margin
 				| Finalizar

@@ -8,7 +8,7 @@ var AtividadeManejoService = function(request, config) {
 	this.findByTipologia = function(tipologia) {
 
 		return request.get(config.BASE_URL() + "atividadesManejo/tipologia/" + tipologia);
-	}
+	};
 
 };
 
