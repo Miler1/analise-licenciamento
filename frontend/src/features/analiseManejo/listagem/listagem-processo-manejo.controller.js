@@ -5,10 +5,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	var listagemProcessoManejo = this;
 
 	listagemProcessoManejo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
+	listagemProcessoManejo.processosManejo = [];
 	listagemProcessoManejo.atualizarPaginacao = atualizarPaginacao;
 	listagemProcessoManejo.atualizarListaProcessos = atualizarListaProcessos;
 	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
-	listagemProcessoManejo.processosManejo = [];
 	listagemProcessoManejo.cadastrarProcessoManejo = cadastrarProcessoManejo;
 
 	listagemProcessoManejo.permissaoCadastrar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('CADASTRAR_PROCESSO_MANEJO') !== -1;
@@ -31,9 +31,6 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		'19': 'Deferido',
 		'20': 'Indeferido'
 	};
-
-	listagemProcessoManejo.visualizarProcesso = null;
-	listagemProcessoManejo.processosManejo = [];
 
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
 

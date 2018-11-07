@@ -7,7 +7,7 @@ var VisualizacaoProcessoManejoController = function ($location, $anchorScroll, $
 
 	if (processo.id) {
 
-		processoManejoService.getProcesso(processo.id)
+		processoManejoService.getProcessoVisualizar(processo.id)
 			.then(function(response){
 
 				modalCtrl.dadosProcesso = response.data;

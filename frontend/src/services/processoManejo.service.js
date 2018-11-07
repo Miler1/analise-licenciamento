@@ -12,6 +12,12 @@ var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 			.get(config.BASE_URL() + "processoManejo/" + id);
 	};
 
+	this.getProcessoVisualizar = function(id) {
+
+		return request
+			.get(config.BASE_URL() + "processoManejo/" + id + "/visualizar");
+	};
+
 	this.iniciarAnalise = function(processo) {
 
 		return request

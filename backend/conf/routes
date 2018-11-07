@@ -144,7 +144,7 @@ GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 POST    /processosManejo                            ProcessosManejo.listWithFilter
 POST    /processoManejo                             ProcessosManejo.save
 GET     /processoManejo/{id}                        ProcessosManejo.findById
-GET     /processoManejo/visualizar/{id}             ProcessosManejo.findProcessoCompletoById
+GET     /processoManejo/{id}/visualizar             ProcessosManejo.findProcessoCompletoById
 POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
 POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
 POST    /processoManejo/count                       ProcessosManejo.countWithFilter
