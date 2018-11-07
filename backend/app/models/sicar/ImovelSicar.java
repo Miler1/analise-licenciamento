@@ -39,6 +39,8 @@ public class ImovelSicar {
 
 	public String siglaEstado;
 
+	public Long codigoMunicipio;
+
 	public ImovelSicar() { }
 	
 	public ImovelSicar(Long id, String nome, String codigo, String geo, 
