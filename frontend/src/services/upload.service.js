@@ -14,6 +14,11 @@ var UploadService = function(request, config, Upload) {
         return request.upload(config.BASE_URL() + 'upload/shape', file, Upload);
     };
 
+	this.saveGeometry = function(file) {
+
+		return request.upload(config.BASE_URL() + 'upload/shape', file, Upload);
+	};
+
 	this.removeShape = function(nameFile) {
 
 		return request
