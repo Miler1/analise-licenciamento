@@ -3,11 +3,16 @@ package models.manejoDigital;
 import com.vividsolutions.jts.geom.Geometry;
 import models.Documento;
 import models.TipoDocumento;
+import models.analiseShape.FeatureQueryInsumo;
+import models.analiseShape.FeatureQueryResumoNDFI;
+import models.analiseShape.FeatureQuerySobreposicao;
+import models.analiseShape.Insumo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.hibernate.annotations.Type;
 import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -18,6 +23,7 @@ import utils.FileManager;
 
 import javax.persistence.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -42,6 +48,7 @@ public class AnaliseManejo  extends GenericModel {
 
     @Required
     @Column(name="the_geom")
+    @Type(type = "org.hibernate.spatial.GeometryType")
     public Geometry geometria;
 
     @Column(name="path_anexo")
@@ -131,6 +138,9 @@ public class AnaliseManejo  extends GenericModel {
 
     @Column(name = "object_id")
     public Integer objectId;
+
+    @Transient
+    public List<Insumo> insumos;
 
     @Override
     public AnaliseManejo save() {
@@ -343,5 +353,37 @@ public class AnaliseManejo  extends GenericModel {
 
         return documento;
 
+    }
+
+    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
+
+        this.analisesVetorial = new ArrayList<>();
+
+        for (FeatureQuerySobreposicao feature : features) {
+
+            feature.attributes.analiseManejo = this;
+            this.analisesVetorial.add(feature.attributes);
+        }
+    }
+
+    public void setInsumos(List<FeatureQueryInsumo> features) {
+
+        this.insumos = new ArrayList<>();
+
+        for (FeatureQueryInsumo feature : features) {
+
+            this.insumos.add(feature.attributes);
+        }
+    }
+
+    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
+
+        this.analisesNdfi = new ArrayList<>();
+
+        for (FeatureQueryResumoNDFI feature : features) {
+
+            feature.attributes.analiseManejo = this;
+            this.analisesNdfi.add(feature.attributes);
+        }
     }
 }
