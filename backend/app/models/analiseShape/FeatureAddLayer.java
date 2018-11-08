@@ -2,12 +2,12 @@ package models.analiseShape;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-public class Feature {
+public class FeatureAddLayer {
 
-	public AtributosFeature attributes;
+	public AtributosAddLayer attributes;
 	public Geometry geometry;
 
-	public Feature(AtributosFeature attributes, Geometry geometry) {
+	public FeatureAddLayer(AtributosAddLayer attributes, Geometry geometry) {
 
 		this.attributes = attributes;
 		this.geometry = geometry;

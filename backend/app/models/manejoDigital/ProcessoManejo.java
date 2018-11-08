@@ -1,9 +1,16 @@
 package models.manejoDigital;
 
 import builders.ProcessoManejoBuilder;
-import models.analiseShape.AtributosFeature;
-import models.analiseShape.Feature;
+import com.google.gson.GsonBuilder;
+import deserializers.AnaliseNDFIDeserializer;
+import deserializers.AnaliseVetorialDeserializer;
+import models.analiseShape.AtributosAddLayer;
+import models.analiseShape.FeatureAddLayer;
 import models.analiseShape.ResponseAddLayer;
+import models.analiseShape.ResponseQueryInsumo;
+import models.analiseShape.ResponseQueryProcesso;
+import models.analiseShape.ResponseQueryResumoNDFI;
+import models.analiseShape.ResponseQuerySobreposicao;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -18,6 +25,7 @@ import utils.Configuracoes;
 import utils.WebService;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -179,17 +187,57 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     private void enviarProcessoAnaliseShape() {
 
-        Feature feature = new Feature(
-                new AtributosFeature(this.numeroProcesso, this.empreendimento.imovel.nome, 0, this.analiseManejo.usuario.nome),
+        FeatureAddLayer feature = new FeatureAddLayer(
+                new AtributosAddLayer(this.numeroProcesso, this.empreendimento.imovel.nome, 0, this.analiseManejo.usuario.nome),
                 this.analiseManejo.geometria
         );
 
         WebService webService = new WebService();
 
-        ResponseAddLayer response = webService.postJSON(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, feature, ResponseAddLayer.class);
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("attributes", feature.attributes);
+        params.put("geometry", feature.geometry);
+
+        ResponseAddLayer response = webService.post(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, params, ResponseAddLayer.class);
 
         //TODO RECUPERAR RESPONTA E SALVAR O objectID;
 
         this._save();
+    }
+
+    public void verificarAnaliseShape() {
+
+        WebService webService = new WebService(
+                new GsonBuilder().setDateFormat("dd/MM/yyyy")
+                        .registerTypeAdapter(AnaliseNdfi.class, new AnaliseNDFIDeserializer())
+                        .registerTypeAdapter(AnaliseVetorial.class, new AnaliseVetorialDeserializer())
+                        .create()
+        );
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("objectIds", this.analiseManejo.objectId);
+        params.put("outFields", "*");
+
+        ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
+
+        if (response.features.get(0).attributes.status == 3) {
+
+            params.clear();
+            params.put("where", "protocolo = '" + this.numeroProcesso + "'");
+            params.put("outFields", "*");
+
+            ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
+            ResponseQueryInsumo responseInsumo =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
+            ResponseQueryResumoNDFI responseResumoNDFI =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryResumoNDFI.class);
+
+            this.analiseManejo.setAnalisesVetoriais(responseSobreposicao.features);
+            this.analiseManejo.setInsumos(responseInsumo.features);
+            this.analiseManejo.setAnalisesNdfi(responseResumoNDFI.features);
+
+            this.analiseManejo._save();
+
+            tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
+        }
     }
 }
