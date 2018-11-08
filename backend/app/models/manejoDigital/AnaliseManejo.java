@@ -12,6 +12,7 @@ import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.hibernate.annotations.Type;
 import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -47,6 +48,7 @@ public class AnaliseManejo  extends GenericModel {
 
     @Required
     @Column(name="the_geom")
+    @Type(type = "org.hibernate.spatial.GeometryType")
     public Geometry geometria;
 
     @Column(name="path_anexo")
