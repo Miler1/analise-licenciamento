@@ -192,4 +192,20 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         this._save();
     }
+
+    public static boolean verificaNumeroProcesso(String numeroProcesso) {
+
+        Boolean existe = false;
+
+        ProcessoManejo processo = ProcessoManejo.find("num_processo", numeroProcesso).first();
+
+        if(processo != null){
+
+            if(processo.numeroProcesso.equals(numeroProcesso)) {
+
+                existe = true;
+            }
+        }
+        return existe;
+    }
 }

@@ -116,4 +116,15 @@ public class ProcessosManejo extends InternalController {
 
 		renderJSON(ProcessoManejo.countWithFilter(filtro));
 	}
+
+	public static void verificaNumeroProcesso(String numeroProcesso){
+
+		notFoundIfNull(numeroProcesso);
+
+		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
+
+		renderJSON(ProcessoManejo.verificaNumeroProcesso(numeroProcesso));
+	}
+
+
 }

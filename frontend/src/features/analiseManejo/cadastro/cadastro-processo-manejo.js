@@ -179,6 +179,23 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				});
 		}
 	};
+
+	cadastroProcessoManejoController.conferirNumeroProcesso = function (numeroProcesso) {
+
+		processoManejoService.verificaSeProcessoExiste(numeroProcesso).then(
+			function(response){
+
+				var existe = response.data;
+
+				if(existe) {
+
+					mensagem.error('Já existe um processo com este número cadastrado.');
+				}
+			})
+			.catch(function(){
+				mensagem.error('Não foi possível consultar o numero do processo.');
+			});
+	};
 };
 
 exports.controllers.CadastroProcessoManejoController = CadastroProcessoManejoController;
