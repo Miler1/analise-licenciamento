@@ -6,9 +6,11 @@ import models.Documento;
 import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
 import models.portalSeguranca.Usuario;
+import play.libs.WS;
 import security.Acao;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
+import utils.WebService;
 
 import java.util.List;
 
@@ -36,21 +38,34 @@ public class ProcessosManejo extends InternalController {
 		renderJSON(processo, ProcessoManejoSerializer.findById);
 	}
 
-	public static void iniciarAnalise(ProcessoManejo processo) {
-
+	public static void iniciarAnaliseShape(ProcessoManejo processo) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
 		notFoundIfNull(processo);
 
-		// TODO enviar processo para analise na imagem
-		processo.analiseManejo = AnaliseManejo.gerarAnalise(processo,
-				(Usuario) Usuario.findById(getUsuarioSessao().id));
+		ProcessoManejo processoSalvo = ProcessoManejo.findById(processo.id);
 
-		ProcessoManejo processoAntigo = ProcessoManejo.findById(processo.id);
-		processoAntigo = processoAntigo.iniciarAnalise(processo);
+		notFoundIfNull(processoSalvo);
 
-		renderJSON(processoAntigo, ProcessoManejoSerializer.iniciarAnalise);
+		processoSalvo.iniciarAnaliseShape(processo);
+
+		renderJSON(Mensagem.ANALISE_SHAPE_INICIADA_COM_SUCESSO);
+	}
+
+	public static void iniciarAnaliseTecnica(Integer idProcesso) {
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(idProcesso);
+
+		ProcessoManejo processoSalvo = ProcessoManejo.findById(idProcesso);
+
+		notFoundIfNull(processoSalvo);
+
+		processoSalvo.iniciarAnaliseTecnica();
+
+		renderJSON(processoSalvo, ProcessoManejoSerializer.iniciarAnalise);
 	}
 
 	public static void downloadPdfAnalise(ProcessoManejo processoManejo) throws Exception {

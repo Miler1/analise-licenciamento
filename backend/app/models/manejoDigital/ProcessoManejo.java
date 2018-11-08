@@ -1,6 +1,9 @@
 package models.manejoDigital;
 
 import builders.ProcessoManejoBuilder;
+import models.analiseShape.AtributosFeature;
+import models.analiseShape.Feature;
+import models.analiseShape.ResponseAddLayer;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -8,8 +11,11 @@ import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
+import play.data.validation.Unique;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
+import utils.Configuracoes;
+import utils.WebService;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +31,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public Long id;
 
     @Required
+    @Unique
     @Column(name="num_processo")
     public String numeroProcesso;
 
@@ -97,11 +104,21 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public ProcessoManejo iniciarAnalise(ProcessoManejo processo) {
+    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo) {
 
         this.analiseManejo = processo.analiseManejo;
 
         this._save();
+
+        this.enviarProcessoAnaliseShape();
+
+        tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.analiseManejo.usuario);
+        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.analiseManejo.usuario);
+
+        return this.refresh();
+    }
+
+    public ProcessoManejo iniciarAnaliseTecnica() {
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.analiseManejo.usuario);
         Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.analiseManejo.usuario);
@@ -158,5 +175,21 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .filtrarPorIdTipoLicenca(filtro.idManejoDigital);
 
         return processoBuilder;
+    }
+
+    private void enviarProcessoAnaliseShape() {
+
+        Feature feature = new Feature(
+                new AtributosFeature(this.numeroProcesso, this.empreendimento.imovel.nome, 0, this.analiseManejo.usuario.nome),
+                this.analiseManejo.geometria
+        );
+
+        WebService webService = new WebService();
+
+        ResponseAddLayer response = webService.postJSON(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, feature, ResponseAddLayer.class);
+
+        //TODO RECUPERAR RESPONTA E SALVAR O objectID;
+
+        this._save();
     }
 }

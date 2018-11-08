@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import com.vividsolutions.jts.geom.Geometry;
 import models.Documento;
 import models.TipoDocumento;
 import models.pdf.PDFGenerator;
@@ -11,6 +12,7 @@ import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
+import security.Auth;
 import utils.Configuracoes;
 import utils.FileManager;
 
@@ -39,17 +41,15 @@ public class AnaliseManejo  extends GenericModel {
     public Integer diasAnalise;
 
     @Required
-    @Column(name="path_arquivo_shape")
-    public String pathShape;
+    @Column(name="the_geom")
+    public Geometry geometria;
 
     @Column(name="path_anexo")
     public String pathAnexo;
 
-    @Required
     @Column(name="analise_temporal")
     public String analiseTemporal;
 
-    @Required
     @Column(name="area_manejo_florestal_solicitada")
     public Double areaManejoFlorestalSolicitada;
 
@@ -95,11 +95,9 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="area_sem_previa_exploracao")
     public Double areaSemPreviaExploracao;
 
-    @Required
     @Column
     public String consideracoes;
 
-    @Required
     @Column
     public String conclusao;
 
@@ -112,7 +110,6 @@ public class AnaliseManejo  extends GenericModel {
     @JoinColumn(name="id_documento")
     public Documento documentoAnalise;
 
-    @Required
     @OneToMany(mappedBy = "analiseManejo")
     public List<Observacao> observacoes;
 
@@ -120,11 +117,9 @@ public class AnaliseManejo  extends GenericModel {
     @OneToOne(mappedBy = "analiseManejo")
     public ProcessoManejo processoManejo;
 
-    @Required
     @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseNdfi> analisesNdfi;
 
-    @Required
     @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseVetorial> analisesVetorial;
 
@@ -134,6 +129,25 @@ public class AnaliseManejo  extends GenericModel {
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 
+    @Column(name = "object_id")
+    public Integer objectId;
+
+    @Override
+    public AnaliseManejo save() {
+
+        this.dataAnalise = new Date();
+
+        this.diasAnalise = 0;
+
+        this.diasAnalise = 0;
+
+        this.usuario = Usuario.findById(Auth.getUsuarioSessao().id);
+
+        this._save();
+
+        return this.refresh();
+    }
+
     public static AnaliseManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
 
         AnaliseManejo analiseManejo = new AnaliseManejo();
@@ -141,8 +155,6 @@ public class AnaliseManejo  extends GenericModel {
         analiseManejo.dataAnalise = new Date();
 
         analiseManejo.diasAnalise = 0;
-
-        analiseManejo.pathShape = processo.analiseManejo.pathShape;
 
         analiseManejo.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
 

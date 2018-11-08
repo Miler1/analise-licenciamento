@@ -10,12 +10,24 @@ ALTER TABLE analise.analise_manejo ADD CONSTRAINT enforce_geotype_geo_localizaca
 ALTER TABLE analise.analise_manejo ADD CONSTRAINT enforce_srid_geo_localizacao CHECK ((public.st_srid(the_geom) = 4674));
 COMMENT ON COLUMN analise.analise_manejo.the_geom IS 'Coluna georreferenciada.';
 
+ALTER TABLE analise.analise_manejo ALTER COLUMN analise_temporal DROP NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN area_manejo_florestal_solicitada DROP NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN area_sem_previa_exploracao DROP NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN consideracoes DROP NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN conclusao DROP NOT NULL;
+
 ALTER TABLE analise.analise_manejo ADD COLUMN object_id INTEGER;
 COMMENT ON COLUMN analise.analise_manejo.object_id IS 'Identificador da análise no serviço de validação de shape.';
 
 # --- !Downs
 
 ALTER TABLE analise.analise_manejo DROP COLUMN object_id;
+
+ALTER TABLE analise.analise_manejo ALTER COLUMN analise_temporal SET NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN area_manejo_florestal_solicitada SET NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN area_sem_previa_exploracao SET NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN consideracoes SET NOT NULL;
+ALTER TABLE analise.analise_manejo ALTER COLUMN conclusao SET NOT NULL;
 
 ALTER TABLE analise.analise_manejo DROP COLUMN the_geom;
 

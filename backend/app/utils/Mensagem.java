@@ -88,7 +88,9 @@ public enum Mensagem {
 
 	PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO,
 
-	IMOVEL_NAO_ENCONTRADO;
+	IMOVEL_NAO_ENCONTRADO,
+
+	ANALISE_SHAPE_INICIADA_COM_SUCESSO;
 
 	public String getTexto(Object ... args) {
 
