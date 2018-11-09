@@ -5,13 +5,15 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
 
 	var analiseGeoManejo = this;
+	analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
+	analiseGeoManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
 	analiseGeoManejo.visualizarProcesso = null;
 	analiseGeoManejo.formularioAnaliseGeo = null;
-	analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-	analiseGeoManejo.processo = null;
-	analiseGeoManejo.arquivoShape = null;
-	analiseGeoManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
+	analiseGeoManejo.processo = {};
+	analiseGeoManejo.arquivoShapeUtil = new app.utils.shapefile(mensagem);
 	analiseGeoManejo.validacaoErro = false;
+	analiseGeoManejo.geometria = null;
+
 
 	analiseGeoManejo.init = function() {
 
@@ -19,6 +21,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			.then(function (response) {
 
 				analiseGeoManejo.processo = response.data;
+				analiseGeoManejo.geometria = false;
 
 				if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital em análise técnica' ) {
 
@@ -32,8 +35,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 					$location.path('/analise-manejo');
 					return;
 				}
-
-				analiseGeoManejo.processo.analiseManejo = {pathShape: null};
 			})
 			.catch(function (response) {
 
@@ -51,34 +52,15 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	}
 
 	analiseGeoManejo.upload = function (file) {
+
 		if (file && !analiseGeoManejo.validacaoErro) {
 
 			if (!file.$error) {
 
-				if (analiseGeoManejo.processo.analiseManejo.pathShape) {
-
-					var nameFile = analiseGeoManejo.processo.analiseManejo.pathShape.replace(/^.*[\\\/]/, '');
-
-					uploadService.removeShape(nameFile)
-
-						.then(function(response) {
-
-							analiseGeoManejo.processo.analiseManejo.pathShape = null;
-							analiseGeoManejo.arquivoShape = null;
-							analiseGeoManejo.saveShape(file);
-
-						}, function(error){
-
-							mensagem.error(error.data.texto);
-						});
-
-				} else {
-
-					analiseGeoManejo.saveShape(file);
-				}
+				analiseGeoManejo.arquivoShapeUtil.shapefileToGeojson(file, analiseGeoManejo.saveGeometria);
 			}
-
 		}
+
 	};
 
 	analiseGeoManejo.validarArquivo = function (file) {
@@ -104,36 +86,14 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		}
 	};
 
-	analiseGeoManejo.saveShape = function (file) {
+	analiseGeoManejo.saveGeometria = function (geometry) {
 
-		uploadService.saveShape(file)
-
-			.then(function(response) {
-
-				analiseGeoManejo.processo.analiseManejo.pathShape = response.data;
-				analiseGeoManejo.arquivoShape = file;
-
-			}, function(error){
-
-				mensagem.error(error.data.texto);
-			});
+		analiseGeoManejo.geometria = geometry;
 	};
 
-	analiseGeoManejo.removeUpload = function () {
+	analiseGeoManejo.removeGeometria = function () {
 
-		var nameFile = analiseGeoManejo.processo.analiseManejo.pathShape.replace(/^.*[\\\/]/, '');
-
-		uploadService.removeShape(nameFile)
-
-			.then(function(response) {
-
-				analiseGeoManejo.processo.analiseManejo.pathShape = null;
-				analiseGeoManejo.arquivoShape = null;
-
-			}, function(error){
-
-				mensagem.error(error.data.texto);
-			});
+		analiseGeoManejo.geometria = null;
 	};
 
 	analiseGeoManejo.analisar = function() {
@@ -144,10 +104,14 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			return;
 		}
 
-		processoManejoService.iniciarAnalise(analiseGeoManejo.processo)
+		analiseGeoManejo.processo.analiseManejo = {geometria: analiseGeoManejo.geometria};
+
+		processoManejoService.inicicarAnaliseShape(analiseGeoManejo.processo)
 			.then(function(response) {
 
-				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
+				mensagem.success(response.data.texto);
+
+				$location.path('/analise-manejo');
 
 			}, function(error){
 
@@ -163,7 +127,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	function analiseValida() {
 
 		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
-		return (analiseGeoManejo.processo.analiseManejo.pathShape);
+		return (analiseGeoManejo.geometria);
 	}
 
 

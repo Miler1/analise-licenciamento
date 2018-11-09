@@ -71,6 +71,7 @@ var config = {
 				"./bower_components/Leaflet.fullscreen/dist/fullscreen.png",
 				"./bower_components/Leaflet.fullscreen/dist/fullscreen@2x.png",
 				"./bower_components/leaflet-graphicscale/dist/Leaflet.GraphicScale.min.*",
+				"./bower_components/shp/dist/shp.min.js",
 				"./bower_components/leaflet-measure/dist/leaflet-measure.css",
 				"./bower_components/leaflet-measure/dist/leaflet-measure.min.js"
 			],
