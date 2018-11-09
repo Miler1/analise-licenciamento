@@ -21,7 +21,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			.then(function (response) {
 
 				analiseGeoManejo.processo = response.data;
-				analiseGeoManejo.geometria = false;
 
 				if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital em análise técnica' ) {
 
@@ -86,9 +85,12 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		}
 	};
 
-	analiseGeoManejo.saveGeometria = function (geometry) {
+	analiseGeoManejo.saveGeometria = function (geojson) {
 
-		analiseGeoManejo.geometria = geometry;
+		var geometria = analiseGeoManejo.arquivoShapeUtil.geojsonToGeometryCollection(geojson);
+		analiseGeoManejo.geometria = geometria;
+		$scope.$apply();
+
 	};
 
 	analiseGeoManejo.removeGeometria = function () {

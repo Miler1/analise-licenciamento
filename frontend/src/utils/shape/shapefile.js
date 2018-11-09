@@ -66,6 +66,21 @@ var shapefile = function(mensagem) {
 	};
 
 
+	this.geojsonToGeometryCollection = function(geojson) {
+
+		var geometryCollection = {type: "GeometryCollection", geometries: []};
+
+		for (var j = 0; j < geojson.features.length; j++) {
+
+			var feature = geojson.features[j];
+
+			geometryCollection.geometries.push(feature.geometry);
+		}
+
+		return geometryCollection;
+	};
+
+
 	this.getFileExtension = function(fileName) {
 
 		var ext = fileName.split('.').pop();
