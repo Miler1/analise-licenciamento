@@ -2,8 +2,8 @@
 
 -- Adicionar novas condições do manejo digital
 
-INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (22, NULL, 'Manejo digital Aguardando Análise de Shape', 1);
-INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (23, NULL, 'Manejo digital em análise de Shape', 1);
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (22, 4, 'Manejo digital Aguardando Análise de Shape', 1);
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (23, 4, 'Manejo digital em análise de Shape', 1);
 
 -- Adicionar novas ações do manejo digital
 
