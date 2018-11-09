@@ -1,6 +1,7 @@
 package models.manejoDigital;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import models.Documento;
 import models.TipoDocumento;
 import models.analiseShape.FeatureQueryInsumo;
@@ -12,6 +13,7 @@ import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.hibernate.annotations.Type;
 import play.data.Upload;
 import play.data.validation.Required;
@@ -49,7 +51,7 @@ public class AnaliseManejo  extends GenericModel {
     @Required
     @Column(name="the_geom")
     @Type(type = "org.hibernate.spatial.GeometryType")
-    public Geometry geometria;
+    public GeometryCollection geometria;
 
     @Column(name="path_anexo")
     public String pathAnexo;
@@ -146,8 +148,6 @@ public class AnaliseManejo  extends GenericModel {
     public AnaliseManejo save() {
 
         this.dataAnalise = new Date();
-
-        this.diasAnalise = 0;
 
         this.diasAnalise = 0;
 

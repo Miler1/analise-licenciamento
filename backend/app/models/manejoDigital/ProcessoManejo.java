@@ -12,6 +12,7 @@ import models.analiseShape.ResponseQueryProcesso;
 import models.analiseShape.ResponseQueryResumoNDFI;
 import models.analiseShape.ResponseQuerySobreposicao;
 import models.portalSeguranca.Setor;
+import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
@@ -20,11 +21,13 @@ import models.tramitacao.Tramitacao;
 import play.data.validation.Required;
 import play.data.validation.Unique;
 import play.db.jpa.GenericModel;
+import security.Auth;
 import security.InterfaceTramitavel;
 import utils.Configuracoes;
 import utils.WebService;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +118,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo) {
 
         this.analiseManejo = processo.analiseManejo;
+        this.analiseManejo.dataAnalise = new Date();
+        this.analiseManejo.diasAnalise = 0;
+        this.analiseManejo.usuario = Usuario.findById(Auth.getUsuarioSessao().id);
 
         this._save();
 
@@ -198,6 +204,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         params.put("attributes", feature.attributes);
         params.put("geometry", feature.geometry);
+        params.put("f", "json");
 
         ResponseAddLayer response = webService.post(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, params, ResponseAddLayer.class);
 

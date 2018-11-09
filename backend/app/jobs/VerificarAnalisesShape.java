@@ -12,7 +12,7 @@ public class VerificarAnalisesShape extends GenericJob {
 	public void executar() throws Exception {
 
 		//TODO VERIFICAR ID DE CONDICAO
-		List<ProcessoManejo> processos = ProcessoManejo.find("objetoTramitavel.condicao.id", 22).fetch();
+		List<ProcessoManejo> processos = ProcessoManejo.find("objetoTramitavel.condicao.id", 23).fetch();
 
 		for (ProcessoManejo processo : processos) {
 
