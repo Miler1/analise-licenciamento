@@ -14,7 +14,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.validacaoErro = false;
 	analiseGeoManejo.geometria = null;
 
-
 	analiseGeoManejo.init = function() {
 
 		processoManejoService.getProcesso($routeParams.idProcesso)
@@ -96,7 +95,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		analiseGeoManejo.geometria = null;
 	};
 
-	analiseGeoManejo.analisar = function() {
+	analiseGeoManejo.analisarShape = function() {
 
 		if(!analiseValida()) {
 
@@ -117,6 +116,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 				mensagem.error(error.data.texto);
 			});
+
 	};
 
 	analiseGeoManejo.cancelar = function() {

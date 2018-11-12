@@ -45,9 +45,9 @@ div(style="margin-top: 30px;")
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="listagemProcessoManejo.iniciarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 17")
+												a(ng-click="listagemProcessoManejo.iniciarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 22")
 													i.glyphicon.glyphicon-check
-													span Analisar
+													span Solicitar analise Shape
 											li
 												a(ng-click="listagemProcessoManejo.continuarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 18")
 													i.glyphicon.glyphicon-check
@@ -60,6 +60,11 @@ div(style="margin-top: 30px;")
 												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 19")
 													i.glyphicon.glyphicon-save-file
 													span Gerar PDF
+
+											li
+												a(ng-click="listagemProcessoManejo.init(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 17")
+													i.glyphicon.glyphicon-check
+													span Solicitar analise técnica
 
 				+paginacao('listagemProcessoManejo.paginacao', 'listagemProcessoManejo.onPaginaAlterada')
 
