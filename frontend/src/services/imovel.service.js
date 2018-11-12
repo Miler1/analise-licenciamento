@@ -63,6 +63,12 @@ var ImovelService =  function (request, config, $uibModal) {
 		window.location.assign(config.BASE_URL() + 'baixarShapefile?codigoImovel=' + codigoImovel);
 	};
 
+	this.getImovelByCodigo = function(codigoImovel) {
+
+		return request
+		.get(config.BASE_URL() + 'imoveis/' + codigoImovel + '/completo');
+	};
+
 };
 
 exports.services.ImovelService = ImovelService;
