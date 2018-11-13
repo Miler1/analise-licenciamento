@@ -12,7 +12,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.processo = {};
 	analiseGeoManejo.arquivoShapeUtil = new app.utils.shapefile(mensagem);
 	analiseGeoManejo.validacaoErro = false;
-	analiseGeoManejo.geometria = null;
+	analiseGeoManejo.geoJsonArcgis = null;
 
 
 	analiseGeoManejo.init = function() {
@@ -80,24 +80,21 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			}
 
 		} else {
-
 			analiseGeoManejo.validacaoErro = false;
 		}
 	};
 
 	analiseGeoManejo.saveGeometria = function (geojson) {
 
-		// TODO TESTAR
-		var geometria = analiseGeoManejo.arquivoShapeUtil.geojsonToArcGIS(geojson);
-
-		analiseGeoManejo.geometria = geometria;
+		var geoJsonArcgis = analiseGeoManejo.arquivoShapeUtil.geojsonToArcGIS(geojson);
+		analiseGeoManejo.geoJsonArcgis = JSON.stringify(geoJsonArcgis);
 		$scope.$apply();
 
 	};
 
 	analiseGeoManejo.removeGeometria = function () {
 
-		analiseGeoManejo.geometria = null;
+		analiseGeoManejo.geoJsonArcgis = null;
 	};
 
 	analiseGeoManejo.analisar = function() {
@@ -108,7 +105,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			return;
 		}
 
-		analiseGeoManejo.processo.analiseManejo = {geometria: analiseGeoManejo.geometria};
+		analiseGeoManejo.processo.analiseManejo = {geometria: analiseGeoManejo.geoJsonArcgis};
 
 		processoManejoService.inicicarAnaliseShape(analiseGeoManejo.processo)
 			.then(function(response) {
@@ -131,7 +128,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	function analiseValida() {
 
 		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
-		return (analiseGeoManejo.geometria);
+		return (analiseGeoManejo.geoJsonArcgis);
 	}
 
 
