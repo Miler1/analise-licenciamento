@@ -15,7 +15,15 @@ INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALU
 INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (49, 45, 22, 23, NULL, NULL);
 INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (50, 46, 23, 17, NULL, NULL);
 
+-- Alterando fluxo de manejo digital
+
+UPDATE tramitacao.fluxo SET id_condicao_inicial = 22 WHERE id_fluxo = 2;
+
 # --- !Downs
+
+-- Alterando fluxo de manejo digital
+
+UPDATE tramitacao.fluxo SET id_condicao_inicial = 17 WHERE id_fluxo = 2;
 
 -- Remover tramitação do manejo digital
 

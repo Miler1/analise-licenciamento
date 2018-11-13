@@ -29,7 +29,9 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		'17': 'Aguardando análise técnica',
 		'18': 'Em análise técnica',
 		'19': 'Deferido',
-		'20': 'Indeferido'
+		'20': 'Indeferido',
+		'22': 'Aguardando análise de shape',
+		'23': 'Em análise de shape'
 	};
 
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {

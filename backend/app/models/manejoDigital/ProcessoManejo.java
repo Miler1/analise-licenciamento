@@ -216,7 +216,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put("features", features);
+        params.put("features", gson.toJson(features).replace("\\", ""));
         params.put("f", "json");
 
         ResponseAddLayer response = webService.post(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, params, ResponseAddLayer.class);
