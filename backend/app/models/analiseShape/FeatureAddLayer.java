@@ -5,9 +5,9 @@ import com.vividsolutions.jts.geom.Geometry;
 public class FeatureAddLayer {
 
 	public AtributosAddLayer attributes;
-	public Geometry geometry;
+	public String geometry;
 
-	public FeatureAddLayer(AtributosAddLayer attributes, Geometry geometry) {
+	public FeatureAddLayer(AtributosAddLayer attributes, String geometry) {
 
 		this.attributes = attributes;
 		this.geometry = geometry;

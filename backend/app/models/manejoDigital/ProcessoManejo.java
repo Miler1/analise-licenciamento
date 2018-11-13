@@ -1,11 +1,15 @@
 package models.manejoDigital;
 
 import builders.ProcessoManejoBuilder;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import deserializers.AnaliseNDFIDeserializer;
 import deserializers.AnaliseVetorialDeserializer;
+import deserializers.GeometriaArcgisDeserializer;
+import exceptions.WebServiceException;
 import models.analiseShape.AtributosAddLayer;
-import models.analiseShape.FeatureAddLayer;
+import models.analiseShape.GeometriaArcgis;
 import models.analiseShape.ResponseAddLayer;
 import models.analiseShape.ResponseQueryInsumo;
 import models.analiseShape.ResponseQueryProcesso;
@@ -27,6 +31,8 @@ import utils.Configuracoes;
 import utils.WebService;
 
 import javax.persistence.*;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -193,22 +199,36 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     private void enviarProcessoAnaliseShape() {
 
-        FeatureAddLayer feature = new FeatureAddLayer(
-                new AtributosAddLayer(this.numeroProcesso, this.empreendimento.imovel.nome, 0, this.analiseManejo.usuario.nome),
-                this.analiseManejo.geometria
-        );
+        Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy")
+                .registerTypeAdapter(GeometriaArcgis.class, new GeometriaArcgisDeserializer())
+                .create();
+
+        Type listType = new TypeToken<ArrayList<GeometriaArcgis>>(){}.getType();
+        List<GeometriaArcgis> features = gson.fromJson(this.analiseManejo.geoJsonArcgis, listType);
+
+        for (GeometriaArcgis feature : features) {
+
+            feature.attributes = new AtributosAddLayer(this.numeroProcesso,
+                    this.empreendimento.imovel.nome, 0, this.analiseManejo.usuario.nome);
+        }
 
         WebService webService = new WebService();
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put("attributes", feature.attributes);
-        params.put("geometry", feature.geometry);
+        params.put("features", features);
         params.put("f", "json");
 
         ResponseAddLayer response = webService.post(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, params, ResponseAddLayer.class);
 
-        //TODO RECUPERAR RESPONTA E SALVAR O objectID;
+        if (response.error != null) {
+
+            throw new WebServiceException("Erro ao enviar processo para análise: " + response.error.message);
+
+        } else {
+
+            this.analiseManejo.objectId = response.addResults.get(response.addResults.size() - 1).objectId;
+        }
 
         this._save();
     }

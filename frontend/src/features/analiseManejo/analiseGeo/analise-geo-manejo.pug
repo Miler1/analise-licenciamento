@@ -30,7 +30,7 @@ div
 		form(name="analiseGeoManejo.formularioAnaliseGeo")
 			.form-group
 				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
-				 ng-class="{'error-button': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.geometria}",
+				 ng-class="{'error-button': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.geoJsonArcgis}",
 				 ngf-before-model-change="analiseGeoManejo.validarArquivo($file)")
 					i.glyphicon.glyphicon-open.glyphicon--with-right-margin
 					| Anexar arquivo à análise
@@ -47,14 +47,14 @@ div
 
 		tbody
 
-			tr(ng-show="analiseGeoManejo.geometria")
+			tr(ng-show="analiseGeoManejo.geoJsonArcgis")
 				td.col-xs-10 Arquivo Shape
 				td.col-xs-2.text-right
 					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeGeometria()")
 						i.glyphicon.glyphicon-trash.icone
-			tr(ng-show="!analiseGeoManejo.geometria")
+			tr(ng-show="!analiseGeoManejo.geoJsonArcgis")
 				td.col-xs-12.text-center Nenhum arquivo anexado
-	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.geometria") Campo obrigatório.
+	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.geoJsonArcgis") Campo obrigatório.
 
 div.botoes-analise-geo
 	button.btn.btn-default.col-md-2(ng-click="analiseGeoManejo.cancelar()", tabindex="0")

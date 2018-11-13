@@ -49,9 +49,8 @@ public class AnaliseManejo  extends GenericModel {
     public Integer diasAnalise;
 
     @Required
-    @Column(name="the_geom")
-    @Type(type = "org.hibernate.spatial.GeometryType")
-    public GeometryCollection geometria;
+    @Column(name="geojson")
+    public String geoJsonArcgis;
 
     @Column(name="path_anexo")
     public String pathAnexo;
@@ -139,7 +138,7 @@ public class AnaliseManejo  extends GenericModel {
     public List<BaseVetorial> basesVetorial;
 
     @Column(name = "object_id")
-    public Integer objectId;
+    public String objectId;
 
     @Transient
     public List<Insumo> insumos;
