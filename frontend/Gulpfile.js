@@ -29,6 +29,8 @@ var config = {
 	},
 
 	libs: {
+
+		arcGisToGeoJsonUtil: "./node_modules/arcgis-to-geojson-utils/dist/arcgis-to-geojson.js",
 		bootstrap: "./bower_components/bootstrap/dist/**",
 		angular: [
 			"./bower_components/angular/angular.min.js",

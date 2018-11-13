@@ -87,6 +87,9 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.saveGeometria = function (geojson) {
 
+		//TODO TESTE
+		var teste = arcGisToGeoJsonUtil.geojsonToArcGIS(geojson);
+
 		var geometria = analiseGeoManejo.arquivoShapeUtil.geojsonToGeometryCollection(geojson);
 		analiseGeoManejo.geometria = geometria;
 		$scope.$apply();
