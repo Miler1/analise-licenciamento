@@ -12,9 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vividsolutions.jts.geom.Geometry;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
 import deserializers.DateDeserializer;
-import deserializers.GeometryCollectionDeserializer;
 import deserializers.GeometryDeserializer;
 import models.licenciamento.Pessoa;
 import models.licenciamento.PessoaFisica;
@@ -38,7 +36,6 @@ public class JsonBinderPlugin extends PlayPlugin {
 		gson = new GsonBuilder()
 					.registerTypeAdapter(Date.class, new DateDeserializer())
 					.registerTypeAdapter(Geometry.class, new GeometryDeserializer())
-					.registerTypeAdapter(GeometryCollection.class, new GeometryCollectionDeserializer())
 					.registerTypeAdapterFactory(pessoaAdapterFactory)
 					.create();
 		

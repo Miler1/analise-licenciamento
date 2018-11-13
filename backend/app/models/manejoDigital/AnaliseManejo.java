@@ -50,7 +50,7 @@ public class AnaliseManejo  extends GenericModel {
 
     @Required
     @Column(name="geojson")
-    public String geometria;
+    public String geoJsonArcgis;
 
     @Column(name="path_anexo")
     public String pathAnexo;
@@ -138,7 +138,7 @@ public class AnaliseManejo  extends GenericModel {
     public List<BaseVetorial> basesVetorial;
 
     @Column(name = "object_id")
-    public Integer objectId;
+    public String objectId;
 
     @Transient
     public List<Insumo> insumos;

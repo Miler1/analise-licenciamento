@@ -13,7 +13,7 @@ ALTER TABLE analise.analise_manejo ALTER COLUMN area_sem_previa_exploracao DROP 
 ALTER TABLE analise.analise_manejo ALTER COLUMN consideracoes DROP NOT NULL;
 ALTER TABLE analise.analise_manejo ALTER COLUMN conclusao DROP NOT NULL;
 
-ALTER TABLE analise.analise_manejo ADD COLUMN object_id INTEGER;
+ALTER TABLE analise.analise_manejo ADD COLUMN object_id VARCHAR(200);
 COMMENT ON COLUMN analise.analise_manejo.object_id IS 'Identificador da análise no serviço de validação de shape.';
 
 # --- !Downs
