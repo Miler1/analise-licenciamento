@@ -52,8 +52,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long INDEFERIR_ANALISE_TECNICA_MANEJO = 42l;
 	public static final Long PRORROGAR_LICENCA = 43l;
 	public static final Long ARQUIVAR_PRORROGACAO_POR_RENOVACAO = 44l;
-	//TODO VERIFICAR IDS
-	public static final Long INICIAR_ANALISE_SHAPE = 44l;
-	public static final Long FINALIZAR_ANALISE_SHAPE = 45l;
+	public static final Long INICIAR_ANALISE_SHAPE = 45l;
+	public static final Long FINALIZAR_ANALISE_SHAPE = 46l;
 }
 

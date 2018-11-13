@@ -209,14 +209,14 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         for (GeometriaArcgis feature : features) {
 
             feature.attributes = new AtributosAddLayer(this.numeroProcesso,
-                    this.empreendimento.imovel.nome, 0, this.analiseManejo.usuario.nome);
+                    this.empreendimento.imovel.nome.substring(0, 50), 0, this.analiseManejo.usuario.nome);
         }
 
         WebService webService = new WebService();
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put("features", gson.toJson(features).replace("\\", ""));
+        params.put("features", gson.toJson(features));
         params.put("f", "json");
 
         ResponseAddLayer response = webService.post(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, params, ResponseAddLayer.class);
