@@ -245,6 +245,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         Map<String, Object> params = new HashMap<>();
         params.put("objectIds", this.analiseManejo.objectId);
         params.put("outFields", "*");
+        params.put("f", "json");
 
         ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
 
@@ -253,6 +254,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             params.clear();
             params.put("where", "protocolo = '" + this.numeroProcesso + "'");
             params.put("outFields", "*");
+            params.put("f", "json");
 
             ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
             ResponseQueryInsumo responseInsumo =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
