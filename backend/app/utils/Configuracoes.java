@@ -77,7 +77,7 @@ public class Configuracoes {
 	public static String ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.sobreposicoes.url", null);
 	public static String ANALISE_SHAPE_QUERY_INSUMOS_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.insumos.url", null);
 	public static String ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.resumo.ndfi.url", null);
-
+	public static String ANALISE_SHAPE_QUERY_AMF_MANEJO_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.amf.manejo.url", null);
 
 	static {
 
