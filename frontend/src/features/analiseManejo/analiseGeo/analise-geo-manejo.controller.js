@@ -105,7 +105,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			return;
 		}
 
-		analiseGeoManejo.processo.analiseManejo = {geometria: analiseGeoManejo.geoJsonArcgis};
+		analiseGeoManejo.processo.analiseManejo = {geoJsonArcgis: analiseGeoManejo.geoJsonArcgis};
 
 		processoManejoService.inicicarAnaliseShape(analiseGeoManejo.processo)
 			.then(function(response) {
