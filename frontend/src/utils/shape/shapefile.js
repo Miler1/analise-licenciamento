@@ -80,6 +80,11 @@ var shapefile = function(mensagem) {
 		return geometryCollection;
 	};
 
+	this.geojsonToArcGIS = function(geojson) {
+
+		return ArcgisToGeojsonUtils.geojsonToArcGIS(geojson);
+	};
+
 
 	this.getFileExtension = function(fileName) {
 
