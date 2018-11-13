@@ -49,9 +49,8 @@ public class AnaliseManejo  extends GenericModel {
     public Integer diasAnalise;
 
     @Required
-    @Column(name="the_geom")
-    @Type(type = "org.hibernate.spatial.GeometryType")
-    public GeometryCollection geometria;
+    @Column(name="geojson")
+    public String geometria;
 
     @Column(name="path_anexo")
     public String pathAnexo;
