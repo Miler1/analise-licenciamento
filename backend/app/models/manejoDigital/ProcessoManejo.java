@@ -6,11 +6,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import deserializers.AnaliseNDFIDeserializer;
 import deserializers.AnaliseVetorialDeserializer;
+import deserializers.AtributosQueryAMFManejoDeserializer;
 import deserializers.GeometriaArcgisDeserializer;
 import exceptions.WebServiceException;
 import models.analiseShape.AtributosAddLayer;
+import models.analiseShape.AtributosQueryAMFManejo;
 import models.analiseShape.GeometriaArcgis;
 import models.analiseShape.ResponseAddLayer;
+import models.analiseShape.ResponseQueryAMFManejo;
 import models.analiseShape.ResponseQueryInsumo;
 import models.analiseShape.ResponseQueryProcesso;
 import models.analiseShape.ResponseQueryResumoNDFI;
@@ -239,6 +242,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 new GsonBuilder().setDateFormat("dd/MM/yyyy")
                         .registerTypeAdapter(AnaliseNdfi.class, new AnaliseNDFIDeserializer())
                         .registerTypeAdapter(AnaliseVetorial.class, new AnaliseVetorialDeserializer())
+                        .registerTypeAdapter(AtributosQueryAMFManejo.class, new AtributosQueryAMFManejoDeserializer())
                         .create()
         );
 
@@ -257,12 +261,20 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             params.put("f", "json");
 
             ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
-            ResponseQueryInsumo responseInsumo =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
-            ResponseQueryResumoNDFI responseResumoNDFI =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryResumoNDFI.class);
+            ResponseQueryAMFManejo responseAMFManejo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_MANEJO_URL, params, ResponseQueryAMFManejo.class);
+
+            params.remove("where");
+            params.put("where", "processo = '" + this.numeroProcesso + "'");
+            ResponseQueryInsumo responseInsumo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
+
+            params.remove("where");
+            params.put("where", "processo_amf = '" + this.numeroProcesso + "'");
+            ResponseQueryResumoNDFI responseResumoNDFI = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL, params, ResponseQueryResumoNDFI.class);
 
             this.analiseManejo.setAnalisesVetoriais(responseSobreposicao.features);
             this.analiseManejo.setInsumos(responseInsumo.features);
             this.analiseManejo.setAnalisesNdfi(responseResumoNDFI.features);
+            this.analiseManejo.areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
 
             this.analiseManejo._save();
 
