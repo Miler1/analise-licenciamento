@@ -109,7 +109,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 		processoManejoService.inicicarAnaliseShape(analiseGeoManejo.processo)
 			.then(function(response) {
 
-				mensagem.success(response.data.texto);
+				mensagem.success('Analise de shape solicitada com sucesso !', { ttl: 10000 });
 
 				$location.path('/analise-manejo');
 
