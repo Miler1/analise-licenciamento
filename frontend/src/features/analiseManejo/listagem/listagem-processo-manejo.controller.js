@@ -72,7 +72,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 	function onPaginaAlterada(){
 
-		$scope.$broadcast('pesquisarProcessos');
+		$scope.$broadcast('pesquisarProcessosManejo');
 	}
 
 	function atualizarPaginacao(totalItens, paginaAtual) {

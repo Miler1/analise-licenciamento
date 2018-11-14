@@ -7,7 +7,7 @@ var FiltroProcessosManejo = {
 		pesquisarAoInicializar: '<'
 	},
 
-	controller: function(municipioService, tipologiaManejoService, atividadeManejoService, tipoLicencaManejoService, processoManejoService, condicaoService, $rootScope) {
+	controller: function($scope, municipioService, tipologiaManejoService, atividadeManejoService, tipoLicencaManejoService, processoManejoService, condicaoService, $rootScope) {
 
 		var ctrl = this;
 
@@ -101,7 +101,7 @@ var FiltroProcessosManejo = {
 					mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
 			});
 
-			$rootScope.$broadcast('atualizarContagemProcessos');
+			$rootScope.$broadcast('atualizarContagemProcessosManejo');
 		};
 
 
@@ -128,6 +128,11 @@ var FiltroProcessosManejo = {
 				ctrl.pesquisar(1);
 			}
 		};
+
+		$scope.$on('pesquisarProcessosManejo', function(event){
+
+			ctrl.pesquisar();
+		});
 	},
 
 	templateUrl: 'components/filtroProcessosManejo/filtroProcessosManejo.html'
