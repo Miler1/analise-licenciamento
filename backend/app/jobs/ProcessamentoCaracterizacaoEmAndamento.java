@@ -60,6 +60,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 				processoAntigo = Processo.find("numero", caracterizacao.numeroProcessoAntigo).first();
 				processo.processoAnterior = processoAntigo;
+				processo.renovacao = true;
 
 				if (!caracterizacao.empreendimento.houveAlteracoes) {
 

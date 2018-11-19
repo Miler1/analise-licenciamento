@@ -1,4 +1,4 @@
-var ProcessoManejoService = function(request, config, Upload) {
+var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 
 	this.salvarProcesso = function(processo) {
 
@@ -12,6 +12,12 @@ var ProcessoManejoService = function(request, config, Upload) {
 			.get(config.BASE_URL() + "processoManejo/" + id);
 	};
 
+	this.getProcessoVisualizar = function(id) {
+
+		return request
+			.get(config.BASE_URL() + "processoManejo/" + id + "/visualizar");
+	};
+
 	this.iniciarAnalise = function(processo) {
 
 		return request
@@ -21,6 +27,35 @@ var ProcessoManejoService = function(request, config, Upload) {
 	this.downloadPdfAnaliseTecnica = function(processo) {
 
 		return request.postArrayBuffer(config.BASE_URL() + "processoManejo/downloadPdfAnalise", processo);
+	};
+
+	this.getProcessos = function(filtro) {
+
+		return request
+			.post(config.BASE_URL() + "processosManejo", filtro);
+	};
+
+	this.visualizarProcessoManejo = function(processo) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'visualizacaoProcessoManejoController',
+			controllerAs: 'modalVisualizacaoProcessoManejoCtrl',
+			templateUrl: 'components/visualizacaoProcessoManejo/visualizacaoProcessoManejo.html',
+			windowClass: 'modalVisualizarProcessoManejo',
+			size: 'lg',
+			resolve: {
+				processo: function() {
+					return processo;
+				}
+			}
+		});
+
+	};
+
+	this.getProcessosCount = function(filtro) {
+
+		return request
+		.post(config.BASE_URL() + "processoManejo/count", filtro);
 	};
 
 };

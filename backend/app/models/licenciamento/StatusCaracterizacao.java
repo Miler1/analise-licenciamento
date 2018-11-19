@@ -25,4 +25,6 @@ public class StatusCaracterizacao extends GenericModel {
 
 	public String nome;
 
+	public String codigo;
+
 }

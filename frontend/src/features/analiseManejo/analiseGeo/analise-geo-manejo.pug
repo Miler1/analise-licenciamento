@@ -13,15 +13,15 @@ div.row#dadosProcesso(ng-init="analiseGeoManejo.init()")
 
 			div.row
 				label.col-sm-4 CPF/CNPJ:
-				span.col-sm-8 {{analiseGeoManejo.processo.cpfCnpj | brCpfCnpj}}
+				span.col-sm-8 {{analiseGeoManejo.processo.empreendimento.cpfCnpj | brCpfCnpj}}
 
 			div.row
 				label.col-sm-4 Nome/Razão Social:
-				span.col-sm-8 {{analiseGeoManejo.processo.denominacaoEmpreendimentoSimlam}}
+				span.col-sm-8 {{analiseGeoManejo.processo.empreendimento.denominacao}}
 
 			div.row
 				label.col-sm-4 Município:
-				span.col-sm-8 {{analiseGeoManejo.processo.nomeMunicipioSimlam}}
+				span.col-sm-8 {{analiseGeoManejo.processo.empreendimento.municipio.nome}}
 hr
 div
 	.col-xs-12.col-md-6.no-padding

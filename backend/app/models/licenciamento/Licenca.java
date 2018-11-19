@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import models.EmailNotificacaoCancelamentoLicenca;
 import models.EmailNotificacaoProrrogacaoLicenca;
 import models.LicencaAnalise;
+import models.LicencaCancelada;
 import models.Suspensao;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -69,6 +70,9 @@ public class Licenca extends GenericModel implements Identificavel {
 	public Boolean ativo;
 
 	public Boolean prorrogacao;
+
+	@OneToOne(mappedBy = "licenca")
+	public LicencaCancelada licencaCancelada;
 
 	public Licenca(Caracterizacao caracterizacao) {
 		

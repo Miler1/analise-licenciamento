@@ -1,20 +1,13 @@
 package builders;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import models.StatusLicenca;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
-import org.hibernate.type.StringType;
 
-import models.Processo;
-import models.licenciamento.Licenca;
 import models.licenciamento.LicencaEmitida;
 import utils.IlikeNoAccents;
 
@@ -22,6 +15,9 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	private static final String CARACTERIZACAO_ALIAS = "carac";
 	private static final String PROCESSO_ALIAS = "proc";
+	private static final String LICENCA_ALIAS = "lic";
+	private static final String LICENCA_SUSPENSAO_ALIAS = "lsus";
+	private static final String LICENCA_CANCELADA_ALIAS = "lca";
 	private static final String EMPREENDIMENTO_ALIAS = "emp";
 	private static final String PESSOA_EMPREENDIMENTO_ALIAS = "pes";
 	private static final String MUNICIPIO_EMPREENDIMENTO_ALIAS = "mun";
@@ -36,14 +32,14 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return this;
 	}
-	
+
 	public LicencaEmitidaBuilder addEmpreendimentoAlias() {
-		
+
 		addCaracterizacaoAlias();
-		
+
 		addAlias(CARACTERIZACAO_ALIAS+".empreendimento", EMPREENDIMENTO_ALIAS);
-		
-		return this;		
+
+		return this;
 	}
 	
 	public LicencaEmitidaBuilder addProcessoAlias() {
@@ -53,7 +49,23 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		addAlias(CARACTERIZACAO_ALIAS+".processos", PROCESSO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 		
 		return this;
-	}	
+	}
+
+	public LicencaEmitidaBuilder addLicencaAlias() {
+
+		addAlias("licenca", LICENCA_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
+	public LicencaEmitidaBuilder addLicencaSuspensaoAlias() {
+
+		addLicencaAlias();
+
+		addAlias(LICENCA_ALIAS+".suspensao", LICENCA_SUSPENSAO_ALIAS);
+
+		return this;
+	}
 	
 	public LicencaEmitidaBuilder addPessoaEmpreendimentoAlias() {
 		
@@ -217,6 +229,34 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return Restrictions.ilike("numero", numeroLicenca, MatchMode.ANYWHERE);
 	}
+
+	private Criterion getStatusAtivoLicencaRestricao(Boolean ativo) {
+
+		return Restrictions.eq("ativo", ativo);
+	}
+
+	private Criterion getStatusSuspensaLicencaRestricao(Boolean suspenso) {
+
+		addLicencaSuspensaoAlias();
+
+		return Restrictions.eq(LICENCA_SUSPENSAO_ALIAS+".ativo", suspenso);
+	}
+
+	private Criterion getStatusCanceladaLicencaRestricao() {
+
+		addLicencaAlias();
+
+		addAlias(LICENCA_ALIAS+".licencaCancelada", LICENCA_CANCELADA_ALIAS, JoinType.INNER_JOIN);
+
+		return Restrictions.eq("ativo", false);
+	}
+
+	private Criterion getStatusRenovacaoLicencaRestricao(boolean renovado) {
+
+		addCaracterizacaoAlias();
+
+		return Restrictions.eq(CARACTERIZACAO_ALIAS+".renovacao", renovado);
+	}
 	
 	public LicencaEmitidaBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 		
@@ -308,6 +348,34 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return this;
 	}
+
+	public LicencaEmitidaBuilder filtrarPorStatusLicenca(StatusLicenca statusLicenca) {
+
+		if (statusLicenca != null) {
+
+			switch (statusLicenca) {
+
+				case ATIVA:
+					addRestriction(this.getStatusAtivoLicencaRestricao(true));
+					break;
+
+				case CANCELADA:
+					addRestriction(this.getStatusCanceladaLicencaRestricao());
+					break;
+
+				case RENOVADA:
+					addRestriction(this.getStatusRenovacaoLicencaRestricao(true));
+					break;
+
+				case SUSPENSA:
+					addRestriction(this.getStatusSuspensaLicencaRestricao(true));
+					break;
+			}
+		}
+
+		return this;
+	}
+
 	
 	//TODO Adicionar filtro por situação da licença
 	
@@ -330,7 +398,9 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	}
 	
 	public LicencaEmitidaBuilder filtrarPorCamposPesquisaRapida(String pesquisa) {
-		
+
+		criteria.add(Restrictions.and(getStatusAtivoLicencaRestricao(true)));
+
 		if (StringUtils.isNotEmpty(pesquisa)) {
 
 			addPessoaEmpreendimentoAlias();
@@ -377,6 +447,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		public Long paginaAtual;
 		public Long itensPorPagina;
 		public String pesquisa;
+		public StatusLicenca statusLicenca;
 		
 		public FiltroLicenca() {
 	

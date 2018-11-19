@@ -20,6 +20,7 @@ GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
 GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
 GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
 GET		/baixarShapefile							Imoveis.baixarShapefile
+GET     /imoveis/{codigoImovel}/completo            Imoveis.getImovelByCodigo
 
 # Analise
 
@@ -94,6 +95,7 @@ GET		/coordenadoresAprovacao						Coordenadores.getCoordenadoresAprovacao
 
 # Condições
 GET		/condicoes									Condicoes.list
+GET     /condicoes/manejo                           Condicoes.listManejo
 
 # Documentos
 GET		/documentos/{id}/download					Documentos.download
@@ -111,6 +113,7 @@ GET		/licencasEmitidas/{id}/downloadDla			LicencasEmitidas.downloadDla
 GET		/licencasEmitidas/{id}/download				LicencasEmitidas.downloadLicencas
 POST	/licencasAnalise/emitir						LicencasAnalise.emitirLicencaAnalise
 GET		/licencas/{idLicenca}						Licencas.findByIdLicenca
+GET		/licencas/status    						Licencas.getStatus
 
 # Dispensa Licenciamento
 GET		/dla/{idDLA}								DLAs.findById
@@ -138,10 +141,13 @@ DELETE  /upload/shape/{token}                       Uploads.deleteShape
 GET     /notificacoes/{idTramitacao}                Notificacoes.downloadPDF
 
 # Processos Manejo
+POST    /processosManejo                            ProcessosManejo.listWithFilter
 POST    /processoManejo                             ProcessosManejo.save
 GET     /processoManejo/{id}                        ProcessosManejo.findById
+GET     /processoManejo/{id}/visualizar             ProcessosManejo.findProcessoCompletoById
 POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
 POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
+POST    /processoManejo/count                       ProcessosManejo.countWithFilter
 
 # Analises Manejo
 POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
@@ -152,6 +158,16 @@ PUT     /analiseManejo/{id}                         AnalisesManejo.finalizar
 # Observações
 POST    /observacao                                 Observacoes.save
 DELETE  /observacao/{id}                            Observacoes.delete
+
+# Tipologias Manejo
+GET     /tipologiasManejo                           TipologiasManejo.list
+
+# Atividades Manejo
+GET     /atividadesManejo                           AtividadesManejo.list
+GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTipologia
+
+# Tipos licença manejo
+GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
 # Estáticos
 GET     /public/									staticDir:public

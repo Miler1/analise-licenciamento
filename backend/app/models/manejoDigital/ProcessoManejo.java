@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import builders.ProcessoManejoBuilder;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -12,6 +13,7 @@ import security.InterfaceTramitavel;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(schema = "analise", name = "processo_manejo")
@@ -27,37 +29,19 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public String numeroProcesso;
 
     @Required
-    @Column(name="cpf_cnpj_empreendimento")
-    public String cpfCnpj;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_empreendimento")
+    public EmpreendimentoManejo empreendimento;
 
     @Required
-    @Column(name="denominacao_empreendimento_simlam")
-    public String denominacaoEmpreendimentoSimlam;
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_licenca")
+    public TipoLicencaManejo tipoLicenca;
 
     @Required
-    @Column(name="id_empreendimento_simlam")
-    public Integer idEmpreendimento;
-
-    @Required
-    @Column(name="id_municipio_simlam")
-    public Integer idMunicipio;
-
-    @Required
-    @Column(name="nome_municipio_simlam")
-    public String nomeMunicipioSimlam;
-
-    @Required
-    @Column(name="id_tipo_licenca")
-    public Integer idTipoLicenca;
-
-    @Required
-    @Column(name="nome_tipo_licenca")
-    public String nomeTipoLicenca;
-
-    @Required
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name="id_imovel_manejo")
-    public ImovelManejo imovelManejo;
+    @ManyToOne
+    @JoinColumn(name = "id_atividade_manejo")
+    public AtividadeManejo atividadeManejo;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_analise_manejo")
@@ -69,12 +53,16 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
     public ObjetoTramitavel objetoTramitavel;
+
     @Transient
     public transient Tramitacao tramitacao = new Tramitacao();
 
 
     @Override
     public ProcessoManejo save() {
+
+        this.tipoLicenca = TipoLicencaManejo.findById(this.tipoLicenca.id);
+        this.atividadeManejo = AtividadeManejo.findById(this.atividadeManejo.id);
 
         tramitacao.iniciar(this, null, Tramitacao.MANEJO_DIGITAL);
 
@@ -126,5 +114,49 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.idObjetoTramitavel);
 
         return objetoTramitavel.condicao.nomeCondicao;
+    }
+
+    public static List listWithFilter(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {
+
+        ProcessoManejoBuilder processoBuilder = commonFilterProcesso(filtro)
+                .groupByIdProcesso()
+                .groupByNumeroProcesso()
+                .groupByDenominacaoEmpreendimento()
+                .groupByMunicipioEmpreendimento()
+                .groupByTipoLicencaManejo()
+                .groupByCpfCnpjEmpreendimento()
+                .groupByCondicao();
+
+        return processoBuilder
+                .fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
+                .list();
+    }
+
+    public static Long countWithFilter(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {
+
+        ProcessoManejoBuilder processoBuilder = commonFilterProcesso(filtro)
+                .addEstadoEmpreendimentoAlias()
+                .addTipologiaAtividadeAlias()
+                .addObjetoTramitavelAlias()
+                .addTipoLicencaAlias()
+                .count();
+
+        Object qtdeTotalItens = processoBuilder.unique();
+
+        return ((Map<String, Long>) qtdeTotalItens).get("total");
+    }
+
+    private static ProcessoManejoBuilder commonFilterProcesso(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {
+
+        ProcessoManejoBuilder processoBuilder = new ProcessoManejoBuilder()
+                .filtrarPorNumeroProcesso(filtro.numeroProcesso)
+                .filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
+                .filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
+                .filtrarPorIdTipologia(filtro.idTipologia)
+                .filtrarPorIdAtividade(filtro.idAtividade)
+                .filtrarPorIdCondicao(filtro.idStatusLicenca)
+                .filtrarPorIdTipoLicenca(filtro.idManejoDigital);
+
+        return processoBuilder;
     }
 }

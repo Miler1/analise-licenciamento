@@ -22,6 +22,11 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.AnaliseTecnicaManejoController,
 			controllerAs: 'analiseTecnicaManejo'
 		})
+		.when("/analise-manejo/cadastro", {
+			templateUrl: "features/analiseManejo/cadastro/cadastro-processo-manejo.html",
+			controller: controllers.CadastroProcessoManejoController,
+			controllerAs: 'cadastroProcessoManejo'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -29,7 +34,8 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 
 analiseManejo
 	.controller('listagemProcessoManejoController', controllers.ListagemProcessoManejoController)
-	.controller('modalObservacaoController', controllers.ModalObservacaoController);
+	.controller('modalObservacaoController', controllers.ModalObservacaoController)
+	.controller('visualizacaoProcessoManejoController', controllers.VisualizacaoProcessoManejoController);
 
 analiseManejo
 	.component('filtroProcessosManejo', directives.FiltroProcessosManejo);
