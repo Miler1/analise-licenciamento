@@ -1,5 +1,6 @@
 package controllers;
 
+import builders.ProcessoManejoBuilder.FiltroProcessoManejo;
 import exceptions.ValidacaoException;
 import models.Documento;
 import models.manejoDigital.AnaliseManejo;
@@ -9,6 +10,8 @@ import security.Acao;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
 
+import java.util.List;
+
 public class ProcessosManejo extends InternalController {
 
 	public static void save(ProcessoManejo processo) {
@@ -17,27 +20,9 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processo);
 
-		// Para não replicar processos enquanto o serviço de alteração de status não existe no SIMLAM
-		ProcessoManejo processoAntigo = ProcessoManejo.find("numeroProcesso", processo.numeroProcesso).first();
+		processo.save();
 
-		if (processoAntigo != null) {
-
-			if (processoAntigo.analiseManejo != null &&
-					!processoAntigo.analiseManejo.usuario.id.equals(getUsuarioSessao().id)) {
-
-				throw new ValidacaoException(Mensagem.PROCESSO_ANALISE_USUARIO_DIFERENTE);
-			}
-
-			renderJSON(processoAntigo, ProcessoManejoSerializer.save);
-
-		} else {
-
-			processo.save();
-
-			// TODO Enviar requisição de alteração de status de EM_ANALISE para o SIMLAM
-
-			renderJSON(processo, ProcessoManejoSerializer.save);
-		}
+		renderMensagem(Mensagem.PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO);
 	}
 
 	public static void findById(Long id) {
@@ -88,5 +73,32 @@ public class ProcessosManejo extends InternalController {
 		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfAnalise.arquivo, nome);
+	}
+
+	public static void listWithFilter(FiltroProcessoManejo filtro){
+
+		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
+
+		List processosList = ProcessoManejo.listWithFilter(filtro);
+
+		renderJSON(processosList);
+	}
+
+	public static void findProcessoCompletoById(Long id) {
+
+		verificarPermissao(Acao.VISUALIZAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(id);
+
+		ProcessoManejo processo = ProcessoManejo.findById(id);
+
+		renderJSON(processo, ProcessoManejoSerializer.findCompletoById);
+	}
+
+	public static void countWithFilter(FiltroProcessoManejo filtro){
+
+		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
+
+		renderJSON(ProcessoManejo.countWithFilter(filtro));
 	}
 }

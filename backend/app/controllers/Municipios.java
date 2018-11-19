@@ -10,8 +10,6 @@ public class Municipios extends InternalController {
 
 	public static void listByEstado(String uf) {
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
-		
 		List<Municipio> municipios = Municipio.findByEstado(uf);
 		renderJSON(municipios, MunicipiosSerializer.findByEstado);
 	}

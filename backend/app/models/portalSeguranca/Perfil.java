@@ -1,5 +1,6 @@
 package models.portalSeguranca;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,5 +64,16 @@ public class Perfil extends GenericModel {
 
 	@Transient
 	private List<Integer> permittedActionsIds;
-	
+
+	public List<String> getListaPermissoes() {
+
+		List<String> permissoes = new ArrayList<>();
+
+		for (Permissao permissao : this.permissoes) {
+
+			permissoes.add(permissao.codigo);
+		}
+
+		return permissoes;
+	}
 }

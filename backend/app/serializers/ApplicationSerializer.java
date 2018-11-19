@@ -9,6 +9,7 @@ public class ApplicationSerializer {
 			"usuarioSessao.perfilSelecionado.id",
 			"usuarioSessao.perfilSelecionado.nome",
 			"usuarioSessao.setorSelecionado.id",
+			"usuarioSessao.perfilSelecionado.listaPermissoes",
 			"usuarioSessao.setorSelecionado.sigla",
 			"usuarioSessao.acoesPermitidas",
 			"usuarioSessao.usuarioEntradaUnica.autenticadoViaToken",

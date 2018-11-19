@@ -74,6 +74,11 @@ public class Configuracoes {
 
 	public static final CadastroUnificadoPessoaService oAuthClient = new CadastroUnificadoPessoaService(CLIENTE_ID, CLIENTE_SECRET, URL_PORTAL_SEGURANCA, URL_CADASTRO_UNIFICADO);
 
+	public static Long TRAMITACAO_ETAPA_MANEJO = getLongConfig("tramitacao.etapa.manejo");
+	public static String URL_SICAR = getConfig("sicar.url", null);
+	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
+	public static String URL_SICAR_IMOVEL_FICHA = URL_SICAR + getConfig("url.sicar.imovel.ficha", null);
+
 	static {
 
 		try {
