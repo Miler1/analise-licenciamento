@@ -48,7 +48,7 @@ public class AnaliseVetorial extends GenericModel {
 
     @Required
     @ManyToOne
-    @JoinColumn(name="id_analise_manejo")
+    @JoinColumn(name="id_analise_tecnica_manejo")
     public AnaliseTecnicaManejo analiseTecnicaManejo;
 
     public static List<AnaliseVetorial> gerarAnalisesVetoriais(AnaliseTecnicaManejo analise) {

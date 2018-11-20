@@ -21,6 +21,6 @@ public class DocumentoShape extends Documento {
 
 	@Required
 	@ManyToOne
-	@JoinColumn(name = "id_analise_manejo")
+	@JoinColumn(name = "id_analise_tecnica_manejo")
 	public AnaliseTecnicaManejo analiseTecnicaManejo;
 }
