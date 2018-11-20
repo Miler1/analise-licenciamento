@@ -152,10 +152,10 @@ POST    /processoManejo/count                       ProcessosManejo.countWithFil
 GET     /processoManejo/verificaNumeroProcesso/{numeroProcesso}        ProcessosManejo.verificaNumeroProcesso
 
 # Analises Manejo
-POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
-DELETE  /analiseManejo/anexo/{id}                   AnalisesManejo.deleteAnexo
-GET     /analiseManejo/{id}                         AnalisesManejo.findById
-PUT     /analiseManejo/{id}                         AnalisesManejo.finalizar
+POST    /analiseTecnicaManejo/{id}/anexo                   AnalisesTecnicasManejo.uploadAnexo
+DELETE  /analiseTecnicaManejo/anexo/{id}                   AnalisesTecnicasManejo.deleteAnexo
+GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.findById
+PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.finalizar
 
 # Observações
 POST    /observacao                                 Observacoes.save

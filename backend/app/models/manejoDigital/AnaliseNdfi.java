@@ -4,7 +4,6 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,9 +50,9 @@ public class AnaliseNdfi extends GenericModel {
     @Required
     @ManyToOne
     @JoinColumn(name="id_analise_manejo")
-    public AnaliseManejo analiseManejo;
+    public AnaliseTecnicaManejo analiseTecnicaManejo;
 
-    public static List<AnaliseNdfi> gerarAnaliseNfid(AnaliseManejo analise) {
+    public static List<AnaliseNdfi> gerarAnaliseNfid(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();
         int numeroRandomico = rand.nextInt(20) + 1;
@@ -78,7 +77,7 @@ public class AnaliseNdfi extends GenericModel {
 
             analiseNdfi.area = Math.random();
 
-            analiseNdfi.analiseManejo = analise;
+            analiseNdfi.analiseTecnicaManejo = analise;
 
             listaAnalise.add(analiseNdfi);
         }
