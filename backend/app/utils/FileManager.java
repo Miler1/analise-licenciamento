@@ -243,7 +243,7 @@ public class FileManager {
 	public String generateFileName(String name, String extension) {
 
     	name = name.substring(0, name.lastIndexOf("."));
-		return name + UUID.randomUUID().toString() + ((extension != null) ? "." + extension : "");
+		return name + '_' + UUID.randomUUID().toString() + ((extension != null) ? "." + extension : "");
 	}
 
     public String getFolderName() throws IOException {
