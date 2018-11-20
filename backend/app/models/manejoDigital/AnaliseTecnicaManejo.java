@@ -28,7 +28,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "analise", name = "analise_manejo")
+@Table(schema = "analise", name = "analise_tecnica_manejo")
 public class AnaliseTecnicaManejo extends GenericModel {
 
     @Id
@@ -116,7 +116,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo",
-            joinColumns = @JoinColumn(name = "id_analise_manejo"),
+            joinColumns = @JoinColumn(name = "id_analise_tecnica_manejo"),
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 

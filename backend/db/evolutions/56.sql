@@ -51,6 +51,12 @@ COMMENT ON COLUMN analise.analise_manejo.id_processo_manejo IS 'Identificador da
 ALTER INDEX analise.pk_analise_manejo RENAME TO pk_analise_tecnica_manejo;
 ALTER TABLE analise.analise_manejo RENAME TO analise_tecnica_manejo;
 
+-- Renomeando atributos de outras tabelas
+
+ALTER TABLE analise.analise_ndfi RENAME COLUMN id_analise_manejo TO id_analise_tecnica_manejo;
+ALTER TABLE analise.rel_base_vetorial_analise_manejo RENAME COLUMN id_analise_manejo TO id_analise_tecnica_manejo;
+ALTER TABLE analise.analise_vetorial RENAME COLUMN id_analise_manejo TO id_analise_tecnica_manejo;
+
 -- Removendo a coluna id_usuario da analise_tecnica_manejo
 
 ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN id_usuario;
@@ -86,6 +92,10 @@ DROP TABLE analise.analista_tecnico_manejo;
 ALTER TABLE analise.analise_tecnica_manejo ADD COLUMN id_usuario INTEGER NOT NULL;
 ALTER TABLE analise.analise_tecnica_manejo ADD CONSTRAINT fk_am_u FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario (id);
 COMMENT ON COLUMN analise.analise_tecnica_manejo.id_usuario IS 'Identificador da entidade usuário que denota o usuário responsável por fazer a análise.';
+
+ALTER TABLE analise.analise_ndfi RENAME COLUMN id_analise_tecnica_manejo TO id_analise_manejo;
+ALTER TABLE analise.rel_base_vetorial_analise_manejo RENAME COLUMN id_analise_tecnica_manejo TO id_analise_manejo;
+ALTER TABLE analise.analise_vetorial RENAME COLUMN id_analise_tecnica_manejo TO id_analise_manejo;
 
 ALTER INDEX analise.pk_analise_tecnica_manejo RENAME TO pk_analise_manejo;
 ALTER TABLE analise.analise_tecnica_manejo RENAME TO analise_manejo;
