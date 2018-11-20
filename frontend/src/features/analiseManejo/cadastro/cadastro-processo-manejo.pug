@@ -15,10 +15,7 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 		.col-md-6.col-sm-6
 			label.control-label Tipologia: *
-			select.form-control(ng-model="cadastroProcessoManejo.tipologia", name="selectTipologia"
-							ng-options="tipologia.id as tipologia.nome for tipologia in cadastroProcessoManejo.tipologias | orderBy:'nome' track by tipologia.id",
-			ng-change="cadastroProcessoManejo.buscarAtividades()", required)
-				option(value="") Selecione a tipologia do processo
+			input.form-control(type='text', name='numProcesso', ng-disabled="true" ng-model='cadastroProcessoManejo.tipologia.nome', maxlength="15", required)
 
 		.col-md-6.col-sm-6
 			label.control-label Atividade: *
