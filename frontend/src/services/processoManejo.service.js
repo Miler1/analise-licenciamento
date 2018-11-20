@@ -58,6 +58,16 @@ var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 		.post(config.BASE_URL() + "processoManejo/count", filtro);
 	};
 
+	this.verificaSeProcessoExiste = function(numeroProcesso) {
+
+		return request.get(config.BASE_URL() + "processoManejo/verificaNumeroProcesso/" + numeroProcesso);
+	};
+
+	this.inicicarAnaliseShape = function(processo) {
+
+		return request.post(config.BASE_URL() + 'processoManejo/inicicarAnaliseShape', processo);
+	};
+
 };
 
 exports.services.ProcessoManejoService = ProcessoManejoService;

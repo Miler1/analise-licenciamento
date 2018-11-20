@@ -1,21 +1,31 @@
 package models.manejoDigital;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import models.Documento;
 import models.TipoDocumento;
+import models.analiseShape.FeatureQueryInsumo;
+import models.analiseShape.FeatureQueryResumoNDFI;
+import models.analiseShape.FeatureQuerySobreposicao;
+import models.analiseShape.Insumo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.hibernate.annotations.Type;
 import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
+import security.Auth;
 import utils.Configuracoes;
 import utils.FileManager;
 
 import javax.persistence.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -39,17 +49,15 @@ public class AnaliseManejo  extends GenericModel {
     public Integer diasAnalise;
 
     @Required
-    @Column(name="path_arquivo_shape")
-    public String pathShape;
+    @Column(name="geojson")
+    public String geoJsonArcgis;
 
     @Column(name="path_anexo")
     public String pathAnexo;
 
-    @Required
     @Column(name="analise_temporal")
     public String analiseTemporal;
 
-    @Required
     @Column(name="area_manejo_florestal_solicitada")
     public Double areaManejoFlorestalSolicitada;
 
@@ -95,11 +103,9 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="area_sem_previa_exploracao")
     public Double areaSemPreviaExploracao;
 
-    @Required
     @Column
     public String consideracoes;
 
-    @Required
     @Column
     public String conclusao;
 
@@ -112,7 +118,6 @@ public class AnaliseManejo  extends GenericModel {
     @JoinColumn(name="id_documento")
     public Documento documentoAnalise;
 
-    @Required
     @OneToMany(mappedBy = "analiseManejo")
     public List<Observacao> observacoes;
 
@@ -120,11 +125,9 @@ public class AnaliseManejo  extends GenericModel {
     @OneToOne(mappedBy = "analiseManejo")
     public ProcessoManejo processoManejo;
 
-    @Required
     @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseNdfi> analisesNdfi;
 
-    @Required
     @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseVetorial> analisesVetorial;
 
@@ -134,6 +137,26 @@ public class AnaliseManejo  extends GenericModel {
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 
+    @Column(name = "object_id")
+    public String objectId;
+
+    @Transient
+    public List<Insumo> insumos;
+
+    @Override
+    public AnaliseManejo save() {
+
+        this.dataAnalise = new Date();
+
+        this.diasAnalise = 0;
+
+        this.usuario = Usuario.findById(Auth.getUsuarioSessao().id);
+
+        this._save();
+
+        return this.refresh();
+    }
+
     public static AnaliseManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
 
         AnaliseManejo analiseManejo = new AnaliseManejo();
@@ -141,8 +164,6 @@ public class AnaliseManejo  extends GenericModel {
         analiseManejo.dataAnalise = new Date();
 
         analiseManejo.diasAnalise = 0;
-
-        analiseManejo.pathShape = processo.analiseManejo.pathShape;
 
         analiseManejo.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
 
@@ -331,5 +352,37 @@ public class AnaliseManejo  extends GenericModel {
 
         return documento;
 
+    }
+
+    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
+
+        this.analisesVetorial = new ArrayList<>();
+
+        for (FeatureQuerySobreposicao feature : features) {
+
+            feature.attributes.analiseManejo = this;
+            this.analisesVetorial.add(feature.attributes);
+        }
+    }
+
+    public void setInsumos(List<FeatureQueryInsumo> features) {
+
+        this.insumos = new ArrayList<>();
+
+        for (FeatureQueryInsumo feature : features) {
+
+            this.insumos.add(feature.attributes);
+        }
+    }
+
+    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
+
+        this.analisesNdfi = new ArrayList<>();
+
+        for (FeatureQueryResumoNDFI feature : features) {
+
+            feature.attributes.analiseManejo = this;
+            this.analisesNdfi.add(feature.attributes);
+        }
     }
 }

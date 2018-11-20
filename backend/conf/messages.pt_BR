@@ -121,6 +121,7 @@ ANEXO_REMOVIDO_SUCESSO=Anexo removido com sucesso.
 ANEXO_SALVO_SUCESSO=Anexo salvo com sucesso.
 ANALISE_FINALIZADA_SUCESSO=Análise finalizada com sucesso.
 ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO=Erro ao criar documento da análise técnica do manejo.
+ANALISE_SHAPE_INICIADA_COM_SUCESSO=Análise shape iniciada com sucesso.
 
 #
 # Processo Manejo

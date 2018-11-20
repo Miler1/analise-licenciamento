@@ -76,6 +76,37 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				cadastroProcessoManejoController.processo.empreendimento.imovel.municipio.id = response.data.imovel.codigoMunicipio;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.nomeSiglaMunicipio = response.data.imovel.nomeMunicipio + '/' + response.data.imovel.siglaEstado;
 
+				_.forEach(response.data.geo, function(geo) {
+
+					switch(geo.tema.codigo) {
+
+						case 'AREA_IMOVEL':
+							cadastroProcessoManejoController.processo.empreendimento.imovel.areaTotalImovelDocumentado = geo.area;
+							break;
+
+						case 'AREA_IMOVEL_LIQUIDA':
+							cadastroProcessoManejoController.processo.empreendimento.imovel.areaLiquidaImovel = geo.area;
+							break;
+
+						case 'ARL_TOTAL':
+							cadastroProcessoManejoController.processo.empreendimento.imovel.areaReservaLegal = geo.area;
+							break;
+
+						case 'APP_TOTAL':
+							cadastroProcessoManejoController.processo.empreendimento.imovel.areaPreservacaoPermanente = geo.area;
+							break;
+
+						case 'VEGETACAO_NATIVA':
+							cadastroProcessoManejoController.processo.empreendimento.imovel.areaRemanescenteVegetacaoNativa = geo.area;
+							break;
+
+						case 'AREA_CONSOLIDADA':
+							cadastroProcessoManejoController.processo.empreendimento.imovel.areaUsoConsolidado = geo.area;
+							break;
+					}
+
+				});
+
 			}, function(error){
 
 				apagarEmpreendimento();
@@ -178,6 +209,23 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 					mensagem.error('Não foi possível obter a lista de atividades.');
 				});
 		}
+	};
+
+	cadastroProcessoManejoController.conferirNumeroProcesso = function (numeroProcesso) {
+
+		processoManejoService.verificaSeProcessoExiste(numeroProcesso).then(
+			function(response){
+
+				var existe = response.data;
+
+				if(existe) {
+
+					mensagem.error('Já existe um processo com este número cadastrado.');
+				}
+			})
+			.catch(function(){
+				mensagem.error('Não foi possível consultar o numero do processo.');
+			});
 	};
 };
 
