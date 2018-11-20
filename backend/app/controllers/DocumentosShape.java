@@ -65,12 +65,29 @@ public class DocumentosShape extends InternalController {
 
 		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO);
 
-		if(file != null || !file.exists()) {
+		if(file != null && file.exists()) {
 
 			renderBinary(file, file.getName());
 		}
 
 		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
+	}
+
+	public static void deleteTmp(String key) {
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
+		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO);
+
+		if(file == null || !file.exists()) {
+
+			renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+		}
+
+		file.delete();
+
+		renderMensagem(Mensagem.DOCUMENTO_DELETADO_COM_SUCESSO);
 
 	}
 }

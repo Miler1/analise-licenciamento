@@ -53,6 +53,7 @@ SHAPE_REMOVIDO_SUCESSO=Shape removido com sucesso;
 # Documentos
 #
 DOCUMENTO_NAO_ENCONTRADO=Documento não encontrado.
+DOCUMENTO_DELETADO_COM_SUCESSO=Documento excluido com sucesso.
 
 #
 # Analise juridica

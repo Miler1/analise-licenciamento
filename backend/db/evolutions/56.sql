@@ -9,7 +9,6 @@ ALTER TABLE analise.analise_manejo DROP COLUMN geojson;
 CREATE TABLE analise.documento_manejo_shape (
  id_documento INTEGER NOT NULL,
  geojson_arcgis TEXT NOT NULL,
- tp_documento_manejo_shape INTEGER NOT NULL,
  id_analise_manejo INTEGER NOT NULL,
  CONSTRAINT pk_documento_manejo_shape PRIMARY KEY (id_documento),
  CONSTRAINT fk_dms_documento FOREIGN KEY (id_documento) REFERENCES analise.documento(id),
@@ -19,14 +18,22 @@ CREATE TABLE analise.documento_manejo_shape (
 COMMENT ON TABLE analise.documento_manejo_shape IS 'Entidade responsável por armazenas os documentos shape do manejo.';
 COMMENT ON COLUMN analise.documento_manejo_shape.id_documento IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.documento_manejo_shape.geojson_arcgis IS 'Geojson arcgis do arquivo shapefile.';
-COMMENT ON COLUMN analise.documento_manejo_shape.tp_documento_manejo_shape IS 'Tipo de documento shape do manejo. 0 - Shape da propriedade, 1 - Shape da área de manejo, 2 - Shape do manejo.';
 COMMENT ON COLUMN analise.documento_manejo_shape.id_analise_manejo IS 'Identificador da entidade analise_manejo que faz o relacionamento entre a análise do manejo e documento shape do manejo.';
 
 ALTER TABLE analise.documento_manejo_shape OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento_manejo_shape TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_manejo_shape TO licenciamento_pa;
 
+-- Adicionando tipos de documento manejo na entidade
+
+INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
+ (8, 'Shape propriedade manejo', 'shape-manejo', 'shape_propriedade'),
+ (9, 'Shape área manejo', 'shape-manejo', 'shape_area_manejo'),
+ (10, 'Shape manejo', 'shape-manejo', 'shape_manejo');
+
 # --- !Downs
+
+DELETE FROM analise.tipo_documento WHERE caminho_pasta = 'shape-manejo';
 
 DROP TABLE analise.documento_manejo_shape;
 

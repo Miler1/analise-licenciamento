@@ -19,7 +19,9 @@ public class TipoDocumento extends Model {
 	public static Long NOTIFICACAO_ANALISE_JURIDICA = 5l;
 	public static Long NOTIFICACAO_ANALISE_TECNICA = 6l;
 	public static Long DOCUMENTO_ANALISE_MANEJO = 7l;
-
+	public static Long SHAPE_PROPRIEDADE_MANEJO = 8l;
+	public static Long SHAPE_AREA_MANEJO = 9l;
+	public static Long SHAPE_MANEJO = 10l;
 
 	@Required
 	public String nome;
