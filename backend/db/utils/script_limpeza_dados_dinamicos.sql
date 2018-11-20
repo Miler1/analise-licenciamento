@@ -15,6 +15,8 @@ DELETE FROM analise.analise_documento;
 DELETE FROM analise.consultor_juridico;
 DELETE FROM analise.analise_juridica;
 DELETE FROM analise.analista_tecnico;
+DELETE FROM analise.licenca_suspensa;
+DELETE FROM analise.licenca_cancelada;
 DELETE FROM licenciamento.licenca;
 DELETE FROM analise.licenca_analise;
 DELETE FROM analise.gerente_tecnico;
