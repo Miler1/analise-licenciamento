@@ -28,7 +28,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "analise", name = "analise_manejo")
+@Table(schema = "analise", name = "analise_tecnica_manejo")
 public class AnaliseTecnicaManejo extends GenericModel {
 
     @Id
