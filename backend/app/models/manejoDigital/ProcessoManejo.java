@@ -36,7 +36,6 @@ import utils.WebService;
 import javax.persistence.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -71,9 +70,8 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @JoinColumn(name = "id_atividade_manejo")
     public AtividadeManejo atividadeManejo;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id_analise_manejo")
-    public AnaliseManejo analiseManejo;
+    @OneToMany(mappedBy = "processoManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<AnaliseTecnicaManejo> analisesTecnicaManejo;
 
     @Column(name = "id_objeto_tramitavel")
     public Long idObjetoTramitavel;
@@ -127,25 +125,26 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo) {
 
-        this.analiseManejo = processo.analiseManejo;
-        this.analiseManejo.dataAnalise = new Date();
-        this.analiseManejo.diasAnalise = 0;
-        this.analiseManejo.usuario = Usuario.findById(Auth.getUsuarioSessao().id);
+        this.analisesTecnicaManejo.add(processo.getAnaliseTecnica());
+        this.getAnaliseTecnica().dataAnalise = new Date();
+        this.getAnaliseTecnica().diasAnalise = 0;
+        this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
+                (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
 
         this._save();
 
         this.enviarProcessoAnaliseShape();
 
-        tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.analiseManejo.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.analiseManejo.usuario);
+        tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
+        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         return this.refresh();
     }
 
     public ProcessoManejo iniciarAnaliseTecnica() {
 
-        tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.analiseManejo.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.analiseManejo.usuario);
+        tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.getAnaliseTecnica().analistaTecnico.usuario);
+        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         return this.refresh();
     }
@@ -211,7 +210,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         List<GeometriaArcgis> features = new ArrayList<>();
         Type listType = new TypeToken<ArrayList<GeometriaArcgis>>(){}.getType();
 
-        for (DocumentoShape documento : this.analiseManejo.documentosShape) {
+        for (DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
 
            features.addAll((ArrayList<GeometriaArcgis>) gson.fromJson(documento.geoJsonArcgis, listType));
         }
@@ -219,7 +218,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         for (GeometriaArcgis feature : features) {
 
             feature.attributes = new AtributosAddLayer(this.numeroProcesso,
-                    this.empreendimento.imovel.nome, 0, this.analiseManejo.usuario.nome);
+                    this.empreendimento.imovel.nome, 0, this.getAnaliseTecnica().analistaTecnico.usuario.nome);
         }
 
         WebService webService = new WebService();
@@ -237,7 +236,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         } else {
 
-            this.analiseManejo.objectId = response.addResults.get(response.addResults.size() - 1).objectId;
+            this.getAnaliseTecnica().objectId = response.addResults.get(response.addResults.size() - 1).objectId;
         }
 
         this._save();
@@ -254,7 +253,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         );
 
         Map<String, Object> params = new HashMap<>();
-        params.put("objectIds", this.analiseManejo.objectId);
+        params.put("objectIds", this.getAnaliseTecnica().objectId);
         params.put("outFields", "*");
         params.put("f", "json");
 
@@ -278,12 +277,12 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             params.put("where", "processo_amf = '" + this.numeroProcesso + "'");
             ResponseQueryResumoNDFI responseResumoNDFI = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL, params, ResponseQueryResumoNDFI.class);
 
-            this.analiseManejo.setAnalisesVetoriais(responseSobreposicao.features);
-            this.analiseManejo.setInsumos(responseInsumo.features);
-            this.analiseManejo.setAnalisesNdfi(responseResumoNDFI.features);
-            this.analiseManejo.areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
+            this.getAnaliseTecnica().setAnalisesVetoriais(responseSobreposicao.features);
+            this.getAnaliseTecnica().setInsumos(responseInsumo.features);
+            this.getAnaliseTecnica().setAnalisesNdfi(responseResumoNDFI.features);
+            this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
 
-            this.analiseManejo._save();
+            this.getAnaliseTecnica()._save();
 
             tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
         }
@@ -303,5 +302,15 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             }
         }
         return existe;
+    }
+
+    public AnaliseTecnicaManejo getAnaliseTecnica() {
+
+        if (this.analisesTecnicaManejo.size() == 0) {
+
+            return null;
+        }
+
+        return this.analisesTecnicaManejo.get(this.analisesTecnicaManejo.size() - 1);
     }
 }

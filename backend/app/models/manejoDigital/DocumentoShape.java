@@ -7,10 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
 @Table(schema = "analise", name = "documento_manejo_shape")
+@PrimaryKeyJoinColumn(name = "id_documento", referencedColumnName = "id")
 public class DocumentoShape extends Documento {
 
 	@Required
@@ -20,5 +22,5 @@ public class DocumentoShape extends Documento {
 	@Required
 	@ManyToOne
 	@JoinColumn(name = "id_analise_manejo")
-	public AnaliseManejo analiseManejo;
+	public AnaliseTecnicaManejo analiseTecnicaManejo;
 }

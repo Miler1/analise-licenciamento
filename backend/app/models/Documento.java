@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -28,6 +30,7 @@ import utils.Identificavel;
 
 @Entity
 @Table(schema = "analise", name = "documento")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Documento extends GenericModel implements Identificavel {
 
 	private static final String SEQ = "analise.documento_id_seq";
