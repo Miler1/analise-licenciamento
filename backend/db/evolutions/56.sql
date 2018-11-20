@@ -40,6 +40,7 @@ DELETE FROM analise.analise_vetorial;
 DELETE FROM analise.rel_base_vetorial_analise_manejo;
 DELETE FROM analise.observacao;
 DELETE FROM analise.analise_manejo;
+DELETE FROM analise.processo_manejo;
 
 ALTER TABLE analise.analise_manejo ADD COLUMN id_processo_manejo INTEGER NOT NULL;
 ALTER TABLE analise.analise_manejo ADD CONSTRAINT fk_atm_pm FOREIGN KEY (id_processo_manejo) REFERENCES analise.processo_manejo(id);
