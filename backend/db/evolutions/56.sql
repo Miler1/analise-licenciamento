@@ -19,7 +19,7 @@ CREATE TABLE analise.documento_manejo_shape (
 COMMENT ON TABLE analise.documento_manejo_shape IS 'Entidade responsável por armazenas os documentos shape do manejo.';
 COMMENT ON COLUMN analise.documento_manejo_shape.id_documento IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.documento_manejo_shape.geojson_arcgis IS 'Geojson arcgis do arquivo shapefile.';
-COMMENT ON COLUMN analise.documento_manejo_shape.tp_documento_manejo_shape IS 'Tipo de documento shape do manejo. ';
+COMMENT ON COLUMN analise.documento_manejo_shape.tp_documento_manejo_shape IS 'Tipo de documento shape do manejo. 0 - Shape da propriedade, 1 - Shape da área de manejo, 2 - Shape do manejo.';
 COMMENT ON COLUMN analise.documento_manejo_shape.id_analise_manejo IS 'Identificador da entidade analise_manejo que faz o relacionamento entre a análise do manejo e documento shape do manejo.';
 
 ALTER TABLE analise.documento_manejo_shape OWNER TO postgres;

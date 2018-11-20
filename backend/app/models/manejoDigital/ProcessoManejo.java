@@ -36,6 +36,7 @@ import utils.WebService;
 import javax.persistence.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -206,8 +207,14 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .registerTypeAdapter(GeometriaArcgis.class, new GeometriaArcgisDeserializer())
                 .create();
 
+        // TODO Alterar envio de features para refletir os diferentes tipos de documento shape. É NECESSÁRIO QUE O SERVIÇO DE INTEGRAÇÃO DA VEGA SEJA ALTERADO.
+        List<GeometriaArcgis> features = new ArrayList<>();
         Type listType = new TypeToken<ArrayList<GeometriaArcgis>>(){}.getType();
-        List<GeometriaArcgis> features = gson.fromJson(this.analiseManejo.geoJsonArcgis, listType);
+
+        for (DocumentoShape documento : this.analiseManejo.documentosShape) {
+
+           features.addAll((ArrayList<GeometriaArcgis>) gson.fromJson(documento.geoJsonArcgis, listType));
+        }
 
         for (GeometriaArcgis feature : features) {
 

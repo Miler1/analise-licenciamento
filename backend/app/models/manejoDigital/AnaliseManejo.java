@@ -48,10 +48,6 @@ public class AnaliseManejo  extends GenericModel {
     @Column(name="dias_analise")
     public Integer diasAnalise;
 
-    @Required
-    @Column(name="geojson")
-    public String geoJsonArcgis;
-
     @Column(name="path_anexo")
     public String pathAnexo;
 
@@ -139,6 +135,10 @@ public class AnaliseManejo  extends GenericModel {
 
     @Column(name = "object_id")
     public String objectId;
+
+    @Required
+    @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<DocumentoShape> documentosShape;
 
     @Transient
     public List<Insumo> insumos;
