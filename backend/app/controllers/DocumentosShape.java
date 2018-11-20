@@ -9,6 +9,7 @@ import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
 
+import java.io.File;
 import java.io.IOException;
 
 public class DocumentosShape extends InternalController {
@@ -56,5 +57,20 @@ public class DocumentosShape extends InternalController {
 
 	}
 
-	
+	public static void downloadTmp(String key) {
+
+		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
+
+		returnIfNull(key, "String");
+
+		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO);
+
+		if(file != null || !file.exists()) {
+
+			renderBinary(file, file.getName());
+		}
+
+		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
+	}
 }

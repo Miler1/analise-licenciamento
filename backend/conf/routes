@@ -171,6 +171,10 @@ GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTip
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
+# Documentos Shape
+POST    /upload/shape                               DocumentosShape.upload
+GET     /download/shape/{key}                       DocumentosShape.downloadTmp
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
