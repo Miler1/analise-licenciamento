@@ -240,70 +240,70 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public List<Observacao> getObservacoesDadosImovel() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 0 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 0 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesBaseVetorial() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 1 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 1 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesAnaliseVetorial() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 2 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 2 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesAnaliseTemporal() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 3 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 3 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesInsumosUtilizados() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 4 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 4 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesCalculoNDFI() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 5 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 5 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesCalculoAreaEfetiva() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 6 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 6 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesDetalhamentoAreaEfetiva() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 7 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 7 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesConsideracoes() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 8 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 8 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesConclusao() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 9 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
@@ -348,7 +348,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("nomeAnexo", nomeAnexo)
                 .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
-                .addParam("analiseManejo", this)
+                .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 

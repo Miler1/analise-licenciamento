@@ -57,7 +57,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		processoManejoService.getProcesso(processo.id)
 			.then(function (response) {
 
-				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
+				$location.path('/analise-manejo/' + response.data.analiseTecnica.id + '/analise-tecnica');
 			})
 			.catch(function (response) {
 
@@ -101,7 +101,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 				if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital em análise técnica' ) {
 
-					$location.path('/analise-manejo/' + analiseGeoManejo.processo.analiseManejo.id + '/analise-tecnica');
+					$location.path('/analise-manejo/' + analiseGeoManejo.processo.analiseTecnica.id + '/analise-tecnica');
 					return;
 
 				// Como ainda não existe a integração com o SIMLAM, esse bloco é necessário para manter a integridade do sistema

@@ -31,7 +31,13 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_imovel_manejo TO
 INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
  (11, 'Documento imóvel manejo', 'documento-imovel-manejo', 'documento_imovel_manejo');
 
+-- Renomeando atributo da entidade observacao
+
+ALTER TABLE analise.observacao RENAME COLUMN id_analise_manejo TO id_analise_tecnica_manejo;
+
 # --- !Downs
+
+ALTER TABLE analise.observacao RENAME COLUMN id_analise_tecnica_manejo TO id_analise_manejo;
 
 DROP TABLE analise.documento_imovel_manejo;
 
