@@ -471,7 +471,8 @@ utils.services(licenciamento)
 	.add('observacaoService', services.ObservacaoService)
 	.add('tipologiaManejoService', services.TipologiaManejoService)
 	.add('atividadeManejoService', services.AtividadeManejoService)
-	.add('tipoLicencaManejoService', services.TipoLicencaManejoService);
+	.add('tipoLicencaManejoService', services.TipoLicencaManejoService)
+	.add('documentoShapeService', services.DocumentoShapeService);
 
 
 utils.filters(licenciamento)
