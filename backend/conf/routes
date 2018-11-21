@@ -171,8 +171,8 @@ GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
 # Documentos shape
 POST    /upload/shape                               DocumentosShape.upload
-GET     /download/shape/{key}                       DocumentosShape.downloadTmp
-DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
+GET     /download/shape                             DocumentosShape.downloadTmp
+DELETE  /delete/shape                               DocumentosShape.deleteTmp
 
 # Estáticos
 GET     /public/									staticDir:public
