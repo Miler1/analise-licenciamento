@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.ValidacaoException;
 import org.apache.tika.Tika;
 import play.data.Upload;
 import play.libs.IO;
@@ -63,14 +64,14 @@ public class DocumentosShape extends InternalController {
 
 		returnIfNull(key, "String");
 
-		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO);
+		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO, "zip");
 
 		if(file != null && file.exists()) {
 
 			renderBinary(file, file.getName());
 		}
 
-		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+		throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
 
 	}
 
@@ -78,11 +79,11 @@ public class DocumentosShape extends InternalController {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO);
+		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO, "zip");
 
 		if(file == null || !file.exists()) {
 
-			renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+			throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
 		}
 
 		file.delete();

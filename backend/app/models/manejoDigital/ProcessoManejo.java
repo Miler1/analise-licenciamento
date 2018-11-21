@@ -136,7 +136,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
             documento.analiseTecnicaManejo = this.getAnaliseTecnica();
             documento.dataCadastro = new Date();
-            documento.caminho = FileManager.getInstance().getFile(documento.key, Configuracoes.ARQUIVOS_SHAPE_MANEJO).getPath();
+            documento.caminho = FileManager.getInstance().getFile(documento.key, Configuracoes.ARQUIVOS_SHAPE_MANEJO, "zip").getPath();
         }
 
         this._save();

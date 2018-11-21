@@ -17,7 +17,7 @@ var UploadService = function(request, config, Upload) {
 	this.deleteShape = function(nameFile) {
 
 		return request
-			.delete(config.BASE_URL() + "delete/shape", { key: nameFile }, 'documentacao', true);
+			.delete(config.BASE_URL() + "delete/shape/" + nameFile, 'documentacao', true);
 	};
 
 };

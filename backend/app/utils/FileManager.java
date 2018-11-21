@@ -132,7 +132,23 @@ public class FileManager {
         return null;
     }
 
-    public byte [] getFileBytes(String fileKey) {
+	public File getFile(String fileKey, String diretorio, String extensao) {
+
+		if (fileKey == null || diretorio == null) {
+			return null;
+		}
+
+		File file = new File (diretorio, fileKey + '.' + extensao);
+
+		if (file.exists()) {
+			return file;
+		}
+
+		return null;
+	}
+
+
+	public byte [] getFileBytes(String fileKey) {
 
       try {
 
