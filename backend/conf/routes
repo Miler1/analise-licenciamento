@@ -169,7 +169,7 @@ GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTip
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
-# Documentos Shape
+# Documentos shape
 POST    /upload/shape                               DocumentosShape.upload
 GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
