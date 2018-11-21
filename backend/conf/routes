@@ -133,8 +133,6 @@ GET     /favicon.ico                            404
 
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
-POST    /upload/shape                               Uploads.uploadShape
-DELETE  /upload/shape/{token}                       Uploads.deleteShape
 
 # Notificacoes
 
@@ -171,7 +169,7 @@ GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTip
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
-# Documentos Shape
+# Documentos shape
 POST    /upload/shape                               DocumentosShape.upload
 GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp

@@ -12,6 +12,8 @@ import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.Upload;
+import play.data.validation.Max;
+import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
@@ -123,6 +125,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public String objectId;
 
     @Required
+    @Min(2)
+    @Max(3)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoShape> documentosShape;
 
