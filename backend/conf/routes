@@ -176,6 +176,11 @@ POST    /upload/shape                               DocumentosShape.upload
 GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
 
+# Documentos imóvel manejo
+POST    /upload/shape                               DocumentosImovelManejo.upload
+GET     /download/shape/{key}                       DocumentosImovelManejo.downloadTmp
+DELETE  /delete/shape/{key}                         DocumentosImovelManejo.deleteTmp
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
