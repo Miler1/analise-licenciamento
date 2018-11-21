@@ -177,7 +177,7 @@ public class Documento extends GenericModel implements Identificavel {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private void configurarCaminho() {
 		
 		this.caminho = File.separator + tipo.caminhoPasta
@@ -187,7 +187,7 @@ public class Documento extends GenericModel implements Identificavel {
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
 	}
-	
+
 	private void criarPasta() {
 		
 		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta;
@@ -197,8 +197,7 @@ public class Documento extends GenericModel implements Identificavel {
 		if (!pasta.exists())
 			pasta.mkdirs();
 	}
-	
-	
+
 	private String getCaminhoCompleto() {
 		
 		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;
