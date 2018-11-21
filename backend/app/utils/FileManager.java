@@ -77,7 +77,7 @@ public class FileManager {
 
         writeFile(file, fileBytes);
 
-        return file.getPath();
+        return fileName;
     }
 
     public String createFile(byte [] fileBytes, String extension) throws IOException {

@@ -9,7 +9,7 @@ var UploadService = function(request, config, Upload) {
         });
     };
 
-    this.saveShape = function(file) {
+    this.uploadShape = function(file) {
 
         return request.upload(config.BASE_URL() + 'upload/shape', file, Upload);
     };

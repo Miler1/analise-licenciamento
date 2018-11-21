@@ -12,6 +12,8 @@ import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.Upload;
+import play.data.validation.Max;
+import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
@@ -31,8 +33,8 @@ import java.util.UUID;
 public class AnaliseTecnicaManejo extends GenericModel {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.analise_manejo_id_seq")
-    @SequenceGenerator(name="analise.analise_manejo_id_seq", sequenceName="analise.analise_manejo_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.analise_tecnica_manejo_id_seq")
+    @SequenceGenerator(name="analise.analise_tecnica_manejo_id_seq", sequenceName="analise.analise_tecnica_manejo_id_seq", allocationSize=1)
     public Long id;
 
     @Required
@@ -120,6 +122,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public String objectId;
 
     @Required
+    @Min(2)
+    @Max(3)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoShape> documentosShape;
 
@@ -132,6 +136,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @JoinColumn(name = "id_processo_manejo")
     public ProcessoManejo processoManejo;
 
+    @Max(2)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoImovelManejo> documentosImovel;
 
@@ -203,6 +208,16 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return analiseTecnicaManejo;
     }
 
+    public DocumentoImovelManejo saveDocumentoImovel(Upload file) throws IOException {
+
+        DocumentoImovelManejo documento = new DocumentoImovelManejo();
+        documento.arquivo = file.asFile();
+        documento.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_IMOVEL_MANEJO);
+        documento.analiseTecnicaManejo = this;
+
+        return (DocumentoImovelManejo) documento.save();
+    }
+
     public String saveAnexo(Upload file) throws IOException {
 
         byte[] data = IO.readContent(file.asFile());
@@ -225,70 +240,70 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public List<Observacao> getObservacoesDadosImovel() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 0 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 0 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesBaseVetorial() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 1 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 1 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesAnaliseVetorial() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 2 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 2 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesAnaliseTemporal() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 3 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 3 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesInsumosUtilizados() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 4 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 4 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesCalculoNDFI() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 5 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 5 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesCalculoAreaEfetiva() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 6 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 6 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesDetalhamentoAreaEfetiva() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 7 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 7 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesConsideracoes() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 8 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 8 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
     public List<Observacao> getObservacoesConclusao() {
 
-        return Observacao.find("analiseManejo.id = :x AND passoAnalise = 9 ORDER BY id")
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
@@ -333,7 +348,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("nomeAnexo", nomeAnexo)
                 .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
-                .addParam("analiseManejo", this)
+                .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 

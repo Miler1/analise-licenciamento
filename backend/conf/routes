@@ -133,8 +133,6 @@ GET     /favicon.ico                            404
 
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
-POST    /upload/shape                               Uploads.uploadShape
-DELETE  /upload/shape/{token}                       Uploads.deleteShape
 
 # Notificacoes
 
@@ -152,10 +150,10 @@ POST    /processoManejo/count                       ProcessosManejo.countWithFil
 GET     /processoManejo/verificaNumeroProcesso/{numeroProcesso}        ProcessosManejo.verificaNumeroProcesso
 
 # Analises Manejo
-POST    /analiseTecnicaManejo/{id}/anexo                   AnalisesTecnicasManejo.uploadAnexo
-DELETE  /analiseTecnicaManejo/anexo/{id}                   AnalisesTecnicasManejo.deleteAnexo
-GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.findById
-PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.finalizar
+POST    /analiseTecnicaManejo/{id}/anexo                   AnalisesTecnicaManejo.uploadAnexo
+DELETE  /analiseTecnicaManejo/anexo/{id}                   AnalisesTecnicaManejo.deleteAnexo
+GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
+PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.finalizar
 
 # Observações
 POST    /observacao                                 Observacoes.save
@@ -171,10 +169,15 @@ GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTip
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
-# Documentos Shape
+# Documentos shape
 POST    /upload/shape                               DocumentosShape.upload
 GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
+
+# Documentos imóvel manejo
+POST    /upload/{idAnaliseTecnica}/imovel/manejo    DocumentosImovelManejo.upload
+GET     /download/imovel/manejo/{id}                DocumentosImovelManejo.download
+DELETE  /delete/imovel/manejo/{id}                  DocumentosImovelManejo.delete
 
 # Estáticos
 GET     /public/									staticDir:public
