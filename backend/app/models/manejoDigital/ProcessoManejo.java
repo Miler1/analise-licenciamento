@@ -141,7 +141,8 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         this._save();
 
-        this.enviarProcessoAnaliseShape();
+        //TODO Integração com o serviço VEGA
+        //this.enviarProcessoAnaliseShape();
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
         Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
@@ -252,48 +253,58 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     public void verificarAnaliseShape() {
 
-        WebService webService = new WebService(
-                new GsonBuilder().setDateFormat("dd/MM/yyyy")
-                        .registerTypeAdapter(AnaliseNdfi.class, new AnaliseNDFIDeserializer())
-                        .registerTypeAdapter(AnaliseVetorial.class, new AnaliseVetorialDeserializer())
-                        .registerTypeAdapter(AtributosQueryAMFManejo.class, new AtributosQueryAMFManejoDeserializer())
-                        .create()
-        );
+        //TODO Integração com o serviço VEGA
+//        WebService webService = new WebService(
+//                new GsonBuilder().setDateFormat("dd/MM/yyyy")
+//                        .registerTypeAdapter(AnaliseNdfi.class, new AnaliseNDFIDeserializer())
+//                        .registerTypeAdapter(AnaliseVetorial.class, new AnaliseVetorialDeserializer())
+//                        .registerTypeAdapter(AtributosQueryAMFManejo.class, new AtributosQueryAMFManejoDeserializer())
+//                        .create()
+//        );
+//
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("objectIds", this.getAnaliseTecnica().objectId);
+//        params.put("outFields", "*");
+//        params.put("f", "json");
+//
+//        ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
+//
+//        if (response.features.get(0).attributes.status == 3) {
+//
+//            params.clear();
+//            params.put("where", "protocolo = '" + this.numeroProcesso + "'");
+//            params.put("outFields", "*");
+//            params.put("f", "json");
+//
+//            ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
+//            ResponseQueryAMFManejo responseAMFManejo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_MANEJO_URL, params, ResponseQueryAMFManejo.class);
+//
+//            params.remove("where");
+//            params.put("where", "processo = '" + this.numeroProcesso + "'");
+//            ResponseQueryInsumo responseInsumo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
+//
+//            params.remove("where");
+//            params.put("where", "processo_amf = '" + this.numeroProcesso + "'");
+//            ResponseQueryResumoNDFI responseResumoNDFI = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL, params, ResponseQueryResumoNDFI.class);
+//
+//            this.getAnaliseTecnica().setAnalisesVetoriais(responseSobreposicao.features);
+//            this.getAnaliseTecnica().setInsumos(responseInsumo.features);
+//            this.getAnaliseTecnica().setAnalisesNdfi(responseResumoNDFI.features);
+//            this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
+//
+//            this.getAnaliseTecnica()._save();
+//
+//            tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
+//        }
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("objectIds", this.getAnaliseTecnica().objectId);
-        params.put("outFields", "*");
-        params.put("f", "json");
+        if (this.analisesTecnicaManejo.size() == 0) {
 
-        ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
-
-        if (response.features.get(0).attributes.status == 3) {
-
-            params.clear();
-            params.put("where", "protocolo = '" + this.numeroProcesso + "'");
-            params.put("outFields", "*");
-            params.put("f", "json");
-
-            ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
-            ResponseQueryAMFManejo responseAMFManejo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_MANEJO_URL, params, ResponseQueryAMFManejo.class);
-
-            params.remove("where");
-            params.put("where", "processo = '" + this.numeroProcesso + "'");
-            ResponseQueryInsumo responseInsumo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
-
-            params.remove("where");
-            params.put("where", "processo_amf = '" + this.numeroProcesso + "'");
-            ResponseQueryResumoNDFI responseResumoNDFI = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL, params, ResponseQueryResumoNDFI.class);
-
-            this.getAnaliseTecnica().setAnalisesVetoriais(responseSobreposicao.features);
-            this.getAnaliseTecnica().setInsumos(responseInsumo.features);
-            this.getAnaliseTecnica().setAnalisesNdfi(responseResumoNDFI.features);
-            this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
-
-            this.getAnaliseTecnica()._save();
-
-            tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
+            this.analisesTecnicaManejo = new ArrayList<>();
         }
+
+        this.getAnaliseTecnica().gerarAnalise();
+
+        tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
     }
 
     public static boolean verificaNumeroProcesso(String numeroProcesso) {

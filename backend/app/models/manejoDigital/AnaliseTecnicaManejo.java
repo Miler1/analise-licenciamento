@@ -17,6 +17,7 @@ import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
+import security.Auth;
 import utils.Configuracoes;
 import utils.FileManager;
 
@@ -154,57 +155,55 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-    public static AnaliseTecnicaManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
+    public AnaliseTecnicaManejo gerarAnalise() {
 
-        AnaliseTecnicaManejo analiseTecnicaManejo = new AnaliseTecnicaManejo();
+        this.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseTecnicaManejo.dataAnalise = new Date();
+        this.areaManejoFlorestalSolicitada = Math.random();
 
-        analiseTecnicaManejo.diasAnalise = 0;
+        this.areaPreservacaoPermanente = Math.random();
 
-        analiseTecnicaManejo.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
+        this.areaServidao = Math.random();
 
-        analiseTecnicaManejo.areaManejoFlorestalSolicitada = Math.random();
+        this.areaConsolidada = Math.random();
 
-        analiseTecnicaManejo.areaPreservacaoPermanente = Math.random();
+        this.areaAntropizadaNaoConsolidada = Math.random();
 
-        analiseTecnicaManejo.areaServidao = Math.random();
+        this.areaUsoRestrito = Math.random();
 
-        analiseTecnicaManejo.areaConsolidada = Math.random();
+        this.areaSemPotencial = Math.random();
 
-        analiseTecnicaManejo.areaAntropizadaNaoConsolidada = Math.random();
+        this.areaCorposAgua = Math.random();
 
-        analiseTecnicaManejo.areaUsoRestrito = Math.random();
+        this.areaEmbargadaIbama = Math.random();
 
-        analiseTecnicaManejo.areaSemPotencial = Math.random();
+        this.areaEfetivoNdfi = Math.random();
 
-        analiseTecnicaManejo.areaCorposAgua = Math.random();
+        this.areaEmbargadaLdi = Math.random();
 
-        analiseTecnicaManejo.areaEmbargadaIbama = Math.random();
+        this.areaSeletivaNdfi = Math.random();
 
-        analiseTecnicaManejo.areaEfetivoNdfi = Math.random();
+        this.areaExploracaoNdfiBaixo = Math.random();
 
-        analiseTecnicaManejo.areaEmbargadaLdi = Math.random();
+        this.areaExploracaoNdfiMedio = Math.random();
 
-        analiseTecnicaManejo.areaSeletivaNdfi = Math.random();
+        this.areaSemPreviaExploracao = Math.random();
 
-        analiseTecnicaManejo.areaExploracaoNdfiBaixo = Math.random();
+        this.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseTecnicaManejo.areaExploracaoNdfiMedio = Math.random();
+        this.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseTecnicaManejo.areaSemPreviaExploracao = Math.random();
+        this.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(this);
 
-        analiseTecnicaManejo.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
+        this.basesVetorial = BaseVetorial.gerarBaseVetorial(this);
 
-        analiseTecnicaManejo.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
+        this.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(this);
 
-        analiseTecnicaManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseTecnicaManejo);
+        this.analistaTecnico = new AnalistaTecnicoManejo(this, (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
 
-        analiseTecnicaManejo.basesVetorial = BaseVetorial.gerarBaseVetorial(analiseTecnicaManejo);
+        this._save();
 
-        analiseTecnicaManejo.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(analiseTecnicaManejo);
-
-        return analiseTecnicaManejo;
+        return this.refresh();
     }
 
     public String saveAnexo(Upload file) throws IOException {

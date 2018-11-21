@@ -132,13 +132,13 @@ public class FileManager {
         return null;
     }
 
-	public File getFile(String fileKey, String diretorio, String extensao) {
+	public File getFile(String fileKey, String folder, String extension) {
 
-		if (fileKey == null || diretorio == null) {
+		if (fileKey == null || folder == null) {
 			return null;
 		}
 
-		File file = new File (diretorio, fileKey + '.' + extensao);
+		File file = new File (folder, fileKey + '.' + extension);
 
 		if (file.exists()) {
 			return file;
