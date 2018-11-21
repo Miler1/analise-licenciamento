@@ -175,9 +175,9 @@ GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
 
 # Documentos imóvel manejo
-POST    /upload/shape                               DocumentosImovelManejo.upload
-GET     /download/shape/{key}                       DocumentosImovelManejo.downloadTmp
-DELETE  /delete/shape/{key}                         DocumentosImovelManejo.deleteTmp
+POST    /upload/{idAnaliseTecnica}/imovel/manejo    DocumentosImovelManejo.upload
+GET     /download/imovel/manejo/{id}                DocumentosImovelManejo.download
+DELETE  /delete/imovel/manejo/{id}                  DocumentosImovelManejo.delete
 
 # Estáticos
 GET     /public/									staticDir:public

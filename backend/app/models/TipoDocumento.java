@@ -22,6 +22,7 @@ public class TipoDocumento extends Model {
 	public static Long SHAPE_PROPRIEDADE_MANEJO = 8l;
 	public static Long SHAPE_AREA_MANEJO = 9l;
 	public static Long SHAPE_MANEJO = 10l;
+	public static Long DOCUMENTO_IMOVEL_MANEJO = 11l;
 
 	@Required
 	public String nome;

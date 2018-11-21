@@ -245,7 +245,11 @@ public class Documento extends GenericModel implements Identificavel {
 				.setParameter("idDocumento", this.id)
 				.fetch();
 	}
-	
-	
-	
+
+	public String getNomeArquivo() {
+
+		this.arquivo = getFile();
+
+		return this.arquivo.getName();
+	}
 }

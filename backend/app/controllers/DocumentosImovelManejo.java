@@ -1,10 +1,13 @@
 package controllers;
 
+import models.manejoDigital.AnaliseTecnicaManejo;
+import models.manejoDigital.DocumentoImovelManejo;
 import org.apache.tika.Tika;
 import play.data.Upload;
 import play.libs.IO;
 import play.mvc.Http;
 import security.Acao;
+import serializers.DocumentosImovelManejoSerializer;
 import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
@@ -14,11 +17,12 @@ import java.io.IOException;
 
 public class DocumentosImovelManejo extends InternalController {
 
-	public static void upload(Upload file) throws IOException {
+	public static void upload(Upload file, Long idAnaliseTecnica) throws IOException {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
 		returnIfNull(file, "Upload");
+		returnIfNull(idAnaliseTecnica, "Long");
 
 		String realType = null;
 
@@ -47,11 +51,12 @@ public class DocumentosImovelManejo extends InternalController {
 				realType.contains("image/png") ||
 				realType.contains("bmp")) {
 
-			byte[] data = IO.readContent(file.asFile());
-			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String key = FileManager.getInstance().createFile(Configuracoes.ARQUIVOS_IMOVEL_MANEJO, file.getFileName(), data, extension);
+			AnaliseTecnicaManejo analiseTecnica = AnaliseTecnicaManejo.findById(idAnaliseTecnica);
+			notFoundIfNull(analiseTecnica);
 
-			renderText(key);
+			DocumentoImovelManejo documento = analiseTecnica.saveDocumentoImovel(file);
+
+			renderJSON(documento, DocumentosImovelManejoSerializer.upload);
 
 		} else {
 
@@ -62,13 +67,15 @@ public class DocumentosImovelManejo extends InternalController {
 
 	}
 
-	public static void downloadTmp(String key) {
+	public static void download(Long id) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		returnIfNull(key, "String");
+		returnIfNull(id, "Long");
+		DocumentoImovelManejo documento = DocumentoImovelManejo.findById(id);
+		returnIfNull(documento, "DocumentoImovelManejo");
 
-		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_IMOVEL_MANEJO);
+		File file = documento.getFile();
 
 		if(file != null && file.exists()) {
 
@@ -79,18 +86,15 @@ public class DocumentosImovelManejo extends InternalController {
 
 	}
 
-	public static void deleteTmp(String key) {
+	public static void delete(Long id) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_IMOVEL_MANEJO);
+		returnIfNull(id, "Long");
+		DocumentoImovelManejo documento = DocumentoImovelManejo.findById(id);
+		returnIfNull(documento, "DocumentoImovelManejo");
 
-		if(file == null || !file.exists()) {
-
-			renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
-		}
-
-		file.delete();
+		documento.delete();
 
 		renderMensagem(Mensagem.DOCUMENTO_DELETADO_COM_SUCESSO);
 

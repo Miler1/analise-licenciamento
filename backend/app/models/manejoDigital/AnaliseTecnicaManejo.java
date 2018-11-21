@@ -208,6 +208,16 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return analiseTecnicaManejo;
     }
 
+    public DocumentoImovelManejo saveDocumentoImovel(Upload file) throws IOException {
+
+        DocumentoImovelManejo documento = new DocumentoImovelManejo();
+        documento.arquivo = file.asFile();
+        documento.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_IMOVEL_MANEJO);
+        documento.analiseTecnicaManejo = this;
+
+        return (DocumentoImovelManejo) documento.save();
+    }
+
     public String saveAnexo(Upload file) throws IOException {
 
         byte[] data = IO.readContent(file.asFile());
