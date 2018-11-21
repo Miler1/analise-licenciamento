@@ -7,17 +7,14 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	var analiseGeoManejo = this;
 	analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 	analiseGeoManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
-	analiseGeoManejo.visualizarProcesso = null;
-	analiseGeoManejo.formularioAnaliseGeo = null;
 	analiseGeoManejo.processo = {};
 	analiseGeoManejo.arquivoShapeUtil = new app.utils.shapefile(mensagem);
-	analiseGeoManejo.validacaoErro = false;
 	analiseGeoManejo.geoJsonArcgis = null;
 
 	analiseGeoManejo.documentosShape = [
-		{titulo: "Shape da propriedade", documento: null, codigo: "SHAPE_PROPRIEDADE_MANEJO", obrigatorio: true},
-		{titulo: "Shape da área de manejo", documento: null, codigo: "SHAPE_AREA_MANEJO", obrigatorio: false},
-		{titulo: "Shape do manejo", documento: null, codigo: "SHAPE_MANEJO", obrigatorio: false}
+		{titulo: "Shape da propriedade", documento: null, codigo: "SHAPE_PROPRIEDADE_MANEJO"},
+		{titulo: "Shape da área de manejo", documento: null, codigo: "SHAPE_AREA_MANEJO"},
+		{titulo: "Shape do manejo", documento: null, codigo: "SHAPE_MANEJO"}
 	];
 
 
@@ -64,7 +61,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 			if ((file.size / Math.pow(1000,2)) > analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB) {
 
-				mensagem.error("O arquivo deve ter um tamanho menor que 10 MB.");
+				mensagem.error("O arquivo deve ter um tamanho menor que " + TAMANHO_MAXIMO_ARQUIVO_MB + " MB.");
 				return;
 			}
 
@@ -81,7 +78,8 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 		documentoShape.documento = {
 			key: null,
-			nome: null
+			nome: null,
+			geoJsonArcgis: null
 		};
 
 		uploadService.uploadShape(arquivo)
@@ -90,7 +88,9 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 				documentoShape.documento.key = response.data;
 				documentoShape.documento.nome = arquivo.name;
 
-				mensagem.success('Documento adicionado com sucesso.', {dontScroll: true});
+				analiseGeoManejo.arquivoShapeUtil.shapefileToGeojson(arquivo, documentoShape, analiseGeoManejo.getGeometria);
+
+				validarAnalise();
 			})
 			.catch(function(response){
 
@@ -105,7 +105,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			.then(function(response){
 
 				documentoShape.documento = null;
-				mensagem.success(response.data.texto);
+				validarAnalise();
 			})
 			.catch(function(response){
 
@@ -117,18 +117,34 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.analisarShape = function() {
 
-		if(!analiseValida()) {
+		if(!validarAnalise()) {
 
-			mensagem.error('O arquivo do shape não foi selecionado', { ttl: 10000 });
+			mensagem.error('É necessário fornecer todos shapes obrigatórios.', { ttl: 10000 });
 			return;
 		}
 
-		analiseGeoManejo.processo.analiseManejo = {geoJsonArcgis: analiseGeoManejo.geoJsonArcgis};
+		var documentosShape = [];
+
+		analiseGeoManejo.documentosShape.forEach(function(item){
+
+			if (item.documento) {
+
+				var documentoShape = {
+					geoJsonArcgis: item.documento.geoJsonArcgis,
+					key: item.documento.key,
+					tipo: item.codigo
+				};
+
+				documentosShape.push(documentoShape);
+			}
+		});
+
+		analiseGeoManejo.processo.analisesTecnicaManejo = [{documentosShape: documentosShape}];
 
 		processoManejoService.inicicarAnaliseShape(analiseGeoManejo.processo)
 			.then(function(response) {
 
-				mensagem.success('Analise de shape solicitada com sucesso !', { ttl: 10000 });
+				mensagem.success('Analise dos shapes solicitada com sucesso!', { ttl: 10000 });
 
 				$location.path('/analise-manejo');
 
@@ -139,98 +155,54 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	};
 
-	function analiseValida() {
+	function validarAnalise() {
 
-		analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
+		var shapes = {
+			SHAPE_PROPRIEDADE_MANEJO: {possui: false, index: null},
+			SHAPE_AREA_MANEJO: {possui: false, index: null},
+			SHAPE_MANEJO: {possui: false, index: null}
+		};
 
+		analiseGeoManejo.documentosShape.forEach(function(item, index){
 
-		return (analiseGeoManejo.geoJsonArcgis);
+			// inicialmente todos são considerados obrigários até que escolha uns dos shapes
+			analiseGeoManejo.documentosShape[index].obrigatorio = true;
+
+			shapes[item.codigo].index = index;
+
+			if (item.documento) {
+				shapes[item.codigo].possui = true;
+			}
+		});
+
+		if (shapes.SHAPE_AREA_MANEJO.possui) {
+			analiseGeoManejo.documentosShape[shapes.SHAPE_MANEJO.index].obrigatorio = false;
+		}
+
+		if (!shapes.SHAPE_AREA_MANEJO.possui && shapes.SHAPE_MANEJO.possui) {
+			analiseGeoManejo.documentosShape[shapes.SHAPE_AREA_MANEJO.index].obrigatorio = false;
+		}
+
+		$scope.formularioAnaliseGeo.$setSubmitted();
+
+		return (
+			shapes.SHAPE_PROPRIEDADE_MANEJO.possui &&
+			(shapes.SHAPE_AREA_MANEJO.possui || shapes.SHAPE_MANEJO.possui)
+		);
 	}
 
+	analiseGeoManejo.getGeometria = function (geojson, documentoShape) {
 
-	// analiseGeoManejo.upload = function (file) {
-	//
-	// 	if (file && !analiseGeoManejo.validacaoErro) {
-	//
-	// 		if (!file.$error) {
-	//
-	// 			analiseGeoManejo.arquivoShapeUtil.shapefileToGeojson(file, analiseGeoManejo.saveGeometria);
-	// 		}
-	// 	}
-	//
-	// };
+		var geoJsonArcgis = analiseGeoManejo.arquivoShapeUtil.geojsonToArcGIS(geojson);
+		documentoShape.documento.geoJsonArcgis = JSON.stringify(geoJsonArcgis);
+		$scope.$apply();
+	};
 
-	// analiseGeoManejo.validarArquivo = function (file) {
-	//
-	// 	// Para funcionar no windows (não é enviado o type quando o arquivo é rar)
-	// 	if (file) {
-	//
-	// 		if (analiseGeoManejo.tipos.indexOf(file.type) === -1 && file.name.substring(file.name.lastIndexOf('.')) !== '.rar') {
-	//
-	// 			mensagem.error("Extensão de arquivo inválida.");
-	// 			analiseGeoManejo.validacaoErro = true;
-	// 		}
-	//
-	// 		if ((file.size / Math.pow(1000,2)) > analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB) {
-	//
-	// 			mensagem.error("O arquivo deve ter um tamanho menor que 10 MB.");
-	// 			analiseGeoManejo.validacaoErro = true;
-	// 		}
-	//
-	// 	} else {
-	// 		analiseGeoManejo.validacaoErro = false;
-	// 	}
-	// };
-
-	// analiseGeoManejo.saveGeometria = function (geojson) {
-	//
-	// 	var geoJsonArcgis = analiseGeoManejo.arquivoShapeUtil.geojsonToArcGIS(geojson);
-	// 	analiseGeoManejo.geoJsonArcgis = JSON.stringify(geoJsonArcgis);
-	// 	$scope.$apply();
-	//
-	// };
-
-	// analiseGeoManejo.removeGeometria = function () {
-	//
-	// 	analiseGeoManejo.geoJsonArcgis = null;
-	// };
-
-	// analiseGeoManejo.analisarShape = function() {
-	//
-	// 	if(!analiseValida()) {
-	//
-	// 		mensagem.error('O arquivo do shape não foi selecionado', { ttl: 10000 });
-	// 		return;
-	// 	}
-	//
-	// 	analiseGeoManejo.processo.analiseManejo = {geoJsonArcgis: analiseGeoManejo.geoJsonArcgis};
-	//
-	// 	processoManejoService.inicicarAnaliseShape(analiseGeoManejo.processo)
-	// 		.then(function(response) {
-	//
-	// 			mensagem.success('Analise de shape solicitada com sucesso !', { ttl: 10000 });
-	//
-	// 			$location.path('/analise-manejo');
-	//
-	// 		}, function(error){
-	//
-	// 			mensagem.error(error.data.texto);
-	// 		});
-	//
-	// };
 
 	analiseGeoManejo.cancelar = function() {
 
 		$location.path('/analise-manejo');
 	};
-
-	// function analiseValida() {
-	//
-	// 	analiseGeoManejo.formularioAnaliseGeo.$setSubmitted();
-	// 	return (analiseGeoManejo.geoJsonArcgis);
-	// }
-
-
 };
 
 exports.controllers.AnaliseGeoManejoController = AnaliseGeoManejoController;
