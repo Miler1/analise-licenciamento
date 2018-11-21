@@ -46,7 +46,7 @@ public class DocumentosShape extends InternalController {
 			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
 			String key = FileManager.getInstance().createFile(Configuracoes.ARQUIVOS_SHAPE_MANEJO, file.getFileName(), data, extension);
 
-			renderText(key);
+			renderText(key.substring(0, key.indexOf('.')));
 
 		} else {
 
