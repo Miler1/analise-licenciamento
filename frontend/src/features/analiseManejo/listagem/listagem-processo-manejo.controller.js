@@ -57,7 +57,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		processoManejoService.getProcesso(processo.id)
 			.then(function (response) {
 
-				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
+				$location.path('/analise-manejo/' + response.data.analiseTecnica.id + '/analise-tecnica');
 			})
 			.catch(function (response) {
 
