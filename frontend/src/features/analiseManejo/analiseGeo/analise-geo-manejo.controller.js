@@ -15,9 +15,9 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.geoJsonArcgis = null;
 
 	analiseGeoManejo.documentosShape = [
-		{titulo: "Shape da propriedade", codigo: "SHAPE_PROPRIEDADE", obrigatorio: true},
-		{titulo: "Shape da área de manejo", codigo: "SHAPE_AREA_MANEJO", obrigatorio: false},
-		{titulo: "Shape do manejo", codigo: "SHAPE_MANEJO", obrigatorio: false}
+		{titulo: "Shape da propriedade", documento: null, codigo: "SHAPE_PROPRIEDADE_MANEJO", obrigatorio: true},
+		{titulo: "Shape da área de manejo", documento: null, codigo: "SHAPE_AREA_MANEJO", obrigatorio: false},
+		{titulo: "Shape do manejo", documento: null, codigo: "SHAPE_MANEJO", obrigatorio: false}
 	];
 
 
@@ -85,10 +85,17 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			return;
 		}
 
+		documentoShape.documento = {
+			key: null,
+			nome: null
+		};
+
 		uploadService.uploadShape(arquivo)
 			.then(function(response){
 
-				documentoShape.documento = response.data;
+				documentoShape.documento.key = response.data;
+				documentoShape.documento.nome = arquivo.name;
+
 				mensagem.success('Documento adicionado com sucesso.', {dontScroll: true});
 			})
 			.catch(function(response){
@@ -97,6 +104,21 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 				return;
 			});
 	}
+
+	analiseGeoManejo.removerArquivo = function (documentoShape) {
+
+		uploadService.deleteShape(documentoShape.documento.key)
+			.then(function(response){
+
+				documentoShape.documento = null;
+				mensagem.success(response.data.texto);
+			})
+			.catch(function(response){
+
+				mensagem.warning(response.data.texto);
+				return;
+			});
+	};
 
 
 

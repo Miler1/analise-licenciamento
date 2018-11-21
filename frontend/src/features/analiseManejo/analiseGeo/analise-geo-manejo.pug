@@ -62,7 +62,7 @@ div
 									div(ng-if="documentoShape.documento") {{documentoShape.documento.nome}}
 								td
 									div.btn-group.pull-right
-										button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do documento",
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do shape",
 										ngf-select, ngf-multiple="false", ngf-keep="false", ngf-max-files="1",
 										ngf-change="analiseGeoManejo.selecionarArquivo($files, $file, documentoShape)",
 										ng-if="!documentoShape.documento",
@@ -73,10 +73,10 @@ div
 										//ng-click="etapaDocumentacao.baixarDocumento(documentoShape.id)",
 										//ng-if="!!documentoShape.documento", target="_blank")
 										//	i.fa.fa-download
-										//button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o documento",
-										//ng-click="etapaDocumentacao.removerDocumento(documentoShape)",
-										//ng-if="!!documentoShape.documento && (cadastro.modo === 'Cadastrar' || documentoShape.novo)")
-										//	i.fa.fa-trash
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o shape",
+										ng-click="analiseGeoManejo.removerArquivo(documentoShape)",
+										ng-if="documentoShape.documento")
+											i.fa.fa-trash
 
 
 //div
