@@ -1,5 +1,9 @@
 # --- !Ups
 
+-- Alterando o nome da sequence analise_manejo_id_seq
+
+ALTER SEQUENCE analise.analise_manejo_id_seq RENAME TO analise_tecnica_manejo_id_seq;
+
 -- Removendo path_anexo de analise_tecnica_manejo
 
 ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN path_anexo;
@@ -35,3 +39,5 @@ DELETE FROM analise.tipo_documento WHERE id = 11;
 
 ALTER TABLE analise.analise_tecnica_manejo ADD COLUMN path_anexo VARCHAR(500);
 COMMENT ON COLUMN analise.analise_tecnica_manejo.path_anexo IS 'Caminho onde está armazenado o anéxo da análise.';
+
+ALTER SEQUENCE analise.analise_tecnica_manejo_id_seq RENAME TO analise_manejo_id_seq;
