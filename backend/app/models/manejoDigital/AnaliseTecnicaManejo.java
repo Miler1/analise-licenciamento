@@ -136,6 +136,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @JoinColumn(name = "id_processo_manejo")
     public ProcessoManejo processoManejo;
 
+    @Max(2)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoImovelManejo> documentosImovel;
 
