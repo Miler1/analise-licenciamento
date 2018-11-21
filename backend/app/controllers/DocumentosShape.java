@@ -45,9 +45,9 @@ public class DocumentosShape extends InternalController {
 
 			byte[] data = IO.readContent(file.asFile());
 			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String key = FileManager.getInstance().createFile(Configuracoes.ARQUIVOS_SHAPE_MANEJO, file.getFileName(), data, extension);
+			String key = FileManager.getInstance().createFile(data, extension);
 
-			renderText(key.substring(0, key.indexOf('.')));
+			renderText(key);
 
 		} else {
 
@@ -64,7 +64,7 @@ public class DocumentosShape extends InternalController {
 
 		returnIfNull(key, "String");
 
-		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO, "zip");
+		File file = FileManager.getInstance().getFile(key);
 
 		if(file != null && file.exists()) {
 
@@ -79,7 +79,7 @@ public class DocumentosShape extends InternalController {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		File file = FileManager.getInstance().getFile(key, Configuracoes.ARQUIVOS_SHAPE_MANEJO, "zip");
+		File file = FileManager.getInstance().getFile(key);
 
 		if(file == null || !file.exists()) {
 

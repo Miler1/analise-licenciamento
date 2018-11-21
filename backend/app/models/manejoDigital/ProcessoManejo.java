@@ -132,14 +132,13 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
                 (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
 
+        this._save();
+
         for(DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
 
             documento.analiseTecnicaManejo = this.getAnaliseTecnica();
-            documento.dataCadastro = new Date();
-            documento.caminho = FileManager.getInstance().getFile(documento.key, Configuracoes.ARQUIVOS_SHAPE_MANEJO, "zip").getPath();
+            documento.save();
         }
-
-        this._save();
 
         //TODO Integração com o serviço VEGA
         //this.enviarProcessoAnaliseShape();
