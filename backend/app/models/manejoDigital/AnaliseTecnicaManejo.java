@@ -43,9 +43,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @Column(name="dias_analise")
     public Integer diasAnalise;
 
-    @Column(name="path_anexo")
-    public String pathAnexo;
-
     @Column(name="analise_temporal")
     public String analiseTemporal;
 
@@ -135,6 +132,9 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @JoinColumn(name = "id_processo_manejo")
     public ProcessoManejo processoManejo;
 
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<DocumentoImovelManejo> documentosImovel;
+
     @Transient
     public List<Insumo> insumos;
 
@@ -210,7 +210,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
         String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_ANEXO_MANEJO_FOLDER, file.getFileName(),
                 data, extension);
 
-        this.pathAnexo = path;
+        //this.pathAnexo = path;
         this._save();
 
         return path;
@@ -218,8 +218,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public void deleteAnexo() {
 
-        FileManager.getInstance().deleteFileFromPath(this.pathAnexo);
-        this.pathAnexo = null;
+        //FileManager.getInstance().deleteFileFromPath(this.pathAnexo);
+        //this.pathAnexo = null;
         this._save();
     }
 
@@ -318,10 +318,10 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         String nomeAnexo = null;
 
-        if(this.pathAnexo != null){
-
-            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
-        }
+//        if(this.pathAnexo != null){
+//
+//            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
+//        }
 
         for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
 
