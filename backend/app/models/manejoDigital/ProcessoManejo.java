@@ -31,6 +31,7 @@ import play.db.jpa.GenericModel;
 import security.Auth;
 import security.InterfaceTramitavel;
 import utils.Configuracoes;
+import utils.FileManager;
 import utils.WebService;
 
 import javax.persistence.*;
@@ -130,6 +131,13 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.getAnaliseTecnica().diasAnalise = 0;
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
                 (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
+
+        for(DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
+
+            documento.analiseTecnicaManejo = this.getAnaliseTecnica();
+            documento.dataCadastro = new Date();
+            documento.caminho = FileManager.getInstance().getFile(documento.key, Configuracoes.ARQUIVOS_SHAPE_MANEJO).getPath();
+        }
 
         this._save();
 

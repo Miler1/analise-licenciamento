@@ -15,7 +15,6 @@ import play.data.Upload;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
-import security.Auth;
 import utils.Configuracoes;
 import utils.FileManager;
 
