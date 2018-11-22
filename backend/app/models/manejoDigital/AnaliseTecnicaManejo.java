@@ -128,7 +128,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @Required
     @Min(2)
     @Max(3)
-    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "analiseTecnicaManejo", orphanRemoval = true)
     public List<DocumentoShape> documentosShape;
 
     @Required
@@ -193,13 +193,11 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         this.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
 
-        this.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(this);
+        this.analisesNdfi.addAll(AnaliseNdfi.gerarAnaliseNfid(this));
 
-        this.basesVetorial = BaseVetorial.gerarBaseVetorial(this);
+        this.basesVetorial.addAll(BaseVetorial.gerarBaseVetorial(this));
 
-        this.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(this);
-
-        this.analistaTecnico = new AnalistaTecnicoManejo(this, (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
+        this.analisesVetorial.addAll(AnaliseVetorial.gerarAnalisesVetoriais(this));
 
         this._save();
 
@@ -348,35 +346,35 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     }
 
-    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
-
-        this.analisesVetorial = new ArrayList<>();
-
-        for (FeatureQuerySobreposicao feature : features) {
-
-            feature.attributes.analiseTecnicaManejo = this;
-            this.analisesVetorial.add(feature.attributes);
-        }
-    }
-
-    public void setInsumos(List<FeatureQueryInsumo> features) {
-
-        this.insumos = new ArrayList<>();
-
-        for (FeatureQueryInsumo feature : features) {
-
-            this.insumos.add(feature.attributes);
-        }
-    }
-
-    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
-
-        this.analisesNdfi = new ArrayList<>();
-
-        for (FeatureQueryResumoNDFI feature : features) {
-
-            feature.attributes.analiseTecnicaManejo = this;
-            this.analisesNdfi.add(feature.attributes);
-        }
-    }
+//    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
+//
+//        this.analisesVetorial = new ArrayList<>();
+//
+//        for (FeatureQuerySobreposicao feature : features) {
+//
+//            feature.attributes.analiseTecnicaManejo = this;
+//            this.analisesVetorial.add(feature.attributes);
+//        }
+//    }
+//
+//    public void setInsumos(List<FeatureQueryInsumo> features) {
+//
+//        this.insumos = new ArrayList<>();
+//
+//        for (FeatureQueryInsumo feature : features) {
+//
+//            this.insumos.add(feature.attributes);
+//        }
+//    }
+//
+//    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
+//
+//        this.analisesNdfi = new ArrayList<>();
+//
+//        for (FeatureQueryResumoNDFI feature : features) {
+//
+//            feature.attributes.analiseTecnicaManejo = this;
+//            this.analisesNdfi.add(feature.attributes);
+//        }
+//    }
 }

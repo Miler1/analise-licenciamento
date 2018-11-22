@@ -3,7 +3,9 @@ package controllers;
 import builders.ProcessoManejoBuilder.FiltroProcessoManejo;
 import models.Documento;
 import models.manejoDigital.ProcessoManejo;
+import models.portalSeguranca.Usuario;
 import security.Acao;
+import security.Auth;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
 
@@ -43,7 +45,7 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processoSalvo);
 
-		processoSalvo.iniciarAnaliseShape(processo);
+		processoSalvo.iniciarAnaliseShape(processo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first());
 
 		renderJSON(Mensagem.ANALISE_SHAPE_INICIADA_COM_SUCESSO);
 	}
