@@ -10,7 +10,7 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 	.row.form-group
 		.col-md-12.col-sm-12
 			label.control-label Número do processo: *
-			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required)
+			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required, ng-blur="cadastroProcessoManejo.conferirNumeroProcesso(cadastroProcessoManejo.processo.numeroProcesso)")
 	.row.form-group
 
 		.col-md-6.col-sm-6

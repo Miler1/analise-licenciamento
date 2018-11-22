@@ -2,6 +2,9 @@ package utils;
 
 import java.io.IOException;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geojson.geom.GeometryJSON;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -28,6 +31,42 @@ public class GeoJsonUtils {
 			throw new RuntimeException(e);
 		}
 		
+	}
+
+	public static GeometryCollection toGeometryCollection(String geoJson) {
+
+		try {
+
+			GeometryJSON gjson = new GeometryJSON();
+			GeometryCollection geometryCollection;
+			geometryCollection = gjson.readGeometryCollection(geoJson);
+			geometryCollection.setSRID(SRID);
+
+			for(int i = 0; i < geometryCollection.getNumGeometries(); i++) {
+
+				geometryCollection.getGeometryN(i).setSRID(SRID);
+			}
+
+			return geometryCollection;
+
+		} catch (IOException e) {
+
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static DefaultFeatureCollection toDefaultFeatureCollection(String geoJson) {
+
+		try {
+
+			FeatureJSON gjson = new FeatureJSON();
+
+			return (DefaultFeatureCollection) gjson.readFeatureCollection(geoJson);
+
+		} catch (IOException e) {
+
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public static String toGeoJson(Geometry geometry){

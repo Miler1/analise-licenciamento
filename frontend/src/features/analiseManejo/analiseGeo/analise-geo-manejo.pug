@@ -24,43 +24,52 @@ div.row#dadosProcesso(ng-init="analiseGeoManejo.init()")
 				span.col-sm-8 {{analiseGeoManejo.processo.empreendimento.municipio.nome}}
 hr
 div
-	.col-xs-12.col-md-6.no-padding
-		h4 Análise Geo - Upload do shape
-	.col-xs-6.col-md-6.text-right.no-padding.margin-bottom-md
-		form(name="analiseGeoManejo.formularioAnaliseGeo")
-			.form-group
-				div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
-				 ng-class="{'error-button': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape}",
-				 ngf-before-model-change="analiseGeoManejo.validarArquivo($file)")
-					i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-					| Anexar arquivo à análise
-				div
-					i   Tamanho máximo de {{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB - ZIP/RAR
-div
-	table.table.table-condensed
 
-		thead
+	.panel.panel-default(name='documentacao')
+		.panel-heading
+			h4.panel-title Análise Geo - Upload dos shapes
+		.panel-body
+			div.row
+				div.col-md-12
+					table.table.table-striped
+						thead
+							tr
+								th.col-md-1 Status
+								th.col-md-5 Tipo documento
+								th.col-md-3 Documento
+								th.col-md-1.text-right Ações
+						tbody
+							tr(ng-repeat="arquivoShape in analiseGeoManejo.arquivosShape")
+								td {{arquivoShape.key ? 'Enviado' : 'Aguardando'}}
+								td(class="relative")
+									div {{arquivoShape.titulo}}
+								td
+									div(ng-if="arquivoShape.key") {{arquivoShape.nome}}
+								td
+									div.btn-group.pull-right
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do shape",
+										ngf-select, ngf-multiple="false", ngf-keep="false", ngf-max-files="1",
+										ngf-change="analiseGeoManejo.selecionarArquivo($files, $file, arquivoShape)",
+										ng-if="!arquivoShape.key",
+										ngf-accept="'application/zip'"
+										ng-class="{'button-error': formularioAnaliseGeo.$submitted && !arquivoShape.key && arquivoShape.obrigatorio}")
+											i.fa.fa-upload
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o shape",
+										ng-click="analiseGeoManejo.downloadArquivo(arquivoShape)",
+										ng-if="!!arquivoShape.key", target="_blank")
+											i.fa.fa-download
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o shape",
+										ng-click="analiseGeoManejo.removerArquivo(arquivoShape)",
+										ng-if="documentoShape.key")
+											i.fa.fa-trash
 
-			tr
-				th.col-xs-10 Arquivo anexado
-				th.col-xs-2.text-right Ações
-
-		tbody
-
-			tr(ng-if="analiseGeoManejo.processo.analiseManejo.pathShape")
-				td.col-xs-10 {{analiseGeoManejo.arquivoShape.name}}
-				td.col-xs-2.text-right
-					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeUpload()")
-						i.glyphicon.glyphicon-trash.icone
-			tr(ng-if="!analiseGeoManejo.processo.analiseManejo.pathShape")
-				td.col-xs-12.text-center Nenhum arquivo anexado
-	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.arquivoShape") Campo obrigatório.
 
 div.botoes-analise-geo
-	button.btn.btn-default.col-md-2(ng-click="analiseGeoManejo.cancelar()", tabindex="0")
-		span.glyphicon.glyphicon-remove.glyphicon--with-right-margin
-		| &nbsp;Cancelar
+	form(name="formularioAnaliseGeo", novalidate)
+		button.btn.btn-default.col-md-2(ng-click="analiseGeoManejo.cancelar()", tabindex="0")
+			span.glyphicon.glyphicon-remove.glyphicon--with-right-margin
+			| &nbsp;Cancelar
 
-	button.btn.btn-success.pull-right.col-md-2(ng-click="analiseGeoManejo.analisar()", tabindex="0")
-		span.glyphicon.glyphicon-check.glyphicon--with-right-margin
-		| &nbsp;Iniciar análise
+		button.btn.btn-success.pull-right.col-md-3(ng-click="analiseGeoManejo.analisarShape()", tabindex="0")
+			span.glyphicon.glyphicon-check.glyphicon--with-right-margin
+			| &nbsp; Solicitar analise

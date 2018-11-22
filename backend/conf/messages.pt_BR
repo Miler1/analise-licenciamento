@@ -53,6 +53,7 @@ SHAPE_REMOVIDO_SUCESSO=Shape removido com sucesso;
 # Documentos
 #
 DOCUMENTO_NAO_ENCONTRADO=Documento não encontrado.
+DOCUMENTO_DELETADO_COM_SUCESSO=Documento excluido com sucesso.
 
 #
 # Analise juridica
@@ -121,6 +122,7 @@ ANEXO_REMOVIDO_SUCESSO=Anexo removido com sucesso.
 ANEXO_SALVO_SUCESSO=Anexo salvo com sucesso.
 ANALISE_FINALIZADA_SUCESSO=Análise finalizada com sucesso.
 ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO=Erro ao criar documento da análise técnica do manejo.
+ANALISE_SHAPE_INICIADA_COM_SUCESSO=Análise shape iniciada com sucesso.
 
 #
 # Processo Manejo

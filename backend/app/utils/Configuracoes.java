@@ -23,7 +23,6 @@ public class Configuracoes {
 	public static String INDEX_URL = "app/index.html";
 
 	public static String APPLICATION_TEMP_FOLDER = getConfig("application.tempFolder", Play.applicationPath + "/tmp/");
-	public static String APPLICATION_SHAPE_FOLDER = getConfig("application.shapeFolder", "/home/licenciamento-pa/documentos/shape");
 	public static String APPLICATION_ANEXO_MANEJO_FOLDER = getConfig("application.anexoManejoFolder", "/home/licenciamento-pa/documentos/anexo_manejo");
 
 	public static long TAMANHO_MAXIMO_ARQUIVO = getLongConfig("sistema.tamanhoMaximoArquivoUpload");
@@ -34,6 +33,7 @@ public class Configuracoes {
 	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_LICENCIAMENTO_PATH + getConfig("arquivos.documentos.path", null);
 	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
 	public static String ESTADO = "PA";
+	public static String ARQUIVOS_SHAPE_MANEJO = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.shape.manejo", null);
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
 
@@ -70,6 +70,14 @@ public class Configuracoes {
 	public static String URL_SICAR = getConfig("sicar.url", null);
 	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
 	public static String URL_SICAR_IMOVEL_FICHA = URL_SICAR + getConfig("url.sicar.imovel.ficha", null);
+
+	public static String ANALISE_SHAPE_URL = getConfig("analise.shape.url", null);
+	public static String ANALISE_SHAPE_ADD_FEATURES_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.add.features.url", null);
+	public static String ANALISE_SHAPE_QUERY_PROCESSOS_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.processos.url", null);
+	public static String ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.sobreposicoes.url", null);
+	public static String ANALISE_SHAPE_QUERY_INSUMOS_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.insumos.url", null);
+	public static String ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.resumo.ndfi.url", null);
+	public static String ANALISE_SHAPE_QUERY_AMF_MANEJO_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.amf.manejo.url", null);
 
 	static {
 

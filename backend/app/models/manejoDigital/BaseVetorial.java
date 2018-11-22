@@ -4,7 +4,6 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,7 @@ public class BaseVetorial extends GenericModel {
     @Column(name="observacao")
     public String observacao;
 
-    public static List<BaseVetorial> gerarBaseVetorial(AnaliseManejo analise) {
+    public static List<BaseVetorial> gerarBaseVetorial(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();
         int numeroRandomico = rand.nextInt(20) + 1;

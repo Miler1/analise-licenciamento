@@ -133,8 +133,6 @@ GET     /favicon.ico                            404
 
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
-POST    /upload/shape                               Uploads.uploadShape
-DELETE  /upload/shape/{token}                       Uploads.deleteShape
 
 # Notificacoes
 
@@ -145,15 +143,17 @@ POST    /processosManejo                            ProcessosManejo.listWithFilt
 POST    /processoManejo                             ProcessosManejo.save
 GET     /processoManejo/{id}                        ProcessosManejo.findById
 GET     /processoManejo/{id}/visualizar             ProcessosManejo.findProcessoCompletoById
-POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
+POST    /processoManejo/inicicarAnaliseShape        ProcessosManejo.iniciarAnaliseShape
+POST    /processoManejo/iniciarAnaliseTecnica       ProcessosManejo.iniciarAnaliseTecnica
 POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
 POST    /processoManejo/count                       ProcessosManejo.countWithFilter
+GET     /processoManejo/verificaNumeroProcesso/{numeroProcesso}        ProcessosManejo.verificaNumeroProcesso
 
 # Analises Manejo
-POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
-DELETE  /analiseManejo/anexo/{id}                   AnalisesManejo.deleteAnexo
-GET     /analiseManejo/{id}                         AnalisesManejo.findById
-PUT     /analiseManejo/{id}                         AnalisesManejo.finalizar
+POST    /analiseTecnicaManejo/{id}/anexo                   AnalisesTecnicasManejo.uploadAnexo
+DELETE  /analiseTecnicaManejo/anexo/{id}                   AnalisesTecnicasManejo.deleteAnexo
+GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.findById
+PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.finalizar
 
 # Observações
 POST    /observacao                                 Observacoes.save
@@ -168,6 +168,11 @@ GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTip
 
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
+
+# Documentos shape
+POST    /upload/shape                               DocumentosShape.upload
+GET     /download/shape/{key}                       DocumentosShape.downloadTmp
+DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
 
 # Estáticos
 GET     /public/									staticDir:public
