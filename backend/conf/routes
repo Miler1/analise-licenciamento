@@ -149,9 +149,7 @@ POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfA
 POST    /processoManejo/count                       ProcessosManejo.countWithFilter
 GET     /processoManejo/verificaNumeroProcesso/{numeroProcesso}        ProcessosManejo.verificaNumeroProcesso
 
-# Analises Manejo
-POST    /analiseTecnicaManejo/{id}/anexo                   AnalisesTecnicaManejo.uploadAnexo
-DELETE  /analiseTecnicaManejo/anexo/{id}                   AnalisesTecnicaManejo.deleteAnexo
+# Analises Técnica Manejo
 GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
 PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.finalizar
 
