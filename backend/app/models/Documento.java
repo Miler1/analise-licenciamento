@@ -123,7 +123,7 @@ public class Documento extends GenericModel implements Identificavel {
 		return this;
 	}
 
-	private void saveArquivoTemp() {
+	protected void saveArquivoTemp() {
 		
 		if (this.key == null)
 			throw new IllegalStateException("Key do documento não preenchido.");
@@ -131,7 +131,7 @@ public class Documento extends GenericModel implements Identificavel {
 		saveArquivo(FileManager.getInstance().getFile(this.key));
 	}
 
-	private void saveArquivo(File file) {
+	protected void saveArquivo(File file) {
 		
 		if (file == null || !file.exists())
 			throw new IllegalStateException("Arquivo não existente.");
@@ -152,7 +152,7 @@ public class Documento extends GenericModel implements Identificavel {
 		}
 	}
 
-	private void saveArquivoBase64() {
+	protected void saveArquivoBase64() {
 		
 		if (this.base64 == null)
 			throw new IllegalStateException("Base64 do documento não preenchido.");
@@ -178,7 +178,7 @@ public class Documento extends GenericModel implements Identificavel {
 		}
 	}
 
-	private void configurarCaminho() {
+	protected void configurarCaminho() {
 		
 		this.caminho = File.separator + tipo.caminhoPasta
 				+ File.separator + tipo.prefixoNomeArquivo + "_"
@@ -188,7 +188,7 @@ public class Documento extends GenericModel implements Identificavel {
 			this.caminho += "." + this.extensao;
 	}
 
-	private void criarPasta() {
+	protected void criarPasta() {
 		
 		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta;
 		
@@ -198,7 +198,7 @@ public class Documento extends GenericModel implements Identificavel {
 			pasta.mkdirs();
 	}
 
-	private String getCaminhoCompleto() {
+	protected String getCaminhoCompleto() {
 		
 		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;
 	}

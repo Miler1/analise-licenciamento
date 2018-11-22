@@ -13,6 +13,7 @@ ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN path_anexo;
 CREATE TABLE analise.documento_imovel_manejo (
  id_documento INTEGER NOT NULL,
  id_analise_tecnica_manejo INTEGER NOT NULL,
+ nome VARCHAR(200),
  CONSTRAINT pk_documento_imovel_manejo PRIMARY KEY (id_documento),
  CONSTRAINT fk_dmi_documento FOREIGN KEY (id_documento) REFERENCES analise.documento(id),
  CONSTRAINT fk_dmi_analise_manejo FOREIGN KEY (id_analise_tecnica_manejo) REFERENCES analise.analise_tecnica_manejo (id)
@@ -21,6 +22,7 @@ CREATE TABLE analise.documento_imovel_manejo (
 COMMENT ON TABLE analise.documento_imovel_manejo IS 'Entidade responsável por armazenas os documentos do imóvel do manejo.';
 COMMENT ON COLUMN analise.documento_imovel_manejo.id_documento IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.documento_imovel_manejo.id_analise_tecnica_manejo IS 'Identificador da entidade analise_tecnica_manejo que faz o relacionamento entre a análise do manejo e documento do imóvel do manejo.';
+COMMENT ON COLUMN analise.documento_imovel_manejo.nome IS 'Nome do documento.';
 
 ALTER TABLE analise.documento_imovel_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento_imovel_manejo TO postgres;
