@@ -18,11 +18,10 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	};
 
 	analiseGeoManejo.documentosShape = [
-		{titulo: "Shape da propriedade", documento: null, codigo: "SHAPE_PROPRIEDADE_MANEJO"},
-		{titulo: "Shape da área de manejo", documento: null, codigo: "SHAPE_AREA_MANEJO"},
-		{titulo: "Shape do manejo", documento: null, codigo: "SHAPE_MANEJO"}
+		{titulo: "Área de manejo florestal solicitada - AMF (hectares)", documento: null, codigo: "SHAPE_PROPRIEDADE_MANEJO"},
+		{titulo: "Área de preservação permanente - APP", documento: null, codigo: "SHAPE_AREA_MANEJO"},
+		{titulo: "Área sem potencial", documento: null, codigo: "SHAPE_MANEJO"}
 	];
-
 
 	analiseGeoManejo.init = function() {
 
@@ -160,6 +159,12 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			});
 
 	};
+
+	analiseGeoManejo.downloadArquivo = function(documentoShape) {
+
+		location.href = documentoShapeService.download(documentoShape.documento.key);
+	};
+
 
 	function validarAnalise() {
 
