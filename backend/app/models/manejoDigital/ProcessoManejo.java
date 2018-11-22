@@ -135,7 +135,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.getAnaliseTecnica().processoManejo = this;
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(this.getAnaliseTecnica(), usuario);
 
-        this._save();
+        this.getAnaliseTecnica()._save();
 
         for(DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
 
