@@ -141,6 +141,9 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoImovelManejo> documentosImovel;
 
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<DocumentoComplementarManejo> documentosComplementares;
+
     @Transient
     public List<Insumo> insumos;
 
