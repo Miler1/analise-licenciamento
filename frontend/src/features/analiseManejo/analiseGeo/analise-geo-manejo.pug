@@ -54,10 +54,10 @@ div
 										ngf-accept="'application/zip'"
 										ng-class="{'button-error': formularioAnaliseGeo.$submitted && !documentoShape.documento && documentoShape.obrigatorio}")
 											i.fa.fa-upload
-										//button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o documento",
-										//ng-click="etapaDocumentacao.baixarDocumento(documentoShape.id)",
-										//ng-if="!!documentoShape.documento", target="_blank")
-										//	i.fa.fa-download
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o shape",
+										ng-click="analiseGeoManejo.downloadArquivo(documentoShape)",
+										ng-if="!!documentoShape.documento", target="_blank")
+											i.fa.fa-download
 										button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o shape",
 										ng-click="analiseGeoManejo.removerArquivo(documentoShape)",
 										ng-if="documentoShape.documento")
