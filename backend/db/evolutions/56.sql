@@ -27,9 +27,9 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_manejo_shape TO 
 -- Adicionando tipos de documento manejo na entidade
 
 INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
- (8, 'Shape propriedade manejo', 'shape-manejo', 'shape_propriedade'),
- (9, 'Shape área manejo', 'shape-manejo', 'shape_area_manejo'),
- (10, 'Shape manejo', 'shape-manejo', 'shape_manejo');
+ (8, 'Área de manejo florestal solicitada - AMF (hectares)', 'shape-manejo', 'amf'),
+ (9, 'Área de preservação permanente - APP', 'shape-manejo', 'app'),
+ (10, 'Área sem potencial', 'shape-manejo', 'area_sem_potencial');
 
 -- Alterando entidade processo manejo para suportar muitas análises técnicas
 
