@@ -24,21 +24,6 @@ div.row#dadosProcesso(ng-init="analiseGeoManejo.init()")
 				span.col-sm-8 {{analiseGeoManejo.processo.empreendimento.municipio.nome}}
 hr
 div
-	//.col-xs-12.col-md-6.no-padding
-	//	h4 Análise Geo - Upload dos shapes
-	//.col-xs-6.col-md-6.text-right.no-padding.margin-bottom-md
-	//	form(name="analiseGeoManejo.formularioAnaliseGeo")
-	//		.form-group
-	//			div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseGeoManejo.upload($file)", ngf-max-size="{{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
-	//			 ng-class="{'error-button': analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.geoJsonArcgis}",
-	//			 ngf-before-model-change="analiseGeoManejo.validarArquivo($file)")
-	//				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-	//				| Anexar arquivo à análise
-	//			div
-	//				i   Tamanho máximo de {{analiseGeoManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB - ZIP/RAR
-	//
-	//
-
 
 	.panel.panel-default(name='documentacao')
 		.panel-heading
@@ -62,48 +47,29 @@ div
 									div(ng-if="documentoShape.documento") {{documentoShape.documento.nome}}
 								td
 									div.btn-group.pull-right
-										button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do documento",
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do shape",
 										ngf-select, ngf-multiple="false", ngf-keep="false", ngf-max-files="1",
 										ngf-change="analiseGeoManejo.selecionarArquivo($files, $file, documentoShape)",
 										ng-if="!documentoShape.documento",
 										ngf-accept="'application/zip'"
-										ng-class="{'button-error': formDocumentacao.$submitted && !documentoShape.documento && documentoShape.obrigatorio}")
+										ng-class="{'button-error': formularioAnaliseGeo.$submitted && !documentoShape.documento && documentoShape.obrigatorio}")
 											i.fa.fa-upload
-										//button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o documento",
-										//ng-click="etapaDocumentacao.baixarDocumento(documentoShape.id)",
-										//ng-if="!!documentoShape.documento", target="_blank")
-										//	i.fa.fa-download
-										//button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o documento",
-										//ng-click="etapaDocumentacao.removerDocumento(documentoShape)",
-										//ng-if="!!documentoShape.documento && (cadastro.modo === 'Cadastrar' || documentoShape.novo)")
-										//	i.fa.fa-trash
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o shape",
+										ng-click="analiseGeoManejo.downloadArquivo(documentoShape)",
+										ng-if="!!documentoShape.documento", target="_blank")
+											i.fa.fa-download
+										button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o shape",
+										ng-click="analiseGeoManejo.removerArquivo(documentoShape)",
+										ng-if="documentoShape.documento")
+											i.fa.fa-trash
 
-
-//div
-//	table.table.table-condensed
-//
-//		thead
-//
-//			tr
-//				th.col-xs-10 Arquivo anexado
-//				th.col-xs-2.text-right Ações
-//
-//		tbody
-//
-//			tr(ng-show="analiseGeoManejo.geoJsonArcgis")
-//				td.col-xs-10 Arquivo Shape
-//				td.col-xs-2.text-right
-//					a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseGeoManejo.removeGeometria()")
-//						i.glyphicon.glyphicon-trash.icone
-//			tr(ng-show="!analiseGeoManejo.geoJsonArcgis")
-//				td.col-xs-12.text-center Nenhum arquivo anexado
-//	span.error-message(ng-show="analiseGeoManejo.formularioAnaliseGeo.$submitted && !analiseGeoManejo.geoJsonArcgis") Campo obrigatório.
 
 div.botoes-analise-geo
-	button.btn.btn-default.col-md-2(ng-click="analiseGeoManejo.cancelar()", tabindex="0")
-		span.glyphicon.glyphicon-remove.glyphicon--with-right-margin
-		| &nbsp;Cancelar
+	form(name="formularioAnaliseGeo", novalidate)
+		button.btn.btn-default.col-md-2(ng-click="analiseGeoManejo.cancelar()", tabindex="0")
+			span.glyphicon.glyphicon-remove.glyphicon--with-right-margin
+			| &nbsp;Cancelar
 
-	button.btn.btn-success.pull-right.col-md-3(ng-click="analiseGeoManejo.analisarShape()", tabindex="0")
-		span.glyphicon.glyphicon-check.glyphicon--with-right-margin
-		| &nbsp; Solicitar analise
+		button.btn.btn-success.pull-right.col-md-3(ng-click="analiseGeoManejo.analisarShape()", tabindex="0")
+			span.glyphicon.glyphicon-check.glyphicon--with-right-margin
+			| &nbsp; Solicitar analise

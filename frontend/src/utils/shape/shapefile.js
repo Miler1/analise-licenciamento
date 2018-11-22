@@ -1,7 +1,7 @@
 var shapefile = function(mensagem) {
 
 
-	this.shapefileToGeojson = function(uploadedFile, callback) {
+	this.shapefileToGeojson = function(uploadedFile, objetoSaida, callback) {
 
 		var fileType = ['zip', 'gpx', 'kml'],
 			fileExtension = this.getFileExtension(uploadedFile.name),
@@ -37,12 +37,12 @@ var shapefile = function(mensagem) {
 
 				case 'kml':
 
-					callback(app.utils.toGeoJSON.kml($.parseXML(fileReader.result)));
+					callback(app.utils.toGeoJSON.kml($.parseXML(fileReader.result)), objetoSaida);
 					break;
 
 				case 'gpx':
 
-					callback(app.utils.toGeoJSON.gpx($.parseXML(fileReader.result)));
+					callback(app.utils.toGeoJSON.gpx($.parseXML(fileReader.result)), objetoSaida);
 					break;
 
 				case 'zip':
@@ -55,7 +55,7 @@ var shapefile = function(mensagem) {
 							return false;
 						}
 
-						callback(data);
+						callback(data, objetoSaida);
 
 					}.bind(this));
 					break;
