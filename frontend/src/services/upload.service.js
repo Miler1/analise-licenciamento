@@ -8,18 +8,6 @@ var UploadService = function(request, config, Upload) {
             data: { file : file }
         });
     };
-
-    this.uploadShape = function(file) {
-
-        return request.upload(config.BASE_URL() + 'upload/shape', file, Upload);
-    };
-
-	this.removeShape = function(nameFile) {
-
-		return request
-			.delete(config.BASE_URL() + "upload/shape/" + nameFile);
-	};
-
 };
 
 exports.services.UploadService = UploadService;
