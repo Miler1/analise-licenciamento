@@ -2,28 +2,23 @@ package models.manejoDigital;
 
 import models.Documento;
 import models.TipoDocumento;
-import models.analiseShape.FeatureQueryInsumo;
-import models.analiseShape.FeatureQueryResumoNDFI;
-import models.analiseShape.FeatureQuerySobreposicao;
 import models.analiseShape.Insumo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.hibernate.annotations.Formula;
 import play.data.Upload;
 import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
-import security.Auth;
 import utils.Configuracoes;
 import utils.FileManager;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -139,10 +134,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     @Max(2)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<DocumentoImovelManejo> documentosImovel;
-
-    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<DocumentoComplementarManejo> documentosComplementares;
+    public List<DocumentoManejo> documentosManejo;
 
     @Transient
     public List<Insumo> insumos;
@@ -208,14 +200,24 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-    public DocumentoImovelManejo saveDocumentoImovel(Upload file) throws IOException {
+    public DocumentoManejo saveDocumentoImovel(Upload file) throws IOException {
 
-        DocumentoImovelManejo documento = new DocumentoImovelManejo();
+        DocumentoManejo documento = new DocumentoManejo();
         documento.arquivo = file.asFile();
         documento.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_IMOVEL_MANEJO);
         documento.analiseTecnicaManejo = this;
 
-        return (DocumentoImovelManejo) documento.save();
+        return (DocumentoManejo) documento.save();
+    }
+
+    public DocumentoManejo saveDocumentoComplementar(Upload file) throws IOException {
+
+        DocumentoManejo documento = new DocumentoManejo();
+        documento.arquivo = file.asFile();
+        documento.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO);
+        documento.analiseTecnicaManejo = this;
+
+        return (DocumentoManejo) documento.save();
     }
 
     public String saveAnexo(Upload file) throws IOException {
