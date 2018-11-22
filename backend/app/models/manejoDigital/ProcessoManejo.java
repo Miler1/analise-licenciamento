@@ -9,6 +9,7 @@ import deserializers.AnaliseVetorialDeserializer;
 import deserializers.AtributosQueryAMFManejoDeserializer;
 import deserializers.GeometriaArcgisDeserializer;
 import exceptions.WebServiceException;
+import models.TipoDocumento;
 import models.analiseShape.AtributosAddLayer;
 import models.analiseShape.AtributosQueryAMFManejo;
 import models.analiseShape.GeometriaArcgis;
@@ -124,19 +125,22 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo) {
+    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, Usuario usuario) {
 
         this.analisesTecnicaManejo.add(processo.getAnaliseTecnica());
         this.getAnaliseTecnica().dataAnalise = new Date();
         this.getAnaliseTecnica().diasAnalise = 0;
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
                 (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
+        this.getAnaliseTecnica().processoManejo = this;
+        this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(this.getAnaliseTecnica(), usuario);
 
         this._save();
 
         for(DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
 
             documento.analiseTecnicaManejo = this.getAnaliseTecnica();
+            documento.tipo = TipoDocumento.findById(documento.tipo.id);
             documento.save();
         }
 

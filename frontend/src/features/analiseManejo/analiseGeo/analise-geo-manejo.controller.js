@@ -11,6 +11,12 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 	analiseGeoManejo.arquivoShapeUtil = new app.utils.shapefile(mensagem);
 	analiseGeoManejo.geoJsonArcgis = null;
 
+	analiseGeoManejo.idTiposDocumento = {
+		SHAPE_PROPRIEDADE_MANEJO: 8,
+		SHAPE_AREA_MANEJO: 9,
+		SHAPE_MANEJO: 10
+	};
+
 	analiseGeoManejo.documentosShape = [
 		{titulo: "Shape da propriedade", documento: null, codigo: "SHAPE_PROPRIEDADE_MANEJO"},
 		{titulo: "Shape da área de manejo", documento: null, codigo: "SHAPE_AREA_MANEJO"},
@@ -132,7 +138,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 				var documentoShape = {
 					geoJsonArcgis: item.documento.geoJsonArcgis,
 					key: item.documento.key,
-					tipo: item.codigo
+					tipo: { id: analiseGeoManejo.idTiposDocumento[item.codigo] }
 				};
 
 				documentosShape.push(documentoShape);
