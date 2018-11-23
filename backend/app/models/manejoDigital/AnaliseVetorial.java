@@ -81,6 +81,8 @@ public class AnaliseVetorial extends GenericModel {
 
             analiseVetorial.analiseTecnicaManejo = analise;
 
+            analiseVetorial.exibirPDF = true;
+
             listaAnalise.add(analiseVetorial);
         }
 

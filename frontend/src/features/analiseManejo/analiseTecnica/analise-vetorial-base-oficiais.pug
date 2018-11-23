@@ -8,13 +8,15 @@ div
 
 			thead
 				tr
+					th.text-center.coluna-dupla-divisao-direita(colspan="1") Selecione
 					th.text-center(colspan="2") Vetores
 					th.text-center.coluna-dupla-divisao(colspan="2") Propriedade
 					th.text-center.coluna-dupla-divisao(colspan="2") AMF
 					th.text-center.coluna-dupla.coluna-dupla-divisao(rowspan="2") Observação
 				tr
-					th Tipo
-					th Nome
+					th
+					th.text-center Tipo
+					th.text-center Nome
 					th.text-center.coluna-dupla-divisao Distância (km)
 					th.text-center Sobreposição (ha)
 					th.text-center.coluna-dupla-divisao Distância (km)
@@ -22,6 +24,8 @@ div
 
 			tbody
 				tr(ng-repeat="analise in analiseTecnicaManejo.analiseTecnica.analisesVetorial")
+					td.col-md-1.text-center.checkbox-center
+						input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
 					td.col-md-1(style='max-width: 100px;') {{analise.tipo || '-'}}
 					td.col-md-1 {{analise.nome || '-'}}
 					td.col-md-1.text-right(style='max-width: 90px; word-wrap: break-word;') {{analise.distanciaPropriedade || '-'}}

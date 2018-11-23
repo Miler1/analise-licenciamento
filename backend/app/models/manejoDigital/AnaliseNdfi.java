@@ -82,6 +82,8 @@ public class AnaliseNdfi extends GenericModel {
 
             analiseNdfi.analiseTecnicaManejo = analise;
 
+            analiseNdfi.exibirPDF = true;
+
             listaAnalise.add(analiseNdfi);
         }
 
