@@ -138,8 +138,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoManejo> documentosManejo;
 
-    @Transient
-    public List<Insumo> insumos;
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<VinculoAnaliseTecnicaManejoInsumo> vinculoInsumos;
 
     @Override
     public AnaliseTecnicaManejo save() {
@@ -196,6 +196,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
         this.basesVetorial.addAll(BaseVetorial.gerarBaseVetorial(this));
 
         this.analisesVetorial.addAll(AnaliseVetorial.gerarAnalisesVetoriais(this));
+
+        this.vinculoInsumos.addAll(VinculoAnaliseTecnicaManejoInsumo.gerarVinculos(this));
 
         this._save();
 

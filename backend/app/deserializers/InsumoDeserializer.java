@@ -18,7 +18,7 @@ public class InsumoDeserializer implements JsonDeserializer<Insumo> {
 
 		JsonObject jsonObject = json.getAsJsonObject();
 
-		insumo.ano = jsonObject.get("ano") == null ? null : new Date(jsonObject.get("ano").getAsLong());
+		insumo.data = jsonObject.get("ano") == null ? null : new Date(jsonObject.get("ano").getAsLong());
 		insumo.satelite = jsonObject.get("satelite") == null ? null : jsonObject.get("satelite").getAsString();
 		insumo.orbPonto = jsonObject.get("orb_ponto") == null ? null : jsonObject.get("orb_ponto").getAsString();
 

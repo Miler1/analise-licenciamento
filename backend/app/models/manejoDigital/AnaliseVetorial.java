@@ -51,6 +51,9 @@ public class AnaliseVetorial extends GenericModel {
     @JoinColumn(name="id_analise_tecnica_manejo")
     public AnaliseTecnicaManejo analiseTecnicaManejo;
 
+    @Column(name = "exibir_pdf")
+    public boolean exibirPDF;
+
     public static List<AnaliseVetorial> gerarAnalisesVetoriais(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();

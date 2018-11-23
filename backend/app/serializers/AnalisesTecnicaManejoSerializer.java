@@ -39,6 +39,7 @@ public class AnalisesTecnicaManejoSerializer {
 			"analisesNdfi.nivelExploracao",
 			"analisesNdfi.valor",
 			"analisesNdfi.area",
+			"analisesNdfi.exibirPDF",
 			"analisesVetorial.id",
 			"analisesVetorial.tipo",
 			"analisesVetorial.nome",
@@ -47,6 +48,7 @@ public class AnalisesTecnicaManejoSerializer {
 			"analisesVetorial.distanciaAmf",
 			"analisesVetorial.sobreposicaoAmf",
 			"analisesVetorial.observacao",
+			"analisesVetorial.exibirPDF",
 			"basesVetorial.id",
 			"basesVetorial.nome",
 			"basesVetorial.fonte",
@@ -106,6 +108,12 @@ public class AnalisesTecnicaManejoSerializer {
 			"documentosImovel.id",
 			"documentosImovel.nome",
 			"documentosComplementares.id",
-			"documentosComplementares.nome"
+			"documentosComplementares.nome",
+			"vinculoInsumos.id",
+			"vinculoInsumos.insumo.id",
+			"vinculoInsumos.insumo.data",
+			"vinculoInsumos.insumo.satelite",
+			"vinculoInsumos.insumo.orbPonto",
+			"vinculoInsumos.exibirPDF"
 	);
 }
