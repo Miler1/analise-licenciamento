@@ -54,47 +54,47 @@ div
 										th.col-md-1.text-right Ações
 								tbody
 									tr
-										td {{analiseTecnicaManejo.documentosImovel[0] ? 'Enviado' : 'Aguardando'}}
+										td {{analiseTecnicaManejo.analiseTecnica.documentosImovel[0] ? 'Enviado' : 'Aguardando'}}
 										td
-											div(ng-if="analiseTecnicaManejo.documentosImovel[0]") {{analiseTecnicaManejo.documentosImovel[0].nome}}
+											div(ng-if="analiseTecnicaManejo.analiseTecnica.documentosImovel[0]") {{analiseTecnicaManejo.analiseTecnica.documentosImovel[0].nome}}
 										td
 											div.btn-group.pull-right
 												button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do shape",
 												ngf-select, ngf-multiple="false", ngf-keep="false", ngf-max-files="1",
 												ngf-change="analiseTecnicaManejo.selecionarArquivo($files, $file, anexo)",
-												ng-if="!analiseTecnicaManejo.documentosImovel[0]",
+												ng-if="!analiseTecnicaManejo.analiseTecnica.documentosImovel[0]",
 												ngf-accept="'application/zip'"
 												ng-class="{'button-error': analiseTecnicaManejo.$submitted}")
 													i.fa.fa-upload
 												button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o shape",
-												ng-click="analiseTecnicaManejo.downloadArquivo(analiseTecnicaManejo.documentosImovel[0].id)",
-												ng-if="analiseTecnicaManejo.documentosImovel[0]", target="_blank")
+												ng-click="analiseTecnicaManejo.downloadArquivo(analiseTecnicaManejo.analiseTecnica.documentosImovel[0].id, 1)",
+												ng-if="analiseTecnicaManejo.analiseTecnica.documentosImovel[0]", target="_blank")
 													i.fa.fa-download
 												button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o shape",
-												ng-click="analiseTecnicaManejo.removerArquivo(analiseTecnicaManejo.documentosImovel[0].id)",
-												ng-if="analiseTecnicaManejo.documentosImovel[0]")
+												ng-click="analiseTecnicaManejo.removeAnexo(analiseTecnicaManejo.analiseTecnica.documentosImovel[0].id)",
+												ng-if="analiseTecnicaManejo.analiseTecnica.documentosImovel[0]")
 													i.fa.fa-trash
 
 									tr
-										td {{analiseTecnicaManejo.documentosImovel[1] ? 'Enviado' : 'Aguardando'}}
+										td {{analiseTecnicaManejo.analiseTecnica.documentosImovel[1] ? 'Enviado' : 'Aguardando'}}
 										td
-											div(ng-if="analiseTecnicaManejo.documentosImovel[1]") {{analiseTecnicaManejo.documentosImovel[1].nome}}
+											div(ng-if="analiseTecnicaManejo.analiseTecnica.documentosImovel[1]") {{analiseTecnicaManejo.analiseTecnica.documentosImovel[1].nome}}
 										td
 											div.btn-group.pull-right
 												button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do shape",
 												ngf-select, ngf-multiple="false", ngf-keep="false", ngf-max-files="1",
 												ngf-change="analiseTecnicaManejo.selecionarArquivo($files, $file, anexo)",
-												ng-if="!analiseTecnicaManejo.documentosImovel[1]",
+												ng-if="!analiseTecnicaManejo.analiseTecnica.documentosImovel[1]",
 												ngf-accept="'application/zip'"
 												ng-class="{'button-error': analiseTecnicaManejo.$submitted}")
 													i.fa.fa-upload
 												button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o shape",
-												ng-click="analiseTecnicaManejo.downloadArquivo(analiseTecnicaManejo.documentosImovel[1].id)",
-												ng-if="analiseTecnicaManejo.documentosImovel[1]", target="_blank")
+												ng-click="analiseTecnicaManejo.downloadArquivo(analiseTecnicaManejo.documentosImovel[1].id, 1)",
+												ng-if="analiseTecnicaManejo.analiseTecnica.documentosImovel[1]", target="_blank")
 													i.fa.fa-download
 												button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o shape",
-												ng-click="analiseTecnicaManejo.removerArquivo(analiseTecnicaManejo.documentosImovel[1].id)",
-												ng-if="analiseTecnicaManejo.documentosImovel[1]")
+												ng-click="analiseTecnicaManejo.removeAnexo(analiseTecnicaManejo.analiseTecnica.documentosImovel[1].id)",
+												ng-if="analiseTecnicaManejo.analiseTecnica.documentosImovel[1]")
 													i.fa.fa-trash
 
 	div

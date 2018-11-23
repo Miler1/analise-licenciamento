@@ -6,10 +6,10 @@ var AnaliseManejoService = function(request, config, Upload) {
             .get(config.BASE_URL() + "analiseTecnicaManejo/" + id);
     };
 
-    this.removeAnexo = function(token) {
+    this.removeAnexo = function(id) {
 
         return request
-            .delete(config.BASE_URL() + "analiseTecnicaManejo/anexo/" + token);
+            .delete(config.BASE_URL() + "delete/imovel/manejo/" + id);
     };
 
     this.finalizar = function(id) {
