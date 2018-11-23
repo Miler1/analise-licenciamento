@@ -19,6 +19,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva', 'id-calculo-area-efetiva-manejo'],
 		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva', 'id-detalhamento-area-efetiva-manejo'],
 		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes', 'id-consideracoes'],
+		DOCUMENTOS_COMPLEMENTARES: ['DOCUMENTOS_COMPLEMENTARES', 'observacoesDocumentosComplementares', 'id-documentos-complementares'],
 		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao', 'id-conclusao']
 	};
 	analiseTecnicaManejo.listaPassos = [
@@ -31,6 +32,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		analiseTecnicaManejo.passos.CALCULO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.CONSIDERACOES,
+		analiseTecnicaManejo.passos.DOCUMENTOS_COMPLEMENTARES,
 		analiseTecnicaManejo.passos.CONCLUSAO
 	];
 	analiseTecnicaManejo.index = 0;
