@@ -1,12 +1,9 @@
 package controllers;
 
 import models.manejoDigital.AnaliseTecnicaManejo;
-import play.data.Upload;
 import security.Acao;
-import serializers.AnalisesManejoSerializer;
+import serializers.AnalisesTecnicaManejoSerializer;
 import utils.Mensagem;
-
-import java.io.IOException;
 
 public class AnalisesTecnicaManejo extends InternalController {
 
@@ -18,7 +15,7 @@ public class AnalisesTecnicaManejo extends InternalController {
 
 		AnaliseTecnicaManejo analise = AnaliseTecnicaManejo.findById(id);
 
-		renderJSON(analise, AnalisesManejoSerializer.findById);
+		renderJSON(analise, AnalisesTecnicaManejoSerializer.findById);
 	}
 
 	public static void finalizar(Long id) {

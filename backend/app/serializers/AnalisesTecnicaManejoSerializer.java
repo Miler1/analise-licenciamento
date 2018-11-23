@@ -3,7 +3,7 @@ package serializers;
 import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 
-public class AnalisesManejoSerializer {
+public class AnalisesTecnicaManejoSerializer {
 
 	public static JSONSerializer findById = SerializerUtil.createWithDateTime(
 			"id",
@@ -104,6 +104,8 @@ public class AnalisesManejoSerializer {
 			"processoManejo.empreendimento.imovel.areaCorposAgua",
 			"processoManejo.empreendimento.imovel.areaUsoConsolidado",
 			"documentosImovel.id",
-			"documentosImovel.nome"
+			"documentosImovel.nome",
+			"documentosComplementares.id",
+			"documentosComplementares.nome"
 	);
 }

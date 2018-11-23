@@ -7,7 +7,6 @@ import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
-import org.hibernate.annotations.Formula;
 import play.data.Upload;
 import play.data.validation.Max;
 import play.data.validation.Min;
@@ -23,6 +22,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
+import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;
 
 @Entity
 @Table(schema = "analise", name = "analise_tecnica_manejo")
@@ -204,7 +206,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         DocumentoManejo documento = new DocumentoManejo();
         documento.arquivo = file.asFile();
-        documento.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_IMOVEL_MANEJO);
+        documento.tipo = TipoDocumento.findById(DOCUMENTO_IMOVEL_MANEJO);
         documento.analiseTecnicaManejo = this;
 
         return (DocumentoManejo) documento.save();
@@ -214,7 +216,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         DocumentoManejo documento = new DocumentoManejo();
         documento.arquivo = file.asFile();
-        documento.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO);
+        documento.tipo = TipoDocumento.findById(DOCUMENTO_COMPLEMENTAR_MANEJO);
         documento.analiseTecnicaManejo = this;
 
         return (DocumentoManejo) documento.save();
@@ -393,4 +395,20 @@ public class AnaliseTecnicaManejo extends GenericModel {
 //            this.analisesNdfi.add(feature.attributes);
 //        }
 //    }
+
+    public List<DocumentoManejo> getDocumentosImovel() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", DOCUMENTO_IMOVEL_MANEJO)
+                .setParameter("y", this.id)
+                .fetch();
+    }
+
+    public List<DocumentoManejo> getDocumentosComplementares() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", DOCUMENTO_COMPLEMENTAR_MANEJO)
+                .setParameter("y", this.id)
+                .fetch();
+    }
 }
