@@ -8,6 +8,6 @@ public class DocumentosManejoSerializer {
 	public static JSONSerializer upload = SerializerUtil.create(
 
 			"id",
-			"nomeArquivo"
+			"nome"
 	);
 }
