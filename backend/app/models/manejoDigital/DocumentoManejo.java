@@ -39,7 +39,7 @@ public class DocumentoManejo extends Documento {
 
 		this.dataCadastro = new Date();
 
-		super.save();
+		this._save();
 
 		if (this.tipo == null)
 			throw new IllegalStateException("Tipo do documento não preenchido.");
@@ -63,7 +63,7 @@ public class DocumentoManejo extends Documento {
 			throw new RuntimeException("Não é possível identificar o arquivo a ser salvo para o documento.");
 		}
 
-		super.save();
+		this._save();
 
 		return this;
 	}
@@ -96,8 +96,5 @@ public class DocumentoManejo extends Documento {
 
 		this.caminho = File.separator + tipo.caminhoPasta
 				+ File.separator + this.nome;
-
-		if (this.extensao != null)
-			this.caminho += "." + this.extensao;
 	}
 }

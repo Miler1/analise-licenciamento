@@ -12,10 +12,6 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.libs.IO;
-import utils.Configuracoes;
-import utils.FileManager;
-
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.Date;
@@ -224,26 +220,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return (DocumentoManejo) documento.save();
     }
 
-    public String saveAnexo(Upload file) throws IOException {
-
-        byte[] data = IO.readContent(file.asFile());
-        String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-        String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_ANEXO_MANEJO_FOLDER, file.getFileName(),
-                data, extension);
-
-        //this.pathAnexo = path;
-        this._save();
-
-        return path;
-    }
-
-    public void deleteAnexo() {
-
-        //FileManager.getInstance().deleteFileFromPath(this.pathAnexo);
-        //this.pathAnexo = null;
-        this._save();
-    }
-
     public List<Observacao> getObservacoesDadosImovel() {
 
         return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 0 ORDER BY id")
@@ -307,12 +283,21 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<Observacao> getObservacoesConclusao() {
+    public List<Observacao> getDocumentosComplementares() {
 
         return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
+
+	public List<Observacao> getObservacoesConclusao() {
+
+		return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 10 ORDER BY id")
+				.setParameter("x", this.id)
+				.fetch();
+	}
+
+
 
     public void finalizar() {
 

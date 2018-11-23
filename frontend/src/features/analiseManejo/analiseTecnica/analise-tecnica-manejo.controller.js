@@ -6,9 +6,10 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	var analiseTecnicaManejo = this;
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
+	analiseTecnicaManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-	analiseTecnicaManejo.anexo = null;
+	analiseTecnicaManejo.anexos = [];
 	analiseTecnicaManejo.passos = {
 		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel', 'id-dados-imovel'],
 		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial', 'id-metodos-base-vetorial'],
@@ -19,6 +20,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva', 'id-calculo-area-efetiva-manejo'],
 		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva', 'id-detalhamento-area-efetiva-manejo'],
 		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes', 'id-consideracoes'],
+		DOCUMENTOS_COMPLEMENTARES: ['DOCUMENTOS_COMPLEMENTARES', 'observacoesDocumentosComplementares', 'id-documentos-complementares'],
 		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao', 'id-conclusao']
 	};
 	analiseTecnicaManejo.listaPassos = [
@@ -31,6 +33,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		analiseTecnicaManejo.passos.CALCULO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.CONSIDERACOES,
+		analiseTecnicaManejo.passos.DOCUMENTOS_COMPLEMENTARES,
 		analiseTecnicaManejo.passos.CONCLUSAO
 	];
 	analiseTecnicaManejo.index = 0;
@@ -97,47 +100,52 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		});
 	};
 
+	analiseTecnicaManejo.selecionarArquivo = function (files, file, anexo) {
+
+		if (file) {
+
+			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || file.name.substring(file.name.lastIndexOf('.')) !== '.zip') {
+
+				mensagem.error("Extensão de arquivo inválida.");
+				return;
+			}
+
+			if ((file.size / Math.pow(1000,2)) > analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB) {
+
+				mensagem.error("O arquivo deve ter um tamanho menor que " + TAMANHO_MAXIMO_ARQUIVO_MB + " MB.");
+				return;
+			}
+
+			analiseTecnicaManejo.upload(file, anexo);
+		}
+	};
+
 	analiseTecnicaManejo.upload = function (file) {
+
 		if (file && !analiseTecnicaManejo.validacaoErro) {
 
 			if (!file.$error) {
 
 				if (analiseTecnicaManejo.analiseTecnica.id) {
 
-					analiseManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
+					analiseManejoService.upload(file, analiseTecnicaManejo.analiseTecnica.id)
+					.then(function(response) {
 
-						.then(function(response) {
+						if(analiseTecnicaManejo.anexos.length === 0){
 
-							analiseTecnicaManejo.anexo = null;
-							analiseTecnicaManejo.saveAnexo(file);
+							analiseTecnicaManejo.anexos[0] = response.data
+						} else if (analiseTecnicaManejo.anexos.length === 1){
 
-						}, function(error){
+							analiseTecnicaManejo.anexos[1] = response.data
+						}
 
-							mensagem.error(error.data.texto);
-						});
+					}, function(error){
 
-				} else {
-
-					analiseTecnicaManejo.saveAnexo(file);
+						mensagem.error(error.data.texto);
+					});
 				}
 			}
 		}
-	};
-
-	analiseTecnicaManejo.saveAnexo = function (file) {
-
-		analiseManejoService.saveAnexo($routeParams.idAnaliseManejo, file)
-
-			.then(function(response) {
-
-				analiseTecnicaManejo.anexo = {
-					file: file
-				};
-
-			}, function(error){
-
-				mensagem.error(error.data.texto);
-			});
 	};
 
 	analiseTecnicaManejo.removeAnexo = function () {

@@ -6,11 +6,6 @@ var AnaliseManejoService = function(request, config, Upload) {
             .get(config.BASE_URL() + "analiseTecnicaManejo/" + id);
     };
 
-    this.saveAnexo = function(id, file) {
-
-        return request.upload(config.BASE_URL() + 'analiseTecnicaManejo/' + id + '/anexo', file, Upload);
-    };
-
     this.removeAnexo = function(token) {
 
         return request
@@ -21,6 +16,11 @@ var AnaliseManejoService = function(request, config, Upload) {
 
         return request
             .put(config.BASE_URL() + "analiseTecnicaManejo/" + id);
+	};
+
+	this.upload = function(file, idAnaliseTecnica) {
+
+        return request.upload(config.BASE_URL() + "upload/" + idAnaliseTecnica + "/imovel/manejo", file, Upload);
     };
 
 };
