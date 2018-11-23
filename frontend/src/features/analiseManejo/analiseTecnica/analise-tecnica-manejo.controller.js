@@ -131,10 +131,10 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 						if(analiseTecnicaManejo.anexos.length === 0){
 
-							analiseTecnicaManejo.anexos[0] = response.data
+							analiseTecnicaManejo.documentosImovel[0] = response.data
 						} else if (analiseTecnicaManejo.anexos.length === 1){
 
-							analiseTecnicaManejo.anexos[1] = response.data
+							analiseTecnicaManejo.documentosImovel[1] = response.data
 						}
 
 					}, function(error){
