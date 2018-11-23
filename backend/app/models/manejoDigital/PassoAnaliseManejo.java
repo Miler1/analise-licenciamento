@@ -11,7 +11,8 @@ public enum PassoAnaliseManejo {
 	CALCULO_AREA_EFETIVA(6,"Cálculo da área efetiva de manejo"),
 	DETALHAMENTO_AREA_EFETIVA(7,"Detalhamento da área efetiva de manejo"),
 	CONSIDERACOES(8,"Considerações"),
-	CONCLUSAO(9,"Conclusão");
+	DOCUMENTOS_COMPLEMENTARES(9, "Documentos complementares"),
+	CONCLUSAO(10,"Conclusão");
 
 	public int id;
 	public String nome;

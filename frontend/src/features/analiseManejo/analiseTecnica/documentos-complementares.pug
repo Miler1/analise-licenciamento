@@ -1,0 +1,16 @@
+include ./observacoes
+
+h5 Anexos Complementares
+
+div
+
+	form(name="formulario-documentos-complementares", novalidate)
+
+		.form-group
+			div.btn.btn-default(type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+				| Anexar arquivo
+			i   Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+
+div
+	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesDocumentosComplementares')

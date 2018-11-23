@@ -281,12 +281,21 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<Observacao> getObservacoesConclusao() {
+    public List<Observacao> getDocumentosComplementares() {
 
         return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
+
+	public List<Observacao> getObservacoesConclusao() {
+
+		return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 10 ORDER BY id")
+				.setParameter("x", this.id)
+				.fetch();
+	}
+
+
 
     public void finalizar() {
 
