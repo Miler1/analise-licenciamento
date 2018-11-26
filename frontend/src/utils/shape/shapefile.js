@@ -1,7 +1,7 @@
 var shapefile = function(mensagem) {
 
 
-	this.shapefileToGeojson = function(uploadedFile, objetoSaida, callback) {
+	this.shapefileToGeojson = function(uploadedFile, objetoAlvo, callback) {
 
 		var fileType = ['zip', 'gpx', 'kml'],
 			fileExtension = this.getFileExtension(uploadedFile.name),
@@ -37,12 +37,12 @@ var shapefile = function(mensagem) {
 
 				case 'kml':
 
-					callback(app.utils.toGeoJSON.kml($.parseXML(fileReader.result)), objetoSaida);
+					callback(app.utils.toGeoJSON.kml(uploadedFile, $.parseXML(fileReader.result)), objetoAlvo);
 					break;
 
 				case 'gpx':
 
-					callback(app.utils.toGeoJSON.gpx($.parseXML(fileReader.result)), objetoSaida);
+					callback(app.utils.toGeoJSON.gpx(uploadedFile, $.parseXML(fileReader.result)), objetoAlvo);
 					break;
 
 				case 'zip':
@@ -55,9 +55,14 @@ var shapefile = function(mensagem) {
 							return false;
 						}
 
-						callback(data, objetoSaida);
+						callback(uploadedFile, data, objetoAlvo);
 
-					}.bind(this));
+					}.bind(this))
+						.catch(function(response){
+
+							mensagem.error('O arquivo shape "'+ uploadedFile.name +'" não é válido.');
+							return;
+						});
 					break;
 			}
 
