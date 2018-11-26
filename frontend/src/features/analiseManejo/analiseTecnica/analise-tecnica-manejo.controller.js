@@ -163,6 +163,43 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			});
 	};
 
+	analiseTecnicaManejo.selecionarDocumentoComplementar = function (files, file, anexo) {
+
+		if (file) {
+
+			if ((file.size / Math.pow(1000,2)) > analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB) {
+
+				mensagem.error("O arquivo deve ter um tamanho menor que " + TAMANHO_MAXIMO_ARQUIVO_MB + " MB.");
+				return;
+			}
+
+			analiseTecnicaManejo.uploadDocumentoComplementar(file, anexo);
+		}
+	};
+
+	analiseTecnicaManejo.uploadDocumentoComplementar = function (file) {
+
+		if (file && !analiseTecnicaManejo.validacaoErro) {
+
+			if (!file.$error) {
+
+				if (analiseTecnicaManejo.analiseTecnica.id) {
+
+					analiseManejoService.uploadDocumentoComplementar(file, analiseTecnicaManejo.analiseTecnica.id)
+						.then(function(response) {
+
+							analiseTecnicaManejo.analiseTecnica.documentosComplementares.push(response.data);
+							$scope.$apply();
+
+						}, function(error){
+
+							mensagem.error(error.data.texto);
+						});
+				}
+			}
+		}
+	};
+
 	analiseTecnicaManejo.removerObservacao = function(observacao) {
 
 		observacaoService.delete(observacao.id).then(function (response) {

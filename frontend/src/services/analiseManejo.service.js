@@ -23,6 +23,11 @@ var AnaliseManejoService = function(request, config, Upload) {
         return request.upload(config.BASE_URL() + "upload/" + idAnaliseTecnica + "/imovel/manejo", file, Upload);
     };
 
+	this.uploadDocumentoComplementar = function(file, idAnaliseTecnica) {
+
+		return request.upload(config.BASE_URL() + "upload/" + idAnaliseTecnica + "/complementar", file, Upload);
+	};
+
 };
 
 exports.services.AnaliseManejoService = AnaliseManejoService;
