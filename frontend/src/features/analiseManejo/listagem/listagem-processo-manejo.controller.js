@@ -93,7 +93,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 	listagemProcessoManejo.iniciarAnaliseTecnica = function(processoManejo) {
 
-		processoManejoService.getProcesso(processoManejo.id)
+		processoManejoService.iniciarAnalise(processoManejo)
 			.then(function (response) {
 
 				$location.path('/analise-manejo/' + response.data.analiseTecnica.id + '/analise-tecnica');
@@ -104,7 +104,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro obter dados do processo.");
+					mensagem.error("Ocorreu um erro ao iniciar a análise técnica do processo.");
 			});
 	};
 };
