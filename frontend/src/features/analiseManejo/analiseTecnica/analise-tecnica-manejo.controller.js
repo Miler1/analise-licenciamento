@@ -81,7 +81,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		modalInstance.result.then(function (observacao) {
 
-			observacao.analiseManejo = { id: analiseTecnicaManejo.analiseTecnica.id };
+			observacao.analiseTecnicaManejo = { id: analiseTecnicaManejo.analiseTecnica.id };
 			observacao.passoAnalise = analiseTecnicaManejo.passoAtual[0];
 
 			observacaoService.save(observacao).then(function (response) {
@@ -195,7 +195,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 						.then(function(response) {
 
 							analiseTecnicaManejo.analiseTecnica.documentosComplementares.push(response.data);
-							$scope.$apply();
 
 						}, function(error){
 
