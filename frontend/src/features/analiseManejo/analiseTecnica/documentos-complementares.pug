@@ -26,10 +26,9 @@ div
 									td {{documentoComplementar.nome}}
 									td
 										div.btn-group.pull-right
-											//button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o shape",
-											//ng-click="analiseGeoManejo.downloadArquivo(arquivoShape)",
-											//ng-if="!!arquivoShape.key", target="_blank")
-											//	i.fa.fa-download
+											button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o arquivo",
+											ng-click="analiseTecnicaManejo.downloadArquivo(arquivoShape)", target="_blank")
+												i.fa.fa-download
 											button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o arquivo",
 											ng-click="analiseTecnicaManejo.removeAnexo(documentoComplementar.id)")
 												i.fa.fa-trash

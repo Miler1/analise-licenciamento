@@ -2,13 +2,13 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
 
     this.getById = function(id) {
 
-    return request
+        return request
             .get(config.BASE_URL() + "analiseTecnicaManejo/" + id);
     };
 
     this.removeAnexo = function(id) {
 
-    return request
+        return request
             .delete(config.BASE_URL() + "delete/manejo/" + id);
     };
 
