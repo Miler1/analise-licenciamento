@@ -40,9 +40,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @Column(name="dias_analise")
     public Integer diasAnalise;
 
-    @Column(name="analise_temporal")
-    public String analiseTemporal;
-
     @Column(name="area_manejo_florestal_solicitada")
     public Double areaManejoFlorestalSolicitada;
 
@@ -87,12 +84,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     @Column(name="area_sem_previa_exploracao")
     public Double areaSemPreviaExploracao;
-
-    @Column
-    public String consideracoes;
-
-    @Column
-    public String conclusao;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="id_documento")
