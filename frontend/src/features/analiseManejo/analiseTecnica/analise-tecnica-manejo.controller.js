@@ -148,6 +148,19 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		}
 	};
 
+	analiseTecnicaManejo.atualizaExibicaoPdf = function () {
+
+		if (analiseTecnicaManejo) {
+
+			analiseManejoService.atualizaExibicaoPdf(analiseTecnicaManejo).then(function(response) {
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+		}
+	};
+
 	analiseTecnicaManejo.removeAnexo = function () {
 
 		analiseManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
@@ -186,6 +199,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	analiseTecnicaManejo.voltar = function() {
 
 		analiseTecnicaManejo.index -= 1;
+		analiseTecnicaManejo.atualizaExibicaoPdf();
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
@@ -193,6 +207,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	analiseTecnicaManejo.proximo = function() {
 
 		analiseTecnicaManejo.index += 1;
+		analiseTecnicaManejo.atualizaExibicaoPdf();
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
@@ -208,6 +223,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	analiseTecnicaManejo.changeTab = function(index) {
 
 		analiseTecnicaManejo.index = index;
+		analiseTecnicaManejo.atualizaExibicaoPdf();
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[index];
 	};
 

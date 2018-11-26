@@ -21,7 +21,13 @@ var AnaliseManejoService = function(request, config, Upload) {
 	this.upload = function(file, idAnaliseTecnica) {
 
         return request.upload(config.BASE_URL() + "upload/" + idAnaliseTecnica + "/imovel/manejo", file, Upload);
-    };
+	};
+
+	this.atualizaExibicaoPdf = function(analiseTecnicaManejo) {
+
+		return request
+		.put(config.BASE_URL() + "analiseTecnicaManejo/atualizaExibicaoPdf", analiseTecnicaManejo);
+	}
 
 };
 
