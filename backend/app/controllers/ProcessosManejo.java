@@ -50,13 +50,13 @@ public class ProcessosManejo extends InternalController {
 		renderJSON(Mensagem.ANALISE_SHAPE_INICIADA_COM_SUCESSO);
 	}
 
-	public static void iniciarAnaliseTecnica(Integer idProcesso) {
+	public static void iniciarAnaliseTecnica(ProcessoManejo processo) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		notFoundIfNull(idProcesso);
+		notFoundIfNull(processo);
 
-		ProcessoManejo processoSalvo = ProcessoManejo.findById(idProcesso);
+		ProcessoManejo processoSalvo = ProcessoManejo.findById(processo.id);
 
 		notFoundIfNull(processoSalvo);
 

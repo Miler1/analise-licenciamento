@@ -1,16 +1,37 @@
 include ./observacoes
 
-h5 Anexos Complementares
-
 div
-
-	form(name="formulario-documentos-complementares", novalidate)
-
-		.form-group
-			div.btn.btn-default(type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
-				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-				| Anexar arquivo
-			i   Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+	blockquote.analise-manejo
+		.panel.panel-default(name='documentacao')
+			.panel-heading
+				h4.panel-title Anexos
+			.panel-body
+				div.row
+					div.col-md-12
+						form(name="formulario-documentos-complementares", novalidate)
+							.form-group.text-right
+								div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseTecnicaManejo.uploadDocumentoComplementar($file, $invalidFile)", ngf-max-size="{{analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+									i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+									| Anexar arquivo
+								div
+									i Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+					div.col-md-12
+						table.table.table-striped
+							thead
+								tr
+									th.col-md-3 Documento
+									th.col-md-1.text-right Ações
+							tbody
+								tr(ng-repeat="documentoComplementar in analiseTecnicaManejo.analiseTecnica.documentosComplementares")
+									td {{documentoComplementar.nome}}
+									td
+										div.btn-group.pull-right
+											button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o arquivo",
+											ng-click="analiseTecnicaManejo.downloadArquivo(arquivoShape)", target="_blank")
+												i.fa.fa-download
+											button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o arquivo",
+											ng-click="analiseTecnicaManejo.removeAnexo(documentoComplementar.id)")
+												i.fa.fa-trash
 
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesDocumentosComplementares')
