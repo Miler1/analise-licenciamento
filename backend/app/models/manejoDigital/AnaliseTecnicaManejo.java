@@ -12,13 +12,15 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
+import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;
 
 @Entity
 @Table(schema = "analise", name = "analise_tecnica_manejo")
@@ -130,7 +132,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     @Max(2)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<DocumentoImovelManejo> documentosImovel;
+    public List<DocumentoManejo> documentosManejo;
 
     @Transient
     public List<Insumo> insumos;
@@ -196,14 +198,24 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-    public DocumentoImovelManejo saveDocumentoImovel(Upload file) throws IOException {
+    public DocumentoManejo saveDocumentoImovel(Upload file) throws IOException {
 
-        DocumentoImovelManejo documento = new DocumentoImovelManejo();
+        DocumentoManejo documento = new DocumentoManejo();
         documento.arquivo = file.asFile();
-        documento.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_IMOVEL_MANEJO);
+        documento.tipo = TipoDocumento.findById(DOCUMENTO_IMOVEL_MANEJO);
         documento.analiseTecnicaManejo = this;
 
-        return (DocumentoImovelManejo) documento.save();
+        return (DocumentoManejo) documento.save();
+    }
+
+    public DocumentoManejo saveDocumentoComplementar(Upload file) throws IOException {
+
+        DocumentoManejo documento = new DocumentoManejo();
+        documento.arquivo = file.asFile();
+        documento.tipo = TipoDocumento.findById(DOCUMENTO_COMPLEMENTAR_MANEJO);
+        documento.analiseTecnicaManejo = this;
+
+        return (DocumentoManejo) documento.save();
     }
 
     public List<Observacao> getObservacoesDadosImovel() {
@@ -269,12 +281,21 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<Observacao> getObservacoesConclusao() {
+    public List<Observacao> getObservacoesDocumentosComplementares() {
 
         return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
                 .fetch();
     }
+
+	public List<Observacao> getObservacoesConclusao() {
+
+		return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 10 ORDER BY id")
+				.setParameter("x", this.id)
+				.fetch();
+	}
+
+
 
     public void finalizar() {
 
@@ -359,4 +380,20 @@ public class AnaliseTecnicaManejo extends GenericModel {
 //            this.analisesNdfi.add(feature.attributes);
 //        }
 //    }
+
+    public List<DocumentoManejo> getDocumentosImovel() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", DOCUMENTO_IMOVEL_MANEJO)
+                .setParameter("y", this.id)
+                .fetch();
+    }
+
+    public List<DocumentoManejo> getDocumentosComplementares() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", DOCUMENTO_COMPLEMENTAR_MANEJO)
+                .setParameter("y", this.id)
+                .fetch();
+    }
 }

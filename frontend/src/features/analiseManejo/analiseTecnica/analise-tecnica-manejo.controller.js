@@ -20,6 +20,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		CALCULO_AREA_EFETIVA: ['CALCULO_AREA_EFETIVA', 'observacoesCalculoAreaEfetiva', 'id-calculo-area-efetiva-manejo'],
 		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva', 'id-detalhamento-area-efetiva-manejo'],
 		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes', 'id-consideracoes'],
+		DOCUMENTOS_COMPLEMENTARES: ['DOCUMENTOS_COMPLEMENTARES', 'observacoesDocumentosComplementares', 'id-documentos-complementares'],
 		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao', 'id-conclusao']
 	};
 	analiseTecnicaManejo.listaPassos = [
@@ -32,6 +33,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		analiseTecnicaManejo.passos.CALCULO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.CONSIDERACOES,
+		analiseTecnicaManejo.passos.DOCUMENTOS_COMPLEMENTARES,
 		analiseTecnicaManejo.passos.CONCLUSAO
 	];
 	analiseTecnicaManejo.index = 0;
@@ -131,6 +133,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 						if(analiseTecnicaManejo.analiseTecnica.documentosImovel.length < 2 ){
 
+							analiseTecnicaManejo.anexos[0] = response.data;
+
+						} else if (analiseTecnicaManejo.anexos.length === 1){
+
+							analiseTecnicaManejo.anexos[1] = response.data;
 							analiseTecnicaManejo.analiseTecnica.documentosImovel.push(response.data);
 						}
 
@@ -161,6 +168,74 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		analiseManejoService.downloadDocumento(idDocumento);
 	};
+
+	analiseTecnicaManejo.selecionarDocumentoComplementar = function (file) {
+
+		var extensoesPermitidas = [".zip", ".png", ".jpg", ".jpeg", ".bmp", ".pdf"];
+
+		if (file) {
+
+			var extensao = file.name.substring(file.name.lastIndexOf('.'));
+
+			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || !extensao.includes(extensao)) {
+
+				mensagem.error("Extensão de arquivo inválida.");
+				return;
+			}
+
+			if ((file.size / Math.pow(1000,2)) > analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB) {
+
+				mensagem.error("O arquivo deve ter um tamanho menor que " + TAMANHO_MAXIMO_ARQUIVO_MB + " MB.");
+				return;
+			}
+
+			analiseTecnicaManejo.uploadDocumentoComplementar(file);
+		}
+	};
+
+	analiseTecnicaManejo.uploadDocumentoComplementar = function (file) {
+
+		if (file && !analiseTecnicaManejo.validacaoErro) {
+
+			if (!file.$error) {
+
+				if (analiseTecnicaManejo.analiseTecnica.id) {
+
+					analiseManejoService.uploadDocumentoComplementar(file, analiseTecnicaManejo.analiseTecnica.id)
+						.then(function(response) {
+
+							analiseTecnicaManejo.analiseTecnica.documentosComplementares.push(response.data);
+
+						}, function(error){
+
+							mensagem.error(error.data.texto);
+						});
+				}
+			}
+		}
+	};
+
+	analiseTecnicaManejo.removeDocumentoComplementar = function (id) {
+
+		analiseManejoService.removeAnexo(id)
+
+			.then(function(response) {
+
+				analiseTecnicaManejo.analiseTecnica.documentosComplementares.forEach(function (documento, index) {
+
+					if (documento.id == id) {
+
+						analiseTecnicaManejo.analiseTecnica.documentosComplementares.splice(index, 1);
+					}
+				});
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	};
+
+
 
 	analiseTecnicaManejo.removerObservacao = function(observacao) {
 
