@@ -49,6 +49,10 @@ div(style="margin-top: 30px;")
 													i.glyphicon.glyphicon-check
 													span Solicitar analise Shape
 											li
+												a(ng-click="listagemProcessoManejo.iniciarAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 17")
+													i.glyphicon.glyphicon-check
+													span Solicitar analise técnica
+											li
 												a(ng-click="listagemProcessoManejo.continuarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 18")
 													i.glyphicon.glyphicon-check
 													span Continuar análise
@@ -60,11 +64,6 @@ div(style="margin-top: 30px;")
 												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 19")
 													i.glyphicon.glyphicon-save-file
 													span Gerar PDF
-
-											li
-												a(ng-click="listagemProcessoManejo.iniciarAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 17")
-													i.glyphicon.glyphicon-check
-													span Solicitar analise técnica
 
 				+paginacao('listagemProcessoManejo.paginacao', 'listagemProcessoManejo.onPaginaAlterada')
 
