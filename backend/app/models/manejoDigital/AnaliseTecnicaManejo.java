@@ -2,7 +2,6 @@ package models.manejoDigital;
 
 import models.Documento;
 import models.TipoDocumento;
-import models.analiseShape.Insumo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
@@ -283,7 +282,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<Observacao> getDocumentosComplementares() {
+    public List<Observacao> getObservacoesDocumentosComplementares() {
 
         return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 9 ORDER BY id")
                 .setParameter("x", this.id)
@@ -396,6 +395,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
                 .setParameter("x", DOCUMENTO_COMPLEMENTAR_MANEJO)
                 .setParameter("y", this.id)
+                .fetch();
+    }
+
+    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculoInsumos() {
+
+        return VinculoAnaliseTecnicaManejoInsumo.find("analiseTecnicaManejo.id = :x ORDER BY insumo.data ASC")
+                .setParameter("x", this.id)
                 .fetch();
     }
 }

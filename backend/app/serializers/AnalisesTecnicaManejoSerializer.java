@@ -116,6 +116,7 @@ public class AnalisesTecnicaManejoSerializer {
 			"vinculoInsumos.id",
 			"vinculoInsumos.insumo.id",
 			"vinculoInsumos.insumo.data",
+			"vinculoInsumos.insumo.ano",
 			"vinculoInsumos.insumo.satelite",
 			"vinculoInsumos.insumo.orbPonto",
 			"vinculoInsumos.exibirPDF"

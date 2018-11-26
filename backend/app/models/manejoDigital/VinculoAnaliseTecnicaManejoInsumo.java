@@ -1,6 +1,5 @@
 package models.manejoDigital;
 
-import models.analiseShape.Insumo;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.CascadeType;

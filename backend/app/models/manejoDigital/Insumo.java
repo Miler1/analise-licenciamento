@@ -1,5 +1,6 @@
-package models.analiseShape;
+package models.manejoDigital;
 
+import org.joda.time.LocalDate;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.Column;
@@ -41,5 +42,11 @@ public class Insumo extends GenericModel {
 		insumo.orbPonto = rand.nextInt(200) + "/" + rand.nextInt(2000);
 
 		return insumo;
+	}
+
+	public int getAno() {
+
+		LocalDate localDate = new LocalDate(this.data);
+		return localDate.getYear();
 	}
 }
