@@ -21,7 +21,7 @@ var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 	this.iniciarAnalise = function(processo) {
 
 		return request
-			.post(config.BASE_URL() + "processoManejo/iniciar", processo);
+			.post(config.BASE_URL() + "processoManejo/iniciarAnaliseTecnica", processo);
 	};
 
 	this.downloadPdfAnaliseTecnica = function(processo) {

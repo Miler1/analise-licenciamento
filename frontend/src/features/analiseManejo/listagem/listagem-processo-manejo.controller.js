@@ -57,7 +57,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		processoManejoService.getProcesso(processo.id)
 			.then(function (response) {
 
-				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
+				$location.path('/analise-manejo/' + response.data.analiseTecnica.id + '/analise-tecnica');
 			})
 			.catch(function (response) {
 
@@ -91,26 +91,12 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 	}
 
-	listagemProcessoManejo.init = function(processoManejo) {
+	listagemProcessoManejo.iniciarAnaliseTecnica = function(processoManejo) {
 
-		processoManejoService.getProcesso(processoManejo.id)
+		processoManejoService.iniciarAnalise(processoManejo)
 			.then(function (response) {
 
-				analiseGeoManejo.processo = response.data;
-				analiseGeoManejo.geometria = false;
-
-				if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital em análise técnica' ) {
-
-					$location.path('/analise-manejo/' + analiseGeoManejo.processo.analiseManejo.id + '/analise-tecnica');
-					return;
-
-				// Como ainda não existe a integração com o SIMLAM, esse bloco é necessário para manter a integridade do sistema
-				} else if (analiseGeoManejo.processo.nomeCondicao == 'Manejo digital deferido' || analiseGeoManejo.processo.nomeCondicao == 'Manejo digital indeferido') {
-
-					mensagem.warning("Processo já análisado.");
-					$location.path('/analise-manejo');
-					return;
-				}
+				$location.path('/analise-manejo/' + response.data.analiseTecnica.id + '/analise-tecnica');
 			})
 			.catch(function (response) {
 
@@ -118,7 +104,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro obter dados do processo.");
+					mensagem.error("Ocorreu um erro ao iniciar a análise técnica do processo.");
 			});
 	};
 };

@@ -22,17 +22,18 @@ public class TipoDocumento extends Model {
 	public static Long AREA_DE_MANEJO_FLORESTAL_SOLICITADA = 8l;
 	public static Long AREA_DE_PRESERVAÇÃO_PERMANENTE = 9l;
 	public static Long AREA_SEM_POTENCIAL = 10l;
+	public static Long DOCUMENTO_IMOVEL_MANEJO = 11l;
 
 	@Required
 	public String nome;
-	
+
 	@Column(name="caminho_modelo")
 	public String caminhoModelo;
-	
+
 	@Required
 	@Column(name="caminho_pasta")
 	public String caminhoPasta;
-	
+
 	@Required
 	@Column(name="prefixo_nome_arquivo")
 	public String prefixoNomeArquivo;
@@ -41,5 +42,5 @@ public class TipoDocumento extends Model {
 
 		return PDFTemplate.getByTipoDocumento(this.id);
 	}
-	
+
 }
