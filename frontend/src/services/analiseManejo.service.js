@@ -1,4 +1,4 @@
-var AnaliseManejoService = function(request, config, Upload) {
+var AnaliseManejoService = function(request, config, Upload, $window) {
 
     this.getById = function(id) {
 
@@ -6,23 +6,28 @@ var AnaliseManejoService = function(request, config, Upload) {
             .get(config.BASE_URL() + "analiseTecnicaManejo/" + id);
     };
 
-    this.saveAnexo = function(id, file) {
-
-        return request.upload(config.BASE_URL() + 'analiseTecnicaManejo/' + id + '/anexo', file, Upload);
-    };
-
-    this.removeAnexo = function(token) {
+    this.removeAnexo = function(id) {
 
         return request
-            .delete(config.BASE_URL() + "analiseTecnicaManejo/anexo/" + token);
+            .delete(config.BASE_URL() + "delete/imovel/manejo/" + id);
     };
 
     this.finalizar = function(id) {
 
         return request
             .put(config.BASE_URL() + "analiseTecnicaManejo/" + id);
-    };
+	};
 
+	this.upload = function(file, idAnaliseTecnica) {
+
+        return request.upload(config.BASE_URL() + "upload/" + idAnaliseTecnica + "/imovel/manejo", file, Upload);
+	};
+
+	this.downloadDocumento = function(idDocumento) {
+
+        $window.open(config.BASE_URL() + "download/imovel/manejo/" + idDocumento);
+
+	};
 };
 
 exports.services.AnaliseManejoService = AnaliseManejoService;

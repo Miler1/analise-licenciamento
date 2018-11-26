@@ -2,13 +2,9 @@ package models.manejoDigital;
 
 import models.Documento;
 import models.TipoDocumento;
-import models.analiseShape.FeatureQueryInsumo;
-import models.analiseShape.FeatureQueryResumoNDFI;
-import models.analiseShape.FeatureQuerySobreposicao;
 import models.analiseShape.Insumo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.Upload;
@@ -16,14 +12,9 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.libs.IO;
-import security.Auth;
-import utils.Configuracoes;
-import utils.FileManager;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -213,26 +204,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
         documento.analiseTecnicaManejo = this;
 
         return (DocumentoImovelManejo) documento.save();
-    }
-
-    public String saveAnexo(Upload file) throws IOException {
-
-        byte[] data = IO.readContent(file.asFile());
-        String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-        String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_ANEXO_MANEJO_FOLDER, file.getFileName(),
-                data, extension);
-
-        //this.pathAnexo = path;
-        this._save();
-
-        return path;
-    }
-
-    public void deleteAnexo() {
-
-        //FileManager.getInstance().deleteFileFromPath(this.pathAnexo);
-        //this.pathAnexo = null;
-        this._save();
     }
 
     public List<Observacao> getObservacoesDadosImovel() {

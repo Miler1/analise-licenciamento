@@ -102,6 +102,8 @@ public class AnalisesManejoSerializer {
 			"processoManejo.empreendimento.imovel.areaPreservacaoPermanente",
 			"processoManejo.empreendimento.imovel.areaRemanescenteVegetacaoNativa",
 			"processoManejo.empreendimento.imovel.areaCorposAgua",
-			"processoManejo.empreendimento.imovel.areaUsoConsolidado"
+			"processoManejo.empreendimento.imovel.areaUsoConsolidado",
+			"documentosImovel.id",
+			"documentosImovel.nome"
 	);
 }
