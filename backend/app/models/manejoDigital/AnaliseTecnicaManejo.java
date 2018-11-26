@@ -11,6 +11,8 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
+
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.Date;
@@ -150,8 +152,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public AnaliseTecnicaManejo gerarAnalise() {
 
-        this.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
-
         this.areaManejoFlorestalSolicitada = Math.random();
 
         this.areaPreservacaoPermanente = Math.random();
@@ -181,10 +181,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
         this.areaExploracaoNdfiMedio = Math.random();
 
         this.areaSemPreviaExploracao = Math.random();
-
-        this.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
-
-        this.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
 
         this.analisesNdfi.addAll(AnaliseNdfi.gerarAnaliseNfid(this));
 

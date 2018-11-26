@@ -54,7 +54,30 @@ GRANT ALL ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO licenciamento_pa;
 GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_insumo_id_seq TO licenciamento_pa;
 
+-- Removendo atributos desnecessários
+
+ALTER TABLE analise.analise_vetorial DROP COLUMN observacao;
+ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN analise_temporal;
+ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN consideracoes;
+ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN conclusao;
+
 # --- !Downs
+
+ALTER TABLE analise.analise_vetorial ADD COLUMN observacao TEXT NOT NULL DEFAULT ' ';
+ALTER TABLE analise.analise_vetorial ALTER COLUMN observacao DROP DEFAULT;
+COMMENT ON COLUMN analise.analise_vetorial.observacao IS 'Observação da análise vetorial.';
+
+ALTER TABLE analise.analise_tecnica_manejo ADD COLUMN analise_temporal TEXT NOT NULL DEFAULT ' ';
+ALTER TABLE analise.analise_tecnica_manejo ALTER COLUMN analise_temporal DROP DEFAULT;
+COMMENT ON COLUMN analise.analise_tecnica_manejo.analise_temporal IS 'Dados da análise temporal.';
+
+ALTER TABLE analise.analise_tecnica_manejo ADD COLUMN consideracoes TEXT NOT NULL DEFAULT ' ';
+ALTER TABLE analise.analise_tecnica_manejo ALTER COLUMN consideracoes DROP DEFAULT;
+COMMENT ON COLUMN analise.analise_tecnica_manejo.consideracoes IS 'Considerações da análise.';
+
+ALTER TABLE analise.analise_tecnica_manejo ADD COLUMN conclusao TEXT NOT NULL DEFAULT ' ';
+ALTER TABLE analise.analise_tecnica_manejo ALTER COLUMN conclusao DROP DEFAULT;
+COMMENT ON COLUMN analise.analise_tecnica_manejo.conclusao IS 'Notas de conclusão da análise.';
 
 DROP TABLE analise.vinculo_analise_tecnica_manejo_insumo;
 
