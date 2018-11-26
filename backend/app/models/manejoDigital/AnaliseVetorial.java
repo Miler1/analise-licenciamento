@@ -43,10 +43,6 @@ public class AnaliseVetorial extends GenericModel {
     public Double sobreposicaoAmf;
 
     @Required
-    @Column(name="observacao")
-    public String observacao;
-
-    @Required
     @ManyToOne
     @JoinColumn(name="id_analise_tecnica_manejo")
     public AnaliseTecnicaManejo analiseTecnicaManejo;
@@ -76,8 +72,6 @@ public class AnaliseVetorial extends GenericModel {
             analiseVetorial.distanciaAmf = Math.random();
 
             analiseVetorial.sobreposicaoAmf = Math.random();
-
-            analiseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
 
             analiseVetorial.analiseTecnicaManejo = analise;
 
