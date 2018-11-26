@@ -131,13 +131,14 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					analiseManejoService.upload(file, analiseTecnicaManejo.analiseTecnica.id)
 					.then(function(response) {
 
-						if(analiseTecnicaManejo.anexos.length === 0){
+						if(analiseTecnicaManejo.analiseTecnica.documentosImovel.length < 2 ){
 
 							analiseTecnicaManejo.anexos[0] = response.data;
 
 						} else if (analiseTecnicaManejo.anexos.length === 1){
 
 							analiseTecnicaManejo.anexos[1] = response.data;
+							analiseTecnicaManejo.analiseTecnica.documentosImovel.push(response.data);
 						}
 
 					}, function(error){
@@ -149,13 +150,13 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		}
 	};
 
-	analiseTecnicaManejo.removeAnexo = function () {
+	analiseTecnicaManejo.removeAnexo = function (id, index) {
 
-		analiseManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
+		analiseManejoService.removeAnexo(id)
 
 			.then(function(response) {
 
-				analiseTecnicaManejo.anexo = null;
+				analiseTecnicaManejo.analiseTecnica.documentosImovel.splice(index, 1);
 
 			}, function(error){
 
@@ -198,6 +199,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				}
 			}
 		}
+	};
+
+	analiseTecnicaManejo.downloadArquivo = function(idDocumento) {
+
+		analiseManejoService.downloadDocumento(idDocumento);
 	};
 
 	analiseTecnicaManejo.removerObservacao = function(observacao) {
