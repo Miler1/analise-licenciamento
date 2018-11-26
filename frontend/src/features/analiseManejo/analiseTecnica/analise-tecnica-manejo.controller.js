@@ -195,7 +195,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 						.then(function(response) {
 
 							analiseTecnicaManejo.analiseTecnica.documentosComplementares.push(response.data);
-							$scope.$apply();
 
 						}, function(error){
 
