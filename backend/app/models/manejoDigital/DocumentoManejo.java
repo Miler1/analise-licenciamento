@@ -94,7 +94,15 @@ public class DocumentoManejo extends Documento {
 	@Override
 	protected void configurarCaminho() {
 
+		this.nome = this.nome.substring(0, this.nome.lastIndexOf('.')) + "_" + this.id;
+
 		this.caminho = File.separator + tipo.caminhoPasta
 				+ File.separator + this.nome;
+
+		if (this.extensao != null) {
+
+			this.caminho += "." + this.extensao;
+			this.nome += "." + this.extensao;
+		}
 	}
 }

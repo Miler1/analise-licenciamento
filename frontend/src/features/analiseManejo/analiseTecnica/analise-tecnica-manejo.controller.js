@@ -164,6 +164,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			});
 	};
 
+	analiseTecnicaManejo.downloadArquivo = function(idDocumento) {
+
+		analiseManejoService.downloadDocumento(idDocumento);
+	};
+
 	analiseTecnicaManejo.selecionarDocumentoComplementar = function (files, file, anexo) {
 
 		if (file) {
@@ -201,10 +206,27 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		}
 	};
 
-	analiseTecnicaManejo.downloadArquivo = function(idDocumento) {
+	analiseTecnicaManejo.removeDocumentoComplementar = function (id) {
 
-		analiseManejoService.downloadDocumento(idDocumento);
+		analiseManejoService.removeAnexo(id)
+
+			.then(function(response) {
+
+				analiseTecnicaManejo.analiseTecnica.documentosComplementares.forEach(function (documento, index) {
+
+					if (documento.id == id) {
+
+						analiseTecnicaManejo.analiseTecnica.documentosComplementares.splice(index, 1);
+					}
+				});
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
 	};
+
+
 
 	analiseTecnicaManejo.removerObservacao = function(observacao) {
 
