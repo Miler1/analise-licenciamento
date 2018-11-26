@@ -131,12 +131,14 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					analiseManejoService.upload(file, analiseTecnicaManejo.analiseTecnica.id)
 					.then(function(response) {
 
-						if(analiseTecnicaManejo.anexos.length === 0){
+						if(analiseTecnicaManejo.analiseTecnica.documentosImovel.length < 2 ){
 
 							analiseTecnicaManejo.anexos[0] = response.data;
+
 						} else if (analiseTecnicaManejo.anexos.length === 1){
 
 							analiseTecnicaManejo.anexos[1] = response.data;
+							analiseTecnicaManejo.analiseTecnica.documentosImovel.push(response.data);
 						}
 
 					}, function(error){
@@ -148,18 +150,60 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		}
 	};
 
-	analiseTecnicaManejo.removeAnexo = function () {
+	analiseTecnicaManejo.removeAnexo = function (id, index) {
 
-		analiseManejoService.removeAnexo(analiseTecnicaManejo.analiseTecnica.id)
+		analiseManejoService.removeAnexo(id)
 
 			.then(function(response) {
 
-				analiseTecnicaManejo.anexo = null;
+				analiseTecnicaManejo.analiseTecnica.documentosImovel.splice(index, 1);
 
 			}, function(error){
 
 				mensagem.error(error.data.texto);
 			});
+	};
+
+	analiseTecnicaManejo.selecionarDocumentoComplementar = function (files, file, anexo) {
+
+		if (file) {
+
+			if ((file.size / Math.pow(1000,2)) > analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB) {
+
+				mensagem.error("O arquivo deve ter um tamanho menor que " + TAMANHO_MAXIMO_ARQUIVO_MB + " MB.");
+				return;
+			}
+
+			analiseTecnicaManejo.uploadDocumentoComplementar(file, anexo);
+		}
+	};
+
+	analiseTecnicaManejo.uploadDocumentoComplementar = function (file) {
+
+		if (file && !analiseTecnicaManejo.validacaoErro) {
+
+			if (!file.$error) {
+
+				if (analiseTecnicaManejo.analiseTecnica.id) {
+
+					analiseManejoService.uploadDocumentoComplementar(file, analiseTecnicaManejo.analiseTecnica.id)
+						.then(function(response) {
+
+							analiseTecnicaManejo.analiseTecnica.documentosComplementares.push(response.data);
+							$scope.$apply();
+
+						}, function(error){
+
+							mensagem.error(error.data.texto);
+						});
+				}
+			}
+		}
+	};
+
+	analiseTecnicaManejo.downloadArquivo = function(idDocumento) {
+
+		analiseManejoService.downloadDocumento(idDocumento);
 	};
 
 	analiseTecnicaManejo.removerObservacao = function(observacao) {
