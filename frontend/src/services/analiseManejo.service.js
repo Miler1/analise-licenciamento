@@ -9,7 +9,7 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
     this.removeAnexo = function(id) {
 
         return request
-            .delete(config.BASE_URL() + "delete/imovel/manejo/" + id);
+            .delete(config.BASE_URL() + "delete/manejo/" + id);
     };
 
     this.finalizar = function(id) {
