@@ -10,7 +10,8 @@ div
 					div.col-md-12
 						form(name="formulario-documentos-complementares", novalidate)
 							.form-group.text-right
-								div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseTecnicaManejo.uploadDocumentoComplementar($file, $invalidFile)", ngf-max-size="{{analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+								div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseTecnicaManejo.selecionarDocumentoComplementar($file, $invalidFile)",
+								ngf-multiple="false", ngf-keep="false", ngf-max-files="1", ngf-accept="'application/pdf,image/*,application/zip'")
 									i.glyphicon.glyphicon-open.glyphicon--with-right-margin
 									| Anexar arquivo
 								div
