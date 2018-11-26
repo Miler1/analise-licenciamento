@@ -149,7 +149,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			.then(function(response) {
 
-				analiseTecnicaManejo.analiseTecnica.documentosImovel[index] = null;
+				analiseTecnicaManejo.analiseTecnica.documentosImovel.splice(index, 1);
 
 			}, function(error){
 
