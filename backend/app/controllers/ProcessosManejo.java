@@ -1,16 +1,13 @@
 package controllers;
 
 import builders.ProcessoManejoBuilder.FiltroProcessoManejo;
-import exceptions.ValidacaoException;
 import models.Documento;
-import models.manejoDigital.AnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
 import models.portalSeguranca.Usuario;
-import play.libs.WS;
 import security.Acao;
+import security.Auth;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
-import utils.WebService;
 
 import java.util.List;
 
@@ -48,7 +45,7 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processoSalvo);
 
-		processoSalvo.iniciarAnaliseShape(processo);
+		processoSalvo.iniciarAnaliseShape(processo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first());
 
 		renderJSON(Mensagem.ANALISE_SHAPE_INICIADA_COM_SUCESSO);
 	}
@@ -77,11 +74,11 @@ public class ProcessosManejo extends InternalController {
 		ProcessoManejo processoManejoSalvo = ProcessoManejo.find("numeroProcesso", processoManejo.numeroProcesso).first();
 
 		notFoundIfNull(processoManejoSalvo);
-		notFoundIfNull(processoManejoSalvo.analiseManejo);
+		notFoundIfNull(processoManejoSalvo.getAnaliseTecnica());
 
-		Documento pdfAnalise = processoManejoSalvo.analiseManejo.gerarPDFAnalise();
+		Documento pdfAnalise = processoManejoSalvo.getAnaliseTecnica().gerarPDFAnalise();
 
-		String nome = pdfAnalise.tipo.nome +  "_" + processoManejoSalvo.analiseManejo.id + ".pdf";
+		String nome = pdfAnalise.tipo.nome +  "_" + processoManejoSalvo.getAnaliseTecnica().id + ".pdf";
 		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
 		response.setHeader("Content-Transfer-Encoding", "binary");

@@ -23,7 +23,6 @@ public class Configuracoes {
 	public static String INDEX_URL = "app/index.html";
 
 	public static String APPLICATION_TEMP_FOLDER = getConfig("application.tempFolder", Play.applicationPath + "/tmp/");
-	public static String APPLICATION_SHAPE_FOLDER = getConfig("application.shapeFolder", "/home/licenciamento-pa/documentos/shape");
 	public static String APPLICATION_ANEXO_MANEJO_FOLDER = getConfig("application.anexoManejoFolder", "/home/licenciamento-pa/documentos/anexo_manejo");
 
 	public static long TAMANHO_MAXIMO_ARQUIVO = getLongConfig("sistema.tamanhoMaximoArquivoUpload");
@@ -34,6 +33,7 @@ public class Configuracoes {
 	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_LICENCIAMENTO_PATH + getConfig("arquivos.documentos.path", null);
 	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
 	public static String ESTADO = "PA";
+	public static String ARQUIVOS_SHAPE_MANEJO = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.shape.manejo", null);
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
 

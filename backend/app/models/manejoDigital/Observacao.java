@@ -21,8 +21,8 @@ public class Observacao  extends GenericModel {
 
     @Required
     @ManyToOne
-    @JoinColumn(name="id_analise_manejo")
-    public AnaliseManejo analiseManejo;
+    @JoinColumn(name="id_analise_tecnica_manejo")
+    public AnaliseTecnicaManejo analiseTecnicaManejo;
 
     @Required
     @Column(name="num_passo")
@@ -36,7 +36,7 @@ public class Observacao  extends GenericModel {
     @Override
     public Observacao save() {
 
-        this.analiseManejo = AnaliseManejo.findById(this.analiseManejo.id);
+        this.analiseTecnicaManejo = AnaliseTecnicaManejo.findById(this.analiseTecnicaManejo.id);
 
         this.data = new Date();
 

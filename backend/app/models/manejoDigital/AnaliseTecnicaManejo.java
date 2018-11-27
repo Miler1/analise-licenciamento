@@ -1,7 +1,5 @@
 package models.manejoDigital;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
 import models.Documento;
 import models.TipoDocumento;
 import models.analiseShape.FeatureQueryInsumo;
@@ -13,9 +11,9 @@ import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
-import org.geotools.feature.DefaultFeatureCollection;
-import org.hibernate.annotations.Type;
 import play.data.Upload;
+import play.data.validation.Max;
+import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.IO;
@@ -32,8 +30,8 @@ import java.util.Random;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "analise", name = "analise_manejo")
-public class AnaliseManejo  extends GenericModel {
+@Table(schema = "analise", name = "analise_tecnica_manejo")
+public class AnaliseTecnicaManejo extends GenericModel {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="analise.analise_manejo_id_seq")
@@ -47,10 +45,6 @@ public class AnaliseManejo  extends GenericModel {
     @Required
     @Column(name="dias_analise")
     public Integer diasAnalise;
-
-    @Required
-    @Column(name="geojson")
-    public String geoJsonArcgis;
 
     @Column(name="path_anexo")
     public String pathAnexo;
@@ -109,107 +103,105 @@ public class AnaliseManejo  extends GenericModel {
     @Column
     public String conclusao;
 
-    @Required
-    @OneToOne
-    @JoinColumn(name="id_usuario")
-    public Usuario usuario;
-
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="id_documento")
     public Documento documentoAnalise;
 
-    @OneToMany(mappedBy = "analiseManejo")
+    @OneToMany(mappedBy = "analiseTecnicaManejo")
     public List<Observacao> observacoes;
 
-    @Required
-    @OneToOne(mappedBy = "analiseManejo")
-    public ProcessoManejo processoManejo;
-
-    @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseNdfi> analisesNdfi;
 
-    @OneToMany(mappedBy = "analiseManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseVetorial> analisesVetorial;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo",
-            joinColumns = @JoinColumn(name = "id_analise_manejo"),
+            joinColumns = @JoinColumn(name = "id_analise_tecnica_manejo"),
             inverseJoinColumns = @JoinColumn(name = "id_base_vetorial"))
     public List<BaseVetorial> basesVetorial;
 
     @Column(name = "object_id")
     public String objectId;
 
+    @Required
+    @Min(2)
+    @Max(3)
+    @OneToMany(mappedBy = "analiseTecnicaManejo", orphanRemoval = true)
+    public List<DocumentoShape> documentosShape;
+
+    @Required
+    @OneToOne(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval =  true)
+    public AnalistaTecnicoManejo analistaTecnico;
+
+    @Required
+    @ManyToOne
+    @JoinColumn(name = "id_processo_manejo")
+    public ProcessoManejo processoManejo;
+
     @Transient
     public List<Insumo> insumos;
 
     @Override
-    public AnaliseManejo save() {
+    public AnaliseTecnicaManejo save() {
 
         this.dataAnalise = new Date();
 
         this.diasAnalise = 0;
-
-        this.usuario = Usuario.findById(Auth.getUsuarioSessao().id);
 
         this._save();
 
         return this.refresh();
     }
 
-    public static AnaliseManejo gerarAnalise(ProcessoManejo processo, Usuario usuario) {
+    public AnaliseTecnicaManejo gerarAnalise() {
 
-        AnaliseManejo analiseManejo = new AnaliseManejo();
+        this.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseManejo.dataAnalise = new Date();
+        this.areaManejoFlorestalSolicitada = Math.random();
 
-        analiseManejo.diasAnalise = 0;
+        this.areaPreservacaoPermanente = Math.random();
 
-        analiseManejo.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
+        this.areaServidao = Math.random();
 
-        analiseManejo.areaManejoFlorestalSolicitada = Math.random();
+        this.areaConsolidada = Math.random();
 
-        analiseManejo.areaPreservacaoPermanente = Math.random();
+        this.areaAntropizadaNaoConsolidada = Math.random();
 
-        analiseManejo.areaServidao = Math.random();
+        this.areaUsoRestrito = Math.random();
 
-        analiseManejo.areaConsolidada = Math.random();
+        this.areaSemPotencial = Math.random();
 
-        analiseManejo.areaAntropizadaNaoConsolidada = Math.random();
+        this.areaCorposAgua = Math.random();
 
-        analiseManejo.areaUsoRestrito = Math.random();
+        this.areaEmbargadaIbama = Math.random();
 
-        analiseManejo.areaSemPotencial = Math.random();
+        this.areaEfetivoNdfi = Math.random();
 
-        analiseManejo.areaCorposAgua = Math.random();
+        this.areaEmbargadaLdi = Math.random();
 
-        analiseManejo.areaEmbargadaIbama = Math.random();
+        this.areaSeletivaNdfi = Math.random();
 
-        analiseManejo.areaEfetivoNdfi = Math.random();
+        this.areaExploracaoNdfiBaixo = Math.random();
 
-        analiseManejo.areaEmbargadaLdi = Math.random();
+        this.areaExploracaoNdfiMedio = Math.random();
 
-        analiseManejo.areaSeletivaNdfi = Math.random();
+        this.areaSemPreviaExploracao = Math.random();
 
-        analiseManejo.areaExploracaoNdfiBaixo = Math.random();
+        this.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseManejo.areaExploracaoNdfiMedio = Math.random();
+        this.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
 
-        analiseManejo.areaSemPreviaExploracao = Math.random();
+        this.analisesNdfi.addAll(AnaliseNdfi.gerarAnaliseNfid(this));
 
-        analiseManejo.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
+        this.basesVetorial.addAll(BaseVetorial.gerarBaseVetorial(this));
 
-        analiseManejo.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
+        this.analisesVetorial.addAll(AnaliseVetorial.gerarAnalisesVetoriais(this));
 
-        analiseManejo.usuario = usuario;
+        this._save();
 
-        analiseManejo.analisesNdfi = AnaliseNdfi.gerarAnaliseNfid(analiseManejo);
-
-        analiseManejo.basesVetorial = BaseVetorial.gerarBaseVetorial(analiseManejo);
-
-        analiseManejo.analisesVetorial = AnaliseVetorial.gerarAnalisesVetoriais(analiseManejo);
-
-        return analiseManejo;
+        return this.refresh();
     }
 
     public String saveAnexo(Upload file) throws IOException {
@@ -309,13 +301,13 @@ public class AnaliseManejo  extends GenericModel {
         // Simulação do resultado da análise feita pela Vega
         if (random.nextBoolean()) {
 
-            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
-            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.usuario);
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_MANEJO, this.analistaTecnico.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
 
         } else {
 
-            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.usuario);
-            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.usuario);
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.analistaTecnico.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
         }
     }
 
@@ -354,35 +346,35 @@ public class AnaliseManejo  extends GenericModel {
 
     }
 
-    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
-
-        this.analisesVetorial = new ArrayList<>();
-
-        for (FeatureQuerySobreposicao feature : features) {
-
-            feature.attributes.analiseManejo = this;
-            this.analisesVetorial.add(feature.attributes);
-        }
-    }
-
-    public void setInsumos(List<FeatureQueryInsumo> features) {
-
-        this.insumos = new ArrayList<>();
-
-        for (FeatureQueryInsumo feature : features) {
-
-            this.insumos.add(feature.attributes);
-        }
-    }
-
-    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
-
-        this.analisesNdfi = new ArrayList<>();
-
-        for (FeatureQueryResumoNDFI feature : features) {
-
-            feature.attributes.analiseManejo = this;
-            this.analisesNdfi.add(feature.attributes);
-        }
-    }
+//    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
+//
+//        this.analisesVetorial = new ArrayList<>();
+//
+//        for (FeatureQuerySobreposicao feature : features) {
+//
+//            feature.attributes.analiseTecnicaManejo = this;
+//            this.analisesVetorial.add(feature.attributes);
+//        }
+//    }
+//
+//    public void setInsumos(List<FeatureQueryInsumo> features) {
+//
+//        this.insumos = new ArrayList<>();
+//
+//        for (FeatureQueryInsumo feature : features) {
+//
+//            this.insumos.add(feature.attributes);
+//        }
+//    }
+//
+//    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
+//
+//        this.analisesNdfi = new ArrayList<>();
+//
+//        for (FeatureQueryResumoNDFI feature : features) {
+//
+//            feature.attributes.analiseTecnicaManejo = this;
+//            this.analisesNdfi.add(feature.attributes);
+//        }
+//    }
 }

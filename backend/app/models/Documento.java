@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -28,6 +30,7 @@ import utils.Identificavel;
 
 @Entity
 @Table(schema = "analise", name = "documento")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Documento extends GenericModel implements Identificavel {
 
 	private static final String SEQ = "analise.documento_id_seq";
@@ -174,7 +177,7 @@ public class Documento extends GenericModel implements Identificavel {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private void configurarCaminho() {
 		
 		this.caminho = File.separator + tipo.caminhoPasta
@@ -184,7 +187,7 @@ public class Documento extends GenericModel implements Identificavel {
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
 	}
-	
+
 	private void criarPasta() {
 		
 		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta;
@@ -194,8 +197,7 @@ public class Documento extends GenericModel implements Identificavel {
 		if (!pasta.exists())
 			pasta.mkdirs();
 	}
-	
-	
+
 	private String getCaminhoCompleto() {
 		
 		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;

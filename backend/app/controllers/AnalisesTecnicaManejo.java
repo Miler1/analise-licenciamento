@@ -1,6 +1,6 @@
 package controllers;
 
-import models.manejoDigital.AnaliseManejo;
+import models.manejoDigital.AnaliseTecnicaManejo;
 import play.data.Upload;
 import security.Acao;
 import serializers.AnalisesManejoSerializer;
@@ -8,7 +8,7 @@ import utils.Mensagem;
 
 import java.io.IOException;
 
-public class AnalisesManejo extends InternalController {
+public class AnalisesTecnicaManejo extends InternalController {
 
 	public static void uploadAnexo(Long id, Upload file) throws IOException {
 
@@ -17,7 +17,7 @@ public class AnalisesManejo extends InternalController {
 		returnIfNull(id, "Long");
 		returnIfNull(file, "Upload");
 
-		AnaliseManejo analise = AnaliseManejo.findById(id);
+		AnaliseTecnicaManejo analise = AnaliseTecnicaManejo.findById(id);
 		analise.saveAnexo(file);
 
 		renderMensagem(Mensagem.ANEXO_SALVO_SUCESSO);
@@ -29,8 +29,8 @@ public class AnalisesManejo extends InternalController {
 
 		returnIfNull(id, "Long");
 
-		AnaliseManejo analiseManejo = AnaliseManejo.findById(id);
-		analiseManejo.deleteAnexo();
+		AnaliseTecnicaManejo analiseTecnicaManejo = AnaliseTecnicaManejo.findById(id);
+		analiseTecnicaManejo.deleteAnexo();
 
 		renderMensagem(Mensagem.ANEXO_REMOVIDO_SUCESSO);
 	}
@@ -41,7 +41,7 @@ public class AnalisesManejo extends InternalController {
 
 		returnIfNull(id, "Long");
 
-		AnaliseManejo analise = AnaliseManejo.findById(id);
+		AnaliseTecnicaManejo analise = AnaliseTecnicaManejo.findById(id);
 
 		renderJSON(analise, AnalisesManejoSerializer.findById);
 	}
@@ -52,7 +52,7 @@ public class AnalisesManejo extends InternalController {
 
 		returnIfNull(id, "Long");
 
-		AnaliseManejo analise = AnaliseManejo.findById(id);
+		AnaliseTecnicaManejo analise = AnaliseTecnicaManejo.findById(id);
 
 		analise.finalizar();
 
