@@ -84,31 +84,34 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 				return;
 			}
 
-			uploadArquivo(file, arquivoShape);
+			analiseGeoManejo.arquivoShapeUtil.shapefileToGeojson(file, arquivoShape, analiseGeoManejo.uploadArquivo);
 		}
 	};
 
-	function uploadArquivo(file, arquivoShape) {
+	analiseGeoManejo.uploadArquivo = function (file, geojson, arquivoShape) {
 
-		if (!file){
+		var geoJsonArcgis = analiseGeoManejo.arquivoShapeUtil.geojsonToArcGIS(geojson);
 
+		if (!geoJsonArcgis) {
+
+			mensagem.error('Não é possível obter as geometrias do arquivo.', {ttl: 10000});
 			return;
 		}
-
-		analiseGeoManejo.arquivoShapeUtil.shapefileToGeojson(file, arquivoShape, analiseGeoManejo.getGeometria);
 
 		documentoShapeService.upload(file)
 			.then(function(response){
 
 				arquivoShape.key = response.data;
 				arquivoShape.nome = file.name;
+				arquivoShape.geoJsonArcgis = JSON.stringify(geoJsonArcgis);
+				$scope.$apply();
 			})
 			.catch(function(response){
 
 				mensagem.warning(response.data.texto);
 				return;
 			});
-	}
+	};
 
 	analiseGeoManejo.removerArquivo = function (arquivoShape) {
 
@@ -129,11 +132,8 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.analisarShape = function() {
 
-		if(!validarAnalise()) {
-
-			mensagem.error('É necessário fornecer todos os shapes obrigatórios.', { ttl: 10000 });
+		if (!validarAnalise())
 			return;
-		}
 
 		var arquivosShape = [];
 
@@ -181,21 +181,15 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 		analiseGeoManejo.arquivosShape.forEach(function(item){
 
-			if (!item.key && item.obrigatorio) {
+			if (item.obrigatorio && !item.key && analiseValida) {
+
+				mensagem.error('É necessário fornecer todos os shapes obrigatórios.', { ttl: 10000 });
 				analiseValida = false;
 			}
 		});
 
 		return analiseValida;
 	}
-
-	analiseGeoManejo.getGeometria = function (geojson, arquivoShape) {
-
-		var geoJsonArcgis = analiseGeoManejo.arquivoShapeUtil.geojsonToArcGIS(geojson);
-		arquivoShape.geoJsonArcgis = JSON.stringify(geoJsonArcgis);
-		$scope.$apply();
-	};
-
 
 	analiseGeoManejo.cancelar = function() {
 

@@ -81,7 +81,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		modalInstance.result.then(function (observacao) {
 
-			observacao.analiseManejo = { id: analiseTecnicaManejo.analiseTecnica.id };
+			observacao.analiseTecnicaManejo = { id: analiseTecnicaManejo.analiseTecnica.id };
 			observacao.passoAnalise = analiseTecnicaManejo.passoAtual[0];
 
 			observacaoService.save(observacao).then(function (response) {
@@ -169,9 +169,19 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		analiseManejoService.downloadDocumento(idDocumento);
 	};
 
-	analiseTecnicaManejo.selecionarDocumentoComplementar = function (files, file, anexo) {
+	analiseTecnicaManejo.selecionarDocumentoComplementar = function (file) {
+
+		var extensoesPermitidas = [".zip", ".png", ".jpg", ".jpeg", ".bmp", ".pdf"];
 
 		if (file) {
+
+			var extensao = file.name.substring(file.name.lastIndexOf('.'));
+
+			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || !extensao.includes(extensao)) {
+
+				mensagem.error("Extensão de arquivo inválida.");
+				return;
+			}
 
 			if ((file.size / Math.pow(1000,2)) > analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB) {
 
@@ -179,7 +189,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				return;
 			}
 
-			analiseTecnicaManejo.uploadDocumentoComplementar(file, anexo);
+			analiseTecnicaManejo.uploadDocumentoComplementar(file);
 		}
 	};
 
@@ -195,7 +205,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 						.then(function(response) {
 
 							analiseTecnicaManejo.analiseTecnica.documentosComplementares.push(response.data);
-							$scope.$apply();
 
 						}, function(error){
 
