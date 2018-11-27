@@ -47,6 +47,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
+				// nome diferente do serializer para usar o get padrão
+				analiseTecnicaManejo.analiseTecnica.vinculoInsumos = analiseTecnicaManejo.analiseTecnica.vinculos;
+
 				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = 0;
 
 				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {

@@ -110,12 +110,12 @@ public class AnalisesTecnicaManejoSerializer {
 			"documentosImovel.nome",
 			"documentosComplementares.id",
 			"documentosComplementares.nome",
-			"vinculoInsumos.id",
-			"vinculoInsumos.insumo.id",
-			"vinculoInsumos.insumo.data",
-			"vinculoInsumos.insumo.ano",
-			"vinculoInsumos.insumo.satelite",
-			"vinculoInsumos.insumo.orbPonto",
-			"vinculoInsumos.exibirPDF"
+			"vinculos.id",
+			"vinculos.insumo.id",
+			"vinculos.insumo.data",
+			"vinculos.insumo.ano",
+			"vinculos.insumo.satelite",
+			"vinculos.insumo.orbPonto",
+			"vinculos.exibirPDF"
 	);
 }

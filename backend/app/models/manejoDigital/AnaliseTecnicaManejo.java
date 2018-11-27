@@ -454,7 +454,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculoInsumos() {
+    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculos() {
 
         return VinculoAnaliseTecnicaManejoInsumo.find("analiseTecnicaManejo.id = :x ORDER BY insumo.data ASC")
                 .setParameter("x", this.id)
