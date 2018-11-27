@@ -11,14 +11,12 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
 
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
 import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;
@@ -140,6 +138,22 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         return this.refresh();
     }
+
+	public AnaliseTecnicaManejo saveAtributos(PassoAnaliseManejo passo) {
+
+    	switch (passo) {
+			case CALCULO_NDFI:
+				break;
+
+			case ANALISE_VETORIAL:
+				break;
+
+			case INSUMOS_UTILIZADOS:
+				break;
+
+		}
+		return this.refresh();
+	}
 
     public AnaliseTecnicaManejo gerarAnalise() {
 
@@ -282,7 +296,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
 				.setParameter("x", this.id)
 				.fetch();
 	}
-
 
 
     public void finalizar() {
