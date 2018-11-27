@@ -14,9 +14,7 @@ import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
 import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;
@@ -139,20 +137,78 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-	public AnaliseTecnicaManejo saveAtributos(PassoAnaliseManejo passo) {
+	public AnaliseTecnicaManejo updateExibirPdf(AnaliseTecnicaManejo novaAnalise, PassoAnaliseManejo passo) {
 
     	switch (passo) {
 			case CALCULO_NDFI:
+
+				this.updateExibirPdfCalculoNDFI(novaAnalise.analisesNdfi);
 				break;
 
 			case ANALISE_VETORIAL:
+
+				this.updateExibirPdfAnalisesVetorial(novaAnalise.analisesVetorial);
 				break;
 
 			case INSUMOS_UTILIZADOS:
+
+				this.updateExibirPdfInsumos(novaAnalise.vinculoInsumos);
 				break;
 
 		}
 		return this.refresh();
+	}
+
+
+	private void updateExibirPdfCalculoNDFI(List<AnaliseNdfi> novasAnalisesNdfi) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (AnaliseNdfi novaAnaliseNdfi : novasAnalisesNdfi) {
+
+			exibirPdfMap.put(novaAnaliseNdfi.id, novaAnaliseNdfi.exibirPDF);
+		}
+
+		for (AnaliseNdfi analiseNdfi : this.analisesNdfi) {
+
+			analiseNdfi.exibirPDF = exibirPdfMap.get(analiseNdfi.id);
+		}
+
+		this._save();
+	}
+
+	private void updateExibirPdfAnalisesVetorial(List<AnaliseVetorial> novasAnalisesVetorial) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (AnaliseVetorial novaAnaliseVetorial : novasAnalisesVetorial) {
+
+			exibirPdfMap.put(novaAnaliseVetorial.id, novaAnaliseVetorial.exibirPDF);
+		}
+
+		for (AnaliseVetorial analiseVetorial : this.analisesVetorial) {
+
+			analiseVetorial.exibirPDF = exibirPdfMap.get(analiseVetorial.id);
+		}
+
+		this._save();
+	}
+
+	private void updateExibirPdfInsumos(List<VinculoAnaliseTecnicaManejoInsumo> novosInsumos) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (VinculoAnaliseTecnicaManejoInsumo novoInsumo : novosInsumos) {
+
+			exibirPdfMap.put(novoInsumo.id, novoInsumo.exibirPDF);
+		}
+
+		for (VinculoAnaliseTecnicaManejoInsumo vinculoInsumo : this.vinculoInsumos) {
+
+			vinculoInsumo.exibirPDF = exibirPdfMap.get(vinculoInsumo.id);
+		}
+
+		this._save();
 	}
 
     public AnaliseTecnicaManejo gerarAnalise() {

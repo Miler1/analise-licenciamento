@@ -34,10 +34,12 @@ public class AnalisesTecnicaManejo extends InternalController {
 		renderMensagem(Mensagem.ANALISE_FINALIZADA_SUCESSO);
 	}
 
-	public static void saveAtributos(PassoAnaliseManejo passo, AnaliseTecnicaManejo analise) {
+	public static void updateExibirPdf(PassoAnaliseManejo passo, AnaliseTecnicaManejo novaAnalise) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		analise.saveAtributos(passo);
+		AnaliseTecnicaManejo analise = AnaliseTecnicaManejo.findById(novaAnalise.id);
+
+		analise.updateExibirPdf(novaAnalise, passo);
 	}
 }
