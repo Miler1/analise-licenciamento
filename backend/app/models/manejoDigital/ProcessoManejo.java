@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import deserializers.GeometriaArcgisDeserializer;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
+import models.manejoDigital.analise.analiseJuridica.AnaliseJuridicaManejo;
 import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
 import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
 import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
@@ -66,6 +67,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     @OneToMany(mappedBy = "processoManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseTecnicaManejo> analisesTecnicaManejo;
+
+    @OneToMany(mappedBy = "processoManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<AnaliseJuridicaManejo> analisesJuridicaManejo;
 
     @Column(name = "id_objeto_tramitavel")
     public Long idObjetoTramitavel;

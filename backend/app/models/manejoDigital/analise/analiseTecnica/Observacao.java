@@ -17,7 +17,7 @@ public class Observacao  extends GenericModel {
     public Long id;
 
     @Required
-    @Column(name="texto")
+    @Column
     public String texto;
 
     @Required
