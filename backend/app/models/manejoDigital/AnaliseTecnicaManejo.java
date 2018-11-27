@@ -179,7 +179,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         this.analisesVetorial.addAll(AnaliseVetorial.gerarAnalisesVetoriais(this));
 
-        this.vinculoInsumos.addAll(VinculoAnaliseTecnicaManejoInsumo.gerarVinculos(this));
+        VinculoAnaliseTecnicaManejoInsumo.gerarVinculos(this);
 
         this._save();
 

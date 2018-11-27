@@ -36,12 +36,10 @@ public class VinculoAnaliseTecnicaManejoInsumo extends GenericModel {
 	@Column(name = "exibir_pdf")
 	public boolean exibirPDF;
 
-	public static List<VinculoAnaliseTecnicaManejoInsumo> gerarVinculos(AnaliseTecnicaManejo analise) {
+	public static void gerarVinculos(AnaliseTecnicaManejo analise) {
 
 		Random rand = new Random();
 		int numeroRandomico = rand.nextInt(20) + 1;
-
-		List<VinculoAnaliseTecnicaManejoInsumo> listaVinculo = new ArrayList<>();
 
 		for (int i = 0; i < numeroRandomico; i++) {
 
@@ -68,10 +66,7 @@ public class VinculoAnaliseTecnicaManejoInsumo extends GenericModel {
 			}
 
 			vinculo.exibirPDF = true;
-
-			listaVinculo.add(vinculo);
+			vinculo._save();
 		}
-
-		return listaVinculo;
 	}
 }
