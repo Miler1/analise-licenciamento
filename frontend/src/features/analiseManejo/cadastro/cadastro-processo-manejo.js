@@ -129,6 +129,10 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 			function(response){
 
 				cadastroProcessoManejoController.tipologias = response.data;
+
+				cadastroProcessoManejoController.tipologia = response.data[0];
+
+				cadastroProcessoManejoController.buscarAtividades();
 			})
 			.catch(function(){
 				mensagem.error('Não foi possível obter a lista de tipologias.');
@@ -200,7 +204,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 		if (cadastroProcessoManejoController.tipologia) {
 
-			atividadeManejoService.findByTipologia(cadastroProcessoManejoController.tipologia).then(
+			atividadeManejoService.findByTipologia(cadastroProcessoManejoController.tipologia.id).then(
 				function(response){
 
 					cadastroProcessoManejoController.atividades = response.data;
