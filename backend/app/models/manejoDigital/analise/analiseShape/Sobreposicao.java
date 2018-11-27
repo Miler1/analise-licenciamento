@@ -1,4 +1,4 @@
-package models.analiseShape;
+package models.manejoDigital.analise.analiseShape;
 
 public class Sobreposicao {
 

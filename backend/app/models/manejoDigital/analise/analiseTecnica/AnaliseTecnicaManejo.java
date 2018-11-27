@@ -1,7 +1,10 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import models.Documento;
 import models.TipoDocumento;
+import models.manejoDigital.DocumentoManejo;
+import models.manejoDigital.DocumentoShape;
+import models.manejoDigital.ProcessoManejo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
@@ -11,14 +14,12 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
 
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
 import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;

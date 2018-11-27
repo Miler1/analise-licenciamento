@@ -1,4 +1,4 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import play.db.jpa.GenericModel;
 
