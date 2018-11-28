@@ -149,11 +149,9 @@ POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfA
 POST    /processoManejo/count                       ProcessosManejo.countWithFilter
 GET     /processoManejo/verificaNumeroProcesso/{numeroProcesso}        ProcessosManejo.verificaNumeroProcesso
 
-# Analises Manejo
-POST    /analiseTecnicaManejo/{id}/anexo                   AnalisesTecnicasManejo.uploadAnexo
-DELETE  /analiseTecnicaManejo/anexo/{id}                   AnalisesTecnicasManejo.deleteAnexo
-GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.findById
-PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicasManejo.finalizar
+# Analises Técnica Manejo
+GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
+PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.finalizar
 
 # Observações
 POST    /observacao                                 Observacoes.save
@@ -173,6 +171,11 @@ GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 POST    /upload/shape                               DocumentosShape.upload
 GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
+
+# Documentos imóvel manejo
+POST    /upload/{idAnaliseTecnica}/imovel/manejo    DocumentosImovelManejo.upload
+GET     /download/imovel/manejo/{id}                DocumentosImovelManejo.download
+DELETE  /delete/imovel/manejo/{id}                  DocumentosImovelManejo.delete
 
 # Estáticos
 GET     /public/									staticDir:public

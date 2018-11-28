@@ -34,6 +34,7 @@ public class Configuracoes {
 	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
 	public static String ESTADO = "PA";
 	public static String ARQUIVOS_SHAPE_MANEJO = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.shape.manejo", null);
+	public static String ARQUIVOS_IMOVEL_MANEJO = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.imovel.manejo", null);
 
 	public static boolean JOBS_ENABLED = getBooleanConfig("jobs.enabled");
 

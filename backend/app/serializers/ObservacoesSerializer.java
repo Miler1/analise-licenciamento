@@ -8,7 +8,7 @@ public class ObservacoesSerializer {
 	public static JSONSerializer save = SerializerUtil.createWithDateTime(
 			"id",
 			"texto",
-			"analiseManejo.id",
+			"analiseTecnicaManejo.id",
 			"passoAnalise.id",
 			"data"
 	);
