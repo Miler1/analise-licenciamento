@@ -60,7 +60,7 @@ public class DocumentoImovelManejo extends Documento {
 
 		} else {
 
-			throw new RuntimeException("Não é possível identificar o arquivo a ser salvo para o documento.");
+			throw new RuntimeException("Não é possível identificar o arquivo a ser salvo.");
 		}
 
 		this._save();
