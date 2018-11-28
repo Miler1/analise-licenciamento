@@ -308,6 +308,11 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         // Simulação de falha da análise
         if (this.numeroProcesso.startsWith("FALHA") && !this.revisaoSolicitada) {
 
+            for (DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
+
+                documento.delete();
+            }
+
             this.revisaoSolicitada = true;
             this._save();
 
