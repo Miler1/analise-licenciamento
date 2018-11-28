@@ -146,6 +146,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
         Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
+        this.revisaoSolicitada = false;
+        this._save();
+
         return this.refresh();
     }
 
@@ -173,7 +176,8 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .groupByMunicipioEmpreendimento()
                 .groupByTipoLicencaManejo()
                 .groupByCpfCnpjEmpreendimento()
-                .groupByCondicao();
+                .groupByCondicao()
+                .groupByRevisaoSolicitada();
 
         return processoBuilder
                 .fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
@@ -301,9 +305,21 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             this.analisesTecnicaManejo = new ArrayList<>();
         }
 
-        this.getAnaliseTecnica().gerarAnalise();
+        // Simulação de falha da análise
+        if (this.numeroProcesso.startsWith("FALHA") && !this.revisaoSolicitada) {
 
-        tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
+            this.revisaoSolicitada = true;
+            this._save();
+
+            tramitacao.tramitar(this, AcaoTramitacao.SOLICITAR_REVISAO_SHAPE, null);
+
+        } else {
+
+            this.getAnaliseTecnica().gerarAnalise();
+
+            tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
+        }
+
     }
 
     public static boolean findByNumeroProcesso(String numeroProcesso) {
