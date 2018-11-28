@@ -4,21 +4,14 @@ import builders.ProcessoManejoBuilder;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import deserializers.AnaliseNDFIDeserializer;
-import deserializers.AnaliseVetorialDeserializer;
-import deserializers.AtributosQueryAMFManejoDeserializer;
 import deserializers.GeometriaArcgisDeserializer;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
-import models.analiseShape.AtributosAddLayer;
-import models.analiseShape.AtributosQueryAMFManejo;
-import models.analiseShape.GeometriaArcgis;
-import models.analiseShape.ResponseAddLayer;
-import models.analiseShape.ResponseQueryAMFManejo;
-import models.analiseShape.ResponseQueryInsumo;
-import models.analiseShape.ResponseQueryProcesso;
-import models.analiseShape.ResponseQueryResumoNDFI;
-import models.analiseShape.ResponseQuerySobreposicao;
+import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
+import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
+import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
+import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
+import models.manejoDigital.analise.analiseTecnica.AnalistaTecnicoManejo;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
@@ -32,7 +25,6 @@ import play.db.jpa.GenericModel;
 import security.Auth;
 import security.InterfaceTramitavel;
 import utils.Configuracoes;
-import utils.FileManager;
 import utils.WebService;
 
 import javax.persistence.*;
@@ -82,6 +74,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
     public ObjetoTramitavel objetoTramitavel;
 
+    @Column(name = "revisao_solicitada")
+    public boolean revisaoSolicitada;
+
     @Transient
     public transient Tramitacao tramitacao = new Tramitacao();
 
@@ -91,6 +86,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         this.tipoLicenca = TipoLicencaManejo.findById(this.tipoLicenca.id);
         this.atividadeManejo = AtividadeManejo.findById(this.atividadeManejo.id);
+        this.revisaoSolicitada = false;
 
         tramitacao.iniciar(this, null, Tramitacao.MANEJO_DIGITAL);
 
