@@ -310,7 +310,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
     }
 
-    public static boolean verificaNumeroProcesso(String numeroProcesso) {
+    public static boolean findByNumeroProcesso(String numeroProcesso) {
 
         Boolean existe = false;
 

@@ -213,7 +213,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	cadastroProcessoManejoController.conferirNumeroProcesso = function (numeroProcesso) {
 
-		processoManejoService.verificaSeProcessoExiste(numeroProcesso).then(
+		processoManejoService.findByNumeroProcesso(numeroProcesso).then(
 			function(response){
 
 				var existe = response.data;
