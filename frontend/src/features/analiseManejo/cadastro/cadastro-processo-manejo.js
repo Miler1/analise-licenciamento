@@ -220,10 +220,13 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 				if(existe) {
 
+					cadastroProcessoManejoController.processo.numeroProcesso = undefined;
 					mensagem.error('Já existe um processo com este número cadastrado.');
 				}
 			})
 			.catch(function(){
+
+				cadastroProcessoManejoController.processo.numeroProcesso = undefined;
 				mensagem.error('Não foi possível consultar o numero do processo.');
 			});
 	};
