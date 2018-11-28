@@ -47,6 +47,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
+				// nome diferente do serializer para usar o get padrão
+				analiseTecnicaManejo.analiseTecnica.vinculoInsumos = analiseTecnicaManejo.analiseTecnica.vinculos;
+
 				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = 0;
 
 				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {
@@ -260,14 +263,30 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.voltar = function() {
 
+		var aux = analiseTecnicaManejo.index;
+
 		analiseTecnicaManejo.index -= 1;
+
+		if(aux === 2 || aux === 4 || aux === 5) {
+
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
+		}
+
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
 
 	analiseTecnicaManejo.proximo = function() {
 
+		var aux = analiseTecnicaManejo.index;
+
 		analiseTecnicaManejo.index += 1;
+
+		if(aux === 2 || aux === 4 || aux === 5) {
+
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
+		}
+
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 	};
@@ -282,7 +301,14 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.changeTab = function(index) {
 
+		var aux = analiseTecnicaManejo.index;
+
 		analiseTecnicaManejo.index = index;
+
+		if(aux === 2 || aux === 4 || aux === 5) {
+
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
+		}
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[index];
 	};
 
@@ -304,6 +330,17 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
 			});
 	};
+
+	$rootScope.$on('$locationChangeStart', function () {
+
+		var aux = analiseTecnicaManejo.index;
+
+		if(aux === 2 || aux === 4 || aux === 5) {
+
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
+		}
+
+	});
 
 };
 

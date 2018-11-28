@@ -32,7 +32,14 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
 
             $window.open(config.BASE_URL() + "download/manejo/" + idDocumento);
 
-    };
+	};
+
+	this.atualizarDadosPdf = function(analiseTecnica, passo) {
+
+		return request
+            .put(config.BASE_URL() + "analiseTecnicaManejo/atributos/" + passo, analiseTecnica);
+
+	};
 };
 
 exports.services.AnaliseManejoService = AnaliseManejoService;

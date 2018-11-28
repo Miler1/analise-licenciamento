@@ -2,7 +2,6 @@ package models.manejoDigital;
 
 import models.Documento;
 import models.TipoDocumento;
-import models.analiseShape.Insumo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
@@ -12,12 +11,10 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+
 import javax.persistence.*;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
 import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;
@@ -38,9 +35,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @Required
     @Column(name="dias_analise")
     public Integer diasAnalise;
-
-    @Column(name="analise_temporal")
-    public String analiseTemporal;
 
     @Column(name="area_manejo_florestal_solicitada")
     public Double areaManejoFlorestalSolicitada;
@@ -87,12 +81,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @Column(name="area_sem_previa_exploracao")
     public Double areaSemPreviaExploracao;
 
-    @Column
-    public String consideracoes;
-
-    @Column
-    public String conclusao;
-
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="id_documento")
     public Documento documentoAnalise;
@@ -134,8 +122,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoManejo> documentosManejo;
 
-    @Transient
-    public List<Insumo> insumos;
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<VinculoAnaliseTecnicaManejoInsumo> vinculoInsumos;
 
     @Override
     public AnaliseTecnicaManejo save() {
@@ -149,9 +137,81 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-    public AnaliseTecnicaManejo gerarAnalise() {
+	public AnaliseTecnicaManejo updateExibirPdf(AnaliseTecnicaManejo novaAnalise, PassoAnaliseManejo passo) {
 
-        this.analiseTemporal = UUID.randomUUID().toString().replace('-', ' ');
+    	switch (passo) {
+			case CALCULO_NDFI:
+
+				this.updateExibirPdfCalculoNDFI(novaAnalise.analisesNdfi);
+				break;
+
+			case ANALISE_VETORIAL:
+
+				this.updateExibirPdfAnalisesVetorial(novaAnalise.analisesVetorial);
+				break;
+
+			case INSUMOS_UTILIZADOS:
+
+				this.updateExibirPdfInsumos(novaAnalise.vinculoInsumos);
+				break;
+
+		}
+		return this.refresh();
+	}
+
+
+	private void updateExibirPdfCalculoNDFI(List<AnaliseNdfi> novasAnalisesNdfi) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (AnaliseNdfi novaAnaliseNdfi : novasAnalisesNdfi) {
+
+			exibirPdfMap.put(novaAnaliseNdfi.id, novaAnaliseNdfi.exibirPDF);
+		}
+
+		for (AnaliseNdfi analiseNdfi : this.analisesNdfi) {
+
+			analiseNdfi.exibirPDF = exibirPdfMap.get(analiseNdfi.id);
+		}
+
+		this._save();
+	}
+
+	private void updateExibirPdfAnalisesVetorial(List<AnaliseVetorial> novasAnalisesVetorial) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (AnaliseVetorial novaAnaliseVetorial : novasAnalisesVetorial) {
+
+			exibirPdfMap.put(novaAnaliseVetorial.id, novaAnaliseVetorial.exibirPDF);
+		}
+
+		for (AnaliseVetorial analiseVetorial : this.analisesVetorial) {
+
+			analiseVetorial.exibirPDF = exibirPdfMap.get(analiseVetorial.id);
+		}
+
+		this._save();
+	}
+
+	private void updateExibirPdfInsumos(List<VinculoAnaliseTecnicaManejoInsumo> novosInsumos) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (VinculoAnaliseTecnicaManejoInsumo novoInsumo : novosInsumos) {
+
+			exibirPdfMap.put(novoInsumo.id, novoInsumo.exibirPDF);
+		}
+
+		for (VinculoAnaliseTecnicaManejoInsumo vinculoInsumo : this.vinculoInsumos) {
+
+			vinculoInsumo.exibirPDF = exibirPdfMap.get(vinculoInsumo.id);
+		}
+
+		this._save();
+	}
+
+    public AnaliseTecnicaManejo gerarAnalise() {
 
         this.areaManejoFlorestalSolicitada = Math.random();
 
@@ -183,15 +243,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         this.areaSemPreviaExploracao = Math.random();
 
-        this.consideracoes =  UUID.randomUUID().toString().replace('-', ' ');
-
-        this.conclusao =  UUID.randomUUID().toString().replace('-', ' ');
-
         this.analisesNdfi.addAll(AnaliseNdfi.gerarAnaliseNfid(this));
 
         this.basesVetorial.addAll(BaseVetorial.gerarBaseVetorial(this));
 
         this.analisesVetorial.addAll(AnaliseVetorial.gerarAnalisesVetoriais(this));
+
+        VinculoAnaliseTecnicaManejoInsumo.gerarVinculos(this);
 
         this._save();
 
@@ -296,7 +354,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
 	}
 
 
-
     public void finalizar() {
 
         Random random = new Random();
@@ -394,6 +451,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
                 .setParameter("x", DOCUMENTO_COMPLEMENTAR_MANEJO)
                 .setParameter("y", this.id)
+                .fetch();
+    }
+
+    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculos() {
+
+        return VinculoAnaliseTecnicaManejoInsumo.find("analiseTecnicaManejo.id = :x ORDER BY insumo.data ASC")
+                .setParameter("x", this.id)
                 .fetch();
     }
 }

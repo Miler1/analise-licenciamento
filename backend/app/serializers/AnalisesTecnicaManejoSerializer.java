@@ -9,7 +9,6 @@ public class AnalisesTecnicaManejoSerializer {
 			"id",
 			"dataAnalise",
 			"pathAnexo",
-			"analiseTemporal",
 			"areaManejoFlorestalSolicitada",
 			"areaPreservacaoPermanente",
 			"areaServidao",
@@ -25,8 +24,6 @@ public class AnalisesTecnicaManejoSerializer {
 			"areaExploracaoNdfiMedio",
 			"areaSemPreviaExploracao",
 			"areaConsolidada",
-			"consideracoes",
-			"conclusao",
 			"processoManejo.numeroProcesso",
 			"processoManejo.empreendimento.cpfCnpj",
 			"processoManejo.empreendimento.denominacao",
@@ -39,6 +36,7 @@ public class AnalisesTecnicaManejoSerializer {
 			"analisesNdfi.nivelExploracao",
 			"analisesNdfi.valor",
 			"analisesNdfi.area",
+			"analisesNdfi.exibirPDF",
 			"analisesVetorial.id",
 			"analisesVetorial.tipo",
 			"analisesVetorial.nome",
@@ -47,6 +45,7 @@ public class AnalisesTecnicaManejoSerializer {
 			"analisesVetorial.distanciaAmf",
 			"analisesVetorial.sobreposicaoAmf",
 			"analisesVetorial.observacao",
+			"analisesVetorial.exibirPDF",
 			"basesVetorial.id",
 			"basesVetorial.nome",
 			"basesVetorial.fonte",
@@ -110,6 +109,13 @@ public class AnalisesTecnicaManejoSerializer {
 			"documentosImovel.id",
 			"documentosImovel.nome",
 			"documentosComplementares.id",
-			"documentosComplementares.nome"
+			"documentosComplementares.nome",
+			"vinculos.id",
+			"vinculos.insumo.id",
+			"vinculos.insumo.data",
+			"vinculos.insumo.ano",
+			"vinculos.insumo.satelite",
+			"vinculos.insumo.orbPonto",
+			"vinculos.exibirPDF"
 	);
 }

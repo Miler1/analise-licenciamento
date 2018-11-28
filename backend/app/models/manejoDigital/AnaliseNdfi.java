@@ -52,6 +52,9 @@ public class AnaliseNdfi extends GenericModel {
     @JoinColumn(name="id_analise_tecnica_manejo")
     public AnaliseTecnicaManejo analiseTecnicaManejo;
 
+    @Column(name = "exibir_pdf")
+    public boolean exibirPDF;
+
     public static List<AnaliseNdfi> gerarAnaliseNfid(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();
@@ -78,6 +81,8 @@ public class AnaliseNdfi extends GenericModel {
             analiseNdfi.area = Math.random();
 
             analiseNdfi.analiseTecnicaManejo = analise;
+
+            analiseNdfi.exibirPDF = true;
 
             listaAnalise.add(analiseNdfi);
         }
