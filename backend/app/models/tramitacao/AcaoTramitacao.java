@@ -54,5 +54,6 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long ARQUIVAR_PRORROGACAO_POR_RENOVACAO = 44l;
 	public static final Long INICIAR_ANALISE_SHAPE = 45l;
 	public static final Long FINALIZAR_ANALISE_SHAPE = 46l;
+	public static final Long SOLICITAR_REVISAO_SHAPE = 47l;
 }
 
