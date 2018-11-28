@@ -47,6 +47,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
+				// nome diferente do serializer para usar o get padrão
+				analiseTecnicaManejo.analiseTecnica.vinculoInsumos = analiseTecnicaManejo.analiseTecnica.vinculos;
+
 				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = 0;
 
 				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {
@@ -266,7 +269,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		if(aux === 2 || aux === 4 || aux === 5) {
 
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, index);
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
 		}
 
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
@@ -281,7 +284,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		if(aux === 2 || aux === 4 || aux === 5) {
 
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, index);
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
 		}
 
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
@@ -304,7 +307,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		if(aux === 2 || aux === 4 || aux === 5) {
 
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, index);
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
 		}
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[index];
 	};
@@ -334,7 +337,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 		if(aux === 2 || aux === 4 || aux === 5) {
 
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, aux);
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
 		}
 
 	});

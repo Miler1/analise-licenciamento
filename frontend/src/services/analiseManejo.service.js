@@ -37,7 +37,7 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
 	this.atualizarDadosPdf = function(analiseTecnica, passo) {
 
 		return request
-            .put(config.BASE_URL() + "analiseTecnicaManejo/atributos/" + passo);
+            .put(config.BASE_URL() + "analiseTecnicaManejo/atributos/" + passo, analiseTecnica);
 
 	};
 };

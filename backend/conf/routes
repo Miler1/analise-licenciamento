@@ -152,6 +152,7 @@ GET     /processoManejo/numeroProcesso              ProcessosManejo.findByNumero
 # Analises Técnica Manejo
 GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
 PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.finalizar
+PUT    /analiseTecnicaManejo/atributos/{passo}             AnalisesTecnicaManejo.updateExibirPdf
 
 # Observações
 POST    /observacao                                 Observacoes.save
