@@ -176,7 +176,8 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .groupByMunicipioEmpreendimento()
                 .groupByTipoLicencaManejo()
                 .groupByCpfCnpjEmpreendimento()
-                .groupByCondicao();
+                .groupByCondicao()
+                .groupByRevisaoSolicitada();
 
         return processoBuilder
                 .fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())

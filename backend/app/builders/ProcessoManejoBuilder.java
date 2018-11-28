@@ -228,6 +228,13 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 		return this;
 	}
 
+	public ProcessoManejoBuilder groupByRevisaoSolicitada() {
+
+		addProjection(Projections.groupProperty("revisaoSolicitada").as("revisaoSolicitada"));
+
+		return this;
+	}
+
 	public ProcessoManejoBuilder count() {
 
 		addProjection(Projections.countDistinct("id").as("total"));
