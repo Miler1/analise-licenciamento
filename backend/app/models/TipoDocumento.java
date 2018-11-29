@@ -20,7 +20,7 @@ public class TipoDocumento extends Model {
 	public static Long NOTIFICACAO_ANALISE_TECNICA = 6l;
 	public static Long DOCUMENTO_ANALISE_MANEJO = 7l;
 	public static Long AREA_DE_MANEJO_FLORESTAL_SOLICITADA = 8l;
-	public static Long AREA_DE_PRESERVAÇÃO_PERMANENTE = 9l;
+	public static Long AREA_DE_PRESERVACAO_PERMANENTE = 9l;
 	public static Long AREA_SEM_POTENCIAL = 10l;
 	public static Long DOCUMENTO_IMOVEL_MANEJO = 11l;
 	public static Long DOCUMENTO_COMPLEMENTAR_MANEJO = 12l;

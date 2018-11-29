@@ -6,7 +6,6 @@ import utils.SerializerUtil;
 public class DocumentosManejoSerializer {
 
 	public static JSONSerializer upload = SerializerUtil.create(
-
 			"id",
 			"nome"
 	);
