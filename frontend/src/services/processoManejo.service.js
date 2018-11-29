@@ -60,7 +60,7 @@ var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 
 	this.findByNumeroProcesso = function(numeroProcesso) {
 
-		return request.getWithCache(config.BASE_URL() + "processoManejo/numeroProcesso/" + encodeURIComponent(numeroProcesso));
+		return request.get(config.BASE_URL() + "processoManejo/numero/processo", {numeroProcesso: numeroProcesso});
 	};
 
 	this.inicicarAnaliseShape = function(processo) {
