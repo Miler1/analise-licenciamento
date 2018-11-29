@@ -5,6 +5,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import deserializers.GeometriaArcgisDeserializer;
+import exceptions.AppException;
+import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
@@ -25,6 +27,7 @@ import play.db.jpa.GenericModel;
 import security.Auth;
 import security.InterfaceTramitavel;
 import utils.Configuracoes;
+import utils.Mensagem;
 import utils.WebService;
 
 import javax.persistence.*;
@@ -357,6 +360,11 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     }
 
     public void indeferir(ProcessoManejo processoManejo, Usuario usuario) {
+
+        if (!this.revisaoSolicitada) {
+
+            throw new ValidacaoException(Mensagem.ERRO_PADRAO);
+        }
 
         this.justificativaIndeferimento = processoManejo.justificativaIndeferimento;
 

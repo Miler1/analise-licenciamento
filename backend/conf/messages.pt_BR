@@ -129,6 +129,7 @@ ANALISE_SHAPE_INICIADA_COM_SUCESSO=Análise shape iniciada com sucesso.
 #
 PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
 PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
+PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Processo indeferido com sucesso.
 
 #
 # Observações
