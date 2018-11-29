@@ -199,7 +199,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.selecionarDocumentoComplementar = function (file) {
 
-		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip'];
+		var mimeTypesPermitidos = ['application/pdf','image/bmp', 'image/jpeg', 'image/png','application/zip','application/x-zip-compressed','multipart/x-zip'];
 		var extensoesPermitidas = [".zip", ".png", ".jpg", ".jpeg", ".bmp", ".pdf"];
 
 		if (file) {
