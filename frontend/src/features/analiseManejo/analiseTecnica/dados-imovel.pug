@@ -61,7 +61,7 @@ div
 											div.btn-group.pull-right
 												button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do arquivo",
 												ngf-select, ngf-multiple="false", ngf-keep="false", ngf-max-files="1",
-												ngf-change="analiseTecnicaManejo.selecionarDocumentoImovel($files, $file, anexo)",
+												ngf-change="analiseTecnicaManejo.selecionarDocumentoImovel($files, documentoImovel.index)",
 												ng-if="!documentoImovel.nome",
 												ngf-accept="'application/zip'"
 												ng-class="{'button-error': analiseTecnicaManejo.$submitted}")

@@ -6,10 +6,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	var analiseTecnicaManejo = this;
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
-	analiseTecnicaManejo.tipos = ['application/pdf','image/bmp', 'image/jpeg', 'image/png','application/zip','application/x-zip-compressed','multipart/x-zip'];
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-	analiseTecnicaManejo.anexos = [];
 	analiseTecnicaManejo.passos = {
 		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel', 'id-dados-imovel'],
 		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial', 'id-metodos-base-vetorial'],
@@ -123,11 +121,18 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		});
 	};
 
-	analiseTecnicaManejo.selecionarDocumentoImovel = function (files, file, anexo) {
+	analiseTecnicaManejo.selecionarDocumentoImovel = function (files, index) {
 
-		if (file) {
+		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip'];
+		var extensoesPermitidas = [".zip"];
 
-			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || file.name.substring(file.name.lastIndexOf('.')) !== '.zip') {
+		if (files) {
+
+			var file = files[0];
+
+			var extensao = file.name.substring(file.name.lastIndexOf('.'));
+
+			if (mimeTypesPermitidos.indexOf(file.type) === -1 || !extensoesPermitidas.includes(extensao)) {
 
 				mensagem.error("Extensão de arquivo inválida.");
 				return;
@@ -139,11 +144,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				return;
 			}
 
-			analiseTecnicaManejo.uploadDocumentoImovel(file, anexo);
+			analiseTecnicaManejo.uploadDocumentoImovel(file, index);
 		}
 	};
 
-	analiseTecnicaManejo.uploadDocumentoImovel = function (file) {
+	analiseTecnicaManejo.uploadDocumentoImovel = function (file, index) {
 
 		if (file && !analiseTecnicaManejo.validacaoErro) {
 
@@ -154,15 +159,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					analiseManejoService.upload(file, analiseTecnicaManejo.analiseTecnica.id)
 					.then(function(response) {
 
-						if(analiseTecnicaManejo.analiseTecnica.documentosImovel.length < 2 ){
-
-							analiseTecnicaManejo.anexos[0] = response.data;
-
-						} else if (analiseTecnicaManejo.anexos.length === 1){
-
-							analiseTecnicaManejo.anexos[1] = response.data;
-							analiseTecnicaManejo.analiseTecnica.documentosImovel.push(response.data);
-						}
+						analiseTecnicaManejo.analiseTecnica.documentosImovel[index] = response.data;
+						analiseTecnicaManejo.analiseTecnica.documentosImovel[index].index = index;
 
 					}, function(error){
 
@@ -201,13 +199,14 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.selecionarDocumentoComplementar = function (file) {
 
+		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip'];
 		var extensoesPermitidas = [".zip", ".png", ".jpg", ".jpeg", ".bmp", ".pdf"];
 
 		if (file) {
 
 			var extensao = file.name.substring(file.name.lastIndexOf('.'));
 
-			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || !extensoesPermitidas.includes(extensao)) {
+			if (mimeTypesPermitidos.indexOf(file.type) === -1 || !extensoesPermitidas.includes(extensao)) {
 
 				mensagem.error("Extensão de arquivo inválida.");
 				return;
