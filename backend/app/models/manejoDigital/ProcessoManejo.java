@@ -77,6 +77,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @Column(name = "revisao_solicitada")
     public boolean revisaoSolicitada;
 
+    @Column(name = "justificativa_indeferimento")
+    public String justificativaIndeferimento;
+
     @Transient
     public transient Tramitacao tramitacao = new Tramitacao();
 
