@@ -6,7 +6,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	var analiseTecnicaManejo = this;
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
-	analiseTecnicaManejo.tipos = ['application/x-rar-compressed','application/zip','application/x-zip-compressed','multipart/x-zip', 'application/vnd.rar'];
+	analiseTecnicaManejo.tipos = ['application/pdf','image/bmp', 'image/jpeg', 'image/png','application/zip','application/x-zip-compressed','multipart/x-zip'];
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
 	analiseTecnicaManejo.anexos = [];
@@ -180,7 +180,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			var extensao = file.name.substring(file.name.lastIndexOf('.'));
 
-			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || !extensao.includes(extensao)) {
+			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || !extensoesPermitidas.includes(extensao)) {
 
 				mensagem.error("Extensão de arquivo inválida.");
 				return;
