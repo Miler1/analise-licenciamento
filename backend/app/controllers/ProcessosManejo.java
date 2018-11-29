@@ -120,7 +120,7 @@ public class ProcessosManejo extends InternalController {
 
 		verificarPermissao(Acao.CADASTRAR_PROCESSO_MANEJO);
 
-		renderJSON(ProcessoManejo.findByNumeroProcesso(""));
+		renderJSON(ProcessoManejo.findByNumeroProcesso(numeroProcesso));
 	}
 
 
