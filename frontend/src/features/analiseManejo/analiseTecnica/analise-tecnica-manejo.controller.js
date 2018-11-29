@@ -6,10 +6,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	var analiseTecnicaManejo = this;
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
-	analiseTecnicaManejo.tipos = ['application/pdf','image/bmp', 'image/jpeg', 'image/png','application/zip','application/x-zip-compressed','multipart/x-zip'];
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
-	analiseTecnicaManejo.anexos = [];
 	analiseTecnicaManejo.passos = {
 		DADOS_IMOVEL: ['DADOS_IMOVEL', 'observacoesDadosImovel', 'id-dados-imovel'],
 		BASE_VETORIAL: ['BASE_VETORIAL', 'observacoesBaseVetorial', 'id-metodos-base-vetorial'],
@@ -50,6 +48,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				// nome diferente do serializer para usar o get padrão
 				analiseTecnicaManejo.analiseTecnica.vinculoInsumos = analiseTecnicaManejo.analiseTecnica.vinculos;
 
+				initDocumentosImovel(analiseTecnicaManejo.analiseTecnica);
+
 				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = 0;
 
 				if (analiseTecnicaManejo.analiseTecnica.pathAnexo) {
@@ -71,6 +71,27 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.error("Ocorreu um erro ao obter dados do processo.");
 			});
 	};
+
+	function initDocumentosImovel(analiseTecnica) {
+
+			var numDocumentos = 2;
+			var documento = {id: null, nome: null, index: null};
+
+			if (!analiseTecnica.documentosImovel) {
+
+				analiseTecnica.documentosImovel = [];
+			}
+
+			for (i = 0; i < numDocumentos; i++) {
+
+				if (analiseTecnica.documentosImovel.length < (i+1)) {
+
+					analiseTecnica.documentosImovel.push(JSON.parse(JSON.stringify(documento)));
+				}
+
+				analiseTecnica.documentosImovel[i].index = i;
+			}
+	}
 
 	analiseTecnicaManejo.abrirModal = function() {
 
@@ -103,11 +124,18 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		});
 	};
 
-	analiseTecnicaManejo.selecionarArquivo = function (files, file, anexo) {
+	analiseTecnicaManejo.selecionarDocumentoImovel = function (files, index) {
 
-		if (file) {
+		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip'];
+		var extensoesPermitidas = [".zip"];
 
-			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || file.name.substring(file.name.lastIndexOf('.')) !== '.zip') {
+		if (files) {
+
+			var file = files[0];
+
+			var extensao = file.name.substring(file.name.lastIndexOf('.'));
+
+			if (mimeTypesPermitidos.indexOf(file.type) === -1 || !extensoesPermitidas.includes(extensao)) {
 
 				mensagem.error("Extensão de arquivo inválida.");
 				return;
@@ -119,11 +147,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				return;
 			}
 
-			analiseTecnicaManejo.upload(file, anexo);
+			analiseTecnicaManejo.uploadDocumentoImovel(file, index);
 		}
 	};
 
-	analiseTecnicaManejo.upload = function (file) {
+	analiseTecnicaManejo.uploadDocumentoImovel = function (file, index) {
 
 		if (file && !analiseTecnicaManejo.validacaoErro) {
 
@@ -134,15 +162,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					analiseManejoService.upload(file, analiseTecnicaManejo.analiseTecnica.id)
 					.then(function(response) {
 
-						if(analiseTecnicaManejo.analiseTecnica.documentosImovel.length < 2 ){
-
-							analiseTecnicaManejo.anexos[0] = response.data;
-
-						} else if (analiseTecnicaManejo.anexos.length === 1){
-
-							analiseTecnicaManejo.anexos[1] = response.data;
-							analiseTecnicaManejo.analiseTecnica.documentosImovel.push(response.data);
-						}
+						analiseTecnicaManejo.analiseTecnica.documentosImovel[index] = response.data;
+						analiseTecnicaManejo.analiseTecnica.documentosImovel[index].index = index;
 
 					}, function(error){
 
@@ -153,13 +174,20 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		}
 	};
 
-	analiseTecnicaManejo.removeAnexo = function (id, index) {
+	analiseTecnicaManejo.removeDocumentoImovel = function (id) {
 
 		analiseManejoService.removeAnexo(id)
 
 			.then(function(response) {
 
-				analiseTecnicaManejo.analiseTecnica.documentosImovel.splice(index, 1);
+				analiseTecnicaManejo.analiseTecnica.documentosImovel.forEach(function (documento, index) {
+
+					if (documento.id == id) {
+
+						analiseTecnicaManejo.analiseTecnica.documentosImovel[index].id = null;
+						analiseTecnicaManejo.analiseTecnica.documentosImovel[index].nome = null;
+					}
+				});
 
 			}, function(error){
 
@@ -167,20 +195,21 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 			});
 	};
 
-	analiseTecnicaManejo.downloadArquivo = function(idDocumento) {
+	analiseTecnicaManejo.downloadDocumento = function(idDocumento) {
 
 		analiseManejoService.downloadDocumento(idDocumento);
 	};
 
 	analiseTecnicaManejo.selecionarDocumentoComplementar = function (file) {
 
+		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip'];
 		var extensoesPermitidas = [".zip", ".png", ".jpg", ".jpeg", ".bmp", ".pdf"];
 
 		if (file) {
 
 			var extensao = file.name.substring(file.name.lastIndexOf('.'));
 
-			if (analiseTecnicaManejo.tipos.indexOf(file.type) === -1 || !extensoesPermitidas.includes(extensao)) {
+			if (mimeTypesPermitidos.indexOf(file.type) === -1 || !extensoesPermitidas.includes(extensao)) {
 
 				mensagem.error("Extensão de arquivo inválida.");
 				return;
@@ -237,7 +266,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				mensagem.error(error.data.texto);
 			});
 	};
-
 
 
 	analiseTecnicaManejo.removerObservacao = function(observacao) {
