@@ -1,6 +1,4 @@
-package models.analiseShape;
-
-import com.vividsolutions.jts.geom.Geometry;
+package models.manejoDigital.analise.analiseShape;
 
 public class FeatureAddLayer {
 

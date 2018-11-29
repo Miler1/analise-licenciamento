@@ -16,7 +16,8 @@ public class ProcessoManejoSerializer {
 			"empreendimento.denominacao",
 			"empreendimento.municipio.nome",
 			"nomeCondicao",
-			"analiseTecnica.id"
+			"analiseTecnica.id",
+			"revisaoSolicitada"
 	);
 
 	public static JSONSerializer findCompletoById = SerializerUtil.create(

@@ -4,10 +4,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import models.manejoDigital.AnaliseVetorial;
+import models.manejoDigital.analise.analiseTecnica.AnaliseVetorial;
 
 import java.lang.reflect.Type;
-import java.util.Date;
 
 public class AnaliseVetorialDeserializer implements JsonDeserializer<AnaliseVetorial> {
 

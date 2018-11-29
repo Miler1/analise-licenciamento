@@ -1,4 +1,4 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import play.db.jpa.GenericModel;
 
@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
