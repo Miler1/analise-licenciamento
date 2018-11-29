@@ -355,4 +355,13 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         return this.analisesTecnicaManejo.get(this.analisesTecnicaManejo.size() - 1);
     }
+
+    public void indeferir(ProcessoManejo processoManejo, Usuario usuario) {
+
+        this.justificativaIndeferimento = processoManejo.justificativaIndeferimento;
+
+        tramitacao.tramitar(this, AcaoTramitacao.INDEFERIR_PROCESSO_MANEJO, usuario);
+
+        this._save();
+    }
 }

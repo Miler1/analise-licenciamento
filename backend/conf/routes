@@ -148,6 +148,7 @@ POST    /processoManejo/iniciarAnaliseTecnica       ProcessosManejo.iniciarAnali
 POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
 POST    /processoManejo/count                       ProcessosManejo.countWithFilter
 GET     /processoManejo/numeroProcesso/{numeroProcesso} ProcessosManejo.findByNumeroProcesso
+PUT     /processoManejo/indeferir                   ProcessosManejo.indeferir
 
 # Analises Técnica Manejo
 GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
