@@ -19,7 +19,7 @@ CREATE TABLE analise.documento_imovel_manejo (
  CONSTRAINT fk_dmi_analise_manejo FOREIGN KEY (id_analise_tecnica_manejo) REFERENCES analise.analise_tecnica_manejo (id)
 );
 
-COMMENT ON TABLE analise.documento_imovel_manejo IS 'Entidade responsável por armazenas os documentos do imóvel do manejo.';
+COMMENT ON TABLE analise.documento_imovel_manejo IS 'Entidade responsável por armazenar os documentos do imóvel do manejo.';
 COMMENT ON COLUMN analise.documento_imovel_manejo.id_documento IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.documento_imovel_manejo.id_analise_tecnica_manejo IS 'Identificador da entidade analise_tecnica_manejo que faz o relacionamento entre a análise do manejo e documento do imóvel do manejo.';
 COMMENT ON COLUMN analise.documento_imovel_manejo.nome IS 'Nome do documento.';
