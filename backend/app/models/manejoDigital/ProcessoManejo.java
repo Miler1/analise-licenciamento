@@ -79,6 +79,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     @Column(name = "revisao_solicitada")
     public boolean revisaoSolicitada;
 
+    @Column(name = "justificativa_indeferimento")
+    public String justificativaIndeferimento;
+
     @Transient
     public transient Tramitacao tramitacao = new Tramitacao();
 
@@ -363,5 +366,20 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         }
 
         return this.analisesTecnicaManejo.get(this.analisesTecnicaManejo.size() - 1);
+    }
+
+    public void indeferir(ProcessoManejo processoManejo, Usuario usuario) {
+
+        if (!this.revisaoSolicitada) {
+
+            throw new ValidacaoException(Mensagem.ERRO_PADRAO);
+        }
+
+        this.justificativaIndeferimento = processoManejo.justificativaIndeferimento;
+        this.revisaoSolicitada = false;
+
+        tramitacao.tramitar(this, AcaoTramitacao.INDEFERIR_PROCESSO_MANEJO, usuario);
+
+        this._save();
     }
 }
