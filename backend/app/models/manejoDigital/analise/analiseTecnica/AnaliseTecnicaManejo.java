@@ -1,7 +1,11 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import models.Documento;
 import models.TipoDocumento;
+import models.manejoDigital.DocumentoManejo;
+import models.manejoDigital.DocumentoShape;
+import models.manejoDigital.PassoAnaliseManejo;
+import models.manejoDigital.ProcessoManejo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
