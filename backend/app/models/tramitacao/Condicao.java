@@ -45,5 +45,9 @@ public class Condicao extends GenericModel {
 	@Column(name = "NM_CONDICAO")
 	public String nomeCondicao;
 
+	public String getNome() {
 
+		String nome = this.nomeCondicao.replace("Manejo digital ", "");
+		return nome.substring(0, 1).toUpperCase() + nome.substring(1);
+	}
 }
