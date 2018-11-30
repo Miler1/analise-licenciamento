@@ -147,11 +147,12 @@ POST    /processoManejo/inicicarAnaliseShape        ProcessosManejo.iniciarAnali
 POST    /processoManejo/iniciarAnaliseTecnica       ProcessosManejo.iniciarAnaliseTecnica
 POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
 POST    /processoManejo/count                       ProcessosManejo.countWithFilter
-GET     /processoManejo/verificaNumeroProcesso/{numeroProcesso}        ProcessosManejo.verificaNumeroProcesso
+GET     /processoManejo/numero/processo             ProcessosManejo.findByNumeroProcesso
 
 # Analises Técnica Manejo
 GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
 PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.finalizar
+PUT    /analiseTecnicaManejo/atributos/{passo}             AnalisesTecnicaManejo.updateExibirPdf
 
 # Observações
 POST    /observacao                                 Observacoes.save
