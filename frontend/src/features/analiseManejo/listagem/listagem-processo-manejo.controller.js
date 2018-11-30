@@ -1,4 +1,4 @@
-var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location) {
+var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location, $uibModal) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO DIGITAL';
 
@@ -67,6 +67,39 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				else
 					mensagem.error("Ocorreu um erro obter dados do processo.");
 			});
+	};
+
+
+	listagemProcessoManejo.indeferir = function(processo) {
+
+		// var modalInstance = $uibModal.open({
+		// 	controller: 'modalObservacaoController',
+		// 	controllerAs: 'modalCtrl',
+		// 	backdrop: 'static',
+		// 	keyboard: false,
+		// 	templateUrl: './features/analiseManejo/analiseTecnica/modal-observacao.html'
+		// });
+		//
+		// modalInstance.result.then(function (observacao) {
+		//
+		// 	observacao.analiseTecnicaManejo = { id: analiseTecnicaManejo.analiseTecnica.id };
+		// 	observacao.passoAnalise = analiseTecnicaManejo.passoAtual[0];
+		//
+		// 	observacaoService.save(observacao).then(function (response) {
+		//
+		// 		analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].push(response.data);
+		//
+		// 	})
+		// 		.catch(function (response) {
+		//
+		// 			if (!!response.data.texto)
+		// 				mensagem.warning(response.data.texto);
+		//
+		// 			else
+		// 				mensagem.error("Ocorreu um erro ao salvar a observacao.");
+		// 		});
+		// });
+
 	};
 
 
