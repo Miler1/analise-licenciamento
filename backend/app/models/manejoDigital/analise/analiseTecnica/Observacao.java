@@ -1,5 +1,6 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
+import models.manejoDigital.PassoAnaliseManejo;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
