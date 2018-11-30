@@ -15,7 +15,7 @@ CREATE TABLE analise.documento_manejo_shape (
  CONSTRAINT fk_dms_analise_manejo FOREIGN KEY (id_analise_tecnica_manejo) REFERENCES analise.analise_manejo (id)
 );
 
-COMMENT ON TABLE analise.documento_manejo_shape IS 'Entidade responsável por armazenas os documentos shape do manejo.';
+COMMENT ON TABLE analise.documento_manejo_shape IS 'Entidade responsável por armazenar os documentos shape do manejo.';
 COMMENT ON COLUMN analise.documento_manejo_shape.id_documento IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.documento_manejo_shape.geojson_arcgis IS 'Geojson arcgis do arquivo shapefile.';
 COMMENT ON COLUMN analise.documento_manejo_shape.id_analise_tecnica_manejo IS 'Identificador da entidade analise_tecnica_manejo que faz o relacionamento entre a análise do manejo e documento shape do manejo.';
@@ -73,7 +73,7 @@ CREATE TABLE analise.analista_tecnico_manejo (
  CONSTRAINT fk_antm_usuario FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario(id)
 );
 
-COMMENT ON TABLE analise.analista_tecnico_manejo IS 'Entidade responsável por armazenas os analistas técnicos do manejo.';
+COMMENT ON TABLE analise.analista_tecnico_manejo IS 'Entidade responsável por armazenar os analistas técnicos do manejo.';
 COMMENT ON COLUMN analise.analista_tecnico_manejo.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.analista_tecnico_manejo.data_vinculacao IS 'Data da vinculação do analista a análise.';
 COMMENT ON COLUMN analise.analista_tecnico_manejo.id_analise_tecnica_manejo IS 'Identificador da entidade analise_tecnica_manejo que faz o relacionamento entre a análise do manejo e o analista técnico.';
