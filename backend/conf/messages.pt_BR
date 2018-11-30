@@ -123,6 +123,9 @@ ANEXO_SALVO_SUCESSO=Anexo salvo com sucesso.
 ANALISE_FINALIZADA_SUCESSO=Análise finalizada com sucesso.
 ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO=Erro ao criar documento da análise técnica do manejo.
 ANALISE_SHAPE_INICIADA_COM_SUCESSO=Análise shape iniciada com sucesso.
+DOCUMENTO_IMOVEL_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO=Não é possível fazer o upload de mais de dois documentos do imóvel.
+DOCUMENTO_SHAPE_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO=Não é possível fazer o upload de mais de três documentos do imóvel.
+DOCUMENTO_SHAPE_MANEJO_DOCUMENTOS_OBRIGATORIOS=É obrigatório enviar pelo menos um arquivo da área de manejo florestal solicitada - AMF (hectares) e um arquivo da área de preservação permanente - APP.
 
 #
 # Processo Manejo

@@ -449,4 +449,24 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .setParameter("x", this.id)
                 .fetch();
     }
+
+    public boolean isDocumentosShapeValidos() {
+
+        boolean hasAMF = false;
+        boolean hasAPP = false;
+
+        for (DocumentoShape documento : this.documentosShape) {
+
+            if (documento.tipo.id.equals(TipoDocumento.AREA_DE_MANEJO_FLORESTAL_SOLICITADA)) {
+
+                hasAMF = true;
+
+            } else if (documento.tipo.id.equals(TipoDocumento.AREA_DE_PRESERVACAO_PERMANENTE)) {
+
+                hasAPP = true;
+            }
+        }
+
+        return  hasAMF && hasAPP;
+    }
 }
