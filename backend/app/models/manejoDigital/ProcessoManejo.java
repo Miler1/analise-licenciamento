@@ -367,6 +367,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         }
 
         this.justificativaIndeferimento = processoManejo.justificativaIndeferimento;
+        this.revisaoSolicitada = false;
 
         tramitacao.tramitar(this, AcaoTramitacao.INDEFERIR_PROCESSO_MANEJO, usuario);
 
