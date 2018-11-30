@@ -491,6 +491,7 @@ html(lang='en')
 			strong Anexos
 		| \#{list caminhosArquivosComplementares, as:'caminhoArquivo'}
 		div
-			img(src='${caminhoArquivo}')
+			center
+				img(src='${caminhoArquivo}', width="600")
 		| \#{/list}
 		| \#{/if}
