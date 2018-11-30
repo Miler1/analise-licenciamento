@@ -74,7 +74,6 @@ public class ProcessosManejo extends InternalController {
 		ProcessoManejo processoManejoSalvo = ProcessoManejo.find("numeroProcesso", processoManejo.numeroProcesso).first();
 
 		notFoundIfNull(processoManejoSalvo);
-		notFoundIfNull(processoManejoSalvo.getAnaliseTecnica());
 
 		Documento pdfAnalise = processoManejoSalvo.getAnaliseTecnica().gerarPDFAnalise();
 
