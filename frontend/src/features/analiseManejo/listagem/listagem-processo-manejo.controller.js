@@ -1,4 +1,4 @@
-var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location) {
+var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location, $uibModal) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO DIGITAL';
 
@@ -67,6 +67,41 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				else
 					mensagem.error("Ocorreu um erro obter dados do processo.");
 			});
+	};
+
+
+	listagemProcessoManejo.indeferir = function(processo) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'modalIndeferirController',
+			controllerAs: 'modalCtrl',
+			backdrop: 'static',
+			keyboard: false,
+			templateUrl: './features/analiseManejo/analiseTecnica/modal-indeferir.html'
+		});
+
+		modalInstance.result.then(function (dados) {
+
+			if (dados && dados.justificativaIndeferimento) {
+
+				processo.justificativaIndeferimento = dados.justificativaIndeferimento;
+
+				processoManejoService.indeferir(processo).then(function (response) {
+
+					mensagem.success(response.data.texto);
+					onPaginaAlterada();
+				})
+				.catch(function (response) {
+
+					if (response.data.texto)
+						mensagem.warning(response.data.texto);
+
+					else
+						mensagem.error("Ocorreu um erro ao salvar a observacao.");
+				});
+			}
+
+		});
 	};
 
 

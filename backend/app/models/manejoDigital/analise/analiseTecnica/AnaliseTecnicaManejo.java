@@ -1,7 +1,11 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import models.Documento;
 import models.TipoDocumento;
+import models.manejoDigital.DocumentoManejo;
+import models.manejoDigital.DocumentoShape;
+import models.manejoDigital.PassoAnaliseManejo;
+import models.manejoDigital.ProcessoManejo;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
@@ -356,19 +360,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public void finalizar() {
 
-        Random random = new Random();
-
-        // Simulação do resultado da análise feita pela Vega
-        if (random.nextBoolean()) {
-
-            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_MANEJO, this.analistaTecnico.usuario);
-            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
-
-        } else {
-
-            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_MANEJO, this.analistaTecnico.usuario);
-            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
-        }
+        this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_PROCESSO_MANEJO, this.analistaTecnico.usuario);
+        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
     }
 
     public Documento gerarPDFAnalise() throws Exception {

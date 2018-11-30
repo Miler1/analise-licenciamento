@@ -32,11 +32,11 @@
 					span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.atividadeManejo.nome}}
 
 			.col-xs-12.col-md-6
-				div.row.margin-bottom-md
+				div.row
 					label.col-sm-4 Licença:
 					span.col-sm-8 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.tipoLicenca.nome}}
 
-			.col-xs-12
+			.col-xs-12.margin-top-md
 				h5.margin-bottom-sm Dados do imóvel
 
 			.col-xs-12
@@ -68,6 +68,16 @@
 				div.row
 					label.col-sm-4.col-md-2  Descrição de acesso:
 					span.col-sm-8.col-md-10 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.empreendimento.imovel.descricaoAcesso}}
+
+
+			div(ng-if="modalVisualizacaoProcessoManejoCtrl.dadosProcesso.justificativaIndeferimento")
+				.col-xs-12.margin-top-md
+					h5.margin-bottom-sm Processo indeferido
+
+				.col-xs-12
+					div.row
+						label.col-sm-4.col-md-2  Justificativa:
+						span.col-sm-8.col-md-10 {{modalVisualizacaoProcessoManejoCtrl.dadosProcesso.justificativaIndeferimento}}
 
 	div.modal-footer#footer-modal
 

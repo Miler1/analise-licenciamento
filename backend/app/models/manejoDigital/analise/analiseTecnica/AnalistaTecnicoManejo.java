@@ -1,6 +1,5 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
-import models.AnaliseTecnica;
 import models.portalSeguranca.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;

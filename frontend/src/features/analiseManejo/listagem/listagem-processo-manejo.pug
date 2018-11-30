@@ -18,9 +18,10 @@ div(style="margin-top: 30px;")
 	.row(style="margin-top: 60px;")
 		.col-md-12
 			div(ng-if="listagemProcessoManejo.processosManejo && listagemProcessoManejo.processosManejo.length > 0").table-responsive
-				table.table.table-striped.table-condensed.no-margin
+				table.table.table-striped.no-margin
 					thead
 						tr
+							th
 							th.col-md-2 Status
 							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
@@ -30,6 +31,8 @@ div(style="margin-top: 30px;")
 							th.col-md-1.text-right(ng-if="listagemProcessoManejo.permissaoAnalisar || listagemProcessoManejo.permissaoVisualizar") Ações
 					tbody
 						tr(ng-repeat="processoManejo in listagemProcessoManejo.processosManejo")
+							td
+								span(ng-class="{'icone-revisao-solicitada': processoManejo.revisaoSolicitada}")
 							td {{listagemProcessoManejo.status[processoManejo.idCondicao]}}
 							td {{processoManejo.numeroProcesso}}
 							td {{processoManejo.cpfCnpjEmpreendimento | brCpfCnpj}}
@@ -46,16 +49,16 @@ div(style="margin-top: 30px;")
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 												a(ng-click="listagemProcessoManejo.iniciarAnaliseShape(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 22")
-													i.glyphicon.glyphicon-check
+													i.glyphicon.glyphicon-share-alt
 													span Solicitar analise Shape
 											li
 												a(ng-click="listagemProcessoManejo.iniciarAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 17")
 													i.glyphicon.glyphicon-check
-													span Solicitar analise técnica
+													span Iniciar analise técnica
 											li
 												a(ng-click="listagemProcessoManejo.continuarAnalise(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 18")
-													i.glyphicon.glyphicon-check
-													span Continuar análise
+													i.glyphicon.glyphicon-arrow-right
+													span Continuar análise técnica
 											li
 												a(ng-click="listagemProcessoManejo.visualizarProcesso(processoManejo)", ng-if="listagemProcessoManejo.permissaoVisualizar")
 													i.glyphicon.glyphicon-eye-open
@@ -64,6 +67,13 @@ div(style="margin-top: 30px;")
 												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 19")
 													i.glyphicon.glyphicon-save-file
 													span Gerar PDF
+											li
+												a(ng-click="listagemProcessoManejo.indeferir(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 22 && processoManejo.revisaoSolicitada")
+													i.glyphicon.glyphicon-remove
+													span Indeferir processo
+
+				div.margin-top-xs
+					span.icone-revisao-solicitada.legenda Revisão Solicitada
 
 				+paginacao('listagemProcessoManejo.paginacao', 'listagemProcessoManejo.onPaginaAlterada')
 

@@ -1,6 +1,4 @@
-package models.analiseShape;
-
-import models.analiseShape.AtributosAddLayer;
+package models.manejoDigital.analise.analiseShape;
 
 public class GeometriaArcgis {
 

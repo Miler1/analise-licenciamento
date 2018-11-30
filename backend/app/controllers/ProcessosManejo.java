@@ -74,7 +74,6 @@ public class ProcessosManejo extends InternalController {
 		ProcessoManejo processoManejoSalvo = ProcessoManejo.find("numeroProcesso", processoManejo.numeroProcesso).first();
 
 		notFoundIfNull(processoManejoSalvo);
-		notFoundIfNull(processoManejoSalvo.getAnaliseTecnica());
 
 		Documento pdfAnalise = processoManejoSalvo.getAnaliseTecnica().gerarPDFAnalise();
 
@@ -123,5 +122,17 @@ public class ProcessosManejo extends InternalController {
 		renderJSON(ProcessoManejo.findByNumeroProcesso(numeroProcesso));
 	}
 
+	public static void indeferir(ProcessoManejo processoManejo) {
 
+		notFoundIfNull(processoManejo);
+		notFoundIfNull(processoManejo.id);
+
+		ProcessoManejo processoSalvo = ProcessoManejo.findById(processoManejo.id);
+
+		notFoundIfNull(processoSalvo);
+
+		processoSalvo.indeferir(processoManejo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first());
+
+		renderMensagem(Mensagem.PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO);
+	}
 }

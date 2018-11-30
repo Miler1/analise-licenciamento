@@ -129,8 +129,10 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	}		
 	
 	public LicencaEmitidaBuilder groupByIdLicenca(){
-		
-		addProjection(Projections.groupProperty("id").as("idLicenca"));
+
+		addLicencaAlias();
+
+		addProjection(Projections.groupProperty(LICENCA_ALIAS+".id").as("idLicenca"));
 		
 		return this;
 	}	

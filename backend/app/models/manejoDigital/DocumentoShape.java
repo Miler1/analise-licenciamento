@@ -1,6 +1,7 @@
 package models.manejoDigital;
 
 import models.Documento;
+import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
 import play.data.validation.Required;
 
 import javax.persistence.Column;

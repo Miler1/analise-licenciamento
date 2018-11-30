@@ -1,7 +1,7 @@
 package controllers;
 
+import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
 import exceptions.ValidacaoException;
-import models.manejoDigital.AnaliseTecnicaManejo;
 import models.manejoDigital.DocumentoManejo;
 import org.apache.tika.Tika;
 import play.data.Upload;
