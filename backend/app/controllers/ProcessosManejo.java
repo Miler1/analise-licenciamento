@@ -122,5 +122,17 @@ public class ProcessosManejo extends InternalController {
 		renderJSON(ProcessoManejo.findByNumeroProcesso(numeroProcesso));
 	}
 
+	public static void indeferir(ProcessoManejo processoManejo) {
 
+		notFoundIfNull(processoManejo);
+		notFoundIfNull(processoManejo.id);
+
+		ProcessoManejo processoSalvo = ProcessoManejo.findById(processoManejo.id);
+
+		notFoundIfNull(processoSalvo);
+
+		processoSalvo.indeferir(processoManejo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first());
+
+		renderMensagem(Mensagem.PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO);
+	}
 }
