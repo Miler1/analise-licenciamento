@@ -2,24 +2,24 @@ include ../../../layout/components/inputErrors
 
 div.modal-header
 
-//	button.close(type='button', ng-click="modalCtrl.cancelar()")
-//		span(aria-hidden='true') ×
-//		span.sr-only Fechar
-//
-//	h4.modal-title Observação
-//
-//div.modal-body
-//
-//	form(name="modalCtrl.formObservacao", novalidate)
-//		.form-group
-//			textarea.form-control(name='texto', rows='6', ng-model="modalCtrl.texto", required)
-//			+inputErrors('modalCtrl.formObservacao', 'texto', 'required')
-//
-//div.modal-footer#footer-modal
-//
-//	button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()")
-//		i.glyphicon.glyphicon-remove
-//		| &nbsp;Cancelar
-//	button.btn.btn-success.pull-right(ng-click="modalCtrl.adicionar()")
-//		i.glyphicon.glyphicon-plus
-//		| &nbsp;Adicionar
+	button.close(type='button', ng-click="modalCtrl.cancelar()")
+		span(aria-hidden='true') ×
+		span.sr-only Fechar
+
+	h4.modal-title Justificativa
+
+div.modal-body
+
+	form(name="modalCtrl.formJustificativa", novalidate)
+		.form-group
+			textarea.form-control(name='texto', rows='6', ng-model="modalCtrl.texto", required)
+			+inputErrors('modalCtrl.formJustificativa', 'texto', 'required')
+
+div.modal-footer#footer-modal
+
+	button.btn.btn-default.pull-left(ng-click="modalCtrl.cancelar()")
+		i.glyphicon.glyphicon-remove
+		| &nbsp;Cancelar
+	button.btn.btn-success.pull-right(ng-click="modalCtrl.adicionar()")
+		i.glyphicon.glyphicon-ok
+		| &nbsp;Salvar

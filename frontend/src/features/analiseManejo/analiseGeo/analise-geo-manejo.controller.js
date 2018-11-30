@@ -96,7 +96,6 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 				arquivoShape.key = response.data;
 				arquivoShape.nome = file.name;
 				arquivoShape.geoJsonArcgis = JSON.stringify(geoJsonArcgis);
-				$scope.$apply();
 			})
 			.catch(function(response){
 
