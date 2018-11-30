@@ -23,6 +23,7 @@ public class TipoDocumento extends Model {
 	public static Long AREA_DE_PRESERVACAO_PERMANENTE = 9l;
 	public static Long AREA_SEM_POTENCIAL = 10l;
 	public static Long DOCUMENTO_IMOVEL_MANEJO = 11l;
+	public static Long DOCUMENTO_COMPLEMENTAR_MANEJO = 12l;
 
 	@Required
 	public String nome;

@@ -172,10 +172,11 @@ POST    /upload/shape                               DocumentosShape.upload
 GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
 
-# Documentos imóvel manejo
-POST    /upload/{idAnaliseTecnica}/imovel/manejo    DocumentosImovelManejo.upload
-GET     /download/imovel/manejo/{id}                DocumentosImovelManejo.download
-DELETE  /delete/imovel/manejo/{id}                  DocumentosImovelManejo.delete
+# Documentos manejo
+POST    /upload/{idAnaliseTecnica}/imovel/manejo    DocumentosManejo.uploadFileImovel
+POST    /upload/{idAnaliseTecnica}/complementar     DocumentosManejo.uploadFileComplementar
+GET     /download/manejo/{id}                       DocumentosManejo.download
+DELETE  /delete/manejo/{id}                         DocumentosManejo.delete
 
 # Estáticos
 GET     /public/									staticDir:public

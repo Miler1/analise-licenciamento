@@ -26,25 +26,27 @@ div
 
 		ul.nav.nav-tabs(role="tablist")
 			li.abas.active(role="presentation")
-				a.link(id="id-dados-imovel", data-toggle="tab", data-target="#dados-imovel", ng-click="analiseTecnicaManejo.changeTab(0)") Imóvel
+				a(id="id-dados-imovel", data-toggle="tab", data-target="#dados-imovel", ng-click="analiseTecnicaManejo.changeTab(0)") Imóvel
 			li.abas(role="tab")
-				a.link(id="id-metodos-base-vetorial", data-toggle="tab", data-target="#metodos-base-vetorial", ng-click="analiseTecnicaManejo.changeTab(1)") Metadados
+				a(id="id-metodos-base-vetorial", data-toggle="tab", data-target="#metodos-base-vetorial", ng-click="analiseTecnicaManejo.changeTab(1)") Metadados
 			li.abas(role="tab")
-				a.link(id="id-analise-vetorial-base-oficiais", data-toggle="tab", data-target="#analise-vetorial-base-oficiais", ng-click="analiseTecnicaManejo.changeTab(2)") Análise Vetorial
+				a(id="id-analise-vetorial-base-oficiais", data-toggle="tab", data-target="#analise-vetorial-base-oficiais", ng-click="analiseTecnicaManejo.changeTab(2)") Análise Vetorial
 			li.abas(role="tab")
-				a.link(id="id-analise-temporal-imagens-satelite", data-toggle="tab", data-target="#analise-temporal-imagens-satelite", ng-click="analiseTecnicaManejo.changeTab(3)") Análise Temporal
+				a(id="id-analise-temporal-imagens-satelite", data-toggle="tab", data-target="#analise-temporal-imagens-satelite", ng-click="analiseTecnicaManejo.changeTab(3)") Análise Temporal
 			li.abas(role="tab")
-				a.link(id="id-insumos-utilizados-analise-temporal", data-toggle="tab", data-target="#insumos-utilizados-analise-temporal", ng-click="analiseTecnicaManejo.changeTab(4)") Insumos
+				a(id="id-insumos-utilizados-analise-temporal", data-toggle="tab", data-target="#insumos-utilizados-analise-temporal", ng-click="analiseTecnicaManejo.changeTab(4)") Insumos
 			li.abas(role="tab")
-				a.link(id="id-calculo-ndfi", data-toggle="tab", data-target="#calculo-ndfi", ng-click="analiseTecnicaManejo.changeTab(5)") NDFI
+				a(id="id-calculo-ndfi", data-toggle="tab", data-target="#calculo-ndfi", ng-click="analiseTecnicaManejo.changeTab(5)") NDFI
 			li.abas(role="tab")
-				a.link(id="id-calculo-area-efetiva-manejo", data-toggle="tab", data-target="#calculo-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(6)") Área Efetiva
+				a(id="id-calculo-area-efetiva-manejo", data-toggle="tab", data-target="#calculo-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(6)") Área Efetiva
 			li.abas(role="tab")
-				a.link(id="id-detalhamento-area-efetiva-manejo", data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(7)") Detalhamento NDFI
+				a(id="id-detalhamento-area-efetiva-manejo", data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(7)") Detalhamento NDFI
 			li.abas(role="tab")
-				a.link(id="id-consideracoes", data-toggle="tab", data-target="#consideracoes", ng-click="analiseTecnicaManejo.changeTab(8)") Considerações
+				a(id="id-consideracoes", data-toggle="tab", data-target="#consideracoes", ng-click="analiseTecnicaManejo.changeTab(8)") Considerações
 			li.abas(role="tab")
-				a.link(id="id-conclusao", data-toggle="tab", data-target="#conclusao", ng-click="analiseTecnicaManejo.changeTab(9)") Conclusão
+				a(id="id-documentos-complementares", data-toggle="tab", data-target="#documentos-complementares", ng-click="analiseTecnicaManejo.changeTab(9)") Documentos complementares
+			li.abas(role="tab")
+				a(id="id-conclusao", data-toggle="tab", data-target="#conclusao", ng-click="analiseTecnicaManejo.changeTab(10)") Conclusão
 
 		.tab-content
 
@@ -75,6 +77,9 @@ div
 			#consideracoes.tab-pane.fade
 				include consideracoes
 
+			#documentos-complementares.tab-pane.fade
+				include documentos-complementares
+
 			#conclusao.tab-pane.fade
 				include conclusao
 
@@ -87,10 +92,10 @@ div
 			span.glyphicon.glyphicon-chevron-left.glyphicon--with-right-margin
 			| &nbsp;Voltar
 
-		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index !== 9", ng-click="analiseTecnicaManejo.proximo()", tabindex="0")
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index !== 10", ng-click="analiseTecnicaManejo.proximo()", tabindex="0")
 			| &nbsp;Próximo&nbsp;
 			span.glyphicon.glyphicon-chevron-right.glyphicon--with-left-margin
 
-		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index === 9", ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index === 10", ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
 			span.glyphicon.glyphicon-ok.glyphicon--with-right-margin()
 			| &nbsp;Confirmar parecer

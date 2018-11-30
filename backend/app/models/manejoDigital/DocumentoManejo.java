@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.util.Date;
 
 @Entity
-@Table(schema = "analise", name = "documento_imovel_manejo")
+@Table(schema = "analise", name = "documento_manejo")
 @PrimaryKeyJoinColumn(name = "id_documento", referencedColumnName = "id")
-public class DocumentoImovelManejo extends Documento {
+public class DocumentoManejo extends Documento {
 
 	@Required
 	@ManyToOne
