@@ -72,34 +72,36 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 
 	listagemProcessoManejo.indeferir = function(processo) {
 
-		// var modalInstance = $uibModal.open({
-		// 	controller: 'modalObservacaoController',
-		// 	controllerAs: 'modalCtrl',
-		// 	backdrop: 'static',
-		// 	keyboard: false,
-		// 	templateUrl: './features/analiseManejo/analiseTecnica/modal-observacao.html'
-		// });
-		//
-		// modalInstance.result.then(function (observacao) {
-		//
-		// 	observacao.analiseTecnicaManejo = { id: analiseTecnicaManejo.analiseTecnica.id };
-		// 	observacao.passoAnalise = analiseTecnicaManejo.passoAtual[0];
-		//
-		// 	observacaoService.save(observacao).then(function (response) {
-		//
-		// 		analiseTecnicaManejo.analiseTecnica[analiseTecnicaManejo.passoAtual[1]].push(response.data);
-		//
-		// 	})
-		// 		.catch(function (response) {
-		//
-		// 			if (!!response.data.texto)
-		// 				mensagem.warning(response.data.texto);
-		//
-		// 			else
-		// 				mensagem.error("Ocorreu um erro ao salvar a observacao.");
-		// 		});
-		// });
+		var modalInstance = $uibModal.open({
+			controller: 'modalIndeferirController',
+			controllerAs: 'modalCtrl',
+			backdrop: 'static',
+			keyboard: false,
+			templateUrl: './features/analiseManejo/analiseTecnica/modal-indeferir.html'
+		});
 
+		modalInstance.result.then(function (dados) {
+
+			if (dados && dados.justificativaIndeferimento) {
+
+				processo.justificativaIndeferimento = dados.justificativaIndeferimento;
+
+				processoManejoService.indeferir(processo).then(function (response) {
+
+					mensagem.success(response.data.texto);
+					onPaginaAlterada();
+				})
+				.catch(function (response) {
+
+					if (response.data.texto)
+						mensagem.warning(response.data.texto);
+
+					else
+						mensagem.error("Ocorreu um erro ao salvar a observacao.");
+				});
+			}
+
+		});
 	};
 
 
