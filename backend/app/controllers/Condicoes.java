@@ -24,6 +24,6 @@ public class Condicoes extends InternalController {
 
 		List<Condicao> condicoes = Condicao.find("idEtapa", Configuracoes.TRAMITACAO_ETAPA_MANEJO).fetch();
 
-		renderJSON(condicoes, CondicaoSerializer.list);
+		renderJSON(condicoes, CondicaoSerializer.listManejo);
 	}
 }
