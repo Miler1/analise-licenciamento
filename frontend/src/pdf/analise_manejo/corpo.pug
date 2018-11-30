@@ -1,11 +1,11 @@
 doctype html
 | %{
-| processoManejo = analiseManejo.processoManejo;
-| imovelManejo = analiseManejo.processoManejo.empreendimento.imovel;
-| basesVetoriais = analiseManejo.basesVetorial;
-| analisesVetoriais = analiseManejo.analisesVetorial;
-| analisesNdfi = analiseManejo.analisesNdfi;
-| vinculosInsumos = analiseManejo.vinculoInsumos;
+| processoManejo = analiseTecnicaManejo.processoManejo;
+| imovelManejo = analiseTecnicaManejo.processoManejo.empreendimento.imovel;
+| basesVetoriais = analiseTecnicaManejo.basesVetorial;
+| analisesVetoriais = analiseTecnicaManejo.analisesVetorial;
+| analisesNdfi = analiseTecnicaManejo.analisesNdfi;
+| vinculosInsumos = analiseTecnicaManejo.vinculoInsumos;
 | }%
 
 html(lang='en')
@@ -76,41 +76,41 @@ html(lang='en')
 					td(colspan="2")
 						strong Área total do imóvel documental
 					td.coluna-valor(colspan="10")
-						| ${imovelManejo.areaTotalImovelDocumentado ? imovelManejo.areaTotalImovelDocumentado : "-"}
+						| ${ imovelManejo.areaTotalImovelDocumentado ? new java.text.DecimalFormat("##########.##").format(imovelManejo.areaTotalImovelDocumentado) : "-"}
 				tr
 					td(colspan="2")
 						strong Área líquida do imóvel
 					td.coluna-valor(colspan="10")
-						| ${imovelManejo.areaLiquidaImovel ? imovelManejo.areaLiquidaImovel : "-"}
+						| ${imovelManejo.areaLiquidaImovel ? new java.text.DecimalFormat("##########.##").format(imovelManejo.areaLiquidaImovel) : "-"}
 				tr
 					td(colspan="2")
 						strong Reserva legal - RL
 					td.coluna-valor(colspan="10")
-						| ${imovelManejo.areaReservaLegal ? imovelManejo.areaReservaLegal : "-"}
+						| ${imovelManejo.areaReservaLegal ? new java.text.DecimalFormat("##########.##").format(imovelManejo.areaReservaLegal) : "-"}
 				tr
 					td(colspan="2")
 						strong Área de preservação permanente - APP
 					td.coluna-valor(colspan="10")
-						| ${imovelManejo.areaPreservacaoPermanente ? imovelManejo.areaPreservacaoPermanente : "-"}
+						| ${imovelManejo.areaPreservacaoPermanente ? new java.text.DecimalFormat("##########.##").format(imovelManejo.areaPreservacaoPermanente) : "-"}
 				tr
 					td(colspan="2")
 						strong Remanescente de vegetação nativa
 					td.coluna-valor(colspan="10")
-						| ${imovelManejo.areaRemanescenteVegetacaoNativa ? imovelManejo.areaRemanescenteVegetacaoNativa : "-"}
+						| ${imovelManejo.areaRemanescenteVegetacaoNativa ? new java.text.DecimalFormat("##########.##").format(imovelManejo.areaRemanescenteVegetacaoNativa) : "-"}
 				tr
 					td(colspan="2")
 						strong Corpos d'água
 					td.coluna-valor(colspan="10")
-						| ${imovelManejo.areaCorposAgua ? imovelManejo.areaCorposAgua : "-"}
+						| ${imovelManejo.areaCorposAgua ? new java.text.DecimalFormat("##########.##").format(imovelManejo.areaCorposAgua) : "-"}
 				tr
 					td(colspan="2")
 						strong Área de uso consolidado
 					td.coluna-valor(colspan="10")
-						| ${imovelManejo.areaUsoConsolidado ? imovelManejo.areaUsoConsolidado : "-"}
+						| ${imovelManejo.areaUsoConsolidado ? new java.text.DecimalFormat("##########.##").format(imovelManejo.areaUsoConsolidado) : "-"}
 
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 0}
 	div
 		p
@@ -158,8 +158,8 @@ html(lang='en')
 					td ${baseVetorial.observacao ? baseVetorial.observacao : "-"}
 				| \#{/list}
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 1}
 	div
 		p
@@ -184,7 +184,6 @@ html(lang='en')
 					th.titulo-tabela(colspan="2") Vetores
 					th.titulo-tabela.coluna-dupla-divisao(colspan="2") Propriedade
 					th.titulo-tabela.coluna-dupla-divisao(colspan="2") AMF
-					th.titulo-tabela.coluna-dupla.coluna-dupla-divisao(rowspan="2") Observação
 				tr(style="page-break-before: avoid;")
 					th.titulo-tabela Tipo
 					th.titulo-tabela Nome
@@ -202,12 +201,11 @@ html(lang='en')
 					td ${ analiseVetorial.sobreposicaoPropriedade ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.sobreposicaoPropriedade) : "-"}
 					td ${ analiseVetorial.distanciaAmf ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.distanciaAmf) : "-"}
 					td ${ analiseVetorial.sobreposicaoAmf ? new java.text.DecimalFormat("##########.##").format(analiseVetorial.sobreposicaoAmf) : "-"}
-					td ${ analiseVetorial.observacao ? analiseVetorial.observacao : "-"}
 				| \#{/if}
 				| \#{/list}
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 2}
 	div
 		p
@@ -224,8 +222,8 @@ html(lang='en')
 	div.div-list
 		p Para comprovação da existência de cobertura florestal e verificação da não ocorrência de áreas com exploração florestal, foi realizada através de análise de imagens de satélite, referente aos ultimos 24 anos. Esta análise está baseada na determinação do índice Normalizado de Diferença de fração - NDFI, cujo objetivo medir as alterações na cobertura vegetal e no solo, conforme determina a IN 05 de 10/09/2015.
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 3}
 	div
 		p
@@ -254,17 +252,17 @@ html(lang='en')
 				| \#{list vinculosInsumos, as:'vinculoInsumos'}
 				| \#{if vinculoInsumos.exibirPDF}
 				tr(style="page-break-before: avoid;")
-					td ${ vinculoInsumos.ano ? vinculoInsumos.ano : "-"}
-					td ${ vinculoInsumos.satelite ? vinculoInsumos.satelite : "-"}
-					td ${ vinculoInsumos.orbPonto ? vinculoInsumos.orbPonto : "-"}
-					td ${ vinculoInsumos.data ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(vinculoInsumos.data) : "-"}
+					td ${ vinculoInsumos.insumo.ano ? vinculoInsumos.insumo.ano : "-"}
+					td ${ vinculoInsumos.insumo.satelite ? vinculoInsumos.insumo.satelite : "-"}
+					td ${ vinculoInsumos.insumo.orbPonto ? vinculoInsumos.insumo.orbPonto : "-"}
+					td ${ vinculoInsumos.insumo.data ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(vinculoInsumos.insumo.data) : "-"}
 				| \#{/if}
 				| \#{/list}
 
 
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 4}
 	div
 		p
@@ -301,13 +299,13 @@ html(lang='en')
 					td ${ analiseNdfi.orbita + '/' + analiseNdfi.ponto ? analiseNdfi.orbita : "-" }
 					td ${ analiseNdfi.satelite ? analiseNdfi.satelite : "-"}
 					td ${ analiseNdfi.nivelExploracao ? analiseNdfi.nivelExploracao : "-"}
-					td.coluna-valor ${ analiseNdfi.valor ? analiseNdfi.valor : "-"}
+					td.coluna-valor ${ analiseNdfi.valor ? new java.text.DecimalFormat("##########.##").format(analiseNdfi.area) : "-"}
 					td.coluna-valor ${ analiseNdfi.area ? new java.text.DecimalFormat("##########.##").format(analiseNdfi.area) : "-"}
 				| \#{/if}
 				| \#{/list}
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 5}
 	div
 		p
@@ -331,7 +329,7 @@ html(lang='en')
 					th.linha-destaque(colspan="5")
 						strong Área de manejo florestal solicitada - AMF (hectares)
 					th.linha-destaque
-						strong ${ analiseManejo.areaManejoFlorestalSolicitada ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaManejoFlorestalSolicitada) : "-"}
+						strong ${ analiseTecnicaManejo.areaManejoFlorestalSolicitada ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaManejoFlorestalSolicitada) : "-"}
 
 
 	div.div-centro(style="page-break-before: avoid;")
@@ -343,50 +341,50 @@ html(lang='en')
 				tr(style="page-break-before: avoid;")
 					td(colspan="5")
 						strong Área de preservação permanente - APP
-					td(colspan="1") ${ analiseManejo.areaPreservacaoPermanente ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaPreservacaoPermanente) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaPreservacaoPermanente ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaPreservacaoPermanente) : "-"}
 				tr
 					td(colspan="5")
 						strong Área de servidão
-					td(colspan="1") ${ analiseManejo.areaServidao ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaServidao) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaServidao ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaServidao) : "-"}
 				tr
 					td(colspan="5")
 						strong Área antopropizada não consolidada
-					td(colspan="1") ${ analiseManejo.areaAntropizadaNaoConsolidada ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaAntropizadaNaoConsolidada) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaAntropizadaNaoConsolidada ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaAntropizadaNaoConsolidada) : "-"}
 				tr
 					td(colspan="5")
 						strong Área consolidada
-					td(colspan="1") ${ analiseManejo.areaConsolidada ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaConsolidada) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaConsolidada ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaConsolidada) : "-"}
 				tr
 					td(colspan="5")
 						strong Uso restrito
-					td(colspan="1") ${ analiseManejo.areaUsoRestrito ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaUsoRestrito) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaUsoRestrito ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaUsoRestrito) : "-"}
 				tr
 					td(colspan="5")
 						strong Área sem potencial (Cipoalica, Rochoso e etc.)
-					td(colspan="1") ${ analiseManejo.areaSemPotencial ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaSemPotencial) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaSemPotencial ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaSemPotencial) : "-"}
 				tr
 					td(colspan="5")
 						strong Corpo d'água
-					td(colspan="1") ${ analiseManejo.areaCorposAgua ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaCorposAgua) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaCorposAgua ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaCorposAgua) : "-"}
 				tr
 					td(colspan="5")
 						strong Área embargada IBAMA
-					td(colspan="1") ${ analiseManejo.areaEmbargadaIbama ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEmbargadaIbama) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaEmbargadaIbama ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaEmbargadaIbama) : "-"}
 				tr
 					td(colspan="5")
 						strong Área embargada LDI
-					td(colspan="1") ${ analiseManejo.areaEmbargadaLdi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEmbargadaLdi) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaEmbargadaLdi ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaEmbargadaLdi) : "-"}
 				tr
 					td(colspan="5")
 						strong Exploração seletiva - NDFI (Índice Alto/Reentrada)
-					td(colspan="1") ${ analiseManejo.areaSeletivaNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaSeletivaNdfi) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaSeletivaNdfi ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaSeletivaNdfi) : "-"}
 				tr
 					td.linha-destaque(colspan="5")
 						strong Área de efetivo manejo - AMF
-					td.linha-destaque(colspan="1") ${ analiseManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEfetivoNdfi) : "-"}
+					td.linha-destaque(colspan="1") ${ analiseTecnicaManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaEfetivoNdfi) : "-"}
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 6}
 	div
 		p
@@ -413,22 +411,22 @@ html(lang='en')
 				tr(style="page-break-before: avoid;")
 					td(colspan="5")
 						strong Área com exploração NDFI (Baixo)
-					td(colspan="1") ${ analiseManejo.areaExploracaoNdfiBaixo ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaExploracaoNdfiBaixo) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaExploracaoNdfiBaixo ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaExploracaoNdfiBaixo) : "-"}
 				tr
 					td(colspan="5")
 						strong Área com exploração NDFI (Médio)
-					td(colspan="1") ${ analiseManejo.areaExploracaoNdfiMedio ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaExploracaoNdfiMedio) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaExploracaoNdfiMedio ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaExploracaoNdfiMedio) : "-"}
 				tr
 					td(colspan="5")
 						strong Área sem previa exploração
-					td(colspan="1") ${ analiseManejo.areaSemPreviaExploracao ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaSemPreviaExploracao) : "-"}
+					td(colspan="1") ${ analiseTecnicaManejo.areaSemPreviaExploracao ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaSemPreviaExploracao) : "-"}
 				tr
 					td.linha-destaque(colspan="5")
 						strong Área de efetivo manejo - AMF
-					td.linha-destaque(colspan="1") ${ analiseManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseManejo.areaEfetivoNdfi) : "-"}
+					td.linha-destaque(colspan="1") ${ analiseTecnicaManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.##").format(analiseTecnicaManejo.areaEfetivoNdfi) : "-"}
 
-	| \#{if analiseManejo.observacoes}
-	| \#{list analiseManejo.observacoes, as:'observacao'}
+	| \#{if analiseTecnicaManejo.observacoes}
+	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
 	| \#{if observacao.passoAnalise.id == 7}
 	div
 		p
