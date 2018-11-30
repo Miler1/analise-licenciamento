@@ -5,6 +5,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import deserializers.GeometriaArcgisDeserializer;
+import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
@@ -25,6 +26,7 @@ import play.db.jpa.GenericModel;
 import security.Auth;
 import security.InterfaceTramitavel;
 import utils.Configuracoes;
+import utils.Mensagem;
 import utils.WebService;
 
 import javax.persistence.*;
@@ -132,6 +134,16 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(this.getAnaliseTecnica(), usuario);
 
         this.getAnaliseTecnica()._save();
+
+        if (this.getAnaliseTecnica().documentosShape.size() > 3) {
+
+            throw new ValidacaoException(Mensagem.DOCUMENTO_SHAPE_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO);
+        }
+
+        if (!this.getAnaliseTecnica().isDocumentosShapeValidos()) {
+
+            throw new ValidacaoException(Mensagem.DOCUMENTO_SHAPE_MANEJO_DOCUMENTOS_OBRIGATORIOS);
+        }
 
         for(DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
 
