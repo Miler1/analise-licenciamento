@@ -29,7 +29,7 @@ public class DocumentosShape extends InternalController {
 
 		if(realType == null){
 			response.status = Http.StatusCode.INTERNAL_ERROR;
-			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
+			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA_SHAPE);
 		}
 
 		if(realType.contains("application/zip")) {
