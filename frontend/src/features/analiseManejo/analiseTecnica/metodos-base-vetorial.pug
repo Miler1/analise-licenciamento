@@ -8,17 +8,17 @@ div
 
 			thead
 				tr
+					th Última atualização
 					th Dados oficiais
 					th Fonte
-					th Última atualização
 					th.text-center Escala
 					th Observação
 
 			tbody
 				tr(ng-repeat="baseVetorial in analiseTecnicaManejo.analiseTecnica.basesVetorial")
+					td.col-md-2 {{baseVetorial.ultimaAtualizacao ? baseVetorial.ultimaAtualizacao : '-'}}
 					td.col-md-4 {{baseVetorial.nome ? baseVetorial.nome : '-'}}
 					td.col-md-2 {{baseVetorial.fonte ? baseVetorial.fonte : '-'}}
-					td.col-md-2 {{baseVetorial.ultimaAtualizacao ? baseVetorial.ultimaAtualizacao : '-'}}
 					td.col-md-1.text-right {{baseVetorial.escala ? baseVetorial.escala : '-'}}
 					td.col-md-3 {{baseVetorial.observacao ? baseVetorial.observacao : '-'}}
 

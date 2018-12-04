@@ -93,12 +93,15 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @OneToMany(mappedBy = "analiseTecnicaManejo")
     public List<Observacao> observacoes;
 
+    @OrderBy("dataAnalise DESC")
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseNdfi> analisesNdfi;
 
+    @OrderBy("id")
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<AnaliseVetorial> analisesVetorial;
 
+    @OrderBy("ultimaAtualizacao DESC")
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(schema = "analise", name = "rel_base_vetorial_analise_manejo",
             joinColumns = @JoinColumn(name = "id_analise_tecnica_manejo"),
