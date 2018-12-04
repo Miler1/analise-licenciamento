@@ -1,5 +1,6 @@
 package models.manejoDigital.analise.analiseTecnica;
 
+import exceptions.ValidacaoException;
 import models.Documento;
 import models.TipoDocumento;
 import models.manejoDigital.DocumentoManejo;
@@ -16,6 +17,7 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Mensagem;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -265,10 +267,20 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public DocumentoManejo saveDocumentoImovel(Upload file, Long idTipoDocumento) throws IOException {
 
+        if (this.getDocumentosImovel().size() > 1) {
+
+            throw new ValidacaoException(Mensagem.DOCUMENTO_IMOVEL_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO);
+        }
+
         DocumentoManejo documento = new DocumentoManejo();
         documento.arquivo = file.asFile();
         documento.tipo = TipoDocumento.findById(idTipoDocumento);
         documento.analiseTecnicaManejo = this;
+
+        if (this.isDocumentosImovelValido(documento)) {
+
+            throw new ValidacaoException(Mensagem.DOCUMENTO_INVALIDO);
+        }
 
         return (DocumentoManejo) documento.save();
     }
@@ -499,5 +511,18 @@ public class AnaliseTecnicaManejo extends GenericModel {
         }
 
         return documentos;
+    }
+
+    public boolean isDocumentosImovelValido(DocumentoManejo documento) {
+
+        for (DocumentoManejo documentoSalvo : this.getDocumentosImovel()) {
+
+            if (documento.tipo.id.equals(documentoSalvo.tipo.id)) {
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }

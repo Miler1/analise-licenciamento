@@ -1,7 +1,6 @@
 package controllers;
 
 import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
-import exceptions.ValidacaoException;
 import models.manejoDigital.DocumentoManejo;
 import org.apache.tika.Tika;
 import play.data.Upload;
@@ -39,11 +38,6 @@ public class DocumentosManejo extends InternalController {
 
 			AnaliseTecnicaManejo analiseTecnica = AnaliseTecnicaManejo.findById(idAnaliseTecnica);
 			notFoundIfNull(analiseTecnica);
-
-			if (analiseTecnica.getDocumentosImovel().size() > 1) {
-
-				throw new ValidacaoException(Mensagem.DOCUMENTO_IMOVEL_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO);
-			}
 
 			DocumentoManejo documento = analiseTecnica.saveDocumentoImovel(file, idTipoDocumento);
 
