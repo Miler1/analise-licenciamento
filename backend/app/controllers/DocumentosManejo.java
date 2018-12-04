@@ -33,15 +33,6 @@ public class DocumentosManejo extends InternalController {
 			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
 		}
 
-		// Verifica se a extensão do arquivo é compatível com o tipo detectado,
-		// com exceção de arquivos BMP
-		if(!realType.contains("bmp")){
-			if(!realType.contentEquals(file.getContentType())){
-				response.status = Http.StatusCode.INTERNAL_ERROR;
-				renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
-			}
-		}
-
 		if(realType.contains("application/pdf") ||
 				realType.contains("application/zip") ||
 				realType.contains("image/jpeg") ||
@@ -86,15 +77,6 @@ public class DocumentosManejo extends InternalController {
 		if(realType == null){
 			response.status = Http.StatusCode.INTERNAL_ERROR;
 			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
-		}
-
-		// Verifica se a extensão do arquivo é compatível com o tipo detectado,
-		// com exceção de arquivos BMP
-		if(!realType.contains("bmp")){
-			if(!realType.contentEquals(file.getContentType())){
-				response.status = Http.StatusCode.INTERNAL_ERROR;
-				renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
-			}
 		}
 
 		if(realType.contains("application/pdf") ||

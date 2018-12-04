@@ -289,16 +289,55 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		$location.path('/analise-manejo');
 	};
 
+	function validarDadosPdf(index) {
+
+		var passo = analiseTecnicaManejo.listaPassos[index][0];
+		var validado = false;
+		var lista = [];
+
+		switch (passo) {
+			case 'ANALISE_VETORIAL':
+				lista = analiseTecnicaManejo.analiseTecnica.analisesVetorial;
+				break;
+
+			case 'INSUMOS_UTILIZADOS':
+				lista = analiseTecnicaManejo.analiseTecnica.analisesVetorial;
+				break;
+
+			case 'CALCULO_NDFI':
+				lista = analiseTecnicaManejo.analiseTecnica.vinculoInsumos;
+				break;
+
+			default:
+				return true;
+		}
+
+		lista.forEach(function (item) {
+
+			if (item.exibirPDF) {
+				validado = true;
+			}
+		});
+
+		if (!validado) {
+
+			mensagem.warning("Ao menos um item deve estar selecionado.");
+
+		} else {
+
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, passo);
+		}
+
+		return validado;
+	}
+
 	analiseTecnicaManejo.voltar = function() {
 
-		var aux = analiseTecnicaManejo.index;
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+			return;
+		}
 
 		analiseTecnicaManejo.index -= 1;
-
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
-		}
 
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
@@ -306,14 +345,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.proximo = function() {
 
-		var aux = analiseTecnicaManejo.index;
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+			return;
+		}
 
 		analiseTecnicaManejo.index += 1;
-
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
-		}
 
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
@@ -329,14 +365,18 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.changeTab = function(index) {
 
-		var aux = analiseTecnicaManejo.index;
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+
+			if (analiseTecnicaManejo.index != index) {
+
+				// TODO Aba carrega elementos da aba que foi clicada
+				//click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
+			}
+			return;
+		}
 
 		analiseTecnicaManejo.index = index;
 
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
-		}
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[index];
 	};
 
@@ -361,13 +401,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	$rootScope.$on('$locationChangeStart', function () {
 
-		var aux = analiseTecnicaManejo.index;
-
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+			return;
 		}
-
 	});
 
 };

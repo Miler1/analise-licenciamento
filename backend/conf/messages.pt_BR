@@ -47,6 +47,7 @@ GERENTE_VINCULADO_SUCESSO=Gerente vinculado com sucesso.
 #
 UPLOAD_ERRO=Ocorreu um erro ao realizar o upload do arquivo.
 UPLOAD_EXTENSAO_NAO_SUPORTADA=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos nos seguintes formatos: .pdf, .jpg, .jpeg, .png, .bmp ou .zip
+UPLOAD_EXTENSAO_NAO_SUPORTADA_SHAPE=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos no formato .zip
 SHAPE_REMOVIDO_SUCESSO=Shape removido com sucesso;
 
 #
@@ -132,6 +133,7 @@ DOCUMENTO_SHAPE_MANEJO_DOCUMENTOS_OBRIGATORIOS=É obrigatório enviar pelo menos
 #
 PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
 PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
+PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Processo indeferido com sucesso.
 
 #
 # Observações
