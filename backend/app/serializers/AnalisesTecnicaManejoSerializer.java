@@ -108,6 +108,7 @@ public class AnalisesTecnicaManejoSerializer {
 			"processoManejo.empreendimento.imovel.areaUsoConsolidado",
 			"documentosImovel.id",
 			"documentosImovel.nome",
+			"documentosImovel.tipo.id",
 			"documentosImovel.tipo.nome",
 			"documentosComplementares.id",
 			"documentosComplementares.nome",
