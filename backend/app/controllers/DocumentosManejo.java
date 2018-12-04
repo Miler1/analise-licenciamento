@@ -30,7 +30,7 @@ public class DocumentosManejo extends InternalController {
 
 		if(realType == null){
 			response.status = Http.StatusCode.INTERNAL_ERROR;
-			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
+			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA_IMOVEL);
 		}
 
 		if(realType.contains("application/pdf") ||
