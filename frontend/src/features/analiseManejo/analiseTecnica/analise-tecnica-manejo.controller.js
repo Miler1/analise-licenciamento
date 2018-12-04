@@ -301,11 +301,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				break;
 
 			case 'INSUMOS_UTILIZADOS':
-				lista = analiseTecnicaManejo.analiseTecnica.analisesVetorial;
+				lista = analiseTecnicaManejo.analiseTecnica.vinculoInsumos;
 				break;
 
 			case 'CALCULO_NDFI':
-				lista = analiseTecnicaManejo.analiseTecnica.vinculoInsumos;
+				lista = analiseTecnicaManejo.analiseTecnica.analisesNdfi;
 				break;
 
 			default:
@@ -369,8 +369,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			if (analiseTecnicaManejo.index != index) {
 
-				// TODO Aba carrega elementos da aba que foi clicada
-				//click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
+				click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
 			}
 			return;
 		}
