@@ -390,7 +390,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
                 .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
-                .addParam("caminhosArquivosComplementares", this.getCaminhosArquivosComplementares())
+                .addParam("arquivosComplementares", this.getArquivosComplementaresImagens())
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 
         pdf.generate();
@@ -476,9 +476,9 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return  hasAMF && hasAPP;
     }
 
-    public List<String> getCaminhosArquivosComplementares() throws IOException {
+    public List<DocumentoManejo> getArquivosComplementaresImagens() throws IOException {
 
-        List<String> caminhos = new ArrayList<>();
+        List<DocumentoManejo> documentos = new ArrayList<>();
 
         Tika tika = new Tika();
 
@@ -491,10 +491,10 @@ public class AnaliseTecnicaManejo extends GenericModel {
                     realType.contains("image/png") ||
                     realType.contains("bmp")) {
 
-                caminhos.add(documento.getFile().getPath());
+                documentos.add(documento);
             }
         }
 
-        return caminhos;
+        return documentos;
     }
 }

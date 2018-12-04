@@ -106,4 +106,9 @@ public class DocumentoManejo extends Documento {
 			this.nome += "." + this.extensao;
 		}
 	}
+
+	public String getNomeSemExtensao() {
+
+		return this.nome.substring(0, this.nome.lastIndexOf('.'));
+	}
 }
