@@ -486,8 +486,14 @@ html(lang='en')
 		p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMS APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
 
 	div
-		| \#{if nomeAnexo != null}
+		| \#{if arquivosComplementares.size() > 0}
 		p
-			strong Anexo
-		p ${ nomeAnexo }
+			strong Anexos
+		| \#{list arquivosComplementares, as:'arquivo'}
+		div.nao-quebra
+			p
+				strong ${ arquivo.nomeSemExtensao }
+			center
+				img(src='${arquivo.getFile().getPath()}', width="600")
+		| \#{/list}
 		| \#{/if}

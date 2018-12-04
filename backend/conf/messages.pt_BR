@@ -47,6 +47,7 @@ GERENTE_VINCULADO_SUCESSO=Gerente vinculado com sucesso.
 #
 UPLOAD_ERRO=Ocorreu um erro ao realizar o upload do arquivo.
 UPLOAD_EXTENSAO_NAO_SUPORTADA=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos nos seguintes formatos: .pdf, .jpg, .jpeg, .png, .bmp ou .zip
+UPLOAD_EXTENSAO_NAO_SUPORTADA_SHAPE=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos no formato .zip
 SHAPE_REMOVIDO_SUCESSO=Shape removido com sucesso;
 
 #

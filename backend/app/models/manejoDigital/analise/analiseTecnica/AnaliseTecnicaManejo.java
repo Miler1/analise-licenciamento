@@ -10,6 +10,7 @@ import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.apache.tika.Tika;
 import play.data.Upload;
 import play.data.validation.Max;
 import play.data.validation.Min;
@@ -389,6 +390,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
                 .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
+                .addParam("arquivosComplementares", this.getArquivosComplementaresImagens())
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 
         pdf.generate();
@@ -472,5 +474,27 @@ public class AnaliseTecnicaManejo extends GenericModel {
         }
 
         return  hasAMF && hasAPP;
+    }
+
+    public List<DocumentoManejo> getArquivosComplementaresImagens() throws IOException {
+
+        List<DocumentoManejo> documentos = new ArrayList<>();
+
+        Tika tika = new Tika();
+
+        for (DocumentoManejo documento : this.getDocumentosComplementares()) {
+
+            String realType = tika.detect(documento.getFile());
+
+            if(realType.contains("image/jpeg") ||
+                    realType.contains("image/jpg") ||
+                    realType.contains("image/png") ||
+                    realType.contains("bmp")) {
+
+                documentos.add(documento);
+            }
+        }
+
+        return documentos;
     }
 }

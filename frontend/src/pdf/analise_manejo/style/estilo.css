@@ -90,3 +90,7 @@ body {
 
 	margin-bottom: 50px
 }
+
+.nao-quebra {
+	page-break-inside: avoid;
+}

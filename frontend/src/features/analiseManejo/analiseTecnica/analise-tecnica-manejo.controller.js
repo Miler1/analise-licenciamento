@@ -126,8 +126,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.selecionarDocumentoImovel = function (files, index) {
 
-		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip'];
-		var extensoesPermitidas = [".zip"];
+		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip', 'application/pdf'];
+		var extensoesPermitidas = [".zip", ".pdf"];
 
 		if (files) {
 
