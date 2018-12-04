@@ -21,8 +21,7 @@ import javax.persistence.*;
 import java.io.IOException;
 import java.util.*;
 
-import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
-import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;
+import static models.TipoDocumento.*;
 
 @Entity
 @Table(schema = "analise", name = "analise_tecnica_manejo")
@@ -264,11 +263,11 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-    public DocumentoManejo saveDocumentoImovel(Upload file) throws IOException {
+    public DocumentoManejo saveDocumentoImovel(Upload file, Long idTipoDocumento) throws IOException {
 
         DocumentoManejo documento = new DocumentoManejo();
         documento.arquivo = file.asFile();
-        documento.tipo = TipoDocumento.findById(DOCUMENTO_IMOVEL_MANEJO);
+        documento.tipo = TipoDocumento.findById(idTipoDocumento);
         documento.analiseTecnicaManejo = this;
 
         return (DocumentoManejo) documento.save();
@@ -438,8 +437,9 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public List<DocumentoManejo> getDocumentosImovel() {
 
-        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
-                .setParameter("x", DOCUMENTO_IMOVEL_MANEJO)
+        return DocumentoManejo.find("(tipo.id = :x OR tipo.id = :z) AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", TERMO_DELIMITACAO_AREA_RESERVA_LEGAL_APROVADA)
+                .setParameter("z", TERMO_AJUSTAMENTO_CONDUTA)
                 .setParameter("y", this.id)
                 .fetch();
     }
