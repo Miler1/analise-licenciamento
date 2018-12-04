@@ -77,7 +77,7 @@ public class ProcessosManejo extends InternalController {
 
 		Documento pdfAnalise = processoManejoSalvo.getAnaliseTecnica().gerarPDFAnalise();
 
-		String nome = pdfAnalise.tipo.nome +  "_" + processoManejoSalvo.getAnaliseTecnica().id + ".pdf";
+		String nome = pdfAnalise.tipo.prefixoNomeArquivo + "_" + processoManejoSalvo.getAnaliseTecnica().id + ".pdf";
 		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
 		response.setHeader("Content-Transfer-Encoding", "binary");
