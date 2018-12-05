@@ -83,6 +83,10 @@ public class Configuracoes {
 	public static String ANALISE_SHAPE_QUERY_AMF_MANEJO_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.amf.manejo.url", null);
 	public static String ANALISE_SHAPE_QUERY_AMF_METADADOS_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.query.amf.metadados.url", null);
 
+	public static String MANEJO_NIVEL_EXPLORACAO_ALTO = getConfig("manejo.nivel.exploracao.alto", null);
+	public static String MANEJO_NIVEL_EXPLORACAO_MEDIO = getConfig("manejo.nivel.exploracao.medio", null);
+	public static String MANEJO_NIVEL_EXPLORACAO_BAIXO = getConfig("manejo.nivel.exploracao.baixo", null);
+
 	static {
 
 		try {
