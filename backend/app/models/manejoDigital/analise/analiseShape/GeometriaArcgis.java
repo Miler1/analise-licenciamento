@@ -3,5 +3,5 @@ package models.manejoDigital.analise.analiseShape;
 public class GeometriaArcgis {
 
 	public AtributosAddLayer attributes;
-	public String geometry;
+	public GeometryArcgis geometry;
 }

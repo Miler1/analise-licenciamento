@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static models.TipoDocumento.*;
+
 @Entity
 @Table(schema = "analise", name = "processo_manejo")
 public class ProcessoManejo extends GenericModel implements InterfaceTramitavel {
@@ -155,8 +157,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             documento.save();
         }
 
-        //TODO Integração com o serviço VEGA
-        //this.enviarProcessoAnaliseShape();
+        this.enviarProcessoAnaliseShape();
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
         Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
@@ -233,14 +234,28 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .registerTypeAdapter(GeometriaArcgis.class, new GeometriaArcgisDeserializer())
                 .create();
 
-        // TODO Alterar envio de features para refletir os diferentes tipos de documento shape. É NECESSÁRIO QUE O SERVIÇO DE INTEGRAÇÃO DA VEGA SEJA ALTERADO.
+        List<GeometriaArcgis> featuresProcesso = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DE_MANEJO_FLORESTAL_SOLICITADA), gson);
+        List<GeometriaArcgis> featuresPropriedade = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DE_PRESERVACAO_PERMANENTE), gson);
+        List<GeometriaArcgis> featuresAreaSemPotencial = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_SEM_POTENCIAL), gson);
+
+        this.getAnaliseTecnica().objectId = this.enviarFeatures(featuresProcesso, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL, gson);
+        this.enviarFeatures(featuresPropriedade, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL, gson);
+        this.enviarFeatures(featuresAreaSemPotencial, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_AREA_SEM_POTENCIAL_URL, gson);
+
+        this._save();
+    }
+
+    private List<GeometriaArcgis> montarGeometrias(DocumentoShape documento, Gson gson) {
+
+        if (documento == null) {
+
+            return new ArrayList<>();
+        }
+
         List<GeometriaArcgis> features = new ArrayList<>();
         Type listType = new TypeToken<ArrayList<GeometriaArcgis>>(){}.getType();
 
-        for (DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
-
-           features.addAll((ArrayList<GeometriaArcgis>) gson.fromJson(documento.geoJsonArcgis, listType));
-        }
+        features.addAll((ArrayList<GeometriaArcgis>) gson.fromJson(documento.geoJsonArcgis, listType));
 
         for (GeometriaArcgis feature : features) {
 
@@ -248,14 +263,37 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                     this.empreendimento.imovel.nome, 0, this.getAnaliseTecnica().analistaTecnico.usuario.nome);
         }
 
+        return features;
+    }
+
+    private DocumentoShape getDocumentoManejoByTipo(Long idTipo) {
+
+        for (DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
+
+            if (documento.tipo.id.equals(idTipo)) {
+
+                return documento;
+            }
+        }
+
+        return null;
+    }
+
+    private String enviarFeatures(List<GeometriaArcgis> features, String rota, Gson gson) {
+
+        if (features.size() == 0) {
+
+            return null;
+        }
+
         WebService webService = new WebService();
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put("features", gson.toJson(features));
+        params.put("features", gson.toJson(features).replace("rings\":\"", "rings\":").replace("]\",\"s", "],\"s"));
         params.put("f", "json");
 
-        ResponseAddLayer response = webService.post(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, params, ResponseAddLayer.class);
+        ResponseAddLayer response = webService.post(rota, params, ResponseAddLayer.class);
 
         if (response.error != null) {
 
@@ -263,10 +301,8 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         } else {
 
-            this.getAnaliseTecnica().objectId = response.addResults.get(response.addResults.size() - 1).objectId;
+            return response.addResults.get(response.addResults.size() - 1).objectId;
         }
-
-        this._save();
     }
 
     public void verificarAnaliseShape() {
