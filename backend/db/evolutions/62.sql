@@ -8,7 +8,7 @@ INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquiv
 
 --- Alterar tipo de documento do manejo
 
-UPDATE analise.tipo_documento SET nome = 'Área da propriedade - APM', prefixo_nome_arquivo = 'apm' WHERE id = 9
+UPDATE analise.tipo_documento SET nome = 'Área da propriedade - APM', prefixo_nome_arquivo = 'apm' WHERE id = 9;
 
 --- Adicionar campo de exibir pdf na análise vetorial
 
