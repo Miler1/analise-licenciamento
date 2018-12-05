@@ -8,6 +8,7 @@ div
 
 			thead
 				tr
+					th.text-center Exibir no PDF
 					th Última atualização
 					th Dados oficiais
 					th Fonte
@@ -16,6 +17,8 @@ div
 
 			tbody
 				tr(ng-repeat="baseVetorial in analiseTecnicaManejo.analiseTecnica.basesVetorial")
+					td.col-md-1.text-center.checkbox-center
+						input(type='checkbox', placeholder='', ng-model='baseVetorial.exibirPDF')
 					td.col-md-2 {{baseVetorial.ultimaAtualizacao ? baseVetorial.ultimaAtualizacao : '-'}}
 					td.col-md-4 {{baseVetorial.nome ? baseVetorial.nome : '-'}}
 					td.col-md-2 {{baseVetorial.fonte ? baseVetorial.fonte : '-'}}

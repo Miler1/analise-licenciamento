@@ -325,6 +325,10 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				lista = analiseTecnicaManejo.analiseTecnica.analisesNdfi;
 				break;
 
+			case 'BASE_VETORIAL':
+				lista = analiseTecnicaManejo.analiseTecnica.basesVetorial;
+				break;
+
 			default:
 				return true;
 		}
