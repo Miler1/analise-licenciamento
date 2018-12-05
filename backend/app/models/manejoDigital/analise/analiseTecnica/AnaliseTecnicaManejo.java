@@ -277,7 +277,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
         documento.tipo = TipoDocumento.findById(idTipoDocumento);
         documento.analiseTecnicaManejo = this;
 
-        if (this.isDocumentosImovelValido(documento)) {
+        if (!this.isDocumentosImovelValido(documento)) {
 
             throw new ValidacaoException(Mensagem.DOCUMENTO_INVALIDO);
         }
