@@ -39,6 +39,9 @@ public class BaseVetorial extends GenericModel {
     @Column(name="observacao")
     public String observacao;
 
+    @Column(name = "exibir_pdf")
+    public boolean exibirPDF;
+
     public static List<BaseVetorial> gerarBaseVetorial(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();
@@ -59,6 +62,8 @@ public class BaseVetorial extends GenericModel {
             baseVetorial.escala = UUID.randomUUID().toString().replace('-', ' ');
 
             baseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
+
+            baseVetorial.exibirPDF = true;
 
             lista.add(baseVetorial);
         }

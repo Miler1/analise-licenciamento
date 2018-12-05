@@ -164,10 +164,31 @@ public class AnaliseTecnicaManejo extends GenericModel {
 				this.updateExibirPdfInsumos(novaAnalise.vinculoInsumos);
 				break;
 
+			case BASE_VETORIAL:
+
+				this.updateExibirPdfBaseVetorial(novaAnalise.basesVetorial);
+				break;
+
 		}
 		return this.refresh();
 	}
 
+	private void updateExibirPdfBaseVetorial(List<BaseVetorial> novasBasesVetorial) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (BaseVetorial novaBaseVetorial : novasBasesVetorial) {
+
+			exibirPdfMap.put(novaBaseVetorial.id, novaBaseVetorial.exibirPDF);
+		}
+
+		for (BaseVetorial baseVetorial : this.basesVetorial) {
+
+			baseVetorial.exibirPDF = exibirPdfMap.get(baseVetorial.id);
+		}
+
+		this._save();
+	}
 
 	private void updateExibirPdfCalculoNDFI(List<AnaliseNdfi> novasAnalisesNdfi) {
 
@@ -474,7 +495,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public boolean isDocumentosShapeValidos() {
 
         boolean hasAMF = false;
-        boolean hasAPP = false;
+        boolean hasAPM = false;
 
         for (DocumentoShape documento : this.documentosShape) {
 
@@ -482,13 +503,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
                 hasAMF = true;
 
-            } else if (documento.tipo.id.equals(TipoDocumento.AREA_DE_PRESERVACAO_PERMANENTE)) {
+            } else if (documento.tipo.id.equals(TipoDocumento.AREA_DA_PROPRIEDADE)) {
 
-                hasAPP = true;
+                hasAPM = true;
             }
         }
 
-        return  hasAMF && hasAPP;
+        return  hasAMF && hasAPM;
     }
 
     public List<DocumentoManejo> getArquivosComplementaresImagens() throws IOException {
