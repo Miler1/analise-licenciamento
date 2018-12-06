@@ -1,5 +1,6 @@
 package models.manejoDigital.analise.analiseTecnica;
 
+import exceptions.ValidacaoException;
 import models.Documento;
 import models.TipoDocumento;
 import models.manejoDigital.DocumentoManejo;
@@ -16,13 +17,13 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Mensagem;
 
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.*;
 
-import static models.TipoDocumento.DOCUMENTO_COMPLEMENTAR_MANEJO;
-import static models.TipoDocumento.DOCUMENTO_IMOVEL_MANEJO;
+import static models.TipoDocumento.*;
 
 @Entity
 @Table(schema = "analise", name = "analise_tecnica_manejo")
@@ -163,10 +164,31 @@ public class AnaliseTecnicaManejo extends GenericModel {
 				this.updateExibirPdfInsumos(novaAnalise.vinculoInsumos);
 				break;
 
+			case BASE_VETORIAL:
+
+				this.updateExibirPdfBaseVetorial(novaAnalise.basesVetorial);
+				break;
+
 		}
 		return this.refresh();
 	}
 
+	private void updateExibirPdfBaseVetorial(List<BaseVetorial> novasBasesVetorial) {
+
+		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+		for (BaseVetorial novaBaseVetorial : novasBasesVetorial) {
+
+			exibirPdfMap.put(novaBaseVetorial.id, novaBaseVetorial.exibirPDF);
+		}
+
+		for (BaseVetorial baseVetorial : this.basesVetorial) {
+
+			baseVetorial.exibirPDF = exibirPdfMap.get(baseVetorial.id);
+		}
+
+		this._save();
+	}
 
 	private void updateExibirPdfCalculoNDFI(List<AnaliseNdfi> novasAnalisesNdfi) {
 
@@ -264,12 +286,22 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-    public DocumentoManejo saveDocumentoImovel(Upload file) throws IOException {
+    public DocumentoManejo saveDocumentoImovel(Upload file, Long idTipoDocumento) throws IOException {
+
+        if (this.getDocumentosImovel().size() > 1) {
+
+            throw new ValidacaoException(Mensagem.DOCUMENTO_IMOVEL_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO);
+        }
 
         DocumentoManejo documento = new DocumentoManejo();
         documento.arquivo = file.asFile();
-        documento.tipo = TipoDocumento.findById(DOCUMENTO_IMOVEL_MANEJO);
+        documento.tipo = TipoDocumento.findById(idTipoDocumento);
         documento.analiseTecnicaManejo = this;
+
+        if (!this.isDocumentosImovelValido(documento)) {
+
+            throw new ValidacaoException(Mensagem.DOCUMENTO_INVALIDO);
+        }
 
         return (DocumentoManejo) documento.save();
     }
@@ -438,8 +470,9 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public List<DocumentoManejo> getDocumentosImovel() {
 
-        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
-                .setParameter("x", DOCUMENTO_IMOVEL_MANEJO)
+        return DocumentoManejo.find("(tipo.id = :x OR tipo.id = :z) AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", TERMO_DELIMITACAO_AREA_RESERVA_LEGAL_APROVADA)
+                .setParameter("z", TERMO_AJUSTAMENTO_CONDUTA)
                 .setParameter("y", this.id)
                 .fetch();
     }
@@ -462,7 +495,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public boolean isDocumentosShapeValidos() {
 
         boolean hasAMF = false;
-        boolean hasAPP = false;
+        boolean hasAPM = false;
 
         for (DocumentoShape documento : this.documentosShape) {
 
@@ -470,13 +503,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
                 hasAMF = true;
 
-            } else if (documento.tipo.id.equals(TipoDocumento.AREA_DE_PRESERVACAO_PERMANENTE)) {
+            } else if (documento.tipo.id.equals(TipoDocumento.AREA_DA_PROPRIEDADE)) {
 
-                hasAPP = true;
+                hasAPM = true;
             }
         }
 
-        return  hasAMF && hasAPP;
+        return  hasAMF && hasAPM;
     }
 
     public List<DocumentoManejo> getArquivosComplementaresImagens() throws IOException {
@@ -499,5 +532,18 @@ public class AnaliseTecnicaManejo extends GenericModel {
         }
 
         return documentos;
+    }
+
+    public boolean isDocumentosImovelValido(DocumentoManejo documento) {
+
+        for (DocumentoManejo documentoSalvo : this.getDocumentosImovel()) {
+
+            if (documento.tipo.id.equals(documentoSalvo.tipo.id)) {
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }
