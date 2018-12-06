@@ -4,7 +4,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import exceptions.AppException;
 import models.manejoDigital.analise.analiseTecnica.Insumo;
 import play.Play;
 
@@ -30,7 +29,6 @@ public class InsumoDeserializer implements JsonDeserializer<Insumo> {
 		} catch (ParseException e) {
 
 			e.printStackTrace();
-			throw new AppException();
 		}
 
 		insumo.satelite = jsonObject.get("satelite") == null ? null : jsonObject.get("satelite").getAsString();

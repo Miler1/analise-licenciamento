@@ -246,7 +246,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 		this._save();
 	}
 
-    public AnaliseTecnicaManejo gerarAnalise() {
+    public AnaliseTecnicaManejo gerarCalculoAreaEfetiva() {
 
         this.areaManejoFlorestalSolicitada = Math.random();
 
@@ -266,27 +266,9 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         this.areaEmbargadaIbama = Math.random();
 
-        this.areaEfetivoNdfi = Math.random();
-
         this.areaEmbargadaLdi = Math.random();
 
         this.areaSeletivaNdfi = Math.random();
-
-        this.areaExploracaoNdfiBaixo = Math.random();
-
-        this.areaExploracaoNdfiMedio = Math.random();
-
-        this.areaSemPreviaExploracao = Math.random();
-
-        this.analisesNdfi.addAll(AnaliseNdfi.gerarAnaliseNfid(this));
-
-        this.basesVetorial.addAll(BaseVetorial.gerarBaseVetorial(this));
-
-        this.analisesVetorial.addAll(AnaliseVetorial.gerarAnalisesVetoriais(this));
-
-        VinculoAnaliseTecnicaManejoInsumo.gerarVinculos(this);
-
-        this._save();
 
         return this.refresh();
     }

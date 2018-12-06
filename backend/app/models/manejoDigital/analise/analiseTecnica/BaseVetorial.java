@@ -31,11 +31,9 @@ public class BaseVetorial extends GenericModel {
     @Column(name="ultima_atualizacao")
     public Date ultimaAtualizacao;
 
-    @Required
     @Column(name="escala")
     public String escala;
 
-    @Required
     @Column(name="observacao")
     public String observacao;
 

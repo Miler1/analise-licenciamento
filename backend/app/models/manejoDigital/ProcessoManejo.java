@@ -254,7 +254,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .create();
 
         List<GeometriaArcgis> featuresProcesso = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DE_MANEJO_FLORESTAL_SOLICITADA), gson);
-        List<GeometriaArcgis> featuresPropriedade = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DE_PRESERVACAO_PERMANENTE), gson);
+        List<GeometriaArcgis> featuresPropriedade = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DA_PROPRIEDADE), gson);
         List<GeometriaArcgis> featuresAreaSemPotencial = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_SEM_POTENCIAL), gson);
 
         this.getAnaliseTecnica().objectId = this.enviarFeatures(featuresProcesso, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL, gson);
@@ -344,7 +344,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
 
-        if (response.features.get(0).attributes.status == 3) {
+        if (response.features.get(0).attributes.status == 2) {
 
             params.clear();
             params.put("where", "protocolo = '" + this.numeroProcesso + "'");
@@ -367,6 +367,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             params.put("where", "1 = 1");
             ResponseQueryMetadados responseQueryMetadados = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_METADADOS_URL, params, ResponseQueryMetadados.class);
 
+            this.getAnaliseTecnica().gerarCalculoAreaEfetiva();
             this.getAnaliseTecnica().setAnalisesVetoriais(responseSobreposicao.features);
             this.getAnaliseTecnica().setInsumos(responseInsumo.features);
             this.getAnaliseTecnica().setAnalisesNdfi(responseResumoNDFI.features);

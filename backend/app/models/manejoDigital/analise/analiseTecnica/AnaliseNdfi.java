@@ -19,7 +19,6 @@ public class AnaliseNdfi extends GenericModel {
     @SequenceGenerator(name="analise.analise_ndfi_id_seq", sequenceName="analise.analise_ndfi_id_seq", allocationSize=1)
     public Long id;
 
-    @Required
     @Column(name="data")
     public Date dataAnalise;
 

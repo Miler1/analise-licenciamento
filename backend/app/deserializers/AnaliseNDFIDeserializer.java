@@ -5,8 +5,11 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.manejoDigital.analise.analiseTecnica.AnaliseNdfi;
+import play.Play;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AnaliseNDFIDeserializer implements JsonDeserializer<AnaliseNdfi> {
@@ -18,7 +21,17 @@ public class AnaliseNDFIDeserializer implements JsonDeserializer<AnaliseNdfi> {
 
 		JsonObject jsonObject = json.getAsJsonObject();
 
-		analise.dataAnalise = jsonObject.get("data") == null ? null : new Date(jsonObject.get("data").getAsLong());
+		try {
+
+			analise.dataAnalise = (jsonObject.get("data") == null) ? null :
+					new SimpleDateFormat(Play.configuration.getProperty("date.format.invert"))
+							.parse(jsonObject.get("data").getAsString());
+
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+
 		analise.orbita = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf(jsonObject.get("orb_ponto").getAsString().substring(jsonObject.get("orb_ponto").getAsString().indexOf('/')));
 		analise.ponto = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf(jsonObject.get("orb_ponto").getAsString().substring(0, jsonObject.get("orb_ponto").getAsString().indexOf('/')));
 		analise.satelite = jsonObject.get("satelite") == null ? null : jsonObject.get("satelite").getAsString();
