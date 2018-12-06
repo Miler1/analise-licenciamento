@@ -20,7 +20,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			obrigatorio: true
 		},
 		{
-			titulo: "Área de preservação permanente - APP",
+			titulo: "Área da propriedade - APM",
 			key: null,
 			nome: null,
 			geoJsonArcgis: null,
