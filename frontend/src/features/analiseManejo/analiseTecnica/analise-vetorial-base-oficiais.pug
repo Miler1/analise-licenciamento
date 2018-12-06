@@ -26,10 +26,10 @@ div
 						input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
 					td.col-md-1(style='max-width: 100px;') {{analise.tipo || '-'}}
 					td.col-md-1 {{analise.nome || '-'}}
-					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{analise.distanciaPropriedade || '-'}}
-					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{analise.sobreposicaoPropriedade || '-'}}
-					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{analise.distanciaAmf || '-'}}
-					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{analise.sobreposicaoAmf || '-'}}
+					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{ (analise.distanciaPropriedade || analise.distanciaPropriedade === 0) ? analise.distanciaPropriedade : '-'}}
+					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{ (analise.sobreposicaoPropriedade || analise.sobreposicaoPropriedade === 0) ? analise.sobreposicaoPropriedade : '-'}}
+					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{ (analise.distanciaAmf || analise.distanciaAmf === 0) ? analise.distanciaAmf : '-'}}
+					td.col-md-1.text-right(style='max-width: 85px; word-wrap: break-word;') {{ (analise.sobreposicaoAmf || analise.sobreposicaoAmf === 0) ? analise.sobreposicaoAmf : '-'}}
 
 
 div

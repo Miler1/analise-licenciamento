@@ -32,8 +32,8 @@ public class AnaliseNDFIDeserializer implements JsonDeserializer<AnaliseNdfi> {
 			e.printStackTrace();
 		}
 
-		analise.orbita = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf(jsonObject.get("orb_ponto").getAsString().substring(jsonObject.get("orb_ponto").getAsString().indexOf('/')));
-		analise.ponto = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf(jsonObject.get("orb_ponto").getAsString().substring(0, jsonObject.get("orb_ponto").getAsString().indexOf('/')));
+		analise.orbita = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf(jsonObject.get("orb_ponto").getAsString().substring(0, jsonObject.get("orb_ponto").getAsString().indexOf('_')));
+		analise.ponto = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf( jsonObject.get("orb_ponto").getAsString().substring(jsonObject.get("orb_ponto").getAsString().indexOf('_') + 1));
 		analise.satelite = jsonObject.get("satelite") == null ? null : jsonObject.get("satelite").getAsString();
 		analise.valor = jsonObject.get("ndfi") == null ? null : jsonObject.get("ndfi").getAsDouble();
 		analise.area = jsonObject.get("area_ha") == null ? null : jsonObject.get("area_ha").getAsDouble();

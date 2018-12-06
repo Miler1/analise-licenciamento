@@ -270,7 +270,9 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         this.areaSeletivaNdfi = Math.random();
 
-        return this.refresh();
+        this.areaEfetivoNdfi = Math.random();
+
+        return this;
     }
 
     public DocumentoManejo saveDocumentoImovel(Upload file, Long idTipoDocumento) throws IOException {
@@ -425,11 +427,10 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
 
-        this.analisesVetorial = new ArrayList<>();
-
         for (FeatureQuerySobreposicao feature : features) {
 
             feature.attributes.analiseTecnicaManejo = this;
+            feature.attributes.exibirPDF = true;
             this.analisesVetorial.add(feature.attributes);
         }
     }
@@ -456,29 +457,21 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
 
-        this.analisesNdfi = new ArrayList<>();
-
         for (FeatureQueryResumoNDFI feature : features) {
 
             feature.attributes.analiseTecnicaManejo = this;
+            feature.attributes.exibirPDF = true;
             this.analisesNdfi.add(feature.attributes);
         }
     }
 
     public void setBasesVetoriais(List<FeatureQueryMetadados> features) {
 
-        this.basesVetorial = new ArrayList<>();
-
         for (FeatureQueryMetadados feature : features) {
 
-            BaseVetorial baseVetorialSalva = BaseVetorial.find("nome", feature.attributes.nome).first();
-
-            if (baseVetorialSalva == null) {
-
-                baseVetorialSalva = feature.attributes.save();
-            }
-
-            this.basesVetorial.add(baseVetorialSalva);
+            feature.attributes.exibirPDF = true;
+            feature.attributes.save();
+            this.basesVetorial.add(feature.attributes);
         }
     }
 

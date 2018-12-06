@@ -344,6 +344,11 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
 
+        if (response.features.size() == 0) {
+
+            return;
+        }
+
         if (response.features.get(0).attributes.status == 2) {
 
             params.clear();
@@ -353,14 +358,14 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
             ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
 
-            ResponseQueryAMFManejo responseAMFManejo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_MANEJO_URL, params, ResponseQueryAMFManejo.class);
+            //ResponseQueryAMFManejo responseAMFManejo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_MANEJO_URL, params, ResponseQueryAMFManejo.class);
 
             params.remove("where");
             params.put("where", "processo = '" + this.numeroProcesso + "'");
             ResponseQueryInsumo responseInsumo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
 
             params.remove("where");
-            params.put("where", "processo_amf = '" + this.numeroProcesso + "'");
+            params.put("where", "processo = '" + this.numeroProcesso + "'");
             ResponseQueryResumoNDFI responseResumoNDFI = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL, params, ResponseQueryResumoNDFI.class);
 
             params.remove("where");
@@ -371,15 +376,13 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             this.getAnaliseTecnica().setAnalisesVetoriais(responseSobreposicao.features);
             this.getAnaliseTecnica().setInsumos(responseInsumo.features);
             this.getAnaliseTecnica().setAnalisesNdfi(responseResumoNDFI.features);
-            this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
+            //this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
             this.getAnaliseTecnica().setDetalhamentoNdfi();
             this.getAnaliseTecnica().setBasesVetoriais(responseQueryMetadados.features);
 
             this.getAnaliseTecnica()._save();
 
             tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
-
-            throw new AppException();
         }
     }
 

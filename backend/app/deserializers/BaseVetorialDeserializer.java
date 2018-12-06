@@ -21,8 +21,8 @@ public class BaseVetorialDeserializer implements JsonDeserializer<BaseVetorial> 
         baseVetorial.nome = jsonObject.get("str_dados_oficiais") == null ? null : jsonObject.get("str_dados_oficiais").getAsString();
         baseVetorial.fonte = jsonObject.get("str_fonte") == null ? null : jsonObject.get("str_fonte").getAsString();
         baseVetorial.ultimaAtualizacao = jsonObject.get("dt_ult_atualizacao") == null ? null : new Date(jsonObject.get("dt_ult_atualizacao").getAsLong());
-        baseVetorial.escala = jsonObject.get("nr_escala") == null ? null : jsonObject.get("nr_escala").getAsString();
-        baseVetorial.observacao = jsonObject.get("txt_obs") == null ? null : jsonObject.get("txt_obs").getAsString();
+        baseVetorial.escala = jsonObject.get("nr_escala").isJsonNull() || jsonObject.get("nr_escala") == null ? null : jsonObject.get("nr_escala").getAsString();
+        baseVetorial.observacao = jsonObject.get("nr_escala").isJsonNull() || jsonObject.get("txt_obs") == null ? null : jsonObject.get("txt_obs").getAsString();
 
         return baseVetorial;
     }
