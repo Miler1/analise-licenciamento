@@ -35,8 +35,23 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		analiseTecnicaManejo.passos.CONCLUSAO
 	];
 	analiseTecnicaManejo.index = 0;
-
 	analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.passos.DADOS_IMOVEL;
+
+	analiseTecnicaManejo.arquivosDadosImovel = [
+		{
+			titulo: "Termo de delimitação da área de reserva aprovada",
+			id: null,
+			nome: null,
+			idTipoDocumento: 13
+		},
+		{
+			titulo: "Termo de ajustamento de conduta",
+			id: null,
+			nome: null,
+			idTipoDocumento: 14
+		}
+	];
+
 
 	analiseTecnicaManejo.init = function() {
 
@@ -74,23 +89,19 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	function initDocumentosImovel(analiseTecnica) {
 
-			var numDocumentos = 2;
-			var documento = {id: null, nome: null, index: null};
+		analiseTecnicaManejo.arquivosDadosImovel.forEach(function (documento) {
 
-			if (!analiseTecnica.documentosImovel) {
+			analiseTecnica.documentosImovel.forEach(function (documentoSalvo) {
 
-				analiseTecnica.documentosImovel = [];
-			}
+				if (documento.idTipoDocumento === documentoSalvo.tipo.id) {
 
-			for (i = 0; i < numDocumentos; i++) {
-
-				if (analiseTecnica.documentosImovel.length < (i+1)) {
-
-					analiseTecnica.documentosImovel.push(JSON.parse(JSON.stringify(documento)));
+					documento.id = documentoSalvo.id;
+					documento.nome = documentoSalvo.nome;
 				}
+			});
+		});
 
-				analiseTecnica.documentosImovel[i].index = i;
-			}
+		analiseTecnica.documentosImovel = analiseTecnicaManejo.arquivosDadosImovel;
 	}
 
 	analiseTecnicaManejo.abrirModal = function() {
@@ -124,10 +135,10 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		});
 	};
 
-	analiseTecnicaManejo.selecionarDocumentoImovel = function (files, index) {
+	analiseTecnicaManejo.selecionarDocumentoImovel = function (files, idTipoDocumento) {
 
-		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip'];
-		var extensoesPermitidas = [".zip"];
+		var mimeTypesPermitidos = ['application/zip','application/x-zip-compressed','multipart/x-zip', 'application/pdf'];
+		var extensoesPermitidas = [".zip", ".pdf"];
 
 		if (files) {
 
@@ -147,11 +158,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				return;
 			}
 
-			analiseTecnicaManejo.uploadDocumentoImovel(file, index);
+			analiseTecnicaManejo.uploadDocumentoImovel(file, idTipoDocumento);
 		}
 	};
 
-	analiseTecnicaManejo.uploadDocumentoImovel = function (file, index) {
+	analiseTecnicaManejo.uploadDocumentoImovel = function (file, idTipoDocumento) {
 
 		if (file && !analiseTecnicaManejo.validacaoErro) {
 
@@ -159,11 +170,17 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				if (analiseTecnicaManejo.analiseTecnica.id) {
 
-					analiseManejoService.upload(file, analiseTecnicaManejo.analiseTecnica.id)
+					analiseManejoService.upload(file, analiseTecnicaManejo.analiseTecnica.id, idTipoDocumento)
 					.then(function(response) {
 
-						analiseTecnicaManejo.analiseTecnica.documentosImovel[index] = response.data;
-						analiseTecnicaManejo.analiseTecnica.documentosImovel[index].index = index;
+						analiseTecnicaManejo.analiseTecnica.documentosImovel.forEach(function (documento) {
+
+							if (documento.idTipoDocumento === idTipoDocumento) {
+
+								documento.id = response.data.id;
+								documento.nome = response.data.nome;
+							}
+						});
 
 					}, function(error){
 
@@ -289,16 +306,59 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		$location.path('/analise-manejo');
 	};
 
+	function validarDadosPdf(index) {
+
+		var passo = analiseTecnicaManejo.listaPassos[index][0];
+		var validado = false;
+		var lista = [];
+
+		switch (passo) {
+			case 'ANALISE_VETORIAL':
+				lista = analiseTecnicaManejo.analiseTecnica.analisesVetorial;
+				break;
+
+			case 'INSUMOS_UTILIZADOS':
+				lista = analiseTecnicaManejo.analiseTecnica.vinculoInsumos;
+				break;
+
+			case 'CALCULO_NDFI':
+				lista = analiseTecnicaManejo.analiseTecnica.analisesNdfi;
+				break;
+
+			case 'BASE_VETORIAL':
+				lista = analiseTecnicaManejo.analiseTecnica.basesVetorial;
+				break;
+
+			default:
+				return true;
+		}
+
+		lista.forEach(function (item) {
+
+			if (item.exibirPDF) {
+				validado = true;
+			}
+		});
+
+		if (!validado) {
+
+			mensagem.warning("Ao menos um item deve estar selecionado.");
+
+		} else {
+
+			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, passo);
+		}
+
+		return validado;
+	}
+
 	analiseTecnicaManejo.voltar = function() {
 
-		var aux = analiseTecnicaManejo.index;
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+			return;
+		}
 
 		analiseTecnicaManejo.index -= 1;
-
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
-		}
 
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
@@ -306,14 +366,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.proximo = function() {
 
-		var aux = analiseTecnicaManejo.index;
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+			return;
+		}
 
 		analiseTecnicaManejo.index += 1;
-
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
-		}
 
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[analiseTecnicaManejo.index];
 		click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
@@ -329,14 +386,17 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.changeTab = function(index) {
 
-		var aux = analiseTecnicaManejo.index;
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+
+			if (analiseTecnicaManejo.index != index) {
+
+				click(document.getElementById(analiseTecnicaManejo.passoAtual[2]));
+			}
+			return;
+		}
 
 		analiseTecnicaManejo.index = index;
 
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
-		}
 		analiseTecnicaManejo.passoAtual = analiseTecnicaManejo.listaPassos[index];
 	};
 
@@ -361,13 +421,9 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	$rootScope.$on('$locationChangeStart', function () {
 
-		var aux = analiseTecnicaManejo.index;
-
-		if(aux === 2 || aux === 4 || aux === 5) {
-
-			analiseManejoService.atualizarDadosPdf(analiseTecnicaManejo.analiseTecnica, analiseTecnicaManejo.listaPassos[aux][0]);
+		if (!validarDadosPdf(analiseTecnicaManejo.index)) {
+			return;
 		}
-
 	});
 
 };

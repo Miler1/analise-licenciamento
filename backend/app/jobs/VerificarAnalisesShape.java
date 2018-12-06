@@ -14,7 +14,6 @@ public class VerificarAnalisesShape extends GenericJob {
 
 		Logger.info("[INICIO-JOB] ::VerificarAnalisesShape:: [INICIO-JOB]");
 
-		//TODO VERIFICAR ID DE CONDICAO
 		List<ProcessoManejo> processos = ProcessoManejo.find("objetoTramitavel.condicao.id", 23l).fetch();
 
 		for (ProcessoManejo processo : processos) {

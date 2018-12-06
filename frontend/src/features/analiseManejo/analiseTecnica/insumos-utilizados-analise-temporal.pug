@@ -13,7 +13,7 @@ div
 		table.table.table-striped.table-condensed
 			thead
 				tr
-					th.text-center Selecione
+					th.text-center Exibir no PDF
 					th.text-center Ano da imagem
 					th.text-center Satélite
 					th.text-center Órbita/ponto
@@ -26,6 +26,6 @@ div
 					td.text-center {{ vinculo.insumo.ano }}
 					td.text-center {{ vinculo.insumo.satelite }}
 					td.text-center {{ vinculo.insumo.orbPonto }}
-					td.text-center {{ vinculo.insumo.data }}
+					td.text-center {{ vinculo.insumo.data ? vinculo.insumo.data : '-'}}
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesInsumosUtilizados')

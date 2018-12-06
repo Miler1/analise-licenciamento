@@ -116,7 +116,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -150,12 +150,14 @@ html(lang='en')
 					th.titulo-tabela OBS
 			tbody(style="page-break-before: avoid;")
 				| \#{list basesVetoriais, as:'baseVetorial'}
+				| \#{if baseVetorial.exibirPDF}
 				tr(style="page-break-before: avoid;")
 					td ${baseVetorial.nome ? baseVetorial.nome : "-"}
 					td ${baseVetorial.fonte ? baseVetorial.fonte : "-"}
 					td ${baseVetorial.ultimaAtualizacao ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(baseVetorial.ultimaAtualizacao) : "-"}
 					td ${baseVetorial.escala ? baseVetorial.escala : "-"}
 					td ${baseVetorial.observacao ? baseVetorial.observacao : "-"}
+				| \#{/if}
 				| \#{/list}
 
 	| \#{if analiseTecnicaManejo.observacoes}
@@ -165,7 +167,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -211,7 +213,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -229,7 +231,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -268,7 +270,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -311,7 +313,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -390,7 +392,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -432,7 +434,7 @@ html(lang='en')
 		p
 			strong Observações.
 	div.div-list
-		p . ${ observacao.texto }
+		p ${ observacao.texto }
 	| \#{/if}
 	| \#{/list}
 	| \#{/if}
@@ -486,8 +488,14 @@ html(lang='en')
 		p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMS APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
 
 	div
-		| \#{if nomeAnexo != null}
+		| \#{if arquivosComplementares.size() > 0}
 		p
-			strong Anexo
-		p ${ nomeAnexo }
+			strong Anexos
+		| \#{list arquivosComplementares, as:'arquivo'}
+		div.nao-quebra
+			p
+				strong ${ arquivo.nomeSemExtensao }
+			center
+				img(src='${arquivo.getFile().getPath()}', width="600")
+		| \#{/list}
 		| \#{/if}

@@ -18,9 +18,9 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
             .put(config.BASE_URL() + "analiseTecnicaManejo/" + id);
     };
 
-    this.upload = function(file, idAnaliseTecnica) {
+    this.upload = function(file, idAnaliseTecnica, idTipoDocumento) {
 
-            return request.upload(config.BASE_URL() + "upload/" + idAnaliseTecnica + "/imovel/manejo", file, Upload);
+            return request.upload(config.BASE_URL() + "upload/" + idAnaliseTecnica + "/imovel/manejo/" + idTipoDocumento, file, Upload);
     };
 
     this.uploadDocumentoComplementar = function(file, idAnaliseTecnica) {

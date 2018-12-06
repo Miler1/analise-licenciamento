@@ -31,13 +31,14 @@ public class BaseVetorial extends GenericModel {
     @Column(name="ultima_atualizacao")
     public Date ultimaAtualizacao;
 
-    @Required
     @Column(name="escala")
     public String escala;
 
-    @Required
     @Column(name="observacao")
     public String observacao;
+
+    @Column(name = "exibir_pdf")
+    public boolean exibirPDF;
 
     public static List<BaseVetorial> gerarBaseVetorial(AnaliseTecnicaManejo analise) {
 
@@ -59,6 +60,8 @@ public class BaseVetorial extends GenericModel {
             baseVetorial.escala = UUID.randomUUID().toString().replace('-', ' ');
 
             baseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
+
+            baseVetorial.exibirPDF = true;
 
             lista.add(baseVetorial);
         }

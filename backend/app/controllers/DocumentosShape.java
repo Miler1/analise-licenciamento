@@ -29,16 +29,7 @@ public class DocumentosShape extends InternalController {
 
 		if(realType == null){
 			response.status = Http.StatusCode.INTERNAL_ERROR;
-			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
-		}
-
-		// Verifica se a extensão do arquivo é compatível com o tipo detectado,
-		// com exceção de arquivos BMP
-		if(!realType.contains("bmp")){
-			if(!realType.contentEquals(file.getContentType())){
-				response.status = Http.StatusCode.INTERNAL_ERROR;
-				renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
-			}
+			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA_SHAPE);
 		}
 
 		if(realType.contains("application/zip")) {

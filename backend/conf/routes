@@ -175,7 +175,7 @@ GET     /download/shape/{key}                       DocumentosShape.downloadTmp
 DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
 
 # Documentos manejo
-POST    /upload/{idAnaliseTecnica}/imovel/manejo    DocumentosManejo.uploadFileImovel
+POST    /upload/{idAnaliseTecnica}/imovel/manejo/{idTipoDocumento} DocumentosManejo.uploadFileImovel
 POST    /upload/{idAnaliseTecnica}/complementar     DocumentosManejo.uploadFileComplementar
 GET     /download/manejo/{id}                       DocumentosManejo.download
 DELETE  /delete/manejo/{id}                         DocumentosManejo.delete

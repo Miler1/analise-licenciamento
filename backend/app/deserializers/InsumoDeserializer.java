@@ -5,9 +5,11 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.manejoDigital.analise.analiseTecnica.Insumo;
+import play.Play;
 
 import java.lang.reflect.Type;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class InsumoDeserializer implements JsonDeserializer<Insumo> {
 
@@ -18,7 +20,17 @@ public class InsumoDeserializer implements JsonDeserializer<Insumo> {
 
 		JsonObject jsonObject = json.getAsJsonObject();
 
-		insumo.data = jsonObject.get("ano") == null ? null : new Date(jsonObject.get("ano").getAsLong());
+		try {
+
+			insumo.data = (jsonObject.get("data") == null) ? null :
+					new SimpleDateFormat(Play.configuration.getProperty("date.format.invert"))
+							.parse(jsonObject.get("data").getAsString());
+
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+
 		insumo.satelite = jsonObject.get("satelite") == null ? null : jsonObject.get("satelite").getAsString();
 		insumo.orbPonto = jsonObject.get("orb_ponto") == null ? null : jsonObject.get("orb_ponto").getAsString();
 
