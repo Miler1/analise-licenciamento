@@ -5,7 +5,7 @@ import utils.SerializerUtil;
 
 public class AnalisesTecnicaManejoSerializer {
 
-	public static JSONSerializer findById = SerializerUtil.create(
+	public static JSONSerializer findById = SerializerUtil.createWithDoubleTransformer(
 			"id",
 			"dataAnalise",
 			"pathAnexo",

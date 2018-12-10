@@ -76,6 +76,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 					analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI += analise.area;
 				});
+
+				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = parseFloat(analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI).toFixed(4);
 			})
 			.catch(function (response) {
 

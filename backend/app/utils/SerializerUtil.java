@@ -6,6 +6,7 @@ import play.Play;
 import play.Play.Mode;
 import serializers.DateSerializer;
 import flexjson.JSONSerializer;
+import serializers.DoubleSerializer;
 
 public class SerializerUtil {
 
@@ -29,5 +30,17 @@ public class SerializerUtil {
 				.exclude("*")
 				.prettyPrint(prettyPrint)
 				.transform(DateSerializer.getTransformerWithDateTime(), Date.class);
+	}
+
+	public static JSONSerializer createWithDoubleTransformer(String... includes) {
+
+		boolean prettyPrint = Play.mode == Mode.DEV;
+
+		return new JSONSerializer()
+				.include(includes)
+				.exclude("*")
+				.prettyPrint(prettyPrint)
+				.transform(DateSerializer.getTransformer(), Date.class)
+				.transform(DoubleSerializer.getTransformer(), Double.class);
 	}
 }

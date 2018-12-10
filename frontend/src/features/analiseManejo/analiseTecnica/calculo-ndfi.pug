@@ -30,11 +30,11 @@ div.margin-top-lg
                     td.col-md-1.text-center {{ analisendfi.satelite }}
                     td.col-md-1.text-center {{ analisendfi.nivelExploracao }}
                     td.col-md-1.text-right(style='max-width: 90px; word-wrap: break-word;') {{ analisendfi.valor }}
-                    td.col-md-1.text-right(style='max-width: 90px; word-wrap: break-word;') {{ analisendfi.area }}
+                    td.col-md-1.text-right(style='max-width: 120px; word-wrap: break-word;') {{ analisendfi.area }}
 
                 tr
                     td(colspan="6").text-right Total
-                    td.col-md-1.text-right(style='max-width: 90px; word-wrap: break-word;') {{ analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI }}
+                    td.col-md-1.text-right(style='max-width: 120px; word-wrap: break-word;') {{ analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI }}
 
 div
     +observacoes('analiseTecnicaManejo.analiseTecnica.observacoesCalculoNDFI')
