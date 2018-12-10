@@ -146,7 +146,6 @@ html(lang='en')
 					th.titulo-tabela Dados oficiais
 					th.titulo-tabela Fonte
 					th.titulo-tabela Última atualização
-					th.titulo-tabela Escala
 					th.titulo-tabela OBS
 			tbody(style="page-break-before: avoid;")
 				| \#{list basesVetoriais, as:'baseVetorial'}
@@ -155,7 +154,6 @@ html(lang='en')
 					td ${baseVetorial.nome ? baseVetorial.nome : "-"}
 					td ${baseVetorial.fonte ? baseVetorial.fonte : "-"}
 					td ${baseVetorial.ultimaAtualizacao ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(baseVetorial.ultimaAtualizacao) : "-"}
-					td ${baseVetorial.escala ? baseVetorial.escala : "-"}
 					td ${baseVetorial.observacao ? baseVetorial.observacao : "-"}
 				| \#{/if}
 				| \#{/list}

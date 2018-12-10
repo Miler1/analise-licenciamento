@@ -50,7 +50,6 @@ public class AnalisesTecnicaManejoSerializer {
 			"basesVetorial.nome",
 			"basesVetorial.fonte",
 			"basesVetorial.ultimaAtualizacao",
-			"basesVetorial.escala",
 			"basesVetorial.observacao",
 			"basesVetorial.exibirPDF",
 			"observacoesDadosImovel.id",
