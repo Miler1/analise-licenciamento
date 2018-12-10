@@ -5,7 +5,7 @@ import utils.SerializerUtil;
 
 public class AnalisesTecnicaManejoSerializer {
 
-	public static JSONSerializer findById = SerializerUtil.createWithDateTime(
+	public static JSONSerializer findById = SerializerUtil.create(
 			"id",
 			"dataAnalise",
 			"pathAnexo",
