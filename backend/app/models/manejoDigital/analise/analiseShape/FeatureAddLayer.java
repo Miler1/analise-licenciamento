@@ -5,6 +5,9 @@ public class FeatureAddLayer {
 	public AtributosAddLayer attributes;
 	public String geometry;
 
+	public FeatureAddLayer() {
+	}
+
 	public FeatureAddLayer(AtributosAddLayer attributes, String geometry) {
 
 		this.attributes = attributes;

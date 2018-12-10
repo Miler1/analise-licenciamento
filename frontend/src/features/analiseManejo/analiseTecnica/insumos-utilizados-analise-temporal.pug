@@ -26,6 +26,6 @@ div
 					td.text-center {{ vinculo.insumo.ano }}
 					td.text-center {{ vinculo.insumo.satelite }}
 					td.text-center {{ vinculo.insumo.orbPonto }}
-					td.text-center {{ vinculo.insumo.data }}
+					td.text-center {{ vinculo.insumo.data ? vinculo.insumo.data : '-'}}
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesInsumosUtilizados')

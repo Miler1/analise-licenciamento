@@ -7,6 +7,10 @@ import models.manejoDigital.DocumentoManejo;
 import models.manejoDigital.DocumentoShape;
 import models.manejoDigital.PassoAnaliseManejo;
 import models.manejoDigital.ProcessoManejo;
+import models.manejoDigital.analise.analiseShape.FeatureQueryInsumo;
+import models.manejoDigital.analise.analiseShape.FeatureQueryMetadados;
+import models.manejoDigital.analise.analiseShape.FeatureQueryResumoNDFI;
+import models.manejoDigital.analise.analiseShape.FeatureQuerySobreposicao;
 import models.pdf.PDFGenerator;
 import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
@@ -17,6 +21,7 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -241,7 +246,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 		this._save();
 	}
 
-    public AnaliseTecnicaManejo gerarAnalise() {
+    public AnaliseTecnicaManejo gerarCalculoAreaEfetiva() {
 
         this.areaManejoFlorestalSolicitada = Math.random();
 
@@ -261,29 +266,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         this.areaEmbargadaIbama = Math.random();
 
-        this.areaEfetivoNdfi = Math.random();
-
         this.areaEmbargadaLdi = Math.random();
 
         this.areaSeletivaNdfi = Math.random();
 
-        this.areaExploracaoNdfiBaixo = Math.random();
+        this.areaEfetivoNdfi = Math.random();
 
-        this.areaExploracaoNdfiMedio = Math.random();
-
-        this.areaSemPreviaExploracao = Math.random();
-
-        this.analisesNdfi.addAll(AnaliseNdfi.gerarAnaliseNfid(this));
-
-        this.basesVetorial.addAll(BaseVetorial.gerarBaseVetorial(this));
-
-        this.analisesVetorial.addAll(AnaliseVetorial.gerarAnalisesVetoriais(this));
-
-        VinculoAnaliseTecnicaManejoInsumo.gerarVinculos(this);
-
-        this._save();
-
-        return this.refresh();
+        return this;
     }
 
     public DocumentoManejo saveDocumentoImovel(Upload file, Long idTipoDocumento) throws IOException {
@@ -436,37 +425,80 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     }
 
-//    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
-//
-//        this.analisesVetorial = new ArrayList<>();
-//
-//        for (FeatureQuerySobreposicao feature : features) {
-//
-//            feature.attributes.analiseTecnicaManejo = this;
-//            this.analisesVetorial.add(feature.attributes);
-//        }
-//    }
-//
-//    public void setInsumos(List<FeatureQueryInsumo> features) {
-//
-//        this.insumos = new ArrayList<>();
-//
-//        for (FeatureQueryInsumo feature : features) {
-//
-//            this.insumos.add(feature.attributes);
-//        }
-//    }
-//
-//    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
-//
-//        this.analisesNdfi = new ArrayList<>();
-//
-//        for (FeatureQueryResumoNDFI feature : features) {
-//
-//            feature.attributes.analiseTecnicaManejo = this;
-//            this.analisesNdfi.add(feature.attributes);
-//        }
-//    }
+    public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {
+
+        for (FeatureQuerySobreposicao feature : features) {
+
+            feature.attributes.analiseTecnicaManejo = this;
+            feature.attributes.exibirPDF = true;
+            this.analisesVetorial.add(feature.attributes);
+        }
+    }
+
+    public void setInsumos(List<FeatureQueryInsumo> features) {
+
+        for (FeatureQueryInsumo feature : features) {
+
+            Insumo insumoSalvo = Insumo.find("data", feature.attributes.data).first();
+
+            if (insumoSalvo == null) {
+
+                insumoSalvo = feature.attributes.save();
+            }
+
+            VinculoAnaliseTecnicaManejoInsumo vinculo = new VinculoAnaliseTecnicaManejoInsumo();
+            vinculo.analiseTecnicaManejo = this;
+            vinculo.exibirPDF = true;
+            vinculo.insumo = insumoSalvo;
+
+            vinculo.save();
+        }
+    }
+
+    public void setAnalisesNdfi(List<FeatureQueryResumoNDFI> features) {
+
+        for (FeatureQueryResumoNDFI feature : features) {
+
+            feature.attributes.analiseTecnicaManejo = this;
+            feature.attributes.exibirPDF = true;
+            this.analisesNdfi.add(feature.attributes);
+        }
+    }
+
+    public void setBasesVetoriais(List<FeatureQueryMetadados> features) {
+
+        for (FeatureQueryMetadados feature : features) {
+
+            feature.attributes.exibirPDF = true;
+            feature.attributes.save();
+            this.basesVetorial.add(feature.attributes);
+        }
+    }
+
+    public void setDetalhamentoNdfi() {
+
+        this.areaExploracaoNdfiBaixo = 0.0;
+        this.areaExploracaoNdfiMedio = 0.0;
+        Double areaExploracaoNdfiAlto = 0.0;
+
+        for (AnaliseNdfi analise : this.analisesNdfi) {
+
+            if (analise.nivelExploracao.equals(Configuracoes.MANEJO_NIVEL_EXPLORACAO_ALTO)) {
+
+                areaExploracaoNdfiAlto += analise.valor;
+
+            } else if (analise.nivelExploracao.equals(Configuracoes.MANEJO_NIVEL_EXPLORACAO_MEDIO)) {
+
+                this.areaExploracaoNdfiMedio += analise.valor;
+
+            }  else if (analise.nivelExploracao.equals(Configuracoes.MANEJO_NIVEL_EXPLORACAO_BAIXO)) {
+
+                this.areaExploracaoNdfiBaixo += analise.valor;
+            }
+        }
+
+        this.areaSemPreviaExploracao = this.areaEfetivoNdfi - (this.areaExploracaoNdfiBaixo + this.areaExploracaoNdfiMedio + areaExploracaoNdfiAlto);
+    }
 
     public List<DocumentoManejo> getDocumentosImovel() {
 

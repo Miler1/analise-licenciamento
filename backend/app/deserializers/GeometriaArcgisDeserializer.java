@@ -1,10 +1,13 @@
 package deserializers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
+import models.manejoDigital.analise.analiseShape.GeometryArcgis;
 
 import java.lang.reflect.Type;
 
@@ -13,12 +16,16 @@ public class GeometriaArcgisDeserializer implements JsonDeserializer<GeometriaAr
 	@Override
 	public GeometriaArcgis deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
 
+		Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy")
+				.registerTypeAdapter(GeometryArcgis.class, new GeometryArcgisDeserializer())
+				.create();
+
 		GeometriaArcgis geometria = new GeometriaArcgis();
 
 		JsonObject jsonObject = json.getAsJsonObject();
 
 		geometria.attributes = null;
-		geometria.geometry = jsonObject.get("geometry") == null ? null : jsonObject.get("geometry").toString();
+		geometria.geometry = jsonObject.get("geometry") == null ? null : gson.fromJson(jsonObject.get("geometry"), GeometryArcgis.class);
 
 		return geometria;
 	}

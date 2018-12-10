@@ -25,7 +25,7 @@ div.margin-top-lg
                 tr(ng-repeat="analisendfi in analiseTecnicaManejo.analiseTecnica.analisesNdfi")
                     td.col-md-1.text-center.checkbox-center
                         input(type='checkbox', placeholder='', ng-model='analisendfi.exibirPDF')
-                    td.col-md-1 {{ analisendfi.dataAnalise }}
+                    td.col-md-1 {{ analisendfi.dataAnalise ? analisendfi.dataAnalise : '-'}}
                     td.col-md-1 {{ analisendfi.orbita + '/' + analisendfi.ponto }}
                     td.col-md-1 {{ analisendfi.satelite }}
                     td.col-md-1 {{ analisendfi.nivelExploracao }}

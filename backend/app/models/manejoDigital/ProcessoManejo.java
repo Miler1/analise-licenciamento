@@ -4,15 +4,34 @@ import builders.ProcessoManejoBuilder;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import deserializers.AnaliseNDFIDeserializer;
+import deserializers.AnaliseVetorialDeserializer;
+import deserializers.AtributosQueryAMFManejoDeserializer;
+import deserializers.BaseVetorialDeserializer;
+import deserializers.FeatureAddLayerDeserializer;
 import deserializers.GeometriaArcgisDeserializer;
+import deserializers.InsumoDeserializer;
+import exceptions.AppException;
 import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
+import models.manejoDigital.analise.analiseShape.AtributosQueryAMFManejo;
+import models.manejoDigital.analise.analiseShape.FeatureAddLayer;
 import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
 import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
+import models.manejoDigital.analise.analiseShape.ResponseQueryAMFManejo;
+import models.manejoDigital.analise.analiseShape.ResponseQueryInsumo;
+import models.manejoDigital.analise.analiseShape.ResponseQueryMetadados;
+import models.manejoDigital.analise.analiseShape.ResponseQueryProcesso;
+import models.manejoDigital.analise.analiseShape.ResponseQueryResumoNDFI;
+import models.manejoDigital.analise.analiseShape.ResponseQuerySobreposicao;
+import models.manejoDigital.analise.analiseTecnica.AnaliseNdfi;
 import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
+import models.manejoDigital.analise.analiseTecnica.AnaliseVetorial;
 import models.manejoDigital.analise.analiseTecnica.AnalistaTecnicoManejo;
+import models.manejoDigital.analise.analiseTecnica.BaseVetorial;
+import models.manejoDigital.analise.analiseTecnica.Insumo;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
 import models.tramitacao.AcaoTramitacao;
@@ -36,6 +55,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static models.TipoDocumento.*;
 
 @Entity
 @Table(schema = "analise", name = "processo_manejo")
@@ -155,8 +176,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             documento.save();
         }
 
-        //TODO Integração com o serviço VEGA
-        //this.enviarProcessoAnaliseShape();
+        this.enviarProcessoAnaliseShape();
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
         Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
@@ -233,14 +253,28 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .registerTypeAdapter(GeometriaArcgis.class, new GeometriaArcgisDeserializer())
                 .create();
 
-        // TODO Alterar envio de features para refletir os diferentes tipos de documento shape. É NECESSÁRIO QUE O SERVIÇO DE INTEGRAÇÃO DA VEGA SEJA ALTERADO.
+        List<GeometriaArcgis> featuresProcesso = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DE_MANEJO_FLORESTAL_SOLICITADA), gson);
+        List<GeometriaArcgis> featuresPropriedade = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DA_PROPRIEDADE), gson);
+        List<GeometriaArcgis> featuresAreaSemPotencial = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_SEM_POTENCIAL), gson);
+
+        this.getAnaliseTecnica().objectId = this.enviarFeatures(featuresProcesso, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL, gson);
+        this.enviarFeatures(featuresPropriedade, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL, gson);
+        this.enviarFeatures(featuresAreaSemPotencial, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_AREA_SEM_POTENCIAL_URL, gson);
+
+        this._save();
+    }
+
+    private List<GeometriaArcgis> montarGeometrias(DocumentoShape documento, Gson gson) {
+
+        if (documento == null) {
+
+            return new ArrayList<>();
+        }
+
         List<GeometriaArcgis> features = new ArrayList<>();
         Type listType = new TypeToken<ArrayList<GeometriaArcgis>>(){}.getType();
 
-        for (DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
-
-           features.addAll((ArrayList<GeometriaArcgis>) gson.fromJson(documento.geoJsonArcgis, listType));
-        }
+        features.addAll((ArrayList<GeometriaArcgis>) gson.fromJson(documento.geoJsonArcgis, listType));
 
         for (GeometriaArcgis feature : features) {
 
@@ -248,14 +282,37 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                     this.empreendimento.imovel.nome, 0, this.getAnaliseTecnica().analistaTecnico.usuario.nome);
         }
 
+        return features;
+    }
+
+    private DocumentoShape getDocumentoManejoByTipo(Long idTipo) {
+
+        for (DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
+
+            if (documento.tipo.id.equals(idTipo)) {
+
+                return documento;
+            }
+        }
+
+        return null;
+    }
+
+    private String enviarFeatures(List<GeometriaArcgis> features, String rota, Gson gson) {
+
+        if (features.size() == 0) {
+
+            return null;
+        }
+
         WebService webService = new WebService();
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put("features", gson.toJson(features));
+        params.put("features", gson.toJson(features).replace("rings\":\"", "rings\":").replace("]\",\"s", "],\"s"));
         params.put("f", "json");
 
-        ResponseAddLayer response = webService.post(Configuracoes.ANALISE_SHAPE_ADD_FEATURES_URL, params, ResponseAddLayer.class);
+        ResponseAddLayer response = webService.post(rota, params, ResponseAddLayer.class);
 
         if (response.error != null) {
 
@@ -263,83 +320,70 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         } else {
 
-            this.getAnaliseTecnica().objectId = response.addResults.get(response.addResults.size() - 1).objectId;
+            return response.addResults.get(response.addResults.size() - 1).objectId;
         }
-
-        this._save();
     }
 
     public void verificarAnaliseShape() {
 
-        //TODO Integração com o serviço VEGA
-//        WebService webService = new WebService(
-//                new GsonBuilder().setDateFormat("dd/MM/yyyy")
-//                        .registerTypeAdapter(AnaliseNdfi.class, new AnaliseNDFIDeserializer())
-//                        .registerTypeAdapter(AnaliseVetorial.class, new AnaliseVetorialDeserializer())
-//                        .registerTypeAdapter(AtributosQueryAMFManejo.class, new AtributosQueryAMFManejoDeserializer())
-//                        .create()
-//        );
-//
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("objectIds", this.getAnaliseTecnica().objectId);
-//        params.put("outFields", "*");
-//        params.put("f", "json");
-//
-//        ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
-//
-//        if (response.features.get(0).attributes.status == 3) {
-//
-//            params.clear();
-//            params.put("where", "protocolo = '" + this.numeroProcesso + "'");
-//            params.put("outFields", "*");
-//            params.put("f", "json");
-//
-//            ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
-//            ResponseQueryAMFManejo responseAMFManejo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_MANEJO_URL, params, ResponseQueryAMFManejo.class);
-//
-//            params.remove("where");
-//            params.put("where", "processo = '" + this.numeroProcesso + "'");
-//            ResponseQueryInsumo responseInsumo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
-//
-//            params.remove("where");
-//            params.put("where", "processo_amf = '" + this.numeroProcesso + "'");
-//            ResponseQueryResumoNDFI responseResumoNDFI = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL, params, ResponseQueryResumoNDFI.class);
-//
-//            this.getAnaliseTecnica().setAnalisesVetoriais(responseSobreposicao.features);
-//            this.getAnaliseTecnica().setInsumos(responseInsumo.features);
-//            this.getAnaliseTecnica().setAnalisesNdfi(responseResumoNDFI.features);
-//            this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
-//
-//            this.getAnaliseTecnica()._save();
-//
-//            tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
-//        }
+        WebService webService = new WebService(
+                new GsonBuilder().setDateFormat("dd/MM/yyyy")
+                        .registerTypeAdapter(AnaliseNdfi.class, new AnaliseNDFIDeserializer())
+                        .registerTypeAdapter(AnaliseVetorial.class, new AnaliseVetorialDeserializer())
+                        .registerTypeAdapter(Insumo.class, new InsumoDeserializer())
+                        .registerTypeAdapter(BaseVetorial.class, new BaseVetorialDeserializer())
+                        .registerTypeAdapter(FeatureAddLayer.class, new FeatureAddLayerDeserializer())
+                        .registerTypeAdapter(AtributosQueryAMFManejo.class, new AtributosQueryAMFManejoDeserializer())
+                        .create()
+        );
 
-        if (this.analisesTecnicaManejo.size() == 0) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("objectIds", this.getAnaliseTecnica().objectId);
+        params.put("outFields", "*");
+        params.put("f", "json");
 
-            this.analisesTecnicaManejo = new ArrayList<>();
+        ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
+
+        if (response.features.size() == 0) {
+
+            return;
         }
 
-        // Simulação de falha da análise
-        if (this.numeroProcesso.startsWith("FALHA") && !this.revisaoSolicitada) {
+        if (response.features.get(0).attributes.status == 2) {
 
-            for (DocumentoShape documento : this.getAnaliseTecnica().documentosShape) {
+            params.clear();
+            params.put("where", "protocolo = '" + this.numeroProcesso + "'");
+            params.put("outFields", "*");
+            params.put("f", "json");
 
-                documento.delete();
-            }
+            ResponseQuerySobreposicao responseSobreposicao =  webService.post(Configuracoes.ANALISE_SHAPE_QUERY_SOBREPOSICOES_URL, params, ResponseQuerySobreposicao.class);
 
-            this.revisaoSolicitada = true;
-            this._save();
+            //ResponseQueryAMFManejo responseAMFManejo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_MANEJO_URL, params, ResponseQueryAMFManejo.class);
 
-            tramitacao.tramitar(this, AcaoTramitacao.SOLICITAR_REVISAO_SHAPE, null);
+            params.remove("where");
+            params.put("where", "processo = '" + this.numeroProcesso + "'");
+            ResponseQueryInsumo responseInsumo = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_INSUMOS_URL, params, ResponseQueryInsumo.class);
 
-        } else {
+            params.remove("where");
+            params.put("where", "processo = '" + this.numeroProcesso + "'");
+            ResponseQueryResumoNDFI responseResumoNDFI = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_RESUMO_NDFI_URL, params, ResponseQueryResumoNDFI.class);
 
-            this.getAnaliseTecnica().gerarAnalise();
+            params.remove("where");
+            params.put("where", "1 = 1");
+            ResponseQueryMetadados responseQueryMetadados = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_AMF_METADADOS_URL, params, ResponseQueryMetadados.class);
+
+            this.getAnaliseTecnica().gerarCalculoAreaEfetiva();
+            this.getAnaliseTecnica().setAnalisesVetoriais(responseSobreposicao.features);
+            this.getAnaliseTecnica().setInsumos(responseInsumo.features);
+            this.getAnaliseTecnica().setAnalisesNdfi(responseResumoNDFI.features);
+            //this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
+            this.getAnaliseTecnica().setDetalhamentoNdfi();
+            this.getAnaliseTecnica().setBasesVetoriais(responseQueryMetadados.features);
+
+            this.getAnaliseTecnica()._save();
 
             tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
         }
-
     }
 
     public static boolean findByNumeroProcesso(String numeroProcesso) {
