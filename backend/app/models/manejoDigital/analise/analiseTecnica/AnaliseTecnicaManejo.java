@@ -397,6 +397,11 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
     public void finalizar(AnaliseTecnicaManejo analise) {
 
+        if (analise.conclusao == null || analise.conclusao.equals("")) {
+
+            throw new ValidacaoException(Mensagem.ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA);
+        }
+
         this.conclusao = analise.conclusao;
 
         if (analise.apto) {
