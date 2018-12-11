@@ -11,7 +11,6 @@ import deserializers.BaseVetorialDeserializer;
 import deserializers.FeatureAddLayerDeserializer;
 import deserializers.GeometriaArcgisDeserializer;
 import deserializers.InsumoDeserializer;
-import exceptions.AppException;
 import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
@@ -379,6 +378,8 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             //this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
             this.getAnaliseTecnica().setDetalhamentoNdfi();
             this.getAnaliseTecnica().setBasesVetoriais(responseQueryMetadados.features);
+            this.getAnaliseTecnica().setConsideracoes();
+            this.getAnaliseTecnica().setEmbasamentos();
 
             this.getAnaliseTecnica()._save();
 

@@ -112,12 +112,20 @@ public class AnalisesTecnicaManejoSerializer {
 			"documentosImovel.tipo.nome",
 			"documentosComplementares.id",
 			"documentosComplementares.nome",
-			"vinculos.id",
-			"vinculos.insumo.id",
-			"vinculos.insumo.data",
-			"vinculos.insumo.ano",
-			"vinculos.insumo.satelite",
-			"vinculos.insumo.orbPonto",
-			"vinculos.exibirPDF"
+			"vinculosInsumos.id",
+			"vinculosInsumos.insumo.id",
+			"vinculosInsumos.insumo.data",
+			"vinculosInsumos.insumo.ano",
+			"vinculosInsumos.insumo.satelite",
+			"vinculosInsumos.insumo.orbPonto",
+			"vinculosInsumos.exibirPDF",
+			"vinculosConsideracoes.id",
+			"vinculosConsideracoes.consideracao.id",
+			"vinculosConsideracoes.consideracao.texto",
+			"vinculosConsideracoes.exibirPDF",
+			"vinculosEmbasamentos.id",
+			"vinculosEmbasamentos.embasamentoLegal.id",
+			"vinculosEmbasamentos.embasamentoLegal.texto",
+			"vinculosEmbasamentos.exibirPDF"
 	);
 }
