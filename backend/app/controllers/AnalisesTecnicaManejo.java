@@ -19,15 +19,15 @@ public class AnalisesTecnicaManejo extends InternalController {
 		renderJSON(analise, AnalisesTecnicaManejoSerializer.findById);
 	}
 
-	public static void finalizar(Long id) {
+	public static void finalizar(AnaliseTecnicaManejo analise) {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
-		returnIfNull(id, "Long");
+		returnIfNull(analise, "AnaliseTecnicaManejo");
 
-		AnaliseTecnicaManejo analise = AnaliseTecnicaManejo.findById(id);
+		AnaliseTecnicaManejo analiseSalva = AnaliseTecnicaManejo.findById(analise.id);
 
-		analise.finalizar();
+		analiseSalva.finalizar(analise);
 
 		//TODO ENVIAR REQUISIÇÃO DE CONCLUSÃO DA ANÁLISE NO SIMLAM
 

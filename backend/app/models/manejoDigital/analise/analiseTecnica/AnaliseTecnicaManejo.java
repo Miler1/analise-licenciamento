@@ -395,10 +395,22 @@ public class AnaliseTecnicaManejo extends GenericModel {
 	}
 
 
-    public void finalizar() {
+    public void finalizar(AnaliseTecnicaManejo analise) {
 
-        this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_PROCESSO_MANEJO, this.analistaTecnico.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+        this.conclusao = analise.conclusao;
+
+        if (analise.apto) {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_PROCESSO_MANEJO, this.analistaTecnico.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+
+        } else {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_PROCESS_MANEJO_ANALISE_TECNICA, this.analistaTecnico.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+        }
+
+        this._save();
     }
 
     public Documento gerarPDFAnalise() throws Exception {

@@ -19,7 +19,6 @@ import models.manejoDigital.analise.analiseShape.AtributosQueryAMFManejo;
 import models.manejoDigital.analise.analiseShape.FeatureAddLayer;
 import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
 import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
-import models.manejoDigital.analise.analiseShape.ResponseQueryAMFManejo;
 import models.manejoDigital.analise.analiseShape.ResponseQueryInsumo;
 import models.manejoDigital.analise.analiseShape.ResponseQueryMetadados;
 import models.manejoDigital.analise.analiseShape.ResponseQueryProcesso;
@@ -423,7 +422,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.justificativaIndeferimento = processoManejo.justificativaIndeferimento;
         this.revisaoSolicitada = false;
 
-        tramitacao.tramitar(this, AcaoTramitacao.INDEFERIR_PROCESSO_MANEJO, usuario);
+        tramitacao.tramitar(this, AcaoTramitacao.INDEFERIR_PROCESSO_MANEJO_ANALISE_SHAPE, usuario);
 
         this._save();
     }
