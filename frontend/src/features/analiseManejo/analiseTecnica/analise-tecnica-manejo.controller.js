@@ -330,6 +330,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				lista = analiseTecnicaManejo.analiseTecnica.basesVetorial;
 				break;
 
+			case 'EMBASAMENTO_LEGAL':
+				lista = analiseTecnicaManejo.analiseTecnica.embasamentoLegal;
+				break;
+
+
 			default:
 				return true;
 		}

@@ -9,50 +9,10 @@ blockquote.analise-manejo
 				th.text-center.col-md-1(style='max-width: 50px;') Exibir no PDF
 				th.text-center.col-md-11 Referência
 		tbody
-			tr
-				td.col-md-1.text-center.checkbox-center(style='max-width: 50px;')
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-11 {{}}
-			tr
+			tr(ng-repeat="vinculo in analiseTecnicaManejo.analiseTecnica.embasamentosLegais")
 				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Instrução Normativa n°02/2014
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Decreto n°7830/2012
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Instrução Normativa n° 01/2014
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Portaria n° 63/2014
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Instrução Normativa n°14/2011
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Decreto n° 216/2011
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Lei Federal 10.267/01
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-2 Lei n° 9605 de 12/02/1998
-			tr
-				td.col-md-1.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-1 Decreto n° 6514 de 22/07/2008
-			tr
-				td.col-md-2.text-center.checkbox-center
-					input(type='checkbox', placeholder='', ng-model='analise.exibirPDF')
-				td.col-md-1 Resolução CONAMA nº 378/2006
+					input(type='checkbox', placeholder='', ng-model='vinculo.exibirPDF')
+				td.col-md-11 {{ vinculo.texto }}
 
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesEmbasamentoLegal')
