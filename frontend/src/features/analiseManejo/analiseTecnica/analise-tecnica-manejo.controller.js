@@ -62,9 +62,6 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
-				// nome diferente do serializer para usar o get padrão
-				analiseTecnicaManejo.analiseTecnica.vinculoInsumos = analiseTecnicaManejo.analiseTecnica.vinculos;
-
 				initDocumentosImovel(analiseTecnicaManejo.analiseTecnica);
 
 				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = 0;
@@ -322,7 +319,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				break;
 
 			case 'INSUMOS_UTILIZADOS':
-				lista = analiseTecnicaManejo.analiseTecnica.vinculoInsumos;
+				lista = analiseTecnicaManejo.analiseTecnica.vinculosInsumos;
 				break;
 
 			case 'CALCULO_NDFI':

@@ -139,6 +139,18 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<VinculoAnaliseTecnicaManejoInsumo> vinculoInsumos;
 
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<VinculoAnaliseTecnicaManejoConsideracao> vinculoConsideracoes;
+
+    @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> vinculoEmbasamentos;
+
+    @Column
+    public String conclusao;
+
+    @Transient
+    public boolean apto;
+
     @Override
     public AnaliseTecnicaManejo save() {
 
@@ -517,9 +529,23 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculos() {
+    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculosInsumos() {
 
         return VinculoAnaliseTecnicaManejoInsumo.find("analiseTecnicaManejo.id = :x ORDER BY insumo.data ASC")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<VinculoAnaliseTecnicaManejoConsideracao> getVinculosConsideracoes() {
+
+        return VinculoAnaliseTecnicaManejoConsideracao.find("analiseTecnicaManejo.id = :x ORDER BY consideracao.id ASC")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> getVinculosEmbasamentos() {
+
+        return VinculoAnaliseTecnicaManejoEmbasamentoLegal.find("analiseTecnicaManejo.id = :x ORDER BY embasamentoLegal.id ASC")
                 .setParameter("x", this.id)
                 .fetch();
     }
@@ -577,5 +603,35 @@ public class AnaliseTecnicaManejo extends GenericModel {
         }
 
         return true;
+    }
+
+    public void setConsideracoes() {
+
+        List<Consideracao> consideracoes = Consideracao.findAll();
+
+        for (Consideracao consideracao : consideracoes) {
+
+            VinculoAnaliseTecnicaManejoConsideracao vinculo = new VinculoAnaliseTecnicaManejoConsideracao();
+            vinculo.analiseTecnicaManejo = this;
+            vinculo.exibirPDF = true;
+            vinculo.consideracao = consideracao;
+
+            vinculo.save();
+        }
+    }
+
+    public void setEmbasamentos() {
+
+        List<EmbasamentoLegal> embasamentos = EmbasamentoLegal.findAll();
+
+        for (EmbasamentoLegal embasamento : embasamentos) {
+
+            VinculoAnaliseTecnicaManejoEmbasamentoLegal vinculo = new VinculoAnaliseTecnicaManejoEmbasamentoLegal();
+            vinculo.analiseTecnicaManejo = this;
+            vinculo.exibirPDF = true;
+            vinculo.embasamentoLegal = embasamento;
+
+            vinculo.save();
+        }
     }
 }
