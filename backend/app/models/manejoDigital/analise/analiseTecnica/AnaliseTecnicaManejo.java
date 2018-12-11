@@ -192,6 +192,11 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 this.updateExibirPdfConsideracoes(novaAnalise.vinculoConsideracoes);
                 break;
 
+            case EMBASAMENTOS_LEGAIS:
+
+                this.updateExibirPdfEmbasamentos(novaAnalise.vinculoEmbasamentos);
+                break;
+
         }
         return this.refresh();
     }
@@ -282,23 +287,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     }
 
     public void updateExibirPdfEmbasamentos(List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> novosEmbasamentos) {
-
-        Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
-
-        for (VinculoAnaliseTecnicaManejoEmbasamentoLegal novoEmbasamento : novosEmbasamentos) {
-
-            exibirPdfMap.put(novoEmbasamento.id, novoEmbasamento.exibirPDF);
-        }
-
-        for (VinculoAnaliseTecnicaManejoEmbasamentoLegal vinculoEmbasamento : this.vinculoEmbasamentos) {
-
-            vinculoEmbasamento.exibirPDF = exibirPdfMap.get(vinculoEmbasamento.id);
-        }
-
-        this._save();
-    }
-
-    private void updateExibirPdfEmbasamentoLegal(List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> novosEmbasamentos) {
 
         Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
 
