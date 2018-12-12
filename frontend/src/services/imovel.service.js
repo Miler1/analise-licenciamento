@@ -69,6 +69,16 @@ var ImovelService =  function (request, config, $uibModal) {
 		.get(config.BASE_URL() + 'imovel/codigo/' + codigoImovel + '/completo');
 	};
 
+	this.getImoveisByCpfCnpj = function(cpfCnpj, idMunicipio) {
+
+		return request
+			.get(config.BASE_URL() + '/imoveis/simplificados',{
+
+				cpfCnpj : cpfCnpj,
+				idMunicipio: idMunicipio
+			});
+	};
+
 };
 
 exports.services.ImovelService = ImovelService;

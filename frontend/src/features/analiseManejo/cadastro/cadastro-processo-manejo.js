@@ -11,6 +11,8 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 	cadastroProcessoManejoController.municipios = [];
 	cadastroProcessoManejoController.licencas = [];
 	cadastroProcessoManejoController.necessarioBuscarEmpreendimento = false;
+	cadastroProcessoManejoController.stringQueryImovel = null;
+	cadastroProcessoManejoController.listaImoveis = [];
 
 	function criarProcesso() {
 
@@ -63,14 +65,33 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	cadastroProcessoManejoController.buscarImovel = function() {
 
+
+		if (!cadastroProcessoManejoController.stringQueryImovel) {
+			return;
+		}
+
+		if (cadastroProcessoManejoController.stringQueryImovel.substring(0, 2) === "PA") {
+
+			buscarImovelCompleto(cadastroProcessoManejoController.stringQueryImovel);
+
+		} else {
+
+			buscarImoveis(cadastroProcessoManejoController.stringQueryImovel);
+		}
+
+	};
+
+	function buscarImovelCompleto(registroCar) {
+
 		cadastroProcessoManejoController.necessarioBuscarEmpreendimento = false;
 
-		imovelService.getImovelByCodigo(cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar)
+		imovelService.getImovelByCodigo(registroCar)
 			.then(function(response) {
 
 				cadastroProcessoManejoController.processo.empreendimento.denominacao = response.data.cadastrante.denominacao ? response.data.cadastrante.denominacao : response.data.cadastrante.nome;
 				cadastroProcessoManejoController.processo.empreendimento.cpfCnpj = response.data.cadastrante.cnpj ? response.data.cadastrante.cnpj : response.data.cadastrante.cpf;
 
+				cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar = registroCar;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.descricaoAcesso = response.data.imovel.descricaoAcesso;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.nome = response.data.imovel.nome;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.municipio.id = response.data.imovel.codigoMunicipio;
@@ -112,7 +133,20 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				apagarEmpreendimento();
 				mensagem.error(error.data.texto);
 			});
-	};
+	}
+
+	function buscarImoveis(cpfCnpj) {
+
+		imovelService.getImoveisByCpfCnpj(cpfCnpj, cadastroProcessoManejoController.processo.empreendimento.municipio.id)
+			.then(function(response) {
+
+				response.data = cadastroProcessoManejoController.listaImoveis;
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	}
 
 	function init(){
 

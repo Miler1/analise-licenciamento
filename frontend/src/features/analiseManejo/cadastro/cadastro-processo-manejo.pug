@@ -49,22 +49,34 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 		h5 Busca de imóvel
 
-		label.required.control-label Informe o CAR: *
+		label.required.control-label Informe o CPF/CNPJ do proprietário ou o número do CAR: *
 
 		div.input-group
 
 			input.form-control(type='text',
-								ng-model='cadastroProcessoManejo.processo.empreendimento.imovel.registroCar',
+								ng-model='cadastroProcessoManejo.stringQueryImovel',
 								enter='cadastroProcessoManejo.buscarImovel()',
 								placeholder='Informe o CAR do processo.',
 								name='car',
+								ng-disabled='!cadastroProcessoManejo.processo.empreendimento.municipio.id',
 								required
 							)
 
 			span.input-group-btn
-				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()', ng-class="{'error-botao' : cadastroProcessoManejo.necessarioBuscarEmpreendimento === true}")
+				button.btn.btn-default(type='button',
+										ng-click='cadastroProcessoManejo.buscarImovel()',
+										ng-class="{'error-botao' : cadastroProcessoManejo.necessarioBuscarEmpreendimento === true}",
+										ng-disabled='!cadastroProcessoManejo.processo.empreendimento.municipio.id'
+									)
 					span.glyphicon.glyphicon-search
 			+inputErrors('formularioCadastroProcessoManejo', 'formularioCadastroProcessoManejo', 'required')
+
+		div
+
+			select.form-control(id="car", name='car', ng-model="cadastro.empreendimento.imovel",
+			ng-options='i.codigo + " - " + i.nome + " - " + i.municipio.nome + " / " + i.municipio.estado.nome for i in localizacaoEmpreendimento.imoveis track by i.id',
+			ng-change="localizacaoEmpreendimento.getDadosImovel(cadastro.empreendimento.imovel.codigo)")
+
 
 	div(ng-if="cadastroProcessoManejo.processo.empreendimento.denominacao")
 		fieldset.panel.panel-default
