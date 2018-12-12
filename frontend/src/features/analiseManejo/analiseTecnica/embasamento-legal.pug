@@ -6,13 +6,13 @@ blockquote.analise-manejo
 	table.table.table-striped
 		thead
 			tr
-				th.text-center.col-md-1(style='max-width: 50px;') Exibir no PDF
-				th.text-center.col-md-11 Referência
+				th.text-center.col-md-1(style='min-width: 111px;') Exibir no PDF
+				th.col-md-11 Referência
 		tbody
-			tr(ng-repeat="vinculo in analiseTecnicaManejo.analiseTecnica.embasamentosLegais")
+			tr(ng-repeat="vinculo in analiseTecnicaManejo.analiseTecnica.vinculosEmbasamentos")
 				td.col-md-1.text-center.checkbox-center
 					input(type='checkbox', placeholder='', ng-model='vinculo.exibirPDF')
-				td.col-md-11 {{ vinculo.texto }}
+				td.col-md-11 {{ vinculo.embasamentoLegal.texto }}
 
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesEmbasamentoLegal')

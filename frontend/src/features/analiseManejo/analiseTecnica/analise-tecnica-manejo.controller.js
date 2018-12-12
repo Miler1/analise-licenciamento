@@ -20,7 +20,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva', 'id-detalhamento-area-efetiva-manejo'],
 		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes', 'id-consideracoes'],
 		DOCUMENTOS_COMPLEMENTARES: ['DOCUMENTOS_COMPLEMENTARES', 'observacoesDocumentosComplementares', 'id-documentos-complementares'],
-		EMBASAMENTO_LEGAL: ['EMBASAMENTO_LEGAL', 'observacoesEmbasamentoLegal', 'id-embasamento-legal'],
+		EMBASAMENTOS_LEGAIS: ['EMBASAMENTOS_LEGAIS', 'observacoesEmbasamentoLegal', 'id-embasamento-legal'],
 		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao', 'id-conclusao']
 	};
 	analiseTecnicaManejo.listaPassos = [
@@ -34,7 +34,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.CONSIDERACOES,
 		analiseTecnicaManejo.passos.DOCUMENTOS_COMPLEMENTARES,
-		analiseTecnicaManejo.passos.EMBASAMENTO_LEGAL,
+		analiseTecnicaManejo.passos.EMBASAMENTOS_LEGAIS,
 		analiseTecnicaManejo.passos.CONCLUSAO
 	];
 	analiseTecnicaManejo.index = 0;
@@ -340,8 +340,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				lista = analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes;
 				break;
 
-			case 'EMBASAMENTO_LEGAL':
-				lista = analiseTecnicaManejo.analiseTecnica.embasamentoLegal;
+			case 'EMBASAMENTOS_LEGAIS':
+				lista = analiseTecnicaManejo.analiseTecnica.vinculosEmbasamentos;
 				break;
 
 			default:
