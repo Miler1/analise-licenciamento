@@ -5,7 +5,7 @@ import utils.SerializerUtil;
 
 public class AnalisesTecnicaManejoSerializer {
 
-	public static JSONSerializer findById = SerializerUtil.createWithDateTime(
+	public static JSONSerializer findById = SerializerUtil.createWithDoubleTransformer(
 			"id",
 			"dataAnalise",
 			"pathAnexo",
@@ -50,7 +50,6 @@ public class AnalisesTecnicaManejoSerializer {
 			"basesVetorial.nome",
 			"basesVetorial.fonte",
 			"basesVetorial.ultimaAtualizacao",
-			"basesVetorial.escala",
 			"basesVetorial.observacao",
 			"basesVetorial.exibirPDF",
 			"observacoesDadosImovel.id",
@@ -98,6 +97,10 @@ public class AnalisesTecnicaManejoSerializer {
 			"observacoesDocumentosComplementares.texto",
 			"observacoesDocumentosComplementares.passoAnalise.id",
 			"observacoesDocumentosComplementares.data",
+			"observacoesEmbasamentoLegal.id",
+			"observacoesEmbasamentoLegal.texto",
+			"observacoesEmbasamentoLegal.passoAnalise.id",
+			"observacoesEmbasamentoLegal.data",
 			"processoManejo.empreendimento.imovel.id",
 			"processoManejo.empreendimento.imovel.registroCar",
 			"processoManejo.empreendimento.imovel.areaTotalImovelDocumentado",
@@ -113,12 +116,20 @@ public class AnalisesTecnicaManejoSerializer {
 			"documentosImovel.tipo.nome",
 			"documentosComplementares.id",
 			"documentosComplementares.nome",
-			"vinculos.id",
-			"vinculos.insumo.id",
-			"vinculos.insumo.data",
-			"vinculos.insumo.ano",
-			"vinculos.insumo.satelite",
-			"vinculos.insumo.orbPonto",
-			"vinculos.exibirPDF"
+			"vinculosInsumosOrdenados.id",
+			"vinculosInsumosOrdenados.insumo.id",
+			"vinculosInsumosOrdenados.insumo.data",
+			"vinculosInsumosOrdenados.insumo.ano",
+			"vinculosInsumosOrdenados.insumo.satelite",
+			"vinculosInsumosOrdenados.insumo.orbPonto",
+			"vinculosInsumosOrdenados.exibirPDF",
+			"vinculosConsideracoesOrdenados.id",
+			"vinculosConsideracoesOrdenados.consideracao.id",
+			"vinculosConsideracoesOrdenados.consideracao.texto",
+			"vinculosConsideracoesOrdenados.exibirPDF",
+			"vinculosEmbasamentosOrdenados.id",
+			"vinculosEmbasamentosOrdenados.embasamentoLegal.id",
+			"vinculosEmbasamentosOrdenados.embasamentoLegal.texto",
+			"vinculosEmbasamentosOrdenados.exibirPDF"
 	);
 }

@@ -5,6 +5,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
 
 	var analiseTecnicaManejo = this;
+	analiseTecnicaManejo.formularioAnaliseTecnicaConclusao = null;
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
@@ -19,6 +20,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		DETALHAMENTO_AREA_EFETIVA: ['DETALHAMENTO_AREA_EFETIVA', 'observacoesDetalhamentoAreaEfetiva', 'id-detalhamento-area-efetiva-manejo'],
 		CONSIDERACOES: ['CONSIDERACOES', 'observacoesConsideracoes', 'id-consideracoes'],
 		DOCUMENTOS_COMPLEMENTARES: ['DOCUMENTOS_COMPLEMENTARES', 'observacoesDocumentosComplementares', 'id-documentos-complementares'],
+		EMBASAMENTOS_LEGAIS: ['EMBASAMENTOS_LEGAIS', 'observacoesEmbasamentoLegal', 'id-embasamento-legal'],
 		CONCLUSAO: ['CONCLUSAO', 'observacoesConclusao', 'id-conclusao']
 	};
 	analiseTecnicaManejo.listaPassos = [
@@ -32,6 +34,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 		analiseTecnicaManejo.passos.DETALHAMENTO_AREA_EFETIVA,
 		analiseTecnicaManejo.passos.CONSIDERACOES,
 		analiseTecnicaManejo.passos.DOCUMENTOS_COMPLEMENTARES,
+		analiseTecnicaManejo.passos.EMBASAMENTOS_LEGAIS,
 		analiseTecnicaManejo.passos.CONCLUSAO
 	];
 	analiseTecnicaManejo.index = 0;
@@ -60,8 +63,10 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
-				// nome diferente do serializer para usar o get padrão
-				analiseTecnicaManejo.analiseTecnica.vinculoInsumos = analiseTecnicaManejo.analiseTecnica.vinculos;
+				//Tratamentos para pegar os arquivos ordenados
+				analiseTecnicaManejo.analiseTecnica.vinculosInsumos = response.data.vinculosInsumosOrdenados;
+				analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes = response.data.vinculosConsideracoesOrdenados;
+				analiseTecnicaManejo.analiseTecnica.vinculosEmbasamentos = response.data.vinculosEmbasamentosOrdenados;
 
 				initDocumentosImovel(analiseTecnicaManejo.analiseTecnica);
 
@@ -76,6 +81,8 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 					analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI += analise.area;
 				});
+
+				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = parseFloat(Math.round(parseFloat(analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI).toFixed(4) * 100) / 100).toFixed(4);
 			})
 			.catch(function (response) {
 
@@ -318,7 +325,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				break;
 
 			case 'INSUMOS_UTILIZADOS':
-				lista = analiseTecnicaManejo.analiseTecnica.vinculoInsumos;
+				lista = analiseTecnicaManejo.analiseTecnica.vinculosInsumos;
 				break;
 
 			case 'CALCULO_NDFI':
@@ -327,6 +334,14 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			case 'BASE_VETORIAL':
 				lista = analiseTecnicaManejo.analiseTecnica.basesVetorial;
+				break;
+
+			case 'CONSIDERACOES':
+				lista = analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes;
+				break;
+
+			case 'EMBASAMENTOS_LEGAIS':
+				lista = analiseTecnicaManejo.analiseTecnica.vinculosEmbasamentos;
 				break;
 
 			default:
@@ -402,22 +417,34 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.confirmar = function() {
 
-		analiseManejoService.finalizar($routeParams.idAnaliseManejo)
-			.then(function (response) {
+		var validado = validarFormularioConclusao();
 
-				mensagem.success(response.data.texto);
-				$location.path('/analise-manejo');
+		if (validado) {
 
-			})
-			.catch(function (response) {
+			analiseManejoService.finalizar(analiseTecnicaManejo.analiseTecnica)
+				.then(function (response) {
 
-				if (!!response.data.texto)
-					mensagem.warning(response.data.texto);
+					mensagem.success(response.data.texto);
+					$location.path('/analise-manejo');
 
-				else
-					mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
-			});
+				})
+				.catch(function (response) {
+
+					if (!!response.data.texto)
+						mensagem.warning(response.data.texto);
+
+					else
+						mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
+				});
+		}
+
 	};
+
+	function validarFormularioConclusao() {
+
+		analiseTecnicaManejo.formularioAnaliseTecnicaConclusao.$setSubmitted();
+		return analiseTecnicaManejo.formularioAnaliseTecnicaConclusao.$valid;
+	}
 
 	$rootScope.$on('$locationChangeStart', function () {
 

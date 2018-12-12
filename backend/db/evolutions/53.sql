@@ -146,6 +146,7 @@ ALTER TABLE analise.imovel_manejo ADD COLUMN endereco TEXT;
 ALTER TABLE analise.imovel_manejo ADD COLUMN bairro VARCHAR(250);
 ALTER TABLE analise.imovel_manejo ADD COLUMN cep VARCHAR(10);
 ALTER TABLE analise.imovel_manejo DROP COLUMN id_municipio;
+ALTER TABLE analise.imovel_manejo DROP COLUMN descricao_acesso;
 
 
 -- tabela empreendimento_manejo

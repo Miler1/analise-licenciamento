@@ -25,7 +25,7 @@ ALTER TABLE analise.base_vetorial DROP COLUMN exibir_pdf;
 
 --- Desfazer Alterar tipo de documento do manejo
 
-UPDATE analise.tipo_documento SET nome = 'Área de preservação permanente - APP', prefixo_nome_arquivo = 'app' WHERE id = 9
+UPDATE analise.tipo_documento SET nome = 'Área de preservação permanente - APP', prefixo_nome_arquivo = 'app' WHERE id = 9;
 
 --- Remover novos tipos de documentos para dados do imovel em analise manejo
 

@@ -31,9 +31,6 @@ public class BaseVetorial extends GenericModel {
     @Column(name="ultima_atualizacao")
     public Date ultimaAtualizacao;
 
-    @Column(name="escala")
-    public String escala;
-
     @Column(name="observacao")
     public String observacao;
 
@@ -56,8 +53,6 @@ public class BaseVetorial extends GenericModel {
             baseVetorial.fonte = UUID.randomUUID().toString().replace('-', ' ');
 
             baseVetorial.ultimaAtualizacao = new Date();
-
-            baseVetorial.escala = UUID.randomUUID().toString().replace('-', ' ');
 
             baseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
 
