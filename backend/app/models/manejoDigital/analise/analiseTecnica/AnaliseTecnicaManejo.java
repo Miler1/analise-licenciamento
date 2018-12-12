@@ -137,13 +137,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public List<DocumentoManejo> documentosManejo;
 
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<VinculoAnaliseTecnicaManejoInsumo> vinculoInsumos;
+    public List<VinculoAnaliseTecnicaManejoInsumo> vinculosInsumos;
 
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<VinculoAnaliseTecnicaManejoConsideracao> vinculoConsideracoes;
+    public List<VinculoAnaliseTecnicaManejoConsideracao> vinculosConsideracoes;
 
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> vinculoEmbasamentos;
+    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> vinculosEmbasamentos;
 
     @Column
     public String conclusao;
@@ -179,7 +179,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
             case INSUMOS_UTILIZADOS:
 
-                this.updateExibirPdfInsumos(novaAnalise.vinculoInsumos);
+                this.updateExibirPdfInsumos(novaAnalise.vinculosInsumos);
                 break;
 
             case BASE_VETORIAL:
@@ -189,12 +189,12 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
             case CONSIDERACOES:
 
-                this.updateExibirPdfConsideracoes(novaAnalise.vinculoConsideracoes);
+                this.updateExibirPdfConsideracoes(novaAnalise.vinculosConsideracoes);
                 break;
 
             case EMBASAMENTOS_LEGAIS:
 
-                this.updateExibirPdfEmbasamentos(novaAnalise.vinculoEmbasamentos);
+                this.updateExibirPdfEmbasamentos(novaAnalise.vinculosEmbasamentos);
                 break;
 
         }
@@ -261,12 +261,11 @@ public class AnaliseTecnicaManejo extends GenericModel {
             exibirPdfMap.put(novoInsumo.id, novoInsumo.exibirPDF);
         }
 
-        for (VinculoAnaliseTecnicaManejoInsumo vinculoInsumo : this.vinculoInsumos) {
+        for (VinculoAnaliseTecnicaManejoInsumo vinculoInsumo : this.vinculosInsumos) {
 
             vinculoInsumo.exibirPDF = exibirPdfMap.get(vinculoInsumo.id);
+            vinculoInsumo.save();
         }
-
-        this._save();
     }
 
     public void updateExibirPdfConsideracoes(List<VinculoAnaliseTecnicaManejoConsideracao> novasConsideracoes) {
@@ -278,12 +277,11 @@ public class AnaliseTecnicaManejo extends GenericModel {
             exibirPdfMap.put(novaConsideracao.id, novaConsideracao.exibirPDF);
         }
 
-        for (VinculoAnaliseTecnicaManejoConsideracao vinculoConsideracao : this.vinculoConsideracoes) {
+        for (VinculoAnaliseTecnicaManejoConsideracao vinculoConsideracao : this.vinculosConsideracoes) {
 
             vinculoConsideracao.exibirPDF = exibirPdfMap.get(vinculoConsideracao.id);
+            vinculoConsideracao.save();
         }
-
-        this._save();
     }
 
     public void updateExibirPdfEmbasamentos(List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> novosEmbasamentos) {
@@ -295,12 +293,11 @@ public class AnaliseTecnicaManejo extends GenericModel {
             exibirPdfMap.put(novoEmbasamento.id, novoEmbasamento.exibirPDF);
         }
 
-        for (VinculoAnaliseTecnicaManejoEmbasamentoLegal vinculoEmbasamento : this.vinculoEmbasamentos) {
+        for (VinculoAnaliseTecnicaManejoEmbasamentoLegal vinculoEmbasamento : this.vinculosEmbasamentos) {
 
             vinculoEmbasamento.exibirPDF = exibirPdfMap.get(vinculoEmbasamento.id);
+            vinculoEmbasamento.save();
         }
-
-        this._save();
     }
 
     public AnaliseTecnicaManejo gerarCalculoAreaEfetiva() {
@@ -598,21 +595,21 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculosInsumos() {
+    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculosInsumosOrdenados() {
 
         return VinculoAnaliseTecnicaManejoInsumo.find("analiseTecnicaManejo.id = :x ORDER BY insumo.data ASC")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoConsideracao> getVinculosConsideracoes() {
+    public List<VinculoAnaliseTecnicaManejoConsideracao> getVinculosConsideracoesOrdenados() {
 
         return VinculoAnaliseTecnicaManejoConsideracao.find("analiseTecnicaManejo.id = :x ORDER BY consideracao.id ASC")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> getVinculosEmbasamentos() {
+    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> getVinculosEmbasamentosOrdenados() {
 
         return VinculoAnaliseTecnicaManejoEmbasamentoLegal.find("analiseTecnicaManejo.id = :x ORDER BY embasamentoLegal.id ASC")
                 .setParameter("x", this.id)

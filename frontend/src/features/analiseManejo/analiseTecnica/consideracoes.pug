@@ -5,12 +5,12 @@ h5 Considerações
 div
     blockquote.analise-manejo
         div.row.card-analise-manejo
-            .col-xs-12
-                ul.margin-top-xs
-                    li.text-justify Toda a análise da GEOTEC foi realizada com base em dados apresentados pelo próprio Técnico Responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.
-                    li.text-justify As informações utilizadas, até a presente data, para analise do processo da GEOTEC, foram disponibilizadas do Banco de Dados de Raster e Vetores pela gerencia GTDI.
-                    li.text-justify No processo CONSTA o Relatório Técnico de Georreferenciamento do Imóvel, em meio analógico e digital, conforme as normas técnicas do INCRA (Lei 10.267/01).
-                    li.margin-bottom-important.text-justify De acordo com a INSTRUÇÃO NORMATIVA Nº 001, de 14 de janeiro de 2014, a APAT não permite o início das atividades de manejo, não autoriza a exploração florestal e nem se constitui em prova de posse ou propriedade para fins de regularização fundiários, de autorização de desmatamento ou de obtenção de financiamento junto às instituições de crédito públicas ou privados;
+            .col-xs-12.margin-top-xs.margin-bottom-xs(ng-repeat="vinculo in analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes")
+
+                .col-xs-1.text-center.checkbox-center
+                    input(type='checkbox', placeholder='', ng-model='vinculo.exibirPDF')
+                .col-xs-11
+                    span.text-justify {{ vinculo.consideracao.texto }}
 
 div
     +observacoes('analiseTecnicaManejo.analiseTecnica.observacoesConsideracoes')
