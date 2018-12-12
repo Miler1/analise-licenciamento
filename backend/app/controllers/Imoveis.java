@@ -2,12 +2,15 @@ package controllers;
 
 import exceptions.AppException;
 import exceptions.WebServiceException;
+import models.licenciamento.Municipio;
 import models.sicar.ImovelSicar;
 import models.sicar.SicarWebService;
 import play.libs.WS;
 import security.Acao;
 import utils.Configuracoes;
 import utils.Mensagem;
+
+import java.util.List;
 
 public class Imoveis extends InternalController {
 
@@ -71,5 +74,31 @@ public class Imoveis extends InternalController {
 		}
 
 		renderJSON(sicarWebService.getImovelById(imovelSicar.id.toString()));
+	}
+
+	public static void getImovelById(String id) {
+
+		verificarPermissao(Acao.CADASTRAR_PROCESSO_MANEJO, Acao.VISUALIZAR_PROCESSO_MANEJO);
+
+		notFoundIfNull(id);
+
+		SicarWebService sicarWebService = new SicarWebService();
+
+		renderJSON(sicarWebService.getImovelById(id));
+	}
+
+	public static void getImoveisSimplificadosPorCpfCnpj(String cpfCnpj, Long idMunicipio) {
+
+		verificarPermissao(Acao.CADASTRAR_PROCESSO_MANEJO);
+
+		if (cpfCnpj == null || cpfCnpj.isEmpty())
+			renderMensagem(Mensagem.CPF_CNPJ_INVALIDO_NAO_INFORMADO);
+
+		Municipio municipio = Municipio.findById(idMunicipio);
+
+		List<ImovelSicar> imoveisEncontrados =
+				new SicarWebService().getImoveisSimplificadosPorCpfCnpj(cpfCnpj, municipio);
+
+		renderJSON(imoveisEncontrados);
 	}
 }

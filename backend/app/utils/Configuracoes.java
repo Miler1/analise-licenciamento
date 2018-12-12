@@ -71,6 +71,7 @@ public class Configuracoes {
 	public static String URL_SICAR = getConfig("sicar.url", null);
 	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
 	public static String URL_SICAR_IMOVEL_FICHA = URL_SICAR + getConfig("url.sicar.imovel.ficha", null);
+	public static String URL_SICAR_IMOVEIS_SIMPLIFICADOS = URL_SICAR + getConfig("url.sicar.imoveisSimplificados", null);
 
 	public static String ANALISE_SHAPE_URL = getConfig("analise.shape.url", null);
 	public static String ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.add.features.propriedade.url", null);
