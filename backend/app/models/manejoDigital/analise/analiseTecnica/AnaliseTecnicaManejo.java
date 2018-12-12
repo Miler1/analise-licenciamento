@@ -137,13 +137,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public List<DocumentoManejo> documentosManejo;
 
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<VinculoAnaliseTecnicaManejoInsumo> vinculoInsumos;
+    public List<VinculoAnaliseTecnicaManejoInsumo> vinculosInsumos;
 
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<VinculoAnaliseTecnicaManejoConsideracao> vinculoConsideracoes;
+    public List<VinculoAnaliseTecnicaManejoConsideracao> vinculosConsideracoes;
 
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
-    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> vinculoEmbasamentos;
+    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> vinculosEmbasamentos;
 
     @Column
     public String conclusao;
@@ -163,100 +163,142 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return this.refresh();
     }
 
-	public AnaliseTecnicaManejo updateExibirPdf(AnaliseTecnicaManejo novaAnalise, PassoAnaliseManejo passo) {
+    public AnaliseTecnicaManejo updateExibirPdf(AnaliseTecnicaManejo novaAnalise, PassoAnaliseManejo passo) {
 
-    	switch (passo) {
-			case CALCULO_NDFI:
+        switch (passo) {
 
-				this.updateExibirPdfCalculoNDFI(novaAnalise.analisesNdfi);
-				break;
+            case CALCULO_NDFI:
 
-			case ANALISE_VETORIAL:
+                this.updateExibirPdfCalculoNDFI(novaAnalise.analisesNdfi);
+                break;
 
-				this.updateExibirPdfAnalisesVetorial(novaAnalise.analisesVetorial);
-				break;
+            case ANALISE_VETORIAL:
 
-			case INSUMOS_UTILIZADOS:
+                this.updateExibirPdfAnalisesVetorial(novaAnalise.analisesVetorial);
+                break;
 
-				this.updateExibirPdfInsumos(novaAnalise.vinculoInsumos);
-				break;
+            case INSUMOS_UTILIZADOS:
 
-			case BASE_VETORIAL:
+                this.updateExibirPdfInsumos(novaAnalise.vinculosInsumos);
+                break;
 
-				this.updateExibirPdfBaseVetorial(novaAnalise.basesVetorial);
-				break;
+            case BASE_VETORIAL:
 
-		}
-		return this.refresh();
-	}
+                this.updateExibirPdfBaseVetorial(novaAnalise.basesVetorial);
+                break;
 
-	private void updateExibirPdfBaseVetorial(List<BaseVetorial> novasBasesVetorial) {
+            case CONSIDERACOES:
 
-		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+                this.updateExibirPdfConsideracoes(novaAnalise.vinculosConsideracoes);
+                break;
 
-		for (BaseVetorial novaBaseVetorial : novasBasesVetorial) {
+            case EMBASAMENTOS_LEGAIS:
 
-			exibirPdfMap.put(novaBaseVetorial.id, novaBaseVetorial.exibirPDF);
-		}
+                this.updateExibirPdfEmbasamentos(novaAnalise.vinculosEmbasamentos);
+                break;
 
-		for (BaseVetorial baseVetorial : this.basesVetorial) {
+        }
+        return this.refresh();
+    }
 
-			baseVetorial.exibirPDF = exibirPdfMap.get(baseVetorial.id);
-		}
+    private void updateExibirPdfBaseVetorial(List<BaseVetorial> novasBasesVetorial) {
 
-		this._save();
-	}
+        Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
 
-	private void updateExibirPdfCalculoNDFI(List<AnaliseNdfi> novasAnalisesNdfi) {
+        for (BaseVetorial novaBaseVetorial : novasBasesVetorial) {
 
-		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+            exibirPdfMap.put(novaBaseVetorial.id, novaBaseVetorial.exibirPDF);
+        }
 
-		for (AnaliseNdfi novaAnaliseNdfi : novasAnalisesNdfi) {
+        for (BaseVetorial baseVetorial : this.basesVetorial) {
 
-			exibirPdfMap.put(novaAnaliseNdfi.id, novaAnaliseNdfi.exibirPDF);
-		}
+            baseVetorial.exibirPDF = exibirPdfMap.get(baseVetorial.id);
+        }
 
-		for (AnaliseNdfi analiseNdfi : this.analisesNdfi) {
+        this._save();
+    }
 
-			analiseNdfi.exibirPDF = exibirPdfMap.get(analiseNdfi.id);
-		}
+    private void updateExibirPdfCalculoNDFI(List<AnaliseNdfi> novasAnalisesNdfi) {
 
-		this._save();
-	}
+        Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
 
-	private void updateExibirPdfAnalisesVetorial(List<AnaliseVetorial> novasAnalisesVetorial) {
+        for (AnaliseNdfi novaAnaliseNdfi : novasAnalisesNdfi) {
 
-		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+            exibirPdfMap.put(novaAnaliseNdfi.id, novaAnaliseNdfi.exibirPDF);
+        }
 
-		for (AnaliseVetorial novaAnaliseVetorial : novasAnalisesVetorial) {
+        for (AnaliseNdfi analiseNdfi : this.analisesNdfi) {
 
-			exibirPdfMap.put(novaAnaliseVetorial.id, novaAnaliseVetorial.exibirPDF);
-		}
+            analiseNdfi.exibirPDF = exibirPdfMap.get(analiseNdfi.id);
+        }
 
-		for (AnaliseVetorial analiseVetorial : this.analisesVetorial) {
+        this._save();
+    }
 
-			analiseVetorial.exibirPDF = exibirPdfMap.get(analiseVetorial.id);
-		}
+    private void updateExibirPdfAnalisesVetorial(List<AnaliseVetorial> novasAnalisesVetorial) {
 
-		this._save();
-	}
+        Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
 
-	private void updateExibirPdfInsumos(List<VinculoAnaliseTecnicaManejoInsumo> novosInsumos) {
+        for (AnaliseVetorial novaAnaliseVetorial : novasAnalisesVetorial) {
 
-		Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+            exibirPdfMap.put(novaAnaliseVetorial.id, novaAnaliseVetorial.exibirPDF);
+        }
 
-		for (VinculoAnaliseTecnicaManejoInsumo novoInsumo : novosInsumos) {
+        for (AnaliseVetorial analiseVetorial : this.analisesVetorial) {
 
-			exibirPdfMap.put(novoInsumo.id, novoInsumo.exibirPDF);
-		}
+            analiseVetorial.exibirPDF = exibirPdfMap.get(analiseVetorial.id);
+        }
 
-		for (VinculoAnaliseTecnicaManejoInsumo vinculoInsumo : this.vinculoInsumos) {
+        this._save();
+    }
 
-			vinculoInsumo.exibirPDF = exibirPdfMap.get(vinculoInsumo.id);
-		}
+    private void updateExibirPdfInsumos(List<VinculoAnaliseTecnicaManejoInsumo> novosInsumos) {
 
-		this._save();
-	}
+        Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+        for (VinculoAnaliseTecnicaManejoInsumo novoInsumo : novosInsumos) {
+
+            exibirPdfMap.put(novoInsumo.id, novoInsumo.exibirPDF);
+        }
+
+        for (VinculoAnaliseTecnicaManejoInsumo vinculoInsumo : this.vinculosInsumos) {
+
+            vinculoInsumo.exibirPDF = exibirPdfMap.get(vinculoInsumo.id);
+            vinculoInsumo.save();
+        }
+    }
+
+    public void updateExibirPdfConsideracoes(List<VinculoAnaliseTecnicaManejoConsideracao> novasConsideracoes) {
+
+        Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+        for (VinculoAnaliseTecnicaManejoConsideracao novaConsideracao : novasConsideracoes) {
+
+            exibirPdfMap.put(novaConsideracao.id, novaConsideracao.exibirPDF);
+        }
+
+        for (VinculoAnaliseTecnicaManejoConsideracao vinculoConsideracao : this.vinculosConsideracoes) {
+
+            vinculoConsideracao.exibirPDF = exibirPdfMap.get(vinculoConsideracao.id);
+            vinculoConsideracao.save();
+        }
+    }
+
+    public void updateExibirPdfEmbasamentos(List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> novosEmbasamentos) {
+
+        Map<Long, Boolean> exibirPdfMap = new HashMap<Long, Boolean>();
+
+        for (VinculoAnaliseTecnicaManejoEmbasamentoLegal novoEmbasamento : novosEmbasamentos) {
+
+            exibirPdfMap.put(novoEmbasamento.id, novoEmbasamento.exibirPDF);
+        }
+
+        for (VinculoAnaliseTecnicaManejoEmbasamentoLegal vinculoEmbasamento : this.vinculosEmbasamentos) {
+
+            vinculoEmbasamento.exibirPDF = exibirPdfMap.get(vinculoEmbasamento.id);
+            vinculoEmbasamento.save();
+        }
+    }
 
     public AnaliseTecnicaManejo gerarCalculoAreaEfetiva() {
 
@@ -387,18 +429,42 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-	public List<Observacao> getObservacoesConclusao() {
+    public List<Observacao> getObservacoesEmbasamentoLegal() {
 
-		return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 10 ORDER BY id")
-				.setParameter("x", this.id)
-				.fetch();
-	}
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 10 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public List<Observacao> getObservacoesConclusao() {
+
+        return Observacao.find("analiseTecnicaManejo.id = :x AND passoAnalise = 10 ORDER BY id")
+                .setParameter("x", this.id)
+                .fetch();
+    }
+
+    public void finalizar(AnaliseTecnicaManejo analise) {
+
+        if (analise.conclusao == null || analise.conclusao.equals("")) {
 
 
-    public void finalizar() {
+            throw new ValidacaoException(Mensagem.ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA);
+        }
 
-        this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_PROCESSO_MANEJO, this.analistaTecnico.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+        this.conclusao = analise.conclusao;
+
+        if (analise.apto) {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_PROCESSO_MANEJO, this.analistaTecnico.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+
+        } else {
+
+            this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_PROCESS_MANEJO_ANALISE_TECNICA, this.analistaTecnico.usuario);
+            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+        }
+
+        this._save();
     }
 
     public Documento gerarPDFAnalise() throws Exception {
@@ -529,21 +595,21 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculosInsumos() {
+    public List<VinculoAnaliseTecnicaManejoInsumo> getVinculosInsumosOrdenados() {
 
         return VinculoAnaliseTecnicaManejoInsumo.find("analiseTecnicaManejo.id = :x ORDER BY insumo.data ASC")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoConsideracao> getVinculosConsideracoes() {
+    public List<VinculoAnaliseTecnicaManejoConsideracao> getVinculosConsideracoesOrdenados() {
 
         return VinculoAnaliseTecnicaManejoConsideracao.find("analiseTecnicaManejo.id = :x ORDER BY consideracao.id ASC")
                 .setParameter("x", this.id)
                 .fetch();
     }
 
-    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> getVinculosEmbasamentos() {
+    public List<VinculoAnaliseTecnicaManejoEmbasamentoLegal> getVinculosEmbasamentosOrdenados() {
 
         return VinculoAnaliseTecnicaManejoEmbasamentoLegal.find("analiseTecnicaManejo.id = :x ORDER BY embasamentoLegal.id ASC")
                 .setParameter("x", this.id)

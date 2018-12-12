@@ -63,6 +63,11 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 				analiseTecnicaManejo.analiseTecnica = response.data;
 
+				//Tratamentos para pegar os arquivos ordenados
+				analiseTecnicaManejo.analiseTecnica.vinculosInsumos = response.data.vinculosInsumosOrdenados;
+				analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes = response.data.vinculosConsideracoesOrdenados;
+				analiseManejoService.analiseTecnica.vinculosEmbasamentos = response.data.vinculosEmbasamentosOrdenados;
+
 				initDocumentosImovel(analiseTecnicaManejo.analiseTecnica);
 
 				analiseTecnicaManejo.analiseTecnica.totalAnaliseNDFI = 0;
@@ -329,6 +334,14 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 			case 'BASE_VETORIAL':
 				lista = analiseTecnicaManejo.analiseTecnica.basesVetorial;
+				break;
+
+			case 'CONSIDERACOES':
+				lista = analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes;
+				break;
+
+			case 'EMBASAMENTO_LEGAL':
+				lista = analiseTecnicaManejo.analiseTecnica.embasamentoLegal;
 				break;
 
 			default:
