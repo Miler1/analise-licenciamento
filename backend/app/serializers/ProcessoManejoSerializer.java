@@ -36,6 +36,7 @@ public class ProcessoManejoSerializer {
 			"empreendimento.imovel.municipio.nome",
 			"empreendimento.imovel.municipio.estado.nome",
 			"empreendimento.imovel.descricaoAcesso",
+			"empreendimento.imovel.status",
 			"justificativaIndeferimento"
 	);
 
