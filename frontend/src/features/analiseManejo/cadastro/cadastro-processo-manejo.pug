@@ -73,8 +73,11 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 			div.panel-body
 				.row
 					label.col-xs-2 Recibo do CAR:
-					.col-xs-8
+					.col-xs-6
 						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.registroCar }}
+					label.col-xs-2 Status:
+					.col-xs-2
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.status }}
 				.row.margin-top-sm
 					label.col-xs-2 Nome do proprietário:
 					.col-xs-4
