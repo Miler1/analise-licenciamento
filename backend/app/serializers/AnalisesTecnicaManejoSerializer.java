@@ -5,7 +5,7 @@ import utils.SerializerUtil;
 
 public class AnalisesTecnicaManejoSerializer {
 
-	public static JSONSerializer findById = SerializerUtil.createWithDateTime(
+	public static JSONSerializer findById = SerializerUtil.createWithDoubleTransformer(
 			"id",
 			"dataAnalise",
 			"pathAnexo",
@@ -50,8 +50,8 @@ public class AnalisesTecnicaManejoSerializer {
 			"basesVetorial.nome",
 			"basesVetorial.fonte",
 			"basesVetorial.ultimaAtualizacao",
-			"basesVetorial.escala",
 			"basesVetorial.observacao",
+			"basesVetorial.exibirPDF",
 			"observacoesDadosImovel.id",
 			"observacoesDadosImovel.texto",
 			"observacoesDadosImovel.passoAnalise.id",
@@ -108,6 +108,8 @@ public class AnalisesTecnicaManejoSerializer {
 			"processoManejo.empreendimento.imovel.areaUsoConsolidado",
 			"documentosImovel.id",
 			"documentosImovel.nome",
+			"documentosImovel.tipo.id",
+			"documentosImovel.tipo.nome",
 			"documentosComplementares.id",
 			"documentosComplementares.nome",
 			"vinculos.id",

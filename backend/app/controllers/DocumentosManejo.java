@@ -1,7 +1,6 @@
 package controllers;
 
 import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
-import exceptions.ValidacaoException;
 import models.manejoDigital.DocumentoManejo;
 import org.apache.tika.Tika;
 import play.data.Upload;
@@ -15,12 +14,13 @@ import java.io.IOException;
 
 public class DocumentosManejo extends InternalController {
 
-	public static void uploadFileImovel(Upload file, Long idAnaliseTecnica) throws IOException {
+	public static void uploadFileImovel(Upload file, Long idAnaliseTecnica, Long idTipoDocumento) throws IOException {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
 
 		returnIfNull(file, "Upload");
 		returnIfNull(idAnaliseTecnica, "Long");
+		returnIfNull(idTipoDocumento, "Long");
 
 		String realType = null;
 
@@ -39,12 +39,7 @@ public class DocumentosManejo extends InternalController {
 			AnaliseTecnicaManejo analiseTecnica = AnaliseTecnicaManejo.findById(idAnaliseTecnica);
 			notFoundIfNull(analiseTecnica);
 
-			if (analiseTecnica.getDocumentosImovel().size() > 1) {
-
-				throw new ValidacaoException(Mensagem.DOCUMENTO_IMOVEL_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO);
-			}
-
-			DocumentoManejo documento = analiseTecnica.saveDocumentoImovel(file);
+			DocumentoManejo documento = analiseTecnica.saveDocumentoImovel(file, idTipoDocumento);
 
 			renderJSON(documento, DocumentosManejoSerializer.upload);
 

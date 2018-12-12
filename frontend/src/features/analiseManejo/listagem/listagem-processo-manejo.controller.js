@@ -28,8 +28,8 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.status = {
 		'17': 'Aguardando análise técnica',
 		'18': 'Em análise técnica',
-		'19': 'Deferido',
-		'20': 'Indeferido',
+		'19': 'Apto',
+		'20': 'Inapto',
 		'22': 'Aguardando análise de shape',
 		'23': 'Em análise de shape'
 	};

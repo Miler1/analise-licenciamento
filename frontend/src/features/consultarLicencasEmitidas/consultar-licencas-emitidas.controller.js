@@ -114,7 +114,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 		if (licenca.origemLicenca === app.ORIGEM_LICENCA.DISPENSA) {
 
-			licencaEmitidaService.downloadDla(licenca.idLicenca);
+			licencaEmitidaService.downloadDla(licenca.idDla);
 		} else {
 
 			licencaEmitidaService.downloadLicenca(licenca.idLicenca);
