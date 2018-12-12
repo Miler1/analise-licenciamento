@@ -12,10 +12,10 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
             .delete(config.BASE_URL() + "delete/manejo/" + id);
     };
 
-    this.finalizar = function(id) {
+    this.finalizar = function(analiseTecnica) {
 
             return request
-            .put(config.BASE_URL() + "analiseTecnicaManejo/" + id);
+            .put(config.BASE_URL() + "analiseTecnicaManejo", analiseTecnica);
     };
 
     this.upload = function(file, idAnaliseTecnica, idTipoDocumento) {

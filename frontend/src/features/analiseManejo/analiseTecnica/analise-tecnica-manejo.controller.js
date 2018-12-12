@@ -66,7 +66,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 				//Tratamentos para pegar os arquivos ordenados
 				analiseTecnicaManejo.analiseTecnica.vinculosInsumos = response.data.vinculosInsumosOrdenados;
 				analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes = response.data.vinculosConsideracoesOrdenados;
-				analiseManejoService.analiseTecnica.vinculosEmbasamentos = response.data.vinculosEmbasamentosOrdenados;
+				analiseTecnicaManejo.analiseTecnica.vinculosEmbasamentos = response.data.vinculosEmbasamentosOrdenados;
 
 				initDocumentosImovel(analiseTecnicaManejo.analiseTecnica);
 
