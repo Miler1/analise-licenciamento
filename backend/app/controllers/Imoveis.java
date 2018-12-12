@@ -1,6 +1,7 @@
 package controllers;
 
 import exceptions.AppException;
+import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.licenciamento.Municipio;
 import models.sicar.ImovelSicar;
@@ -91,8 +92,15 @@ public class Imoveis extends InternalController {
 
 		verificarPermissao(Acao.CADASTRAR_PROCESSO_MANEJO);
 
-		if (cpfCnpj == null || cpfCnpj.isEmpty())
-			renderMensagem(Mensagem.CPF_CNPJ_INVALIDO_NAO_INFORMADO);
+		if (cpfCnpj == null || cpfCnpj.isEmpty()) {
+
+			throw new ValidacaoException(Mensagem.CPF_CNPJ_INVALIDO_NAO_INFORMADO);
+		}
+
+		if (idMunicipio == null) {
+
+			throw new ValidacaoException(Mensagem.MUNICIPIO_INVALIDO_NAO_INFORMADO);
+		}
 
 		Municipio municipio = Municipio.findById(idMunicipio);
 
