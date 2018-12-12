@@ -74,6 +74,11 @@ html(lang='en')
 						| ${imovelManejo.registroCar ? imovelManejo.registroCar : "-"}
 				tr
 					td(colspan="2")
+						strong Status
+					td.coluna-valor(colspan="10")
+						| ${imovelManejo.status ? imovelManejo.status : "-"}
+				tr
+					td(colspan="2")
 						strong Área total do imóvel documental
 					td.coluna-valor(colspan="10")
 						| ${ imovelManejo.areaTotalImovelDocumentado ? new java.text.DecimalFormat("##########.####").format(imovelManejo.areaTotalImovelDocumentado) : "-"}

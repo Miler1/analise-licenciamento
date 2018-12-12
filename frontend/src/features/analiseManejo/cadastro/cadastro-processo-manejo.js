@@ -96,6 +96,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				cadastroProcessoManejoController.processo.empreendimento.imovel.nome = response.data.imovel.nome;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.municipio.id = response.data.imovel.codigoMunicipio;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.nomeSiglaMunicipio = response.data.imovel.nomeMunicipio + '/' + response.data.imovel.siglaEstado;
+				cadastroProcessoManejoController.processo.empreendimento.imovel.status = response.data.imovel.status;
 
 				_.forEach(response.data.geo, function(geo) {
 
