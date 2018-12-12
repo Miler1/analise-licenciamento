@@ -44,10 +44,11 @@ public class ImovelManejo extends GenericModel {
     @Column(name="area_uso_consolidado")
     public Double areaUsoConsolidado;
 
-	@Column(name="descricao_acesso")
+    @Column(name="descricao_acesso")
     public String descricaoAcesso;
 
-    @Column(name="status")
+    @Column
+    @Enumerated(EnumType.STRING)
     public StatusImovelManejo status;
 
 	@Required
