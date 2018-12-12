@@ -146,3 +146,4 @@ OBSERVACAO_EXCLUIDA_SUCESSO=Observação removida com sucesso.
 # Imóvel
 #
 IMOVEL_NAO_ENCONTRADO=Imóvel não encontrado.
+MUNICIPIO_INVALIDO_NAO_INFORMADO=Município não informado ou inválido.
