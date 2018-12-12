@@ -5,6 +5,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 	var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
 
 	var analiseTecnicaManejo = this;
+	analiseTecnicaManejo.formularioAnaliseTecnicaConclusao = null;
 	analiseTecnicaManejo.formularioAnaliseTecnica = null;
 	analiseTecnicaManejo.analiseTecnica = null;
 	analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB = TAMANHO_MAXIMO_ARQUIVO_MB;
@@ -403,22 +404,34 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 
 	analiseTecnicaManejo.confirmar = function() {
 
-		analiseManejoService.finalizar($routeParams.idAnaliseManejo)
-			.then(function (response) {
+		var validado = validarFormularioConclusao();
 
-				mensagem.success(response.data.texto);
-				$location.path('/analise-manejo');
+		if (validado) {
 
-			})
-			.catch(function (response) {
+			analiseManejoService.finalizar(analiseTecnicaManejo.analiseTecnica)
+				.then(function (response) {
 
-				if (!!response.data.texto)
-					mensagem.warning(response.data.texto);
+					mensagem.success(response.data.texto);
+					$location.path('/analise-manejo');
 
-				else
-					mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
-			});
+				})
+				.catch(function (response) {
+
+					if (!!response.data.texto)
+						mensagem.warning(response.data.texto);
+
+					else
+						mensagem.error("Ocorreu um erro ao finalizar a análise do manejo.");
+				});
+		}
+
 	};
+
+	function validarFormularioConclusao() {
+
+		analiseTecnicaManejo.formularioAnaliseTecnicaConclusao.$setSubmitted();
+		return analiseTecnicaManejo.formularioAnaliseTecnicaConclusao.$valid;
+	}
 
 	$rootScope.$on('$locationChangeStart', function () {
 
