@@ -72,7 +72,7 @@ var ImovelService =  function (request, config, $uibModal) {
 	this.getImoveisByCpfCnpj = function(cpfCnpj, idMunicipio) {
 
 		return request
-			.get(config.BASE_URL() + '/imoveis/simplificados',{
+			.get(config.BASE_URL() + 'imoveis/simplificados', {
 
 				cpfCnpj : cpfCnpj,
 				idMunicipio: idMunicipio
