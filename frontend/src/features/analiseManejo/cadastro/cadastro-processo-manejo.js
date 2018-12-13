@@ -12,7 +12,8 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 	cadastroProcessoManejoController.licencas = [];
 	cadastroProcessoManejoController.necessarioBuscarEmpreendimento = false;
 	cadastroProcessoManejoController.stringQueryImovel = null;
-	cadastroProcessoManejoController.listaImoveis = [];
+	cadastroProcessoManejoController.listaImoveis = null;
+	cadastroProcessoManejoController.imovelSelecionado = null;
 
 	function criarProcesso() {
 
@@ -76,7 +77,14 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 		} else {
 
-			buscarImoveis(cadastroProcessoManejoController.stringQueryImovel);
+			if (cadastroProcessoManejoController.imovelSelecionado) {
+
+				buscarImovelCompleto(cadastroProcessoManejoController.imovelSelecionado.codigo);
+
+			} else {
+
+				buscarImoveis(cadastroProcessoManejoController.stringQueryImovel);
+			}
 		}
 
 	};
@@ -141,7 +149,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 		imovelService.getImoveisByCpfCnpj(cpfCnpj, cadastroProcessoManejoController.processo.empreendimento.municipio.id)
 			.then(function(response) {
 
-				response.data = cadastroProcessoManejoController.listaImoveis;
+				cadastroProcessoManejoController.listaImoveis = response.data;
 
 			}, function(error){
 

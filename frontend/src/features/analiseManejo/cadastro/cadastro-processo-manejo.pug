@@ -52,11 +52,10 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 		label.required.control-label Informe o CPF/CNPJ do proprietário ou o número do CAR: *
 
 		div.input-group
-
 			input.form-control(type='text',
 								ng-model='cadastroProcessoManejo.stringQueryImovel',
 								enter='cadastroProcessoManejo.buscarImovel()',
-								placeholder='Informe o CAR do processo.',
+								placeholder='Informe o CPF/CNPJ ou CAR.',
 								name='car',
 								ng-disabled='!cadastroProcessoManejo.processo.empreendimento.municipio.id',
 								required
@@ -69,14 +68,21 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 										ng-disabled='!cadastroProcessoManejo.processo.empreendimento.municipio.id'
 									)
 					span.glyphicon.glyphicon-search
-			+inputErrors('formularioCadastroProcessoManejo', 'formularioCadastroProcessoManejo', 'required')
+
+		div.margin-top-md(ng-if="cadastroProcessoManejo.listaImoveis.length > 0")
+
+			label Imóveis encontrados:
+			select.form-control(id="car", name='car', ng-model="cadastroProcessoManejo.imovelSelecionado",
+			ng-options='c.codigo for c in cadastroProcessoManejo.listaImoveis track by c.id',
+			ng-change="cadastroProcessoManejo.buscarImovel()"
+			required)
+				option(value="") Selecione o imóvel
+
+
+		div.text-center.margin-top-md(ng-if="cadastroProcessoManejo.listaImoveis !== null && cadastroProcessoManejo.listaImoveis.length === 0") Nenhum imóvel encontrado.
 
 		div
-
-			select.form-control(id="car", name='car', ng-model="cadastro.empreendimento.imovel",
-			ng-options='i.codigo + " - " + i.nome + " - " + i.municipio.nome + " / " + i.municipio.estado.nome for i in localizacaoEmpreendimento.imoveis track by i.id',
-			ng-change="localizacaoEmpreendimento.getDadosImovel(cadastro.empreendimento.imovel.codigo)")
-
+			+inputErrors('formularioCadastroProcessoManejo', 'formularioCadastroProcessoManejo', 'required')
 
 	div(ng-if="cadastroProcessoManejo.processo.empreendimento.denominacao")
 		fieldset.panel.panel-default
