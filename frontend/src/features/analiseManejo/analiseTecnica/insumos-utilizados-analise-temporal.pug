@@ -20,7 +20,7 @@ div
 					th.text-center Data
 
 			tbody
-				tr(ng-repeat="vinculo in analiseTecnicaManejo.analiseTecnica.vinculoInsumos")
+				tr(ng-repeat="vinculo in analiseTecnicaManejo.analiseTecnica.vinculosInsumos")
 					td.col-md-1.text-center.checkbox-center
 						input(type='checkbox', placeholder='', ng-model='vinculo.exibirPDF')
 					td.text-center {{ vinculo.insumo.ano }}
