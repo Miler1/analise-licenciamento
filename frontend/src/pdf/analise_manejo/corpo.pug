@@ -111,15 +111,13 @@ html(lang='en')
 						| ${imovelManejo.areaUsoConsolidado ? new java.text.DecimalFormat("##########.####").format(imovelManejo.areaUsoConsolidado) : "-"}
 
 
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 0}
+	| \#{if analiseTecnicaManejo.getObservacoesDadosImovel() != null && analiseTecnicaManejo.getObservacoesDadosImovel().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesDadosImovel(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesDadosImovel().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
 
@@ -160,15 +158,13 @@ html(lang='en')
 				| \#{/if}
 				| \#{/list}
 
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 1}
+	| \#{if analiseTecnicaManejo.getObservacoesBaseVetorial() != null && analiseTecnicaManejo.getObservacoesBaseVetorial().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesBaseVetorial(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesBaseVetorial().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
 
@@ -206,15 +202,13 @@ html(lang='en')
 				| \#{/if}
 				| \#{/list}
 
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 2}
+	| \#{if analiseTecnicaManejo.getObservacoesAnaliseVetorial() != null && analiseTecnicaManejo.getObservacoesAnaliseVetorial().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesAnaliseVetorial(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesAnaliseVetorial().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
 
@@ -224,15 +218,13 @@ html(lang='en')
 	div.div-list
 		p Para comprovação da existência de cobertura florestal e verificação da não ocorrência de áreas com exploração florestal, foi realizada através de análise de imagens de satélite, referente aos ultimos 24 anos. Esta análise está baseada na determinação do índice Normalizado de Diferença de fração - NDFI, cujo objetivo medir as alterações na cobertura vegetal e no solo, conforme determina a IN 05 de 10/09/2015.
 
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 3}
+	| \#{if analiseTecnicaManejo.getObservacoesAnaliseTemporal() != null && analiseTecnicaManejo.getObservacoesAnaliseTemporal().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesAnaliseTemporal(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesAnaliseTemporal().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
 
@@ -261,17 +253,13 @@ html(lang='en')
 				| \#{/if}
 				| \#{/list}
 
-
-
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 4}
+	| \#{if analiseTecnicaManejo.getObservacoesInsumosUtilizados() != null && analiseTecnicaManejo.getObservacoesInsumosUtilizados().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesInsumosUtilizados(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesInsumosUtilizados().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
 
@@ -306,15 +294,13 @@ html(lang='en')
 				| \#{/if}
 				| \#{/list}
 
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 5}
+	| \#{if analiseTecnicaManejo.getObservacoesCalculoNDFI() != null && analiseTecnicaManejo.getObservacoesCalculoNDFI().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesCalculoNDFI(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesCalculoNDFI().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
 
@@ -346,7 +332,7 @@ html(lang='en')
 					td(colspan="1") ${ analiseTecnicaManejo.areaPreservacaoPermanente ? new java.text.DecimalFormat("##########.####").format(analiseTecnicaManejo.areaPreservacaoPermanente) : "-"}
 				tr
 					td(colspan="5")
-						strong Área de servidão
+						strong Área de servidão administrativa
 					td(colspan="1") ${ analiseTecnicaManejo.areaServidao ? new java.text.DecimalFormat("##########.####").format(analiseTecnicaManejo.areaServidao) : "-"}
 				tr
 					td(colspan="5")
@@ -385,18 +371,15 @@ html(lang='en')
 						strong Área de efetivo manejo - AMF
 					td.linha-destaque(colspan="1") ${ analiseTecnicaManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.####").format(analiseTecnicaManejo.areaEfetivoNdfi) : "-"}
 
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 6}
+	| \#{if analiseTecnicaManejo.getObservacoesCalculoAreaEfetiva() != null && analiseTecnicaManejo.getObservacoesCalculoAreaEfetiva().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesCalculoAreaEfetiva(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesCalculoAreaEfetiva().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
-
 
 	div
 		p
@@ -427,15 +410,13 @@ html(lang='en')
 						strong Área de efetivo manejo - AMF
 					td.linha-destaque(colspan="1") ${ analiseTecnicaManejo.areaEfetivoNdfi ? new java.text.DecimalFormat("##########.####").format(analiseTecnicaManejo.areaEfetivoNdfi) : "-"}
 
-	| \#{if analiseTecnicaManejo.observacoes}
-	| \#{list analiseTecnicaManejo.observacoes, as:'observacao'}
-	| \#{if observacao.passoAnalise.id == 7}
+	| \#{if analiseTecnicaManejo.getObservacoesDetalhamentoAreaEfetiva() != null && analiseTecnicaManejo.getObservacoesDetalhamentoAreaEfetiva().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesDetalhamentoAreaEfetiva(), as:'observacao'}
 	div
 		p
-			strong Observações.
+			strong ${ analiseTecnicaManejo.getObservacoesDetalhamentoAreaEfetiva().size() > 1 ? 'Observações:' : 'Observação:'}
 	div.div-list
 		p ${ observacao.texto }
-	| \#{/if}
 	| \#{/list}
 	| \#{/if}
 
@@ -444,12 +425,25 @@ html(lang='en')
 			strong 9 - Considerações:
 
 	div.div-list
+			| \#{set contador:1 /}
 			| \#{list vinculosConsideracoes, as:'vinculo'}
 			| \#{if vinculo.exibirPDF}
 			p
-				strong ${ vinculo.consideracao.texto }
+				strong 9.${ contador }  ${ vinculo.consideracao.texto }
+				| \#{set contador:contador + 1 /}
 			| \#{/if}
 			| \#{/list}
+
+	| \#{if analiseTecnicaManejo.getObservacoesConsideracoes() != null && analiseTecnicaManejo.getObservacoesConsideracoes().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesConsideracoes(), as:'observacao'}
+	div
+		p
+			strong ${ analiseTecnicaManejo.getObservacoesConsideracoes().size() > 1 ? 'Observações:' : 'Observação:'}
+	div.div-list
+		p ${ observacao.texto }
+	| \#{/list}
+	| \#{/if}
+
 	div
 		p
 			strong 10 - Embasamentos legais
@@ -461,6 +455,16 @@ html(lang='en')
 		| \#{/if}
 		| \#{/list}
 
+	| \#{if analiseTecnicaManejo.getObservacoesEmbasamentoLegal() != null && analiseTecnicaManejo.getObservacoesEmbasamentoLegal().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesEmbasamentoLegal(), as:'observacao'}
+	div
+		p
+			strong ${ analiseTecnicaManejo.getObservacoesEmbasamentoLegal().size() > 1 ? 'Observações:' : 'Observação:'}
+	div.div-list
+		p ${ observacao.texto }
+	| \#{/list}
+	| \#{/if}
+
 	div
 		p
 			strong 11 - Conclusão
@@ -468,6 +472,16 @@ html(lang='en')
 	div.div-list
 		p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMF APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
 		p ${ analiseTecnicaManejo.conclusao }
+
+	| \#{if analiseTecnicaManejo.getObservacoesConclusao() != null && analiseTecnicaManejo.getObservacoesConclusao().size() > 0}
+	| \#{list analiseTecnicaManejo.getObservacoesConclusao(), as:'observacao'}
+	div
+		p
+			strong ${ analiseTecnicaManejo.getObservacoesConclusao().size() > 1 ? 'Observações:' : 'Observação:'}
+	div.div-list
+		p ${ observacao.texto }
+	| \#{/list}
+	| \#{/if}
 
 	div
 		| \#{if arquivosComplementares.size() > 0}
@@ -480,4 +494,14 @@ html(lang='en')
 			center
 				img(src='${arquivo.getFile().getPath()}', width="600")
 		| \#{/list}
+
+		| \#{if analiseTecnicaManejo.getObservacoesDocumentosComplementares() != null && analiseTecnicaManejo.getObservacoesDocumentosComplementares().size() > 0}
+		| \#{list analiseTecnicaManejo.getObservacoesDocumentosComplementares(), as:'observacao'}
+		div
+			p
+				strong ${ analiseTecnicaManejo.getObservacoesDocumentosComplementares().size() > 1 ? 'Observações:' : 'Observação:'}
+		div.div-list
+			p ${ observacao.texto }
+		| \#{/list}
+		| \#{/if}
 		| \#{/if}
