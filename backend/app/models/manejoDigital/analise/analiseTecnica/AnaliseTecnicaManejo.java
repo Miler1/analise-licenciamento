@@ -118,8 +118,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public String objectId;
 
     @Required
-    @Min(2)
-    @Max(3)
     @OneToMany(mappedBy = "analiseTecnicaManejo", orphanRemoval = true)
     public List<DocumentoShape> documentosShape;
 
@@ -132,7 +130,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @JoinColumn(name = "id_processo_manejo")
     public ProcessoManejo processoManejo;
 
-    @Max(2)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoManejo> documentosManejo;
 
@@ -513,6 +510,14 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
                 .setParameter("x", DOCUMENTO_COMPLEMENTAR_MANEJO)
+                .setParameter("y", this.id)
+                .fetch();
+    }
+
+    public List<DocumentoManejo> getDocumentosProcessoManejo() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", ANEXO_PROCESSO_MANEJO_DIGITAL)
                 .setParameter("y", this.id)
                 .fetch();
     }
