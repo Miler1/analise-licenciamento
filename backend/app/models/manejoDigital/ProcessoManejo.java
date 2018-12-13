@@ -239,7 +239,6 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .filtrarPorNumeroProcesso(filtro.numeroProcesso)
                 .filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
                 .filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
-                .filtrarPorIdTipologia(filtro.idTipologia)
                 .filtrarPorIdAtividade(filtro.idAtividade)
                 .filtrarPorIdCondicao(filtro.idStatusLicenca)
                 .filtrarPorIdTipoLicenca(filtro.idManejoDigital);
