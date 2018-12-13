@@ -14,6 +14,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 	cadastroProcessoManejoController.stringQueryImovel = null;
 	cadastroProcessoManejoController.listaImoveis = null;
 	cadastroProcessoManejoController.imovelSelecionado = null;
+	cadastroProcessoManejoController.erroCampoCpfCnp = null;
 
 	function criarProcesso() {
 
@@ -66,7 +67,6 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	cadastroProcessoManejoController.buscarImovel = function() {
 
-
 		if (!cadastroProcessoManejoController.stringQueryImovel) {
 			return;
 		}
@@ -76,6 +76,13 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 			buscarImovelCompleto(cadastroProcessoManejoController.stringQueryImovel);
 
 		} else {
+
+			if (!cadastroProcessoManejoController.stringQueryImovel.isCPF() && !cadastroProcessoManejoController.stringQueryImovel.isCNPJ()) {
+
+				mensagem.error('CPF ou CNPJ inválido.', { ttl: 10000 });
+				cadastroProcessoManejoController.erroCampoCpfCnp = true;
+				return;
+			}
 
 			if (cadastroProcessoManejoController.imovelSelecionado) {
 
@@ -156,6 +163,13 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				mensagem.error(error.data.texto);
 			});
 	}
+
+	cadastroProcessoManejoController.watchQueryBuscarImovel = function() {
+
+		cadastroProcessoManejoController.erroCampoCpfCnp = false;
+		cadastroProcessoManejoController.listaImoveis = null;
+		cadastroProcessoManejoController.imovelSelecionado = null;
+	};
 
 	function init(){
 
