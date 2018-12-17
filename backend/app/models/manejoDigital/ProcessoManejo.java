@@ -17,9 +17,11 @@ import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
 import models.manejoDigital.analise.analiseShape.AtributosQueryAMFManejo;
+import models.manejoDigital.analise.analiseShape.AttachmentInfo;
 import models.manejoDigital.analise.analiseShape.FeatureAddLayer;
 import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
 import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
+import models.manejoDigital.analise.analiseShape.ResponseAnexoProcesso;
 import models.manejoDigital.analise.analiseShape.ResponseQueryAMFManejo;
 import models.manejoDigital.analise.analiseShape.ResponseQueryInsumo;
 import models.manejoDigital.analise.analiseShape.ResponseQueryMetadados;
@@ -344,7 +346,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
 
-        if (response.features.size() == 0) {
+        if (response.features.isEmpty()) {
 
             return;
         }
@@ -382,7 +384,24 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
             this.getAnaliseTecnica()._save();
 
-            tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
+            params.clear();
+            params.put("f", "json");
+
+            String urlAnexos = Configuracoes.ANALISE_SHAPE_URL + "/1/"
+                    + response.features.get(0).attributes.objectid + "/attachments";
+            ResponseAnexoProcesso responseAnexoProcesso = webService.post(urlAnexos, params, ResponseAnexoProcesso.class);
+
+            if(responseAnexoProcesso.attachmentInfos != null) {
+
+                for(AttachmentInfo anexo : responseAnexoProcesso.attachmentInfos) {
+
+                    webService.post(urlAnexos + "/" + anexo.id + "?gdbVersion=1", params, ResponseAnexoProcesso.class);
+                }
+            }
+
+            throw new AppException();
+
+            //tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
         }
     }
 
