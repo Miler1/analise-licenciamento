@@ -2,8 +2,8 @@ package models;
 
 public enum StatusImovelManejo {
 
-    ATIVO,
-    CANCELADO,
-    PENDENTE,
-    SUSPENSO
+    Ativo,
+    Cancelado,
+    Pendente,
+    Suspenso
 }
