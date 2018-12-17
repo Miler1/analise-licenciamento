@@ -486,7 +486,7 @@ html(lang='en')
 		p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMF APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
 
 	div
-		| \#{if arquivosComplementares.size() > 0}
+		| \#{if arquivosComplementares.size() > 0 || anexosARQGIS.size() > 0}
 		p
 			strong Anexos
 		| \#{list arquivosComplementares, as:'arquivo'}
@@ -495,5 +495,13 @@ html(lang='en')
 				strong ${ arquivo.nomeSemExtensao }
 			center
 				img(src='${arquivo.getFile().getPath()}', width="600")
+		| \#{/list}
+
+		| \#{list anexosARQGIS, as:'anexo'}
+		div.nao-quebra
+			p
+				strong ${ anexo.nomeSemExtensao }
+			center
+				img(src='${anexo.getFile().getPath()}', width="600")
 		| \#{/list}
 		| \#{/if}

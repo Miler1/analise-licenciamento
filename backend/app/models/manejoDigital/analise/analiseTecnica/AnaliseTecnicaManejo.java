@@ -394,11 +394,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         String nomeAnexo = null;
 
-//        if(this.pathAnexo != null){
-//
-//            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
-//        }
-
         for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
 
             totalAnaliseNDFI += analiseNdfi.area;
@@ -412,6 +407,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
                 .addParam("arquivosComplementares", this.getArquivosComplementaresImagens())
+                .addParam("anexosARQGIS", this.getAnexosARQGIS())
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 
         pdf.generate();
@@ -582,5 +578,13 @@ public class AnaliseTecnicaManejo extends GenericModel {
         }
 
         return true;
+    }
+
+    public List<DocumentoManejo> getAnexosARQGIS() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", ANEXO_PROCESSO_MANEJO_DIGITAL)
+                .setParameter("y", this.id)
+                .fetch();
     }
 }
