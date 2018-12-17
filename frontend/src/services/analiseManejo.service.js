@@ -12,10 +12,10 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
             .delete(config.BASE_URL() + "delete/manejo/" + id);
     };
 
-    this.finalizar = function(id) {
+    this.finalizar = function(analiseTecnica) {
 
             return request
-            .put(config.BASE_URL() + "analiseTecnicaManejo/" + id);
+            .put(config.BASE_URL() + "analiseTecnicaManejo", analiseTecnica);
     };
 
     this.upload = function(file, idAnaliseTecnica, idTipoDocumento) {
@@ -32,14 +32,14 @@ var AnaliseManejoService = function(request, config, Upload, $window) {
 
             $window.open(config.BASE_URL() + "download/manejo/" + idDocumento);
 
-	};
+    };
 
-	this.atualizarDadosPdf = function(analiseTecnica, passo) {
+    this.atualizarDadosPdf = function(analiseTecnica, passo) {
 
-		return request
+            return request
             .put(config.BASE_URL() + "analiseTecnicaManejo/atributos/" + passo, analiseTecnica);
 
-	};
+    };
 };
 
 exports.services.AnaliseManejoService = AnaliseManejoService;
