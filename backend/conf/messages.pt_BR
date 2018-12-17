@@ -137,6 +137,7 @@ ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA=É obrigatório informar a conclusão da a
 PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
 PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
 PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Processo indeferido com sucesso.
+ERRO_PROCESSAR_ANEXO_PROCESSO_MANEJO=Erro ao processar o anéxo do processo do manejo vindo da análise shape.
 
 #
 # Observações

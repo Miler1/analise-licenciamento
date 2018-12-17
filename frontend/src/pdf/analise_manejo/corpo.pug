@@ -489,7 +489,7 @@ html(lang='en')
 	| \#{/if}
 
 	div
-		| \#{if arquivosComplementares.size() > 0}
+		| \#{if arquivosComplementares.size() > 0 || anexosARQGIS.size() > 0}
 		p
 			strong Anexos
 		| \#{list arquivosComplementares, as:'arquivo'}
@@ -498,6 +498,14 @@ html(lang='en')
 				strong ${ arquivo.nomeSemExtensao }
 			center
 				img(src='${arquivo.getFile().getPath()}', width="600")
+		| \#{/list}
+
+		| \#{list anexosARQGIS, as:'anexo'}
+		div.nao-quebra
+			p
+				strong ${ anexo.nomeSemExtensao }
+			center
+				img(src='${anexo.getFile().getPath()}', width="600")
 		| \#{/list}
 
 		| \#{if analiseTecnicaManejo.getObservacoesDocumentosComplementares() != null && analiseTecnicaManejo.getObservacoesDocumentosComplementares().size() > 0}
@@ -509,4 +517,5 @@ html(lang='en')
 			p ${ observacao.texto }
 		| \#{/list}
 		| \#{/if}
+
 		| \#{/if}
