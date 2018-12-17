@@ -7,13 +7,12 @@ var FiltroProcessosManejo = {
 		pesquisarAoInicializar: '<'
 	},
 
-	controller: function($scope, municipioService, tipologiaManejoService, atividadeManejoService, tipoLicencaManejoService, processoManejoService, condicaoService, $rootScope) {
+	controller: function($scope, municipioService, atividadeManejoService, tipoLicencaManejoService, processoManejoService, condicaoService, $rootScope) {
 
 		var ctrl = this;
 
 		ctrl.openedAccordion = false;
 		ctrl.municipios = [];
-		ctrl.tipologias = [];
 		ctrl.atividades = [];
 		ctrl.manejosDigitais = [];
 		ctrl.statusLicenca = [];
@@ -27,16 +26,6 @@ var FiltroProcessosManejo = {
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de municípios.');
-			});
-
-		tipologiaManejoService.findAll().then(
-
-			function(response){
-
-				ctrl.tipologias = response.data;
-			})
-			.catch(function(){
-				mensagem.warning('Não foi possível obter a lista de tipologias do manejo.');
 			});
 
 		atividadeManejoService.findAll().then(
@@ -54,6 +43,15 @@ var FiltroProcessosManejo = {
 			function(response){
 
 				ctrl.manejosDigitais = response.data;
+
+				_.forEach(ctrl.manejosDigitais, function(manejoDigital) {
+
+					if(manejoDigital.codigo === 'APAT') {
+
+						ctrl.filtro.idManejoDigital = manejoDigital.id;
+					}
+				});
+
 			})
 			.catch(function(){
 				mensagem.warning('Não foi possível obter a lista de tipos de licença do manejo.');
@@ -112,7 +110,9 @@ var FiltroProcessosManejo = {
 
 		this.limparFiltros = function(){
 
+			var idManejoDigital = ctrl.filtro.idManejoDigital;
 			setFiltrosPadrao();
+			ctrl.filtro.idManejoDigital = idManejoDigital;
 
 			$('#cpfCnpjEmpreendimento').val('');
 

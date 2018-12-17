@@ -21,7 +21,6 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 		public String numeroProcesso;
 		public String cpfCnpjEmpreendimento;
 		public Long idMunicipioEmpreendimento;
-		public Long idTipologia;
 		public Long idAtividade;
 		public Long idManejoDigital;
 		public Long idStatusLicenca;
@@ -118,17 +117,6 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 			criteria.add(
 					Restrictions.ilike(EMPREENDIMENTO_ALIAS+".cpfCnpj", cpfCnpj, MatchMode.START)
 			);
-		}
-
-		return this;
-	}
-
-	public ProcessoManejoBuilder filtrarPorIdTipologia(Long idTipologia) {
-
-		if (idTipologia != null) {
-
-			addTipologiaAtividadeAlias();
-			addRestriction(Restrictions.eq(TIPOLOGIA_ATIVIDADE_ALIAS+".id", idTipologia));
 		}
 
 		return this;
