@@ -5,7 +5,9 @@ doctype html
 | basesVetoriais = analiseTecnicaManejo.basesVetorial;
 | analisesVetoriais = analiseTecnicaManejo.analisesVetorial;
 | analisesNdfi = analiseTecnicaManejo.analisesNdfi;
-| vinculosInsumos = analiseTecnicaManejo.vinculoInsumos;
+| vinculosInsumos = analiseTecnicaManejo.vinculosInsumosOrdenados;
+| vinculosConsideracoes = analiseTecnicaManejo.vinculosConsideracoesOrdenados;
+| vinculosEmbasamentos = analiseTecnicaManejo.vinculosEmbasamentosOrdenados;
 | }%
 
 html(lang='en')
@@ -241,7 +243,7 @@ html(lang='en')
 
 	div
 		p
-			strong 5 - Insulmos utilizados para análise temporal.
+			strong 5 - Insumos utilizados para análise temporal.
 	div.div-list
 		p Para elaboração deste laudo técnico foi realizada a análise multitemporal de imagens de satélites, referente aos últimos 24 anos, onde foram verificadas as feições da cobertura do solo dentro da área de manejo florestal – AMF. As informações das imagens de satélites utilizados são descritas na tabela abaixo:
 
@@ -447,41 +449,22 @@ html(lang='en')
 			strong 9 - Considerações:
 
 	div.div-list
+			| \#{list vinculosConsideracoes, as:'vinculo'}
+			| \#{if vinculo.exibirPDF}
 			p
-				strong 9.1.Toda a análise de GEOTEC foi realizada com base em dados apresentados pelo próprio técnico responsável, passível de sansões administrativas conforme art. 66 da lei n° 9605 de 12/02/1998 e art. 82 do decreto n° 6514 de 22/07/2008.
-			p
-				strong 9.2.As informações utilizadas, até a presente data, para analise do processo da GEOTEC, foram disponibilizadas do Banco de Dados de Raster e Vetores pela gerencia GTDI.
-			p
-				strong 9.3.No processo CONSTA o Relatório Técnico de Georreferenciamento do Imóvel, em meio analógico e digital, conforme as normas técnicas do INCRA (Lei 10.267/01).
-			p
-				strong 9.4.De acordo com a INSTRUÇÃO NORMATIVA No 001, de 14 de janeiro de 2014, a APAT não permite o início das atividades de manejo, não autoriza a exploração florestal e nem se constitui em prova de posse ou propriedade para fins de regularização fundiários, de autorização de desmatamento ou de obtenção de financiamento junto às instituições de crédito públicas ou privados;
-
+				strong ${ vinculo.consideracao.texto }
+			| \#{/if}
+			| \#{/list}
 	div
 		p
 			strong 10 - Embasamentos legais
 	div.div-list
+		| \#{list vinculosEmbasamentos, as:'vinculo'}
+		| \#{if vinculo.exibirPDF}
 		p
-			strong . Código Florestal - Lei n°12651/2012
-		p
-			strong . Instrução Normativa n°02/2014
-		p
-			strong . Decreto n°7830/2012
-		p
-			strong . Instrução Normativa n° 01/2014
-		p
-			strong . Portaria n° 63/2014
-		p
-			strong . Instrução Normativa n°14/2011
-		p
-			strong . Decreto n° 216/2011
-		p
-			strong . Lei Federal 10.267/01
-		p
-			strong . Lei n° 9605 de 12/02/1998
-		p
-			strong . Decreto n° 6514 de 22/07/2008
-		p
-			strong . Resolução CONAMA no 378/2006
+			strong ${ vinculo.embasamentoLegal.texto }
+		| \#{/if}
+		| \#{/list}
 
 	div
 		p
@@ -489,6 +472,7 @@ html(lang='en')
 
 	div.div-list
 		p Do ponto de vista estritamente do Geoprocessamento, consideramos a AMF APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
+		p ${ analiseTecnicaManejo.conclusao }
 
 	div
 		| \#{if arquivosComplementares.size() > 0}

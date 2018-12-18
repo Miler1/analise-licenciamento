@@ -154,8 +154,8 @@ PUT     /processoManejo/indeferir                   ProcessosManejo.indeferir
 
 # Analises Técnica Manejo
 GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
-PUT     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.finalizar
-PUT    /analiseTecnicaManejo/atributos/{passo}             AnalisesTecnicaManejo.updateExibirPdf
+PUT     /analiseTecnicaManejo                              AnalisesTecnicaManejo.finalizar
+PUT     /analiseTecnicaManejo/atributos/{passo}            AnalisesTecnicaManejo.updateExibirPdf
 
 # Observações
 POST    /observacao                                 Observacoes.save
