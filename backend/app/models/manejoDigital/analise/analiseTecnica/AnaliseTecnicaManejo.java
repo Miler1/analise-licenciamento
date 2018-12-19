@@ -118,8 +118,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     public String objectId;
 
     @Required
-    @Min(2)
-    @Max(3)
     @OneToMany(mappedBy = "analiseTecnicaManejo", orphanRemoval = true)
     public List<DocumentoShape> documentosShape;
 
@@ -132,7 +130,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
     @JoinColumn(name = "id_processo_manejo")
     public ProcessoManejo processoManejo;
 
-    @Max(2)
     @OneToMany(mappedBy = "analiseTecnicaManejo", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<DocumentoManejo> documentosManejo;
 
@@ -475,11 +472,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
         String nomeAnexo = null;
 
-//        if(this.pathAnexo != null){
-//
-//            nomeAnexo = this.pathAnexo.substring(this.pathAnexo.lastIndexOf(System.getProperty("file.separator"))+1,this.pathAnexo.length());
-//        }
-
         for(AnaliseNdfi analiseNdfi : this.analisesNdfi) {
 
             totalAnaliseNDFI += analiseNdfi.area;
@@ -493,6 +485,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
                 .addParam("arquivosComplementares", this.getArquivosComplementaresImagens())
+                .addParam("anexosARQGIS", this.getAnexosARQGIS())
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 
         pdf.generate();
@@ -595,6 +588,14 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .fetch();
     }
 
+    public List<DocumentoManejo> getDocumentosProcessoManejo() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", ANEXO_PROCESSO_MANEJO_DIGITAL)
+                .setParameter("y", this.id)
+                .fetch();
+    }
+
     public List<VinculoAnaliseTecnicaManejoInsumo> getVinculosInsumosOrdenados() {
 
         return VinculoAnaliseTecnicaManejoInsumo.find("analiseTecnicaManejo.id = :x ORDER BY insumo.data ASC")
@@ -669,6 +670,14 @@ public class AnaliseTecnicaManejo extends GenericModel {
         }
 
         return true;
+    }
+
+    public List<DocumentoManejo> getAnexosARQGIS() {
+
+        return DocumentoManejo.find("tipo.id = :x AND analiseTecnicaManejo.id = :y")
+                .setParameter("x", ANEXO_PROCESSO_MANEJO_DIGITAL)
+                .setParameter("y", this.id)
+                .fetch();
     }
 
     public void setConsideracoes() {

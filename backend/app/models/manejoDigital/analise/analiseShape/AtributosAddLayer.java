@@ -6,6 +6,7 @@ public class AtributosAddLayer {
 	public String amf;
 	public Integer status;
 	public String responsavel;
+	public String objectid;
 
 	public AtributosAddLayer(String protocolo, String amf, Integer status, String responsavel) {
 

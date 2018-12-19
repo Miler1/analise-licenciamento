@@ -11,14 +11,17 @@ import deserializers.BaseVetorialDeserializer;
 import deserializers.FeatureAddLayerDeserializer;
 import deserializers.GeometriaArcgisDeserializer;
 import deserializers.InsumoDeserializer;
+import exceptions.AppException;
 import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
 import models.manejoDigital.analise.analiseShape.AtributosQueryAMFManejo;
+import models.manejoDigital.analise.analiseShape.AttachmentInfo;
 import models.manejoDigital.analise.analiseShape.FeatureAddLayer;
 import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
 import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
+import models.manejoDigital.analise.analiseShape.ResponseAnexoProcesso;
 import models.manejoDigital.analise.analiseShape.ResponseQueryInsumo;
 import models.manejoDigital.analise.analiseShape.ResponseQueryMetadados;
 import models.manejoDigital.analise.analiseShape.ResponseQueryProcesso;
@@ -37,9 +40,11 @@ import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
 import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import models.tramitacao.Tramitacao;
+import org.apache.commons.io.IOUtils;
 import play.data.validation.Required;
 import play.data.validation.Unique;
 import play.db.jpa.GenericModel;
+import play.libs.WS.HttpResponse;
 import security.Auth;
 import security.InterfaceTramitavel;
 import utils.Configuracoes;
@@ -47,6 +52,11 @@ import utils.Mensagem;
 import utils.WebService;
 
 import javax.persistence.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -341,7 +351,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         ResponseQueryProcesso response = webService.post(Configuracoes.ANALISE_SHAPE_QUERY_PROCESSOS_URL, params, ResponseQueryProcesso.class);
 
-        if (response.features.size() == 0) {
+        if (response.features.isEmpty()) {
 
             return;
         }
@@ -380,6 +390,49 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             this.getAnaliseTecnica().setEmbasamentos();
 
             this.getAnaliseTecnica()._save();
+
+            params.clear();
+            params.put("f", "json");
+
+            String urlAnexos = Configuracoes.ANALISE_SHAPE_URL + "/1/"
+                    + response.features.get(0).attributes.objectid + "/attachments";
+            ResponseAnexoProcesso responseAnexoProcesso = webService.post(urlAnexos, params, ResponseAnexoProcesso.class);
+
+            if(responseAnexoProcesso.attachmentInfos != null) {
+
+                for(AttachmentInfo anexo : responseAnexoProcesso.attachmentInfos) {
+
+                    DocumentoManejo documento = new DocumentoManejo();
+
+                    HttpResponse responseAnexo = webService.post(urlAnexos + "/" + anexo.id + "?gdbVersion=1", params);
+                    InputStream inputStream = responseAnexo.getStream();
+
+                    // Por algum motivo o filename está dentro do header content-disposition
+                    // TODO Alterar obtenção do nome do arquivo quando os headers forem separados
+                    String contentDisposition = responseAnexo.getHeader("Content-Disposition");
+                    String fileName = contentDisposition.substring(contentDisposition.indexOf("\"") + 1, contentDisposition.lastIndexOf("\""));
+
+                    File tmp = new File(Configuracoes.APPLICATION_TEMP_FOLDER + "/" + fileName);
+                    OutputStream outputStream = null;
+
+                    try {
+
+                        outputStream = new FileOutputStream(tmp);
+                        IOUtils.copy(inputStream, outputStream);
+                        outputStream.close();
+                        documento.arquivo = tmp;
+
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                        throw new AppException(Mensagem.ERRO_PROCESSAR_ANEXO_PROCESSO_MANEJO);
+                    }
+
+                    documento.tipo = TipoDocumento.findById(TipoDocumento.ANEXO_PROCESSO_MANEJO_DIGITAL);
+                    documento.analiseTecnicaManejo = this.getAnaliseTecnica();
+                    documento.save();
+                }
+            }
 
             tramitacao.tramitar(this, AcaoTramitacao.FINALIZAR_ANALISE_SHAPE, null);
         }
