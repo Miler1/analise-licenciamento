@@ -3,11 +3,11 @@
 --- Alterando texto das considerações
 
 UPDATE analise.consideracao
- SET texto = 'Toda a análise da GEOTEC/DIGEO foi realizada com base em dados apresentados pelo próprio Técnico Responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.'
+ SET texto = 'Toda a análise da GEOTEC/DIGEO foi realizada com base em dados apresentados pelo próprio técnico responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.'
  WHERE texto = 'Toda a análise da GEOTEC foi realizada com base em dados apresentados pelo próprio Técnico Responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.';
 
 UPDATE analise.consideracao
- SET texto = 'As informações utilizadas, até a presente data, para análise do processo da GEOTEC/DIGEO, foram disponibilizados do Banco de dados de Raster pela GTDI, DIGEO  e Vetorial GEOSIG/DIGEO.'
+ SET texto = 'As informações utilizadas, até a presente data, para análise do processo da GEOTEC/DIGEO, foram disponibilizados do banco de dados de Raster pela GTDI, DIGEO  e Vetorial GEOSIG/DIGEO.'
  WHERE texto = 'As informações utilizadas, até a presente data, para analise do processo da GEOTEC, foram disponibilizadas do Banco de Dados de Raster e Vetores pela gerencia GTDI.';
 
 UPDATE analise.consideracao
@@ -22,8 +22,8 @@ UPDATE analise.consideracao
 
 UPDATE analise.consideracao
  SET texto = 'As informações utilizadas, até a presente data, para analise do processo da GEOTEC, foram disponibilizadas do Banco de Dados de Raster e Vetores pela gerencia GTDI.'
- WHERE texto = 'As informações utilizadas, até a presente data, para análise do processo da GEOTEC/DIGEO, foram disponibilizados do Banco de dados de Raster pela GTDI, DIGEO  e Vetorial GEOSIG/DIGEO.';
+ WHERE texto = 'As informações utilizadas, até a presente data, para análise do processo da GEOTEC/DIGEO, foram disponibilizados do banco de dados de Raster pela GTDI, DIGEO  e Vetorial GEOSIG/DIGEO.';
 
 UPDATE analise.consideracao
  SET texto = 'Toda a análise da GEOTEC foi realizada com base em dados apresentados pelo próprio Técnico Responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.'
- WHERE texto = 'Toda a análise da GEOTEC/DIGEO foi realizada com base em dados apresentados pelo próprio Técnico Responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.';
+ WHERE texto = 'Toda a análise da GEOTEC/DIGEO foi realizada com base em dados apresentados pelo próprio técnico responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.';
