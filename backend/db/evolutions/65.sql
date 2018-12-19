@@ -3,7 +3,7 @@
 --- Adicionando atributo na entidade analise_tecnica_manejo
 
 ALTER TABLE analise.analise_tecnica_manejo ADD COLUMN conclusao TEXT;
-
+COMMENT ON COLUMN analise.analise_tecnica_manejo.conclusao IS 'Conclusão da análise técnica do manejo.';
 
 --- Criando entidade consideracao
 
