@@ -3,12 +3,16 @@ package models.sicar;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import deserializers.DateDeserializer;
+import models.licenciamento.Municipio;
 import play.libs.WS.HttpResponse;
 import utils.Configuracoes;
 import utils.WebService;
 
 import javax.xml.ws.WebServiceException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SicarWebService {
 	
@@ -55,6 +59,30 @@ public class SicarWebService {
 		}
 
 		return retorno.dados;
+	}
+
+	public List<ImovelSicar> getImoveisSimplificadosPorCpfCnpj(String cpfCnpj, Municipio municipio) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("cpfCnpj", cpfCnpj);
+		params.put("codMunicipioIbge", municipio.id);
+
+		HttpResponse response = new WebService().get(Configuracoes.URL_SICAR_IMOVEIS_SIMPLIFICADOS, params);
+
+		if(!response.success()){
+			throw new WebServiceException("Erro ao consultar imóveis no CAR/PA");
+		}
+
+		Type type = new TypeToken<MensagemSicar<List<ImovelSicar>>>(){}.getType();
+
+		MensagemSicar<List<ImovelSicar>> retorno = gsonBuilder.create().fromJson(response.getJson(), type);
+
+		if(!retorno.status.equals(StatusSiCAR.SUCESSO.sigla)){
+			throw new WebServiceException(String.format("Erro ao consultar imóveis no CAR/PA: %s", retorno.mensagem));
+		}
+
+		return retorno.dados;
+
 	}
 
 	public enum StatusSiCAR {

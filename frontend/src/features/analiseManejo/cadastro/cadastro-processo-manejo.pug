@@ -49,21 +49,41 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 		h5 Busca de imóvel
 
-		label.required.control-label Informe o CAR: *
+		label.required.control-label Informe o CPF/CNPJ do proprietário ou o número do CAR: *
 
 		div.input-group
-
 			input.form-control(type='text',
-								ng-model='cadastroProcessoManejo.processo.empreendimento.imovel.registroCar',
+								ng-model='cadastroProcessoManejo.stringQueryImovel',
 								enter='cadastroProcessoManejo.buscarImovel()',
-								placeholder='Informe o CAR do processo.',
+								placeholder='Informe o CPF/CNPJ ou CAR.',
 								name='car',
-								required
+								ng-disabled='!cadastroProcessoManejo.processo.empreendimento.municipio.id',
+								required,
+								ng-class="{'button-error': cadastroProcessoManejo.erroCampoCpfCnp}",
+								ng-keyup='cadastroProcessoManejo.watchQueryBuscarImovel()'
 							)
 
 			span.input-group-btn
-				button.btn.btn-default(type='button', ng-click='cadastroProcessoManejo.buscarImovel()', ng-class="{'error-botao' : cadastroProcessoManejo.necessarioBuscarEmpreendimento === true}")
+				button.btn.btn-default(type='button',
+										ng-click='cadastroProcessoManejo.buscarImovel()',
+										ng-class="{'error-botao' : cadastroProcessoManejo.erroCampoCpfCnp}",
+										ng-disabled='!cadastroProcessoManejo.processo.empreendimento.municipio.id'
+									)
 					span.glyphicon.glyphicon-search
+
+		div.margin-top-md(ng-if="cadastroProcessoManejo.listaImoveis.length > 0")
+
+			label Imóveis encontrados:
+			select.form-control(id="car", name='car', ng-model="cadastroProcessoManejo.imovelSelecionado",
+			ng-options='c.codigo for c in cadastroProcessoManejo.listaImoveis track by c.id',
+			ng-change="cadastroProcessoManejo.buscarImovel()"
+			required)
+				option(value="") Selecione o imóvel
+
+
+		div.text-center.margin-top-md(ng-if="cadastroProcessoManejo.listaImoveis !== null && cadastroProcessoManejo.listaImoveis.length === 0") Nenhum imóvel encontrado.
+
+		div
 			+inputErrors('formularioCadastroProcessoManejo', 'formularioCadastroProcessoManejo', 'required')
 
 	div(ng-if="cadastroProcessoManejo.processo.empreendimento.denominacao")
@@ -72,8 +92,12 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 				h3.panel-title Dados do imóvel
 			div.panel-body
 				.row
+					label.col-xs-2 Status:
+					.col-xs-10
+						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.status }}
+				.row
 					label.col-xs-2 Recibo do CAR:
-					.col-xs-8
+					.col-xs-10
 						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.registroCar }}
 				.row.margin-top-sm
 					label.col-xs-2 Nome do proprietário:
