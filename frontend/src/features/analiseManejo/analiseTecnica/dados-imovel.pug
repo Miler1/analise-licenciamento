@@ -13,61 +13,73 @@ div
 
 			tbody
 				tr
-					td.col-md-1 Registro no CAR
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.registroCar ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.registroCar : '-'}}
+					td.col-md-5 Registro no CAR
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.registroCar ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.registroCar : '-'}}
 				tr
-					td.col-md-1 Área total do imóvel documental
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaTotalImovelDocumentado ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaTotalImovelDocumentado : '-'}}
+					td.col-md-5 Status
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.status ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.status : '-'}}
 				tr
-					td.col-md-1 Área liquida do imóvel
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaLiquidaImovel ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaLiquidaImovel : '-'}}
+					td.col-md-5 Área total do imóvel documental
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaTotalImovelDocumentado ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaTotalImovelDocumentado : '-'}}
 				tr
-					td.col-md-1 Reserva legal - RL
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaReservaLegal ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaReservaLegal : '-'}}
+					td.col-md-5 Área liquida do imóvel
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaLiquidaImovel ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaLiquidaImovel : '-'}}
 				tr
-					td.col-md-1 Área de preservação permanente - APP
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaPreservacaoPermanente ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaPreservacaoPermanente : '-'}}
+					td.col-md-5 Reserva legal - RL
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaReservaLegal ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaReservaLegal : '-'}}
 				tr
-					td.col-md-1 Remanescente de vegetação nativa
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaRemanescenteVegetacaoNativa ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaRemanescenteVegetacaoNativa : '-'}}
+					td.col-md-5 Área de preservação permanente - APP
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaPreservacaoPermanente ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaPreservacaoPermanente : '-'}}
 				tr
-					td.col-md-1 Corpos d'água
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaCorposAgua ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaCorposAgua : '-'}}
+					td.col-md-5 Remanescente de vegetação nativa
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaRemanescenteVegetacaoNativa ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaRemanescenteVegetacaoNativa : '-'}}
 				tr
-					td.col-md-1 Área de uso consolidado
-					td.col-md-1 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaUsoConsolidado ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaUsoConsolidado : '-'}}
+					td.col-md-5 Corpos d'água
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaCorposAgua ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaCorposAgua : '-'}}
+				tr
+					td.col-md-5 Área consolidada
+					td.col-md-6 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaUsoConsolidado ? analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.imovel.areaUsoConsolidado : '-'}}
 
 div
 	blockquote.analise-manejo
 		div
-			.col-xs-12.col-md-12.text-right.no-padding.margin-bottom-md
-				form(name="analiseTecnicaManejo.formularioAnaliseTecnica")
-					.form-group
-						div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseTecnicaManejo.upload($file)", ngf-max-size="{{analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB",
-						ngf-before-model-change="analiseTecnicaManejo.validarArquivo($file)")
-							i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-							| Anexar arquivo à análise
-						div
-							i   Tamanho máximo de {{analiseTecnicaManejo.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
-
-		div
-			table.table.table-condensed
-
-				thead
-
-					tr
-						th.col-xs-10 Arquivo anexado
-						th.col-xs-2.text-right Ações
-
-				tbody
-
-					tr(ng-if="analiseTecnicaManejo.anexo")
-						td.col-xs-10 {{analiseTecnicaManejo.anexo.file.name}}
-						td.col-xs-2.text-right
-							a.d-inline.margin-right-xs(title="Remover arquivo", ng-click="analiseTecnicaManejo.removeAnexo()")
-								i.glyphicon.glyphicon-trash
-					tr(ng-if="!analiseTecnicaManejo.anexo")
-						td.col-xs-12.text-center Nenhum arquivo anexado
+			.panel.panel-default
+				.panel-heading
+					h4.panel-title Anexos
+				.panel-body
+					div.row
+						div.col-md-12
+							table.table.table-striped
+								thead
+									tr
+										th.col-md-1 Status
+										th.col-md-5 Tipo documento
+										th.col-md-3 Documento
+										th.col-md-1.text-right Ações
+								tbody
+									tr(ng-repeat="documentoImovel in analiseTecnicaManejo.analiseTecnica.documentosImovel")
+										td {{documentoImovel.nome ? 'Enviado' : 'Aguardando'}}
+										td(class="relative")
+											div {{documentoImovel.titulo}}
+										td
+											div(ng-if="documentoImovel.nome") {{documentoImovel.nome}}
+										td
+											div.btn-group.pull-right
+												button.btn.btn-default.btn-xs.no-margin(title="Clique para fazer o upload do arquivo",
+												ngf-select, ngf-multiple="false", ngf-keep="false", ngf-max-files="1",
+												ngf-change="analiseTecnicaManejo.selecionarDocumentoImovel($files, documentoImovel.idTipoDocumento)",
+												ng-if="!documentoImovel.nome",
+												ngf-accept="'application/pdf,application/zip'"
+												ng-class="{'button-error': analiseTecnicaManejo.$submitted}")
+													i.fa.fa-upload
+												button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o arquivo",
+												ng-click="analiseTecnicaManejo.downloadDocumento(documentoImovel.id)",
+												ng-if="documentoImovel.nome", target="_blank")
+													i.fa.fa-download
+												button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o arquivo",
+												ng-click="analiseTecnicaManejo.removeDocumentoImovel(documentoImovel.id)",
+												ng-if="documentoImovel.nome")
+													i.fa.fa-trash
 
 	div
 		+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesDadosImovel')

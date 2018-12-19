@@ -1,10 +1,9 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +19,6 @@ public class AnaliseNdfi extends GenericModel {
     @SequenceGenerator(name="analise.analise_ndfi_id_seq", sequenceName="analise.analise_ndfi_id_seq", allocationSize=1)
     public Long id;
 
-    @Required
     @Column(name="data")
     public Date dataAnalise;
 
@@ -50,10 +48,13 @@ public class AnaliseNdfi extends GenericModel {
 
     @Required
     @ManyToOne
-    @JoinColumn(name="id_analise_manejo")
-    public AnaliseManejo analiseManejo;
+    @JoinColumn(name="id_analise_tecnica_manejo")
+    public AnaliseTecnicaManejo analiseTecnicaManejo;
 
-    public static List<AnaliseNdfi> gerarAnaliseNfid(AnaliseManejo analise) {
+    @Column(name = "exibir_pdf")
+    public boolean exibirPDF;
+
+    public static List<AnaliseNdfi> gerarAnaliseNfid(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();
         int numeroRandomico = rand.nextInt(20) + 1;
@@ -78,7 +79,9 @@ public class AnaliseNdfi extends GenericModel {
 
             analiseNdfi.area = Math.random();
 
-            analiseNdfi.analiseManejo = analise;
+            analiseNdfi.analiseTecnicaManejo = analise;
+
+            analiseNdfi.exibirPDF = true;
 
             listaAnalise.add(analiseNdfi);
         }

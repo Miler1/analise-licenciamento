@@ -8,19 +8,20 @@ div
 
 			thead
 				tr
-					th Dados oficiais
-					th Fonte
-					th Última atualização
-					th.text-center Escala
-					th Observação
+					th.text-center Exibir no PDF
+					th.text-center Última atualização
+					th.text-center Dados oficiais
+					th.text-center Fonte
+					th.text-center Observação
 
 			tbody
 				tr(ng-repeat="baseVetorial in analiseTecnicaManejo.analiseTecnica.basesVetorial")
-					td.col-md-4 {{baseVetorial.nome ? baseVetorial.nome : '-'}}
-					td.col-md-2 {{baseVetorial.fonte ? baseVetorial.fonte : '-'}}
-					td.col-md-2 {{baseVetorial.ultimaAtualizacao ? baseVetorial.ultimaAtualizacao : '-'}}
-					td.col-md-1.text-right {{baseVetorial.escala ? baseVetorial.escala : '-'}}
-					td.col-md-3 {{baseVetorial.observacao ? baseVetorial.observacao : '-'}}
+					td.col-md-1.text-center.checkbox-center
+						input(type='checkbox', placeholder='', ng-model='baseVetorial.exibirPDF')
+					td.col-md-2.text-center {{baseVetorial.ultimaAtualizacao ? baseVetorial.ultimaAtualizacao : '-'}}
+					td.col-md-4.text-center {{baseVetorial.nome ? baseVetorial.nome : '-'}}
+					td.col-md-2.text-center {{baseVetorial.fonte ? baseVetorial.fonte : '-'}}
+					td.col-md-3.text-center {{baseVetorial.observacao ? baseVetorial.observacao : '-'}}
 
 div
 	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesBaseVetorial')

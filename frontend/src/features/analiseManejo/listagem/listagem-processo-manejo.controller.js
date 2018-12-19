@@ -1,4 +1,4 @@
-var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location) {
+var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location, $uibModal) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO DIGITAL';
 
@@ -15,7 +15,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.permissaoAnalisar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('ANALISAR_PROCESSO_MANEJO') !== -1;
 	listagemProcessoManejo.permissaoVisualizar = LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.listaPermissoes.indexOf('VISUALIZAR_PROCESSO_MANEJO') !== -1;
 
-	listagemProcessoManejo.iniciarAnalise = function (processo) {
+	listagemProcessoManejo.iniciarAnaliseShape = function (processo) {
 
 		$location.path('/analise-manejo/' + processo.id + '/analise-geo');
 	};
@@ -28,8 +28,10 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.status = {
 		'17': 'Aguardando análise técnica',
 		'18': 'Em análise técnica',
-		'19': 'Deferido',
-		'20': 'Indeferido'
+		'19': 'Apto',
+		'20': 'Inapto',
+		'22': 'Aguardando análise de shape',
+		'23': 'Em análise de shape'
 	};
 
 	listagemProcessoManejo.downloadPdfAnaliseTecnica = function (processo) {
@@ -55,7 +57,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		processoManejoService.getProcesso(processo.id)
 			.then(function (response) {
 
-				$location.path('/analise-manejo/' + response.data.analiseManejo.id + '/analise-tecnica');
+				$location.path('/analise-manejo/' + response.data.analiseTecnica.id + '/analise-tecnica');
 			})
 			.catch(function (response) {
 
@@ -65,6 +67,41 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 				else
 					mensagem.error("Ocorreu um erro obter dados do processo.");
 			});
+	};
+
+
+	listagemProcessoManejo.indeferir = function(processo) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'modalIndeferirController',
+			controllerAs: 'modalCtrl',
+			backdrop: 'static',
+			keyboard: false,
+			templateUrl: './features/analiseManejo/analiseTecnica/modal-indeferir.html'
+		});
+
+		modalInstance.result.then(function (dados) {
+
+			if (dados && dados.justificativaIndeferimento) {
+
+				processo.justificativaIndeferimento = dados.justificativaIndeferimento;
+
+				processoManejoService.indeferir(processo).then(function (response) {
+
+					mensagem.success(response.data.texto);
+					onPaginaAlterada();
+				})
+				.catch(function (response) {
+
+					if (response.data.texto)
+						mensagem.warning(response.data.texto);
+
+					else
+						mensagem.error("Ocorreu um erro ao salvar a observacao.");
+				});
+			}
+
+		});
 	};
 
 
@@ -88,6 +125,23 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 		$location.path('/analise-manejo/cadastro');
 
 	}
+
+	listagemProcessoManejo.iniciarAnaliseTecnica = function(processoManejo) {
+
+		processoManejoService.iniciarAnalise(processoManejo)
+			.then(function (response) {
+
+				$location.path('/analise-manejo/' + response.data.analiseTecnica.id + '/analise-tecnica');
+			})
+			.catch(function (response) {
+
+				if (!!response.data.texto)
+					mensagem.warning(response.data.texto);
+
+				else
+					mensagem.error("Ocorreu um erro ao iniciar a análise técnica do processo.");
+			});
+	};
 };
 
 exports.controllers.ListagemProcessoManejoController = ListagemProcessoManejoController;

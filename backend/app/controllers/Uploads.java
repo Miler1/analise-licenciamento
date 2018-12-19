@@ -58,62 +58,11 @@ public class Uploads extends InternalController {
 
 			renderText(key);
 		}
-		else {
-
-			response.status = Http.StatusCode.INTERNAL_ERROR;
-			renderMensagem(Mensagem.UPLOAD_ERRO);
-
-		}
-
-	}
-
-	public static void uploadShape(Upload file) throws IOException {
-
-		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
-
-		returnIfNull(file, "Upload");
-
-		String realType = null;
-
-		// Detecta o tipo de arquivo pela assinatura (Magic)
-		Tika tika = new Tika();
-		realType = tika.detect(file.asFile());
-
-		if(realType == null){
-			response.status = Http.StatusCode.INTERNAL_ERROR;
-			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
-		}
-
-		if(realType.contains("application/zip") ||
-				realType.contains("application/x-rar-compressed") ||
-				realType.contains("application/octet-stream") ||
-				realType.contains("application/x-zip-compressed") ||
-				realType.contains("multipart/x-zip") ||
-				realType.contains("application/vnd.rar")) {
-
-			byte[] data = IO.readContent(file.asFile());
-			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String path = FileManager.getInstance().createFile(Configuracoes.APPLICATION_SHAPE_FOLDER, file.getFileName(),
-					data, extension);
-
-			renderText(path);
-		}
 
 		else {
 
 			response.status = Http.StatusCode.INTERNAL_ERROR;
 			renderMensagem(Mensagem.UPLOAD_ERRO);
 		}
-	}
-
-	public static void deleteShape(String token) {
-
-		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
-
-		returnIfNull(token, "String");
-
-		FileManager.getInstance().deleteFile(Configuracoes.APPLICATION_SHAPE_FOLDER, token);
-
-		renderMensagem(Mensagem.SHAPE_REMOVIDO_SUCESSO);
 	}
 }

@@ -20,7 +20,9 @@ GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
 GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
 GET 	/baixarDemonstrativo						Imoveis.baixarDemonstrativo
 GET		/baixarShapefile							Imoveis.baixarShapefile
-GET     /imoveis/{codigoImovel}/completo            Imoveis.getImovelByCodigo
+GET     /imovel/codigo/{codigoImovel}/completo      Imoveis.getImovelByCodigo
+GET     /imoveis/simplificados                      Imoveis.getImoveisSimplificadosPorCpfCnpj
+GET     /imovel/{id}/completo                       Imoveis.getImovelById
 
 # Analise
 
@@ -133,8 +135,6 @@ GET     /favicon.ico                            404
 
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
-POST    /upload/shape                               Uploads.uploadShape
-DELETE  /upload/shape/{token}                       Uploads.deleteShape
 
 # Notificacoes
 
@@ -145,15 +145,17 @@ POST    /processosManejo                            ProcessosManejo.listWithFilt
 POST    /processoManejo                             ProcessosManejo.save
 GET     /processoManejo/{id}                        ProcessosManejo.findById
 GET     /processoManejo/{id}/visualizar             ProcessosManejo.findProcessoCompletoById
-POST    /processoManejo/iniciar                     ProcessosManejo.iniciarAnalise
+POST    /processoManejo/inicicarAnaliseShape        ProcessosManejo.iniciarAnaliseShape
+POST    /processoManejo/iniciarAnaliseTecnica       ProcessosManejo.iniciarAnaliseTecnica
 POST    /processoManejo/downloadPdfAnalise          ProcessosManejo.downloadPdfAnalise
 POST    /processoManejo/count                       ProcessosManejo.countWithFilter
+GET     /processoManejo/numero/processo             ProcessosManejo.findByNumeroProcesso
+PUT     /processoManejo/indeferir                   ProcessosManejo.indeferir
 
-# Analises Manejo
-POST    /analiseManejo/{id}/anexo                   AnalisesManejo.uploadAnexo
-DELETE  /analiseManejo/anexo/{id}                   AnalisesManejo.deleteAnexo
-GET     /analiseManejo/{id}                         AnalisesManejo.findById
-PUT     /analiseManejo/{id}                         AnalisesManejo.finalizar
+# Analises Técnica Manejo
+GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
+PUT     /analiseTecnicaManejo                              AnalisesTecnicaManejo.finalizar
+PUT     /analiseTecnicaManejo/atributos/{passo}            AnalisesTecnicaManejo.updateExibirPdf
 
 # Observações
 POST    /observacao                                 Observacoes.save
@@ -168,6 +170,17 @@ GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTip
 
 # Tipos licença manejo
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
+
+# Documentos shape
+POST    /upload/shape                               DocumentosShape.upload
+GET     /download/shape/{key}                       DocumentosShape.downloadTmp
+DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
+
+# Documentos manejo
+POST    /upload/{idAnaliseTecnica}/imovel/manejo/{idTipoDocumento} DocumentosManejo.uploadFileImovel
+POST    /upload/{idAnaliseTecnica}/complementar     DocumentosManejo.uploadFileComplementar
+GET     /download/manejo/{id}                       DocumentosManejo.download
+DELETE  /delete/manejo/{id}                         DocumentosManejo.delete
 
 # Estáticos
 GET     /public/									staticDir:public

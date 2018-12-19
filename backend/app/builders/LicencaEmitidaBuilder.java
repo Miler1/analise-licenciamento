@@ -25,6 +25,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	private static final String TIPO_LICENCA_ALIAS = "tlic";
 	private static final String ATIVIDADE_CARACTERIZACAO_ALIAS = "atc";
 	private static final String ATIVIDADE_ALIAS = "atv";
+	private static final String DLA_ALIAS = "dla";
 
 	public LicencaEmitidaBuilder addCaracterizacaoAlias() {
 		
@@ -121,6 +122,13 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		return this;
 	}
 
+	public LicencaEmitidaBuilder addDlaAlias() {
+
+		addAlias("dla", DLA_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
 	public LicencaEmitidaBuilder groupByOrigemLicenca(){
 		
 		addProjection(Projections.groupProperty("tipoDispensa").as("origemLicenca"));
@@ -129,8 +137,12 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	}		
 	
 	public LicencaEmitidaBuilder groupByIdLicenca(){
-		
-		addProjection(Projections.groupProperty("id").as("idLicenca"));
+
+		addLicencaAlias();
+		addDlaAlias();
+
+		addProjection(Projections.groupProperty(LICENCA_ALIAS+".id").as("idLicenca"));
+		addProjection(Projections.groupProperty(DLA_ALIAS+".id").as("idDla"));
 		
 		return this;
 	}	

@@ -15,7 +15,7 @@ div
 					span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.cpfCnpj | brCpfCnpj}}
 
 				div.row
-					label.col-sm-4 Nome/Razão Social:
+					label.col-sm-4 Nome do proprietário e/ou Detentor:
 					span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.denominacao}}
 
 				div.row
@@ -26,56 +26,66 @@ div
 
 		ul.nav.nav-tabs(role="tablist")
 			li.abas.active(role="presentation")
-				a.link(id="id-dados-imovel", data-toggle="tab", data-target="#dados-imovel", ng-click="analiseTecnicaManejo.changeTab(0)") Imóvel
+				a(id="id-dados-imovel", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(0)") Imóvel
 			li.abas(role="tab")
-				a.link(id="id-metodos-base-vetorial", data-toggle="tab", data-target="#metodos-base-vetorial", ng-click="analiseTecnicaManejo.changeTab(1)") Metadados
+				a(id="id-metodos-base-vetorial", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(1)") Metadados
 			li.abas(role="tab")
-				a.link(id="id-analise-vetorial-base-oficiais", data-toggle="tab", data-target="#analise-vetorial-base-oficiais", ng-click="analiseTecnicaManejo.changeTab(2)") Análise Vetorial
+				a(id="id-analise-vetorial-base-oficiais", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(2)") Análise Vetorial
 			li.abas(role="tab")
-				a.link(id="id-analise-temporal-imagens-satelite", data-toggle="tab", data-target="#analise-temporal-imagens-satelite", ng-click="analiseTecnicaManejo.changeTab(3)") Análise Temporal
+				a(id="id-analise-temporal-imagens-satelite", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(3)") Análise Temporal
 			li.abas(role="tab")
-				a.link(id="id-insumos-utilizados-analise-temporal", data-toggle="tab", data-target="#insumos-utilizados-analise-temporal", ng-click="analiseTecnicaManejo.changeTab(4)") Insumos
+				a(id="id-insumos-utilizados-analise-temporal", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(4)") Insumos
 			li.abas(role="tab")
-				a.link(id="id-calculo-ndfi", data-toggle="tab", data-target="#calculo-ndfi", ng-click="analiseTecnicaManejo.changeTab(5)") NDFI
+				a(id="id-calculo-ndfi", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(5)") NDFI
 			li.abas(role="tab")
-				a.link(id="id-calculo-area-efetiva-manejo", data-toggle="tab", data-target="#calculo-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(6)") Área Efetiva
+				a(id="id-calculo-area-efetiva-manejo", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(6)") Área Efetiva
 			li.abas(role="tab")
-				a.link(id="id-detalhamento-area-efetiva-manejo", data-toggle="tab", data-target="#detalhamento-area-efetiva-manejo", ng-click="analiseTecnicaManejo.changeTab(7)") Detalhamento NDFI
+				a(id="id-detalhamento-area-efetiva-manejo", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(7)") Detalhamento NDFI
 			li.abas(role="tab")
-				a.link(id="id-consideracoes", data-toggle="tab", data-target="#consideracoes", ng-click="analiseTecnicaManejo.changeTab(8)") Considerações
+				a(id="id-consideracoes", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(8)") Considerações
 			li.abas(role="tab")
-				a.link(id="id-conclusao", data-toggle="tab", data-target="#conclusao", ng-click="analiseTecnicaManejo.changeTab(9)") Conclusão
+				a(id="id-documentos-complementares", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(9)") Documentos complementares
+			li.abas(role="tab")
+				a(id="id-embasamento-legal", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(10)") Embasamento legal
+			li.abas(role="tab")
+				a(id="id-conclusao", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(11)") Conclusão
 
 		.tab-content
 
-			#dados-imovel.tab-pane.fade.in.active
+			div(ng-if="analiseTecnicaManejo.index === 0")
 				include dados-imovel
 
-			#metodos-base-vetorial.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 1")
 				include metodos-base-vetorial
 
-			#analise-vetorial-base-oficiais.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 2")
 				include analise-vetorial-base-oficiais
 
-			#analise-temporal-imagens-satelite.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 3")
 				include analise-temporal-imagens-satelite
 
-			#insumos-utilizados-analise-temporal.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 4")
 				include insumos-utilizados-analise-temporal
 
-			#calculo-ndfi.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 5")
 				include calculo-ndfi
 
-			#calculo-area-efetiva-manejo.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 6")
 				include calculo-area-efetiva-manejo
 
-			#detalhamento-area-efetiva-manejo.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 7")
 				include detalhamento-area-efetiva-manejo
 
-			#consideracoes.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 8")
 				include consideracoes
 
-			#conclusao.tab-pane.fade
+			div(ng-if="analiseTecnicaManejo.index === 9")
+				include documentos-complementares
+
+			div(ng-if="analiseTecnicaManejo.index === 10")
+				include embasamento-legal
+
+			div(ng-if="analiseTecnicaManejo.index === 11")
 				include conclusao
 
 	.col-xs-12.rodape-analise
@@ -87,10 +97,10 @@ div
 			span.glyphicon.glyphicon-chevron-left.glyphicon--with-right-margin
 			| &nbsp;Voltar
 
-		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index !== 9", ng-click="analiseTecnicaManejo.proximo()", tabindex="0")
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index !== 11", ng-click="analiseTecnicaManejo.proximo()", tabindex="0")
 			| &nbsp;Próximo&nbsp;
 			span.glyphicon.glyphicon-chevron-right.glyphicon--with-left-margin
 
-		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index === 9", ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index === 11", ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
 			span.glyphicon.glyphicon-ok.glyphicon--with-right-margin()
 			| &nbsp;Confirmar parecer

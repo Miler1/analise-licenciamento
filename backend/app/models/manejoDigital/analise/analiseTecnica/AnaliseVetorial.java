@@ -1,12 +1,10 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -45,15 +43,14 @@ public class AnaliseVetorial extends GenericModel {
     public Double sobreposicaoAmf;
 
     @Required
-    @Column(name="observacao")
-    public String observacao;
-
-    @Required
     @ManyToOne
-    @JoinColumn(name="id_analise_manejo")
-    public AnaliseManejo analiseManejo;
+    @JoinColumn(name="id_analise_tecnica_manejo")
+    public AnaliseTecnicaManejo analiseTecnicaManejo;
 
-    public static List<AnaliseVetorial> gerarAnalisesVetoriais(AnaliseManejo analise) {
+    @Column(name = "exibir_pdf")
+    public boolean exibirPDF;
+
+    public static List<AnaliseVetorial> gerarAnalisesVetoriais(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();
         int numeroRandomico = rand.nextInt(20) + 1;
@@ -76,9 +73,9 @@ public class AnaliseVetorial extends GenericModel {
 
             analiseVetorial.sobreposicaoAmf = Math.random();
 
-            analiseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
+            analiseVetorial.analiseTecnicaManejo = analise;
 
-            analiseVetorial.analiseManejo = analise;
+            analiseVetorial.exibirPDF = true;
 
             listaAnalise.add(analiseVetorial);
         }

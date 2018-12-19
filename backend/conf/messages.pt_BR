@@ -47,12 +47,15 @@ GERENTE_VINCULADO_SUCESSO=Gerente vinculado com sucesso.
 #
 UPLOAD_ERRO=Ocorreu um erro ao realizar o upload do arquivo.
 UPLOAD_EXTENSAO_NAO_SUPORTADA=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos nos seguintes formatos: .pdf, .jpg, .jpeg, .png, .bmp ou .zip
+UPLOAD_EXTENSAO_NAO_SUPORTADA_SHAPE=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos no formato .zip
+UPLOAD_EXTENSAO_NAO_SUPORTADA_IMOVEL=O arquivo enviado possui extensão não aceita pelo sistema. Por favor, envie arquivos nos seguintes formatos: .pdf ou .zip
 SHAPE_REMOVIDO_SUCESSO=Shape removido com sucesso;
 
 #
 # Documentos
 #
 DOCUMENTO_NAO_ENCONTRADO=Documento não encontrado.
+DOCUMENTO_DELETADO_COM_SUCESSO=Documento excluido com sucesso.
 
 #
 # Analise juridica
@@ -121,12 +124,20 @@ ANEXO_REMOVIDO_SUCESSO=Anexo removido com sucesso.
 ANEXO_SALVO_SUCESSO=Anexo salvo com sucesso.
 ANALISE_FINALIZADA_SUCESSO=Análise finalizada com sucesso.
 ERRO_CRIAR_DOCUMENTO_ANALISE_MANEJO=Erro ao criar documento da análise técnica do manejo.
+ANALISE_SHAPE_INICIADA_COM_SUCESSO=Análise shape iniciada com sucesso.
+DOCUMENTO_IMOVEL_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO=Não é possível fazer o upload de mais de dois documentos do imóvel.
+DOCUMENTO_SHAPE_MANEJO_TAMANHO_MAXIMO_LISTA_EXCEDIDO=Não é possível fazer o upload de mais de três documentos do imóvel.
+DOCUMENTO_SHAPE_MANEJO_DOCUMENTOS_OBRIGATORIOS=É obrigatório enviar pelo menos um arquivo da área de manejo florestal solicitada - AMF (hectares) e um arquivo da área de preservação permanente - APP.
+DOCUMENTO_INVALIDO=Documento inválido.
+ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA=É obrigatório informar a conclusão da análise.
 
 #
 # Processo Manejo
 #
 PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
 PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
+PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Processo indeferido com sucesso.
+ERRO_PROCESSAR_ANEXO_PROCESSO_MANEJO=Erro ao processar o anéxo do processo do manejo vindo da análise shape.
 
 #
 # Observações
@@ -137,3 +148,4 @@ OBSERVACAO_EXCLUIDA_SUCESSO=Observação removida com sucesso.
 # Imóvel
 #
 IMOVEL_NAO_ENCONTRADO=Imóvel não encontrado.
+MUNICIPIO_INVALIDO_NAO_INFORMADO=Município não informado ou inválido.

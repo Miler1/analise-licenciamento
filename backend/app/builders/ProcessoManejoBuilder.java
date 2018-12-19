@@ -21,7 +21,6 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 		public String numeroProcesso;
 		public String cpfCnpjEmpreendimento;
 		public Long idMunicipioEmpreendimento;
-		public Long idTipologia;
 		public Long idAtividade;
 		public Long idManejoDigital;
 		public Long idStatusLicenca;
@@ -123,17 +122,6 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 		return this;
 	}
 
-	public ProcessoManejoBuilder filtrarPorIdTipologia(Long idTipologia) {
-
-		if (idTipologia != null) {
-
-			addTipologiaAtividadeAlias();
-			addRestriction(Restrictions.eq(TIPOLOGIA_ATIVIDADE_ALIAS+".id", idTipologia));
-		}
-
-		return this;
-	}
-
 	public ProcessoManejoBuilder filtrarPorIdAtividade(Long idAtividade) {
 
 		if (idAtividade != null) {
@@ -224,6 +212,13 @@ public class ProcessoManejoBuilder extends CriteriaBuilder<ProcessoManejo> {
 		addObjetoTramitavelAlias();
 
 		addProjection(Projections.groupProperty(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao").as("idCondicao"));
+
+		return this;
+	}
+
+	public ProcessoManejoBuilder groupByRevisaoSolicitada() {
+
+		addProjection(Projections.groupProperty("revisaoSolicitada").as("revisaoSolicitada"));
 
 		return this;
 	}

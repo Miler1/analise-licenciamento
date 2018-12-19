@@ -48,9 +48,13 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long ARQUIVAR_POR_RENOVACAO = 38l;
 	public static final Long RENOVAR_SEM_ALTERACAO = 39l;
 	public static final Long INICIAR_ANALISE_TECNICA_MANEJO = 40l;
-	public static final Long DEFERIR_ANALISE_TECNICA_MANEJO = 41l;
-	public static final Long INDEFERIR_ANALISE_TECNICA_MANEJO = 42l;
+	public static final Long DEFERIR_PROCESSO_MANEJO = 41l;
+	public static final Long INDEFERIR_PROCESSO_MANEJO_ANALISE_SHAPE = 42l;
 	public static final Long PRORROGAR_LICENCA = 43l;
 	public static final Long ARQUIVAR_PRORROGACAO_POR_RENOVACAO = 44l;
+	public static final Long INICIAR_ANALISE_SHAPE = 45l;
+	public static final Long FINALIZAR_ANALISE_SHAPE = 46l;
+	public static final Long SOLICITAR_REVISAO_SHAPE = 47l;
+	public static final Long INDEFERIR_PROCESS_MANEJO_ANALISE_TECNICA = 48l;
 }
 

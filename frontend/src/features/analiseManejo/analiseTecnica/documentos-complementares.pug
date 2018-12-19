@@ -1,0 +1,41 @@
+include ./observacoes
+
+div
+	blockquote.analise-manejo
+		.panel.panel-default(name='documentacao')
+			.panel-heading
+				h4.panel-title Anexos
+			.panel-body
+				div.row
+					div.col-md-12
+						form(name="formulario-documentos-complementares", novalidate)
+							.form-group.text-right
+								div.btn.btn-default(type="file", name="arquivo", ngf-select="analiseTecnicaManejo.selecionarDocumentoComplementar($file, $invalidFile)",
+								ngf-multiple="false", ngf-keep="false", ngf-max-files="1", ngf-accept="'application/pdf,image/*,application/zip'")
+									i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+									| Anexar arquivo
+								div
+									i Tamanho máximo de {{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB
+					div.col-md-12(ng-if="analiseTecnicaManejo.analiseTecnica.documentosComplementares.length > 0")
+						table.table.table-striped
+							thead
+								tr
+									th.col-md-3 Documento
+									th.col-md-1.text-right Ações
+							tbody
+								tr(ng-repeat="documentoComplementar in analiseTecnicaManejo.analiseTecnica.documentosComplementares")
+									td {{documentoComplementar.nome}}
+									td
+										div.btn-group.pull-right
+											button.btn.btn-default.btn-xs.no-margin(title="Clique para baixar o arquivo",
+											ng-click="analiseTecnicaManejo.downloadDocumento(documentoComplementar.id)", target="_blank")
+												i.fa.fa-download
+											button.btn.btn-default.btn-xs.no-margin(title="Clique para remover o arquivo",
+											ng-click="analiseTecnicaManejo.removeDocumentoComplementar(documentoComplementar.id)")
+												i.fa.fa-trash
+
+					div.col-md-12(ng-if="analiseTecnicaManejo.analiseTecnica.documentosComplementares.length === 0")
+						div.text-center Não há nenhum documento anexo.
+
+div
+	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesDocumentosComplementares')

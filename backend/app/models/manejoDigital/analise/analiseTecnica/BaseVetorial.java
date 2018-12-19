@@ -1,10 +1,9 @@
-package models.manejoDigital;
+package models.manejoDigital.analise.analiseTecnica;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,15 +31,13 @@ public class BaseVetorial extends GenericModel {
     @Column(name="ultima_atualizacao")
     public Date ultimaAtualizacao;
 
-    @Required
-    @Column(name="escala")
-    public String escala;
-
-    @Required
     @Column(name="observacao")
     public String observacao;
 
-    public static List<BaseVetorial> gerarBaseVetorial(AnaliseManejo analise) {
+    @Column(name = "exibir_pdf")
+    public boolean exibirPDF;
+
+    public static List<BaseVetorial> gerarBaseVetorial(AnaliseTecnicaManejo analise) {
 
         Random rand = new Random();
         int numeroRandomico = rand.nextInt(20) + 1;
@@ -57,9 +54,9 @@ public class BaseVetorial extends GenericModel {
 
             baseVetorial.ultimaAtualizacao = new Date();
 
-            baseVetorial.escala = UUID.randomUUID().toString().replace('-', ' ');
-
             baseVetorial.observacao = UUID.randomUUID().toString().replace('-', ' ');
+
+            baseVetorial.exibirPDF = true;
 
             lista.add(baseVetorial);
         }
