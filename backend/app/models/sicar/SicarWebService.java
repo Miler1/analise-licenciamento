@@ -82,7 +82,6 @@ public class SicarWebService {
 		}
 
 		return retorno.dados;
-
 	}
 
 	public enum StatusSiCAR {

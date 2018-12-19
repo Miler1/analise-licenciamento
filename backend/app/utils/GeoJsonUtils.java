@@ -30,7 +30,6 @@ public class GeoJsonUtils {
 			
 			throw new RuntimeException(e);
 		}
-		
 	}
 
 	public static GeometryCollection toGeometryCollection(String geoJson) {
@@ -74,6 +73,5 @@ public class GeoJsonUtils {
 		GeometryJSON gjson = new GeometryJSON(PRECISION);
 		
 		return gjson.toString(geometry);
-		
 	}
 }

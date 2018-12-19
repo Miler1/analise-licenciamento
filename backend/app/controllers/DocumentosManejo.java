@@ -47,9 +47,7 @@ public class DocumentosManejo extends InternalController {
 
 			response.status = Http.StatusCode.INTERNAL_ERROR;
 			renderMensagem(Mensagem.UPLOAD_ERRO);
-
 		}
-
 	}
 
 	public static void uploadFileComplementar(Upload file, Long idAnaliseTecnica) throws IOException {
@@ -88,9 +86,7 @@ public class DocumentosManejo extends InternalController {
 
 			response.status = Http.StatusCode.INTERNAL_ERROR;
 			renderMensagem(Mensagem.UPLOAD_ERRO);
-
 		}
-
 	}
 
 	public static void download(Long id) {
@@ -109,7 +105,6 @@ public class DocumentosManejo extends InternalController {
 		}
 
 		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
-
 	}
 
 	public static void delete(Long id) {
@@ -123,6 +118,5 @@ public class DocumentosManejo extends InternalController {
 		documento.delete();
 
 		renderMensagem(Mensagem.DOCUMENTO_DELETADO_COM_SUCESSO);
-
 	}
 }

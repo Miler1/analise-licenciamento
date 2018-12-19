@@ -193,8 +193,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
                 this.updateExibirPdfEmbasamentos(novaAnalise.vinculosEmbasamentos);
                 break;
-
         }
+
         return this.refresh();
     }
 
@@ -493,7 +493,6 @@ public class AnaliseTecnicaManejo extends GenericModel {
         Documento documento = new Documento(tipoDocumento, pdf.getFile());
 
         return documento;
-
     }
 
     public void setAnalisesVetoriais(List<FeatureQuerySobreposicao> features) {

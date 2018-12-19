@@ -6,7 +6,6 @@ import play.data.Upload;
 import play.libs.IO;
 import play.mvc.Http;
 import security.Acao;
-import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
 
@@ -44,9 +43,7 @@ public class DocumentosShape extends InternalController {
 
 			response.status = Http.StatusCode.INTERNAL_ERROR;
 			renderMensagem(Mensagem.UPLOAD_ERRO);
-
 		}
-
 	}
 
 	public static void downloadTmp(String key) {
@@ -63,7 +60,6 @@ public class DocumentosShape extends InternalController {
 		}
 
 		throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
-
 	}
 
 	public static void deleteTmp(String key) {
@@ -80,6 +76,5 @@ public class DocumentosShape extends InternalController {
 		file.delete();
 
 		renderMensagem(Mensagem.DOCUMENTO_DELETADO_COM_SUCESSO);
-
 	}
 }

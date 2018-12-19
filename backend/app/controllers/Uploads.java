@@ -58,12 +58,11 @@ public class Uploads extends InternalController {
 
 			renderText(key);
 		}
+
 		else {
 
 			response.status = Http.StatusCode.INTERNAL_ERROR;
 			renderMensagem(Mensagem.UPLOAD_ERRO);
-
 		}
-
 	}
 }
