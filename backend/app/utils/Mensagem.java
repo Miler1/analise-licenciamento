@@ -106,6 +106,8 @@ public enum Mensagem {
 
 	DOCUMENTO_INVALIDO,
 
+	MUNICIPIO_INVALIDO_NAO_INFORMADO,
+
 	ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA;
 
 	public String getTexto(Object ... args) {

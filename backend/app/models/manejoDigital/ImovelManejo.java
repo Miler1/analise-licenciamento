@@ -1,5 +1,6 @@
 package models.manejoDigital;
 
+import models.StatusImovelManejo;
 import models.licenciamento.Municipio;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -43,8 +44,12 @@ public class ImovelManejo extends GenericModel {
     @Column(name="area_uso_consolidado")
     public Double areaUsoConsolidado;
 
-	@Column(name="descricao_acesso")
+    @Column(name="descricao_acesso")
     public String descricaoAcesso;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    public StatusImovelManejo status;
 
 	@Required
 	@ManyToOne
