@@ -11,6 +11,10 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 	cadastroProcessoManejoController.municipios = [];
 	cadastroProcessoManejoController.licencas = [];
 	cadastroProcessoManejoController.necessarioBuscarEmpreendimento = false;
+	cadastroProcessoManejoController.stringQueryImovel = null;
+	cadastroProcessoManejoController.listaImoveis = null;
+	cadastroProcessoManejoController.imovelSelecionado = null;
+	cadastroProcessoManejoController.erroCampoCpfCnp = null;
 
 	function criarProcesso() {
 
@@ -63,18 +67,51 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	cadastroProcessoManejoController.buscarImovel = function() {
 
+		if (!cadastroProcessoManejoController.stringQueryImovel) {
+			return;
+		}
+
+		if (cadastroProcessoManejoController.stringQueryImovel.substring(0, 2) === "PA") {
+
+			buscarImovelCompleto(cadastroProcessoManejoController.stringQueryImovel);
+
+		} else {
+
+			if (!cadastroProcessoManejoController.stringQueryImovel.isCPF() && !cadastroProcessoManejoController.stringQueryImovel.isCNPJ()) {
+
+				mensagem.error('CPF ou CNPJ inválido.', { ttl: 10000 });
+				cadastroProcessoManejoController.erroCampoCpfCnp = true;
+				return;
+			}
+
+			if (cadastroProcessoManejoController.imovelSelecionado) {
+
+				buscarImovelCompleto(cadastroProcessoManejoController.imovelSelecionado.codigo);
+
+			} else {
+
+				buscarImoveis(cadastroProcessoManejoController.stringQueryImovel);
+			}
+		}
+
+	};
+
+	function buscarImovelCompleto(registroCar) {
+
 		cadastroProcessoManejoController.necessarioBuscarEmpreendimento = false;
 
-		imovelService.getImovelByCodigo(cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar)
+		imovelService.getImovelByCodigo(registroCar)
 			.then(function(response) {
 
 				cadastroProcessoManejoController.processo.empreendimento.denominacao = response.data.cadastrante.denominacao ? response.data.cadastrante.denominacao : response.data.cadastrante.nome;
 				cadastroProcessoManejoController.processo.empreendimento.cpfCnpj = response.data.cadastrante.cnpj ? response.data.cadastrante.cnpj : response.data.cadastrante.cpf;
 
+				cadastroProcessoManejoController.processo.empreendimento.imovel.registroCar = registroCar;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.descricaoAcesso = response.data.imovel.descricaoAcesso;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.nome = response.data.imovel.nome;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.municipio.id = response.data.imovel.codigoMunicipio;
 				cadastroProcessoManejoController.processo.empreendimento.imovel.nomeSiglaMunicipio = response.data.imovel.nomeMunicipio + '/' + response.data.imovel.siglaEstado;
+				cadastroProcessoManejoController.processo.empreendimento.imovel.status = response.data.imovel.status;
 
 				_.forEach(response.data.geo, function(geo) {
 
@@ -112,6 +149,26 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 				apagarEmpreendimento();
 				mensagem.error(error.data.texto);
 			});
+	}
+
+	function buscarImoveis(cpfCnpj) {
+
+		imovelService.getImoveisByCpfCnpj(cpfCnpj, cadastroProcessoManejoController.processo.empreendimento.municipio.id)
+			.then(function(response) {
+
+				cadastroProcessoManejoController.listaImoveis = response.data;
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
+	}
+
+	cadastroProcessoManejoController.watchQueryBuscarImovel = function() {
+
+		cadastroProcessoManejoController.erroCampoCpfCnp = false;
+		cadastroProcessoManejoController.listaImoveis = null;
+		cadastroProcessoManejoController.imovelSelecionado = null;
 	};
 
 	function init(){
@@ -217,22 +274,25 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	cadastroProcessoManejoController.conferirNumeroProcesso = function (numeroProcesso) {
 
-		processoManejoService.findByNumeroProcesso(numeroProcesso).then(
-			function(response){
+		if (numeroProcesso) {
 
-				var existe = response.data;
+			processoManejoService.findByNumeroProcesso(numeroProcesso).then(
+				function(response){
 
-				if(existe) {
+					var existe = response.data;
+
+					if(existe) {
+
+						cadastroProcessoManejoController.processo.numeroProcesso = undefined;
+						mensagem.error('Já existe um processo com este número cadastrado.');
+					}
+				})
+				.catch(function(){
 
 					cadastroProcessoManejoController.processo.numeroProcesso = undefined;
-					mensagem.error('Já existe um processo com este número cadastrado.');
-				}
-			})
-			.catch(function(){
-
-				cadastroProcessoManejoController.processo.numeroProcesso = undefined;
-				mensagem.error('Não foi possível consultar o numero do processo.');
-			});
+					mensagem.error('Não foi possível consultar o numero do processo.');
+				});
+		}
 	};
 };
 

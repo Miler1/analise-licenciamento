@@ -12,7 +12,9 @@ public enum PassoAnaliseManejo {
 	DETALHAMENTO_AREA_EFETIVA(7,"Detalhamento da área efetiva de manejo"),
 	CONSIDERACOES(8,"Considerações"),
 	DOCUMENTOS_COMPLEMENTARES(9, "Documentos complementares"),
-	CONCLUSAO(10,"Conclusão");
+	EMBASAMENTOS_LEGAIS(10,"Embasamentos legais"),
+	CONCLUSAO(11,"Conclusão");
+
 
 	public int id;
 	public String nome;

@@ -15,7 +15,7 @@ div
 					span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.cpfCnpj | brCpfCnpj}}
 
 				div.row
-					label.col-sm-4 Nome/Razão Social:
+					label.col-sm-4 Nome do proprietário e/ou Detentor:
 					span.col-sm-8 {{analiseTecnicaManejo.analiseTecnica.processoManejo.empreendimento.denominacao}}
 
 				div.row
@@ -46,7 +46,9 @@ div
 			li.abas(role="tab")
 				a(id="id-documentos-complementares", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(9)") Documentos complementares
 			li.abas(role="tab")
-				a(id="id-conclusao", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(10)") Conclusão
+				a(id="id-embasamento-legal", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(10)") Embasamento legal
+			li.abas(role="tab")
+				a(id="id-conclusao", data-toggle="tab", ng-click="analiseTecnicaManejo.changeTab(11)") Conclusão
 
 		.tab-content
 
@@ -81,6 +83,9 @@ div
 				include documentos-complementares
 
 			div(ng-if="analiseTecnicaManejo.index === 10")
+				include embasamento-legal
+
+			div(ng-if="analiseTecnicaManejo.index === 11")
 				include conclusao
 
 	.col-xs-12.rodape-analise
@@ -92,10 +97,10 @@ div
 			span.glyphicon.glyphicon-chevron-left.glyphicon--with-right-margin
 			| &nbsp;Voltar
 
-		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index !== 10", ng-click="analiseTecnicaManejo.proximo()", tabindex="0")
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index !== 11", ng-click="analiseTecnicaManejo.proximo()", tabindex="0")
 			| &nbsp;Próximo&nbsp;
 			span.glyphicon.glyphicon-chevron-right.glyphicon--with-left-margin
 
-		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index === 10", ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
+		button.btn.btn-success.pull-right(ng-if="analiseTecnicaManejo.index === 11", ng-click="analiseTecnicaManejo.confirmar()", tabindex="0")
 			span.glyphicon.glyphicon-ok.glyphicon--with-right-margin()
 			| &nbsp;Confirmar parecer

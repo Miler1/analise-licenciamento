@@ -247,7 +247,6 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                 .filtrarPorNumeroProcesso(filtro.numeroProcesso)
                 .filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
                 .filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
-                .filtrarPorIdTipologia(filtro.idTipologia)
                 .filtrarPorIdAtividade(filtro.idAtividade)
                 .filtrarPorIdCondicao(filtro.idStatusLicenca)
                 .filtrarPorIdTipoLicenca(filtro.idManejoDigital);
@@ -387,6 +386,8 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             //this.getAnaliseTecnica().areaEfetivoNdfi = responseAMFManejo.features.get(0).attributes.area;
             this.getAnaliseTecnica().setDetalhamentoNdfi();
             this.getAnaliseTecnica().setBasesVetoriais(responseQueryMetadados.features);
+            this.getAnaliseTecnica().setConsideracoes();
+            this.getAnaliseTecnica().setEmbasamentos();
 
             this.getAnaliseTecnica()._save();
 
@@ -473,7 +474,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.justificativaIndeferimento = processoManejo.justificativaIndeferimento;
         this.revisaoSolicitada = false;
 
-        tramitacao.tramitar(this, AcaoTramitacao.INDEFERIR_PROCESSO_MANEJO, usuario);
+        tramitacao.tramitar(this, AcaoTramitacao.INDEFERIR_PROCESSO_MANEJO_ANALISE_SHAPE, usuario);
 
         this._save();
     }
