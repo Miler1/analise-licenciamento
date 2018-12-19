@@ -17,4 +17,12 @@ div
 			label.radio-inline(for="radio_indeferido")
 				input#radio_indeferido(type="radio", name="apto", ng-value="false", ng-model="analiseTecnicaManejo.analiseTecnica.apto", ng-required="!analiseTecnicaManejo.analiseTecnica.apto")
 				| Inapto
+
+			div.margin-top-md(ng-if="analiseTecnicaManejo.analiseTecnica.apto === true")
+				span
+				| Do ponto de vista estritamente do geoprocessamento, consideramos a AMF APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
+			div.margin-top-md(ng-if="analiseTecnicaManejo.analiseTecnica.apto === false")
+				span
+				| Do ponto de vista estritamente do geoprocessamento, por não haver condições técnicas e outras para continuidade das análises nesta DIGEO, consideramos INAPTO para a apresentação do PMFS.
+
 			+inputErrors('analiseTecnicaManejo.formularioAnaliseTecnicaConclusao', 'apto', 'required')
