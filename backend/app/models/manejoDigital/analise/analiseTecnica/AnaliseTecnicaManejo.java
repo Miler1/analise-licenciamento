@@ -24,7 +24,10 @@ import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.Mensagem;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -484,8 +487,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
                 .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
-                .addParam("arquivosComplementares", this.getArquivosComplementaresImagens())
-                .addParam("anexosARQGIS", this.getAnexosARQGIS())
+                .addParam("arquivosComplementares", getDocumentosManejoImagens(this.getDocumentosComplementares()))
+                .addParam("anexosARQGIS", getDocumentosManejoImagens(this.getAnexosARQGIS()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 
         pdf.generate();
@@ -636,13 +639,15 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return  hasAMF && hasAPM;
     }
 
-    public List<DocumentoManejo> getArquivosComplementaresImagens() throws IOException {
+
+
+    public List<DocumentoManejo> getDocumentosManejoImagens(List<DocumentoManejo> documentosSalvo) throws IOException {
 
         List<DocumentoManejo> documentos = new ArrayList<>();
 
         Tika tika = new Tika();
 
-        for (DocumentoManejo documento : this.getDocumentosComplementares()) {
+        for (DocumentoManejo documento : documentosSalvo) {
 
             String realType = tika.detect(documento.getFile());
 
@@ -650,6 +655,10 @@ public class AnaliseTecnicaManejo extends GenericModel {
                     realType.contains("image/jpg") ||
                     realType.contains("image/png") ||
                     realType.contains("bmp")) {
+
+                BufferedImage img = ImageIO.read(new File(documento.getFile().getPath()));
+                documento.width = img.getWidth();
+                documento.height = img.getHeight();
 
                 documentos.add(documento);
             }

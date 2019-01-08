@@ -1,7 +1,7 @@
 include ../../../layout/components/inputErrors
 
 form(name="formularioCadastroProcessoManejo", novalidate)
-	h4.titulo.col-md-12 Cadastro de Manejo Digital.
+	h4.titulo.col-md-12 Cadastro de Manejo Digital
 
 	.row
 
@@ -27,7 +27,7 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 		.col-md-6.col-sm-6
 			label.control-label Município: *
-			select.form-control(ng-model="cadastroProcessoManejo.processo.empreendimento.municipio.id", name="selectMunicipio",
+			select.form-control(ng-model="cadastroProcessoManejo.processo.empreendimento.municipio.id", ng-disabled="cadastroProcessoManejo.processo.empreendimento.denominacao || cadastroProcessoManejo.listaImoveis.length > 0", name="selectMunicipio",
 								ng-options="municipio.id as municipio.nome for municipio in cadastroProcessoManejo.municipios track by municipio.id", required)
 				option(value="") Selecione o municipio
 
@@ -86,10 +86,14 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 		div
 			+inputErrors('formularioCadastroProcessoManejo', 'formularioCadastroProcessoManejo', 'required')
 
+
 	div(ng-if="cadastroProcessoManejo.processo.empreendimento.denominacao")
 		fieldset.panel.panel-default
 			div.panel-heading
-				h3.panel-title Dados do imóvel
+				h3.panel-title(style="display: inline;") Dados do imóvel
+				div(style="float: right;")
+					a.limpar-filtros.traditional(ng-click="cadastroProcessoManejo.excluirProcesso()")
+						span Limpar imóvel
 			div.panel-body
 				.row
 					label.col-xs-2 Status:
@@ -118,9 +122,6 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 				.row
 					.col-xs-12
 						span {{ cadastroProcessoManejo.processo.empreendimento.imovel.descricaoAcesso }}
-				.row.margin-top-sm.pull-right.margin-right-sm
-					button.btn.btn-default(ng-click="cadastroProcessoManejo.excluirProcesso()")
-						i.glyphicon.glyphicon-trash
 
 	section.margin-top-md.margin-bottom-xl
 
