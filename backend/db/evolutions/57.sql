@@ -26,7 +26,7 @@ COMMENT ON COLUMN analise.documento_imovel_manejo.nome IS 'Nome do documento.';
 
 ALTER TABLE analise.documento_imovel_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento_imovel_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_imovel_manejo TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_imovel_manejo TO licenciamento_am;
 
 -- Adicionando tipos de documento do imóvel do manejo na entidade tipo_documento
 

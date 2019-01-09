@@ -22,8 +22,8 @@ COMMENT ON COLUMN analise.base_vetorial.observacao IS 'Observação da base veto
 
 ALTER TABLE analise.base_vetorial OWNER TO postgres;
 GRANT ALL ON TABLE analise.base_vetorial TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.base_vetorial TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.base_vetorial_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.base_vetorial TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.base_vetorial_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela imovel_manejo
@@ -54,8 +54,8 @@ COMMENT ON COLUMN analise.imovel_manejo.area_uso_consolidado IS 'Área de uso co
 
 ALTER TABLE analise.imovel_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.imovel_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.imovel_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.imovel_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.imovel_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.imovel_manejo_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela analise_manejo
@@ -116,8 +116,8 @@ COMMENT ON COLUMN analise.analise_manejo.id_usuario IS 'Identificador da entidad
 
 ALTER TABLE analise.analise_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_manejo_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela rel_base_vetorial_analise_manejo
@@ -138,8 +138,8 @@ COMMENT ON COLUMN analise.rel_base_vetorial_analise_manejo.id_analise_manejo IS 
 
 ALTER TABLE analise.rel_base_vetorial_analise_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.rel_base_vetorial_analise_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_base_vetorial_analise_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.rel_base_vetorial_analise_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_base_vetorial_analise_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.rel_base_vetorial_analise_manejo_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela analise_vetorial
@@ -171,8 +171,8 @@ COMMENT ON COLUMN analise.analise_vetorial.id_analise_manejo IS 'Identificador d
 
 ALTER TABLE analise.analise_vetorial OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_vetorial TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_vetorial TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_vetorial_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_vetorial TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_vetorial_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela analise_ndfi
@@ -203,8 +203,8 @@ COMMENT ON COLUMN analise.analise_ndfi.id_analise_manejo IS 'Identificador da an
 
 ALTER TABLE analise.analise_ndfi OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_ndfi TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_ndfi TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_ndfi_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_ndfi TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_ndfi_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela observacao
@@ -226,8 +226,8 @@ COMMENT ON COLUMN analise.observacao.num_passo IS 'Número do passo em que a obs
 
 ALTER TABLE analise.observacao OWNER TO postgres;
 GRANT ALL ON TABLE analise.observacao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.observacao TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.observacao_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.observacao TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.observacao_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela processo_manejo
@@ -264,8 +264,8 @@ COMMENT ON COLUMN analise.processo_manejo.id_analise_manejo IS 'Identificador da
 
 ALTER TABLE analise.processo_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.processo_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.processo_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.processo_manejo_id_seq TO licenciamento_am;
 
 
 # --- !Downs

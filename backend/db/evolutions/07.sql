@@ -7,8 +7,8 @@ id SERIAL NOT NULL,
 url_getcapabilities VARCHAR(250) NOT NULL,
 CONSTRAINT pk_geoserver PRIMARY KEY(id)
 );
-GRANT SELECT,INSERT,UPDATE,DELETE ON analise.geoserver TO licenciamento_pa;
-GRANT SELECT,USAGE ON analise.geoserver_id_seq TO licenciamento_pa;
+GRANT SELECT,INSERT,UPDATE,DELETE ON analise.geoserver TO licenciamento_am;
+GRANT SELECT,USAGE ON analise.geoserver_id_seq TO licenciamento_am;
 
 COMMENT ON TABLE analise.geoserver IS 'Entidade responsável por armazenar os endereços dos geoserver';
 COMMENT ON COLUMN analise.geoserver.id IS 'Identificador único da entidade.';
@@ -28,8 +28,8 @@ CONSTRAINT pk_configuracao_layer PRIMARY KEY(id),
 CONSTRAINT fk_cl_geoserver FOREIGN KEY(id_geoserver)
 REFERENCES analise.geoserver(id)
 );
-GRANT SELECT,INSERT,UPDATE,DELETE ON analise.configuracao_layer TO licenciamento_pa;
-GRANT SELECT,USAGE ON analise.configuracao_layer_id_seq TO licenciamento_pa;
+GRANT SELECT,INSERT,UPDATE,DELETE ON analise.configuracao_layer TO licenciamento_am;
+GRANT SELECT,USAGE ON analise.configuracao_layer_id_seq TO licenciamento_am;
 
 COMMENT ON TABLE analise.configuracao_layer IS 'Entidade responsável por armazenar as configurações das layers que serão utilizadas para cacular regras de analise';
 COMMENT ON COLUMN analise.configuracao_layer.id IS 'Identificador único da entidade.';

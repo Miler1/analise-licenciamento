@@ -6,7 +6,7 @@ DROP SCHEMA IF EXISTS analise CASCADE;
 CREATE SCHEMA analise;
 
 GRANT ALL ON SCHEMA analise TO postgres;
-GRANT USAGE ON SCHEMA analise TO licenciamento_pa;
+GRANT USAGE ON SCHEMA analise TO licenciamento_am;
 
 
 
@@ -25,7 +25,7 @@ WITH (
 ALTER TABLE analise.tipo_documento
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipo_documento TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_documento TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_documento TO licenciamento_am;
 COMMENT ON TABLE analise.tipo_documento
   IS 'Entidade responsavel por armazenar os possíveis tipos de documentos exigidos pelo analise.';
 COMMENT ON COLUMN analise.tipo_documento.id IS 'Identificado único da entidade.';
@@ -53,8 +53,8 @@ WITH (
 ALTER TABLE analise.documento
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.documento_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.documento_id_seq TO licenciamento_am;
 COMMENT ON TABLE analise.documento
   IS 'Entidade responsavel por armazenar aos documentos que passaram pela análise.';
 COMMENT ON COLUMN analise.documento.id IS 'Identificado único da entidade.';
@@ -73,8 +73,8 @@ REFERENCES licenciamento.empreendimento(id)
 );
 ALTER TABLE analise.processo OWNER TO postgres;
 GRANT ALL ON TABLE analise.processo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_am;
 
 
 CREATE TABLE analise.analise(
@@ -88,8 +88,8 @@ REFERENCES analise.processo(id)
 );
 ALTER TABLE analise.analise OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_id_seq TO licenciamento_am;
 
 
 CREATE TABLE analise.tipo_resultado_analise(
@@ -99,8 +99,8 @@ CONSTRAINT pk_tipo_resultado_analise PRIMARY KEY(id)
 );
 ALTER TABLE analise.tipo_resultado_analise OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipo_resultado_analise TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_resultado_analise TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.tipo_resultado_analise_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_resultado_analise TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.tipo_resultado_analise_id_seq TO licenciamento_am;
 
 
 
@@ -127,8 +127,8 @@ REFERENCES analise.tipo_resultado_analise(id)
 );
 ALTER TABLE analise.analise_juridica OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_juridica TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_juridica TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_juridica_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_juridica TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_juridica_id_seq TO licenciamento_am;
 
 
 CREATE TABLE analise.consultor_juridico(
@@ -144,8 +144,8 @@ REFERENCES portal_seguranca.usuario
 );
 ALTER TABLE analise.processo OWNER TO postgres;
 GRANT ALL ON TABLE analise.processo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_am;
 
 
 CREATE TABLE analise.analise_documento(
@@ -162,8 +162,8 @@ REFERENCES licenciamento.documento(id)
 );
 ALTER TABLE analise.analise_documento OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_documento TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_documento TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_documento_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_documento TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_documento_id_seq TO licenciamento_am;
 
 
 CREATE TABLE analise.rel_documento_analise_juridica(
@@ -177,7 +177,7 @@ REFERENCES analise.analise_juridica(id)
 );
 ALTER TABLE analise.rel_documento_analise_juridica OWNER TO postgres;
 GRANT ALL ON TABLE analise.rel_documento_analise_juridica TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_analise_juridica TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_analise_juridica TO licenciamento_am;
 
 
 CREATE TABLE analise.rel_processo_caracterizacao(
@@ -192,7 +192,7 @@ CONSTRAINT ue_pc_id_caracterizacao UNIQUE(id_caracterizacao)
 );
 ALTER TABLE analise.rel_processo_caracterizacao OWNER TO postgres;
 GRANT ALL ON TABLE analise.rel_processo_caracterizacao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_processo_caracterizacao TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_processo_caracterizacao TO licenciamento_am;
 
 
 

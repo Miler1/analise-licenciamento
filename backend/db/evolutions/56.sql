@@ -22,7 +22,7 @@ COMMENT ON COLUMN analise.documento_manejo_shape.id_analise_tecnica_manejo IS 'I
 
 ALTER TABLE analise.documento_manejo_shape OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento_manejo_shape TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_manejo_shape TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_manejo_shape TO licenciamento_am;
 
 -- Adicionando tipos de documento manejo na entidade
 
@@ -81,8 +81,8 @@ COMMENT ON COLUMN analise.analista_tecnico_manejo.id_usuario IS 'Identificador d
 
 ALTER TABLE analise.analista_tecnico_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analista_tecnico_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_tecnico_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.analista_tecnico_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_tecnico_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analista_tecnico_manejo_id_seq TO licenciamento_am;
 
 
 # --- !Downs

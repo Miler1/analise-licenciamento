@@ -19,8 +19,8 @@ COMMENT ON COLUMN analise.consideracao.texto IS 'Conteúdo da consideração.';
 
 ALTER TABLE analise.consideracao OWNER TO postgres;
 GRANT ALL ON TABLE analise.consideracao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.consideracao TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.consideracao_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.consideracao TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.consideracao_id_seq TO licenciamento_am;
 
 INSERT INTO analise.consideracao (texto) VALUES
  ('Toda a análise da GEOTEC foi realizada com base em dados apresentados pelo próprio Técnico Responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.'),
@@ -49,8 +49,8 @@ COMMENT ON COLUMN analise.vinculo_analise_tecnica_manejo_consideracao.exibir_pdf
 
 ALTER TABLE analise.vinculo_analise_tecnica_manejo_consideracao OWNER TO postgres;
 GRANT ALL ON TABLE analise.vinculo_analise_tecnica_manejo_consideracao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_consideracao TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_consideracao_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_consideracao TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_consideracao_id_seq TO licenciamento_am;
 
 
 -- Criando da entidade embasamento_legal
@@ -67,8 +67,8 @@ COMMENT ON COLUMN analise.embasamento_legal.texto IS 'Conteúdo do embasamento.'
 
 ALTER TABLE analise.embasamento_legal OWNER TO postgres;
 GRANT ALL ON TABLE analise.embasamento_legal TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.embasamento_legal TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.embasamento_legal_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.embasamento_legal TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.embasamento_legal_id_seq TO licenciamento_am;
 
 INSERT INTO analise.embasamento_legal (texto) VALUES
  ('Código Florestal - Lei n°12651/2012'),
@@ -105,8 +105,8 @@ COMMENT ON COLUMN analise.vinculo_analise_tecnica_manejo_embasamento_legal.exibi
 
 ALTER TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal OWNER TO postgres;
 GRANT ALL ON TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_embasamento_legal_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_embasamento_legal_id_seq TO licenciamento_am;
 
 
 # --- !Downs

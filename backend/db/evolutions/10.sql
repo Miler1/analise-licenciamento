@@ -22,8 +22,8 @@ CREATE TABLE analise.analise_tecnica (
  CONSTRAINT fk_at_tipo_resultado_validacao FOREIGN KEY (id_tipo_resultado_validacao)
  REFERENCES analise.tipo_resultado_analise(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analise_tecnica TO licenciamento_pa;
-GRANT SELECT,USAGE ON SEQUENCE analise.analise_tecnica_id_seq TO licenciamento_pa;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analise_tecnica TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.analise_tecnica_id_seq TO licenciamento_am;
 ALTER TABLE analise.analise_tecnica OWNER TO postgres;
 
 
@@ -41,8 +41,8 @@ CREATE TABLE analise.licenca_analise(
  REFERENCES licenciamento.licenca(id)
  
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.licenca_analise TO licenciamento_pa;
-GRANT SELECT,USAGE ON SEQUENCE analise.licenca_analise_id_seq TO licenciamento_pa;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.licenca_analise TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.licenca_analise_id_seq TO licenciamento_am;
 ALTER TABLE analise.licenca_analise OWNER TO postgres;
 
 
@@ -56,8 +56,8 @@ CREATE TABLE analise.condicionante(
  CONSTRAINT fk_c_licenca_analise FOREIGN KEY(id_licenca_analise)
  REFERENCES analise.licenca_analise(id) 
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.condicionante TO licenciamento_pa;
-GRANT SELECT,USAGE ON SEQUENCE analise.condicionante_id_seq TO licenciamento_pa;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.condicionante TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.condicionante_id_seq TO licenciamento_am;
 ALTER TABLE analise.condicionante OWNER TO postgres;
 
 
@@ -71,8 +71,8 @@ CREATE TABLE analise.recomendacao (
  CONSTRAINT fk_r_licenca_analise FOREIGN KEY(id_licenca_analise)
  REFERENCES analise.licenca_analise(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.recomendacao TO licenciamento_pa;
-GRANT SELECT,USAGE ON SEQUENCE analise.recomendacao_id_seq TO licenciamento_pa;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.recomendacao TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.recomendacao_id_seq TO licenciamento_am;
 ALTER TABLE analise.recomendacao OWNER TO postgres;
 
 
@@ -85,8 +85,8 @@ CREATE TABLE analise.parecer_tecnico_restricao(
  CONSTRAINT fk_ptr_analise_tecnica FOREIGN KEY(id_analise_tecnica)
  REFERENCES analise.analise_tecnica(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.parecer_tecnico_restricao TO licenciamento_pa;
-GRANT SELECT,USAGE ON SEQUENCE analise.parecer_tecnico_restricao_id_seq TO licenciamento_pa;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.parecer_tecnico_restricao TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.parecer_tecnico_restricao_id_seq TO licenciamento_am;
 ALTER TABLE analise.parecer_tecnico_restricao OWNER TO postgres;
 
 CREATE TABLE analise.analista_tecnico(
@@ -101,8 +101,8 @@ CREATE TABLE analise.analista_tecnico(
  REFERENCES portal_seguranca.usuario(id)
 
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analista_tecnico TO licenciamento_pa;
-GRANT SELECT,USAGE ON SEQUENCE analise.analista_tecnico_id_seq TO licenciamento_pa;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analista_tecnico TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.analista_tecnico_id_seq TO licenciamento_am;
 ALTER TABLE analise.analista_tecnico OWNER TO postgres;
 
 CREATE TABLE analise.rel_documento_analise_tecnica(
@@ -114,7 +114,7 @@ CREATE TABLE analise.rel_documento_analise_tecnica(
  CONSTRAINT fk_rdat_analise_tecnica FOREIGN KEY(id_analise_tecnica)
  REFERENCES analise.analise_tecnica(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_analise_tecnica TO licenciamento_pa;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_analise_tecnica TO licenciamento_am;
 ALTER TABLE analise.rel_documento_analise_tecnica OWNER TO postgres;
 
 ALTER TABLE analise.analise_documento ADD COLUMN id_analise_tecnica INTEGER;

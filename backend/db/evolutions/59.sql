@@ -28,8 +28,8 @@ COMMENT ON COLUMN analise.insumo.orb_ponto IS 'Orb e ponto utilizados.';
 
 ALTER TABLE analise.insumo OWNER TO postgres;
 GRANT ALL ON TABLE analise.insumo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.insumo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.insumo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.insumo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.insumo_id_seq TO licenciamento_am;
 
 -- Criando da entidade vinculo_analise_tecnica_manejo_insumo
 
@@ -51,8 +51,8 @@ COMMENT ON COLUMN analise.vinculo_analise_tecnica_manejo_insumo.exibir_pdf IS 'F
 
 ALTER TABLE analise.vinculo_analise_tecnica_manejo_insumo OWNER TO postgres;
 GRANT ALL ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_insumo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_insumo_id_seq TO licenciamento_am;
 
 -- Removendo atributos desnecessários
 

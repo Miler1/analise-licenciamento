@@ -9,7 +9,7 @@ CREATE SEQUENCE analise.reenvio_email_id_seq
 ALTER TABLE analise.reenvio_email_id_seq
   OWNER TO postgres;
 GRANT ALL ON SEQUENCE analise.reenvio_email_id_seq TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE analise.reenvio_email_id_seq TO licenciamento_pa;
+GRANT SELECT, USAGE ON SEQUENCE analise.reenvio_email_id_seq TO licenciamento_am;
 
 CREATE TABLE analise.reenvio_email ( 
 	id Integer DEFAULT nextval('analise.reenvio_email_id_seq'::regclass) NOT NULL,
@@ -25,7 +25,7 @@ WITH (
 ALTER TABLE analise.reenvio_email
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.reenvio_email TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.reenvio_email TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.reenvio_email TO licenciamento_am;
 
 COMMENT ON TABLE analise.reenvio_email
   IS 'Entidade responsável por armazenar o controle do reenvio de email. Guarad os emails que não foram enviados para serem enviados na próxima interação do job de reenvio de email.';

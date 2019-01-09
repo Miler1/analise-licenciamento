@@ -27,8 +27,8 @@ COMMENT ON COLUMN analise.tipo_licenca_manejo.codigo IS 'Código do tipo de lice
 
 ALTER TABLE analise.tipo_licenca_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipo_licenca_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_licenca_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.tipo_licenca_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_licenca_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.tipo_licenca_manejo_id_seq TO licenciamento_am;
 
 
 -- Criação da tabela tipologia_manejo
@@ -47,8 +47,8 @@ COMMENT ON COLUMN analise.tipologia_manejo.codigo IS 'Código da tipologia.';
 
 ALTER TABLE analise.tipologia_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipologia_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipologia_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.tipologia_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipologia_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.tipologia_manejo_id_seq TO licenciamento_am;
 
 -- Criação da tabela atividade_manejo
 
@@ -69,8 +69,8 @@ COMMENT ON COLUMN analise.atividade_manejo.id_tipologia IS 'Identificador da ent
 
 ALTER TABLE analise.atividade_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.atividade_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.atividade_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.atividade_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.atividade_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.atividade_manejo_id_seq TO licenciamento_am;
 
 -- tabela empreendimento_manejo
 
@@ -92,8 +92,8 @@ CREATE TABLE analise.empreendimento_manejo
 ALTER TABLE analise.empreendimento_manejo
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.empreendimento_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.empreendimento_manejo TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.empreendimento_manejo_id_seq TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.empreendimento_manejo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.empreendimento_manejo_id_seq TO licenciamento_am;
 
 COMMENT ON TABLE analise.empreendimento_manejo IS 'Entidade responsavel por armazenar o empreendimento do manejo.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id IS 'Identificado único da entidade.';

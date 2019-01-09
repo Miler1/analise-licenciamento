@@ -8,9 +8,9 @@ CREATE TABLE analise.suspensao(
  data_suspensao DATE,
  CONSTRAINT pk_suspensao PRIMARY KEY(id)
 );
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.suspensao TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.suspensao_id_seq TO licenciamento_pa;
-ALTER TABLE analise.suspensao OWNER TO licenciamento_pa;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.suspensao TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.suspensao_id_seq TO licenciamento_am;
+ALTER TABLE analise.suspensao OWNER TO licenciamento_am;
 
 COMMENT ON TABLE analise.suspensao IS 'Entidade responsável por armazenar a contagem de dias que cada licença fica suspensa.';
 COMMENT ON COLUMN analise.suspensao.id IS 'Identificador único da entidade.';

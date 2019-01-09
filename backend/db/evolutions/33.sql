@@ -10,8 +10,8 @@ id_usuario_executor INTEGER NOT NULL,
 CONSTRAINT pk_licenca_cancelada PRIMARY KEY(id)
 );
 
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.licenca_cancelada TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.licenca_cancelada_id_seq TO licenciamento_pa;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.licenca_cancelada TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.licenca_cancelada_id_seq TO licenciamento_am;
 
 COMMENT ON TABLE analise.licenca_cancelada IS 'Entidade responsável por armazenar as licenças canceladas.';
 COMMENT ON COLUMN analise.licenca_cancelada.id IS 'Identificador único da entidade.';
@@ -30,8 +30,8 @@ id_usuario_executor INTEGER NOT NULL,
 CONSTRAINT pk_dispensa_licencamento_cancelada PRIMARY KEY(id)
 );
 
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.dispensa_licencamento_cancelada TO licenciamento_pa;
-GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licencamento_cancelada_id_seq TO licenciamento_pa;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.dispensa_licencamento_cancelada TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licencamento_cancelada_id_seq TO licenciamento_am;
 
 COMMENT ON TABLE analise.dispensa_licencamento_cancelada IS 'Entidade responsável por armazenar as Dispensas de licenciamento Ambiental canceladas.';
 COMMENT ON COLUMN analise.dispensa_licencamento_cancelada.id IS 'Identificador único da entidade.';

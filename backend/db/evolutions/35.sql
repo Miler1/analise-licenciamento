@@ -8,7 +8,7 @@ CREATE SEQUENCE "analise"."notificacao_id_seq"
   CACHE 1;
 ALTER TABLE "analise"."notificacao_id_seq"
 OWNER TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE "analise"."notificacao_id_seq" TO licenciamento_pa;
+GRANT SELECT, USAGE ON SEQUENCE "analise"."notificacao_id_seq" TO licenciamento_am;
 
 CREATE TABLE "analise"."notificacao" ( 
 	"id" Integer DEFAULT nextval('analise.notificacao_id_seq'::regclass) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE "analise"."notificacao" (
  ALTER TABLE analise.notificacao
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.notificacao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.notificacao TO licenciamento_pa;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.notificacao TO licenciamento_am;
 
 COMMENT ON COLUMN "analise"."notificacao"."id" IS 'Identificador único da entidade.';
 COMMENT ON COLUMN "analise"."notificacao"."id_analise_juridica" IS 'Identificador da tabela analise_juridica, responsável pelo relacionamento entre as duas tabelas.';
