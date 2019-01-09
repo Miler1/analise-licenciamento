@@ -1,8 +1,5 @@
 # --- !Ups
 
-ALTER TABLE licenciamento.tipo_documento ADD COLUMN tipo_analise integer;
-COMMENT ON COLUMN licenciamento.tipo_documento.tipo_analise IS 'Indica se o documento será avaliado na análise técnica ou análise jurídica (0 - Jurídica; 1 - Técnica).';
-
 UPDATE licenciamento.tipo_documento SET tipo_analise= 0 WHERE id= 101 ;
 UPDATE licenciamento.tipo_documento SET tipo_analise= 0 WHERE id= 102 ;
 UPDATE licenciamento.tipo_documento SET tipo_analise= 0 WHERE id= 103 ;
