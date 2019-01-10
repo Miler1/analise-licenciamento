@@ -12,7 +12,7 @@
     "angular-input-masks": "2.5.0",
     "jquery-mask-plugin": "jquery-mask#1.14.10",
     "gsap": "1.19.0",
-    "blockUI": "*",
+    "blockUI": "blockui#*",
     "lodash": "4.13.1",
     "angular-growl-v2": "0.7.9",
     "angular-messages": "1.6.2",
