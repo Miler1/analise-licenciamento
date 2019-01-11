@@ -49,6 +49,8 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	function apagarEmpreendimento() {
 
+		cadastroProcessoManejoController.stringQueryImovel = null;
+
 		cadastroProcessoManejoController.processo.empreendimento = {
 			denominacao: undefined,
 			cpfCnpj: undefined,

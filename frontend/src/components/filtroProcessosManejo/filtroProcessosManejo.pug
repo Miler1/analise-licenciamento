@@ -30,10 +30,10 @@ div(uib-accordion class="accordion")
 
 		.row.form-group
 			.col-md-12
-				label.control-label Manejo Digital:
+				label.control-label Tipo de licença:
 				select.form-control(ng-model="$ctrl.filtro.idManejoDigital", name="selectManejoDigital",
 				ng-options="manejoDigital.id as manejoDigital.nome for manejoDigital in $ctrl.manejosDigitais | orderBy:'nome'", ng-disabled="true")
-					option(value="") Selecione o manejo digital
+					option(value="") Selecione o tipo de licença
 
 		.row.form-group
 			.col-md-12

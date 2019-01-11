@@ -6,12 +6,7 @@ import org.apache.commons.io.FileUtils;
 import play.data.validation.Required;
 import utils.FileManager;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -29,6 +24,12 @@ public class DocumentoManejo extends Documento {
 	@Required
 	@Column
 	public String nome;
+
+	@Transient
+	public int width;
+
+	@Transient
+	public int height;
 
 	@Override
 	public Documento save() {
