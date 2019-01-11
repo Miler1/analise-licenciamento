@@ -98,12 +98,17 @@ public class Usuario extends GenericModel  {
 	
 	public static List<Usuario> getUsuariosByPerfil(Integer idPerfil) {
 		
-		return Usuario.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p WHERE p.id = ?", idPerfil).fetch();
+		return Usuario.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p WHERE p.id = :idPerfil")
+				.setParameter("idPerfil", idPerfil)
+				.fetch();
 	}
 	
 	public static List<Usuario> getUsuariosByPerfilSetor(Integer idPerfil, Integer idSetor) {
 		
-		return Usuario.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = ? and s.id = ? ",idPerfil, idSetor).fetch();
+		return Usuario.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = :idPerfil and s.id = :idSetor ")
+				.setParameter("idPerfil", idPerfil)
+				.setParameter("idSetor", idSetor)
+				.fetch();
 	}
 	
 	public static List<Usuario> getUsuariosByPerfilSetores(Integer idPerfil, List<Integer> idsSetores) {

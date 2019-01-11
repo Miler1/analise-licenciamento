@@ -4,20 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -112,12 +99,16 @@ public class Analise extends GenericModel {
 	}
 	
 	public static Analise findByProcesso(Processo processo) {
-		return Analise.find("processo.id = ? AND ativo = true", processo.id).first();
+		return Analise.find("processo.id = :idProcesso AND ativo = true")
+				.setParameter("idProcesso", processo.id)
+				.first();
 	}
 	
 	public static Analise findByAnaliseJuridica(Long idAnaliseJuridica) {
 		
-		AnaliseJuridica analiseJuridica = AnaliseJuridica.find("id = ? AND ativo = true", idAnaliseJuridica).first();
+		AnaliseJuridica analiseJuridica = AnaliseJuridica.find("id = :idAnaliseJuridica AND ativo = true")
+				.setParameter("idAnaliseJuridica", idAnaliseJuridica)
+				.first();
 		
 		return analiseJuridica.analise;
 	}
@@ -157,12 +148,18 @@ public class Analise extends GenericModel {
 		Long notificacoesNaoResolvidas;
 		
 		if(this.getAnaliseTecnica() != null) {
+
+			Query query = em().createQuery("select count (*) from " + Notificacao.class.getName() + " analiseTecnica.id = :idAnaliseTecnica AND ativo = true AND resolvido = false")
+					.setParameter("idAnaliseTecnica", this.getAnaliseTecnica().id);
 			
-			notificacoesNaoResolvidas = Notificacao.count("analiseTecnica.id = ? AND ativo = true AND resolvido = false", this.getAnaliseTecnica().id);
+			notificacoesNaoResolvidas = Long.parseLong(query.getSingleResult().toString());
 			
 		} else {
-			
-			notificacoesNaoResolvidas = Notificacao.count("analiseJuridica.id = ? AND ativo = true AND resolvido = false", this.getAnaliseJuridica().id);
+
+			Query query = em().createQuery("select count (*) from " + Notificacao.class.getName() + " analiseJuridica.id = :idAnaliseJuridica AND ativo = true AND resolvido = false")
+					.setParameter("idAnaliseJuridica", this.getAnaliseJuridica().id);
+
+			notificacoesNaoResolvidas = Long.parseLong(query.getSingleResult().toString());
 			
 		}
 		

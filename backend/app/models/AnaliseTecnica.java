@@ -171,7 +171,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	}	
 	
 	public static AnaliseTecnica findByProcesso(Processo processo) {
-		return AnaliseTecnica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
+		return AnaliseTecnica.find("analise.processo.id = :idProcesso AND ativo = true")
+				.setParameter("idProcesso", processo.id)
+				.first();
 	}
 	
 	public AnaliseTecnica save() {
@@ -387,7 +389,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	public static AnaliseTecnica findByNumeroProcesso(String numeroProcesso) {
 		
-		return AnaliseTecnica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
+		return AnaliseTecnica.find("analise.processo.numero = :numeroProcesso AND ativo = true")
+				.setParameter("numeroProcesso", numeroProcesso)
+				.first();
 	}
 	
 	public void finalizar(AnaliseTecnica analise, Usuario usuarioExecutor) {
