@@ -83,7 +83,7 @@ public class Atividade extends GenericModel {
 	public static List<Atividade> listAtividadesSimplificado() {
 		
 		List<Atividade> atividades = 
-				Atividade.find("SELECT a FROM atividade a JOIN a.tiposCaracterizacoesAtividade t WHERE t.licenciamentoSimplificado = ?", true).fetch();
+				Atividade.find("SELECT a FROM atividade a JOIN a.tiposCaracterizacoesAtividade t WHERE t.licenciamentoSimplificado = TRUE").fetch();
 		
 		return atividades;
 	}

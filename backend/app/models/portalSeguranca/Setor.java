@@ -76,9 +76,11 @@ public class Setor extends GenericModel {
 			sql+= String.format("JOIN s%d.setorPai s%d ", i-1, i);
 		}
 		
-		sql+= String.format("WHERE s%d.setorPai = ?", --i);
+		sql+= String.format("WHERE s%d.setorPai = :setor", --i);
 		
-		List<Setor> setoresByNivel = Setor.find(sql, this).fetch();
+		List<Setor> setoresByNivel = Setor.find(sql)
+				.setParameter("setor", this)
+				.fetch();
 		
 		return setoresByNivel;
 	}

@@ -356,16 +356,22 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 	}
 	
 	public static AnaliseJuridica findByNumeroProcesso(String numeroProcesso) {
-		return AnaliseJuridica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
+		return AnaliseJuridica.find("analise.processo.numero = :numeroProcesso AND ativo = true")
+				.setParameter("numeroProcesso", numeroProcesso)
+				.first();
 	}	
 		
 	public static AnaliseJuridica findByProcesso(Processo processo) {
-		return AnaliseJuridica.find("analise.processo.id = ? AND ativo = true", processo.id).first();
+		return AnaliseJuridica.find("analise.processo.id = :idProcesso AND ativo = true")
+				.setParameter("idProcesso", processo.id)
+				.first();
 	}
 	
 	public static List<AnaliseDocumento> findDocumentos(Long idAnaliseJuridica) {
 		
-		return AnaliseDocumento.find("analiseJuridica.id = ? ", idAnaliseJuridica).fetch();
+		return AnaliseDocumento.find("analiseJuridica.id = :idAnaliseJuridica ")
+				.setParameter("idAnaliseJuridica", idAnaliseJuridica)
+				.fetch();
 	}
 	
 	public void validaParecer(AnaliseJuridica analiseJuridica, Usuario usuarioExecultor) {
