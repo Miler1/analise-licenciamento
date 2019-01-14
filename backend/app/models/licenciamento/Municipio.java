@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.SQLQuery;
-import org.hibernate.spatial.GeometryType;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -46,14 +45,15 @@ public class Municipio extends GenericModel {
 	public List<Atividade> atividadesNaoAptas;
 	
 	public Geometry getLimite() {
-		
-		String sql = "SELECT the_geom FROM licenciamento.municipio WHERE id_municipio = :id";
-		
-		return (Geometry) JPA.em().createNativeQuery(sql)
-			.unwrap(SQLQuery.class)
-			.addScalar("the_geom", GeometryType.INSTANCE)
-			.setParameter("id", this.id)
-			.uniqueResult();
+		//TODO SPRINT-AM-01 Refazer consulta de busca do limite de municipio
+//		String sql = "SELECT the_geom FROM licenciamento.municipio WHERE id_municipio = :id";
+//
+//		return (Geometry) JPA.em().createNativeQuery(sql)
+//			.unwrap(SQLQuery.class)
+//			.addScalar("the_geom", GeometryType.INSTANCE)
+//			.setParameter("id", this.id)
+//			.uniqueResult();
+		return null;
 	}
 	
 	public static List<Municipio> findByEstado(String uf) {

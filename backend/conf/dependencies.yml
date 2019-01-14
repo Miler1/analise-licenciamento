@@ -9,15 +9,12 @@ require:
     - org.geotools -> gt-geojson 14.5
     - org.geotools -> gt-wfs 14.5
     - org.geotools -> gt-epsg-hsql 14.5
-    - org.hibernate -> hibernate-spatial 4.0.1:
-        exclude:
-            - org.hibernate -> hibernate-core
-            - postgresql -> postgresql
     - play -> pdf 0.9
     - com.google.zxing -> core 2.2
     - com.google.zxing -> javase 2.2
-    - org.hibernate -> hibernate-core 4.2.21.Final
-    - org.postgresql -> postgresql 9.2-1003-jdbc4
+    - org.postgresql -> postgresql 42.1.4:
+                force: true
+    - org.hibernate -> hibernate-spatial 5.2.13.Final
     - com.vividsolutions -> jts 1.13
     - log4j -> apache-log4j-extras 1.2.17
     - net.sf.flexjson -> flexjson 2.1
@@ -29,30 +26,6 @@ require:
 
 repositories:
 
-    - hibernatespatial:
-        type: iBiblio
-        root: "http://www.hibernatespatial.org/repository"
-        contains:
-            - org.hibernate -> hibernate-spatial
-            - org.postgis -> *
-
-    - BOUNDLESSGEO:
-           type: iBiblio
-           root: "https://repo.boundlessgeo.com/main/"
-           contains:
-               - org.geotools.* -> *
-               - it.geosolutions.* -> *
-               - it.geosolutions.*.* -> *
-
-
-    - OSGEO:
-           type: iBiblio
-           root: "http://download.osgeo.org/webdav/geotools/"
-           contains:
-               - javax.media -> *
-               - jgridshift -> *
-
-
     - Nexus Lemaf:
             type: iBiblio
             root: "http://repo.ti.lemaf.ufla.br/repository/public"
@@ -63,4 +36,20 @@ repositories:
                 - org.eclipse.xsd -> *
                 - org.apache.xml -> *
                 - org.junit -> *
+                - org.hibernatespatial -> *
+                - org.hibernate -> *
+                - org.postgis -> *
+                - org.geotools -> *
+                - javax.media -> *
+                - jgridshift -> *
+                - net.sf.flexjson -> *
+                - log4j -> *
+                - play -> *
+                - org.mockito -> *
+                - br.ufla -> *
+                - javax.media -> *
+                - java3d -> *
+                - it.geosolutions.imageio-ext -> *
+                - com.google.zxing -> *
+                - br.ufla.lemaf -> *
 

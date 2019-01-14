@@ -74,8 +74,7 @@ public class Empreendimento extends GenericModel {
 	@Enumerated(EnumType.ORDINAL)
 	public TipoLocalizacao localizacao;
 	
-	@Column(name = "the_geom")
-	@Type(type = "org.hibernate.spatial.GeometryType")
+	@Column(name = "the_geom", columnDefinition = "Geometry")
 	public Geometry coordenadas;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empreendimento", orphanRemoval = true)

@@ -41,8 +41,7 @@ public class ImovelEmpreendimento extends GenericModel {
 	
 	public String nome;
 	
-	@Column(name = "the_geom")
-	@Type(type = "org.hibernate.spatial.GeometryType")
+	@Column(name = "the_geom", columnDefinition = "Geometry")
 	public Geometry limite;
 	
 	@ManyToOne
