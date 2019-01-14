@@ -6,15 +6,14 @@ require:
             - org.hibernate -> hibernate-core
             - org.postgresql -> *
             - org.javassist -> *
-    - org.geotools -> gt-geojson 14.5
-    - org.geotools -> gt-wfs 14.5
-    - org.geotools -> gt-epsg-hsql 14.5
-    - play -> pdf 0.9
-    - com.google.zxing -> core 2.2
-    - com.google.zxing -> javase 2.2
     - org.postgresql -> postgresql 42.1.4:
                 force: true
+    - play -> pdf 0.9
+    - org.geotools -> gt-geojson 14.3
     - org.hibernate -> hibernate-spatial 5.2.13.Final
+    - org.geotools -> gt-shapefile 14.3
+    - com.google.zxing -> core 3.2.1
+    - com.google.zxing -> javase 2.2
     - com.vividsolutions -> jts 1.13
     - log4j -> apache-log4j-extras 1.2.17
     - net.sf.flexjson -> flexjson 2.1
@@ -23,6 +22,7 @@ require:
     - org.junit -> com.springsource.org.junit 4.7.0
     - br.ufla.lemaf -> InterfaceTramitacao 0.3.5-SNAPSHOT
     - org.apache.tika -> tika-core 1.7
+    - com.google.guava -> guava 27.0.1-jre
 
 repositories:
 
@@ -32,7 +32,6 @@ repositories:
             contains:
                 - br.ufla.lemaf -> *
                 - org.eclipse.emf -> *
-                - javax.persistence -> *
                 - org.eclipse.xsd -> *
                 - org.apache.xml -> *
                 - org.junit -> *
@@ -47,7 +46,6 @@ repositories:
                 - play -> *
                 - org.mockito -> *
                 - br.ufla -> *
-                - javax.media -> *
                 - java3d -> *
                 - it.geosolutions.imageio-ext -> *
                 - com.google.zxing -> *

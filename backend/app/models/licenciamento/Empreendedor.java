@@ -19,12 +19,17 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Filter;
 
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.ParamDef;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 @Entity
 @Table(schema = "licenciamento", name = "empreendedor")
-@Filter(name="empreendedorAtivo")
+@FilterDefs(value = {
+		@FilterDef( name = "empreendedorAtivo", parameters = @ParamDef(name = "ativo", type = "boolean"), defaultCondition = "ativo = TRUE" ),
+})
 public class Empreendedor extends GenericModel {
 
 	private static final String SEQ = "licenciamento.empreendedor_id_seq";
