@@ -43,17 +43,18 @@ public class Municipio extends GenericModel {
 		joinColumns = @JoinColumn(name = "id_municipio"), 
 		inverseJoinColumns = @JoinColumn(name="id_atividade"))
 	public List<Atividade> atividadesNaoAptas;
+
+	@Column(name = "the_geom")
+	public Geometry limite;
 	
 	public Geometry getLimite() {
-		//TODO SPRINT-AM-01 Refazer consulta de busca do limite de municipio
-//		String sql = "SELECT the_geom FROM licenciamento.municipio WHERE id_municipio = :id";
-//
-//		return (Geometry) JPA.em().createNativeQuery(sql)
-//			.unwrap(SQLQuery.class)
-//			.addScalar("the_geom", GeometryType.INSTANCE)
-//			.setParameter("id", this.id)
-//			.uniqueResult();
-		return null;
+
+		String jpql = "SELECT m.limite FROM " + Municipio.class.getSimpleName() + " m " + " WHERE id = :idMunicipio";
+
+		Geometry geometry = Municipio.find(jpql)
+				.setParameter("idMunicipio", this.id)
+				.first();
+		return geometry;
 	}
 	
 	public static List<Municipio> findByEstado(String uf) {
