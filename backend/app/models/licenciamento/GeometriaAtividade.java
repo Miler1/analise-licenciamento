@@ -29,8 +29,7 @@ public class GeometriaAtividade extends GenericModel {
 
 	public Double area;
 
-	@Column(name = "the_geom")
-	@Type(type = "org.hibernate.spatial.GeometryType")
+	@Column(name = "the_geom", columnDefinition = "Geometry")
 	public Geometry geometria;
 
 	@ManyToOne

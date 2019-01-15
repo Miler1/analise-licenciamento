@@ -21,8 +21,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -32,7 +31,9 @@ import play.db.jpa.GenericModel;
 
 @Entity
 @Table(schema = "licenciamento", name = "empreendimento")
-@Filter(name="empreendimentoAtivo")
+@FilterDefs(value = {
+		@FilterDef( name = "empreendimentoAtivo", parameters = @ParamDef(name = "ativo", type = "boolean"), defaultCondition = "ativo = FALSE" )
+})
 public class Empreendimento extends GenericModel {
 
 	private static final String SEQ = "licenciamento.empreendimento_id_seq";
@@ -74,8 +75,7 @@ public class Empreendimento extends GenericModel {
 	@Enumerated(EnumType.ORDINAL)
 	public TipoLocalizacao localizacao;
 	
-	@Column(name = "the_geom")
-	@Type(type = "org.hibernate.spatial.GeometryType")
+	@Column(name = "the_geom", columnDefinition = "Geometry")
 	public Geometry coordenadas;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empreendimento", orphanRemoval = true)

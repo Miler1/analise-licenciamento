@@ -128,7 +128,9 @@ public class Licenca extends GenericModel implements Identificavel {
 
 	public static void setAnteriorInativa(Long idCaracterizacao) {
 
-		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", idCaracterizacao).fetch();
+		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = :idCaracterizacao AND ativo = TRUE ORDER BY dataCadastro")
+				.setParameter("idCaracterizacao", idCaracterizacao)
+				.fetch();
 
 		licencasAntigas.remove(licencasAntigas.size() - 1);
 
@@ -141,7 +143,9 @@ public class Licenca extends GenericModel implements Identificavel {
 
 	public static void finalizarProrrogacao(Long idCaracterizacao) {
 
-		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = ? AND ativo = TRUE ORDER BY dataCadastro", idCaracterizacao).fetch();
+		List<Licenca> licencasAntigas = Licenca.find("caracterizacao.id = :idCaracterizacao AND ativo = TRUE ORDER BY dataCadastro")
+				.setParameter("idCaracterizacao", idCaracterizacao)
+				.fetch();
 
 		licencasAntigas.remove(licencasAntigas.size() - 1);
 

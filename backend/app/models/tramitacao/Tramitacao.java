@@ -178,8 +178,9 @@ public class Tramitacao {
 	// Retorna o historico do objeto tramitavél
 	public List<HistoricoTramitacao> findHistorico(Tramitavel tramitavel) {
 		
-		return HistoricoTramitacao.find("idObjetoTramitavel = ? order by data desc", 
-										tramitavel.getIdObjetoTramitavel()).fetch();
+		return HistoricoTramitacao.find("idObjetoTramitavel = :objeto.getIdObjetoTramitavel() order by data desc")
+				.setParameter("objeto.getIdObjetoTramitavel()", tramitavel.getIdObjetoTramitavel())
+				.fetch();
 	}
 	
 	// Retorna se a ação está disponivel para o objeto tramitavel
@@ -191,14 +192,22 @@ public class Tramitacao {
 		if (objeto == null || objeto.getIdObjetoTramitavel() == null)
 			throw new IllegalArgumentException(Mensagem.TRAMITACAO_OBJETO_TRAMITAVEL_VAZIO.getTexto());
 		
-		AcaoDisponivelObjetoTramitavel acaoDisponivel = AcaoDisponivelObjetoTramitavel.find("idAcao = ? AND idObjetoTramitavel = ?", idAcao, objeto.getIdObjetoTramitavel()).first();
+		AcaoDisponivelObjetoTramitavel acaoDisponivel = AcaoDisponivelObjetoTramitavel.find("idAcao = :idAcao AND idObjetoTramitavel = :idObjetoTramitavel")
+				.setParameter("idAcao", idAcao)
+				.setParameter("objeto.getIdObjetoTramitavel()", objeto.getIdObjetoTramitavel())
+				.first();
+
 		return acaoDisponivel != null;
 	}
 	
 	//Verifica se o usuário é o responsavel pelo usuário
 	public boolean isUsuarioResponsavelObjeto(Long idPessoa, Tramitavel objeto) {
 		
-		ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.find("usuarioResponsavel.id = ? AND id = ?", idPessoa, objeto.getIdObjetoTramitavel()).first();
+		ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.find("usuarioResponsavel.id = :idPessoa AND id = :idObjetoTramitavel")
+				.setParameter("idPessoa", idPessoa)
+				.setParameter("idObjetoTramitavel", objeto.getIdObjetoTramitavel())
+				.first();
+
 		return objetoTramitavel != null;
 	}
 	
