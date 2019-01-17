@@ -275,3 +275,7 @@ gulp.task('default', function() {
 	gulp.run('dev');
 	return gulp.watch(config.src.all, ['dev']);
 });
+
+gulp.task('runners', function () {
+	return gulp.run('dist');
+});
