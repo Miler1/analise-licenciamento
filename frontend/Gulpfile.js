@@ -29,6 +29,8 @@ var config = {
 	},
 
 	libs: {
+
+		arcGisToGeoJsonUtil: "./node_modules/arcgis-to-geojson-utils/dist/arcgis-to-geojson.js",
 		bootstrap: "./bower_components/bootstrap/dist/**",
 		angular: [
 			"./bower_components/angular/angular.min.js",
@@ -71,6 +73,7 @@ var config = {
 				"./bower_components/Leaflet.fullscreen/dist/fullscreen.png",
 				"./bower_components/Leaflet.fullscreen/dist/fullscreen@2x.png",
 				"./bower_components/leaflet-graphicscale/dist/Leaflet.GraphicScale.min.*",
+				"./bower_components/shp/dist/shp.min.js",
 				"./bower_components/leaflet-measure/dist/leaflet-measure.css",
 				"./bower_components/leaflet-measure/dist/leaflet-measure.min.js"
 			],

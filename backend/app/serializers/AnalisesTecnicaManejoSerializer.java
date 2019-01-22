@@ -3,13 +3,12 @@ package serializers;
 import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 
-public class AnalisesManejoSerializer {
+public class AnalisesTecnicaManejoSerializer {
 
-	public static JSONSerializer findById = SerializerUtil.createWithDateTime(
+	public static JSONSerializer findById = SerializerUtil.createWithDoubleTransformer(
 			"id",
 			"dataAnalise",
 			"pathAnexo",
-			"analiseTemporal",
 			"areaManejoFlorestalSolicitada",
 			"areaPreservacaoPermanente",
 			"areaServidao",
@@ -25,8 +24,6 @@ public class AnalisesManejoSerializer {
 			"areaExploracaoNdfiMedio",
 			"areaSemPreviaExploracao",
 			"areaConsolidada",
-			"consideracoes",
-			"conclusao",
 			"processoManejo.numeroProcesso",
 			"processoManejo.empreendimento.cpfCnpj",
 			"processoManejo.empreendimento.denominacao",
@@ -39,6 +36,7 @@ public class AnalisesManejoSerializer {
 			"analisesNdfi.nivelExploracao",
 			"analisesNdfi.valor",
 			"analisesNdfi.area",
+			"analisesNdfi.exibirPDF",
 			"analisesVetorial.id",
 			"analisesVetorial.tipo",
 			"analisesVetorial.nome",
@@ -47,12 +45,13 @@ public class AnalisesManejoSerializer {
 			"analisesVetorial.distanciaAmf",
 			"analisesVetorial.sobreposicaoAmf",
 			"analisesVetorial.observacao",
+			"analisesVetorial.exibirPDF",
 			"basesVetorial.id",
 			"basesVetorial.nome",
 			"basesVetorial.fonte",
 			"basesVetorial.ultimaAtualizacao",
-			"basesVetorial.escala",
 			"basesVetorial.observacao",
+			"basesVetorial.exibirPDF",
 			"observacoesDadosImovel.id",
 			"observacoesDadosImovel.texto",
 			"observacoesDadosImovel.passoAnalise.id",
@@ -94,6 +93,14 @@ public class AnalisesManejoSerializer {
 			"observacoesConclusao.texto",
 			"observacoesConclusao.passoAnalise.id",
 			"observacoesConclusao.data",
+			"observacoesDocumentosComplementares.id",
+			"observacoesDocumentosComplementares.texto",
+			"observacoesDocumentosComplementares.passoAnalise.id",
+			"observacoesDocumentosComplementares.data",
+			"observacoesEmbasamentoLegal.id",
+			"observacoesEmbasamentoLegal.texto",
+			"observacoesEmbasamentoLegal.passoAnalise.id",
+			"observacoesEmbasamentoLegal.data",
 			"processoManejo.empreendimento.imovel.id",
 			"processoManejo.empreendimento.imovel.registroCar",
 			"processoManejo.empreendimento.imovel.areaTotalImovelDocumentado",
@@ -102,6 +109,28 @@ public class AnalisesManejoSerializer {
 			"processoManejo.empreendimento.imovel.areaPreservacaoPermanente",
 			"processoManejo.empreendimento.imovel.areaRemanescenteVegetacaoNativa",
 			"processoManejo.empreendimento.imovel.areaCorposAgua",
-			"processoManejo.empreendimento.imovel.areaUsoConsolidado"
+			"processoManejo.empreendimento.imovel.areaUsoConsolidado",
+			"processoManejo.empreendimento.imovel.status",
+			"documentosImovel.id",
+			"documentosImovel.nome",
+			"documentosImovel.tipo.id",
+			"documentosImovel.tipo.nome",
+			"documentosComplementares.id",
+			"documentosComplementares.nome",
+			"vinculosInsumosOrdenados.id",
+			"vinculosInsumosOrdenados.insumo.id",
+			"vinculosInsumosOrdenados.insumo.data",
+			"vinculosInsumosOrdenados.insumo.ano",
+			"vinculosInsumosOrdenados.insumo.satelite",
+			"vinculosInsumosOrdenados.insumo.orbPonto",
+			"vinculosInsumosOrdenados.exibirPDF",
+			"vinculosConsideracoesOrdenados.id",
+			"vinculosConsideracoesOrdenados.consideracao.id",
+			"vinculosConsideracoesOrdenados.consideracao.texto",
+			"vinculosConsideracoesOrdenados.exibirPDF",
+			"vinculosEmbasamentosOrdenados.id",
+			"vinculosEmbasamentosOrdenados.embasamentoLegal.id",
+			"vinculosEmbasamentosOrdenados.embasamentoLegal.texto",
+			"vinculosEmbasamentosOrdenados.exibirPDF"
 	);
 }

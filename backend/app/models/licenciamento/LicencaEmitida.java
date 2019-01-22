@@ -32,7 +32,11 @@ public class LicencaEmitida extends GenericModel {
 	@OneToOne
 	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
 	public Licenca licenca;
-	
+
+	@OneToOne
+	@JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
+	public DispensaLicenciamento dla;
+
 	@OneToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id", nullable = false)
 	public Caracterizacao caracterizacao;

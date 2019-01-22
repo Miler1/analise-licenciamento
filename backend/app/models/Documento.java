@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -28,6 +30,7 @@ import utils.Identificavel;
 
 @Entity
 @Table(schema = "analise", name = "documento")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Documento extends GenericModel implements Identificavel {
 
 	private static final String SEQ = "analise.documento_id_seq";
@@ -120,7 +123,7 @@ public class Documento extends GenericModel implements Identificavel {
 		return this;
 	}
 
-	private void saveArquivoTemp() {
+	protected void saveArquivoTemp() {
 		
 		if (this.key == null)
 			throw new IllegalStateException("Key do documento não preenchido.");
@@ -128,7 +131,7 @@ public class Documento extends GenericModel implements Identificavel {
 		saveArquivo(FileManager.getInstance().getFile(this.key));
 	}
 
-	private void saveArquivo(File file) {
+	protected void saveArquivo(File file) {
 		
 		if (file == null || !file.exists())
 			throw new IllegalStateException("Arquivo não existente.");
@@ -149,7 +152,7 @@ public class Documento extends GenericModel implements Identificavel {
 		}
 	}
 
-	private void saveArquivoBase64() {
+	protected void saveArquivoBase64() {
 		
 		if (this.base64 == null)
 			throw new IllegalStateException("Base64 do documento não preenchido.");
@@ -174,8 +177,8 @@ public class Documento extends GenericModel implements Identificavel {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	private void configurarCaminho() {
+
+	protected void configurarCaminho() {
 		
 		this.caminho = File.separator + tipo.caminhoPasta
 				+ File.separator + tipo.prefixoNomeArquivo + "_"
@@ -184,8 +187,8 @@ public class Documento extends GenericModel implements Identificavel {
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
 	}
-	
-	private void criarPasta() {
+
+	protected void criarPasta() {
 		
 		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta;
 		
@@ -194,9 +197,8 @@ public class Documento extends GenericModel implements Identificavel {
 		if (!pasta.exists())
 			pasta.mkdirs();
 	}
-	
-	
-	private String getCaminhoCompleto() {
+
+	protected String getCaminhoCompleto() {
 		
 		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;
 	}
@@ -242,7 +244,11 @@ public class Documento extends GenericModel implements Identificavel {
 				.setParameter("idDocumento", this.id)
 				.fetch();
 	}
-	
-	
-	
+
+	public String getNomeArquivo() {
+
+		this.arquivo = getFile();
+
+		return this.arquivo.getName();
+	}
 }

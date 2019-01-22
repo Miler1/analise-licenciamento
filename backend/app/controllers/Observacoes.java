@@ -1,6 +1,6 @@
 package controllers;
 
-import models.manejoDigital.Observacao;
+import models.manejoDigital.analise.analiseTecnica.Observacao;
 import security.Acao;
 import serializers.ObservacoesSerializer;
 import utils.Mensagem;

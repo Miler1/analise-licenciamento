@@ -123,6 +123,34 @@ public class WebService {
 		
 		return request.post();
 	}
+
+	public <T> T post(String url, Map<String, Object> params, Class<T> responseType) {
+
+		WSRequest request = createRequest(url);
+
+		if (params != null && !params.isEmpty()) {
+			request.params(params);
+		}
+
+		HttpResponse response = request.post();
+
+		if (!response.success())
+			throw new WebServiceException(response);
+
+		JsonElement responseJson = response.getJson();
+
+		if (responseJson.isJsonObject()) {
+
+			JsonObject json = (JsonObject) responseJson;
+			return gson.fromJson(json, responseType);
+
+		} else if (responseJson.isJsonArray()) {
+
+			return gson.fromJson(responseJson.getAsJsonArray(), responseType);
+		}
+
+		return null;
+	}
 	
 	public HttpResponse post(String url) {
 		

@@ -1,12 +1,28 @@
-include ./observacoes
+include ../../../layout/components/inputErrors
 
 h5 Conclusão
 
 div
-	blockquote.analise-manejo
-		div.row.card-analise-manejo
-			.col-xs-12
-				p.margin-top-xs {{analiseTecnicaManejo.analiseTecnica.conclusao}}
+	form(name="analiseTecnicaManejo.formularioAnaliseTecnicaConclusao", novalidate)
 
-div
-	+observacoes('analiseTecnicaManejo.analiseTecnica.observacoesConclusao')
+		div
+			textarea.form-control(name='conclusao', rows='6', ng-model="analiseTecnicaManejo.analiseTecnica.conclusao", required)
+			+inputErrors('analiseTecnicaManejo.formularioAnaliseTecnicaConclusao', 'conclusao', 'required')
+
+		div.margin-top-md.text-center
+
+			label.radio-inline(style="margin-right: 30px" for="radio_deferido")
+				input#radio_deferido(type="radio", name="apto", ng-value="true", ng-model="analiseTecnicaManejo.analiseTecnica.apto", ng-required="!analiseTecnicaManejo.analiseTecnica.apto")
+				| Apto
+			label.radio-inline(for="radio_indeferido")
+				input#radio_indeferido(type="radio", name="apto", ng-value="false", ng-model="analiseTecnicaManejo.analiseTecnica.apto", ng-required="!analiseTecnicaManejo.analiseTecnica.apto")
+				| Inapto
+
+			div.margin-top-md(ng-if="analiseTecnicaManejo.analiseTecnica.apto === true")
+				span
+				| Do ponto de vista estritamente do geoprocessamento, consideramos a AMF APTA para apresentação de PMFS, encaminhando para prosseguimento das demais análises, devendo ser levado em consideração as informações supracitadas.
+			div.margin-top-md(ng-if="analiseTecnicaManejo.analiseTecnica.apto === false")
+				span
+				| Do ponto de vista estritamente do geoprocessamento, por não haver condições técnicas e outras para continuidade das análises nesta DIGEO, consideramos INAPTO para a apresentação do PMFS.
+
+			+inputErrors('analiseTecnicaManejo.formularioAnaliseTecnicaConclusao', 'apto', 'required')

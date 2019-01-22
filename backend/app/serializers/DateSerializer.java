@@ -15,12 +15,12 @@ import flexjson.transformer.DateTransformer;
 import flexjson.transformer.Transformer;
 
 public class DateSerializer implements JsonSerializer<Date> {
-	
+
 	private static final String DATE_FORMAT = Play.configuration.getProperty("date.format");
 	private static final String DATE_FORMAT_TIMEABLE = Play.configuration.getProperty("date.format.timeable");
 	
 	private static DateTransformer dateTransformer;
-	
+
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 	
 	public static Transformer getTransformer() {
@@ -33,7 +33,7 @@ public class DateSerializer implements JsonSerializer<Date> {
 
 	@Override
 	public JsonElement serialize(Date date, Type type, JsonSerializationContext context) {
-		
+
 		return new JsonPrimitive(dateFormat.format(date));
 	}
 

@@ -77,7 +77,7 @@ public class FileManager {
 
         writeFile(file, fileBytes);
 
-        return file.getPath();
+        return fileName;
     }
 
     public String createFile(byte [] fileBytes, String extension) throws IOException {
@@ -132,7 +132,22 @@ public class FileManager {
         return null;
     }
 
-    public byte [] getFileBytes(String fileKey) {
+	public File getFile(String fileKey, String folder, String extension) {
+
+		if (fileKey == null || folder == null) {
+			return null;
+		}
+
+		File file = new File (folder, fileKey + '.' + extension);
+
+		if (file.exists()) {
+			return file;
+		}
+
+		return null;
+	}
+
+	public byte [] getFileBytes(String fileKey) {
 
       try {
 
@@ -243,7 +258,7 @@ public class FileManager {
 	public String generateFileName(String name, String extension) {
 
     	name = name.substring(0, name.lastIndexOf("."));
-		return name + UUID.randomUUID().toString() + ((extension != null) ? "." + extension : "");
+		return name + '_' + UUID.randomUUID().toString() + ((extension != null) ? "." + extension : "");
 	}
 
     public String getFolderName() throws IOException {

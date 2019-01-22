@@ -21,7 +21,13 @@ var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 	this.iniciarAnalise = function(processo) {
 
 		return request
-			.post(config.BASE_URL() + "processoManejo/iniciar", processo);
+			.post(config.BASE_URL() + "processoManejo/iniciarAnaliseTecnica", processo);
+	};
+
+	this.indeferir = function(processo) {
+
+		return request
+			.put(config.BASE_URL() + "processoManejo/indeferir", processo);
 	};
 
 	this.downloadPdfAnaliseTecnica = function(processo) {
@@ -56,6 +62,16 @@ var ProcessoManejoService = function(request, config, Upload, $uibModal) {
 
 		return request
 		.post(config.BASE_URL() + "processoManejo/count", filtro);
+	};
+
+	this.findByNumeroProcesso = function(numeroProcesso) {
+
+		return request.get(config.BASE_URL() + "processoManejo/numero/processo", {numeroProcesso: numeroProcesso});
+	};
+
+	this.inicicarAnaliseShape = function(processo) {
+
+		return request.post(config.BASE_URL() + 'processoManejo/inicicarAnaliseShape', processo);
 	};
 
 };

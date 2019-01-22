@@ -5,7 +5,7 @@ h5 Cálculo da área efetiva de manejo
 div
 	div.row.card-analise-manejo
 		.col-xs-12
-			p.analise-temporal A tabela a seguir, apresenta a área total de manejo florestal solicitada para análise, e a área efetiva a ser explorada (área líquida), após desconto das áreas sem permissão para exploração.
+			p.analise-temporal.text-justify A tabela a seguir, apresenta a área total de manejo florestal solicitada para análise, e a área efetiva a ser explorada (área líquida), após desconto das áreas sem permissão para exploração.
 
 
 div
@@ -14,7 +14,7 @@ div
 
 			tbody
 				tr.linha-destaque
-					td Área de manejo florestal solicitada - AMF (hectares)
+					td Área de manejo florestal solicitada - AMF (ha)
 					td.text-right {{ analiseTecnicaManejo.analiseTecnica.areaManejoFlorestalSolicitada }}
 
 div
@@ -23,14 +23,14 @@ div
 
 			thead
 				tr
-					th.text-center(colspan="2") Áreas descontadas da AMF (hectares)
+					th.text-center(colspan="2") Áreas descontadas da AMF (ha)
 
 			tbody
 				tr
 					td Área de preservação permanente - APP
 					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaPreservacaoPermanente || '-'}}
 				tr
-					td Área de servidão
+					td Área de servidão administrativa
 					td.text-right {{analiseTecnicaManejo.analiseTecnica.areaServidao || '-'}}
 				tr
 					td Área antropizada não consolidada

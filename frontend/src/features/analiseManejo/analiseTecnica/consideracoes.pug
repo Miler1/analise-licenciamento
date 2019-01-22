@@ -4,9 +4,16 @@ h5 Considerações
 
 div
     blockquote.analise-manejo
-        div.row.card-analise-manejo
-            .col-xs-12
-                p.margin-top-xs {{ analiseTecnicaManejo.analiseTecnica.consideracoes }}
+        table.table.table-striped
+            thead
+                tr
+                    th.text-center.col-md-1(style='min-width: 111px;') Exibir no PDF
+                    th.col-md-11 Referência
+            tbody
+                tr(ng-repeat="vinculo in analiseTecnicaManejo.analiseTecnica.vinculosConsideracoes")
+                    td.col-md-1.text-center.checkbox-center
+                        input(type='checkbox', placeholder='', ng-model='vinculo.exibirPDF')
+                    td.col-md-11.text-justify {{ vinculo.consideracao.texto }}
 
 div
     +observacoes('analiseTecnicaManejo.analiseTecnica.observacoesConsideracoes')

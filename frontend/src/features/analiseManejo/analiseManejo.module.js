@@ -35,6 +35,7 @@ analiseManejo.config(["$routeProvider", function($routeProvider) {
 analiseManejo
 	.controller('listagemProcessoManejoController', controllers.ListagemProcessoManejoController)
 	.controller('modalObservacaoController', controllers.ModalObservacaoController)
+	.controller('modalIndeferirController', controllers.ModalIndeferirController)
 	.controller('visualizacaoProcessoManejoController', controllers.VisualizacaoProcessoManejoController);
 
 analiseManejo
