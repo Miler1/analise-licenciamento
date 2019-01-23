@@ -34,7 +34,7 @@ import models.manejoDigital.analise.analiseTecnica.AnalistaTecnicoManejo;
 import models.manejoDigital.analise.analiseTecnica.BaseVetorial;
 import models.manejoDigital.analise.analiseTecnica.Insumo;
 import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.tramitacao.ObjetoTramitavel;
@@ -155,13 +155,13 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, Usuario usuario) {
+    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, UsuarioLicenciamento usuario) {
 
         this.analisesTecnicaManejo.add(processo.getAnaliseTecnica());
         this.getAnaliseTecnica().dataAnalise = new Date();
         this.getAnaliseTecnica().diasAnalise = 0;
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
-                (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
+                (UsuarioLicenciamento) UsuarioLicenciamento.findById(Auth.getUsuarioSessao().id));
         this.getAnaliseTecnica().processoManejo = this;
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(this.getAnaliseTecnica(), usuario);
 
@@ -286,7 +286,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         for (GeometriaArcgis feature : features) {
 
             feature.attributes = new AtributosAddLayer(this.numeroProcesso,
-                    this.empreendimento.imovel.nome, 0, this.getAnaliseTecnica().analistaTecnico.usuario.nome);
+                    this.empreendimento.imovel.nome, 0, this.getAnaliseTecnica().analistaTecnico.usuario.login);
         }
 
         return features;
@@ -464,7 +464,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return this.analisesTecnicaManejo.get(this.analisesTecnicaManejo.size() - 1);
     }
 
-    public void indeferir(ProcessoManejo processoManejo, Usuario usuario) {
+    public void indeferir(ProcessoManejo processoManejo, UsuarioLicenciamento usuario) {
 
         if (!this.revisaoSolicitada) {
 

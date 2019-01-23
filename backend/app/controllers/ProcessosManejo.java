@@ -45,7 +45,7 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processoSalvo);
 
-		processoSalvo.iniciarAnaliseShape(processo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first());
+		processoSalvo.iniciarAnaliseShape(processo, (UsuarioLicenciamento) UsuarioLicenciamento.find("login", Auth.getUsuarioSessao().login).first());
 
 		renderJSON(Mensagem.ANALISE_SHAPE_INICIADA_COM_SUCESSO);
 	}
@@ -131,7 +131,7 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processoSalvo);
 
-		processoSalvo.indeferir(processoManejo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first());
+		processoSalvo.indeferir(processoManejo, (UsuarioLicenciamento) UsuarioLicenciamento.find("login", Auth.getUsuarioSessao().login).first());
 
 		renderMensagem(Mensagem.PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO);
 	}
