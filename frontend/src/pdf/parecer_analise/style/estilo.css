@@ -18,3 +18,12 @@ body {
   text-align: justify;
   margin-top: 40px;
 }
+
+.assinatura {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.dado-assinatura {
+  margin-top: 5px;
+}
