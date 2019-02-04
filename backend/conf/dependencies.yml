@@ -8,9 +8,11 @@ require:
             - org.javassist -> *
     - org.postgresql -> postgresql 42.1.4:
                 force: true
-    - play -> pdf 0.9
     - org.geotools -> gt-geojson 14.3
+    - org.geotools -> gt-wfs 14.3
+    - org.geotools -> gt-epsg-hsql 14.3
     - org.hibernate -> hibernate-spatial 5.2.13.Final
+    - play -> pdf 0.9
     - org.geotools -> gt-shapefile 14.3
     - com.google.zxing -> core 3.2.1
     - com.google.zxing -> javase 2.2
@@ -38,7 +40,6 @@ repositories:
                 - org.hibernatespatial -> *
                 - org.hibernate -> *
                 - org.postgis -> *
-                - org.geotools -> *
                 - javax.media -> *
                 - jgridshift -> *
                 - net.sf.flexjson -> *
@@ -51,3 +52,10 @@ repositories:
                 - com.google.zxing -> *
                 - br.ufla.lemaf -> *
 
+    - BOUNDLESSGEO:
+          type: iBiblio
+          root: "https://repo.boundlessgeo.com/main/"
+          contains:
+              - org.geotools.* -> *
+              - it.geosolutions.* -> *
+              - it.geosolutions.*.* -> *
