@@ -73,7 +73,7 @@ public class Configuracoes {
 	public static String URL_PORTAL_SEGURANCA = getConfig("url.portal.seguranca", null);
 	public static String URL_CADASTRO_UNIFICADO = getConfig("url.cadastro.unificado", null);
 
-	public static final CadastroUnificadoPessoaService oAuthClient = new CadastroUnificadoPessoaService(CLIENTE_ID, CLIENTE_SECRET, URL_PORTAL_SEGURANCA, URL_CADASTRO_UNIFICADO);
+	public static final CadastroUnificadoPessoaServiceLicenciamento oAuthClient = new CadastroUnificadoPessoaServiceLicenciamento(CLIENTE_ID, CLIENTE_SECRET, URL_PORTAL_SEGURANCA, URL_CADASTRO_UNIFICADO);
 
 	public static Long TRAMITACAO_ETAPA_MANEJO = getLongConfig("tramitacao.etapa.manejo");
 	public static String URL_SICAR = getConfig("sicar.url", null);

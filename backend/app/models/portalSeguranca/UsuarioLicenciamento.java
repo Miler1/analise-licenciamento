@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import models.EntradaUnica.Usuario;
 import play.Play;
 import play.data.validation.MaxSize;
 import play.db.jpa.GenericModel;
@@ -43,7 +44,7 @@ public class UsuarioLicenciamento extends GenericModel  {
 	private List<Integer> permittedActionsIds;
 
 	@Transient
-	public main.java.br.ufla.lemaf.beans.pessoa.Usuario usuarioEntradaUnica;
+	public Usuario usuarioEntradaUnica;
 
 	@Transient
 	public Perfil perfilSelecionado;

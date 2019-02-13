@@ -1,6 +1,6 @@
 package security;
 
-import main.java.br.ufla.lemaf.beans.pessoa.Usuario;
+import models.EntradaUnica.Usuario;
 import models.portalSeguranca.UsuarioLicenciamento;
 import play.Logger;
 import play.Play;
