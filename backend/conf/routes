@@ -71,8 +71,7 @@ GET		/atividades									Atividades.list
 GET		/tipologias									Tipologias.list
 
 # Login
-GET     /login/{sessionKeyEntradaUnica}             Login.login
-GET		/authenticate								Login.autenticar
+GET		/authenticate								Login.login
 GET		/logout										Login.logout
 
 # Consultores

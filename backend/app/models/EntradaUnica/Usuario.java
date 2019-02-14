@@ -15,6 +15,7 @@ public class Usuario implements Serializable {
     public Perfil perfilSelecionado;
     public Setor setorSelecionado;
     public String sessionKeyEntradaUnica;
+    public boolean autenticadoViaToken;
 
     public Usuario() {
     }

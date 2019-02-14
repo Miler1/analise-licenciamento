@@ -2,6 +2,7 @@ package controllers;
 
 import models.Notificacao;
 import models.portalSeguranca.UsuarioLicenciamento;
+import play.Play;
 import play.libs.Crypto;
 import security.Auth;
 import serializers.ApplicationSerializer;
@@ -30,8 +31,8 @@ public class Application extends GenericController {
 		DadosApp dados = new DadosApp();
 		dados.usuarioSessao = Auth.getAuthenticatedUser(session.current());
 		
-//		if(Play.mode == Play.Mode.DEV)
-//			dados.usuarioSessao.autenticadoViaToken = true;
+		if(Play.mode == Play.Mode.DEV)
+			dados.usuarioSessao.usuarioEntradaUnica.autenticadoViaToken = true;
 		
 		String jsonConfig = ApplicationSerializer.findInfo.serialize(dados);
 		

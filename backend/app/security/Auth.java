@@ -1,6 +1,5 @@
 package security;
 
-import models.EntradaUnica.Usuario;
 import models.portalSeguranca.UsuarioLicenciamento;
 import play.Logger;
 import play.Play;
@@ -8,8 +7,6 @@ import play.cache.Cache;
 import play.mvc.Http;
 import play.mvc.Scope;
 import play.mvc.Scope.Session;
-
-import static utils.Configuracoes.oAuthClient;
 
 public class Auth {
 
@@ -64,25 +61,6 @@ public class Auth {
 	public static void setUsuarioSessao(UsuarioLicenciamento usuario, Session session) {
 
 		Cache.set(CACHE_PREFIX +  session.getId(), usuario);
-	}
-
-	public static boolean autenticarEntradaUnica(String sessionKeyEntradaUnica, Session session) {
-
-		Usuario usuario = oAuthClient.searchBySessionKey(sessionKeyEntradaUnica);
-
-		if (usuario == null) {
-
-			return false;
-		}
-
-		UsuarioLicenciamento usuarioLicenciamento = UsuarioLicenciamento.find("login", usuario.login).first();
-		usuarioLicenciamento.usuarioEntradaUnica = usuario;
-
-		Logger.debug("ID da Sessão: %s", new Object[]{session.getId()});
-
-		Cache.set(CACHE_PREFIX + session.getId(), usuarioLicenciamento, Play.configuration.getProperty("application.session.maxAge"));
-
-		return true;
 	}
 
 	public static boolean autenticarPortalSeguranca(Http.Request request, Session session) {

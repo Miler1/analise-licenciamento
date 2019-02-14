@@ -67,14 +67,6 @@ public class Configuracoes {
 	public static Integer PRAZO_MAXIMO_CONDICIONANTE = 1900;
 
 	public static long DIAS_PRORROGACAO = getLongConfig("dias.prorrogacao");
-
-	public static String CLIENTE_ID = getConfig("cliente.id", null);
-	public static String CLIENTE_SECRET = getConfig("cliente.secret", null);
-	public static String URL_PORTAL_SEGURANCA = getConfig("url.portal.seguranca", null);
-	public static String URL_CADASTRO_UNIFICADO = getConfig("url.cadastro.unificado", null);
-
-	public static final CadastroUnificadoPessoaServiceLicenciamento oAuthClient = new CadastroUnificadoPessoaServiceLicenciamento(CLIENTE_ID, CLIENTE_SECRET, URL_PORTAL_SEGURANCA, URL_CADASTRO_UNIFICADO);
-
 	public static Long TRAMITACAO_ETAPA_MANEJO = getLongConfig("tramitacao.etapa.manejo");
 	public static String URL_SICAR = getConfig("sicar.url", null);
 	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
