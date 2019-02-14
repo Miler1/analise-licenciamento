@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
 import models.EntradaUnica.Usuario;
 import play.Play;
 import play.data.validation.MaxSize;
