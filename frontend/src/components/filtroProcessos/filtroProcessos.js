@@ -195,7 +195,7 @@ var FiltroProcessos = {
 					 * as gerências pertencentes a ele estão dois níveis abaixo. Já se
 					 * for o coordenador estará um nível abaixo. 
 					 */
-					var nivel = $rootScope.usuarioSessao.perfilSelecionado.id === $rootScope.perfis.APROVADOR ? 2 : 1;
+					var nivel = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id === $rootScope.perfis.APROVADOR ? 2 : 1;
 
 					setorService.getSetoresByNivel(nivel)
 						.then(function(response){
