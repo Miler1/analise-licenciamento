@@ -355,7 +355,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.VISUALIZAR_PROCESSO_MANEJO,
 					app.utils.Perfis.ANALISAR_PROCESSO_MANEJO,
 					app.utils.Perfis.LISTAR_PROCESSO_MANEJO
-				].indexOf($rootScope.usuarioSessaousuarioEntradaUnica.perfilSelecionado.id) !== -1;
+				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id) !== -1;
 			}
 		}];
 
@@ -419,9 +419,10 @@ licenciamento.constant('config', {
 function configurarPermissoes(usuarioSessao, $rootScope) {
 
 	var permissoes = {};
+	var usuarioPermissoes = usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes;
 
-	for (var i = 0; i < usuarioSessao.permissoes.length; i++)
-		permissoes[usuarioSessao.permissoes[i]] = true;
+	for (var i = 0; i < usuarioPermissoes.length; i++)
+		permissoes[usuarioPermissoes[i]] = true;
 
 	$rootScope.permissoes = permissoes;
 
