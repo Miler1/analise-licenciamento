@@ -1,6 +1,7 @@
 package models.EntradaUnica;
 
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
+import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,5 +19,18 @@ public class Usuario implements Serializable {
     public boolean autenticadoViaToken;
 
     public Usuario() {
+    }
+
+    public boolean hasPermissao(String codigoPermissao) {
+
+        for (Permissao permissao : this.perfilSelecionado.permissoes) {
+
+            if (permissao.codigo.equals(codigoPermissao)) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }
