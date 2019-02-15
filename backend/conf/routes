@@ -73,6 +73,7 @@ GET		/tipologias									Tipologias.list
 # Login
 GET		/authenticate								Login.login
 GET		/logout										Login.logout
+GET     /login/getAuthenticatedUser                 Login.getAuthenticatedUserDados
 
 # Consultores
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico

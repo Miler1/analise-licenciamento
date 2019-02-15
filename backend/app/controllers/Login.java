@@ -1,5 +1,8 @@
 package controllers;
 
+import models.portalSeguranca.UsuarioLicenciamento;
+import play.Logger;
+import play.cache.Cache;
 import play.mvc.Http;
 import play.mvc.Http.Request;
 import security.Auth;
@@ -21,6 +24,14 @@ public class Login extends GenericController {
 
 		Auth.logout(session.current());
 		redirect(Configuracoes.LOGIN_URL);
+	}
+
+	public static UsuarioLicenciamento getAuthenticatedUser() {
+
+		Logger.debug("ID da Sessão: %s", new Object[]{session.getId()});
+
+		return Cache.get(session.getId(), UsuarioLicenciamento.class);
+
 	}
 
 }
