@@ -520,7 +520,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder filtrarPorIdSetor(Integer idSetor) {
 		
 		if (idSetor != null) {
-			
+
 			addTipoCaracterizacaoAtividade();
 			addRestriction(Restrictions.eq(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idSetor));
 			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
@@ -544,8 +544,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder filtrarPorIdsSetores(List<Integer> idsSetores) {
 		
 		if (idsSetores != null && idsSetores.size() > 0) {
-			
-			addTipoCaracterizacaoAtividade();			
+
+			addTipoCaracterizacaoAtividade();
 			addRestriction(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idsSetores));
 			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}

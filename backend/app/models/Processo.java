@@ -249,7 +249,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 		
 		if (usuarioSessao.setorSelecionado == null) {
-			
+
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_USUARIO_SEM_SETOR);
 		}
 		
