@@ -1,11 +1,11 @@
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id === aguardandoValidacaoListagem.perfis.COORDENADOR_JURIDICO", 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === aguardandoValidacaoListagem.perfis.COORDENADOR_JURIDICO",
     ng-controller='aguardandoValidacaoJuridicoListController as listagem')
     include coordenadorJuridico/aguardando-validacao-listagem
 
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id === aguardandoValidacaoListagem.perfis.COORDENADOR_TECNICO", 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === aguardandoValidacaoListagem.perfis.COORDENADOR_TECNICO",
     ng-controller='aguardandoValidacaoTecnicaListController as listagem')
     include coordenadorTecnico/aguardando-validacao-listagem
 
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id === aguardandoValidacaoListagem.perfis.GERENTE_TECNICO", 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === aguardandoValidacaoListagem.perfis.GERENTE_TECNICO",
     ng-controller='aguardandoValidacaoGerenteTecnicoListController as listagem')
     include gerenteTecnico/aguardando-validacao-listagem
