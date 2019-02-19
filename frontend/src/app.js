@@ -359,7 +359,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 		$scope.$on("$routeChangeError", function(event, rotaAtual, rotaAnterior, error) {
 
-			if (error.data.texto) {
+			if (error.data && error.data.texto) {
 
 				mensagem.error(error.data.texto);
 			}
@@ -398,7 +398,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			});
 
 			return result;
-		}
+		};
 
 	}]);
 
