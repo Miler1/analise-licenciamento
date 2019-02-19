@@ -8,24 +8,25 @@ import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Processos extends InternalController {
 
 	public static void listWithFilter(FiltroProcesso filtro){
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
-		List processosList = Processo.listWithFilter(filtro, Auth.getUsuarioSessao());
+		List processosList = new ArrayList(); //Processo.listWithFilter(filtro, Auth.getUsuarioSessao());
 		
 		renderJSON(processosList);
 	}
 	
 	public static void countWithFilter(FiltroProcesso filtro){
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
-		renderJSON(Processo.countWithFilter(filtro, Auth.getUsuarioSessao()));
+		renderJSON(0l); //Processo.countWithFilter(filtro, Auth.getUsuarioSessao())
 	}
 	
 	public static void findById(Long idProcesso) {

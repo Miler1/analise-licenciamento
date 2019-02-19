@@ -27,5 +27,11 @@ public class ApplicationSerializer {
 			"usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo",
 			"usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes.nome",
 			"usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes.codigo",
+			"usuarioSessao.usuarioEntradaUnica.setores.id",
+			"usuarioSessao.usuarioEntradaUnica.setores.nome",
+			"usuarioSessao.usuarioEntradaUnica.setores.sigla",
+			"usuarioSessao.usuarioEntradaUnica.setorSelecionado.id",
+			"usuarioSessao.usuarioEntradaUnica.setorSelecionado.nome",
+			"usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla",
 			"configuracoes.baseURL");
 }

@@ -1,5 +1,6 @@
 package controllers;
 
+import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
 import models.portalSeguranca.UsuarioLicenciamento;
 import play.mvc.Before;
 import play.mvc.Http;
@@ -44,7 +45,7 @@ public class InternalController extends GenericController {
 		boolean permitido = false;
 		
 		for (Acao acao : acoes)
-			permitido = permitido; //|| usuario.possuiPermissao(acao);
+			permitido = permitido || usuario.usuarioEntradaUnica.hasPermissao(acao.codigo);
 		
 		if (!permitido) {
 			

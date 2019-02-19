@@ -12,18 +12,18 @@ public class Auth {
 
 	private static final String CACHE_PREFIX = "LIC_USER_";
 
-	public static boolean autenticar(Scope.Session session) {
-
-		UsuarioLicenciamento usuario = getAuthenticatedUser(session);
-
-		if (usuario == null) {
-
-			return false;
-		}
-
-		setUsuarioSessao(usuario, session);
-		return true;
-	}
+//	public static boolean autenticar(Scope.Session session) {
+//
+//		UsuarioLicenciamento usuario = getAuthenticatedUser(session);
+//
+//		if (usuario == null) {
+//
+//			return false;
+//		}
+//
+//		setUsuarioSessao(usuario, session);
+//		return true;
+//	}
 
 //	public static boolean autenticar(Http.Request request, Scope.Session session) {
 //
@@ -63,7 +63,7 @@ public class Auth {
 		Cache.set(CACHE_PREFIX +  session.getId(), usuario);
 	}
 
-	public static boolean autenticarPortalSeguranca(Http.Request request, Session session) {
+	public static boolean autenticar(Http.Request request, Session session) {
 
 		AuthService authService = new AuthServiceFactory().getInstance();
 
