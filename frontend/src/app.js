@@ -338,8 +338,6 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			}
 		}];
 
-		configurarPermissoes($rootScope.usuarioSessao, $rootScope);
-
 		/*  Limpando o breadcrumb ao acessar a tela inicial */
 		$scope.$on('$routeChangeSuccess', function (event, rotaAtual, rotaAnterior) {
 
@@ -416,20 +414,6 @@ licenciamento.constant('config', {
 		COORDENADORIA: 'COORDENADORIA',
 		GERENCIA:'GERENCIA'
 	});
-
-
-function configurarPermissoes(usuarioSessao, $rootScope) {
-
-	var permissoes = {};
-	var usuarioPermissoes = usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes;
-
-	for (var i = 0; i < usuarioPermissoes.length; i++)
-		permissoes[usuarioPermissoes[i]] = true;
-
-	$rootScope.permissoes = permissoes;
-
-}
-
 
 var services = app.services,
 	utils = app.utils,
