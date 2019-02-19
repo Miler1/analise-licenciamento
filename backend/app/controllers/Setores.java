@@ -14,7 +14,7 @@ public class Setores extends InternalController {
 	
 	public static void getSetoresByNivel(Integer nivel){
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
 		
@@ -35,7 +35,7 @@ public class Setores extends InternalController {
 	
 	public static void getSetoresByTipo(TipoSetor tipoSetor) {
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		List<Setor> setores = Setor.find("tipoSetor = :tipoSetor")
 					.setParameter("tipoSetor", tipoSetor)
