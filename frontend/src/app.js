@@ -36,14 +36,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 					return "/consultar-processo";
 
-				} else if (
-
-					$scope.verificarPermissao([
-						app.utils.Permissoes.ANALISAR_PROCESSO_MANEJO,
-						app.utils.Permissoes.CADASTRAR_PROCESSO_MANEJO,
-						app.utils.Permissoes.LISTAR_PROCESSO_MANEJO,
-						app.utils.Permissoes.VISUALIZAR_PROCESSO_MANEJO
-					])) {
+				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_SIMLAM ||
+					LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR) {
 
 					return '/listagem-processo-manejo';
 				}
@@ -398,7 +392,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			});
 
 			return result;
-		}
+		};
 
 	}]);
 
