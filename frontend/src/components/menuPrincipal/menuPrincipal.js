@@ -10,7 +10,7 @@ var MenuPrincipal = {
 
 		ctrl.isPerfilLicenciamento = false;
 
-		var permissoes = ['LISTAR_PROCESSO_JURIDICO', 'VINCULAR_PROCESSO_JURIDICO', 'CONSULTAR_PROCESSO', 'VALIDAR_PARECER_JURIDICO',
+		var permissoes = ['LISTAR_PROCESSO', 'VINCULAR_PROCESSO_JURIDICO', 'CONSULTAR_PROCESSO', 'VALIDAR_PARECER_JURIDICO',
 			'VINCULAR_PROCESSO_TECNICO', 'INICIAR_PARECER_JURIDICO', 'INICIAR_PARECER_TECNICO', 'APROVAR_ANALISE', 'VALIDAR_PARECER_TECNICO',
 			'VALIDAR_PARECERES_JURIDICO_TECNICO', 'CONSULTAR_LICENCAS_EMITIDAS', 'SUSPENDER_LICENCA_EMITIDA', 'CANCELAR_LICENCA_EMITIDA'];
 
@@ -57,12 +57,12 @@ var MenuPrincipal = {
 			else
 				filtro.filtrarPorUsuario = item.deveFiltrarPorUsuario;
 
-			if (_.isFunction(item.idPerfilSelecionado)){
+			if (_.isFunction(item.codigoPerfilSelecionado)){
 
-				var idPerfilSelecionado = item.idPerfilSelecionado();
+				var codigoPerfilSelecionado = item.codigoPerfilSelecionado();
 
-				filtro.isAnaliseJuridica = isAnaliseJuridica(idPerfilSelecionado);
-				filtro.isAnaliseTecnica = isAnaliseTecnica(idPerfilSelecionado);
+				filtro.isAnaliseJuridica = isAnaliseJuridica(codigoPerfilSelecionado);
+				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
 			}
 
 			processoService.getProcessosCount(filtro)
@@ -77,17 +77,17 @@ var MenuPrincipal = {
 				});
 		}
 
-		function isAnaliseJuridica(idPerfilSelecionado) {
+		function isAnaliseJuridica(codigoPerfilSelecionado) {
 
-			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_JURIDICO ||
-				   idPerfilSelecionado === app.utils.Perfis.CONSULTOR_JURIDICO;
+			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR_JURIDICO ||
+				codigoPerfilSelecionado === app.utils.Perfis.CONSULTOR_JURIDICO;
 		}
 
-		function isAnaliseTecnica(idPerfilSelecionado) {
+		function isAnaliseTecnica(codigoPerfilSelecionado) {
 
-			return idPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO ||
-				   idPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO ||
-				   idPerfilSelecionado === app.utils.Perfis.GERENTE_TECNICO;
+			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO ||
+				codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO ||
+				codigoPerfilSelecionado === app.utils.Perfis.GERENTE_TECNICO;
 		}
 
 		$scope.$on('atualizarContagemProcessos', function(event){

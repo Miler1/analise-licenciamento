@@ -37,30 +37,15 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 					return "/consultar-processo";
 
 				} else if (
-					[
-						app.utils.Perfis.COORDENADOR_JURIDICO,
-						app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
-						app.utils.Perfis.CONSULTOR_JURIDICO,
-						app.utils.Perfis.COORDENADOR_TECNICO,
-						app.utils.Perfis.GERENTE_TECNICO,
-						app.utils.Perfis.ANALISTA_TECNICO,
-						app.utils.Perfis.APROVADOR
-					].indexOf(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) === -1) {
 
-					var result = false;
+					$scope.verificarPermissao([
+						app.utils.Permissoes.ANALISAR_PROCESSO_MANEJO,
+						app.utils.Permissoes.CADASTRAR_PROCESSO_MANEJO,
+						app.utils.Permissoes.LISTAR_PROCESSO_MANEJO,
+						app.utils.Permissoes.VISUALIZAR_PROCESSO_MANEJO
+					])) {
 
-					_.forEach(LICENCIAMENTO_CONFIG.usuarioSessao.permissoes, function(permissao) {
-
-						if(permissao === 'LISTAR_PROCESSO_MANEJO') {
-
-							result = true;
-						}
-					});
-
-					if (result) {
-
-						return '/listagem-processo-manejo';
-					}
+					return '/listagem-processo-manejo';
 				}
 
 				return "/caixa-entrada";
@@ -171,7 +156,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.COORDENADOR_TECNICO,
 					app.utils.Perfis.GERENTE_TECNICO,
 					app.utils.Perfis.ANALISTA_TECNICO,
-					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id) > -1;
+					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function() {
 
@@ -187,9 +172,9 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 			},
 			deveFiltrarPorUsuario: true,
-			idPerfilSelecionado: function(){
+			codigoPerfilSelecionado: function(){
 
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
 		{
@@ -216,7 +201,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			visivel: function() {
 
 				return [app.utils.Perfis.CONSULTOR_JURIDICO,
-				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id) > -1;
+				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
@@ -226,9 +211,9 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
 			},
 			deveFiltrarPorUsuario: true,
-			idPerfilSelecionado: function(){
+			codigoPerfilSelecionado: function(){
 
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
 		{
@@ -248,7 +233,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return [app.utils.Perfis.GERENTE_TECNICO,
 				app.utils.Perfis.COORDENADOR_TECNICO,
-				app.utils.Perfis.COORDENADOR_JURIDICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id) > -1;
+				app.utils.Perfis.COORDENADOR_JURIDICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
@@ -261,9 +246,9 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 			},
 			deveFiltrarPorUsuario: true,
-			idPerfilSelecionado: function(){
+			codigoPerfilSelecionado: function(){
 
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
 		{
@@ -311,7 +296,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.GERENTE_TECNICO,
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.APROVADOR
-				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id) !== -1;
+				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
 		},
 		{
@@ -335,7 +320,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.GERENTE_TECNICO,
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.APROVADOR
-				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id) !== -1;
+				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
 		},
 		{
@@ -351,11 +336,11 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return [
-					app.utils.Perfis.VISUALIZAR_PROCESSO_MANEJO,
-					app.utils.Perfis.ANALISAR_PROCESSO_MANEJO,
-					app.utils.Perfis.LISTAR_PROCESSO_MANEJO
-				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.id) !== -1;
+				return $scope.verificarPermissao([
+					app.utils.Permissoes.VISUALIZAR_PROCESSO_MANEJO,
+					app.utils.Permissoes.ANALISAR_PROCESSO_MANEJO,
+					app.utils.Permissoes.LISTAR_PROCESSO_MANEJO
+				]);
 			}
 		}];
 
@@ -391,6 +376,29 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				$location.path("/");
 			}
 		});
+
+
+		$scope.verificarPermissao = function (permissoesSolicitadas) {
+
+			var result = false;
+
+			_.forEach(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes, function(permissaoUsuario) {
+
+				if (!result) {
+
+					_.forEach(permissoesSolicitadas, function (permissaoSolicitada) {
+
+						if (permissaoSolicitada === permissaoUsuario.codigo) {
+
+							result = true;
+						}
+					});
+				}
+
+			});
+
+			return result;
+		}
 
 	}]);
 
