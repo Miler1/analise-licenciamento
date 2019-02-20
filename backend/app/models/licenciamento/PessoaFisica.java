@@ -1,19 +1,11 @@
 package models.licenciamento;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-
 import play.data.validation.CheckWith;
 import play.data.validation.Required;
 import utils.validacao.CpfCheck;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(schema = "licenciamento", name = "pessoa_fisica")

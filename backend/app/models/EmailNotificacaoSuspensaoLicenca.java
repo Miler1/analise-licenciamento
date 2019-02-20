@@ -1,11 +1,11 @@
 package models;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import exceptions.AppException;
 import models.ReenvioEmail.TipoEmail;
 import notifiers.Emails;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class EmailNotificacaoSuspensaoLicenca extends EmailNotificacao {
 	

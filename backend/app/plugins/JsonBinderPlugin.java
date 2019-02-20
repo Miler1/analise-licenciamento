@@ -1,17 +1,7 @@
 package plugins;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.Map;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.vividsolutions.jts.geom.Geometry;
-
 import deserializers.DateDeserializer;
 import deserializers.GeometryDeserializer;
 import models.licenciamento.Pessoa;
@@ -21,6 +11,11 @@ import play.Logger;
 import play.PlayPlugin;
 import play.mvc.Http.Request;
 import utils.gson.RuntimeTypeAdapterFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.Date;
+import java.util.Map;
 
 public class JsonBinderPlugin extends PlayPlugin {
 

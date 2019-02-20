@@ -8,11 +8,11 @@ public enum TipoSetor {
 	GERENCIA(3,"Gerência");
 	
 	public int id;
-	public String nome;	
+	public String nome;
 
 	TipoSetor(int id, String nome) {
 		
 		this.id = id;
-		this.nome = nome;		
+		this.nome = nome;
 	}
 }

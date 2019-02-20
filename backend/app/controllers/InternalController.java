@@ -1,6 +1,5 @@
 package controllers;
 
-import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
 import models.portalSeguranca.UsuarioLicenciamento;
 import play.mvc.Before;
 import play.mvc.Http;
@@ -8,8 +7,8 @@ import security.Acao;
 import security.Auth;
 import utils.JPACallable;
 import utils.Mensagem;
-import utils.Pool;
 import utils.PlayCallable;
+import utils.Pool;
 
 import java.util.concurrent.Callable;
 

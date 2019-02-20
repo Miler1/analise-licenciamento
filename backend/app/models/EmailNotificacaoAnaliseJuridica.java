@@ -1,16 +1,15 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import org.apache.commons.lang.StringUtils;
-
 import exceptions.AppException;
 import models.ReenvioEmail.TipoEmail;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class EmailNotificacaoAnaliseJuridica extends EmailNotificacao {
 	

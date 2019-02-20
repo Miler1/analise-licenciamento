@@ -2,17 +2,7 @@ package models.licenciamento;
 
 import play.db.jpa.GenericModel;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import models.portalSeguranca.Setor;
-
+import javax.persistence.*;
 import java.util.List;
 
 @Entity

@@ -2,7 +2,6 @@ package security;
 
 import models.portalSeguranca.UsuarioLicenciamento;
 import play.mvc.Http;
-import play.mvc.Scope;
 
 public interface AuthService {
 

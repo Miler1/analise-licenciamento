@@ -4,7 +4,6 @@ import models.portalSeguranca.UsuarioLicenciamento;
 import play.Logger;
 import play.cache.Cache;
 import play.mvc.Http;
-import play.mvc.Http.Request;
 import security.Auth;
 import utils.Configuracoes;
 

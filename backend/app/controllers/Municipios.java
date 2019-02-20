@@ -1,10 +1,9 @@
 package controllers;
 
-import java.util.List;
-
 import models.licenciamento.Municipio;
-import security.Acao;
 import serializers.MunicipiosSerializer;
+
+import java.util.List;
 
 public class Municipios extends InternalController {
 

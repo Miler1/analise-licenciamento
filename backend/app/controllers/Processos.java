@@ -4,7 +4,6 @@ import builders.ProcessoBuilder.FiltroProcesso;
 import models.AnaliseJuridica;
 import models.Processo;
 import security.Acao;
-import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
 

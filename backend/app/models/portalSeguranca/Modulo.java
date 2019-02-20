@@ -1,28 +1,14 @@
 package models.portalSeguranca;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.MinSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema = "portal_seguranca", name = "modulo")
@@ -74,10 +60,7 @@ public class Modulo extends GenericModel {
 
 	@Enumerated(EnumType.ORDINAL)
 	public Alvo alvo;
-	
-	@OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
-	public List<Permissao> permissoes;
-	
+
 	public Boolean fixo;
 	
 	@Transient

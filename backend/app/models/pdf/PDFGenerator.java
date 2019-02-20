@@ -1,22 +1,10 @@
 package models.pdf;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.allcolor.yahp.converter.IHtmlToPdfTransformer;
 import org.allcolor.yahp.converter.IHtmlToPdfTransformer.PageSize;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.commons.lang.StringUtils;
-
 import play.Play;
-import play.classloading.enhancers.LocalvariablesNamesEnhancer;
 import play.exceptions.TemplateNotFoundException;
 import play.exceptions.UnexpectedException;
 import play.modules.pdf.PDF;
@@ -25,6 +13,12 @@ import play.templates.Template;
 import play.templates.TemplateLoader;
 import utils.Configuracoes;
 import utils.FileManager;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Classe utilizada para gerar PDF atravém de template HTML.

@@ -12,10 +12,8 @@ public class Suspensoes extends InternalController {
     	verificarPermissao(Acao.SUSPENDER_LICENCA_EMITIDA);
 		
     	returnIfNull(suspensao, "Suspensao");
-    	
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
 
-	    UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+	    UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
     	
     	suspensao.suspenderLicenca(usuarioExecutor);
     	

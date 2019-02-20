@@ -1,15 +1,12 @@
 package utils.flexjson;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-
 import com.vividsolutions.jts.geom.Geometry;
-
-import utils.GeoJsonUtils;
-
 import flexjson.ObjectBinder;
 import flexjson.ObjectFactory;
 import flexjson.transformer.AbstractTransformer;
+import utils.GeoJsonUtils;
+
+import java.lang.reflect.Type;
 
 public class GeometryTransformer extends AbstractTransformer implements ObjectFactory {
 	

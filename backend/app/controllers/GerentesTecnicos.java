@@ -1,15 +1,15 @@
 package controllers;
 
-import java.util.List;
-
+import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
-import models.portalSeguranca.Perfil;
 import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
 import serializers.UsuarioSerializer;
 import utils.Mensagem;
+
+import java.util.List;
 
 public class GerentesTecnicos extends InternalController {
 
@@ -18,8 +18,8 @@ public class GerentesTecnicos extends InternalController {
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
 		UsuarioLicenciamento gerente = UsuarioLicenciamento.findById(idUsuario);
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
-		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		for(Long idProcesso : idsProcesso) {
 			
@@ -43,7 +43,7 @@ public class GerentesTecnicos extends InternalController {
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 		
-		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfilSetor(Perfil.GERENTE_TECNICO, tipoAtividadeCaracterizacao.setor.id);
+		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE_TECNICO, tipoAtividadeCaracterizacao.siglaSetor);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}	
@@ -52,7 +52,7 @@ public class GerentesTecnicos extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		List<UsuarioLicenciamento> gerentes = UsuarioLicenciamento.getUsuariosByPerfil(Perfil.GERENTE_TECNICO);
+		List<UsuarioLicenciamento> gerentes = UsuarioLicenciamento.getUsuariosByPerfil(CodigoPerfil.GERENTE_TECNICO);
 		
 		renderJSON(gerentes, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}

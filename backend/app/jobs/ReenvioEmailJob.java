@@ -1,16 +1,15 @@
 package jobs;
 
 
-import java.util.Arrays;
-import java.util.List;
-
 import models.*;
 import models.licenciamento.Licenca;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
-
 import play.Logger;
 import play.jobs.On;
+
+import java.util.Arrays;
+import java.util.List;
 
 @On("cron.reenviarEmail")
 public class ReenvioEmailJob extends GenericJob {
@@ -77,7 +76,7 @@ public class ReenvioEmailJob extends GenericJob {
 					List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
 
 					new EmailNotificacaoArquivamentoProcesso(processo, emailsDestinatarios, arquivamento.dataInicial, notificacoes,
-							historicoAnalise.setor).enviar();
+							historicoAnalise.relHistoricoTramitacaoSetor.siglaSetor).enviar();
 
 					break;
 

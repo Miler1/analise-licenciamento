@@ -1,9 +1,5 @@
 package jobs;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
@@ -12,6 +8,10 @@ import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {

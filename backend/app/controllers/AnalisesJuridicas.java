@@ -1,13 +1,13 @@
 package controllers;
 
-import java.util.List;
-
 import models.*;
 import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
 import utils.Mensagem;
+
+import java.util.List;
 
 public class AnalisesJuridicas extends InternalController {
 	
@@ -46,9 +46,8 @@ public class AnalisesJuridicas extends InternalController {
 		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
-		
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
-		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);				
@@ -60,9 +59,8 @@ public class AnalisesJuridicas extends InternalController {
 		verificarPermissao(Acao.INICIAR_PARECER_JURIDICO);		
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
-		
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
-		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
@@ -87,9 +85,8 @@ public class AnalisesJuridicas extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO);
 		
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
-		
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
-		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		analiseAvalidar.validaParecer(analise, usuarioExecutor);
 		
@@ -102,9 +99,8 @@ public class AnalisesJuridicas extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
-		
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
-		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		analiseAvalidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		

@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder;
 import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectDecrypter;
-
 import models.portalSeguranca.UsuarioLicenciamento;
 import play.Logger;
 import play.Play;

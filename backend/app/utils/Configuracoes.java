@@ -1,15 +1,14 @@
 package utils;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-import main.java.br.ufla.lemaf.services.CadastroUnificadoPessoaService;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import play.Play;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class Configuracoes {
 
@@ -87,6 +86,8 @@ public class Configuracoes {
 	public static String MANEJO_NIVEL_EXPLORACAO_ALTO = getConfig("manejo.nivel.exploracao.alto", null);
 	public static String MANEJO_NIVEL_EXPLORACAO_MEDIO = getConfig("manejo.nivel.exploracao.medio", null);
 	public static String MANEJO_NIVEL_EXPLORACAO_BAIXO = getConfig("manejo.nivel.exploracao.baixo", null);
+
+	// Código
 
 	static {
 

@@ -1,15 +1,14 @@
 package models.validacaoParecer;
 
-import java.util.ArrayList;
-
 import models.AnaliseTecnica;
 import models.LicencaAnalise;
 import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.Setor;
 import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+
+import java.util.ArrayList;
 
 public class SolicitarAjustesTecnicoAprovador extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
@@ -57,6 +56,6 @@ public class SolicitarAjustesTecnicoAprovador extends TipoResultadoAnaliseChain<
 		copia.updatePareceresTecnicosRestricoes(pareceresTecnicosRestricoesSalvar);
 			
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_ANALISE_TECNICA_APROVADOR, usuarioExecutor);
-		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 }

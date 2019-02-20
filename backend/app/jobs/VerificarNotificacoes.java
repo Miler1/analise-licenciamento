@@ -1,17 +1,7 @@
 package jobs;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import models.Analise;
-import models.AnaliseJuridica;
-import models.AnaliseTecnica;
-import models.DiasAnalise;
-import models.EmailNotificacaoArquivamentoProcesso;
-import models.LicencaAnalise;
-import models.Notificacao;
+import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
 import models.licenciamento.StatusCaracterizacao;
@@ -22,6 +12,10 @@ import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @On("cron.vetificarNotificacoes")
 public class VerificarNotificacoes extends GenericJob {
@@ -162,7 +156,7 @@ public class VerificarNotificacoes extends GenericJob {
 		List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
 
 		new EmailNotificacaoArquivamentoProcesso(analise.processo, destinatarios, arquivamento.dataInicial, notificacoes,
-				historicoAnalise.setor).enviar();
+				historicoAnalise.relHistoricoTramitacaoSetor.siglaSetor).enviar();
 	}
 
 

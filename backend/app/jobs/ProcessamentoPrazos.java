@@ -1,27 +1,22 @@
 package jobs;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import models.*;
-import models.tramitacao.ObjetoTramitavel;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-
 import exceptions.AppException;
+import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
+import models.tramitacao.ObjetoTramitavel;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
 import utils.Mensagem;
+
+import java.util.*;
 
 @On("cron.processamentoPrazos")
 public class ProcessamentoPrazos extends GenericJob {
