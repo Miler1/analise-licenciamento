@@ -1,9 +1,6 @@
 package builders;
 
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
+import models.Processo;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -12,7 +9,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.type.StringType;
 
-import models.Processo;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ProcessoBuilder extends CriteriaBuilder<Processo> { 
 	

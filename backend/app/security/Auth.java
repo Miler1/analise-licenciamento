@@ -5,7 +5,6 @@ import play.Logger;
 import play.Play;
 import play.cache.Cache;
 import play.mvc.Http;
-import play.mvc.Scope;
 import play.mvc.Scope.Session;
 
 public class Auth {

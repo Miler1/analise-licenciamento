@@ -1,13 +1,11 @@
 package models.licenciamento;
 
-import java.util.List;
+import play.db.jpa.GenericModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import play.db.jpa.GenericModel;
 
 @Entity
 @Table(schema = "licenciamento", name="estado")

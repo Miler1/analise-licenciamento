@@ -1,8 +1,5 @@
 package models.licenciamento;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public enum Esfera {
 
 	MUNICIPAL(0, "Municipal"),

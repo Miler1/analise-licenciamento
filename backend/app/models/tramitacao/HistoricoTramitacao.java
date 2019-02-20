@@ -1,24 +1,16 @@
 package models.tramitacao;
 
+import models.Notificacao;
+import models.licenciamento.DocumentoLicenciamento;
+import models.portalSeguranca.RelHistoricoTramitacaoSetor;
+import models.portalSeguranca.UsuarioLicenciamento;
+import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.Query;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import models.Notificacao;
-import models.licenciamento.DocumentoLicenciamento;
-import models.portalSeguranca.Setor;
-import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
 
 //View que possui informações sobre o histórico do objeto tramitavel
 
@@ -81,11 +73,10 @@ public class HistoricoTramitacao extends GenericModel {
 	@Column(name = "DT_CADASTRO")
 	public Date dataInicial;
 
-	@ManyToOne
+	@OneToOne
 	@JoinTable(schema = "portal_seguranca", name = "historico_tramitacao_setor",
-			joinColumns = @JoinColumn(name = "id_setor"),
-			inverseJoinColumns = @JoinColumn(name = "id_historico_tramitacao"))
-	public Setor setor;
+			joinColumns = @JoinColumn(name = "id_historico_tramitacao"))
+	public RelHistoricoTramitacaoSetor relHistoricoTramitacaoSetor;
 
 	@Transient
 	public String tempoPermanencia;
@@ -194,12 +185,6 @@ public class HistoricoTramitacao extends GenericModel {
 		return notificacoes != null && notificacoes.size() > 0;
 	}
 
-	public Setor getSetor() {
-
-		return Setor.find("select s from Setor s join s.historicosTramitacao ht where ht.id = :x")
-				.setParameter("x", this.idHistorico).first();
-	}
-
 	public List<DocumentoLicenciamento> getDocumentosCorrigidos() {
 
 		ArrayList<DocumentoLicenciamento> documentos = new ArrayList<>();
@@ -219,6 +204,26 @@ public class HistoricoTramitacao extends GenericModel {
 
 		return documentos.size() > 0 ? documentos : null;
 
+	}
+
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, UsuarioLicenciamento usuarioExecutor) {
+
+		if (usuarioExecutor.usuarioEntradaUnica.setorSelecionado != null) {
+
+			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND codigoSetor = :y")
+					.setParameter("x", historicoTramitacao.idHistorico)
+					.setParameter("y", usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla).first();
+
+			if (rel == null) {
+
+				rel = new RelHistoricoTramitacaoSetor();
+
+				rel.siglaSetor = usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla;
+				rel.historicoTramitacao = historicoTramitacao;
+
+				rel.save();
+			}
+		}
 	}
 
 }

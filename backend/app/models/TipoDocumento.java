@@ -1,12 +1,12 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import models.pdf.PDFTemplate;
 import play.data.validation.Required;
 import play.db.jpa.Model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(schema = "analise", name = "tipo_documento")

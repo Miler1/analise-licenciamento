@@ -1,27 +1,16 @@
 package models.licenciamento;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-
-import models.portalSeguranca.Setor;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "licenciamento", name = "tipo_caracterizacao_atividade")
@@ -50,10 +39,9 @@ public class TipoCaracterizacaoAtividade extends GenericModel {
 	
 	@Column(name = "licenciamento_declaratorio")
 	public Boolean licenciamentoDeclatorio;
-	
-	@ManyToOne
-	@JoinColumn(name="id_setor")
-	public Setor setor;	
+
+	@Column(name="sigla_setor")
+	public String siglaSetor;
 	
 	
 	/*

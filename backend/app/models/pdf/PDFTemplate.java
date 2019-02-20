@@ -1,9 +1,9 @@
 package models.pdf;
 
-import java.io.File;
-
 import models.TipoDocumento;
 import utils.Configuracoes;
+
+import java.io.File;
 
 public enum PDFTemplate {
 

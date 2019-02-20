@@ -1,7 +1,5 @@
 package serializers;
 
-import java.util.Date;
-
 import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 

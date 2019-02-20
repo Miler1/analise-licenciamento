@@ -1,21 +1,17 @@
 package models.tramitacao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.ufla.lemaf.tramitacao.exception.TramitacaoException;
 import br.ufla.lemaf.tramitacao.service.TramitacaoService;
-import br.ufla.lemaf.tramitacao.vo.InicioTramitacaoRequestVO;
-import br.ufla.lemaf.tramitacao.vo.InicioTramitacaoResponseVO;
-import br.ufla.lemaf.tramitacao.vo.TramiteRequestVO;
-import br.ufla.lemaf.tramitacao.vo.TramiteResponseVO;
-import br.ufla.lemaf.tramitacao.vo.TramiteVO;
+import br.ufla.lemaf.tramitacao.vo.*;
 import exceptions.AppException;
 import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.enums.FluxoTramitacao;
 import models.tramitacao.enums.TipoObjetoTramitavel;
 import play.Logger;
 import utils.Mensagem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tramitacao {
 	

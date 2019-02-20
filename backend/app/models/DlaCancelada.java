@@ -1,18 +1,5 @@
 package models;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import exceptions.AppException;
 import models.licenciamento.DispensaLicenciamento;
 import models.licenciamento.LicenciamentoWebService;
@@ -20,6 +7,9 @@ import models.portalSeguranca.UsuarioLicenciamento;
 import play.Logger;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(schema="analise", name="dispensa_licencamento_cancelada")

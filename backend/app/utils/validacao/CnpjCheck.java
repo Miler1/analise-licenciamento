@@ -1,10 +1,8 @@
 package utils.validacao;
 
-import java.util.InputMismatchException;
-
 import play.data.validation.Check;
-import play.data.validation.Validation;
-import play.data.validation.Validation.Validator;
+
+import java.util.InputMismatchException;
 
 public class CnpjCheck extends Check {
 

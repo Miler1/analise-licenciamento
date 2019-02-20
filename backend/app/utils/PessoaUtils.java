@@ -1,10 +1,10 @@
 package utils;
 
-import java.util.Collection;
-import java.util.List;
-
 import models.licenciamento.Pessoa;
 import models.licenciamento.PessoaFisica;
+
+import java.util.Collection;
+import java.util.List;
 
 public class PessoaUtils {
 

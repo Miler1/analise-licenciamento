@@ -1,41 +1,16 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import models.portalSeguranca.Setor;
-import models.tramitacao.HistoricoTramitacao;
-import org.apache.commons.lang.StringUtils;
-
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
+import models.pdf.PDFGenerator;
 import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.Analisavel;
 import models.validacaoParecer.SolicitarAjustesJuridicoAprovador;
+import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -43,7 +18,8 @@ import utils.ListUtil;
 import utils.Mensagem;
 import utils.ModelUtil;
 
-import models.pdf.PDFGenerator;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
@@ -262,7 +238,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_JURIDICA, usuarioExecutor);
-		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 	
 	public void update(AnaliseJuridica novaAnalise) {
@@ -319,12 +295,12 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		
 		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 			
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_JURIDICA, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		
 		} else {
 			
@@ -337,7 +313,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 			List<Notificacao> notificacoes = Notificacao.find("analiseJuridica.id", this.id).fetch();
 			Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
 
-			Setor.setHistoricoTramitacao(historicoTramitacao, usuarioExecutor);
+			HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
 
 			enviarEmailNotificacao();
 		}				
@@ -484,7 +460,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 				
 				analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_JURIDICO, usuarioExecutor);
 
-				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 				
 				return;
 			}
@@ -498,7 +474,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 				if (usuarioValidacaoAprovador != null) {
 					
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.DEFERIR_ANALISE_JURIDICA_COORDENADOR_APROVADOR, usuarioExecutor);
-					Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
+					HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 				} else {
 					
@@ -508,7 +484,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 					analiseTecnica.save();
 					
 					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_JURIDICO, usuarioExecutor);
-					Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
+					HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 				}
 				
 			}
@@ -535,7 +511,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 			copia._save();
 			
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_JURIDICO, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 
 		private void validarAnaliseJuridica() {
@@ -564,7 +540,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 			criarNovaAnalise(novaAnaliseJuridica.consultoresJuridicos.get(0).usuario, usuarioExecutor);
 			
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_PARECER_JURIDICO, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 
 		private void criarNovaAnalise(UsuarioLicenciamento usuarioConsultor, UsuarioLicenciamento usuarioValidacao) {

@@ -1,12 +1,8 @@
 package utils.validacao;
 
-import java.util.Collection;
-
 import net.sf.oval.Validator;
 import net.sf.oval.configuration.annotation.AbstractAnnotationCheck;
 import net.sf.oval.context.OValContext;
-import play.db.Model.BinaryField;
-import play.exceptions.UnexpectedException;
 
 @SuppressWarnings("serial")
 public class CustomValidationCheck extends AbstractAnnotationCheck<CustomValidation> {

@@ -1,6 +1,5 @@
 package exceptions;
 
-import play.i18n.Messages;
 import utils.Mensagem;
 
 public class AppException extends RuntimeException {

@@ -1,18 +1,16 @@
 package serializers;
 
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import play.Play;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-
 import flexjson.transformer.DateTransformer;
 import flexjson.transformer.Transformer;
+import play.Play;
+
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DateSerializer implements JsonSerializer<Date> {
 

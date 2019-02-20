@@ -1,18 +1,12 @@
 package deserializers;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-
-import java.text.ParseException;
-import java.util.Date;
-
-import utils.GeoJsonUtils;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.vividsolutions.jts.geom.Geometry;
+import utils.GeoJsonUtils;
+
+import java.lang.reflect.Type;
 
 public class GeometryDeserializer implements JsonDeserializer<Geometry> {
 

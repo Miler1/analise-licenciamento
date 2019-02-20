@@ -1,17 +1,16 @@
 package models.validacaoParecer;
 
-import java.util.ArrayList;
-
 import exceptions.ValidacaoException;
 import models.AnaliseTecnica;
 import models.AnalistaTecnico;
 import models.GerenteTecnico;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.Setor;
 import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
+
+import java.util.ArrayList;
 
 public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
@@ -36,14 +35,14 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 			criarNovaAnaliseComGerente(analiseTecnica, novaAnaliseTecnica.getGerenteTecnico().usuario, usuarioExecutor);
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_GERENTE, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		} else {
 			
 			criarNovaAnaliseComAnalista(analiseTecnica, novaAnaliseTecnica.getAnalistaTecnico().usuario, usuarioExecutor);
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 	}
 

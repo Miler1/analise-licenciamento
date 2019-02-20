@@ -1,11 +1,11 @@
 package models.tramitacao;
 
+import play.db.jpa.GenericModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import play.db.jpa.GenericModel;
 
 // View que lista quais ações estão disponiveis para determinado objeto tramitavel
 

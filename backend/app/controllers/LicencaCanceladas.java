@@ -12,10 +12,8 @@ public class LicencaCanceladas extends InternalController {
 		verificarPermissao(Acao.CANCELAR_LICENCA_EMITIDA);
 		
 		returnIfNull(licencaCancelada, "LicencaCancelada");
-    	
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
 
-		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		licencaCancelada.cancelarLicenca(usuarioExecutor);
 		

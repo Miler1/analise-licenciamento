@@ -10,7 +10,6 @@ import play.Play;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class AnaliseNDFIDeserializer implements JsonDeserializer<AnaliseNdfi> {
 

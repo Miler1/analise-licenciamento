@@ -8,8 +8,7 @@ public class LicencasAnalise extends InternalController {
 
 	public static void emitirLicencaAnalise(LicencaAnalise... licencasAnalise) {
 
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
-		UsuarioLicenciamento usuarioExecutor = UsuarioLicenciamento.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 
 		LicencaAnalise.emitirLicencas(licencasAnalise, usuarioExecutor);
 

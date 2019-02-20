@@ -102,10 +102,6 @@ GET     /condicoes/manejo                           Condicoes.listManejo
 # Documentos
 GET		/documentos/{id}/download					Documentos.download
 
-# Setores
-GET		/setores/nivel/{nivel}						Setores.getSetoresByNivel
-GET		/setores/setoresPorTipo						Setores.getSetoresByTipo
-
 # Licenças
 POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter
 POST	/licencasEmitidas/pesquisaRapida/count		LicencasEmitidas.countWithFilter

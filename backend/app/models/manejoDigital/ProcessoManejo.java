@@ -4,42 +4,15 @@ import builders.ProcessoManejoBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import deserializers.AnaliseNDFIDeserializer;
-import deserializers.AnaliseVetorialDeserializer;
-import deserializers.AtributosQueryAMFManejoDeserializer;
-import deserializers.BaseVetorialDeserializer;
-import deserializers.FeatureAddLayerDeserializer;
-import deserializers.GeometriaArcgisDeserializer;
-import deserializers.InsumoDeserializer;
+import deserializers.*;
 import exceptions.AppException;
 import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
-import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
-import models.manejoDigital.analise.analiseShape.AtributosQueryAMFManejo;
-import models.manejoDigital.analise.analiseShape.AttachmentInfo;
-import models.manejoDigital.analise.analiseShape.FeatureAddLayer;
-import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
-import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
-import models.manejoDigital.analise.analiseShape.ResponseAnexoProcesso;
-import models.manejoDigital.analise.analiseShape.ResponseQueryInsumo;
-import models.manejoDigital.analise.analiseShape.ResponseQueryMetadados;
-import models.manejoDigital.analise.analiseShape.ResponseQueryProcesso;
-import models.manejoDigital.analise.analiseShape.ResponseQueryResumoNDFI;
-import models.manejoDigital.analise.analiseShape.ResponseQuerySobreposicao;
-import models.manejoDigital.analise.analiseTecnica.AnaliseNdfi;
-import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
-import models.manejoDigital.analise.analiseTecnica.AnaliseVetorial;
-import models.manejoDigital.analise.analiseTecnica.AnalistaTecnicoManejo;
-import models.manejoDigital.analise.analiseTecnica.BaseVetorial;
-import models.manejoDigital.analise.analiseTecnica.Insumo;
-import models.portalSeguranca.Setor;
+import models.manejoDigital.analise.analiseShape.*;
+import models.manejoDigital.analise.analiseTecnica.*;
 import models.portalSeguranca.UsuarioLicenciamento;
-import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
-import models.tramitacao.ObjetoTramitavel;
-import models.tramitacao.AcaoDisponivelObjetoTramitavel;
-import models.tramitacao.Tramitacao;
+import models.tramitacao.*;
 import org.apache.commons.io.IOUtils;
 import play.data.validation.Required;
 import play.data.validation.Unique;
@@ -52,17 +25,9 @@ import utils.Mensagem;
 import utils.WebService;
 
 import javax.persistence.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static models.TipoDocumento.*;
 
@@ -187,7 +152,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.enviarProcessoAnaliseShape();
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         this.revisaoSolicitada = false;
         this._save();
@@ -198,7 +163,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public ProcessoManejo iniciarAnaliseTecnica() {
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.getAnaliseTecnica().analistaTecnico.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         return this.refresh();
     }

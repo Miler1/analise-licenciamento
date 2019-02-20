@@ -1,24 +1,5 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import models.portalSeguranca.Setor;
-import models.tramitacao.HistoricoTramitacao;
-
 import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
@@ -26,11 +7,18 @@ import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
 import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
 import utils.DateUtil;
 import utils.ListUtil;
 import utils.Mensagem;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema="analise", name="licenca_suspensa")
@@ -98,7 +86,7 @@ public class Suspensao extends GenericModel {
 			if(deveSuspenderProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROCESSO, usuarioExecutor);
-				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 			enviarNotificacaoSuspensaoPorEmail();

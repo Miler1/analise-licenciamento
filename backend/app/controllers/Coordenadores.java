@@ -1,24 +1,20 @@
 package controllers;
 
-import java.util.List;
-
+import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
-import models.portalSeguranca.Perfil;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.TipoSetor;
-import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import serializers.UsuarioSerializer;
+
+import java.util.List;
 
 public class Coordenadores extends InternalController {
 	
-	public static void getCoordenadoresAprovacao(Integer idPerfil, Long idProcesso) {
+	public static void getCoordenadoresAprovacao(String codigoPerfil, Long idProcesso) {
 		
 		verificarPermissao(Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
-		if(idPerfil == Perfil.COORDENADOR_TECNICO) {
+		if(codigoPerfil.equals(CodigoPerfil.COORDENADOR_TECNICO)) {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
@@ -28,18 +24,19 @@ public class Coordenadores extends InternalController {
 					TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);		
 			
 			// sobe na hierarquia até encontrar o coordenador técnico
-			Setor setor = tipoAtividadeCaracterizacao.setor;
-			while(setor.setorPai != null && !setor.tipoSetor.equals(TipoSetor.COORDENADORIA)) {
-				setor = setor.setorPai;
-			}
-			
-			
-			renderJSON(UsuarioLicenciamento.getUsuariosByPerfilSetor(idPerfil, setor.id),
-					UsuarioSerializer.getConsultoresAnalistasGerentes);
+			//TODO REFACTOR
+//			Setor setor = tipoAtividadeCaracterizacao.setor;
+//			while(setor.setorPai != null && !setor.tipoSetor.equals(TipoSetor.COORDENADORIA)) {
+//				setor = setor.setorPai;
+//			}
+//
+//
+//			renderJSON(UsuarioLicenciamento.getUsuariosByPerfilSetor(idPerfil, setor.id),
+//					UsuarioSerializer.getConsultoresAnalistasGerentes);
 		}
 		
-		renderJSON(UsuarioLicenciamento.getUsuariosByPerfil(idPerfil),
-				UsuarioSerializer.getConsultoresAnalistasGerentes);
+//		renderJSON(UsuarioLicenciamento.getUsuariosByPerfil(idPerfil),
+//				UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 
 }
