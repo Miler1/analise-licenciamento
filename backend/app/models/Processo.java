@@ -4,6 +4,7 @@ import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Setor;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacao;
@@ -171,7 +172,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.idSetorCoordenadoria != null) {
 
 			// TODO REFACTOR
-			// Setor setor = Setor.findById(filtro.idSetorCoordenadoria);
+			 //Setor setor = Setor.findById(filtro.idSetorCoordenadoria);
 			
 			/**
 			 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
