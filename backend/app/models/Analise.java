@@ -109,7 +109,7 @@ public class Analise extends GenericModel {
 	}
 	
 	public static List<Analise> findAtivas() {
-		return Analise.find("byAtivo", true).fetch();
+		return Analise.find("SELECT a FROM Analise a WHERE a.ativo = ?", true).fetch();
 	}
 	
 	public static List<Analise> findComNotificacao() {

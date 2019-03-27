@@ -51,7 +51,7 @@ public class AnalistaTecnico extends GenericModel {
 	}	
 	
 	public static void vincularAnalise(UsuarioLicenciamento usuario, AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor, String justificativaCoordenador) {
-		
+
 		if (!usuario.hasPerfil(CodigoPerfil.ANALISTA_TECNICO))
 			throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);
 		

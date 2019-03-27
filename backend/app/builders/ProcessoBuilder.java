@@ -516,12 +516,12 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;		
 	}
 	
-	public ProcessoBuilder filtrarPorIdSetor(Integer idSetor) {
+	public ProcessoBuilder filtrarPorSiglaSetor(String siglaSetor) {
 		
-		if (idSetor != null) {
+		if (siglaSetor != null) {
 
 			addTipoCaracterizacaoAtividade();
-			addRestriction(Restrictions.eq(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idSetor));
+			addRestriction(Restrictions.eq(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.sigla", siglaSetor));
 			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 		
@@ -540,12 +540,12 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}	
 	
-	public ProcessoBuilder filtrarPorIdsSetores(List<Integer> idsSetores) {
+	public ProcessoBuilder filtrarPorSiglaSetores(List<String> siglasSetores) {
 		
-		if (idsSetores != null && idsSetores.size() > 0) {
+		if (siglasSetores != null && siglasSetores.size() > 0) {
 
 			addTipoCaracterizacaoAtividade();
-			addRestriction(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.id", idsSetores));
+			addRestriction(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.sigla", siglasSetores));
 			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 		
@@ -651,8 +651,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public boolean isAnaliseTecnica;
 		public boolean isAnaliseTecnicaOpcional;
 		public Long idAnalistaTecnico;
-		public Integer idSetorGerencia;
-		public Integer idSetorCoordenadoria;
+		public String siglaSetorGerencia;
+		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		
 		public FiltroProcesso() {

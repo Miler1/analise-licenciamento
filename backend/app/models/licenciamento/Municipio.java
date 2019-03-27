@@ -36,7 +36,8 @@ public class Municipio extends GenericModel {
 	public List<Atividade> atividadesNaoAptas;
 	
 	public Geometry getLimite() {
-		
+
+		// TODO PROCURAR NO BANCO
 		String sql = "SELECT the_geom FROM licenciamento.municipio WHERE id_municipio = :id";
 		
 		return (Geometry) JPA.em().createNativeQuery(sql)

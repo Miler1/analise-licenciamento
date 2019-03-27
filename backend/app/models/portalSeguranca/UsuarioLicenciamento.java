@@ -5,6 +5,8 @@ import models.EntradaUnica.Usuario;
 import play.Play;
 import play.data.validation.MaxSize;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
+import services.ExternalUsuarioService;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,32 +36,18 @@ public class UsuarioLicenciamento extends GenericModel  {
 
 	public static List<UsuarioLicenciamento> getUsuariosByPerfil(String codigoPerfil) {
 
-		// TODO REFACTOR
-		//return UsuarioLicenciamento.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p WHERE p.id = ?", idPerfil).fetch();
-		return null;
+		return  ExternalUsuarioService.findUsuariosByPerfil(codigoPerfil);
 	}
 	
 	public static List<UsuarioLicenciamento> getUsuariosByPerfilSetor(String codigoPerfil, String siglaSetor) {
 
-		//TODO REFACTOR
-		//return UsuarioLicenciamento.find("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = ? and s.id = ? ",idPerfil, siglaSetor).fetch();
-		return null;
+
+		return ExternalUsuarioService.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
 	}
 	
-	public static List<UsuarioLicenciamento> getUsuariosByPerfilSetores(String codigoPerfil, List<Integer> idsSetores) {
+	public static List<UsuarioLicenciamento> getUsuariosByPerfilSetores(String codigoPerfil, List<String> siglasSetores) {
 
-		// TODO REFACTOR
-//		if(idsSetores.size() == 0) {
-//			return null;
-//		}
-//
-//		Query query = JPA.em().createQuery("SELECT DISTINCT(u) FROM Usuario u JOIN u.perfisUsuario pu JOIN pu.perfil p JOIN pu.setor s where p.id = :idPerfil and s.id IN (:idsSetores)");
-//
-//		query.setParameter("idPerfil", idPerfil);
-//		query.setParameter("idsSetores", idsSetores);
-//
-//		return query.getResultList();
-		return new ArrayList<>();
+		return ExternalUsuarioService.findUsuariosByPerfilAndSetores(codigoPerfil, siglasSetores);
 	}
 	
 	public boolean hasPerfil(String codigoPerfil){

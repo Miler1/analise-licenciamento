@@ -38,15 +38,15 @@ div(uib-accordion class="accordion")
         .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.COORDENADORIA)")
             .col-md-12
                 label.control-label Coordenadoria:
-                select.form-control(ng-model="$ctrl.filtro.idSetorCoordenadoria", name="selectCoordenadoria",
-                                    ng-options="setor.id as setor.nome for setor in $ctrl.Coordenadorias | orderBy:'nome' track by setor.id")
+                select.form-control(ng-model="$ctrl.filtro.SiglaSetorCoordenadoria", name="selectCoordenadoria",
+                                    ng-options="setor.sigla as setor.nome for setor in $ctrl.Coordenadorias | orderBy:'nome' track by setor.sigla")
                     option(value="") Selecione a coordenadoria
 
         .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.GERENCIA)")
             .col-md-12
                 label.control-label Gerência:
-                select.form-control(ng-model="$ctrl.filtro.idSetorGerencia", name="selectGerencia",
-                                    ng-options="setor.id as setor.nome for setor in $ctrl.Gerencias | orderBy:'nome' track by setor.id")
+                select.form-control(ng-model="$ctrl.filtro.siglaSetorGerencia", name="selectGerencia",
+                                    ng-options="setor.sigla as setor.nome for setor in $ctrl.Gerencias | orderBy:'nome' track by setor.sigla")
                     option(value="") Selecione a gerência
 
         .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.CONSULTOR_JURIDICO)")

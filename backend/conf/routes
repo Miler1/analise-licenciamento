@@ -73,7 +73,7 @@ GET		/tipologias									Tipologias.list
 # Login
 GET		/authenticate								Login.login
 GET		/logout										Login.logout
-GET     /login/getAuthenticatedUser                 Login.getAuthenticatedUserDados
+GET     /login/getAuthenticatedUser                 Login.getAuthenticatedUser
 
 # Consultores
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
@@ -152,6 +152,9 @@ PUT     /processoManejo/indeferir                   ProcessosManejo.indeferir
 GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
 PUT     /analiseTecnicaManejo                              AnalisesTecnicaManejo.finalizar
 PUT     /analiseTecnicaManejo/atributos/{passo}            AnalisesTecnicaManejo.updateExibirPdf
+
+# Setores
+GET     /setores/nivel/{nivel}                             Analistas.getSetorByNivel
 
 # Observações
 POST    /observacao                                 Observacoes.save

@@ -4,6 +4,7 @@ import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Setor;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacao;
@@ -12,6 +13,7 @@ import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
+import services.ExternalSetorService;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
@@ -168,37 +170,25 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		processoBuilder.filtrarPorIdConsultorJuridico(filtro.idConsultorJuridico);
 		
-		if (filtro.idSetorCoordenadoria != null) {
+		if (filtro.siglaSetorCoordenadoria != null) {
 
-			// TODO REFACTOR
-			// Setor setor = Setor.findById(filtro.idSetorCoordenadoria);
-			
-			/**
-			 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-			 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
-			 */
-			// TODO REFACTOR
-			//if (setor != null) {
-			//
-			//	processoBuilder.filtrarPorIdsSetores(setor.getIdsSetoresByNivel(1));
-			//}
+			 Setor setor = ExternalSetorService.findBySigla(filtro.siglaSetorCoordenadoria);
+
+			if (setor != null) {
+
+				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 1));
+			}
 		}
 		
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
 			filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
 
-			// TODO REFACTOR
-			// Setor setor = Setor.findById(usuarioSessao.setorSelecionado.id);
-			
-			/**
-			 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-			 * Neste caso, colocamos o nível dois, pois a hierarquia é Diretoria/Coordenadoria(1)/Gerência(2)
-			 */
-			// TODO REFACTOR
-			//if (setor != null) {
+			Setor setor = ExternalSetorService.findBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+			if (setor != null) {
 				
-			//	processoBuilder.filtrarPorIdsSetores(setor.getIdsSetoresByNivel(2));
-			//}
+				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 2));
+			}
 		}		
 	}
 
@@ -237,7 +227,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 		
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
-		processoBuilder.filtrarPorIdSetor(filtro.idSetorGerencia);
+		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 		
 		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
 
@@ -255,8 +245,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
 
 			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, filtro.isAnaliseTecnicaOpcional);
-			// TODO REFACTOR
-			//processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		} else {
 			
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
@@ -265,35 +255,26 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
 			
 			processoBuilder.filtrarPorIdGerenteTecnico(usuarioSessao.id);
-			// TODO REFACTOR
-			//processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
 
-		/**
-		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-		 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
-		 */
-		if (filtro.idSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
-			//TODO REFATORAR
-			//processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1));
+		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
+
+			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 
-		/**
-		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-		 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
-		 */
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
-			//TODO REFATORAR
-			//processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1));
+
+			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
 			
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
-			//TODO REFATORAR
-			//processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}		
 	}
 

@@ -5,37 +5,25 @@ import play.Logger;
 import play.Play;
 import play.cache.Cache;
 import play.mvc.Http;
+import play.mvc.Scope;
 import play.mvc.Scope.Session;
 
 public class Auth {
 
 	private static final String CACHE_PREFIX = "LIC_USER_";
 
-//	public static boolean autenticar(Scope.Session session) {
-//
-//		UsuarioLicenciamento usuario = getAuthenticatedUser(session);
-//
-//		if (usuario == null) {
-//
-//			return false;
-//		}
-//
-//		setUsuarioSessao(usuario, session);
-//		return true;
-//	}
+	public static boolean autenticar(Scope.Session session) {
 
-//	public static boolean autenticar(Http.Request request, Scope.Session session) {
-//
-//		AuthService authService = new AuthServiceFactory().getInstance();
-//
-//		UsuarioSessao usuarioSessao = authService.autenticar(request);
-//
-//		if (usuarioSessao == null)
-//			return false;
-//
-//		setUsuarioSessao(usuarioSessao, session);
-//		return true;
-//	}
+		UsuarioLicenciamento usuario = getAuthenticatedUser(session);
+
+		if (usuario == null) {
+
+			return false;
+		}
+
+		setUsuarioSessao(usuario, session);
+		return true;
+	}
 
 	public static void logout(Session session) {
 

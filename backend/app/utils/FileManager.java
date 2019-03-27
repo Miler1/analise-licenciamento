@@ -418,7 +418,6 @@ public class FileManager {
 		extensoes.add("pdf");
 
 		if(file.length() < TAMANHO_MAX_ARQUIVO && extensoes.contains(FilenameUtils.getExtension(file.getPath()))){
-			System.out.println(FilenameUtils.getExtension(file.getPath()));
 			return true;
 		}
 		return false;

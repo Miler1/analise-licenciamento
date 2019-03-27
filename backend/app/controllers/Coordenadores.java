@@ -1,10 +1,14 @@
 package controllers;
 
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Setor;
 import models.Processo;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
+import models.portalSeguranca.TipoSetor;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
+import serializers.UsuarioSerializer;
 
 import java.util.List;
 
@@ -21,22 +25,19 @@ public class Coordenadores extends InternalController {
 			List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacoes.get(0).atividadesCaracterizacao;
 			
 			TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
-					TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);		
-			
-			// sobe na hierarquia até encontrar o coordenador técnico
-			//TODO REFACTOR
-//			Setor setor = tipoAtividadeCaracterizacao.setor;
-//			while(setor.setorPai != null && !setor.tipoSetor.equals(TipoSetor.COORDENADORIA)) {
-//				setor = setor.setorPai;
-//			}
-//
-//
-//			renderJSON(UsuarioLicenciamento.getUsuariosByPerfilSetor(idPerfil, setor.id),
-//					UsuarioSerializer.getConsultoresAnalistasGerentes);
+					TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
+
+			Setor setor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado;
+			while(setor.setorPai != null && !setor.tipo.equals(TipoSetor.COORDENADORIA)) {
+				setor = setor.setorPai;
+			}
+
+			renderJSON(UsuarioLicenciamento.getUsuariosByPerfilSetor(codigoPerfil, setor.sigla),
+					UsuarioSerializer.getConsultoresAnalistasGerentes);
 		}
 		
-//		renderJSON(UsuarioLicenciamento.getUsuariosByPerfil(idPerfil),
-//				UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(UsuarioLicenciamento.getUsuariosByPerfil(codigoPerfil),
+				UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 
 }

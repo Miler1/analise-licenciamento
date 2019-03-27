@@ -7,6 +7,8 @@ import models.licenciamento.TipoCaracterizacaoAtividade;
 import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
 import serializers.UsuarioSerializer;
+import services.ExternalSetorService;
+import services.ExternalUsuarioService;
 import utils.Mensagem;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class Analistas extends InternalController {
 
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 
+		//TODO ANALISAR - PH
 		UsuarioLicenciamento analista = UsuarioLicenciamento.findById(idUsuario);
 
 		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
@@ -65,28 +68,20 @@ public class Analistas extends InternalController {
 
 		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
 
-		List<Integer> idsSetoresFilhos = null;
+		List<String> siglasSetoresFilhos = null;
 		List<UsuarioLicenciamento> pessoas = null;
 		switch (usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) {
-		/**
-		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia.
-		 * Neste caso, colocamos o nível 2, pois aqui o aprovador está pesquisando e o setor dele
-		 * é diretoria, então a hierarquia é Diretoria/Coordenadoria(1)/Gerência(2)
-		 */
+
 		case CodigoPerfil.APROVADOR:
-			//TODO REFATORAR
-			//idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresByNivel(2);
-			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, idsSetoresFilhos);
+
+			siglasSetoresFilhos = ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,2);
+			pessoas = ExternalUsuarioService.findUsuariosByPerfilAndSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
 			break;
-		/**
-		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia.
-		 * Neste caso, colocamos o nível 1, pois aqui o coordenador está pesquisando e o setor dele
-		 * é cordenadoria, então a hierarquia é Coordenadoria/Gerência(1)
-		 */
+
 		case CodigoPerfil.COORDENADOR_TECNICO:
-			//TODO REFATORAR
-			//idsSetoresFilhos = usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1);
-			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, idsSetoresFilhos);
+
+			siglasSetoresFilhos = ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1);
+			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
 			break;
 		/**
 		 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
@@ -97,6 +92,12 @@ public class Analistas extends InternalController {
 		}
 
 		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
+	}
+
+	public void getSetorByNivel(int nivel){
+		String sigla = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla;
+
+		renderJSON(ExternalSetorService.getSiglasSetoresByNivel( sigla, 1));
 	}
 
 
