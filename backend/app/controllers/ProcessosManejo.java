@@ -6,6 +6,7 @@ import models.manejoDigital.ProcessoManejo;
 import models.portalSeguranca.Usuario;
 import security.Acao;
 import security.Auth;
+import security.AuthManejo;
 import serializers.ProcessoManejoSerializer;
 import utils.Mensagem;
 
@@ -45,7 +46,9 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processoSalvo);
 
-		processoSalvo.iniciarAnaliseShape(processo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first());
+		String token = AuthManejo.getToken(session.current().getId());
+
+		processoSalvo.iniciarAnaliseShape(processo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first(), token);
 
 		renderJSON(Mensagem.ANALISE_SHAPE_INICIADA_COM_SUCESSO);
 	}
@@ -86,7 +89,7 @@ public class ProcessosManejo extends InternalController {
 		renderBinary(pdfAnalise.arquivo, nome);
 	}
 
-	public static void listWithFilter(FiltroProcessoManejo filtro){
+	public static void listWithFilter(FiltroProcessoManejo filtro) {
 
 		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
 
@@ -106,14 +109,14 @@ public class ProcessosManejo extends InternalController {
 		renderJSON(processo, ProcessoManejoSerializer.findCompletoById);
 	}
 
-	public static void countWithFilter(FiltroProcessoManejo filtro){
+	public static void countWithFilter(FiltroProcessoManejo filtro) {
 
 		verificarPermissao(Acao.LISTAR_PROCESSO_MANEJO);
 
 		renderJSON(ProcessoManejo.countWithFilter(filtro));
 	}
 
-	public static void findByNumeroProcesso(String numeroProcesso){
+	public static void findByNumeroProcesso(String numeroProcesso) {
 
 		notFoundIfNull(numeroProcesso);
 
@@ -135,4 +138,5 @@ public class ProcessosManejo extends InternalController {
 
 		renderMensagem(Mensagem.PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO);
 	}
+
 }

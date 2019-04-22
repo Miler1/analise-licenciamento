@@ -4,42 +4,16 @@ import builders.ProcessoManejoBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import deserializers.AnaliseNDFIDeserializer;
-import deserializers.AnaliseVetorialDeserializer;
-import deserializers.AtributosQueryAMFManejoDeserializer;
-import deserializers.BaseVetorialDeserializer;
-import deserializers.FeatureAddLayerDeserializer;
-import deserializers.GeometriaArcgisDeserializer;
-import deserializers.InsumoDeserializer;
+import deserializers.*;
 import exceptions.AppException;
 import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
 import models.TipoDocumento;
-import models.manejoDigital.analise.analiseShape.AtributosAddLayer;
-import models.manejoDigital.analise.analiseShape.AtributosQueryAMFManejo;
-import models.manejoDigital.analise.analiseShape.AttachmentInfo;
-import models.manejoDigital.analise.analiseShape.FeatureAddLayer;
-import models.manejoDigital.analise.analiseShape.GeometriaArcgis;
-import models.manejoDigital.analise.analiseShape.ResponseAddLayer;
-import models.manejoDigital.analise.analiseShape.ResponseAnexoProcesso;
-import models.manejoDigital.analise.analiseShape.ResponseQueryInsumo;
-import models.manejoDigital.analise.analiseShape.ResponseQueryMetadados;
-import models.manejoDigital.analise.analiseShape.ResponseQueryProcesso;
-import models.manejoDigital.analise.analiseShape.ResponseQueryResumoNDFI;
-import models.manejoDigital.analise.analiseShape.ResponseQuerySobreposicao;
-import models.manejoDigital.analise.analiseTecnica.AnaliseNdfi;
-import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
-import models.manejoDigital.analise.analiseTecnica.AnaliseVetorial;
-import models.manejoDigital.analise.analiseTecnica.AnalistaTecnicoManejo;
-import models.manejoDigital.analise.analiseTecnica.BaseVetorial;
-import models.manejoDigital.analise.analiseTecnica.Insumo;
+import models.manejoDigital.analise.analiseShape.*;
+import models.manejoDigital.analise.analiseTecnica.*;
 import models.portalSeguranca.Setor;
 import models.portalSeguranca.Usuario;
-import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
-import models.tramitacao.ObjetoTramitavel;
-import models.tramitacao.AcaoDisponivelObjetoTramitavel;
-import models.tramitacao.Tramitacao;
+import models.tramitacao.*;
 import org.apache.commons.io.IOUtils;
 import play.data.validation.Required;
 import play.data.validation.Unique;
@@ -52,17 +26,9 @@ import utils.Mensagem;
 import utils.WebService;
 
 import javax.persistence.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static models.TipoDocumento.*;
 
@@ -155,7 +121,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, Usuario usuario) {
+    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, Usuario usuario, String token) {
 
         this.analisesTecnicaManejo.add(processo.getAnaliseTecnica());
         this.getAnaliseTecnica().dataAnalise = new Date();
@@ -184,7 +150,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             documento.save();
         }
 
-        this.enviarProcessoAnaliseShape();
+        this.enviarProcessoAnaliseShape(token);
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
         Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
@@ -254,7 +220,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return processoBuilder;
     }
 
-    private void enviarProcessoAnaliseShape() {
+    private void enviarProcessoAnaliseShape(String token) {
 
         Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy")
                 .registerTypeAdapter(GeometriaArcgis.class, new GeometriaArcgisDeserializer())
@@ -264,9 +230,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         List<GeometriaArcgis> featuresPropriedade = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DA_PROPRIEDADE), gson);
         List<GeometriaArcgis> featuresAreaSemPotencial = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_SEM_POTENCIAL), gson);
 
-        this.getAnaliseTecnica().objectId = this.enviarFeatures(featuresProcesso, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL, gson);
-        this.enviarFeatures(featuresPropriedade, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL, gson);
-        this.enviarFeatures(featuresAreaSemPotencial, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_AREA_SEM_POTENCIAL_URL, gson);
+        this.getAnaliseTecnica().objectId = this.enviarFeatures(featuresProcesso, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL, token, gson);
+        this.enviarFeatures(featuresPropriedade, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL, token, gson);
+        this.enviarFeatures(featuresAreaSemPotencial, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_AREA_SEM_POTENCIAL_URL, token, gson);
 
         this._save();
     }
@@ -305,7 +271,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return null;
     }
 
-    private String enviarFeatures(List<GeometriaArcgis> features, String rota, Gson gson) {
+    private String enviarFeatures(List<GeometriaArcgis> features, String rota, String token, Gson gson) {
 
         if (features.size() == 0) {
 
@@ -316,6 +282,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         Map<String, Object> params = new HashMap<>();
 
+        params.put("token", token);
         params.put("features", gson.toJson(features).replace("rings\":\"", "rings\":").replace("]\",\"s", "],\"s"));
         params.put("f", "json");
 
@@ -331,7 +298,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         }
     }
 
-    public void verificarAnaliseShape() {
+
+
+    public void verificarAnaliseShape(String token) {
 
         WebService webService = new WebService(
                 new GsonBuilder().setDateFormat("dd/MM/yyyy")
@@ -345,6 +314,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         );
 
         Map<String, Object> params = new HashMap<>();
+        params.put("token", token);
         params.put("objectIds", this.getAnaliseTecnica().objectId);
         params.put("outFields", "*");
         params.put("f", "json");
