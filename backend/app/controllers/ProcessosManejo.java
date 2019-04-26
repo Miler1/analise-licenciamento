@@ -48,7 +48,7 @@ public class ProcessosManejo extends InternalController {
 
 		String token = AuthManejo.getToken(session.current().getId());
 
-		processoSalvo.iniciarAnaliseShape(processo, (Usuario) Usuario.find("login", Auth.getUsuarioSessao().cpfCnpj).first(), token);
+		processoSalvo.iniciarAnaliseShape(processo, token);
 
 		renderJSON(Mensagem.ANALISE_SHAPE_INICIADA_COM_SUCESSO);
 	}

@@ -11,8 +11,7 @@ import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.*;
 import models.manejoDigital.analise.analiseTecnica.*;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.*;
 import org.apache.commons.io.IOUtils;
 import play.data.validation.Required;
@@ -121,7 +120,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, Usuario usuario, String token) {
+    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, String token) {
 
         this.analisesTecnicaManejo.add(processo.getAnaliseTecnica());
         this.getAnaliseTecnica().dataAnalise = new Date();
@@ -129,7 +128,6 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
                 (UsuarioLicenciamento) UsuarioLicenciamento.findById(Auth.getUsuarioSessao().id));
         this.getAnaliseTecnica().processoManejo = this;
-        this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(this.getAnaliseTecnica(), usuario);
 
         this.getAnaliseTecnica()._save();
 
