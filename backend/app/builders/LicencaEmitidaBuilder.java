@@ -1,15 +1,14 @@
 package builders;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import models.StatusLicenca;
+import models.licenciamento.LicencaEmitida;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
-
-import models.licenciamento.LicencaEmitida;
 import utils.IlikeNoAccents;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> { 
 	

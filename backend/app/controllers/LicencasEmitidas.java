@@ -1,19 +1,16 @@
 package controllers;
 
-import java.io.File;
-import java.util.List;
-
 import builders.LicencaEmitidaBuilder.FiltroLicenca;
 import exceptions.AppException;
-import models.Documento;
 import models.licenciamento.DispensaLicenciamento;
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicencaEmitida;
-import play.db.jpa.JPABase;
-import play.libs.Crypto;
 import security.Acao;
 import utils.Mensagem;
+
+import java.io.File;
+import java.util.List;
 
 public class LicencasEmitidas extends InternalController {
 	

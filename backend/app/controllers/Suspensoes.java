@@ -1,9 +1,8 @@
 package controllers;
 
 import models.Suspensao;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import security.UsuarioSessao;
 import utils.Mensagem;
 
 public class Suspensoes extends InternalController {
@@ -13,10 +12,8 @@ public class Suspensoes extends InternalController {
     	verificarPermissao(Acao.SUSPENDER_LICENCA_EMITIDA);
 		
     	returnIfNull(suspensao, "Suspensao");
-    	
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
 
-	    Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+	    UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
     	
     	suspensao.suspenderLicenca(usuarioExecutor);
     	

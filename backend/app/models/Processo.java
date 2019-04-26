@@ -1,41 +1,29 @@
 package models;
 
+import builders.ProcessoBuilder;
+import builders.ProcessoBuilder.FiltroProcesso;
+import exceptions.ValidacaoException;
+import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Setor;
+import models.licenciamento.Caracterizacao;
+import models.licenciamento.Empreendimento;
+import models.licenciamento.StatusCaracterizacao;
+import models.portalSeguranca.UsuarioLicenciamento;
+import models.tramitacao.*;
+import play.data.validation.Required;
+import play.db.jpa.GenericModel;
+import security.InterfaceTramitavel;
+import services.ExternalSetorService;
+import utils.Configuracoes;
+import utils.DateUtil;
+import utils.Mensagem;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import javax.persistence.*;
-
-import builders.CriteriaBuilder;
-import builders.ProcessoBuilder;
-import builders.ProcessoBuilder.FiltroProcesso;
-import exceptions.AppException;
-import exceptions.ValidacaoException;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.Empreendimento;
-import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.Perfil;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
-import models.tramitacao.AcaoDisponivelObjetoTramitavel;
-import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.Condicao;
-import models.tramitacao.HistoricoTramitacao;
-import models.tramitacao.ObjetoTramitavel;
-import models.tramitacao.Tramitacao;
-import play.data.validation.Required;
-import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
-import play.db.jpa.JPABase;
-import security.Auth;
-import security.InterfaceTramitavel;
-import security.UsuarioSessao;
-import utils.Configuracoes;
-import utils.DateUtil;
-import utils.ListUtil;
-import utils.Mensagem;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -125,33 +113,33 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		super.save();
 	}
 
-	public void vincularConsultor(Usuario consultor, Usuario usuarioExecutor) {
+	public void vincularConsultor(UsuarioLicenciamento consultor, UsuarioLicenciamento usuarioExecutor) {
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
-		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 		
 	}
 	
-	public void vincularAnalista(Usuario analista, Usuario usuarioExecutor, String justificativaCoordenador) {
+	public void vincularAnalista(UsuarioLicenciamento analista, UsuarioLicenciamento usuarioExecutor, String justificativaCoordenador) {
 		
 		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
-		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 		
 	}
 	
-	public void vincularGerenteTecnico(Usuario gerente, Usuario usuarioExecutor) {
+	public void vincularGerenteTecnico(UsuarioLicenciamento gerente, UsuarioLicenciamento usuarioExecutor) {
 		
 		GerenteTecnico.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
-		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 	}	
 
-	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
+	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
 		
 		ProcessoBuilder processoBuilder = new ProcessoBuilder()
 			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
@@ -172,41 +160,34 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return processoBuilder;
 	}
 
-	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro, 
-			UsuarioSessao usuarioSessao) {
+	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+	                                                  UsuarioLicenciamento usuarioSessao) {
 		
-		if (usuarioSessao.perfilSelecionado.id != Perfil.APROVADOR) {
+		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.APROVADOR)) {
+
 			return;
 		}
 		
 		processoBuilder.filtrarPorIdConsultorJuridico(filtro.idConsultorJuridico);
 		
-		if (filtro.idSetorCoordenadoria != null) {
-			
-			Setor setor = Setor.findById(filtro.idSetorCoordenadoria);
-			
-			/**
-			 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-			 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
-			 */
+		if (filtro.siglaSetorCoordenadoria != null) {
+
+			 Setor setor = ExternalSetorService.findBySigla(filtro.siglaSetorCoordenadoria);
+
 			if (setor != null) {
-				
-				processoBuilder.filtrarPorIdsSetores(setor.getIdsSetoresByNivel(1));
+
+				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 1));
 			}
 		}
 		
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
 			filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
-			
-			Setor setor = Setor.findById(usuarioSessao.setorSelecionado.id);
-			
-			/**
-			 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-			 * Neste caso, colocamos o nível dois, pois a hierarquia é Diretoria/Coordenadoria(1)/Gerência(2)
-			 */
+
+			Setor setor = ExternalSetorService.findBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
 			if (setor != null) {
 				
-				processoBuilder.filtrarPorIdsSetores(setor.getIdsSetoresByNivel(2));
+				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 2));
 			}
 		}		
 	}
@@ -238,7 +219,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 	
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
-			UsuarioSessao usuarioSessao) {
+	                                                       UsuarioLicenciamento usuarioSessao) {
 		
 		if (!filtro.isAnaliseTecnica) {
 			
@@ -246,26 +227,26 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 		
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
-		processoBuilder.filtrarPorIdSetor(filtro.idSetorGerencia);
+		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 		
 		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
-			
+
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
-			
-			return;		
+
+			return;
 		}
 		
-		if (usuarioSessao.setorSelecionado == null) {
-			
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_USUARIO_SEM_SETOR);
 		}
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) || 
 				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
-			
+
 			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, filtro.isAnaliseTecnicaOpcional);
-			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
-			
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		} else {
 			
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
@@ -274,36 +255,30 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
 			
 			processoBuilder.filtrarPorIdGerenteTecnico(usuarioSessao.id);
-			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
-		
-		/**
-		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-		 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
-		 */
-		if (filtro.idSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
-			
-			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1));			
+
+		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
+
+			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
-		
-		/**
-		 * Nível 1 corresponde aos filhos e nível 2 aos netos e assim por diante na hieraquia. 
-		 * Neste caso, colocamos o nível 1, pois a hierarquia é Coordenadoria/Gerência(1)
-		 */
+
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
-							
+
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
-			processoBuilder.filtrarPorIdsSetores(usuarioSessao.setorSelecionado.getIdsSetoresByNivel(1));	
+
+			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
 			
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
-			processoBuilder.filtrarPorIdSetor(usuarioSessao.setorSelecionado.id);
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}		
 	}
 
-	public static List listWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
+	public static List listWithFilter(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
 				
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.comTiposLicencas()
@@ -363,9 +338,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.orderByDataVencimentoPrazoAnaliseTecnica();
 	}
 	
-	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioSessao usuarioSessao) {
+	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioLicenciamento usuarioSessao) {
 		
-		if (usuarioSessao.perfilSelecionado.id != Perfil.APROVADOR) {
+		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.APROVADOR)) {
 			
 			return;
 		}
@@ -374,7 +349,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDiasAprovador();
 	}
 
-	public static Long countWithFilter(FiltroProcesso filtro, UsuarioSessao usuarioSessao) {
+	public static Long countWithFilter(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
 		
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.addPessoaEmpreendimentoAlias()

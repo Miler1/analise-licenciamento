@@ -1,20 +1,10 @@
 package models;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.StringUtils;
-
 import play.db.jpa.GenericModel;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "reenvio_email", schema = "analise")

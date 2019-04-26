@@ -1,7 +1,7 @@
 package controllers;
 
-import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
 import models.manejoDigital.PassoAnaliseManejo;
+import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
 import security.Acao;
 import serializers.AnalisesTecnicaManejoSerializer;
 import utils.Mensagem;

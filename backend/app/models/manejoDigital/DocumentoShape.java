@@ -4,12 +4,7 @@ import models.Documento;
 import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
 import play.data.validation.Required;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(schema = "analise", name = "documento_manejo_shape")

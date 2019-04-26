@@ -1,20 +1,16 @@
 package utils.validacao;
 
-import java.lang.annotation.ElementType;
-import java.util.Collection;
-
-import net.sf.oval.Validator;
-import net.sf.oval.context.OValContext;
+import exceptions.ValidacaoException;
 import play.Logger;
 import play.Play;
 import play.Play.Mode;
-import play.data.validation.RequiredCheck;
-import play.data.validation.Validation;
 import play.data.validation.Error;
+import play.data.validation.Validation;
 import play.db.Model.BinaryField;
 import play.exceptions.UnexpectedException;
 import utils.Mensagem;
-import exceptions.ValidacaoException;
+
+import java.util.Collection;
 
 public class Validacao {
 

@@ -1,7 +1,5 @@
 package controllers;
 
-import models.licenciamento.TipoCaracterizacaoAtividade;
-import models.licenciamento.TipoCaracterizacaoAtividade.FiltroAtividade;
 import models.tramitacao.Condicao;
 import security.Acao;
 import serializers.CondicaoSerializer;

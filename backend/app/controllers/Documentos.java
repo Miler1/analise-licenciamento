@@ -1,13 +1,10 @@
 package controllers;
 
-import java.io.File;
-
 import models.Documento;
-import models.licenciamento.DocumentoLicenciamento;
-import play.mvc.Controller;
 import security.Acao;
-import utils.Configuracoes;
 import utils.Mensagem;
+
+import java.io.File;
 
 public class Documentos extends InternalController {
 

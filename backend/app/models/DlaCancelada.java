@@ -1,32 +1,15 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import exceptions.AppException;
-import models.licenciamento.Caracterizacao;
 import models.licenciamento.DispensaLicenciamento;
-import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
-import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.Logger;
 import play.db.jpa.GenericModel;
-import utils.ListUtil;
 import utils.Mensagem;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(schema="analise", name="dispensa_licencamento_cancelada")
@@ -45,7 +28,7 @@ public class DlaCancelada extends GenericModel {
 	
 	@ManyToOne
 	@JoinColumn(name="id_usuario_executor")
-	public Usuario usuario;
+	public UsuarioLicenciamento usuario;
 	
 	@Column(name="data_cancelamento")
 	public Date dataCancelada;
@@ -56,9 +39,9 @@ public class DlaCancelada extends GenericModel {
 		
 	}
 	
-	public void cancelarDla(Usuario usuarioExecutor) {
+	public void cancelarDla(UsuarioLicenciamento usuarioExecutor) {
 
-		this.usuario = new Usuario();
+		this.usuario = new UsuarioLicenciamento();
 		this.usuario.id = usuarioExecutor.id;
 
 		LicenciamentoWebService webService = new LicenciamentoWebService();

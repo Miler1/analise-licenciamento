@@ -1,55 +1,23 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import models.portalSeguranca.PerfilUsuario;
-import models.portalSeguranca.Setor;
-import models.tramitacao.HistoricoTramitacao;
-import models.pdf.PDFGenerator;
-import org.apache.commons.lang.StringUtils;
-
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
-import models.portalSeguranca.Usuario;
+import models.pdf.PDFGenerator;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
-import models.validacaoParecer.Analisavel;
-import models.validacaoParecer.ParecerNaoValidadoTecnico;
-import models.validacaoParecer.ParecerNaoValidadoTecnicoGerente;
-import models.validacaoParecer.ParecerValidadoTecnico;
-import models.validacaoParecer.ParecerValidadoTecnicoGerente;
-import models.validacaoParecer.SolicitarAjustesTecnico;
-import models.validacaoParecer.SolicitarAjustesTecnicoAprovador;
-import models.validacaoParecer.SolicitarAjustesTecnicoGerente;
-import models.validacaoParecer.TipoResultadoAnaliseChain;
+import models.tramitacao.HistoricoTramitacao;
+import models.validacaoParecer.*;
+import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.ListUtil;
 import utils.Mensagem;
 import utils.ModelUtil;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(schema="analise", name="analise_tecnica")
@@ -119,7 +87,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-	public Usuario usuarioValidacao;
+	public UsuarioLicenciamento usuarioValidacao;
 	
 	@OneToMany(mappedBy="analiseTecnica", orphanRemoval = true)
 	public List<LicencaAnalise> licencasAnalise;
@@ -139,7 +107,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
-	public Usuario usuarioValidacaoGerente;	
+	public UsuarioLicenciamento usuarioValidacaoGerente;
  	
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<GerenteTecnico> gerentesTecnicos;
@@ -158,7 +126,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
-	public Usuario usuarioValidacaoAprovador;
+	public UsuarioLicenciamento usuarioValidacaoAprovador;
  	
  	@Column(name="data_fim_validacao_aprovador")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -197,7 +165,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return super.save();
 	}
 	
-	public void iniciar(Usuario usuarioExecutor) {
+	public void iniciar(UsuarioLicenciamento usuarioExecutor) {
 		
 		if(this.dataInicio == null) {
 			
@@ -212,7 +180,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
-		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}	
 
 	public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {
@@ -390,7 +358,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return AnaliseTecnica.find("analise.processo.numero = ? AND ativo = true", numeroProcesso).first();
 	}
 	
-	public void finalizar(AnaliseTecnica analise, Usuario usuarioExecutor) {
+	public void finalizar(AnaliseTecnica analise, UsuarioLicenciamento usuarioExecutor) {
 		
 		this.update(analise);
 		
@@ -417,13 +385,13 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			if(this.usuarioValidacaoGerente != null) {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 			else {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
@@ -431,13 +399,13 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			if(this.usuarioValidacaoGerente != null) {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 			else {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-				Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 		} else {
@@ -445,14 +413,14 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			Notificacao.criarNotificacoesAnaliseTecnica(analise);
 		
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 			HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
 
 			List<Notificacao> notificacoes = Notificacao.find("analiseTecnica.id", this.id).fetch();
 			Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
 
-			Setor.setHistoricoTramitacao(historicoTramitacao, usuarioExecutor);
+			HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
 
 			enviarEmailNotificacao();
 		}
@@ -468,7 +436,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		notificacao.enviar();				
 	}	
 	
-	public void validaParecer(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+	public void validaParecer(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnico();		
 		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnico());
@@ -477,7 +445,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
 	
-	public void validaParecerGerente(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+	public void validaParecerGerente(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnicoGerente();		
 		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnicoGerente());
@@ -486,7 +454,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
 	
-	public void validarParecerValidacaoAprovador(AnaliseTecnica analiseTecnica, Usuario usuarioExecutor) {
+	public void validarParecerValidacaoAprovador(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new SolicitarAjustesTecnicoAprovador();	
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		

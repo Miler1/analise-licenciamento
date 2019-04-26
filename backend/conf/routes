@@ -71,9 +71,9 @@ GET		/atividades									Atividades.list
 GET		/tipologias									Tipologias.list
 
 # Login
-GET		/login										Login.showLogin
 GET		/authenticate								Login.login
 GET		/logout										Login.logout
+GET     /login/getAuthenticatedUser                 Login.getAuthenticatedUser
 
 # Consultores
 POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuridico
@@ -101,10 +101,6 @@ GET     /condicoes/manejo                           Condicoes.listManejo
 
 # Documentos
 GET		/documentos/{id}/download					Documentos.download
-
-# Setores
-GET		/setores/nivel/{nivel}						Setores.getSetoresByNivel
-GET		/setores/setoresPorTipo						Setores.getSetoresByTipo
 
 # Licenças
 POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter
@@ -156,6 +152,9 @@ PUT     /processoManejo/indeferir                   ProcessosManejo.indeferir
 GET     /analiseTecnicaManejo/{id}                         AnalisesTecnicaManejo.findById
 PUT     /analiseTecnicaManejo                              AnalisesTecnicaManejo.finalizar
 PUT     /analiseTecnicaManejo/atributos/{passo}            AnalisesTecnicaManejo.updateExibirPdf
+
+# Setores
+GET     /setores/nivel/{nivel}                             Analistas.getSetorByNivel
 
 # Observações
 POST    /observacao                                 Observacoes.save

@@ -1,28 +1,13 @@
 package utils;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import exceptions.AppException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-
 import play.Logger;
 import play.libs.Files;
-import exceptions.AppException;
+
+import java.io.*;
+import java.util.*;
 
 public class FileManager {
 
@@ -433,7 +418,6 @@ public class FileManager {
 		extensoes.add("pdf");
 
 		if(file.length() < TAMANHO_MAX_ARQUIVO && extensoes.contains(FilenameUtils.getExtension(file.getPath()))){
-			System.out.println(FilenameUtils.getExtension(file.getPath()));
 			return true;
 		}
 		return false;

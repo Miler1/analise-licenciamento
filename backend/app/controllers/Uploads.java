@@ -1,16 +1,13 @@
 package controllers;
 
-import java.io.IOException;
-
 import org.apache.tika.Tika;
-
 import play.data.Upload;
 import play.libs.IO;
 import play.mvc.Http;
-import security.Acao;
-import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
+
+import java.io.IOException;
 
 public class Uploads extends InternalController {
 

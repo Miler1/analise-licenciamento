@@ -1,21 +1,10 @@
 package models.manejoDigital.analise.analiseTecnica;
 
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -37,14 +26,14 @@ public class AnalistaTecnicoManejo extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public Usuario usuario;
+	public UsuarioLicenciamento usuario;
 
 	@Required
 	@Column(name="data_vinculacao")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
 
-	public AnalistaTecnicoManejo(AnaliseTecnicaManejo analiseTecnica, Usuario usuario) {
+	public AnalistaTecnicoManejo(AnaliseTecnicaManejo analiseTecnica, UsuarioLicenciamento usuario) {
 
 		this.analiseTecnicaManejo = analiseTecnica;
 		this.usuario = usuario;

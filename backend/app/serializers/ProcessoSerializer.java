@@ -1,9 +1,6 @@
 package serializers;
 
-import java.util.Date;
-
 import com.vividsolutions.jts.geom.Geometry;
-
 import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 import utils.flexjson.GeometryTransformer;

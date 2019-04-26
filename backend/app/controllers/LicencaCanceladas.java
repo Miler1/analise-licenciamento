@@ -1,10 +1,8 @@
 package controllers;
 
 import models.LicencaCancelada;
-import models.Suspensao;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import security.UsuarioSessao;
 import utils.Mensagem;
 
 public class LicencaCanceladas extends InternalController {
@@ -14,10 +12,8 @@ public class LicencaCanceladas extends InternalController {
 		verificarPermissao(Acao.CANCELAR_LICENCA_EMITIDA);
 		
 		returnIfNull(licencaCancelada, "LicencaCancelada");
-    	
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
 
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		licencaCancelada.cancelarLicenca(usuarioExecutor);
 		
