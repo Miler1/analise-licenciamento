@@ -73,6 +73,12 @@ public class Configuracoes {
 	public static String URL_SICAR_IMOVEIS_SIMPLIFICADOS = URL_SICAR + getConfig("url.sicar.imoveisSimplificados", null);
 
 	public static String ANALISE_SHAPE_URL = getConfig("analise.shape.url", null);
+	public static String ANALISE_SHAPE_TOKEN_URL = getConfig("analise.shape.token.url", null);
+	public static String ANALISE_SHAPE_TOKEN_USERNAME = getConfig("analise.shape.token.username", null);
+	public static String ANALISE_SHAPE_TOKEN_PASSWORD = getConfig("analise.shape.token.password", null);
+	public static String ANALISE_SHAPE_TOKEN_REFERER = getConfig("analise.shape.token.referer", null);
+	public static String ANALISE_SHAPE_TOKEN_EXPIRATION = getConfig("analise.shape.token.expiration", null);
+
 	public static String ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.add.features.propriedade.url", null);
 	public static String ANALISE_SHAPE_ADD_FEATURES_AREA_SEM_POTENCIAL_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.add.features.area.sem.potencial.url", null);
 	public static String ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL = ANALISE_SHAPE_URL + getConfig("analise.shape.add.features.processos.url", null);

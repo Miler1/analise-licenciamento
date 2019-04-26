@@ -11,7 +11,8 @@ import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.*;
 import models.manejoDigital.analise.analiseTecnica.*;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.portalSeguranca.Setor;
+import models.portalSeguranca.Usuario;
 import models.tramitacao.*;
 import org.apache.commons.io.IOUtils;
 import play.data.validation.Required;
@@ -120,7 +121,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, UsuarioLicenciamento usuario) {
+    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, Usuario usuario, String token) {
 
         this.analisesTecnicaManejo.add(processo.getAnaliseTecnica());
         this.getAnaliseTecnica().dataAnalise = new Date();
@@ -149,7 +150,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             documento.save();
         }
 
-        this.enviarProcessoAnaliseShape();
+        this.enviarProcessoAnaliseShape(token);
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
@@ -219,7 +220,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return processoBuilder;
     }
 
-    private void enviarProcessoAnaliseShape() {
+    private void enviarProcessoAnaliseShape(String token) {
 
         Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy")
                 .registerTypeAdapter(GeometriaArcgis.class, new GeometriaArcgisDeserializer())
@@ -229,9 +230,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         List<GeometriaArcgis> featuresPropriedade = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_DA_PROPRIEDADE), gson);
         List<GeometriaArcgis> featuresAreaSemPotencial = this.montarGeometrias(this.getDocumentoManejoByTipo(AREA_SEM_POTENCIAL), gson);
 
-        this.getAnaliseTecnica().objectId = this.enviarFeatures(featuresProcesso, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL, gson);
-        this.enviarFeatures(featuresPropriedade, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL, gson);
-        this.enviarFeatures(featuresAreaSemPotencial, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_AREA_SEM_POTENCIAL_URL, gson);
+        this.getAnaliseTecnica().objectId = this.enviarFeatures(featuresProcesso, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROCESSOS_URL, token, gson);
+        this.enviarFeatures(featuresPropriedade, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_PROPRIEDADE_URL, token, gson);
+        this.enviarFeatures(featuresAreaSemPotencial, Configuracoes.ANALISE_SHAPE_ADD_FEATURES_AREA_SEM_POTENCIAL_URL, token, gson);
 
         this._save();
     }
@@ -270,7 +271,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return null;
     }
 
-    private String enviarFeatures(List<GeometriaArcgis> features, String rota, Gson gson) {
+    private String enviarFeatures(List<GeometriaArcgis> features, String rota, String token, Gson gson) {
 
         if (features.size() == 0) {
 
@@ -281,6 +282,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
         Map<String, Object> params = new HashMap<>();
 
+        params.put("token", token);
         params.put("features", gson.toJson(features).replace("rings\":\"", "rings\":").replace("]\",\"s", "],\"s"));
         params.put("f", "json");
 
@@ -296,7 +298,9 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         }
     }
 
-    public void verificarAnaliseShape() {
+
+
+    public void verificarAnaliseShape(String token) {
 
         WebService webService = new WebService(
                 new GsonBuilder().setDateFormat("dd/MM/yyyy")
@@ -310,6 +314,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         );
 
         Map<String, Object> params = new HashMap<>();
+        params.put("token", token);
         params.put("objectIds", this.getAnaliseTecnica().objectId);
         params.put("outFields", "*");
         params.put("f", "json");

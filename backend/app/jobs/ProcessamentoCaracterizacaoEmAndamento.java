@@ -64,7 +64,15 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 				if (!caracterizacao.empreendimento.houveAlteracoes) {
 
-					clonarAnaliseJuridica(analise, processoAntigo);
+					try {
+
+						clonarAnaliseJuridica(analise, processoAntigo);
+
+					} catch (Exception e) {
+
+						Logger.error(e, e.getMessage());
+					}
+
 
 				} else {
 
