@@ -178,8 +178,8 @@ public class Tramitacao {
 	// Retorna o historico do objeto tramitavél
 	public List<HistoricoTramitacao> findHistorico(Tramitavel tramitavel) {
 		
-		return HistoricoTramitacao.find("idObjetoTramitavel = :objeto.getIdObjetoTramitavel() order by data desc")
-				.setParameter("objeto.getIdObjetoTramitavel()", tramitavel.getIdObjetoTramitavel())
+		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel) order by data desc")
+				.setParameter("idObjetoTramitavel", tramitavel.getIdObjetoTramitavel())
 				.fetch();
 	}
 	
@@ -194,7 +194,7 @@ public class Tramitacao {
 		
 		AcaoDisponivelObjetoTramitavel acaoDisponivel = AcaoDisponivelObjetoTramitavel.find("idAcao = :idAcao AND idObjetoTramitavel = :idObjetoTramitavel")
 				.setParameter("idAcao", idAcao)
-				.setParameter("objeto.getIdObjetoTramitavel()", objeto.getIdObjetoTramitavel())
+				.setParameter("idObjetoTramitavel", objeto.getIdObjetoTramitavel())
 				.first();
 
 		return acaoDisponivel != null;
