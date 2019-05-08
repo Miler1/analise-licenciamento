@@ -1,7 +1,6 @@
 package models.licenciamento;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public enum TipoResponsavelEmpreendimento {
 	

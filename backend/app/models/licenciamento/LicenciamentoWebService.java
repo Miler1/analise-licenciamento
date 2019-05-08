@@ -1,18 +1,16 @@
 package models.licenciamento;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.ws.WebServiceException;
-
 import com.google.gson.reflect.TypeToken;
-
 import models.DlaCancelada;
 import play.libs.WS.HttpResponse;
 import utils.Configuracoes;
 import utils.WebService;
+
+import javax.xml.ws.WebServiceException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LicenciamentoWebService {
 	

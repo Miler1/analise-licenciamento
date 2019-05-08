@@ -1,25 +1,14 @@
 package models;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import exceptions.PermissaoNegadaException;
-import models.portalSeguranca.Perfil;
-import models.portalSeguranca.Usuario;
+import models.EntradaUnica.CodigoPerfil;
+import models.portalSeguranca.UsuarioLicenciamento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(schema="analise", name="gerente_tecnico")
@@ -40,7 +29,7 @@ public class GerenteTecnico extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public Usuario usuario;
+	public UsuarioLicenciamento usuario;
 	
 	@Required
 	@Column(name="data_vinculacao")
@@ -51,7 +40,7 @@ public class GerenteTecnico extends GenericModel {
 		
 	}
 	
-	public GerenteTecnico(AnaliseTecnica analiseTecnica, Usuario usuario) {
+	public GerenteTecnico(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuario) {
 		
 		super();
 		this.analiseTecnica = analiseTecnica;
@@ -60,9 +49,9 @@ public class GerenteTecnico extends GenericModel {
 		
 	}	
 	
-	public static void vincularAnalise(Usuario usuario, Usuario usuarioExecutor, AnaliseTecnica analiseTecnica) {
+	public static void vincularAnalise(UsuarioLicenciamento usuario, UsuarioLicenciamento usuarioExecutor, AnaliseTecnica analiseTecnica) {
 		
-		if (!usuario.hasPerfil(Perfil.GERENTE_TECNICO))
+		if (!usuario.hasPerfil(CodigoPerfil.GERENTE_TECNICO))
 			throw new PermissaoNegadaException(Mensagem.GERENTE_DIFERENTE_DE_GERENTE_TECNICO);		
 		
 		GerenteTecnico gerenteTecnico = new GerenteTecnico(analiseTecnica, usuario);

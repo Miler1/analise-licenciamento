@@ -1,15 +1,9 @@
 package models.licenciamento;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import play.db.jpa.GenericModel;
 import utils.Identificavel;
+
+import javax.persistence.*;
 
 @Entity
 @Table(schema = "licenciamento", name = "resposta")

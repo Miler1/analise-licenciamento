@@ -24,16 +24,15 @@ DELETE FROM analise.analise_tecnica;
 DELETE FROM analise.dia_analise;
 DELETE FROM analise.analise;
 DELETE FROM analise.dispensa_licencamento_cancelada;
+DELETE FROM analise.documento_manejo_shape;
+DELETE FROM analise.documento_manejo;
 DELETE FROM analise.documento;
 DELETE FROM analise.rel_processo_caracterizacao;
--- manejo
 DELETE FROM analise.rel_base_vetorial_analise_manejo;
 DELETE FROM analise.analise_vetorial;
 DELETE FROM analise.analise_ndfi;
 DELETE FROM analise.observacao;
-DELETE FROM analise.documento_manejo_shape;
 DELETE FROM analise.analista_tecnico_manejo;
-DELETE FROM analise.documento_manejo;
 DELETE FROM analise.vinculo_analise_tecnica_manejo_consideracao;
 DELETE FROM analise.vinculo_analise_tecnica_manejo_insumo;
 DELETE FROM analise.vinculo_analise_tecnica_manejo_embasamento_legal;
@@ -41,6 +40,7 @@ DELETE FROM analise.analista_tecnico_manejo;
 DELETE FROM analise.analise_tecnica_manejo;
 DELETE FROM analise.processo_manejo;
 DELETE FROM analise.empreendimento_manejo;
+DELETE FROM analise.processo;
 
 -- Limpar licenciamento
 -- caracterização
@@ -61,6 +61,7 @@ DELETE FROM licenciamento.documento_responsavel_empreendimento;
 DELETE FROM licenciamento.responsavel_empreendimento;
 DELETE FROM licenciamento.historico_alteracao_empreendimento_empreendedor;
 DELETE FROM licenciamento.historico_alteracao_empreendimento_pessoa;
+DELETE FROM licenciamento.endereco_empreendimento;
 DELETE FROM licenciamento.empreendimento;
 DELETE FROM licenciamento.documento;
 -- empreendedor

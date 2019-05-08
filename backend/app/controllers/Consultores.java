@@ -1,14 +1,13 @@
 package controllers;
 
-import java.util.List;
-
+import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
-import models.portalSeguranca.Perfil;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import security.Acao;
-import security.UsuarioSessao;
 import serializers.UsuarioSerializer;
 import utils.Mensagem;
+
+import java.util.List;
 
 public class Consultores extends InternalController {
 
@@ -16,9 +15,8 @@ public class Consultores extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO);
 		
-		Usuario consultor = Usuario.findById(idUsuario);				
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+		UsuarioLicenciamento consultor = UsuarioLicenciamento.findById(idUsuario);
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		for(Long idProcesso : idsProcesso) {
 			
@@ -36,7 +34,7 @@ public class Consultores extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
-		List<Usuario> consultores = Usuario.getUsuariosByPerfil(Perfil.CONSULTOR_JURIDICO);
+		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfil(CodigoPerfil.CONSULTOR_JURIDICO);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}

@@ -1,13 +1,8 @@
 package models.licenciamento;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
-
-import models.portalSeguranca.TipoSetor;
 import play.db.jpa.Model;
+
+import javax.persistence.*;
 
 @Entity
 @Table(schema = "licenciamento", name = "tipo_documento")

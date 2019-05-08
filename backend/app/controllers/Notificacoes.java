@@ -1,14 +1,7 @@
 package controllers;
 
-import models.AnaliseJuridica;
 import models.Documento;
 import models.Notificacao;
-import org.apache.commons.collections.FastHashMap;
-import play.libs.Crypto;
-import utils.Configuracoes;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 public class Notificacoes extends InternalController {
 

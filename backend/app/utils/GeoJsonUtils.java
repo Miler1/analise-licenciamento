@@ -1,13 +1,12 @@
 package utils;
 
-import java.io.IOException;
-
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geojson.geom.GeometryJSON;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.io.IOException;
 
 public class GeoJsonUtils {
 	

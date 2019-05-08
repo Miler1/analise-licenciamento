@@ -11,8 +11,7 @@ import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.*;
 import models.manejoDigital.analise.analiseTecnica.*;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.*;
 import org.apache.commons.io.IOUtils;
 import play.data.validation.Required;
@@ -121,15 +120,14 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         super.save();
     }
 
-    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, Usuario usuario, String token) {
+    public ProcessoManejo iniciarAnaliseShape(ProcessoManejo processo, String token) {
 
         this.analisesTecnicaManejo.add(processo.getAnaliseTecnica());
         this.getAnaliseTecnica().dataAnalise = new Date();
         this.getAnaliseTecnica().diasAnalise = 0;
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
-                (Usuario) Usuario.findById(Auth.getUsuarioSessao().id));
+                (UsuarioLicenciamento) UsuarioLicenciamento.findById(Auth.getUsuarioSessao().id));
         this.getAnaliseTecnica().processoManejo = this;
-        this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(this.getAnaliseTecnica(), usuario);
 
         this.getAnaliseTecnica()._save();
 
@@ -153,7 +151,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.enviarProcessoAnaliseShape(token);
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         this.revisaoSolicitada = false;
         this._save();
@@ -164,7 +162,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public ProcessoManejo iniciarAnaliseTecnica() {
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.getAnaliseTecnica().analistaTecnico.usuario);
-        Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         return this.refresh();
     }
@@ -252,7 +250,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         for (GeometriaArcgis feature : features) {
 
             feature.attributes = new AtributosAddLayer(this.numeroProcesso,
-                    this.empreendimento.imovel.nome, 0, this.getAnaliseTecnica().analistaTecnico.usuario.nome);
+                    this.empreendimento.imovel.nome, 0, this.getAnaliseTecnica().analistaTecnico.usuario.login);
         }
 
         return features;
@@ -437,7 +435,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return this.analisesTecnicaManejo.get(this.analisesTecnicaManejo.size() - 1);
     }
 
-    public void indeferir(ProcessoManejo processoManejo, Usuario usuario) {
+    public void indeferir(ProcessoManejo processoManejo, UsuarioLicenciamento usuario) {
 
         if (!this.revisaoSolicitada) {
 

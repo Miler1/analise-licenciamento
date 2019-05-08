@@ -1,13 +1,10 @@
 package serializers;
 
-import java.lang.reflect.Type;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.vividsolutions.jts.geom.Geometry;
-
 import flexjson.transformer.Transformer;
 import utils.GeoJsonUtils;
 import utils.flexjson.GeometryTransformer;

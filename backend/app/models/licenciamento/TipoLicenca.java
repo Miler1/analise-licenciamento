@@ -1,15 +1,10 @@
 package models.licenciamento;
 
+import play.db.jpa.GenericModel;
+
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import play.db.jpa.GenericModel;
 
 @Entity
 @Table(schema = "licenciamento", name = "tipo_licenca")

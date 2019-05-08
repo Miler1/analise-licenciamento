@@ -1,36 +1,18 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoDocumentoLicenciamento;
 import models.pdf.PDFGenerator;
 import models.tramitacao.HistoricoTramitacao;
-import models.tramitacao.ObjetoTramitavel;
-import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
 import utils.Configuracoes;
 import utils.QRCode;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(schema="analise", name="notificacao")

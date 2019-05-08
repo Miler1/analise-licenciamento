@@ -1,24 +1,14 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import com.sun.corba.se.spi.ior.Identifiable;
-
 import exceptions.ValidacaoException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
 import utils.Configuracoes;
 import utils.Identificavel;
 import utils.Mensagem;
 import utils.validacao.Validacao;
+
+import javax.persistence.*;
 
 @Entity
 @Table(schema="analise", name="condicionante")

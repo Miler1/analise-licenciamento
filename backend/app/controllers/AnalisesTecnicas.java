@@ -1,21 +1,19 @@
 package controllers;
 
+import models.Analise;
+import models.AnaliseTecnica;
+import models.Documento;
+import models.Notificacao;
+import models.geocalculo.Geoserver;
+import models.portalSeguranca.UsuarioLicenciamento;
+import org.apache.commons.io.FileUtils;
+import security.Acao;
+import serializers.AnaliseTecnicaSerializer;
+import utils.Mensagem;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
-
-import models.Analise;
-import models.Documento;
-import models.Notificacao;
-import org.apache.commons.io.FileUtils;
-
-import models.AnaliseTecnica;
-import models.geocalculo.Geoserver;
-import models.portalSeguranca.Usuario;
-import security.Acao;
-import security.UsuarioSessao;
-import serializers.AnaliseTecnicaSerializer;
-import utils.Mensagem;
 
 public class AnalisesTecnicas extends InternalController {
 		
@@ -24,9 +22,8 @@ public class AnalisesTecnicas extends InternalController {
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
-		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
@@ -39,9 +36,8 @@ public class AnalisesTecnicas extends InternalController {
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
-		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
@@ -102,9 +98,8 @@ public class AnalisesTecnicas extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
-		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		analiseAValidar.validaParecer(analise, usuarioExecutor);
 		
@@ -116,9 +111,8 @@ public class AnalisesTecnicas extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO);
 		
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
-		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		analiseAValidar.validaParecerGerente(analise, usuarioExecutor);
 		
@@ -130,9 +124,8 @@ public class AnalisesTecnicas extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
-		
-		UsuarioSessao usuarioSessao = getUsuarioSessao();
-		Usuario usuarioExecutor = Usuario.findById(usuarioSessao.id, usuarioSessao.perfilSelecionado, usuarioSessao.setorSelecionado);
+
+		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
 		
 		analiseAValidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		

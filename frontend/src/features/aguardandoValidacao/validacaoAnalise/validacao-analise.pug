@@ -1,11 +1,11 @@
-div(ng-if="usuarioSessao.perfilSelecionado.id === validacaoAnalise.perfis.COORDENADOR_JURIDICO", 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === validacaoAnalise.perfis.COORDENADOR_JURIDICO",
     ng-controller='validacaoAnaliseJuridicaController as validacaoAnaliseJuridica', ng-init="validacaoAnaliseJuridica.init()")
     include coordenadorJuridico/validacao-analise
 
-div(ng-if="usuarioSessao.perfilSelecionado.id === validacaoAnalise.perfis.COORDENADOR_TECNICO", 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === validacaoAnalise.perfis.COORDENADOR_TECNICO",
     ng-controller='validacaoAnaliseTecnicaController as validacaoAnaliseTecnica', ng-init="validacaoAnaliseTecnica.init()")
     include coordenadorTecnico/validacao-analise
 
-div(ng-if="usuarioSessao.perfilSelecionado.id === validacaoAnalise.perfis.GERENTE_TECNICO", 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === validacaoAnalise.perfis.GERENTE_TECNICO",
     ng-controller='validacaoAnaliseTecnicaGerenteController as validacaoAnaliseTecnicaGerente', ng-init="validacaoAnaliseTecnicaGerente.init()")
     include gerenteTecnico/validacao-analise

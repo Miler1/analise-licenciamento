@@ -5,12 +5,10 @@ import play.templates.FastTags;
 import play.templates.GroovyTemplate;
 import play.templates.JavaExtensions;
 
-import javax.xml.crypto.Data;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 public class TagPDF extends FastTags {

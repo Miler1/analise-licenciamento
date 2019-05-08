@@ -2,7 +2,6 @@ package controllers;
 
 import exceptions.AppException;
 import exceptions.ValidacaoException;
-import exceptions.WebServiceException;
 import models.licenciamento.Municipio;
 import models.sicar.ImovelSicar;
 import models.sicar.SicarWebService;

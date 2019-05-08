@@ -1,16 +1,14 @@
 package models.validacaoParecer;
 
-import java.util.ArrayList;
-
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.LicencaAnalise;
 import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+
+import java.util.ArrayList;
 
 public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
@@ -20,7 +18,7 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 	}
 	
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		   
 		analiseTecnica.tipoResultadoValidacaoGerente = novaAnaliseTecnica.tipoResultadoValidacaoGerente;
 		analiseTecnica.parecerValidacaoGerente = novaAnaliseTecnica.parecerValidacaoGerente;
@@ -52,6 +50,6 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 		copia.updatePareceresTecnicosRestricoes(pareceresTecnicosRestricoesSalvar);
 			
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
-		Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 }

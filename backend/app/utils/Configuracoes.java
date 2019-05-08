@@ -1,14 +1,14 @@
 package utils;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import play.Play;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class Configuracoes {
 
@@ -66,7 +66,6 @@ public class Configuracoes {
 	public static Integer PRAZO_MAXIMO_CONDICIONANTE = 1900;
 
 	public static long DIAS_PRORROGACAO = getLongConfig("dias.prorrogacao");
-
 	public static Long TRAMITACAO_ETAPA_MANEJO = getLongConfig("tramitacao.etapa.manejo");
 	public static String URL_SICAR = getConfig("sicar.url", null);
 	public static String URL_SICAR_IMOVEIS_COMPLETOS = URL_SICAR + getConfig("sicar.imoveisCompletos.url", null);
@@ -93,6 +92,8 @@ public class Configuracoes {
 	public static String MANEJO_NIVEL_EXPLORACAO_ALTO = getConfig("manejo.nivel.exploracao.alto", null);
 	public static String MANEJO_NIVEL_EXPLORACAO_MEDIO = getConfig("manejo.nivel.exploracao.medio", null);
 	public static String MANEJO_NIVEL_EXPLORACAO_BAIXO = getConfig("manejo.nivel.exploracao.baixo", null);
+
+	// Código
 
 	static {
 

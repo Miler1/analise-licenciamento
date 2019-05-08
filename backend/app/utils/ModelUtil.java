@@ -1,9 +1,8 @@
 package utils;
 
-import java.util.Collection;
-
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
+
+import java.util.Collection;
 
 public class ModelUtil {
 

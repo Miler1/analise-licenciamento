@@ -1,20 +1,14 @@
 package jobs;
 
-import java.util.Date;
-import java.util.List;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-
-import com.vividsolutions.jts.index.strtree.Interval;
-
 import models.Analise;
 import models.DiasAnalise;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import play.Logger;
-import play.jobs.On;
 import play.jobs.OnApplicationStart;
-import utils.Configuracoes;
+
+import java.util.Date;
+import java.util.List;
 
 @OnApplicationStart
 public class ProcessamentoProcessosEmAnalise extends GenericJob {

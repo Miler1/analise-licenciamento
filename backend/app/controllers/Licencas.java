@@ -1,9 +1,7 @@
 package controllers;
-import java.util.List;
 
 import models.licenciamento.Licenca;
 import serializers.LicencaSerializer;
-import utils.Mensagem;
 
 public class Licencas extends InternalController{
 

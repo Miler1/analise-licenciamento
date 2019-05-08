@@ -1,28 +1,21 @@
 package controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import exceptions.AppException;
+import flexjson.JSONSerializer;
+import models.Documento;
+import play.Logger;
+import play.db.jpa.JPA;
+import play.mvc.Catch;
+import play.mvc.Controller;
+import play.mvc.Http.StatusCode;
+import utils.Mensagem;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import models.Documento;
-
-import org.hibernate.Session;
-
-import play.Logger;
-import play.db.jpa.JPA;
-import play.mvc.Before;
-import play.mvc.Catch;
-import play.mvc.Controller;
-import play.mvc.Http.StatusCode;
-import utils.Configuracoes;
-import utils.Mensagem;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import exceptions.AppException;
-import flexjson.JSONSerializer;
 
 public class GenericController extends Controller {
 

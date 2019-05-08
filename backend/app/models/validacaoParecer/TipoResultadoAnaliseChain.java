@@ -1,6 +1,6 @@
 package models.validacaoParecer;
 
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 
 public abstract class TipoResultadoAnaliseChain<T extends Analisavel> {
 	
@@ -23,7 +23,7 @@ public abstract class TipoResultadoAnaliseChain<T extends Analisavel> {
         }
     }
 	
-	public void validarParecer(T analise, T novaAnalise, Usuario usuarioExecultor) {
+	public void validarParecer(T analise, T novaAnalise, UsuarioLicenciamento usuarioExecultor) {
 		
 		if (novaAnalise.getTipoResultadoValidacao().id.equals(idResultadoAnalise)) {
 							
@@ -35,5 +35,5 @@ public abstract class TipoResultadoAnaliseChain<T extends Analisavel> {
 		}
 	}
 	
-	protected abstract void validaParecer(T analise, T novaAnalise, Usuario usuarioExecultor);
+	protected abstract void validaParecer(T analise, T novaAnalise, UsuarioLicenciamento usuarioExecultor);
 }
