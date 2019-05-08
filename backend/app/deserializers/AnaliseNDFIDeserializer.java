@@ -27,18 +27,23 @@ public class AnaliseNDFIDeserializer implements JsonDeserializer<AnaliseNdfi> {
 					new SimpleDateFormat(Play.configuration.getProperty("date.format.invert"))
 							.parse(jsonObject.get("data").getAsString());
 
-		} catch (ParseException e) {
+			analise.satelite =  elementIsValido(jsonObject.get("satelite")) ? jsonObject.get("satelite").getAsString() : null;
+			analise.orbita =  elementIsValido(jsonObject.get("orb_ponto")) ? Integer.valueOf(jsonObject.get("orb_ponto").getAsString().substring(0, jsonObject.get("orb_ponto").getAsString().indexOf('_'))) : null;
+			analise.ponto =  elementIsValido(jsonObject.get("orb_ponto")) ? Integer.valueOf( jsonObject.get("orb_ponto").getAsString().substring(jsonObject.get("orb_ponto").getAsString().indexOf('_') + 1)) : null;
+			analise.valor = elementIsValido(jsonObject.get("ndfi")) ? jsonObject.get("ndfi").getAsDouble() : 0.0;
+			analise.area =  elementIsValido(jsonObject.get("area_ha")) ? jsonObject.get("area_ha").getAsDouble() : 0.0;
+			analise.nivelExploracao =  elementIsValido(jsonObject.get("nv_exploracao")) ? jsonObject.get("nv_exploracao").getAsString() : "INDEFINIDO";
+
+		} catch ( Exception e) {
 
 			e.printStackTrace();
 		}
 
-		analise.orbita = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf(jsonObject.get("orb_ponto").getAsString().substring(0, jsonObject.get("orb_ponto").getAsString().indexOf('_')));
-		analise.ponto = jsonObject.get("orb_ponto") == null ? null : Integer.valueOf( jsonObject.get("orb_ponto").getAsString().substring(jsonObject.get("orb_ponto").getAsString().indexOf('_') + 1));
-		analise.satelite = jsonObject.get("satelite") == null ? null : jsonObject.get("satelite").getAsString();
-		analise.valor = jsonObject.get("ndfi") == null ? null : jsonObject.get("ndfi").getAsDouble();
-		analise.area = jsonObject.get("area_ha") == null ? null : jsonObject.get("area_ha").getAsDouble();
-		analise.nivelExploracao = jsonObject.get("nv_exploracao") == null ? null : jsonObject.get("nv_exploracao").getAsString();
-
 		return analise;
+	}
+
+	private Boolean elementIsValido(JsonElement elemento) {
+
+		return !(elemento == null || elemento.isJsonNull());
 	}
 }

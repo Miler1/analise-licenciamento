@@ -310,6 +310,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
                         .registerTypeAdapter(BaseVetorial.class, new BaseVetorialDeserializer())
                         .registerTypeAdapter(FeatureAddLayer.class, new FeatureAddLayerDeserializer())
                         .registerTypeAdapter(AtributosQueryAMFManejo.class, new AtributosQueryAMFManejoDeserializer())
+                        .serializeNulls()
                         .create()
         );
 
@@ -329,6 +330,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         if (response.features.get(0).attributes.status == 2) {
 
             params.clear();
+            params.put("token", token);
             params.put("where", "protocolo = '" + this.numeroProcesso + "'");
             params.put("outFields", "*");
             params.put("f", "json");
@@ -362,6 +364,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
             this.getAnaliseTecnica()._save();
 
             params.clear();
+            params.put("token", token);
             params.put("f", "json");
 
             String urlAnexos = Configuracoes.ANALISE_SHAPE_URL + "/1/"
