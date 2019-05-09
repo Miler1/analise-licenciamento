@@ -531,6 +531,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
             feature.attributes.analiseTecnicaManejo = this;
             feature.attributes.exibirPDF = true;
+
             this.analisesNdfi.add(feature.attributes);
         }
     }
