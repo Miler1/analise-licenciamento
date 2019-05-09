@@ -4,11 +4,7 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(schema = "analise", name = "base_vetorial")

@@ -1,16 +1,14 @@
 package models.validacaoParecer;
 
-import java.util.ArrayList;
-
-import models.AnaliseJuridica;
 import models.AnaliseTecnica;
 import models.LicencaAnalise;
 import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+
+import java.util.ArrayList;
 
 public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
@@ -20,7 +18,7 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 	}
 	
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, Usuario usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
 		   
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;
@@ -59,11 +57,11 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 		if (copia.hasGerentes()){
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR_PARA_GERENTE, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		} else {
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR_PARA_ANALISTA, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 	}
 }

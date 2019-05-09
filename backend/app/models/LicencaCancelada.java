@@ -1,31 +1,21 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import exceptions.AppException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
 import utils.ListUtil;
 import utils.Mensagem;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema="analise", name="licenca_cancelada")
@@ -44,7 +34,7 @@ public class LicencaCancelada extends GenericModel{
 	
 	@ManyToOne
 	@JoinColumn(name="id_usuario_executor")
-	public Usuario usuario;
+	public UsuarioLicenciamento usuario;
 	
 	@Column(name="data_cancelamento")
 	public Date dataCancelada;
@@ -56,7 +46,7 @@ public class LicencaCancelada extends GenericModel{
 		
 	}
 	
-	public void cancelarLicenca(Usuario usuarioExecutor) {
+	public void cancelarLicenca(UsuarioLicenciamento usuarioExecutor) {
 		
 		Calendar c = Calendar.getInstance();
 		Date dataAtual = c.getTime();

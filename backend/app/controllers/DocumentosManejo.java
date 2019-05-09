@@ -1,7 +1,7 @@
 package controllers;
 
-import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
 import models.manejoDigital.DocumentoManejo;
+import models.manejoDigital.analise.analiseTecnica.AnaliseTecnicaManejo;
 import org.apache.tika.Tika;
 import play.data.Upload;
 import play.mvc.Http;

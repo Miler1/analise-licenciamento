@@ -1,8 +1,8 @@
 package utils;
 
-import java.util.concurrent.Callable;
-
 import play.db.jpa.JPA;
+
+import java.util.concurrent.Callable;
 
 public class JPACallable<T> implements Callable<T> {
 

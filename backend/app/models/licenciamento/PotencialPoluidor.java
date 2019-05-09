@@ -1,9 +1,9 @@
 package models.licenciamento;
 
+import play.db.jpa.Model;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import play.db.jpa.Model;
 
 
 @Entity

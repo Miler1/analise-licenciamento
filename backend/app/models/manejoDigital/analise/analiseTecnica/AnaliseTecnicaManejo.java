@@ -12,19 +12,19 @@ import models.manejoDigital.analise.analiseShape.FeatureQueryMetadados;
 import models.manejoDigital.analise.analiseShape.FeatureQueryResumoNDFI;
 import models.manejoDigital.analise.analiseShape.FeatureQuerySobreposicao;
 import models.pdf.PDFGenerator;
-import models.portalSeguranca.Setor;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.tika.Tika;
 import play.data.Upload;
-import play.data.validation.Max;
-import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.Mensagem;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -453,12 +453,12 @@ public class AnaliseTecnicaManejo extends GenericModel {
         if (analise.apto) {
 
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_PROCESSO_MANEJO, this.analistaTecnico.usuario);
-            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
 
         } else {
 
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_PROCESS_MANEJO_ANALISE_TECNICA, this.analistaTecnico.usuario);
-            Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
         }
 
         this._save();
@@ -484,8 +484,8 @@ public class AnaliseTecnicaManejo extends GenericModel {
                 .addParam("totalAnaliseNDFI", totalAnaliseNDFI)
                 .addParam("analiseTecnicaManejo", this)
                 .addParam("processoManejo", this.processoManejo)
-                .addParam("arquivosComplementares", this.getArquivosComplementaresImagens())
-                .addParam("anexosARQGIS", this.getAnexosARQGIS())
+                .addParam("arquivosComplementares", getDocumentosManejoImagens(this.getDocumentosComplementares()))
+                .addParam("anexosARQGIS", getDocumentosManejoImagens(this.getAnexosARQGIS()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 3.5D);
 
         pdf.generate();
@@ -531,6 +531,7 @@ public class AnaliseTecnicaManejo extends GenericModel {
 
             feature.attributes.analiseTecnicaManejo = this;
             feature.attributes.exibirPDF = true;
+
             this.analisesNdfi.add(feature.attributes);
         }
     }
@@ -636,13 +637,15 @@ public class AnaliseTecnicaManejo extends GenericModel {
         return  hasAMF && hasAPM;
     }
 
-    public List<DocumentoManejo> getArquivosComplementaresImagens() throws IOException {
+
+
+    public List<DocumentoManejo> getDocumentosManejoImagens(List<DocumentoManejo> documentosSalvo) throws IOException {
 
         List<DocumentoManejo> documentos = new ArrayList<>();
 
         Tika tika = new Tika();
 
-        for (DocumentoManejo documento : this.getDocumentosComplementares()) {
+        for (DocumentoManejo documento : documentosSalvo) {
 
             String realType = tika.detect(documento.getFile());
 
@@ -650,6 +653,10 @@ public class AnaliseTecnicaManejo extends GenericModel {
                     realType.contains("image/jpg") ||
                     realType.contains("image/png") ||
                     realType.contains("bmp")) {
+
+                BufferedImage img = ImageIO.read(new File(documento.getFile().getPath()));
+                documento.width = img.getWidth();
+                documento.height = img.getHeight();
 
                 documentos.add(documento);
             }

@@ -1,23 +1,17 @@
 package builders;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.*;
+import org.hibernate.sql.JoinType;
+import play.db.jpa.JPA;
+
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.sql.JoinType;
-
-import play.db.jpa.JPA;
 
 public abstract class CriteriaBuilder<T> {
 	

@@ -1,32 +1,19 @@
 package models;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.FileManager;
 import utils.Identificavel;
+
+import javax.persistence.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema = "analise", name = "documento")

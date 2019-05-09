@@ -221,7 +221,7 @@ html(lang='en')
 		p
 			strong 4 - Analise temporal de imagens de satélite
 	div.div-list
-		p Para comprovação da existência de cobertura florestal e verificação da ocorrência ou não de áreas com exploração florestal não autorizada, foi realizada através de análise de imagens de satélite, referente aos últimos 24 anos. Esta análise está baseada na determinação do Índice Normalizado de Diferença de Fração, portaria 63/2014, cujo objetivo medir as alterações na cobertura vegetal e no solo, conforme determina a portaria 63 de 10/09/2015.
+		p Para comprovação da existência de cobertura florestal e verificação da ocorrência ou não de áreas com exploração florestal não autorizada, foi realizada através de análise de imagens de satélite, referente aos últimos 24 anos. Esta análise está baseada na determinação do Índice Normalizado de Diferença de Fração, portaria 63/2014, cujo objetivo é medir as alterações na cobertura vegetal e no solo, conforme determina a portaria 63 de 10/09/2015.
 
 	| \#{if analiseTecnicaManejo.getObservacoesAnaliseTemporal() != null && analiseTecnicaManejo.getObservacoesAnaliseTemporal().size() > 0}
 	| \#{list analiseTecnicaManejo.getObservacoesAnaliseTemporal(), as:'observacao'}
@@ -320,7 +320,7 @@ html(lang='en')
 			thead
 				tr
 					th.linha-destaque(colspan="5")
-						strong Área de manejo florestal solicitada - AMF (hectares)
+						strong Área de manejo florestal solicitada - AMF (ha)
 					th.linha-destaque
 						strong ${ analiseTecnicaManejo.areaManejoFlorestalSolicitada ? new java.text.DecimalFormat("##########.####").format(analiseTecnicaManejo.areaManejoFlorestalSolicitada) : "-"}
 
@@ -329,7 +329,7 @@ html(lang='en')
 		table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
 			thead(style="page-break-before: avoid;")
 				tr
-					th.titulo-tabela.text-center(colspan="6") Área descontadas da AMF (hectares)
+					th.titulo-tabela.text-center(colspan="6") Área descontadas da AMF (ha)
 			tbody(style="page-break-before: avoid;")
 				tr(style="page-break-before: avoid;")
 					td(colspan="5")
@@ -396,7 +396,7 @@ html(lang='en')
 		table.tabela(width="80%" align="center" border="1" cellspacing="0" cellpadding="3")
 			thead(style="page-break-before: avoid;")
 				tr
-					th.titulo-tabela.text-center(colspan="6") Resultados (hectares)
+					th.titulo-tabela.text-center(colspan="6") Resultados (ha)
 			tbody(style="page-break-before: avoid;")
 				tr(style="page-break-before: avoid;")
 					td(colspan="5")
@@ -497,7 +497,12 @@ html(lang='en')
 			p
 				strong ${ arquivo.nomeSemExtensao }
 			center
-				img(src='${arquivo.getFile().getPath()}', width="600")
+				| \#{if arquivo.width > 600}
+				img(src='${arquivo.getFile().getPath()}' width="600")
+				| \#{/if}
+				| \#{else}
+				img(src='${arquivo.getFile().getPath()}')
+				| \#{/else}
 		| \#{/list}
 
 		| \#{list anexosARQGIS, as:'anexo'}
@@ -505,7 +510,12 @@ html(lang='en')
 			p
 				strong ${ anexo.nomeSemExtensao }
 			center
-				img(src='${anexo.getFile().getPath()}', width="600")
+				| \#{if anexo.width > 600}
+				img(src='${anexo.getFile().getPath()}' width="600")
+				| \#{/if}
+				| \#{else}
+				img(src='${anexo.getFile().getPath()}')
+				| \#{/else}
 		| \#{/list}
 
 		| \#{if analiseTecnicaManejo.getObservacoesDocumentosComplementares() != null && analiseTecnicaManejo.getObservacoesDocumentosComplementares().size() > 0}

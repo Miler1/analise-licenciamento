@@ -1,6 +1,5 @@
 package security;
 
-import play.Play;
 import utils.Configuracoes;
 
 public class AuthServiceFactory {

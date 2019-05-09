@@ -58,7 +58,7 @@ var config = {
 			fonts: "./bower_components/components-font-awesome/fonts/**"
 		},
 		lodash: "./bower_components/lodash/dist/lodash.min.js",
-		blockUI: "./bower_components/blockUI/jquery.blockUI.js",
+		blockUI: "./bower_components/blockui/jquery.blockUI.js",
 		inputMasks: "./bower_components/angular-input-masks/angular-input-masks-standalone.min.js",
 		moment: [
 				"./bower_components/moment/min/moment-with-locales.min.js",

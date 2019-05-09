@@ -25,6 +25,7 @@ require:
     - br.ufla.lemaf -> InterfaceTramitacao 0.3.5-SNAPSHOT
     - org.apache.tika -> tika-core 1.7
     - com.google.guava -> guava 27.0.1-jre
+    - br.ufla.lemaf -> cadastro-unificado-oauth-client 1.1.16
 
 repositories:
 
@@ -51,6 +52,7 @@ repositories:
                 - it.geosolutions.imageio-ext -> *
                 - com.google.zxing -> *
                 - br.ufla.lemaf -> *
+                - javax.persistence -> *
 
     - BOUNDLESSGEO:
           type: iBiblio

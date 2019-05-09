@@ -1,10 +1,9 @@
 package serializers;
 
 import com.vividsolutions.jts.geom.Geometry;
-
+import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 import utils.flexjson.GeometryTransformer;
-import flexjson.JSONSerializer;
 
 public class AnaliseTecnicaSerializer {
 	

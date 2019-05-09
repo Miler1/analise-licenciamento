@@ -3,6 +3,7 @@ package jobs;
 import models.manejoDigital.ProcessoManejo;
 import play.Logger;
 import play.jobs.On;
+import security.AuthManejo;
 
 import java.util.List;
 
@@ -18,7 +19,10 @@ public class VerificarAnalisesShape extends GenericJob {
 
 		for (ProcessoManejo processo : processos) {
 
-			processo.verificarAnaliseShape();
+			// TODO futuramente usar id do Semas do usuário
+			String cacheId = processo.numeroProcesso;
+			String token = AuthManejo.getToken(cacheId);
+			processo.verificarAnaliseShape(token);
 		}
 
 		Logger.info("[FIM-JOB] ::VerificarAnalisesShape:: [FIM-JOB]");

@@ -1,14 +1,13 @@
 package models;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.*;
-
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
+
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema="analise", name="analise")

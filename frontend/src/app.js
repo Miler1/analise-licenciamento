@@ -27,40 +27,20 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 		.when("/", {
 			redirectTo: function(){
 
-				if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR &&
+				if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR &&
 					LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken){
 
 					return "/aguardando-assinatura";
 
-				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR) {
+				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR
+					|| LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ADMINISTRATIVO_JURIDICO) {
 
 					return "/consultar-processo";
 
-				} else if (
-					[
-						app.utils.Perfis.COORDENADOR_JURIDICO,
-						app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
-						app.utils.Perfis.CONSULTOR_JURIDICO,
-						app.utils.Perfis.COORDENADOR_TECNICO,
-						app.utils.Perfis.GERENTE_TECNICO,
-						app.utils.Perfis.ANALISTA_TECNICO,
-						app.utils.Perfis.APROVADOR
-					].indexOf(LICENCIAMENTO_CONFIG.usuarioSessao.perfilSelecionado.id) === -1) {
+				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_SIMLAM ||
+					LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR) {
 
-					var result = false;
-
-					_.forEach(LICENCIAMENTO_CONFIG.usuarioSessao.permissoes, function(permissao) {
-
-						if(permissao === 'LISTAR_PROCESSO_MANEJO') {
-
-							result = true;
-						}
-					});
-
-					if (result) {
-
-						return '/listagem-processo-manejo';
-					}
+					return '/listagem-processo-manejo';
 				}
 
 				return "/caixa-entrada";
@@ -171,25 +151,25 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.COORDENADOR_TECNICO,
 					app.utils.Perfis.GERENTE_TECNICO,
 					app.utils.Perfis.ANALISTA_TECNICO,
-					].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
+					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function() {
 
-				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
-				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.CONSULTOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
-				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_TECNICO)
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR;
-				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.GERENTE_TECNICO)
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE;
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
+				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 			},
 			deveFiltrarPorUsuario: true,
-			idPerfilSelecionado: function(){
+			codigoPerfilSelecionado: function(){
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
 		{
@@ -198,7 +178,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			icone: 'glyphicon glyphicon-ok',
 			url: function() {
 
-				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO) {
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.CONSULTOR_JURIDICO) {
 
 					return '/analise-juridica';
 
@@ -216,19 +196,19 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			visivel: function() {
 
 				return [app.utils.Perfis.CONSULTOR_JURIDICO,
-				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
+				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
-				if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.CONSULTOR_JURIDICO)
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.CONSULTOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA;
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.ANALISTA_TECNICO)
+				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
 			},
 			deveFiltrarPorUsuario: true,
-			idPerfilSelecionado: function(){
+			codigoPerfilSelecionado: function(){
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
 		{
@@ -248,22 +228,22 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 				return [app.utils.Perfis.GERENTE_TECNICO,
 				app.utils.Perfis.COORDENADOR_TECNICO,
-				app.utils.Perfis.COORDENADOR_JURIDICO].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) > -1;
+				app.utils.Perfis.COORDENADOR_JURIDICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
-				if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_TECNICO)
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
-				else if($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.GERENTE_TECNICO)
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
 
-				else if ($rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.COORDENADOR_JURIDICO)
+				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 			},
 			deveFiltrarPorUsuario: true,
-			idPerfilSelecionado: function(){
+			codigoPerfilSelecionado: function(){
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
 		{
@@ -281,7 +261,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return $rootScope.usuarioSessao.perfilSelecionado.id === app.utils.Perfis.APROVADOR && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
 			},
 
 			condicaoTramitacao: function(){
@@ -311,7 +291,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.GERENTE_TECNICO,
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.APROVADOR
-				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
+				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
 		},
 		{
@@ -335,7 +315,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					app.utils.Perfis.GERENTE_TECNICO,
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.APROVADOR
-				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
+				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
 		},
 		{
@@ -351,15 +331,13 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function(){
 
-				return [
-					app.utils.Perfis.VISUALIZAR_PROCESSO_MANEJO,
-					app.utils.Perfis.ANALISAR_PROCESSO_MANEJO,
-					app.utils.Perfis.LISTAR_PROCESSO_MANEJO
-				].indexOf($rootScope.usuarioSessao.perfilSelecionado.id) !== -1;
+				return $scope.verificarPermissao([
+					app.utils.Permissoes.VISUALIZAR_PROCESSO_MANEJO,
+					app.utils.Permissoes.ANALISAR_PROCESSO_MANEJO,
+					app.utils.Permissoes.LISTAR_PROCESSO_MANEJO
+				]);
 			}
 		}];
-
-		configurarPermissoes($rootScope.usuarioSessao, $rootScope);
 
 		/*  Limpando o breadcrumb ao acessar a tela inicial */
 		$scope.$on('$routeChangeSuccess', function (event, rotaAtual, rotaAnterior) {
@@ -374,7 +352,7 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 
 		$scope.$on("$routeChangeError", function(event, rotaAtual, rotaAnterior, error) {
 
-			if (error.data.texto) {
+			if (error.data && error.data.texto) {
 
 				mensagem.error(error.data.texto);
 			}
@@ -391,6 +369,29 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 				$location.path("/");
 			}
 		});
+
+
+		$scope.verificarPermissao = function (permissoesSolicitadas) {
+
+			var result = false;
+
+			_.forEach(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes, function(permissaoUsuario) {
+
+				if (!result) {
+
+					_.forEach(permissoesSolicitadas, function (permissaoSolicitada) {
+
+						if (permissaoSolicitada === permissaoUsuario.codigo) {
+
+							result = true;
+						}
+					});
+				}
+
+			});
+
+			return result;
+		};
 
 	}]);
 
@@ -414,19 +415,6 @@ licenciamento.constant('config', {
 		COORDENADORIA: 'COORDENADORIA',
 		GERENCIA:'GERENCIA'
 	});
-
-
-function configurarPermissoes(usuarioSessao, $rootScope) {
-
-	var permissoes = {};
-
-	for (var i = 0; i < usuarioSessao.permissoes.length; i++)
-		permissoes[usuarioSessao.permissoes[i]] = true;
-
-	$rootScope.permissoes = permissoes;
-
-}
-
 
 var services = app.services,
 	utils = app.utils,

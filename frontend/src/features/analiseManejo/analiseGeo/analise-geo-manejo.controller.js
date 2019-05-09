@@ -12,7 +12,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.arquivosShape = [
 		{
-			titulo: "Área de manejo florestal solicitada - AMF (hectares)",
+			titulo: "Área de manejo florestal solicitada - AMF (ha)",
 			key: null,
 			nome: null,
 			geoJsonArcgis: null,

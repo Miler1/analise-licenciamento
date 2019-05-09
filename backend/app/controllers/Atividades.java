@@ -9,7 +9,7 @@ public class Atividades extends InternalController {
 
 	public static void list() {
 		
-		verificarPermissao(Acao.LISTAR_PROCESSO_JURIDICO);
+		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		FiltroAtividade filtro = new FiltroAtividade();
 		filtro.licenciamentoSimplificado = getParamAsBoolean("licenciamentoSimplificado");

@@ -1,12 +1,12 @@
 package utils;
 
-import java.util.Date;
-
+import flexjson.JSONSerializer;
 import play.Play;
 import play.Play.Mode;
 import serializers.DateSerializer;
-import flexjson.JSONSerializer;
 import serializers.DoubleSerializer;
+
+import java.util.Date;
 
 public class SerializerUtil {
 

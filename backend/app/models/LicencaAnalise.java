@@ -1,29 +1,12 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.Setor;
-import models.portalSeguranca.Usuario;
+import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
@@ -33,6 +16,12 @@ import utils.Identificavel;
 import utils.ListUtil;
 import utils.Mensagem;
 import utils.validacao.Validacao;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 @Entity
 @Table(schema="analise", name="licenca_analise")
@@ -282,7 +271,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}					
 	}
 	
-	public static void emitirLicencas(LicencaAnalise[] licencasAnalise, Usuario usuarioExecutor) {
+	public static void emitirLicencas(LicencaAnalise[] licencasAnalise, UsuarioLicenciamento usuarioExecutor) {
 		
 		List<LicencaAnalise> licencaAnalisesCopia = new ArrayList<>();
 		List<Long> idsLicencas = new ArrayList<>();
@@ -345,7 +334,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			lAnalise.analiseTecnica._save();
 
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
-			Setor.setHistoricoTramitacao(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 
 		} catch (Exception e) {
 			

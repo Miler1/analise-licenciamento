@@ -2,7 +2,19 @@ var ApplicationService = function(request, config) {
 
 	this.findInfo = function(successCallback) {
 
-		request.get(config.BASE_URL() + "aplicacao/info").then(successCallback);
+		request.get("http://localhost:9011" + "aplicacao/info").then(successCallback);
+
+	};
+
+	this.login = function(successCallback) {
+
+		request.get("http://localhost:9011" + "/authenticate").then(successCallback);
+
+	};
+
+	this.auth = function(successCallback) {
+
+		request.get("http://localhost:9011" + "login/getAuthenticatedUser").then(successCallback);
 
 	};
 
