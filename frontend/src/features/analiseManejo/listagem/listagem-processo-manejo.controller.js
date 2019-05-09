@@ -11,9 +11,9 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 	listagemProcessoManejo.onPaginaAlterada = onPaginaAlterada;
 	listagemProcessoManejo.cadastrarProcessoManejo = cadastrarProcessoManejo;
 
-	listagemProcessoManejo.permissaoCadastrar = LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.listaPermissoes.indexOf('CADASTRAR_PROCESSO_MANEJO') !== -1;
-	listagemProcessoManejo.permissaoAnalisar = LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.listaPermissoes.indexOf('ANALISAR_PROCESSO_MANEJO') !== -1;
-	listagemProcessoManejo.permissaoVisualizar = LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.listaPermissoes.indexOf('VISUALIZAR_PROCESSO_MANEJO') !== -1;
+	listagemProcessoManejo.permissaoCadastrar = LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes.indexOf('CADASTRAR_PROCESSO_MANEJO') !== -1;
+	listagemProcessoManejo.permissaoAnalisar = LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes.indexOf('ANALISAR_PROCESSO_MANEJO') !== -1;
+	listagemProcessoManejo.permissaoVisualizar = LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.permissoes.indexOf('VISUALIZAR_PROCESSO_MANEJO') !== -1;
 
 	listagemProcessoManejo.iniciarAnaliseShape = function (processo) {
 
