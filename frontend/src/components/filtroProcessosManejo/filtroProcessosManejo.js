@@ -18,7 +18,7 @@ var FiltroProcessosManejo = {
 		ctrl.statusLicenca = [];
 
 
-		municipioService.getMunicipiosByUf('PA').then(
+		municipioService.getMunicipiosByUf('AM').then(
 
 			function(response){
 

@@ -121,7 +121,7 @@ var FiltroProcessos = {
 
 			setFiltrosPadrao();
 
-			municipioService.getMunicipiosByUf('PA').then(
+			municipioService.getMunicipiosByUf('AM').then(
 				function(response){
 					
 					ctrl.municipios = response.data; 

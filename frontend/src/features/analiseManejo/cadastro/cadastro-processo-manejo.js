@@ -175,7 +175,7 @@ var CadastroProcessoManejoController = function($scope, config, $rootScope, tipo
 
 	function init(){
 
-		municipioService.getMunicipiosByUf('PA').then(
+		municipioService.getMunicipiosByUf('AM').then(
 			function(response){
 
 				cadastroProcessoManejoController.municipios = response.data;
