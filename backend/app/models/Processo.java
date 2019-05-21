@@ -13,6 +13,7 @@ import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
+import security.UsuarioSessao;
 import services.ExternalSetorService;
 import utils.Configuracoes;
 import utils.DateUtil;

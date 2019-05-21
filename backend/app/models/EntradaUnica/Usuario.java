@@ -20,12 +20,35 @@ public class Usuario implements Serializable {
 
     public Usuario() {
     }
+    public Usuario(main.java.br.ufla.lemaf.beans.pessoa.Usuario usuario) {
 
+        this.id = usuario.id;
+        this.login = usuario.login;
+        this.nome = usuario.nome;
+        this.email = usuario.email;
+        this.perfis = usuario.perfis;
+        //this.setores = usuario.;
+        this.sessionKeyEntradaUnica = usuario.sessionKeyEntradaUnica;
+
+    }
     public boolean hasPermissao(String codigoPermissao) {
 
         for (Permissao permissao : this.perfilSelecionado.permissoes) {
 
             if (permissao.codigo.equals(codigoPermissao)) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean possuiPerfil(String codigoPerfil) {
+
+        for (main.java.br.ufla.lemaf.beans.pessoa.Perfil perfilUsuario : perfis) {
+
+            if (perfilUsuario.codigo.equals(codigoPerfil)) {
 
                 return true;
             }

@@ -4,7 +4,7 @@ import utils.Configuracoes;
 
 public class AuthServiceFactory {
 
-	private static final String SERVICES_PACKAGE = "security.auth.";
+	private static final String SERVICES_PACKAGE = "security.";
 	
 	private static AuthService service = null;
 
@@ -15,22 +15,6 @@ public class AuthServiceFactory {
 		}
 
 		return service;
-	}
-
-	public static <T extends AuthService> boolean usingImplementation(Class<T> clazz) {
-	
-		return getServiceClass().equals(clazz);
-	}
-	
-	private static Class getServiceClass() {
-		
-		try {
-			return Class.forName(SERVICES_PACKAGE + Configuracoes.AUTH_SERVICE);
-			
-		} catch (ClassNotFoundException e) {
-
-			throw new RuntimeException(e);
-		}
 	}
 	
 	private AuthService createService() {
@@ -43,7 +27,7 @@ public class AuthServiceFactory {
 		
 		try {
 			
-			return (AuthService) getServiceClass().newInstance();
+			return (AuthService) Class.forName(SERVICES_PACKAGE + Configuracoes.AUTH_SERVICE).newInstance();
 
 		} catch (Exception e) {
 

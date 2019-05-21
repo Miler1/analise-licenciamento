@@ -4,6 +4,7 @@ import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Usuario;
 import play.Play;
 import play.data.validation.MaxSize;
+import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import services.ExternalUsuarioService;
@@ -15,15 +16,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @Entity
-@Table(schema = "portal_seguranca", name = "usuario")
+@Table(schema = "analise", name = "usuario_analise")
 public class UsuarioLicenciamento extends GenericModel  {
 
+	public static final String SEQ = "analise.usuario_analise_id_seq";
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_usuario")
-	@SequenceGenerator(name = "sq_usuario", sequenceName = "portal_seguranca.sq_usuario", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
+	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 
-	@MaxSize(value = 20)
+	@Column(name="login")
+	@Required
+	@MaxSize(value = 14)
 	public String login;
 
 	public static transient ExecutorService executorService = new ScheduledThreadPoolExecutor(Integer.valueOf(Play.configuration.getProperty("usuario.threads", "3")));

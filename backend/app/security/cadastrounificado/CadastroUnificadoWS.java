@@ -1,0 +1,119 @@
+package security.cadastrounificado;
+
+import main.java.br.ufla.lemaf.beans.PessoaFiltroResult;
+import main.java.br.ufla.lemaf.beans.pessoa.FiltroPessoa;
+import main.java.br.ufla.lemaf.beans.pessoa.Pessoa;
+import main.java.br.ufla.lemaf.services.CadastroUnificadoPessoaService;
+import play.Logger;
+import utils.Configuracoes;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class CadastroUnificadoWS extends CadastroUnificadoPessoaService {
+
+    private static final int TMR_INIT_CONNECTION = 5000; //5s
+    private static final int TMR_PERIOD_CONNECTION = 30000; //30s
+
+    private static final String LOG_PREFIX = "[CADASTRO-UNIFICADO-WS]";
+
+    private static TimerTask taskTryConnection = new TimerTask() {
+        @Override
+        public void run() {
+            try {
+
+                tryConnection();
+                cancel();
+                Logger.info(LOG_PREFIX + " - conexão estabelecida com sucesso.");
+            }
+            catch (Exception e) {
+                ws = null;
+                Logger.error(LOG_PREFIX +" - erro ao tentar estabelecer a conexão.");
+            }
+        }
+    };
+
+    // Integraçao com o Entrada Unica
+    public static CadastroUnificadoWS ws = null;
+    static {
+
+        try {
+
+            tryConnection();
+        }
+        catch (Exception ex) {
+
+            ex.printStackTrace();
+            ws = null;
+
+            // Inicia o timer para renovar a conexão com o Entrada Única
+            new Timer().schedule(taskTryConnection, TMR_INIT_CONNECTION, TMR_PERIOD_CONNECTION);
+        }
+    }
+
+    /**
+     * Conexão com a aplicação Entrada Única
+     */
+    private static synchronized void tryConnection() {
+
+        ws = new CadastroUnificadoWS(Configuracoes.ENTRADA_UNICA_CLIENTE_ID,
+                Configuracoes.ENTRADA_UNICA_CLIENTE_SECRET,
+                Configuracoes.ENTRADA_UNICA_URL_PORTAL_SEGURANCA,
+                Configuracoes.ENTRADA_UNICA_URL_CADASTRO_UNIFICADO);
+    }
+
+    /**
+     * Construtor
+     * @param clientId
+     * @param clientSecret
+     * @param urlPortal
+     * @param urlCadastro
+     */
+    public CadastroUnificadoWS(String clientId, String clientSecret, String urlPortal, String urlCadastro) {
+        super(clientId, clientSecret, urlPortal, urlCadastro);
+    }
+
+    /**
+     * Retorna todos os usuários
+     * @return
+     */
+    public List<Pessoa> getUsuarios() {
+
+        return getUsuariosByPerfil(null);
+    }
+
+    /**
+     * Retorna os usuários associados ao perfil
+     * @return
+     */
+    public List<Pessoa> getUsuariosByPerfil(String perfil) {
+
+        // Busca os usuários cadastrados e associados ao perfil informado
+        FiltroPessoa filtroPessoa = new FiltroPessoa();
+        filtroPessoa.nomePerfil = perfil;
+
+        PessoaFiltroResult pessoasNoEntradaUnica = this.buscarPessoasComFiltro(filtroPessoa);
+
+        if(pessoasNoEntradaUnica != null) {
+
+            return pessoasNoEntradaUnica.pageItems;
+        }
+
+        return null;
+    }
+
+    public Pessoa getPessoa(String cpfCnpj) {
+
+        Pessoa pessoa = null;
+
+        if(cpfCnpj.length() == 11) {
+            pessoa = this.buscarPessoaFisicaPeloCpf(cpfCnpj);
+        } else if(cpfCnpj.length() == 14) {
+            pessoa = this.buscarPessoaJuridicaPeloCnpj(cpfCnpj);
+        }
+
+        return pessoa;
+    }
+
+}
