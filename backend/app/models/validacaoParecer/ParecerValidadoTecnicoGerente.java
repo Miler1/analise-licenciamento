@@ -2,7 +2,7 @@ package models.validacaoParecer;
 
 import models.AnaliseTecnica;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 
@@ -13,7 +13,7 @@ public class ParecerValidadoTecnicoGerente extends TipoResultadoAnaliseChain<Ana
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioAnalise usuarioExecutor) {
 
 		analiseTecnica.tipoResultadoValidacaoGerente = novaAnaliseTecnica.tipoResultadoValidacaoGerente;
 		analiseTecnica.parecerValidacaoGerente = novaAnaliseTecnica.parecerValidacaoGerente;

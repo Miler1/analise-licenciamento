@@ -8,24 +8,24 @@ import com.google.gson.JsonObject;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Setor;
 import models.EntradaUnica.Usuario;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDeserializer implements JsonDeserializer<List<UsuarioLicenciamento>> {
+public class UsuarioDeserializer implements JsonDeserializer<List<UsuarioAnalise>> {
 
 	@Override
-	public List<UsuarioLicenciamento> deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
+	public List<UsuarioAnalise> deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
 
-		List<UsuarioLicenciamento> usuarios = new ArrayList<>();
+		List<UsuarioAnalise> usuarios = new ArrayList<>();
 
 		JsonArray usuariosJson = json.getAsJsonArray();
 
 		for (int i = 0; i < usuariosJson.size(); i++) {
 
-			UsuarioLicenciamento usuario = new UsuarioLicenciamento();
+			UsuarioAnalise usuario = new UsuarioAnalise();
 			usuario.usuarioEntradaUnica = new Usuario();
 
 			JsonObject jsonObject = usuariosJson.get(i).getAsJsonObject();

@@ -4,7 +4,6 @@ import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
-import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
@@ -87,7 +86,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-	public UsuarioLicenciamento usuarioValidacao;
+	public UsuarioAnalise usuarioValidacao;
 	
 	@OneToMany(mappedBy="analiseTecnica", orphanRemoval = true)
 	public List<LicencaAnalise> licencasAnalise;
@@ -107,7 +106,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
-	public UsuarioLicenciamento usuarioValidacaoGerente;
+	public UsuarioAnalise usuarioValidacaoGerente;
  	
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<GerenteTecnico> gerentesTecnicos;
@@ -126,7 +125,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
-	public UsuarioLicenciamento usuarioValidacaoAprovador;
+	public UsuarioAnalise usuarioValidacaoAprovador;
  	
  	@Column(name="data_fim_validacao_aprovador")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -167,7 +166,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return super.save();
 	}
 	
-	public void iniciar(UsuarioLicenciamento usuarioExecutor) {
+	public void iniciar(UsuarioAnalise usuarioExecutor) {
 		
 		if(this.dataInicio == null) {
 			
@@ -362,7 +361,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 				.first();
 	}
 	
-	public void finalizar(AnaliseTecnica analise, UsuarioLicenciamento usuarioExecutor) {
+	public void finalizar(AnaliseTecnica analise, UsuarioAnalise usuarioExecutor) {
 		
 		this.update(analise);
 		
@@ -440,7 +439,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		notificacao.enviar();				
 	}	
 	
-	public void validaParecer(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
+	public void validaParecer(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnico();		
 		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnico());
@@ -449,7 +448,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
 	
-	public void validaParecerGerente(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
+	public void validaParecerGerente(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new ParecerValidadoTecnicoGerente();		
 		tiposResultadosAnalise.setNext(new SolicitarAjustesTecnicoGerente());
@@ -458,7 +457,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		
 	}
 	
-	public void validarParecerValidacaoAprovador(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor) {
+	public void validarParecerValidacaoAprovador(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
 		
 		TipoResultadoAnaliseChain<AnaliseTecnica> tiposResultadosAnalise = new SolicitarAjustesTecnicoAprovador();	
 		tiposResultadosAnalise.validarParecer(this, analiseTecnica, usuarioExecutor);		

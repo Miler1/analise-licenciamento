@@ -2,7 +2,7 @@ package controllers;
 
 import exceptions.AppException;
 import models.EntradaUnica.Usuario;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import play.Logger;
 import play.Play;
 import play.cache.Cache;
@@ -42,7 +42,7 @@ public class Login extends GenericController {
 				showLogin();
 			}
 
-			UsuarioLicenciamento usuarioLogado =  Auth.getUsuarioSessao();
+			UsuarioAnalise usuarioLogado =  Auth.getUsuarioSessao();
 
 			if (usuarioLogado == null) {
 				unauthorized();
@@ -83,19 +83,19 @@ public class Login extends GenericController {
 
 		boolean autenticado = (usuario.perfilSelecionado != null);
 
-		UsuarioLicenciamento usuarioLicenciamento = UsuarioLicenciamento.find("login", usuario.login).first();
+		UsuarioAnalise usuarioAnalise = UsuarioAnalise.find("login", usuario.login).first();
 
-		if (usuarioLicenciamento == null) {
-			usuarioLicenciamento = new UsuarioLicenciamento();
-			usuarioLicenciamento.login = usuario.login;
-			usuarioLicenciamento.save();
+		if (usuarioAnalise == null) {
+			usuarioAnalise = new UsuarioAnalise();
+			usuarioAnalise.login = usuario.login;
+			usuarioAnalise.save();
 		}
 
-		usuarioLicenciamento.usuarioEntradaUnica = usuario;
+		usuarioAnalise.usuarioEntradaUnica = usuario;
 
 		if (autenticado) {
 			Logger.info("[AUTH] Usuário autenticado [ Login: " + usuario.login + " ] - Authenticated - SessionID: " + session.getId() + " - GA SessionID: " + usuario.sessionKeyEntradaUnica);
-			Auth.setUsuarioSessao(usuarioLicenciamento, session);
+			Auth.setUsuarioSessao(usuarioAnalise, session);
 		} else {
 
 			String login = request.params.get("login");
@@ -114,11 +114,11 @@ public class Login extends GenericController {
 		redirect(Configuracoes.LOGIN_URL);
 	}
 
-	public static UsuarioLicenciamento getAuthenticatedUser() {
+	public static UsuarioAnalise getAuthenticatedUser() {
 
 		Logger.debug("ID da Sessão: %s", new Object[]{session.getId()});
 
-		return Cache.get(session.getId(), UsuarioLicenciamento.class);
+		return Cache.get(session.getId(), UsuarioAnalise.class);
 
 	}
 

@@ -5,7 +5,6 @@ import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
@@ -37,7 +36,7 @@ public class Suspensao extends GenericModel {
 
 	@ManyToOne
 	@JoinColumn(name="id_usuario_executor")
-	public UsuarioLicenciamento usuario;
+	public UsuarioAnalise usuario;
 
 	@Column(name="quantidade_dias_suspensao")
 	public Integer qtdeDiasSuspensao;
@@ -56,7 +55,7 @@ public class Suspensao extends GenericModel {
 		return Suspensao.find("byAtivo", true).fetch();
 	}
 
-	public void suspenderLicenca(UsuarioLicenciamento usuarioExecutor) {
+	public void suspenderLicenca(UsuarioAnalise usuarioExecutor) {
 
 		Calendar c = Calendar.getInstance();
 		Date dataAtual = c.getTime();

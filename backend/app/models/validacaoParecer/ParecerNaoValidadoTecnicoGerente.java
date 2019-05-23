@@ -4,7 +4,7 @@ import exceptions.ValidacaoException;
 import models.AnaliseTecnica;
 import models.AnalistaTecnico;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
@@ -18,7 +18,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioAnalise usuarioExecutor) {
 		
 		analiseTecnica.tipoResultadoValidacaoGerente = novaAnaliseTecnica.tipoResultadoValidacaoGerente;
 		analiseTecnica.parecerValidacaoGerente = novaAnaliseTecnica.parecerValidacaoGerente;
@@ -35,7 +35,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 
-	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioAnalista, UsuarioLicenciamento usuarioValidacao) {
+	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioAnalista, UsuarioAnalise usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		

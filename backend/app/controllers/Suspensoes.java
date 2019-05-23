@@ -1,7 +1,7 @@
 package controllers;
 
 import models.Suspensao;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import utils.Mensagem;
 
@@ -13,7 +13,7 @@ public class Suspensoes extends InternalController {
 		
     	returnIfNull(suspensao, "Suspensao");
 
-	    UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+	    UsuarioAnalise usuarioExecutor = getUsuarioSessao();
     	
     	suspensao.suspenderLicenca(usuarioExecutor);
     	

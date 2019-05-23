@@ -4,7 +4,7 @@ import models.AnaliseTecnica;
 import models.LicencaAnalise;
 import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 
@@ -18,7 +18,7 @@ public class SolicitarAjustesTecnicoAprovador extends TipoResultadoAnaliseChain<
 	}
 	
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioAnalise usuarioExecutor) {
 		   
 		analiseTecnica.tipoResultadoValidacaoAprovador = novaAnaliseTecnica.tipoResultadoValidacaoAprovador;
 		analiseTecnica.parecerValidacaoAprovador = novaAnaliseTecnica.parecerValidacaoAprovador;

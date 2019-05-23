@@ -12,9 +12,9 @@ public class Usuario implements Serializable {
     public String nome;
     public String email;
     public List<Perfil> perfis;
-    public List<Setor> setores;
+    public List<br.ufla.lemaf.beans.pessoa.Setor> setores;
     public Perfil perfilSelecionado;
-    public Setor setorSelecionado;
+    public br.ufla.lemaf.beans.pessoa.Setor setorSelecionado;
     public String sessionKeyEntradaUnica;
     public boolean autenticadoViaToken;
 
@@ -27,7 +27,7 @@ public class Usuario implements Serializable {
         this.nome = usuario.nome;
         this.email = usuario.email;
         this.perfis = usuario.perfis;
-        //this.setores = usuario.;
+        this.setores = usuario.setores;
         this.sessionKeyEntradaUnica = usuario.sessionKeyEntradaUnica;
 
     }

@@ -1,7 +1,7 @@
 package security;
 
 import models.EntradaUnica.Usuario;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import play.Logger;
 import play.cache.Cache;
 import play.mvc.Scope.Session;
@@ -21,17 +21,17 @@ public class Auth implements AuthService {
 		session.current().clear();
 	}
 
-	public static UsuarioLicenciamento getAuthenticatedUser(Session session) {
+	public static UsuarioAnalise getAuthenticatedUser(Session session) {
 
-		return Cache.get(CACHE_PREFIX +  session.current().getId(), UsuarioLicenciamento.class);
+		return Cache.get(CACHE_PREFIX +  session.current().getId(), UsuarioAnalise.class);
 	}
 
-	public static void setUsuarioSessao(UsuarioLicenciamento usuario, Session session) {
+	public static void setUsuarioSessao(UsuarioAnalise usuario, Session session) {
 
 		Cache.set(CACHE_PREFIX +  session.getId(), usuario);
 	}
 
-	public static UsuarioLicenciamento getUsuarioSessao() {
+	public static UsuarioAnalise getUsuarioSessao() {
 
 		return getAuthenticatedUser(Session.current());
 	}
@@ -55,10 +55,7 @@ public class Auth implements AuthService {
 			Usuario usuarioSessao = new Usuario(usuarioEntradaUnica);
 
 			usuarioSessao.perfilSelecionado = usuarioEntradaUnica.perfilSelecionado;
-//			usuarioSessao.perfil = new Perfil(usuarioEntradaUnica.perfilSelecionado);
-//
-//			usuarioSessao.acessoLiberado = true;
-
+			usuarioSessao.setorSelecionado = usuarioEntradaUnica.setorSelecionado;
 
 			return usuarioSessao;
 		}

@@ -4,7 +4,7 @@ import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.UsuarioSerializer;
 import services.ExternalSetorService;
@@ -20,9 +20,9 @@ public class Analistas extends InternalController {
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 
 		//TODO ANALISAR - PH
-		UsuarioLicenciamento analista = UsuarioLicenciamento.findById(idUsuario);
+		UsuarioAnalise analista = UsuarioAnalise.findById(idUsuario);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
 		for(Long idProcesso : idsProcesso) {
 
@@ -47,7 +47,7 @@ public class Analistas extends InternalController {
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao =
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 
-		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, tipoAtividadeCaracterizacao.siglaSetor);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, tipoAtividadeCaracterizacao.siglaSetor);
 
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
@@ -56,7 +56,7 @@ public class Analistas extends InternalController {
 
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.CONSULTAR_PROCESSO);
 
-		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO);
 
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 
@@ -66,10 +66,10 @@ public class Analistas extends InternalController {
 
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 
-		UsuarioLicenciamento usuarioSessao = getUsuarioSessao();
+		UsuarioAnalise usuarioSessao = getUsuarioSessao();
 
 		List<String> siglasSetoresFilhos = null;
-		List<UsuarioLicenciamento> pessoas = null;
+		List<UsuarioAnalise> pessoas = null;
 		switch (usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) {
 
 		case CodigoPerfil.APROVADOR:
@@ -81,13 +81,13 @@ public class Analistas extends InternalController {
 		case CodigoPerfil.COORDENADOR_TECNICO:
 
 			siglasSetoresFilhos = ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1);
-			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
+			pessoas = UsuarioAnalise.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
 			break;
 		/**
 		 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
 		 */
 		default:
-			pessoas = UsuarioLicenciamento.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			pessoas = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 			break;
 		}
 

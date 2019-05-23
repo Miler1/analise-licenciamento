@@ -3,7 +3,6 @@ package models;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
-import models.portalSeguranca.UsuarioLicenciamento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -30,7 +29,7 @@ public class AnalistaTecnico extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public UsuarioLicenciamento usuario;
+	public UsuarioAnalise usuario;
 	
 	@Required
 	@Column(name="data_vinculacao")
@@ -41,7 +40,7 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}
 	
-	public AnalistaTecnico(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuario) {
+	public AnalistaTecnico(AnaliseTecnica analiseTecnica, UsuarioAnalise usuario) {
 		
 		super();
 		this.analiseTecnica = analiseTecnica;
@@ -50,7 +49,7 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}	
 	
-	public static void vincularAnalise(UsuarioLicenciamento usuario, AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioExecutor, String justificativaCoordenador) {
+	public static void vincularAnalise(UsuarioAnalise usuario, AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
 
 		if (!usuario.hasPerfil(CodigoPerfil.ANALISTA_TECNICO))
 			throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO);

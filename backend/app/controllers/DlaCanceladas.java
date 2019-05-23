@@ -1,7 +1,7 @@
 package controllers;
 
 import models.DlaCancelada;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import utils.Mensagem;
 
@@ -13,7 +13,7 @@ public class DlaCanceladas extends InternalController {
 		
 		returnIfNull(dlaCancelada, "DlaCancelada");
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		dlaCancelada.cancelarDla(usuarioExecutor);
 		

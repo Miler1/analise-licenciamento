@@ -3,7 +3,7 @@ package controllers;
 import builders.ProcessoManejoBuilder.FiltroProcessoManejo;
 import models.Documento;
 import models.manejoDigital.ProcessoManejo;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import security.Auth;
 import security.AuthManejo;
@@ -134,7 +134,7 @@ public class ProcessosManejo extends InternalController {
 
 		notFoundIfNull(processoSalvo);
 
-		processoSalvo.indeferir(processoManejo, (UsuarioLicenciamento) UsuarioLicenciamento.find("login", Auth.getUsuarioSessao().login).first());
+		processoSalvo.indeferir(processoManejo, (UsuarioAnalise) UsuarioAnalise.find("login", Auth.getUsuarioSessao().login).first());
 
 		renderMensagem(Mensagem.PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO);
 	}

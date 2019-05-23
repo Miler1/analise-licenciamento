@@ -1,7 +1,7 @@
 package controllers;
 
 import models.LicencaCancelada;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import utils.Mensagem;
 
@@ -13,7 +13,7 @@ public class LicencaCanceladas extends InternalController {
 		
 		returnIfNull(licencaCancelada, "LicencaCancelada");
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		licencaCancelada.cancelarLicenca(usuarioExecutor);
 		

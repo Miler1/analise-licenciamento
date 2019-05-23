@@ -1,6 +1,6 @@
 package services;
 
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import utils.WebService;
 
 import javax.annotation.Nullable;
@@ -11,17 +11,17 @@ public class ExternalUsuarioService extends BaseExternalService {
 
 	protected static String FIND_USUARIOS_BY_PERFIL = "/external/usuario/perfil/";
 
-	public static List<UsuarioLicenciamento> findUsuariosByPerfil(String codigoPerfil) {
+	public static List<UsuarioAnalise> findUsuariosByPerfil(String codigoPerfil) {
 
 		return response(codigoPerfil, null);
 	}
 
-	public static List<UsuarioLicenciamento> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
+	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
 
 		return response(codigoPerfil, siglaSetor);
 	}
 
-	public static List<UsuarioLicenciamento> findUsuariosByPerfilAndSetores(String codigoPerfil, List<String> siglaSetores) {
+	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetores(String codigoPerfil, List<String> siglaSetores) {
 
 		StringBuilder stringBuilder = new StringBuilder();
 
@@ -33,7 +33,7 @@ public class ExternalUsuarioService extends BaseExternalService {
 		return response(codigoPerfil, stringBuilder.toString());
 	}
 
-	public static List<UsuarioLicenciamento> response(String codigoPerfil, @Nullable String siglaSetores){
+	public static List<UsuarioAnalise> response(String codigoPerfil, @Nullable String siglaSetores){
 
 		String separator = "/";
 
@@ -44,7 +44,7 @@ public class ExternalUsuarioService extends BaseExternalService {
 
 		WebService wsRequest = new WebService();
 
-		return Arrays.asList(wsRequest.getJson(portalSeguranca + FIND_USUARIOS_BY_PERFIL + codigoPerfil + separator + siglaSetores, UsuarioLicenciamento[].class));
+		return Arrays.asList(wsRequest.getJson(portalSeguranca + FIND_USUARIOS_BY_PERFIL + codigoPerfil + separator + siglaSetores, UsuarioAnalise[].class));
 
 	}
 

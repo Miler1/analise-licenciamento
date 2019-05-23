@@ -2,7 +2,6 @@ package models;
 
 import exceptions.PermissaoNegadaException;
 import models.EntradaUnica.CodigoPerfil;
-import models.portalSeguranca.UsuarioLicenciamento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -29,7 +28,7 @@ public class GerenteTecnico extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public UsuarioLicenciamento usuario;
+	public UsuarioAnalise usuario;
 	
 	@Required
 	@Column(name="data_vinculacao")
@@ -40,7 +39,7 @@ public class GerenteTecnico extends GenericModel {
 		
 	}
 	
-	public GerenteTecnico(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuario) {
+	public GerenteTecnico(AnaliseTecnica analiseTecnica, UsuarioAnalise usuario) {
 		
 		super();
 		this.analiseTecnica = analiseTecnica;
@@ -49,7 +48,7 @@ public class GerenteTecnico extends GenericModel {
 		
 	}	
 	
-	public static void vincularAnalise(UsuarioLicenciamento usuario, UsuarioLicenciamento usuarioExecutor, AnaliseTecnica analiseTecnica) {
+	public static void vincularAnalise(UsuarioAnalise usuario, UsuarioAnalise usuarioExecutor, AnaliseTecnica analiseTecnica) {
 		
 		if (!usuario.hasPerfil(CodigoPerfil.GERENTE_TECNICO))
 			throw new PermissaoNegadaException(Mensagem.GERENTE_DIFERENTE_DE_GERENTE_TECNICO);		

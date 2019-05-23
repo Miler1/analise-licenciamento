@@ -1,4 +1,4 @@
-package models.portalSeguranca;
+package models;
 
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Usuario;
@@ -6,18 +6,16 @@ import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
 import services.ExternalUsuarioService;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @Entity
 @Table(schema = "analise", name = "usuario_analise")
-public class UsuarioLicenciamento extends GenericModel  {
+public class UsuarioAnalise extends GenericModel  {
 
 	public static final String SEQ = "analise.usuario_analise_id_seq";
 
@@ -39,18 +37,18 @@ public class UsuarioLicenciamento extends GenericModel  {
 	@Transient
 	public Usuario usuarioEntradaUnica;
 
-	public static List<UsuarioLicenciamento> getUsuariosByPerfil(String codigoPerfil) {
+	public static List<UsuarioAnalise> getUsuariosByPerfil(String codigoPerfil) {
 
 		return  ExternalUsuarioService.findUsuariosByPerfil(codigoPerfil);
 	}
 	
-	public static List<UsuarioLicenciamento> getUsuariosByPerfilSetor(String codigoPerfil, String siglaSetor) {
+	public static List<UsuarioAnalise> getUsuariosByPerfilSetor(String codigoPerfil, String siglaSetor) {
 
 
 		return ExternalUsuarioService.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
 	}
 	
-	public static List<UsuarioLicenciamento> getUsuariosByPerfilSetores(String codigoPerfil, List<String> siglasSetores) {
+	public static List<UsuarioAnalise> getUsuariosByPerfilSetores(String codigoPerfil, List<String> siglasSetores) {
 
 		return ExternalUsuarioService.findUsuariosByPerfilAndSetores(codigoPerfil, siglasSetores);
 	}

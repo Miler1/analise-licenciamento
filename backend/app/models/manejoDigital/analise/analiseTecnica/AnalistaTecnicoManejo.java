@@ -1,6 +1,6 @@
 package models.manejoDigital.analise.analiseTecnica;
 
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
@@ -26,14 +26,14 @@ public class AnalistaTecnicoManejo extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public UsuarioLicenciamento usuario;
+	public UsuarioAnalise usuario;
 
 	@Required
 	@Column(name="data_vinculacao")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
 
-	public AnalistaTecnicoManejo(AnaliseTecnicaManejo analiseTecnica, UsuarioLicenciamento usuario) {
+	public AnalistaTecnicoManejo(AnaliseTecnicaManejo analiseTecnica, UsuarioAnalise usuario) {
 
 		this.analiseTecnicaManejo = analiseTecnica;
 		this.usuario = usuario;

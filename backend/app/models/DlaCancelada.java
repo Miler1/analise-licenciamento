@@ -3,7 +3,6 @@ package models;
 import exceptions.AppException;
 import models.licenciamento.DispensaLicenciamento;
 import models.licenciamento.LicenciamentoWebService;
-import models.portalSeguranca.UsuarioLicenciamento;
 import play.Logger;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -28,7 +27,7 @@ public class DlaCancelada extends GenericModel {
 	
 	@ManyToOne
 	@JoinColumn(name="id_usuario_executor")
-	public UsuarioLicenciamento usuario;
+	public UsuarioAnalise usuario;
 	
 	@Column(name="data_cancelamento")
 	public Date dataCancelada;
@@ -39,9 +38,9 @@ public class DlaCancelada extends GenericModel {
 		
 	}
 	
-	public void cancelarDla(UsuarioLicenciamento usuarioExecutor) {
+	public void cancelarDla(UsuarioAnalise usuarioExecutor) {
 
-		this.usuario = new UsuarioLicenciamento();
+		this.usuario = new UsuarioAnalise();
 		this.usuario.id = usuarioExecutor.id;
 
 		LicenciamentoWebService webService = new LicenciamentoWebService();

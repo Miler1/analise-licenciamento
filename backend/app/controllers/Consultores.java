@@ -2,7 +2,7 @@ package controllers;
 
 import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.UsuarioSerializer;
 import utils.Mensagem;
@@ -15,8 +15,8 @@ public class Consultores extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO);
 		
-		UsuarioLicenciamento consultor = UsuarioLicenciamento.findById(idUsuario);
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise consultor = UsuarioAnalise.findById(idUsuario);
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		for(Long idProcesso : idsProcesso) {
 			
@@ -34,7 +34,7 @@ public class Consultores extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
 		
-		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfil(CodigoPerfil.CONSULTOR_JURIDICO);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.CONSULTOR_JURIDICO);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}

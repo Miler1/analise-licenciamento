@@ -2,8 +2,8 @@ package models.tramitacao;
 
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
-import models.portalSeguranca.RelHistoricoTramitacaoSetor;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.RelHistoricoTramitacaoSetor;
+import models.UsuarioAnalise;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 
@@ -74,7 +74,7 @@ public class HistoricoTramitacao extends GenericModel {
 	public Date dataInicial;
 
 	@OneToOne
-	@JoinTable(schema = "portal_seguranca", name = "historico_tramitacao_setor",
+	@JoinTable(schema = "analise", name = "historico_tramitacao_setor",
 			joinColumns = @JoinColumn(name = "id_historico_tramitacao"))
 	public RelHistoricoTramitacaoSetor relHistoricoTramitacaoSetor;
 
@@ -206,7 +206,7 @@ public class HistoricoTramitacao extends GenericModel {
 
 	}
 
-	public static void setSetor(HistoricoTramitacao historicoTramitacao, UsuarioLicenciamento usuarioExecutor) {
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, UsuarioAnalise usuarioExecutor) {
 
 		if (usuarioExecutor.usuarioEntradaUnica.setorSelecionado != null) {
 
