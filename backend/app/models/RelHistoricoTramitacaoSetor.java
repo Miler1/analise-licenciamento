@@ -9,9 +9,9 @@ import javax.persistence.*;
 @Table(schema = "analise", name = "historico_tramitacao_setor")
 public class RelHistoricoTramitacaoSetor extends GenericModel {
 
-    @MapsId
+    @Id
     @OneToOne
-    @JoinColumn(name = "id_historico_tramitacao")
+    @JoinColumn(name="id_historico_tramitacao")
     public HistoricoTramitacao historicoTramitacao;
 
     @Column(name="sigla_setor")

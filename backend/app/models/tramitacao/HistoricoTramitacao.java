@@ -73,7 +73,7 @@ public class HistoricoTramitacao extends GenericModel {
 	@Column(name = "DT_CADASTRO")
 	public Date dataInicial;
 
-	@OneToOne(mappedBy = "historicoTramitacao", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "historicoTramitacao")
 //	@JoinTable(schema = "analise", name = "historico_tramitacao_setor",
 //			joinColumns = @JoinColumn(name = "id_historico_tramitacao"))
 	public RelHistoricoTramitacaoSetor relHistoricoTramitacaoSetor;
@@ -210,7 +210,7 @@ public class HistoricoTramitacao extends GenericModel {
 
 		if (usuarioExecutor.usuarioEntradaUnica.setorSelecionado != null) {
 
-			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND codigoSetor = :y")
+			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND siglaSetor = :y")
 					.setParameter("x", historicoTramitacao.idHistorico)
 					.setParameter("y", usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla).first();
 
