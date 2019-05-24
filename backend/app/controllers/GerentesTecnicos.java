@@ -16,8 +16,10 @@ public class GerentesTecnicos extends InternalController {
 	public static void vincularAnaliseGerenteTecnico(Long idUsuario, Long... idsProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
-		
-		UsuarioAnalise gerente = UsuarioAnalise.findById(idUsuario);
+
+		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
+
+		UsuarioAnalise gerente = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		

@@ -9,6 +9,7 @@ import play.cache.Cache;
 import play.mvc.Before;
 import security.*;
 import utils.Configuracoes;
+import utils.Helper;
 import utils.Mensagem;
 
 public class Login extends GenericController {
@@ -87,7 +88,7 @@ public class Login extends GenericController {
 
 		if (usuarioAnalise == null) {
 			usuarioAnalise = new UsuarioAnalise();
-			usuarioAnalise.login = usuario.login;
+			usuarioAnalise.login = Helper.desformatarCpfCnpj(usuario.login);
 			usuarioAnalise.save();
 		}
 

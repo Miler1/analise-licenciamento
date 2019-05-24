@@ -6,7 +6,7 @@ import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
 import java.io.Serializable;
 import java.util.List;
 
-public class Usuario implements Serializable {
+public class Usuario  extends main.java.br.ufla.lemaf.beans.pessoa.Usuario  implements Serializable{
     public Integer id;
     public String login;
     public String nome;

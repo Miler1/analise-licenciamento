@@ -150,5 +150,6 @@ OBSERVACAO_EXCLUIDA_SUCESSO=Observação removida com sucesso.
 IMOVEL_NAO_ENCONTRADO=Imóvel não encontrado.
 MUNICIPIO_INVALIDO_NAO_INFORMADO=Município não informado ou inválido.
 
-#Login
-PERFIL_NAO_VINCULADO_AO_USUARIO=Este perfil não está vinculado a este login no Entrada Única
+#Entrada Única
+PERFIL_NAO_VINCULADO_AO_USUARIO=Este perfil não está vinculado a este login no Entrada Única.
+ERRO_COMUNICACAO_ENTRADA_UNICA = Não foi possível efetuar a comunicação com o Entrada Única.

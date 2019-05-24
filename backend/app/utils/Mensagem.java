@@ -112,7 +112,10 @@ public enum Mensagem {
 
 	ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA,
 
-	PERFIL_NAO_VINCULADO_AO_USUARIO;
+	PERFIL_NAO_VINCULADO_AO_USUARIO,
+
+	//Entrada Única
+	ERRO_COMUNICACAO_ENTRADA_UNICA;
 
 	public String getTexto(Object ... args) {
 

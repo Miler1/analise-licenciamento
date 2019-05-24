@@ -6,7 +6,7 @@ import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import services.ExternalUsuarioService;
+import services.IntegracaoEntradaUnicaService;
 
 import javax.persistence.*;
 import java.util.List;
@@ -37,20 +37,35 @@ public class UsuarioAnalise extends GenericModel  {
 	@Transient
 	public Usuario usuarioEntradaUnica;
 
+	@Transient
+	public String nome;
+
+	public static UsuarioAnalise getUsuarioByLogin(String login) {
+
+		IntegracaoEntradaUnicaService integracaoEntradaUnica= new IntegracaoEntradaUnicaService();
+
+		return integracaoEntradaUnica.findUsuarioByLogin(login);
+	}
+
 	public static List<UsuarioAnalise> getUsuariosByPerfil(String codigoPerfil) {
 
-		return  ExternalUsuarioService.findUsuariosByPerfil(codigoPerfil);
+		IntegracaoEntradaUnicaService integracaoEntradaUnica= new IntegracaoEntradaUnicaService();
+
+		return integracaoEntradaUnica.findUsuariosByPerfil(codigoPerfil);
 	}
 	
 	public static List<UsuarioAnalise> getUsuariosByPerfilSetor(String codigoPerfil, String siglaSetor) {
 
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
-		return ExternalUsuarioService.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
+		return integracaoEntradaUnica.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
 	}
 	
 	public static List<UsuarioAnalise> getUsuariosByPerfilSetores(String codigoPerfil, List<String> siglasSetores) {
 
-		return ExternalUsuarioService.findUsuariosByPerfilAndSetores(codigoPerfil, siglasSetores);
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
+		return integracaoEntradaUnica.findUsuariosByPerfilAndSetores(codigoPerfil, siglasSetores);
 	}
 	
 	public boolean hasPerfil(String codigoPerfil){

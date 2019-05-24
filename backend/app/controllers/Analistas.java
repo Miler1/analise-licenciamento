@@ -2,13 +2,12 @@ package controllers;
 
 import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
+import models.UsuarioAnalise;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
-import models.UsuarioAnalise;
 import security.Acao;
 import serializers.UsuarioSerializer;
-import services.ExternalSetorService;
-import services.ExternalUsuarioService;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import java.util.List;
@@ -20,7 +19,10 @@ public class Analistas extends InternalController {
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 
 		//TODO ANALISAR - PH
-		UsuarioAnalise analista = UsuarioAnalise.findById(idUsuario);
+
+		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
+
+		UsuarioAnalise analista = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
@@ -68,19 +70,22 @@ public class Analistas extends InternalController {
 
 		UsuarioAnalise usuarioSessao = getUsuarioSessao();
 
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
 		List<String> siglasSetoresFilhos = null;
 		List<UsuarioAnalise> pessoas = null;
 		switch (usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) {
 
 		case CodigoPerfil.APROVADOR:
 
-			siglasSetoresFilhos = ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,2);
-			pessoas = ExternalUsuarioService.findUsuariosByPerfilAndSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
+			siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,2);
+			pessoas = integracaoEntradaUnica.findUsuariosByPerfilAndSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
+
 			break;
 
 		case CodigoPerfil.COORDENADOR_TECNICO:
 
-			siglasSetoresFilhos = ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1);
+			siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1);
 			pessoas = UsuarioAnalise.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
 			break;
 		/**
@@ -95,9 +100,12 @@ public class Analistas extends InternalController {
 	}
 
 	public void getSetorByNivel(int nivel){
+
 		String sigla = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla;
 
-		renderJSON(ExternalSetorService.getSiglasSetoresByNivel( sigla, 1));
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
+		renderJSON(integracaoEntradaUnica.getSiglasSetoresByNivel( sigla, 1));
 	}
 
 

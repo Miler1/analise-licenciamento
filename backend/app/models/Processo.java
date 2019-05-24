@@ -4,7 +4,6 @@ import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
-import models.EntradaUnica.Setor;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacao;
@@ -12,7 +11,7 @@ import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
-import services.ExternalSetorService;
+import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
@@ -161,7 +160,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 	                                                  UsuarioAnalise usuarioSessao) {
-		
+
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
 		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.APROVADOR)) {
 
 			return;
@@ -171,22 +172,22 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		if (filtro.siglaSetorCoordenadoria != null) {
 
-			 Setor setor = ExternalSetorService.findBySigla(filtro.siglaSetorCoordenadoria);
+			 br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(filtro.siglaSetorCoordenadoria);
 
 			if (setor != null) {
 
-				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 1));
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 1));
 			}
 		}
 		
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
 			filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
 
-			Setor setor = ExternalSetorService.findBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 			if (setor != null) {
 				
-				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 2));
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 2));
 			}
 		}		
 	}
@@ -220,6 +221,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 	                                                       UsuarioAnalise usuarioSessao) {
 		
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
 		if (!filtro.isAnaliseTecnica) {
 			
 			return;
@@ -260,14 +263,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
 
-			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
 
-			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {

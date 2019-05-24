@@ -1,12 +1,16 @@
 package security.cadastrounificado;
 
+import br.ufla.lemaf.beans.pessoa.Setor;
 import main.java.br.ufla.lemaf.beans.PessoaFiltroResult;
 import main.java.br.ufla.lemaf.beans.pessoa.FiltroPessoa;
 import main.java.br.ufla.lemaf.beans.pessoa.Pessoa;
+import main.java.br.ufla.lemaf.beans.pessoa.Usuario;
 import main.java.br.ufla.lemaf.services.CadastroUnificadoPessoaService;
+import models.UsuarioAnalise;
 import play.Logger;
 import utils.Configuracoes;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,24 +78,12 @@ public class CadastroUnificadoWS extends CadastroUnificadoPessoaService {
         super(clientId, clientSecret, urlPortal, urlCadastro);
     }
 
-    /**
-     * Retorna todos os usuários
-     * @return
-     */
-    public List<Pessoa> getUsuarios() {
-
-        return getUsuariosByPerfil(null);
-    }
 
     /**
-     * Retorna os usuários associados ao perfil
+     * Retorna as pessoas associados ao perfil
      * @return
      */
-    public List<Pessoa> getUsuariosByPerfil(String perfil) {
-
-        // Busca os usuários cadastrados e associados ao perfil informado
-        FiltroPessoa filtroPessoa = new FiltroPessoa();
-        filtroPessoa.nomePerfil = perfil;
+    public List<Pessoa> getPessoasByFiltro(FiltroPessoa filtroPessoa) {
 
         PessoaFiltroResult pessoasNoEntradaUnica = this.buscarPessoasComFiltro(filtroPessoa);
 
@@ -103,6 +95,55 @@ public class CadastroUnificadoWS extends CadastroUnificadoPessoaService {
         return null;
     }
 
+    /**
+     * Retorna os usuários associados ao perfil
+     * @return
+     */
+
+    public List<Usuario> getUsuariosByPerfil(String codigoPerfil) {
+
+        Usuario[] usuarios = this.findUsuariosByPerfil(codigoPerfil);
+
+        return Arrays.asList(usuarios);
+
+    }
+
+    /**
+     * Retorna os usuários associados ao perfil e setores
+     * @return
+     */
+    public List<Usuario> getUsuariosByPerfilAndSetores(String codigoPerfil, String siglaSetor) {
+
+        Usuario[] usuarios = this.findUsuariosByPerfilAndSetores(codigoPerfil, siglaSetor);
+
+        return Arrays.asList(usuarios);
+    }
+
+    /**
+     * Busca setor por sigla.
+     * @return
+     */
+    public Setor findBySigla(String siglaSetor) {
+
+        return  this.getSetorBySigla(siglaSetor);
+    }
+
+
+    /**
+     * Busca setor por sigla e nível.
+     * @return
+     */
+    public List<String> getSiglasSetoresByNivel(String siglaSetor, int nivel){
+
+        String [] siglas = this.getSiglaSetoresByNivel(siglaSetor, nivel);
+
+        return  Arrays.asList(siglas);
+    }
+
+    /**
+     * Busca pessoa por cpfCnpj.
+     * @return
+     */
     public Pessoa getPessoa(String cpfCnpj) {
 
         Pessoa pessoa = null;

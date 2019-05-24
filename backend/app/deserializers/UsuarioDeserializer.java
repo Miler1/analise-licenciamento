@@ -67,21 +67,20 @@ public class UsuarioDeserializer implements JsonDeserializer<List<UsuarioAnalise
 		return perfis;
 	}
 
-	private List<Setor> getSetores(JsonArray setoresJson){
+	private List<br.ufla.lemaf.beans.pessoa.Setor> getSetores(JsonArray setoresJson){
 
 		if(setoresJson == null){
 			return null;
 		}
 
-		List<Setor> setores = null;
+		List<br.ufla.lemaf.beans.pessoa.Setor> setores = null;
 
 		for (int perfilIndex = 0; perfilIndex < setoresJson.size(); perfilIndex++) {
 
-			Setor setor = new Setor();
+			br.ufla.lemaf.beans.pessoa.Setor setor = new br.ufla.lemaf.beans.pessoa.Setor();
 
 			JsonObject jsonObject = setoresJson.get(perfilIndex).getAsJsonObject();
 
-			setor.id = jsonObject.get("id") == null ? null : jsonObject.get("id").getAsInt();
 			setor.nome = jsonObject.get("nome") == null ? null : jsonObject.get("nome").getAsString();
 			setor.sigla = jsonObject.get("sigla") == null ? null : jsonObject.get("sigla").getAsString();;
 			setores.add(setor);

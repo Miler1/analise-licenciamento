@@ -14,8 +14,10 @@ public class Consultores extends InternalController {
 	public static void vincularAnaliseConsultorJuridico(Long idUsuario, Long... idsProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO);
-		
-		UsuarioAnalise consultor = UsuarioAnalise.findById(idUsuario);
+
+		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
+
+		UsuarioAnalise consultor = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		for(Long idProcesso : idsProcesso) {
@@ -32,7 +34,7 @@ public class Consultores extends InternalController {
 	
 	public static void getConsultoresJuridicos() {
 		
-		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO_JURIDICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO, Acao.VINCULAR_PROCESSO);
 		
 		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.CONSULTOR_JURIDICO);
 		

@@ -73,9 +73,9 @@ public class HistoricoTramitacao extends GenericModel {
 	@Column(name = "DT_CADASTRO")
 	public Date dataInicial;
 
-	@OneToOne
-	@JoinTable(schema = "analise", name = "historico_tramitacao_setor",
-			joinColumns = @JoinColumn(name = "id_historico_tramitacao"))
+	@OneToOne(mappedBy = "historicoTramitacao", cascade = CascadeType.ALL)
+//	@JoinTable(schema = "analise", name = "historico_tramitacao_setor",
+//			joinColumns = @JoinColumn(name = "id_historico_tramitacao"))
 	public RelHistoricoTramitacaoSetor relHistoricoTramitacaoSetor;
 
 	@Transient

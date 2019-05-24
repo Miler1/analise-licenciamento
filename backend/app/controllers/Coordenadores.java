@@ -27,10 +27,7 @@ public class Coordenadores extends InternalController {
 			TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 					TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 
-			Setor setor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado;
-			while(setor.setorPai != null && !setor.tipo.equals(TipoSetor.COORDENADORIA)) {
-				setor = setor.setorPai;
-			}
+			br.ufla.lemaf.beans.pessoa.Setor setor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado;
 
 			renderJSON(UsuarioAnalise.getUsuariosByPerfilSetor(codigoPerfil, setor.sigla),
 					UsuarioSerializer.getConsultoresAnalistasGerentes);
