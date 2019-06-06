@@ -5,7 +5,7 @@ import models.AnaliseTecnica;
 import models.AnalistaTecnico;
 import models.GerenteTecnico;
 import models.TipoResultadoAnalise;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
@@ -19,7 +19,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 	}
 
 	@Override
-	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioLicenciamento usuarioExecutor) {
+	protected void validaParecer(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica, UsuarioAnalise usuarioExecutor) {
 		
 		analiseTecnica.tipoResultadoValidacao = novaAnaliseTecnica.tipoResultadoValidacao;
 		analiseTecnica.parecerValidacao = novaAnaliseTecnica.parecerValidacao;		
@@ -46,7 +46,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		}
 	}
 
-	private void salvarNovaAnalise(AnaliseTecnica novaAnalise, AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioValidacao) {
+	private void salvarNovaAnalise(AnaliseTecnica novaAnalise, AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioValidacao) {
 			
 		novaAnalise.analise = analiseTecnica.analise;
 		novaAnalise.dataCadastro = analiseTecnica.dataCadastro;
@@ -58,7 +58,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		novaAnalise._save();
 	}
 	
-	private void criarNovaAnaliseComGerente(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioGerente, UsuarioLicenciamento usuarioValidacao) {
+	private void criarNovaAnaliseComGerente(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioGerente, UsuarioAnalise usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		
@@ -69,7 +69,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		salvarNovaAnalise(novaAnalise, analiseTecnica, usuarioValidacao);
 	}
 	
-	private void criarNovaAnaliseComAnalista(AnaliseTecnica analiseTecnica, UsuarioLicenciamento usuarioAnalista, UsuarioLicenciamento usuarioValidacao) {
+	private void criarNovaAnaliseComAnalista(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioAnalista, UsuarioAnalise usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		

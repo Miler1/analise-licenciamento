@@ -1,7 +1,7 @@
 package controllers;
 
 import models.Notificacao;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import play.Play;
 import play.libs.Crypto;
 import security.Auth;
@@ -17,7 +17,7 @@ public class Application extends GenericController {
 
 	public static void index() {
 
-		UsuarioLicenciamento usuarioSessao = Auth.getAuthenticatedUser(session.current());
+		UsuarioAnalise usuarioSessao = Auth.getAuthenticatedUser(session.current());
 		
 		if (usuarioSessao != null)
 			redirect(Configuracoes.INDEX_URL);
@@ -46,7 +46,7 @@ public class Application extends GenericController {
 	
 	public static class DadosApp {
 		
-		public UsuarioLicenciamento usuarioSessao;
+		public UsuarioAnalise usuarioSessao;
 		public ConfiguracoesApp configuracoes = new ConfiguracoesApp();
 	}
 	

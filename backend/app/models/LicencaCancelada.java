@@ -4,7 +4,6 @@ import exceptions.AppException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
@@ -34,7 +33,7 @@ public class LicencaCancelada extends GenericModel{
 	
 	@ManyToOne
 	@JoinColumn(name="id_usuario_executor")
-	public UsuarioLicenciamento usuario;
+	public UsuarioAnalise usuario;
 	
 	@Column(name="data_cancelamento")
 	public Date dataCancelada;
@@ -46,7 +45,7 @@ public class LicencaCancelada extends GenericModel{
 		
 	}
 	
-	public void cancelarLicenca(UsuarioLicenciamento usuarioExecutor) {
+	public void cancelarLicenca(UsuarioAnalise usuarioExecutor) {
 		
 		Calendar c = Calendar.getInstance();
 		Date dataAtual = c.getTime();

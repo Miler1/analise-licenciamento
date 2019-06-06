@@ -3,7 +3,6 @@ package models;
 import exceptions.PermissaoNegadaException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
-import models.portalSeguranca.UsuarioLicenciamento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -30,7 +29,7 @@ public class ConsultorJuridico extends GenericModel {
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
-	public UsuarioLicenciamento usuario;
+	public UsuarioAnalise usuario;
 	
 	@Required
 	@Column(name="data_vinculacao")
@@ -41,7 +40,7 @@ public class ConsultorJuridico extends GenericModel {
 		super();
 	}
 	
-	public ConsultorJuridico(AnaliseJuridica analiseJuridica, UsuarioLicenciamento usuario) {
+	public ConsultorJuridico(AnaliseJuridica analiseJuridica, UsuarioAnalise usuario) {
 		
 		super();
 		this.analiseJuridica = analiseJuridica;
@@ -50,7 +49,7 @@ public class ConsultorJuridico extends GenericModel {
 		
 	}
 	
-	public static void vincularAnalise(UsuarioLicenciamento usuario, AnaliseJuridica analiseJuridica, UsuarioLicenciamento usuarioExecutor) {
+	public static void vincularAnalise(UsuarioAnalise usuario, AnaliseJuridica analiseJuridica, UsuarioAnalise usuarioExecutor) {
 		
 		if (!usuario.hasPerfil(CodigoPerfil.CONSULTOR_JURIDICO))
 			throw new PermissaoNegadaException(Mensagem.CONSULTOR_DIFERENTE_DE_CONSULTOR_JURIDICO);

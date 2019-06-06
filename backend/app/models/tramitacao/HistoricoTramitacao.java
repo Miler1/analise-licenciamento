@@ -2,8 +2,8 @@ package models.tramitacao;
 
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
-import models.portalSeguranca.RelHistoricoTramitacaoSetor;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.RelHistoricoTramitacaoSetor;
+import models.UsuarioAnalise;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 
@@ -73,9 +73,9 @@ public class HistoricoTramitacao extends GenericModel {
 	@Column(name = "DT_CADASTRO")
 	public Date dataInicial;
 
-	@OneToOne
-	@JoinTable(schema = "portal_seguranca", name = "historico_tramitacao_setor",
-			joinColumns = @JoinColumn(name = "id_historico_tramitacao"))
+	@OneToOne(mappedBy = "historicoTramitacao")
+//	@JoinTable(schema = "analise", name = "historico_tramitacao_setor",
+//			joinColumns = @JoinColumn(name = "id_historico_tramitacao"))
 	public RelHistoricoTramitacaoSetor relHistoricoTramitacaoSetor;
 
 	@Transient
@@ -206,11 +206,11 @@ public class HistoricoTramitacao extends GenericModel {
 
 	}
 
-	public static void setSetor(HistoricoTramitacao historicoTramitacao, UsuarioLicenciamento usuarioExecutor) {
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, UsuarioAnalise usuarioExecutor) {
 
 		if (usuarioExecutor.usuarioEntradaUnica.setorSelecionado != null) {
 
-			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND codigoSetor = :y")
+			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND siglaSetor = :y")
 					.setParameter("x", historicoTramitacao.idHistorico)
 					.setParameter("y", usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla).first();
 

@@ -4,16 +4,14 @@ import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
-import models.EntradaUnica.Setor;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
-import services.ExternalSetorService;
+import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
@@ -113,7 +111,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		super.save();
 	}
 
-	public void vincularConsultor(UsuarioLicenciamento consultor, UsuarioLicenciamento usuarioExecutor) {
+	public void vincularConsultor(UsuarioAnalise consultor, UsuarioAnalise usuarioExecutor) {
 		
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
 		
@@ -122,7 +120,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 	
-	public void vincularAnalista(UsuarioLicenciamento analista, UsuarioLicenciamento usuarioExecutor, String justificativaCoordenador) {
+	public void vincularAnalista(UsuarioAnalise analista, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
 		
 		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
 		
@@ -131,7 +129,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 	
-	public void vincularGerenteTecnico(UsuarioLicenciamento gerente, UsuarioLicenciamento usuarioExecutor) {
+	public void vincularGerenteTecnico(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
 		
 		GerenteTecnico.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		
@@ -139,7 +137,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 	}	
 
-	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
+	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
 		
 		ProcessoBuilder processoBuilder = new ProcessoBuilder()
 			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
@@ -161,8 +159,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
-	                                                  UsuarioLicenciamento usuarioSessao) {
-		
+	                                                  UsuarioAnalise usuarioSessao) {
+
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
 		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.APROVADOR)) {
 
 			return;
@@ -172,22 +172,22 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		if (filtro.siglaSetorCoordenadoria != null) {
 
-			 Setor setor = ExternalSetorService.findBySigla(filtro.siglaSetorCoordenadoria);
+			 br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(filtro.siglaSetorCoordenadoria);
 
 			if (setor != null) {
 
-				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 1));
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 1));
 			}
 		}
 		
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
 			filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
 
-			Setor setor = ExternalSetorService.findBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 			if (setor != null) {
 				
-				processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(setor.sigla, 2));
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 2));
 			}
 		}		
 	}
@@ -219,8 +219,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 	
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
-	                                                       UsuarioLicenciamento usuarioSessao) {
+	                                                       UsuarioAnalise usuarioSessao) {
 		
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
 		if (!filtro.isAnaliseTecnica) {
 			
 			return;
@@ -261,14 +263,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
 
-			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
 
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
 
-			processoBuilder.filtrarPorSiglaSetores(ExternalSetorService.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
@@ -278,7 +280,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}		
 	}
 
-	public static List listWithFilter(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
+	public static List listWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
 				
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.comTiposLicencas()
@@ -338,7 +340,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.orderByDataVencimentoPrazoAnaliseTecnica();
 	}
 	
-	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioLicenciamento usuarioSessao) {
+	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioAnalise usuarioSessao) {
 		
 		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.APROVADOR)) {
 			
@@ -349,7 +351,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			.groupByDiasAprovador();
 	}
 
-	public static Long countWithFilter(FiltroProcesso filtro, UsuarioLicenciamento usuarioSessao) {
+	public static Long countWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
 		
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
 			.addPessoaEmpreendimentoAlias()

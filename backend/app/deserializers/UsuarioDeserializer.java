@@ -8,24 +8,24 @@ import com.google.gson.JsonObject;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Setor;
 import models.EntradaUnica.Usuario;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDeserializer implements JsonDeserializer<List<UsuarioLicenciamento>> {
+public class UsuarioDeserializer implements JsonDeserializer<List<UsuarioAnalise>> {
 
 	@Override
-	public List<UsuarioLicenciamento> deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
+	public List<UsuarioAnalise> deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
 
-		List<UsuarioLicenciamento> usuarios = new ArrayList<>();
+		List<UsuarioAnalise> usuarios = new ArrayList<>();
 
 		JsonArray usuariosJson = json.getAsJsonArray();
 
 		for (int i = 0; i < usuariosJson.size(); i++) {
 
-			UsuarioLicenciamento usuario = new UsuarioLicenciamento();
+			UsuarioAnalise usuario = new UsuarioAnalise();
 			usuario.usuarioEntradaUnica = new Usuario();
 
 			JsonObject jsonObject = usuariosJson.get(i).getAsJsonObject();
@@ -67,21 +67,20 @@ public class UsuarioDeserializer implements JsonDeserializer<List<UsuarioLicenci
 		return perfis;
 	}
 
-	private List<Setor> getSetores(JsonArray setoresJson){
+	private List<br.ufla.lemaf.beans.pessoa.Setor> getSetores(JsonArray setoresJson){
 
 		if(setoresJson == null){
 			return null;
 		}
 
-		List<Setor> setores = null;
+		List<br.ufla.lemaf.beans.pessoa.Setor> setores = null;
 
 		for (int perfilIndex = 0; perfilIndex < setoresJson.size(); perfilIndex++) {
 
-			Setor setor = new Setor();
+			br.ufla.lemaf.beans.pessoa.Setor setor = new br.ufla.lemaf.beans.pessoa.Setor();
 
 			JsonObject jsonObject = setoresJson.get(perfilIndex).getAsJsonObject();
 
-			setor.id = jsonObject.get("id") == null ? null : jsonObject.get("id").getAsInt();
 			setor.nome = jsonObject.get("nome") == null ? null : jsonObject.get("nome").getAsString();
 			setor.sigla = jsonObject.get("sigla") == null ? null : jsonObject.get("sigla").getAsString();;
 			setores.add(setor);
