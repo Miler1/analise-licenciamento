@@ -4,7 +4,7 @@ import br.ufla.lemaf.tramitacao.exception.TramitacaoException;
 import br.ufla.lemaf.tramitacao.service.TramitacaoService;
 import br.ufla.lemaf.tramitacao.vo.*;
 import exceptions.AppException;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import models.tramitacao.enums.FluxoTramitacao;
 import models.tramitacao.enums.TipoObjetoTramitavel;
 import play.Logger;
@@ -27,7 +27,7 @@ public class Tramitacao {
 	
 	/*Método que inicia o fluxo de tramitação recebendo o objeto tramitavel 
 	(Que implementa a interface Tramitavel e o usuario destino do objeto tramitavel) */
-	public void iniciar(Tramitavel objetoTramitavel, UsuarioLicenciamento usuarioDestino, Long[] fluxo) {
+	public void iniciar(Tramitavel objetoTramitavel, UsuarioAnalise usuarioDestino, Long[] fluxo) {
 		
 		if (objetoTramitavel == null)
 			throw new IllegalArgumentException(Mensagem.TRAMITACAO_OBJETO_TRAMITAVEL_OBRIGATORIO.getTexto());
@@ -65,7 +65,7 @@ public class Tramitacao {
 		}
 	
 	// Método que tramita recebendo o objeto tramitavel, ação da tramitação e o usuario que está realizando a tramitação
-	public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioLicenciamento usuarioExecutor) {
+	public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioAnalise usuarioExecutor) {
 		
 		List<Tramitavel> tramitaveis = new ArrayList<Tramitavel>();
 		tramitaveis.add(tramitavel);
@@ -74,7 +74,7 @@ public class Tramitacao {
 	}
 	
 	// Método que tramita recebendo o objeto tramitavel, ação da tramitação, o usuario que está realizando a tramitação e uma observação
-	public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioLicenciamento usuarioExecutor, String observacao) {
+	public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioAnalise usuarioExecutor, String observacao) {
 		
 		List<Tramitavel> tramitaveis = new ArrayList<Tramitavel>();
 		tramitaveis.add(tramitavel);
@@ -83,7 +83,7 @@ public class Tramitacao {
 	}
 	
 	// Método que tramita recebendo o objeto tramitavel, ação da tramitação, o usuario que está realizando a tramitação, o usuario para qual será tramitado o objeto e uma observação
-	public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioLicenciamento usuarioExecutor, UsuarioLicenciamento usuarioDestino, String observacao) {
+	public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioAnalise usuarioExecutor, UsuarioAnalise usuarioDestino, String observacao) {
 		
 		List<Tramitavel> tramitaveis = new ArrayList<Tramitavel>();
 		tramitaveis.add(tramitavel);
@@ -92,7 +92,7 @@ public class Tramitacao {
 	}
 	
 	// Método que tramita recebendo o objeto tramitavel, ação da tramitação, o usuario que está realizando a tramitação, o usuario para qual será tramitado o objeto e uma observação
-		public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioLicenciamento usuarioExecutor, UsuarioLicenciamento usuarioDestino) {
+		public void tramitar(Tramitavel tramitavel, Long idAcaoTramitacao, UsuarioAnalise usuarioExecutor, UsuarioAnalise usuarioDestino) {
 			
 			List<Tramitavel> tramitaveis = new ArrayList<Tramitavel>();
 			tramitaveis.add(tramitavel);
@@ -107,14 +107,14 @@ public class Tramitacao {
 	}
 	
 	// Método que tramita recebendo uma lista de objetos tramitaveis, ação da tramitação, o usuario que está realizando a tramitação e o usuario destino da tramitação
-	public void tramitar(List<? extends Tramitavel> tramitaveis, Long idAcaoTramitacao, UsuarioLicenciamento usuarioExecutor, UsuarioLicenciamento usuarioDestino) {
+	public void tramitar(List<? extends Tramitavel> tramitaveis, Long idAcaoTramitacao, UsuarioAnalise usuarioExecutor, UsuarioAnalise usuarioDestino) {
 		
 		this.tramitar(tramitaveis, idAcaoTramitacao, usuarioExecutor, usuarioDestino, null);
 	}
 	
 	/*Método que tramita recebendo uma lista de objetos tramitaveis, ação da tramitação, o usuario que está realizando a tramitação, o usuario destino da tramitação e uma observação
 	Esse método criar o objeto VO necessario para solicitar a tramitação*/
-	private void tramitar(List<? extends Tramitavel> tramitaveis, Long idAcaoTramitacao, UsuarioLicenciamento usuarioExecutor, UsuarioLicenciamento usuarioDestino, String observacao) {
+	private void tramitar(List<? extends Tramitavel> tramitaveis, Long idAcaoTramitacao, UsuarioAnalise usuarioExecutor, UsuarioAnalise usuarioDestino, String observacao) {
 
 		validateTramitar(tramitaveis, idAcaoTramitacao, usuarioExecutor);
 
@@ -156,7 +156,7 @@ public class Tramitacao {
 	}
 	
 	// Método que valida os parametros da tramitação
-	private void validateTramitar(List<? extends Tramitavel> tramitaveis, Long idAcaoTramitacao, UsuarioLicenciamento usuarioExecutor) {
+	private void validateTramitar(List<? extends Tramitavel> tramitaveis, Long idAcaoTramitacao, UsuarioAnalise usuarioExecutor) {
 
 		if (tramitaveis == null || tramitaveis.isEmpty())
 			throw new IllegalArgumentException(Mensagem.TRAMITACAO_OBJETO_OBRIGATORIO_TRAMITAR.getTexto());

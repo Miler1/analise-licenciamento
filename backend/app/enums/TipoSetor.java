@@ -1,4 +1,4 @@
-package models.portalSeguranca;
+package enums;
 
 public enum TipoSetor {
 	

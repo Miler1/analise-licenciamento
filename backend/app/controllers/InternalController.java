@@ -1,6 +1,6 @@
 package controllers;
 
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import play.mvc.Before;
 import play.mvc.Http;
 import security.Acao;
@@ -17,14 +17,14 @@ public class InternalController extends GenericController {
 	@Before
 	public static void verificarAutenticacao() {
 		
-		UsuarioLicenciamento usuario = Auth.getAuthenticatedUser(session.current());
+		UsuarioAnalise usuario = Auth.getAuthenticatedUser(session.current());
 		
 		if (usuario == null)
 			unauthorized();
 			
 	}
 	
-	protected static UsuarioLicenciamento getUsuarioSessao() {
+	protected static UsuarioAnalise getUsuarioSessao() {
 		
 		return Auth.getAuthenticatedUser(session.current());
 	}
@@ -39,7 +39,7 @@ public class InternalController extends GenericController {
 	
 	protected static void verificarPermissao(Acao ... acoes) {
 		
-		UsuarioLicenciamento usuario = getUsuarioSessao();
+		UsuarioAnalise usuario = getUsuarioSessao();
 		
 		boolean permitido = false;
 		

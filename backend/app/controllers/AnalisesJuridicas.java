@@ -1,7 +1,7 @@
 package controllers;
 
 import models.*;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.AnaliseDocumentoSerializer;
 import serializers.AnaliseJuridicaSerializer;
@@ -47,7 +47,7 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);				
@@ -60,7 +60,7 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAAlterar = AnaliseJuridica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
@@ -86,7 +86,7 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		analiseAvalidar.validaParecer(analise, usuarioExecutor);
 		
@@ -100,7 +100,7 @@ public class AnalisesJuridicas extends InternalController {
 		
 		AnaliseJuridica analiseAvalidar = AnaliseJuridica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		analiseAvalidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		

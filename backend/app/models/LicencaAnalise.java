@@ -6,7 +6,6 @@ import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
-import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
@@ -271,7 +270,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		}					
 	}
 	
-	public static void emitirLicencas(LicencaAnalise[] licencasAnalise, UsuarioLicenciamento usuarioExecutor) {
+	public static void emitirLicencas(LicencaAnalise[] licencasAnalise, UsuarioAnalise usuarioExecutor) {
 		
 		List<LicencaAnalise> licencaAnalisesCopia = new ArrayList<>();
 		List<Long> idsLicencas = new ArrayList<>();

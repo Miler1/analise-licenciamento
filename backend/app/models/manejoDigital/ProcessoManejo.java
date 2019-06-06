@@ -11,7 +11,7 @@ import exceptions.WebServiceException;
 import models.TipoDocumento;
 import models.manejoDigital.analise.analiseShape.*;
 import models.manejoDigital.analise.analiseTecnica.*;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import models.tramitacao.*;
 import org.apache.commons.io.IOUtils;
 import play.data.validation.Required;
@@ -126,7 +126,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.getAnaliseTecnica().dataAnalise = new Date();
         this.getAnaliseTecnica().diasAnalise = 0;
         this.getAnaliseTecnica().analistaTecnico = new AnalistaTecnicoManejo(processo.getAnaliseTecnica(),
-                (UsuarioLicenciamento) UsuarioLicenciamento.findById(Auth.getUsuarioSessao().id));
+                (UsuarioAnalise) UsuarioAnalise.findById(Auth.getUsuarioSessao().id));
         this.getAnaliseTecnica().processoManejo = this;
 
         this.getAnaliseTecnica()._save();
@@ -435,7 +435,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         return this.analisesTecnicaManejo.get(this.analisesTecnicaManejo.size() - 1);
     }
 
-    public void indeferir(ProcessoManejo processoManejo, UsuarioLicenciamento usuario) {
+    public void indeferir(ProcessoManejo processoManejo, UsuarioAnalise usuario) {
 
         if (!this.revisaoSolicitada) {
 

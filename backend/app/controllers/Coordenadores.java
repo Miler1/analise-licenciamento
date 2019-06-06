@@ -5,8 +5,8 @@ import models.EntradaUnica.Setor;
 import models.Processo;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
-import models.portalSeguranca.TipoSetor;
-import models.portalSeguranca.UsuarioLicenciamento;
+import enums.TipoSetor;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.UsuarioSerializer;
 
@@ -27,16 +27,13 @@ public class Coordenadores extends InternalController {
 			TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 					TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 
-			Setor setor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado;
-			while(setor.setorPai != null && !setor.tipo.equals(TipoSetor.COORDENADORIA)) {
-				setor = setor.setorPai;
-			}
+			br.ufla.lemaf.beans.pessoa.Setor setor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado;
 
-			renderJSON(UsuarioLicenciamento.getUsuariosByPerfilSetor(codigoPerfil, setor.sigla),
+			renderJSON(UsuarioAnalise.getUsuariosByPerfilSetor(codigoPerfil, setor.sigla),
 					UsuarioSerializer.getConsultoresAnalistasGerentes);
 		}
 		
-		renderJSON(UsuarioLicenciamento.getUsuariosByPerfil(codigoPerfil),
+		renderJSON(UsuarioAnalise.getUsuariosByPerfil(codigoPerfil),
 				UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 

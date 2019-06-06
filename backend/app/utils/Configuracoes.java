@@ -32,7 +32,7 @@ public class Configuracoes {
 	public static String ARQUIVOS_DOCUMENTOS_ANALISE_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.documentos.path", null);
 	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_LICENCIAMENTO_PATH + getConfig("arquivos.documentos.path", null);
 	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
-	public static String ESTADO = "PA";
+	public static String ESTADO = "AM";
 	public static String ARQUIVOS_SHAPE_MANEJO = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.shape.manejo", null);
 	public static String ARQUIVOS_IMOVEL_MANEJO = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.imovel.manejo", null);
 
@@ -92,6 +92,12 @@ public class Configuracoes {
 	public static String MANEJO_NIVEL_EXPLORACAO_ALTO = getConfig("manejo.nivel.exploracao.alto", null);
 	public static String MANEJO_NIVEL_EXPLORACAO_MEDIO = getConfig("manejo.nivel.exploracao.medio", null);
 	public static String MANEJO_NIVEL_EXPLORACAO_BAIXO = getConfig("manejo.nivel.exploracao.baixo", null);
+
+	// Integração com o Entrada Unica
+	public static final String ENTRADA_UNICA_CLIENTE_ID = Play.configuration.getProperty("entrada.unica.cliente.id");
+	public static final String ENTRADA_UNICA_CLIENTE_SECRET = Play.configuration.getProperty("entrada.unica.cliente.secret");
+	public static final String ENTRADA_UNICA_URL_PORTAL_SEGURANCA = Play.configuration.getProperty("entrada.unica.url.portal.seguranca");
+	public static final String ENTRADA_UNICA_URL_CADASTRO_UNIFICADO = Play.configuration.getProperty("entrada.unica.url.cadastro.unificado");
 
 	// Código
 

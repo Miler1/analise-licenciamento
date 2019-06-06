@@ -72,6 +72,7 @@ GET		/tipologias									Tipologias.list
 
 # Login
 GET		/authenticate								Login.login
+GET     /login/{sessionKeyEntradaUnica}   		    Login.showLoginEntradaUnica
 GET		/logout										Login.logout
 GET     /login/getAuthenticatedUser                 Login.getAuthenticatedUser
 

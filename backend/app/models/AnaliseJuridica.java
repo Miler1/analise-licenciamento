@@ -5,7 +5,6 @@ import models.licenciamento.Caracterizacao;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
-import models.portalSeguranca.UsuarioLicenciamento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.Analisavel;
@@ -89,7 +88,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-	public UsuarioLicenciamento usuarioValidacao;
+	public UsuarioAnalise usuarioValidacao;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_resultado_validacao_aprovador")
@@ -100,7 +99,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_usuario_validacao_aprovador", referencedColumnName = "id")
-	public UsuarioLicenciamento usuarioValidacaoAprovador;
+	public UsuarioAnalise usuarioValidacaoAprovador;
 
 	@Override
 	public AnaliseJuridica clone() throws CloneNotSupportedException {
@@ -224,7 +223,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		return super.save();
 	}
 	
-	public void iniciar(UsuarioLicenciamento usuarioExecutor) {
+	public void iniciar(UsuarioAnalise usuarioExecutor) {
 		
 		if(this.dataInicio == null) {
 			
@@ -281,7 +280,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		this._save();
 	}
 	
-	public void finalizar(AnaliseJuridica analise, UsuarioLicenciamento usuarioExecutor) {
+	public void finalizar(AnaliseJuridica analise, UsuarioAnalise usuarioExecutor) {
 					
 		this.update(analise);
 		
@@ -348,7 +347,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 				.fetch();
 	}
 	
-	public void validaParecer(AnaliseJuridica analiseJuridica, UsuarioLicenciamento usuarioExecultor) {
+	public void validaParecer(AnaliseJuridica analiseJuridica, UsuarioAnalise usuarioExecultor) {
 		
 		TipoResultadoAnaliseChain tiposResultadosAnalise = new ParecerValidado();
 		tiposResultadosAnalise.setNext(new SolicitarAjustes());
@@ -419,13 +418,13 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 			}
 		}
 		
-		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica, UsuarioLicenciamento usuarioExecutor) {
+		private void setAnaliseJuridica(AnaliseJuridica novaAnaliseJuridica, UsuarioAnalise usuarioExecutor) {
 			
 			tipoResultadoValidacao = novaAnaliseJuridica.tipoResultadoValidacao;
 			parecerValidacao = novaAnaliseJuridica.parecerValidacao;
 		}
 		
-		public void validarParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioLicenciamento usuarioExecutor) {
+		public void validarParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioAnalise usuarioExecutor) {
 			
 			if (novaAnaliseJuridica.tipoResultadoValidacao.id.equals(idResultadoAnalise)) {
 				
@@ -438,7 +437,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 			}
 		}
 		
-		protected abstract void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioLicenciamento usuarioExecutor);
+		protected abstract void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioAnalise usuarioExecutor);
 	}
 	
 	private class ParecerValidado extends AnaliseJuridica.TipoResultadoAnaliseChain {
@@ -448,7 +447,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		}
 
 		@Override
-		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioLicenciamento usuarioExecutor) {
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioAnalise usuarioExecutor) {
 			
 			validarTipoResultadoValidacao();
 			
@@ -504,7 +503,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		}	
 
 		@Override
-		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioLicenciamento usuarioExecutor) {
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioAnalise usuarioExecutor) {
 			
 			validarAnaliseJuridica();
 			
@@ -535,7 +534,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		}	
 
 		@Override
-		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioLicenciamento usuarioExecutor) {
+		protected void validaParecer(AnaliseJuridica novaAnaliseJuridica, UsuarioAnalise usuarioExecutor) {
 			
 			validarAnaliseJuridica(novaAnaliseJuridica);
 			
@@ -549,7 +548,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 
-		private void criarNovaAnalise(UsuarioLicenciamento usuarioConsultor, UsuarioLicenciamento usuarioValidacao) {
+		private void criarNovaAnalise(UsuarioAnalise usuarioConsultor, UsuarioAnalise usuarioValidacao) {
 			
 			AnaliseJuridica novaAnalise = new AnaliseJuridica();
 			
@@ -608,7 +607,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		}		
 	}
 	
-	public void validarParecerValidacaoAprovador(AnaliseJuridica analiseJuridica, UsuarioLicenciamento usuarioExecutor) {
+	public void validarParecerValidacaoAprovador(AnaliseJuridica analiseJuridica, UsuarioAnalise usuarioExecutor) {
 		
 		models.validacaoParecer.TipoResultadoAnaliseChain<AnaliseJuridica> tiposResultadosAnalise = new SolicitarAjustesJuridicoAprovador();	
 		tiposResultadosAnalise.validarParecer(this, analiseJuridica, usuarioExecutor);		

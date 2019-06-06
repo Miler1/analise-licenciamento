@@ -1,6 +1,6 @@
 package models.tramitacao;
 
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -23,7 +23,7 @@ public class ObjetoTramitavel extends GenericModel {
 
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "ID_USUARIO", referencedColumnName = "id")
-	public UsuarioLicenciamento usuarioResponsavel;
+	public UsuarioAnalise usuarioResponsavel;
 	
  	@ManyToOne
  	@JoinColumn(name = "ID_PAI", referencedColumnName = "ID_OBJETO_TRAMITAVEL")
@@ -37,13 +37,13 @@ public class ObjetoTramitavel extends GenericModel {
  	
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "ID_RESPONSAVEL_ANTERIOR", referencedColumnName = "id")
-	public UsuarioLicenciamento responsavelAnterior;
+	public UsuarioAnalise responsavelAnterior;
 	
  	@OneToMany
  	@JoinColumn(name = "ID_OBJETO_TRAMITAVEL", referencedColumnName = "ID_OBJETO_TRAMITAVEL")
 	public List<AcaoDisponivelObjetoTramitavel> acoesDisponiveis;
 	
-	public UsuarioLicenciamento getResponsavel() {
+	public UsuarioAnalise getResponsavel() {
 		return this.usuarioResponsavel;
 	}
 	

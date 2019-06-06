@@ -4,7 +4,7 @@ import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.UsuarioSerializer;
 import utils.Mensagem;
@@ -16,10 +16,12 @@ public class GerentesTecnicos extends InternalController {
 	public static void vincularAnaliseGerenteTecnico(Long idUsuario, Long... idsProcesso) {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
-		
-		UsuarioLicenciamento gerente = UsuarioLicenciamento.findById(idUsuario);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
+
+		UsuarioAnalise gerente = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
+
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		for(Long idProcesso : idsProcesso) {
 			
@@ -43,7 +45,7 @@ public class GerentesTecnicos extends InternalController {
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 		
-		List<UsuarioLicenciamento> consultores = UsuarioLicenciamento.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE_TECNICO, tipoAtividadeCaracterizacao.siglaSetor);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE_TECNICO, tipoAtividadeCaracterizacao.siglaSetor);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}	
@@ -52,7 +54,7 @@ public class GerentesTecnicos extends InternalController {
 		
 		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
 		
-		List<UsuarioLicenciamento> gerentes = UsuarioLicenciamento.getUsuariosByPerfil(CodigoPerfil.GERENTE_TECNICO);
+		List<UsuarioAnalise> gerentes = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.GERENTE_TECNICO);
 		
 		renderJSON(gerentes, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}

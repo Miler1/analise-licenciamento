@@ -1,9 +1,7 @@
 package security;
 
-import models.portalSeguranca.UsuarioLicenciamento;
-import play.mvc.Http;
+import models.EntradaUnica.Usuario;
 
 public interface AuthService {
-
-	UsuarioLicenciamento autenticar(Http.Request request);
+	Usuario usuarioLogadoBySessionKey(String sessionKey);
 }

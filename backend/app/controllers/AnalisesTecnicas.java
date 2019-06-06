@@ -5,7 +5,7 @@ import models.AnaliseTecnica;
 import models.Documento;
 import models.Notificacao;
 import models.geocalculo.Geoserver;
-import models.portalSeguranca.UsuarioLicenciamento;
+import models.UsuarioAnalise;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
@@ -23,7 +23,7 @@ public class AnalisesTecnicas extends InternalController {
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
@@ -37,7 +37,7 @@ public class AnalisesTecnicas extends InternalController {
 		
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		analiseAAlterar.finalizar(analise, usuarioExecutor);
 		
@@ -99,7 +99,7 @@ public class AnalisesTecnicas extends InternalController {
 		
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		analiseAValidar.validaParecer(analise, usuarioExecutor);
 		
@@ -112,7 +112,7 @@ public class AnalisesTecnicas extends InternalController {
 		
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		analiseAValidar.validaParecerGerente(analise, usuarioExecutor);
 		
@@ -125,7 +125,7 @@ public class AnalisesTecnicas extends InternalController {
 		
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 
-		UsuarioLicenciamento usuarioExecutor = getUsuarioSessao();
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		analiseAValidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 		
