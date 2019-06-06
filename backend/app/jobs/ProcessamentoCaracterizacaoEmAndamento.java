@@ -81,6 +81,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			} else {
 
+				//TODO RUNNERS-SQUAD-4 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
+
 				criarNovaAnaliseJuridica(analise);
 			}
 
