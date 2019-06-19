@@ -21,7 +21,7 @@ public class Application extends GenericController {
 		
 		if (usuarioSessao != null)
 			redirect(Configuracoes.INDEX_URL);
-		else
+			Auth.logout(session.current());
 			redirect(Configuracoes.LOGIN_URL);
 
 	}
@@ -30,7 +30,11 @@ public class Application extends GenericController {
 		
 		DadosApp dados = new DadosApp();
 		dados.usuarioSessao = Auth.getAuthenticatedUser(session.current());
-		
+
+		if (dados.usuarioSessao == null) {
+			redirect(Configuracoes.LOGIN_URL);
+		}
+
 		if(Play.mode == Play.Mode.DEV)
 			dados.usuarioSessao.usuarioEntradaUnica.autenticadoViaToken = true;
 		
