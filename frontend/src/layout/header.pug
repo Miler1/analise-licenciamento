@@ -6,7 +6,7 @@ header
 		ul.text-right
 			li
 				a.btn.btn-link(href="../logout")
-					span.glyphicon.glyphicon-off
+					span.glyphicon.glyphicon-off.custom-small-name
 					|  Sair
 
 
@@ -15,19 +15,20 @@ header
 			div.row
 				div.col-sm-6
 					a(href='#/', title='Ir à Página Inicial')
-						img.img-responsive(src='images/logo.png')
+						img.img-responsive.img-custom-align(src='images/logo.png')
 				div.col-sm-6
 
 					nav.navbar.navbar-right.navbar-inverse.navbar-global.hidden-xs(role='navigation')
 						ul.nav.navbar-nav
 							li.hidden-sm(style='margin-right: 16px;')
 								p.navbar-text.pull-right
-									small
+									small.custom-small-name
+										| Bem vindo(a), 
 										strong {{usuarioSessao.usuarioEntradaUnica.nome | textoTruncado : 25}} ({{usuarioSessao.usuarioEntradaUnica.perfilSelecionado.nome}}{{usuarioSessao.usuarioEntradaUnica.setorSelecionado ? ' - ' + usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla : '' }})
 							li.dropdown
 								li
 									a(href='../logout')
-										small
+										small.custom-small-name
 											span.glyphicon.glyphicon-off
 											|  Sair
 
@@ -39,7 +40,7 @@ header
 				li.dropdown
 					li
 						a(href='../logout')
-							small
+							small.custom-small-name
 								span.glyphicon.glyphicon-off
 								|  Sair
 
