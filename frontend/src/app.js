@@ -32,8 +32,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 					return "/aguardando-assinatura";
 
-				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR
-					|| LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ADMINISTRATIVO_JURIDICO) {
+				} else if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR ||
+					LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ADMINISTRATIVO_JURIDICO) {
 
 					return "/consultar-processo";
 
