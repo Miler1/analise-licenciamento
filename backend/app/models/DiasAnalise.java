@@ -24,7 +24,10 @@ public class DiasAnalise extends GenericModel{
 	
 	@Column(name="quantidade_dias_tecnica")
 	public Integer qtdeDiasTecnica;
-	
+
+	@Column(name="quantidade_dias_geo")
+	public Integer qtdeDiasGeo;
+
 	@Column(name="quantidade_dias_analise")
 	public Integer qtdeDiasAnalise;
 	
@@ -41,6 +44,7 @@ public class DiasAnalise extends GenericModel{
 			this.analise = analise;
 			this.qtdeDiasAnalise = 0;
 			this.qtdeDiasJuridica = 0;
+			this.qtdeDiasGeo = 0;
 		}
 		
 	}

@@ -3,7 +3,8 @@ package models.licenciamento;
 public enum TipoAnalise {
 	
 	JURIDICA(0,"JURIDICA"),
-	TECNICA(1,"TECNICA");
+	TECNICA(1,"TECNICA"),
+	GEO(3,"GEO");
 	
 	public int id;
 	public String nome;	
