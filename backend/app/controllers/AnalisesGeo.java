@@ -17,7 +17,7 @@ public class AnalisesGeo extends InternalController {
 
         verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
-        AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
+        AnaliseGeo analiseAAlterar = AnaliseGeo.findById(analise.id);
 
         UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
@@ -66,7 +66,7 @@ public class AnalisesGeo extends InternalController {
 
     public static void findById(Long idAnaliseGeo) {
 
-        verificarPermissao(Acao.VALIDAR_PARECER_GEO, Acao.INICIAR_PARECER_GEO);
+        verificarPermissao(Acao.VALIDAR_PARECER_GEO, Acao.INICIAR_PARECER_GEO, Acao.VALIDAR_PARECERES);
 
         AnaliseGeo analise = AnaliseGeo.findById(idAnaliseGeo);
 
@@ -117,7 +117,7 @@ public class AnalisesGeo extends InternalController {
 
     public static void validarParecerAprovador(AnaliseGeo analise) {
 
-        verificarPermissao(Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
+        verificarPermissao(Acao.VALIDAR_PARECERES);
 
         AnaliseGeo analiseAValidar = AnaliseGeo.findById(analise.id);
 

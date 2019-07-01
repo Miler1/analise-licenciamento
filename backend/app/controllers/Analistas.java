@@ -16,7 +16,7 @@ public class Analistas extends InternalController {
 
 	public static void vincularAnaliseAnalistaTecnico(Long idUsuario, String justificativaCoordenador, Long... idsProcesso) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO);
 
 		//TODO ANALISAR - PH
 
@@ -41,7 +41,7 @@ public class Analistas extends InternalController {
 
 	public static void vincularAnaliseAnalistaGeo(Long idUsuario, String justificativaCoordenador, Long... idsProcesso) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_GEO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO);
 
 		//TODO ANALISAR - PH
 
@@ -65,7 +65,7 @@ public class Analistas extends InternalController {
 
 	public static void getAnalistaTecnico(Long idProcesso) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO);
 
 		Processo processo = Processo.findById(idProcesso);
 
@@ -81,7 +81,7 @@ public class Analistas extends InternalController {
 
 	public static void getAnalistaTecnicoPerfil() {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.CONSULTAR_PROCESSO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO, Acao.CONSULTAR_PROCESSO);
 
 		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO);
 
@@ -90,9 +90,9 @@ public class Analistas extends InternalController {
 	}
 
 
-	public static void getAnalistaTecnico(Long idProcesso) {
+	public static void getAnalistaGeo(Long idProcesso) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_GEO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO);
 
 		Processo processo = Processo.findById(idProcesso);
 
@@ -106,9 +106,9 @@ public class Analistas extends InternalController {
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 
-	public static void getAnalistaTecnicoPerfil() {
+	public static void getAnalistaGeoPerfil() {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_GEO, Acao.CONSULTAR_PROCESSO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO, Acao.CONSULTAR_PROCESSO);
 
 		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.ANALISTA_GEO);
 
@@ -119,7 +119,7 @@ public class Analistas extends InternalController {
 
 	public static void getAnalistaTecnicoPerfilSetores(boolean isGerente) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO, Acao.VALIDAR_PARECERES);
 
 		UsuarioAnalise usuarioSessao = getUsuarioSessao();
 
@@ -152,9 +152,9 @@ public class Analistas extends InternalController {
 		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}
 
-	public static void getAnalistaTecnicoPerfilSetores(boolean isGerente) {
+	public static void getAnalistaGeoPerfilSetores(boolean isGerente) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO_GEO);
+		verificarPermissao(Acao.VINCULAR_PROCESSO);
 
 		UsuarioAnalise usuarioSessao = getUsuarioSessao();
 
