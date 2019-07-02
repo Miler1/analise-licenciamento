@@ -109,7 +109,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	public UsuarioAnalise usuarioValidacaoGerente;
  	
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
-	public List<GerenteTecnico> gerentesTecnicos;
+	public List<Gerente> gerentes;
 	
 	@Required
 	@Column(name="data_cadastro")
@@ -606,14 +606,14 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			copia.analistasTecnicos.add(copiaAnalistaTec);
 		}
 		
-		copia.gerentesTecnicos = new ArrayList<>();
+		copia.gerentes = new ArrayList<>();
 		
-		for (GerenteTecnico gerenteTecnico: this.gerentesTecnicos) {
+		for (Gerente gerente: this.gerentes) {
 			
-			GerenteTecnico copiaGerenteTec = gerenteTecnico.gerarCopia();
+			Gerente copiaGerenteTec = gerente.gerarCopia();
 			
 			copiaGerenteTec.analiseTecnica = copia;
-			copia.gerentesTecnicos.add(copiaGerenteTec);
+			copia.gerentes.add(copiaGerenteTec);
 		}		
 		
 		copia.licencasAnalise = new ArrayList<>();
@@ -656,12 +656,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	
 	public boolean hasGerentes() {
 		
-		return this.gerentesTecnicos != null && this.gerentesTecnicos.size() > 0;
+		return this.gerentes != null && this.gerentes.size() > 0;
 	}
 	
-	public GerenteTecnico getGerenteTecnico() {
+	public Gerente getGerente() {
 		
-		return this.gerentesTecnicos.get(0);
+		return this.gerentes.get(0);
 	}
 
 	public Documento gerarPDFParecer() throws Exception {

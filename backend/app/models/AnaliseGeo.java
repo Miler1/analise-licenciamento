@@ -109,7 +109,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public UsuarioAnalise usuarioValidacaoGerente;
 
     @OneToMany(mappedBy="analiseGeo", cascade=CascadeType.ALL)
-    public List<GerenteGeo> gerentesGeo;
+    public List<Gerente> gerentes;
 
     @Required
     @Column(name="data_cadastro")
@@ -486,7 +486,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         boolean todosDocumentosValidados = true;
         for(AnaliseDocumento analise : this.analisesDocumentos) {
 
-            if(analise.documento.tipo.tipoAnalise.equals(TipoAnalise.TECNICA)) {
+            if(analise.documento.tipo.tipoAnalise.equals(TipoAnalise.GEO)) {
 
                 if(analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
 
@@ -607,14 +607,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             copia.analistasGeo.add(copiaAnalistaGeo);
         }
 
-        copia.gerentesGeo = new ArrayList<>();
+        copia.gerentes = new ArrayList<>();
 
-        for (GerenteGeo gerenteGeo: this.gerentesGeo) {
+        for (Gerente gerente: this.gerentes) {
 
-            GerenteGeo copiaGerenteGeo = gerenteGeo.gerarCopia();
+            Gerente copiaGerenteGeo = gerente.gerarCopia();
 
             copiaGerenteGeo.analiseGeo= copia;
-            copia.gerentesGeo.add(copiaGerenteGeo);
+            copia.gerentes.add(copiaGerenteGeo);
         }
 
         copia.licencasAnalise = new ArrayList<>();
@@ -657,12 +657,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public boolean hasGerentes() {
 
-        return this.gerentesGeo != null && this.gerentesGeo.size() > 0;
+        return this.gerentes != null && this.gerentes.size() > 0;
     }
 
-    public GerenteGeo getGerenteGeo() {
+    public Gerente getGerente() {
 
-        return this.gerentesGeo.get(0);
+        return this.gerentes.get(0);
     }
 
     public Documento gerarPDFParecer() throws Exception {
