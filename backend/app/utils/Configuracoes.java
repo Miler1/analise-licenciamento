@@ -42,6 +42,7 @@ public class Configuracoes {
 
 	public static Integer PRAZO_ANALISE = getIntConfig("analise.prazo");
 	public static Integer PRAZO_ANALISE_JURIDICA = getIntConfig("analise.juridica.prazo");
+	public static Integer PRAZO_ANALISE_GEO = getIntConfig("analise.geo.prazo");
 	public static Integer PRAZO_ANALISE_TECNICA = getIntConfig("analise.tecnica.prazo");
 
 	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);

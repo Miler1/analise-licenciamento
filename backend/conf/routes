@@ -56,7 +56,19 @@ POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecer
 POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.downloadPDFParecer
 POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.downloadPDFNotificacao
 
+# Analise GEO
 
+GET		/analisesGeo/parecer							    AnalisesGeo.findByNumeroProcesso
+POST	/analisesGeo/iniciar 							    AnalisesGeo.iniciar
+POST	/analisesGeo									    AnalisesGeo.alterar
+POST	/analisesGeo/concluir							    AnalisesGeo.concluir
+GET		/analisesGeo/{idAnaliseTecnica}				        AnalisesGeo.findById
+GET		/analisesGeo/{idAnaliseTecnica}/restricoesGeo	    AnalisesGeo.getRestricoesGeo
+POST	/analisesGeo/validarParecer					        AnalisesGeo.validarParecer
+POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
+POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador
+POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
+POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
