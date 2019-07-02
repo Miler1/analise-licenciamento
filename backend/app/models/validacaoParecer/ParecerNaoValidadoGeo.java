@@ -28,14 +28,14 @@ public class ParecerNaoValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo>
 
         if (novaAnaliseGeo.hasGerentes()) {
 
-            criarNovaAnaliseComGerente(analiseGeo, novaAnaliseGeo.getGerenteGeo().usuario, usuarioExecutor);
+            criarNovaAnaliseComGerente(analiseGeo, novaAnaliseGeo.getGerente().usuario, usuarioExecutor);
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_PELO_COORD_ENCAMINHANDO_GERENTE, usuarioExecutor);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
         } else {
 
-            criarNovaAnaliseComAnalista(analiseGeo, novaAnaliseGeo.getAnalistaTecnico().usuario, usuarioExecutor);
+            criarNovaAnaliseComAnalista(analiseGeo, novaAnaliseGeo.getAnalistaGeo().usuario, usuarioExecutor);
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_TECNICO, usuarioExecutor);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -58,9 +58,9 @@ public class ParecerNaoValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo>
 
         AnaliseGeo novaAnalise = new AnaliseGeo();
 
-        novaAnalise.gerentesGeo = new ArrayList<>();
-        GerenteGeo gerenteGeo = new GerenteGeo(novaAnalise, usuarioGerente);
-        novaAnalise.gerentesGeo.add(gerenteGeo);
+        novaAnalise.gerentes = new ArrayList<>();
+        Gerente gerenteGeo = new Gerente(novaAnalise, usuarioGerente);
+        novaAnalise.gerentes.add(gerenteGeo);
 
         salvarNovaAnalise(novaAnalise, analiseGeo, usuarioValidacao);
     }
@@ -83,7 +83,7 @@ public class ParecerNaoValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo>
 
         analiseGeo.validarParecerValidacao();
 
-        if ((novaAnaliseGeo.gerentesGeo == null || novaAnaliseGeo.gerentesGeo.isEmpty()) &&
+        if ((novaAnaliseGeo.gerentes == null || novaAnaliseGeo.gerentes.isEmpty()) &&
                 (novaAnaliseGeo.analistasGeo == null || novaAnaliseGeo.analistasGeo.isEmpty())) {
 
             throw new ValidacaoException(Mensagem.ANALISE_GEO_GERENTE_ANALISTA_NAO_INFORMADO);

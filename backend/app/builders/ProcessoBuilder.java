@@ -31,7 +31,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ANALISTA_TECNICO_ALIAS = "att";
 	private static final String ATIVIDADE_CNAE_ALIAS = "atvc";
 	private static final String TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS = "tca";
-	private static final String GERENTE_TECNICO_ALIAS = "gte";
+	private static final String GERENTE_ALIAS = "gte";
 	private static final String DIA_ANALISE_ALIAS = "da";
 	
 	public ProcessoBuilder addEmpreendimentoAlias() {
@@ -196,11 +196,11 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 	
-	public ProcessoBuilder addGerenteTecnicoAlias() {
+	public ProcessoBuilder addGerenteAlias() {
 		
 		addAnaliseTecnicaAlias(false);
 			
-		addAlias(ANALISE_TECNICA_ALIAS+".gerentesTecnicos", GERENTE_TECNICO_ALIAS);
+		addAlias(ANALISE_TECNICA_ALIAS+".gerentes", GERENTE_ALIAS);
 		
 		return this;
 	}	
@@ -563,12 +563,12 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}		
 	
-	public ProcessoBuilder filtrarPorIdGerenteTecnico(Long idGerenteTecnico) {
+	public ProcessoBuilder filtrarPorIdGerente(Long idGerente) {
 		
-		if (idGerenteTecnico != null) {
+		if (idGerente != null) {
 			
-			addGerenteTecnicoAlias();			
-			addRestriction(Restrictions.eq(GERENTE_TECNICO_ALIAS+".usuario.id", idGerenteTecnico));
+			addGerenteAlias();
+			addRestriction(Restrictions.eq(GERENTE_ALIAS+".usuario.id", idGerente));
 		}
 		
 		return this;		
