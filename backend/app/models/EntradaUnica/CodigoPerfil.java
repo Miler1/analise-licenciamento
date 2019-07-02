@@ -2,7 +2,7 @@ package models.EntradaUnica;
 
 public class CodigoPerfil {
 
-    public static final String ANALISTA_GCAR= "ANALISTA_GCAR";
+    public static final String ANALISTA_CAR= "ANALISTA_CAR";
     public static final String ANALISTA_GEO = "ANALISTA_GEO";
     public static final String ANALISTA_TECNICO = "ANALISTA_TECNICO";
     public static final String DIRETOR = "DIRETOR";
