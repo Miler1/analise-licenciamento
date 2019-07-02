@@ -269,19 +269,19 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 pareceresGeoRestricoesIterator.remove();
             }
         }
-//FIM
+
         for (ParecerGeoRestricao novoParecerGeoRestricao : pareceresSalvar) {
 
             ParecerGeoRestricao parecerGeoRestricao = ListUtil.getById(novoParecerGeoRestricao.id, this.pareceresGeoRestricoes);
 
-            if (parecerGeoRestricao == null) { // novo parecer técnico restrição
+            if (parecerGeoRestricao == null) { // novo parecer geo restrição
 
                 novoParecerGeoRestricao.analiseGeo = this;
                 novoParecerGeoRestricao.save();
 
                 this.pareceresGeoRestricoes.add(novoParecerGeoRestricao);
 
-            } else { // parecer técnico já existente
+            } else { // parecer geo já existente
 
                 parecerGeoRestricao.update(novoParecerGeoRestricao);
             }

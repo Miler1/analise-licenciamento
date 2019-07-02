@@ -324,13 +324,7 @@ public class Notificacao extends GenericModel {
 					.setParameter("idAnaliseTecnica", analise.getAnaliseTecnica().id)
 					.fetch();
 			
-		} else if (analise.getAnaliseTecnica() != null){
-			
-			notificacoes = Notificacao.find("analiseJuridica.id = :idAnaliseJuridica AND ativo = true")
-					.setParameter("idAnaliseJuridica", analise.getAnaliseJuridica().id)
-					.fetch();
-			
-		}else {
+		} else{
 			notificacoes = Notificacao.find("analiseGeo.id = :idAnaliseGeo AND ativo = true")
 					.setParameter("idAnaliseGeo", analise.getAnaliseGeo().id)
 					.fetch();
@@ -390,16 +384,12 @@ public class Notificacao extends GenericModel {
 				.addParam("qrcodeLink", url)
 				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
 
-		if (this.analiseJuridica != null) {
-
-			pdf.addParam("analiseEspecifica", this.analiseJuridica);
-			pdf.addParam("analiseArea", "ANALISE_JURIDICA");
-
-		} else if (analiseTecnica != null) {
+		if (this.analiseTecnica != null) {
 
 			pdf.addParam("analiseEspecifica", this.analiseTecnica);
 			pdf.addParam("analiseArea", "ANALISE_TECNICA");
-		}else {
+
+		} else{
 			pdf.addParam("analiseEspecifica", this.analiseGeo);
 			pdf.addParam("analiseArea", "ANALISE_GEO");
 		}
