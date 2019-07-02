@@ -37,9 +37,9 @@ public class AtividadeCaracterizacao extends GenericModel {
 	@JoinColumn(name="id_porte_empreendimento")
 	public PorteEmpreendimento porteEmpreendimento;
 
-	@Column(name = "valor_parametro")
-	public Double valorParametro;
-	
+	@OneToMany(mappedBy = "atividadeCaracterizacao", cascade = CascadeType.ALL)
+	public List<AtividadeCaracterizacaoParametros> atividadeCaracterizacaoParametros;
+
 	public static AtividadeCaracterizacao getAtividadeCaracterizacaoWithMaiorPotencialPoluidor(List<AtividadeCaracterizacao> atividadesCaracterizacao) {
 		
 		PotencialPoluidor potencialPoluidor = atividadesCaracterizacao.get(0).atividade.potencialPoluidor;

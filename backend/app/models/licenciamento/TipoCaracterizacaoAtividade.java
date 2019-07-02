@@ -40,10 +40,6 @@ public class TipoCaracterizacaoAtividade extends GenericModel {
 	@Column(name = "licenciamento_declaratorio")
 	public Boolean licenciamentoDeclatorio;
 
-	@Column(name="sigla_setor")
-	public String siglaSetor;
-	
-	
 	/*
 	 * Retorna todas as atividades baseadas no tipo de licencimento dispensa ou simplificado
 	 */

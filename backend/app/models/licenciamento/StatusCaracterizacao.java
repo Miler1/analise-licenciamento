@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(schema = "licenciamento", name = "status_caracterizacao")
 public class StatusCaracterizacao extends GenericModel {
 
-	public static final Long FINALIZADO = 1l;
+	public static final Long DEFERIDO = 1l;
 	public static final Long EM_ANDAMENTO = 2l;
 	public static final Long AGUARDANDO_EMISSAO_DAE = 3l;
 	public static final Long AGUARDANDO_QUITACAO_DAE = 4l;
@@ -19,6 +19,11 @@ public class StatusCaracterizacao extends GenericModel {
 	public static final Long SUSPENSO = 7l;
 	public static final Long CANCELADO = 8l;
 	public static final Long NOTIFICADO = 9l;
+	public static final Long EM_RENOVACAO_SEM_ALTERACAO = 10l;
+	public static final Long EM_RENOVACAO_COM_ALTERACAO = 11l;
+	public static final Long EXPIRADA = 12L;
+	public static final Long VENCIDO_AGUARDANDO_PAGAMENTO = 13L;
+	public static final Long VENCIDO_AGUARDANDO_EMISSAO = 14L;
 	
 	@Id
 	public Long id;

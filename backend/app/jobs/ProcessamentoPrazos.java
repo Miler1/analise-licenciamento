@@ -219,7 +219,7 @@ public class ProcessamentoPrazos extends GenericJob {
 							}
 						}
 
-						Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.FINALIZADO);
+						Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.DEFERIDO);
 						Caracterizacao.setCaracterizacaoEmAnalise(idsCaracterizacoes, false);
 						Caracterizacao.setCaracterizacaoEmRenovacao(idsCaracterizacoes, false);
 

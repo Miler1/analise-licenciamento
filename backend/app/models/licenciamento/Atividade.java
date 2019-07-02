@@ -48,10 +48,12 @@ public class Atividade extends GenericModel {
 	
 	@Column(name = "limite_superior_simplificado")
 	public Double limiteSuperiorLicenciamentoSimplificado;
-	
-	@ManyToOne
-	@JoinColumn(name="id_parametro")
-	public ParametroAtividade parametro;
+
+	@ManyToMany
+	@JoinTable(schema = "licenciamento", name = "rel_atividade_parametro_atividade",
+			joinColumns = @JoinColumn(name = "id_atividade"),
+			inverseJoinColumns = @JoinColumn(name = "id_parametro_atividade"))
+	public List<ParametroAtividade> parametros;
 
 	@ManyToOne
 	@JoinColumn(name="id_potencial_poluidor")
@@ -65,13 +67,16 @@ public class Atividade extends GenericModel {
 	
 	@OneToMany(mappedBy="atividade")
 	public List<TipoCaracterizacaoAtividade> tiposCaracterizacoesAtividade;
-	
+
+	@Column(name = "sigla_setor")
+	public String siglaSetor;
+
 	@Transient
 	public List<AtividadeCnae> atividadesCnae;
 	
 	public static List<Atividade> listAtividadesSimplificado() {
 		
-		List<Atividade> atividades = 
+		List<Atividade> atividades =
 				Atividade.find("SELECT a FROM atividade a JOIN a.tiposCaracterizacoesAtividade t WHERE t.licenciamentoSimplificado = TRUE").fetch();
 		
 		return atividades;
