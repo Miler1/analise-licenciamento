@@ -44,14 +44,12 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 							// se o aprovador já finalizou a analise
 							
 							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFimValidacaoAprovador);
-							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.findPrimeiraAnaliseJuridicaComDataFim().dataFim);
 							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim);
 							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim, analise.analiseTecnica.dataFimValidacaoAprovador);
 							
 						} else {
 							
 							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.findPrimeiraAnaliseJuridicaComDataFim().dataFim);
 							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim);
 							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim, new Date());
 							
@@ -61,35 +59,38 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 					// se a analise tecnica nao acabou
 
 						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-						diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);							
 						diasAnalise.qtdeDiasTecnica= CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
-
 					}
 
-				} else {
-				// se nao existe analise tecnica 
-
-					if(analise.getAnaliseJuridica() != null) {
-					// se existe analise juridica
+				} else if(analise.getAnaliseGeo() != null) {
+					// se existe analise geo
 						
-						if(analise.analiseJuridica.dataFim != null) {
-						// se a analise juridica acabou
+						if(analise.analiseGeo.dataFim != null) {
+						// se a analise geo acabou
 
-							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, analise.analiseJuridica.dataFim);
-							
-	
+							if(analise.analiseGeo.dataFimValidacaoAprovador != null) {
+								// se o aprovador já finalizou a analise
+
+								diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseGeo.dataFimValidacaoAprovador);
+								diasAnalise.qtdeDiasGeo = CalculaDiferencaDias(analise.analiseGeo.dataCadastro, analise.findPrimeiraAnaliseGeoComDataFim().dataFim);
+								diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseGeoComDataFim().dataFim, analise.analiseGeo.dataFimValidacaoAprovador);
+
+							} else {
+
+								diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+								diasAnalise.qtdeDiasGeo = CalculaDiferencaDias(analise.analiseGeo.dataCadastro, analise.findPrimeiraAnaliseGeoComDataFim().dataFim);
+								diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseGeoComDataFim().dataFim, new Date());
+
+							}
+
 						} else {
-						// se a analise juridica nao acabou
+							// se a analise geo nao acabou
 
-							diasAnalise.qtdeDiasJuridica = CalculaDiferencaDias(analise.dataCadastro, new Date());
+							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+							diasAnalise.qtdeDiasGeo= CalculaDiferencaDias(analise.analiseGeo.dataCadastro, new Date());
 
 						}
-
-						diasAnalise.qtdeDiasAnalise = diasAnalise.qtdeDiasJuridica;
-				
 					}
-
-				}
 
 				diasAnalise.analise = analise;
 				diasAnalise._save();
