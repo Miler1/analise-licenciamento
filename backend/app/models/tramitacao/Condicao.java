@@ -28,6 +28,10 @@ public class Condicao extends GenericModel {
 	public static final Long LICENCA_EMITIDA = 14l;
 	public static final Long SUSPENSO = 15l;
 	public static final Long CANCELADO = 16l;
+	public static final Long AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE = 24l;
+	public static final Long AGUARDANDO_ANALISE_GEO = 25l;
+	public static final Long EM_ANALISE_GEO = 26l;
+	public static final Long AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE = 27l;
 	
 	@Id
 	@Column(name = "ID_CONDICAO")
