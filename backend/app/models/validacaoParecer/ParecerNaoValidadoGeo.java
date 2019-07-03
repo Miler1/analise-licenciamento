@@ -30,14 +30,14 @@ public class ParecerNaoValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo>
 
             criarNovaAnaliseComGerente(analiseGeo, novaAnaliseGeo.getGerente().usuario, usuarioExecutor);
 
-            analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_PELO_COORD_ENCAMINHANDO_GERENTE, usuarioExecutor);
+            analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_PELO_GERENTE, usuarioExecutor);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
         } else {
 
             criarNovaAnaliseComAnalista(analiseGeo, novaAnaliseGeo.getAnalistaGeo().usuario, usuarioExecutor);
 
-            analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_TECNICO, usuarioExecutor);
+            analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, usuarioExecutor);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
         }
     }

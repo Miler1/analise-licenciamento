@@ -1,15 +1,15 @@
 var AnaliseGeoService = function(request, config) {
 
-	this.getRestricoesGeo = function(idAnaliseTecnica) {
+	this.getRestricoesGeo = function(idAnaliseGeo) {
 
 		return request
-                	.get(config.BASE_URL() + 'analisesTecnicas/' + idAnaliseTecnica + '/restricoesGeo');
+                	.get(config.BASE_URL() + 'analisesGeo/' + idAnaliseGeo + '/restricoesGeo');
 	};
 
 	this.iniciar = function(analise) {
 
 		return request
-                	.post(config.BASE_URL() + 'analisesTecnicas/iniciar', analise);
+                	.post(config.BASE_URL() + 'analisesGeo/iniciar', analise);
 	};	
 
 	this.getAnaliseGeo = function(idAnaliseGeo) {
@@ -21,37 +21,37 @@ var AnaliseGeoService = function(request, config) {
 	this.getParecerByNumeroProcesso = function(numeroProcesso) {
 
 		return request
-                .get(config.BASE_URL() + 'analisesTecnicas/parecer?numeroProcesso=' + numeroProcesso);
+                .get(config.BASE_URL() + 'analisesGeo/parecer?numeroProcesso=' + numeroProcesso);
 	};	
 
 	this.salvar = function(analise) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesTecnicas', analise);
+				.post(config.BASE_URL() + 'analisesGeo', analise);
 	};
 
 	this.concluir = function(analise) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesTecnicas/concluir', analise);
+				.post(config.BASE_URL() + 'analisesGeo/concluir', analise);
 	};	
 
 	this.validarParecer = function(analise) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesTecnicas/validarParecer', analise);
+				.post(config.BASE_URL() + 'analisesGeo/validarParecer', analise);
 	};
 
 	this.validarParecerGerente = function(analise) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesTecnicas/validarParecerGerente', analise);
+				.post(config.BASE_URL() + 'analisesGeo/validarParecerGerente', analise);
     };
 
     this.solicitarAjusteAprovador = function(analise) {
 
         return request
-            .post(config.BASE_URL() + 'analisesTecnicas/validarParecerAprovador', analise);
+            .post(config.BASE_URL() + 'analisesGeo/validarParecerAprovador', analise);
     };
 };
 

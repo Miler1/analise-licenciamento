@@ -54,18 +54,6 @@ public class AnalistaGeo extends GenericModel {
         if (!usuario.hasPerfil(CodigoPerfil.ANALISTA_GEO))
             throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_GEO);
 
-        /**
-         * A justificativa é somente obrigatória para o coordenador que vincula uma analista geo
-         */
-        if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.COORDENADOR_GEO)) {
-
-            if (justificativaCoordenador == null || justificativaCoordenador.isEmpty()){
-                throw new ValidacaoException(Mensagem.ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA);
-            }
-
-            analiseGeo.justificativaCoordenador = justificativaCoordenador;
-        }
-
         AnalistaGeo analistaGeo = new AnalistaGeo(analiseGeo, usuario);
         analistaGeo.save();
 
@@ -73,7 +61,7 @@ public class AnalistaGeo extends GenericModel {
          * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
          * caso contrário atribui o usuário executor para o campo do coordenador.
          */
-        if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE_GEO)){
+        if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
 
             analiseGeo.usuarioValidacaoGerente = usuarioExecutor;
 

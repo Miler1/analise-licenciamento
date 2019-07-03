@@ -9,6 +9,7 @@ var FiltroProcessos = {
 		pesquisarAoInicializar: '<',
 		isAnaliseJuridica: '<',
 		isAnaliseTecnica: '<',
+		isAnaliseGeo: '<',
 		isAnaliseTecnicaOpcional: '<',
 		onAfterUpdate: '=',
 		isGerenteLogado: '<',
