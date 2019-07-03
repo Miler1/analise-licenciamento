@@ -460,7 +460,8 @@ utils.services(licenciamento)
 	.add('tipologiaManejoService', services.TipologiaManejoService)
 	.add('atividadeManejoService', services.AtividadeManejoService)
 	.add('tipoLicencaManejoService', services.TipoLicencaManejoService)
-	.add('documentoShapeService', services.DocumentoShapeService);
+	.add('documentoShapeService', services.DocumentoShapeService)
+	.add('validacaoShapeService', services.ValidacaoShapeService);
 
 
 utils.filters(licenciamento)
@@ -476,7 +477,8 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController)
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
-	.controller('legislacaoController', controllers.LegislacaoController);
+	.controller('legislacaoController', controllers.LegislacaoController)
+	.controller('validacaoShapeController', controllers.ValidacaoShapeController);
 
 
 licenciamento
