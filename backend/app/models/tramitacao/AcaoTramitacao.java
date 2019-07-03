@@ -70,5 +70,6 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long VALIDAR_DEFERIMENTO_GEO_PELO_GERENTE =59l;
 	public static final Long SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE = 60l;
 	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_APROVADOR = 61l;
+
 }
 

@@ -31,7 +31,6 @@ public enum Acao {
 	CADASTRAR_PROCESSO_MANEJO("ANL_CADASTRAR_PROCESSO_MANEJO"),
 	VINCULAR_PROCESSO_TECNICO("ANL_VINCULAR_PROCESSO_TECNICO");
 
-
 	public String codigo;
 
 	private Acao(String codigo) {

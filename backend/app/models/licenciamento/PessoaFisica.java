@@ -43,9 +43,8 @@ public class PessoaFisica extends Pessoa {
 	@ManyToOne
 	@JoinColumn(name="id_estado_civil", referencedColumnName="id")
 	public EstadoCivil estadoCivil;
-	
-	@Required
-	@ManyToOne
-	@JoinColumn(name="id_municipio_nascimento", referencedColumnName="id_municipio")
-	public Municipio municipioNascimento;
+
+	@Column
+	public String naturalidade;
+
 }

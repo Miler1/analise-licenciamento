@@ -3,6 +3,7 @@ package models.licenciamento;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
+import utils.PessoaUtils;
 import utils.PessoaUtils.IPessoaFisica;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(schema = "licenciamento", name = "responsavel_empreendimento")
-public class ResponsavelEmpreendimento extends GenericModel implements IPessoaFisica {
+public class ResponsavelEmpreendimento extends GenericModel implements PessoaUtils.IPessoa {
 
 	private static final String SEQ = "licenciamento.responsavel_empreendimento_id_seq";
 	
@@ -21,8 +22,8 @@ public class ResponsavelEmpreendimento extends GenericModel implements IPessoaFi
 	
 	@Required
 	@OneToOne
-	@JoinColumn(name = "id_pessoa_fisica", referencedColumnName = "id_pessoa")
-	public PessoaFisica pessoa;
+	@JoinColumn(name = "id_pessoa", referencedColumnName = "id")
+	public Pessoa pessoa;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_empreendimento", referencedColumnName = "id", nullable = false)
@@ -53,8 +54,8 @@ public class ResponsavelEmpreendimento extends GenericModel implements IPessoaFi
 	
 	@Column(name = "numero_credenciamento")
 	public String numeroCredenciamento;
-	
-	
+
+
 	@ManyToMany
 	@JoinTable(schema = "licenciamento", name = "documento_responsavel_empreendimento",
 			joinColumns = @JoinColumn(name = "id_responsavel_empreendimento"),
@@ -63,7 +64,7 @@ public class ResponsavelEmpreendimento extends GenericModel implements IPessoaFi
 
 
 	@Override
-	public PessoaFisica getPessoa() {
+	public Pessoa getPessoa() {
 		return this.pessoa;
 	}
 }

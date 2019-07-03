@@ -1,6 +1,7 @@
 package models.licenciamento;
 
 import play.db.jpa.GenericModel;
+import utils.PessoaUtils;
 import utils.PessoaUtils.IPessoaFisica;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(schema = "licenciamento", name = "representante_legal")
-public class RepresentanteLegal extends GenericModel implements IPessoaFisica {
+public class RepresentanteLegal extends GenericModel implements PessoaUtils.IPessoa {
 
 	private static final String SEQ = "licenciamento.representante_legal_id_seq";
 	
@@ -22,10 +23,10 @@ public class RepresentanteLegal extends GenericModel implements IPessoaFisica {
 	
 	@OneToOne
 	@JoinColumn(name = "id_pessoa")
-	public PessoaFisica pessoa;
+	public Pessoa pessoa;
 
 	@Override
-	public PessoaFisica getPessoa() {
+	public Pessoa getPessoa() {
 		
 		return this.pessoa;
 	}
