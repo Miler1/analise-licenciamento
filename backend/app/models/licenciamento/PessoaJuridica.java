@@ -36,7 +36,4 @@ public class PessoaJuridica extends Pessoa {
 	
 	@Column(name = "inscricao_estadual")
 	public String inscricaoEstadual;
-	
-	@Required
-	public boolean isento;
 }

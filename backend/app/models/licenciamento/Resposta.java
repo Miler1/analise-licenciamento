@@ -14,6 +14,8 @@ public class Resposta extends GenericModel implements Identificavel {
 
 	public String texto;
 
+	public String codigo;
+
 	@Column(name="permite_licenciamento")
 	public Boolean permiteLicenciamento;
 	

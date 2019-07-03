@@ -303,7 +303,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			webService.gerarPDFLicencas(idsLicencas);
 			
 			if(!idsCaracterizacoesDeferidas.isEmpty()) {
-				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
+				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.DEFERIDO);
 				Caracterizacao.setCaracterizacaoEmAnalise(idsCaracterizacoesDeferidas, false);
 				Caracterizacao.setCaracterizacaoEmRenovacao(idsCaracterizacoesDeferidas, false);
 			}
