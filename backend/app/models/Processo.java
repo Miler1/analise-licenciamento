@@ -183,7 +183,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null &&
-				filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA)){
+				filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
 
 			br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
