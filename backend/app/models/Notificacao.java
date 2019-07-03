@@ -5,6 +5,7 @@ import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoDocumentoLicenciamento;
 import models.pdf.PDFGenerator;
+import models.AnaliseGeo;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
@@ -32,6 +33,10 @@ public class Notificacao extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_analise_tecnica", nullable=true)
 	public AnaliseTecnica analiseTecnica;
+
+	@ManyToOne
+	@JoinColumn(name="id_analise_geo", nullable=true)
+	public AnaliseGeo analiseGeo;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
@@ -192,6 +197,88 @@ public class Notificacao extends GenericModel {
 		
 	}
 
+	public static void criarNotificacoesAnaliseGeo(AnaliseGeo analiseGeo) {
+
+		for(AnaliseDocumento analiseDocumento : analiseGeo.analisesDocumentos) {
+
+			if(analiseDocumento.validado == null || analiseDocumento.validado) {
+				continue;
+			}
+
+			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
+
+			Notificacao notificacao = new Notificacao();
+			notificacao.analiseGeo = analiseGeo;
+			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
+			notificacao.analiseDocumento = analiseDocumento;
+			notificacao.resolvido = false;
+			notificacao.ativo = true;
+			notificacao.dataCadastro = new Date();
+
+			Calendar calendario = new GregorianCalendar();
+			calendario.setTime(notificacao.dataCadastro);
+			int anoDataCadastro = calendario.get(Calendar.YEAR);
+
+			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseGeo);
+			notificacao.codigoAno = anoDataCadastro;
+			notificacao.save();
+
+		}
+
+		Analise analise = Analise.findById(analiseGeo.analise.id);
+		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
+		verificaDiasAnalise.qtdeDiasNotificacao = 0;
+		verificaDiasAnalise.save();
+
+		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+
+			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
+			caracterizacao._save();
+		}
+
+		analise.temNotificacaoAberta = true;
+		analise._save();
+
+	}
+
+
+
+	public static List<Notificacao> gerarNotificacoesTemporarias(AnaliseGeo analiseGeo) {
+
+		List<Notificacao> notificacoes = new ArrayList<>();
+
+		for(AnaliseDocumento analiseDocumento : analiseGeo.analisesDocumentos) {
+
+			if(analiseDocumento.validado == null || analiseDocumento.validado) {
+				continue;
+			}
+
+			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
+
+			Notificacao notificacao = new Notificacao();
+			notificacao.analiseGeo = analiseGeo;
+			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
+			notificacao.analiseDocumento = analiseDocumento;
+			notificacao.resolvido = false;
+			notificacao.ativo = true;
+			notificacao.dataCadastro = new Date();
+
+			Calendar calendario = new GregorianCalendar();
+			calendario.setTime(notificacao.dataCadastro);
+			int anoDataCadastro = calendario.get(Calendar.YEAR);
+
+			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseGeo);
+			notificacao.codigoAno = anoDataCadastro;
+
+			notificacoes.add(notificacao);
+
+		}
+
+		return notificacoes;
+
+	}
+
+
 	public static List<Notificacao> gerarNotificacoesTemporarias(AnaliseTecnica analiseTecnica) {
 
 		List<Notificacao> notificacoes = new ArrayList<>();
@@ -237,12 +324,10 @@ public class Notificacao extends GenericModel {
 					.setParameter("idAnaliseTecnica", analise.getAnaliseTecnica().id)
 					.fetch();
 			
-		} else {
-			
-			notificacoes = Notificacao.find("analiseJuridica.id = :idAnaliseJuridica AND ativo = true")
-					.setParameter("idAnaliseJuridica", analise.getAnaliseJuridica().id)
+		} else{
+			notificacoes = Notificacao.find("analiseGeo.id = :idAnaliseGeo AND ativo = true")
+					.setParameter("idAnaliseGeo", analise.getAnaliseGeo().id)
 					.fetch();
-			
 		}
 		
 		return notificacoes;
@@ -276,11 +361,17 @@ public class Notificacao extends GenericModel {
 			tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA);
 			notificacoes = Notificacao.find("id_analise_juridica", analiseId).fetch();
 
-		} else {
+		} else if (this.analiseTecnica != null){
 
 			analiseId = this.analiseTecnica.id;
 			tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);
 			notificacoes = Notificacao.find("id_analise_tecnica", analiseId).fetch();
+
+		} else {
+
+			analiseId = this.analiseGeo.id;
+			tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
+			notificacoes = Notificacao.find("id_analise_geo", analiseId).fetch();
 		}
 
 		String idQrCode = String.valueOf(notificacoes.get(0).codigoSequencia) + '/' + notificacoes.get(0).codigoAno;
@@ -293,15 +384,14 @@ public class Notificacao extends GenericModel {
 				.addParam("qrcodeLink", url)
 				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
 
-		if (this.analiseJuridica != null) {
-
-			pdf.addParam("analiseEspecifica", this.analiseJuridica);
-			pdf.addParam("analiseArea", "ANALISE_JURIDICA");
-
-		} else {
+		if (this.analiseTecnica != null) {
 
 			pdf.addParam("analiseEspecifica", this.analiseTecnica);
 			pdf.addParam("analiseArea", "ANALISE_TECNICA");
+
+		} else{
+			pdf.addParam("analiseEspecifica", this.analiseGeo);
+			pdf.addParam("analiseArea", "ANALISE_GEO");
 		}
 
 		pdf.generate();
@@ -326,6 +416,24 @@ public class Notificacao extends GenericModel {
 
 		return new Documento(tipoDocumento, pdf.getFile());
 	}
+
+
+	public static Documento gerarPDF(List<Notificacao> notificacoes, AnaliseGeo analiseGeo) throws Exception {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("notificacoes", notificacoes)
+				.addParam("analiseEspecifica", analiseGeo)
+				.addParam("analiseArea", "ANALISE_GEO")
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+
+		pdf.generate();
+
+		return new Documento(tipoDocumento, pdf.getFile());
+	}
+
 
 	public static Documento gerarPDF(List<Notificacao> notificacoes, AnaliseTecnica analiseTecnica) throws Exception {
 
@@ -390,6 +498,33 @@ public class Notificacao extends GenericModel {
 		}
 
 		if (analiseNotificacao != null && analiseTecnica.id.equals(analiseNotificacao.id)) {
+
+			return notificacao.codigoSequencia;
+		}
+
+		return notificacao.codigoSequencia + 1;
+	}
+
+	public static long getProximaSequenciaCodigo(int anoDataCadastro, AnaliseGeo analiseGeo) {
+
+		List<Notificacao> notificacoes = Notificacao.find("codigoAno = :x order by codigoSequencia desc")
+				.setParameter("x", anoDataCadastro)
+				.fetch();
+
+		if (notificacoes.size() == 0) {
+
+			return 1;
+		}
+
+		Notificacao notificacao = notificacoes.get(0);
+		AnaliseGeo analiseNotificacao = notificacao.analiseGeo;
+
+		if (notificacao.codigoSequencia == null) {
+
+			return 1;
+		}
+
+		if (analiseNotificacao != null && analiseGeo.id.equals(analiseNotificacao.id)) {
 
 			return notificacao.codigoSequencia;
 		}

@@ -56,7 +56,19 @@ POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecer
 POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.downloadPDFParecer
 POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.downloadPDFNotificacao
 
+# Analise GEO
 
+GET		/analisesGeo/parecer							    AnalisesGeo.findByNumeroProcesso
+POST	/analisesGeo/iniciar 							    AnalisesGeo.iniciar
+POST	/analisesGeo									    AnalisesGeo.alterar
+POST	/analisesGeo/concluir							    AnalisesGeo.concluir
+GET		/analisesGeo/{idAnaliseTecnica}				        AnalisesGeo.findById
+GET		/analisesGeo/{idAnaliseTecnica}/restricoesGeo	    AnalisesGeo.getRestricoesGeo
+POST	/analisesGeo/validarParecer					        AnalisesGeo.validarParecer
+POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
+POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador
+POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
+POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
@@ -87,10 +99,10 @@ GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
 GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
 
 
-# Gerentes técnicos
-POST	/gerentes/vincular							GerentesTecnicos.vincularAnaliseGerenteTecnico
-GET		/gerentes									GerentesTecnicos.getGerentesTecnicos
-GET		/gerentes/processo/{idProcesso}				GerentesTecnicos.getGerentesTecnicosByIdProcesso
+# Gerentes
+POST	/gerentes/vincular							Gerentes.vincularAnaliseGerente
+GET		/gerentes									Gerentes.getGerentes
+GET		/gerentes/processo/{idProcesso}				Gerentes.getGerentesByIdProcesso
 
 # Coordenadores
 GET		/coordenadoresAprovacao						Coordenadores.getCoordenadoresAprovacao

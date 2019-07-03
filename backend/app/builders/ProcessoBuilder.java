@@ -239,6 +239,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+
 	public ProcessoBuilder addGerenteAlias() {
 
 		addAnaliseTecnicaAlias(false);
@@ -750,7 +751,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	}
 
 	public ProcessoBuilder filtrarPorIdGerente(Long idGerente) {
-
+		
 		if (idGerente != null) {
 
 			addGerenteAlias();

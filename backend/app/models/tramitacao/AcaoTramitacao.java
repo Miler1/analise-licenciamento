@@ -1,6 +1,7 @@
 package models.tramitacao;
 
 import play.db.jpa.GenericModel;
+import sun.rmi.runtime.Log;
 
 
 //Tabela de mapeamento das ações de tramitação, essas ações estão na tabela ACOES no banco de tramitação
@@ -57,14 +58,18 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_REVISAO_SHAPE = 47l;
 	public static final Long INDEFERIR_PROCESS_MANEJO_ANALISE_TECNICA = 48l;
 	public static final Long DEFERIR_ANALISE_GEO_VIA_GERENTE = 49l;
-	public static final Long INDEFERIR_ANALISE_GEO_VIA_GERENTE = 50l;
-	public static final Long INICIAR_ANALISE_GEO = 51l;
-	public static final Long INVALIDAR_PARECER_GEO_PELO_GERENTE = 52l;
-	public static final Long VALIDAR_DEFERIMENTO_GEO_PELO_GERENTE = 53l;
-	public static final Long VALIDAR_INDEFERIMENTO_GEO_PELO_GERENTE = 54l;
-	public static final Long SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE = 55l;
-	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_PRESIDENTE = 56l;
-	public static final Long RESOLVER_NOTIFICACAO_GEO = 57l;
-	public static final Long INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO = 58l;
+	public static final Long DEFERIR_ANALISE_GEO_VIA_COORDENADOR = 50l;
+	public static final Long INDEFERIR_ANALISE_GEO_VIA_GERENTE = 51l;
+	public static final Long INDEFERIR_ANALISE_GEO_VIA_COORDENADOR = 52l;
+	public static final Long INICIAR_ANALISE_GEO = 53l;
+	public static final Long SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR_PARA_ANALISTA = 54l;
+	public static final Long SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR_PARA_GERENTE = 55l;
+	public static final Long INVALIDAR_PARECER_GEO_PELO_COORD_ENCAMINHANDO_GERENTE = 56l;
+	public static final Long INVALIDAR_PARECER_GEO_ENCAMINHANDO_TECNICO =57l;
+	public static final Long VALIDAR_INDEFERIMENTO_GEO_PELO_GERENTE =58l;
+	public static final Long VALIDAR_DEFERIMENTO_GEO_PELO_GERENTE =59l;
+	public static final Long SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE = 60l;
+	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_APROVADOR = 61l;
+
 }
 
