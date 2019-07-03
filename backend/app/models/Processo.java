@@ -26,35 +26,35 @@ import java.util.concurrent.TimeUnit;
 @Entity
 @Table(schema="analise", name="processo")
 public class Processo extends GenericModel implements InterfaceTramitavel{
-	
+
 	private static final String SEQ = "analise.processo_id_seq";
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
-	
+
 	@Required
 	public String numero;
-	
+
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_empreendimento")
 	public Empreendimento empreendimento;
-	
+
 	@Column(name = "id_objeto_tramitavel")
 	public Long idObjetoTramitavel;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
 	public ObjetoTramitavel objetoTramitavel;
-	
+
 	@ManyToMany
-	@JoinTable(schema="analise", name="rel_processo_caracterizacao", 
-		joinColumns= @JoinColumn(name="id_processo"),
-		inverseJoinColumns = @JoinColumn(name="id_caracterizacao"))
+	@JoinTable(schema="analise", name="rel_processo_caracterizacao",
+			joinColumns= @JoinColumn(name="id_processo"),
+			inverseJoinColumns = @JoinColumn(name="id_caracterizacao"))
 	public List<Caracterizacao> caracterizacoes;
-	
+
 	@OneToMany(mappedBy="processo")
 	public List<Analise> analises;
 
@@ -72,16 +72,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
-	
+
 	@Transient
 	public Analise analise;
-	
+
 	@Override
 	public Processo save() {
 
 		// Inicia a tramitacao e chama o metodo salvaObjetoTramitavel() que cria o Processo ja com o objeto tramitavel setado que eh obrigatorio.
 		tramitacao.iniciar(this, null, Tramitacao.LICENCIAMENTO_AMBIENTAL);
-			
+
 		return this;
 	}
 
@@ -97,13 +97,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	@Override
 	public List<AcaoDisponivelObjetoTramitavel> getAcoesDisponiveisTramitacao() {
-		
+
 		if (this.idObjetoTramitavel == null)
 			return null;
 
 		ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.idObjetoTramitavel);
 		return objetoTramitavel.acoesDisponiveis;
-		
+
 	}
 
 	@Override
@@ -112,54 +112,56 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	public void vincularConsultor(UsuarioAnalise consultor, UsuarioAnalise usuarioExecutor) {
-		
+
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
-		
+
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
-		
+
 	}
-	
+
 	public void vincularAnalista(UsuarioAnalise analista, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
-		
+
 		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
-		
+
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
-		
+
 	}
-	
+
 	public void vincularGerenteTecnico(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
-		
+
 		GerenteTecnico.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
-		
+
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
-	}	
+	}
 
 	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
-		
+
 		ProcessoBuilder processoBuilder = new ProcessoBuilder()
-			.filtrarPorNumeroProcesso(filtro.numeroProcesso)
-			.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
-			.filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
-			.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
-			.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
-			.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
-			.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
-			
-				
-		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, usuarioSessao.id);
-		
+				.filtrarPorNumeroProcesso(filtro.numeroProcesso)
+				.filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
+				.filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
+				.filtrarPorIdTipologia(filtro.idTipologiaEmpreendimento)
+				.filtrarPorIdAtividade(filtro.idAtividadeEmpreendimento)
+				.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
+				.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
+
+
+//		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, usuarioSessao.id);
+
 		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, usuarioSessao);
-		
+
+		commonFilterProcessoAnaliseGeo(processoBuilder, filtro, usuarioSessao);
+
 		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
-		
+
 		return processoBuilder;
 	}
 
 	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
-	                                                  UsuarioAnalise usuarioSessao) {
+													  UsuarioAnalise usuarioSessao) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
@@ -167,96 +169,96 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			return;
 		}
-		
+
 		processoBuilder.filtrarPorIdConsultorJuridico(filtro.idConsultorJuridico);
-		
+
 		if (filtro.siglaSetorCoordenadoria != null) {
 
-			 br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(filtro.siglaSetorCoordenadoria);
+			br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(filtro.siglaSetorCoordenadoria);
 
 			if (setor != null) {
 
 				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 1));
 			}
 		}
-		
-		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
-			filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
+
+		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null &&
+				filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA)){
 
 			br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 			if (setor != null) {
-				
+
 				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 2));
 			}
-		}		
+		}
 	}
 
-	private static void commonFilterProcessoAnaliseJuridica(ProcessoBuilder processoBuilder,
-			FiltroProcesso filtro, Long idUsuarioLogado) {
+//	private static void commonFilterProcessoAnaliseJuridica(ProcessoBuilder processoBuilder,
+//			FiltroProcesso filtro, Long idUsuarioLogado) {
+//
+//		if (!filtro.isAnaliseJuridica) {
+//
+//			return;
+//		}
+//
+//		processoBuilder.filtrarAnaliseJuridicaAtiva();
+//
+//		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null &&
+//		   (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) ||
+//			filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA))) {
+//
+//			processoBuilder.filtrarPorIdConsultorJuridico(idUsuarioLogado);
+//		}
+//
+//		if (filtro.idCondicaoTramitacao != null &&
+//			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_JURIDICA)) {
+//
+//				processoBuilder.filtrarPorIdUsuarioValidacao(idUsuarioLogado);
+//		}
+//
+//
+//	}
 
-		if (!filtro.isAnaliseJuridica) {
-			
-			return;
-		}		
-		
-		processoBuilder.filtrarAnaliseJuridicaAtiva();
-		
-		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null && 
-		   (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) || 
-			filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA))) {
-					
-			processoBuilder.filtrarPorIdConsultorJuridico(idUsuarioLogado);
-		}
-		
-		if (filtro.idCondicaoTramitacao != null && 
-			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_JURIDICA)) {
-						
-				processoBuilder.filtrarPorIdUsuarioValidacao(idUsuarioLogado);
-		}
-
-		
-	}
-	
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
-	                                                       UsuarioAnalise usuarioSessao) {
-		
+														   UsuarioAnalise usuarioSessao) {
+
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
 		if (!filtro.isAnaliseTecnica) {
-			
+
 			return;
 		}
-		
+
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
-		
+
 		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
 
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
 
 			return;
 		}
-		
+
 		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
 
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_USUARIO_SEM_SETOR);
 		}
-		
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) || 
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) ||
 				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
 
 			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, filtro.isAnaliseTecnicaOpcional);
 
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		} else {
-			
+
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
 		}
-		
+
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
-			
-			processoBuilder.filtrarPorIdGerenteTecnico(usuarioSessao.id);
+
+			processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
 
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
@@ -272,126 +274,205 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
-		
+
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
-			
+
 			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}		
+		}
+	}
+
+	private static void commonFilterProcessoAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+													   UsuarioAnalise usuarioSessao) {
+
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
+		if (!filtro.isAnaliseGeo) {
+
+			return;
+		}
+
+		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
+		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
+
+		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+
+			return;
+		}
+
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
+			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
+		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_GEO) ||
+				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_GEO)) {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, filtro.isAnaliseGeoOpcional);
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		} else {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
+
+			processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		}
+
+		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
+
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		}
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
-				
+
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
-			.comTiposLicencas()
-			.groupByIdProcesso()
-			.groupByNumeroProcesso()
-			.groupByCpfCnpjEmpreendimento()
-			.groupByDenominacaoEmpreendimento()
-			.groupByMunicipioEmpreendimento()
-			.groupByDataVencimentoPrazoAnalise()
-			.groupByIdAnalise()
-			.groupByDiasAnalise()
-			.groupByDataCadastroAnalise()
-			.groupByRenovacao();
-									
+				.comTiposLicencas()
+				.groupByIdProcesso()
+				.groupByNumeroProcesso()
+				.groupByCpfCnpjEmpreendimento()
+				.groupByDenominacaoEmpreendimento()
+				.groupByMunicipioEmpreendimento()
+				.groupByDataVencimentoPrazoAnalise()
+				.groupByIdAnalise()
+				.groupByDiasAnalise()
+				.groupByDataCadastroAnalise()
+				.groupByRenovacao();
+
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
-		
+
 		listWithFilterAnaliseTecnica(processoBuilder, filtro);
-		
+
 		listWithFilterAprovador(processoBuilder, usuarioSessao);
-					
+
 		return processoBuilder
-			.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())				
-			.list();		
+				.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
+				.list();
 	}
-	
+
 
 	private static void listWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
-		
+
 		if (!filtro.isAnaliseJuridica) {
-			
+
 			return;
 		}
-		
+
 		processoBuilder.groupByIdAnaliseJuridica()
-			.groupByDataFinalAnaliseJuridica()
-			.groupByDataVencimentoPrazoAnaliseJuridica()
-			.groupByRevisaoSolicitadaAnaliseJuridica()	
-			.groupByDiasAnaliseJuridica()
-			.groupByNotificacaoAtendidaAnaliseJuridica()
-			.orderByDataVencimentoPrazoAnaliseJuridica();
+				.groupByDataFinalAnaliseJuridica()
+				.groupByDataVencimentoPrazoAnaliseJuridica()
+				.groupByRevisaoSolicitadaAnaliseJuridica()
+				.groupByDiasAnaliseJuridica()
+				.groupByNotificacaoAtendidaAnaliseJuridica()
+				.orderByDataVencimentoPrazoAnaliseJuridica();
 	}
-	
+
 	private static void listWithFilterAnaliseTecnica(ProcessoBuilder processoBuilder,
-			FiltroProcesso filtro) {
-		
+													 FiltroProcesso filtro) {
+
 		if (!filtro.isAnaliseTecnica) {
-			
+
 			return;
 		}
-		
+
 		processoBuilder.groupByIdAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
-			.groupByDataVencimentoPrazoAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
-			.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
-			.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
-			.groupByDiasAnaliseTecnica()
-			.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
-			.orderByDataVencimentoPrazoAnaliseTecnica();
+				.groupByDataVencimentoPrazoAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByDiasAnaliseTecnica()
+				.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.orderByDataVencimentoPrazoAnaliseTecnica();
 	}
-	
-	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioAnalise usuarioSessao) {
-		
-		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.APROVADOR)) {
-			
+
+	private static void listWithFilterAnaliseGeo(ProcessoBuilder processoBuilder,
+												 FiltroProcesso filtro) {
+
+		if (!filtro.isAnaliseGeo) {
+
 			return;
 		}
-		
+
+		processoBuilder.groupByIdAnaliseGeo(filtro.isAnaliseGeoOpcional)
+				.groupByDataVencimentoPrazoAnaliseGeo(filtro.isAnaliseGeoOpcional)
+				.groupByRevisaoSolicitadaAnaliseGeo(filtro.isAnaliseGeoOpcional)
+				.groupByDataFinalAnaliseGeo(filtro.isAnaliseGeoOpcional)
+				.groupByDiasAnaliseGeo()
+				.groupByNotificacaoAtendidaAnaliseGeo(filtro.isAnaliseGeoOpcional)
+				.orderByDataVencimentoPrazoAnaliseGeo();
+	}
+
+	private static void listWithFilterAprovador(ProcessoBuilder processoBuilder, UsuarioAnalise usuarioSessao) {
+
+		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.APROVADOR)) {
+
+			return;
+		}
+
 		processoBuilder.groupByIdAnalise()
-			.groupByDiasAprovador();
+				.groupByDiasAprovador();
 	}
 
 	public static Long countWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
-		
+
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
-			.addPessoaEmpreendimentoAlias()
-			.addEstadoEmpreendimentoAlias()
-			.addAnaliseAlias()
-			.count();
-						
+				.addPessoaEmpreendimentoAlias()
+				.addEstadoEmpreendimentoAlias()
+				.addAnaliseAlias()
+				.count();
+
 		countWithFilterAnaliseJuridica(processoBuilder, filtro);
-		
+
 		countWithFilterAnaliseTecnica(processoBuilder, filtro);
-			
+
 		Object qtdeTotalItens = processoBuilder.unique();
-		
-		return ((Map<String, Long>) qtdeTotalItens).get("total"); 
+
+		return ((Map<String, Long>) qtdeTotalItens).get("total");
 	}
-	
+
 	private static void countWithFilterAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
-		
+
 		if (!filtro.isAnaliseTecnica) {
-			
+
 			return;
 		}
-		
-		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);		
+
+		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);
 	}
 
 	private static void countWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
-		
+
 		if (!filtro.isAnaliseJuridica) {
-			
+
 			return;
 		}
-		
-		processoBuilder.addAnaliseJuridicaAlias();		
+
+		processoBuilder.addAnaliseJuridicaAlias();
 	}
 
 	public Caracterizacao getCaracterizacao() {
 		return caracterizacoes.get(0);
 	}
-	
+
 	public Analise getAnalise() {
 
 		if(this.analise != null)
@@ -401,14 +482,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			for(Analise analise : this.analises)
 				if(analise.ativo)
 					this.analise = analise;
-		
+
 		if(this.analise == null)
 			this.analise = Analise.findByProcesso(this);
 
 		return this.analise;
-		
+
 	}
-	
+
 	//Retorna o historico da tramitação com o tempo que o objeto tramitavel permaneceu na condição
 	public List<HistoricoTramitacao> getHistoricoTramitacao() {
 
@@ -424,7 +505,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			else
 				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, historicosTramitacoes.get(i - 1).dataInicial);
 		}
-		
+
 		//Lógica que adiciona a data final da condição
 		for (int i = historicosTramitacoes.size() - 1; i >= 0; i--) {
 
@@ -471,32 +552,32 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return historicosTramitacoes;
 	}
-	
+
 	public List<String> getTiposLicenca() {
-		
+
 		List<String> tiposLicenca = new ArrayList<>();
-		
+
 		for(Caracterizacao caracterizacao : this.caracterizacoes) {
-			
+
 			String temp = caracterizacao.tipoLicenca.nome + " (" + caracterizacao.tipoLicenca.validadeEmAnos + " anos)";
 			tiposLicenca.add(temp);
-			
+
 		}
-		
+
 		return tiposLicenca;
-		
+
 	}
-	
+
 	public List<Caracterizacao> getCaracterizacoesNaoArquivadas() {
-		
+
 		List<Caracterizacao> caracterizacoes = new ArrayList<>();
-		
+
 		for(Caracterizacao caracterizacao : this.caracterizacoes)
 			if(!caracterizacao.isArquivada())
 				caracterizacoes.add(caracterizacao);
-		
+
 		return caracterizacoes;
-		
+
 	}
 
 	public boolean isProrrogacao() {
