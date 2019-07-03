@@ -26,6 +26,8 @@ public class TipoDocumento extends Model {
 	public static Long TERMO_DELIMITACAO_AREA_RESERVA_LEGAL_APROVADA = 13l;
 	public static Long TERMO_AJUSTAMENTO_CONDUTA = 14l;
 	public static Long ANEXO_PROCESSO_MANEJO_DIGITAL = 15l;
+	public static Long PARECER_ANALISE_GEO = 16l;
+	public static Long NOTIFICACAO_ANALISE_GEO = 17l;
 
 	@Required
 	public String nome;

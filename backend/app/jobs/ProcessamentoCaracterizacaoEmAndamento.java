@@ -66,7 +66,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 					try {
 
-						clonarAnaliseJuridica(analise, processoAntigo);
+						clonarAnaliseGeo(analise, processoAntigo);
 
 					} catch (Exception e) {
 
@@ -76,14 +76,14 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 				} else {
 
-					criarNovaAnaliseJuridica(analise);
+					criarNovaAnaliseGeo(analise);
 				}
 
 			} else {
 
 				//TODO RUNNERS-SQUAD-4 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
 
-				criarNovaAnaliseJuridica(analise);
+				criarNovaAnaliseGeo(analise);
 			}
 
 			criarNovoDiasAnalise(analise);
@@ -133,9 +133,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 					processo.tramitacao.tramitar(processo, AcaoTramitacao.RENOVAR_SEM_ALTERACAO);
 
-					AnaliseTecnica analiseTecnica = new AnaliseTecnica();
-					analiseTecnica.analise = analise;
-					analiseTecnica.save();
+					AnaliseGeo analiseGeo= new AnaliseGeo();
+					analiseGeo.analise = analise;
+					analiseGeo.save();
 				}
 			}
 		}
@@ -173,37 +173,37 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 	}
 
-	private AnaliseJuridica clonarAnaliseJuridica(Analise analise, Processo processoAntigo) {
+	private AnaliseGeo clonarAnaliseGeo(Analise analise, Processo processoAntigo) {
 
-		AnaliseJuridica analiseJuridicaAntiga = processoAntigo.getAnalise().getAnaliseJuridica();
-		AnaliseJuridica analiseJuridica = new AnaliseJuridica();
+		AnaliseGeo analiseGeoAntiga = processoAntigo.getAnalise().getAnaliseGeo();
+		AnaliseGeo analiseGeo = new AnaliseGeo();
 
 		List<AnaliseDocumento> analisesDocumentos = new ArrayList<>();
-		List<ConsultorJuridico> consultoresJuridicos = new ArrayList<>();
+		List<Gerente> gerentes = new ArrayList<>();
 
-		analiseJuridica.id = null;
-		analiseJuridica.analise = analise;
-		analiseJuridica.parecer = analiseJuridicaAntiga.parecer;
-		analiseJuridica.dataVencimentoPrazo = new Date();
-		analiseJuridica.revisaoSolicitada = false;
-		analiseJuridica.notificacaoAtendida = false;
-		analiseJuridica.ativo = true;
-		analiseJuridica.analiseJuridicaRevisada = null;
-		analiseJuridica.dataInicio = new Date();
-		analiseJuridica.dataFim = new Date();
-		analiseJuridica.tipoResultadoAnalise = analiseJuridicaAntiga.tipoResultadoAnalise;
-		analiseJuridica.tipoResultadoValidacao = analiseJuridicaAntiga.tipoResultadoValidacao;
-		analiseJuridica.parecerValidacao = analiseJuridicaAntiga.parecerValidacao;
-		analiseJuridica.usuarioValidacao = analiseJuridicaAntiga.usuarioValidacao;
-		analiseJuridica.tipoResultadoValidacaoAprovador = analiseJuridicaAntiga.tipoResultadoValidacaoAprovador;
-		analiseJuridica.parecerValidacaoAprovador = analiseJuridicaAntiga.parecerValidacaoAprovador;
-		analiseJuridica.usuarioValidacaoAprovador = analiseJuridicaAntiga.usuarioValidacaoAprovador;
+		analiseGeo.id = null;
+		analiseGeo.analise = analise;
+		analiseGeo.parecer = analiseGeoAntiga.parecer;
+		analiseGeo.dataVencimentoPrazo = new Date();
+		analiseGeo.revisaoSolicitada = false;
+		analiseGeo.notificacaoAtendida = false;
+		analiseGeo.ativo = true;
+		analiseGeo.analiseGeoRevisada = null;
+		analiseGeo.dataInicio = new Date();
+		analiseGeo.dataFim = new Date();
+		analiseGeo.tipoResultadoAnalise = analiseGeoAntiga.tipoResultadoAnalise;
+		analiseGeo.tipoResultadoValidacao = analiseGeoAntiga.tipoResultadoValidacao;
+		analiseGeo.parecerValidacao = analiseGeoAntiga.parecerValidacao;
+		analiseGeo.usuarioValidacao = analiseGeoAntiga.usuarioValidacao;
+		analiseGeo.tipoResultadoValidacaoAprovador = analiseGeoAntiga.tipoResultadoValidacaoAprovador;
+		analiseGeo.parecerValidacaoAprovador = analiseGeoAntiga.parecerValidacaoAprovador;
+		analiseGeo.usuarioValidacaoAprovador = analiseGeoAntiga.usuarioValidacaoAprovador;
 
-		for (AnaliseDocumento analiseDocumentoAntigo : analiseJuridicaAntiga.analisesDocumentos) {
+		for (AnaliseDocumento analiseDocumentoAntigo : analiseGeoAntiga.analisesDocumentos) {
 
 			AnaliseDocumento analiseDocumento = new AnaliseDocumento();
 			analiseDocumento.id = null;
-			analiseDocumento.analiseJuridica = analiseJuridica;
+			analiseDocumento.analiseGeo = analiseGeo;
 			analiseDocumento.validado = analiseDocumentoAntigo.validado;
 			analiseDocumento.parecer = analiseDocumentoAntigo.parecer;
 			analiseDocumento.analiseTecnica = null;
@@ -212,31 +212,31 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			analisesDocumentos.add(analiseDocumento);
 		}
 
-		for (ConsultorJuridico consultorJuridicoAntigo : analiseJuridicaAntiga.consultoresJuridicos) {
+		for (Gerente gerenteAntigo : analiseGeoAntiga.gerentes) {
 
-			ConsultorJuridico consultorJuridico = new ConsultorJuridico();
-			consultorJuridico.id = null;
-			consultorJuridico.analiseJuridica = analiseJuridica;
-			consultorJuridico.usuario = consultorJuridicoAntigo.usuario;
-			consultorJuridico.dataVinculacao = consultorJuridicoAntigo.dataVinculacao;
-			consultoresJuridicos.add(consultorJuridico);
+			Gerente gerente = new Gerente();
+			gerente.id = null;
+			gerente.analiseGeo = analiseGeo;
+			gerente.usuario = gerenteAntigo.usuario;
+			gerente.dataVinculacao = gerenteAntigo.dataVinculacao;
+			gerentes.add(gerente);
 		}
 
-		analiseJuridica.analisesDocumentos = analisesDocumentos;
-		analiseJuridica.consultoresJuridicos = consultoresJuridicos;
-		analiseJuridica._save();
+		analiseGeo.analisesDocumentos = analisesDocumentos;
+		analiseGeo.gerentes = gerentes;
+		analiseGeo._save();
 
-		return analiseJuridica;
+		return analiseGeo;
 	}
 
-	private AnaliseJuridica criarNovaAnaliseJuridica(Analise analise) {
+	private AnaliseGeo criarNovaAnaliseGeo(Analise analise) {
 
-		AnaliseJuridica analiseJuridica = new AnaliseJuridica();
-		analiseJuridica.analise = analise;
+		AnaliseGeo analiseGeo = new AnaliseGeo();
+		analiseGeo.analise = analise;
 		
-		analiseJuridica.save();
+		analiseGeo.save();
 		
-		return analiseJuridica;
+		return analiseGeo;
 	}
 	
 	private DiasAnalise criarNovoDiasAnalise(Analise analise) {

@@ -129,9 +129,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 	}
 	
-	public void vincularGerenteTecnico(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
+	public void vincularGerente(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
 		
-		GerenteTecnico.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
+		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
@@ -256,7 +256,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
 			
-			processoBuilder.filtrarPorIdGerenteTecnico(usuarioSessao.id);
+			processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
 
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
