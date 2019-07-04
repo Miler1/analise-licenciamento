@@ -1,4 +1,4 @@
-package async;
+package async.requestConnection;
 
 import play.Logger;
 import play.Play;

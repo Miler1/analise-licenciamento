@@ -39,6 +39,7 @@ repositories:
                 - org.eclipse.emf -> *
                 - org.eclipse.xsd -> *
                 - org.apache.xml -> *
+                - org.apache.tika -> *
                 - org.junit -> *
                 - org.hibernatespatial -> *
                 - org.hibernate -> *

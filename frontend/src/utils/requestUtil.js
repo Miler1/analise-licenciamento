@@ -1,6 +1,7 @@
-var Request = function($http, animacaoLoader) {
+var Request = function($http, Upload, animacaoLoader) {
 
 	this._$http = $http;
+	this._Uploading = null;
 
 	this.requests = [];
 	this.animacao = animacaoLoader;
@@ -275,7 +276,15 @@ Request.prototype.upload = function(url, file, Upload, elem, comLoad) {
 		this._finally(upload, url);
 	}
 
+	this._Uploading = upload;
+
 	return upload;
+};
+
+Request.prototype.abortUpload = function() {
+	if(this._Uploading) {
+        this._Uploading.abort();
+    }
 };
 
 exports.services.Request = Request;

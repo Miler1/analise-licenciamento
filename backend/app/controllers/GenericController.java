@@ -222,4 +222,48 @@ public class GenericController extends Controller {
 		}
 	}
 
+	protected static void renderError(String ... messages) {
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < messages.length; i++) {
+
+			sb.append(messages[i]);
+
+			if (i != messages.length - 1) {
+
+				sb.append(";");
+			}
+		}
+
+		error(sb.toString());
+
+	}
+
+	/**
+	 * Caso algum dos objetos passados como parâmetro forem null, retorna 404.
+	 */
+	protected static void returnIfNotFound(Object model, Object ... models) {
+
+		if (model == null) {
+
+			response.status = 404;
+
+			renderText("O id informado não foi encontrado.");
+		}
+
+		if (models != null && models.length > 0) {
+
+			for (int i = 0; i < models.length; i++) {
+
+				if (models[i] == null) {
+
+					response.status = 404;
+
+					renderText("O id informado não foi encontrado.");
+				}
+			}
+		}
+	}
+
 }

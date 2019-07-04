@@ -1,7 +1,7 @@
 /**
  * Controller para a validação de shapes
  **/
-var ValidacaoShapeController = function (validacaoShapeService) {
+var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 
 	var validacaoShape = this;
 
@@ -51,7 +51,7 @@ var ValidacaoShapeController = function (validacaoShapeService) {
 
 			validacaoShape.arquivoSelecionado = null;
 
-			mensagemService.error('O arquivo enviado não possui uma extensão de arquivo válida. Envie arquivos cuja extensão seja \".zip\" ou \".rar\"');
+			mensagem.error('O arquivo enviado não possui uma extensão de arquivo válida. Envie arquivos cuja extensão seja \".zip\" ou \".rar\"');
 
 			return;
 		}
@@ -64,7 +64,7 @@ var ValidacaoShapeController = function (validacaoShapeService) {
 
 			validacaoShape.arquivoSelecionado = null;
 
-			mensagemService.error('O arquivo escolhido ultrapassa o limite de tamanho aceito pelo sistema (100MB). Envie um arquivo que não ultrapasse esse tamanho');
+			mensagem.error('O arquivo escolhido ultrapassa o limite de tamanho aceito pelo sistema (100MB). Envie um arquivo que não ultrapasse esse tamanho');
 
 			return;
 		}
@@ -137,9 +137,9 @@ var ValidacaoShapeController = function (validacaoShapeService) {
 
 		validacaoShape.arquivoSelecionado = null;
 		validacaoShape.resultadoProcessamento = null;
-		$scope.cadastro.la.resultadoEnvio = null;
+		// $scope.cadastro.la.resultadoEnvio = null;
 
-		mensagemService.warning(message);
+		mensagem.warning(message);
 
 		return [];
 	}

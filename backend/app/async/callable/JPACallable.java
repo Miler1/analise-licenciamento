@@ -1,4 +1,4 @@
-package async;
+package async.callable;
 
 import play.db.jpa.JPAPlugin;
 

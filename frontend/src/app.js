@@ -461,7 +461,8 @@ utils.services(licenciamento)
 	.add('atividadeManejoService', services.AtividadeManejoService)
 	.add('tipoLicencaManejoService', services.TipoLicencaManejoService)
 	.add('documentoShapeService', services.DocumentoShapeService)
-	.add('validacaoShapeService', services.ValidacaoShapeService);
+	.add('validacaoShapeService', services.ValidacaoShapeService)
+	.add('requestService', utils.Request);
 
 
 utils.filters(licenciamento)
