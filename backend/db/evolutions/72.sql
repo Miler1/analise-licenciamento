@@ -54,16 +54,16 @@ CREATE TABLE analise.analise_geo
         REFERENCES analise.tipo_resultado_analise (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION,
 
-    CONSTRAINT fk_ag_usuario FOREIGN KEY (id_usuario_validacao)
-        REFERENCES portal_seguranca.usuario (id) MATCH SIMPLE
+    CONSTRAINT fk_ag_usuario_analise FOREIGN KEY (id_usuario_validacao)
+        REFERENCES analise.usuario_analise (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION,
 
-    CONSTRAINT fk_ag_usuario_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador)
-        REFERENCES portal_seguranca.usuario (id) MATCH SIMPLE
+    CONSTRAINT fk_ag_usuario_analise_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador)
+        REFERENCES analise.usuario_analise (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION,
 
-    CONSTRAINT fk_ag_usuario_validacao_gerente FOREIGN KEY (id_usuario_validacao_gerente)
-        REFERENCES portal_seguranca.usuario (id) MATCH SIMPLE
+    CONSTRAINT fk_ag_usuario_analise_validacao_gerente FOREIGN KEY (id_usuario_validacao_gerente)
+        REFERENCES analise.usuario_analise (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
@@ -85,7 +85,7 @@ COMMENT ON COLUMN analise.analise_geo.data_fim IS 'Data de fim de análise.';
 COMMENT ON COLUMN analise.analise_geo.id_tipo_resultado_analise IS 'Campo responsavel por armazenar o resultado da análise do gerente.';
 COMMENT ON COLUMN analise.analise_geo.id_tipo_resultado_validacao IS 'Campo responsavel por armazenar o resultado da análise do gerente.';
 COMMENT ON COLUMN analise.analise_geo.parecer_validacao IS 'Campo responsável por armazenar a justificativa do gerente quando o mesmo vincular diretamente um analista geo.';
-COMMENT ON COLUMN analise.analise_geo.id_usuario_validacao IS 'Identificador da entidade portal_seguranca.usuario que realizará o relacionamento entre as duas entidades.';
+COMMENT ON COLUMN analise.analise_geo.id_usuario_validacao IS 'Identificador da entidade analise.usuario_analise que realizará o relacionamento entre as duas entidades.';
 COMMENT ON COLUMN analise.analise_geo.id_tipo_resultado_validacao_gerente IS 'Campo responsavel por armazenar o resultado da análise do gerente geo.';
 COMMENT ON COLUMN analise.analise_geo.parecer_validacao_gerente IS 'Campo responsável por armazenar a descrição da validação do gerente geo.';
 COMMENT ON COLUMN analise.analise_geo.id_usuario_validacao_gerente IS 'Campo responsável por armazernar o gerente que fez a validação.';
@@ -110,8 +110,8 @@ CREATE TABLE analise.analista_geo
         REFERENCES analise.analise_geo (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION,
 
-    CONSTRAINT fk_ag_usuario FOREIGN KEY (id_usuario)
-        REFERENCES portal_seguranca.usuario (id) MATCH SIMPLE
+    CONSTRAINT fk_ag_usuario_analise FOREIGN KEY (id_usuario)
+        REFERENCES analise.usuario_analise (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
