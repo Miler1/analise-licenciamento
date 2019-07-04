@@ -73,7 +73,7 @@ public class AnalistaTecnico extends GenericModel {
 		 * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
 		 * caso contrário atribui o usuário executor para o campo do coordenador. 
 		 */
-		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE_TECNICO)){
+		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
 			
 			analiseTecnica.usuarioValidacaoGerente = usuarioExecutor;
 			
