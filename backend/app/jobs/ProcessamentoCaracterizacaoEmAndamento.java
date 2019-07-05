@@ -81,7 +81,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			} else {
 
-				//TODO RUNNERS-SQUAD-4 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
+				//TODO PUMA-SQUAD-1 Buscar na caracterizacao -> atividadecaractericao -> atividade o setor da atividade
+				//TODO PUMA-SQUAD-1 Buscar lista de analistas pelo setor da atividade no entrada única através desse servico integracaoEntradaUnica.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
+				//TODO PUMA-SQUAD-1 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
 
 				criarNovaAnaliseGeo(analise);
 			}
@@ -233,6 +235,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
+		//analiseGeo.analistasGeo.add();
 		
 		analiseGeo.save();
 		

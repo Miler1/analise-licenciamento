@@ -363,6 +363,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		listWithFilterAnaliseTecnica(processoBuilder, filtro);
 
+		listWithFilterAnaliseGeo(processoBuilder, filtro);
+
 		listWithFilterAprovador(processoBuilder, usuarioSessao);
 
 		return processoBuilder
@@ -444,6 +446,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		countWithFilterAnaliseTecnica(processoBuilder, filtro);
 
+		countWithFilterAnaliseGeo(processoBuilder, filtro);
+
 		Object qtdeTotalItens = processoBuilder.unique();
 
 		return ((Map<String, Long>) qtdeTotalItens).get("total");
@@ -457,6 +461,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);
+	}
+
+	private static void countWithFilterAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isAnaliseGeo) {
+
+			return;
+		}
+
+		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
 	}
 
 	private static void countWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {

@@ -107,6 +107,8 @@ var FiltroProcessos = {
 			ctrl.filtro.isAnaliseJuridica = !!ctrl.isAnaliseJuridica;
 			ctrl.filtro.isAnaliseTecnica = !!ctrl.isAnaliseTecnica;
 			ctrl.filtro.isAnaliseTecnicaOpcional = !!ctrl.isAnaliseTecnicaOpcional;
+			ctrl.filtro.isAnaliseGeo = !!ctrl.isAnaliseGeo;
+			ctrl.filtro.isAnaliseGeoOpcional = !!ctrl.isAnaliseGeoOpcional;
 		}
 
 		this.limparFiltros = function(){
