@@ -95,4 +95,9 @@ public class AnalistaGeo extends GenericModel {
 
         return null;
     }
+
+    public static AnalistaGeo distribuicaoProcesso() {
+        return AnalistaGeo.find("SELECT count(id), id_usuario FROM analise.analista_geo GROUP BY id_usuario, data_vinculacao ORDER BY data_vinculacao DESC, 1 OFFSET 0 LIMIT 1")
+                .first();
+    }
 }

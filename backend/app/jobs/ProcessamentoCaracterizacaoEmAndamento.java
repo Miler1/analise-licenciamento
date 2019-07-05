@@ -235,7 +235,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
-		//analiseGeo.analistasGeo.add();
+		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso());
 		
 		analiseGeo.save();
 		
