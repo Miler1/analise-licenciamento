@@ -1,5 +1,7 @@
 package controllers;
 
+import async.callable.JPACallable;
+import async.requestConnection.Pool;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import exceptions.AppException;
@@ -16,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class GenericController extends Controller {
 
@@ -263,6 +266,32 @@ public class GenericController extends Controller {
 					renderText("O id informado não foi encontrado.");
 				}
 			}
+		}
+	}
+
+	/**
+	 *
+	 * @param callable - Objeto a ser executado
+	 * @return Tipo definido no momento da chamada
+	 */
+	protected static <T> T async(Callable<T> callable) {
+		return await(Pool.global().submit(new JPACallable<T>(callable, false)));
+	}
+
+	/**
+	 *
+	 * @param callable - Objeto a ser executado
+	 * @return Tipo definido no momento da chamada
+	 */
+	protected static <T> T async(Callable<T> callable, boolean readOnlyTransaction) {
+		return await(Pool.global().submit(new JPACallable<T>(callable, readOnlyTransaction)));
+	}
+
+	protected static void rollback() {
+
+		if (JPA.isInsideTransaction()) {
+			JPA.em().getTransaction().rollback();
+			JPA.em().getTransaction().begin();
 		}
 	}
 

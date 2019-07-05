@@ -10,6 +10,7 @@ import enums.InformacoesNecessariasShapeEnum;
 import interfaces.ColumnShapeFile;
 //import models.car.Municipio;
 //import models.desmatamento.RegiaoDesmatada;
+import models.licenciamento.Municipio;
 import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
 import org.geotools.data.DataStore;
@@ -26,6 +27,7 @@ import org.opengis.filter.Filter;
 import play.Logger;
 import play.Play;
 import play.i18n.Messages;
+import utils.Configuracoes;
 import utils.GeoCalc;
 import utils.StringUtils;
 
@@ -77,6 +79,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		this.resultado.dados.keyTemp = keyTemp;
 		this.resultado.mensagens = new ArrayList<String>();
 		this.informacoesNecessarias = informacoesNecessarias;
+		/** TODO - oisouothiago - depois de trazer o municipo pode trocar esse ID por ele todo e evitar a consulta no banco **/
 		this.idMunicipio = idMunicipio;
 	}
 
@@ -113,7 +116,9 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		}
 		if(this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA){
 			if(this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
-//				this.validarGeometriaMunicipioUsuarioLogado();
+				//O Analista não precisa de um shape vinculado ao usuário logado
+				//Mas é preciso validar em função do
+				this.validarGeometriaMunicipioEmpreendimento();
 			}
 		}
 
@@ -211,7 +216,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 				if(atributo.valor != null && atributo.valor instanceof Geometry) {
 
 					Geometry geometria = (Geometry)atributo.valor;
-					geometria.setSRID(4674);
+					geometria.setSRID(Configuracoes.SRID_DEFAULT);
 					geometriasDoShapeFile.add(geometria);
 				}
 			}
@@ -281,24 +286,23 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	}
 
-//	private void validarGeometriaMunicipioUsuarioLogado() {
-//
-//		if(this.idMunicipio != null) {
-//
-//			Municipio municipio = Municipio.findById(this.idMunicipio);
-//
-//			List<Geometry> geometriasDoShapeFile = getTodasAsGeometriasDoShape();
-//
-//			for (Geometry g : geometriasDoShapeFile) {
-//
-//				if (!municipio.geometria.contains(g)) {
-//
-//					this.fireError(Messages.get("error.shapefile.attributes.foraMunicipio"), null);
-//					return;
-//				}
-//			}
-//		}
-//	}
+	private void validarGeometriaMunicipioEmpreendimento() {
+
+		/** TODO - oisouothiago - Após trazer o municipio pode tirar o if e rodar (ele já vai ter sido filtrado pra estar na tela por um processo **/
+		if(this.idMunicipio != null) {
+
+			Municipio municipio = Municipio.findById(this.idMunicipio);
+
+			List<Geometry> geometriasDoShapeFile = getTodasAsGeometriasDoShape();
+
+			Boolean geometriaInvalida = geometriasDoShapeFile.stream().anyMatch(gds -> !municipio.limite.contains(gds));
+
+			if(geometriaInvalida) {
+				this.fireError(Messages.get("error.shapefile.attributes.foraMunicipio"), null);
+				return;
+			}
+		}
+	}
 
 	/**
 	 * Retorna o contador para cada tipo de atributo encontrado
