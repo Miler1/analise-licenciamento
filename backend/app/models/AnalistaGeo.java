@@ -9,6 +9,8 @@ import utils.Mensagem;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="analista_geo")
@@ -84,20 +86,30 @@ public class AnalistaGeo extends GenericModel {
     }
 
     public Setor getSetor() {
-//TODO REFACTOR
+    //TODO PUMA-SQUAD-1 ajustar busca de setor do analista
 
-//		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
-//				.setParameter("x", this.usuario.id)
-//				.setParameter("y", "Analista TÉCNICO")
-//				.first();
-//
-//		return perfil.setor;
+    //		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
+    //				.setParameter("x", this.usuario.id)
+    //				.setParameter("y", "Analista TÉCNICO")
+    //				.first();
+    //
+    //		return perfil.setor;
 
         return null;
     }
 
-    public static AnalistaGeo distribuicaoProcesso() {
-        return AnalistaGeo.find("SELECT count(id), id_usuario FROM analise.analista_geo GROUP BY id_usuario, data_vinculacao ORDER BY data_vinculacao DESC, 1 OFFSET 0 LIMIT 1")
-                .first();
+    public static AnalistaGeo distribuicaoProcesso(String setorAtividade) {
+
+        List<UsuarioAnalise> analistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+
+        List<Long> idsAnalistasGeo = analistasGeo.stream()
+                        .map(ang->ang.id)
+                        .collect(Collectors.toList());
+
+//        String jpql = "SELECT ang.usuario.id FROM " + AnaliseGeo.class.getSimpleName() + " ang WHERE ang.usuario.id in (:idsAnalistasGeo) ";
+//
+//        return AnalistaGeo.find(jpql).setParameter("idsAnalistasGeo", idsAnalistasGeo).first();
+        return null;
+
     }
 }

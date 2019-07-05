@@ -1,5 +1,6 @@
 package jobs;
 
+import br.ufla.lemaf.beans.pessoa.Setor;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
@@ -80,10 +81,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 				}
 
 			} else {
-
-				//TODO PUMA-SQUAD-1 Buscar na caracterizacao -> atividadecaractericao -> atividade o setor da atividade
-				//TODO PUMA-SQUAD-1 Buscar lista de analistas pelo setor da atividade no entrada única através desse servico integracaoEntradaUnica.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
-				//TODO PUMA-SQUAD-1 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
 
 				criarNovaAnaliseGeo(analise);
 			}
@@ -233,9 +230,16 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 	private AnaliseGeo criarNovaAnaliseGeo(Analise analise) {
 
+		//TODO PUMA-SQUAD-1 Buscar na caracterizacao -> atividadecaractericao -> atividade o setor da atividade
+		//TODO PUMA-SQUAD-1 Buscar lista de analistas pelo setor da atividade no entrada única através desse servico integracaoEntradaUnica.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
+		//TODO PUMA-SQUAD-1 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
+
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
-		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso());
+
+		String siglaSetor = analise.processo.getCaracterizacao().atividadesCaracterizacao.get(0).atividade.siglaSetor;
+
+		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso(siglaSetor));
 		
 		analiseGeo.save();
 		
