@@ -28,7 +28,7 @@ mixin uploadField(controller)
 					span
 						strong Arquivo: 
 					| {{validacaoShape.arquivoSelecionado.arquivo.nome}}
-					span
+					span.file-action
 						|(
 						a(ng-if="validacaoShape.progressBarStatus !== '100%'", ng-click="validacaoShape.cancelaUpload()")
 							| cancelar envio

@@ -19,9 +19,9 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 
 	/** Declaração das funções **/
 	function passoValido() {
-		return $scope.cadastro.la.descricao &&
-			$scope.cadastro.la.necessitaValidacao &&
-			$scope.cadastro.la.resultadoEnvio;
+		return validacaoShape.descricao &&
+			validacaoShape.necessitaValidacao &&
+			validacaoShape.resultadoEnvio;
 	}
 
 	function atualizaBarraProgresso(evt) {
@@ -39,7 +39,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 		validacaoShape.progressBarStatus = 0;
 		validacaoShape.arquivoSelecionado = null;
 		validacaoShape.resultadoProcessamento = null;
-		$scope.cadastro.la.resultadoEnvio = null;
+		validacaoShape.resultadoEnvio = null;
 	}
 
     /**
@@ -78,44 +78,44 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 
 				if (resultado) {
 
-					if (resultado.status === 'SUCESSO') {
+					if (resultado.data.status === 'SUCESSO') {
 
-						var dados = resultado.dados;
+						var dados = resultado.data.dados;
 						validacaoShape.arquivoSelecionado.arquivo.key = dados.keyTemp;
 						validacaoShape.arquivoSelecionado.arquivo.nome = arquivoEnviar.name;
 
 						// Publica resultado
-						$scope.cadastro.la.resultadoEnvio = dados;
+						validacaoShape.resultadoEnvio = dados;
 
-						if (dados.atributos.length < $scope.cadastro.quantidadeColunasObrigatorias) {
+						if (dados.atributos.length < 1) {
 							restartUploadOnError('O arquivo enviado é inválido. A quantidade de atributos do shapefile é menor que a quantidade de colunas obrigatórias.');
 							return;
 						}
 
-						for (var i = 0; i < $scope.cadastro.la.resultadoEnvio.atributos.length; i++) {
+						for (var i = 0; i < validacaoShape.resultadoEnvio.atributos.length; i++) {
 
-							$scope.cadastro.la.resultadoEnvio.atributos[i].colunasBanco = [];
+							validacaoShape.resultadoEnvio.atributos[i].colunasBanco = [];
 
-							for (var j = 0; j < $scope.cadastro.colunasBanco.length; j++) {
-								if ($scope.cadastro.la.resultadoEnvio.atributos[i].tipo === $scope.cadastro.colunasBanco[j].tipo && $scope.cadastro.colunasBanco[j].obrigatorio) {
-									$scope.cadastro.la.resultadoEnvio.atributos[i].colunasBanco.push($scope.cadastro.colunasBanco[j]);
-								}
+							// for (var j = 0; j < validacaoShape.colunasBanco.length; j++) {
+							// 	if (validacaoShape.resultadoEnvio.atributos[i].tipo === validacaoShape.colunasBanco[j].tipo && validacaoShape.colunasBanco[j].obrigatorio) {
+							// 		validacaoShape.resultadoEnvio.atributos[i].colunasBanco.push(validacaoShape.colunasBanco[j]);
+							// 	}
+							// }
+
+							if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Geometry') {
+
+								validacaoShape.resultadoEnvio.atributos[i].nomeBanco = 'the_geom';
+								validacaoShape.resultadoEnvio.atributos[i].tipoGeometria = true;
 							}
 
-							if ($scope.cadastro.la.resultadoEnvio.atributos[i].tipo === 'Geometry') {
+							if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Date') {
 
-								$scope.cadastro.la.resultadoEnvio.atributos[i].nomeBanco = 'the_geom';
-								$scope.cadastro.la.resultadoEnvio.atributos[i].tipoGeometria = true;
-							}
+								for (var v = 0; v < validacaoShape.resultadoEnvio.registros.length; v++) {
 
-							if ($scope.cadastro.la.resultadoEnvio.atributos[i].tipo === 'Date') {
-
-								for (var v = 0; v < $scope.cadastro.la.resultadoEnvio.registros.length; v++) {
-
-									if ($scope.cadastro.la.resultadoEnvio.registros[v][i].valor) {
-										$scope.cadastro.la.resultadoEnvio.registros[v][i].valor = new Date($scope.cadastro.la.resultadoEnvio.registros[v][i].valor).asString();
+									if (validacaoShape.resultadoEnvio.registros[v][i].valor) {
+										validacaoShape.resultadoEnvio.registros[v][i].valor = new Date(validacaoShape.resultadoEnvio.registros[v][i].valor).asString();
 									} else {
-										$scope.cadastro.la.resultadoEnvio.registros[v][i].valor = '-';
+										validacaoShape.resultadoEnvio.registros[v][i].valor = '-';
 									}
 
 								}
@@ -137,7 +137,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 
 		validacaoShape.arquivoSelecionado = null;
 		validacaoShape.resultadoProcessamento = null;
-		// $scope.cadastro.la.resultadoEnvio = null;
+		validacaoShape.resultadoEnvio = null;
 
 		mensagem.warning(message);
 

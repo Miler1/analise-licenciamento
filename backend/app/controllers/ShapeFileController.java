@@ -35,7 +35,7 @@ public class ShapeFileController extends GenericController {
 
 			// Processamento do arquivo zip
 			/** TODO oisouothiago - Após o merge trazer o Municipio pra validação no construtor **/
-			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.TABELA_REGIAO_DESMATADA, null);
+			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, null);
 
 			// Executa o processamento
 			ResultadoProcessamentoShapeFile resultadoProcessamentoShapeFile = async(processamentoShapeFile);

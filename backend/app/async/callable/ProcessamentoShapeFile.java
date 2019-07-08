@@ -233,54 +233,51 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	private void validarAtributosProcessados() {
 
 		TipoContadorAtributoShape contadorTiposAtributosShape = this.contaTiposAtributosShape();
-		TipoContadorAtributoShape contadorTiposAtributosTabela = null;
+//		TipoContadorAtributoShape contadorTiposAtributosTabela = null;
+//
+//		if(this.informacoesNecessarias == InformacoesNecessariasShapeEnum.TABELA_REGIAO_DESMATADA){
+//
+//			//contadorTiposAtributosTabela = this.contaTiposAtributosTabelaRegiaoDesmatada();
+//		}
+//		else if(this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA){
+//
+//			contadorTiposAtributosTabela = this.contaTiposAtributosApenasGeometria();
+//		}
+//
+//		boolean atributosValidos = true;
+//
+//		/**
+//		 * valida os tipos pela quantidade processada no shape e na tabela
+//		 */
+//		if(contadorTiposAtributosTabela.cGeometry > contadorTiposAtributosShape.cGeometry) {
+//
+//			atributosValidos = false;
+//		}
+//
+//		if(contadorTiposAtributosTabela.cLong > contadorTiposAtributosShape.cLong) {
+//
+//			atributosValidos = false;
+//		}
+//
+//		if(contadorTiposAtributosTabela.cDouble > contadorTiposAtributosShape.cDouble) {
+//
+//			atributosValidos = false;
+//		}
+//
+//		if(contadorTiposAtributosTabela.cString > contadorTiposAtributosShape.cString) {
+//
+//			atributosValidos = false;
+//		}
+//
+//		if(contadorTiposAtributosTabela.cDate > contadorTiposAtributosShape.cDate) {
+//
+//			atributosValidos = false;
+//		}
 
-		if(this.informacoesNecessarias == InformacoesNecessariasShapeEnum.TABELA_REGIAO_DESMATADA){
-
-			//contadorTiposAtributosTabela = this.contaTiposAtributosTabelaRegiaoDesmatada();
-		}
-		else if(this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA){
-
-			contadorTiposAtributosTabela = this.contaTiposAtributosApenasGeometria();
-		}
-
-		boolean atributosValidos = true;
-
-		/**
-		 * valida os tipos pela quantidade processada no shape e na tabela
-		 */
-		if(contadorTiposAtributosTabela.cGeometry > contadorTiposAtributosShape.cGeometry) {
-
-			atributosValidos = false;
-		}
-
-		if(contadorTiposAtributosTabela.cLong > contadorTiposAtributosShape.cLong) {
-
-			atributosValidos = false;
-		}
-
-		if(contadorTiposAtributosTabela.cDouble > contadorTiposAtributosShape.cDouble) {
-
-			atributosValidos = false;
-		}
-
-		if(contadorTiposAtributosTabela.cString > contadorTiposAtributosShape.cString) {
-
-			atributosValidos = false;
-		}
-
-		if(contadorTiposAtributosTabela.cDate > contadorTiposAtributosShape.cDate) {
-
-			atributosValidos = false;
-		}
-
-		if(!atributosValidos) {
-
-			if(this.informacoesNecessarias == InformacoesNecessariasShapeEnum.TABELA_REGIAO_DESMATADA){
-
-				this.fireError(Messages.get("error.shapefile.attributes"), null);
-			}
-
+//		if(!atributosValidos) {
+		if(contadorTiposAtributosShape.atributosVazios()){
+			this.fireError(Messages.get("error.shapefile.attributes"), null);
+		} else {
 			return;
 		}
 
@@ -1063,6 +1060,15 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		int cDouble = 0;
 		int cString = 0;
 		int cDate = 0;
+
+		public boolean atributosVazios(){
+			if(this.cGeometry == 0 && this.cGeometry == 0 &&
+					this.cDouble == 0 && this.cString == 0 && this.cDate == 0){
+				return true;
+			}
+
+			return false;
+		}
 	}
 
 }
