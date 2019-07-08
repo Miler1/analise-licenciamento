@@ -94,7 +94,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 
 						for (var i = 0; i < validacaoShape.resultadoEnvio.atributos.length; i++) {
 
-							validacaoShape.resultadoEnvio.atributos[i].colunasBanco = [];
+							// validacaoShape.resultadoEnvio.atributos[i].colunasBanco = [];
 
 							// for (var j = 0; j < validacaoShape.colunasBanco.length; j++) {
 							// 	if (validacaoShape.resultadoEnvio.atributos[i].tipo === validacaoShape.colunasBanco[j].tipo && validacaoShape.colunasBanco[j].obrigatorio) {
@@ -106,6 +106,11 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 
 								validacaoShape.resultadoEnvio.atributos[i].nomeBanco = 'the_geom';
 								validacaoShape.resultadoEnvio.atributos[i].tipoGeometria = true;
+
+								// Linha para converter de texto para JSON de geometria
+								// Fazer isso antes de colocar no mapa - E NÃO SALVAR NO BANCO ANTES
+								// L.geoJSON(JSON.parse(ctrl.localizacaoEmpreendimento)).addTo(map);
+								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
 							}
 
 							if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Date') {
@@ -122,6 +127,10 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 							}
 						}
 					}
+
+					else {
+						restartUploadOnError(response.data);
+					} 
 
 					validacaoShape.resultadoProcessamento = resultado;
 				}

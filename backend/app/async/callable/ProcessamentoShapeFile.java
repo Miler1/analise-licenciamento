@@ -764,12 +764,12 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 				return false;
 			}
-			else if((this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA) && this.resultado.dados.registros.size() > 1){
-
-				this.fireError(Messages.get("error.poligonos.analise.upload.shapefile.multipleAttributes"), "Lista de registros contém mais de um registro no shape");
-
-				return false;
-			}
+//			else if((this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA) && this.resultado.dados.registros.size() > 1){
+//
+//				this.fireError(Messages.get("error.poligonos.analise.upload.shapefile.multipleAttributes"), "Lista de registros contém mais de um registro no shape");
+//
+//				return false;
+//			}
 
 			return true;
 
