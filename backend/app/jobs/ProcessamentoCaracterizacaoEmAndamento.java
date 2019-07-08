@@ -1,5 +1,6 @@
 package jobs;
 
+import br.ufla.lemaf.beans.pessoa.Setor;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
@@ -80,8 +81,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 				}
 
 			} else {
-
-				//TODO RUNNERS-SQUAD-4 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
 
 				criarNovaAnaliseGeo(analise);
 			}
@@ -233,6 +232,12 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
+
+		String siglaSetor = analise.processo.getCaracterizacao().atividadesCaracterizacao.get(0).atividade.siglaSetor;
+
+		analiseGeo.analistasGeo = new ArrayList<>();
+
+		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo));
 		
 		analiseGeo.save();
 		

@@ -1,0 +1,74 @@
+include ../../../../layout/components/paginacao
+
+div
+	filtro-processos(paginacao="listagem.paginacao",
+		disabled-fields="analiseEmAndamentoListagem.disabledFields"
+		atualizar-lista="listagem.atualizarListaProcessos",
+		atualizar-paginacao="listagem.atualizarPaginacao",
+		condicao-tramitacao="listagem.condicaoTramitacao",
+		pesquisar-ao-inicializar="true",
+		is-analise-tecnica="true")
+
+	h4 Lista de processos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="listagem.processos && listagem.processos.length > 0").table-responsive
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th
+							th.col-md-1 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-2 Empreendimento
+							th.col-md-2 Município
+							th.col-md-1 Licenças
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise técnica
+							th.col-md-1 Prazo análise Geo
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in listagem.processos")
+							td
+								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
+								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
+								span(ng-class="{'icone-renovacao': processo.renovacao}")
+
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{listagem.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, listagem.PrazoAnalise.ANALISE)}}
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,listagem.PrazoAnalise.ANALISE_TECNICA)}}
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAnaliseGeo, listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,listagem.PrazoAnalise.ANALISE_GEO)}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+												a(ng-click="listagem.continuarAnalise(processo.idAnaliseGeo)")
+													i.glyphicon.glyphicon-play-circle
+													span Continuar análise
+											li
+												a(ng-click="listagem.exibirDadosProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar processo
+				div
+					span.icone-revisao-solicitada.legenda Revisão Solicitada
+					span.icone-revisao-atendida.legenda Notificação Atendida
+					span.icone-renovacao.legenda Renovação
+
+				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
+
+		.row(ng-show="!listagem.processos || listagem.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.

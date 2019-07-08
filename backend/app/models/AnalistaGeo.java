@@ -3,12 +3,17 @@ package models;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import org.hibernate.jpa.TypedParameterValue;
+import org.hibernate.mapping.Array;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 import utils.Mensagem;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="analista_geo")
@@ -54,18 +59,6 @@ public class AnalistaGeo extends GenericModel {
         if (!usuario.hasPerfil(CodigoPerfil.ANALISTA_GEO))
             throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_GEO);
 
-        /**
-         * A justificativa é somente obrigatória para o coordenador que vincula uma analista geo
-         */
-        if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.COORDENADOR_GEO)) {
-
-            if (justificativaCoordenador == null || justificativaCoordenador.isEmpty()){
-                throw new ValidacaoException(Mensagem.ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA);
-            }
-
-            analiseGeo.justificativaCoordenador = justificativaCoordenador;
-        }
-
         AnalistaGeo analistaGeo = new AnalistaGeo(analiseGeo, usuario);
         analistaGeo.save();
 
@@ -96,15 +89,53 @@ public class AnalistaGeo extends GenericModel {
     }
 
     public Setor getSetor() {
-//TODO REFACTOR
+    //TODO PUMA-SQUAD-1 ajustar busca de setor do analista
 
-//		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
-//				.setParameter("x", this.usuario.id)
-//				.setParameter("y", "Analista TÉCNICO")
-//				.first();
-//
-//		return perfil.setor;
+    //		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
+    //				.setParameter("x", this.usuario.id)
+    //				.setParameter("y", "Analista TÉCNICO")
+    //				.first();
+    //
+    //		return perfil.setor;
 
         return null;
+    }
+
+    public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
+
+        List<UsuarioAnalise> analistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+
+        List<Long> idsAnalistasGeo = analistasGeo.stream()
+                        .map(ang->ang.id)
+                        .collect(Collectors.toList());
+
+        String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsAnalistasGeo) +"]";
+
+        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
+                "     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.analista_geo ag) LIMIT 1), " +
+                "     t3 AS (SELECT count(id), id_usuario FROM analise.analista_geo " +
+                "        WHERE id_usuario in ("+ getParameterLongAsStringDBArray(idsAnalistasGeo) +") " +
+                "        GROUP BY id_usuario, data_vinculacao " +
+                "        ORDER BY data_vinculacao ,1 OFFSET 0 LIMIT 1) " +
+                " SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+
+        Query consulta = JPA.em().createNativeQuery(sql, AnalistaGeoVO.class);
+
+        AnalistaGeoVO analistaGeoVO = (AnalistaGeoVO) consulta.getSingleResult();
+
+        return new AnalistaGeo(analiseGeo, UsuarioAnalise.findById(analistaGeoVO.id));
+
+    }
+
+    private static String getParameterLongAsStringDBArray(List<Long> lista) {
+
+        String retorno = "";
+
+        for (Long cnpj : lista) {
+            retorno = retorno + "" + cnpj + ", ";
+        }
+        retorno = retorno.substring(0, retorno.length() -2) ;
+
+        return retorno;
     }
 }

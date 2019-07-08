@@ -1,10 +1,6 @@
 package models.validacaoParecer;
 
-import models.AnaliseGeo;
-import models.LicencaAnalise;
-import models.ParecerGeoRestricao;
-import models.TipoResultadoAnalise;
-import models.UsuarioAnalise;
+import models.*;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 
@@ -55,7 +51,7 @@ public class SolicitarAjustesGeoAprovador extends TipoResultadoAnaliseChain<Anal
         copia.pareceresGeoRestricoes.clear();
         copia.updatePareceresGeoRestricoes(pareceresGeoRestricoesSalvar);
 
-        analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_ANALISE_GEO_APROVADOR, usuarioExecutor);
+        analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_ANALISE_GEO_PRESIDENTE, usuarioExecutor);
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 }

@@ -62,8 +62,8 @@ GET		/analisesGeo/parecer							    AnalisesGeo.findByNumeroProcesso
 POST	/analisesGeo/iniciar 							    AnalisesGeo.iniciar
 POST	/analisesGeo									    AnalisesGeo.alterar
 POST	/analisesGeo/concluir							    AnalisesGeo.concluir
-GET		/analisesGeo/{idAnaliseTecnica}				        AnalisesGeo.findById
-GET		/analisesGeo/{idAnaliseTecnica}/restricoesGeo	    AnalisesGeo.getRestricoesGeo
+GET		/analisesGeo/{idAnaliseGeo}				            AnalisesGeo.findById
+GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	        AnalisesGeo.getRestricoesGeo
 POST	/analisesGeo/validarParecer					        AnalisesGeo.validarParecer
 POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
 POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador

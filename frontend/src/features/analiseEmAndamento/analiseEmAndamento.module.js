@@ -16,7 +16,12 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 			templateUrl: 'features/analiseEmAndamento/listagem/analise-em-andamento-listagem.html',
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
-		})		
+		})
+		.when('/analise-geo', {
+			templateUrl: 'features/analiseEmAndamento/listagem/analise-em-andamento-listagem.html',
+			controller: controllers.AnaliseEmAndamentoListagemController,
+			controllerAs: 'analiseEmAndamentoListagem'
+		})
 		.otherwise({
 			redirectTo: '/'
 		});    
@@ -25,4 +30,5 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 
 analiseEmAndamento
 	.controller('analiseEmAndamentoJuridicoListController', controllers.AnaliseEmAndamentoJuridicoListController)
-	.controller('analiseEmAndamentoTecnicaListController', controllers.AnaliseEmAndamentoTecnicaListController);
+	.controller('analiseEmAndamentoTecnicaListController', controllers.AnaliseEmAndamentoTecnicaListController)
+	.controller('analiseEmAndamentoGeoListController', controllers.AnaliseEmAndamentoGeoListController);

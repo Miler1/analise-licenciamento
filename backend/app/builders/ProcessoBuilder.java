@@ -685,7 +685,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (siglaSetor != null) {
 
 			addTipoCaracterizacaoAtividade();
-			addRestriction(Restrictions.eq(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.sigla", siglaSetor));
+			addAtividadeAlias();
+			addRestriction(Restrictions.eq(ATIVIDADE_ALIAS+".siglaSetor", siglaSetor));
 			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 
@@ -721,7 +722,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (siglasSetores != null && siglasSetores.size() > 0) {
 
 			addTipoCaracterizacaoAtividade();
-			addRestriction(Restrictions.in(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".setor.sigla", siglasSetores));
+			addAtividadeAlias();
+			addRestriction(Restrictions.in(ATIVIDADE_ALIAS+".siglaSetor", siglasSetores));
 			addRestriction(Restrictions.eqProperty(TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS+".atividade.id", ATIVIDADE_CARACTERIZACAO_ALIAS+".atividade.id"));
 		}
 

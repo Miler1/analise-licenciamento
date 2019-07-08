@@ -2,6 +2,7 @@ package models;
 
 import exceptions.PermissaoNegadaException;
 import models.EntradaUnica.CodigoPerfil;
+import models.licenciamento.TipoAnalise;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -14,12 +15,6 @@ import java.util.Date;
 public class Gerente extends GenericModel {
 	
 	public static final String SEQ = "analise.gerente_id_seq";
-
-	public static enum tipoAnalise {
-		GEO,
-		TECNICA,
-		JURIDICA
-	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -46,7 +41,7 @@ public class Gerente extends GenericModel {
 
 	@Required
 	@Enumerated(EnumType.STRING)
-	public String tipoAnalise;
+	public TipoAnalise tipoAnalise;
 	
 	public Gerente() {
 		

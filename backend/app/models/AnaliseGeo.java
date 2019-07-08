@@ -157,12 +157,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this.ativo = true;
 
-        if(this.analise.diasAnalise.qtdeDiasGeo == null) {
-
-            this.analise.diasAnalise.qtdeDiasGeo = 0;
-            this.analise.diasAnalise.save();
-        }
-
         return super.save();
     }
 
@@ -391,23 +385,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
-            else {
-
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-            }
-
         } else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 
             if(this.usuarioValidacaoGerente != null) {
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-            }
-
-            else {
-
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
@@ -454,13 +436,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         tiposResultadosAnalise.setNext(new SolicitarAjustesGeoGerente());
         tiposResultadosAnalise.setNext(new ParecerNaoValidadoGeoGerente());
 
-        tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
-    }
-
-    public void validarParecerValidacaoAprovador(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
-
-
-        TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new SolicitarAjustesGeoAprovador();
         tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
     }
 
@@ -570,6 +545,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
         }
     }
+
+    public void validarParecerValidacaoAprovador(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
+
+        TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new SolicitarAjustesGeoAprovador();
+        tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
+    }
+
 
     public AnaliseGeo gerarCopia(boolean notificacao) {
 
