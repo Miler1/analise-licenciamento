@@ -111,13 +111,13 @@ public class AnalistaGeo extends GenericModel {
 
         String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsAnalistasGeo) +"]";
 
-        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
+        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
                 "     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.analista_geo ag) LIMIT 1), " +
-                "     t3 AS (SELECT count(id), id_usuario FROM analise.analista_geo " +
+                "     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.analista_geo " +
                 "        WHERE id_usuario in ("+ getParameterLongAsStringDBArray(idsAnalistasGeo) +") " +
-                "        GROUP BY id_usuario, data_vinculacao " +
-                "        ORDER BY data_vinculacao ,1 OFFSET 0 LIMIT 1) " +
-                " SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+                "        GROUP BY id_usuario " +
+                "        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
+                "SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
 
         Query consulta = JPA.em().createNativeQuery(sql, AnalistaGeoVO.class);
 
