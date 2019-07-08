@@ -230,16 +230,14 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 	private AnaliseGeo criarNovaAnaliseGeo(Analise analise) {
 
-		//TODO PUMA-SQUAD-1 Buscar na caracterizacao -> atividadecaractericao -> atividade o setor da atividade
-		//TODO PUMA-SQUAD-1 Buscar lista de analistas pelo setor da atividade no entrada única através desse servico integracaoEntradaUnica.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
-		//TODO PUMA-SQUAD-1 Implementar lógica para distribuição automatica dos processos para os analistas GEOS
-
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
 
 		String siglaSetor = analise.processo.getCaracterizacao().atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
-		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso(siglaSetor));
+		analiseGeo.analistasGeo = new ArrayList<>();
+
+		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo));
 		
 		analiseGeo.save();
 		

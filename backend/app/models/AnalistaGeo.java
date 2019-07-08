@@ -3,8 +3,11 @@ package models;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import org.hibernate.jpa.TypedParameterValue;
+import org.hibernate.mapping.Array;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -98,7 +101,7 @@ public class AnalistaGeo extends GenericModel {
         return null;
     }
 
-    public static AnalistaGeo distribuicaoProcesso(String setorAtividade) {
+    public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
         List<UsuarioAnalise> analistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
@@ -106,10 +109,33 @@ public class AnalistaGeo extends GenericModel {
                         .map(ang->ang.id)
                         .collect(Collectors.toList());
 
-//        String jpql = "SELECT ang.usuario.id FROM " + AnaliseGeo.class.getSimpleName() + " ang WHERE ang.usuario.id in (:idsAnalistasGeo) ";
-//
-//        return AnalistaGeo.find(jpql).setParameter("idsAnalistasGeo", idsAnalistasGeo).first();
-        return null;
+        String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsAnalistasGeo) +"]";
 
+        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
+                "     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.analista_geo ag) LIMIT 1), " +
+                "     t3 AS (SELECT count(id), id_usuario FROM analise.analista_geo " +
+                "        WHERE id_usuario in ("+ getParameterLongAsStringDBArray(idsAnalistasGeo) +") " +
+                "        GROUP BY id_usuario, data_vinculacao " +
+                "        ORDER BY data_vinculacao ,1 OFFSET 0 LIMIT 1) " +
+                " SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+
+        Query consulta = JPA.em().createNativeQuery(sql, AnalistaGeoVO.class);
+
+        AnalistaGeoVO analistaGeoVO = (AnalistaGeoVO) consulta.getSingleResult();
+
+        return new AnalistaGeo(analiseGeo, UsuarioAnalise.findById(analistaGeoVO.id));
+
+    }
+
+    private static String getParameterLongAsStringDBArray(List<Long> lista) {
+
+        String retorno = "";
+
+        for (Long cnpj : lista) {
+            retorno = retorno + "" + cnpj + ", ";
+        }
+        retorno = retorno.substring(0, retorno.length() -2) ;
+
+        return retorno;
     }
 }
