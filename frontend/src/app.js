@@ -476,7 +476,8 @@ licenciamento
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
 	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('legislacaoController', controllers.LegislacaoController)
-	.controller('validacaoShapeController', controllers.ValidacaoShapeController);
+	.controller('validacaoShapeController', controllers.ValidacaoShapeController)
+	.controller('painelMapaController', controllers.PainelMapaController);
 
 
 licenciamento

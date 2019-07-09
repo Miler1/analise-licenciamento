@@ -1,0 +1,6 @@
+mixin mapPanel(id, height, fullscreen)
+    div(ng-controller="painelMapaController as painelMapa" 
+        ng-init="painelMapa.init('"+id+"','"+fullscreen+"')" 
+        ng-cloak)
+
+        div(id=id style="height:"+height+"px; width: 100%;")

@@ -1,7 +1,7 @@
 /**
  * Controller para a validação de shapes
  **/
-var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
+var ValidacaoShapeController = function (validacaoShapeService, mensagem, $rootScope) {
 
 	var validacaoShape = this;
 
@@ -110,7 +110,11 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 								// Linha para converter de texto para JSON de geometria
 								// Fazer isso antes de colocar no mapa - E NÃO SALVAR NO BANCO ANTES
 								// L.geoJSON(JSON.parse(ctrl.localizacaoEmpreendimento)).addTo(map);
+								
 								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
+								$rootScope.geometriaEnviada = validacaoShape.resultadoEnvio.registros[i][i].valor;
+								
+								$rootScope.atualizarMapa($rootScope.geometriaEnviada);
 							}
 
 							// if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Date') {

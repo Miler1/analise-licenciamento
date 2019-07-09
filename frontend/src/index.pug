@@ -39,8 +39,12 @@ html(lang='pt-br')
 					include components/breadcrumb/breadcrumb
 
 					div(growl inline="true")
-
 					div
+						include layout/components/mapPanel
+						+mapPanel('id1','400',true)
+
+						include layout/components/uploadField
+						+uploadField("validacaoShapeController","mapPanelController")
 
 						aside.col-xs-3.main-container__menu
 							menu-principal(itens="itensMenuPrincipal")
