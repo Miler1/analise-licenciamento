@@ -113,24 +113,30 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
 							}
 
-							if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Date') {
+							// if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Date') {
 
-								for (var v = 0; v < validacaoShape.resultadoEnvio.registros.length; v++) {
+							// 	for (var v = 0; v < validacaoShape.resultadoEnvio.registros.length; v++) {
 
-									if (validacaoShape.resultadoEnvio.registros[v][i].valor) {
-										validacaoShape.resultadoEnvio.registros[v][i].valor = new Date(validacaoShape.resultadoEnvio.registros[v][i].valor).asString();
-									} else {
-										validacaoShape.resultadoEnvio.registros[v][i].valor = '-';
-									}
+							// 		if (validacaoShape.resultadoEnvio.registros[v][i].valor) {
+							// 			validacaoShape.resultadoEnvio.registros[v][i].valor = new Date(validacaoShape.resultadoEnvio.registros[v][i].valor).asString();
+							// 		} else {
+							// 			validacaoShape.resultadoEnvio.registros[v][i].valor = '-';
+							// 		}
 
-								}
-							}
+							// 	}
+							// }
 						}
 					}
 
 					else {
-						restartUploadOnError(response.data);
-					} 
+						if (response.data.data.mensagens[0] === "error.shapefile.geometry.invalid.notPolygon") {
+							restartUploadOnError('O arquivo enviado é inválido. Não possui um polígono na sua geometria');
+						} else if (response.data.data.mensagens[0] === "error.shapefile.structure"){
+							restartUploadOnError('O arquivo enviado é inválido. Não possui uma estrutura válida de shapes');
+						} else {
+							restartUploadOnError(response.data.data.mensagens[0]);
+						}
+					}
 
 					validacaoShape.resultadoProcessamento = resultado;
 				}
@@ -138,7 +144,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem) {
 			}, null, validacaoShape.atualizaBarraProgresso)
 			.catch(function (response) {
 
-				restartUploadOnError(response.data);
+				restartUploadOnError(response.data.data.mensagens[0]);
 			});
 	}
 
