@@ -2,12 +2,9 @@ include modalEspecificacaoUpload
 
 mixin uploadField(controller)
 	div(ng-controller="validacaoShapeController as validacaoShape" ng-cloak)
-
 		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
-
 		.row
 			.col-sm-offset-1.col-sm-10
-
 				.dropzone(ng-hide="validacaoShape.arquivoSelecionado.arquivo",
 									ngf-drop,
 									ngf-select,
@@ -39,9 +36,8 @@ mixin uploadField(controller)
 							role="alert", ng-if="validacaoShape.resultadoProcessamento")
 						p(ng-repeat="mensagem in validacaoShape.resultadoProcessamento.mensagens") {{mensagem}}
 		.row
-			
-			p.text-center
+			p.text-center.upload-especifications
 				i.fa.fa-info-circle.modal-open-icon(ng-click="validacaoShape.abrirModal()")
-				a.modal-open-text(ng-click="validacaoShape.abrirModal()")
+				a.modal-open-text.upload-especifications-text(ng-click="validacaoShape.abrirModal()")
 					| Especificações do arquivo a ser enviado
 			
