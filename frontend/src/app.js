@@ -146,11 +146,10 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.COORDENADOR_JURIDICO,
-					app.utils.Perfis.CONSULTOR_JURIDICO,
-					app.utils.Perfis.COORDENADOR_TECNICO,
-					app.utils.Perfis.GERENTE_TECNICO,
-					app.utils.Perfis.ANALISTA_TECNICO,
+					app.utils.Perfis.GERENTE,
+					app.utils.Perfis.ANALISTA_GEO,
+					app.utils.Perfis.ANALISTA_CAR,
+						app.utils.Perfis.ANALISTA_TECNICO
 					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function() {
@@ -161,10 +160,12 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR;
-				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE_TECNICO)
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
+				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_GEO;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -178,9 +179,9 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			icone: 'glyphicon glyphicon-ok',
 			url: function() {
 
-				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.CONSULTOR_JURIDICO) {
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
 
-					return '/analise-juridica';
+					return '/analise-geo';
 
 				} else {
 
@@ -190,18 +191,18 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			countItens: true,
 			estaSelecionado: function() {
 
-				return $location.path().indexOf('/analise-juridica') > -1 ||
+				return $location.path().indexOf('/analise-geo') > -1 ||
 					$location.path().indexOf('/analise-tecnica') > -1;
 			},
 			visivel: function() {
 
-				return [app.utils.Perfis.CONSULTOR_JURIDICO,
+				return [app.utils.Perfis.ANALISTA_GEO,
 				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
-				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.CONSULTOR_JURIDICO)
-					return app.utils.CondicaoTramitacao.EM_ANALISE_JURIDICA;
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.A)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_GEO;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
 			},
@@ -226,19 +227,12 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 			},
 			visivel: function() {
 
-				return [app.utils.Perfis.GERENTE_TECNICO,
-				app.utils.Perfis.COORDENADOR_TECNICO,
-				app.utils.Perfis.COORDENADOR_JURIDICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				return [app.utils.Perfis.GERENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
-				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_TECNICO)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
-				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE_TECNICO)
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
-
-				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_JURIDICO)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_JURIDICA;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -407,7 +401,8 @@ licenciamento.constant('config', {
 	.constant('TiposAnalise', {
 
 		JURIDICA: 'JURIDICA',
-		TECNICA: 'TECNICA'
+		TECNICA: 'TECNICA',
+		GEO: 'GEO'
 	})
 	.constant('TiposSetores', {
 		SECRETARIA: 'SECRETARIA',
@@ -461,6 +456,7 @@ utils.services(licenciamento)
 	.add('atividadeManejoService', services.AtividadeManejoService)
 	.add('tipoLicencaManejoService', services.TipoLicencaManejoService)
 	.add('documentoShapeService', services.DocumentoShapeService)
+	.add('analiseGeoService', services.AnaliseGeoService)
 	.add('validacaoShapeService', services.ValidacaoShapeService)
 	.add('requestService', utils.Request);
 
@@ -478,6 +474,7 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController)
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
+	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('validacaoShapeController', controllers.ValidacaoShapeController);
 

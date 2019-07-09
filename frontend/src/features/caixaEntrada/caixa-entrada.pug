@@ -14,6 +14,10 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaE
     ng-controller='cxEntAnalistaTecnicoController as cxEntAnalistaTecnico')
     include analistaTecnico/caixa-entrada
 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.ANALISTA_GEO",
+ng-controller='cxEntAnalistaGeoController as cxEntAnalistaGeo')
+    include analistaGeo/caixa-entrada
+
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.GERENTE_TECNICO",
     ng-controller='cxEntGerenteTecnicoController as cxEntGerenteTecnico')
     include gerenteTecnico/caixa-entrada

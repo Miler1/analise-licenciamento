@@ -232,6 +232,13 @@ public class Documento extends GenericModel implements Identificavel {
 				.fetch();
 	}
 
+	public List<AnaliseGeo> getAnaliseGeoRelacionadas() {
+
+		return AnaliseJuridica.find("select at from AnaliseGeo at inner join at.documentos documento where documento.id = :idDocumento")
+				.setParameter("idDocumento", this.id)
+				.fetch();
+	}
+
 	public String getNomeArquivo() {
 
 		this.arquivo = getFile();

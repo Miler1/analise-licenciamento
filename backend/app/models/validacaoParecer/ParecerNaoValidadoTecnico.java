@@ -3,7 +3,7 @@ package models.validacaoParecer;
 import exceptions.ValidacaoException;
 import models.AnaliseTecnica;
 import models.AnalistaTecnico;
-import models.GerenteTecnico;
+import models.Gerente;
 import models.TipoResultadoAnalise;
 import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
@@ -32,7 +32,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		
 		if (novaAnaliseTecnica.hasGerentes()) {
 			
-			criarNovaAnaliseComGerente(analiseTecnica, novaAnaliseTecnica.getGerenteTecnico().usuario, usuarioExecutor);
+			criarNovaAnaliseComGerente(analiseTecnica, novaAnaliseTecnica.getGerente().usuario, usuarioExecutor);
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_GERENTE, usuarioExecutor);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -62,9 +62,9 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		
-		novaAnalise.gerentesTecnicos = new ArrayList<>();
-		GerenteTecnico gerenteTecnico = new GerenteTecnico(novaAnalise, usuarioGerente);
-		novaAnalise.gerentesTecnicos.add(gerenteTecnico);
+		novaAnalise.gerentes = new ArrayList<>();
+		Gerente gerente = new Gerente(novaAnalise, usuarioGerente);
+		novaAnalise.gerentes.add(gerente);
 		
 		salvarNovaAnalise(novaAnalise, analiseTecnica, usuarioValidacao);
 	}
@@ -87,7 +87,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		
 		analiseTecnica.validarParecerValidacao();
 		
-		if ((novaAnaliseTecnica.gerentesTecnicos == null || novaAnaliseTecnica.gerentesTecnicos.isEmpty()) &&
+		if ((novaAnaliseTecnica.gerentes == null || novaAnaliseTecnica.gerentes.isEmpty()) &&
 			(novaAnaliseTecnica.analistasTecnicos == null || novaAnaliseTecnica.analistasTecnicos.isEmpty())) {
 			
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO);
