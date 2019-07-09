@@ -6,22 +6,22 @@ var ValidacaoShapeService = function(requestService, request, config, Upload) {
 	var validacaoShape = this;
 
 	/** Atribuição das funções **/
-	validacaoShape.list = list;
+	// validacaoShape.list = list;
 	validacaoShape.uploadShapeFile = uploadShapeFile;
 	validacaoShape.abortEnvioPublicacao = abortEnvioPublicacao;
-	validacaoShape.salvarPublicacao = salvarPublicacao;
-	validacaoShape.verificaSePublicacaoFoiProcessado = verificaSePublicacaoFoiProcessado;
-	validacaoShape.buscarPublicacaoDeAreasPorId = buscarPublicacaoDeAreasPorId;
-	validacaoShape.listColunasTabelaPoligono = listColunasTabelaPoligono;
+	// validacaoShape.salvarPublicacao = salvarPublicacao;
+	// validacaoShape.verificaSePublicacaoFoiProcessado = verificaSePublicacaoFoiProcessado;
+	// validacaoShape.buscarPublicacaoDeAreasPorId = buscarPublicacaoDeAreasPorId;
+	// validacaoShape.listColunasTabelaPoligono = listColunasTabelaPoligono;
 
-	function list(pagina, filtro) {
+	// function list(pagina, filtro) {
 
-		var data = {
-			filtro: filtro
-		};
+	// 	var data = {
+	// 		filtro: filtro
+	// 	};
 
-		return requestService.post('admin/publicacao/area/list/' + pagina, data);
-	}
+	// 	return requestService.post('admin/publicacao/area/list/' + pagina, data);
+	// }
 
 	function uploadShapeFile(arquivo) {
 
@@ -34,21 +34,21 @@ var ValidacaoShapeService = function(requestService, request, config, Upload) {
 		request.abortUpload();
 	}
 
-	function salvarPublicacao(publicacao) {
-		return requestService.post('admin/publicacao/area/salvar', {validacaoShape: publicacao});
-	}
+	// function salvarPublicacao(publicacao) {
+	// 	return requestService.post('admin/publicacao/area/salvar', {validacaoShape: publicacao});
+	// }
 
-	function verificaSePublicacaoFoiProcessado(idvalidacaoShape) {
-		return requestService.get('admin/publicacao/area/foiProcessado/' + idvalidacaoShape);
-	}
+	// function verificaSePublicacaoFoiProcessado(idvalidacaoShape) {
+	// 	return requestService.get('admin/publicacao/area/foiProcessado/' + idvalidacaoShape);
+	// }
 
-	function buscarPublicacaoDeAreasPorId(idvalidacaoShape) {
-		return requestService.get('admin/publicacao/area/' + idvalidacaoShape);
-	}
+	// function buscarPublicacaoDeAreasPorId(idvalidacaoShape) {
+	// 	return requestService.get('admin/publicacao/area/' + idvalidacaoShape);
+	// }
 
-    function listColunasTabelaPoligono() {
-        return requestService.get('admin/publicacao/area/colunasTabelaPoligono');
-    }
+    // function listColunasTabelaPoligono() {
+    //     return requestService.get('admin/publicacao/area/colunasTabelaPoligono');
+    // }
 
 };
 
