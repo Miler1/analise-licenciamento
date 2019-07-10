@@ -57,14 +57,25 @@ var PainelMapaController = function ($scope) {
 
     // Função para atualizar o mapa
     function atualizarMapa(event, shape) {
-        console.log(shape);
-        
-        painelMapa.map.removeLayer(L.geoJSON(painelMapa.listaGeometriasMapa[shape.tipo]));
+        painelMapa.listaGeometriasMapa[shape.tipo] = L.geoJSON(shape.geometria);
+        // TODO - Ajustar o estilo do elemento recebido! Pra diferenciar cor e colocar tooltip!
+        painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo]);
+        centralizarGeometrias();
+    }
+    $scope.$on('mapa:inserirGeometria', atualizarMapa);
+
+    function removerGeometriaMapa(event, shape) {
+        painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo]);
         painelMapa.listaGeometriasMapa[shape.tipo] = shape.geometria;
-        painelMapa.map.addLayer(L.geoJSON(painelMapa.listaGeometriasMapa[shape.tipo]));
+        centralizarGeometrias();
+    }
+    $scope.$on('mapa:removerGeometriaMapa', removerGeometriaMapa);
+
+    function centralizarGeometrias() {
+        // painelMapa.map.fitBounds();
     }
 
-    $scope.$on('mapa:inserirGeometria', atualizarMapa);
+   // painelMapa.listaGeometriasMapa[shape.tipo].getLayers()[0].feature.geometry
 
 };
 

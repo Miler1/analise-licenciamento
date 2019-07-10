@@ -147,6 +147,11 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			$scope.$emit('mapa:inserirGeometria', shape);
 		});
 
+		// On para remover o elemento que foi feito upload, mas cancelado
+		$scope.$on('shapefile:eraseUpload', function(event, shape){
+			$scope.$emit('mapa:removerGeometriaMapa', shape);
+		});
+
 		$rootScope.itensMenuPrincipal = [{
 
 			titulo: 'Caixa de entrada',

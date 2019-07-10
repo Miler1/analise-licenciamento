@@ -1,7 +1,10 @@
 include modalEspecificacaoUpload
 
-mixin uploadField(controller, mapController)
-	div(ng-controller="validacaoShapeController as validacaoShape" ng-cloak)
+mixin uploadField(controller, tipoUpload)
+	div(ng-controller="validacaoShapeController as validacaoShape"
+		ng-init="validacaoShape.init('"+tipoUpload+"')" 
+		ng-cloak)
+		
 		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
 		.row
 			.col-sm-offset-1.col-sm-10

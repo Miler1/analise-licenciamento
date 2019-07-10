@@ -6,32 +6,28 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	var validacaoShape = this;
 
 	/** Atribuição das funções **/
+	validacaoShape.init = init;
 	validacaoShape.alterarArquivo = alterarArquivo;
 	validacaoShape.atualizaBarraProgresso = atualizaBarraProgresso;
 	validacaoShape.cancelaUpload = cancelaUpload;
 	validacaoShape.abrirModal = abrirModal;
 	validacaoShape.arquivoShapeEscolhido = arquivoShapeEscolhido;
-	validacaoShape.passoValido = passoValido;
-
+	
 	/** Atribuição das variáveis **/
 	validacaoShape.progressBarStatus = 0;
 	validacaoShape.resultadoProcessamento = null;
 
 	/** Declaração das funções **/
-	function passoValido() {
-		return validacaoShape.descricao &&
-			validacaoShape.necessitaValidacao &&
-			validacaoShape.resultadoEnvio;
+	function init(tipo){
+		validacaoShape.tipo = tipo;
 	}
 
 	function atualizaBarraProgresso(evt) {
 		var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-
 		validacaoShape.progressBarStatus = progressPercentage + '%';
 	}
 
 	function cancelaUpload() {
-
 		validacaoShapeService.abortUploadShapeFile();
 	}
 
@@ -40,6 +36,8 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 		validacaoShape.arquivoSelecionado = null;
 		validacaoShape.resultadoProcessamento = null;
 		validacaoShape.resultadoEnvio = null;
+
+		$scope.$emit('shapefile:eraseUpload', {geometria: null, tipo: validacaoShape.tipo});
 	}
 
     /**
@@ -48,24 +46,17 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	function arquivoShapeEscolhido(files, file) {
 
 		if (files.length === 0) {
-
 			validacaoShape.arquivoSelecionado = null;
-
 			mensagem.error('O arquivo enviado não possui uma extensão de arquivo válida. Envie arquivos cuja extensão seja \".zip\" ou \".rar\"');
-
 			return;
 		}
 
 		var tamanhoMaximoEmBytes = 104857600; // 100MB
-
 		var fileValidate = files.pop();
 
 		if (fileValidate && fileValidate.size > tamanhoMaximoEmBytes) {
-
 			validacaoShape.arquivoSelecionado = null;
-
 			mensagem.error('O arquivo escolhido ultrapassa o limite de tamanho aceito pelo sistema (100MB). Envie um arquivo que não ultrapasse esse tamanho');
-
 			return;
 		}
 
@@ -94,13 +85,6 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 						for (var i = 0; i < validacaoShape.resultadoEnvio.atributos.length; i++) {
 
-							// validacaoShape.resultadoEnvio.atributos[i].colunasBanco = [];
-
-							// for (var j = 0; j < validacaoShape.colunasBanco.length; j++) {
-							// 	if (validacaoShape.resultadoEnvio.atributos[i].tipo === validacaoShape.colunasBanco[j].tipo && validacaoShape.colunasBanco[j].obrigatorio) {
-							// 		validacaoShape.resultadoEnvio.atributos[i].colunasBanco.push(validacaoShape.colunasBanco[j]);
-							// 	}
-							// }
 
 							if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Geometry') {
 
@@ -108,27 +92,11 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 								validacaoShape.resultadoEnvio.atributos[i].tipoGeometria = true;
 
 								// Linha para converter de texto para JSON de geometria
-								// Fazer isso antes de colocar no mapa - E NÃO SALVAR NO BANCO ANTES
-								// L.geoJSON(JSON.parse(ctrl.localizacaoEmpreendimento)).addTo(map);
-								
 								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
 								validacaoShape.shapeEnviado = validacaoShape.resultadoEnvio.registros[i][i].valor;
 								
-								$scope.$emit('shapefile:uploaded', {geometria: validacaoShape.shapeEnviado, tipo: 'HIDROGRAFIA'});
+								$scope.$emit('shapefile:uploaded', {geometria: validacaoShape.shapeEnviado, tipo: validacaoShape.tipo});
 							}
-
-							// if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Date') {
-
-							// 	for (var v = 0; v < validacaoShape.resultadoEnvio.registros.length; v++) {
-
-							// 		if (validacaoShape.resultadoEnvio.registros[v][i].valor) {
-							// 			validacaoShape.resultadoEnvio.registros[v][i].valor = new Date(validacaoShape.resultadoEnvio.registros[v][i].valor).asString();
-							// 		} else {
-							// 			validacaoShape.resultadoEnvio.registros[v][i].valor = '-';
-							// 		}
-
-							// 	}
-							// }
 						}
 					}
 
@@ -147,24 +115,20 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 			}, null, validacaoShape.atualizaBarraProgresso)
 			.catch(function (response) {
-
 				restartUploadOnError(response.data.data.mensagens[0]);
 			});
 	}
 
 	function restartUploadOnError(message) {
-
 		validacaoShape.arquivoSelecionado = null;
 		validacaoShape.resultadoProcessamento = null;
 		validacaoShape.resultadoEnvio = null;
-
 		mensagem.warning(message);
 
 		return [];
 	}
 
 	function abrirModal() {
-
 		$('#modalEspecificacoesArquivo').modal('show');
 	}
 
