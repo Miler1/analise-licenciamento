@@ -1,7 +1,7 @@
 /**
  * Controller para a validação de shapes
  **/
-var ValidacaoShapeController = function (validacaoShapeService, mensagem, $rootScope) {
+var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope) {
 
 	var validacaoShape = this;
 
@@ -112,9 +112,9 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $rootS
 								// L.geoJSON(JSON.parse(ctrl.localizacaoEmpreendimento)).addTo(map);
 								
 								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
-								$rootScope.geometriaEnviada = validacaoShape.resultadoEnvio.registros[i][i].valor;
+								validacaoShape.shapeEnviado = validacaoShape.resultadoEnvio.registros[i][i].valor;
 								
-								$rootScope.atualizarMapa($rootScope.geometriaEnviada);
+								$scope.$emit('shapefile:uploaded', {geometria: validacaoShape.shapeEnviado, tipo: 'HIDROGRAFIA'});
 							}
 
 							// if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Date') {

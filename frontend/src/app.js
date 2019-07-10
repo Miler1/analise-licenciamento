@@ -116,8 +116,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	amMoment.changeLocale('pt-br');
 });
 
-licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
-	function($scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
+licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
+	function($injector, $scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
 
 		$rootScope.location = $location;
 		$rootScope.confirmacao = {};
@@ -127,9 +127,25 @@ licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationS
 		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
 		$rootScope.perfis = app.utils.Perfis;
 
+		var appController = this;
+
 		if (!$rootScope.usuarioSessao) {
 			window.location = $rootScope.config.baseUrl;
 		}
+
+		// Invoke  para receber as funções da controller da controller do componente do Mapa
+		$injector.invoke(exports.controllers.PainelMapaController, this,
+			{
+				$scope: $scope,
+				$timeout: $timeout,
+			}
+		);
+		appController.init('id21',true);
+
+		// On para receber o valor do componente de upload
+		$scope.$on('shapefile:uploaded', function(event, shape){
+			$scope.$emit('mapa:inserirGeometria', shape);
+		});
 
 		$rootScope.itensMenuPrincipal = [{
 

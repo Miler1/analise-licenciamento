@@ -1,8 +1,9 @@
 /**
  * Controller para a painel de mapa
  **/
-var PainelMapaController = function ($rootScope) {
+var PainelMapaController = function ($scope) {
     var painelMapa = this;
+    painelMapa.map = null;
 
     // Funções atribuídas
     painelMapa.instanciaMapa = instanciaMapa;
@@ -13,16 +14,17 @@ var PainelMapaController = function ($rootScope) {
         // Recebe o ID via parâmetro do mixin
         painelMapa.id = id;
         painelMapa.isFullscreen = fullscreen;
+        painelMapa.listaGeometriasMapa = [];
         painelMapa.instanciaMapa();
     };
 
     // Start do mapa
     function instanciaMapa() {
         painelMapa.map = new L.Map(painelMapa.id, {
-            zoomControl: false,
+            zoomControl: true,
             minZoom: 5,
             maxZoom: 16,
-            scrollWheelZoom: false
+            scrollWheelZoom: true
         }).setView([-3, -52.497545], 6);
     
         /* Termos de uso: http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf */
@@ -36,7 +38,7 @@ var PainelMapaController = function ($rootScope) {
             }
         });
 
-        if(painelMapa.isFullscreen === "true"){
+        if(painelMapa.isFullscreen){
             painelMapa.map.addControl(new L.Control.Fullscreen({
                 position: 'topright',
                 title: {
@@ -54,16 +56,16 @@ var PainelMapaController = function ($rootScope) {
     }
 
     // Função para atualizar o mapa
-    painelMapa.atualizarMapa = function(novaGeometria) {
-        console.log(novaGeometria);
+    function atualizarMapa(event, shape) {
+        console.log(shape);
+        
+        painelMapa.map.removeLayer(L.geoJSON(painelMapa.listaGeometriasMapa[shape.tipo]));
+        painelMapa.listaGeometriasMapa[shape.tipo] = shape.geometria;
+        painelMapa.map.addLayer(L.geoJSON(painelMapa.listaGeometriasMapa[shape.tipo]));
+    }
 
-		// modalCtrl.inserirGeometria(modalCtrl.limite);
+    $scope.$on('mapa:inserirGeometria', atualizarMapa);
 
-		// modalCtrl.inserirEmpreendimento(modalCtrl.dadosProcesso.empreendimento.coordenadas);
-
-		// modalCtrl.map._onResize();
-	};
-    
 };
 
 exports.controllers.PainelMapaController = PainelMapaController;
