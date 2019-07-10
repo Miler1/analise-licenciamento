@@ -109,6 +109,9 @@ public class AnalistaGeo extends GenericModel {
                         .map(ang->ang.id)
                         .collect(Collectors.toList());
 
+        if (idsAnalistasGeo != null && idsAnalistasGeo.size() == 0)
+            return null;
+
         String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsAnalistasGeo) +"]";
 
         String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
@@ -131,8 +134,8 @@ public class AnalistaGeo extends GenericModel {
 
         String retorno = "";
 
-        for (Long cnpj : lista) {
-            retorno = retorno + "" + cnpj + ", ";
+        for (Long id : lista) {
+            retorno = retorno + "" + id + ", ";
         }
         retorno = retorno.substring(0, retorno.length() -2) ;
 
