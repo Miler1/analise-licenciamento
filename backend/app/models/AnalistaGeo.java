@@ -11,6 +11,8 @@ import play.db.jpa.JPA;
 import utils.Mensagem;
 
 import javax.persistence.*;
+import javax.xml.ws.WebServiceException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,12 +107,12 @@ public class AnalistaGeo extends GenericModel {
 
         List<UsuarioAnalise> analistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
+        if (analistasGeo == null || analistasGeo.size() == 0)
+            throw new WebServiceException("Não existe nenhum analista geo para vincular automáticamente o processo.");
+
         List<Long> idsAnalistasGeo = analistasGeo.stream()
                         .map(ang->ang.id)
                         .collect(Collectors.toList());
-
-        if (idsAnalistasGeo != null && idsAnalistasGeo.size() == 0)
-            return null;
 
         String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsAnalistasGeo) +"]";
 

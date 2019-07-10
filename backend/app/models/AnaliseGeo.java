@@ -131,9 +131,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFimValidacaoAprovador;
 
-    @Transient
-    public boolean deveTramitar;
-
     private void validarParecer() {
 
         if(StringUtils.isBlank(this.parecer))
