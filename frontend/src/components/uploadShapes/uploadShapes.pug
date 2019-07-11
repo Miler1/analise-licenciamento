@@ -8,5 +8,12 @@ mixin uploadShapes()
 		+uploadField("validacaoShapeController","HIDROGAFIA",'#2196F3',"Hidrografia")
 		+uploadField("validacaoShapeController","APP",'#8BC34A',"Área de preservação permanente")
 		+uploadField("validacaoShapeController","AREA ANTROPIZADA",'#CDDC39',"Área antropizada")
-
 		
+		div.row
+			div.pull-left
+				button.btn.btn-default(ng-click="uploadShapes.enviaShapes")
+					| &nbsp;Cancelar
+			div.pull-right
+				button.btn.btn-default.btn-success(ng-click="uploadShapes.enviaShapes", ng-disabled="uploadShapes.shapesUploaded !== 3")
+					| &nbsp;Continuar
+	
