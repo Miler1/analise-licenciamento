@@ -45,8 +45,9 @@ html(lang='pt-br')
 						+mapPanel('id21','400', true)
 
 						include layout/components/uploadField
-						+uploadField("validacaoShapeController","HIDROGAFIA")
-						+uploadField("validacaoShapeController","APP")
+						+uploadField("validacaoShapeController","HIDROGAFIA",'#2196F3',"Hidrografia")
+						+uploadField("validacaoShapeController","APP",'#8BC34A',"Área de preservação permanente")
+						+uploadField("validacaoShapeController","AREA ANTROPIZADA",'#CDDC39',"Área antropizada")
 
 						aside.col-xs-3.main-container__menu
 							menu-principal(itens="itensMenuPrincipal")

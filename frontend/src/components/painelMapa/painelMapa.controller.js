@@ -11,7 +11,7 @@ var PainelMapaController = function ($scope) {
     // Função para receber os parâmetros do pug e iniciar a renderização do mapa
     painelMapa.init = function(id, fullscreen)
     {
-        // Recebe o ID via parâmetro do mixin
+        // Recebe o ID via parâmetro da controller pai (por conta dos $emits em escopos diferentes)
         painelMapa.id = id;
         painelMapa.isFullscreen = fullscreen;
         painelMapa.listaGeometriasMapa = [];
@@ -57,25 +57,33 @@ var PainelMapaController = function ($scope) {
 
     // Função para atualizar o mapa
     function atualizarMapa(event, shape) {
-        painelMapa.listaGeometriasMapa[shape.tipo] = L.geoJSON(shape.geometria);
-        // TODO - Ajustar o estilo do elemento recebido! Pra diferenciar cor e colocar tooltip!
-        painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo]);
+        painelMapa.listaGeometriasMapa[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
+        painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo].bindTooltip(shape.tooltipTexto));
         centralizarGeometrias();
     }
     $scope.$on('mapa:inserirGeometria', atualizarMapa);
 
     function removerGeometriaMapa(event, shape) {
         painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo]);
-        painelMapa.listaGeometriasMapa[shape.tipo] = shape.geometria;
+        delete painelMapa.listaGeometriasMapa[shape.tipo];
         centralizarGeometrias();
     }
     $scope.$on('mapa:removerGeometriaMapa', removerGeometriaMapa);
 
     function centralizarGeometrias() {
-        // painelMapa.map.fitBounds();
-    }
+        var latLngBounds = null;
 
-   // painelMapa.listaGeometriasMapa[shape.tipo].getLayers()[0].feature.geometry
+        Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+            if(!latLngBounds) {
+                latLngBounds = painelMapa.listaGeometriasMapa[index].getBounds();
+            }
+            else {
+                latLngBounds.extend(painelMapa.listaGeometriasMapa[index].getBounds());
+            }  
+        });
+        
+        painelMapa.map.fitBounds(latLngBounds);
+    }
 
 };
 

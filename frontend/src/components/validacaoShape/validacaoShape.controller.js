@@ -18,8 +18,10 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	validacaoShape.resultadoProcessamento = null;
 
 	/** Declaração das funções **/
-	function init(tipo){
+	function init(tipo,cor,tooltipTexto){
 		validacaoShape.tipo = tipo;
+		validacaoShape.cor = cor;
+		validacaoShape.tooltipTexto = tooltipTexto;
 	}
 
 	function atualizaBarraProgresso(evt) {
@@ -95,7 +97,18 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
 								validacaoShape.shapeEnviado = validacaoShape.resultadoEnvio.registros[i][i].valor;
 								
-								$scope.$emit('shapefile:uploaded', {geometria: validacaoShape.shapeEnviado, tipo: validacaoShape.tipo});
+								$scope.$emit('shapefile:uploaded', {
+									geometria: validacaoShape.shapeEnviado, 
+									tipo: validacaoShape.tipo, 
+									estilo: {
+										style: {
+											fillColor: validacaoShape.cor,
+											color: validacaoShape.cor,
+											fillOpacity: 0.2
+										}
+									},
+									tooltipTexto: validacaoShape.tooltipTexto
+								});
 							}
 						}
 					}
