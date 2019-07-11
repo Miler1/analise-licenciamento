@@ -1,0 +1,12 @@
+include ../../layout/components/mapPanel
+include ../../layout/components/uploadField
+
+mixin uploadShapes()
+	div(ng-controller="uploadShapesController as uploadShapes" ng-cloak)
+		+mapPanel('id1','500', true)
+		
+		+uploadField("validacaoShapeController","HIDROGAFIA",'#2196F3',"Hidrografia")
+		+uploadField("validacaoShapeController","APP",'#8BC34A',"Área de preservação permanente")
+		+uploadField("validacaoShapeController","AREA ANTROPIZADA",'#CDDC39',"Área antropizada")
+
+		

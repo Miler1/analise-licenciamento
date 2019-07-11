@@ -133,24 +133,24 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			window.location = $rootScope.config.baseUrl;
 		}
 
-		// Invoke  para receber as funções da controller da controller do componente do Mapa
-		$injector.invoke(exports.controllers.PainelMapaController, this,
-			{
-				$scope: $scope,
-				$timeout: $timeout,
-			}
-		);
-		appController.init('id21',true);
+		// // Invoke  para receber as funções da controller da controller do componente do Mapa
+		// $injector.invoke(exports.controllers.PainelMapaController, this,
+		// 	{
+		// 		$scope: $scope,
+		// 		$timeout: $timeout,
+		// 	}
+		// );
+		// appController.init('id21',true);
 
-		// On para receber o valor do componente de upload
-		$scope.$on('shapefile:uploaded', function(event, shape){
-			$scope.$emit('mapa:inserirGeometria', shape);
-		});
+		// // On para receber o valor do componente de upload
+		// $scope.$on('shapefile:uploaded', function(event, shape){
+		// 	$scope.$emit('mapa:inserirGeometria', shape);
+		// });
 
-		// On para remover o elemento que foi feito upload, mas cancelado
-		$scope.$on('shapefile:eraseUpload', function(event, shape){
-			$scope.$emit('mapa:removerGeometriaMapa', shape);
-		});
+		// // On para remover o elemento que foi feito upload, mas cancelado
+		// $scope.$on('shapefile:eraseUpload', function(event, shape){
+		// 	$scope.$emit('mapa:removerGeometriaMapa', shape);
+		// });
 
 		$rootScope.itensMenuPrincipal = [{
 
@@ -498,7 +498,8 @@ licenciamento
 	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('validacaoShapeController', controllers.ValidacaoShapeController)
-	.controller('painelMapaController', controllers.PainelMapaController);
+	.controller('painelMapaController', controllers.PainelMapaController)
+	.controller('uploadShapesController', controllers.UploadShapesController);
 
 
 licenciamento
