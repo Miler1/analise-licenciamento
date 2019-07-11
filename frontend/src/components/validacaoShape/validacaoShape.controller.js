@@ -18,10 +18,10 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	validacaoShape.resultadoProcessamento = null;
 
 	/** Declaração das funções **/
-	function init(tipo,cor,tooltipTexto){
+	function init(tipo,cor,popupText){
 		validacaoShape.tipo = tipo;
 		validacaoShape.cor = cor;
-		validacaoShape.tooltipTexto = tooltipTexto;
+		validacaoShape.popupText = popupText;
 	}
 
 	function atualizaBarraProgresso(evt) {
@@ -107,7 +107,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 											fillOpacity: 0.2
 										}
 									},
-									tooltipTexto: validacaoShape.tooltipTexto
+									popupText: validacaoShape.popupText
 								});
 							}
 						}

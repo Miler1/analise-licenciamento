@@ -1,8 +1,8 @@
 include modalEspecificacaoUpload
 
-mixin uploadField(controller, tipoUpload, cor, tooltipTexto)
+mixin uploadField(controller, tipoUpload, cor, popupText)
 	div(ng-controller="validacaoShapeController as validacaoShape"
-		ng-init="validacaoShape.init('"+tipoUpload+"','"+cor+"','"+tooltipTexto+"')" 
+		ng-init="validacaoShape.init('"+tipoUpload+"','"+cor+"','"+popupText+"')" 
 		ng-cloak)
 		
 		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')

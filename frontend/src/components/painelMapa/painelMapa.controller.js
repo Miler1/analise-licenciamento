@@ -58,7 +58,7 @@ var PainelMapaController = function ($scope) {
 	// Função para atualizar o mapa
 	function atualizarMapa(event, shape) {
 		painelMapa.listaGeometriasMapa[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
-		painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo].bindTooltip(shape.tooltipTexto));
+		painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo].bindPopup(shape.popupText));
 		centralizarGeometrias();
 	}
 	$scope.$on('mapa:inserirGeometria', atualizarMapa);
