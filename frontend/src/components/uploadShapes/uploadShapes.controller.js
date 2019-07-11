@@ -2,24 +2,22 @@
  * Controller para a tela de upload de shapes
  **/
 var UploadShapesController = function ($injector, $scope, $timeout) {
+
 	var uploadShapes = this;
 
-	uploadShapes.isDisabled = false;
+	/** Variáveis para controle de lógica **/
 	uploadShapes.shapesUploaded = 0;
+	uploadShapes.abrirModal = abrirModal;
 
 	/** Atribuição de funções **/
 	uploadShapes.enviaShapes = enviaShapes;
-	uploadShapes.isDisabled = isDisabled;
+
+	function abrirModal() {
+		$('#modalEspecificacoesArquivo').modal('show');
+	}
 
 	function enviaShapes() {
 		console.log();
-	}
-
-	function isDisabled(){
-		if(uploadShapes.shapesUploaded === 3){
-			return false;
-		}
-		return true;
 	}
 
 	// Invoke  para receber as funções da controller da controller do componente do Mapa

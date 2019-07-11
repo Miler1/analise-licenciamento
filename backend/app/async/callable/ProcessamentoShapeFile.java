@@ -67,10 +67,10 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		Tika tika = new Tika();
 		realType = tika.detect(arquivo);
 
-		if(realType.contains("application/zip") ){
+		if (realType.contains("application/zip")) {
 
 			this.arquivoZip = arquivo;
-		}else{
+		} else {
 			this.arquivoRar = arquivo;
 		}
 		this.keyTemp = keyTemp;
@@ -90,44 +90,43 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 		boolean arquivoExtraido;
 
-		if(isZip){
+		if (isZip) {
 			arquivoExtraido = this.arquivoShapeExtraido(this.arquivoZip);
-		}else{
+		} else {
 			arquivoExtraido = this.arquivoShapeExtraido(this.arquivoRar);
 		}
 
-		if(!arquivoExtraido) {
-			if(isZip){
+		if (!arquivoExtraido) {
+			if (isZip) {
 
 				this.extrairArquivosShapeZip(this.arquivoZip);
-			}else{
+			} else {
 				this.extrairArquivosShapeRar(this.arquivoRar);
 			}
 		}
 
-		if(this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
+		if (this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
 			this.processarArquivosShape();
 		}
-		if(this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
+		if (this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
 			this.validarAtributosProcessados();
 		}
-		if(this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
+		if (this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
 			this.validarGeometriasSobrepostas();
 		}
-		if(this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA){
-			if(this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
+		if (this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA) {
+			if (this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
 				//O Analista não precisa de um shape vinculado ao usuário logado
 				//Mas é preciso validar em função do
 				this.validarGeometriaMunicipioEmpreendimento();
 			}
 		}
 
-		if(this.resultado.status == null) {
+		if (this.resultado.status == null) {
 
 			this.resultado.status = ResultadoProcessamentoShapeFile.Status.SUCESSO;
 			this.resultado.mensagens.add(Messages.get("success.shapefile"));
-		}
-		else {
+		} else {
 
 			this.resultado.dados = null;
 		}
@@ -148,31 +147,30 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 		String detalhesSobreposicao = "";
 
-		for(int x = 0; x < geometriasDoShapeFile.size(); x++) {
+		for (int x = 0; x < geometriasDoShapeFile.size(); x++) {
 
 			int countSobreposicao = 0;
 
-			for(int y = 0; y < geometriasDoShapeFile.size(); y++) {
+			for (int y = 0; y < geometriasDoShapeFile.size(); y++) {
 
-				if(x == y){
+				if (x == y) {
 
 					countSobreposicao++;
-				}
-				else if(geometriasDoShapeFile.get(x).intersects(geometriasDoShapeFile.get(y))) {
+				} else if (geometriasDoShapeFile.get(x).intersects(geometriasDoShapeFile.get(y))) {
 
 					Geometry interseccoes = geometriasDoShapeFile.get(x).intersection(geometriasDoShapeFile.get(y));
 					int quantidadeInterseccoes = interseccoes.getNumGeometries();
 					double somaAreaInterseccoes = 0;
-					for(int i = 0; i < quantidadeInterseccoes; i++){
+					for (int i = 0; i < quantidadeInterseccoes; i++) {
 						somaAreaInterseccoes += (GeoCalc.area(interseccoes.getGeometryN(i))) / 10000;
 					}
 
-					if(somaAreaInterseccoes > 0.1) {
+					if (somaAreaInterseccoes > 0.1) {
 						countSobreposicao++;
 					}
 				}
 
-				if(countSobreposicao > 1) {
+				if (countSobreposicao > 1) {
 
 					Logger.info("Sobreposição detectada entre os registros: [ " + this.resultado.dados.registros.get(x).get(1).valor + " ] e [ " + this.resultado.dados.registros.get(y).get(1).valor + " ]");
 
@@ -183,13 +181,13 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 				}
 			}
 
-			if(isAreasSobrepostas) {
+			if (isAreasSobrepostas) {
 
 				break;
 			}
 		}
 
-		if(isAreasSobrepostas) {
+		if (isAreasSobrepostas) {
 
 			this.fireError(Messages.get("error.shapefile.attributes.sobreposicao") + " " + detalhesSobreposicao, null);
 			return;
@@ -198,24 +196,25 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	/**
 	 * Obtem todas as áreas (geometrias) processadas do shape
+	 *
 	 * @return
 	 */
 	private List<Geometry> getTodasAsGeometriasDoShape() {
 
 		List<Geometry> geometriasDoShapeFile = new ArrayList<Geometry>();
 
-		if(this.resultado.dados == null || this.resultado.dados.registros == null || this.resultado.dados.registros.isEmpty()) {
+		if (this.resultado.dados == null || this.resultado.dados.registros == null || this.resultado.dados.registros.isEmpty()) {
 
 			return geometriasDoShapeFile;
 		}
 
-		for(List<AtributoShape> registro : this.resultado.dados.registros) {
+		for (List<AtributoShape> registro : this.resultado.dados.registros) {
 
-			for(AtributoShape atributo : registro) {
+			for (AtributoShape atributo : registro) {
 
-				if(atributo.valor != null && atributo.valor instanceof Geometry) {
+				if (atributo.valor != null && atributo.valor instanceof Geometry) {
 
-					Geometry geometria = (Geometry)atributo.valor;
+					Geometry geometria = (Geometry) atributo.valor;
 					geometria.setSRID(Configuracoes.SRID_DEFAULT);
 					geometriasDoShapeFile.add(geometria);
 				}
@@ -228,7 +227,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	/**
 	 * Valida os atributos processados com base no contador dos tipos encontrados.
 	 * - Compara o contador dos tipos de atributos encontrados na tabela RegiaoDesmatada (Atributos Obrigatórios)
-	 *   com o contador dos tipos de atributos encontrados no shapefile.
+	 * com o contador dos tipos de atributos encontrados no shapefile.
 	 */
 	private void validarAtributosProcessados() {
 
@@ -275,7 +274,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 //		}
 
 //		if(!atributosValidos) {
-		if(contadorTiposAtributosShape.atributosVazios()){
+		if (contadorTiposAtributosShape.atributosVazios()) {
 			this.fireError(Messages.get("error.shapefile.attributes"), null);
 		} else {
 			return;
@@ -286,17 +285,22 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	private void validarGeometriaMunicipioEmpreendimento() {
 
 		/** TODO - oisouothiago - Após trazer o municipio pode tirar o if e rodar (ele já vai ter sido filtrado pra estar na tela por um processo **/
-		if(this.idMunicipio != null) {
+		if (this.idMunicipio != null) {
 
 			Municipio municipio = Municipio.findById(this.idMunicipio);
 
 			List<Geometry> geometriasDoShapeFile = getTodasAsGeometriasDoShape();
 
-			Boolean geometriaInvalida = geometriasDoShapeFile.stream().anyMatch(gds -> !municipio.limite.contains(gds));
-
-			if(geometriaInvalida) {
+			geometriasDoShapeFile.stream().map(gds -> {
+				if (!municipio.limite.contains(gds)) {
+					return municipio.limite.intersection(gds);
+				}
+				else {
+					return gds;
+				}
+			});
+			if (geometriasDoShapeFile.stream().anyMatch(gds -> gds.isEmpty())) {
 				this.fireError(Messages.get("error.shapefile.attributes.foraMunicipio"), null);
-				return;
 			}
 		}
 	}
@@ -356,6 +360,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	/**
 	 * Retorna o contador para cada tipo de atributo encontrado
 	 * na tabela (atributos obrigatórios).
+	 *
 	 * @return
 	 */
 	private TipoContadorAtributoShape contaTiposAtributosApenasGeometria() {
@@ -370,36 +375,33 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	/**
 	 * Retorna o contador para cada tipo de atributo encontrado
 	 * no shapefile.
+	 *
 	 * @return
 	 */
 	private TipoContadorAtributoShape contaTiposAtributosShape() {
 
 		TipoContadorAtributoShape tipoContadorAtributoShape = new TipoContadorAtributoShape();
 
-		if(this.resultado.dados == null || this.resultado.dados.atributos == null || this.resultado.dados.atributos.isEmpty()) {
+		if (this.resultado.dados == null || this.resultado.dados.atributos == null || this.resultado.dados.atributos.isEmpty()) {
 
 			return tipoContadorAtributoShape;
 		}
 
-		for(AtributoShape atributoShape : this.resultado.dados.atributos) {
+		for (AtributoShape atributoShape : this.resultado.dados.atributos) {
 
-			if(atributoShape.tipo.equals(Geometry.class.getSimpleName())) {
+			if (atributoShape.tipo.equals(Geometry.class.getSimpleName())) {
 
 				tipoContadorAtributoShape.cGeometry++;
-			}
-			else if(atributoShape.tipo.equals(Long.class.getSimpleName())) {
+			} else if (atributoShape.tipo.equals(Long.class.getSimpleName())) {
 
 				tipoContadorAtributoShape.cLong++;
-			}
-			else if(atributoShape.tipo.equals(Double.class.getSimpleName())) {
+			} else if (atributoShape.tipo.equals(Double.class.getSimpleName())) {
 
 				tipoContadorAtributoShape.cDouble++;
-			}
-			else if(atributoShape.tipo.equals(String.class.getSimpleName())) {
+			} else if (atributoShape.tipo.equals(String.class.getSimpleName())) {
 
 				tipoContadorAtributoShape.cString++;
-			}
-			else if(atributoShape.tipo.equals(Date.class.getSimpleName())) {
+			} else if (atributoShape.tipo.equals(Date.class.getSimpleName())) {
 
 				tipoContadorAtributoShape.cDate++;
 			}
@@ -409,9 +411,9 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	}
 
 
-
 	/**
 	 * Retorna se o arquivo shapefile .sh existe
+	 *
 	 * @return
 	 */
 	private boolean arquivoShapeExtraido(File arquivo) {
@@ -426,19 +428,16 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 		String arquivoPrj = arquivo.getParent() + "/" + this.keyTemp + ".prj";
 
-		if(!new File(arquivoShp).exists()) {
+		if (!new File(arquivoShp).exists()) {
 
 			return false;
-		}
-		else if(!new File(arquivoDbf).exists()) {
+		} else if (!new File(arquivoDbf).exists()) {
 
 			return false;
-		}
-		else if(!new File(arquivoShx).exists()) {
+		} else if (!new File(arquivoShx).exists()) {
 
 			return false;
-		}
-		else if(!new File(arquivoPrj).exists()) {
+		} else if (!new File(arquivoPrj).exists()) {
 
 			return false;
 		}
@@ -463,7 +462,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 			 * Valida o arquivo zip e obtem os arquivos
 			 * necessários na estrutura do shapefile (shp,dbf,shx)
 			 */
-			if(!arquivoZipValido(zipFile)) {
+			if (!arquivoZipValido(zipFile)) {
 
 				return;
 			}
@@ -495,8 +494,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 			ioPrj.close();
 			zipFile.close();
 
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 
 			this.fireError(Messages.get("error.shapefile.invalid"), ex.getMessage());
 			return;
@@ -514,13 +512,13 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		Archive archive = new Archive(arquivoRar);
 
 
-		try{
+		try {
 
 			/**
 			 * Valida o arquivo zip e obtem os arquivos
 			 * necessários na estrutura do shapefile (shp,dbf,shx)
 			 */
-			if(!arquivoRarValido(archive)) {
+			if (!arquivoRarValido(archive)) {
 
 				return;
 			}
@@ -537,7 +535,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 			archive.extractFile(this.rarShx, osShx);
 			archive.extractFile(this.rarPrj, osPrj);
 
-		}catch (Exception ex){
+		} catch (Exception ex) {
 
 			this.fireError(Messages.get("error.shapefile.invalid"), ex.getMessage());
 			return;
@@ -553,35 +551,33 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		boolean isZip = this.arquivoZip != null;
 		try {
 			String pathBaseDestino;
-			if(isZip){
+			if (isZip) {
 
 				pathBaseDestino = this.arquivoZip.getParent() + "/" + this.keyTemp;
-			}else{
+			} else {
 				pathBaseDestino = this.arquivoRar.getParent() + "/" + this.keyTemp;
 			}
 
 
-			if(this.verificarSistemasDeCoordenadas(pathBaseDestino + ".prj")){
+			if (this.verificarSistemasDeCoordenadas(pathBaseDestino + ".prj")) {
 
 				/**
 				 * Obtem as propriedades do shape (atributos do cabeçalho)
 				 */
 				this.processarAtributosShape(pathBaseDestino + ".shp");
 
-			}
-			else {
+			} else {
 
 				this.fireError(Messages.get("error.shapefile.not.sirgas2000"), "O arquivo não segue a configuração de projeção indicada");
 			}
 
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 
 			ex.printStackTrace();
 
 			Logger.error(ex.getMessage());
 
-			if(this.resultado.mensagens.isEmpty()) {
+			if (this.resultado.mensagens.isEmpty()) {
 
 				this.fireError(Messages.get("error.shapefile.generic"), ex.getMessage());
 			}
@@ -589,13 +585,12 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	}
 
 	/**
-	 *
 	 * @param rarFile
 	 * @return
 	 */
 	private boolean arquivoRarValido(Archive rarFile) {
 
-		if(rarFile.getFileHeaders().size()== 0) {
+		if (rarFile.getFileHeaders().size() == 0) {
 
 			this.fireError(Messages.get("error.shapefile.empty"), "Arquivo inválido, size=0");
 			return false;
@@ -614,22 +609,22 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 			Logger.info(fileHeader.getFileNameString());
 
 
-			if(fileHeader.getFileNameString().toLowerCase().endsWith(".shp")) {
+			if (fileHeader.getFileNameString().toLowerCase().endsWith(".shp")) {
 
 				this.rarShp = fileHeader;
 			}
 
-			if(fileHeader.getFileNameString().toLowerCase().endsWith(".dbf")) {
+			if (fileHeader.getFileNameString().toLowerCase().endsWith(".dbf")) {
 
 				this.rarDbf = fileHeader;
 			}
 
-			if(fileHeader.getFileNameString().toLowerCase().endsWith(".shx")) {
+			if (fileHeader.getFileNameString().toLowerCase().endsWith(".shx")) {
 
 				this.rarShx = fileHeader;
 			}
 
-			if(fileHeader.getFileNameString().toLowerCase().endsWith(".prj")) {
+			if (fileHeader.getFileNameString().toLowerCase().endsWith(".prj")) {
 
 				this.rarPrj = fileHeader;
 			}
@@ -641,7 +636,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		 * http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Shapefile_file_extensions/005600000003000000/
 		 * Esses quatro arquivos (shp,shx,dbf, prj) são requeridos na estrutura do shapefile.
 		 */
-		if(this.rarShp == null || this.rarDbf == null || this.rarShx == null || this.rarPrj == null) {
+		if (this.rarShp == null || this.rarDbf == null || this.rarShx == null || this.rarPrj == null) {
 
 			this.fireError(Messages.get("error.shapefile.structure"), "O shapefile não contém todos os arquivos requeridos (shp,shx,dbf,prj)");
 
@@ -653,13 +648,12 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	}
 
 	/**
-	 *
 	 * @param zipFile
 	 * @return
 	 */
 	private boolean arquivoZipValido(ZipFile zipFile) {
 
-		if(zipFile.size() == 0) {
+		if (zipFile.size() == 0) {
 
 			this.fireError(Messages.get("error.shapefile.empty"), "Arquivo inválido, size=0");
 
@@ -671,22 +665,22 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 			ZipEntry element = zipEntries.nextElement();
 
-			if(element.getName().toLowerCase().endsWith(".shp")) {
+			if (element.getName().toLowerCase().endsWith(".shp")) {
 
 				this.zipShp = element;
 			}
 
-			if(element.getName().toLowerCase().endsWith(".dbf")) {
+			if (element.getName().toLowerCase().endsWith(".dbf")) {
 
 				this.zipDbf = element;
 			}
 
-			if(element.getName().toLowerCase().endsWith(".shx")) {
+			if (element.getName().toLowerCase().endsWith(".shx")) {
 
 				this.zipShx = element;
 			}
 
-			if(element.getName().toLowerCase().endsWith(".prj")) {
+			if (element.getName().toLowerCase().endsWith(".prj")) {
 
 				this.zipPrj = element;
 			}
@@ -698,7 +692,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		 * Esses três arquivos (shp,shx,dbf) são requeridos na estrutura do shapefile.
 		 */
 
-		if(this.zipShp == null || this.zipDbf == null || this.zipShx == null || this.zipPrj == null) {
+		if (this.zipShp == null || this.zipDbf == null || this.zipShx == null || this.zipPrj == null) {
 
 			this.fireError(Messages.get("error.shapefile.structure"), "O shapefile não contém todos os arquivos requeridos (shp,shx,dbf,prj)");
 
@@ -712,6 +706,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	/**
 	 * Processa os atributos do cabeçalho a serem armazenados no resultado
 	 * do processamento.
+	 *
 	 * @param pathShpFile - Caminho do arquivo .shp do shapefile
 	 */
 	private boolean processarAtributosShape(String pathShpFile) {
@@ -737,18 +732,18 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 			/**
 			 * Processa as features
 			 */
-			while(features.hasNext()) {
+			while (features.hasNext()) {
 
 				SimpleFeature feature = features.next();
 
-				if(this.resultado.dados.atributos.isEmpty()) {
+				if (this.resultado.dados.atributos.isEmpty()) {
 
 					this.preencheAtributosResultado(feature);
 				}
 
 				List<AtributoShape> registro = this.preencheNovoRegistroResultado(feature);
 
-				if(!registro.isEmpty()) {
+				if (!registro.isEmpty()) {
 
 					this.resultado.dados.registros.add(registro);
 				}
@@ -758,7 +753,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 			dataStore.dispose();
 
-			if(this.resultado.dados.atributos.isEmpty() || this.resultado.dados.registros.isEmpty()) {
+			if (this.resultado.dados.atributos.isEmpty() || this.resultado.dados.registros.isEmpty()) {
 
 				this.fireError(Messages.get("error.shapefile.attributes.empty"), "Lista de atributos/registros não contém registros");
 
@@ -773,8 +768,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 			return true;
 
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 
 			this.fireError(Messages.get("error.shapefile.shp"), ex.getMessage());
 
@@ -784,6 +778,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	/**
 	 * Verifica se o sistema de coordenadas do shapefile é o SIRGAS 2000 Geometry
+	 *
 	 * @return
 	 */
 	private boolean verificarSistemasDeCoordenadas(String pathPjrFile) throws IOException {
@@ -791,7 +786,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		File file = new File(pathPjrFile);
 		FileInputStream fi = new FileInputStream(file);
 
-		byte[] bytesFile = new byte[(int)file.length()];
+		byte[] bytesFile = new byte[(int) file.length()];
 
 		fi.read(bytesFile);
 
@@ -803,12 +798,12 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		try {
 			CRSshape = (DefaultGeographicCRS) CRS.parseWKT(conteudo);
 
-			if(CRSshape == null) {
+			if (CRSshape == null) {
 
 				return false;
 			}
 
-			if(CRSshape.getName() == null) {
+			if (CRSshape.getName() == null) {
 
 				return false;
 			}
@@ -816,7 +811,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 			// A projeção deve estar em Sirgas2000 Geográfico
 			String name = CRSshape.getName().toString().toLowerCase();
 
-			if(!name.contains("sirgas 2000") && !name.contains("sirgas_2000")) {
+			if (!name.contains("sirgas 2000") && !name.contains("sirgas_2000")) {
 				return false;
 			}
 		} catch (Exception e) {
@@ -828,6 +823,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	/**
 	 * Preenche os atributos a serem retornados como resultado
+	 *
 	 * @param feature
 	 */
 	private void preencheAtributosResultado(SimpleFeature feature) {
@@ -836,20 +832,18 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 			String name = attribute.getName() != null ? attribute.getName().toString() : null;
 
-			if(name != null) {
+			if (name != null) {
 
 				AtributoShape atributo = new AtributoShape();
 				atributo.nome = attribute.getName().toString();
 
-				if(attribute.getValue() instanceof Geometry) {
+				if (attribute.getValue() instanceof Geometry) {
 
 					atributo.tipo = Geometry.class.getSimpleName();
-				}
-				else if(attribute.getValue() instanceof Integer) {
+				} else if (attribute.getValue() instanceof Integer) {
 
 					atributo.tipo = Long.class.getSimpleName();
-				}
-				else {
+				} else {
 
 					atributo.tipo = attribute.getType().getBinding().getSimpleName();
 				}
@@ -861,6 +855,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	/**
 	 * Preenche um registro a ser retornado como resultado
+	 *
 	 * @param feature
 	 */
 	private List<AtributoShape> preencheNovoRegistroResultado(SimpleFeature feature) {
@@ -871,46 +866,44 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 			String name = attribute.getName() != null ? attribute.getName().toString() : null;
 
-			if(name != null) {
+			if (name != null) {
 
 				AtributoShape atributo = new AtributoShape();
 
 				atributo.nome = attribute.getName().toString();
 
-				if(attribute.getValue() instanceof Geometry) {
+				if (attribute.getValue() instanceof Geometry) {
 
 					Geometry geometria = (Geometry) attribute.getValue();
 
 					// Valida geometria
 
-					if(!(geometria.getGeometryType().equals("Polygon") || geometria.getGeometryType().equals("MultiPolygon"))){
+					if (!(geometria.getGeometryType().equals("Polygon") || geometria.getGeometryType().equals("MultiPolygon"))) {
 
 						this.fireError(Messages.get("error.shapefile.geometry.invalid.notPolygon"), "Polígono gerado não é do tipo Polygon");
 					}
 
-					if(!geometria.isValid()) {
+					if (!geometria.isValid()) {
 
 						//Converte geometria para o padrão OGC (altera-se a ordem dos vértices)
 						Geometry geometriaPadraoOGC = geometria.buffer(0.0);
 
-						if(geometriaPadraoOGC.isValid()){
+						if (geometriaPadraoOGC.isValid()) {
 							//Ao alterar ordem dos vértices, pode-se ter gerado polígonos menores, com arestas novas
-							if(geometria.contains(geometriaPadraoOGC) && geometriaPadraoOGC.contains(geometria) ) {
+							if (geometria.contains(geometriaPadraoOGC) && geometriaPadraoOGC.contains(geometria)) {
 
 								attribute.setValue(geometriaPadraoOGC);
-							}
-							else{
+							} else {
 
 								this.fireError(Messages.get("error.shapefile.geometry.invalid.arestaCruzada"), "Geometria inválida.");
 							}
-						}
-						else{
+						} else {
 
 							this.fireError(Messages.get("error.shapefile.geometry.invalid.arestaCruzada"), "Geometria inválida.");
 						}
 					}
 
-					if(geometria.getGeometryType().toLowerCase().equals("polygon") || geometria.getGeometryType().toLowerCase().equals("multipolygon")) {
+					if (geometria.getGeometryType().toLowerCase().equals("polygon") || geometria.getGeometryType().toLowerCase().equals("multipolygon")) {
 
 						atributo.tipo = attribute.getType().getBinding().getSimpleName();
 
@@ -922,15 +915,13 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 							atributo.valor = null;
 						}
 					}
-				}
-				else if(attribute.getValue() instanceof Integer) {
+				} else if (attribute.getValue() instanceof Integer) {
 
 					Long valor = ((Integer) attribute.getValue()).longValue();
 
 					atributo.tipo = Long.class.getSimpleName();
 					atributo.valor = valor;
-				}
-				else if(attribute.getValue() instanceof String) {
+				} else if (attribute.getValue() instanceof String) {
 
 					atributo.tipo = attribute.getType().getBinding().getSimpleName();
 
@@ -938,8 +929,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 					String strConvert = StringUtils.convertCharsetString(str);
 
 					atributo.valor = strConvert;
-				}
-				else {
+				} else {
 
 					atributo.tipo = attribute.getType().getBinding().getSimpleName();
 					atributo.valor = attribute.getValue();
@@ -954,6 +944,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	/**
 	 * Grava o conteúdo mapeado pelo Inputstream no path informado
+	 *
 	 * @param in
 	 * @param filePath
 	 * @throws IOException
@@ -970,6 +961,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	/**
 	 * Dispara inserção de mensagem de erro.
+	 *
 	 * @param message
 	 */
 	private void fireError(String message, String ex) {
@@ -978,9 +970,9 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 		this.resultado.status = ResultadoProcessamentoShapeFile.Status.ERRO;
 
-		for(String msg : this.resultado.mensagens) {
+		for (String msg : this.resultado.mensagens) {
 
-			if(msg.equals(message)) {
+			if (msg.equals(message)) {
 
 				return;
 			}
@@ -996,11 +988,10 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 		File arquivoShape;
 
-		if(isZip){
+		if (isZip) {
 
 			arquivoShape = this.arquivoZip;
-		}
-		else {
+		} else {
 
 			arquivoShape = this.arquivoRar;
 		}
@@ -1013,7 +1004,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		File arquivoRemover;
 
 		arquivoRemover = new File(arquivoShp);
-		if(arquivoRemover.exists()) {
+		if (arquivoRemover.exists()) {
 
 			try {
 				FileUtils.forceDelete(arquivoRemover);
@@ -1023,7 +1014,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		}
 
 		arquivoRemover = new File(arquivoDbf);
-		if(arquivoRemover.exists()) {
+		if (arquivoRemover.exists()) {
 
 			try {
 				FileUtils.forceDelete(arquivoRemover);
@@ -1033,7 +1024,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		}
 
 		arquivoRemover = new File(arquivoShx);
-		if(arquivoRemover.exists()) {
+		if (arquivoRemover.exists()) {
 
 			try {
 				FileUtils.forceDelete(arquivoRemover);
@@ -1043,7 +1034,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		}
 
 		arquivoRemover = new File(arquivoPrj);
-		if(arquivoRemover.exists()) {
+		if (arquivoRemover.exists()) {
 
 			try {
 				FileUtils.forceDelete(arquivoRemover);
@@ -1061,9 +1052,9 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		int cString = 0;
 		int cDate = 0;
 
-		public boolean atributosVazios(){
-			if(this.cGeometry == 0 && this.cGeometry == 0 &&
-					this.cDouble == 0 && this.cString == 0 && this.cDate == 0){
+		public boolean atributosVazios() {
+			if (this.cGeometry == 0 && this.cGeometry == 0 &&
+					this.cDouble == 0 && this.cString == 0 && this.cDate == 0) {
 				return true;
 			}
 

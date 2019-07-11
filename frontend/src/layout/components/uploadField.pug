@@ -1,13 +1,14 @@
 include modalEspecificacaoUpload
 
-mixin uploadField(controller, tipoUpload, cor, popupText)
+mixin uploadField(controller, tipoUpload, cor, popupText, hasDescription)
 	div(ng-controller="validacaoShapeController as validacaoShape"
 		ng-init="validacaoShape.init('"+tipoUpload+"','"+cor+"','"+popupText+"')" 
 		ng-cloak)
 		
 		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
 		.row
-			.col-sm-offset-1.col-sm-10
+			//- .col-sm-offset-1
+			.col-sm-12
 				.dropzone(ng-hide="validacaoShape.arquivoSelecionado.arquivo",
 									ngf-drop,
 									ngf-select,
@@ -38,7 +39,8 @@ mixin uploadField(controller, tipoUpload, cor, popupText)
 					div.alert(ng-class="{'alert-success': validacaoShape.resultadoProcessamento.status === 'SUCESSO', 'alert-danger': validacaoShape.resultadoProcessamento.status === 'ERRO'}",
 							role="alert", ng-if="validacaoShape.resultadoProcessamento")
 						p(ng-repeat="mensagem in validacaoShape.resultadoProcessamento.mensagens") {{mensagem}}
-		.row
+		
+		.row(ng-if=hasDescription)
 			p.text-center.upload-especifications
 				i.fa.fa-info-circle.modal-open-icon(ng-click="validacaoShape.abrirModal()")
 				a.modal-open-text.upload-especifications-text(ng-click="validacaoShape.abrirModal()")

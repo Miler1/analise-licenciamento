@@ -1,19 +1,54 @@
 include ../../layout/components/mapPanel
 include ../../layout/components/uploadField
+include ../../layout/components/modalEspecificacaoUpload
 
 mixin uploadShapes()
 	div(ng-controller="uploadShapesController as uploadShapes" ng-cloak)
-		+mapPanel('id1','500', true)
+
+		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
+
+		div.us-container
+			+mapPanel('id1','400', true)
+			
+			div.us-upload-container
+				h.us-upload-title Hidrografia
+				div.us-upload-description
+					i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
+					a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
+						| Especificações do arquivo a ser enviado
+				+uploadField("validacaoShapeController",
+							"HIDROGAFIA",
+							'#2196F3',
+							"Hidrografia",
+							true)
+
+				h3.us-upload-title APP (Área de preservação permanente)
+				div.us-upload-description
+					i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
+					a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
+						| Especificações do arquivo a ser enviado
+				+uploadField("validacaoShapeController",
+							"APP",
+							'#8BC34A',
+							"Área de preservação permanente",
+							true)
+
+				h3.us-upload-title Área antropizada
+				div.us-upload-description
+					i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
+					a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
+						| Especificações do arquivo a ser enviado
+				+uploadField("validacaoShapeController",
+							"AREA ANTROPIZADA",
+							'#CDDC39',
+							"Área antropizada",
+							true)
+			
+			div.row.us-custom-row
+				div.pull-left
+					button.btn.btn-default(ng-click="uploadShapes.enviaShapes")
+						| &nbsp;Cancelar
+				div.pull-right
+					button.btn.btn-default.btn-success(ng-click="uploadShapes.enviaShapes", ng-disabled="uploadShapes.shapesUploaded !== 3")
+						| &nbsp;Continuar
 		
-		+uploadField("validacaoShapeController","HIDROGAFIA",'#2196F3',"Hidrografia")
-		+uploadField("validacaoShapeController","APP",'#8BC34A',"Área de preservação permanente")
-		+uploadField("validacaoShapeController","AREA ANTROPIZADA",'#CDDC39',"Área antropizada")
-		
-		div.row
-			div.pull-left
-				button.btn.btn-default(ng-click="uploadShapes.enviaShapes")
-					| &nbsp;Cancelar
-			div.pull-right
-				button.btn.btn-default.btn-success(ng-click="uploadShapes.enviaShapes", ng-disabled="uploadShapes.shapesUploaded !== 3")
-					| &nbsp;Continuar
-	
