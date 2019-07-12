@@ -7,6 +7,7 @@ var UploadShapesController = function ($injector, $scope, $timeout) {
 
 	/** Variáveis para controle de lógica **/
 	uploadShapes.shapesUploaded = 0;
+	uploadShapes.doesntHasShapes = false;
 	uploadShapes.abrirModal = abrirModal;
 
 	/** Atribuição de funções **/
@@ -28,6 +29,7 @@ var UploadShapesController = function ($injector, $scope, $timeout) {
 		}
 	);
 	uploadShapes.init('id1',true);
+	uploadShapes.init('id2',true);
 
 	// On para receber o valor do componente de upload
 	$scope.$on('shapefile:uploaded', function(event, shape){

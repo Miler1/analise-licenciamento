@@ -31,6 +31,13 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 	function cancelaUpload() {
 		validacaoShapeService.abortUploadShapeFile();
+
+		validacaoShape.progressBarStatus = 0;
+		validacaoShape.arquivoSelecionado = null;
+		validacaoShape.resultadoProcessamento = null;
+		validacaoShape.resultadoEnvio = null;
+
+		$scope.$emit('shapefile:eraseUpload', {geometria: null, tipo: validacaoShape.tipo});
 	}
 
 	function alterarArquivo() {
@@ -116,9 +123,12 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 					else {
 						if (response.data.data.mensagens[0] === "error.shapefile.geometry.invalid.notPolygon") {
 							restartUploadOnError('O arquivo enviado é inválido. Não possui um polígono na sua geometria');
-						} else if (response.data.data.mensagens[0] === "error.shapefile.structure"){
+						} else if (response.data.data.mensagens[0] === "error.shapefile.structure") {
 							restartUploadOnError('O arquivo enviado é inválido. Não possui uma estrutura válida de shapes');
-						} else {
+						} else if( response.data.data.mensagens[0] === "error.shapefile.not.sirgas2000") {
+							restartUploadOnError('O arquivo enviado é inválido. Não está no formato SIRGAS 2000');
+						}
+						else { 
 							restartUploadOnError(response.data.data.mensagens[0]);
 						}
 					}

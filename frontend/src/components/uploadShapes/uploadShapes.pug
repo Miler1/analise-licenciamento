@@ -8,47 +8,85 @@ mixin uploadShapes()
 		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
 
 		div.us-container
-			+mapPanel('id1','400', true)
+			div.us-header
+				h2.tituloPagina.us-header-title PROCESSO
+				.us-header-item
+						span Número:
+						strong.us-header-item-strong 2017/00000012
+				.us-header-item
+						span CPF/CNPJ:
+						strong.us-header-item-strong 342.687.567-12
+				.us-header-item
+						span Interessado:
+						strong.us-header-item-strong Empreendimentos Lopes e Cia
+				.us-header-item
+						span Município:
+						strong.us-header-item-strong Manaus-AM
+
+			div(ng-show="uploadShapes.doesntHasShapes")
+				+mapPanel('id1','400', true)
+
+			div(ng-show="!uploadShapes.doesntHasShapes")
+				+mapPanel('id2','400', true)
 			
+			div.us-checkbox-area
+				input(type='checkbox', 
+					placeholder='Não possui nenhum shape', 
+					ng-model='uploadShapes.doesntHasShapes',
+					id='naoPossuiShape') 
+				label.us-checkbox-label(for="naoPossuiShape") Não possui nenhum dos shapes
+
 			div.us-upload-container
-				h.us-upload-title Hidrografia
-				div.us-upload-description
-					i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
-					a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
-						| Especificações do arquivo a ser enviado
-				+uploadField("validacaoShapeController",
-							"HIDROGAFIA",
-							'#2196F3',
-							"Hidrografia",
-							true)
+				h2.tituloPagina.us-upload-top-title Arquivos anexados
 
-				h3.us-upload-title APP (Área de preservação permanente)
-				div.us-upload-description
-					i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
-					a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
-						| Especificações do arquivo a ser enviado
-				+uploadField("validacaoShapeController",
-							"APP",
-							'#8BC34A',
-							"Área de preservação permanente",
-							true)
+				div(ng-show="!uploadShapes.doesntHasShapes")
+					h3.us-upload-title Hidrografia
+					div.us-upload-description
+						i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
+						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
+							| Especificações do arquivo a ser enviado
+					+uploadField("validacaoShapeController",
+								"HIDROGAFIA",
+								'#2196F3',
+								"Hidrografia",
+								true)
 
-				h3.us-upload-title Área antropizada
-				div.us-upload-description
-					i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
-					a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
-						| Especificações do arquivo a ser enviado
-				+uploadField("validacaoShapeController",
-							"AREA ANTROPIZADA",
-							'#CDDC39',
-							"Área antropizada",
-							true)
-			
+					h3.us-upload-title APP (Área de preservação permanente)
+					div.us-upload-description
+						i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
+						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
+							| Especificações do arquivo a ser enviado
+					+uploadField("validacaoShapeController",
+								"APP",
+								'#8BC34A',
+								"Área de preservação permanente",
+								true)
+
+					h3.us-upload-title Área antropizada
+					div.us-upload-description
+						i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
+						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
+							| Especificações do arquivo a ser enviado
+					+uploadField("validacaoShapeController",
+								"AREA ANTROPIZADA",
+								'#CDDC39',
+								"Área antropizada",
+								true)
+
+				div(ng-show="uploadShapes.doesntHasShapes")
+					h3.us-upload-noupload O empreendimento  
+						strong não 
+						|  possui arquivos para anexar
+
 			div.row.us-custom-row
 				div.pull-left
 					button.btn.btn-default(ng-click="uploadShapes.enviaShapes")
+						span.glyphicon.glyphicon-remove-sign
 						| &nbsp;Cancelar
 				div.pull-right
-					button.btn.btn-default.btn-success(ng-click="uploadShapes.enviaShapes", ng-disabled="uploadShapes.shapesUploaded !== 3")
+					button.btn.btn-default.btn-success(
+													ng-click="uploadShapes.enviaShapes", 
+													ng-disabled="uploadShapes.shapesUploaded < 1 && !uploadShapes.doesntHasShapes")
+						span.glyphicon.glyphicon-ok-sign
 						| &nbsp;Continuar
 		
