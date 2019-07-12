@@ -46,5 +46,5 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 }]);    
 
 analiseGeo
-	.controller('analiseGeoController', controllers.AnaliseGeoController)
+	//.controller('analiseGeoController', controllers.AnaliseGeoController)
 	.controller('modalParecerRestricaoController', controllers.ModalParecerRestricaoController);

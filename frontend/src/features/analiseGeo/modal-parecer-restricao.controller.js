@@ -1,8 +1,8 @@
-var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restricao, $rootScope, restricaoGeo, analiseTecnica, empreendimentoGeo, imovel, mensagem) {
+var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restricao, $rootScope, restricaoGeo, analiseGeo, empreendimentoGeo, imovel, mensagem) {
 
 	var modalCtrl = this;
 	modalCtrl.restricao = restricao;
-	modalCtrl.analiseTecnica = analiseTecnica;
+	modalCtrl.analiseGeo = analiseGeo;
 	modalCtrl.restricaoGeo = restricaoGeo;
 	modalCtrl.empreendimentoGeo = empreendimentoGeo;
 	modalCtrl.imovel = imovel;
@@ -94,7 +94,7 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 
 	modalCtrl.excluirParecer = function(codigoCamada) {
 
-		_.remove(modalCtrl.analiseTecnica.pareceresTecnicosRestricoes, function(parecer) {
+		_.remove(modalCtrl.analiseGeo.pareceresTecnicosRestricoes, function(parecer) {
 			return codigoCamada === parecer.codigoCamada;
 		});
 
@@ -116,21 +116,21 @@ var ModalParecerRestricaoController = function ($uibModalInstance, $scope, restr
 
 		modalCtrl.restricao.feature.properties.parecer = modalCtrl.parecer;
 
-		if(!modalCtrl.analiseTecnica.pareceresTecnicosRestricoes || _.isEmpty(modalCtrl.analiseTecnica.pareceresTecnicosRestricoes)) {
+		if(!modalCtrl.analiseGeo.pareceresTecnicosRestricoes || _.isEmpty(modalCtrl.analiseGeo.pareceresTecnicosRestricoes)) {
 
-			modalCtrl.analiseTecnica.pareceresTecnicosRestricoes = [];
-			modalCtrl.analiseTecnica.pareceresTecnicosRestricoes.push({
+			modalCtrl.analiseGeo.pareceresTecnicosRestricoes = [];
+			modalCtrl.analiseGeo.pareceresTecnicosRestricoes.push({
 				codigoCamada: modalCtrl.restricao.feature.id,
 				parecer: modalCtrl.parecer
 			});
 
 		} else {
 
-			_.find(modalCtrl.analiseTecnica.pareceresTecnicosRestricoes, function(parecer, index) {
+			_.find(modalCtrl.analiseGeo.pareceresTecnicosRestricoes, function(parecer, index) {
 				if(parecer.codigoCamada === modalCtrl.restricao.feature.id)
-					modalCtrl.analiseTecnica.pareceresTecnicosRestricoes[index].parecer = modalCtrl.parecer;
+					modalCtrl.analiseGeo.pareceresTecnicosRestricoes[index].parecer = modalCtrl.parecer;
 				else
-					modalCtrl.analiseTecnica.pareceresTecnicosRestricoes.push({
+					modalCtrl.analiseGeo.pareceresTecnicosRestricoes.push({
 						codigoCamada: modalCtrl.restricao.feature.id,
 						parecer: modalCtrl.parecer
 					});
