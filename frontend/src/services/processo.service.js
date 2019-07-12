@@ -18,6 +18,12 @@ var ProcessoService = function(request, config, $uibModal) {
 			.get(config.BASE_URL() + 'processos/' + idProcesso);
 	};
 
+	this.getAnaliseGeo = function(idProcesso) {
+
+		return request
+			.get(config.BASE_URL() + 'processos/' + idProcesso + '/analiseGeo');
+	};
+
 	this.getAnaliseJuridica = function(idProcesso) {
 
 		return request
