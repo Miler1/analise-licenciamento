@@ -41,19 +41,22 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 			processo.selecionado = cxEntAnalistaGeo.todosProcessosSelecionados;
 		});
 	}
-
+	
 	function iniciarAnalise(idAnaliseGeo) {
 
-		analiseGeoService.iniciar({ id : idAnaliseGeo })
-			.then(function(response){
+		// analiseGeoService.iniciar({ id : idAnaliseGeo })
+		// 	.then(function(response){
 
-				$rootScope.$broadcast('atualizarContagemProcessos');
-				$location.path('/analise-geo/' + idAnaliseGeo.toString());
+		// 		// $rootScope.$broadcast('atualizarContagemProcessos');
+		// 		// URL necessária para entrar na análise
+		// 		// $location.path('/analise-geo/' + idAnaliseGeo.toString());
+		// 		// $location.path('/analise-geo/shape-upload');
 			
-			}, function(error){
+		// 	}, function(error){
 
-				mensagem.error(error.data.texto);
-			});
+		// 		mensagem.error(error.data.texto);
+		// 	});
+		$location.path('/analise-geo/shape-upload');
 	}
 
 	function visualizarProcesso(processo) {

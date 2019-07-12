@@ -15,6 +15,7 @@ var licenciamento = angular.module("licenciamento", [
 	"analiseJuridica",
 	"analiseEmAndamento",
 	"analiseManejo",
+	"analiseGeo",
 	"ui.bootstrap",
 	"textAngular",
 	"analiseTecnica",
