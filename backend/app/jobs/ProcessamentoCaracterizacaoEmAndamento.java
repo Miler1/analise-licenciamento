@@ -1,6 +1,5 @@
 package jobs;
 
-import br.ufla.lemaf.beans.pessoa.Setor;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
@@ -21,7 +20,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	public void executar() {
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [INICIO-JOB]");
-		
+
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 
 		// Licenças com status EM_ANALISE
@@ -132,9 +131,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 					processo.tramitacao.tramitar(processo, AcaoTramitacao.RENOVAR_SEM_ALTERACAO);
 
-					AnaliseGeo analiseGeo= new AnaliseGeo();
-					analiseGeo.analise = analise;
-					analiseGeo.save();
+					AnaliseGeo analiseGeoRenovacao = new AnaliseGeo();
+					analiseGeoRenovacao.analise = analise;
+					analiseGeoRenovacao.save();
 				}
 			}
 		}
@@ -238,7 +237,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analiseGeo.analistasGeo = new ArrayList<>();
 
 		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo));
-		
+
 		analiseGeo.save();
 		
 		return analiseGeo;

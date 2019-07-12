@@ -44,7 +44,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 	function iniciarAnalise(idAnaliseGeo) {
 
-		analiseTecnicaService.iniciar({ id : idAnaliseGeo })
+		analiseGeoService.iniciar({ id : idAnaliseGeo })
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');

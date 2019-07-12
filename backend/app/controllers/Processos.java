@@ -22,7 +22,7 @@ public class Processos extends InternalController {
 		renderJSON(processosList);
 	}
 	
-	public static void countWithFilter(FiltroProcesso filtro){
+	public static void  countWithFilter(FiltroProcesso filtro){
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
