@@ -1,9 +1,8 @@
-var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeout, $uibModalInstance, processo, $scope, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService, notificacaoService) {
+var VisualizacaoProcessoController = function ($location,$anchorScroll, $timeout,$uibModalInstance, processo, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService, notificacaoService) {
 
 	var modalCtrl = this;
 
 	modalCtrl.processo = processo;
-
 	modalCtrl.baixarDocumento = baixarDocumento;
 	modalCtrl.dateUtil = app.utils.DateUtil;
 	modalCtrl.PrazoAnalise = app.utils.PrazoAnalise;
@@ -223,6 +222,14 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 		}
 	};
 
+	this.getDiasAnaliseGeo = function() {
+
+		if (this.dadosProcesso) {
+
+			return this.dateUtil.calcularDias(this.dadosProcesso.analise.dataCadastro, this.dadosProcesso.analise.analiseGeo.dataFim);
+		}
+	};
+
 	this.getDiasAnaliseTecnica = function() {
 
 		if (this.dadosProcesso) {
@@ -238,7 +245,7 @@ var VisualizacaoProcessoController = function ($location, $anchorScroll, $timeou
 			var diasAnaliseTecnica = this.getDiasAnaliseTecnica(this.dadosProcesso.analise.analiseTecnica);
 			diasAnaliseTecnica = diasAnaliseTecnica === '-' ? 0 : diasAnaliseTecnica;
 
-			return this.getDiasAnaliseJuridica() + diasAnaliseTecnica;
+			return this.getDiasAnaliseGeo() + diasAnaliseTecnica;
 		}
 	};
 
