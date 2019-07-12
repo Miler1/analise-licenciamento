@@ -176,13 +176,13 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 
 		var modalInstance = $uibModal.open({
 			animation: true,
-			templateUrl: './features/analiseTecnica/analiseGeo/modal-parecer-restricao.html',
+			templateUrl: './features/analiseGeo/analiseGeo/modal-parecer-restricao.html',
 			controller: 'modalParecerRestricaoController',
 			controllerAs: 'modalCtrl',
 			size: 'lg',
 			resolve: {
 				analiseTecnica: function () {
-					return $scope.analiseTecnica;
+					return $scope.analiseGeo;
 				},
 				restricao: function () {
 					return restricao;
@@ -245,19 +245,19 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
             component: 'modalFichaImovel',
             size: 'lg',
 			resolve: {
-				imovel: $scope.analiseTecnica.analise.processo.empreendimento.imovel
+				imovel: $scope.analiseGeo.analise.processo.empreendimento.imovel
 			}
         });
 
 		modalInstance.result.then(function(){},function(){});
 
     };
-	this.init = function(restricoes, analiseTecnica) {
+	this.init = function(restricoes, analiseGeo) {
 
-		$scope.analiseTecnica = analiseTecnica;
+		$scope.analiseGeo = analiseGeo;
 
 		_.forEach(restricoes.features, function(restricao) {
-			var parecerTecnicoRestricao = _.find($scope.analiseTecnica.pareceresTecnicosRestricoes, function(parecerRestricao) {
+			var parecerTecnicoRestricao = _.find($scope.analiseGeo.pareceresTecnicosRestricoes, function(parecerRestricao) {
 				return parecerRestricao.codigoCamada === restricao.id;
 			});
 
@@ -312,11 +312,11 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal) {
 
 			});
 
-			if ($scope.analiseTecnica.analise.processo.empreendimento &&
-				!$scope.analiseTecnica.analise.processo.empreendimento.imovel &&
-				$scope.analiseTecnica.analise.processo.empreendimento.municipio.limite) {
+			if ($scope.analiseGeo.analise.processo.empreendimento &&
+				!$scope.analiseGeo.analise.processo.empreendimento.imovel &&
+				$scope.analiseGeo.analise.processo.empreendimento.municipio.limite) {
 
-				inserirGeometriaMunicipio($scope.analiseTecnica.analise.processo.empreendimento.municipio.limite, mapa);
+				inserirGeometriaMunicipio($scope.analiseGeo.analise.processo.empreendimento.municipio.limite, mapa);
 
 				meusDados.addLayer($scope.municipioGeormetria);
 
