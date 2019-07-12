@@ -38,10 +38,10 @@
 							div(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
 								div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
 									h5.info {{atividadeCaracterizacao.atividade.nome}}
-										div(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
-											ul
-												li(ng-repeat="parametro in atividadeCaracterizacao.atividade.parametros")
-													span {{parametro.codigo}} - {{parametro.nome}} : {{atividadeCaracterizacaoParametro.valorParametro}}
+									div(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
+										ul
+											li
+												span {{atividadeCaracterizacao.atividade.parametros[$index].codigo}} - {{atividadeCaracterizacao.atividade.parametros[$index].nome}} : {{atividadeCaracterizacaoParametro.valorParametro}}
 
 			div.panel.panel-success
 				div.panel-body
