@@ -9,6 +9,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntAnalistaGeo.onPaginaAlterada = onPaginaAlterada;
 	cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
+	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
 
 	cxEntAnalistaGeo.processos = [];
@@ -42,21 +43,24 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 		});
 	}
 	
-	function iniciarAnalise(idAnaliseGeo) {
+	// Sendo utilizada na outra controller - da tela de upload
+	// caso ela seja retirada, voltar aqui e descomentar
+	//
+	// function iniciarAnalise(idAnaliseGeo) {
+	// 	analiseGeoService.iniciar({ id : idAnaliseGeo })
+	// 		.then(function(response){
 
-		// analiseGeoService.iniciar({ id : idAnaliseGeo })
-		// 	.then(function(response){
-
-		// 		// $rootScope.$broadcast('atualizarContagemProcessos');
-		// 		// URL necessária para entrar na análise
-		// 		// $location.path('/analise-geo/' + idAnaliseGeo.toString());
-		// 		// $location.path('/analise-geo/shape-upload');
+	// 			$rootScope.$broadcast('atualizarContagemProcessos');
+	// 			$location.path('/analise-geo/' + idAnaliseGeo.toString());
 			
-		// 	}, function(error){
-
-		// 		mensagem.error(error.data.texto);
-		// 	});
-		$location.path('/analise-geo/shape-upload');
+	// 		}, function(error){
+	// 			mensagem.error(error.data.texto);
+	// 		});
+	// }
+	
+	function iniciarUploadShapes(idAnaliseGeo){
+		$rootScope.idAnaliseGeo = idAnaliseGeo;
+		$location.path('/shape-upload');
 	}
 
 	function visualizarProcesso(processo) {

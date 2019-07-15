@@ -7,9 +7,9 @@ var utils = app.utils,
 analiseGeo.config(['$routeProvider', function($routeProvider) {
 	
 	$routeProvider
-		.when('/analise-geo/shape-upload', {
-			templateUrl: 'features/analiseGeo/shape-upload.html'
-		})
+		// .when('/analise-geo/shape-upload', {
+		// 	templateUrl: 'features/analiseGeo/shape-upload.html'
+		// })
 		.when('/analise-geo/:idAnaliseGeo', {
 			templateUrl: 'features/analiseGeo/analise-geo.html',
 			controller: controllers.AnaliseGeoController,
@@ -40,7 +40,7 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 
 					return $route.current.params.idAnaliseGeo;
 
-				}			
+				}
 			}
 		})
 		.otherwise({

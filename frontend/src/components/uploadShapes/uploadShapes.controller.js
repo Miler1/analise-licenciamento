@@ -1,24 +1,52 @@
 /**
  * Controller para a tela de upload de shapes
  **/
-var UploadShapesController = function ($injector, $scope, $timeout) {
+var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService) {
 
 	var uploadShapes = this;
 
 	/** Variáveis para controle de lógica **/
 	uploadShapes.shapesUploaded = 0;
 	uploadShapes.doesntHasShapes = false;
-	uploadShapes.abrirModal = abrirModal;
 
 	/** Atribuição de funções **/
 	uploadShapes.enviaShapes = enviaShapes;
+	uploadShapes.abrirModal = abrirModal;
+	uploadShapes.cancelaEnvio = cancelaEnvio;
 
 	function abrirModal() {
 		$('#modalEspecificacoesArquivo').modal('show');
 	}
 
 	function enviaShapes() {
-		console.log();
+
+		// Aqui vai salvar os shapes no banco
+		console.log("salvar os modafoquim shapes");
+		console.log(uploadShapes.listaGeometriasMapa);
+
+		validacaoShapeService.salvarGeometrias(uploadShapes.listaGeometriasMapa)
+			.then(function(response){
+				console.log(response);
+			});
+
+		// Aqui vai trocar a tramitacao de caixa de entrada pra análise
+		// var idAnaliseGeo = $rootScope.idAnaliseGeo;
+		// analiseGeoService.iniciar({ id : idAnaliseGeo })
+		// 	.then(function(response){
+
+		// 		$rootScope.$broadcast('atualizarContagemProcessos');
+		// 		$location.path('/analise-geo/' + idAnaliseGeo.toString());
+			
+		// 	}, function(error){
+		// 		mensagem.error(error.data.texto);
+		// 	});
+
+	}
+
+	function cancelaEnvio() {
+
+		$location.path('/caixa-entrada');
+
 	}
 
 	// Invoke  para receber as funções da controller da controller do componente do Mapa

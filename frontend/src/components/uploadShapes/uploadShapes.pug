@@ -31,10 +31,10 @@ mixin uploadShapes(idMapa)
 			
 			div.us-checkbox-area
 				input(type='checkbox', 
-					placeholder='Não possui nenhum shape', 
+					placeholder='Não possui nenhuma camada', 
 					ng-model='uploadShapes.doesntHasShapes',
 					id='naoPossuiShape') 
-				label.us-checkbox-label(for="naoPossuiShape") Não possui nenhum dos shapes
+				label.us-checkbox-label(for="naoPossuiShape") Não possui nenhuma camada
 
 			div.us-upload-container
 				h2.tituloPagina.us-upload-top-title Arquivos anexados
@@ -80,12 +80,12 @@ mixin uploadShapes(idMapa)
 
 			div.row.us-custom-row
 				div.pull-left
-					button.btn.btn-default(ng-click="uploadShapes.enviaShapes")
+					button.btn.btn-default(ng-click="uploadShapes.cancelaEnvio()")
 						span.glyphicon.glyphicon-remove-sign
 						| &nbsp;Cancelar
 				div.pull-right
 					button.btn.btn-default.btn-success(
-													ng-click="uploadShapes.enviaShapes", 
+													ng-click="uploadShapes.enviaShapes()", 
 													ng-disabled="uploadShapes.shapesUploaded < 1 && !uploadShapes.doesntHasShapes")
 						span.glyphicon.glyphicon-ok-sign
 						| &nbsp;Continuar

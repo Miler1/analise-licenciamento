@@ -195,7 +195,8 @@ GET     /download/manejo/{id}                       DocumentosManejo.download
 DELETE  /delete/manejo/{id}                         DocumentosManejo.delete
 
 # Validação e envio do shapefile
-POST    /shapefile/enviar                           ShapeFileController.enviar
+POST    /shapefile/enviar                                       ShapeFileController.enviar
+POST    /shapefile/salvarGeometrias                             ShapeFileController.salvarGeometrias
 
 # Estáticos
 GET     /public/									staticDir:public

@@ -65,4 +65,8 @@ public class ShapeFileController extends GenericController {
 	}
 
 
+	public static void salvarGeometrias(Upload file) throws IOException {
+		
+	}
+
 }
