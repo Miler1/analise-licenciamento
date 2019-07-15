@@ -38,10 +38,6 @@ public class Gerente extends GenericModel {
 	@Column(name="data_vinculacao")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataVinculacao;
-
-	@Required
-	@Enumerated(EnumType.STRING)
-	public TipoAnalise tipoAnalise;
 	
 	public Gerente() {
 		
