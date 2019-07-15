@@ -8,7 +8,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.atualizarPaginacao = atualizarPaginacao;
 	cxEntAnalistaGeo.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntAnalistaGeo.onPaginaAlterada = onPaginaAlterada;
-	cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
+	// cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
 	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
 

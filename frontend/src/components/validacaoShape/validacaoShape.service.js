@@ -1,7 +1,7 @@
 /**
  * Service para a validação de shapes
  **/
-var ValidacaoShapeService = function(requestService, request, config, Upload) {
+var ValidacaoShapeService = function(request, config, Upload) {
 
 	var validacaoShape = this;
 
@@ -18,8 +18,11 @@ var ValidacaoShapeService = function(requestService, request, config, Upload) {
 		request.abortUpload();
 	}
 
-	function salvarGeometrias(geometrias){
-		return request.upload(config.BASE_URL() + 'shapefile/salvar', geometrias);
+	function salvarGeometrias(listaGeometrias) {
+
+		var geometrias = { listaGeometrias: listaGeometrias };
+
+		return request.post(config.BASE_URL() + 'shapefile/salvar', geometrias);
 	}
 
 };

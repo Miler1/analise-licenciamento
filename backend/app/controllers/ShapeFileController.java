@@ -3,8 +3,11 @@ package controllers;
 import async.beans.ResultadoProcessamentoShapeFile;
 import async.callable.ProcessamentoShapeFile;
 import enums.InformacoesNecessariasShapeEnum;
+import models.ListShapeContentVO;
 import models.Message;
+import models.ShapeContentVO;
 import org.apache.tika.Tika;
+import play.Logger;
 import play.data.Upload;
 import play.i18n.Messages;
 import play.libs.IO;
@@ -14,6 +17,10 @@ import utils.FileManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ShapeFileController extends GenericController {
 
@@ -53,7 +60,7 @@ public class ShapeFileController extends GenericController {
 
 		ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(arquivoShape, arquivoShape.getName(), true, InformacoesNecessariasShapeEnum.TABELA_REGIAO_DESMATADA, null);
 
-		ResultadoProcessamentoShapeFile resultadoProcessamento = async(processamentoShapeFile);
+			ResultadoProcessamentoShapeFile resultadoProcessamento = async(processamentoShapeFile);
 
 		if(resultadoProcessamento.status.equals(ResultadoProcessamentoShapeFile.Status.ERRO)) {
 
@@ -64,9 +71,12 @@ public class ShapeFileController extends GenericController {
 		return resultadoProcessamento;
 	}
 
+	public static void salvarGeometrias(ListShapeContentVO geometrias) {
+		Logger.info(geometrias.toString());
 
-	public static void salvarGeometrias(Upload file) throws IOException {
-		
+		geometrias.listaGeometrias.forEach(g -> {
+			Logger.info(g.type);
+		});
 	}
 
 }

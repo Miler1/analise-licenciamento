@@ -24,7 +24,21 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		console.log("salvar os modafoquim shapes");
 		console.log(uploadShapes.listaGeometriasMapa);
 
-		validacaoShapeService.salvarGeometrias(uploadShapes.listaGeometriasMapa)
+		// var listaGeometrias = new Map();
+
+		var geometria = {type:'', geometry:''};
+		var listaGeometrias = [];
+
+
+		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(index){
+			// listaGeometrias.set(index,JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry));
+			
+			geometria.type=index;
+			geometria.geometry=JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry);
+			listaGeometrias.push(geometria);
+		});
+
+		validacaoShapeService.salvarGeometrias(listaGeometrias)
 			.then(function(response){
 				console.log(response);
 			});
