@@ -163,6 +163,7 @@ public class ProcessoSerializer {
 			"caracterizacoes.documentosEnviados.tipo.nome",
 			"caracterizacoes.tipo.nome",
 			"caracterizacoes.tipoLicenca.nome",
+			"caracterizacoes.licenca.dataValidade",
 			"caracterizacoes.atividadesCaracterizacao.atividade",
 			"caracterizacoes.atividadesCaracterizacao.atividade.potencialPoluidor",
 			"caracterizacoes.atividadesCaracterizacao.atividade.potencialPoluidor.nome",
