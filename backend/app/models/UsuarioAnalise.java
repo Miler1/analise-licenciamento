@@ -29,6 +29,10 @@ public class UsuarioAnalise extends GenericModel  {
 	@MaxSize(value = 14)
 	public String login;
 
+	@OneToOne
+	@JoinColumn(name = "id_pessoa")
+	public Pessoa pessoa;
+
 	public static transient ExecutorService executorService = new ScheduledThreadPoolExecutor(Integer.valueOf(Play.configuration.getProperty("usuario.threads", "3")));
 
 	@Transient

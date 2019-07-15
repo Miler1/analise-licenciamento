@@ -19,12 +19,12 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 
 				analiseGeo: function(analiseGeoService, $route, $q) {
 
-					var deferred = $q.defer();					
+					var deferred = $q.defer();
 					analiseGeoService.getAnaliseGeo($route.current.params.idAnaliseGeo)
 						.then(function(response){
 							deferred.resolve(response.data);
 						});
-					return deferred.promise;					
+					return deferred.promise;
 				},
 				restricoes: function(analiseGeoService, $route, $q) {
 
@@ -40,13 +40,13 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 
 					return $route.current.params.idAnaliseGeo;
 
-				}			
+				}
 			}
 		})
 		.otherwise({
 			redirectTo: '/'
 		});
-}]);    
+}]);
 
 analiseGeo
 	//.controller('analiseGeoController', controllers.AnaliseGeoController)

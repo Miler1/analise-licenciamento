@@ -6,27 +6,27 @@
 			blockquote.success
 				div.row
 					label.col-sm-4 Tipo do Licenciamento:
-					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.tipo.nome}}
+					span.col-sm-8(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes") {{caracterizacao.tipo.nome}} 
 
 				div.row
 					label.col-sm-4 Licenças Solicitadas:
 					div.col-sm-8
-						span(ng-repeat="licenca in modalVisualizacaoProcessoCtrl.dadosProcesso.tiposLicenca") {{licenca}}
-							br
+						span(ng-repeat="licenca in modalVisualizacaoProcessoCtrl.processo.licencas") {{licenca}}
 
 			blockquote.success
 				div.row
 					label.col-sm-4 Tipologia:
-					span.col-sm-8 {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome}}
+					span.col-sm-8(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
+						div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.tipologia.nome}} 
 				div.row
 					label.col-sm-4 Atividade(s) Licenciada(s):
-					ul.col-sm-8
-						li(ng-repeat='atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao')
-							span {{atividadeCaracterizacao.atividade.nome}}
-							ul
-								li(ng-repeat='atividadeCnae in atividadeCaracterizacao.atividadesCnae')
-									label CNAE:
-									span {{atividadeCnae.codigo}} - {{atividadeCnae.nome}}
+					.col-sm-8
+						div(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
+							span(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.nome}} 
+									div(ng-repeat='atividadeCnae in atividadeCaracterizacao.atividadesCnae')
+										label CNAE
+										ul
+											li {{atividadeCnae.codigo}} - {{atividadeCnae.nome}}
 
 		.col-xs-12.col-md-4
 			div.panel.panel-success
@@ -35,13 +35,13 @@
 				div.panel-footer.text-center
 					.media-div
 						.media-context
-							div(ng-repeat='atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao')
-								h5.info {{atividadeCaracterizacao.atividade.nome}}
-								ul
-									li
-										span {{atividadeCaracterizacao.atividade.parametro.codigo}} - {{atividadeCaracterizacao.atividade.parametro.nome}} :
-										b {{atividadeCaracterizacao.valorParametro}}
-
+							div(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
+								div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
+									h5.info {{atividadeCaracterizacao.atividade.nome}}
+									div(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
+										ul
+											li
+												span {{atividadeCaracterizacao.atividade.parametros[$index].codigo}} - {{atividadeCaracterizacao.atividade.parametros[$index].nome}} : {{atividadeCaracterizacaoParametro.valorParametro}}
 
 			div.panel.panel-success
 				div.panel-body
@@ -49,7 +49,8 @@
 				div.panel-footer.text-center
 					.media-div
 						.media-context
-							label {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao[0].porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.getMaiorPotencialPoluidor(modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao).codigo}}
+							div(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
+								div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.getMaiorPotencialPoluidor(caracterizacao.atividadesCaracterizacao).codigo}}
 	div.row
 		.col-xs-12.col-md-6
 			blockquote.success
@@ -63,9 +64,9 @@
 					div.panel-footer
 						.row
 							.col-xs-4.col-md-4.text-center
-								span Análise jurídica
-									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica , modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_JURIDICA)}")
-										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica == null ? ' - ' : modalVisualizacaoProcessoCtrl.processo.diasAnaliseJuridica}}
+								span Análise GEO
+									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.processo.diasAnaliseGeo , modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_GEO)}")
+										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseGeo == null ? ' - ' : modalVisualizacaoProcessoCtrl.processo.diasAnaliseGeo}}
 							.col-xs-4.col-md-4.text-center
 								span Análise técnica
 									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica , modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_TECNICA)}")
@@ -156,7 +157,7 @@
 								td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
 								td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 								td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
-								td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
+								td.col-md-1 {{tramitacao.relHistoricoTramitacaoSetor.siglaSetor ? tramitacao.relHistoricoTramitacaoSetor.siglaSetor : '-'}}
 								td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
 
 									i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",

@@ -32,13 +32,11 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
-	
-	@Required
+
 	@ManyToOne
 	@JoinColumn(name="id_analise_tecnica")
 	public AnaliseTecnica analiseTecnica;
 
-	@Required
 	@ManyToOne
 	@JoinColumn(name="id_analise_geo")
 	public AnaliseGeo analiseGeo;
