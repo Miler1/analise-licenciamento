@@ -28,8 +28,8 @@ var UploadShapesController = function ($injector, $scope, $timeout) {
 			$timeout: $timeout,
 		}
 	);
-	uploadShapes.init('id1',true);
-	uploadShapes.init('id2',true);
+	uploadShapes.init('mapa', true);
+	// uploadShapes.init('id2',true);
 
 	// On para receber o valor do componente de upload
 	$scope.$on('shapefile:uploaded', function(event, shape){

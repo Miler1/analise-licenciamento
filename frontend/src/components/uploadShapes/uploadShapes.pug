@@ -2,7 +2,7 @@ include ../../layout/components/mapPanel
 include ../../layout/components/uploadField
 include ../../layout/components/modalEspecificacaoUpload
 
-mixin uploadShapes()
+mixin uploadShapes(idMapa)
 	div(ng-controller="uploadShapesController as uploadShapes" ng-cloak)
 
 		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
@@ -23,11 +23,11 @@ mixin uploadShapes()
 						span Município:
 						strong.us-header-item-strong Manaus-AM
 
-			div(ng-show="uploadShapes.doesntHasShapes")
-				+mapPanel('id1','400', true)
+			//- div(ng-show="uploadShapes.doesntHasShapes")
+			//- 	+mapPanel('id1','400', true)
 
-			div(ng-show="!uploadShapes.doesntHasShapes")
-				+mapPanel('id2','400', true)
+			//- div(ng-show="!uploadShapes.doesntHasShapes")
+			+mapPanel(idMapa,'400', true)
 			
 			div.us-checkbox-area
 				input(type='checkbox', 

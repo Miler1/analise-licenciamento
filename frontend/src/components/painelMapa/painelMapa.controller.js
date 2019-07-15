@@ -28,9 +28,9 @@ var PainelMapaController = function ($scope) {
 		}).setView([-3, -52.497545], 6);
 	
 		/* Termos de uso: http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf */
-			L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-				attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-			}).addTo(painelMapa.map);
+		L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+			attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+		}).addTo(painelMapa.map);
 	
 		painelMapa.map.on('moveend click', function() {
 			if (!painelMapa.map.scrollWheelZoom.enabled()) {
@@ -42,8 +42,8 @@ var PainelMapaController = function ($scope) {
 			painelMapa.map.addControl(new L.Control.Fullscreen({
 				position: 'topright',
 				title: {
-				  'false': 'Ativar modo de tela cheia',
-				  'true': 'Desativar modo de tela cheia'
+					'false': 'Ativar modo de tela cheia',
+					'true': 'Desativar modo de tela cheia'
 				}
 			}));
 		}
