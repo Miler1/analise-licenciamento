@@ -20,25 +20,17 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 	function enviaShapes() {
 
-		// Aqui vai salvar os shapes no banco
-		console.log("salvar os modafoquim shapes");
-		console.log(uploadShapes.listaGeometriasMapa);
-
-		// var listaGeometrias = new Map();
-
 		var geometria = {type:'', geometry:''};
 		var listaGeometrias = [];
 
-
 		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(index){
-			// listaGeometrias.set(index,JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry));
 			
-			geometria.type=index;
-			geometria.geometry=JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry);
+			geometria.type = index;
+			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry);
 			listaGeometrias.push(geometria);
 		});
 
-		validacaoShapeService.salvarGeometrias(listaGeometrias)
+		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, $rootScope.cpfCnpjEmpreendimento)
 			.then(function(response){
 				console.log(response);
 			});
@@ -70,8 +62,8 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 			$timeout: $timeout,
 		}
 	);
+	uploadShapes.init('emptyMap',true);
 	uploadShapes.init('mapa', true);
-	// uploadShapes.init('id2',true);
 
 	// On para receber o valor do componente de upload
 	$scope.$on('shapefile:uploaded', function(event, shape){

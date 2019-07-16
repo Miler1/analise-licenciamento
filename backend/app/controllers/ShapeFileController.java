@@ -3,9 +3,9 @@ package controllers;
 import async.beans.ResultadoProcessamentoShapeFile;
 import async.callable.ProcessamentoShapeFile;
 import enums.InformacoesNecessariasShapeEnum;
-import models.ListShapeContentVO;
-import models.Message;
-import models.ShapeContentVO;
+import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
+import models.*;
+import models.licenciamento.Empreendimento;
 import org.apache.tika.Tika;
 import play.Logger;
 import play.data.Upload;
@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ShapeFileController extends GenericController {
 
@@ -72,11 +73,36 @@ public class ShapeFileController extends GenericController {
 	}
 
 	public static void salvarGeometrias(ListShapeContentVO geometrias) {
-		Logger.info(geometrias.toString());
 
-		geometrias.listaGeometrias.forEach(g -> {
-			Logger.info(g.type);
-		});
+		if(geometrias.naoTemShapes) {
+			Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
+			empreendimento.possui_anexo = false;
+			empreendimento.save();
+		} else {
+
+
+			geometrias.listaGeometrias.forEach(g -> {
+
+				List<TipoAreaGeometria> tiposArea = TipoAreaGeometria.findAll();
+
+				TipoAreaGeometria tipoAreaGeometria = tiposArea.stream().filter(ta -> {
+					return ta.codigo.equals(g.type);
+				}).collect(Collectors.toList()).get(0);
+
+				if(tipoAreaGeometria != null){
+
+					Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
+					empreendimento.possui_anexo = true;
+//						empreendimento.save();
+
+					AnalistaGeoAnexo novoAnexo = new AnalistaGeoAnexo(empreendimento, tipoAreaGeometria, g.geometry);
+					novoAnexo.save();
+
+				}
+
+			});
+		}
+
 	}
 
 }

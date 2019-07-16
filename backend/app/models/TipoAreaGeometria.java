@@ -1,6 +1,7 @@
 package models;
 
 import org.hibernate.annotations.Immutable;
+import play.db.jpa.GenericModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Immutable
 @Table(schema="analise", name="tipo_area_geometria")
-public class TipoAreaGeometria {
+public class TipoAreaGeometria extends GenericModel {
 
 	@Id
 	public Long id;
@@ -20,4 +21,5 @@ public class TipoAreaGeometria {
 
 	@Column(name="nome")
 	public String nome;
+
 }

@@ -8,7 +8,7 @@ import play.db.jpa.GenericModel;
 import javax.persistence.*;
 
 @Entity
-@Table(schema="analise", name="analista_geo_anexo")
+@Table(schema="analise", name="analise_geo_anexo")
 public class AnalistaGeoAnexo extends GenericModel {
 
 	public static final String SEQ = "analise.analise_geo_anexo_id_seq";

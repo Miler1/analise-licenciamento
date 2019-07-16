@@ -8,7 +8,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.atualizarPaginacao = atualizarPaginacao;
 	cxEntAnalistaGeo.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntAnalistaGeo.onPaginaAlterada = onPaginaAlterada;
-	// cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
+	cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
 	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
 
@@ -43,23 +43,24 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 		});
 	}
 	
-	// Sendo utilizada na outra controller - da tela de upload
-	// caso ela seja retirada, voltar aqui e descomentar
-	//
-	// function iniciarAnalise(idAnaliseGeo) {
-	// 	analiseGeoService.iniciar({ id : idAnaliseGeo })
-	// 		.then(function(response){
+	function iniciarAnalise(idAnaliseGeo) {
+		analiseGeoService.iniciar({ id : idAnaliseGeo })
+			.then(function(response){
 
-	// 			$rootScope.$broadcast('atualizarContagemProcessos');
-	// 			$location.path('/analise-geo/' + idAnaliseGeo.toString());
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				$location.path('/analise-geo/' + idAnaliseGeo.toString());
 			
-	// 		}, function(error){
-	// 			mensagem.error(error.data.texto);
-	// 		});
-	// }
+			}, function(error){
+				mensagem.error(error.data.texto);
+			});
+	}
 	
-	function iniciarUploadShapes(idAnaliseGeo){
-		$rootScope.idAnaliseGeo = idAnaliseGeo;
+	function iniciarUploadShapes(processo){
+
+		$rootScope.cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
+		
+		$rootScope.idAnaliseGeo = processo.idAnaliseGeo;
+
 		$location.path('/shape-upload');
 	}
 

@@ -6,5 +6,4 @@ public class ShapeContentVO {
 
 	public String type;
 	public Geometry geometry;
-
 }

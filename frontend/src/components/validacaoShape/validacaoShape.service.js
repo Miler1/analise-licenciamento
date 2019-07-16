@@ -18,9 +18,13 @@ var ValidacaoShapeService = function(request, config, Upload) {
 		request.abortUpload();
 	}
 
-	function salvarGeometrias(listaGeometrias) {
+	function salvarGeometrias(listaGeometrias, naoTemShapes, cpfCnpjEmpreendimento) {
 
-		var geometrias = { listaGeometrias: listaGeometrias };
+		var geometrias = { 
+			listaGeometrias: listaGeometrias, 
+			naoTemShapes: naoTemShapes,
+			cpfCnpjEmpreendimento: cpfCnpjEmpreendimento
+		};
 
 		return request.post(config.BASE_URL() + 'shapefile/salvar', geometrias);
 	}

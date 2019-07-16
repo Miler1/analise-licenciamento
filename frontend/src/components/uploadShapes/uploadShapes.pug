@@ -23,11 +23,11 @@ mixin uploadShapes(idMapa)
 						span Município:
 						strong.us-header-item-strong Manaus-AM
 
-			//- div(ng-show="uploadShapes.doesntHasShapes")
-			//- 	+mapPanel('id1','400', true)
+			div(ng-show="uploadShapes.doesntHasShapes")
+				+mapPanel('emptyMap','400', true)
 
-			//- div(ng-show="!uploadShapes.doesntHasShapes")
-			+mapPanel(idMapa,'400', true)
+			div(ng-show="!uploadShapes.doesntHasShapes")
+				+mapPanel(idMapa,'400', true)
 			
 			div.us-checkbox-area
 				input(type='checkbox', 
@@ -46,7 +46,7 @@ mixin uploadShapes(idMapa)
 						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
 							| Especificações do arquivo a ser enviado
 					+uploadField("validacaoShapeController",
-								"HIDROGAFIA",
+								"HID",
 								'#2196F3',
 								"Hidrografia",
 								true)
@@ -68,7 +68,7 @@ mixin uploadShapes(idMapa)
 						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
 							| Especificações do arquivo a ser enviado
 					+uploadField("validacaoShapeController",
-								"AREA ANTROPIZADA",
+								"AA",
 								'#CDDC39',
 								"Área antropizada",
 								true)
