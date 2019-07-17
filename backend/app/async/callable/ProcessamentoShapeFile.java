@@ -36,6 +36,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -250,12 +251,18 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 			/** TODO - oisouothiago - Conseguir cortar shapes fora do Municipio**/
 			geometriasDoShapeFile.stream().map(gds -> {
 				if (!municipio.limite.contains(gds)) {
-					return municipio.limite.intersection(gds);
+					Geometry interseccao = municipio.limite.intersection(gds);
+					return interseccao;
 				}
 				else {
 					return gds;
 				}
-			});
+			}).collect(Collectors.toList());
+
+//			Logger.info(geometriasDoShapeFile.get(0).toString());
+
+//			geometriasDoShapeFile.set(0, municipio.limite.intersection(geometriasDoShapeFile.get(0)));
+
 			if (geometriasDoShapeFile.stream().anyMatch(gds -> gds.isEmpty())) {
 				this.fireError(Messages.get("error.shapefile.attributes.foraMunicipio"), null);
 			}
