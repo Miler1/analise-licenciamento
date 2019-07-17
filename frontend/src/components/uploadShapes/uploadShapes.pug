@@ -12,16 +12,16 @@ mixin uploadShapes(idMapa)
 				h2.tituloPagina.us-header-title PROCESSO
 				.us-header-item
 						span Número:
-						strong.us-header-item-strong 2017/00000012
+						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.numero : '-'}}
 				.us-header-item
 						span CPF/CNPJ:
-						strong.us-header-item-strong 342.687.567-12
+						strong.us-header-item-strong {{uploadShapes.processo ? (uploadShapes.processo.cpfEmpreendimento ? uploadShapes.processo.cpfEmpreendimento : uploadShapes.processo.cnpjEmpreendimento ) : '-'}}
 				.us-header-item
 						span Interessado:
-						strong.us-header-item-strong Empreendimentos Lopes e Cia
+						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.denominacaoEmpreendimento : '-'}}
 				.us-header-item
 						span Município:
-						strong.us-header-item-strong Manaus-AM
+						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.municipioEmpreendimento : '-'}} / {{uploadShapes.processo ? uploadShapes.processo.siglaEstadoEmpreendimento : '-'}}
 
 			div(ng-show="uploadShapes.doesntHasShapes")
 				+mapPanel('emptyMap','400', true)

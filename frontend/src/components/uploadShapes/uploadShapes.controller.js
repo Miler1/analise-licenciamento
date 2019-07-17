@@ -9,6 +9,9 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.shapesUploaded = 0;
 	uploadShapes.doesntHasShapes = false;
 
+	/**  **/
+	uploadShapes.processo = $rootScope.processo;
+
 	/** Atribuição de funções **/
 	uploadShapes.enviaShapes = enviaShapes;
 	uploadShapes.abrirModal = abrirModal;
@@ -20,33 +23,35 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 	function enviaShapes() {
 
-		var geometria = {type:'', geometry:''};
 		var listaGeometrias = [];
 
 		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(index){
-			
+			var geometria = {type:'', geometry:''};
+
 			geometria.type = index;
 			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry);
 			listaGeometrias.push(geometria);
 		});
 
-		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, $rootScope.cpfCnpjEmpreendimento)
+		var cpfCnpjEmpreendimento = uploadShapes.processo.cpfEmpreendimento ? uploadShapes.processo.cpfEmpreendimento : uploadShapes.processo.cnpjEmpreendimento;
+
+		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, cpfCnpjEmpreendimento)
 			.then(function(response){
 				console.log(response);
+
+				// Aqui vai trocar a tramitacao de caixa de entrada pra análise
+				var idAnaliseGeo = uploadShapes.processo.idAnaliseGeo;
+				analiseGeoService.iniciar({ id : idAnaliseGeo })
+					.then(function(response){
+
+						$rootScope.$broadcast('atualizarContagemProcessos');
+						$location.path('/analise-geo/' + idAnaliseGeo.toString());
+				
+				}, function(error){
+					mensagem.error(error.data.texto);
+				});
+
 			});
-
-		// Aqui vai trocar a tramitacao de caixa de entrada pra análise
-		// var idAnaliseGeo = $rootScope.idAnaliseGeo;
-		// analiseGeoService.iniciar({ id : idAnaliseGeo })
-		// 	.then(function(response){
-
-		// 		$rootScope.$broadcast('atualizarContagemProcessos');
-		// 		$location.path('/analise-geo/' + idAnaliseGeo.toString());
-			
-		// 	}, function(error){
-		// 		mensagem.error(error.data.texto);
-		// 	});
-
 	}
 
 	function cancelaEnvio() {
