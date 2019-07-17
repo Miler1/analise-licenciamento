@@ -61,6 +61,8 @@ div(ng-init='ctrl.init()')
 												i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
 												| &nbsp;&nbsp;
 												i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
+												i.glyphicon.glyphicon-alert(ng-click='addInconsistencia()', title='Adicionar inconsistência')
+												| &nbsp;&nbsp;
 
 					div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
 						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")

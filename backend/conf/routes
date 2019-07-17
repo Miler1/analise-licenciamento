@@ -69,6 +69,8 @@ POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
 POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
+
+POST    /salvarInconsistencia                               Inconsistencias.salvarInconsistencia
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download

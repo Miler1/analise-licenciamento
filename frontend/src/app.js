@@ -420,6 +420,7 @@ var services = app.services,
 
 
 utils.services(licenciamento)
+	.add('inconsistenciaService', services.InconsistenciaService)
 	.add('applicationService', services.ApplicationService)
 	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('mensagem', services.Mensagem)
@@ -473,7 +474,8 @@ licenciamento
 	.controller('modalSimplesController', controllers.ModalSimplesController)
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
-	.controller('legislacaoController', controllers.LegislacaoController);
+	.controller('legislacaoController', controllers.LegislacaoController)
+	.controller('inconsistenciaController',controllers.InconsistenciaController);
 
 
 licenciamento

@@ -325,6 +325,21 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 
 	};
 
+	$scope.addInconsistencia = function(){
+			var modalInstance = $uibModal.open({
+			controller: 'inconsistenciaController',
+			controllerAs: 'modalCtrl',
+			templateUrl: 'features/analiseGeo/modalInconsistencia.html',
+			size: 'lg',
+			resolve: {
+				analiseGeo: function () {
+					return ctrl.analiseGeo;
+				}
+			}		
+		});
+
+	};
+		
 };
 
 exports.controllers.AnaliseGeoController = AnaliseGeoController;

@@ -1,0 +1,28 @@
+div.modal-header
+
+    button.close(type='button', ng-click="modalCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Adicionar Inconsistência
+
+div.modal-body
+
+    div.descricao-atividade
+        label Descrição da inconsistência*:
+        br
+        textarea(name="descricaoInconsistência", ng-model="modalCtrl.descricaoInconsistencia")
+    div.descricao-atividade
+        label Tipo da inconsistência*:
+        br
+        textarea(name="tipoInconsistência", ng-model="modalCtrl.tipoInconsistencia")
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="modalCtrl.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Fechar
+    
+    button.btn.btn-success.pull-right(ng-click="modalCtrl.concluir()")
+        i.glyphicon.glyphicon-arrow-right
+        | &nbsp;Concluir
