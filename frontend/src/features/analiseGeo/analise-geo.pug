@@ -1,73 +1,89 @@
-div(ng-controller='analiseGeoController as geoCtrl', ng-init='geoCtrl.init(ctrl.restricoes, ctrl.analiseGeo)')
-	section.margin-bottom-md
+div(ng-init='ctrl.init()')
 
-		header.row
+	.row
+		.col-md-6
+			h4 PARECER GEO
 
-		.row
-			.col-md-12
+			div.row
+				label.col-sm-4 Processo:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.numero ? ctrl.analiseGeo.analise.processo.numero : ctrl.analiseGeo.analise.processo.numeroProcesso}}
 
-				div.margin-bottom-sm(ng-if="ctrl.imovel")
-					span.d-inline-block.margin-right-xs CAR vinculado:
-					strong {{ctrl.imovel.codigo}} 
-					span - {{ctrl.imovel.nome}} - {{ctrl.imovel.municipio.nome}}-{{ctrl.imovel.municipio.estado.codigo}}
+			div.row
+				label.col-sm-4 CPF/CNPJ:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf : ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
 
-				div.margin-bottom-md(ng-if="ctrl.imovel")
-					button.btn.btn-sm.btn-default.pull-right(ng-click="geoCtrl.visualizarFichaImovel()")
-						i.glyphicon.glyphicon-search
-						| &nbsp;Ficha do Imóvel
+			div.row
+				label.col-sm-4 Interessado:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.denominacao}}
 
-				h5 Localização do empreendimento
+			div.row
+				label.col-sm-4 Município:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{ctrl.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
 
-				#mapa-restricoes
-				br
-				#lista-restricoes
-					#accordion.panel-group
-						div
-							a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#meusDados')
-								.panel.panel-default
-									.panel-heading
-										h4.panel-title
-											| Meus Dados
-							#meusDados.collapse
-									table.table.table-condensed
-										thead
-											tr
-												th Nome
-												th.text-right #
+		.col-md-6
 
-										tbody
-											tr(ng-repeat='(key, layer) in meusDados.getLayers()')
-												td.col-md-11(ng-if='layer.feature.id === "meu-imovel"') Minha área do imóvel
-												td.col-md-11(ng-if='layer.feature.id === "meu-empreendimento"') Meu empreendimento
-												td.col-md-11(ng-if='layer.feature.id === "municipio-empreendimento"') Município do empreendimento
-												td.col-md-1.text-right
-													i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
-													i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
-													| &nbsp;&nbsp;
-													i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
-						
-						div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
-							a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")
-								.panel.panel-default
-									.panel-heading
-										h4.panel-title
-											| {{key}}
-							div.collapse(id="{{'outrosDados'+$index}}")
+			button.btn.btn-sm.btn-default.pull-right(ng-click="ctrl.visualizarProcesso(ctrl.analiseGeo.analise.processo)")
+				i.fa.fa-eye
+				| &nbsp;Visualizar Processo
+			a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
+				i.fa.fa-bars
+				| &nbsp;Legislação
+
+	.row
+		.col-md-12
+
+			h5 Localização do empreendimento
+
+			#mapa-restricoes
+			br
+			#lista-restricoes
+				#accordion.panel-group
+					div
+						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#meusDados')
+							.panel.panel-default
+								.panel-heading
+									h4.panel-title
+										| Meus Dados
+						#meusDados.collapse
 								table.table.table-condensed
 									thead
 										tr
 											th Nome
-											th.text-right Restrição
 											th.text-right #
 
 									tbody
-										tr(ng-repeat='(key, layer) in groupLayer.getLayers()')
-											td.col-md-6 {{layer.feature.properties.descricaoLayer | textoTruncado: 30:4}}
-											td.col-md-4.text-right {{tratarRestricao(layer.feature.properties)}}
-											td.col-md-2.text-right
-												i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida', title='Exibir geometria')
-												i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida', title='Esconder geometria')
+										tr(ng-repeat='(key, layer) in meusDados.getLayers()')
+											td.col-md-11(ng-if='layer.feature.id === "meu-imovel"') Minha área do imóvel
+											td.col-md-11(ng-if='layer.feature.id === "meu-empreendimento"') Meu empreendimento
+											td.col-md-11(ng-if='layer.feature.id === "municipio-empreendimento"') Município do empreendimento
+											td.col-md-1.text-right
+												i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
+												i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
 												| &nbsp;&nbsp;
-												i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, groupLayer.color)', , title='Centralizar na geometria')
-												| &nbsp;&nbsp;
-												i.glyphicon.glyphicon-alert(ng-click='adicionarRestricao(layer)', title='Adicionar parecer da restrição', ng-class="{'restricao-adicionada': layer.feature.properties.parecer}")
+												i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
+
+					div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
+						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")
+							.panel.panel-default
+								.panel-heading
+									h4.panel-title
+										| {{key}}
+						div.collapse(id="{{'outrosDados'+$index}}")
+							table.table.table-condensed
+								thead
+									tr
+										th Nome
+										th.text-right Restrição
+										th.text-right #
+
+								tbody
+									tr(ng-repeat='(key, layer) in groupLayer.getLayers()')
+										td.col-md-6 {{layer.feature.properties.descricaoLayer | textoTruncado: 30:4}}
+										td.col-md-4.text-right {{tratarRestricao(layer.feature.properties)}}
+										td.col-md-2.text-right
+											i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida', title='Exibir geometria')
+											i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida', title='Esconder geometria')
+											| &nbsp;&nbsp;
+											i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, groupLayer.color)', , title='Centralizar na geometria')
+											| &nbsp;&nbsp;
+											i.glyphicon.glyphicon-alert(ng-click='adicionarRestricao(layer)', title='Adicionar parecer da restrição', ng-class="{'restricao-adicionada': layer.feature.properties.parecer}")

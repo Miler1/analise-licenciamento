@@ -21,7 +21,7 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 						.then(function(response){
 							deferred.resolve(response.data);
 						});
-					return deferred.promise;					
+					return deferred.promise;
 				},
 				restricoes: function(analiseGeoService, $route, $q) {
 
