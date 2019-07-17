@@ -93,7 +93,7 @@ public class ShapeFileController extends GenericController {
 
 					Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
 					empreendimento.possui_anexo = true;
-//						empreendimento.save();
+					empreendimento.save();
 
 					AnalistaGeoAnexo novoAnexo = new AnalistaGeoAnexo(empreendimento, tipoAreaGeometria, g.geometry);
 					novoAnexo.save();
