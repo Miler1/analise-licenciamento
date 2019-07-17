@@ -79,7 +79,6 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		this.resultado.dados.keyTemp = keyTemp;
 		this.resultado.mensagens = new ArrayList<String>();
 		this.informacoesNecessarias = informacoesNecessarias;
-		/** TODO - oisouothiago - depois de trazer o municipo pode trocar esse ID por ele todo e evitar a consulta no banco **/
 		this.idMunicipio = idMunicipio;
 	}
 
@@ -243,13 +242,12 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 	private void validarGeometriaMunicipioEmpreendimento() {
 
-		/** TODO - oisouothiago - Após trazer o municipio pode tirar o if e rodar (ele já vai ter sido filtrado pra estar na tela por um processo **/
 		if (this.idMunicipio != null) {
 
 			Municipio municipio = Municipio.findById(this.idMunicipio);
 
 			List<Geometry> geometriasDoShapeFile = getTodasAsGeometriasDoShape();
-
+			/** TODO - oisouothiago - Conseguir cortar shapes fora do Municipio**/
 			geometriasDoShapeFile.stream().map(gds -> {
 				if (!municipio.limite.contains(gds)) {
 					return municipio.limite.intersection(gds);

@@ -1,7 +1,7 @@
 /**
  * Controller para a validação de shapes
  **/
-var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope) {
+var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope, $rootScope) {
 
 	var validacaoShape = this;
 
@@ -71,7 +71,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 		var arquivoEnviar = validacaoShape.arquivoSelecionado.arquivo = fileValidate;
 
-		validacaoShapeService.uploadShapeFile(arquivoEnviar)
+		validacaoShapeService.uploadShapeFile(arquivoEnviar, $rootScope.processo.idMunicipioEmpreendimento)
 			.then(function (response) {
 
 				var resultado = response.data;

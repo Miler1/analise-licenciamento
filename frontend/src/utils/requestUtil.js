@@ -281,6 +281,30 @@ Request.prototype.upload = function(url, file, Upload, elem, comLoad) {
 	return upload;
 };
 
+Request.prototype.uploadFileWithCity = function(url, file, city, Upload, elem, comLoad) {
+
+	if(comLoad === null || comLoad === undefined)
+		comLoad = true;
+
+	var upload = Upload.upload({
+
+		url: url,
+		data: { 
+			file: file,
+			idMunicipio: city
+		}
+	});
+
+	if(comLoad) {
+		this.load(url, elem);
+		this._finally(upload, url);
+	}
+
+	this._Uploading = upload;
+
+	return upload;
+};
+
 Request.prototype.abortUpload = function() {
 	if(this._Uploading) {
         this._Uploading.abort();

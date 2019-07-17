@@ -135,25 +135,6 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			window.location = $rootScope.config.baseUrl;
 		}
 
-		// // Invoke  para receber as funções da controller da controller do componente do Mapa
-		// $injector.invoke(exports.controllers.PainelMapaController, this,
-		// 	{
-		// 		$scope: $scope,
-		// 		$timeout: $timeout,
-		// 	}
-		// );
-		// appController.init('id21',true);
-
-		// // On para receber o valor do componente de upload
-		// $scope.$on('shapefile:uploaded', function(event, shape){
-		// 	$scope.$emit('mapa:inserirGeometria', shape);
-		// });
-
-		// // On para remover o elemento que foi feito upload, mas cancelado
-		// $scope.$on('shapefile:eraseUpload', function(event, shape){
-		// 	$scope.$emit('mapa:removerGeometriaMapa', shape);
-		// });
-
 		$rootScope.itensMenuPrincipal = [{
 
 			titulo: 'Caixa de entrada',
@@ -480,8 +461,7 @@ utils.services(licenciamento)
 	.add('tipoLicencaManejoService', services.TipoLicencaManejoService)
 	.add('documentoShapeService', services.DocumentoShapeService)
 	.add('analiseGeoService', services.AnaliseGeoService)
-	.add('validacaoShapeService', services.ValidacaoShapeService)
-	.add('requestService', utils.Request);
+	.add('validacaoShapeService', services.ValidacaoShapeService);
 
 
 utils.filters(licenciamento)

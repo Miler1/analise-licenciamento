@@ -58,8 +58,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	function iniciarUploadShapes(processo){
 
 		$rootScope.processo = processo;
-		// $rootScope.cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
-		// $rootScope.idAnaliseGeo = processo.idAnaliseGeo;
 
 		$location.path('/shape-upload');
 	}

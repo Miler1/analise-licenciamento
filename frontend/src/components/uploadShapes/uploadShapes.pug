@@ -9,13 +9,15 @@ mixin uploadShapes(idMapa)
 
 		div.us-container
 			div.us-header
-				h2.tituloPagina.us-header-title PROCESSO
+				h4.us-page-title Upload de camadas
+
+				h2.tituloPagina.us-header-title Processo
 				.us-header-item
 						span Número:
 						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.numero : '-'}}
 				.us-header-item
 						span CPF/CNPJ:
-						strong.us-header-item-strong {{uploadShapes.processo ? (uploadShapes.processo.cpfEmpreendimento ? uploadShapes.processo.cpfEmpreendimento : uploadShapes.processo.cnpjEmpreendimento ) : '-'}}
+						strong.us-header-item-strong {{uploadShapes.processo ? (uploadShapes.processo.cpfEmpreendimento ? uploadShapes.processo.cpfEmpreendimento : uploadShapes.processo.cnpjEmpreendimento ) : '-' | brCpfCnpj}}
 				.us-header-item
 						span Interessado:
 						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.denominacaoEmpreendimento : '-'}}

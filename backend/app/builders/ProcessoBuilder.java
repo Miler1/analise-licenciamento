@@ -301,6 +301,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addMunicipioEmpreendimentoAlias();
 		addProjection(Projections.groupProperty(MUNICIPIO_EMPREENDIMENTO_ALIAS+".nome").as("municipioEmpreendimento"));
+		addProjection(Projections.groupProperty(MUNICIPIO_EMPREENDIMENTO_ALIAS+".id").as("idMunicipioEmpreendimento"));
 
 		addEstadoEmpreendimentoAlias();
 		addProjection(Projections.groupProperty(ESTADO_EMPREENDIMENTO_ALIAS+".id").as("siglaEstadoEmpreendimento"));

@@ -6,6 +6,7 @@ import enums.InformacoesNecessariasShapeEnum;
 import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
 import models.*;
 import models.licenciamento.Empreendimento;
+import models.licenciamento.Municipio;
 import org.apache.tika.Tika;
 import play.Logger;
 import play.data.Upload;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class ShapeFileController extends GenericController {
 
-	public static void enviar(Upload file) throws IOException {
+	public static void enviar(Upload file, Long idMunicipio) throws IOException {
 
 		String realType = null;
 
@@ -43,7 +44,7 @@ public class ShapeFileController extends GenericController {
 
 			// Processamento do arquivo zip
 			/** TODO oisouothiago - Após o merge trazer o Municipio pra validação no construtor **/
-			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, 1302603L);
+			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, idMunicipio);
 
 			// Executa o processamento
 			ResultadoProcessamentoShapeFile resultadoProcessamentoShapeFile = async(processamentoShapeFile);
@@ -55,21 +56,6 @@ public class ShapeFileController extends GenericController {
 			renderError(Messages.get(Messages.get("erro.upload.documento")));
 		}
 
-	}
-
-	private static ResultadoProcessamentoShapeFile processarShapeFile(File arquivoShape) throws IOException {
-
-		ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(arquivoShape, arquivoShape.getName(), true, InformacoesNecessariasShapeEnum.TABELA_REGIAO_DESMATADA, null);
-
-			ResultadoProcessamentoShapeFile resultadoProcessamento = async(processamentoShapeFile);
-
-		if(resultadoProcessamento.status.equals(ResultadoProcessamentoShapeFile.Status.ERRO)) {
-
-			rollback();
-			renderError(Messages.get("cadastro.save.erro") + " " + resultadoProcessamento.mensagens);
-		}
-
-		return resultadoProcessamento;
 	}
 
 	public static void salvarGeometrias(ListShapeContentVO geometrias) {
