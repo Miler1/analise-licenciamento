@@ -10,21 +10,26 @@ mixin uploadShapes(idMapa)
 		div.us-container
 			div.us-header
 				h4.us-page-title Upload de camadas
+				hr
 
-				h2.tituloPagina.us-header-title Processo
-				.us-header-item
-						span Número:
-						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.numero : '-'}}
-				.us-header-item
-						span CPF/CNPJ:
-						strong.us-header-item-strong {{uploadShapes.processo ? (uploadShapes.processo.cpfEmpreendimento ? uploadShapes.processo.cpfEmpreendimento : uploadShapes.processo.cnpjEmpreendimento ) : '-' | brCpfCnpj}}
-				.us-header-item
-						span Interessado:
-						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.denominacaoEmpreendimento : '-'}}
-				.us-header-item
-						span Município:
-						strong.us-header-item-strong {{uploadShapes.processo ? uploadShapes.processo.municipioEmpreendimento : '-'}} / {{uploadShapes.processo ? uploadShapes.processo.siglaEstadoEmpreendimento : '-'}}
-
+				.us-process-info
+					.row.col-md-6
+						.row
+							label.col-sm-4 Processo:
+							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.numero : '-'}}
+						.row
+							label.col-sm-4 CPF/CNPJ:
+							span.col-sm-8 {{uploadShapes.processo ? (uploadShapes.processo.cpfEmpreendimento ? uploadShapes.processo.cpfEmpreendimento : uploadShapes.processo.cnpjEmpreendimento ) : '-' | brCpfCnpj}}
+						.row
+							label.col-sm-4 Interessado:
+							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.denominacaoEmpreendimento : '-'}}
+						.row
+							label.col-sm-4 Município:
+							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.municipioEmpreendimento : '-'}} / {{uploadShapes.processo ? uploadShapes.processo.siglaEstadoEmpreendimento : '-'}}
+				
+				.row.col-md-12
+					h5.us-map-title Localização das camadas
+			
 			div(ng-show="uploadShapes.doesntHasShapes")
 				+mapPanel('emptyMap','400', true)
 
