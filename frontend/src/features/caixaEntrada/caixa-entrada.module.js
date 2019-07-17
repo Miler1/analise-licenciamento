@@ -12,6 +12,11 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.CaixaEntradaController,
 			controllerAs: 'caixaEntrada'
 		})
+		.when("/shape-upload", {
+			templateUrl: "features/caixaEntrada/analistaGeo/shape-upload.html",
+			controller: controllers.CaixaEntradaController,
+			controllerAs: 'caixaEntrada'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});

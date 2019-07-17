@@ -15,12 +15,10 @@ var licenciamento = angular.module("licenciamento", [
 	"analiseJuridica",
 	"analiseEmAndamento",
 	"analiseManejo",
-	"analiseGeo",
 	"ui.bootstrap",
 	"textAngular",
 	"analiseTecnica",
-	"as.sortable",
-	"analiseGeo"
+	"as.sortable"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {
@@ -118,8 +116,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	amMoment.changeLocale('pt-br');
 });
 
-licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
-	function($injector, $scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
+licenciamento.controller("AppController", ["$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
+	function($scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
 
 		$rootScope.location = $location;
 		$rootScope.confirmacao = {};
@@ -128,8 +126,6 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 		$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
 		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
 		$rootScope.perfis = app.utils.Perfis;
-
-		var appController = this;
 
 		if (!$rootScope.usuarioSessao) {
 			window.location = $rootScope.config.baseUrl;
@@ -205,7 +201,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			},
 			condicaoTramitacao: function () {
 
-				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.A)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_GEO;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
@@ -460,8 +456,12 @@ utils.services(licenciamento)
 	.add('atividadeManejoService', services.AtividadeManejoService)
 	.add('tipoLicencaManejoService', services.TipoLicencaManejoService)
 	.add('documentoShapeService', services.DocumentoShapeService)
-	.add('analiseGeoService', services.AnaliseGeoService)
-	.add('validacaoShapeService', services.ValidacaoShapeService);
+<<<<<<< HEAD
+	.add('validacaoShapeService', services.ValidacaoShapeService)
+	.add('requestService', utils.Request);
+=======
+	.add('analiseGeoService', services.AnaliseGeoService);
+>>>>>>> 47b14df0a589825b89b28d61f9913c44f94d773b
 
 
 utils.filters(licenciamento)
@@ -478,10 +478,7 @@ licenciamento
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
 	.controller('legislacaoController', controllers.LegislacaoController)
-	.controller('legislacaoController', controllers.LegislacaoController)
-	.controller('validacaoShapeController', controllers.ValidacaoShapeController)
-	.controller('painelMapaController', controllers.PainelMapaController)
-	.controller('uploadShapesController', controllers.UploadShapesController);
+	.controller('validacaoShapeController', controllers.ValidacaoShapeController);
 
 
 licenciamento

@@ -1,0 +1,26 @@
+mixin modalEspecificacoesArquivo(idModal,modalCtrl)
+
+    .modal.fade(id=idModal,tabindex="-1",role="dialog")
+        .modal-dialog(role="document")
+            .modal-content
+
+                .modal-header
+                    button.close(type="button", data-dismiss="modal",aria-label="Close")
+                        span(aria-hidden="true")
+                            | &times;
+                    h4.modal-title
+                        | Especificações do arquivo a ser enviado
+            
+                .modal-body
+                    p 
+                        |O arquivo shapefile deverá atender aos seguintes requisitos:
+                    p
+                        div 1. O arquivo deve estar compactado, possuindo a extensão de aquivo .ZIP ou .RAR.
+                        div 2. Os arquivos .SHP, .SHX, .DBF e .PRJ referente a este shapefile são obrigatórios.
+                        div 3. O arquivo não deve exceder ao tamanho máximo de 100MB.
+                        div 4. O shapefile deverá estar projetado para o sistema de coordenadas geográficas SIRGAS 2000 Geographic.
+
+                .modal-footer
+                    button.btn.btn-default.pull-left(data-dismiss="modal")
+                        | Fechar
+                

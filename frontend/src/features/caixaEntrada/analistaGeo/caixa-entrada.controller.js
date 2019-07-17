@@ -9,6 +9,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntAnalistaGeo.onPaginaAlterada = onPaginaAlterada;
 	cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
+	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
 
 	cxEntAnalistaGeo.processos = [];
@@ -41,9 +42,8 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 			processo.selecionado = cxEntAnalistaGeo.todosProcessosSelecionados;
 		});
 	}
-
+	
 	function iniciarAnalise(idAnaliseGeo) {
-
 		analiseGeoService.iniciar({ id : idAnaliseGeo })
 			.then(function(response){
 
@@ -51,9 +51,15 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 				$location.path('/analise-geo/' + idAnaliseGeo.toString());
 			
 			}, function(error){
-
 				mensagem.error(error.data.texto);
 			});
+	}
+	
+	function iniciarUploadShapes(processo){
+
+		$rootScope.processo = processo;
+
+		$location.path('/shape-upload');
 	}
 
 	function visualizarProcesso(processo) {
