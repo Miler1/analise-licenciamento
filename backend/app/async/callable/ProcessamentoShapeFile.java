@@ -7,9 +7,6 @@ import com.github.junrar.exception.RarException;
 import com.github.junrar.rarfile.FileHeader;
 import com.vividsolutions.jts.geom.Geometry;
 import enums.InformacoesNecessariasShapeEnum;
-import interfaces.ColumnShapeFile;
-//import models.car.Municipio;
-//import models.desmatamento.RegiaoDesmatada;
 import models.licenciamento.Municipio;
 import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
@@ -32,8 +29,6 @@ import utils.GeoCalc;
 import utils.StringUtils;
 
 import java.io.*;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
