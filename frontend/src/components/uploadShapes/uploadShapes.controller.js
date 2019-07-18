@@ -1,7 +1,7 @@
 /**
  * Controller para a tela de upload de shapes
  **/
-var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService) {
+var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService, $route, processoService) {
 
 	var uploadShapes = this;
 
@@ -9,13 +9,24 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.shapesUploaded = 0;
 	uploadShapes.doesntHasShapes = false;
 
-	/**  **/
+	/** Variáveis para buscar o processo vínculado a página do upload **/
 	uploadShapes.processo = $rootScope.processo;
+	/** Utiliza o ID do processo salvo na URL para não perder a referência de buscar os dados **/
+	uploadShapes.idProcesso = $route.current.params.idProcesso;
 
 	/** Atribuição de funções **/
+	uploadShapes.onInit = onInit;
 	uploadShapes.enviaShapes = enviaShapes;
 	uploadShapes.abrirModal = abrirModal;
 	uploadShapes.cancelaEnvio = cancelaEnvio;
+	uploadShapes.buscaProcesso = buscaProcesso;
+
+	function buscaProcesso() {
+		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso))
+			.then(function(response){
+				uploadShapes.processo = response.data;
+			});
+	}
 
 	function abrirModal() {
 		$('#modalEspecificacoesArquivo').modal('show');
@@ -55,10 +66,16 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	}
 
 	function cancelaEnvio() {
-
 		$location.path('/caixa-entrada');
-
 	}
+
+	// Função para preencher o processo em função do ID da URL
+	function onInit(){
+		$rootScope.$broadcast('atualizarContagemProcessos');
+		uploadShapes.buscaProcesso();
+	}
+	
+	uploadShapes.onInit();
 
 	// Invoke  para receber as funções da controller da controller do componente do Mapa
 	$injector.invoke(exports.controllers.PainelMapaController, this,
