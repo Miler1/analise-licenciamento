@@ -1,21 +1,17 @@
 package models.licenciamento;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.*;
-
 import com.vividsolutions.jts.geom.Geometry;
-
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.ParamDef;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema = "licenciamento", name = "empreendimento")
@@ -96,6 +92,9 @@ public class Empreendimento extends GenericModel {
 	
 	@Transient
 	public boolean possuiCaracterizacoes;
+
+	@Column(name = "possui_anexo")
+	public boolean possui_anexo;
 	
 	public List<String> emailsProprietarios() {
 		
@@ -117,4 +116,20 @@ public class Empreendimento extends GenericModel {
 		}
 		return emails;		
 	}
+
+	public static Empreendimento buscaEmpreendimentoByCpfCnpj(String cpfCnpj) {
+		String select = "";
+		select =
+				" SELECT emp FROM " + Empreendimento.class.getCanonicalName() + " emp " +
+						" INNER JOIN emp.pessoa p ";
+
+		select += cpfCnpj.length() > 11 ?
+				" INNER JOIN PessoaJuridica pj ON p.id = pj.id WHERE pj.cnpj = :cpfCnpj" :
+				" INNER JOIN PessoaFisica pf ON p.id = pf.id WHERE pf.cpf = :cpfCnpj" ;
+
+		return Empreendimento.find(select)
+				.setParameter("cpfCnpj", cpfCnpj)
+				.first();
+	}
+
 }

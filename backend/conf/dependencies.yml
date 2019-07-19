@@ -27,6 +27,7 @@ require:
     - com.google.guava -> guava 27.0.1-jre
     - br.com.caelum.stella -> caelum-stella-bean-validation 2.0.4
     - br.ufla.lemaf -> cadastro-unificado-oauth-client 2.0.3
+    - com.github.junrar -> junrar 0.7
 
 repositories:
 
@@ -38,6 +39,7 @@ repositories:
                 - org.eclipse.emf -> *
                 - org.eclipse.xsd -> *
                 - org.apache.xml -> *
+                - org.apache.tika -> *
                 - org.junit -> *
                 - org.hibernatespatial -> *
                 - org.hibernate -> *

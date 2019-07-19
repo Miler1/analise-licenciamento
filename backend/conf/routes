@@ -196,6 +196,10 @@ POST    /upload/{idAnaliseTecnica}/complementar     DocumentosManejo.uploadFileC
 GET     /download/manejo/{id}                       DocumentosManejo.download
 DELETE  /delete/manejo/{id}                         DocumentosManejo.delete
 
+# Validação e envio do shapefile
+POST    /shapefile/enviar                           ShapeFileController.enviar
+POST    /shapefile/salvar                           ShapeFileController.salvarGeometrias
+
 # Estáticos
 GET     /public/									staticDir:public
 GET     /app/										staticDir:public/app
