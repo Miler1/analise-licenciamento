@@ -4,6 +4,8 @@ BEGIN;
 
 ALTER TABLE licenciamento.empreendimento ADD COLUMN possui_anexo BOOLEAN;
 
+COMMENT ON COLUMN licenciamento.empreendimento.possui_anexo IS 'Boooleano que indica se o empreendimento posui ou não anexos';
+
 UPDATE licenciamento.empreendimento SET possui_anexo = false WHERE possui_anexo is null;
 
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET NOT NULL;
