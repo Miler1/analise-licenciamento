@@ -9,6 +9,8 @@ var PainelMapaController = function ($scope) {
 
 	// Funções atribuídas
 	painelMapa.instanciaMapa = instanciaMapa;
+	painelMapa.esconderGeometriasNaoBaseMapa = esconderGeometriasNaoBaseMapa;
+	painelMapa.exibeGeometriasNaoBaseMapa = exibeGeometriasNaoBaseMapa;
 
 	// Função para receber os parâmetros do pug e iniciar a renderização do mapa
 	painelMapa.init = function(id, fullscreen)
@@ -17,6 +19,7 @@ var PainelMapaController = function ($scope) {
 		painelMapa.id = id;
 		painelMapa.isFullscreen = fullscreen;
 		painelMapa.listaGeometriasMapa = [];
+		painelMapa.listaGeometriasBase = [];
 		painelMapa.instanciaMapa();
 	};
 
@@ -57,6 +60,31 @@ var PainelMapaController = function ($scope) {
 		};
 	}
 
+	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
+	function adicionarGeometriasBase(event, shape){
+		painelMapa.listaGeometriasBase[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
+
+		if(shape.popupText){
+			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo].bindPopup(shape.popupText));
+		} else {
+			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo]);
+		}
+
+		centralizaGeometriasBase();
+	}
+	$scope.$on('mapa:adicionar-geometria-base', adicionarGeometriasBase);
+
+	/** Centraliza geometrias base de um mapa **/
+	function centralizaGeometriasBase(){
+		var latLngBounds = new L.latLngBounds();
+
+		Object.keys(painelMapa.listaGeometriasBase).forEach(function(index){
+			latLngBounds.extend(painelMapa.listaGeometriasBase[index].getBounds());
+		});
+
+		painelMapa.map.fitBounds(latLngBounds);
+	}
+
 	// Função para atualizar o mapa
 	function atualizarMapa(event, shape) {
 		painelMapa.listaGeometriasMapa[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
@@ -74,6 +102,22 @@ var PainelMapaController = function ($scope) {
 		centralizarGeometrias(shape.specificShape);
 	}
 	$scope.$on('mapa:inserirGeometria', atualizarMapa);
+
+	// Função para esconder geometrias nao basicas do mapa
+	function esconderGeometriasNaoBaseMapa(){
+		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+			painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[index]);
+		});
+		centralizaGeometriasBase();
+	}
+
+	// Função para exibir as geometrias nao basicas do mapa
+	function exibeGeometriasNaoBaseMapa(){
+		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[index]);
+		});
+		centralizarGeometrias(true);
+	}
 
 	function removerGeometriaMapa(event, shape) {
 		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo]);
@@ -119,6 +163,7 @@ var PainelMapaController = function ($scope) {
 				latLngBounds.extend(painelMapa.listaGeometriasMapa[index].getBounds());
 			});
 			
+			centralizaGeometriasBase();
 		}
 
 		painelMapa.map.fitBounds(latLngBounds);

@@ -29,19 +29,17 @@ mixin uploadShapes(idMapa)
 				
 				.row.col-md-12
 					h5.us-map-title Localização das camadas
-			
-			div(ng-show="uploadShapes.doesntHasShapes")
-				+mapPanel('emptyMap','400', true)
 
-			div(ng-show="!uploadShapes.doesntHasShapes")
-				+mapPanel(idMapa,'400', true)
+			+mapPanel(idMapa,'400', true)
 			
 			div.us-checkbox-area
 				input(type='checkbox', 
 					placeholder='Não possui nenhuma camada', 
 					ng-model='uploadShapes.doesntHasShapes',
-					id='naoPossuiShape') 
-				label.us-checkbox-label(for="naoPossuiShape") Não possui nenhuma camada
+					id='naoPossuiShape',
+					ng-click='uploadShapes.hideUploadShapes()') 
+				label.us-checkbox-label(for="naoPossuiShape",
+										ng-click='uploadShapes.hideUploadShapes()') Não possui nenhuma camada
 
 			div.us-upload-container
 				h2.tituloPagina.us-upload-top-title Arquivos anexados

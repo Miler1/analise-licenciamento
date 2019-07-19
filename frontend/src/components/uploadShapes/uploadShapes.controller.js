@@ -19,6 +19,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.abrirModal = abrirModal;
 	uploadShapes.cancelaEnvio = cancelaEnvio;
 	uploadShapes.buscaProcesso = buscaProcesso;
+	uploadShapes.hideUploadShapes = hideUploadShapes;
 	
 
 	function buscaProcesso() {
@@ -29,7 +30,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 				uploadShapes.idMunicipio = uploadShapes.processo.empreendimento.municipio.id;
 
-				$scope.$emit('shapefile:uploaded', {
+				$scope.$emit('mapa:adicionar-geometria-base', {
 					geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
 					tipo: 'EMP-LOCAL',
 					estilo: {
@@ -39,7 +40,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 					popupText: 'Empreendimento',
 				});
 
-				$scope.$emit('shapefile:uploaded', {
+				$scope.$emit('mapa:adicionar-geometria-base', {
 					geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
 					tipo: 'EMP-CIDADE',
 					estilo: {
@@ -108,8 +109,15 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 			$timeout: $timeout,
 		}
 	);
-	uploadShapes.init('emptyMap',true);
 	uploadShapes.init('mapa', true);
+
+	function hideUploadShapes() {
+		if(uploadShapes.doesntHasShapes){
+			uploadShapes.esconderGeometriasNaoBaseMapa();
+		}else {
+			uploadShapes.exibeGeometriasNaoBaseMapa();
+		}
+	}
 
 	// On para receber o valor do componente de upload
 	$scope.$on('shapefile:uploaded', function(event, shape){
