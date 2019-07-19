@@ -71,9 +71,15 @@ public class ShapeFileController extends GenericController {
 
 				List<TipoAreaGeometria> tiposArea = TipoAreaGeometria.findAll();
 
-				TipoAreaGeometria tipoAreaGeometria = tiposArea.stream().filter(ta -> {
+				TipoAreaGeometria tipoAreaGeometria = null;
+				tiposArea = tiposArea.stream().filter(ta -> {
 					return ta.codigo.equals(g.type);
-				}).collect(Collectors.toList()).get(0);
+				}).collect(Collectors.toList());
+
+				/* Atualmente, um shape só pode ter um tipo de área */
+				if(tiposArea.size() > 0){
+					tipoAreaGeometria = tiposArea.get(0);
+				}
 
 				if(tipoAreaGeometria != null){
 

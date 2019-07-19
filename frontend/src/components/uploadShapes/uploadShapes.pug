@@ -57,7 +57,8 @@ mixin uploadShapes(idMapa)
 								'#2196F3',
 								"Hidrografia",
 								true,
-								"uploadShapes.processo.empreendimento.municipio.id")
+								"{{uploadShapes.idMunicipio}}")
+								//- TODO oisouothiago - ajustar como o parametro é enviado para o mixin
 
 					h3.us-upload-title APP (Área de preservação permanente)
 					div.us-upload-description
@@ -69,7 +70,7 @@ mixin uploadShapes(idMapa)
 								'#8BC34A',
 								"Área de preservação permanente",
 								true,
-								"uploadShapes.processo.empreendimento.municipio.id")
+								"{{uploadShapes.idMunicipio}}")
 
 					h3.us-upload-title Área antropizada
 					div.us-upload-description
@@ -81,7 +82,7 @@ mixin uploadShapes(idMapa)
 								'#CDDC39',
 								"Área antropizada",
 								true,
-								"uploadShapes.processo.empreendimento.municipio.id")
+								"{{uploadShapes.idMunicipio}}")
 
 				div(ng-show="uploadShapes.doesntHasShapes")
 					h3.us-upload-noupload O empreendimento  

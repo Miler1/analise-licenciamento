@@ -115,7 +115,8 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 											fillOpacity: 0.2
 										}
 									},
-									popupText: validacaoShape.popupText
+									popupText: validacaoShape.popupText,
+									specificShape: true
 								});
 							}
 						}
