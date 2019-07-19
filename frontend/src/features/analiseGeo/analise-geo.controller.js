@@ -1,5 +1,5 @@
 var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, restricoes, idAnaliseGeo, processoService) {
-
+	
 	var idMapa = 'mapa-restricoes',
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
@@ -12,6 +12,7 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 	ctrl.restricoes = restricoes;
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
+	ctrl.categoria = app.utils.Inconsistencia;
 
 	var getLayer = function(descricao){
 
@@ -325,6 +326,24 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 
 	};
 
+	$scope.addInconsistencia = function(categoriaInconsistencia){
+			var modalInstance = $uibModal.open({
+			controller: 'inconsistenciaController',
+			controllerAs: 'modalCtrl',
+			templateUrl: 'features/analiseGeo/modalInconsistencia.html',
+			size: 'lg',
+			resolve: {
+				analiseGeo: function () {
+					return ctrl.analiseGeo;
+				},
+				categoriaInconsistencia: function(){
+					return categoriaInconsistencia;
+				}
+			}		
+		});
+
+	};
+		
 };
 
 exports.controllers.AnaliseGeoController = AnaliseGeoController;

@@ -43,13 +43,13 @@ div(ng-init='ctrl.init()')
 							.panel.panel-default
 								.panel-heading
 									h4.panel-title
-										| Meus Dados
+										| Dados do empreendimento 
 						#meusDados.collapse
-								table.table.table-condensed
+								table.table.table-striped.table-condensed.no-margin.table-responsive
 									thead
 										tr
-											th Nome
-											th.text-right #
+											th.col-md-4 Item
+											th.col-md-1.text-right Ações
 
 									tbody
 										tr(ng-repeat='(key, layer) in meusDados.getLayers()')
@@ -61,6 +61,8 @@ div(ng-init='ctrl.init()')
 												i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
 												| &nbsp;&nbsp;
 												i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
+												i.glyphicon.glyphicon-alert(ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
+												| &nbsp;&nbsp;
 
 					div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
 						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")
