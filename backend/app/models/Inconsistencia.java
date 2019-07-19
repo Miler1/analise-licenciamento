@@ -6,12 +6,14 @@ import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
 import utils.Configuracoes;
 import models.AnaliseGeo;
+import utils.ListUtil;
 import utils.Mensagem;
+import utils.ModelUtil;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 @Entity
 @Table(schema="analise", name="inconsistencia")
@@ -66,5 +68,53 @@ public class Inconsistencia extends GenericModel{
 
     }
 
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo) {
 
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = descricaoInconsistencia;
+        this.tipoInconsistencia = tipoInconsistencia;
+        this.categoria = categoria;
+    }
+
+    public void saveAnexos(List<Documento> novosAnexos) {
+
+        TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_INCONSISTENCIA);
+
+        if (this.anexos == null)
+            this.anexos = new ArrayList<>();
+
+        Iterator<Documento> docsCadastrados = anexos.iterator();
+        List<Documento> documentosDeletar = new ArrayList<>();
+
+//        while (docsCadastrados.hasNext()) {
+//
+//            Documento docCadastrado = docsCadastrados.next();
+//
+//            if (ListUtil.getById(docCadastrado.id, novosAnexos) == null) {
+//
+//                docsCadastrados.remove();
+//
+//                // remove o documeto do banco apenas se ele não estiver relacionado
+//                // com outra análises
+//                List<AnaliseJuridica> analiseJuridicasRelacionadas = docCadastrado.getAnaliseJuridicasRelacionadas();
+//                if(analiseJuridicasRelacionadas.size() == 0) {
+//
+//                    documentosDeletar.add(docCadastrado);
+//                }
+//
+//            }
+//        }
+
+        for (Documento novoAnexo : novosAnexos) {
+
+            if (novoAnexo.id == null) {
+
+                novoAnexo.tipo = tipo;
+                novoAnexo.save();
+                this.anexos.add(novoAnexo);
+            }
+        }
+
+        //ModelUtil.deleteAll(documentosDeletar);
+    }
 }

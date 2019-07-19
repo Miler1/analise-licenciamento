@@ -1,5 +1,5 @@
 var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, restricoes, idAnaliseGeo, processoService) {
-
+	
 	var idMapa = 'mapa-restricoes',
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
