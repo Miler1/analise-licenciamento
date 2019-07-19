@@ -482,7 +482,8 @@ licenciamento
 	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('validacaoShapeController', controllers.ValidacaoShapeController)
 	.controller('painelMapaController', controllers.PainelMapaController)
-	.controller('uploadShapesController', controllers.UploadShapesController);
+	.controller('uploadShapesController', controllers.UploadShapesController)
+	.controller('inconsistenciaController',controllers.InconsistenciaController);
 
 
 licenciamento
