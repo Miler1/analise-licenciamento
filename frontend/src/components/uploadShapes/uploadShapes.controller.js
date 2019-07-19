@@ -9,8 +9,6 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.shapesUploaded = 0;
 	uploadShapes.doesntHasShapes = false;
 
-	/** Variáveis para buscar o processo vínculado a página do upload **/
-	uploadShapes.processo = $rootScope.processo;
 	/** Utiliza o ID do processo salvo na URL para não perder a referência de buscar os dados **/
 	uploadShapes.idProcesso = $route.current.params.idProcesso;
 
@@ -24,8 +22,30 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	function buscaProcesso() {
 		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso))
 			.then(function(response){
+
 				uploadShapes.processo = response.data;
-			});
+
+				$scope.$emit('shapefile:uploaded', {
+					geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
+					tipo: 'EMP-LOCAL',
+					estilo: {
+						style: {
+						}
+					},
+					popupText: 'Empreendimento'
+				});
+
+				$scope.$emit('shapefile:uploaded', {
+					geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
+					tipo: 'EMP-CIDADE',
+					estilo: {
+						style: {
+							fillColor: 'transparent',
+							color: '#FFF',
+						}
+					},
+				});
+		});
 	}
 
 	function abrirModal() {
