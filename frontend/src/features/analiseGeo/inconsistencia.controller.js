@@ -1,4 +1,4 @@
-var InconsistenciaController = function ($uibModalInstance,analiseGeo,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
+var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaInconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
 
 	var inconsistenciaController = this;
 
@@ -6,13 +6,10 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,tamanhoMax
 	inconsistenciaController.tipoInconsistencia = null;
 	inconsistenciaController.anexos = [];
 	inconsistenciaController.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
-	
-
 
 	inconsistenciaController.fechar = function () {
 		$uibModalInstance.dismiss('cancel');
 	};
-
 
 	inconsistenciaController.upload = function(file, invalidFile) {
 
@@ -29,7 +26,6 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,tamanhoMax
 
 												id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA
 										}
-										
 								});
 															
 						}, function(error){
@@ -55,7 +51,7 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,tamanhoMax
 			analiseGeo: {id: analiseGeo.id},
 			tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
 			descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-			categoria: 'PROPRIEDADE',
+			categoria: categoriaInconsistencia,
 			anexos: inconsistenciaController.anexos
 		};
 
@@ -73,7 +69,6 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,tamanhoMax
 
 	inconsistenciaController.baixarDocumentoInconsistencia= function(idDocumento) {
 
-		// idDocumento = inconsistenciaController.anexos.tipoDocumento.id;
 		inconsistenciaService.download(idDocumento);
 	};
 
