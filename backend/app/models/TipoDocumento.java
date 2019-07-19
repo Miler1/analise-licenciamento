@@ -28,6 +28,7 @@ public class TipoDocumento extends Model {
 	public static Long ANEXO_PROCESSO_MANEJO_DIGITAL = 15l;
 	public static Long PARECER_ANALISE_GEO = 16l;
 	public static Long NOTIFICACAO_ANALISE_GEO = 17l;
+	public static Long DOCUMENTO_INCONSISTENCIA = 18l;
 
 	@Required
 	public String nome;

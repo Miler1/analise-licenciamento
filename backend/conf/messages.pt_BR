@@ -35,7 +35,12 @@ ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO=O Analista informado não tem perfil de a
 ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
 ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista técnico pelo coordenador a justificativa é obrigatória.
 
-
+#
+# Inconsistencia
+#
+INCONSISTENCIA_SALVA_SUCESSO=A inconsistência foi salva com sucesso.
+TIPO_INCONSISTENCIA_OBRIGATORIA=O campo 'Tipo de inconsistência' é obrigatório.
+DESCRICAO_OBRIGATORIA=O campo 'Descrição da inconsistência' é obrigatório.
 #
 # Gerentes
 #
