@@ -1,10 +1,7 @@
 package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
-import enums.CategoriaInconsistencia;
 import models.*;
-import org.geotools.geojson.GeoJSONUtil;
-import org.geotools.geojson.geom.GeometryJSON;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.ParamDef;
@@ -97,8 +94,8 @@ public class Empreendimento extends GenericModel {
 	@Transient
 	public boolean possuiCaracterizacoes;
 
-	@Column(name = "possui_anexo")
-	public boolean possuiAnexo;
+	@Column(name = "possui_shape")
+	public boolean possuiShape;
 	
 	public List<String> emailsProprietarios() {
 		
@@ -147,20 +144,20 @@ public class Empreendimento extends GenericModel {
 
 		dadosGeoEmpreendimento.add(camadaGeo);
 
-		List<AnaliseGeoAnexo> listaAnexos = AnaliseGeoAnexo.find("byEmpreendimento", this).fetch();
+		List<EmpreendimentoCamandaGeo> listaAnexos = EmpreendimentoCamandaGeo.find("byEmpreendimento", this).fetch();
 
 		List<TipoAreaGeometria> tiposAreaGeometria = TipoAreaGeometria.findAll();
 
 		for (TipoAreaGeometria tipoAreaGeometria : tiposAreaGeometria) {
 
-			AnaliseGeoAnexo analiseGeoAnexo = listaAnexos.stream()
+			EmpreendimentoCamandaGeo empreendimentoCamandaGeo = listaAnexos.stream()
 					.filter(g -> g.tipoAreaGeometria.codigo.equals(tipoAreaGeometria.codigo))
 					.findAny()
 					.orElse(null);
 
-			if (analiseGeoAnexo != null) {
+			if (empreendimentoCamandaGeo != null) {
 
-				camadaGeo = new CamadaGeo(analiseGeoAnexo.tipoAreaGeometria.nome, analiseGeoAnexo.areaGeometria.toString() + " ha", analiseGeoAnexo.areaGeometria, analiseGeoAnexo.geometria);
+				camadaGeo = new CamadaGeo(empreendimentoCamandaGeo.tipoAreaGeometria.nome, empreendimentoCamandaGeo.areaGeometria.toString() + " ha", empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria);
 				dadosGeoEmpreendimento.add(camadaGeo);
 
 			} else {
