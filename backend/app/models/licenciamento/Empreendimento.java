@@ -93,15 +93,15 @@ public class Empreendimento extends GenericModel {
 	@Transient
 	public boolean possuiCaracterizacoes;
 
-	@Column(name = "possui_anexo")
-	public boolean possui_anexo;
+	@Column(name = "possui_shape")
+	public Boolean possui_shape;
 	
 	public List<String> emailsProprietarios() {
 		
 		List<String> emails = new ArrayList<String>();
 		for(Proprietario proprietario : this.proprietarios) {
 			
-			if(proprietario.pessoa.contato != null) {				
+			if(proprietario.pessoa.contato != null) {
 				emails.add(proprietario.pessoa.contato.email);
 			}
 		}

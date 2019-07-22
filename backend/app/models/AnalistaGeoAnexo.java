@@ -8,10 +8,10 @@ import play.db.jpa.GenericModel;
 import javax.persistence.*;
 
 @Entity
-@Table(schema="analise", name="analise_geo_anexo")
+@Table(schema="analise", name="empreendimento_camada_geo")
 public class AnalistaGeoAnexo extends GenericModel {
 
-	public static final String SEQ = "analise.analise_geo_anexo_id_seq";
+	public static final String SEQ = "analise.empreendimento_camada_geo_id_seq";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
@@ -31,6 +31,10 @@ public class AnalistaGeoAnexo extends GenericModel {
 	@Required
 	@Column(name="geom")
 	public Geometry geom;
+
+	@Required
+	@Column(name="area")
+	public Double area;
 
 	public AnalistaGeoAnexo() {
 

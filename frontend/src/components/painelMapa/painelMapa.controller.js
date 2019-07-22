@@ -18,7 +18,9 @@ var PainelMapaController = function ($scope) {
 		// Recebe o ID via parâmetro da controller pai (por conta dos $emits em escopos diferentes)
 		painelMapa.id = id;
 		painelMapa.isFullscreen = fullscreen;
+		// Lista de geometrias enviadas pelo usuário via upload (tem prioridade na hierarquia de centralizar)
 		painelMapa.listaGeometriasMapa = [];
+		// Lista de geometrias base do mapa, são centralizadas somente se a lista de geometrias enviadas estiver vazia
 		painelMapa.listaGeometriasBase = [];
 		painelMapa.instanciaMapa();
 	};

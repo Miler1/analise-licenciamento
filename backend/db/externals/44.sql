@@ -4,7 +4,7 @@ BEGIN;
 
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo DROP NOT NULL;
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET DEFAULT NULL;
-ALTER TABLE licenciamento.empreendimento RENAME COLUMN possui_anexo TO possui_sahpe;
+ALTER TABLE licenciamento.empreendimento RENAME COLUMN possui_anexo TO possui_shape;
 COMMENT ON COLUMN licenciamento.empreendimento.possui_sahpe IS 'Boooleano que indica se o empreendimento posui ou não upload de shapes, se é nulo o empreendimento nunca cadastrou shapes';
 
 COMMIT;
@@ -13,8 +13,8 @@ COMMIT;
 
 BEGIN;
 
-ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_sahpe SET DEFAULT false;
-ALTER TABLE licenciamento.empreendimento RENAME COLUMN possui_sahpe TO possui_anexo;
+ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_shape SET DEFAULT false;
+ALTER TABLE licenciamento.empreendimento RENAME COLUMN possui_shape TO possui_anexo;
 COMMENT ON COLUMN licenciamento.empreendimento.possui_anexo IS 'Boooleano que indica se o empreendimento posui ou não anexos';
 
 COMMIT;
