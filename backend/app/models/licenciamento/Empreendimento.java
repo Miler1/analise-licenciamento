@@ -1,17 +1,21 @@
 package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
+import enums.CategoriaInconsistencia;
+import models.*;
+import org.geotools.geojson.GeoJSONUtil;
+import org.geotools.geojson.geom.GeometryJSON;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.ParamDef;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
+import utils.GeoCalc;
+import utils.GeoJsonUtils;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(schema = "licenciamento", name = "empreendimento")
@@ -94,7 +98,7 @@ public class Empreendimento extends GenericModel {
 	public boolean possuiCaracterizacoes;
 
 	@Column(name = "possui_anexo")
-	public boolean possui_anexo;
+	public boolean possuiAnexo;
 	
 	public List<String> emailsProprietarios() {
 		
@@ -130,6 +134,44 @@ public class Empreendimento extends GenericModel {
 		return Empreendimento.find(select)
 				.setParameter("cpfCnpj", cpfCnpj)
 				.first();
+	}
+
+	public List<CamadaGeo> buscaDadosGeoEmpreendimento(String geometria) {
+
+		List<CamadaGeo> dadosGeoEmpreendimento = new ArrayList<>();
+
+		Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(geometria);
+		Double areaEmpreendimento = GeoCalc.area(geometriaEmpreendimento) / 10000;
+
+		CamadaGeo camadaGeo = new CamadaGeo("Propriedade", areaEmpreendimento.toString() + " ha", areaEmpreendimento, geometriaEmpreendimento);
+
+		dadosGeoEmpreendimento.add(camadaGeo);
+
+		List<AnaliseGeoAnexo> listaAnexos = AnaliseGeoAnexo.find("byEmpreendimento", this).fetch();
+
+		List<TipoAreaGeometria> tiposAreaGeometria = TipoAreaGeometria.findAll();
+
+		for (TipoAreaGeometria tipoAreaGeometria : tiposAreaGeometria) {
+
+			AnaliseGeoAnexo analiseGeoAnexo = listaAnexos.stream()
+					.filter(g -> g.tipoAreaGeometria.codigo.equals(tipoAreaGeometria.codigo))
+					.findAny()
+					.orElse(null);
+
+			if (analiseGeoAnexo != null) {
+
+				camadaGeo = new CamadaGeo(analiseGeoAnexo.tipoAreaGeometria.nome, analiseGeoAnexo.areaGeometria.toString() + " ha", analiseGeoAnexo.areaGeometria, analiseGeoAnexo.geometria);
+				dadosGeoEmpreendimento.add(camadaGeo);
+
+			} else {
+
+				camadaGeo = new CamadaGeo(tipoAreaGeometria.nome, "não possui", 0.0, null);
+				dadosGeoEmpreendimento.add(camadaGeo);
+			}
+
+		}
+
+		return dadosGeoEmpreendimento;
 	}
 
 }

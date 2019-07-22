@@ -69,6 +69,10 @@ POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
 POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
+
+# Empreendimento
+GET     /empreendimento/buscaDadosGeo/{cpfCnpj}             Empreendimentos.buscaDadosGeoEmpreendimento
+
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download

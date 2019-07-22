@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(schema="analise", name="analise_geo_anexo")
-public class AnalistaGeoAnexo extends GenericModel {
+public class AnaliseGeoAnexo extends GenericModel {
 
 	public static final String SEQ = "analise.analise_geo_anexo_id_seq";
 
@@ -30,18 +30,23 @@ public class AnalistaGeoAnexo extends GenericModel {
 
 	@Required
 	@Column(name="geom")
-	public Geometry geom;
+	public Geometry geometria;
 
-	public AnalistaGeoAnexo() {
+	@Required
+	@Column(name="area")
+	public Double areaGeometria;
+
+	public AnaliseGeoAnexo() {
 
 	}
 
-	public AnalistaGeoAnexo(Empreendimento empreendimento, TipoAreaGeometria tipoAreaGeometria, Geometry geom) {
+	public AnaliseGeoAnexo(Empreendimento empreendimento, TipoAreaGeometria tipoAreaGeometria, Geometry geometria, Double areaGeometria) {
 
 		super();
 		this.empreendimento = empreendimento;
 		this.tipoAreaGeometria = tipoAreaGeometria;
-		this.geom = geom;
+		this.geometria = geometria;
+		this.areaGeometria = areaGeometria;
 
 	}
 
