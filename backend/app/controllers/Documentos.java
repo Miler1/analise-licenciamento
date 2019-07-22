@@ -10,7 +10,7 @@ public class Documentos extends InternalController {
 
    public static void download(Long id) {
 	   
-	   verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO, Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_TECNICO);
+	   verificarPermissao(Acao.VALIDAR_PARECER_GEO,  Acao.INICIAR_PARECER_GEO);
 	   
 	   returnIfNull(id, "Long");
 	   

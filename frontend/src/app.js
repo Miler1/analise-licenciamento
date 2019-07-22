@@ -423,6 +423,7 @@ var services = app.services,
 
 
 utils.services(licenciamento)
+	.add('inconsistenciaService', services.InconsistenciaService)
 	.add('applicationService', services.ApplicationService)
 	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('mensagem', services.Mensagem)
@@ -481,7 +482,8 @@ licenciamento
 	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('validacaoShapeController', controllers.ValidacaoShapeController)
 	.controller('painelMapaController', controllers.PainelMapaController)
-	.controller('uploadShapesController', controllers.UploadShapesController);
+	.controller('uploadShapesController', controllers.UploadShapesController)
+	.controller('inconsistenciaController',controllers.InconsistenciaController);
 
 
 licenciamento

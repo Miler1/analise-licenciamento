@@ -241,10 +241,9 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		if (this.idMunicipio != null) {
 
 			Municipio municipio = Municipio.findById(this.idMunicipio);
-
 			List<Geometry> geometriasDoShapeFile = getTodasAsGeometriasDoShape();
-			/** TODO - oisouothiago - Conseguir cortar shapes fora do Municipio**/
-			geometriasDoShapeFile.stream().map(gds -> {
+
+			geometriasDoShapeFile = geometriasDoShapeFile.stream().map(gds -> {
 				if (!municipio.limite.contains(gds)) {
 					Geometry interseccao = municipio.limite.intersection(gds);
 					return interseccao;
@@ -254,12 +253,28 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 				}
 			}).collect(Collectors.toList());
 
-//			Logger.info(geometriasDoShapeFile.get(0).toString());
-
-//			geometriasDoShapeFile.set(0, municipio.limite.intersection(geometriasDoShapeFile.get(0)));
-
 			if (geometriasDoShapeFile.stream().anyMatch(gds -> gds.isEmpty())) {
 				this.fireError(Messages.get("error.shapefile.attributes.foraMunicipio"), null);
+			}else {
+				/** TODO oisouothiago - Encontrar o conteúdo alterado da lista e salvar nos registros! **/
+				List<List<AtributoShape>> registrosAlterados = new ArrayList<List<AtributoShape>>();
+
+				for (List<AtributoShape> registro : this.resultado.dados.registros) {
+
+					for (AtributoShape atributo : registro) {
+
+						if (atributo.valor != null && atributo.valor instanceof Geometry) {
+
+							Geometry geometria = (Geometry) atributo.valor;
+							geometria.setSRID(Configuracoes.SRID_DEFAULT);
+							geometriasDoShapeFile.add(geometria);
+						}
+					}
+
+					registrosAlterados.add(registro);
+				}
+
+				this.resultado.dados.registros = registrosAlterados;
 			}
 		}
 	}

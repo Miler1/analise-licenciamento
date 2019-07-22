@@ -70,6 +70,8 @@ POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprova
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 
+POST    /salvarInconsistencia                               Inconsistencias.salvarInconsistencia
+
 # Empreendimento
 GET     /empreendimento/buscaDadosGeo/{cpfCnpj}             Empreendimentos.buscaDadosGeoEmpreendimento
 

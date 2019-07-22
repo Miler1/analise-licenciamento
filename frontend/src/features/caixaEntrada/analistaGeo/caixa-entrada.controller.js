@@ -59,7 +59,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 		$rootScope.processo = processo;
 
-		$location.path('/shape-upload');
+		$location.path('/shape-upload/' + processo.idProcesso.toString());
 	}
 
 	function visualizarProcesso(processo) {

@@ -4,9 +4,13 @@
 var PainelMapaController = function ($scope) {
 	var painelMapa = this;
 	painelMapa.map = null;
+	// Lista para conter as geometrias que precisam de atenção especial durante a renderização
+	painelMapa.specificGeometries = [];
 
 	// Funções atribuídas
 	painelMapa.instanciaMapa = instanciaMapa;
+	painelMapa.esconderGeometriasNaoBaseMapa = esconderGeometriasNaoBaseMapa;
+	painelMapa.exibeGeometriasNaoBaseMapa = exibeGeometriasNaoBaseMapa;
 
 	// Função para receber os parâmetros do pug e iniciar a renderização do mapa
 	painelMapa.init = function(id, fullscreen)
@@ -15,6 +19,7 @@ var PainelMapaController = function ($scope) {
 		painelMapa.id = id;
 		painelMapa.isFullscreen = fullscreen;
 		painelMapa.listaGeometriasMapa = [];
+		painelMapa.listaGeometriasBase = [];
 		painelMapa.instanciaMapa();
 	};
 
@@ -55,28 +60,112 @@ var PainelMapaController = function ($scope) {
 		};
 	}
 
+	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
+	function adicionarGeometriasBase(event, shape){
+		painelMapa.listaGeometriasBase[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
+
+		if(shape.popupText){
+			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo].bindPopup(shape.popupText));
+		} else {
+			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo]);
+		}
+
+		centralizaGeometriasBase();
+	}
+	$scope.$on('mapa:adicionar-geometria-base', adicionarGeometriasBase);
+
+	/** Centraliza geometrias base de um mapa **/
+	function centralizaGeometriasBase(){
+		var latLngBounds = new L.latLngBounds();
+
+		Object.keys(painelMapa.listaGeometriasBase).forEach(function(index){
+			latLngBounds.extend(painelMapa.listaGeometriasBase[index].getBounds());
+		});
+
+		painelMapa.map.fitBounds(latLngBounds);
+	}
+
 	// Função para atualizar o mapa
 	function atualizarMapa(event, shape) {
 		painelMapa.listaGeometriasMapa[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
-		painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo].bindPopup(shape.popupText));
-		centralizarGeometrias();
+
+		if(shape.popupText){
+			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo].bindPopup(shape.popupText));
+		} else {
+			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo]);
+		}
+
+		if(shape.specificShape){
+			painelMapa.specificGeometries.push(shape.tipo);
+		}
+		
+		centralizarGeometrias(shape.specificShape);
 	}
 	$scope.$on('mapa:inserirGeometria', atualizarMapa);
 
+	// Função para esconder geometrias nao basicas do mapa
+	function esconderGeometriasNaoBaseMapa(){
+		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+			painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[index]);
+		});
+		centralizaGeometriasBase();
+	}
+
+	// Função para exibir as geometrias nao basicas do mapa
+	function exibeGeometriasNaoBaseMapa(){
+		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[index]);
+		});
+		centralizarGeometrias(true);
+	}
+
 	function removerGeometriaMapa(event, shape) {
 		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo]);
+
+		// Limpeza do elemento da lista de centralização especial
+		painelMapa.specificGeometries.forEach(function(index, item) {
+			if(index === shape.tipo){
+				// Deleta o item da lista
+				painelMapa.specificGeometries.splice(item,1);
+			}
+		});
+
 		delete painelMapa.listaGeometriasMapa[shape.tipo];
-		centralizarGeometrias();
+		
+		// Caso não haja nenhuma geometria que necessite de centralização especial, volta centralizando tudo
+		if(painelMapa.specificGeometries.length > 0){
+			centralizarGeometrias(true);
+		}else{
+			centralizarGeometrias(false);
+		}
+		
 	}
 	$scope.$on('mapa:removerGeometriaMapa', removerGeometriaMapa);
 
-	function centralizarGeometrias() {
+	/** O parâmetro centralizarEspecifico remete a possibilidade de centralizar apenas 
+	 * as geometrias relacionadas ao upload, não referente aos dados do empreendimento **/
+	function centralizarGeometrias(centralizarEspecifico) {
 		var latLngBounds = new L.latLngBounds();
 
-		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
-			latLngBounds.extend(painelMapa.listaGeometriasMapa[index].getBounds());
-		});
-		
+		if(centralizarEspecifico){
+
+			Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+				painelMapa.specificGeometries.forEach(function(item) {
+					if(index === item){
+						latLngBounds.extend(painelMapa.listaGeometriasMapa[index].getBounds());
+					}
+				});
+			});
+
+		}else {
+
+			Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+				latLngBounds.extend(painelMapa.listaGeometriasMapa[index].getBounds());
+			});
+			
+			centralizaGeometriasBase();
+		}
+
 		painelMapa.map.fitBounds(latLngBounds);
 	}
 

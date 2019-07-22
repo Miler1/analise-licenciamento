@@ -18,10 +18,11 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	validacaoShape.resultadoProcessamento = null;
 
 	/** Declaração das funções **/
-	function init(tipo,cor,popupText){
+	function init(tipo,cor,popupText,idMunicipio){
 		validacaoShape.tipo = tipo;
 		validacaoShape.cor = cor;
 		validacaoShape.popupText = popupText;
+		validacaoShape.idMunicipio = idMunicipio;
 	}
 
 	function atualizaBarraProgresso(evt) {
@@ -71,7 +72,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 		var arquivoEnviar = validacaoShape.arquivoSelecionado.arquivo = fileValidate;
 
-		validacaoShapeService.uploadShapeFile(arquivoEnviar, $rootScope.processo.idMunicipioEmpreendimento)
+		validacaoShapeService.uploadShapeFile(arquivoEnviar, validacaoShape.idMunicipio)
 			.then(function (response) {
 
 				var resultado = response.data;
@@ -114,7 +115,8 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 											fillOpacity: 0.2
 										}
 									},
-									popupText: validacaoShape.popupText
+									popupText: validacaoShape.popupText,
+									specificShape: true
 								});
 							}
 						}
