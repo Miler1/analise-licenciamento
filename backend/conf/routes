@@ -67,6 +67,7 @@ GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	        AnalisesGeo.getRestricoes
 POST	/analisesGeo/validarParecer					        AnalisesGeo.validarParecer
 POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
 POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador
+GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}          AnalisesGeo.verificaAnexosEmpreendimento
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 

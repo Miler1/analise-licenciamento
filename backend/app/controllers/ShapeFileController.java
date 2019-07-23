@@ -14,6 +14,7 @@ import utils.FileManager;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import utils.GeoCalc;
 
@@ -36,7 +37,6 @@ public class ShapeFileController extends InternalController {
 			String key = FileManager.getInstance().createFile(data, extension);
 
 			// Processamento do arquivo zip
-			/** TODO oisouothiago - Após o merge trazer o Municipio pra validação no construtor **/
 			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, idMunicipio);
 
 			// Executa o processamento
