@@ -11,6 +11,12 @@ public class EmpreendimentoSerializer {
 			"item",
 			"descricao",
 			"area",
-			"geometria")
+			"geometria",
+			"tipo",
+			"restricoes.item",
+			"restricoes.descricao",
+			"restricoes.area",
+			"restricoes.geometria",
+			"restricoes.tipo")
 			.transform(new GeometryTransformer(), Geometry.class);
 }

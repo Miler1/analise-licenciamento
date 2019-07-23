@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, restricoes, idAnaliseGeo, processoService) {
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, restricoes, idAnaliseGeo, processoService, empreendimentoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -13,6 +13,8 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
 	ctrl.categoria = app.utils.Inconsistencia;
+	ctrl.camadas = [];
+	ctrl.estiloMapa = app.utils.EstiloMapa;
 
 	var getLayer = function(descricao){
 
@@ -38,6 +40,15 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 		return layerControle;
 
 	};
+
+	$injector.invoke(exports.controllers.PainelMapaController, this,
+		{
+			$scope: $scope,
+			$timeout: $timeout
+		}
+	);
+
+	ctrl.init('mapa-localizacao-empreendimento', true);
 
 	function piscarFeature(layer, color) {
 
@@ -251,6 +262,30 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 		processoService.visualizarProcesso(processo);
     };
 
+	this.controlaExibicaoCamadas = function(camada) {
+
+		if (camada.visivel) {
+			$scope.$emit('mapa:remover-geometria-base', camada);
+		} else {
+			adicionarGeometriaNoMapa(camada);
+		}
+	};
+
+	function adicionarGeometriaNoMapa (camada) {
+
+		camada.visivel = true;
+		camada.color = ctrl.estiloMapa[camada.tipo].color;
+
+		$scope.$emit('mapa:adicionar-geometria-base', {
+			geometria: JSON.parse(camada.geometria),
+			tipo: camada.tipo,
+			estilo: {
+				style: ctrl.estiloMapa[camada.tipo]
+			},
+			popupText: camada.item
+		});
+	}
+
 	this.init = function() {
 
 		$scope.analiseGeo = analiseGeo;
@@ -266,61 +301,73 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 
 		$timeout(function() {
 
-			mapa = L.map(idMapa,{
-				layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					maxZoom: 19,
-					attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-				})],
-				maxZoom: 15,
-				minZoom: 2
-			});
-			meusDados = $scope.meusDados = L.layerGroup().addTo(mapa);
+			var cpfCnpjEmpreendimento = $scope.analiseGeo.analise.processo.empreendimento.pessoa.cpf || $scope.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
 
-			var measure = L.control.measure({
-				position: 'topright',
-				primaryLengthUnit: 'meters',
-				primaryAreaUnit: 'hectares',
-				captureZIndex: 10000,
-				localization: 'pt_BR'
-			});
+			empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento)
+				.then(function(response) {
 
-			mapa.addControl(measure);			
+					ctrl.camadasDadosEmpreendimento = response.data;
 
-			var restricoesGeoJson = L.geoJSON(restricoes);
-
-			mapa.fitBounds(restricoesGeoJson.getBounds());
-
-			restricoesGeoJson.eachLayer(function(layer){
-				var properties = layer.feature.properties;
-
-				var layerControle = getLayer(properties.descricao);
-
-				if(layer.setStyle){
-
-					if(!layerControle.color){
-						layer.color = colors.pop();
-					}
-
-					layer.setStyle({
-						color: layerControle.color || layer.color,
-						fillOpacity: 0.1
+					ctrl.camadasDadosEmpreendimento.forEach(function (camada) {
+						adicionarGeometriaNoMapa(camada);
 					});
-				}
+				});
 
-				layerControle.addLayer(layer);
-
-			});
-
-			if ($scope.analiseGeo.analise.processo.empreendimento &&
-				!$scope.analiseGeo.analise.processo.empreendimento.imovel &&
-				$scope.analiseGeo.analise.processo.empreendimento.municipio.limite) {
-
-				inserirGeometriaMunicipio($scope.analiseGeo.analise.processo.empreendimento.municipio.limite, mapa);
-
-				meusDados.addLayer($scope.municipioGeormetria);
-
-				mapa.flyToBounds($scope.municipioGeormetria.getBounds());
-			}
+			// mapa = L.map(idMapa,{
+			// 	layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			// 		maxZoom: 19,
+			// 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			// 	})],
+			// 	maxZoom: 15,
+			// 	minZoom: 2
+			// });
+			// meusDados = $scope.meusDados = L.layerGroup().addTo(mapa);
+            //
+			// var measure = L.control.measure({
+			// 	position: 'topright',
+			// 	primaryLengthUnit: 'meters',
+			// 	primaryAreaUnit: 'hectares',
+			// 	captureZIndex: 10000,
+			// 	localization: 'pt_BR'
+			// });
+            //
+			// mapa.addControl(measure);
+            //
+			// var restricoesGeoJson = L.geoJSON(restricoes);
+            //
+			// mapa.fitBounds(restricoesGeoJson.getBounds());
+            //
+			// restricoesGeoJson.eachLayer(function(layer){
+			// 	var properties = layer.feature.properties;
+            //
+			// 	var layerControle = getLayer(properties.descricao);
+            //
+			// 	if(layer.setStyle){
+            //
+			// 		if(!layerControle.color){
+			// 			layer.color = colors.pop();
+			// 		}
+            //
+			// 		layer.setStyle({
+			// 			color: layerControle.color || layer.color,
+			// 			fillOpacity: 0.1
+			// 		});
+			// 	}
+            //
+			// 	layerControle.addLayer(layer);
+            //
+			// });
+            //
+			// if ($scope.analiseGeo.analise.processo.empreendimento &&
+			// 	!$scope.analiseGeo.analise.processo.empreendimento.imovel &&
+			// 	$scope.analiseGeo.analise.processo.empreendimento.municipio.limite) {
+            //
+			// 	inserirGeometriaMunicipio($scope.analiseGeo.analise.processo.empreendimento.municipio.limite, mapa);
+            //
+			// 	meusDados.addLayer($scope.municipioGeormetria);
+            //
+			// 	mapa.flyToBounds($scope.municipioGeormetria.getBounds());
+			// }
 
 		});
 

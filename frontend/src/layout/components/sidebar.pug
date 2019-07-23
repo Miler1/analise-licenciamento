@@ -1,0 +1,33 @@
+mixin sideBarLayers(idMapa,tituloCamadas, controller)
+	- var titulo = tituloCamadas || 'Camadas'
+	#sidebar.sidebar.scrollbar.collapsed
+
+		// Nav tabs
+		.sidebar-tabs
+			ul(role='tablist')
+				li(title="Dados do Empreendimento",
+						data-toggle="tooltip",
+						data-placement="right",
+						data-container="body")
+					a.inline_block(href='#camadas-empreendimento', role="tab")
+						i.i.fa.fa-bars
+
+		// Tab panes
+		.sidebar-content
+			#camadas-empreendimento.sidebar-pane
+				h1.sidebar-header
+					| #{titulo}
+					span.sidebar-close
+						i.fa.fa-times
+				div.sidebar-body(ng-show=controller + ".camadasDadosEmpreendimento.length > 0")
+					.row
+						label.sidebar-label Camadas empreendimento
+					.row.no-margin-left-right.camadas-mapa(ng-repeat="camada in " + controller + ".camadasDadosEmpreendimento")
+						.col-sm-2.col-xs-2(style="padding: 0px 5px 0px 5px")
+
+							button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : camada.visivel, 'fa-eye-slash' : !camada.visivel}",
+								ng-click=controller + ".controlaExibicaoCamadas(camada)")
+							span.fa.fa-square.icon-legenda(ng-style="{'color': camada.color}")
+
+						.col-sm-10.col-xs-10.descricao
+							span {{camada.item}}

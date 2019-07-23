@@ -45,13 +45,15 @@ var PainelMapaController = function ($scope) {
 
 		if(painelMapa.isFullscreen){
 			painelMapa.map.addControl(new L.Control.Fullscreen({
-				position: 'topright',
+				position: 'topleft',
 				title: {
 					'false': 'Ativar modo de tela cheia',
 					'true': 'Desativar modo de tela cheia'
 				}
 			}));
 		}
+
+		painelMapa.adicionaSideBar(painelMapa.map, true);
 		
 		window.onscroll = function () {
 			if (painelMapa.map.scrollWheelZoom.enabled()) {
@@ -59,6 +61,21 @@ var PainelMapaController = function ($scope) {
 			}
 		};
 	}
+
+	painelMapa.adicionaSideBar = function(mapa, insereSideBarMapa) {
+		if (insereSideBarMapa) {
+			var sidebar = L.control.sidebar("sidebar", {position: 'right'}).addTo(mapa);
+			mapa.sidebar = sidebar;
+		}
+	};
+	painelMapa.abrirSideBar = function(idMapa, idSideBar) {
+		var mapaAtual = this.mapFromId(idMapa);
+		mapaAtual.sidebar.open(idSideBar);
+	};
+	painelMapa.fecharSideBar = function(idMapa, idSideBar) {
+		var mapaAtual = this.mapFromId(idMapa);
+		mapaAtual.sidebar.close(idSideBar);
+	};
 
 	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
 	function adicionarGeometriasBase(event, shape){
@@ -140,7 +157,27 @@ var PainelMapaController = function ($scope) {
 		}
 		
 	}
+
+	function removerGeometriaMapaBase(event, shape) {
+
+		shape.visivel = false;
+
+		painelMapa.map.removeLayer(painelMapa.listaGeometriasBase[shape.tipo]);
+
+		// Limpeza do elemento da lista de centralização especial
+		painelMapa.specificGeometries.forEach(function(index, item) {
+			if(index === shape.tipo){
+				// Deleta o item da lista
+				painelMapa.specificGeometries.splice(item,1);
+			}
+		});
+
+		delete painelMapa.listaGeometriasBase[shape.tipo];
+
+	}
 	$scope.$on('mapa:removerGeometriaMapa', removerGeometriaMapa);
+
+	$scope.$on('mapa:remover-geometria-base', removerGeometriaMapaBase);
 
 	/** O parâmetro centralizarEspecifico remete a possibilidade de centralizar apenas 
 	 * as geometrias relacionadas ao upload, não referente aos dados do empreendimento **/

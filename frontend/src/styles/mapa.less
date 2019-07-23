@@ -1,3 +1,217 @@
+@import 'variaveis.less';
+
 .mapa {
-	height: 500px;
+
+	@media (max-width: 991px) and (min-width: 768px){
+		.sidebar-pane {
+			min-width: 300px;
+		}
+	}
+
+	@media (min-width: 1200px) {
+
+		.sidebar {
+			max-width: 340px;
+		}
+
+		.sidebar-pane {
+			min-width: 300px;
+		}
+
+	}
+
+	.sidebar-pane {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+
+	.p-margin-top {
+		margin-top: 17px;
+	}
+
+	.sidebar {
+		border-radius: 0px;
+		box-shadow: none;
+		border: none;
+		background-color: transparent;
+	}
+
+	.sidebar-right {
+		z-index: 1000;
+
+		bottom: 0;
+	}
+
+	.sidebar-label {
+		font-weight: bold;
+		font-size: 14px;
+		color: @primaria;
+		padding-left: 12px;
+	}
+
+	.sidebar-content {
+		background-color: @branco;
+		height: 370px;
+
+		.sidebar-section {
+			background-color: @branco;
+			border-bottom: 1px solid @border-mapa;
+			padding: 5px 5px 5px 10px;
+			color: @primaria;
+			font-size: 13pt;
+			margin: 5px 0 5px 0;
+		}
+
+	}
+
+	.sidebar-right.collapsed .sidebar-content {
+		right: 40px;
+		transition: 0.5s;
+	}
+
+	.sidebar-right .sidebar-content {
+		right: 0;
+		transition: 0.5s;
+		margin-right: 35px;
+		margin-bottom: 15px;
+	}
+
+	.sidebar.leaflet-touch {
+		border-right: none;
+	}
+
+	.sidebar-tabs {
+
+		background-color: transparent;
+		top: 0px;
+
+		a {
+			color: @preto;
+			background-color: @branco;
+			line-height: 30px;
+			width: 30px;
+			height: 30px;
+			border-radius: 3px;
+
+
+			.img-responsive {
+				max-width: 70%;
+				max-height: 70%;
+				display: inline;
+			}
+
+		}
+
+		a:focus ,  a:active {
+			border-radius: 3px;
+			border-color: transparent;
+			i {
+				margin-right: 3px;
+			}
+		}
+
+		.icon-lar span {
+			font-size:12px !important;
+			font-weight: bold;
+		}
+
+	}
+
+	.sidebar-tabs > li, .sidebar-tabs > ul > li {
+		overflow: inherit !important;
+
+	}
+
+	.sidebar-tabs, .sidebar-tabs > ul {
+		position: absolute;
+		width: 30px;
+		margin: 0;
+		padding: 0;
+
+		> li {
+			margin-bottom: 10px;
+			height: 30px;
+
+			.icon-button {
+				font-size: 1.2em;
+				padding-top: 0;
+			}
+
+			.icon-legenda {
+				font-size: 1em;
+			}
+
+		}
+
+		> li:hover, li:focus {
+			border-radius: 3px;
+		}
+	}
+
+	.sidebar-header {
+		background-color: @branco;
+		color: @primaria;
+		font-size: 13pt;
+		border-bottom: 1px solid @border-mapa;
+		margin: -10px 0px 5px 0px;
+	}
+
+	.sidebar-body {
+		margin-left: 10px;
+	}
+
+	#lista-layers {
+
+		width: 100%;
+
+		li {
+			a.jstree-anchor {
+
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				width: 90%;
+			}
+
+			.jstree-icon.fa.fa-folder, .jstree-icon.fa.fa-folder-open {
+				color: darkgoldenrod;
+			}
+		}
+	}
+
+	.icon-legenda {
+		font-size: 1em;
+	}
+
+}
+
+.sidebar-tabs > ul > li.disabled > a {
+	color: @cinza;
+}
+
+#camadas-empreendimento {
+
+	.camadas-mapa {
+
+		margin-top: 3px;
+		margin-bottom: 3px;
+		padding-top: 0px;
+		padding-bottom: 3px;
+
+		.descricao {
+			padding:4px 5px 0 0;
+		}
+
+	}
+
+	.btn-exibe-camada {
+
+		padding: 3px 6px 3px 6px;
+		background-color: @branco;
+
+	}
+
+	.fa-eye:before {
+		padding-top: 10px;
+	}
 }

@@ -1,6 +1,7 @@
 package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
+import enums.CamadaGeoEnum;
 import models.*;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
@@ -10,6 +11,7 @@ import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
 import utils.GeoCalc;
 import utils.GeoJsonUtils;
+import utils.Helper;
 
 import javax.persistence.*;
 import java.util.*;
@@ -140,7 +142,7 @@ public class Empreendimento extends GenericModel {
 		Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(geometria);
 		Double areaEmpreendimento = GeoCalc.area(geometriaEmpreendimento) / 10000;
 
-		CamadaGeo camadaGeo = new CamadaGeo("Propriedade", areaEmpreendimento.toString() + " ha", areaEmpreendimento, geometriaEmpreendimento);
+		CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.PROPRIEDADE.nome, CamadaGeoEnum.PROPRIEDADE.tipo, Helper.formatBrDecimal(areaEmpreendimento, 2) + " ha", areaEmpreendimento, geometriaEmpreendimento);
 
 		dadosGeoEmpreendimento.add(camadaGeo);
 
@@ -157,12 +159,12 @@ public class Empreendimento extends GenericModel {
 
 			if (empreendimentoCamandaGeo != null) {
 
-				camadaGeo = new CamadaGeo(empreendimentoCamandaGeo.tipoAreaGeometria.nome, empreendimentoCamandaGeo.areaGeometria.toString() + " ha", empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria);
+				camadaGeo = new CamadaGeo(empreendimentoCamandaGeo.tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(empreendimentoCamandaGeo.tipoAreaGeometria.codigo), Helper.formatBrDecimal(empreendimentoCamandaGeo.areaGeometria, 2)+ " ha",empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria);
 				dadosGeoEmpreendimento.add(camadaGeo);
 
 			} else {
 
-				camadaGeo = new CamadaGeo(tipoAreaGeometria.nome, "não possui", 0.0, null);
+				camadaGeo = new CamadaGeo(tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(tipoAreaGeometria.codigo), "não possui", 0.00, null);
 				dadosGeoEmpreendimento.add(camadaGeo);
 			}
 
