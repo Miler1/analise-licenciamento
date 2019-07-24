@@ -97,7 +97,7 @@ public class Empreendimento extends GenericModel {
 	public boolean possuiCaracterizacoes;
 
 	@Column(name = "possui_shape")
-	public boolean possuiShape;
+	public Boolean possuiShape;
 	
 	public List<String> emailsProprietarios() {
 		

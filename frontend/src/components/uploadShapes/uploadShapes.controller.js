@@ -108,10 +108,10 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
 			$scope: $scope,
-			$timeout: $timeout,
+			$timeout: $timeout
 		}
 	);
-	uploadShapes.init('mapa', true);
+	uploadShapes.init('mapa', true, false);
 
 	function hideUploadShapes() {
 		if(uploadShapes.doesntHasShapes){

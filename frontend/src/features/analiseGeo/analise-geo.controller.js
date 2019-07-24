@@ -48,7 +48,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		}
 	);
 
-	ctrl.init('mapa-localizacao-empreendimento', true);
+	ctrl.init('mapa-localizacao-empreendimento', true, true);
 
 	function piscarFeature(layer, color) {
 

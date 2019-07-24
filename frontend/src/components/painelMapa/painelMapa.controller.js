@@ -13,11 +13,12 @@ var PainelMapaController = function ($scope) {
 	painelMapa.exibeGeometriasNaoBaseMapa = exibeGeometriasNaoBaseMapa;
 
 	// Função para receber os parâmetros do pug e iniciar a renderização do mapa
-	painelMapa.init = function(id, fullscreen)
+	painelMapa.init = function(id, fullscreen, sidebar)
 	{
 		// Recebe o ID via parâmetro da controller pai (por conta dos $emits em escopos diferentes)
 		painelMapa.id = id;
 		painelMapa.isFullscreen = fullscreen;
+		painelMapa.sidebar = sidebar;
 		// Lista de geometrias enviadas pelo usuário via upload (tem prioridade na hierarquia de centralizar)
 		painelMapa.listaGeometriasMapa = [];
 		// Lista de geometrias base do mapa, são centralizadas somente se a lista de geometrias enviadas estiver vazia
@@ -55,8 +56,10 @@ var PainelMapaController = function ($scope) {
 			}));
 		}
 
-		painelMapa.adicionaSideBar(painelMapa.map, true);
-		
+		if (painelMapa.sidebar) {
+			painelMapa.adicionaSideBar(painelMapa.map, true);
+		}
+
 		window.onscroll = function () {
 			if (painelMapa.map.scrollWheelZoom.enabled()) {
 				painelMapa.map.scrollWheelZoom.disable();
