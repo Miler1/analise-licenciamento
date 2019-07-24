@@ -79,8 +79,8 @@ var PainelMapaController = function ($scope) {
 
 	function adicionarBotaoCentralizar () {
 
-		var maxZoom = 17
-		var botaoCentralizar = L.easyButton('glyphicon-screenshot', centralizaGeometriasBase(), 'Centralizar no imóvel', {position: 'topright'}).addTo(botaoCentralizar);
+		var maxZoom = 17;
+		var botaoCentralizar = L.easyButton('glyphicon-screenshot', centralizaGeometriasBase(maxZoom), 'Centralizar no imóvel', {position: 'topright'}).addTo(botaoCentralizar);
 		botaoCentralizar.addTo(painelMapa.map);
 		painelMapa.map.botaoCentralizar = botaoCentralizar;
 	}

@@ -19,4 +19,9 @@ public class EmpreendimentoSerializer {
 			"restricoes.geometria",
 			"restricoes.tipo")
 			.transform(new GeometryTransformer(), Geometry.class);
+
+	public static JSONSerializer getDadosEmpreendimento = SerializerUtil.create(
+			"id",
+			"denominacao",
+			"possuiShape");
 }

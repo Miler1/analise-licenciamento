@@ -78,7 +78,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 				console.log(response);
 
 				// Aqui vai trocar a tramitacao de caixa de entrada pra análise
-				var idAnaliseGeo = uploadShapes.processo.idAnaliseGeo;
+				var idAnaliseGeo = uploadShapes.processo.analise.analiseGeo.id;
 				analiseGeoService.iniciar({ id : idAnaliseGeo })
 					.then(function(response){
 
