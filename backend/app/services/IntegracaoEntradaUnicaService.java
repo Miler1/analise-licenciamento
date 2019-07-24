@@ -2,11 +2,15 @@ package services;
 
 import br.ufla.lemaf.beans.pessoa.Setor;
 import exceptions.AppException;
+import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
+import main.java.br.ufla.lemaf.beans.EmpreendimentoFiltroResult;
+import main.java.br.ufla.lemaf.beans.FiltroEmpreendimento;
 import main.java.br.ufla.lemaf.beans.pessoa.FiltroPessoa;
 import main.java.br.ufla.lemaf.beans.pessoa.Pessoa;
 import main.java.br.ufla.lemaf.beans.pessoa.Usuario;
 import models.UsuarioAnalise;
+import models.licenciamento.Empreendimento;
 import play.Logger;
 import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Helper;
@@ -183,6 +187,31 @@ public class IntegracaoEntradaUnicaService {
 		}
 
 		return usuariosAnalise;
+	}
+
+
+	public main.java.br.ufla.lemaf.beans.Empreendimento findEmpreendimentosByCpfCnpj(String cpfCnpj) {
+
+		try {
+
+			FiltroEmpreendimento filtro = new FiltroEmpreendimento();
+
+			filtro.cpfsCnpjs = new ArrayList<>();
+
+			filtro.cpfsCnpjs.add(cpfCnpj);
+
+			filtro.ordenacao = "DENOMINACAO_ASC";
+
+
+			EmpreendimentoFiltroResult listaEmpEU = CadastroUnificadoWS.ws.buscarEmpreendimentosComFiltro(filtro);
+
+			return listaEmpEU.totalItems > 0 ? listaEmpEU.pageItems.get(0) : null;
+
+		} catch (WebServiceException e) {
+
+			throw new AppException(Mensagem.ERRO_COMUNICACAO_ENTRADA_UNICA);
+
+		}
 	}
 
 }

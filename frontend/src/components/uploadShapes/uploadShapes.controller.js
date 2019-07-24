@@ -10,6 +10,8 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.doesntHasShapes = false;
 	uploadShapes.idMunicipio = '';
 
+	uploadShapes.estiloMapa = app.utils.EstiloMapa;
+
 	/** Utiliza o ID do processo salvo na URL para não perder a referência de buscar os dados **/
 	uploadShapes.idProcesso = $route.current.params.idProcesso;
 

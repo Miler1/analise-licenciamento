@@ -1,3 +1,5 @@
+include ../../layout/components/mapPanel
+
 div(ng-init='ctrl.init()')
 
 	.row
@@ -34,7 +36,7 @@ div(ng-init='ctrl.init()')
 
 			h5 Localização do empreendimento
 
-			#mapa-restricoes
+			+mapPanel-sidebar("mapa-localizacao-empreendimento",'400', true, 'ctrl')
 			br
 			#lista-restricoes
 				#accordion.panel-group
@@ -48,20 +50,16 @@ div(ng-init='ctrl.init()')
 								table.table.table-striped.table-condensed.no-margin.table-responsive
 									thead
 										tr
-											th.col-md-4 Item
-											th.col-md-1.text-right Ações
+											th.col-md-5 Item
+											th.col-md-5 Área (ha)
+											th.col-md-2.text-right Ações
 
 									tbody
-										tr(ng-repeat='(key, layer) in meusDados.getLayers()')
-											td.col-md-11(ng-if='layer.feature.id === "meu-imovel"') Minha área do imóvel
-											td.col-md-11(ng-if='layer.feature.id === "meu-empreendimento"') Meu empreendimento
-											td.col-md-11(ng-if='layer.feature.id === "municipio-empreendimento"') Município do empreendimento
-											td.col-md-1.text-right
-												i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
-												i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
-												| &nbsp;&nbsp;
-												i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
-												i.glyphicon.glyphicon-alert(ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
+										tr(ng-repeat='camada in ctrl.camadasDadosEmpreendimento')
+											td.col-md-5 {{camada.item}}
+											td.col-md-5 {{camada.descricao}}
+											td.col-md-2.text-right
+												i.glyphicon.glyphicon-alert(ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
 												| &nbsp;&nbsp;
 
 					div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')

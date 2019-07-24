@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ShapeFileController extends GenericController {
+import utils.GeoCalc;
+
+public class ShapeFileController extends InternalController {
 
 	public static void enviar(Upload file, Long idMunicipio) throws IOException {
 
@@ -53,32 +55,26 @@ public class ShapeFileController extends GenericController {
 
 		if(geometrias.naoTemShapes) {
 			Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
-			empreendimento.possui_shape = false;
+			empreendimento.possuiShape = false;
 			empreendimento.save();
 		} else {
 
+			List<TipoAreaGeometria> tiposArea = TipoAreaGeometria.findAll();
 
 			geometrias.listaGeometrias.forEach(g -> {
 
-				List<TipoAreaGeometria> tiposArea = TipoAreaGeometria.findAll();
-
-				TipoAreaGeometria tipoAreaGeometria = null;
-				tiposArea = tiposArea.stream().filter(ta -> {
-					return ta.codigo.equals(g.type);
-				}).collect(Collectors.toList());
-
-				/* Atualmente, um shape só pode ter um tipo de área */
-				if(tiposArea.size() > 0){
-					tipoAreaGeometria = tiposArea.get(0);
-				}
+				TipoAreaGeometria tipoAreaGeometria = tiposArea.stream()
+						.filter(ta -> ta.codigo.equals(g.type))
+						.findAny()
+						.orElse(null);
 
 				if(tipoAreaGeometria != null){
 
 					Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
-					empreendimento.possui_shape = true;
+					empreendimento.possuiShape = true;
 					empreendimento.save();
 
-					AnalistaGeoAnexo novoAnexo = new AnalistaGeoAnexo(empreendimento, tipoAreaGeometria, g.geometry);
+					EmpreendimentoCamandaGeo novoAnexo = new EmpreendimentoCamandaGeo(empreendimento, tipoAreaGeometria, g.geometry, GeoCalc.area(g.geometry)/10000);
 					novoAnexo.save();
 
 				}

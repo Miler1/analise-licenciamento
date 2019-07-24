@@ -133,7 +133,7 @@ public class AnalisesGeo extends InternalController {
 
         Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(cpfCnpjEmpreendimento);
 
-        renderJSON(empreendimento.possui_shape);
+        renderJSON(empreendimento.possuiShape);
     }
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {

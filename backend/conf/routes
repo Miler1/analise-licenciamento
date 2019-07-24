@@ -72,6 +72,10 @@ POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.download
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 
 POST    /salvarInconsistencia                               Inconsistencias.salvarInconsistencia
+
+# Empreendimento
+POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
+
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
