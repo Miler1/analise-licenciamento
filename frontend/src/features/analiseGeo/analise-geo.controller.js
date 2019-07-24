@@ -311,6 +311,9 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 					ctrl.camadasDadosEmpreendimento.forEach(function (camada) {
 						adicionarGeometriaNoMapa(camada);
 					});
+
+					//$scope.$emit('mapa:adicionar-botao-centralizar-mapa-base');
+
 				});
 
 			// mapa = L.map(idMapa,{
