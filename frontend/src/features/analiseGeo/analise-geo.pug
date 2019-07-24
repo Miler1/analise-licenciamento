@@ -27,7 +27,7 @@ div(ng-init='ctrl.init()')
 				| &nbsp;Visualizar Processo
 			a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
 				i.fa.fa-bars
-				| &nbsp;Legislação
+				| &nbsp;Legislação 
 
 	.row
 		.col-md-12
@@ -49,20 +49,81 @@ div(ng-init='ctrl.init()')
 									thead
 										tr
 											th.col-md-4 Item
+											th.col-md-5 Área (ha)
 											th.col-md-1.text-right Ações
 
 									tbody
-										tr(ng-repeat='(key, layer) in meusDados.getLayers()')
-											td.col-md-11(ng-if='layer.feature.id === "meu-imovel"') Minha área do imóvel
-											td.col-md-11(ng-if='layer.feature.id === "meu-empreendimento"') Meu empreendimento
-											td.col-md-11(ng-if='layer.feature.id === "municipio-empreendimento"') Município do empreendimento
+										tr
+											td.col-md-4.text-left Propriedade
+											td.col-md-5.text-left Meu empreendimento 
+											td.col-md-1.text-right
+												//- i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
+												//- i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
+												//- | &nbsp;&nbsp;
+												//- i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
+												i.glyphicon.glyphicon-alert(ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
+												| &nbsp;&nbsp;
+
+			br
+			#lista-restricoes
+				#accordion.panel-group
+					h4.panel-title Dados da área do projeto
+					br
+					div(ng-repeat="caracterizacao in ctrl.analiseGeo.analise.processo.caracterizacoes") 
+						div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
+
+							a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#dadosAreaProjeto')
+								.panel.panel-default
+									.panel-heading
+										h4.panel-title
+											| Atividade: {{atividadeCaracterizacao.atividade.nome}} 
+							#dadosAreaProjeto.collapse
+									table.table.table-striped.table-condensed.no-margin.table-responsive
+										thead
+											tr
+												th.col-md-4 Item
+												th.col-md-5 Área (ha)
+												th.col-md-1.text-right Ações
+
+										tbody
+											tr
+												td.col-md-4 Área do projeto
+												td.col-md-5 dadosReferentesaAreadoProjeto
+												td.col-md-1.text-right
+													i.glyphicon.glyphicon-alert(ng-click='addInconsistencia(ctrl.categoria.AREA_PROJETO)', title='Adicionar inconsistência')
+													| &nbsp;&nbsp;
+
+					br
+					div
+						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#restricoesAtividade')
+							.panel.panel-default
+								.panel-heading
+									h4.panel-title
+										| Áreas de restrição da atividade
+						#restricoesAtividade.collapse
+								table.table.table-striped.table-condensed.no-margin.table-responsive
+									thead
+										tr
+											th.col-md-4 Item
+											th.col-md-5 Critério
+											th.col-md-1.text-right Ações
+
+									tbody
+										tr
+											td.col-md-4 Minha área do imóvel
+											td.col-md-5 Meu empreendimento
 											td.col-md-1.text-right
 												i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
 												i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
 												| &nbsp;&nbsp;
 												i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
-												i.glyphicon.glyphicon-alert(ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
+												i.glyphicon.glyphicon-alert(ng-click='addInconsistencia(ctrl.categoria.RESTRICAO)', title='Adicionar inconsistência')
 												| &nbsp;&nbsp;
+					br
+					br
+
+
+
 
 					div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
 						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")

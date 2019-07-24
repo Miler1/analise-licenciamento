@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, restricoes, idAnaliseGeo, processoService) {
+var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, restricoes ,idAnaliseGeo,inconsistenciaService,processoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -13,6 +13,8 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
 	ctrl.categoria = app.utils.Inconsistencia;
+	
+
 
 	var getLayer = function(descricao){
 
@@ -327,21 +329,34 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 	};
 
 	$scope.addInconsistencia = function(categoriaInconsistencia){
-			var modalInstance = $uibModal.open({
-			controller: 'inconsistenciaController',
-			controllerAs: 'modalCtrl',
-			templateUrl: 'features/analiseGeo/modalInconsistencia.html',
-			size: 'lg',
-			resolve: {
-				analiseGeo: function () {
-					return ctrl.analiseGeo;
-				},
-				categoriaInconsistencia: function(){
-					return categoriaInconsistencia;
-				}
-			}		
-		});
+			
+			params = {
+				categoria: categoriaInconsistencia,
+				analiseGeo: {id: analiseGeo.id}
+			};
+	
+			inconsistenciaService.findInconsistencia(params)
+			.then(function(response){
 
+				var modalInstance = $uibModal.open({
+					controller: 'inconsistenciaController',
+					controllerAs: 'modalCtrl',
+					templateUrl: 'features/analiseGeo/modalInconsistencia.html',
+					size: 'lg',
+					resolve: {
+						analiseGeo: function () {
+							return ctrl.analiseGeo;
+						},
+						categoriaInconsistencia: function(){
+							return categoriaInconsistencia;
+						},
+						inconsistencia: function(){
+							return response.data;
+						}
+					}		
+				});
+	
+			});
 	};
 		
 };

@@ -71,6 +71,8 @@ POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.download
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 
 POST    /salvarInconsistencia                               Inconsistencias.salvarInconsistencia
+POST    /findInconsistencia                                 Inconsistencias.findInconsistencia
+POST    /removerDocumento                                   Inconsistencias.removerDocumento
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
