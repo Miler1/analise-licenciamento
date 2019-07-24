@@ -70,14 +70,17 @@ var PainelMapaController = function ($scope) {
 			mapa.sidebar = sidebar;
 		}
 	};
-	painelMapa.abrirSideBar = function(idMapa, idSideBar) {
-		var mapaAtual = this.mapFromId(idMapa);
-		mapaAtual.sidebar.open(idSideBar);
-	};
-	painelMapa.fecharSideBar = function(idMapa, idSideBar) {
-		var mapaAtual = this.mapFromId(idMapa);
-		mapaAtual.sidebar.close(idSideBar);
-	};
+
+	$scope.$on('mapa:adicionar-botao-centralizar-mapa-base', adicionarBotaoCentralizar);
+
+
+	function adicionarBotaoCentralizar () {
+
+		var maxZoom = 17
+		var botaoCentralizar = L.easyButton('glyphicon-screenshot', centralizaGeometriasBase(), 'Centralizar no imóvel', {position: 'topright'}).addTo(botaoCentralizar);
+		botaoCentralizar.addTo(painelMapa.map);
+		painelMapa.map.botaoCentralizar = botaoCentralizar;
+	}
 
 	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
 	function adicionarGeometriasBase(event, shape){
@@ -94,14 +97,19 @@ var PainelMapaController = function ($scope) {
 	$scope.$on('mapa:adicionar-geometria-base', adicionarGeometriasBase);
 
 	/** Centraliza geometrias base de um mapa **/
-	function centralizaGeometriasBase(){
+	function centralizaGeometriasBase(maxZoom){
+
 		var latLngBounds = new L.latLngBounds();
 
 		Object.keys(painelMapa.listaGeometriasBase).forEach(function(index){
 			latLngBounds.extend(painelMapa.listaGeometriasBase[index].getBounds());
 		});
 
-		painelMapa.map.fitBounds(latLngBounds);
+		if (maxZoom) {
+			painelMapa.map.fitBounds(latLngBounds, {maxZoom: maxZoom});
+		} else {
+			painelMapa.map.fitBounds(latLngBounds);
+		}
 	}
 
 	// Função para atualizar o mapa
