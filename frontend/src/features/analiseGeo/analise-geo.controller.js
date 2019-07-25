@@ -301,7 +301,22 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 		$timeout(function() {
 
-			var cpfCnpjEmpreendimento = $scope.analiseGeo.analise.processo.empreendimento.pessoa.cpf || $scope.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
+			var empreendimento = $scope.analiseGeo.analise.processo.empreendimento;
+
+			$scope.$emit('mapa:adicionar-geometria-base', {
+				geometria: JSON.parse($scope.analiseGeo.analise.processo.empreendimento.municipio.limite),
+				tipo: 'EMP-CIDADE',
+				estilo: {
+					style: {
+						fillColor: 'transparent',
+						color: '#FFF'
+					}
+				},
+
+				popupText: empreendimento.municipio.nome + ' - AM'
+			});
+
+			var cpfCnpjEmpreendimento = empreendimento.pessoa.cpf || empreendimento.pessoa.cnpj;
 
 			empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento)
 				.then(function(response) {
