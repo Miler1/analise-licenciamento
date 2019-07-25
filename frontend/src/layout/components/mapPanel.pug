@@ -1,2 +1,8 @@
+include ../../layout/components/sidebar
+
 mixin mapPanel(id, height, fullscreen)
     div(id=id style="height:"+height+"px; width: 100%;")
+
+mixin mapPanel-sidebar(id, height, fullscreen, controller)
+    div.mapa(id=id style="height:"+height+"px; width: 100%;")
+        +sideBarLayers(id, 'Camadas', controller, "true")

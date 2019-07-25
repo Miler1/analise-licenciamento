@@ -29,19 +29,17 @@ mixin uploadShapes(idMapa)
 				
 				.row.col-md-12
 					h5.us-map-title Localização das camadas
-			
-			div(ng-show="uploadShapes.doesntHasShapes")
-				+mapPanel('emptyMap','400', true)
 
-			div(ng-show="!uploadShapes.doesntHasShapes")
-				+mapPanel(idMapa,'400', true)
+			+mapPanel(idMapa,'400', true)
 			
 			div.us-checkbox-area
 				input(type='checkbox', 
 					placeholder='Não possui nenhuma camada', 
 					ng-model='uploadShapes.doesntHasShapes',
-					id='naoPossuiShape') 
-				label.us-checkbox-label(for="naoPossuiShape") Não possui nenhuma camada
+					id='naoPossuiShape',
+					ng-click='uploadShapes.hideUploadShapes()') 
+				label.us-checkbox-label(for="naoPossuiShape",
+										ng-click='uploadShapes.hideUploadShapes()') Não possui nenhuma camada
 
 			div.us-upload-container
 				h2.tituloPagina.us-upload-top-title Arquivos anexados
@@ -57,7 +55,8 @@ mixin uploadShapes(idMapa)
 								'#2196F3',
 								"Hidrografia",
 								true,
-								"uploadShapes.processo.empreendimento.municipio.id")
+								"{{uploadShapes.idMunicipio}}")
+								//- TODO oisouothiago - ajustar como o parametro é enviado para o mixin
 
 					h3.us-upload-title APP (Área de preservação permanente)
 					div.us-upload-description
@@ -69,7 +68,7 @@ mixin uploadShapes(idMapa)
 								'#8BC34A',
 								"Área de preservação permanente",
 								true,
-								"uploadShapes.processo.empreendimento.municipio.id")
+								"{{uploadShapes.idMunicipio}}")
 
 					h3.us-upload-title Área antropizada
 					div.us-upload-description
@@ -81,7 +80,7 @@ mixin uploadShapes(idMapa)
 								'#CDDC39',
 								"Área antropizada",
 								true,
-								"uploadShapes.processo.empreendimento.municipio.id")
+								"{{uploadShapes.idMunicipio}}")
 
 				div(ng-show="uploadShapes.doesntHasShapes")
 					h3.us-upload-noupload O empreendimento  

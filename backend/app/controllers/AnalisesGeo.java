@@ -2,9 +2,11 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
+import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseGeoSerializer;
+import serializers.EmpreendimentoSerializer;
 import utils.Mensagem;
 
 import java.io.File;
@@ -126,6 +128,13 @@ public class AnalisesGeo extends InternalController {
         analiseAValidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
 
         renderMensagem(Mensagem.VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO);
+    }
+
+    public static void verificaAnexosEmpreendimento(String cpfCnpjEmpreendimento) {
+
+        Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(cpfCnpjEmpreendimento);
+
+        renderJSON(empreendimento.possuiShape, EmpreendimentoSerializer.getDadosEmpreendimento);
     }
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {

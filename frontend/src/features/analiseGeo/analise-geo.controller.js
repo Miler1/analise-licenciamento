@@ -1,5 +1,5 @@
-var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, restricoes ,idAnaliseGeo,inconsistenciaService,processoService) {
-	
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, restricoes ,idAnaliseGeo, inconsistenciaService,processoService, empreendimentoService) {
+
 	var idMapa = 'mapa-restricoes',
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
@@ -13,7 +13,8 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
 	ctrl.categoria = app.utils.Inconsistencia;
-	
+	ctrl.camadas = [];
+	ctrl.estiloMapa = app.utils.EstiloMapa;
 
 
 	var getLayer = function(descricao){
@@ -40,6 +41,15 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 		return layerControle;
 
 	};
+
+	$injector.invoke(exports.controllers.PainelMapaController, this,
+		{
+			$scope: $scope,
+			$timeout: $timeout
+		}
+	);
+
+	ctrl.init('mapa-localizacao-empreendimento', true, true);
 
 	function piscarFeature(layer, color) {
 
@@ -253,6 +263,31 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 		processoService.visualizarProcesso(processo);
     };
 
+	this.controlaExibicaoCamadas = function(camada) {
+
+		if (camada.visivel) {
+			$scope.$emit('mapa:remover-geometria-base', camada);
+		} else {
+			adicionarGeometriaNoMapa(camada, true);
+		}
+	};
+
+	function adicionarGeometriaNoMapa (camada, disable) {
+
+		camada.visivel = true;
+		camada.color = ctrl.estiloMapa[camada.tipo].color;
+
+		$scope.$emit('mapa:adicionar-geometria-base', {
+			geometria: JSON.parse(camada.geometria),
+			tipo: camada.tipo,
+			estilo: {
+				style: ctrl.estiloMapa[camada.tipo]
+			},
+			popupText: camada.item,
+			disableCentralizarGeometrias:disable
+		});
+	}
+
 	this.init = function() {
 
 		$scope.analiseGeo = analiseGeo;
@@ -268,61 +303,33 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 
 		$timeout(function() {
 
-			mapa = L.map(idMapa,{
-				layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					maxZoom: 19,
-					attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-				})],
-				maxZoom: 15,
-				minZoom: 2
-			});
-			meusDados = $scope.meusDados = L.layerGroup().addTo(mapa);
+			var empreendimento = $scope.analiseGeo.analise.processo.empreendimento;
 
-			var measure = L.control.measure({
-				position: 'topright',
-				primaryLengthUnit: 'meters',
-				primaryAreaUnit: 'hectares',
-				captureZIndex: 10000,
-				localization: 'pt_BR'
-			});
-
-			mapa.addControl(measure);			
-
-			var restricoesGeoJson = L.geoJSON(restricoes);
-
-			mapa.fitBounds(restricoesGeoJson.getBounds());
-
-			restricoesGeoJson.eachLayer(function(layer){
-				var properties = layer.feature.properties;
-
-				var layerControle = getLayer(properties.descricao);
-
-				if(layer.setStyle){
-
-					if(!layerControle.color){
-						layer.color = colors.pop();
+			$scope.$emit('mapa:adicionar-geometria-base', {
+				geometria: JSON.parse(empreendimento.municipio.limite),
+				tipo: 'EMP-CIDADE',
+				estilo: {
+					style: {
+						fillColor: 'transparent',
+						color: '#FFF'
 					}
+				},
 
-					layer.setStyle({
-						color: layerControle.color || layer.color,
-						fillOpacity: 0.1
-					});
-				}
-
-				layerControle.addLayer(layer);
-
+				popupText: empreendimento.municipio.nome + ' - AM'
 			});
 
-			if ($scope.analiseGeo.analise.processo.empreendimento &&
-				!$scope.analiseGeo.analise.processo.empreendimento.imovel &&
-				$scope.analiseGeo.analise.processo.empreendimento.municipio.limite) {
+			var cpfCnpjEmpreendimento = empreendimento.pessoa.cpf || empreendimento.pessoa.cnpj;
 
-				inserirGeometriaMunicipio($scope.analiseGeo.analise.processo.empreendimento.municipio.limite, mapa);
+			empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento)
+				.then(function(response) {
 
-				meusDados.addLayer($scope.municipioGeormetria);
+					ctrl.camadasDadosEmpreendimento = response.data;
 
-				mapa.flyToBounds($scope.municipioGeormetria.getBounds());
-			}
+					ctrl.camadasDadosEmpreendimento.forEach(function (camada) {
+						adicionarGeometriaNoMapa(camada);
+					});
+
+				});
 
 		});
 
