@@ -34,6 +34,10 @@ public class Documento extends GenericModel implements Identificavel {
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
 	public TipoDocumento tipo;
+
+
+	 @Column(name="nome_arquivo")
+	 public String nomeDoArquivo;
 	
 	@Transient
 	public String key;
@@ -166,11 +170,11 @@ public class Documento extends GenericModel implements Identificavel {
 	}
 
 	protected void configurarCaminho() {
-		
-		this.caminho = File.separator + tipo.caminhoPasta
-				+ File.separator + tipo.prefixoNomeArquivo + "_"
+
+		this.caminho = File.separator + this.nomeDoArquivo
+				+ "_"
 				+ this.id;
-		
+
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
 	}
@@ -178,7 +182,6 @@ public class Documento extends GenericModel implements Identificavel {
 	protected void criarPasta() {
 		
 		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta;
-		
 		File pasta = new File(caminho);
 		
 		if (!pasta.exists())
@@ -186,7 +189,7 @@ public class Documento extends GenericModel implements Identificavel {
 	}
 
 	protected String getCaminhoCompleto() {
-		
+
 		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;
 	}
 	

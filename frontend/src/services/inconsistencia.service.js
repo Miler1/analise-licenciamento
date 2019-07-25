@@ -5,6 +5,16 @@ var InconsistenciaService = function(request,$window,config) {
 			.post(config.BASE_URL() + '/analisesGeo/salvarInconsistencia', params);
 	};
 
+	this.removerDocumento = function(indiceDocumento){
+		return request
+			.post("/removerDocumento", indiceDocumento);
+	};
+
+	this.findInconsistencia = function(params){
+		return request
+			.post("/findInconsistencia", params);
+	};
+
 	this.download = function(idDocumento) {
 
         $window.open(config.BASE_URL() + 'documentos/' + idDocumento + '/download', '_blank');

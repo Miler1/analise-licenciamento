@@ -71,6 +71,9 @@ GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}       
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 POST    /analisesGeo/salvarInconsistencia                   Inconsistencias.salvarInconsistencia
+POST    /findInconsistencia                                 Inconsistencias.findInconsistencia
+POST    /removerDocumento                                   Inconsistencias.removerDocumento
+
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
