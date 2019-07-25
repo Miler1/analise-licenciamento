@@ -2,10 +2,10 @@ var EstiloMapa = {
 
     'HIDROGRAFIA': {
         color: '#2196F3',
-        dashArray: '5, 10',
         opacity: 1,
         weight: 2,
-        fill: true
+        fill: true,
+        fillOpacity: 0.5
     },
 
     'APP': {
