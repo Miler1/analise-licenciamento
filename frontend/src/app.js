@@ -114,8 +114,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 
 
 
-}).run(function(amMoment) {
+}).run(function(amMoment, $rootScope, growlMessages) {
 	amMoment.changeLocale('pt-br');
+	$rootScope.$on('$routeChangeSuccess', function(){
+		growlMessages.destroyAllMessages();
+	});
 });
 
 licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",

@@ -1,13 +1,9 @@
 package models;
 
-import models.tramitacao.AcaoDisponivelObjetoTramitavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import security.InterfaceTramitavel;
-import utils.Configuracoes;
-import models.AnaliseGeo;
+import play.db.jpa.JPA;
 import utils.ListUtil;
-import utils.Mensagem;
 import utils.ModelUtil;
 
 import javax.persistence.*;
@@ -76,6 +72,15 @@ public class Inconsistencia extends GenericModel{
         this.categoria = categoria;
     }
 
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, List<Documento> anexos) {
+
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = descricaoInconsistencia;
+        this.tipoInconsistencia = tipoInconsistencia;
+        this.categoria = categoria;
+        this.anexos = anexos;
+    }
+
     public void saveAnexos(List<Documento> novosAnexos) {
 
         TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_INCONSISTENCIA);
@@ -83,9 +88,9 @@ public class Inconsistencia extends GenericModel{
         if (this.anexos == null)
             this.anexos = new ArrayList<>();
 
-        Iterator<Documento> docsCadastrados = anexos.iterator();
-        List<Documento> documentosDeletar = new ArrayList<>();
-
+//        Iterator<Documento> docsCadastrados = anexos.iterator();
+//        List<Documento> documentosDeletar = new ArrayList<>();
+//
 //        while (docsCadastrados.hasNext()) {
 //
 //            Documento docCadastrado = docsCadastrados.next();
@@ -96,25 +101,25 @@ public class Inconsistencia extends GenericModel{
 //
 //                // remove o documeto do banco apenas se ele não estiver relacionado
 //                // com outra análises
-//                List<AnaliseJuridica> analiseJuridicasRelacionadas = docCadastrado.getAnaliseJuridicasRelacionadas();
-//                if(analiseJuridicasRelacionadas.size() == 0) {
+//                List<AnaliseGeo> analiseGeoRelacionadas = docCadastrado.getAnaliseGeoRelacionadas();
+//                if(analiseGeoRelacionadas.size() == 0) {
 //
 //                    documentosDeletar.add(docCadastrado);
 //                }
 //
 //            }
 //        }
-
         for (Documento novoAnexo : novosAnexos) {
 
             if (novoAnexo.id == null) {
 
                 novoAnexo.tipo = tipo;
+
                 novoAnexo.save();
-                this.anexos.add(novoAnexo);
+              //  this.anexos.add(novoAnexo);
             }
         }
 
-        //ModelUtil.deleteAll(documentosDeletar);
+     //   ModelUtil.deleteAll(documentosDeletar);
     }
 }

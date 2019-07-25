@@ -1,10 +1,13 @@
-var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaInconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
+var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaInconsistencia, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
 
 	var inconsistenciaController = this;
-
-	inconsistenciaController.descricaoInconsistencia = null;
-	inconsistenciaController.tipoInconsistencia = null;
-	inconsistenciaController.anexos = [];
+	
+	if(inconsistencia){
+		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
+		inconsistenciaController.tipoInconsistencia = inconsistencia.tipoInconsistencia;
+		inconsistenciaController.anexos = inconsistencia.anexos;
+		inconsistenciaController.id = inconsistencia.id;
+	}
 	inconsistenciaController.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 
 	inconsistenciaController.fechar = function () {
@@ -21,7 +24,7 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaI
 							inconsistenciaController.anexos.push({
 
 										key: response.data,
-										nome: file.name,
+										nomeDoArquivo: file.name,
 										tipoDocumento: {
 
 												id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA
@@ -52,7 +55,8 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaI
 			tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
 			descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
 			categoria: categoriaInconsistencia,
-			anexos: inconsistenciaController.anexos
+			anexos: inconsistenciaController.anexos,
+			id: inconsistencia.id
 		};
 
 		inconsistenciaService.salvarInconsistencia(params)
@@ -62,7 +66,7 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaI
 				
 			}).catch(function(response){
 				mensagem.error(response.data.texto);
-				$uibModalInstance.dismiss('cancel');
+				
 			});
 		
 	};

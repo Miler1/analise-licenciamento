@@ -29,7 +29,7 @@ div(ng-init='ctrl.init()')
 				| &nbsp;Visualizar Processo
 			a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
 				i.fa.fa-bars
-				| &nbsp;Legislação
+				| &nbsp;Legislação 
 
 	.row
 		.col-md-12
@@ -62,6 +62,11 @@ div(ng-init='ctrl.init()')
 											td.col-md-2.text-right
 												i.glyphicon.glyphicon-alert(ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
 												| &nbsp;&nbsp;
+					br
+					br
+
+
+
 
 					div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
 						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")
