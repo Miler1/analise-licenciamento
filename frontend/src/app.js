@@ -282,13 +282,12 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.COORDENADOR_JURIDICO,
-					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
-					app.utils.Perfis.CONSULTOR_JURIDICO,
-					app.utils.Perfis.COORDENADOR_TECNICO,
-					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_GEO,
+					app.utils.Perfis.ANALISTA_CAR,
 					app.utils.Perfis.ANALISTA_TECNICO,
-					app.utils.Perfis.APROVADOR
+					app.utils.Perfis.DIRETOR,
+					app.utils.Perfis.GERENTE,
+					app.utils.Perfis.PRESIDENTE
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
 		},
