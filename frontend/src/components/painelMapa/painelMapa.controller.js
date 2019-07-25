@@ -60,6 +60,8 @@ var PainelMapaController = function ($scope) {
 			painelMapa.adicionaSideBar(painelMapa.map, true);
 		}
 
+		adicionarBotaoCentralizar();
+
 		window.onscroll = function () {
 			if (painelMapa.map.scrollWheelZoom.enabled()) {
 				painelMapa.map.scrollWheelZoom.disable();
@@ -79,10 +81,10 @@ var PainelMapaController = function ($scope) {
 
 	function adicionarBotaoCentralizar () {
 
-		var maxZoom = 17;
-		var botaoCentralizar = L.easyButton('glyphicon-screenshot', centralizaGeometriasBase(maxZoom), 'Centralizar no imóvel', {position: 'topright'}).addTo(botaoCentralizar);
-		botaoCentralizar.addTo(painelMapa.map);
-		painelMapa.map.botaoCentralizar = botaoCentralizar;
+		L.easyButton('fa-crosshairs fa-lg', function () {
+			var maxZoom = 17;
+			centralizaGeometriasBase(maxZoom);
+		}, 'Centralizar no imóvel').addTo(painelMapa.map);
 	}
 
 	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
@@ -97,6 +99,7 @@ var PainelMapaController = function ($scope) {
 
 		centralizaGeometriasBase();
 	}
+
 	$scope.$on('mapa:adicionar-geometria-base', adicionarGeometriasBase);
 
 	/** Centraliza geometrias base de um mapa **/

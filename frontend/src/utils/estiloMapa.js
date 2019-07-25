@@ -5,7 +5,7 @@ var EstiloMapa = {
         dashArray: '5, 10',
         opacity: 1,
         weight: 2,
-        fill: false
+        fill: true
     },
 
     'APP': {

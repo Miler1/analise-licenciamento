@@ -312,65 +312,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 						adicionarGeometriaNoMapa(camada);
 					});
 
-					//$scope.$emit('mapa:adicionar-botao-centralizar-mapa-base');
-
 				});
-
-			// mapa = L.map(idMapa,{
-			// 	layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			// 		maxZoom: 19,
-			// 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-			// 	})],
-			// 	maxZoom: 15,
-			// 	minZoom: 2
-			// });
-			// meusDados = $scope.meusDados = L.layerGroup().addTo(mapa);
-            //
-			// var measure = L.control.measure({
-			// 	position: 'topright',
-			// 	primaryLengthUnit: 'meters',
-			// 	primaryAreaUnit: 'hectares',
-			// 	captureZIndex: 10000,
-			// 	localization: 'pt_BR'
-			// });
-            //
-			// mapa.addControl(measure);
-            //
-			// var restricoesGeoJson = L.geoJSON(restricoes);
-            //
-			// mapa.fitBounds(restricoesGeoJson.getBounds());
-            //
-			// restricoesGeoJson.eachLayer(function(layer){
-			// 	var properties = layer.feature.properties;
-            //
-			// 	var layerControle = getLayer(properties.descricao);
-            //
-			// 	if(layer.setStyle){
-            //
-			// 		if(!layerControle.color){
-			// 			layer.color = colors.pop();
-			// 		}
-            //
-			// 		layer.setStyle({
-			// 			color: layerControle.color || layer.color,
-			// 			fillOpacity: 0.1
-			// 		});
-			// 	}
-            //
-			// 	layerControle.addLayer(layer);
-            //
-			// });
-            //
-			// if ($scope.analiseGeo.analise.processo.empreendimento &&
-			// 	!$scope.analiseGeo.analise.processo.empreendimento.imovel &&
-			// 	$scope.analiseGeo.analise.processo.empreendimento.municipio.limite) {
-            //
-			// 	inserirGeometriaMunicipio($scope.analiseGeo.analise.processo.empreendimento.municipio.limite, mapa);
-            //
-			// 	meusDados.addLayer($scope.municipioGeormetria);
-            //
-			// 	mapa.flyToBounds($scope.municipioGeormetria.getBounds());
-			// }
 
 		});
 
