@@ -34,6 +34,7 @@ var PainelMapaController = function ($scope) {
 			maxZoom: 16,
 			scrollWheelZoom: true
 		}).setView([-3, -52.497545], 6);
+
 	
 		/* Termos de uso: http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf */
 		L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -45,6 +46,8 @@ var PainelMapaController = function ($scope) {
 				painelMapa.map.scrollWheelZoom.enable();
 			}
 		});
+
+		painelMapa.map.doubleClickZoom.disable();
 
 		if(painelMapa.isFullscreen){
 			painelMapa.map.addControl(new L.Control.Fullscreen({
@@ -89,6 +92,7 @@ var PainelMapaController = function ($scope) {
 
 	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
 	function adicionarGeometriasBase(event, shape){
+
 		painelMapa.listaGeometriasBase[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
 
 		if(shape.popupText){
@@ -97,7 +101,10 @@ var PainelMapaController = function ($scope) {
 			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo]);
 		}
 
-		centralizaGeometriasBase();
+		if (!shape.disableCentralizarGeometrias) {
+
+			centralizaGeometriasBase();
+		}
 	}
 
 	$scope.$on('mapa:adicionar-geometria-base', adicionarGeometriasBase);
@@ -129,6 +136,7 @@ var PainelMapaController = function ($scope) {
 		}
 
 		if(shape.specificShape){
+
 			painelMapa.specificGeometries.push(shape.tipo);
 		}
 		

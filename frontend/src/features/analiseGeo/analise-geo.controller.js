@@ -267,11 +267,11 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		if (camada.visivel) {
 			$scope.$emit('mapa:remover-geometria-base', camada);
 		} else {
-			adicionarGeometriaNoMapa(camada);
+			adicionarGeometriaNoMapa(camada, true);
 		}
 	};
 
-	function adicionarGeometriaNoMapa (camada) {
+	function adicionarGeometriaNoMapa (camada, disable) {
 
 		camada.visivel = true;
 		camada.color = ctrl.estiloMapa[camada.tipo].color;
@@ -282,7 +282,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			estilo: {
 				style: ctrl.estiloMapa[camada.tipo]
 			},
-			popupText: camada.item
+			popupText: camada.item,
+			disableCentralizarGeometrias:disable
 		});
 	}
 
@@ -304,7 +305,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			var empreendimento = $scope.analiseGeo.analise.processo.empreendimento;
 
 			$scope.$emit('mapa:adicionar-geometria-base', {
-				geometria: JSON.parse($scope.analiseGeo.analise.processo.empreendimento.municipio.limite),
+				geometria: JSON.parse(empreendimento.municipio.limite),
 				tipo: 'EMP-CIDADE',
 				estilo: {
 					style: {

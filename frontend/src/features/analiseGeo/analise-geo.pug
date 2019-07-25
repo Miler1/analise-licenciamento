@@ -41,11 +41,12 @@ div(ng-init='ctrl.init()')
 			#lista-restricoes
 				#accordion.panel-group
 					div
-						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#meusDados')
+						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion', aria-expanded='false', data-target='#meusDados', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion' )
 							.panel.panel-default
 								.panel-heading
 									h4.panel-title
-										| Dados do empreendimento 
+										| Dados do empreendimento
+										i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
 						#meusDados.collapse
 								table.table.table-striped.table-condensed.no-margin.table-responsive
 									thead
