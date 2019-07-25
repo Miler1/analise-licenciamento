@@ -74,6 +74,7 @@ public class AnaliseGeoSerializer {
             "documentos.nome",
             "documentos.tipo.id",
             "documentos.tipo.nome",
+            "documentos.nomeDoArquivo",
             "licencasAnalise.id",
             "licencasAnalise.validade",
             "licencasAnalise.validadeMaxima",

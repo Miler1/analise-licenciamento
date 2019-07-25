@@ -1,4 +1,4 @@
-var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaInconsistencia, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
+var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,categoriaInconsistencia, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
 
 	var inconsistenciaController = this;
 	

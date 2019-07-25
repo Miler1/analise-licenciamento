@@ -1,4 +1,4 @@
-var AnaliseGeoService = function(request, config) {
+var AnaliseGeoService = function(request, $window ,config) {
 
 	this.getRestricoesGeo = function(idAnaliseGeo) {
 
@@ -52,7 +52,13 @@ var AnaliseGeoService = function(request, config) {
 
         return request
             .post(config.BASE_URL() + 'analisesGeo/validarParecerAprovador', analise);
-    };
+	};
+	
+	this.download = function(idDocumento) {
+
+        $window.open(config.BASE_URL() + 'documentos/' + idDocumento + '/download', '_blank');
+
+	};
 };
 
 exports.services.AnaliseGeoService = AnaliseGeoService;

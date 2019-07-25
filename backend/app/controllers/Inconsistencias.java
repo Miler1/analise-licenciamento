@@ -34,16 +34,17 @@ public class Inconsistencias extends GenericController{
             i.saveAnexos(i.anexos);
             i.save();
 
+            renderJSON(i,InconsistenciaSerializer.findInconsistencia);
 
         } else {
             Inconsistencia novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo);
 
             novaInconsistencia.saveAnexos(inconsistencia.anexos);
             novaInconsistencia.save();
+            renderJSON(novaInconsistencia,InconsistenciaSerializer.findInconsistencia);
         }
 
-        renderMensagem(Mensagem.INCONSISTENCIA_SALVA_SUCESSO);
-
+//        renderMensagem(Mensagem.INCONSISTENCIA_SALVA_SUCESSO);
     }
 
     public static void findInconsistencia(Inconsistencia inconsistencia) {

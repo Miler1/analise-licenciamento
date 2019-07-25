@@ -1,0 +1,121 @@
+#etapa-conclusao
+    div.col-md-5.pull-right.margin-right-xs.text-cloneParecer
+        label.pull-left Informe o número do processo para clonar o parecer
+        br
+        div.pull-right.display-clone
+            textarea.textArea-clone(name="numeroProcesso", ng-model="ctrl.numeroProcesso")  
+            .btn.btn-default.tamanho-botaoClone(type="submit", name="clonar", ng-click="ctrl.clonarParecerGeo()")
+                i.glyphicon.glyphicon-refresh.glyphicon--with-right-margin
+                | Clonar paracer  
+            
+            
+
+hr
+h5 Análise GEO
+div
+#camposAnaliseGeo
+    div
+        label.label-parecer Da situação fundiária*:
+        br
+        textarea.campos-parecer(name="situacaoFundiaria", ng-model="ctrl.situacaoFundiaria", ng-disabled='')
+    div
+        label.label-parecer Da análise temporal*:
+        br
+        textarea.campos-parecer(name="analiseTemporal", ng-model="ctrl.analiseTemporal")
+        
+    div
+        label.label-parecer Conclusão*:
+        br
+        textarea.campos-parecer(name="conclusao", ng-model="ctrl.conclusao")
+
+    div.btn.btn-default(type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+        i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+        | Anexar arquivo ao parecer
+
+    table.table.table-condensed(ng-if="ctrl.analiseGeo.documentos.length > 0")
+
+        thead
+
+            tr
+                th.col-md-10 Documento anexado
+                th.col-md-2.text-right Ações
+
+        tbody
+
+            tr(ng-repeat="documento in ctrl.analiseGeo.documentos")
+
+                td.col-md-10 {{documento.nomeDoArquivo}}
+                td.col-md-2.text-right
+                    a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento.tipoDocumento.id)")
+                        i.glyphicon.glyphicon-save
+
+                    a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index)")
+                        i.glyphicon.glyphicon-trash
+div
+#conclusao
+    h5 Conclusão
+    hr
+    label Análise final do processo*:
+        div.pull-right.col-md-10.posicao-principal
+            form.pull-center.posicao-conteudo
+                label.opDla.radio-inline.posicao-primeiroItem
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="DEFERIDO")
+                    | Deferido
+                label.opDla.radio-inline
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="INDEFERIDO")
+                    | Indeferido
+                label.opDla.radio-inline
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="NOTIFICACAO")
+                    | Emitir notificação
+    hr
+div#conclusao
+    div(ng-if="ctrl.opcaoConclusaoParecer !== 'NOTIFICACAO'")
+        label Observações*:
+        br
+        textarea.tamanho-obs(name="observacao", ng-model="ctrl.observacao")
+
+    div(ng-if="ctrl.opcaoConclusaoParecer === 'NOTIFICACAO'")
+        #lista-restricoes
+            #accordion.panel-group
+                h4.panel-title Inconsistências adicionadas:
+                br
+                div(ng-repeat="caracterizacao in ctrl.analiseGeo.analise.processo.caracterizacoes") 
+                    div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
+
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#dadosInconsistenciaTipo')
+                            .panel.panel-default
+                                .panel-heading
+                                    h4.panel-title
+                                        | Propriedade 
+                        #dadosInconsistenciaTipo.collapse
+                                table.table.table-striped.table-condensed.no-margin.table-responsive
+                                    thead
+                                        tr
+                                            th.col-md-12 Item
+
+                                    tbody
+                                        tr
+                                            td.col-md-12 Área do projeto
+                                            
+                br
+                div
+                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#inconsistenciaAtividade')
+                        .panel.panel-default
+                            .panel-heading
+                                h4.panel-title
+                                    | Atividades
+                    #inconsistenciaAtividade.collapse
+                            table.table.table-striped.table-condensed.no-margin.table-responsive
+                                thead
+                                    tr
+                                        th.col-md-12 Descrição
+
+                                tbody
+                                    tr
+                                        td.col-md-12 ........
+
+div#troca-etapa
+    .btn.etapa-anterior(type="submit", name="etapaAnterior")
+        i.glyphicon.glyphicon-menu-left.pull-left
+        | Etapa Anterior     
+

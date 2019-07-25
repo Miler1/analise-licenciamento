@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, restricoes ,idAnaliseGeo,inconsistenciaService,processoService) {
+var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes ,idAnaliseGeo,inconsistenciaService,uploadService,processoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -13,7 +13,6 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
 	ctrl.categoria = app.utils.Inconsistencia;
-	
 
 
 	var getLayer = function(descricao){
@@ -351,14 +350,81 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, res
 							return categoriaInconsistencia;
 						},
 						inconsistencia: function(){
-							return response.data;
+							return response.data;						
 						}
 					}		
 				});
 	
 			});
 	};
-		
+
+
+	 ctrl.clonarParecerGeo = function() {
+
+		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+				.then(function(response){
+
+						if(response.data === null) {
+
+								ctrl.analiseGeo.parecer = null;
+								mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+								return;
+						}
+						ctrl.analiseGeo.parecer = response.data.parecer;
+
+				}, function(error){
+
+						mensagem.error(error.data.texto);
+				});
+};
+
+	ctrl.upload = function(file, invalidFile) {
+
+		if(file) {
+
+				uploadService.save(file)
+						.then(function(response) {
+
+							ctrl.analiseGeo.documentos.push({
+
+										key: response.data,
+										nomeDoArquivo: file.name,
+										tipoDocumento: {
+
+												id: app.utils.TiposDocumentosAnalise.ANALISE_GEO
+										}
+								});
+															
+						}, function(error){
+
+								mensagem.error(error.data.texto);
+						});
+
+		} else if(invalidFile && invalidFile.$error === 'maxSize'){
+
+				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+		}
+};
+
+	 ctrl.removerDocumento = function (indiceDocumento) {
+
+		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
+	};
+
+	ctrl.baixarDocumento= function(idDocumento) {
+
+		analiseGeoService.download(idDocumento);
+	};
+
+	ctrl.confirmar= function() {
+
+		console.log(ctrl.situacaoFundiaria);
+		console.log(ctrl.analiseTemporal);
+		console.log(ctrl.conclusao);
+		console.log(ctrl.documentos);
+
+	};
+
 };
 
 exports.controllers.AnaliseGeoController = AnaliseGeoController;
