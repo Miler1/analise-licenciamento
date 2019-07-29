@@ -98,6 +98,9 @@ var config = {
 
 			"./bower_components/ng-sortable/dist/ng-sortable.min.js",
 			"./bower_components/ng-sortable/dist/ng-sortable.style.css"
+		],
+		summernote:[
+			"./bower_components/angular-summernote/dist/angular-summernote.min.js"
 		]
 	},
 

@@ -7,11 +7,12 @@
     #lista-restricoes
         #accordion.panel-group
             div
-                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#meusDados')
+                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion', aria-expanded='false', data-target='#meusDados', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
                     .panel.panel-default
                         .panel-heading
                             h4.panel-title
-                                | Dados do empreendimento 
+                                | Dados do empreendimento
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}") 
                 #meusDados.collapse
                         table.table.table-striped.table-condensed.no-margin.table-responsive
                             thead
@@ -25,10 +26,6 @@
                                     td.col-md-4.text-left Propriedade
                                     td.col-md-5.text-left Meu empreendimento 
                                     td.col-md-1.text-right
-                                        //- i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida')
-                                        //- i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida')
-                                        //- | &nbsp;&nbsp;
-                                        //- i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, layer.color)')
                                         i.glyphicon.glyphicon-alert(ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
                                         | &nbsp;&nbsp;
 
@@ -40,11 +37,12 @@
             div(ng-repeat="caracterizacao in ctrl.analiseGeo.analise.processo.caracterizacoes") 
                 div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
 
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#dadosAreaProjeto')
+                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#dadosAreaProjeto', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
                         .panel.panel-default
                             .panel-heading
                                 h4.panel-title
-                                    | Atividade: {{atividadeCaracterizacao.atividade.nome}} 
+                                    | Atividade: {{atividadeCaracterizacao.atividade.nome}}
+                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}") 
                     #dadosAreaProjeto.collapse
                             table.table.table-striped.table-condensed.no-margin.table-responsive
                                 thead
@@ -63,11 +61,12 @@
 
             br
             div
-                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#restricoesAtividade')
+                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#restricoesAtividade', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
                     .panel.panel-default
                         .panel-heading
                             h4.panel-title
                                 | Áreas de restrição da atividade
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
                 #restricoesAtividade.collapse
                         table.table.table-striped.table-condensed.no-margin.table-responsive
                             thead
@@ -119,6 +118,6 @@
                                     | &nbsp;&nbsp;
                                     i.glyphicon.glyphicon-alert(ng-click='adicionarRestricao(layer)', title='Adicionar parecer da restrição', ng-class="{'restricao-adicionada': layer.feature.properties.parecer}")
 div#troca-etapa
-    .btn.etapa-proxima.pull-right(type="submit", name="etapaProxima")
+    .btn.etapa-proxima.pull-right(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()")
         i.glyphicon.glyphicon-menu-right
         | Próxima etapa                        

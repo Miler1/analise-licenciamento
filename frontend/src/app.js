@@ -20,7 +20,8 @@ var licenciamento = angular.module("licenciamento", [
 	"textAngular",
 	"analiseTecnica",
 	"as.sortable",
-	"analiseGeo"
+	"analiseGeo",
+	"summernote"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {

@@ -44,7 +44,6 @@ public class Inconsistencias extends GenericController{
             renderJSON(novaInconsistencia,InconsistenciaSerializer.findInconsistencia);
         }
 
-//        renderMensagem(Mensagem.INCONSISTENCIA_SALVA_SUCESSO);
     }
 
     public static void findInconsistencia(Inconsistencia inconsistencia) {
@@ -57,5 +56,15 @@ public class Inconsistencias extends GenericController{
 
     }
 
+
+    public static void removerDocumento(Long id) {
+
+        Inconsistencia i = Inconsistencia.findById(id);
+
+
+
+        renderJSON(i, InconsistenciaSerializer.findInconsistencia);
+
+    }
 }
 

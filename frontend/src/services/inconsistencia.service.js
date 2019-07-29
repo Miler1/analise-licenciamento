@@ -5,9 +5,9 @@ var InconsistenciaService = function(request,$window,config) {
 			.post("/salvarInconsistencia", params);
 	};
 
-	this.removerDocumento = function(indiceDocumento){
+	this.removerDocumento = function(id){
 		return request
-			.post("/removerDocumento", indiceDocumento);
+			.post("/removerDocumento/"+ id);
 	};
 
 	this.findInconsistencia = function(params){

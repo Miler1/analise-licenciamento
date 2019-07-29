@@ -14,6 +14,7 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 	ctrl.analiseGeo = angular.copy(analiseGeo);
 	ctrl.categoria = app.utils.Inconsistencia;
 
+	ctrl.listaInconsistencias = [];
 
 	var getLayer = function(descricao){
 
@@ -354,7 +355,11 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 						}
 					}		
 				});
-	
+
+				modalInstance.result.then(function(inconsistencia){
+					ctrl.listaInconsistencias.push(inconsistencia);
+				});	
+				
 			});
 	};
 
@@ -406,9 +411,11 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 		}
 };
 
-	 ctrl.removerDocumento = function (indiceDocumento) {
+	 ctrl.removerDocumento = function (indiceDocumento,idDocumento) {
 
 		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
+		// analiseGeoService.removerDocumento(idDocumento)
+		// 			.then
 	};
 
 	ctrl.baixarDocumento= function(idDocumento) {
@@ -418,11 +425,36 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 
 	ctrl.confirmar= function() {
 
-		console.log(ctrl.situacaoFundiaria);
-		console.log(ctrl.analiseTemporal);
-		console.log(ctrl.conclusao);
-		console.log(ctrl.documentos);
 
+
+	};
+
+	ctrl.proximaEtapa = function(){
+		$('#tabConclusao').tab("show");
+	};
+
+	ctrl.etapaAnterior = function(){
+		$("#tabLocalizacaoGeografica").tab("show");
+	};
+
+	$scope.optionsText = {
+		toolbar: [
+			['edit',['undo','redo']],
+			['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+			['textsize', ['fontsize']],
+			['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+			['height', ['height']],
+			['table', ['table']],
+			['insert', ['picture',]]
+		]
+	};
+
+	$scope.snPaste = function(e, model) {
+		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+		e.preventDefault();
+		setTimeout( function(){
+		  document.execCommand( 'insertText', false, bufferText );
+		}, 10 );
 	};
 
 };
