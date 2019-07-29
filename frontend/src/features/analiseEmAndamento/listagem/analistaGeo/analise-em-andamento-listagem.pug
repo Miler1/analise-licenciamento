@@ -21,17 +21,16 @@ div
 							th
 							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
-							th.col-md-2 Empreendimento
+							th.col-md-2 Interessado
 							th.col-md-2 Município
-							th.col-md-1 Licenças
+							th.col-md-2 Licenças
 							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise técnica
 							th.col-md-1 Prazo análise Geo
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
 							td
-								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
+								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseGeo}")
 								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
 								span(ng-class="{'icone-renovacao': processo.renovacao}")
 
@@ -42,10 +41,8 @@ div
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{listagem.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, listagem.PrazoAnalise.ANALISE)}}
-							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,listagem.PrazoAnalise.ANALISE_TECNICA)}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAnaliseGeo, listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
-								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,listagem.PrazoAnalise.ANALISE_GEO)}}
+								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseGeo,listagem.PrazoAnalise.ANALISE_GEO)}}
 							td
 								span.pull-right
 

@@ -22,16 +22,17 @@ div
 					thead
 						tr
 							th.col-md-1 Processo
-							th.col-md-2 Empreendimento
+							th.col-md-2 CPF/CNPJ
+							th.col-md-2 Interessado
 							th.col-md-2 Município
 							th.col-md-1 Títulos
 							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise jurídica
-							th.col-md-1 Prazo análise técnica
+							th.col-md-1 Prazo análise GEO
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
@@ -39,11 +40,8 @@ div
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise ,consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{consultarProcesso.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, consultarProcesso.PrazoAnalise.ANALISE)}}
 
-							td(ng-class="{'error-message': processo.dataConclusaoAnaliseJuridica ? false : consultarProcesso.dateUtil.verificaPrazoMinimo(processo.diasAnaliseJuridica ,consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_JURIDICA)}")
-								| {{processo.dataConclusaoAnaliseJuridica ? 'Concluída em ' + consultarProcesso.dateUtil.formatarData(processo.dataConclusaoAnaliseJuridica) : consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseJuridica, consultarProcesso.PrazoAnalise.ANALISE_JURIDICA)}}
-
-							td(ng-class="{'error-message': processo.dataConclusaoAnaliseTecnica ? false : consultarProcesso.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{processo.dataConclusaoAnaliseTecnica ? 'Concluída em ' + consultarProcesso.dateUtil.formatarData(processo.dataConclusaoAnaliseTecnica) : consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica, consultarProcesso.PrazoAnalise.ANALISE_TECNICA)}}
+							td(ng-class="{'error-message': processo.dataConclusaoAnaliseGeo ? false : consultarProcesso.dateUtil.verificaPrazoMinimo(processo.diasAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída em ' + consultarProcesso.dateUtil.formatarData(processo.dataConclusaoAnaliseGeo) : consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseGeo, consultarProcesso.PrazoAnalise.ANALISE_GEO)}}
 							td
 								span.pull-right
 
