@@ -6,6 +6,10 @@ import utils.SerializerUtil;
 public class ApplicationSerializer {
 
 	public static JSONSerializer findInfo = SerializerUtil.create(
+			"usuarioSessao.id",
+			"usuarioSessao.login",
+			"usuarioSessao.pessoa.id",
+			"usuarioSessao.pessoa.nome",
 			"usuarioSessao.perfilSelecionado.id",
 			"usuarioSessao.perfilSelecionado.nome",
 			"usuarioSessao.setorSelecionado.id",

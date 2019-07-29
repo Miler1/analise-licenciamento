@@ -292,7 +292,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					app.utils.Perfis.GERENTE,
 					app.utils.Perfis.PRESIDENTE
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
-			}
+			},
+			deveFiltrarPorUsuario: true
 		},
 		{
 			titulo: 'Consultar títulos emitidos',
