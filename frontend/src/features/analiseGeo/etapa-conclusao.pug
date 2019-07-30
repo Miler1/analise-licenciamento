@@ -38,18 +38,19 @@ div
                     ng-model="ctrl.analiseTemporal",
                     config="optionsText",
                     ng-disabled="ctrl.analiseGeo.inconsistencias.length > 0")
-        //- textarea.campos-parecer(name="analiseTemporal", ng-model="ctrl.analiseTemporal", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
-        
-    div
-        label.label-parecer Conclusão*: 
-        br
-        summernote.form-control(id="conclusao",
-                    on-paste="snPaste(evt)",
-                    name="conclusao",
-                    lang="pt-BR",
-                    height="200",
-                    ng-model="ctrl.conclusao",
-                    config="optionsText")
+
+div
+    label.label-parecer Conclusão*: 
+    br
+    summernote.form-control(id="conclusao",
+                on-paste="snPaste(evt)",
+                name="conclusao",
+                lang="pt-BR",
+                height="200",
+                ng-model="ctrl.conclusao",
+                config="optionsText",
+                class="editable",
+                contenteditable="true")
 
     div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin

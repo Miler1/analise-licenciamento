@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes ,idAnaliseGeo,inconsistenciaService,uploadService,processoService) {
+var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes ,idAnaliseGeo,inconsistenciaService,uploadService,mensagem,processoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -430,11 +430,20 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 	};
 
 	ctrl.proximaEtapa = function(){
-		$('#tabConclusao').tab("show");
+		
+		if(ctrl.analiseGeo.inconsistencias.length > 0){
+			$('#situacaoFundiaria').summernote('disable');
+			$('#analiseTemporal').summernote('disable');
+		}
+
+		$('#tabConclusao').show();
+    $('#tabLocalizacaoGeografica').hide();
+
 	};
 
 	ctrl.etapaAnterior = function(){
-		$("#tabLocalizacaoGeografica").tab("show");
+		$('#tabLocalizacaoGeografica').show();
+    $('#tabConclusao').hide();
 	};
 
 	$scope.optionsText = {
@@ -446,6 +455,7 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 			['height', ['height']],
 			['table', ['table']],
 			['insert', ['picture',]]
+			
 		]
 	};
 

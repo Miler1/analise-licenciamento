@@ -55,16 +55,23 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 	inconsistenciaController.concluir = function() {
 		var params;
 		if(inconsistencia.id){
-			params.id = inconsistencia.id;
+			params ={
+				id : inconsistencia.id,
+				analiseGeo: {id: analiseGeo.id},
+				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+				categoria: categoriaInconsistencia,
+				anexos: inconsistenciaController.anexos
+			};
+		}else{
+			params = {
+				analiseGeo: {id: analiseGeo.id},
+				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+				categoria: categoriaInconsistencia,
+				anexos: inconsistenciaController.anexos,
+			};
 		}
-		params = {
-			analiseGeo: {id: analiseGeo.id},
-			tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
-			descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-			categoria: categoriaInconsistencia,
-			anexos: inconsistenciaController.anexos
-		};
-
 		inconsistenciaService.salvarInconsistencia(params)
 			.then(function(response){
 				mensagem.success("Inconsistência salva com sucesso!");
@@ -77,12 +84,14 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 		
 	};
 
-	inconsistenciaController.baixarDocumentoInconsistencia= function(idDocumento) {
+	inconsistenciaController.baixarDocumentoInconsistencia= function(anexo) {
 
-		if(!idDocumento){
-			mensagem.error("Para baixar o arquivo, deve-se primeiro salvar");
-		}
-		inconsistenciaService.download(idDocumento);
+		if(!anexo.id){
+			mensagem.error("Para baixar o documento, ele precisa ser salvo primeiro");
+		}else{
+		inconsistenciaService.download(anexo.id);
+		
+	}
 	};
 
 };

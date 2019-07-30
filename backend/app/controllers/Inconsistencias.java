@@ -61,8 +61,6 @@ public class Inconsistencias extends GenericController{
 
         Inconsistencia i = Inconsistencia.findById(id);
 
-
-
         renderJSON(i, InconsistenciaSerializer.findInconsistencia);
 
     }
