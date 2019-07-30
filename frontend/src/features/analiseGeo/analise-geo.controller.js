@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, restricoes ,idAnaliseGeo, inconsistenciaService,processoService, empreendimentoService) {
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, restricoes ,idAnaliseGeo, inconsistenciaService,processoService, empreendimentoService, documentoAnaliseService, mensagem) {
 
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -364,6 +364,30 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 				});
 	
 			});
+	};
+
+	ctrl.downloadPDFParecer = function() {
+
+		var params = {
+			id: $scope.analiseGeo.id,
+			parecer: $scope.analiseGeo.parecer
+		};
+
+		documentoAnaliseService.generatePDFParecerGeo(params)
+			.then(
+				function(data, status, headers){
+
+					var a = document.createElement('a');
+					a.href = URL.createObjectURL(data.data.response.blob);
+					a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+					a.click();
+				},
+
+				function(error){
+
+					mensagem.error(error.data.texto);
+				}
+			);
 	};
 		
 };
