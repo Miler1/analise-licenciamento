@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes ,idAnaliseGeo,inconsistenciaService,uploadService,mensagem,processoService) {
+var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,uploadService,mensagem,processoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -13,8 +13,6 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
 	ctrl.categoria = app.utils.Inconsistencia;
-
-	ctrl.listaInconsistencias = [];
 
 	var getLayer = function(descricao){
 
@@ -357,7 +355,7 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 				});
 
 				modalInstance.result.then(function(inconsistencia){
-					ctrl.listaInconsistencias.push(inconsistencia);
+					ctrl.analiseGeo.inconsistencias.push(inconsistencia);
 				});	
 				
 			});
@@ -411,16 +409,19 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 		}
 };
 
-	 ctrl.removerDocumento = function (indiceDocumento,idDocumento) {
+	 ctrl.removerDocumento = function (indiceDocumento) {
 
 		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
-		// analiseGeoService.removerDocumento(idDocumento)
-		// 			.then
+
 	};
 
-	ctrl.baixarDocumento= function(idDocumento) {
+	ctrl.baixarDocumento= function(documento) {
 
-		analiseGeoService.download(idDocumento);
+		if(!documento.id){
+			documentoService.download(documento.key);
+		}else{
+			analiseGeoService.download(documento.id);	
+		}
 	};
 
 	ctrl.confirmar= function() {
@@ -435,15 +436,11 @@ var AnaliseGeoController = function($scope, $timeout, $uibModal, analiseGeo, ana
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
 		}
-
-		$('#tabConclusao').show();
-    $('#tabLocalizacaoGeografica').hide();
-
+			$('.nav-tabs > .active').next('li').find('a').trigger('click');		
 	};
 
 	ctrl.etapaAnterior = function(){
-		$('#tabLocalizacaoGeografica').show();
-    $('#tabConclusao').hide();
+			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
 	};
 
 	$scope.optionsText = {

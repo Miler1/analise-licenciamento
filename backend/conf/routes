@@ -70,9 +70,9 @@ POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprova
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 
-POST    /salvarInconsistencia                               Inconsistencias.salvarInconsistencia
-POST    /findInconsistencia                                 Inconsistencias.findInconsistencia
-POST    /removerDocumento/{id}                                   Inconsistencias.removerDocumento
+POST    /inconsistencia/salvarInconsistencia                Inconsistencias.salvarInconsistencia
+POST    /inconsistencia/findInconsistencia                  Inconsistencias.findInconsistencia
+
 # Documentos licenciamento
 
 GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
@@ -188,9 +188,9 @@ GET     /atividadesManejo/tipologia/{idTipologia}   AtividadesManejo.listWithTip
 GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
 # Documentos shape
-POST    /upload/shape                               DocumentosShape.upload
-GET     /download/shape/{key}                       DocumentosShape.downloadTmp
-DELETE  /delete/shape/{key}                         DocumentosShape.deleteTmp
+POST    /upload/documento                               Documentos.upload
+GET     /download/documento/{key}                       Documentos.downloadTmp
+DELETE  /delete/documento/{key}                         Documentos.deleteTmp
 
 # Documentos manejo
 POST    /upload/{idAnaliseTecnica}/imovel/manejo/{idTipoDocumento} DocumentosManejo.uploadFileImovel

@@ -29,9 +29,8 @@ public class Inconsistencias extends GenericController{
             i.tipoInconsistencia = inconsistencia.tipoInconsistencia;
             i.categoria = inconsistencia.categoria;
             i.analiseGeo = inconsistencia.analiseGeo;
-            i.anexos = inconsistencia.anexos;
             i.id = inconsistencia.id;
-            i.saveAnexos(i.anexos);
+            i.saveAnexos(inconsistencia.anexos);
             i.save();
 
             renderJSON(i,InconsistenciaSerializer.findInconsistencia);
@@ -56,13 +55,5 @@ public class Inconsistencias extends GenericController{
 
     }
 
-
-    public static void removerDocumento(Long id) {
-
-        Inconsistencia i = Inconsistencia.findById(id);
-
-        renderJSON(i, InconsistenciaSerializer.findInconsistencia);
-
-    }
 }
 
