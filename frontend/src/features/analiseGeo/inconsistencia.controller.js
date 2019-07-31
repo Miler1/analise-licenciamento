@@ -1,12 +1,13 @@
-var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaInconsistencia, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
+var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,categoriaInconsistencia, documentoService, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
 
 	var inconsistenciaController = this;
-	
+	inconsistenciaController.anexos = [];
 	if(inconsistencia){
 		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
 		inconsistenciaController.tipoInconsistencia = inconsistencia.tipoInconsistencia;
 		inconsistenciaController.anexos = inconsistencia.anexos;
 		inconsistenciaController.id = inconsistencia.id;
+		
 	}
 	inconsistenciaController.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 
@@ -49,21 +50,29 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaI
 
 	inconsistenciaController.concluir = function() {
 		var params;
-
-		params = {
-			analiseGeo: {id: analiseGeo.id},
-			tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
-			descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-			categoria: categoriaInconsistencia,
-			anexos: inconsistenciaController.anexos,
-			id: inconsistencia.id
-		};
-
+		if(inconsistencia){
+			params ={
+				id : inconsistencia.id,
+				analiseGeo: {id: analiseGeo.id},
+				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+				categoria: categoriaInconsistencia,
+				anexos: inconsistenciaController.anexos
+			};
+		}else{
+			params = {
+				analiseGeo: {id: analiseGeo.id},
+				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+				categoria: categoriaInconsistencia,
+				anexos: inconsistenciaController.anexos,
+			};
+		}
 		inconsistenciaService.salvarInconsistencia(params)
 			.then(function(response){
-				mensagem.success(response.data.texto);
-				$uibModalInstance.dismiss('cancel');
-				
+				mensagem.success("Inconsistência salva com sucesso!");
+				$uibModalInstance.close(
+					response.data);				
 			}).catch(function(response){
 				mensagem.error(response.data.texto);
 				
@@ -71,9 +80,14 @@ var InconsistenciaController = function ($uibModalInstance,analiseGeo,categoriaI
 		
 	};
 
-	inconsistenciaController.baixarDocumentoInconsistencia= function(idDocumento) {
+	inconsistenciaController.baixarDocumentoInconsistencia= function(anexo) {
 
-		inconsistenciaService.download(idDocumento);
+		if(!anexo.id){
+			documentoService.download(anexo.key);
+		}else{
+			inconsistenciaService.download(anexo.id);	
+		}
+
 	};
 
 };

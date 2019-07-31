@@ -74,6 +74,7 @@ public class AnaliseGeoSerializer {
             "documentos.nome",
             "documentos.tipo.id",
             "documentos.tipo.nome",
+            "documentos.nomeDoArquivo",
             "licencasAnalise.id",
             "licencasAnalise.validade",
             "licencasAnalise.validadeMaxima",
@@ -102,7 +103,17 @@ public class AnaliseGeoSerializer {
             "tipoResultadoValidacaoGerente.id",
             "parecerValidacaoGerente",
             "analiseGeoRevisada",
-            "usuarioValidacao.pessoa.nome"
+            "usuarioValidacao.pessoa.nome",
+            "inconsistencias.id",
+            "inconsistencias.tipoInconsistencia",
+            "inconsistencias.descricaoInconsistencia",
+            "inconsistencias.anexos.id",
+            "inconsistencias.anexos.nomeDoArquivo",
+            "inconsistencias.anexos.caminho",
+            "inconsistencias.anexos.tipo",
+            "inconsistencias.anexos.tipo.nome",
+            "inconsistencias.anexos.tipo.id",
+            "inconsistencias.categoria"
 
     ).transform(new GeometryTransformer(), Geometry.class);
 

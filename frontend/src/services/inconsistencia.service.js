@@ -2,17 +2,12 @@ var InconsistenciaService = function(request,$window,config) {
 
 	this.salvarInconsistencia = function(params){
 		return request
-			.post(config.BASE_URL() + '/analisesGeo/salvarInconsistencia', params);
-	};
-
-	this.removerDocumento = function(indiceDocumento){
-		return request
-			.post("/removerDocumento", indiceDocumento);
+			.post(config.BASE_URL() + 'analisesGeo/inconsistencia/salvarInconsistencia', params);
 	};
 
 	this.findInconsistencia = function(params){
 		return request
-			.post("/findInconsistencia", params);
+			.post(config.BASE_URL() + 'analisesGeo/inconsistencia/findInconsistencia', params);
 	};
 
 	this.download = function(idDocumento) {

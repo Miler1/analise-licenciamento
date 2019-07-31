@@ -1,5 +1,3 @@
-include ../../layout/components/mapPanel
-
 div(ng-init='ctrl.init()')
 
 	.row
@@ -32,64 +30,40 @@ div(ng-init='ctrl.init()')
 				| &nbsp;Legislação 
 
 	.row
-		.col-md-12
+		div(style="padding:15px;")
+			div.modal-body
 
-			h5 Localização do empreendimento
+			ul.nav.nav-tabs(role="tablist")
+				li#localizacaoGeografica.active(role="presentation")
+					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Localização Geográfica
+					
+				li#conclusao(role="tab")
+					a(data-toggle="tab", data-target="#tabConclusao") Conclusão
 
-			+mapPanel-sidebar("mapa-localizacao-empreendimento",'400', true, 'ctrl')
-			br
-			#lista-restricoes
-				#accordion.panel-group
-					div
-						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion', aria-expanded='false', data-target='#meusDados', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion' )
-							.panel.panel-default
-								.panel-heading
-									h4.panel-title
-										| Dados do empreendimento
-										i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
-						#meusDados.collapse
-								table.table.table-striped.table-condensed.no-margin.table-responsive
-									thead
-										tr
-											th.col-md-5 Item
-											th.col-md-5 Área (ha)
-											th.col-md-2.text-right Ações
+				
+			.tab-content
+				#tabLocalizacaoGeografica.tab-pane.fade.in.active 
+					include etapa-localizacaoGeografica
+					div#tabLocalizacaoGeografica
+						.btn.etapa-proxima.pull-right.btnNext(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()")
+							i.glyphicon.glyphicon-menu-right
+							| Próxima etapa
+				#tabConclusao.tab-pane
+					include etapa-conclusao	
+					div#tabConclusao
+						.btn.etapa-anterior.btnPrevious(type="submit", name="etapaAnterior", ng-click="ctrl.etapaAnterior()")
+							i.glyphicon.glyphicon-menu-left.pull-left
+							| Etapa Anterior	
 
-									tbody
-										tr(ng-repeat='camada in ctrl.camadasDadosEmpreendimento')
-											td.col-md-5 {{camada.item}}
-											td.col-md-5 {{camada.descricao}}
-											td.col-md-2.text-right
-												i.glyphicon.glyphicon-alert(ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
-												| &nbsp;&nbsp;
-					br
-					br
+div
+	button.btn.btn-default.pull-left(style="margin:10px;",,ng-click="ctrl.cancelar()")
+		i.glyphicon.glyphicon-arrow-left
+		| &nbsp;Cancelar
 
+	button.btn.btn-success.pull-right(style="margin:10px;",ng-click="ctrl.confirmar()")
+		i.glyphicon.glyphicon-ok
+		| &nbsp;Confirmar
 
-
-
-					div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
-						a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")
-							.panel.panel-default
-								.panel-heading
-									h4.panel-title
-										| {{key}}
-						div.collapse(id="{{'outrosDados'+$index}}")
-							table.table.table-condensed
-								thead
-									tr
-										th Nome
-										th.text-right Restrição
-										th.text-right #
-
-								tbody
-									tr(ng-repeat='(key, layer) in groupLayer.getLayers()')
-										td.col-md-6 {{layer.feature.properties.descricaoLayer | textoTruncado: 30:4}}
-										td.col-md-4.text-right {{tratarRestricao(layer.feature.properties)}}
-										td.col-md-2.text-right
-											i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida', title='Exibir geometria')
-											i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida', title='Esconder geometria')
-											| &nbsp;&nbsp;
-											i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, groupLayer.color)', , title='Centralizar na geometria')
-											| &nbsp;&nbsp;
-											i.glyphicon.glyphicon-alert(ng-click='adicionarRestricao(layer)', title='Adicionar parecer da restrição', ng-class="{'restricao-adicionada': layer.feature.properties.parecer}")
+	button.btn.btn-success.pull-right(style="margin:10px;", ng-click="ctrl.salvar()")
+		i.glyphicon.glyphicon-arrow-right
+		| &nbsp;Salvar

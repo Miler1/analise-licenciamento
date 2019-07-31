@@ -131,6 +131,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFimValidacaoAprovador;
 
+    @OneToMany(mappedBy="analiseGeo", cascade=CascadeType.ALL)
+    public List<Inconsistencia> inconsistencias;
+
     private void validarParecer() {
 
         if(StringUtils.isBlank(this.parecer))

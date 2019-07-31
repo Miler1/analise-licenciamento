@@ -1,5 +1,5 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, restricoes ,idAnaliseGeo, inconsistenciaService,processoService, empreendimentoService) {
-
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
+	
 	var idMapa = 'mapa-restricoes',
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
@@ -360,12 +360,119 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 						inconsistencia: function(){
 							return response.data;
 						}
-					}		
+					}
 				});
-	
+
+				modalInstance.result.then(function(inconsistencia){
+					ctrl.analiseGeo.inconsistencias.push(inconsistencia);
+				});
+				
 			});
 	};
+
+
+	 ctrl.clonarParecerGeo = function() {
+
+		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+				.then(function(response){
+
+						if(response.data === null) {
+
+								ctrl.analiseGeo.parecer = null;
+								mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+								return;
+						}
+						ctrl.analiseGeo.parecer = response.data.parecer;
+
+				}, function(error){
+
+						mensagem.error(error.data.texto);
+				});
+};
+
+	ctrl.upload = function(file, invalidFile) {
+
+		if(file) {
+
+				uploadService.save(file)
+						.then(function(response) {
+
+							ctrl.analiseGeo.documentos.push({
+
+										key: response.data,
+										nomeDoArquivo: file.name,
+										tipoDocumento: {
+
+												id: app.utils.TiposDocumentosAnalise.ANALISE_GEO
+										}
+								});
+
+						}, function(error){
+
+								mensagem.error(error.data.texto);
+						});
+
+		} else if(invalidFile && invalidFile.$error === 'maxSize'){
+
+				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+		}
+};
+
+	 ctrl.removerDocumento = function (indiceDocumento) {
+
+		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
+
+	};
+
+	ctrl.baixarDocumento= function(documento) {
+
+		if(!documento.id){
+			documentoService.download(documento.key);
+		}else{
+			analiseGeoService.download(documento.id);	
+		}
+	};
+
+	ctrl.confirmar= function() {
+
+
+
+	};
+
+	ctrl.proximaEtapa = function(){
 		
+		if(ctrl.analiseGeo.inconsistencias.length > 0){
+			$('#situacaoFundiaria').summernote('disable');
+			$('#analiseTemporal').summernote('disable');
+		}
+			$('.nav-tabs > .active').next('li').find('a').trigger('click');
+	};
+
+	ctrl.etapaAnterior = function(){
+			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+	};
+
+	$scope.optionsText = {
+		toolbar: [
+			['edit',['undo','redo']],
+			['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+			['textsize', ['fontsize']],
+			['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+			['height', ['height']],
+			['table', ['table']],
+			['insert', ['picture',]]
+			
+		]
+	};
+
+	$scope.snPaste = function(e, model) {
+		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+		e.preventDefault();
+		setTimeout( function(){
+		  document.execCommand( 'insertText', false, bufferText );
+		}, 10 );
+	};
+
 };
 
 exports.controllers.AnaliseGeoController = AnaliseGeoController;

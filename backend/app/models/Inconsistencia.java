@@ -88,27 +88,27 @@ public class Inconsistencia extends GenericModel{
         if (this.anexos == null)
             this.anexos = new ArrayList<>();
 
-//        Iterator<Documento> docsCadastrados = anexos.iterator();
-//        List<Documento> documentosDeletar = new ArrayList<>();
-//
-//        while (docsCadastrados.hasNext()) {
-//
-//            Documento docCadastrado = docsCadastrados.next();
-//
-//            if (ListUtil.getById(docCadastrado.id, novosAnexos) == null) {
-//
-//                docsCadastrados.remove();
-//
-//                // remove o documeto do banco apenas se ele não estiver relacionado
-//                // com outra análises
-//                List<AnaliseGeo> analiseGeoRelacionadas = docCadastrado.getAnaliseGeoRelacionadas();
-//                if(analiseGeoRelacionadas.size() == 0) {
-//
-//                    documentosDeletar.add(docCadastrado);
-//                }
-//
-//            }
-//        }
+        Iterator<Documento> docsCadastrados = anexos.iterator();
+        List<Documento> documentosDeletar = new ArrayList<>();
+
+        while (docsCadastrados.hasNext()) {
+
+            Documento docCadastrado = docsCadastrados.next();
+
+            if (ListUtil.getById(docCadastrado.id, novosAnexos) == null) {
+
+                docsCadastrados.remove();
+
+                // remove o documeto do banco apenas se ele não estiver relacionado
+                // com outra análises
+                List<AnaliseGeo> analiseGeoRelacionadas = docCadastrado.getAnaliseGeoRelacionadas();
+                if(analiseGeoRelacionadas.size() == 0) {
+
+                    documentosDeletar.add(docCadastrado);
+                }
+
+            }
+        }
         for (Documento novoAnexo : novosAnexos) {
 
             if (novoAnexo.id == null) {
@@ -116,10 +116,10 @@ public class Inconsistencia extends GenericModel{
                 novoAnexo.tipo = tipo;
 
                 novoAnexo.save();
-              //  this.anexos.add(novoAnexo);
+                this.anexos.add(novoAnexo);
             }
         }
 
-     //   ModelUtil.deleteAll(documentosDeletar);
+        ModelUtil.deleteAll(documentosDeletar);
     }
 }
