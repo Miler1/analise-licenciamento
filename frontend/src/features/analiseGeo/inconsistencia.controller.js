@@ -1,7 +1,7 @@
-var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,categoriaInconsistencia, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
+var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,categoriaInconsistencia, documentoService, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
 
 	var inconsistenciaController = this;
-
+	inconsistenciaController.anexos = [];
 	if(inconsistencia){
 		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
 		inconsistenciaController.tipoInconsistencia = inconsistencia.tipoInconsistencia;
@@ -43,18 +43,14 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 		}
 };
 
-	 inconsistenciaController.removerDocumento = function (indiceDocumento, idDocumento) {
+	 inconsistenciaController.removerDocumento = function (indiceDocumento) {
 
 		inconsistenciaController.anexos.splice(indiceDocumento,1);
-		inconsistenciaService.removerDocumento(idDocumento)
-			.then(function(response){
-				mensagem.success(response);
-			});
 	};
 
 	inconsistenciaController.concluir = function() {
 		var params;
-		if(inconsistencia.id){
+		if(inconsistencia){
 			params ={
 				id : inconsistencia.id,
 				analiseGeo: {id: analiseGeo.id},
@@ -87,11 +83,11 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 	inconsistenciaController.baixarDocumentoInconsistencia= function(anexo) {
 
 		if(!anexo.id){
-			mensagem.error("Para baixar o documento, ele precisa ser salvo primeiro");
+			documentoService.download(anexo.key);
 		}else{
-		inconsistenciaService.download(anexo.id);
-		
-	}
+			inconsistenciaService.download(anexo.id);	
+		}
+
 	};
 
 };

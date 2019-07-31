@@ -23,10 +23,8 @@ div
                     lang="pt-BR",
                     height="200",
                     ng-model="ctrl.situacaoFundiaria",
-                    config="optionsText",
-                    ng-disabled="ctrl.analiseGeo.inconsistencias.length > 0")
+                    config="optionsText")
 
-        //- textarea.campos-parecer(name="situacaoFundiaria", ng-model="ctrl.situacaoFundiaria", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
     div
         label.label-parecer Da análise temporal*:
         br
@@ -36,8 +34,7 @@ div
                     lang="pt-BR",
                     height="200",
                     ng-model="ctrl.analiseTemporal",
-                    config="optionsText",
-                    ng-disabled="ctrl.analiseGeo.inconsistencias.length > 0")
+                    config="optionsText")
 
 div
     label.label-parecer Conclusão*: 
@@ -70,7 +67,7 @@ div
 
                 td.col-md-10 {{documento.nomeDoArquivo}}
                 td.col-md-2.text-right
-                    a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento.id)")
+                    a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
                         i.glyphicon.glyphicon-save
 
                     a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
@@ -88,7 +85,7 @@ div
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="INDEFERIDO")
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="NOTIFICACAO")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="NOTIFICACAO", disabled="true")
                     | Emitir notificação
     hr
 div#conclusao
@@ -139,8 +136,5 @@ div#conclusao
                                     tr
                                         td.col-md-12 ........
 
-div#troca-etapa
-    .btn.etapa-anterior(type="submit", name="etapaAnterior", ng-click="ctrl.etapaAnterior()")
-        i.glyphicon.glyphicon-menu-left.pull-left
-        | Etapa Anterior     
+ 
 

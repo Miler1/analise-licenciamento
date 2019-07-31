@@ -34,18 +34,27 @@ div(ng-init='ctrl.init()')
 			div.modal-body
 
 			ul.nav.nav-tabs(role="tablist")
-				li.active(role="presentation")
+				li#localizacaoGeografica.active(role="presentation")
 					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Localização Geográfica
 					
-				li(role="tab")
+				li#conclusao(role="tab")
 					a(data-toggle="tab", data-target="#tabConclusao") Conclusão
 
 				
 			.tab-content
 				#tabLocalizacaoGeografica.tab-pane.fade.in.active 
 					include etapa-localizacaoGeografica
+					div#tabLocalizacaoGeografica
+						.btn.etapa-proxima.pull-right.btnNext(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()")
+							i.glyphicon.glyphicon-menu-right
+							| Próxima etapa
 				#tabConclusao.tab-pane
-					include etapa-conclusao		
+					include etapa-conclusao	
+					div#tabConclusao
+						.btn.etapa-anterior.btnPrevious(type="submit", name="etapaAnterior", ng-click="ctrl.etapaAnterior()")
+							i.glyphicon.glyphicon-menu-left.pull-left
+							| Etapa Anterior	
+
 div
 	button.btn.btn-default.pull-left(style="margin:10px;",,ng-click="ctrl.cancelar()")
 		i.glyphicon.glyphicon-arrow-left

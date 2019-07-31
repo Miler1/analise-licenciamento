@@ -1,5 +1,5 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes ,idAnaliseGeo, inconsistenciaService,processoService, empreendimentoService) {
-
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
+	
 	var idMapa = 'mapa-restricoes',
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
@@ -360,12 +360,12 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 						inconsistencia: function(){
 							return response.data;
 						}
-					}		
+					}
 				});
 
 				modalInstance.result.then(function(inconsistencia){
-					ctrl.listaInconsistencias.push(inconsistencia);
-				});	
+					ctrl.analiseGeo.inconsistencias.push(inconsistencia);
+				});
 				
 			});
 	};
@@ -406,7 +406,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 												id: app.utils.TiposDocumentosAnalise.ANALISE_GEO
 										}
 								});
-															
+
 						}, function(error){
 
 								mensagem.error(error.data.texto);
@@ -418,16 +418,19 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		}
 };
 
-	 ctrl.removerDocumento = function (indiceDocumento,idDocumento) {
+	 ctrl.removerDocumento = function (indiceDocumento) {
 
 		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
-		// analiseGeoService.removerDocumento(idDocumento)
-		// 			.then
+
 	};
 
-	ctrl.baixarDocumento= function(idDocumento) {
+	ctrl.baixarDocumento= function(documento) {
 
-		analiseGeoService.download(idDocumento);
+		if(!documento.id){
+			documentoService.download(documento.key);
+		}else{
+			analiseGeoService.download(documento.id);	
+		}
 	};
 
 	ctrl.confirmar= function() {
@@ -442,15 +445,11 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
 		}
-
-		$('#tabConclusao').show();
-    $('#tabLocalizacaoGeografica').hide();
-
+			$('.nav-tabs > .active').next('li').find('a').trigger('click');
 	};
 
 	ctrl.etapaAnterior = function(){
-		$('#tabLocalizacaoGeografica').show();
-    $('#tabConclusao').hide();
+			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
 	};
 
 	$scope.optionsText = {
