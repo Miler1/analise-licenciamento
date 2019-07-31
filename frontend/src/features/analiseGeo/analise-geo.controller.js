@@ -1,5 +1,5 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
-	
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes, documentoService, idAnaliseGeo, inconsistenciaService,processoService, empreendimentoService, documentoAnaliseService, uploadService, mensagem) {
+
 	var idMapa = 'mapa-restricoes',
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
@@ -370,8 +370,31 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			});
 	};
 
+	ctrl.downloadPDFParecer = function() {
 
-	 ctrl.clonarParecerGeo = function() {
+		var params = {
+			id: $scope.analiseGeo.id,
+			parecer: $scope.analiseGeo.parecer
+		};
+
+		documentoAnaliseService.generatePDFParecerGeo(params)
+			.then(
+				function(data, status, headers){
+
+					var a = document.createElement('a');
+					a.href = URL.createObjectURL(data.data.response.blob);
+					a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+					a.click();
+				},
+
+				function(error){
+
+					mensagem.error(error.data.texto);
+				}
+			);
+	};
+
+	ctrl.clonarParecerGeo = function() {
 
 		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
 				.then(function(response){
@@ -388,7 +411,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 						mensagem.error(error.data.texto);
 				});
-};
+	};
 
 	ctrl.upload = function(file, invalidFile) {
 
@@ -416,13 +439,13 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
 		}
-};
+	};
 
-	 ctrl.removerDocumento = function (indiceDocumento) {
+	ctrl.removerDocumento = function (indiceDocumento) {
 
 		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
 
-	};
+		};
 
 	ctrl.baixarDocumento= function(documento) {
 

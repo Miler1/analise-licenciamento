@@ -145,7 +145,7 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
 
-        analiseGeoSalva.parecer = novoParecer;
+        analiseGeoSalva.parecer = "<p><b>PARECER GEO</b></p><p>Não foi encontrada nenhuma inconsitência ou restrição para a licença solicitada referente à parte <u>geográfica</u>. </p><p> Considero analisados os itens:</p><ol><li>Restrição - Nada consta</li><li>Inconcistência - Nada consta</li></ol><p></p>";
 
         Documento pdfParecer = analiseGeoSalva.gerarPDFParecer();
 
