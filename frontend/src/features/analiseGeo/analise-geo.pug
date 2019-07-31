@@ -40,20 +40,19 @@ div(ng-init='ctrl.init()')
 				li#conclusao(role="tab")
 					a(data-toggle="tab", data-target="#tabConclusao") Conclusão
 
-				
 			.tab-content
 				#tabLocalizacaoGeografica.tab-pane.fade.in.active 
 					include etapa-localizacaoGeografica
-					div#tabLocalizacaoGeografica
+					div
 						.btn.etapa-proxima.pull-right.btnNext(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()")
 							i.glyphicon.glyphicon-menu-right
 							| Próxima etapa
 				#tabConclusao.tab-pane
-					include etapa-conclusao	
-					div#tabConclusao
+					include etapa-conclusao
+					div
 						.btn.etapa-anterior.btnPrevious(type="submit", name="etapaAnterior", ng-click="ctrl.etapaAnterior()")
 							i.glyphicon.glyphicon-menu-left.pull-left
-							| Etapa Anterior	
+							| Etapa Anterior
 
 div
 	button.btn.btn-default.pull-left(style="margin:10px;",,ng-click="ctrl.cancelar()")

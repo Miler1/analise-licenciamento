@@ -104,6 +104,9 @@ var config = {
 
 			"./bower_components/sidebar-v2/js/leaflet-sidebar.min.js",
 			"./bower_components/sidebar-v2/css/leaflet-sidebar.min.css"
+		],
+		summernote:[
+			"./bower_components/angular-summernote/dist/angular-summernote.min.js"
 		]
 	},
 
