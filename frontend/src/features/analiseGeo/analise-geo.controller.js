@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $location, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -437,6 +437,11 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 
 
+	};
+
+
+	ctrl.cancelar= function() {
+		$location.path('/analise-geo');
 	};
 
 	ctrl.proximaEtapa = function(){
