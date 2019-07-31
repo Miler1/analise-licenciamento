@@ -8,6 +8,9 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	/** Variáveis para controle de lógica **/
 	uploadShapes.shapesUploaded = 0;
 	uploadShapes.doesntHasShapes = false;
+	uploadShapes.idMunicipio = '';
+
+	uploadShapes.estiloMapa = app.utils.EstiloMapa;
 
 	/** Utiliza o ID do processo salvo na URL para não perder a referência de buscar os dados **/
 	uploadShapes.idProcesso = $route.current.params.idProcesso;
@@ -18,6 +21,8 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.abrirModal = abrirModal;
 	uploadShapes.cancelaEnvio = cancelaEnvio;
 	uploadShapes.buscaProcesso = buscaProcesso;
+	uploadShapes.hideUploadShapes = hideUploadShapes;
+	
 
 	function buscaProcesso() {
 		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso))
@@ -25,17 +30,19 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 				uploadShapes.processo = response.data;
 
-				$scope.$emit('shapefile:uploaded', {
+				uploadShapes.idMunicipio = uploadShapes.processo.empreendimento.municipio.id;
+
+				$scope.$emit('mapa:adicionar-geometria-base', {
 					geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
 					tipo: 'EMP-LOCAL',
 					estilo: {
 						style: {
 						}
 					},
-					popupText: 'Empreendimento'
+					popupText: 'Empreendimento',
 				});
 
-				$scope.$emit('shapefile:uploaded', {
+				$scope.$emit('mapa:adicionar-geometria-base', {
 					geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
 					tipo: 'EMP-CIDADE',
 					estilo: {
@@ -64,14 +71,14 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 			listaGeometrias.push(geometria);
 		});
 
-		var cpfCnpjEmpreendimento = uploadShapes.processo.cpfEmpreendimento ? uploadShapes.processo.cpfEmpreendimento : uploadShapes.processo.cnpjEmpreendimento;
+		var cpfCnpjEmpreendimento = uploadShapes.processo.empreendimento.pessoa.cpf ? uploadShapes.processo.empreendimento.pessoa.cpf : uploadShapes.processo.empreendimento.pessoa.cnpj;
 
 		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, cpfCnpjEmpreendimento)
 			.then(function(response){
 				console.log(response);
 
 				// Aqui vai trocar a tramitacao de caixa de entrada pra análise
-				var idAnaliseGeo = uploadShapes.processo.idAnaliseGeo;
+				var idAnaliseGeo = uploadShapes.processo.analise.analiseGeo.id;
 				analiseGeoService.iniciar({ id : idAnaliseGeo })
 					.then(function(response){
 
@@ -101,11 +108,18 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
 			$scope: $scope,
-			$timeout: $timeout,
+			$timeout: $timeout
 		}
 	);
-	uploadShapes.init('emptyMap',true);
-	uploadShapes.init('mapa', true);
+	uploadShapes.init('mapa', true, false);
+
+	function hideUploadShapes() {
+		if(uploadShapes.doesntHasShapes){
+			uploadShapes.esconderGeometriasNaoBaseMapa();
+		}else {
+			uploadShapes.exibeGeometriasNaoBaseMapa();
+		}
+	}
 
 	// On para receber o valor do componente de upload
 	$scope.$on('shapefile:uploaded', function(event, shape){

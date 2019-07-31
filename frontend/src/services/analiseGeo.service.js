@@ -18,6 +18,12 @@ var AnaliseGeoService = function(request, $window ,config) {
                 	.get(config.BASE_URL() + 'analisesGeo/' + idAnaliseGeo);
 	};
 
+	this.getPossuiAnexo = function(cpfCnpjEmpreendimento) {
+
+		return request
+					.get(config.BASE_URL() + 'analisesGeo/verificaAnexosEmpreendimento/' + cpfCnpjEmpreendimento);
+	};
+
 	this.getParecerByNumeroProcesso = function(numeroProcesso) {
 
 		return request

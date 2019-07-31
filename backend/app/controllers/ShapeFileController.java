@@ -3,28 +3,22 @@ package controllers;
 import async.beans.ResultadoProcessamentoShapeFile;
 import async.callable.ProcessamentoShapeFile;
 import enums.InformacoesNecessariasShapeEnum;
-import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
 import models.*;
 import models.licenciamento.Empreendimento;
-import models.licenciamento.Municipio;
 import org.apache.tika.Tika;
-import play.Logger;
 import play.data.Upload;
 import play.i18n.Messages;
 import play.libs.IO;
 import serializers.ProcessamentoShapeSerializer;
-import sun.net.www.content.text.Generic;
 import utils.FileManager;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ShapeFileController extends GenericController {
+import utils.GeoCalc;
+
+public class ShapeFileController extends InternalController {
 
 	public static void enviar(Upload file, Long idMunicipio) throws IOException {
 
@@ -43,7 +37,6 @@ public class ShapeFileController extends GenericController {
 			String key = FileManager.getInstance().createFile(data, extension);
 
 			// Processamento do arquivo zip
-			/** TODO oisouothiago - Após o merge trazer o Municipio pra validação no construtor **/
 			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, idMunicipio);
 
 			// Executa o processamento
@@ -62,26 +55,26 @@ public class ShapeFileController extends GenericController {
 
 		if(geometrias.naoTemShapes) {
 			Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
-			empreendimento.possui_anexo = false;
+			empreendimento.possuiShape = false;
 			empreendimento.save();
 		} else {
 
+			List<TipoAreaGeometria> tiposArea = TipoAreaGeometria.findAll();
 
 			geometrias.listaGeometrias.forEach(g -> {
 
-				List<TipoAreaGeometria> tiposArea = TipoAreaGeometria.findAll();
-
-				TipoAreaGeometria tipoAreaGeometria = tiposArea.stream().filter(ta -> {
-					return ta.codigo.equals(g.type);
-				}).collect(Collectors.toList()).get(0);
+				TipoAreaGeometria tipoAreaGeometria = tiposArea.stream()
+						.filter(ta -> ta.codigo.equals(g.type))
+						.findAny()
+						.orElse(null);
 
 				if(tipoAreaGeometria != null){
 
 					Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
-					empreendimento.possui_anexo = true;
+					empreendimento.possuiShape = true;
 					empreendimento.save();
 
-					AnalistaGeoAnexo novoAnexo = new AnalistaGeoAnexo(empreendimento, tipoAreaGeometria, g.geometry);
+					EmpreendimentoCamandaGeo novoAnexo = new EmpreendimentoCamandaGeo(empreendimento, tipoAreaGeometria, g.geometry, GeoCalc.area(g.geometry)/10000);
 					novoAnexo.save();
 
 				}

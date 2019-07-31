@@ -2,7 +2,7 @@ var InconsistenciaService = function(request,$window,config) {
 
 	this.salvarInconsistencia = function(params){
 		return request
-			.post("/salvarInconsistencia", params);
+			.post(config.BASE_URL() + '/analisesGeo/salvarInconsistencia', params);
 	};
 
 	this.removerDocumento = function(id){

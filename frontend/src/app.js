@@ -20,8 +20,7 @@ var licenciamento = angular.module("licenciamento", [
 	"textAngular",
 	"analiseTecnica",
 	"as.sortable",
-	"analiseGeo",
-	"summernote"
+	"analiseGeo"
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {
@@ -286,15 +285,15 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.COORDENADOR_JURIDICO,
-					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
-					app.utils.Perfis.CONSULTOR_JURIDICO,
-					app.utils.Perfis.COORDENADOR_TECNICO,
-					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.ANALISTA_GEO,
+					app.utils.Perfis.ANALISTA_CAR,
 					app.utils.Perfis.ANALISTA_TECNICO,
-					app.utils.Perfis.APROVADOR
+					app.utils.Perfis.DIRETOR,
+					app.utils.Perfis.GERENTE,
+					app.utils.Perfis.PRESIDENTE
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
-			}
+			},
+			deveFiltrarPorUsuario: true
 		},
 		{
 			titulo: 'Consultar títulos emitidos',
@@ -466,7 +465,8 @@ utils.services(licenciamento)
 	.add('tipoLicencaManejoService', services.TipoLicencaManejoService)
 	.add('documentoShapeService', services.DocumentoShapeService)
 	.add('analiseGeoService', services.AnaliseGeoService)
-	.add('validacaoShapeService', services.ValidacaoShapeService);
+	.add('validacaoShapeService', services.ValidacaoShapeService)
+	.add('empreendimentoService', services.EmpreendimentoService);
 
 
 utils.filters(licenciamento)

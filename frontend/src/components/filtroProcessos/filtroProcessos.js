@@ -14,7 +14,8 @@ var FiltroProcessos = {
 		onAfterUpdate: '=',
 		isGerenteLogado: '<',
 		pesquisarTodasGerencias: '<',
-		tipoSetor: '<'
+		tipoSetor: '<',
+		filtrarPorUsuario: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -196,7 +197,7 @@ var FiltroProcessos = {
 					 * Nível 1 corresponde aos filhos e nível 2 aos netos na hieraquia. 
 					 * Neste caso, colocamos esta verificação, pois se for o aprovador
 					 * as gerências pertencentes a ele estão dois níveis abaixo. Já se
-					 * for o coordenador estará um nível abaixo. 
+					 * for o coordenador estará um nível abaixo.
 					 */
 					var nivel = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === $rootScope.perfis.APROVADOR ? 2 : 1;
 
@@ -217,7 +218,7 @@ var FiltroProcessos = {
 							}
 						});
 				
-					} else {
+				} else {
 
 					setorService.getSetoresPorTipo(ctrl.tipoSetor)
 						.then(function(response){
@@ -242,7 +243,7 @@ var FiltroProcessos = {
 				/**
 				 * Nível 1 corresponde aos filhos na hieraquia. Ex. Se o usuário logado for Diretor,
 				 * então os setores que virão serão as coordenadorias
-				 */		
+				 */
 				setorService.getSetoresByNivel(1)
 					.then(function(response){
 
@@ -259,7 +260,7 @@ var FiltroProcessos = {
 							mensagem.warning('Não foi possível obter a lista de setores.');
 						}
 					});
-			}			
+			}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.CONSULTOR_JURIDICO)){
 
@@ -271,6 +272,10 @@ var FiltroProcessos = {
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de consultores jurídicos.');
 					});
+			}
+
+			if (ctrl.filtrarPorUsuario) {
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 			}
 
 			if (ctrl.pesquisarAoInicializar){

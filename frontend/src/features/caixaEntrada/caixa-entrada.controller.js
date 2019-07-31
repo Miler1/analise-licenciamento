@@ -10,6 +10,7 @@ var CaixaEntradaController = function($scope, $rootScope) {
 		app.DISABLED_FILTER_FIELDS.COORDENADORIA,
 		app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO
 	];
+
 };
 
 exports.controllers.CaixaEntradaController = CaixaEntradaController;
