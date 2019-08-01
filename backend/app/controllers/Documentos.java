@@ -64,7 +64,7 @@ public class Documentos extends InternalController {
 		}
 	}
 
-	public static void downloadTmp(String key) {
+	public static void downloadTmp(String key, String nome) {
 
 		returnIfNull(key, "String");
 
@@ -72,7 +72,7 @@ public class Documentos extends InternalController {
 
 		if(file != null && file.exists()) {
 
-			renderBinary(file, file.getName());
+			renderBinary(file, nome);
 		}
 
 		throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);

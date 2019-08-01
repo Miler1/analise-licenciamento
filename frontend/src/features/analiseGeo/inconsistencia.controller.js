@@ -83,7 +83,7 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 	inconsistenciaController.baixarDocumentoInconsistencia= function(anexo) {
 
 		if(!anexo.id){
-			documentoService.download(anexo.key);
+			documentoService.download(anexo.key, anexo.nomeDoArquivo);
 		}else{
 			inconsistenciaService.download(anexo.id);	
 		}

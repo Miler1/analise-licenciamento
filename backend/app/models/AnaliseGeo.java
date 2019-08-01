@@ -2,6 +2,7 @@ package models;
 
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.Empreendimento;
 import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
@@ -658,6 +659,28 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("numeroParecer", this.id.toString() + "/" + Helper.getAno(new Date()).substring(2))
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+
+        pdf.generate();
+
+        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+
+    }
+
+    public Documento gerarPDFCartaImagem() throws Exception {
+
+        //TODO PUMA-SQ1 Criar tipo documento carta imagem
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+
+        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("analiseEspecifica", this)
+                .addParam("analiseArea", "ANALISE_GEO")
+                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
 
         pdf.generate();
 

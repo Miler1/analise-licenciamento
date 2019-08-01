@@ -13,14 +13,7 @@ public class Empreendimentos extends InternalController {
 
 		verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
-		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(cpfCnpj);
-
-		Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(cpfCnpj);
-
-		renderJSON(empreendimento.buscaDadosGeoEmpreendimento(empreendimentoEU.localizacao.geometria), EmpreendimentoSerializer.getDadosGeoEmpreendimento);
+		renderJSON(Empreendimento.buscaDadosGeoEmpreendimento(cpfCnpj), EmpreendimentoSerializer.getDadosGeoEmpreendimento);
 
 	}
-	
 }

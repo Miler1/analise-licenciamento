@@ -9,6 +9,7 @@ import org.hibernate.annotations.ParamDef;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
+import services.IntegracaoEntradaUnicaService;
 import utils.GeoCalc;
 import utils.GeoJsonUtils;
 import utils.Helper;
@@ -135,18 +136,24 @@ public class Empreendimento extends GenericModel {
 				.first();
 	}
 
-	public List<CamadaGeo> buscaDadosGeoEmpreendimento(String geometria) {
+	public static List<CamadaGeo> buscaDadosGeoEmpreendimento(String cpfCnpj) {
+
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
+		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(cpfCnpj);
+
+		Empreendimento empreendimentoLicenciamento = Empreendimento.buscaEmpreendimentoByCpfCnpj(cpfCnpj);
 
 		List<CamadaGeo> dadosGeoEmpreendimento = new ArrayList<>();
 
-		Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(geometria);
+		Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
 		Double areaEmpreendimento = GeoCalc.area(geometriaEmpreendimento) / 10000;
 
 		CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.PROPRIEDADE.nome, CamadaGeoEnum.PROPRIEDADE.tipo, Helper.formatBrDecimal(areaEmpreendimento, 2) + " ha", areaEmpreendimento, geometriaEmpreendimento);
 
 		dadosGeoEmpreendimento.add(camadaGeo);
 
-		List<EmpreendimentoCamandaGeo> listaAnexos = EmpreendimentoCamandaGeo.find("byEmpreendimento", this).fetch();
+		List<EmpreendimentoCamandaGeo> listaAnexos = EmpreendimentoCamandaGeo.find("byEmpreendimento", empreendimentoLicenciamento).fetch();
 
 		List<TipoAreaGeometria> tiposAreaGeometria = TipoAreaGeometria.findAll();
 
@@ -171,6 +178,11 @@ public class Empreendimento extends GenericModel {
 		}
 
 		return dadosGeoEmpreendimento;
+	}
+
+	public  String getCpfCnpj() {
+
+		return this.pessoa.getCpfCnpj();
 	}
 
 }
