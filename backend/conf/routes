@@ -70,6 +70,7 @@ POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprova
 GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}          AnalisesGeo.verificaAnexosEmpreendimento
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
+POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.downloadPDFCartaImagem
 
 POST    /analisesGeo/inconsistencia/salvarInconsistencia                Inconsistencias.salvarInconsistencia
 POST    /analisesGeo/inconsistencia/findInconsistencia                  Inconsistencias.findInconsistencia

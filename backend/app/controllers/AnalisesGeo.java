@@ -159,6 +159,24 @@ public class AnalisesGeo extends InternalController {
 
     }
 
+    public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) throws Exception {
+
+        verificarPermissao(Acao.INICIAR_PARECER_GEO);
+
+        AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
+
+        Documento pdfParecer = analiseGeoSalva.gerarPDFCartaImagem();
+
+        String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
+        nome = nome.replace(' ', '_');
+        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Content-Type", "application/pdf");
+
+        renderBinary(pdfParecer.arquivo, nome);
+
+    }
+
     public static void downloadPDFNotificacao(AnaliseGeo analiseGeo) throws Exception {
 
         verificarPermissao(Acao.INICIAR_PARECER_GEO);
