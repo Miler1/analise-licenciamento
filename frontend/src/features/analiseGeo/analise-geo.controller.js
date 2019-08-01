@@ -427,7 +427,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	ctrl.baixarDocumento= function(documento) {
 
 		if(!documento.id){
-			documentoService.download(documento.key);
+			documentoService.download(documento.key, documento.nomeDoArquivo);
 		}else{
 			analiseGeoService.download(documento.id);	
 		}

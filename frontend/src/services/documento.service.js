@@ -11,9 +11,9 @@ var DocumentoService = function(request, $window, config, Upload) {
             .delete(config.BASE_URL() + "delete/documento/" + nameFile);
     };
 
-	this.download = function(nameFile) {
+	this.download = function(key,nome) {
 
-        $window.open(config.BASE_URL() + "download/documento/" + nameFile, '_blank');
+        $window.open(config.BASE_URL() + "download/"+key+"/documento/"+nome, '_blank');
 	};
 };
 

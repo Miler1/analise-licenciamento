@@ -39,8 +39,7 @@ ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista 
 # Inconsistencia
 #
 INCONSISTENCIA_SALVA_SUCESSO=A inconsistência foi salva com sucesso.
-TIPO_INCONSISTENCIA_OBRIGATORIA=O campo 'Tipo de inconsistência' é obrigatório.
-DESCRICAO_OBRIGATORIA=O campo 'Descrição da inconsistência' é obrigatório.
+CAMPOS_OBRIGATORIOS= Verifique os campos obrigatórios!
 #
 # Gerentes
 #

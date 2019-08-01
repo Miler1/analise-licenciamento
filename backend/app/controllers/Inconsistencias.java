@@ -14,12 +14,12 @@ public class Inconsistencias extends GenericController{
 
         if (inconsistencia.descricaoInconsistencia == null || inconsistencia.descricaoInconsistencia.equals("")) {
 
-            throw new ValidacaoException(Mensagem.DESCRICAO_OBRIGATORIA);
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
         }
 
         if(inconsistencia.tipoInconsistencia == null || inconsistencia.tipoInconsistencia.equals("")){
 
-            throw new ValidacaoException(Mensagem.TIPO_INCONSISTENCIA_OBRIGATORIA);
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
         }
 
         if (inconsistencia.id != null) {

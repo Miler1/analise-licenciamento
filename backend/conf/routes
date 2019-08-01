@@ -193,7 +193,7 @@ GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
 # Documentos shape
 POST    /upload/documento                               Documentos.upload
-GET     /download/documento/{key}                       Documentos.downloadTmp
+GET     /download/{key}/documento/{nome}                       Documentos.downloadTmp
 DELETE  /delete/documento/{key}                         Documentos.deleteTmp
 
 # Documentos manejo

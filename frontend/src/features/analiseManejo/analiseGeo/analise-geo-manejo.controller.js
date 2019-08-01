@@ -160,7 +160,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.downloadArquivo = function(arquivoShape) {
 
-		location.href = documentoService.download(arquivoShape.key);
+		location.href = documentoService.download(arquivoShape.key, arquivoShape.key);
 	};
 
 
