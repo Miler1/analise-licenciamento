@@ -171,10 +171,8 @@ public class Documento extends GenericModel implements Identificavel {
 
 	protected void configurarCaminho() {
 
-		this.caminho = File.separator + this.nomeDoArquivo
-				+ "_"
-				+ this.id;
-
+		this.caminho = File.separator + this.nomeDoArquivo;
+		this.caminho = this.caminho.substring(0,this.caminho.length()-4);
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
 	}
