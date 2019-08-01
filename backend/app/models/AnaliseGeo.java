@@ -10,10 +10,7 @@ import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
-import utils.ListUtil;
-import utils.Mensagem;
-import utils.ModelUtil;
+import utils.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -658,7 +655,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
                 .addParam("analiseArea", "ANALISE_GEO")
-                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+                .addParam("numeroParecer", this.id.toString() + "/" + Helper.getAno(new Date()).substring(2))
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
         pdf.generate();
 

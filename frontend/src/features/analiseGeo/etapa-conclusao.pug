@@ -37,7 +37,7 @@ div
                     config="optionsText")
 
 div
-    label.label-parecer Conclusão*: 
+    label(style="font-size:13px") Conclusão*: 
     br
     summernote.form-control(id="conclusao",
                 on-paste="snPaste(evt)",
@@ -76,8 +76,8 @@ div
 #conclusao
     hr
     label Análise final do processo*:
-        div.pull-right.col-md-10.posicao-principal
-            form.pull-center.posicao-conteudo
+        div.pull-left.col-md-10.posicao-principal
+            form.pull-left.posicao-conteudo
                 label.opDla.radio-inline.posicao-primeiroItem
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="DEFERIDO", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Deferido

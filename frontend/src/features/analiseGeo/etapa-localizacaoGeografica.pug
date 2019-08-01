@@ -29,7 +29,9 @@ include ../../layout/components/mapPanel
                                         td.col-md-5 {{camada.item}}
                                         td.col-md-5 {{camada.descricao}}
                                         td.col-md-2.text-right
-                                            i.glyphicon.glyphicon-alert(ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
+                                            i.glyphicon.glyphicon-alert(ng-show="ctrl.analiseGeo.inconsistencias.length > 0", style="color:red",ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência', )
+                                            | &nbsp;&nbsp;
+                                            i.glyphicon.glyphicon-alert(ng-show="ctrl.analiseGeo.inconsistencias.length < 1",ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
                                             | &nbsp;&nbsp;
 
             br

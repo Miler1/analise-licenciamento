@@ -1,33 +1,44 @@
 doctype html
 html(lang="pt-br")
   head
-    meta(charset='utf-8')
-    style.
+      meta(charset='utf-8')
+      title Análise - Licenciamento Ambiental - Amazonas
+      link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+      style.
+        * {
+          margin: 0px;
+          padding:0px;
+        }
 
-      * {
-        margin: 0px;
-        padding:0px;
-      }
+        .footer {
+            margin-top: 30px;
+        }
 
-      .footer {
-        padding:60px;
-      }
+        .in-left {
+          text-align: left;
+          float: left;
+           margin-top: 30px;
 
-      .in-left {
-        text-align: left;
-      }
+        }
 
-      .in-right {
-        text-align: right;
-      }
+        .in-right {
+          text-align: right;
+          float: right;
+          margin-top: 30px;
+        }
 
   body
-    .footer.in-left
+    div.rodape
+            p
+                img.logo(src='/public/app/images/rodape-barra-horizontal.png' height="20" width="700")
 
-      p Av. Mario Ypiranga Monteiro, 3280 - Parque 10 de Novembro
-      p Fone: (92) 2123-6721 / (92) 2123-6731 / (92) 2123-6778
-      p Manaus - AM - CEP: 69.050-030
-      p Web: www.ipaam.an.gov.br
-
-    .footer.in-right
-      img(src='/public/app/images/logo-ipaam-preto.png' height="127" width="352")
+            p.in-left
+                span Av. Mario Ypiranga Monteiro, 3280 - Parque 10 de Novembro
+                br
+                span Fone: (92) 2123-6721 / (92) 2123-6731 / (92) 2123-6778
+                br
+                span Manaus - AM - CEP: 69.050-030
+                br
+                span Web: www.ipaam.am.gov.br
+            p.in-right
+                img.logo(src='/public/app/images/logo-ipaam-preto.png' height="50" width="100")

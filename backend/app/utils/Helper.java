@@ -594,6 +594,15 @@ public class Helper {
 		return mes + "/" + ano;
 	}
 
+	public static String getAno(Date data) {
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(data);
+
+		return String.valueOf(calendar.get(Calendar.YEAR));
+
+	}
+
 	/**
 	 * Método que remove a hora da data
 	 * O método remove a hora da data passada como parâmetro
