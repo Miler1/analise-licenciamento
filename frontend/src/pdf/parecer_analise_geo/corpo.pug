@@ -16,18 +16,96 @@ html(lang="pt-br")
                 margin: 20px 20px 20px 60px;
             }
 
-            .item {
+            .titulo-item {
                 text-decoration:underline;
+                margin: 20px 20px 10px 60px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .conteudo-item {
+                font-size: 12px;
+                font-weight: normal;
+            }
+            p {
+                padding-top: 15px;
             }
 
+            .lista-conteudo {
+                font-weight: bold;
+                font-size: 14px;
+            }
 
+            .lista-referencias {
+                font-size: 10px;
+                padding-top: 100px;
+            }
+
+            .text-align-center {
+                text-align: center;
+            }
+
+            .text-align-right {
+                text-align: right;
+            }
 
 body.corpo
-        div.titulo
-            h2 PARECER TÉCNICO Nº ${numeroParecer} - GGEO
-        div.conteudo
-            h3 PROCESSO: ${analiseEspecifica.analise.processo.numero}
-            h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+    div.titulo
+        h2 PARECER TÉCNICO Nº ${numeroParecer} - GGEO
+    div.conteudo
+        h3 PROCESSO: ${analiseEspecifica.analise.processo.numero}
+        h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
 
+        ol.lista-conteudo
+
+            li
+                .titulo-item DO REQUERIMENTO
+                .conteudo-item
+                    p O interessado requer L.P // L.I. // L.O. // CADASTRO // APAT // INEXIGIBILIDADE, para atividade(s) de ATIVIDADE-NOME em um imóvel situado em ÁREA URBANA // ZONA RURAL.
+
+                    p Quanto ao município informo que o imóvel se encontra TOTALMENTE INSERIDO nos limites do município de XXXX/AM.
+
+                    p Quanto ao município informo que o imóvel se encontra com MAIOR PORÇÃO INSERIDA nos limites do município de XXXX/AM e MENOR PORÇÃO INSERIDA nos limites do município de XXX/AM.
+
+            li
+                .titulo-item DAS ÁREAS RESULTANTES DA CARACTERIZAÇÃO
+                .conteudo-item
+                    p As áreas das poligonais do empreendimento, estimadas a partir do Sistema de Projeção Universal Transverse Mercator (UTM) – Datum SIRGAS_2000, podem ser observadas abaixo:
+
+            li
+                .titulo-item DA ÁREA DA ATIVIDADE
+                .conteudo-item
+                    p As áreas das poligonais do empreendimento, estimadas a partir do Sistema de Projeção Universal Transverse Mercator (UTM) – Datum SIRGAS_2000, podem ser observadas abaixo:
+
+            li
+                .titulo-item DA ANÁLISE DA SITUAÇÃO FUNDIÁRIA
+                .conteudo-item
+                    p As áreas das poligonais do empreendimento, estimadas a partir do Sistema de Projeção Universal Transverse Mercator (UTM) – Datum SIRGAS_2000, podem ser observadas abaixo:
+
+            li
+                .titulo-item DA ANÁLISE TEMPORAL
+                .conteudo-item
+                    p As áreas das poligonais do empreendimento, estimadas a partir do Sistema de Projeção Universal Transverse Mercator (UTM) – Datum SIRGAS_2000, podem ser observadas abaixo:
+
+            li
+                .titulo-item CONCLUSÃO
+                .conteudo-item
+                    p As áreas das poligonais do empreendimento, estimadas a partir do Sistema de Projeção Universal Transverse Mercator (UTM) – Datum SIRGAS_2000, podem ser observadas abaixo:
+                    p Segue em anexo mapa-imagem resultante da caracterização
+
+        p.text-align-right Manaus, ${dataDoParecer}
+
+
+        .lista-referencias
+            p Referências:
             ol
-                li.item  DO REQUERIMENTO
+
+                li Bases vetoriais digitais cedidas pelo Instituto de Terras do Amazonas – ITEAM, atualizado em julho de 2011, e Instituto Nacional            de Colonização e Reforma Agrária - INCRA, com atualização em março de 2017.
+
+                li Bases vetoriais digitais disponibilizadas pela Secretaria de Estado do Meio Ambiente - SEMA, Instituto Chico Mendes de Conservação da Biodiversidade –
+                    b ICMBio e Fundação nacional do Índio – FUNAI.
+
+                li Recomendação da Procuradoria da República do Estado do Amazonas (PR/AM), por meio do Ofício N o 0037/2013/2 o OFCIV/PR/AM, atualizado em 13/02/2015 (Ofício N° 69/2015-IPHAN/AM)
+
+                li As áreas antropizadas foram identificadaa com auxílio de imagem LANDSAT (2019) disponível nesta Especializada, bem como consultando o Programa de Cálculo do Desflorestamento da Amazônia - PRODES com áreas consolidadas até 2017 (ver carta-imagem, em anexo).
+
+                li A caracterização utilizou base vetorial de empreendimentos GGEO, base vetorial DSG e base cartográfica vetorial digital, escala 1:100.000, fornecida pela Diretoria de Serviço Geográfico do Exército – DSG.

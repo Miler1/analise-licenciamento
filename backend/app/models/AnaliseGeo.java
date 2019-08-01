@@ -656,6 +656,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("analiseEspecifica", this)
                 .addParam("analiseArea", "ANALISE_GEO")
                 .addParam("numeroParecer", this.id.toString() + "/" + Helper.getAno(new Date()).substring(2))
+                .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
         pdf.generate();
