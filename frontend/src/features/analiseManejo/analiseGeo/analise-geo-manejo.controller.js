@@ -1,4 +1,4 @@
-var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, documentoShapeService, $location, mensagem) {
+var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, documentoService, $location, mensagem) {
 
 	$rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -90,7 +90,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 			return;
 		}
 
-		documentoShapeService.upload(file)
+		documentoService.upload(file)
 			.then(function(response){
 
 				arquivoShape.key = response.data;
@@ -106,7 +106,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.removerArquivo = function (arquivoShape) {
 
-		documentoShapeService.delete(arquivoShape.key)
+		documentoService.delete(arquivoShape.key)
 			.then(function(response){
 
 				arquivoShape.key = null;
@@ -160,7 +160,7 @@ var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, proc
 
 	analiseGeoManejo.downloadArquivo = function(arquivoShape) {
 
-		location.href = documentoShapeService.download(arquivoShape.key);
+		location.href = documentoService.download(arquivoShape.key, arquivoShape.key);
 	};
 
 

@@ -73,10 +73,7 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	
 	@Column(name="declaracao_veracidade_informacoes")
 	public Boolean declaracaoVeracidadeInformacoes;
-	
-	@Column(name="quantidade_daes_vencidos")
-	public int quantidadeDaesVencidos;
-	
+
 	@ManyToMany(mappedBy="caracterizacoes")
 	public List<Processo> processos;	
 	

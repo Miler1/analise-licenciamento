@@ -32,11 +32,14 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
-	
-	@Required
+
 	@ManyToOne
 	@JoinColumn(name="id_analise_tecnica")
 	public AnaliseTecnica analiseTecnica;
+
+	@ManyToOne
+	@JoinColumn(name="id_analise_geo")
+	public AnaliseGeo analiseGeo;
 	
 	@Required
 	public Integer validade;
@@ -303,7 +306,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			webService.gerarPDFLicencas(idsLicencas);
 			
 			if(!idsCaracterizacoesDeferidas.isEmpty()) {
-				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.FINALIZADO);
+				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoesDeferidas, StatusCaracterizacao.DEFERIDO);
 				Caracterizacao.setCaracterizacaoEmAnalise(idsCaracterizacoesDeferidas, false);
 				Caracterizacao.setCaracterizacaoEmRenovacao(idsCaracterizacoesDeferidas, false);
 			}

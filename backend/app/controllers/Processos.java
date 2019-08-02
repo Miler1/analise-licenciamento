@@ -22,7 +22,7 @@ public class Processos extends InternalController {
 		renderJSON(processosList);
 	}
 	
-	public static void countWithFilter(FiltroProcesso filtro){
+	public static void  countWithFilter(FiltroProcesso filtro){
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
@@ -42,9 +42,9 @@ public class Processos extends InternalController {
 	}
 
 	public static void getInfoProcesso(Long id) {
-		
-		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO, Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
-		
+
+		verificarPermissao(Acao.VALIDAR_PARECER_GEO, Acao.INICIAR_PARECER_GEO,Acao.VALIDAR_PARECERES);
+
 		Processo processo = Processo.findById(id);
 		
 		renderJSON(processo, ProcessoSerializer.getInfo);

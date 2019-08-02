@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-// View que possui os dasdos das condicao
+// View que possui os dados das condicao
 @Entity
 @Table(schema = "tramitacao", name = "VW_CONDICAO")
 public class Condicao extends GenericModel {
@@ -28,6 +28,14 @@ public class Condicao extends GenericModel {
 	public static final Long LICENCA_EMITIDA = 14l;
 	public static final Long SUSPENSO = 15l;
 	public static final Long CANCELADO = 16l;
+
+	public static final Long AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE = 24l;
+	public static final Long AGUARDANDO_ANALISE_GEO = 25l;
+	public static final Long EM_ANALISE_GEO = 26l;
+	public static final Long AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE = 27l;
+	public static final Long AGUARDANDO_VALIDACAO_GERENTE = 28l;
+	public static final Long AGUARDANDO_VALIDACAO_DIRETORIA = 29l;
+
 	
 	@Id
 	@Column(name = "ID_CONDICAO")

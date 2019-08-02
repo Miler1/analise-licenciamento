@@ -2,6 +2,7 @@ package controllers;
 
 import exceptions.AppException;
 import models.EntradaUnica.Usuario;
+import models.Pessoa;
 import models.UsuarioAnalise;
 import play.Logger;
 import play.Play;
@@ -89,6 +90,10 @@ public class Login extends GenericController {
 		if (usuarioAnalise == null) {
 			usuarioAnalise = new UsuarioAnalise();
 			usuarioAnalise.login = Helper.desformatarCpfCnpj(usuario.login);
+			Pessoa pessoa = new Pessoa();
+			pessoa.nome = usuario.nome;
+			pessoa.save();
+			usuarioAnalise.pessoa = pessoa;
 			usuarioAnalise.save();
 		}
 

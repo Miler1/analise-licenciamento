@@ -34,6 +34,10 @@ public class Documento extends GenericModel implements Identificavel {
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
 	public TipoDocumento tipo;
+
+
+	 @Column(name="nome_arquivo")
+	 public String nomeDoArquivo;
 	
 	@Transient
 	public String key;
@@ -166,11 +170,9 @@ public class Documento extends GenericModel implements Identificavel {
 	}
 
 	protected void configurarCaminho() {
-		
-		this.caminho = File.separator + tipo.caminhoPasta
-				+ File.separator + tipo.prefixoNomeArquivo + "_"
-				+ this.id;
-		
+
+		this.caminho = File.separator + this.nomeDoArquivo;
+		this.caminho = this.caminho.substring(0,this.caminho.length()-4);
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
 	}
@@ -178,7 +180,6 @@ public class Documento extends GenericModel implements Identificavel {
 	protected void criarPasta() {
 		
 		String caminho = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta;
-		
 		File pasta = new File(caminho);
 		
 		if (!pasta.exists())
@@ -186,7 +187,7 @@ public class Documento extends GenericModel implements Identificavel {
 	}
 
 	protected String getCaminhoCompleto() {
-		
+
 		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;
 	}
 	
@@ -228,6 +229,13 @@ public class Documento extends GenericModel implements Identificavel {
 	public List<AnaliseTecnica> getAnaliseTecnicasRelacionadas() {
 		
 		return AnaliseJuridica.find("select at from AnaliseTecnica at inner join at.documentos documento where documento.id = :idDocumento")
+				.setParameter("idDocumento", this.id)
+				.fetch();
+	}
+
+	public List<AnaliseGeo> getAnaliseGeoRelacionadas() {
+
+		return AnaliseJuridica.find("select at from AnaliseGeo at inner join at.documentos documento where documento.id = :idDocumento")
 				.setParameter("idDocumento", this.id)
 				.fetch();
 	}

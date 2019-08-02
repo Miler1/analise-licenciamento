@@ -98,6 +98,15 @@ var config = {
 
 			"./bower_components/ng-sortable/dist/ng-sortable.min.js",
 			"./bower_components/ng-sortable/dist/ng-sortable.style.css"
+		],
+
+		sideBar: [
+
+			"./bower_components/sidebar-v2/js/leaflet-sidebar.min.js",
+			"./bower_components/sidebar-v2/css/leaflet-sidebar.min.css"
+		],
+		summernote:[
+			"./bower_components/angular-summernote/dist/angular-summernote.min.js"
 		]
 	},
 

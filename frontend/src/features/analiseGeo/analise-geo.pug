@@ -1,0 +1,68 @@
+div(ng-init='ctrl.init()')
+
+	.row
+		.col-md-6
+			h4 PARECER GEO
+
+			div.row
+				label.col-sm-4 Processo:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.numero ? ctrl.analiseGeo.analise.processo.numero : ctrl.analiseGeo.analise.processo.numeroProcesso}}
+
+			div.row
+				label.col-sm-4 CPF/CNPJ:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf : ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
+
+			div.row
+				label.col-sm-4 Interessado:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.denominacao}}
+
+			div.row
+				label.col-sm-4 Município:
+				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{ctrl.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
+
+		.col-md-6
+
+			button.btn.btn-sm.btn-default.pull-right(ng-click="ctrl.visualizarProcesso(ctrl.analiseGeo.analise.processo)")
+				i.fa.fa-eye
+				| &nbsp;Visualizar Processo
+			a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
+				i.fa.fa-bars
+				| &nbsp;Legislação 
+
+	.row
+		div(style="padding:15px;")
+			div.modal-body
+
+			ul.nav.nav-tabs(role="tablist")
+				li#localizacaoGeografica.active(role="presentation")
+					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Análise Geo
+					
+				li#conclusao(role="tab")
+					a(data-toggle="tab", data-target="#tabConclusao") Conclusão da análise
+
+			.tab-content
+				#tabLocalizacaoGeografica.tab-pane.fade.in.active 
+					include etapa-localizacaoGeografica
+					div
+						.btn.etapa-proxima.pull-right.btnNext(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()")
+							i.glyphicon.glyphicon-menu-right
+							| Próxima etapa
+				#tabConclusao.tab-pane
+					include etapa-conclusao
+					div
+						.btn.etapa-anterior.btnPrevious(type="submit", name="etapaAnterior", ng-click="ctrl.etapaAnterior()")
+							i.glyphicon.glyphicon-menu-left.pull-left
+							| Etapa Anterior
+
+div
+	button.btn.btn-default.pull-left(style="margin:10px;",ng-click="ctrl.cancelar()")
+		i.glyphicon.glyphicon-arrow-left
+		| &nbsp;Cancelar
+
+	button.btn.btn-success.pull-right(style="margin:10px;",ng-click="ctrl.confirmar()")
+		i.glyphicon.glyphicon-ok
+		| &nbsp;Confirmar
+
+	button.btn.btn-success.pull-right(style="margin:10px;", ng-click="ctrl.salvar()")
+		i.glyphicon.glyphicon-arrow-right
+		| &nbsp;Salvar

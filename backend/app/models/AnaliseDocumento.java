@@ -31,7 +31,11 @@ public class AnaliseDocumento extends GenericModel implements Identificavel {
 	
 	@ManyToOne
 	@JoinColumn(name="id_analise_tecnica", nullable=true)
-	public AnaliseTecnica analiseTecnica;	
+	public AnaliseTecnica analiseTecnica;
+
+	@ManyToOne
+	@JoinColumn(name="id_analise_geo", nullable=true)
+	public AnaliseGeo analiseGeo;
 	
 	@OneToOne
 	@JoinColumn(name="id_analise_documento_anterior", referencedColumnName="id")

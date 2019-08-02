@@ -63,6 +63,7 @@ var MenuPrincipal = {
 
 				filtro.isAnaliseJuridica = isAnaliseJuridica(codigoPerfilSelecionado);
 				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
+				filtro.isAnaliseGeo = isAnaliseGeo(codigoPerfilSelecionado);
 			}
 
 			processoService.getProcessosCount(filtro)
@@ -88,6 +89,12 @@ var MenuPrincipal = {
 			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO ||
 				codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO ||
 				codigoPerfilSelecionado === app.utils.Perfis.GERENTE_TECNICO;
+		}
+
+		function isAnaliseGeo(codigoPerfilSelecionado) {
+
+			return codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_GEO||
+				codigoPerfilSelecionado === app.utils.Perfis.GERENTE;
 		}
 
 		$scope.$on('atualizarContagemProcessos', function(event){

@@ -1,21 +1,20 @@
 package models.licenciamento;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.*;
-
 import com.vividsolutions.jts.geom.Geometry;
-
+import enums.CamadaGeoEnum;
+import models.*;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.ParamDef;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
+import utils.GeoCalc;
+import utils.GeoJsonUtils;
+import utils.Helper;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(schema = "licenciamento", name = "empreendimento")
@@ -96,6 +95,9 @@ public class Empreendimento extends GenericModel {
 	
 	@Transient
 	public boolean possuiCaracterizacoes;
+
+	@Column(name = "possui_shape")
+	public Boolean possuiShape;
 	
 	public List<String> emailsProprietarios() {
 		
@@ -117,4 +119,58 @@ public class Empreendimento extends GenericModel {
 		}
 		return emails;		
 	}
+
+	public static Empreendimento buscaEmpreendimentoByCpfCnpj(String cpfCnpj) {
+		String select = "";
+		select =
+				" SELECT emp FROM " + Empreendimento.class.getCanonicalName() + " emp " +
+						" INNER JOIN emp.pessoa p ";
+
+		select += cpfCnpj.length() > 11 ?
+				" INNER JOIN PessoaJuridica pj ON p.id = pj.id WHERE pj.cnpj = :cpfCnpj" :
+				" INNER JOIN PessoaFisica pf ON p.id = pf.id WHERE pf.cpf = :cpfCnpj" ;
+
+		return Empreendimento.find(select)
+				.setParameter("cpfCnpj", cpfCnpj)
+				.first();
+	}
+
+	public List<CamadaGeo> buscaDadosGeoEmpreendimento(String geometria) {
+
+		List<CamadaGeo> dadosGeoEmpreendimento = new ArrayList<>();
+
+		Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(geometria);
+		Double areaEmpreendimento = GeoCalc.area(geometriaEmpreendimento) / 10000;
+
+		CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.PROPRIEDADE.nome, CamadaGeoEnum.PROPRIEDADE.tipo, Helper.formatBrDecimal(areaEmpreendimento, 2) + " ha", areaEmpreendimento, geometriaEmpreendimento);
+
+		dadosGeoEmpreendimento.add(camadaGeo);
+
+		List<EmpreendimentoCamandaGeo> listaAnexos = EmpreendimentoCamandaGeo.find("byEmpreendimento", this).fetch();
+
+		List<TipoAreaGeometria> tiposAreaGeometria = TipoAreaGeometria.findAll();
+
+		for (TipoAreaGeometria tipoAreaGeometria : tiposAreaGeometria) {
+
+			EmpreendimentoCamandaGeo empreendimentoCamandaGeo = listaAnexos.stream()
+					.filter(g -> g.tipoAreaGeometria.codigo.equals(tipoAreaGeometria.codigo))
+					.findAny()
+					.orElse(null);
+
+			if (empreendimentoCamandaGeo != null) {
+
+				camadaGeo = new CamadaGeo(empreendimentoCamandaGeo.tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(empreendimentoCamandaGeo.tipoAreaGeometria.codigo), Helper.formatBrDecimal(empreendimentoCamandaGeo.areaGeometria, 2)+ " ha",empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria);
+				dadosGeoEmpreendimento.add(camadaGeo);
+
+			} else {
+
+				camadaGeo = new CamadaGeo(tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(tipoAreaGeometria.codigo), "não possui", 0.00, null);
+				dadosGeoEmpreendimento.add(camadaGeo);
+			}
+
+		}
+
+		return dadosGeoEmpreendimento;
+	}
+
 }

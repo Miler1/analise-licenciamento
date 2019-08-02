@@ -38,7 +38,10 @@ public class Analise extends GenericModel {
 	public List<AnaliseJuridica> analisesJuridica;
 	
 	@OneToMany(mappedBy="analise")
-	public List<AnaliseTecnica> analisesTecnicas;	
+	public List<AnaliseTecnica> analisesTecnicas;
+
+	@OneToMany(mappedBy="analise")
+	public List<AnaliseGeo> analisesGeo;
 	
 	public Boolean ativo;
 	
@@ -46,7 +49,10 @@ public class Analise extends GenericModel {
 	public AnaliseJuridica analiseJuridica;
 	
 	@Transient 
-	public AnaliseTecnica analiseTecnica;	
+	public AnaliseTecnica analiseTecnica;
+
+	@Transient
+	public AnaliseGeo analiseGeo;
 	
 	@OneToOne(mappedBy="analise")
 	public DiasAnalise diasAnalise;
@@ -96,6 +102,23 @@ public class Analise extends GenericModel {
 
 		return this.analiseTecnica;		
 	}
+
+
+	public AnaliseGeo getAnaliseGeo() {
+
+		if(this.analiseGeo != null)
+			return this.analiseGeo;
+
+		if(this.analiseGeo != null && !this.analisesGeo.isEmpty())
+			for(AnaliseGeo analiseGeo : this.analisesGeo)
+				if(analiseGeo.ativo)
+					this.analiseGeo = analiseGeo;
+
+		if(this.analiseGeo == null)
+			this.analiseGeo = analiseGeo.findByProcesso(processo);
+
+		return this.analiseGeo;
+	}
 	
 	public static Analise findByProcesso(Processo processo) {
 		return Analise.find("processo.id = :idProcesso AND ativo = true")
@@ -110,6 +133,15 @@ public class Analise extends GenericModel {
 				.first();
 		
 		return analiseJuridica.analise;
+	}
+
+	public static Analise findByAnaliseGeo(Long idAnaliseGeo) {
+
+		AnaliseGeo analiseGeo = AnaliseGeo.find("id = :idAnaliseGeo AND ativo = true")
+				.setParameter("idAnaliseGeo", idAnaliseGeo)
+				.first();
+
+		return analiseGeo.analise;
 	}
 	
 	public static List<Analise> findAtivas() {
@@ -129,6 +161,17 @@ public class Analise extends GenericModel {
 		
 		return analiseJuridica;
 		
+	}
+
+	public AnaliseGeo findPrimeiraAnaliseGeoComDataFim() {
+
+		String jpqlMin = "SELECT MIN(aj.id) FROM " + AnaliseGeo.class.getSimpleName() + " aj WHERE aj.analise.id = :idAnalise AND aj.dataFim IS NOT NULL";
+		String jpql = "SELECT anaJ FROM " + AnaliseGeo.class.getSimpleName() + " anaJ WHERE anaJ.id = (" + jpqlMin + ")";
+
+		AnaliseGeo analiseGeo = AnaliseGeo.find(jpql).setParameter("idAnalise", this.id).first();
+
+		return analiseGeo;
+
 	}
 	
 	public AnaliseTecnica findPrimeiraAnaliseTecnicaComDataFim() {
@@ -153,13 +196,19 @@ public class Analise extends GenericModel {
 			
 			notificacoesNaoResolvidas = Long.parseLong(query.getSingleResult().toString());
 			
-		} else {
+		} else if (this.getAnaliseJuridica() != null){
 
 			Query query = em().createQuery("select count (*) from " + Notificacao.class.getName() + " analiseJuridica.id = :idAnaliseJuridica AND ativo = true AND resolvido = false")
 					.setParameter("idAnaliseJuridica", this.getAnaliseJuridica().id);
 
 			notificacoesNaoResolvidas = Long.parseLong(query.getSingleResult().toString());
 			
+		}else {
+
+			Query query = em().createQuery("select count (*) from " + Notificacao.class.getName() + " analiseGeo.id = :idAnaliseGeo AND ativo = true AND resolvido = false")
+					.setParameter("idAnaliseGeo", this.getAnaliseGeo().id);
+
+			notificacoesNaoResolvidas = Long.parseLong(query.getSingleResult().toString());
 		}
 		
 		if(notificacoesNaoResolvidas > 0) {

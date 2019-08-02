@@ -1,0 +1,140 @@
+#etapa-conclusao
+    div.col-md-5.pull-right.margin-right-xs.text-cloneParecer
+        label.pull-left Informe o número do processo para clonar o parecer
+        br
+        div.pull-right.display-clone
+            textarea.textArea-clone(name="numeroProcesso", ng-model="ctrl.numeroProcesso")  
+            .btn.btn-default.tamanho-botaoClone(type="submit", name="clonar", ng-click="ctrl.clonarParecerGeo()")
+                i.glyphicon.glyphicon-refresh.glyphicon--with-right-margin
+                | Clonar paracer  
+            
+            
+
+hr
+h5 Análise GEO
+div
+#camposAnaliseGeo
+    div
+        label.label-parecer Da situação fundiária*:
+        br
+        summernote.campos-parecer(id="situacaoFundiaria",
+                    on-paste="snPaste(evt)",
+                    name="situacaoFundiaria",
+                    lang="pt-BR",
+                    height="200",
+                    ng-model="ctrl.situacaoFundiaria",
+                    config="optionsText")
+
+    div
+        label.label-parecer Da análise temporal*:
+        br
+        summernote.campos-parecer(id="analiseTemporal",
+                    on-paste="snPaste(evt)",
+                    name="analiseTemporal",
+                    lang="pt-BR",
+                    height="200",
+                    ng-model="ctrl.analiseTemporal",
+                    config="optionsText")
+
+div
+    label(style="font-size:13px") Conclusão*: 
+    br
+    summernote.form-control(id="conclusao",
+                on-paste="snPaste(evt)",
+                name="conclusao",
+                lang="pt-BR",
+                height="200",
+                ng-model="ctrl.conclusao",
+                config="optionsText",
+                class="editable",
+                contenteditable="true")
+
+    div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+        i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+        | Anexar arquivo ao parecer
+
+    table.table.table-condensed(ng-if="ctrl.analiseGeo.documentos.length > 0")
+
+        thead
+
+            tr
+                th.col-md-10 Documento anexado
+                th.col-md-2.text-right Ações
+
+        tbody
+
+            tr(ng-repeat="documento in ctrl.analiseGeo.documentos")
+
+                td.col-md-10 {{documento.nomeDoArquivo}}
+                td.col-md-2.text-right
+                    a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                        i.glyphicon.glyphicon-save
+
+                    a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
+                        i.glyphicon.glyphicon-trash
+div
+#conclusao
+    hr
+    label Análise final do processo*:
+        div.pull-left.col-md-10.posicao-principal
+            form.pull-left.posicao-conteudo
+                label.opDla.radio-inline.posicao-primeiroItem
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="DEFERIDO", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    | Deferido
+                label.opDla.radio-inline
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="INDEFERIDO")
+                    | Indeferido
+                label.opDla.radio-inline
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="NOTIFICACAO", disabled="true")
+                    | Emitir notificação
+    hr
+div#conclusao
+    div(ng-if="ctrl.opcaoConclusaoParecer !== 'NOTIFICACAO'")
+        label Observações*:
+        br
+        textarea.tamanho-obs(name="observacao", ng-model="ctrl.observacao")
+
+    div(ng-if="ctrl.opcaoConclusaoParecer === 'NOTIFICACAO'")
+        #lista-restricoes
+            #accordion.panel-group
+                h4.panel-title Inconsistências adicionadas:
+                br
+                div(ng-repeat="caracterizacao in ctrl.analiseGeo.analise.processo.caracterizacoes") 
+                    div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
+
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#dadosInconsistenciaTipo', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
+                            .panel.panel-default
+                                .panel-heading
+                                    h4.panel-title
+                                        | Propriedade
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}") 
+                        #dadosInconsistenciaTipo.collapse
+                                table.table.table-striped.table-condensed.no-margin.table-responsive
+                                    thead
+                                        tr
+                                            th.col-md-12 Item
+
+                                    tbody
+                                        tr
+                                            td.col-md-12 Área do projeto
+                                            
+                br
+                div
+                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#inconsistenciaAtividade', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
+                        .panel.panel-default
+                            .panel-heading
+                                h4.panel-title
+                                    | Atividades
+                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
+                    #inconsistenciaAtividade.collapse
+                            table.table.table-striped.table-condensed.no-margin.table-responsive
+                                thead
+                                    tr
+                                        th.col-md-12 Descrição
+
+                                tbody
+                                    tr
+                                        td.col-md-12 ........
+
+ 
+

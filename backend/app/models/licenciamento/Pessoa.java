@@ -1,7 +1,9 @@
 package models.licenciamento;
 
+import exceptions.AppException;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -39,4 +41,37 @@ public class Pessoa extends GenericModel {
 	// Atributo utilizado para deserialização pelo gson.
 	@Transient
 	public final String type = this.getClass().getSimpleName();
+
+
+	public String getCpfCnpj() {
+
+		if (this.isPessoaFisica())
+			return ((PessoaFisica)this).cpf;
+		else
+			return ((PessoaJuridica)this).cnpj;
+	}
+
+	public String getNomeRazaoSocial() {
+
+		if (this.isPessoaFisica()) {
+			return ((PessoaFisica)this).nome;
+		}
+
+		return ((PessoaJuridica)this).razaoSocial;
+	}
+
+	public void setCpfCnpj(String cpfCnpj) {
+
+		if (this.isPessoaFisica()) {
+			((PessoaFisica)this).cpf = cpfCnpj;
+		} else {
+			((PessoaJuridica)this).cnpj = cpfCnpj;
+		}
+	}
+
+	public boolean isPessoaFisica() {
+
+		return (this instanceof PessoaFisica);
+	}
+
 }

@@ -22,6 +22,8 @@ public class Configuracoes {
 	public static Boolean EXTERNAL_LOGIN = !LOGIN_URL.equals(DEFAULT_LOGIN_URL);
 	public static String INDEX_URL = "app/index.html";
 
+	public static Integer CODIGO_TIPO_PESSOA_JURIDICA = 1;
+
 	public static String APPLICATION_TEMP_FOLDER = getConfig("application.tempFolder", Play.applicationPath + "/tmp/");
 	public static String APPLICATION_ANEXO_MANEJO_FOLDER = getConfig("application.anexoManejoFolder", "/home/licenciamento-pa/documentos/anexo_manejo");
 
@@ -42,6 +44,7 @@ public class Configuracoes {
 
 	public static Integer PRAZO_ANALISE = getIntConfig("analise.prazo");
 	public static Integer PRAZO_ANALISE_JURIDICA = getIntConfig("analise.juridica.prazo");
+	public static Integer PRAZO_ANALISE_GEO = getIntConfig("analise.geo.prazo");
 	public static Integer PRAZO_ANALISE_TECNICA = getIntConfig("analise.tecnica.prazo");
 
 	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);

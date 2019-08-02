@@ -64,12 +64,12 @@ div(uib-accordion class="accordion")
                     option(value="") Selecione o analista técnico
 
         .row
-            .col-md-5.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.SITUACAO)")
+            .col-md-12.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.SITUACAO)")
                 label.control-label Situação:
                 select.form-control(ng-model="$ctrl.filtro.idCondicaoTramitacao", name="selectCondicao",
                                     ng-options="condicao.idCondicao as condicao.nomeCondicao for condicao in $ctrl.condicoes | orderBy:'nomeCondicao' track by condicao.idCondicao")
                     option(value="") Selecione a situação
-
+        .row
             .col-md-7.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.PERIODO_PROCESSO)")
                 label.control-label Período:
                 .form-inline.periodo

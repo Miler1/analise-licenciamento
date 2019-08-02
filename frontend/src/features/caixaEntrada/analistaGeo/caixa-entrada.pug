@@ -1,0 +1,70 @@
+include ../../../layout/components/paginacao
+
+div
+
+	filtro-processos(paginacao="cxEntAnalistaGeo.paginacao",
+		disabled-fields="cxEntAnalistaGeo.disabledFields",
+		atualizar-lista="cxEntAnalistaGeo.atualizarListaProcessos",
+		atualizar-paginacao="cxEntAnalistaGeo.atualizarPaginacao",
+		condicao-tramitacao="cxEntAnalistaGeo.condicaoTramitacao",
+		pesquisar-ao-inicializar="true",
+		is-analise-geo="true")
+
+	h4 Lista de processos
+	hr
+	.row
+		.col-md-12
+			div(ng-if="cxEntAnalistaGeo.processos && cxEntAnalistaGeo.processos.length > 0").table-responsive
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th
+							th.col-md-1 Processo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-2 Interessado
+							th.col-md-2 Município
+							th.col-md-2 Licenças
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise GEO
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in cxEntAnalistaGeo.processos")
+							td
+								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseGeo}")
+								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
+								span(ng-class="{'icone-renovacao': processo.renovacao}")
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntAnalistaGeo.PrazoAnalise.ANALISE)}}
+							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimo(processo.diasAnaliseGeo, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantes(processo.diasAnaliseGeo,cxEntAnalistaGeo.PrazoAnalise.ANALISE_GEO)}}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+												a(ng-click="cxEntAnalistaGeo.primeiroAcesso(processo)")
+													i.glyphicon.glyphicon-ok-circle
+													span Iniciar análise
+											li
+												a(ng-click="cxEntAnalistaGeo.visualizarProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar processo
+				div
+					span.icone-revisao-solicitada.legenda Revisão Solicitada
+					span.icone-revisao-atendida.legenda Notificação Atendida
+					span.icone-renovacao.legenda Renovação
+
+				+paginacao('cxEntAnalistaGeo.paginacao', 'cxEntAnalistaGeo.onPaginaAlterada')
+
+		.row(ng-show="!cxEntAnalistaGeo.processos || cxEntAnalistaGeo.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.

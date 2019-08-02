@@ -30,7 +30,9 @@
     "textAngular": "^1.5.16",
     "leaflet-measure": "^2.1.7",
     "ng-sortable": "1.3.8",
-    "shp": "calvinmetcalf/shapefile-js#4cf2943"
+    "shp": "calvinmetcalf/shapefile-js#4cf2943",
+    "sidebar-v2": "^0.4.0",
+    "angular-summernote": "^0.8.1"
   },
   "resolutions": {
     "angular": "1.6.2"

@@ -12,6 +12,18 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.CaixaEntradaController,
 			controllerAs: 'caixaEntrada'
 		})
+		.when("/shape-upload/:idProcesso", {
+			templateUrl: "features/caixaEntrada/analistaGeo/shape-upload.html",
+			controller: controllers.CaixaEntradaController,
+			controllerAs: 'caixaEntrada',
+
+			resolve: {
+				
+				idProcesso: function($route) {
+					return $route.current.params.idProcesso;
+				}
+			}
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -23,7 +35,8 @@ caixasEntrada
 	.controller('modalVincularConsultorController', controllers.ModalVincularConsultorController)
 	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController)
 	.controller('cxEntAnalistaTecnicoController', controllers.CxEntAnalistaTecnicoController)
-	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteTecnicoController);
+	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteTecnicoController)
+	.controller('cxEntAnalistaGeoController', controllers.CxEntAnalistaGeoController);
 
 caixasEntrada
 	.component('filtroProcessos', directives.FiltroProcessos);

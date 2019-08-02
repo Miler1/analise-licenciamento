@@ -1,0 +1,55 @@
+div.modal-header
+
+    button.close(type='button', ng-click="modalCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Adicionar Inconsistência
+    div(growl inline="true" reference='')
+
+div.modal-body
+
+    div
+        label(style="font-size:13px;") Descrição da inconsistência*:
+        br
+        textarea(name="descricaoInconsistência", ng-model="modalCtrl.descricaoInconsistencia", style="margin: 0px; width: 811px; height: 88px")
+
+    div
+        label(style="font-size:13px;") Tipo da inconsistência*:
+        br
+        textarea(name="tipoInconsistência", ng-model="modalCtrl.tipoInconsistencia", style="margin: 0px; width: 811px; height: 88px;")
+
+    div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+        i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+        | Anexar arquivo na inconsistência
+
+    table.table.table-condensed(ng-if="modalCtrl.anexos.length > 0")
+
+        thead
+
+            tr
+                th.col-md-10 Arquivo anexado
+                th.col-md-2.text-right Ações
+
+        tbody
+
+            tr(ng-model="modalCtrl.anexo",ng-repeat="anexo in modalCtrl.anexos")
+
+                td.col-md-10 {{anexo.nomeDoArquivo}}
+                td.col-md-2.text-right
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Baixar anexo", ng-click="modalCtrl.baixarDocumentoInconsistencia(anexo)")
+                        i.glyphicon.glyphicon-save
+
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="modalCtrl.removerDocumento($index,anexo.id)")
+                        i.glyphicon.glyphicon-trash
+
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="modalCtrl.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Cancelar
+    
+    button.btn.btn-success.pull-right(ng-click="modalCtrl.concluir()")
+        i.glyphicon.glyphicon-arrow-right
+        | &nbsp;Confirmar

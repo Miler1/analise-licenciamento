@@ -1,0 +1,48 @@
+include modalEspecificacaoUpload
+
+mixin uploadField(controller, tipoUpload, cor, popupText, hasDescription, idMunicipio)
+	div(ng-controller="validacaoShapeController as validacaoShape"
+		ng-init="validacaoShape.init('"+tipoUpload+"','"+cor+"','"+popupText+"','"+idMunicipio+"')" 
+		ng-cloak)
+		
+		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
+		.row
+			//- .col-sm-offset-1
+			.col-sm-12
+				.dropzone(ng-hide="validacaoShape.arquivoSelecionado.arquivo",
+									ngf-drop,
+									ngf-select,
+									ng-model= "validacaoShape.arquivoSelecionado.arquivo", ngf-drag-over-class="'dragover'",
+									ngf-multiple= "false", ngf-allow-dir="false", ngf-keep="true",
+									ngf-accept= "'.zip,.rar'",
+									ngf-pattern= "'.zip,.rar'",
+									ngf-change= "validacaoShape.arquivoShapeEscolhido($files, $file, $newFiles)")
+					i.fa.fa-upload
+					p Selecionar arquivo ...
+						span.subtitle Ou arraste um arquivo até esta área
+					//- | Ou arraste um arquivo até esta área
+				div(ng-show="validacaoShape.arquivoSelecionado.arquivo")
+					.progress
+						.progress-bar(role="progressbar", aria-valuenow="60",aria-valuemin="0",
+						aria-valuemax="100", ng-style="{width: validacaoShape.progressBarStatus}")
+							| {{validacaoShape.progressBarStatus}}
+					span
+						strong Arquivo: 
+					| {{validacaoShape.arquivoSelecionado.arquivo.nome}}
+					span.file-action
+						|(
+						a(ng-if="validacaoShape.progressBarStatus !== '100%'", ng-click="validacaoShape.cancelaUpload()")
+							| cancelar envio
+						a(ng-if="validacaoShape.progressBarStatus === '100%'", ng-click="validacaoShape.alterarArquivo()")
+							| alterar arquivo
+						|)
+					div.alert(ng-class="{'alert-success': validacaoShape.resultadoProcessamento.status === 'SUCESSO', 'alert-danger': validacaoShape.resultadoProcessamento.status === 'ERRO'}",
+							role="alert", ng-if="validacaoShape.resultadoProcessamento")
+						p(ng-repeat="mensagem in validacaoShape.resultadoProcessamento.mensagens") {{mensagem}}
+		
+		.row(ng-if=hasDescription)
+			p.text-center.upload-especifications
+				i.fa.fa-info-circle.modal-open-icon(ng-click="validacaoShape.abrirModal()")
+				a.modal-open-text.upload-especifications-text(ng-click="validacaoShape.abrirModal()")
+					| Especificações do arquivo a ser enviado
+			
