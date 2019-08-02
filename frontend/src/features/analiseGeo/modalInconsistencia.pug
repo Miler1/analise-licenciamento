@@ -53,3 +53,7 @@ div.modal-footer
     button.btn.btn-success.pull-right(ng-click="modalCtrl.concluir()")
         i.glyphicon.glyphicon-arrow-right
         | &nbsp;Confirmar
+
+    button.btn.btn-default.pull-right(ng-disabled = "!modalCtrl.habilitaExcluir", ng-bootbox-title='Confirmação', ng-bootbox-custom-dialog='Deseja realmente excluir esta inconsistência ?', ng-bootbox-buttons='modalCtrl.customDialogButtons')
+        i.glyphicon.glyphicon-trash
+        | &nbsp;Excluir

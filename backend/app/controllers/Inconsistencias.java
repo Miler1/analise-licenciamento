@@ -55,5 +55,17 @@ public class Inconsistencias extends GenericController{
 
     }
 
+    public static void excluirInconsistencia(Long id) {
+
+        returnIfNull(id, "Long");
+
+        Inconsistencia i = Inconsistencia.findById(id);
+
+        i.delete();
+
+        renderText(Mensagem.INCONSISTENCIA_EXCLUIDA_SUCESSO.getTexto());
+
+    }
+
 }
 

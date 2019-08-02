@@ -2,6 +2,9 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 
 	var inconsistenciaController = this;
 	inconsistenciaController.anexos = [];
+
+	inconsistenciaController.habilitaExcluir = inconsistencia !== null;
+
 	if(inconsistencia){
 		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
 		inconsistenciaController.tipoInconsistencia = inconsistencia.tipoInconsistencia;
@@ -65,7 +68,7 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
 				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
 				categoria: categoriaInconsistencia,
-				anexos: inconsistenciaController.anexos,
+				anexos: inconsistenciaController.anexos
 			};
 		}
 		inconsistenciaService.salvarInconsistencia(params)
@@ -85,9 +88,34 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 		if(!anexo.id){
 			documentoService.download(anexo.key, anexo.nomeDoArquivo);
 		}else{
-			inconsistenciaService.download(anexo.id);	
+			inconsistenciaService.download(anexo.id);
 		}
 
+	};
+
+	inconsistenciaController.customDialogButtons = {
+		warning: {
+			label: "Cancelar",
+			className: "btn-default",
+			callback: function() {
+
+			}
+		},
+		main: {
+			label: "Excluir",
+			className: "btn-success",
+			callback: function() {
+
+				inconsistenciaService.excluirInconsistencia()
+					.then(function (response) {
+						mensagem.success(response.data);
+						$uibModalInstance.dismiss('cancel');
+					}).catch(function (response) {
+					mensagem.error(response.data.texto);
+
+				});
+			}
+		}
 	};
 
 };
