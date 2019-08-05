@@ -368,6 +368,10 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 					if (data.isExclusao) {
 						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.indexOf(data.inconsistencia), 1);
 					} else if (data.isEdicao) {
+
+						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+							return i.id === data.inconsistencia.id;
+						}), 1);
 						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
 					} else {
 						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
