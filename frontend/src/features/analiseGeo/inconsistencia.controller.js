@@ -2,6 +2,9 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 
 	var inconsistenciaController = this;
 	inconsistenciaController.anexos = [];
+
+	inconsistenciaController.habilitaExcluir = inconsistencia !== null;
+
 	if(inconsistencia){
 		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
 		inconsistenciaController.tipoInconsistencia = inconsistencia.tipoInconsistencia;
@@ -65,14 +68,21 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
 				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
 				categoria: categoriaInconsistencia,
-				anexos: inconsistenciaController.anexos,
+				anexos: inconsistenciaController.anexos
 			};
 		}
 		inconsistenciaService.salvarInconsistencia(params)
 			.then(function(response){
 				mensagem.success("Inconsistência salva com sucesso!");
+
+				var retorno = {
+					inconsistencia: response.data,
+					isEdicao: params.id !== undefined && params.id !== null
+				};
+
 				$uibModalInstance.close(
-					response.data);				
+					retorno);
+
 			}).catch(function(response){
 				mensagem.error(response.data.texto);
 				
@@ -85,9 +95,41 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 		if(!anexo.id){
 			documentoService.download(anexo.key, anexo.nomeDoArquivo);
 		}else{
-			inconsistenciaService.download(anexo.id);	
+			inconsistenciaService.download(anexo.id);
 		}
 
+	};
+
+	inconsistenciaController.customDialogButtons = {
+		warning: {
+			label: "Cancelar",
+			className: "btn-default",
+			callback: function() {
+
+			}
+		},
+		main: {
+			label: "Excluir",
+			className: "btn-success",
+			callback: function() {
+
+				inconsistenciaService.excluirInconsistencia(inconsistencia.id)
+					.then(function (response) {
+						mensagem.success(response.data);
+
+						var retorno = {
+							inconsistencia: inconsistencia,
+							isExclusao: true
+						};
+
+						$uibModalInstance.close(
+							retorno);
+					}).catch(function (response) {
+					mensagem.error(response.data.texto);
+
+				});
+			}
+		}
 	};
 
 };

@@ -6,6 +6,7 @@ import models.Documento;
 import models.Inconsistencia;
 import serializers.InconsistenciaSerializer;
 import utils.Mensagem;
+import utils.ModelUtil;
 
 public class Inconsistencias extends GenericController{
 
@@ -52,6 +53,20 @@ public class Inconsistencias extends GenericController{
                 .setParameter("categoria",inconsistencia.categoria).first();
 
         renderJSON(i, InconsistenciaSerializer.findInconsistencia);
+
+    }
+
+    public static void excluirInconsistencia(Long id) {
+
+        returnIfNull(id, "Long");
+
+        Inconsistencia i = Inconsistencia.findById(id);
+
+        i.deleteAnexos();
+
+        i.delete();
+
+        renderText(Mensagem.INCONSISTENCIA_EXCLUIDA_SUCESSO.getTexto());
 
     }
 

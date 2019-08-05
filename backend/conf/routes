@@ -73,6 +73,7 @@ POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.download
 
 POST    /analisesGeo/inconsistencia/salvarInconsistencia                Inconsistencias.salvarInconsistencia
 POST    /analisesGeo/inconsistencia/findInconsistencia                  Inconsistencias.findInconsistencia
+POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}          Inconsistencias.excluirInconsistencia
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
