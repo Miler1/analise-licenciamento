@@ -142,7 +142,7 @@ public class Empreendimento extends GenericModel {
 		Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(geometria);
 		Double areaEmpreendimento = GeoCalc.area(geometriaEmpreendimento) / 10000;
 
-		CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.PROPRIEDADE.nome, CamadaGeoEnum.PROPRIEDADE.tipo, Helper.formatBrDecimal(areaEmpreendimento, 2) + " ha", areaEmpreendimento, geometriaEmpreendimento);
+		CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.PROPRIEDADE.nome, CamadaGeoEnum.PROPRIEDADE.tipo, Helper.formatBrDecimal(areaEmpreendimento, 2) + " ha", areaEmpreendimento, geometriaEmpreendimento, "");
 
 		dadosGeoEmpreendimento.add(camadaGeo);
 
@@ -159,12 +159,12 @@ public class Empreendimento extends GenericModel {
 
 			if (empreendimentoCamandaGeo != null) {
 
-				camadaGeo = new CamadaGeo(empreendimentoCamandaGeo.tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(empreendimentoCamandaGeo.tipoAreaGeometria.codigo), Helper.formatBrDecimal(empreendimentoCamandaGeo.areaGeometria, 2)+ " ha",empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria);
+				camadaGeo = new CamadaGeo(empreendimentoCamandaGeo.tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(empreendimentoCamandaGeo.tipoAreaGeometria.codigo), Helper.formatBrDecimal(empreendimentoCamandaGeo.areaGeometria, 2)+ " ha",empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria, "");
 				dadosGeoEmpreendimento.add(camadaGeo);
 
 			} else {
 
-				camadaGeo = new CamadaGeo(tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(tipoAreaGeometria.codigo), "não possui", 0.00, null);
+				camadaGeo = new CamadaGeo(tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(tipoAreaGeometria.codigo), "não possui", 0.00, null, "");
 				dadosGeoEmpreendimento.add(camadaGeo);
 			}
 

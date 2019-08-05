@@ -2,8 +2,10 @@ package models;
 
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
+import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
+import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacao;
@@ -14,6 +16,7 @@ import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.DateUtil;
+import utils.GeoCalc;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -628,7 +631,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public List<CamadaGeo> getDadosAreaProjeto (){
 
+		List<CamadaGeo> camadasProjeto = new ArrayList<>();
 
+		Caracterizacao caracterizacao = this.getCaracterizacao();
+
+		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
+
+//			CamadaGeo camadaProjeto = new CamadaGeo(CamadaGeoEnum.AREA_PROJETO.nome, CamadaGeoEnum.AREA_PROJETO.tipo,
+//					GeoCalc.)
+		}
 
 		return null;
 	}
