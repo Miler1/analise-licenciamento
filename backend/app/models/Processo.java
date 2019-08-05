@@ -626,4 +626,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
+	public List<CamadaGeo> getDadosAreaProjeto (){
+
+
+
+		return null;
+	}
+
 }

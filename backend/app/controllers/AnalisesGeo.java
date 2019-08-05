@@ -179,4 +179,15 @@ public class AnalisesGeo extends InternalController {
 
     }
 
+    public static void buscaDadosAreaProjeto(String numeroProcesso) {
+
+        returnIfNull(numeroProcesso, "String");
+
+        Processo processo = Processo.findByNumProcesso(numeroProcesso);
+
+        processo.getDadosAreaProjeto();
+
+        //renderJSON(empreendimento.possuiShape, EmpreendimentoSerializer.getDadosEmpreendimento);
+    }
+
 }
