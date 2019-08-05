@@ -363,8 +363,16 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 					}
 				});
 
-				modalInstance.result.then(function(inconsistencia){
-					ctrl.analiseGeo.inconsistencias.push(inconsistencia);
+				modalInstance.result.then(function(data){
+
+					if (data.isExclusao) {
+						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.indexOf(data.inconsistencia), 1);
+					} else if (data.isEdicao) {
+						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+					} else {
+						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+					}
+
 				});
 				
 			});

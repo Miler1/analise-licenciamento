@@ -6,6 +6,7 @@ import models.Documento;
 import models.Inconsistencia;
 import serializers.InconsistenciaSerializer;
 import utils.Mensagem;
+import utils.ModelUtil;
 
 public class Inconsistencias extends GenericController{
 
@@ -60,6 +61,8 @@ public class Inconsistencias extends GenericController{
         returnIfNull(id, "Long");
 
         Inconsistencia i = Inconsistencia.findById(id);
+
+        i.deleteAnexos();
 
         i.delete();
 

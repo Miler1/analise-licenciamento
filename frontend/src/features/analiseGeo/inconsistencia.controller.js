@@ -74,8 +74,15 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 		inconsistenciaService.salvarInconsistencia(params)
 			.then(function(response){
 				mensagem.success("Inconsistência salva com sucesso!");
+
+				var retorno = {
+					inconsistencia: response.data,
+					isEdicao: params.id !== undefined && params.id !== null
+				};
+
 				$uibModalInstance.close(
-					response.data);				
+					retorno);
+
 			}).catch(function(response){
 				mensagem.error(response.data.texto);
 				
@@ -106,10 +113,17 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 			className: "btn-success",
 			callback: function() {
 
-				inconsistenciaService.excluirInconsistencia()
+				inconsistenciaService.excluirInconsistencia(inconsistencia.id)
 					.then(function (response) {
 						mensagem.success(response.data);
-						$uibModalInstance.dismiss('cancel');
+
+						var retorno = {
+							inconsistencia: inconsistencia,
+							isExclusao: true
+						};
+
+						$uibModalInstance.close(
+							retorno);
 					}).catch(function (response) {
 					mensagem.error(response.data.texto);
 
