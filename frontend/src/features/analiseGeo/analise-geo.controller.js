@@ -461,6 +461,12 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
+			ctrl.situacaoFundiaria = undefined;
+			ctrl.analiseTemporal = undefined;
+
+		} else {
+			$('#situacaoFundiaria').summernote('enable');
+			$('#analiseTemporal').summernote('enable');
 		}
 			$('.nav-tabs > .active').next('li').find('a').trigger('click');
 	};
