@@ -71,8 +71,9 @@ GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}       
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 
-POST    /analisesGeo/inconsistencia/salvarInconsistencia                Inconsistencias.salvarInconsistencia
-POST    /analisesGeo/inconsistencia/findInconsistencia                  Inconsistencias.findInconsistencia
+POST    /analisesGeo/desvinculo/{idProcesso}/solicitarDesvinculo/{justificativa}	Desvinculos.solicitarDesvinculo
+POST    /analisesGeo/inconsistencia/salvarInconsistencia    Inconsistencias.salvarInconsistencia
+POST    /analisesGeo/inconsistencia/findInconsistencia      Inconsistencias.findInconsistencia
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
