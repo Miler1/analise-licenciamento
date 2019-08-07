@@ -469,7 +469,8 @@ utils.services(licenciamento)
 	.add('documentoService', services.DocumentoService)
 	.add('analiseGeoService', services.AnaliseGeoService)
 	.add('validacaoShapeService', services.ValidacaoShapeService)
-	.add('empreendimentoService', services.EmpreendimentoService);
+	.add('empreendimentoService', services.EmpreendimentoService)
+	.add('desvinculoService', services.DesvinculoService);
 
 
 utils.filters(licenciamento)
@@ -490,7 +491,8 @@ licenciamento
 	.controller('validacaoShapeController', controllers.ValidacaoShapeController)
 	.controller('painelMapaController', controllers.PainelMapaController)
 	.controller('uploadShapesController', controllers.UploadShapesController)
-	.controller('inconsistenciaController',controllers.InconsistenciaController);
+	.controller('inconsistenciaController',controllers.InconsistenciaController)
+	.controller('desvinculoController', controllers.DesvinculoController);
 
 
 licenciamento

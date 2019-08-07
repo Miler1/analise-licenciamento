@@ -1,4 +1,4 @@
-var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoService, mensagem, $rootScope, processoService) {
+var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoService, mensagem, $rootScope, $uibModal ,processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE GEO';
 
@@ -62,9 +62,26 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	}
 
 	function visualizarProcesso(processo) {
-
 		return processoService.visualizarProcesso(processo);
 	}
+
+
+	cxEntAnalistaGeo.solicitarDesvinculo =  function(idAnaliseGeo){
+
+				var modalInstance = $uibModal.open({
+					controller: 'desvinculoController',
+					controllerAs: 'desvinculoCtrl',
+					templateUrl: 'features/caixaEntrada/analistaGeo/modalDesvinculo.html',
+					size: 'lg',
+					resolve: {
+
+						processo: function(){
+							return idAnaliseGeo.idProcesso;
+						}
+					}
+					
+				});
+	};
 
 	function primeiroAcesso(processo) {
 		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
