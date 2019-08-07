@@ -33,8 +33,8 @@ public class Desvinculos extends GenericController {
 
             desvinculo.save();
 
-            desvinculo.idProcesso.tramitacao.tramitar(desvinculo.idProcesso, AcaoTramitacao.SOLICITAR_DESVINCULO, desvinculo.idAnalistaGeo);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.idProcesso.objetoTramitavel.id), desvinculo.idAnalistaGeo);
+//            desvinculo.idProcesso.tramitacao.tramitar(desvinculo.idProcesso, AcaoTramitacao.SOLICITAR_DESVINCULO, desvinculo.idAnalistaGeo);
+//            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.idProcesso.objetoTramitavel.id), desvinculo.idAnalistaGeo);
 
             renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 

@@ -1,4 +1,4 @@
-var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoService, mensagem, $rootScope, $uibModal, desvinculoService ,processoService) {
+var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoService, mensagem, $rootScope, $uibModal ,processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE GEO';
 
@@ -62,7 +62,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	}
 
 	function visualizarProcesso(processo) {
-
 		return processoService.visualizarProcesso(processo);
 	}
 

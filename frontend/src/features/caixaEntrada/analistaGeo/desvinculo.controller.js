@@ -20,14 +20,12 @@ var DesvinculoController = function ($uibModalInstance, processo, mensagem, desv
             $uibModalInstance.close();
 
         }else{
-
             desvinculoService.solicitarDesvinculo(processo, justificativa)
                 .then(function(response){
 
                     mensagem.success(response.data);
-                    $rootScope.$broadcast('atualizarContagemProcessos');
-                    $location.path('/caixa-entrada');
                     $uibModalInstance.close();	
+                    $location.path('/caixa-entrada');
             });
         }
 		

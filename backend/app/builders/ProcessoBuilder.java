@@ -278,6 +278,13 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByStatusProcesso(){
+
+		addProjection(Projections.groupProperty("status").as("status"));
+
+		return this;
+	}
+
 	public ProcessoBuilder groupByCpfCnpjEmpreendimento(){
 
 		addPessoaEmpreendimentoAlias();
