@@ -468,11 +468,11 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			$('#situacaoFundiaria').summernote('enable');
 			$('#analiseTemporal').summernote('enable');
 		}
-			$('.nav-tabs > .active').next('li').find('a').trigger('click');
+			$('.nav-tabs > .active').next('li').find('a').trigger('click').top();
 	};
 
 	ctrl.etapaAnterior = function(){
-			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+			$('.nav-tabs > .active').prev('li').find('a').trigger('click').top();
 	};
 
 	$scope.optionsText = {
