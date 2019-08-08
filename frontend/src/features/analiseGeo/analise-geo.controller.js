@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $location, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -456,6 +456,9 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		$location.path('/analise-geo');
 	};
 
+	function scrollTop() {
+		$anchorScroll();
+	}
 	ctrl.proximaEtapa = function(){
 		
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
@@ -468,11 +471,14 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			$('#situacaoFundiaria').summernote('enable');
 			$('#analiseTemporal').summernote('enable');
 		}
-			$('.nav-tabs > .active').next('li').find('a').trigger('click').top();
+			$('.nav-tabs > .active').next('li').find('a').trigger('click');
+			scrollTop();
+
 	};
 
 	ctrl.etapaAnterior = function(){
-			$('.nav-tabs > .active').prev('li').find('a').trigger('click').top();
+			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+			scrollTop();
 	};
 
 	$scope.optionsText = {

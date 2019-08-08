@@ -8,7 +8,6 @@ import utils.flexjson.GeometryTransformer;
 public class ProcessoSerializer {
 	
 	public static JSONSerializer list = SerializerUtil.create(
-			"status",
 			"id",
 			"numero",
 			"empreendimento.municipio.nome",
@@ -18,7 +17,6 @@ public class ProcessoSerializer {
 			"empreendimento.denominacao");
 
 	public static JSONSerializer getInfo = SerializerUtil.create(
-			"status",
 			"id",
 			"numero",
 			"tiposLicenca",

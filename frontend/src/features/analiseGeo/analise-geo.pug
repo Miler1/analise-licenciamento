@@ -44,7 +44,7 @@ div(ng-init='ctrl.init()')
 				#tabLocalizacaoGeografica.tab-pane.fade.in.active 
 					include etapa-localizacaoGeografica
 					div
-						.btn.etapa-proxima.pull-right.btnNext(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()")
+						.btn.etapa-proxima.pull-right.btnNext(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()",style="color:#536e01")
 							i.glyphicon.glyphicon-menu-right
 							| Próxima etapa
 				#tabConclusao.tab-pane
@@ -53,7 +53,6 @@ div(ng-init='ctrl.init()')
 						.btn.etapa-anterior.btnPrevious(type="submit", name="etapaAnterior", ng-click="ctrl.etapaAnterior()")
 							i.glyphicon.glyphicon-menu-left.pull-left
 							| Etapa Anterior
-
 div
 	button.btn.btn-default.pull-left(style="margin:10px;",ng-click="ctrl.cancelar()")
 		i.glyphicon.glyphicon-arrow-left

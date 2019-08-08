@@ -35,10 +35,20 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS = "tca";
 	private static final String GERENTE_ALIAS = "gte";
 	private static final String DIA_ANALISE_ALIAS = "da";
+	private static final String CONDICAO_ALIAS = "ca";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
 		addAlias("empreendimento", EMPREENDIMENTO_ALIAS);
+
+		return this;
+	}
+
+	public ProcessoBuilder addCondicaoAlias() {
+
+		addObjetoTramitavelAlias();
+
+		addAlias(OBJETO_TRAMITAVEL_ALIAS+".condicao", CONDICAO_ALIAS);
 
 		return this;
 	}
@@ -278,19 +288,21 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByStatusProcesso(){
-
-		addProjection(Projections.groupProperty("status").as("status"));
-
-		return this;
-	}
-
 	public ProcessoBuilder groupByCpfCnpjEmpreendimento(){
 
 		addPessoaEmpreendimentoAlias();
 
 		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cpf").as("cpfEmpreendimento"));
 		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj").as("cnpjEmpreendimento"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByObjetoTramitavel(){
+
+		addCondicaoAlias();
+
+		addProjection(Projections.groupProperty(CONDICAO_ALIAS+".id").as("idCondicaoTramitacao"));
 
 		return this;
 	}
