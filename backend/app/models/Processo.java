@@ -2,28 +2,23 @@ package models;
 
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
-import models.licenciamento.AtividadeCaracterizacao;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.Empreendimento;
-import models.licenciamento.StatusCaracterizacao;
+import models.licenciamento.*;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
-import utils.Configuracoes;
-import utils.DateUtil;
-import utils.GeoCalc;
-import utils.Mensagem;
+import utils.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Entity
@@ -629,19 +624,62 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
-	public List<CamadaGeo> getDadosAreaProjeto (){
+	public List<CamadaGeoAtividade> getDadosAreaProjeto (){
 
-		List<CamadaGeo> camadasProjeto = new ArrayList<>();
+		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
 
 		Caracterizacao caracterizacao = this.getCaracterizacao();
 
+		int index = 0;
+
 		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
-//			CamadaGeo camadaProjeto = new CamadaGeo(CamadaGeoEnum.AREA_PROJETO.nome, CamadaGeoEnum.AREA_PROJETO.tipo,
-//					GeoCalc.)
+			List<CamadaGeo> camadasGeo= new ArrayList<>();
+
+			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
+
+				for (Geometry geometrie : GeoCalc.getGeometries(geometria.geometria)) {
+
+					index = index + 1;
+
+					CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.ATIVIDADE.nome +"_" + index, CamadaGeoEnum.ATIVIDADE.tipo +"_" + index,
+							getDescricaoAtividade(geometrie), GeoCalc.areaHectare(geometrie), geometrie);
+
+					camadasGeo.add(camadaGeo);
+				}
+
+			}
+
+			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao.atividade.nome, camadasGeo);
+
+			dadosAreaProjeto.add(camadaGeoAtividade);
+
 		}
 
-		return null;
+		return dadosAreaProjeto;
 	}
+
+	private String getDescricaoAtividade (Geometry geometry) {
+
+		String descricao = "";
+
+		switch (geometry.getGeometryType().toUpperCase()) {
+
+			case "POINT" :
+				descricao = "[" + String.valueOf(((Point) geometry).getY()) + "," + String.valueOf(((Point) geometry).getX()) + "]";
+				break;
+			case "LINESTRING":
+
+				descricao = "Extensão " + String.valueOf(GeoCalc.length(geometry)/1000) + " Km";
+				break;
+			case "POLYGON":
+				descricao = "Área " + String.valueOf(GeoCalc.areaHectare(geometry)) + " ha";
+				break;
+		}
+
+		return descricao;
+	}
+
+
 
 }

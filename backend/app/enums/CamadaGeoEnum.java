@@ -7,7 +7,7 @@ public enum CamadaGeoEnum {
 	HIDROGRADIA("HID","Hidrografia", "HIDROGRAFIA"),
 	APP("APP","Área de Preservação Permanente", "APP"),
 	AREA_ATROPIZADA("AA","Área Antropizada", "AREA_ANTROPIZADA"),
-	AREA_PROJETO("ARP","Área do Projeto", "AREA_PROJETO");
+	ATIVIDADE("ATV","Geometria", "ATIVIDADE");
 
 	public String codigo;
 	public String nome;

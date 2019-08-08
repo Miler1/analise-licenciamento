@@ -30,6 +30,14 @@ var EstiloMapa = {
         fill: true,
         fillOpacity: 0.5,
         opacity: 1
+    },
+
+    'ATIVIDADE': {
+        color: '#A52A2A',
+        weight: 2,
+        fill: true,
+        fillOpacity: 0.5,
+        opacity: 1
     }
 
 };

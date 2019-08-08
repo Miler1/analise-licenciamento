@@ -6,12 +6,14 @@ import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseGeoSerializer;
+import serializers.CamadaGeoAtividadeSerializer;
 import serializers.EmpreendimentoSerializer;
 import utils.Mensagem;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 public class AnalisesGeo extends InternalController {
 
@@ -179,15 +181,15 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void buscaDadosAreaProjeto(String numeroProcesso) {
+    public static void buscaDadosAreaProjeto(Long idProcesso) {
 
-        returnIfNull(numeroProcesso, "String");
+        returnIfNull(idProcesso, "Long");
 
-        Processo processo = Processo.findByNumProcesso(numeroProcesso);
+        Processo processo = Processo.findById(idProcesso);
 
-        processo.getDadosAreaProjeto();
+      List<CamadaGeoAtividade> dadosAreaProjeto =  processo.getDadosAreaProjeto();
 
-        //renderJSON(empreendimento.possuiShape, EmpreendimentoSerializer.getDadosEmpreendimento);
+        renderJSON(dadosAreaProjeto, CamadaGeoAtividadeSerializer.getDadosGeoAtividade);
     }
 
 }
