@@ -29,8 +29,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	private static final String SEQ = "analise.processo_id_seq";
 
-	public enum Status { AGUARDANDO_ANALISE_GEO, SOLICITACAO_DESVINCULO_PENDENTE, NOTIFICACAO_ATENDDA }
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
@@ -67,12 +65,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Column(name="data_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
-
-	@Required
-	@Enumerated(EnumType.STRING)
-	@Column(name="status")
-	public Status status;
-
 
 	@ManyToOne
 	@JoinColumn(name = "id_processo_anterior")
@@ -363,7 +355,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.comTiposLicencas()
 				.groupByIdProcesso()
 				.groupByNumeroProcesso()
-				.groupByStatusProcesso()
+				.groupByObjetoTramitavel()
 				.groupByCpfCnpjEmpreendimento()
 				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()

@@ -10,7 +10,6 @@ public class AnalisesSerializer {
 			"id",
 			"processo.id",
 			"processo.numero",
-			"processo.status",
 			"processo.empreendimento.denominacao",
 			"processo.empreendimento.pessoa.cpf",
 			"processo.empreendimento.pessoa.cnpj",

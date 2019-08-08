@@ -14,7 +14,6 @@ public class AnaliseGeoSerializer {
             "analise.dataVencimentoPrazo",
             "analise.processo.id",
             "analise.processo.numero",
-            "analise.processo.status",
             "analise.processo.empreendimento.pessoa.cpf",
             "analise.processo.empreendimento.pessoa.cnpj",
             "analise.processo.empreendimento.denominacao",

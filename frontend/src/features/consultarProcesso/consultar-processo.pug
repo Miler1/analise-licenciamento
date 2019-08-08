@@ -33,7 +33,7 @@ div
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
-								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}")
+								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.legendaDesvinculo}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}

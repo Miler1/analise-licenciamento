@@ -30,8 +30,6 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntAnalistaGeo.processos")
 							td
-								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}")
-								span(ng-class="{'icone-revisao-atendida': processo.status === 'NOTIFICACAO_ATENDIDA'}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -49,23 +47,19 @@ div
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li(ng-class="{'anchor-not-active': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}") 
+											li
 												a(ng-click="cxEntAnalistaGeo.primeiroAcesso(processo)")
-													i.glyphicon.glyphicon-ok-circle(ng-class="{'anchor-not-active': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}") 
-													span(ng-class="{'anchor-not-active': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}")  Iniciar análise
+													i.glyphicon.glyphicon-ok-circle
+													span Iniciar análise
 											li
 												a(ng-click="cxEntAnalistaGeo.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
-											li(ng-class="{'anchor-not-active': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}") 
+											li
 												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculo(processo)")
-													i.glyphicon.glyphicon-link(ng-class="{'anchor-not-active': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}") 
-													span(ng-class="{'anchor-not-active': processo.status === 'SOLICITACAO_DESVINCULO_PENDENTE'}") Solicitar desvínculo
+													i.glyphicon.glyphicon-link
+													spanSolicitar desvínculo
 				div
-
-					span.icone-soliciacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
-					span.icone-revisao-atendida.legenda Notificação Atendida
-
 				+paginacao('cxEntAnalistaGeo.paginacao', 'cxEntAnalistaGeo.onPaginaAlterada')
 
 		.row(ng-show="!cxEntAnalistaGeo.processos || cxEntAnalistaGeo.processos.length == 0")
