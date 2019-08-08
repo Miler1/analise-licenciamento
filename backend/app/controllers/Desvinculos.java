@@ -21,7 +21,7 @@ public class Desvinculos extends GenericController {
             Desvinculo desvinculo = new Desvinculo();
             desvinculo.idAnalistaGeo = getUsuarioSessao();
             desvinculo.justificativa = justificativa;
-            desvinculo.idProcesso = Processo.findById(idProcesso);
+            desvinculo.processo = Processo.findById(idProcesso);
 
             if(desvinculo.dataSolicitacao == null) {
 
@@ -33,8 +33,8 @@ public class Desvinculos extends GenericController {
 
             desvinculo.save();
 
-            desvinculo.idProcesso.tramitacao.tramitar(desvinculo.idProcesso, AcaoTramitacao.SOLICITAR_DESVINCULO, desvinculo.idAnalistaGeo);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.idProcesso.objetoTramitavel.id), desvinculo.idAnalistaGeo);
+            desvinculo.processo.tramitacao.tramitar(desvinculo.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, desvinculo.idAnalistaGeo);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.processo.objetoTramitavel.id), desvinculo.idAnalistaGeo);
 
             renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 

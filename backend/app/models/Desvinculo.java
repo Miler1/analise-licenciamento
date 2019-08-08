@@ -23,7 +23,7 @@ public class Desvinculo extends GenericModel {
     @Required
     @OneToOne
     @JoinColumn(name="id_processo", referencedColumnName = "id")
-    public Processo idProcesso;
+    public Processo processo;
 
     @Required
     @OneToOne

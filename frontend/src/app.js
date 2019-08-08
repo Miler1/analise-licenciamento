@@ -186,7 +186,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 		{
 
 			titulo: 'Em análise',
-			icone: 'glyphicon glyphicon-ok',
+			icone: 'glyphicon glyphicon-edit',
 			url: function() {
 
 				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
