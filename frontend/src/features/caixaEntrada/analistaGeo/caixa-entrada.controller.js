@@ -75,7 +75,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 					size: 'lg',
 					resolve: {
 
-						processo: function(){
+						idProcesso: function(){
 							return idAnaliseGeo.idProcesso;
 						}
 					}

@@ -1,8 +1,8 @@
 var DesvinculoService = function(request, config) {
 
-	this.solicitarDesvinculo = function(processo, justificativa){
+	this.solicitarDesvinculo = function(params){
 		return request
-			.post(config.BASE_URL() + "analisesGeo/desvinculo/"+processo+"/solicitarDesvinculo/"+justificativa);
+			.post(config.BASE_URL() + "analisesGeo/desvinculo/solicitarDesvinculo",params);
 	};	
 };
 

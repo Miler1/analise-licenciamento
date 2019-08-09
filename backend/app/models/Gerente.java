@@ -2,13 +2,16 @@ package models;
 
 import exceptions.PermissaoNegadaException;
 import models.EntradaUnica.CodigoPerfil;
-import models.licenciamento.TipoAnalise;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 import utils.Mensagem;
 
 import javax.persistence.*;
+import javax.xml.ws.WebServiceException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="gerente")
@@ -93,5 +96,46 @@ public class Gerente extends GenericModel {
 		copia.dataVinculacao = this.dataVinculacao;
 		
 		return copia;
+	}
+
+	public static UsuarioAnalise distribuicaoSolicitacaoDesvinculo(String setorAtividade, Desvinculo desvinculo) {
+
+		List<UsuarioAnalise> gerentes = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, setorAtividade);
+
+		if (gerentes == null || gerentes.size() == 0)
+			throw new WebServiceException("Não existe nenhum gerente para atender a essa solicitação de desvínculo.");
+
+		List<Long> idsGerentes = gerentes.stream()
+				.map(ang->ang.id)
+				.collect(Collectors.toList());
+
+		String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsGerentes) +"]";
+
+		String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
+				"     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.gerente ge) LIMIT 1), " +
+				"     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.gerente " +
+				"        WHERE id_usuario in ("+ getParameterLongAsStringDBArray(idsGerentes) +") " +
+				"        GROUP BY id_usuario " +
+				"        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
+				"SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+
+		Query consulta = JPA.em().createNativeQuery(sql, GerenteVO.class);
+
+		GerenteVO gerenteVO = (GerenteVO) consulta.getSingleResult();
+
+		return  UsuarioAnalise.findById(gerenteVO.id);
+
+	}
+
+	private static String getParameterLongAsStringDBArray(List<Long> lista) {
+
+		String retorno = "";
+
+		for (Long id : lista) {
+			retorno = retorno + "" + id + ", ";
+		}
+		retorno = retorno.substring(0, retorno.length() -2) ;
+
+		return retorno;
 	}
 }

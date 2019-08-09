@@ -1,4 +1,4 @@
-var DesvinculoController = function ($uibModalInstance, processo, mensagem, desvinculoService) {
+var DesvinculoController = function ($uibModalInstance,idProcesso , mensagem, desvinculoService) {
 
 	var desvinculoController = this;
 	
@@ -12,23 +12,19 @@ var DesvinculoController = function ($uibModalInstance, processo, mensagem, desv
 		$location.path('/caixa-entrada');
     };
     
-	desvinculoController.concluir = function() {
-        var justificativa = desvinculoController.justificativa;
-        if(typeof justificativa === "undefined"|| desvinculoController.justificativa === ""){
-
-            mensagem.error("Verifique os campos obrigatórios!");
-            $uibModalInstance.close();
-
-        }else{
-            desvinculoService.solicitarDesvinculo(processo, justificativa)
+    desvinculoController.concluir = function() {
+        var params={
+            justificativa: desvinculoController.justificativa,
+            processo: {id: idProcesso}
+        };
+            desvinculoService.solicitarDesvinculo(params)
                 .then(function(response){
 
                     mensagem.success(response.data);
                     $uibModalInstance.close();	
                     $location.path('/caixa-entrada');
             });
-        }
-		
+
 	};
 
 	

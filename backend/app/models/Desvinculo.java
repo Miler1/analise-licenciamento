@@ -1,13 +1,15 @@
 package models;
 
-import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.EntradaUnica.CodigoPerfil;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 
 import javax.persistence.*;
-import java.util.Calendar;
+import javax.xml.ws.WebServiceException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="desvinculo")
@@ -28,7 +30,7 @@ public class Desvinculo extends GenericModel {
     @Required
     @OneToOne
     @JoinColumn(name="id_analista", referencedColumnName = "id")
-    public UsuarioAnalise idAnalistaGeo;
+    public UsuarioAnalise analista;
 
     @Required
     @Column(name="justificativa")
@@ -44,7 +46,7 @@ public class Desvinculo extends GenericModel {
 
     @OneToOne
     @JoinColumn(name="id_gerente", referencedColumnName = "id")
-    public Gerente idGerente;
+    public UsuarioAnalise gerente;
 
     @Required
     @Column(name="data_solicitacao")
@@ -53,8 +55,5 @@ public class Desvinculo extends GenericModel {
 
     @Column(name="data_resposta")
     public Date dataResposta;
-
-
-
 
 }
