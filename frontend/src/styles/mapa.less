@@ -1,5 +1,10 @@
 @import 'variaveis.less';
 
+@color_1: #333;
+@font_family_1: 'Glyphicons Halflings';
+@background_color_1: #fff;
+@border_color_1: #e4e5e7;
+
 .mapa {
 
 	@media (max-width: 991px) and (min-width: 768px){
@@ -60,6 +65,86 @@
 			color: @primaria;
 			font-size: 13pt;
 			margin: 5px 0 5px 0;
+		}
+
+		.panel-default {
+			>.panel-heading {
+				color: @color_1;
+				background-color: @background_color_1;
+				border-color: @border_color_1;
+				padding: 0;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				a {
+					display: block;
+					padding: 10px 15px;
+					text-decoration: none;
+					&:after {
+						content: "";
+						position: relative;
+						top: 1px;
+						display: inline-block;
+						font-family: @font_family_1;
+						font-style: normal;
+						font-weight: 400;
+						line-height: 1;
+						-webkit-font-smoothing: antialiased;
+						-moz-osx-font-smoothing: grayscale;
+						float: right;
+						transition: transform .25s linear;
+						-webkit-transition: -webkit-transform .25s linear;
+					}
+				}
+				a[aria-expanded] {
+					&:after {
+						content: "\e114";
+					}
+				}
+
+				a[aria-expanded="true"] {
+					&:after {
+						content: "\e113";
+					}
+				}
+				a[aria-expanded="false"] {
+					&:after {
+						content: "\e114";
+					}
+				}
+			}
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		.nav {
+			li {
+				border-bottom: 1px solid #eee;
+				a {
+					font-size: 14px;
+				}
+			}
+		}
+		#accordionMenu {
+			max-width: 300px;
+		}
+		.panel-body {
+			padding: 0;
+		}
+		.panel-group {
+			.panel&+.panel {
+				margin-top: 0;
+				border-top: 0;
+			}
+			.panel {
+				border-radius: 0;
+			}
+
+			margin-bottom: 0px;
 		}
 
 	}
@@ -139,6 +224,7 @@
 
 			.icon-legenda {
 				font-size: 1em;
+				padding: 4px 8px 0px 15px;
 			}
 
 		}
@@ -153,7 +239,7 @@
 		color: @primaria;
 		font-size: 13pt;
 		border-bottom: 1px solid @border-mapa;
-		margin: -10px 0px 5px 0px;
+		margin: -10px 0px 0px 0px;
 	}
 
 	.sidebar-body {
@@ -181,6 +267,7 @@
 
 	.icon-legenda {
 		font-size: 1em;
+		padding: 4px 8px 0px 15px;
 	}
 
 }
@@ -189,7 +276,7 @@
 	color: @cinza;
 }
 
-#camadas-empreendimento {
+#camadas {
 
 	.camadas-mapa {
 

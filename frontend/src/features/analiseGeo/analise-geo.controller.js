@@ -272,16 +272,21 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		}
 	};
 
+	this.controlaCentralizacaoCamadas = function (camada) {
+
+		$scope.$emit('mapa:centralizar-camada', camada);
+	};
+
 	function adicionarGeometriaNoMapa (camada, disable) {
 
 		camada.visivel = true;
-		camada.color = ctrl.estiloMapa[camada.tipo].color;
+		camada.color = ctrl.estiloMapa[camada.tipo] != undefined ? ctrl.estiloMapa[camada.tipo].color : ctrl.estiloMapa.ATIVIDADE.color;
 
 		$scope.$emit('mapa:adicionar-geometria-base', {
 			geometria: JSON.parse(camada.geometria),
 			tipo: camada.tipo,
 			estilo: {
-				style: ctrl.estiloMapa[camada.tipo]
+				style: ctrl.estiloMapa[camada.tipo] || ctrl.estiloMapa.ATIVIDADE
 			},
 			popupText: camada.item,
 			disableCentralizarGeometrias:disable
@@ -329,6 +334,16 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 						adicionarGeometriaNoMapa(camada);
 					});
 
+					analiseGeoService.getDadosAreaProjeto($scope.analiseGeo.analise.processo.id)
+						.then(function (response) {
+
+							ctrl.camadasDadosAtividade = response.data;
+							ctrl.camadasDadosAtividade.forEach(function (camadaAtividade) {
+								camadaAtividade.camadasGeo.forEach(function (camadaGeo) {
+									adicionarGeometriaNoMapa(camadaGeo);
+								});
+							});
+						});
 				});
 
 		});
@@ -461,6 +476,12 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
+			ctrl.situacaoFundiaria = undefined;
+			ctrl.analiseTemporal = undefined;
+
+		} else {
+			$('#situacaoFundiaria').summernote('enable');
+			$('#analiseTemporal').summernote('enable');
 		}
 			$('.nav-tabs > .active').next('li').find('a').trigger('click');
 	};
