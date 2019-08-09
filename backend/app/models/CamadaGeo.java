@@ -1,6 +1,7 @@
 package models;
 
 import com.vividsolutions.jts.geom.Geometry;
+import models.licenciamento.Atividade;
 
 import java.util.List;
 
