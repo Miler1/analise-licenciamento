@@ -39,6 +39,7 @@ ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista 
 # Inconsistencia
 #
 INCONSISTENCIA_SALVA_SUCESSO=A inconsistência foi salva com sucesso.
+INCONSISTENCIA_EXCLUIDA_SUCESSO=A inconsistência foi excluída com sucesso.
 CAMPOS_OBRIGATORIOS= Verifique os campos obrigatórios!
 #
 # Gerentes

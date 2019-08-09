@@ -81,6 +81,18 @@ var PainelMapaController = function ($scope) {
 
 	$scope.$on('mapa:adicionar-botao-centralizar-mapa-base', adicionarBotaoCentralizar);
 
+    $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
+
+    function centralizarCamadaEspecifica(event, camada) {
+
+		var geometria = painelMapa.listaGeometriasBase[camada.tipo];
+
+        var latLngBounds = new L.latLngBounds();
+
+        latLngBounds.extend(geometria.getBounds());
+
+        painelMapa.map.fitBounds(latLngBounds, {maxZoom: 17});
+    }
 
 	function adicionarBotaoCentralizar () {
 

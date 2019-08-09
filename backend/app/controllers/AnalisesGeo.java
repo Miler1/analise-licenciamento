@@ -6,12 +6,14 @@ import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseGeoSerializer;
+import serializers.CamadaGeoAtividadeSerializer;
 import serializers.EmpreendimentoSerializer;
 import utils.Mensagem;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 public class AnalisesGeo extends InternalController {
 
@@ -195,6 +197,17 @@ public class AnalisesGeo extends InternalController {
 
         renderBinary(pdfNotificacao.arquivo, nome);
 
+    }
+
+    public static void buscaDadosAreaProjeto(Long idProcesso) {
+
+        returnIfNull(idProcesso, "Long");
+
+        Processo processo = Processo.findById(idProcesso);
+
+      List<CamadaGeoAtividade> dadosAreaProjeto =  processo.getDadosAreaProjeto();
+
+        renderJSON(dadosAreaProjeto, CamadaGeoAtividadeSerializer.getDadosGeoAtividade);
     }
 
 }

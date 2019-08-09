@@ -1,12 +1,13 @@
 package models;
 
+import exceptions.ValidacaoException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
-import utils.ListUtil;
-import utils.ModelUtil;
+import utils.*;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,7 +37,7 @@ public class Inconsistencia extends GenericModel{
     @JoinColumn(name="id_analise_geo")
     public AnaliseGeo analiseGeo;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(schema="analise", name="rel_documento_inconsistencia",
             joinColumns=@JoinColumn(name="id_inconsistencia"),
             inverseJoinColumns=@JoinColumn(name="id_documento"))
@@ -121,5 +122,15 @@ public class Inconsistencia extends GenericModel{
         }
 
         ModelUtil.deleteAll(documentosDeletar);
+    }
+
+    public void deleteAnexos() {
+
+        for (Documento anexo : this.anexos) {
+
+            File documento = anexo.getFile();
+            documento.delete();
+        }
+
     }
 }

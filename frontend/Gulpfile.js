@@ -107,6 +107,14 @@ var config = {
 		],
 		summernote:[
 			"./bower_components/angular-summernote/dist/angular-summernote.min.js"
+		],
+		ngBootbox:[
+			"./bower_components/ngBootbox/dist/ngBootbox.min.js"
+		],
+		bootbox:[
+			"./bower_components/bootbox/dist/bootbox.all.min.js",
+			"./bower_components/bootbox/dist/bootbox.locales.min.js",
+			"./bower_components/bootbox/dist/bootbox.min.js"
 		]
 	},
 

@@ -21,7 +21,9 @@ var licenciamento = angular.module("licenciamento", [
 	"analiseTecnica",
 	"as.sortable",
 	"analiseGeo",
-	"summernote"
+	"summernote",
+	"ngBootbox"
+
 ]);
 
 licenciamento.config(["$routeProvider", function($routeProvider) {
