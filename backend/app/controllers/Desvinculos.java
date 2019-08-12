@@ -1,6 +1,7 @@
 package controllers;
 
 
+import exceptions.ValidacaoException;
 import models.*;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -20,6 +21,11 @@ public class Desvinculos extends GenericController {
 
             returnIfNull(desvinculo, "Desvinculo");
 
+            if(desvinculo.justificativa == null || desvinculo.justificativa.equals("")){
+
+                throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+
+            }
             desvinculo.analista = getUsuarioSessao();
 
             if(desvinculo.dataSolicitacao == null) {

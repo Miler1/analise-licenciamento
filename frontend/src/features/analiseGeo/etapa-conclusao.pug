@@ -89,10 +89,15 @@ div
                     | Emitir notificação
     hr
 div#conclusao
-    div(ng-if="ctrl.opcaoConclusaoParecer !== 'NOTIFICACAO'")
-        label Observações*:
+    div(ng-if="ctrl.opcaoConclusaoParecer === 'INDEFERIDO'")
+        label Justificativa*:
         br
-        textarea.tamanho-obs(name="observacao", ng-model="ctrl.observacao")
+        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.justificativa")
+
+    div(ng-if="ctrl.opcaoConclusaoParecer === 'DEFERIDO'")
+        label Despacho*:
+        br
+        textarea.tamanho-obs(name="despacho", ng-model="ctrl.despacho")
 
     div(ng-if="ctrl.opcaoConclusaoParecer === 'NOTIFICACAO'")
         #lista-restricoes

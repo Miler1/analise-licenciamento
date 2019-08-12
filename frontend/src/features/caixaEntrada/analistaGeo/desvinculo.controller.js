@@ -23,7 +23,9 @@ var DesvinculoController = function ($uibModalInstance,idProcesso , mensagem, de
                     mensagem.success(response.data);
                     $uibModalInstance.close();	
                     $location.path('/caixa-entrada');
-            });
+            }).catch(function(response){
+				mensagem.error(response.data.texto, {referenceId: 5});
+			});
 
 	};
 
