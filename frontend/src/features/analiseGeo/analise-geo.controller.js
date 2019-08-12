@@ -337,7 +337,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 					analiseGeoService.getDadosAreaProjeto($scope.analiseGeo.analise.processo.id)
 						.then(function (response) {
 
-							ctrl.camadasDadosAtividade = response.data;
+							ctrl.camadasDadosAtividade = response.data;				
 							ctrl.camadasDadosAtividade.forEach(function (camadaAtividade) {
 								camadaAtividade.camadasGeo.forEach(function (camadaGeo) {
 									adicionarGeometriaNoMapa(camadaGeo);
