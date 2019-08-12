@@ -666,14 +666,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		switch (geometry.getGeometryType().toUpperCase()) {
 
 			case "POINT" :
-				descricao = "[" + String.valueOf(((Point) geometry).getY()) + "," + String.valueOf(((Point) geometry).getX()) + "]";
+				descricao = "Coordenadas [" + String.valueOf(((Point) geometry).getY()) + ", " + String.valueOf(((Point) geometry).getX()) + "]";
 				break;
 			case "LINESTRING":
 
-				descricao = "Extensão " + String.valueOf(GeoCalc.length(geometry)/1000) + " Km";
+				descricao = "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
 				break;
 			case "POLYGON":
-				descricao = "Área " + String.valueOf(GeoCalc.areaHectare(geometry)) + " ha";
+				descricao = "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
 				break;
 		}
 

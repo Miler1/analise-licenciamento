@@ -18,12 +18,12 @@ html(lang="pt-br")
 
             .titulo-item {
                 text-decoration:underline;
-                margin: 20px 20px 10px 60px;
+                margin: 0px 20px 10px 60px;
                 font-size: 14px;
                 font-weight: bold;
             }
             .conteudo-item {
-                font-size: 12px;
+                font-size: 14px;
                 font-weight: normal;
             }
             p {
@@ -38,10 +38,21 @@ html(lang="pt-br")
             .lista-referencias {
                 font-size: 10px;
                 padding-top: 100px;
+                padding-left: 15px;
             }
 
-            .text-align-center {
-                text-align: center;
+            .lista-itens {
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+            .col-item-titulo {
+                width: 230px;
+                border-bottom: dotted;
+            }
+            .col-item-conteudo {
+                width: 200px;
+                border-bottom: dotted;
+                text-align: right;
             }
 
             .text-align-right {
@@ -50,7 +61,7 @@ html(lang="pt-br")
 
 body.corpo
     div.titulo
-        h2 PARECER TÉCNICO Nº ${numeroParecer} - GGEO
+        h2 PARECER GEO Nº ${analiseEspecifica.analise.processo.numero} - GGEO
     div.conteudo
         h3 PROCESSO: ${analiseEspecifica.analise.processo.numero}
         h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
@@ -62,19 +73,39 @@ body.corpo
                 .conteudo-item
                     p O interessado requer L.P // L.I. // L.O. // CADASTRO // APAT // INEXIGIBILIDADE, para atividade(s) de ATIVIDADE-NOME em um imóvel situado em ÁREA URBANA // ZONA RURAL.
 
-                    p Quanto ao município informo que o imóvel se encontra TOTALMENTE INSERIDO nos limites do município de XXXX/AM.
-
-                    p Quanto ao município informo que o imóvel se encontra com MAIOR PORÇÃO INSERIDA nos limites do município de XXXX/AM e MENOR PORÇÃO INSERIDA nos limites do município de XXX/AM.
+                    p Quanto ao município informo que o imóvel se encontra TOTALMENTE INSERIDO nos limites do município de ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM.
 
             li
                 .titulo-item DAS ÁREAS RESULTANTES DA CARACTERIZAÇÃO
                 .conteudo-item
                     p As áreas das poligonais do empreendimento, estimadas a partir do Sistema de Projeção Universal Transverse Mercator (UTM) – Datum SIRGAS_2000, podem ser observadas abaixo:
 
-            li
-                .titulo-item DA ÁREA DA ATIVIDADE
-                .conteudo-item
-                    p As áreas das poligonais do empreendimento, estimadas a partir do Sistema de Projeção Universal Transverse Mercator (UTM) – Datum SIRGAS_2000, podem ser observadas abaixo:
+                    p.titulo-item DA ÁREA DO EMPREENDIMENTO
+                        div.lista-itens
+                            table
+                                tbody
+                                    | \#{list items:camadasGeoEmpreedimento, as:'camadaEmp'}
+                                    tr
+                                        td.col-item-titulo
+                                            |${camadaEmp.item}
+                                        td.col-item-conteudo
+                                            |${camadaEmp.descricao}
+                                    | \#{/list}
+
+                    p.titulo-item DA ÁREA DA ATIVIDADE
+                        | \#{list items:camadasGeoAtividade, as:'camadaAti'}
+                        div.lista-itens
+                            table
+                                tbody
+                                    tr Atividade: ${camadaAti.atividade.toUpperCase()}
+                                    | \#{list items:camadaAti.camadasGeo, as:'camadaGeoAti'}
+                                    tr
+                                        td.col-item-titulo
+                                            | ${camadaGeoAti.item}
+                                        td.col-item-conteudo
+                                            | ${camadaGeoAti.descricao}
+                                    | \#{/list}
+                        | \#{/list}
 
             li
                 .titulo-item DA ANÁLISE DA SITUAÇÃO FUNDIÁRIA
