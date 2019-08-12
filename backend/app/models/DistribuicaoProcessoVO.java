@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class AnalistaGeoVO {
+public class DistribuicaoProcessoVO {
 
 	@Id
 	@Column(name="id_usuario")

@@ -119,11 +119,11 @@ public class Gerente extends GenericModel {
 				"        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
 				"SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
 
-		Query consulta = JPA.em().createNativeQuery(sql, GerenteVO.class);
+		Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
 
-		GerenteVO gerenteVO = (GerenteVO) consulta.getSingleResult();
+		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
 
-		return  UsuarioAnalise.findById(gerenteVO.id);
+		return  UsuarioAnalise.findById(distribuicaoProcessoVO.id);
 
 	}
 
