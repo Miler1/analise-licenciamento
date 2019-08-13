@@ -344,8 +344,9 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 								});
 							});
 						});
-				});
 
+					habilitarCamposParecerEmpreedimento();
+				});
 		});
 
 	};
@@ -415,10 +416,26 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
 					}
 
+					habilitarCamposParecerEmpreedimento();
+
 				});
 				
 			});
 	};
+
+	function habilitarCamposParecerEmpreedimento() {
+
+		if(ctrl.analiseGeo.inconsistencias.length > 0){
+			$('#situacaoFundiaria').summernote('disable');
+			$('#analiseTemporal').summernote('disable');
+			ctrl.situacaoFundiaria = undefined;
+			ctrl.analiseTemporal = undefined;
+
+		} else {
+			$('#situacaoFundiaria').summernote('enable');
+			$('#analiseTemporal').summernote('enable');
+		}
+	}
 
 	ctrl.downloadPDFParecer = function() {
 
@@ -518,22 +535,13 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	};
 
 	ctrl.proximaEtapa = function(){
-		
-		if(ctrl.analiseGeo.inconsistencias.length > 0){
-			$('#situacaoFundiaria').summernote('disable');
-			$('#analiseTemporal').summernote('disable');
-			ctrl.situacaoFundiaria = undefined;
-			ctrl.analiseTemporal = undefined;
 
-		} else {
-			$('#situacaoFundiaria').summernote('enable');
-			$('#analiseTemporal').summernote('enable');
-		}
-			$('.nav-tabs > .active').next('li').find('a').trigger('click');
+		$('.nav-tabs > .active').next('li').find('a').trigger('click');
 	};
 
 	ctrl.etapaAnterior = function(){
-			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+
+		$('.nav-tabs > .active').prev('li').find('a').trigger('click');
 	};
 
 	$scope.optionsText = {
