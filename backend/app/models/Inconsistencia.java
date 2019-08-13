@@ -18,7 +18,7 @@ public class Inconsistencia extends GenericModel{
 
     public static final String SEQ = "analise.inconsistencia_id_seq";
 
-    public enum Categoria { PROPRIEDADE, AREA_PROJETO, RESTRICAO }
+    public enum Categoria { PROPRIEDADE, ATIVIDADE, RESTRICAO }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
