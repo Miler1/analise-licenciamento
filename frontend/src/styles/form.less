@@ -186,7 +186,7 @@ form{
 
   &:before {
     content: "";
-    background-color: orange;
+    background-color: #16cbd1;
     border-radius: 50%;
     width: 12px;
     height: 12px;
@@ -227,6 +227,32 @@ form{
 	}
 }
 
+.icone-soliciacao-desvinculo-pendente {
+	color: #757575;
+	font-style: italic;
+
+	&:before {
+		content: "";
+    background-color: orange;
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
+	}
+
+	&.legenda {
+		margin-left: 5px;
+
+		&:before {
+			margin-right: 5px;
+		}
+	}
+}
+
+
+
 .icone-revisao-atendida {
     color: #757575;
 	font-style: italic;
@@ -254,7 +280,17 @@ form{
 .no-margin {
 	margin:0px !important;
 }
-
+#justificativa-desvinculo{
+  .label-justificativa{
+    font-size: 13px;
+    margin-left:15px;
+  }
+  .text-justificativa{
+    margin:15px;
+    width: 840px;
+    height: 170px;
+  }
+}
 .form-inline.periodo {
   white-space: nowrap;
 

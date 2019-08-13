@@ -3,8 +3,6 @@ package models;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
-import org.hibernate.jpa.TypedParameterValue;
-import org.hibernate.mapping.Array;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -12,7 +10,6 @@ import utils.Mensagem;
 
 import javax.persistence.*;
 import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -124,11 +121,11 @@ public class AnalistaGeo extends GenericModel {
                 "        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
                 "SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
 
-        Query consulta = JPA.em().createNativeQuery(sql, AnalistaGeoVO.class);
+        Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
 
-        AnalistaGeoVO analistaGeoVO = (AnalistaGeoVO) consulta.getSingleResult();
+        DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
 
-        return new AnalistaGeo(analiseGeo, UsuarioAnalise.findById(analistaGeoVO.id));
+        return new AnalistaGeo(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
 
     }
 

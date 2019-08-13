@@ -10,6 +10,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.onPaginaAlterada = onPaginaAlterada;
 	consultarProcesso.visualizarProcesso = visualizarProcesso;
 
+	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
 	consultarProcesso.processos = [];
 	consultarProcesso.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	consultarProcesso.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;

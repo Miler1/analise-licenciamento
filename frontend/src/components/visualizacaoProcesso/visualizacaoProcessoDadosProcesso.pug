@@ -39,7 +39,7 @@
 								div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
 									h5.info {{atividadeCaracterizacao.atividade.nome}}
 									div(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
-										ul
+										ul(style="margin-left:25px")
 											li
 												span {{atividadeCaracterizacao.atividade.parametros[$index].codigo}} - {{atividadeCaracterizacao.atividade.parametros[$index].nome}} : {{atividadeCaracterizacaoParametro.valorParametro}}
 

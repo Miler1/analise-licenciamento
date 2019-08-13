@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $location, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -15,6 +15,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	ctrl.categoria = app.utils.Inconsistencia;
 	ctrl.camadas = [];
 	ctrl.estiloMapa = app.utils.EstiloMapa;
+	ctrl.controleVisualizacao = null;
 
 
 	var getLayer = function(descricao){
@@ -50,7 +51,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	);
 
 	ctrl.init('mapa-localizacao-empreendimento', true, true);
-
+	ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	function piscarFeature(layer, color) {
 
 		setTimeout(function(){
@@ -483,19 +484,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		}
 	};
 
-	ctrl.confirmar= function() {
-
-
-
-	};
-
-
-	ctrl.cancelar= function() {
-		$location.path('/analise-geo');
-	};
-
-	ctrl.proximaEtapa = function(){
-		
+	ctrl.avancarProximaEtapa= function() {
+		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
@@ -507,10 +497,28 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			$('#analiseTemporal').summernote('enable');
 		}
 			$('.nav-tabs > .active').next('li').find('a').trigger('click');
+			scrollTop();
+
 	};
 
-	ctrl.etapaAnterior = function(){
+
+	ctrl.cancelar= function() {
+		$location.path('/analise-geo');
+		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+	};
+
+	function scrollTop() {
+		$anchorScroll();
+	}
+
+	ctrl.voltarEtapaAnterior = function(){
 			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+			scrollTop();
+			ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+	};
+
+	ctrl.concluir = function(){
+		
 	};
 
 	$scope.optionsText = {
