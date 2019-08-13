@@ -1,6 +1,8 @@
 package models;
 
 import com.vividsolutions.jts.geom.Geometry;
+import models.licenciamento.Atividade;
+import models.licenciamento.GeometriaAtividade;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ public class CamadaGeo {
 	public Double area;
 
 	public Geometry geometria;
+
+	public GeometriaAtividade geometriaAtividade;
 
 	List<CamadaGeo> restricoes;
 

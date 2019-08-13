@@ -7,17 +7,17 @@ include ../../layout/components/mapPanel
 
             +mapPanel-sidebar("mapa-localizacao-empreendimento",'400', true, 'ctrl')
             br
-            #lista-restricoes
-                #accordion.panel-group
+            #lista-camadas-empreendimento
+                #accordion-empreendimento.panel-group
                     div
-                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion', aria-expanded='false', data-target='#meusDados', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion' )
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-empreendimento', aria-expanded='false', data-target='#meusDados', ng-init = 'ctrl.openedAccordionEmpreendimento = false', ng-click = 'ctrl.openedAccordionEmpreendimento = !ctrl.openedAccordionEmpreendimento' )
                             .panel.panel-default
                                 .panel-heading
                                     h4.panel-title
                                         | Dados do empreendimento
-                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !ctrl.openedAccordionEmpreendimento}")
                         #meusDados.collapse
-                            table.table.table-striped.table-condensed.no-margin.table-responsive
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                 thead
                                     tr
                                         th.col-md-5 Item
@@ -29,61 +29,64 @@ include ../../layout/components/mapPanel
                                         td.col-md-5 {{camada.item}}
                                         td.col-md-5 {{camada.descricao}}
                                         td.col-md-2.text-right
-                                            i.glyphicon.glyphicon-alert(ng-show="ctrl.analiseGeo.inconsistencias.length > 0", style="color:red",ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência', )
-                                            | &nbsp;&nbsp;
-                                            i.glyphicon.glyphicon-alert(ng-show="ctrl.analiseGeo.inconsistencias.length < 1",ng-if = 'camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE', ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência')
+                                            i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE" , ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência', )
                                             | &nbsp;&nbsp;
 
             br
-            div
-                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#restricoesAtividade', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
-                    .panel.panel-default
-                        .panel-heading
-                            h4.panel-title
-                                | Áreas de restrição da atividade
-                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
-                #restricoesAtividade.collapse
-                        table.table.table-striped.table-condensed.no-margin.table-responsive
-                            thead
-                                tr
-                                    th.col-md-4 Item
-                                    th.col-md-5 Critério
-                                    th.col-md-1.text-right Ações
+            #lista-camadas-atividades
+                #accordion-atividades.panel-group
+                    h5(style="margin-bottom:0px") Dados da área do projeto
+                    br
+                    hr(style="margin-top:2px;")
+                    div(ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
+                            .panel.panel-default
+                                .panel-heading(style="display: inline-flex;")
+                                    h4.panel-title
+                                        | Atividade:&nbsp;&nbsp;
+                                    h4.panel-title(style="text-transform: uppercase;")
+                                        |  {{camadaDadosAtividade.atividade.nome}}
+                                        i.pull-right(style="margin-left: 460px;",class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
 
-                            tbody
-                                tr
-                                    td.col-md-4 Minha área do imóvel
-                                    td.col-md-5 Meu empreendimento
-                                    td.col-md-2.text-right
-                                        i.glyphicon.glyphicon-alert(title='Sobreposição encontrada. Emitir notificação ao interessado')
-                                        i.glyphicon.glyphicon-envelope(title='Será comunicado ao órgão competente sobre a restrição declarada')
-                                        | &nbsp;&nbsp;
-            br
-            br
+                        #dadosAreaProjeto.collapse
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                thead
+                                    tr
+                                        th.col-md-4 Item
+                                        th.col-md-5 Declarado
+                                        th.col-md-1.text-right Ações
 
-            div.margin-top-xs(ng-repeat='(key, groupLayer) in layersRestricoes')
-                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', ng-attr-data-target="{{'#outrosDados'+$index}}")
-                    .panel.panel-default
-                        .panel-heading
-                            h4.panel-title
-                                | {{key}}
-                div.collapse(id="{{'outrosDados'+$index}}")
-                    table.table.table-condensed
-                        thead
-                            tr
-                                th Nome
-                                th.text-right Restrição
-                                th.text-right #
+                                tbody(ng-repeat="camadaGeo in camadaDadosAtividade.camadasGeo")
+                                    tr
+                                        td.col-md-4 {{camadaGeo.item}}
+                                        td.col-md-5 {{camadaGeo.descricao}}
+                                        td.col-md-1.text-right
+                                            i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(camadaDadosAtividade.atividade.id, camadaGeo.item) }", ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência', )
+                                                | &nbsp;&nbsp;
 
-                        tbody
-                            tr(ng-repeat='(key, layer) in groupLayer.getLayers()')
-                                td.col-md-6 {{layer.feature.properties.descricaoLayer | textoTruncado: 30:4}}
-                                td.col-md-4.text-right {{tratarRestricao(layer.feature.properties)}}
-                                td.col-md-2.text-right
-                                    i.glyphicon.glyphicon-eye-open(ng-click='mostrarLayer(layer)', ng-if='layer.escondida', title='Exibir geometria')
-                                    i.glyphicon.glyphicon-eye-close(ng-click='esconderLayer(layer)', ng-if='!layer.escondida', title='Esconder geometria')
-                                    | &nbsp;&nbsp;
-                                    i.glyphicon.glyphicon-screenshot(ng-click='visualizarLayer(layer, groupLayer.color)', , title='Centralizar na geometria')
-                                    | &nbsp;&nbsp;
-                                    i.glyphicon.glyphicon-alert(ng-click='adicionarRestricao(layer)', title='Adicionar parecer da restrição', ng-class="{'restricao-adicionada': layer.feature.properties.parecer}")
-                        
+                            br
+                            //- div
+                            //-     a(href='javascript:;', data-parent='#accordion',aria-expanded='false', data-target='#dadosAreaProjeto', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
+                            //-         .panel.panel-default
+                            //-             .panel-heading
+                            //-                 h4.panel-title
+                            //-                     | Áreas de restrição da atividade
+                            //-     #dadosAreaProjeto
+                            //-             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                            //-                 thead
+                            //-                     tr
+                            //-                         th.col-md-4 Item
+                            //-                         th.col-md-5 Critério
+                            //-                         th.col-md-1.text-right Ações
+
+                            //-                 tbody
+                            //-                     tr
+                            //-                         td.col-md-4 Minha área do imóvel
+                            //-                         td.col-md-5 Meu empreendimento
+                            //-                         td.col-md-2.text-right
+                            //-                             i.glyphicon.glyphicon-alert(title='Sobreposição encontrada. Emitir notificação ao interessado')
+                            //-                             | &nbsp;&nbsp;
+                            //-                             i.glyphicon.glyphicon-envelope(title='Será comunicado ao órgão competente sobre a restrição declarada')
+                            //-                             | &nbsp;&nbsp;
+                            br
+                            br

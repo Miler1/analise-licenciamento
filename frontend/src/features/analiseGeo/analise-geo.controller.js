@@ -273,16 +273,21 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		}
 	};
 
+	this.controlaCentralizacaoCamadas = function (camada) {
+
+		$scope.$emit('mapa:centralizar-camada', camada);
+	};
+
 	function adicionarGeometriaNoMapa (camada, disable) {
 
 		camada.visivel = true;
-		camada.color = ctrl.estiloMapa[camada.tipo].color;
+		camada.color = ctrl.estiloMapa[camada.tipo] != undefined ? ctrl.estiloMapa[camada.tipo].color : ctrl.estiloMapa.ATIVIDADE.color;
 
 		$scope.$emit('mapa:adicionar-geometria-base', {
 			geometria: JSON.parse(camada.geometria),
 			tipo: camada.tipo,
 			estilo: {
-				style: ctrl.estiloMapa[camada.tipo]
+				style: ctrl.estiloMapa[camada.tipo] || ctrl.estiloMapa.ATIVIDADE
 			},
 			popupText: camada.item,
 			disableCentralizarGeometrias:disable
@@ -330,10 +335,43 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 						adicionarGeometriaNoMapa(camada);
 					});
 
+					analiseGeoService.getDadosAreaProjeto($scope.analiseGeo.analise.processo.id)
+						.then(function (response) {
+
+							ctrl.camadasDadosAtividade = response.data;				
+							ctrl.camadasDadosAtividade.forEach(function (camadaAtividade) {
+								camadaAtividade.camadasGeo.forEach(function (camadaGeo) {
+									adicionarGeometriaNoMapa(camadaGeo);
+								});
+							});
+						});
 				});
 
 		});
 
+	};
+
+	$scope.verificaInconsistenciaEmpreendimento = function () {
+
+		if (ctrl.analiseGeo.inconsistencias === undefined  || ctrl.analiseGeo.inconsistencias.length === 0) {
+			return false;
+		}
+
+		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
+			return inconsistencia.categoria.toUpperCase() === ctrl.categoria.PROPRIEDADE ;
+		});
+
+		return inconsitenciaEncontrada !== undefined;
+	};
+
+	$scope.verificaInconsistenciaAtividade = function (atividade, nomeGeometria) {
+
+		//TODO PUMA-SQ1 - Criar método para buscar no array de inconsistencias, uma inconsistencia por atividade e nomeGeometria
+	};
+
+	$scope.addInconsistenciaAtividade = function (atividade, geometria) {
+
+		//TODO PUMA-SQ1 - Criar método para adicionar inconsitencia por geometria da atividade
 	};
 
 	$scope.addInconsistencia = function(categoriaInconsistencia){

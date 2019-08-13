@@ -65,6 +65,12 @@ var AnaliseGeoService = function(request, $window ,config) {
         $window.open(config.BASE_URL() + 'documentos/' + idDocumento + '/download', '_blank');
 
 	};
+
+	this.getDadosAreaProjeto = function(idProcesso) {
+
+		return request
+			.post(config.BASE_URL() + 'analisesGeo/processo/buscaDadosAreaProjeto/' + idProcesso);
+	};
 };
 
 exports.services.AnaliseGeoService = AnaliseGeoService;

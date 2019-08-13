@@ -1,5 +1,6 @@
 package utils;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.index.strtree.STRtree;
 import com.vividsolutions.jts.operation.valid.IsValidOp;
@@ -11,6 +12,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import play.Play;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -90,6 +92,17 @@ public class GeoCalc {
 		CoordinateReferenceSystem[] crs = detecteCRS(geometry);
 
 		return area(geometry, crs[0]);
+	}
+
+	public static double areaHectare(Geometry geometry) {
+
+		if(geometry.isEmpty()) {
+			return 0D;
+		}
+
+		CoordinateReferenceSystem[] crs = detecteCRS(geometry);
+
+		return area(geometry, crs[0])/10000;
 	}
 
 	public static double area(Geometry geometry, CoordinateReferenceSystem crs) {
@@ -213,5 +226,20 @@ public class GeoCalc {
 		}
 
 		return new MultiPolygon(polygons.toArray(new Polygon[polygons.size()]), geometry.getFactory());
+	}
+
+	public static List<Geometry> getGeometries(Geometry gc) {
+
+		List<Geometry> geometries = new ArrayList<>();
+
+		gc.apply(new GeometryFilter() {
+			public void filter (Geometry geom) {
+				if (geom instanceof Point || geom instanceof LineString || geom instanceof Polygon) {
+					geometries.add(geom);
+				}
+			}
+		});
+
+		return geometries;
 	}
 }
