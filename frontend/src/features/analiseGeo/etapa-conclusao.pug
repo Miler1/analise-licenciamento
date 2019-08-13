@@ -22,7 +22,7 @@ div
                     name="situacaoFundiaria",
                     lang="pt-BR",
                     height="200",
-                    ng-model="ctrl.situacaoFundiaria",
+                    ng-model="ctrl.analiseGeo.situacaoFundiaria",
                     config="optionsText")
 
     div
@@ -33,7 +33,7 @@ div
                     name="analiseTemporal",
                     lang="pt-BR",
                     height="200",
-                    ng-model="ctrl.analiseTemporal",
+                    ng-model="ctrl.analiseGeo.analiseTemporal",
                     config="optionsText")
 
 div
@@ -44,7 +44,7 @@ div
                 name="conclusao",
                 lang="pt-BR",
                 height="200",
-                ng-model="ctrl.conclusao",
+                ng-model="ctrl.analiseGeo.parecer",
                 config="optionsText",
                 class="editable",
                 contenteditable="true")
@@ -79,27 +79,27 @@ div
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
                 label.opDla.radio-inline.posicao-primeiroItem
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="DEFERIDO", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Deferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="INDEFERIDO")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}")
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.opcaoConclusaoParecer', value="NOTIFICACAO", disabled="true")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO}}", disabled="true")
                     | Emitir notificação
     hr
 div#conclusao
-    div(ng-if="ctrl.opcaoConclusaoParecer === 'INDEFERIDO'")
+    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()")
         label Justificativa*:
         br
-        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.justificativa")
+        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.analiseGeo.despacho")
 
-    div(ng-if="ctrl.opcaoConclusaoParecer === 'DEFERIDO'")
+    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString()")
         label Despacho*:
         br
-        textarea.tamanho-obs(name="despacho", ng-model="ctrl.despacho")
+        textarea.tamanho-obs(name="despacho", ng-model="ctrl.analiseGeo.despacho")
 
-    div(ng-if="ctrl.opcaoConclusaoParecer === 'NOTIFICACAO'")
+    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()")
         #lista-restricoes
             #accordion.panel-group
                 h4.panel-title Inconsistências adicionadas:

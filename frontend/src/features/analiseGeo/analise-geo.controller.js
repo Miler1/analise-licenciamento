@@ -12,10 +12,12 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	ctrl.restricoes = restricoes;
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
+	ctrl.analiseGeo.tipoResultadoAnalise = {id:undefined};
 	ctrl.categoria = app.utils.Inconsistencia;
 	ctrl.camadas = [];
 	ctrl.estiloMapa = app.utils.EstiloMapa;
 	ctrl.controleVisualizacao = null;
+	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
 
 	var getLayer = function(descricao){
@@ -522,8 +524,49 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	};
 
+	function analiseValida() {
+
+		if ((!ctrl.analiseGeo.inconsistencias || ctrl.analiseGeo.inconsistencias.length === 0) && (!ctrl.analiseGeo.analiseTemporal || !ctrl.analiseGeo.situacaoFundiaria)) {
+			return false;
+		}
+
+		if (!ctrl.analiseGeo.parecer) {
+			return false;
+		}
+
+		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
+			return false;
+		}
+
+		return (ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
+			ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString() && !ctrl.analiseGeo.despacho);
+	}
+
 	ctrl.concluir = function(){
-		
+
+		if(!analiseValida()) {
+
+			mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
+				'<ul>' +
+				'<li>Para concluir é necessário descrever o parecer.</li>' +
+				'<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' +
+				'<li>Para DEFERIDO, todos os documentos de validação técnica devem ter sido validados.</li>' +
+				'<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' +
+				'</ul>', { ttl: 10000 });
+			return;
+		}
+
+		ctrl.analiseTecnica.analise.processo.empreendimento.pessoa = null;
+		analiseGeoService.concluir(ctrl.analiseGeo)
+			.then(function(response) {
+
+				mensagem.success(response.data.texto);
+				$location.path('/analise-geo');
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
 	};
 
 	$scope.optionsText = {

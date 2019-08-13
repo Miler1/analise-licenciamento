@@ -359,27 +359,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public void finalizar(AnaliseGeo analise, UsuarioAnalise usuarioExecutor) {
 
         this.update(analise);
-
-        validarLicencasAnalise();
         validarParecer();
-        validarAnaliseDocumentos();
-        validarResultado();
-
-        if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO))
-            validarEmissaoLicencas(this.licencasAnalise);
-
-        if(this.analise.diasAnalise.qtdeDiasAprovador == null) {
-
-            this.analise.diasAnalise.qtdeDiasAprovador = 0;
-            this.analise.diasAnalise.save();
-        }
+        //TODO PUMA-SQ1 Validar campos obrigatorios
 
         this._save();
 
-
-
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
+            //TODO PUMA-SQ1 Usar distribuição automática para algum gerente ?
             if(this.usuarioValidacaoGerente != null) {
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor);
