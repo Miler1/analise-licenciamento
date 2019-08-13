@@ -353,6 +353,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.comTiposLicencas()
 				.groupByIdProcesso()
 				.groupByNumeroProcesso()
+				.groupByObjetoTramitavel()
 				.groupByCpfCnpjEmpreendimento()
 				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()

@@ -21,6 +21,7 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
+							th
 							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Interessado
@@ -31,6 +32,8 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
+							td
+								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.legendaDesvinculo}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -54,6 +57,10 @@ div
 												a(ng-click="consultarProcesso.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
+				div
+
+					span.icone-soliciacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
+					span.icone-revisao-atendida.legenda Notificação Atendida		
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 

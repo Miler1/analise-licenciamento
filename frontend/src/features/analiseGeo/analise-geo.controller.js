@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $location, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, documentoAnaliseService, uploadService,mensagem) {
+var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -15,6 +15,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	ctrl.categoria = app.utils.Inconsistencia;
 	ctrl.camadas = [];
 	ctrl.estiloMapa = app.utils.EstiloMapa;
+	ctrl.controleVisualizacao = null;
 
 
 	var getLayer = function(descricao){
@@ -50,7 +51,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	);
 
 	ctrl.init('mapa-localizacao-empreendimento', true, true);
-
+	ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	function piscarFeature(layer, color) {
 
 		setTimeout(function(){
@@ -344,9 +345,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 								});
 							});
 						});
-
-					habilitarCamposParecerEmpreedimento();
 				});
+
 		});
 
 	};
@@ -416,14 +416,12 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
 					}
 
-					habilitarCamposParecerEmpreedimento();
-
 				});
 				
 			});
 	};
 
-	function habilitarCamposParecerEmpreedimento() {
+	function controleCamposParecerEmpreedimento() {
 
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
 			$('#situacaoFundiaria').summernote('disable');
@@ -437,31 +435,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		}
 	}
 
-	ctrl.downloadPDFParecer = function() {
 
-		var params = {
-			id: $scope.analiseGeo.id,
-			parecer: $scope.analiseGeo.parecer
-		};
-
-		documentoAnaliseService.generatePDFParecerGeo(params)
-			.then(
-				function(data, status, headers){
-
-					var a = document.createElement('a');
-					a.href = URL.createObjectURL(data.data.response.blob);
-					a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-					a.click();
-				},
-
-				function(error){
-
-					mensagem.error(error.data.texto);
-				}
-			);
-	};
-
-	ctrl.clonarParecerGeo = function() {
+	 ctrl.clonarParecerGeo = function() {
 
 		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
 				.then(function(response){
@@ -478,7 +453,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 						mensagem.error(error.data.texto);
 				});
-	};
+};
 
 	ctrl.upload = function(file, invalidFile) {
 
@@ -506,42 +481,49 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
 		}
-	};
+};
 
-	ctrl.removerDocumento = function (indiceDocumento) {
+	 ctrl.removerDocumento = function (indiceDocumento) {
 
 		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
 
-		};
+	};
 
 	ctrl.baixarDocumento= function(documento) {
 
 		if(!documento.id){
 			documentoService.download(documento.key, documento.nomeDoArquivo);
 		}else{
-			analiseGeoService.download(documento.id);	
+			analiseGeoService.download(documento.id);
 		}
 	};
 
-	ctrl.confirmar= function() {
-
-
+	ctrl.avancarProximaEtapa= function() {
+		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+		$('.nav-tabs > .active').next('li').find('a').trigger('click');
+		controleCamposParecerEmpreedimento();
+		scrollTop();
 
 	};
 
 
 	ctrl.cancelar= function() {
 		$location.path('/analise-geo');
+		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	};
 
-	ctrl.proximaEtapa = function(){
+	function scrollTop() {
+		$anchorScroll();
+	}
 
-		$('.nav-tabs > .active').next('li').find('a').trigger('click');
+	ctrl.voltarEtapaAnterior = function(){
+			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+			scrollTop();
+			ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	};
 
-	ctrl.etapaAnterior = function(){
-
-		$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+	ctrl.concluir = function(){
+		
 	};
 
 	$scope.optionsText = {

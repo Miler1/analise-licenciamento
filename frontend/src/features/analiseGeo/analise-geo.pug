@@ -45,28 +45,22 @@ div(ng-init='ctrl.init()')
 					a(data-toggle="tab", data-target="#tabConclusao") Conclusão da análise
 
 			.tab-content
-				#tabLocalizacaoGeografica.tab-pane.fade.in.active 
+				#tabLocalizacaoGeografica.tab-pane.fade.in.active
 					include etapa-localizacaoGeografica
-					div
-						.btn.etapa-proxima.pull-right.btnNext(type="submit", name="etapaProxima", ng-click="ctrl.proximaEtapa()")
-							i.glyphicon.glyphicon-menu-right
-							| Próxima etapa
+
 				#tabConclusao.tab-pane
 					include etapa-conclusao
-					div
-						.btn.etapa-anterior.btnPrevious(type="submit", name="etapaAnterior", ng-click="ctrl.etapaAnterior()")
-							i.glyphicon.glyphicon-menu-left.pull-left
-							| Etapa Anterior
-
+						
 div
-	button.btn.btn-default.pull-left(style="margin:10px;",ng-click="ctrl.cancelar()")
-		i.glyphicon.glyphicon-arrow-left
+	button.btn.btn-default.pull-left(style="margin:15px;",ng-click="ctrl.cancelar()")
+		i.glyphicon.glyphicon-remove
 		| &nbsp;Cancelar
-
-	button.btn.btn-success.pull-right(style="margin:10px;",ng-click="ctrl.confirmar()")
+	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.avancarProximaEtapa()", ng-if="ctrl.controleVisualizacao === 'ETAPA_LOCALIZACAO_GEOGRAFICA'")
 		i.glyphicon.glyphicon-ok
-		| &nbsp;Confirmar
-
-	button.btn.btn-success.pull-right(style="margin:10px;", ng-click="ctrl.salvar()")
-		i.glyphicon.glyphicon-arrow-right
-		| &nbsp;Salvar
+		| &nbsp;Avançar
+	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.concluir()",ng-if="ctrl.controleVisualizacao === 'ETAPA_CONCLUSAO'")
+		i.glyphicon.glyphicon-ok
+		| &nbsp;Concluir
+	button.btn.btn-default.posicao-voltar(ng-click="ctrl.voltarEtapaAnterior()",ng-if="ctrl.controleVisualizacao === 'ETAPA_CONCLUSAO'")
+		i.glyphicon.glyphicon-arrow-left
+		| &nbsp;Voltar

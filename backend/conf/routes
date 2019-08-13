@@ -72,10 +72,15 @@ POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.download
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.downloadPDFCartaImagem
 
-POST    /analisesGeo/inconsistencia/salvarInconsistencia                Inconsistencias.salvarInconsistencia
-POST    /analisesGeo/inconsistencia/findInconsistencia                  Inconsistencias.findInconsistencia
-POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}          Inconsistencias.excluirInconsistencia
-POST    /analisesGeo/processo/buscaDadosAreaProjeto/{idProcesso}        AnalisesGeo.buscaDadosAreaProjeto
+
+POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
+
+POST    /analisesGeo/inconsistencia/salvarInconsistencia                            Inconsistencias.salvarInconsistencia
+POST    /analisesGeo/inconsistencia/findInconsistencia                              Inconsistencias.findInconsistencia
+POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistencia
+
+POST    /analisesGeo/processo/buscaDadosAreaProjeto/{idProcesso}                    AnalisesGeo.buscaDadosAreaProjeto
+
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento

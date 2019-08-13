@@ -84,7 +84,7 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 					retorno);
 
 			}).catch(function(response){
-				mensagem.error(response.data.texto);
+				mensagem.error(response.data.texto, {referenceId: 5});
 				
 			});
 		
