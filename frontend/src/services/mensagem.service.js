@@ -1,4 +1,4 @@
-var Mensagem = function(growl, $anchorScroll) {
+var Mensagem = function(growl, $anchorScroll, $rootScope) {
 
     this.success = criarFuncaoGrowl('success');
     this.warning = criarFuncaoGrowl('warning');
@@ -23,6 +23,24 @@ var Mensagem = function(growl, $anchorScroll) {
         return growl[tipo](mensagem, config);
 
     }
+
+    this.setMensagemProximaTela = function(tipo, mensagem){
+
+        $rootScope.msg = {
+            texto: mensagem,
+            tipo: tipo || 'warning'
+        };
+
+    };
+
+    this.verificaMensagemGlobal = function(){
+
+        if ($rootScope.msg !== undefined){
+            growl[$rootScope.msg.tipo]($rootScope.msg.texto, {});
+            $rootScope.msg = undefined;
+        }
+
+    };
 
     function scrollTop() {
         $anchorScroll();

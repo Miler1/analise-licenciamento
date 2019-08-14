@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
+var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -544,6 +544,26 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()) && ctrl.analiseGeo.despacho);
 	}
 
+	ctrl.downloadPDFParecer = function() {
+
+		var params = {
+			id: $scope.analiseGeo.id,
+			parecer: $scope.analiseGeo.parecer
+		};
+
+		documentoAnaliseService.generatePDFParecerGeo(params)
+			.then(function(data, status, headers){
+
+				var a = document.createElement('a');
+				a.href = URL.createObjectURL(data.data.response.blob);
+				a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+				a.click();
+
+			},function(error){
+				mensagem.error(error.data.texto);
+			});
+	};
+
 	ctrl.concluir = function(){
 
 		if(!analiseValida()) {
@@ -557,11 +577,29 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		}
 
 		ctrl.analiseGeo.analise.processo.empreendimento = null;
+
 		analiseGeoService.concluir(ctrl.analiseGeo)
 			.then(function(response) {
 
-				$location.path('/analise-geo');
-				mensagem.success(response.data.texto,  {referenceId: 0});
+				var params = {
+					id: $scope.analiseGeo.id,
+					parecer: $scope.analiseGeo.parecer
+				};
+
+				documentoAnaliseService.generatePDFParecerGeo(params)
+					.then(function(data, status, headers){
+
+						var a = document.createElement('a');
+						a.href = URL.createObjectURL(data.data.response.blob);
+						a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+						a.click();
+
+						$location.path('/analise-geo');
+						mensagem.setMensagemProximaTela('success', response.data.texto);
+
+					},function(error){
+							mensagem.error(error.data.texto);
+					});
 
 			}, function(error){
 
