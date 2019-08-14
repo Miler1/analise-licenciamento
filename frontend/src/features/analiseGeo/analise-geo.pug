@@ -29,7 +29,7 @@ div(ng-init='ctrl.init()')
 				i.fa.fa-bars
 				| &nbsp;Legislação
 			.form-group.col-md-3(title="Gerar PDF do parecer")
-				div.btn.btn-default(ng-click="ctrl.downloadPDFParecer()")
+				div.btn.btn-default(ng-if="false", ng-click="ctrl.downloadPDFParecer()")
 					i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
 					| Gerar PDF do parecer
 

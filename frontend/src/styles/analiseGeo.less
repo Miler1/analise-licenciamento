@@ -35,13 +35,18 @@
 	}
 
 	.textArea-clone{
-		margin: 0px; 
 		width: 200px; 
-		height: 31px;
+		height: 35px;
+		border-radius: 3px;
+		resize: none;
+		margin-right: 7px;
 	}
 	.tamanho-botaoClone{
-		margin: 0px; 
 		width: 150px;
+		&.disabled {
+			pointer-events: none;
+			cursor: not-allowed;
+		}
 	}
 }
 .etapa-anterior{

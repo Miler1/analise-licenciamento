@@ -24,10 +24,10 @@ var AnaliseGeoService = function(request, $window ,config) {
 					.get(config.BASE_URL() + 'analisesGeo/verificaAnexosEmpreendimento/' + cpfCnpjEmpreendimento);
 	};
 
-	this.getParecerByNumeroProcesso = function(numeroProcesso) {
+	this.getParecerByNumeroProcesso = function(numeroProcessoClone) {
 
 		return request
-                .get(config.BASE_URL() + 'analisesGeo/parecer?numeroProcesso=' + numeroProcesso);
+                .get(config.BASE_URL() + 'analisesGeo/parecer?numeroProcesso=' + numeroProcessoClone);
 	};	
 
 	this.salvar = function(analise) {

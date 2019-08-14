@@ -440,7 +440,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 	 ctrl.clonarParecerGeo = function() {
 
-		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
 				.then(function(response){
 
 						if(response.data === null) {
@@ -450,6 +450,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 								return;
 						}
 						ctrl.analiseGeo.parecer = response.data.parecer;
+						ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
+						ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
 
 				}, function(error){
 
@@ -538,8 +540,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			return false;
 		}
 
-		return (ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
-			ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString() && !ctrl.analiseGeo.despacho);
+		return ((ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
+			ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()) && ctrl.analiseGeo.despacho);
 	}
 
 	ctrl.concluir = function(){
@@ -548,20 +550,18 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 			mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
 				'<ul>' +
-				'<li>Para concluir é necessário descrever o parecer.</li>' +
-				'<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' +
-				'<li>Para DEFERIDO, todos os documentos de validação técnica devem ter sido validados.</li>' +
-				'<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' +
+				'<li>Para concluir é necessário descrever o parecer na conclusão.</li>' +
+				'<li>Selecione um parecer para o processo (Deferido, Indeferido, Emitir notificação).</li>' +
 				'</ul>', { ttl: 10000 });
 			return;
 		}
 
-		ctrl.analiseTecnica.analise.processo.empreendimento.pessoa = null;
+		ctrl.analiseGeo.analise.processo.empreendimento = null;
 		analiseGeoService.concluir(ctrl.analiseGeo)
 			.then(function(response) {
 
-				mensagem.success(response.data.texto);
 				$location.path('/analise-geo');
+				mensagem.success(response.data.texto,  {referenceId: 0});
 
 			}, function(error){
 

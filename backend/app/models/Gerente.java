@@ -98,12 +98,12 @@ public class Gerente extends GenericModel {
 		return copia;
 	}
 
-	public static UsuarioAnalise distribuicaoSolicitacaoDesvinculo(String setorAtividade, Desvinculo desvinculo) {
+	public static UsuarioAnalise distribuicaoAutomaticaGerente(String setorAtividade) {
 
 		List<UsuarioAnalise> gerentes = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, setorAtividade);
 
 		if (gerentes == null || gerentes.size() == 0)
-			throw new WebServiceException("Não existe nenhum gerente para atender a essa solicitação de desvínculo.");
+			throw new WebServiceException("Não existe nenhum gerente ativado no sistema");
 
 		List<Long> idsGerentes = gerentes.stream()
 				.map(ang->ang.id)

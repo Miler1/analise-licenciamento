@@ -36,7 +36,7 @@ public class Desvinculos extends GenericController {
                 desvinculo.dataSolicitacao = c.getTime();
             }
             String siglaSetor = desvinculo.analista.usuarioEntradaUnica.setorSelecionado.sigla;
-            desvinculo.gerente = Gerente.distribuicaoSolicitacaoDesvinculo(siglaSetor, desvinculo);
+            desvinculo.gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor);
             desvinculo.save();
             Processo processoBanco = Processo.findById(desvinculo.processo.id);
             desvinculo.processo.tramitacao.tramitar(processoBanco, AcaoTramitacao.SOLICITAR_DESVINCULO, desvinculo.analista, desvinculo.gerente);

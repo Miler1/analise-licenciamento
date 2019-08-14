@@ -129,6 +129,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFimValidacaoAprovador;
 
+    @Column(name="situacao_fundiaria")
+    public String situacaoFundiaria;
+
+    @Column(name="analise_temporal")
+    public String analiseTemporal;
+
+    @Column(name="despacho_analista")
+    public String despacho;
+
     @OneToMany(mappedBy="analiseGeo", cascade=CascadeType.ALL)
     public List<Inconsistencia> inconsistencias;
 
@@ -136,6 +145,36 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if(StringUtils.isBlank(this.parecer))
             throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
+    }
+
+    private void validarParecerEmpreendimento(){
+
+        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.analiseTemporal.equals("") )){
+            throw new ValidacaoException(Mensagem.ANALISE_ANALISE_TEMPORAL_NAO_PREENCHIDA);
+        }
+
+        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.situacaoFundiaria.equals("") )){
+            throw new ValidacaoException(Mensagem.ANALISE_SITUACAO_FUNDIARIA_NAO_PREENCHIDA);
+        }
+
+    }
+
+    private void validarTipoResultadoAnalise(){
+
+        if(this.tipoResultadoAnalise == null) {
+            throw new ValidacaoException(Mensagem.ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA);
+        }
+
+        if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO) && this.despacho.equals("")) {
+            throw new ValidacaoException(Mensagem.ANALISE_DESPACHO_NAO_PREENCHIDO);
+        }
+
+        if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO) && this.despacho.equals("")) {
+            throw new ValidacaoException(Mensagem.ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA);
+        }
+
+        //TODO PUMA-SQ1 Adicionar validacao para o Tipo Resultado Análise "EMITIR NOTIFICACAO"
+
     }
 
     public static AnaliseGeo findByProcesso(Processo processo) {
@@ -212,6 +251,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         }
 
         this.parecer = novaAnalise.parecer;
+        this.situacaoFundiaria = novaAnalise.situacaoFundiaria;
+        this.analiseTemporal = novaAnalise.analiseTemporal;
+        this.despacho = novaAnalise.despacho;
 
         if(novaAnalise.tipoResultadoAnalise != null &&
                 novaAnalise.tipoResultadoAnalise.id != null) {
@@ -221,29 +263,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         updateDocumentos(novaAnalise.documentos);
 
-        if (this.analisesDocumentos == null) {
-
-            this.analisesDocumentos = new ArrayList<>();
-        }
-
-        for(AnaliseDocumento novaAnaliseDocumento : novaAnalise.analisesDocumentos) {
-
-            AnaliseDocumento analiseDocumento = ListUtil.getById(novaAnaliseDocumento.id, this.analisesDocumentos);
-
-            if(analiseDocumento != null) {
-
-                analiseDocumento.update(novaAnaliseDocumento);
-
-            } else {
-
-                novaAnaliseDocumento.analiseGeo = this;
-                this.analisesDocumentos.add(novaAnaliseDocumento);
-            }
-        }
-
         this._save();
 
-        updateLicencasAnalise(novaAnalise.licencasAnalise);
         updatePareceresGeoRestricoes(novaAnalise.pareceresGeoRestricoes);
     }
 
@@ -351,8 +372,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public static AnaliseGeo findByNumeroProcesso(String numeroProcesso) {
 
-        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso AND ativo = true")
+        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso AND ativo = true AND " +
+                "tipoResultadoAnalise.id in (:idsTipoResultadoAnalise) AND situacaoFundiaria != null AND analiseTemporal != null")
                 .setParameter("numeroProcesso", numeroProcesso)
+                .setParameter("idsTipoResultadoAnalise", Arrays.asList(TipoResultadoAnalise.DEFERIDO, TipoResultadoAnalise.INDEFERIDO))
                 .first();
     }
 
@@ -360,16 +383,18 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this.update(analise);
         validarParecer();
-        //TODO PUMA-SQ1 Validar campos obrigatorios
+        validarParecerEmpreendimento();
+        validarTipoResultadoAnalise();
 
         this._save();
 
+        this.usuarioValidacaoGerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla);
+
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
-            //TODO PUMA-SQ1 Usar distribuição automática para algum gerente ?
             if(this.usuarioValidacaoGerente != null) {
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor);
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
@@ -377,7 +402,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             if(this.usuarioValidacaoGerente != null) {
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor);
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
@@ -385,7 +410,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             Notificacao.criarNotificacoesAnaliseGeo(analise);
 
-            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
+            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
             HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);

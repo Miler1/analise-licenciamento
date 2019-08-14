@@ -3,8 +3,8 @@
         label.pull-left Informe o número do processo para clonar o parecer
         br
         div.pull-right.display-clone
-            textarea.textArea-clone(name="numeroProcesso", ng-model="ctrl.numeroProcesso")  
-            .btn.btn-default.tamanho-botaoClone(type="submit", name="clonar", ng-click="ctrl.clonarParecerGeo()")
+            input.form-control.textArea-clone(type='text',name="numeroProcesso", ng-model="ctrl.numeroProcessoClone", ng-disabled = "ctrl.analiseGeo.inconsistencias.length > 0")
+            button.btn.btn-default.tamanho-botaoClone(type="submit", name="clonar", ng-click="ctrl.clonarParecerGeo()", ng-disabled = "ctrl.analiseGeo.inconsistencias.length > 0")
                 i.glyphicon.glyphicon-refresh.glyphicon--with-right-margin
                 | Clonar paracer  
             

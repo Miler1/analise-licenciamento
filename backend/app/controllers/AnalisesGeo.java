@@ -13,7 +13,6 @@ import utils.Mensagem;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
 
 public class AnalisesGeo extends InternalController {
 

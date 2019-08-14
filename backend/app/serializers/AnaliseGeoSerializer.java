@@ -122,7 +122,9 @@ public class AnaliseGeoSerializer {
 
     public static JSONSerializer parecer = SerializerUtil.create(
 
-            "parecer"
+            "parecer",
+            "situacaoFundiaria",
+            "analiseTemporal"
     );
 
 }
