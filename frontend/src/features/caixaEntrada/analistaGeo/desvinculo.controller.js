@@ -1,4 +1,4 @@
-var DesvinculoController = function ($uibModalInstance,idProcesso , mensagem, desvinculoService) {
+var DesvinculoController = function ($uibModalInstance,idProcesso ,$rootScope, mensagem, desvinculoService) {
 
 	var desvinculoController = this;
 	
@@ -23,6 +23,7 @@ var DesvinculoController = function ($uibModalInstance,idProcesso , mensagem, de
                     mensagem.success(response.data);
                     $uibModalInstance.close();	
                     $location.path('/caixa-entrada');
+                    $rootScope.$broadcast('atualizarContagemProcessos');
             }).catch(function(response){
 				mensagem.error(response.data.texto, {referenceId: 5});
 			});
