@@ -502,12 +502,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 	};
 
+
 	ctrl.avancarProximaEtapa= function() {
 		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
 		$('.nav-tabs > .active').next('li').find('a').trigger('click');
 		controleCamposParecerEmpreedimento();
 		scrollTop();
-
 	};
 
 

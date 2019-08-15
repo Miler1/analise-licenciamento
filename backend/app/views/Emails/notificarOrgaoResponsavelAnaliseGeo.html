@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+%{
+processo = analiseGeo.analise.processo;
+dataNotificacao = notificacao.dataCadastro;
+numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
+empreendimento = analiseGeo.analise.processo.empreendimento;
+empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+nomeAtividade = analiseGeo.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao.atividade.nome;
+bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
+numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
+cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
+municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo;
+end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
+}%
+
+<html>
+
+<head>
+</head>
+
+<body>
+
+<h1 style="text-align: center">
+#{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'100', width:'100' /}
+</h1>
+
+<p></p>
+
+
+<p><strong>Ofício n.° ${processo.numero}/20${processo.numero}/IPAAM-DT </strong> </p>
+<p style="text-align: right">  Manaus/AM, ${new java.text.simpleDateFormat("dd/MM/yyyy").now()}</p>
+
+<p><strong>Data de Protocolo:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}</p>
+
+<p><strong>Interessado ou Requerente/Arrendatario:</strong> ${empreendimentoNome}</p>
+
+<p><strong>Assunto:</strong> Informe de notificação ( Movimentação de processo )</p>
+
+<p><strong>Data:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataNotificacao)}</p>
+
+<p><strong>Movimentação: </strong> Notificação n° ${numeroNotificacao} <strong> SETOR:</strong> GDFLOR</p>
+
+<p><strong> Prezada Coordenadoria, </strong></p>
+<p> </p>
+<p> </p>
+
+<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°. ${processo.numero} de interesse de ${empreendimentoNome}, referente à solicitação de licenciamento ambiental para a atividade de ${nomeAtividade}, no município de ${municipio}/AM </p>
+
+<p>Informamos ainda, que e empreendimento dista ${distanciaRestricao} da ${restricao}, conforme o mapa de caracterização anexo.</p>
+
+<p> </p>
+<p>             Atenciosamente,  </p>
+
+<p style="text-align: center"><strong> ${nomePresidente} </strong></p>
+<p style="text-align: center"><strong> Diretor Presidente </strong></p>
+
+</body>
+
+
+</html>

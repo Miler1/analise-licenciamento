@@ -24,9 +24,9 @@ public class StatusCaracterizacao extends GenericModel {
 	public static final Long EXPIRADA = 12L;
 	public static final Long VENCIDO_AGUARDANDO_PAGAMENTO = 13L;
 	public static final Long VENCIDO_AGUARDANDO_EMISSAO = 14L;
-	public static final Long AGUARDANDO_ANALISE = 15l;
-	public static final Long INDEFERIDO = 16l;
-	public static final Long SOLICITACAO_DE_DESVINCULO = 17l;
+//	public static final Long AGUARDANDO_ANALISE = 15l;
+//	public static final Long INDEFERIDO = 16l;
+//	public static final Long SOLICITACAO_DE_DESVINCULO = 17l;
 	
 	@Id
 	public Long id;

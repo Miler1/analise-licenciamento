@@ -107,4 +107,17 @@ public class Emails extends Mailer {
 		}
 		return send(licenca);
 	}
+
+	public static Future<Boolean> notificarOrgaoResponsavelAnaliseGeo(List<String> destinatarios, String licencas,
+																	List<AnaliseDocumento> documentosAnalisados, AnaliseGeo analiseGeo, Notificacao notificacao) {
+
+		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+		return send(licencas, documentosAnalisados, analiseGeo, notificacao);
+	}
+
 }

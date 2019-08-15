@@ -434,6 +434,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         notificacao.enviar();
     }
 
+    public void enviarEmailComunicado() {
+
+        List<String> destinatarios = new ArrayList<String>();
+        destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
+        destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
+
+        EmailComunicarOrgaoResponsavelAnaliseGeo comunicado = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, destinatarios);
+        comunicado.enviar();
+    }
+
     public void validaParecer(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
 
         TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new ParecerValidadoGeo();;
