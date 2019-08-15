@@ -23,16 +23,6 @@ public class Desvinculo extends GenericModel {
     public Long id;
 
     @Required
-    @OneToOne
-    @JoinColumn(name="id_processo", referencedColumnName = "id")
-    public Processo processo;
-
-    @Required
-    @OneToOne
-    @JoinColumn(name="id_analista", referencedColumnName = "id")
-    public UsuarioAnalise analista;
-
-    @Required
     @Column(name="justificativa")
     public String justificativa;
 
@@ -56,4 +46,15 @@ public class Desvinculo extends GenericModel {
     @Column(name="data_resposta")
     public Date dataResposta;
 
+    @ManyToOne
+    @JoinColumn(name="id_analise_geo", nullable=true)
+    public AnaliseGeo analiseGeo;
+
+    @ManyToOne
+    @JoinColumn(name="id_analise_tecnica", nullable=true)
+    public AnaliseTecnica analiseTecnica;
+
+    @ManyToOne
+    @JoinColumn(name="id_analise_juridica", nullable=true)
+    public AnaliseJuridica analiseJuridica;
 }

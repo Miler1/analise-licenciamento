@@ -49,7 +49,7 @@ public class Comunicado extends GenericModel {
 
     @OneToOne
     @JoinColumn(name="id_orgao", referencedColumnName="id")
-    public OrgaoClasse orgaoClasse;
+    public Orgao orgao;
 
 
 

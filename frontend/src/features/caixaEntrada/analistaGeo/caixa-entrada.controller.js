@@ -66,7 +66,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	}
 
 
-	cxEntAnalistaGeo.solicitarDesvinculo =  function(idAnaliseGeo){
+	cxEntAnalistaGeo.solicitarDesvinculo =  function(processo){
 
 				var modalInstance = $uibModal.open({
 					controller: 'desvinculoController',
@@ -75,8 +75,8 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 					size: 'lg',
 					resolve: {
 
-						idProcesso: function(){
-							return idAnaliseGeo.idProcesso;
+						idAnaliseGeo: function(){
+							return processo.idAnaliseGeo;
 						}
 					}
 					
