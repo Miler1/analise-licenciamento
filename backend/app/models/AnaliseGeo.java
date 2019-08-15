@@ -362,10 +362,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this.update(analise);
 
-        validarLicencasAnalise();
+//        validarLicencasAnalise();
         validarParecer();
-        validarAnaliseDocumentos();
-        validarResultado();
+//        validarAnaliseDocumentos();
+//        validarResultado();
 
         if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO))
             validarEmissaoLicencas(this.licencasAnalise);
@@ -375,7 +375,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             this.analise.diasAnalise.qtdeDiasAprovador = 0;
             this.analise.diasAnalise.save();
         }
-
+        
         this._save();
 
 
@@ -422,6 +422,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         EmailNotificacaoAnaliseGeo notificacao = new EmailNotificacaoAnaliseGeo(this, destinatarios);
         notificacao.enviar();
+    }
+
+    public void enviarEmailComunicado() {
+
+        List<String> destinatarios = new ArrayList<String>();
+        destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
+        destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
+
+        EmailComunicarOrgaoResponsavelAnaliseGeo comunicado = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, destinatarios);
+        comunicado.enviar();
     }
 
     public void validaParecer(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {

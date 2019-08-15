@@ -462,7 +462,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 	ctrl.confirmar= function() {
 
-
+	
+		analiseGeoService.concluir(ctrl.analiseGeo);
 
 	};
 
