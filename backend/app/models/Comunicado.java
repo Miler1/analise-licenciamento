@@ -48,7 +48,7 @@ public class Comunicado extends GenericModel {
     public Boolean ativo;
 
     @OneToOne
-    @JoinColumn(name="id_orgao", referencedColumnName="id")
+    @JoinColumn(name="id_atividade_caracterizacao", referencedColumnName="id")
     public AtividadeCaracterizacao atividadeCaracterizacao;
 
     @OneToOne
