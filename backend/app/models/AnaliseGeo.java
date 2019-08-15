@@ -382,28 +382,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public void finalizar(AnaliseGeo analise, UsuarioAnalise usuarioExecutor) {
 
         this.update(analise);
-<<<<<<< HEAD
-
-//        validarLicencasAnalise();
-        validarParecer();
-//        validarAnaliseDocumentos();
-//        validarResultado();
-
-        if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO))
-            validarEmissaoLicencas(this.licencasAnalise);
-
-        if(this.analise.diasAnalise.qtdeDiasAprovador == null) {
-
-            this.analise.diasAnalise.qtdeDiasAprovador = 0;
-            this.analise.diasAnalise.save();
-        }
-        
-=======
         validarParecer();
         validarParecerEmpreendimento();
         validarTipoResultadoAnalise();
 
->>>>>>> 5d00cd198f68cef685bb7c2ae9a6b45d18347407
         this._save();
 
         this.usuarioValidacaoGerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla);
