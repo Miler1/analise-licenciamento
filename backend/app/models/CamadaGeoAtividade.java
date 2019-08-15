@@ -1,18 +1,18 @@
 package models;
 
-import models.licenciamento.Atividade;
+import models.licenciamento.AtividadeCaracterizacao;
 
 import java.util.List;
 
 public class CamadaGeoAtividade {
 
-	public Atividade atividade;
+	public AtividadeCaracterizacao atividadeCaracterizacao;
 
 	public List<CamadaGeo> camadasGeo;
 
-	public CamadaGeoAtividade(Atividade atividade, List<CamadaGeo> camadasGeo) {
+	public CamadaGeoAtividade(AtividadeCaracterizacao atividadeCaracterizacao, List<CamadaGeo> camadasGeo) {
 
-		this.atividade = atividade;
+		this.atividadeCaracterizacao = atividadeCaracterizacao;
 		this.camadasGeo = camadasGeo;
 	}
 }

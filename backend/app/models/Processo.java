@@ -652,7 +652,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			}
 
-			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao.atividade, camadasGeo);
+			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao, camadasGeo);
 
 			dadosAreaProjeto.add(camadaGeoAtividade);
 

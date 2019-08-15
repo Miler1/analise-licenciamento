@@ -1,11 +1,10 @@
 package models.licenciamento;
 
+import models.Orgao;
 import play.db.jpa.GenericModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "licenciamento", name = "tipo_sobreposicao")
@@ -38,5 +37,11 @@ public class TipoSobreposicao extends GenericModel {
 
 	@Column
 	public String nome;
+
+	@ManyToMany
+	@JoinTable(schema = "licenciamento", name = "rel_tipo_sobreposicao_orgao",
+			joinColumns = @JoinColumn(name = "id_tipo_sobreposicao"),
+			inverseJoinColumns = @JoinColumn(name = "id_orgao"))
+	public List<Orgao> orgaosResponsaveis;
 
 }
