@@ -16,18 +16,12 @@ public class Orgao  extends GenericModel {
     @SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
     public Long id;
 
-    @ManyToOne
-    @Required
-    @JoinColumn(name="sigla")
+    @Column(name="sigla")
     public String sigla;
 
-    @ManyToOne
-    @Required
-    @JoinColumn(name="nome")
+    @Column(name="nome")
     public String nome;
 
-    @ManyToOne
-    @Required
-    @JoinColumn(name="email")
+    @Column(name="email")
     public String email;
 }
