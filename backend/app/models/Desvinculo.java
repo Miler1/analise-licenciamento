@@ -1,15 +1,10 @@
 package models;
 
-import models.EntradaUnica.CodigoPerfil;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
 
 import javax.persistence.*;
-import javax.xml.ws.WebServiceException;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="desvinculo")
@@ -21,6 +16,18 @@ public class Desvinculo extends GenericModel {
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
     @SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
     public Long id;
+
+    @ManyToOne
+    @JoinColumn(name="id_analise_geo", nullable=true)
+    public AnaliseGeo analiseGeo;
+
+    @ManyToOne
+    @JoinColumn(name="id_analise_tecnica", nullable=true)
+    public AnaliseTecnica analiseTecnica;
+
+    @ManyToOne
+    @JoinColumn(name="id_analise_juridica", nullable=true)
+    public AnaliseJuridica analiseJuridica;
 
     @Required
     @Column(name="justificativa")
@@ -46,15 +53,4 @@ public class Desvinculo extends GenericModel {
     @Column(name="data_resposta")
     public Date dataResposta;
 
-    @ManyToOne
-    @JoinColumn(name="id_analise_geo", nullable=true)
-    public AnaliseGeo analiseGeo;
-
-    @ManyToOne
-    @JoinColumn(name="id_analise_tecnica", nullable=true)
-    public AnaliseTecnica analiseTecnica;
-
-    @ManyToOne
-    @JoinColumn(name="id_analise_juridica", nullable=true)
-    public AnaliseJuridica analiseJuridica;
 }
