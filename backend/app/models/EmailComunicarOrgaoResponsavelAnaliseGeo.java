@@ -26,24 +26,24 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
         try {
 
-            List<String> tiposlicenca = new ArrayList<String>();
-            for(Caracterizacao caracterizacao : this.analiseGeo.analise.processo.caracterizacoes) {
+//            List<String> tiposlicenca = new ArrayList<String>();
+//            for(Caracterizacao caracterizacao : this.analiseGeo.analise.processo.caracterizacoes) {
+//
+//                tiposlicenca.add(caracterizacao.tipoLicenca.nome);
+//            }
+//            String licencas = StringUtils.join(tiposlicenca, ",");
+//
+//            List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
+//            for(AnaliseDocumento analiseDocumento : this.analiseGeo.analisesDocumentos) {
+//
+//                if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.GEO) && !analiseDocumento.validado) {
+//                    documentosInvalidados.add(analiseDocumento);
+//                }
+//            }
 
-                tiposlicenca.add(caracterizacao.tipoLicenca.nome);
-            }
-            String licencas = StringUtils.join(tiposlicenca, ",");
+            Comunicado comunicado = Comunicado.find("id_analise_geo", this.analiseGeo.id).first();
 
-            List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
-            for(AnaliseDocumento analiseDocumento : this.analiseGeo.analisesDocumentos) {
-
-                if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.GEO) && !analiseDocumento.validado) {
-                    documentosInvalidados.add(analiseDocumento);
-                }
-            }
-
-            Notificacao notificacao = Notificacao.find("id_analise_geo", this.analiseGeo.id).first();
-
-            if(!Emails.notificarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseGeo, notificacao).get()) {
+            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, comunicado).get()) {
 
                 throw new AppException();
 

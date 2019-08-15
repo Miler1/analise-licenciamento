@@ -108,8 +108,8 @@ public class Emails extends Mailer {
 		return send(licenca);
 	}
 
-	public static Future<Boolean> notificarOrgaoResponsavelAnaliseGeo(List<String> destinatarios, String licencas,
-																	List<AnaliseDocumento> documentosAnalisados, AnaliseGeo analiseGeo, Notificacao notificacao) {
+	public static Future<Boolean> comunicarOrgaoResponsavelAnaliseGeo(List<String> destinatarios,
+																	 AnaliseGeo analiseGeo, Comunicado comunicado) {
 
 		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -117,7 +117,7 @@ public class Emails extends Mailer {
 
 			addRecipient(email);
 		}
-		return send(licencas, documentosAnalisados, analiseGeo, notificacao);
+		return send(analiseGeo, comunicado);
 	}
 
 }
