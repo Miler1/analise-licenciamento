@@ -1,6 +1,8 @@
 package models;
 
+import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.OrgaoClasse;
+import models.licenciamento.TipoSobreposicao;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -21,14 +23,6 @@ public class Comunicado extends GenericModel {
     @JoinColumn(name="id_analise_geo", nullable=true)
     public AnaliseGeo analiseGeo;
 
-    @ManyToOne
-    @JoinColumn(name="id_analise_tecnica", nullable=true)
-    public AnaliseTecnica analiseTecnica;
-
-    @ManyToOne
-    @JoinColumn(name="id_analise_juridica", nullable=true)
-    public AnaliseJuridica analiseJuridica;
-
     @Column(name="justificativa")
     public String justificativa;
 
@@ -47,9 +41,19 @@ public class Comunicado extends GenericModel {
     @Column(name="parecer_orgao")
     public String parecerOrgao;
 
+    @Column(name="resolvido")
+    public Boolean resolvido;
+
+    @Column(name="ativo")
+    public Boolean ativo;
+
     @OneToOne
     @JoinColumn(name="id_orgao", referencedColumnName="id")
-    public OrgaoClasse orgaoClasse;
+    public AtividadeCaracterizacao atividadeCaracterizacao;
+
+    @OneToOne
+    @JoinColumn(name="id_orgao", referencedColumnName="id")
+    public TipoSobreposicao tipoSobreposicao;
 
 
 
