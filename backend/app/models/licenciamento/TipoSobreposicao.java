@@ -1,6 +1,5 @@
 package models.licenciamento;
 
-import models.Orgao;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
