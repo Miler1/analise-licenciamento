@@ -1,13 +1,15 @@
-package models;
+package models.licenciamento;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 
+@Entity
+@Table(schema="licenciamento", name="orgao")
 public class Orgao  extends GenericModel {
 
-    private static final String SEQ = "analise.orgao_id_seq";
+    private static final String SEQ = "licenciamento.orgao_id_seq";
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
