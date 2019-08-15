@@ -57,6 +57,14 @@ div
 												a(ng-click="consultarProcesso.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
+											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE")
+												a(ng-click="consultarProcesso.downloadPDFparecer(processo)")
+													i.fa.fa-download
+													span Baixar parecer GEO
+											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE")
+												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
+													i.fa.fa-download
+													span Baixar carta imagem
 				div
 
 					span.icone-soliciacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente

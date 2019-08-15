@@ -1,4 +1,4 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal, TiposSetores) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal, TiposSetores, documentoAnaliseService, mensagem) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
 
@@ -11,6 +11,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.visualizarProcesso = visualizarProcesso;
 
 	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
+	consultarProcesso.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	consultarProcesso.processos = [];
 	consultarProcesso.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	consultarProcesso.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
@@ -74,6 +75,30 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 		return consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo[dataVencimento], 
 					consultarProcesso.PrazoMinimoAvisoAnalise[tipoAnalise]);
 	}
+
+	consultarProcesso.downloadPDFparecer = function (processo) {
+
+		var params = {
+			id: processo.idAnaliseGeo
+		};
+
+		documentoAnaliseService.generatePDFParecerGeo(params)
+			.then(function(data, status, headers){
+
+				var a = document.createElement('a');
+				a.href = URL.createObjectURL(data.data.response.blob);
+				a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+				a.click();
+
+			},function(error){
+				mensagem.error(error.data.texto);
+			});
+	};
+
+	consultarProcesso.downloadPDFCartaImagem = function () {
+
+		mensagem.success('Carta imagem em construção ...');
+	};
 
 };
 
