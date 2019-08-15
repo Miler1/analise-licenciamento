@@ -35,6 +35,9 @@ public class AnaliseGeoSerializer {
             "analise.processo.caracterizacoes.documentosEnviados.tipo.nome",
             "analise.processo.caracterizacoes.documentosEnviados.tipo.tipoAnalise",
             "analise.processo.caracterizacoes.atividadesCaracterizacao.atividade.nome",
+            "analise.processo.caracterizacoes.atividadesCaracterizacao.atividade.parametros.codigo",
+            "analise.processo.caracterizacoes.atividadesCaracterizacao.atividade.parametros.nome",
+            "analise.processo.caracterizacoes.atividadesCaracterizacao.atividadeCaracterizacaoParametros.valorParametro",
             "analise.processo.numero",
             "analise.processo.empreendimento.id",
             "analise.processo.empreendimento.denominacao",
@@ -119,7 +122,9 @@ public class AnaliseGeoSerializer {
 
     public static JSONSerializer parecer = SerializerUtil.create(
 
-            "parecer"
+            "parecer",
+            "situacaoFundiaria",
+            "analiseTemporal"
     );
 
 }

@@ -1,4 +1,4 @@
-var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $rootScope, processoService) {
+var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $rootScope, processoService, mensagem) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE GEO';
 
@@ -17,6 +17,8 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
+
+	mensagem.verificaMensagemGlobal();
 
 	function atualizarListaProcessos(processos) {
 

@@ -150,7 +150,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 		processo.caracterizacoes = new ArrayList<>();
 		processo.caracterizacoes.add(caracterizacao);
-		
 		processo._save();
 
 		return processo;

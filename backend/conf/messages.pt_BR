@@ -34,7 +34,7 @@ CONSULTOR_VINCULADO_SUCESSO=Consultor vinculado com sucesso.
 ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO=O Analista informado não tem perfil de analista técnico.
 ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
 ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista técnico pelo coordenador a justificativa é obrigatória.
-
+DESVINCULO_SOLICITADO_COM_SUCESSO=Seu desvínculo foi solicitado com sucesso!
 #
 # Inconsistencia
 #
@@ -68,6 +68,12 @@ DOCUMENTO_DELETADO_COM_SUCESSO=Documento excluido com sucesso.
 ANALISE_CONCLUIDA_SUCESSO=Análise concluída com sucesso.
 ANALISE_CADASTRADA_SUCESSO=Análise cadastrada com sucesso.
 ANALISE_PARECER_NAO_PREENCHIDO=O parecer não foi preenchido.
+ANALISE_ANALISE_TEMPORAL_NAO_PREENCHIDA=O campo análise temporal não foi preenchido.
+ANALISE_SITUACAO_FUNDIARIA_NAO_PREENCHIDA=O campo situação fundiária não foi preenchido.
+ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA=Não foi informada a análise final do processo.
+ANALISE_DESPACHO_NAO_PREENCHIDO= O campo despacho não foi preenchido.
+ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA = O campo justificativa não foi preenchido.
+ANALISE_CONCLUSAO_NAO_PREENCHIDA= O campo conclusão não foi preenchido.
 ANALISE_SEM_RESULTADO=O resultado da análise não foi definido.
 ANALISE_DOCUMENTO_NAO_AVALIADO=Existem documentos que não foram analisados ou documento não validado com parecer não preenchido.
 TODOS_OS_DOCUMENTOS_VALIDOS=Para deferir uma análise, todos os documentos devem ser validados.

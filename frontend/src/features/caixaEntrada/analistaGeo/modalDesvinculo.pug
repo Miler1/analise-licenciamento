@@ -1,0 +1,27 @@
+div.modal-header
+
+    button.close(type='button', ng-click="desvinculoCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Solicitar desvínculo do processo
+    div(growl inline="true" reference='5')
+  
+
+div.modal-body
+
+    div#justificativa-desvinculo
+        label.label-justificativa Justificativa*:
+        br
+        textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa")
+
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="desvinculoCtrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        | &nbsp;Cancelar
+    
+    button.btn.btn-success.pull-right(ng-click="desvinculoCtrl.concluir()")
+        i.glyphicon.glyphicon-ok
+        | &nbsp;Confirmar

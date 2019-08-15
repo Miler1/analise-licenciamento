@@ -79,7 +79,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 }]).config(['growlProvider', function(growlProvider) {
 
 	growlProvider.globalDisableCountDown(false)
-		.globalTimeToLive(5000);
+		.globalTimeToLive(6000);
 
 }]).config(function($provide){
 
@@ -186,7 +186,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 		{
 
 			titulo: 'Em análise',
-			icone: 'glyphicon glyphicon-ok',
+			icone: 'glyphicon glyphicon-edit',
 			url: function() {
 
 				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
@@ -469,7 +469,8 @@ utils.services(licenciamento)
 	.add('documentoService', services.DocumentoService)
 	.add('analiseGeoService', services.AnaliseGeoService)
 	.add('validacaoShapeService', services.ValidacaoShapeService)
-	.add('empreendimentoService', services.EmpreendimentoService);
+	.add('empreendimentoService', services.EmpreendimentoService)
+	.add('desvinculoService', services.DesvinculoService);
 
 
 utils.filters(licenciamento)
@@ -490,7 +491,8 @@ licenciamento
 	.controller('validacaoShapeController', controllers.ValidacaoShapeController)
 	.controller('painelMapaController', controllers.PainelMapaController)
 	.controller('uploadShapesController', controllers.UploadShapesController)
-	.controller('inconsistenciaController',controllers.InconsistenciaController);
+	.controller('inconsistenciaController',controllers.InconsistenciaController)
+	.controller('desvinculoController', controllers.DesvinculoController);
 
 
 licenciamento

@@ -2,6 +2,7 @@ package models;
 
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.Empreendimento;
 import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
@@ -10,10 +11,7 @@ import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
-import utils.ListUtil;
-import utils.Mensagem;
-import utils.ModelUtil;
+import utils.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -131,6 +129,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFimValidacaoAprovador;
 
+    @Column(name="situacao_fundiaria")
+    public String situacaoFundiaria;
+
+    @Column(name="analise_temporal")
+    public String analiseTemporal;
+
+    @Column(name="despacho_analista")
+    public String despacho;
+
     @OneToMany(mappedBy="analiseGeo", cascade=CascadeType.ALL)
     public List<Inconsistencia> inconsistencias;
 
@@ -138,6 +145,36 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if(StringUtils.isBlank(this.parecer))
             throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
+    }
+
+    private void validarParecerEmpreendimento(){
+
+        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.analiseTemporal.equals("") )){
+            throw new ValidacaoException(Mensagem.ANALISE_ANALISE_TEMPORAL_NAO_PREENCHIDA);
+        }
+
+        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.situacaoFundiaria.equals("") )){
+            throw new ValidacaoException(Mensagem.ANALISE_SITUACAO_FUNDIARIA_NAO_PREENCHIDA);
+        }
+
+    }
+
+    private void validarTipoResultadoAnalise(){
+
+        if(this.tipoResultadoAnalise == null) {
+            throw new ValidacaoException(Mensagem.ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA);
+        }
+
+        if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO) && this.despacho.equals("")) {
+            throw new ValidacaoException(Mensagem.ANALISE_DESPACHO_NAO_PREENCHIDO);
+        }
+
+        if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO) && this.despacho.equals("")) {
+            throw new ValidacaoException(Mensagem.ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA);
+        }
+
+        //TODO PUMA-SQ1 Adicionar validacao para o Tipo Resultado Análise "EMITIR NOTIFICACAO"
+
     }
 
     public static AnaliseGeo findByProcesso(Processo processo) {
@@ -214,6 +251,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         }
 
         this.parecer = novaAnalise.parecer;
+        this.situacaoFundiaria = novaAnalise.situacaoFundiaria;
+        this.analiseTemporal = novaAnalise.analiseTemporal;
+        this.despacho = novaAnalise.despacho;
 
         if(novaAnalise.tipoResultadoAnalise != null &&
                 novaAnalise.tipoResultadoAnalise.id != null) {
@@ -223,29 +263,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         updateDocumentos(novaAnalise.documentos);
 
-        if (this.analisesDocumentos == null) {
-
-            this.analisesDocumentos = new ArrayList<>();
-        }
-
-        for(AnaliseDocumento novaAnaliseDocumento : novaAnalise.analisesDocumentos) {
-
-            AnaliseDocumento analiseDocumento = ListUtil.getById(novaAnaliseDocumento.id, this.analisesDocumentos);
-
-            if(analiseDocumento != null) {
-
-                analiseDocumento.update(novaAnaliseDocumento);
-
-            } else {
-
-                novaAnaliseDocumento.analiseGeo = this;
-                this.analisesDocumentos.add(novaAnaliseDocumento);
-            }
-        }
-
         this._save();
 
-        updateLicencasAnalise(novaAnalise.licencasAnalise);
         updatePareceresGeoRestricoes(novaAnalise.pareceresGeoRestricoes);
     }
 
@@ -353,14 +372,17 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public static AnaliseGeo findByNumeroProcesso(String numeroProcesso) {
 
-        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso AND ativo = true")
+        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso AND ativo = true AND " +
+                "tipoResultadoAnalise.id in (:idsTipoResultadoAnalise) AND situacaoFundiaria != null AND analiseTemporal != null")
                 .setParameter("numeroProcesso", numeroProcesso)
+                .setParameter("idsTipoResultadoAnalise", Arrays.asList(TipoResultadoAnalise.DEFERIDO, TipoResultadoAnalise.INDEFERIDO))
                 .first();
     }
 
     public void finalizar(AnaliseGeo analise, UsuarioAnalise usuarioExecutor) {
 
         this.update(analise);
+<<<<<<< HEAD
 
 //        validarLicencasAnalise();
         validarParecer();
@@ -376,15 +398,21 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             this.analise.diasAnalise.save();
         }
         
+=======
+        validarParecer();
+        validarParecerEmpreendimento();
+        validarTipoResultadoAnalise();
+
+>>>>>>> 5d00cd198f68cef685bb7c2ae9a6b45d18347407
         this._save();
 
-
+        this.usuarioValidacaoGerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla);
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
             if(this.usuarioValidacaoGerente != null) {
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor);
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
@@ -392,7 +420,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             if(this.usuarioValidacaoGerente != null) {
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor);
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
@@ -400,7 +428,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             Notificacao.criarNotificacoesAnaliseGeo(analise);
 
-            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
+            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
             HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
@@ -663,11 +691,41 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public Documento gerarPDFParecer() throws Exception {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        Processo processo = Processo.findById(this.analise.processo.id);
+        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
                 .addParam("analiseArea", "ANALISE_GEO")
+                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
+                .addParam("camadasGeoAtividade", camadasGeoAtividade)
+                .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+
+        pdf.generate();
+
+        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+
+    }
+
+    public Documento gerarPDFCartaImagem() throws Exception {
+
+        //TODO PUMA-SQ1 Criar tipo documento carta imagem
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+
+        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        Processo processo = Processo.findById(this.analise.processo.id);
+        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("analiseEspecifica", this)
+                .addParam("analiseArea", "ANALISE_GEO")
+                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
 
         pdf.generate();

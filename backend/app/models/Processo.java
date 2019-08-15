@@ -353,6 +353,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.comTiposLicencas()
 				.groupByIdProcesso()
 				.groupByNumeroProcesso()
+				.groupByObjetoTramitavel()
 				.groupByCpfCnpjEmpreendimento()
 				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
@@ -644,13 +645,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 					CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.ATIVIDADE.nome +"_" + index, CamadaGeoEnum.ATIVIDADE.tipo +"_" + index,
 							getDescricaoAtividade(geometrie), GeoCalc.areaHectare(geometrie), geometrie);
+					camadaGeo.geometriaAtividade = geometria;
 
 					camadasGeo.add(camadaGeo);
 				}
 
 			}
 
-			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao.atividade.nome, camadasGeo);
+			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao.atividade, camadasGeo);
 
 			dadosAreaProjeto.add(camadaGeoAtividade);
 
@@ -666,14 +668,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		switch (geometry.getGeometryType().toUpperCase()) {
 
 			case "POINT" :
-				descricao = "[" + String.valueOf(((Point) geometry).getY()) + "," + String.valueOf(((Point) geometry).getX()) + "]";
+				descricao = "Coordenadas [" + String.valueOf(((Point) geometry).getY()) + ", " + String.valueOf(((Point) geometry).getX()) + "]";
 				break;
 			case "LINESTRING":
 
-				descricao = "Extensão " + String.valueOf(GeoCalc.length(geometry)/1000) + " Km";
+				descricao = "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
 				break;
 			case "POLYGON":
-				descricao = "Área " + String.valueOf(GeoCalc.areaHectare(geometry)) + " ha";
+				descricao = "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
 				break;
 		}
 

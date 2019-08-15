@@ -66,5 +66,8 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_PRESIDENTE = 56l;
 	public static final Long RESOLVER_NOTIFICACAO_GEO = 57l;
 	public static final Long INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO = 58l;
+	public static final Long SOLICITAR_DESVINCULO = 59l;
+	public static final Long APROVAR_SOLICITACAO_DESVINCULO = 60l;
+	public static final Long NEGAR_SOLICITACAO_DESVINCULO = 61l;
 }
 

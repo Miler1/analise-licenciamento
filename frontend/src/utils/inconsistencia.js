@@ -1,7 +1,7 @@
 var Inconsistencia = {
 
     PROPRIEDADE: 'PROPRIEDADE',
-	AREA_PROJETO: 'AREA_PROJETO',
+	ATIVIDADE: 'ATIVIDADE',
     RESTRICAO: 'RESTRICAO'
     
 };

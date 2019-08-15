@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, analiseGeo, $location, analiseGeoService, restricoes, documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem) {
+var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -12,9 +12,12 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	ctrl.restricoes = restricoes;
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
+	ctrl.analiseGeo.tipoResultadoAnalise = {id:undefined};
 	ctrl.categoria = app.utils.Inconsistencia;
 	ctrl.camadas = [];
 	ctrl.estiloMapa = app.utils.EstiloMapa;
+	ctrl.controleVisualizacao = null;
+	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
 
 	var getLayer = function(descricao){
@@ -50,7 +53,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 	);
 
 	ctrl.init('mapa-localizacao-empreendimento', true, true);
-
+	ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	function piscarFeature(layer, color) {
 
 		setTimeout(function(){
@@ -337,7 +340,7 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 					analiseGeoService.getDadosAreaProjeto($scope.analiseGeo.analise.processo.id)
 						.then(function (response) {
 
-							ctrl.camadasDadosAtividade = response.data;
+							ctrl.camadasDadosAtividade = response.data;				
 							ctrl.camadasDadosAtividade.forEach(function (camadaAtividade) {
 								camadaAtividade.camadasGeo.forEach(function (camadaGeo) {
 									adicionarGeometriaNoMapa(camadaGeo);
@@ -348,6 +351,29 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 
 		});
 
+	};
+
+	$scope.verificaInconsistenciaEmpreendimento = function () {
+
+		if (ctrl.analiseGeo.inconsistencias === undefined  || ctrl.analiseGeo.inconsistencias.length === 0) {
+			return false;
+		}
+
+		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
+			return inconsistencia.categoria.toUpperCase() === ctrl.categoria.PROPRIEDADE ;
+		});
+
+		return inconsitenciaEncontrada !== undefined;
+	};
+
+	$scope.verificaInconsistenciaAtividade = function (atividade, nomeGeometria) {
+
+		//TODO PUMA-SQ1 - Criar método para buscar no array de inconsistencias, uma inconsistencia por atividade e nomeGeometria
+	};
+
+	$scope.addInconsistenciaAtividade = function (atividade, geometria) {
+
+		//TODO PUMA-SQ1 - Criar método para adicionar inconsitencia por geometria da atividade
 	};
 
 	$scope.addInconsistencia = function(categoriaInconsistencia){
@@ -397,10 +423,24 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 			});
 	};
 
+	function controleCamposParecerEmpreedimento() {
+
+		if(ctrl.analiseGeo.inconsistencias.length > 0){
+			$('#situacaoFundiaria').summernote('disable');
+			$('#analiseTemporal').summernote('disable');
+			ctrl.situacaoFundiaria = undefined;
+			ctrl.analiseTemporal = undefined;
+
+		} else {
+			$('#situacaoFundiaria').summernote('enable');
+			$('#analiseTemporal').summernote('enable');
+		}
+	}
+
 
 	 ctrl.clonarParecerGeo = function() {
 
-		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcesso)
+		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
 				.then(function(response){
 
 						if(response.data === null) {
@@ -410,6 +450,8 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 								return;
 						}
 						ctrl.analiseGeo.parecer = response.data.parecer;
+						ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
+						ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
 
 				}, function(error){
 
@@ -456,39 +498,113 @@ var AnaliseGeoController = function($injector, $scope, $timeout, $uibModal, anal
 		if(!documento.id){
 			documentoService.download(documento.key, documento.nomeDoArquivo);
 		}else{
-			analiseGeoService.download(documento.id);	
+			analiseGeoService.download(documento.id);
 		}
 	};
 
-	ctrl.confirmar= function() {
 
-	
-		analiseGeoService.concluir(ctrl.analiseGeo);
-
+	ctrl.avancarProximaEtapa= function() {
+		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+		$('.nav-tabs > .active').next('li').find('a').trigger('click');
+		controleCamposParecerEmpreedimento();
+		scrollTop();
 	};
 
 
 	ctrl.cancelar= function() {
 		$location.path('/analise-geo');
+		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	};
 
-	ctrl.proximaEtapa = function(){
-		
-		if(ctrl.analiseGeo.inconsistencias.length > 0){
-			$('#situacaoFundiaria').summernote('disable');
-			$('#analiseTemporal').summernote('disable');
-			ctrl.situacaoFundiaria = undefined;
-			ctrl.analiseTemporal = undefined;
+	function scrollTop() {
+		$anchorScroll();
+	}
 
-		} else {
-			$('#situacaoFundiaria').summernote('enable');
-			$('#analiseTemporal').summernote('enable');
-		}
-			$('.nav-tabs > .active').next('li').find('a').trigger('click');
-	};
-
-	ctrl.etapaAnterior = function(){
+	ctrl.voltarEtapaAnterior = function(){
 			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+			scrollTop();
+			ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+	};
+
+	function analiseValida() {
+
+		if ((!ctrl.analiseGeo.inconsistencias || ctrl.analiseGeo.inconsistencias.length === 0) && (!ctrl.analiseGeo.analiseTemporal || !ctrl.analiseGeo.situacaoFundiaria)) {
+			return false;
+		}
+
+		if (!ctrl.analiseGeo.parecer) {
+			return false;
+		}
+
+		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
+			return false;
+		}
+
+		return ((ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
+			ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()) && ctrl.analiseGeo.despacho);
+	}
+
+	ctrl.downloadPDFParecer = function() {
+
+		var params = {
+			id: $scope.analiseGeo.id,
+			parecer: $scope.analiseGeo.parecer
+		};
+
+		documentoAnaliseService.generatePDFParecerGeo(params)
+			.then(function(data, status, headers){
+
+				var a = document.createElement('a');
+				a.href = URL.createObjectURL(data.data.response.blob);
+				a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+				a.click();
+
+			},function(error){
+				mensagem.error(error.data.texto);
+			});
+	};
+
+	ctrl.concluir = function(){
+
+		if(!analiseValida()) {
+
+			mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
+				'<ul>' +
+				'<li>Para concluir é necessário descrever o parecer na conclusão.</li>' +
+				'<li>Selecione um parecer para o processo (Deferido, Indeferido, Emitir notificação).</li>' +
+				'</ul>', { ttl: 10000 });
+			return;
+		}
+
+		ctrl.analiseGeo.analise.processo.empreendimento = null;
+
+		analiseGeoService.concluir(ctrl.analiseGeo)
+			.then(function(response) {
+
+				var params = {
+					id: $scope.analiseGeo.id,
+					parecer: $scope.analiseGeo.parecer
+				};
+
+				documentoAnaliseService.generatePDFParecerGeo(params)
+					.then(function(data, status, headers){
+
+						var a = document.createElement('a');
+						a.href = URL.createObjectURL(data.data.response.blob);
+						a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+						a.click();
+
+						$location.path('/analise-geo');
+						mensagem.setMensagemProximaTela('success', response.data.texto);
+
+					},function(error){
+							mensagem.error(error.data.texto);
+					});
+
+			}, function(error){
+
+				mensagem.error(error.data.texto);
+			});
 	};
 
 	$scope.optionsText = {

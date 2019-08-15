@@ -16,7 +16,7 @@ public class Condicoes extends InternalController {
 		verificarPermissao(Acao.CONSULTAR_PROCESSO);
 
 		List<Condicao> condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
-				.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO, Condicao.EM_ANALISE_GEO))
+				.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO, Condicao.EM_ANALISE_GEO, Condicao.SOLICITACAO_DESVINCULO_PENDENTE, Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE))
 				.fetch();
 		
 		renderJSON(condicoesVisiveis, CondicaoSerializer.list);

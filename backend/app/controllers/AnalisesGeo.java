@@ -13,7 +13,6 @@ import utils.Mensagem;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
 
 public class AnalisesGeo extends InternalController {
 
@@ -147,9 +146,27 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
 
-        analiseGeoSalva.parecer = novoParecer;
+        analiseGeoSalva.parecer = "<p><b>PARECER GEO</b></p><p>Não foi encontrada nenhuma inconsitência ou restrição para a licença solicitada referente à parte <u>geográfica</u>. </p><p> Considero analisados os itens:</p><ol><li>Restrição - Nada consta</li><li>Inconcistência - Nada consta</li></ol><p></p>";
 
         Documento pdfParecer = analiseGeoSalva.gerarPDFParecer();
+
+        String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
+        nome = nome.replace(' ', '_');
+        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Content-Type", "application/pdf");
+
+        renderBinary(pdfParecer.arquivo, nome);
+
+    }
+
+    public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) throws Exception {
+
+        verificarPermissao(Acao.INICIAR_PARECER_GEO);
+
+        AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
+
+        Documento pdfParecer = analiseGeoSalva.gerarPDFCartaImagem();
 
         String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');

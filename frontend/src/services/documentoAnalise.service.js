@@ -16,6 +16,11 @@ var DocumentoAnaliseService = function(request, config, $window) {
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFParecer', analiseTecnica);
 	};
 
+	this.generatePDFParecerGeo = function(analiseGeo) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesGeo/downloadPDFParecer', analiseGeo);
+	};
+
 	this.generatePDFNotificacaoParecerJuridico = function(analiseJuridica) {
 
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFNotificacao', analiseJuridica);
