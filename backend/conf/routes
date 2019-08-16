@@ -128,6 +128,9 @@ GET		/coordenadoresAprovacao						Coordenadores.getCoordenadoresAprovacao
 GET		/condicoes									Condicoes.list
 GET     /condicoes/manejo                           Condicoes.listManejo
 
+#Sobreposições
+GET		/tiposSobreposicao                          Sobreposicoes.list
+
 # Documentos
 GET		/documentos/{id}/download					Documentos.download
 

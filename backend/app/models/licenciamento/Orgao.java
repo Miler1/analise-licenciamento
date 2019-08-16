@@ -1,6 +1,5 @@
 package models.licenciamento;
 
-import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;

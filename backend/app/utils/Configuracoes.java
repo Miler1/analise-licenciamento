@@ -64,6 +64,7 @@ public class Configuracoes {
 	public static Integer SRID_DEFAULT = null;
 	public static String GETCAPABILITIES_GEOSERVER_SICAR = getConfig("sistema.url.getcapabilities.geoserver.sicar", null);
 	public static String GEOSERVER_SICAR_IMOVEL_LAYER = getConfig("sistema.url.getcapabilities.geoserver.sicar.layer.name", null);
+	public static String GEOSERVER_BASE_URL = getConfig("sistema.base.url.geoserver", null);
 
 	//Prazo da condicionante deverá ser menor ou igual a 1900 (5 anos) conforme regra.
 	public static Integer PRAZO_MAXIMO_CONDICIONANTE = 1900;

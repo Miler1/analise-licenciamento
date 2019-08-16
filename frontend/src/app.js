@@ -406,7 +406,9 @@ licenciamento.constant('config', {
 		else
 			return LICENCIAMENTO_CONFIG.configuracoes.baseURL + "/";
 	},
-	QTDE_ITENS_POR_PAGINA: 10
+	QTDE_ITENS_POR_PAGINA: 10,
+	BASE_URL_GEOSERVER: LICENCIAMENTO_CONFIG.configuracoes.baseUrlGeoServer
+
 }).constant('tamanhoMaximoArquivoAnaliseMB', 10)
 	.constant('TiposAnalise', {
 
@@ -470,8 +472,9 @@ utils.services(licenciamento)
 	.add('analiseGeoService', services.AnaliseGeoService)
 	.add('validacaoShapeService', services.ValidacaoShapeService)
 	.add('empreendimentoService', services.EmpreendimentoService)
-	.add('desvinculoService', services.DesvinculoService);
-
+	.add('desvinculoService', services.DesvinculoService)
+	.add('wmsTileService', services.WMSTileService)
+	.add('tiposSobreposicaoService', services.TiposSobreposicaoService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

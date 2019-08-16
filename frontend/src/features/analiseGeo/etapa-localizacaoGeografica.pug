@@ -44,7 +44,7 @@ include ../../layout/components/mapPanel
                                 .panel-heading
                                     h4.panel-title
                                         | Atividade: {{camadaDadosAtividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}}
-                                        i.pull-right(style="margin-left: 460px;",class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
 
                         #dadosAreaProjeto.collapse
                             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
@@ -62,24 +62,19 @@ include ../../layout/components/mapPanel
                                             i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(camadaDadosAtividade.atividade.id, camadaGeo.item) }", ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência', )
                                                 | &nbsp;&nbsp;
 
-                        div
-                         a(href='javascript:;', data-parent='#accordion',aria-expanded='false', data-target='#dadosAreaProjeto', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
-                             .panel.panel-default
-                                 .panel-heading
-                                     h4.panel-title
-                                         | Áreas de restrição da atividade
-                         #dadosAreaProjeto
-                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                                     thead
-                                         tr
-                                             th.col-md-4 Item
-                                             th.col-md-5 Critério
-                                             th.col-md-1.text-right Ações
+                            br
+                            div(ng-if="camadaDadosAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.length > 0")
+                                label Áreas de restrição da atividade
 
-                                     tbody
-                                         tr
-                                             td.col-md-4 Minha área do imóvel
-                                             td.col-md-5 Meu empreendimento
+                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                    thead
+                                        tr
+                                         th.col-md-4 Item
+                                         th.col-md-1.text-right Ações
+
+                                    tbody(ng-repeat="sobreposicao in camadaDadosAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades")
+                                        tr
+                                            td.col-md-4 {{sobreposicao.tipoSobreposicao.nome}}
                                              td.col-md-2.text-right
                                                  i.glyphicon.glyphicon-alert(title='Sobreposição encontrada. Emitir notificação ao interessado')
                                                  | &nbsp;&nbsp;

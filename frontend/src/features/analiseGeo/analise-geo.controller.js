@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService) {
+var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService, tiposSobreposicaoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -18,7 +18,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.estiloMapa = app.utils.EstiloMapa;
 	ctrl.controleVisualizacao = null;
 	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
-
+	ctrl.TiposSobreposicao = [];
+	getTiposSobreposicao();
 
 	var getLayer = function(descricao){
 
@@ -53,6 +54,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	);
 
 	ctrl.init('mapa-localizacao-empreendimento', true, true);
+
 	ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 	function piscarFeature(layer, color) {
 
@@ -275,6 +277,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 	};
 
+	this.controlaExibicaoLayer = function(tipoSobreposicao) {
+
+		adicionarWmsLayerNoMapa(tipoSobreposicao);
+	};
+
 	this.controlaCentralizacaoCamadas = function (camada) {
 
 		$scope.$emit('mapa:centralizar-camada', camada);
@@ -283,15 +290,32 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	function adicionarGeometriaNoMapa (camada, disable) {
 
 		camada.visivel = true;
-		camada.color = ctrl.estiloMapa[camada.tipo] != undefined ? ctrl.estiloMapa[camada.tipo].color : ctrl.estiloMapa.ATIVIDADE.color;
+		camada.color = ctrl.estiloMapa[camada.tipo] != undefined ? ctrl.estiloMapa[camada.tipo].color : camada.estilo.color;
 
 		$scope.$emit('mapa:adicionar-geometria-base', {
 			geometria: JSON.parse(camada.geometria),
 			tipo: camada.tipo,
 			estilo: {
-				style: ctrl.estiloMapa[camada.tipo] || ctrl.estiloMapa.ATIVIDADE
+				style: ctrl.estiloMapa[camada.tipo] || camada.estilo
 			},
 			popupText: camada.item,
+			disableCentralizarGeometrias:disable
+		});
+	}
+
+
+	function adicionarWmsLayerNoMapa (tipoSobreposicao) {
+
+		tipoSobreposicao.visivel = true;
+		tipoSobreposicao.color = ctrl.estiloMapa.SOBREPOSICAO.color;
+
+		$scope.$emit('mapa:adicionar-wmslayer-mapa', {
+			layer: 'base_referencia_am:' + tipoSobreposicao.codigo.toLowerCase(),
+			tipo: tipoSobreposicao.codigo,
+			estilo: {
+				style: ctrl.estiloMapa.SOBREPOSICAO
+			},
+			popupText: tipoSobreposicao.nome,
 			disableCentralizarGeometrias:disable
 		});
 	}
@@ -340,10 +364,20 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					analiseGeoService.getDadosAreaProjeto($scope.analiseGeo.analise.processo.id)
 						.then(function (response) {
 
-							ctrl.camadasDadosAtividade = response.data;				
+							ctrl.camadasDadosAtividade = response.data;
 							ctrl.camadasDadosAtividade.forEach(function (camadaAtividade) {
 								camadaAtividade.camadasGeo.forEach(function (camadaGeo) {
+									camadaGeo.estilo = ctrl.estiloMapa.ATIVIDADE;
 									adicionarGeometriaNoMapa(camadaGeo);
+								});
+
+								camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.forEach(function (sobreposicao) {
+
+									sobreposicao.item = sobreposicao.tipoSobreposicao.nome;
+									sobreposicao.tipo = sobreposicao.tipoSobreposicao.codigo;
+									sobreposicao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
+
+									adicionarGeometriaNoMapa(sobreposicao);
 								});
 							});
 						});
@@ -438,26 +472,26 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	}
 
 
-	 ctrl.clonarParecerGeo = function() {
+	ctrl.clonarParecerGeo = function() {
 
 		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
-				.then(function(response){
+			.then(function(response){
 
-						if(response.data === null) {
+					if(response.data === null) {
 
-								ctrl.analiseGeo.parecer = null;
-								mensagem.error('Não foi encontrado um parecer para esse número de processo.');
-								return;
-						}
-						ctrl.analiseGeo.parecer = response.data.parecer;
-						ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
-						ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
+							ctrl.analiseGeo.parecer = null;
+							mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+							return;
+					}
+					ctrl.analiseGeo.parecer = response.data.parecer;
+					ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
+					ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
 
-				}, function(error){
+			}, function(error){
 
-						mensagem.error(error.data.texto);
-				});
-};
+					mensagem.error(error.data.texto);
+			});
+	};
 
 	ctrl.upload = function(file, invalidFile) {
 
@@ -485,7 +519,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
 		}
-};
+	};
 
 	 ctrl.removerDocumento = function (indiceDocumento) {
 
@@ -627,6 +661,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		  document.execCommand( 'insertText', false, bufferText );
 		}, 10 );
 	};
+
+	function getTiposSobreposicao() {
+
+		tiposSobreposicaoService.getTiposSobreposicao(function (response) {
+
+			ctrl.TiposSobreposicao = response.data;
+		});
+	}
 
 };
 

@@ -57,6 +57,7 @@ public class Application extends GenericController {
 	public static class ConfiguracoesApp {
 		
 		public String baseURL = Configuracoes.HTTP_PATH;
+		public String baseUrlGeoServer = Configuracoes.GEOSERVER_BASE_URL;
 	}
 
 

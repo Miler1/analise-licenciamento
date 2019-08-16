@@ -37,5 +37,6 @@ public class ApplicationSerializer {
 			"usuarioSessao.usuarioEntradaUnica.setorSelecionado.id",
 			"usuarioSessao.usuarioEntradaUnica.setorSelecionado.nome",
 			"usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla",
-			"configuracoes.baseURL");
+			"configuracoes.baseURL",
+			"configuracoes.baseUrlGeoServer");
 }

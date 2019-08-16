@@ -38,6 +38,14 @@ var EstiloMapa = {
         fill: true,
         fillOpacity: 0.5,
         opacity: 1
+    },
+
+    'SOBREPOSICAO': {
+        color: '#ffd700',
+        weight: 2,
+        fill: true,
+        fillOpacity: 0.5,
+        opacity: 1
     }
 
 };

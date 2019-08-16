@@ -1,7 +1,7 @@
 /**
  * Controller para a painel de mapa
  **/
-var PainelMapaController = function ($scope) {
+var PainelMapaController = function ($scope, wmsTileService) {
 	var painelMapa = this;
 	painelMapa.map = null;
 	// Lista para conter as geometrias que precisam de atenção especial durante a renderização
@@ -23,6 +23,7 @@ var PainelMapaController = function ($scope) {
 		painelMapa.listaGeometriasMapa = [];
 		// Lista de geometrias base do mapa, são centralizadas somente se a lista de geometrias enviadas estiver vazia
 		painelMapa.listaGeometriasBase = [];
+		painelMapa.listaWmsLayers = [];
 		painelMapa.instanciaMapa();
 	};
 
@@ -82,6 +83,18 @@ var PainelMapaController = function ($scope) {
 	$scope.$on('mapa:adicionar-botao-centralizar-mapa-base', adicionarBotaoCentralizar);
 
     $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
+	
+	$scope.$on('mapa:adicionar-wmslayer-mapa', adicionarWmsLayer);
+	
+
+	function adicionarWmsLayer(camada) {
+
+		var wmsLayer = wmsTileService.novoTile(null, camada.layer, 5, 20, null, null);
+
+		painelMapa.listaWmsLayers[camada.tipo] = camada.layer;
+
+		painelMapa.map.addLayer(wmsLayer);
+	}
 
     function centralizarCamadaEspecifica(event, camada) {
 
