@@ -89,9 +89,12 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	function adicionarWmsLayer(event, camada) {
 
-		var wmsLayer = wmsTileService.novoTile(null, camada.layer, 5, 20, null, null);
+		var wmsLayer = wmsTileService.novoTile(null, camada.nomeLayer, 5, 20, null, null);
 
-		painelMapa.listaWmsLayers[camada.tipo] = camada.layer;
+		camada.layer = wmsLayer;
+		camada.legend = wmsLayer.legend;
+
+		painelMapa.listaWmsLayers[camada.tipo] = camada;
 
 		painelMapa.map.addLayer(wmsLayer);
 	}

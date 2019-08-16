@@ -310,7 +310,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		tipoSobreposicao.color = ctrl.estiloMapa.SOBREPOSICAO.color;
 
 		$scope.$emit('mapa:adicionar-wmslayer-mapa', {
-			layer: ctrl.camadasSobreposicao[tipoSobreposicao.codigo],
+			nomeLayer: ctrl.camadasSobreposicao[tipoSobreposicao.codigo],
 			tipo: tipoSobreposicao.codigo,
 			estilo: {
 				style: ctrl.estiloMapa.SOBREPOSICAO
