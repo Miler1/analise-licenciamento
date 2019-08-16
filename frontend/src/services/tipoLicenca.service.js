@@ -2,7 +2,7 @@ var TipoLicencaService = function(request, config) {
 
 	this.getTiposLicencas = function() {
 
-		return request.getWithCache(config.BASE_URL() + "tiposLicencas");
+		return request.getWithCache(config.BASE_URL() + 'tiposLicencas');
 	};
 
 };

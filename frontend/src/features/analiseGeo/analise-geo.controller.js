@@ -16,10 +16,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.categoria = app.utils.Inconsistencia;
 	ctrl.camadas = [];
 	ctrl.estiloMapa = app.utils.EstiloMapa;
+	ctrl.camadasSobreposicao = app.utils.CamadaSobreposicao;
 	ctrl.controleVisualizacao = null;
 	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 	ctrl.TiposSobreposicao = [];
-	getTiposSobreposicao();
 
 	var getLayer = function(descricao){
 
@@ -310,13 +310,13 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		tipoSobreposicao.color = ctrl.estiloMapa.SOBREPOSICAO.color;
 
 		$scope.$emit('mapa:adicionar-wmslayer-mapa', {
-			layer: 'base_referencia_am:' + tipoSobreposicao.codigo.toLowerCase(),
+			layer: ctrl.camadasSobreposicao[tipoSobreposicao.codigo],
 			tipo: tipoSobreposicao.codigo,
 			estilo: {
 				style: ctrl.estiloMapa.SOBREPOSICAO
 			},
 			popupText: tipoSobreposicao.nome,
-			disableCentralizarGeometrias:disable
+			disableCentralizarGeometrias:false
 		});
 	}
 
@@ -371,14 +371,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 									adicionarGeometriaNoMapa(camadaGeo);
 								});
 
-								camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.forEach(function (sobreposicao) {
-
-									sobreposicao.item = sobreposicao.tipoSobreposicao.nome;
-									sobreposicao.tipo = sobreposicao.tipoSobreposicao.codigo;
-									sobreposicao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
-
-									adicionarGeometriaNoMapa(sobreposicao);
-								});
+								tiposSobreposicaoService.getTiposSobreposicao()
+									.then(function (response) {
+										ctrl.TiposSobreposicao = response.data;
+									});
 							});
 						});
 				});
@@ -661,14 +657,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		  document.execCommand( 'insertText', false, bufferText );
 		}, 10 );
 	};
-
-	function getTiposSobreposicao() {
-
-		tiposSobreposicaoService.getTiposSobreposicao(function (response) {
-
-			ctrl.TiposSobreposicao = response.data;
-		});
-	}
 
 };
 

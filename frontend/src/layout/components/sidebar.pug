@@ -38,7 +38,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 											span.fa.fa-square.icon-legenda(ng-style="{'color': camada.color}")
 											span {{camada.item}}
 
-										.col-sm-3.col-xs-3(style="padding: 0px 5px 0px 5px")
+										.col-sm-3.col-xs-3
 
 											button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : camada.visivel, 'fa-eye-slash' : !camada.visivel}",
 											ng-click=controller + ".controlaExibicaoCamadas(camada)")
@@ -55,7 +55,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 										span.fa.fa-square.icon-legenda(ng-style="{'color': camada.color}")
 										span {{camada.item}}
 
-									.col-sm-3.col-xs-3(style="padding: 0px 5px 0px 5px")
+									.col-sm-3.col-xs-3
 
 										button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : camada.visivel, 'fa-eye-slash' : !camada.visivel}",
 										ng-click=controller + ".controlaExibicaoCamadas(camada)")
@@ -73,7 +73,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 							span.fa.fa-square.icon-legenda(ng-style="{'color': '#ffd700'}")
 							span {{tipoSobreposicao.nome}}
 
-						.col-sm-3.col-xs-3(style="padding: 0px 5px 0px 5px")
+						.col-sm-3.col-xs-3
 
 							button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : tipoSobreposicao.visivel, 'fa-eye-slash' : !tipoSobreposicao.visivel}",
 							ng-click=controller + ".controlaExibicaoLayer(tipoSobreposicao)")
