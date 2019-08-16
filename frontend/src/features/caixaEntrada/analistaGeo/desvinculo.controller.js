@@ -1,4 +1,4 @@
-var DesvinculoController = function ($uibModalInstance,idProcesso, $location ,$window,$rootScope, mensagem, desvinculoService) {
+var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, $location ,$window,$rootScope, mensagem, desvinculoService) {
 
 	var desvinculoController = this;
 	
@@ -15,7 +15,7 @@ var DesvinculoController = function ($uibModalInstance,idProcesso, $location ,$w
     desvinculoController.concluir = function() {
         var params={
             justificativa: desvinculoController.justificativa,
-            processo: {id: idProcesso}
+            analiseGeo: {id: idAnaliseGeo}
         };
             desvinculoService.solicitarDesvinculo(params)
                 .then(function(response){

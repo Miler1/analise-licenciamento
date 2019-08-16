@@ -1,5 +1,6 @@
 package models.licenciamento;
 
+import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -15,12 +16,15 @@ public class Orgao  extends GenericModel {
     @SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
     public Long id;
 
-    @Column(name="sigla")
+    @Required
+    @JoinColumn(name="sigla")
     public String sigla;
 
-    @Column(name="nome")
+    @Required
+    @JoinColumn(name="nome")
     public String nome;
 
-    @Column(name="email")
+    @Required
+    @JoinColumn(name="email")
     public String email;
 }

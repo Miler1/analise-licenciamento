@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 %{
-processo = analiseGeo.analise.processo;
+
 dataNotificacao = notificacao.dataCadastro;
 numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
 empreendimento = analiseGeo.analise.processo.empreendimento;
@@ -27,18 +27,12 @@ end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAces
 <p></p>
 
 
-<p><strong>Ofício n.° ${processo.numero}/20${processo.numero}/IPAAM-DT </strong> </p>
+<p><strong>Ofício n.° ${processo.numero}/2019/IPAAM-DT </strong> </p>
 <p style="text-align: right">  Manaus/AM, ${new java.text.simpleDateFormat("dd/MM/yyyy").now()}</p>
 
-<p><strong>Data de Protocolo:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}</p>
+À
+<p>À <br> <strong> Coordernadoria Regional de Manaus - FUNAI </strong><br> Rua Maceió, 224 - Adrianópolis <br> CEP: 69057-010 - Manaus/AM</p>
 
-<p><strong>Interessado ou Requerente/Arrendatario:</strong> ${empreendimentoNome}</p>
-
-<p><strong>Assunto:</strong> Informe de notificação ( Movimentação de processo )</p>
-
-<p><strong>Data:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataNotificacao)}</p>
-
-<p><strong>Movimentação: </strong> Notificação n° ${numeroNotificacao} <strong> SETOR:</strong> GDFLOR</p>
 
 <p><strong> Prezada Coordenadoria, </strong></p>
 <p> </p>

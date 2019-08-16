@@ -26,7 +26,6 @@ public class Desvinculos extends GenericController {
                 throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
 
             }
-            desvinculo.analista = getUsuarioSessao();
 
             if(desvinculo.dataSolicitacao == null) {
 
@@ -35,12 +34,14 @@ public class Desvinculos extends GenericController {
 
                 desvinculo.dataSolicitacao = c.getTime();
             }
-            String siglaSetor = desvinculo.analista.usuarioEntradaUnica.setorSelecionado.sigla;
+            String siglaSetor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla;
             desvinculo.gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor);
+
             desvinculo.save();
-            Processo processoBanco = Processo.findById(desvinculo.processo.id);
-            desvinculo.processo.tramitacao.tramitar(processoBanco, AcaoTramitacao.SOLICITAR_DESVINCULO, desvinculo.analista, desvinculo.gerente);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processoBanco.objetoTramitavel.id), desvinculo.analista);
+
+            AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(desvinculo.analiseGeo.id);
+            desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, getUsuarioSessao(), desvinculo.gerente);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
             renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 

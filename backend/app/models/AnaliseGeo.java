@@ -1,9 +1,7 @@
 package models;
 
 import exceptions.ValidacaoException;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.Empreendimento;
-import models.licenciamento.TipoAnalise;
+import models.licenciamento.*;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -391,6 +389,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         this.usuarioValidacaoGerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla);
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+
+            for (AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.getCaracterizacao().atividadesCaracterizacao) {
+                for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades){
+                    if (sobreposicaoCaracterizacaoAtividade != null){
+                        enviarEmailComunicado();
+                    }
+                }
+            }
+
 
             if(this.usuarioValidacaoGerente != null) {
 
