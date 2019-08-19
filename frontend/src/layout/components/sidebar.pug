@@ -15,7 +15,8 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 				li(title="Tipos sobreposições",
 						data-toggle="tooltip",
 						data-placement="right",
-						data-container="body")
+						data-container="body",
+						ng-click=controller + ".getCamadasSobreposicoes()")
 					a.inline_block(href='#sobreposicoes', role="tab")
 						i.i.fa.fa-list-ul
 
@@ -38,7 +39,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 											span.fa.fa-square.icon-legenda(ng-style="{'color': camada.color}")
 											span {{camada.item}}
 
-										.col-sm-3.col-xs-3
+										.col-sm-3.col-xs-3(style='padding: 0px;')
 
 											button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : camada.visivel, 'fa-eye-slash' : !camada.visivel}",
 											ng-click=controller + ".controlaExibicaoCamadas(camada)")
@@ -55,7 +56,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 										span.fa.fa-square.icon-legenda(ng-style="{'color': camada.color}")
 										span {{camada.item}}
 
-									.col-sm-3.col-xs-3
+									.col-sm-3.col-xs-3(style='padding: 0px;')
 
 										button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : camada.visivel, 'fa-eye-slash' : !camada.visivel}",
 										ng-click=controller + ".controlaExibicaoCamadas(camada)")
@@ -69,11 +70,13 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 
 				div.sidebar-body
 					.row.no-margin-left-right.camadas-mapa(ng-repeat="tipoSobreposicao in " + controller + ".TiposSobreposicao")
-						.col-sm-9.col-xs-9.descricao
-							span.fa.fa-square.icon-legenda(ng-style="{'color': '#ffd700'}")
-							span {{tipoSobreposicao.nome}}
+						.col-sm-9.col-xs-9
+							.col-sm-2.col-xs-2.imagem-legenda
+								img(src="{{tipoSobreposicao.legend[0].src}}")
+							.col-sm-10.col-xs-10.descricao-legenda
+								span {{tipoSobreposicao.nome}}
 
-						.col-sm-3.col-xs-3
+						.col-sm-3.col-xs-3(style='text-align: center;')
 
 							button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : tipoSobreposicao.visivel, 'fa-eye-slash' : !tipoSobreposicao.visivel}",
 							ng-click=controller + ".controlaExibicaoLayer(tipoSobreposicao)")

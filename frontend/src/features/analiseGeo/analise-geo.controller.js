@@ -279,7 +279,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	this.controlaExibicaoLayer = function(tipoSobreposicao) {
 
-		adicionarWmsLayerNoMapa(tipoSobreposicao);
+		$scope.$emit('mapa:controla-exibicao-wmslayer', tipoSobreposicao);
+	};
+
+	this.getCamadasSobreposicoes = function() {
+
+		ctrl.TiposSobreposicao.forEach(function (tipo) {
+			adicionarWmsLayerNoMapa(tipo);
+		});
 	};
 
 	this.controlaCentralizacaoCamadas = function (camada) {
@@ -306,18 +313,15 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	function adicionarWmsLayerNoMapa (tipoSobreposicao) {
 
-		tipoSobreposicao.visivel = true;
+		tipoSobreposicao.visivel = false;
 		tipoSobreposicao.color = ctrl.estiloMapa.SOBREPOSICAO.color;
+		tipoSobreposicao.nomeLayer = ctrl.camadasSobreposicao[tipoSobreposicao.codigo];
+		tipoSobreposicao.tipo = tipoSobreposicao.codigo;
+		tipoSobreposicao.estilo = {style: ctrl.estiloMapa.SOBREPOSICAO};
+		tipoSobreposicao.popupText = tipoSobreposicao.nome;
+		tipoSobreposicao.disableCentralizarGeometrias=false;
 
-		$scope.$emit('mapa:adicionar-wmslayer-mapa', {
-			nomeLayer: ctrl.camadasSobreposicao[tipoSobreposicao.codigo],
-			tipo: tipoSobreposicao.codigo,
-			estilo: {
-				style: ctrl.estiloMapa.SOBREPOSICAO
-			},
-			popupText: tipoSobreposicao.nome,
-			disableCentralizarGeometrias:false
-		});
+		$scope.$emit('mapa:adicionar-wmslayer-mapa', tipoSobreposicao, true);
 	}
 
 	this.init = function() {

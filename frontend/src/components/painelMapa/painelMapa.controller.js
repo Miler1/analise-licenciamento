@@ -85,18 +85,39 @@ var PainelMapaController = function ($scope, wmsTileService) {
     $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
 	
 	$scope.$on('mapa:adicionar-wmslayer-mapa', adicionarWmsLayer);
+
+	$scope.$on('mapa:controla-exibicao-wmslayer', controlaExibicaoWmsLayer);
 	
+	function controlaExibicaoWmsLayer(event, camada) {
 
-	function adicionarWmsLayer(event, camada) {
+		var wmslayer = painelMapa.listaWmsLayers[camada.tipo];
 
-		var wmsLayer = wmsTileService.novoTile(null, camada.nomeLayer, 5, 20, null, null);
+		if(camada.visivel){
 
-		camada.layer = wmsLayer;
-		camada.legend = wmsLayer.legend;
+			camada.visivel = false;
+			painelMapa.map.removeLayer(wmslayer.layer);
 
-		painelMapa.listaWmsLayers[camada.tipo] = camada;
+		} else {
+			camada.visivel = true;
+			painelMapa.map.addLayer(wmslayer.layer);
+		}
+	}
 
-		painelMapa.map.addLayer(wmsLayer);
+	function adicionarWmsLayer(event, camada, naoExibirCamadas) {
+
+		if (painelMapa.listaWmsLayers.length === 0) {
+
+			var wmsLayer = wmsTileService.novoTile(null, camada.nomeLayer, 5, 20, null, null);
+
+			camada.layer = wmsLayer;
+			camada.legend = wmsLayer.legend;
+
+			painelMapa.listaWmsLayers[camada.tipo] = camada;
+
+			if(!naoExibirCamadas) {
+				painelMapa.map.addLayer(wmsLayer);
+			}
+		}
 	}
 
     function centralizarCamadaEspecifica(event, camada) {
