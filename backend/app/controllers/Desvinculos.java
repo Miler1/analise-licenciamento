@@ -39,9 +39,9 @@ public class Desvinculos extends GenericController {
 
             desvinculo.save();
 
-            AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(desvinculo.analiseGeo.id);
-            desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, getUsuarioSessao(), desvinculo.gerente);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+            desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
+            desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, getUsuarioSessao(), desvinculo.gerente);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
             renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 
