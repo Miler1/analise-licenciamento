@@ -393,7 +393,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             for (AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.getCaracterizacao().atividadesCaracterizacao) {
                 for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades){
                     if (sobreposicaoCaracterizacaoAtividade != null){
-                        enviarEmailComunicado();
+                        //enviarEmailComunicado();
                     }
                 }
             }
