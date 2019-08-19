@@ -52,7 +52,7 @@ public class Comunicado extends GenericModel {
     public AtividadeCaracterizacao atividadeCaracterizacao;
 
     @OneToOne
-    @JoinColumn(name="id_orgao", referencedColumnName="id")
+    @JoinColumn(name="id_tipo_sobreposicao", referencedColumnName="id")
     public TipoSobreposicao tipoSobreposicao;
 
 
