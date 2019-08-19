@@ -18,7 +18,7 @@ html(lang="pt-br")
 
             .titulo-item {
                 text-decoration:underline;
-                margin: 0px 20px 10px 60px;
+                margin: 10px 20px 10px 60px;
                 font-size: 14px;
                 font-weight: bold;
             }
@@ -26,6 +26,11 @@ html(lang="pt-br")
                 font-size: 14px;
                 font-weight: normal;
             }
+
+            td {
+                border: 1px solid black;
+            }
+
             p {
                 padding-top: 15px;
             }
@@ -47,11 +52,9 @@ html(lang="pt-br")
             }
             .col-item-titulo {
                 width: 230px;
-                border-bottom: dotted;
             }
             .col-item-conteudo {
                 width: 200px;
-                border-bottom: dotted;
                 text-align: right;
             }
 
@@ -71,7 +74,11 @@ body.corpo
             li
                 .titulo-item DO REQUERIMENTO
                 .conteudo-item
-                    p O interessado requer L.P // L.I. // L.O. // CADASTRO // APAT // INEXIGIBILIDADE, para atividade(s) de ATIVIDADE-NOME em um imóvel situado em ÁREA URBANA // ZONA RURAL.
+                    span O interessado requer ${analiseEspecifica.analise.processo.getCaracterizacao().tipoLicenca.sigla}, para atividade(s) de
+                    | \#{list items:analiseEspecifica.analise.processo.getCaracterizacao().atividadesCaracterizacao, as:'atividadeCaracterizacao'}
+                    span ${atividadeCaracterizacao.atividade.nome.toUpperCase()}
+                    | \#{/list}
+                    span  em um imóvel situado em ÁREA URBANA.
 
                     p Quanto ao município informo que o imóvel se encontra TOTALMENTE INSERIDO nos limites do município de ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM.
 
@@ -97,8 +104,8 @@ body.corpo
                         div.lista-itens
                             table
                                 tbody
-                                    tr Atividade: ${camadaAti.atividade.nome.toUpperCase()}
-                                    | \#{list items:camadaAti.camadasGeo, as:'camadaGeoAti'}
+                                    tr Atividade: ${camadaAti.atividadeCaracterizacao.atividade.nome.toUpperCase()}
+                                        | \#{list items:camadaAti.camadasGeo, as:'camadaGeoAti'}
                                     tr
                                         td.col-item-titulo
                                             | ${camadaGeoAti.item}
