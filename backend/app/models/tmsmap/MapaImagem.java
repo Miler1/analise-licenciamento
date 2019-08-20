@@ -126,7 +126,7 @@ public class MapaImagem {
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
 
 		TMSMap map = createMap(crs);
-		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 10, 14, 256, 256);
+		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 14, 256, 256);
 
 		Style polygonStyle = new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
@@ -226,6 +226,14 @@ public class MapaImagem {
 		
 		createMainCoordinates(map, geometryAreaImovel, crs);
 
+		//Setando os pontos do poligono
+		for(DataLayer dataLayer : dataLayers) {
+
+			if (dataLayer.geometry instanceof Point){
+				createPointCoordinates(map, dataLayer.geometry , dataLayer.name, crs);
+			}
+		}
+
 		BufferedImage mapa = new BufferedImage(MAP_WIDTH, MAP_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		map.render(MAP_WIDTH, MAP_HEIGHT, Format.PNG, mapa);
 
@@ -304,7 +312,7 @@ public class MapaImagem {
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
 
 		TMSMap map = createMap(crs);
-		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 10, 14, 256, 256);
+		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 14, 256, 256);
 
 		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
@@ -554,6 +562,36 @@ public class MapaImagem {
 	}
 
 	private Collection<Coordinate> createPoligonosCoordinates(TMSMap map, Geometry geometriePoligono, int numeroPoligono, CoordinateReferenceSystem crs) {
+
+		List<Coordinate> mainCoordinatesResult = new ArrayList<>();
+
+		Point centerPoint = geometriePoligono.getInteriorPoint();
+
+		Coordinate coordinate = centerPoint.getCoordinate();
+
+		map.addLayer((CustomLayer)(graphics, mapContent, mapViewport) -> {
+
+			Font font = new Font("Dialog", Font.PLAIN, 10);
+			graphics.setFont(font);
+			graphics.setStroke(new BasicStroke());
+			graphics.setColor(Color.RED);
+
+			Point2D resultPoint = new Point2D.Double();
+			mapViewport.getWorldToScreen().transform(new Point2D.Double(coordinate.x, coordinate.y), resultPoint);
+
+			graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 2, resultPoint.getY() - 2, 4, 4));
+			graphics.drawString(String.valueOf(numeroPoligono), (float)resultPoint.getX() + 3, (float)resultPoint.getY() + 3);
+
+			Coordinate worldUtmCoordinate = GeoCalc.transform(coordinate, DefaultGeographicCRS.WGS84, crs);
+			mainCoordinatesResult.add(worldUtmCoordinate);
+
+		});
+
+		return mainCoordinatesResult;
+
+	}
+
+	private Collection<Coordinate> createPointCoordinates(TMSMap map, Geometry geometriePoligono, String numeroPoligono, CoordinateReferenceSystem crs) {
 
 		List<Coordinate> mainCoordinatesResult = new ArrayList<>();
 

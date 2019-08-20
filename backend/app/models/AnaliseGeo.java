@@ -743,4 +743,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return documento;
 
     }
+
+    private String getColorTemaCiclo() {
+
+        Random random = new Random();
+        int nextInt = random.nextInt(256*256*256);
+        return String.format("#%06x", nextInt);
+    }
 }
