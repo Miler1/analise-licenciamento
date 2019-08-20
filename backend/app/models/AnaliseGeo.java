@@ -724,8 +724,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public Documento gerarPDFCartaImagem() throws Exception {
 
-        //TODO PUMA-SQ1 Criar tipo documento carta imagem
-        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
 
         List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
