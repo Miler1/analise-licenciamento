@@ -21,6 +21,11 @@ var DocumentoAnaliseService = function(request, config, $window) {
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesGeo/downloadPDFParecer', analiseGeo);
 	};
 
+	this.generatePDFCartaImagemGeo = function(analiseGeo) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesGeo/downloadPDFCartaImagem', analiseGeo);
+	};
+
 	this.generatePDFNotificacaoParecerJuridico = function(analiseJuridica) {
 
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesJuridicas/downloadPDFNotificacao', analiseJuridica);

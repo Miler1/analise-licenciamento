@@ -1,0 +1,92 @@
+doctype html
+html(lang="pt-br")
+    head
+        meta(charset='utf-8')
+        title Análise - Licenciamento Ambiental - Amazonas
+        link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+        style.
+            * {
+                margin: 0;
+                padding:0;
+            }
+            .titulo{
+                text-align: center;
+            }
+            .conteudo {
+                margin: 20px 20px 20px 60px;
+            }
+
+            .titulo-item {
+                text-decoration:underline;
+                margin: 10px 20px 10px 60px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .conteudo-item {
+                font-size: 14px;
+                font-weight: normal;
+            }
+
+            td {
+                border: 1px solid black;
+            }
+
+            .lista-conteudo {
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .lista-referencias {
+                font-size: 10px;
+                padding-top: 100px;
+                padding-left: 15px;
+            }
+
+            .lista-itens {
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+            .col-item-titulo {
+                width: 230px;
+            }
+            .col-item-conteudo {
+                width: 200px;
+                text-align: right;
+            }
+
+            .text-align-right {
+                text-align: right;
+            }
+
+            .text-align-left {
+                text-align: left;
+            }
+
+            .imagem {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                text-align: center;
+                width: 100%;
+            }
+
+            img {
+                width: 424px;
+            }
+
+body.corpo
+    div.titulo
+        h2 CARTA IMAGEM Nº ${analiseEspecifica.analise.processo.numero}
+    div.conteudo
+
+        .conteudo-item
+            p
+                strong Interessado:
+                | ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+            p
+                strong Município:
+                | ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM
+
+        .imagem
+            img(src='${imagemCaracterizacao}', alt='Red dot')
+
+    p.text-align-right Manaus, ${dataCartaImagem}

@@ -95,9 +95,23 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 			});
 	};
 
-	consultarProcesso.downloadPDFCartaImagem = function () {
+	consultarProcesso.downloadPDFCartaImagem = function (processo) {
 
-		mensagem.success('Carta imagem em construção ...');
+		var params = {
+			id: processo.idAnaliseGeo
+		};
+
+		documentoAnaliseService.generatePDFCartaImagemGeo(params)
+			.then(function(data, status, headers){
+
+				var a = document.createElement('a');
+				a.href = URL.createObjectURL(data.data.response.blob);
+				a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pdf';
+				a.click();
+
+			},function(error){
+				mensagem.error(error.data.texto);
+			});
 	};
 
 };

@@ -1,8 +1,12 @@
 package models;
 
+import com.vividsolutions.jts.geom.Geometry;
+import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import models.licenciamento.*;
 import models.pdf.PDFGenerator;
+import models.tmsmap.LayerType;
+import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
@@ -703,19 +707,34 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public Documento gerarPDFCartaImagem() throws Exception {
 
-        //TODO PUMA-SQ1 Criar tipo documento carta imagem
-        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
 
         List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
         List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
 
+        Geometry geometriaAreaMunicipio = this.analise.processo.empreendimento.municipio.getLimite();
+
+        Map<LayerType, Geometry> geometriesCaracterizacao = new HashMap<>();
+        for (CamadaGeo camadaGeo : camadasGeoEmpreedimento) {
+            geometriesCaracterizacao.put(CamadaGeoEnum.fromTipo(camadaGeo.tipo), camadaGeo.geometria);
+        }
+
+        String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaMunicipio, geometriesCaracterizacao);
+
+        Map<LayerType, Geometry> geometriesAtividades = new HashMap<>();
+
+//        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
+//            geometriesCaracterizacao.put(CamadaGeoEnum.fromCodigo(camadaGeo.tipo), camadaGeo.geometria);
+//        }
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
-                .addParam("analiseArea", "ANALISE_GEO")
                 .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
-                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+                .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
+                .addParam("imagemCaracterizacao", imagemCaracterizacao)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
         pdf.generate();
 

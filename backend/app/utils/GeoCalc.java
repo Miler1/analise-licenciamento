@@ -242,4 +242,42 @@ public class GeoCalc {
 
 		return geometries;
 	}
+
+	public static Geometry transform(Geometry geometry, CoordinateReferenceSystem crs) {
+
+		MathTransform mathTransform;
+		try {
+			mathTransform = CRS.findMathTransform(CRS_DEFAUL, crs, true);
+		} catch(FactoryException e) {
+			throw new RuntimeException(e);
+		}
+
+		try {
+			return JTS.transform(geometry, mathTransform);
+		} catch(TransformException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	public static Coordinate transform(Coordinate coordinate, CoordinateReferenceSystem originCrs, CoordinateReferenceSystem destCrs) {
+
+		MathTransform mathTransform;
+		try {
+			mathTransform = CRS.findMathTransform(originCrs, destCrs, true);
+		} catch(FactoryException e) {
+			throw new RuntimeException(e);
+		}
+
+		try {
+
+			Coordinate resultCoordinate = new Coordinate();
+
+			return JTS.transform(coordinate, resultCoordinate, mathTransform);
+
+		} catch(TransformException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
 }
