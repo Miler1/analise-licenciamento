@@ -17,6 +17,10 @@ import utils.*;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="analise_geo")
@@ -395,13 +399,17 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
             for (AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.getCaracterizacao().atividadesCaracterizacao) {
-                for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades){
+
+                List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividadesList = atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.stream().distinct()
+                        .filter(distinctByKey(sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo)).collect(Collectors.toList());
+
+                for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicaoCaracterizacaoAtividadesList ){
+
                     if (sobreposicaoCaracterizacaoAtividade != null){
-                        //enviarEmailComunicado();
+                        enviarEmailComunicado(atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade);
                     }
                 }
             }
-
 
             if(this.usuarioValidacaoGerente != null) {
 
@@ -445,14 +453,23 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         notificacao.enviar();
     }
 
-    public void enviarEmailComunicado() {
+    public void enviarEmailComunicado(AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
 
-        List<String> destinatarios = new ArrayList<String>();
-        destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
-        destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
+        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
 
-        EmailComunicarOrgaoResponsavelAnaliseGeo comunicado = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, destinatarios);
-        comunicado.enviar();
+            if(!orgaoResponsavel.sigla.equals("IPHAN")  && !orgaoResponsavel.sigla.equals("IBAMA")) {
+
+                List<String> destinatarios = new ArrayList<String>();
+                destinatarios.add(orgaoResponsavel.email);
+
+
+                Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
+                comunicado.save();
+
+                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
+                emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
+            }
+        }
     }
 
     public void validaParecer(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
@@ -707,7 +724,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public Documento gerarPDFCartaImagem() throws Exception {
 
-        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
+        //TODO PUMA-SQ1 Criar tipo documento carta imagem
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
 
         List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
@@ -749,5 +767,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Random random = new Random();
         int nextInt = random.nextInt(256*256*256);
         return String.format("#%06x", nextInt);
+    }
+    
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 }
