@@ -744,6 +744,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
 
             geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
+
+            for (CamadaGeo camadaGeo:camadaAtividade.camadasGeo) {
+
+                if (camadaGeo.restricoes != null &&  camadaGeo.restricoes.size() > 0) {
+                    geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaGeo.restricoes);
+                }
+            }
         }
 
         String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaMunicipio, geometriesCaracterizacao);
@@ -763,65 +770,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return documento;
 
     }
-
-//    public Documento gerarPDFCartaImagem2() throws Exception {
-//
-//        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
-//
-//        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
-//        Processo processo = Processo.findById(this.analise.processo.id);
-//        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
-//
-//        Geometry geometriaAreaMunicipio = this.analise.processo.empreendimento.municipio.getLimite();
-//
-//        Map<LayerType, List<Geometry>> geometriesCaracterizacao = new HashMap<>();
-//
-//        List<Geometry> geometriasDadosEmpreendimento = new ArrayList<>();
-//
-//        for (CamadaGeo camadaGeo : camadasGeoEmpreedimento) {
-//
-//            if (camadaGeo.geometria == null) {
-//                continue;
-//            }
-//
-//            geometriasDadosEmpreendimento.add(camadaGeo.geometria);
-//        }
-//
-//        geometriesCaracterizacao.put(new Tema("Dados Empreendimento", getColorTemaCiclo()), geometriasDadosEmpreendimento);
-//
-//        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
-//
-//            List<Geometry> geometrias = new ArrayList<>();
-//
-//            for(CamadaGeo camadaGeo : camadaAtividade.camadasGeo) {
-//
-//                if (camadaGeo.geometria == null) {
-//                    continue;
-//                }
-//
-//                geometrias.add(camadaGeo.geometria);
-//            }
-//
-//            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, getColorTemaCiclo()), geometrias);
-//        }
-//
-//        String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaMunicipio, geometriesCaracterizacao);
-//
-//        PDFGenerator pdf = new PDFGenerator()
-//                .setTemplate(tipoDocumento.getPdfTemplate())
-//                .addParam("analiseEspecifica", this)
-//                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
-//                .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
-//                .addParam("imagemCaracterizacao", imagemCaracterizacao)
-//                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
-//
-//        pdf.generate();
-//
-//        Documento documento = new Documento(tipoDocumento, pdf.getFile());
-//
-//        return documento;
-//
-//    }
 
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
