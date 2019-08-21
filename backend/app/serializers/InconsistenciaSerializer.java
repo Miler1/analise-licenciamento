@@ -17,5 +17,9 @@ public class InconsistenciaSerializer {
             "anexos.tipo.nome",
             "anexos.tipo.id",
             "categoria",
+            "atividadeCaracterizacao.id",
+            "geometriaAtividade.id",
+            "atividadeCaracterizacao",
+            "geometriaAtividade",
             "analiseGeo.id");
 }

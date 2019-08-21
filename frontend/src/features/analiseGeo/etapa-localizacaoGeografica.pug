@@ -56,11 +56,11 @@ include ../../layout/components/mapPanel
 
                                 tbody(ng-repeat="camadaGeo in camadaDadosAtividade.camadasGeo")
                                     tr
-                                        td.col-md-4 {{camadaGeo.item}}
+                                        td.col-md-5 {{camadaGeo.item}}
                                         td.col-md-5 {{camadaGeo.descricao}}
-                                        td.col-md-1.text-right
-                                            i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(camadaDadosAtividade.atividade.id, camadaGeo.item) }", ng-click='addInconsistencia(ctrl.categoria.PROPRIEDADE)', title='Adicionar inconsistência', )
-                                                | &nbsp;&nbsp;
+                                        td.col-md-2.text-right
+                                            i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(camadaDadosAtividade.atividadeCaracterizacao.id,camadaGeo.geometriaAtividade.id)}", ng-click='addInconsistenciaAtividade(ctrl.categoria.ATIVIDADE, camadaDadosAtividade.atividadeCaracterizacao.id, camadaGeo.geometriaAtividade.id)', title='Adicionar inconsistência')
+                                                | &nbsp;
 
                             br
                             div(ng-if="camadaDadosAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.length > 0")

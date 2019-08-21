@@ -411,14 +411,69 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		return inconsitenciaEncontrada !== undefined;
 	};
 
-	$scope.verificaInconsistenciaAtividade = function (atividade, nomeGeometria) {
+	$scope.verificaInconsistenciaAtividade = function (idAtividadeCaracterizacao, idGeometriaAtividade) {
 
-		//TODO PUMA-SQ1 - Criar método para buscar no array de inconsistencias, uma inconsistencia por atividade e nomeGeometria
+		if (ctrl.analiseGeo.inconsistencias === undefined  || ctrl.analiseGeo.inconsistencias.length === 0) {
+			return false;
+		}
+
+		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
+			return inconsistencia.categoria.toUpperCase() === ctrl.categoria.ATIVIDADE && 
+						 inconsistencia.atividadeCaracterizacao.id === idAtividadeCaracterizacao && 
+						 inconsistencia.geometriaAtividade.id === idGeometriaAtividade;
+		});
+
+		return inconsitenciaEncontrada !== undefined;
 	};
 
-	$scope.addInconsistenciaAtividade = function (atividade, geometria) {
+	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idAtividade , idGeometriaAtividade) {
 
-		//TODO PUMA-SQ1 - Criar método para adicionar inconsitencia por geometria da atividade
+		params = {
+			categoria:categoriaInconsistencia,
+			analiseGeo: {id: analiseGeo.id},
+			atividadeCaracterizacao: {id: idAtividade},
+			geometriaAtividade: {id: idGeometriaAtividade}			
+		};
+
+		inconsistenciaService.findInconsistencia(params)
+		.then(function(response){
+
+			var modalInstance = $uibModal.open({
+				controller: 'inconsistenciaController',
+				controllerAs: 'modalCtrl',
+				templateUrl: 'features/analiseGeo/modalInconsistencia.html',
+				size: 'lg',
+				resolve: {
+					analiseGeo: function () {
+						return ctrl.analiseGeo;
+					},
+					categoriaInconsistencia: function(){
+						return categoriaInconsistencia;
+					},
+					inconsistencia: function(){
+						return response.data;
+					}
+				}
+			});
+
+			modalInstance.result.then(function(data){
+
+				if (data.isExclusao) {
+					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.indexOf(data.inconsistencia), 1);
+				} else if (data.isEdicao) {
+
+					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+						return i.id === data.inconsistencia.id;
+					}), 1);
+					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+				} else {
+					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+				}
+
+			});
+			
+		});		
+
 	};
 
 	$scope.addInconsistencia = function(categoriaInconsistencia){

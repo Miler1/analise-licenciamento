@@ -19,6 +19,7 @@ public class CamadaGeoAtividadeSerializer {
 			"camadasGeo.area",
 			"camadasGeo.geometria",
 			"camadasGeo.tipo",
+			"camadasGeo.geometriaAtividade.id",
 			"camadasGeo.restricoes.item",
 			"camadasGeo.restricoes.descricao",
 			"camadasGeo.restricoes.area",
