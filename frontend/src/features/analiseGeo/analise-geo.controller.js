@@ -417,12 +417,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		return inconsitenciaEncontrada !== undefined;
 	};
 
-	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idAtividade , idGeometriaAtividade) {
+	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idAtividadeCaracterizacao , idGeometriaAtividade) {
 
 		params = {
 			categoria:categoriaInconsistencia,
 			analiseGeo: {id: analiseGeo.id},
-			atividadeCaracterizacao: {id: idAtividade},
+			atividadeCaracterizacao: {id: idAtividadeCaracterizacao},
 			geometriaAtividade: {id: idGeometriaAtividade}			
 		};
 
@@ -443,6 +443,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					},
 					inconsistencia: function(){
 						return response.data;
+					},
+					idAtividadeCaracterizacao: function(){
+						return idAtividadeCaracterizacao;
+					},
+					idGeometriaAtividade: function(){
+						return idGeometriaAtividade;
 					}
 				}
 			});
@@ -491,6 +497,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						},
 						inconsistencia: function(){
 							return response.data;
+						},
+						idAtividadeCaracterizacao: function(){
+							return null;
+						},
+						idGeometriaAtividade: function(){
+							return null;
 						}
 					}
 				});
