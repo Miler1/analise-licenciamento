@@ -1,5 +1,7 @@
 package notifiers;
 
+import main.java.br.ufla.lemaf.beans.Empreendimento;
+import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
 import models.*;
 import models.licenciamento.Licenca;
 import play.Play;
@@ -109,7 +111,7 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> comunicarOrgaoResponsavelAnaliseGeo(List<String> destinatarios,
-																	 AnaliseGeo analiseGeo, Comunicado comunicado) {
+																	  AnaliseGeo analiseGeo, Comunicado comunicado, Municipio municipio) {
 
 		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -117,7 +119,7 @@ public class Emails extends Mailer {
 
 			addRecipient(email);
 		}
-		return send(analiseGeo, comunicado);
+		return send(analiseGeo, comunicado, municipio);
 	}
 
 }
