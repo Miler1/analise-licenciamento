@@ -30,9 +30,9 @@ div
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
 							td
-								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseGeo}")
-								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
-								span(ng-class="{'icone-renovacao': processo.renovacao}")
+								//- span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseGeo}")
+								//- span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
+								//- span(ng-class="{'icone-renovacao': processo.renovacao}")
 
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
@@ -60,9 +60,9 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
-					span.icone-revisao-solicitada.legenda Revisão Solicitada
-					span.icone-revisao-atendida.legenda Notificação Atendida
-					span.icone-renovacao.legenda Renovação
+					//- span.icone-revisao-solicitada.legenda Revisão Solicitada
+					//- span.icone-revisao-atendida.legenda Notificação Atendida
+					//- span.icone-renovacao.legenda Renovação
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

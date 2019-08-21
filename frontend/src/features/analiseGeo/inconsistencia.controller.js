@@ -60,7 +60,9 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
 				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
 				categoria: categoriaInconsistencia,
-				anexos: inconsistenciaController.anexos
+				anexos: inconsistenciaController.anexos,
+				atividadeCaracterizacao: {id:inconsistencia.idAtividadeCaracterizacao},
+				geometriaAtividade: {id: inconsistencia.idGeometriaAtividade}
 			};
 		}else{
 			params = {
@@ -68,7 +70,9 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
 				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
 				categoria: categoriaInconsistencia,
-				anexos: inconsistenciaController.anexos
+				anexos: inconsistenciaController.anexos,
+				atividadeCaracterizacao: {id: inconsistencia.idAtividadeCaracterizacao},
+				geometriaAtividade: {id: inconsistencia.idGeometriaAtividade}
 			};
 		}
 		inconsistenciaService.salvarInconsistencia(params)
