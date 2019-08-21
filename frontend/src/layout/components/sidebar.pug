@@ -62,6 +62,20 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 										ng-click=controller + ".controlaExibicaoCamadas(camada)")
 										button.btn.btn-exibe-camada.fa.fa-crosshairs.icon-button(ng-click=controller + ".controlaCentralizacaoCamadas(camada)")
 
+
+							div.sidebar-body(ng-if="camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.length > 0")
+								label Áreas de restrição da atividade
+								.row(ng-repeat="sobreposicao in camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades")
+									.col-sm-9.col-xs-9.descricao
+										span.fa.fa-square.icon-legenda(ng-style="{'color': sobreposicao.color}")
+										span {{sobreposicao.tipoSobreposicao.nome}}
+
+									.col-sm-3.col-xs-3(style='padding: 0px;')
+
+										button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : sobreposicao.visivel, 'fa-eye-slash' : !sobreposicao.visivel}",
+										ng-click=controller + ".controlaExibicaoCamadas(sobreposicao)")
+										button.btn.btn-exibe-camada.fa.fa-crosshairs.icon-button(ng-click=controller + ".controlaCentralizacaoCamadas(sobreposicao)")
+
 			#sobreposicoes.sidebar-pane
 				h1.sidebar-header
 					| Tipos sobreposições

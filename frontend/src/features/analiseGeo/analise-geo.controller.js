@@ -375,6 +375,17 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 									adicionarGeometriaNoMapa(camadaGeo);
 								});
 
+								if (camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades !== null && camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.length > 0) {
+									camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.forEach(function (sobreposicao) {
+
+										sobreposicao.item = sobreposicao.tipoSobreposicao.nome;
+										sobreposicao.tipo = sobreposicao.tipoSobreposicao.codigo;
+										sobreposicao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
+
+										adicionarGeometriaNoMapa(sobreposicao);
+									});
+								}
+
 								tiposSobreposicaoService.getTiposSobreposicao()
 									.then(function (response) {
 										ctrl.TiposSobreposicao = response.data;
