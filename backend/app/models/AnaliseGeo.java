@@ -730,20 +730,23 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Processo processo = Processo.findById(this.analise.processo.id);
         List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
 
-        Geometry geometriaAreaMunicipio = this.analise.processo.empreendimento.municipio.getLimite();
+        CamadaGeo camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
+                .findAny().orElse(null);
 
-        Map<LayerType, Geometry> geometriesCaracterizacao = new HashMap<>();
-        for (CamadaGeo camadaGeo : camadasGeoEmpreedimento) {
-            geometriesCaracterizacao.put(CamadaGeoEnum.fromTipo(camadaGeo.tipo), camadaGeo.geometria);
+        Geometry geometriaAreaMunicipio = camadaPropriedade.geometria;
+
+        camadasGeoEmpreedimento.removeIf(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
+
+        Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao = new HashMap<>();
+
+        geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
+
+        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
+
+            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
         }
 
         String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaMunicipio, geometriesCaracterizacao);
-
-        Map<LayerType, Geometry> geometriesAtividades = new HashMap<>();
-
-//        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
-//            geometriesCaracterizacao.put(CamadaGeoEnum.fromCodigo(camadaGeo.tipo), camadaGeo.geometria);
-//        }
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
@@ -761,13 +764,65 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    private String getColorTemaCiclo() {
+//    public Documento gerarPDFCartaImagem2() throws Exception {
+//
+//        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
+//
+//        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+//        Processo processo = Processo.findById(this.analise.processo.id);
+//        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
+//
+//        Geometry geometriaAreaMunicipio = this.analise.processo.empreendimento.municipio.getLimite();
+//
+//        Map<LayerType, List<Geometry>> geometriesCaracterizacao = new HashMap<>();
+//
+//        List<Geometry> geometriasDadosEmpreendimento = new ArrayList<>();
+//
+//        for (CamadaGeo camadaGeo : camadasGeoEmpreedimento) {
+//
+//            if (camadaGeo.geometria == null) {
+//                continue;
+//            }
+//
+//            geometriasDadosEmpreendimento.add(camadaGeo.geometria);
+//        }
+//
+//        geometriesCaracterizacao.put(new Tema("Dados Empreendimento", getColorTemaCiclo()), geometriasDadosEmpreendimento);
+//
+//        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
+//
+//            List<Geometry> geometrias = new ArrayList<>();
+//
+//            for(CamadaGeo camadaGeo : camadaAtividade.camadasGeo) {
+//
+//                if (camadaGeo.geometria == null) {
+//                    continue;
+//                }
+//
+//                geometrias.add(camadaGeo.geometria);
+//            }
+//
+//            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, getColorTemaCiclo()), geometrias);
+//        }
+//
+//        String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaMunicipio, geometriesCaracterizacao);
+//
+//        PDFGenerator pdf = new PDFGenerator()
+//                .setTemplate(tipoDocumento.getPdfTemplate())
+//                .addParam("analiseEspecifica", this)
+//                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
+//                .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
+//                .addParam("imagemCaracterizacao", imagemCaracterizacao)
+//                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+//
+//        pdf.generate();
+//
+//        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+//
+//        return documento;
+//
+//    }
 
-        Random random = new Random();
-        int nextInt = random.nextInt(256*256*256);
-        return String.format("#%06x", nextInt);
-    }
-    
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;

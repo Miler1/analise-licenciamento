@@ -4,6 +4,7 @@ import br.ufla.tmsmap.*;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
+import models.CamadaGeo;
 import org.apache.commons.codec.binary.Base64;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -53,6 +54,18 @@ public class MapaImagem {
 		public DataLayer fillColor(Color color) {
 			this.fillColor = color;
 			return this;
+		}
+
+	}
+
+	public class GrupoDataLayer {
+
+		public String titulo;
+		List<DataLayer> dataLayers;
+
+		public GrupoDataLayer(String titulo, List<DataLayer> dataLayers) {
+			this.titulo = titulo;
+			this.dataLayers = dataLayers;
 		}
 
 	}
@@ -160,33 +173,37 @@ public class MapaImagem {
 
 	}
 
-	public String createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, Geometry> geometriesCaracterizacao) {
+	public String createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao) {
 
-		LinkedList<DataLayer> dataLayers = new LinkedList<>();
+		LinkedList<GrupoDataLayer> grupoDataLayers = new LinkedList<>();
 
-		for(Entry<LayerType, Geometry> entry : geometriesCaracterizacao.entrySet()) {
+		for(Entry<LayerType, List<CamadaGeo>> entry : geometriesCaracterizacao.entrySet()) {
 
-			Geometry geometry = entry.getValue();
+			List<CamadaGeo> camadaGeos = entry.getValue();
 			LayerType layerType = entry.getKey();
+			LinkedList<DataLayer> dataLayers = new LinkedList<>();
 
-			if(geometry == null) {
-				continue;
+			for (CamadaGeo camadaGeo : camadaGeos) {
+
+				if(camadaGeo.geometria == null) {
+					continue;
+				}
+
+				Color color = Color.decode(getColorTemaCiclo());
+				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
+				dataLayers.add(new DataLayer(camadaGeo.item, camadaGeo.geometria, color).fillColor(fillColor));
 			}
 
-			Color color = Color.decode(layerType.getColor());
-			Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
+			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
 
-			dataLayers.add(new DataLayer(layerType.getName(), geometry, color).fillColor(fillColor));
-
+			grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers));
 		}
-		
-		dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
-				
-		return createMapCaracterizacaoImovel(geometryAreaImovel, dataLayers);
+
+		return createMapCaracterizacaoImovel(geometryAreaImovel, grupoDataLayers);
 
 	}
 
-	private String createMapCaracterizacaoImovel(Geometry geometryAreaImovel, LinkedList<DataLayer> dataLayers) {
+	private String createMapCaracterizacaoImovel2(Geometry geometryAreaImovel, LinkedList<DataLayer> dataLayers) {
 
 		BufferedImage newImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = newImage.createGraphics();
@@ -216,14 +233,14 @@ public class MapaImagem {
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
 
 		for(DataLayer dataLayer : dataLayers) {
-			
+
 			PolygonStyle polygonStyle1 = (PolygonStyle)new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
 			map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
-			
+
 		}
 
 		dataLayers.addFirst(new DataLayer("Área total do município", geometryAreaImovel, Color.YELLOW).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
-		
+
 		createMainCoordinates(map, geometryAreaImovel, crs);
 
 		//Setando os pontos do poligono
@@ -246,8 +263,103 @@ public class MapaImagem {
 		// Início rodapé
 
 		int frameWidth = (WIDTH - HORIZONTAL_MARGIN_SIZE * 2 - HORIZONTAL_MARGIN_SIZE / 2) / 2;
-		createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, 120, dataLayers);
-		createAreasTable(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, 120, crs, dataLayers);
+		createLegendTable2(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, 120, dataLayers);
+		createAreasTable2(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, 120, crs, dataLayers);
+
+		// Fim rodapé
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		try {
+			ImageIO.write(newImage, Format.PNG.formatName, out);
+		} catch(IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		return "data:image/png;base64," + Base64.encodeBase64String(out.toByteArray());
+
+	}
+
+	private String createMapCaracterizacaoImovel(Geometry geometryAreaImovel, LinkedList<GrupoDataLayer> grupoDataLayers) {
+
+		BufferedImage newImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = newImage.createGraphics();
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setColor(Color.WHITE);
+		graphics.fill(new Rectangle(0, 0, WIDTH, HEIGHT));
+		graphics.setColor(Color.BLACK);
+
+		graphics.drawRect(0, 0, WIDTH - 1, HEIGHT - 1);
+
+		int topY = VERTICAL_MARGIN_SIZE - 10;
+
+		// Inicio Header
+
+		// topY = createHeader(graphics, 0, topY, 0);
+
+		// Fim Header
+
+		// Inicio Mapa
+
+		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
+
+		TMSMap map = createMap(crs);
+		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 10, 14, 256, 256);
+
+		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
+		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
+
+		//Uni todas as dataLayer de todos os grupos dataLayer
+		LinkedList<DataLayer> dataLayers = new LinkedList<>();
+
+		for(GrupoDataLayer grupoDataLayer : grupoDataLayers) {
+			dataLayers.addAll(grupoDataLayer.dataLayers);
+		}
+
+		for(DataLayer dataLayer : dataLayers) {
+
+			PolygonStyle polygonStyle1 = (PolygonStyle)new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
+			map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+
+		}
+
+		DataLayer newDataLayer = new DataLayer("Limite", geometryAreaImovel, Color.YELLOW).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 ));
+		dataLayers.addFirst(newDataLayer);
+
+		List<DataLayer> newDataLayers = new ArrayList<>();
+		newDataLayers.add(newDataLayer);
+
+		grupoDataLayers.add(new GrupoDataLayer("Área total da propriedade", newDataLayers));
+
+		createMainCoordinates(map, geometryAreaImovel, crs);
+
+		//Setando os pontos do poligono
+		for(DataLayer dataLayer : dataLayers) {
+
+			if (dataLayer.geometry instanceof Point){
+				createPointCoordinates(map, dataLayer.geometry , dataLayer.name, crs);
+			}
+		}
+
+		BufferedImage mapa = new BufferedImage(MAP_WIDTH, MAP_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		map.render(MAP_WIDTH, MAP_HEIGHT, Format.PNG, mapa);
+
+		graphics.drawRect(HORIZONTAL_MARGIN_SIZE, topY, MAP_WIDTH + 1, MAP_HEIGHT + 1);
+		graphics.drawImage(mapa, HORIZONTAL_MARGIN_SIZE + 1, topY + 1, null);
+
+		topY += MAP_HEIGHT + 2 + VERTICAL_MARGIN_SIZE;
+		// Fim Mapa
+
+		// Início rodapé
+
+		LinkedList<GrupoDataLayer> grupoDataLayersOrder = new LinkedList<>();
+		grupoDataLayers.descendingIterator().forEachRemaining(grupoDataLayer -> {
+			grupoDataLayersOrder.add(grupoDataLayer);
+		});
+
+		int frameWidth = (WIDTH - HORIZONTAL_MARGIN_SIZE * 2 - HORIZONTAL_MARGIN_SIZE / 2) / 2;
+		createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, 120, grupoDataLayersOrder);
+		createAreasTable(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, 120, crs, grupoDataLayersOrder);
 
 		// Fim rodapé
 
@@ -348,8 +460,8 @@ public class MapaImagem {
 
 		int frameWidth = (WIDTH - HORIZONTAL_MARGIN_SIZE * 2 - HORIZONTAL_MARGIN_SIZE / 2) / 2;
 		int frameHeight = 60 + 30 * numeroCiclos;
-		createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, frameHeight, dataLayers);
-		createAreasTable(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, frameHeight, crs, dataLayers);
+		createLegendTable2(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, frameHeight, dataLayers);
+		createAreasTable2(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, frameHeight, crs, dataLayers);
 
 		// Fim rodapé
 
@@ -365,7 +477,7 @@ public class MapaImagem {
 
 	}
 
-	private void createLegendTable(Graphics2D graphics, int x, int y, int width, int height, Collection<DataLayer> dataLayers) {
+	private void createLegendTable2(Graphics2D graphics, int x, int y, int width, int height, Collection<DataLayer> dataLayers) {
 
 		float tableFontSize = BRAND_X * 2.3f;
 		Font headerFont = this.brandPrimaryFont1.deriveFont(Font.BOLD, tableFontSize);
@@ -415,7 +527,67 @@ public class MapaImagem {
 
 	}
 
-	private void createAreasTable(Graphics2D graphics, int x, int y, int width, int height, CoordinateReferenceSystem utmCrs, Collection<DataLayer> dataLayes) {
+	private void createLegendTable(Graphics2D graphics, int x, int y, int width, int height, Collection<GrupoDataLayer> grupoDataLayers) {
+
+		float tableFontSize = BRAND_X * 2.3f;
+		Font headerFont = this.brandPrimaryFont1.deriveFont(Font.BOLD, tableFontSize);
+		graphics.setFont(headerFont);
+
+		FontMetrics fm = graphics.getFontMetrics(headerFont);
+
+		int hCellPadding = 10;
+		int vCellPadding = 1;
+
+		int textTopY = y + fm.getHeight();
+
+		graphics.setColor(Color.BLACK);
+		graphics.drawRect(x, y, width, height);
+
+		String headerText = "Legenda";
+		graphics.drawString(headerText, x + width / 2 - fm.stringWidth(headerText) / 2, textTopY + vCellPadding);
+
+		Font contentFont = this.brandPrimaryFont1.deriveFont(tableFontSize);
+
+		int legendSize = fm.getHeight();
+		int lineHeight = legendSize + hCellPadding;
+		int lineNumber = 0;
+
+		for (GrupoDataLayer grupoDataLayer: grupoDataLayers) {
+
+			lineNumber++;
+			graphics.setFont(headerFont);
+
+			graphics.drawString(grupoDataLayer.titulo, x + legendSize + hCellPadding * 2, y + lineHeight * lineNumber + legendSize - 1);
+
+			for (DataLayer dataLayer : grupoDataLayer.dataLayers) {
+
+				graphics.setFont(contentFont);
+
+				lineNumber++;
+
+				graphics.setColor(dataLayer.color);
+				graphics.setStroke(dataLayer.stroke);
+
+				graphics.drawRect(x + hCellPadding, y + lineHeight * lineNumber, legendSize, legendSize);
+
+				if (dataLayer.fillColor != null) {
+					graphics.setColor(dataLayer.fillColor);
+					graphics.fillRect(x + hCellPadding, y + lineHeight * lineNumber, legendSize, legendSize);
+				}
+
+				graphics.setStroke(new BasicStroke());
+				graphics.setColor(Color.BLACK);
+
+				String legend = dataLayer.name;
+
+				graphics.drawString(legend, x + legendSize + hCellPadding * 2, y + lineHeight * lineNumber + legendSize - 1);
+
+			}
+		}
+
+	}
+
+	private void createAreasTable2(Graphics2D graphics, int x, int y, int width, int height, CoordinateReferenceSystem utmCrs, Collection<DataLayer> dataLayes) {
 
 		float tableFontSize = BRAND_X * 2.3f;
 		Font headerFont = this.brandPrimaryFont1.deriveFont(Font.BOLD, tableFontSize);
@@ -452,6 +624,59 @@ public class MapaImagem {
 			graphics.drawString(legend, x + hCellPadding, y + lineHeight * lineNumber + legendSize - 1);
 			graphics.drawString(area, x + width - hCellPadding - fm.stringWidth(area), y + lineHeight * lineNumber + legendSize - 1);
 
+		}
+
+	}
+
+	private void createAreasTable(Graphics2D graphics, int x, int y, int width, int height, CoordinateReferenceSystem utmCrs, Collection<GrupoDataLayer> grupoDataLayes) {
+
+		float tableFontSize = BRAND_X * 2.3f;
+		Font headerFont = this.brandPrimaryFont1.deriveFont(Font.BOLD, tableFontSize);
+		graphics.setFont(headerFont);
+
+		FontMetrics fm = graphics.getFontMetrics(headerFont);
+
+		int hCellPadding = 10;
+		int vCellPadding = 2;
+
+		int textTopY = y + fm.getHeight();
+
+		graphics.setColor(Color.BLACK);
+		graphics.drawRect(x, y, width, height);
+
+		String headerText = "Quadro de Áreas";
+		graphics.drawString(headerText, x + width / 2 - fm.stringWidth(headerText) / 2, textTopY + vCellPadding);
+
+		Font contentFont = this.brandPrimaryFont1.deriveFont(tableFontSize);
+
+
+		DecimalFormat df = new DecimalFormat("#,##0.0000");
+
+		int legendSize = fm.getHeight();
+		int lineHeight = legendSize + hCellPadding;
+		int lineNumber = 0;
+
+		for (GrupoDataLayer grupoDataLayer: grupoDataLayes) {
+
+			graphics.setFont(headerFont);
+
+			lineNumber++;
+
+			graphics.drawString(grupoDataLayer.titulo, x + hCellPadding, y + lineHeight * lineNumber + legendSize - 1);
+
+			for (DataLayer dataLayer : grupoDataLayer.dataLayers) {
+
+				graphics.setFont(contentFont);
+
+				lineNumber++;
+
+				String legend = dataLayer.name;
+				String area = df.format(GeoCalc.area(dataLayer.geometry, utmCrs) / 10000) + " ha";
+
+				graphics.drawString(legend, x + hCellPadding, y + lineHeight * lineNumber + legendSize - 1);
+				graphics.drawString(area, x + width - hCellPadding - fm.stringWidth(area), y + lineHeight * lineNumber + legendSize - 1);
+
+			}
 		}
 
 	}
@@ -741,6 +966,13 @@ public class MapaImagem {
 
 		return y;
 
+	}
+
+	public static String getColorTemaCiclo() {
+
+		Random random = new Random();
+		int nextInt = random.nextInt(256*256*256);
+		return String.format("#%06x", nextInt);
 	}
 
 }
