@@ -54,7 +54,8 @@ public class Comunicado extends GenericModel {
     @JoinColumn(name="id_orgao", referencedColumnName="id")
     public Orgao orgao;
 
-
+    @Transient
+    public String linkComunicado;
 
     public Comunicado(AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
         this.tipoSobreposicao = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao;
@@ -66,6 +67,7 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
     }
+
 
 
 

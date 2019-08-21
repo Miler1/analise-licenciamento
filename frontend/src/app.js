@@ -72,6 +72,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ListagemProcessoManejoController,
 			controllerAs: 'listagemProcessoManejo'
 		})
+		.when("/parecer-orgao", {
+			templateUrl: "features/parecerOrgao/parecerOrgao.html",
+			controller: controllers.ParecerOrgaoController,
+			controllerAs: 'parecerOrgao'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});

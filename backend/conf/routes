@@ -78,7 +78,7 @@ POST    /analisesGeo/desvinculo/solicitarDesvinculo	                            
 POST    /analisesGeo/inconsistencia/salvarInconsistencia                            Inconsistencias.salvarInconsistencia
 POST    /analisesGeo/inconsistencia/findInconsistencia                              Inconsistencias.findInconsistencia
 POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistencia
-
+POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 POST    /analisesGeo/processo/buscaDadosAreaProjeto/{idProcesso}                    AnalisesGeo.buscaDadosAreaProjeto
 
 
