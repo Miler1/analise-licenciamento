@@ -14,6 +14,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.analiseGeo = angular.copy(analiseGeo);
 	ctrl.analiseGeo.tipoResultadoAnalise = {id:undefined};
 	ctrl.categoria = app.utils.Inconsistencia;
+	ctrl.orgaos = app.utils.Orgao;
 	ctrl.camadas = [];
 	ctrl.estiloMapa = app.utils.EstiloMapa;
 	ctrl.camadasSobreposicao = app.utils.CamadaSobreposicao;
@@ -400,17 +401,18 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		return inconsitenciaEncontrada !== undefined;
 	};
 
-	$scope.verificaInconsistenciaAtividade = function (idAtividadeCaracterizacao, idGeometriaAtividade) {
+	$scope.verificaInconsistenciaAtividade = function ( categoriaInconsistencia, idAtividadeCaracterizacao, idGeometriaAtividade) {
 
 		if (ctrl.analiseGeo.inconsistencias === undefined  || ctrl.analiseGeo.inconsistencias.length === 0) {
 			return false;
 		}
-
+		var verificaCategoria = categoriaInconsistencia;
 		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
-			return inconsistencia.categoria.toUpperCase() === ctrl.categoria.ATIVIDADE && 
+			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() && 
 						 inconsistencia.atividadeCaracterizacao.id === idAtividadeCaracterizacao && 
 						 inconsistencia.geometriaAtividade.id === idGeometriaAtividade;
 		});
+
 
 		return inconsitenciaEncontrada !== undefined;
 	};
