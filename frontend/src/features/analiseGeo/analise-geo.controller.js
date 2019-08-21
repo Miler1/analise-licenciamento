@@ -540,8 +540,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
-			ctrl.situacaoFundiaria = undefined;
-			ctrl.analiseTemporal = undefined;
+			ctrl.analiseGeo.situacaoFundiaria = undefined;
+            ctrl.analiseGeo.analiseTemporal = undefined;
 
 		} else {
 			$('#situacaoFundiaria').summernote('enable');
