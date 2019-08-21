@@ -65,7 +65,8 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 
 							div.sidebar-body(ng-if="camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.length > 0")
 								label Áreas de restrição da atividade
-								.row(ng-repeat="sobreposicao in camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades")
+								.row(ng-repeat="sobreposicao in camadaAtivid" +
+								"ade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades")
 									.col-sm-9.col-xs-9.descricao
 										span.fa.fa-square.icon-legenda(ng-style="{'color': sobreposicao.color}")
 										span {{sobreposicao.tipoSobreposicao.nome}}

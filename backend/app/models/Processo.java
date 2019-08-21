@@ -652,7 +652,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			}
 
-			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao, camadasGeo);
+			List<CamadaGeo> restricoes = new ArrayList<>();
+
+			for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade: atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
+
+				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo, getDescricaoAtividade(sobreposicaoCaracterizacaoAtividade.geometria), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria);
+				restricoes.add(restricao);
+			}
+
+			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao, camadasGeo, restricoes);
 
 			dadosAreaProjeto.add(camadaGeoAtividade);
 

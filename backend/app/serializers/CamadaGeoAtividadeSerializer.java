@@ -20,11 +20,11 @@ public class CamadaGeoAtividadeSerializer {
 			"camadasGeo.geometria",
 			"camadasGeo.tipo",
 			"camadasGeo.geometriaAtividade.id",
-			"camadasGeo.restricoes.item",
-			"camadasGeo.restricoes.descricao",
-			"camadasGeo.restricoes.area",
-			"camadasGeo.restricoes.geometria",
-			"camadasGeo.restricoes.tipo")
+			"restricoes.item",
+			"restricoes.descricao",
+			"restricoes.area",
+			"restricoes.geometria",
+			"restricoes.tipo")
 			.transform(new GeometryTransformer(), Geometry.class);
 
 }

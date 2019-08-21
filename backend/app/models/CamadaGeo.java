@@ -20,8 +20,6 @@ public class CamadaGeo {
 
 	public GeometriaAtividade geometriaAtividade;
 
-	List<CamadaGeo> restricoes;
-
 	public CamadaGeo(String item, String tipo, String descricao, Double area, Geometry geometria) {
 
 		this.item = item;
