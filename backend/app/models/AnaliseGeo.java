@@ -733,24 +733,24 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         CamadaGeo camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
                 .findAny().orElse(null);
 
-        Geometry geometriaAreaMunicipio = camadaPropriedade.geometria;
+        Geometry geometriaAreaPropriedade = camadaPropriedade.geometria;
 
         camadasGeoEmpreedimento.removeIf(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
 
         Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao = new HashMap<>();
 
+//        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
+//
+//            if (camadaAtividade.restricoes != null &&  camadaAtividade.restricoes.size() > 0) {
+//                geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaAtividade.restricoes);
+//            }
+//
+//            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
+//        }
+
         geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
 
-        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
-
-            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
-
-            if (camadaAtividade.restricoes != null &&  camadaAtividade.restricoes.size() > 0) {
-                geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaAtividade.restricoes);
-            }
-        }
-
-        String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaMunicipio, geometriesCaracterizacao);
+        String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaPropriedade, geometriesCaracterizacao);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())

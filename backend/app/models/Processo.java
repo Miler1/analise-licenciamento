@@ -656,7 +656,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade: atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
 
-				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo, getDescricaoAtividade(sobreposicaoCaracterizacaoAtividade.geometria), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria);
+				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo, getDescricaoAtividade(sobreposicaoCaracterizacaoAtividade.geometria), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria,sobreposicaoCaracterizacaoAtividade);
 				restricoes.add(restricao);
 			}
 

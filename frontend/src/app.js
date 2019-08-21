@@ -72,6 +72,12 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ListagemProcessoManejoController,
 			controllerAs: 'listagemProcessoManejo'
 		})
+
+		.when("/parecer-orgao", {
+			templateUrl: "features/analiseManejo/listagem/listagem-processo-manejo.html",
+			controller: controllers.ListagemProcessoManejoController,
+			controllerAs: 'listagemProcessoManejo'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -495,7 +501,8 @@ licenciamento
 	.controller('painelMapaController', controllers.PainelMapaController)
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
-	.controller('desvinculoController', controllers.DesvinculoController);
+	.controller('desvinculoController', controllers.DesvinculoController)
+	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController);
 
 
 licenciamento

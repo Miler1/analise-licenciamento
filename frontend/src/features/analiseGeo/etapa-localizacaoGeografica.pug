@@ -63,13 +63,14 @@ include ../../layout/components/mapPanel
                                                 | &nbsp;
 
                             br
-                            div(ng-if="camadaDadosAtividade.atividadeCaracterizacao.restricoes.length > 0")
+                            div(ng-if="camadaDadosAtividade.restricoes.length > 0")
                                 label Áreas de restrição da atividade
 
                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                     thead
                                         tr
                                          th.col-md-4 Item
+                                         th.col-md-5 Descrição
                                          th.col-md-1.text-right Ações
 
                                     tbody(ng-repeat="restricao in camadaDadosAtividade.restricoes")

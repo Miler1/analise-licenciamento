@@ -24,7 +24,10 @@ public class CamadaGeoAtividadeSerializer {
 			"restricoes.descricao",
 			"restricoes.area",
 			"restricoes.geometria",
-			"restricoes.tipo")
+			"restricoes.tipo",
+			"restricoes.sobreposicaoCaracterizacaoAtividade.id",
+			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id",
+			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo")
 			.transform(new GeometryTransformer(), Geometry.class);
 
 }

@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -70,7 +71,7 @@ public class MapaImagem {
 
 	}
 
-	private static final String URL_MOSAICOS = Play.configuration.getProperty("mapa.mosaicos", "http://sistemas.ipaam.am.gov.br/mosaicos/Mapnik/{z}/{x}/{y}.jpg");
+	private static final String URL_MOSAICOS = Play.configuration.getProperty("mapa.mosaicos", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{x}/{y}.jpg");
 
 	// External Frame
 	private static final int WIDTH = 312 * 2 + 40 * 2;
@@ -139,7 +140,7 @@ public class MapaImagem {
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
 
 		TMSMap map = createMap(crs);
-		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 14, 256, 256);
+		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
 		Style polygonStyle = new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
@@ -227,7 +228,7 @@ public class MapaImagem {
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
 
 		TMSMap map = createMap(crs);
-		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 10, 14, 256, 256);
+		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
 		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
@@ -304,7 +305,7 @@ public class MapaImagem {
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
 
 		TMSMap map = createMap(crs);
-		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 10, 14, 256, 256);
+		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
 		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
@@ -424,7 +425,7 @@ public class MapaImagem {
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
 
 		TMSMap map = createMap(crs);
-		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 14, 256, 256);
+		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
 		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
@@ -683,12 +684,12 @@ public class MapaImagem {
 
 	private TMSMap createMap(CoordinateReferenceSystem utmCrs) {
 
-		TMSMap map = new TMSMap(0);
+		TMSMap map = new TMSMap();
 
 		try {
-			map.addLayer(TMSLayer.from(new URL(URL_MOSAICOS)));
-		} catch(MalformedURLException e) {
-			throw new RuntimeException(e);
+			map.addLayer(TMSLayer.from(new URL(URL_MOSAICOS), false));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
 
 		Font font = this.brandSecondaryFont.deriveFont(12f);

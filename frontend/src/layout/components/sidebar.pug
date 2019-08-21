@@ -63,19 +63,18 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 										button.btn.btn-exibe-camada.fa.fa-crosshairs.icon-button(ng-click=controller + ".controlaCentralizacaoCamadas(camada)")
 
 
-							div.sidebar-body(ng-if="camadaAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.length > 0")
+							div.sidebar-body(ng-if="camadaAtividade.restricoes.length > 0")
 								label Áreas de restrição da atividade
-								.row(ng-repeat="sobreposicao in camadaAtivid" +
-								"ade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades")
+								.row(ng-repeat="restricao in camadaAtividade.restricoes")
 									.col-sm-9.col-xs-9.descricao
-										span.fa.fa-square.icon-legenda(ng-style="{'color': sobreposicao.color}")
-										span {{sobreposicao.tipoSobreposicao.nome}}
+										span.fa.fa-square.icon-legenda(ng-style="{'color': restricao.color}")
+										span {{restricao.item}}
 
 									.col-sm-3.col-xs-3(style='padding: 0px;')
 
-										button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : sobreposicao.visivel, 'fa-eye-slash' : !sobreposicao.visivel}",
-										ng-click=controller + ".controlaExibicaoCamadas(sobreposicao)")
-										button.btn.btn-exibe-camada.fa.fa-crosshairs.icon-button(ng-click=controller + ".controlaCentralizacaoCamadas(sobreposicao)")
+										button.btn.btn-exibe-camada.fa.icon-button(ng-class="{'fa-eye' : restricao.visivel, 'fa-eye-slash' : !restricao.visivel}",
+										ng-click=controller + ".controlaExibicaoCamadas(restricao)")
+										button.btn.btn-exibe-camada.fa.fa-crosshairs.icon-button(ng-click=controller + ".controlaCentralizacaoCamadas(restricao)")
 
 			#sobreposicoes.sidebar-pane
 				h1.sidebar-header

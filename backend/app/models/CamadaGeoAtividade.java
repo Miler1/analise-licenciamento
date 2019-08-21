@@ -10,7 +10,7 @@ public class CamadaGeoAtividade {
 
 	public List<CamadaGeo> camadasGeo;
 
-	List<CamadaGeo> restricoes;
+	public List<CamadaGeo> restricoes;
 
 	public CamadaGeoAtividade(AtividadeCaracterizacao atividadeCaracterizacao, List<CamadaGeo> camadasGeo, List<CamadaGeo> restricoes) {
 
