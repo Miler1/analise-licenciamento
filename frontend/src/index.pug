@@ -33,9 +33,11 @@ html(lang='pt-br')
 		div#loader
 
 			div#wrap
+
+			div(ng-if='!isRoute("/parecer-orgao")')
+
 				include layout/header
 				include layout/menu
-
 				section.container.main-container
 
 					include components/breadcrumb/breadcrumb
@@ -51,6 +53,13 @@ html(lang='pt-br')
 							div(ng-view)
 
 				//- include layout/footer
+
+			div(ng-if='isRoute("/parecer-orgao")')
+
+				include layout/header
+				div.col-xs-12.main-container__parecer-orgao
+					section.container.main-container-parecer-orgao
+						include features/parecerOrgao/parecerOrgao
 
 		script(src="./aplicacao/info")
 		script(src="./libs/jquery/jquery.min.js")

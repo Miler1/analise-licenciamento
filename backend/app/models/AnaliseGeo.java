@@ -457,7 +457,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
 
-            if(!orgaoResponsavel.sigla.equals("IPHAN")  && !orgaoResponsavel.sigla.equals("IBAMA")) {
+            if(!orgaoResponsavel.sigla.equals("IPHAN")  || !orgaoResponsavel.sigla.equals("IBAMA")) {
 
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
@@ -465,6 +465,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
                 comunicado.save();
+                comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
 
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();

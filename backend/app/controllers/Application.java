@@ -31,15 +31,19 @@ public class Application extends GenericController {
 		DadosApp dados = new DadosApp();
 		dados.usuarioSessao = Auth.getAuthenticatedUser(session.current());
 
+		String jsonConfig = "";
+
 		if (dados.usuarioSessao == null) {
-			redirect(Configuracoes.LOGIN_URL);
+			//redirect(Configuracoes.LOGIN_URL);
+			jsonConfig = ApplicationSerializer.findInfoSemUsuario.serialize(dados);
+		} else {
+
+			if(Play.mode == Play.Mode.DEV)
+				dados.usuarioSessao.usuarioEntradaUnica.autenticadoViaToken = true;
+
+			jsonConfig = ApplicationSerializer.findInfo.serialize(dados);
 		}
 
-		if(Play.mode == Play.Mode.DEV)
-			dados.usuarioSessao.usuarioEntradaUnica.autenticadoViaToken = true;
-		
-		String jsonConfig = ApplicationSerializer.findInfo.serialize(dados);
-		
 		render(jsonConfig);
 	}
 	

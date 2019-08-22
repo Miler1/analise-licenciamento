@@ -39,4 +39,8 @@ public class ApplicationSerializer {
 			"usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla",
 			"configuracoes.baseURL",
 			"configuracoes.baseUrlGeoServer");
+
+	public static JSONSerializer findInfoSemUsuario = SerializerUtil.create(
+			"configuracoes.baseURL",
+			"configuracoes.baseUrlGeoServer");
 }
