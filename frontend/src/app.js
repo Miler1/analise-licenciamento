@@ -507,7 +507,7 @@ licenciamento
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
 	.controller('desvinculoController', controllers.DesvinculoController)
-	.controller('parecerOrgaoController', controllers.ParecerOrgaoController),
+	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController);
 
 
