@@ -33,22 +33,29 @@ html(lang='pt-br')
 		div#loader
 
 			div#wrap
+
 				include layout/header
-				include layout/menu
 
-				section.container.main-container
+				div(ng-if='isRoute("/parecer-orgao")')
+					div.col-xs-12.main-container__parecer-orgao
+						include features/parecerOrgao/parecerOrgao
 
-					include components/breadcrumb/breadcrumb
+				div(ng-if='!isRoute("/parecer-orgao")')
 
-					div(growl inline="true")
+					include layout/menu
+					section.container.main-container
 
-					div
+						include components/breadcrumb/breadcrumb
 
-						aside.col-xs-3.main-container__menu
-							menu-principal(itens="itensMenuPrincipal")
+						div(growl inline="true")
 
-						div.col-xs-9.main-container__views
-							div(ng-view)
+						div
+
+							aside.col-xs-3.main-container__menu
+								menu-principal(itens="itensMenuPrincipal")
+
+							div.col-xs-9.main-container__views
+								div(ng-view)
 
 				//- include layout/footer
 

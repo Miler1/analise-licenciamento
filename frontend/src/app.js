@@ -142,9 +142,14 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 		var appController = this;
 
-		if (!$rootScope.usuarioSessao) {
-			window.location = $rootScope.config.baseUrl;
+		if (!$rootScope.usuarioSessao && $rootScope.location.$$url !== '/parecer-orgao') {
+			window.location = $rootScope.config.baseURL;
 		}
+
+		$rootScope.isRoute = function(path) {
+
+			return $location.path() === path;
+		};
 
 		$rootScope.itensMenuPrincipal = [{
 
@@ -479,7 +484,8 @@ utils.services(licenciamento)
 	.add('empreendimentoService', services.EmpreendimentoService)
 	.add('desvinculoService', services.DesvinculoService)
 	.add('wmsTileService', services.WMSTileService)
-	.add('tiposSobreposicaoService', services.TiposSobreposicaoService);
+	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
+	.add('parecerOrgaoService', services.ParecerOrgaoService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -500,7 +506,8 @@ licenciamento
 	.controller('painelMapaController', controllers.PainelMapaController)
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
-	.controller('desvinculoController', controllers.DesvinculoController);
+	.controller('desvinculoController', controllers.DesvinculoController)
+	.controller('parecerOrgaoController', controllers.ParecerOrgaoController);
 
 
 licenciamento

@@ -1,4 +1,4 @@
-div(ng-controller='ParecerOrgaoController')
-    button.btn.btn-default.posicao-voltar(ng-click="parecerOrgao.showMensagem")
+div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
+    button.btn.btn-default(ng-click="showMensagem()")
         i.glyphicon.glyphicon-arrow-left
         | &nbsp;Click aqui!

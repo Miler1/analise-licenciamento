@@ -1,20 +1,17 @@
 package controllers;
 
-import exceptions.ValidacaoException;
-import models.AnaliseGeo;
-import models.Documento;
-import models.Inconsistencia;
-import serializers.InconsistenciaSerializer;
-import utils.Mensagem;
-import utils.ModelUtil;
+import models.Comunicado;
 
 public class Comunicados extends GenericController{
 
 
-    public static void salvarParecerOrgao(String parecerOrgao) {
+    public static void salvarParecerOrgao(Comunicado comunicado) {
 
+        if(comunicado.id != null){
+            renderJSON(true);
+        }
 
-
+        renderJSON(false);
     }
 
 }

@@ -1,10 +1,11 @@
-var ParecerOrgaoController = function(mensagem) {
+var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $rootScope ) {
 
-	var parecerOrgao = this;
-
-	parecerOrgao.showMensagem = function () {
-
-		mensagem.success('Carta imagem em construção ...');
+	$scope.showMensagem = function () {
+		var params = {id: 1};
+		parecerOrgaoService.enviar(params)
+			.then(function (response) {
+				window.location = $rootScope.config.baseURL;
+		});
 	};
 
 };
