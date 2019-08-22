@@ -427,13 +427,93 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		return inconsitenciaEncontrada !== undefined;
 	};
 
-	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idAtividadeCaracterizacao , idGeometriaAtividade) {
+	$scope.verificaInconsistenciaRestricao = function ( categoriaInconsistencia, idAtividadeCaracterizacao, idSobreposicao) {
+
+		if (ctrl.analiseGeo.inconsistencias === undefined  || ctrl.analiseGeo.inconsistencias.length === 0) {
+			return false;
+		}
+		var verificaCategoria = categoriaInconsistencia;
+		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
+			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() && 
+						 inconsistencia.atividadeCaracterizacao.id === idAtividadeCaracterizacao && 
+						 inconsistencia.sobreposicaoCaracterizacaoAtividade.id === idSobreposicao;
+		});
+
+
+		return inconsitenciaEncontrada !== undefined;
+	};
+
+
+	$scope.addInconsistenciaRestricao = function (categoriaInconsistencia, idAtividadeCaracterizacao , idSobreposicao) {
+
 
 		params = {
 			categoria:categoriaInconsistencia,
 			analiseGeo: {id: analiseGeo.id},
 			atividadeCaracterizacao: {id: idAtividadeCaracterizacao},
-			geometriaAtividade: {id: idGeometriaAtividade}			
+			geometriaAtividade: {id: null},
+			sobreposicaoCaracterizacaoAtividade: {id: idSobreposicao}			
+		};
+
+		inconsistenciaService.findInconsistencia(params)
+		.then(function(response){
+
+			var modalInstance = $uibModal.open({
+				controller: 'inconsistenciaController',
+				controllerAs: 'modalCtrl',
+				templateUrl: 'features/analiseGeo/modalInconsistencia.html',
+				size: 'lg',
+				resolve: {
+					analiseGeo: function () {
+						return ctrl.analiseGeo;
+					},
+					categoriaInconsistencia: function(){
+						return categoriaInconsistencia;
+					},
+					inconsistencia: function(){
+						return response.data;
+					},
+					idAtividadeCaracterizacao: function(){
+						return idAtividadeCaracterizacao;
+					},
+					idGeometriaAtividade: function(){
+						return null;
+					},
+					idSobreposicao: function(){
+						return idSobreposicao;
+					}
+				}
+			});
+
+			modalInstance.result.then(function(data){
+
+				if (data.isExclusao) {
+					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.indexOf(data.inconsistencia), 1);
+				} else if (data.isEdicao) {
+
+					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+						return i.id === data.inconsistencia.id;
+					}), 1);
+					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+				} else {
+					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+				}
+
+			});
+			
+		});		
+
+	};
+
+	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idAtividadeCaracterizacao , idGeometriaAtividade) {
+
+
+		params = {
+			categoria:categoriaInconsistencia,
+			analiseGeo: {id: analiseGeo.id},
+			atividadeCaracterizacao: {id: idAtividadeCaracterizacao},
+			geometriaAtividade: {id: idGeometriaAtividade},
+			sobreposicaoCaracterizacaoAtividade: {id: null}			
 		};
 
 		inconsistenciaService.findInconsistencia(params)
@@ -459,6 +539,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					},
 					idGeometriaAtividade: function(){
 						return idGeometriaAtividade;
+					},
+					idSobreposicao: function(){
+						return null;
 					}
 				}
 			});
@@ -512,6 +595,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 							return null;
 						},
 						idGeometriaAtividade: function(){
+							return null;
+						},
+						idSobreposicao: function(){
 							return null;
 						}
 					}

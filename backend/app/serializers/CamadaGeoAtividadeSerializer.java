@@ -11,6 +11,7 @@ public class CamadaGeoAtividadeSerializer {
 			"atividadeCaracterizacao.id",
 			"atividadeCaracterizacao.atividade.id",
 			"atividadeCaracterizacao.atividade.nome",
+			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.id",
 			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.codigo",
 			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.nome",
 			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.orgaosResponsaveis",
@@ -30,6 +31,8 @@ public class CamadaGeoAtividadeSerializer {
 			"restricoes.tipo",
 			"restricoes.sobreposicaoCaracterizacaoAtividade.id",
 			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id",
+			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis",
+			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis.sigla",
 			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo")
 			.transform(new GeometryTransformer(), Geometry.class);
 

@@ -59,7 +59,8 @@ include ../../layout/components/mapPanel
                                         td.col-md-5 {{camadaGeo.item}}
                                         td.col-md-5 {{camadaGeo.descricao}}
                                         td.col-md-2.text-right
-                                            i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(ctrl.categoria.ATIVIDADE,camadaDadosAtividade.atividadeCaracterizacao.id,camadaGeo.geometriaAtividade.id)}", ng-click='addInconsistenciaAtividade(ctrl.categoria.ATIVIDADE, camadaDadosAtividade.atividadeCaracterizacao.id, camadaGeo.geometriaAtividade.id)', title='Adicionar inconsistência')
+                                            i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(ctrl.categoria.ATIVIDADE,camadaDadosAtividade.atividadeCaracterizacao.id,camadaGeo.geometriaAtividade.id)}", 
+                                                                        ng-click='addInconsistenciaAtividade(ctrl.categoria.ATIVIDADE, camadaDadosAtividade.atividadeCaracterizacao.id, camadaGeo.geometriaAtividade.id)', title='Adicionar inconsistência')
                                                 | &nbsp;
 
                             br
@@ -74,11 +75,20 @@ include ../../layout/components/mapPanel
                                          th.col-md-1.text-right Ações
 
                                     tbody(ng-repeat="restricao in camadaDadosAtividade.restricoes")
-                                        tr
-                                            td.col-md-5 {{restricao.item}}
-                                            td.col-md-5 {{restricao.descricao}}
+                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
+                                            td.col-md-5 {{restricao.item}} 
+                                            td.col-md-5 {{restricao.descricao}} 
                                             td.col-md-2.text-right
-                                                i.glyphicon.glyphicon-alert(title='Sobreposição encontrada. Emitir notificação ao interessado')
-                                                | &nbsp;&nbsp;
-                                                i.glyphicon.glyphicon-envelope(title='Será comunicado ao órgão competente sobre a restrição declarada')
-                                                | &nbsp;&nbsp;
+                                                i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione uma inconsistência e notifique ao interessado para que procure o órgao {{orgao.sigla.toUpperCase()}}', 
+
+                                                                                        ng-if="orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA",
+
+                                                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, camadaDadosAtividade.atividadeCaracterizacao.id, restricao.sobreposicaoCaracterizacaoAtividade.id)",
+
+                                                                                        ng-class="{'temInconsistencia' : verificaInconsistenciaRestricao(ctrl.categoria.RESTRICAO,camadaDadosAtividade.atividadeCaracterizacao.id,restricao.sobreposicaoCaracterizacaoAtividade.id)}")
+                                                |&nbsp;
+                                                i.glyphicon.glyphicon-envelope(title='O órgão {{orgao.sigla.toUpperCase()}} será comunicado sobre a restrição {{restricao.item.toUpperCase()}}', 
+
+                                                                                ng-if="orgao.sigla.toUpperCase() !== ctrl.orgaos.IPHAN && orgao.sigla.toUpperCase() !== ctrl.orgaos.IBAMA")
+                                                |&nbsp;
+
