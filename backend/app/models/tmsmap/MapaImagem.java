@@ -72,7 +72,7 @@ public class MapaImagem {
 
 	}
 
-	private static final String URL_MOSAICOS = Play.configuration.getProperty("mapa.mosaicos", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{x}/{y}.jpg");
+	private static final String URL_MOSAICOS = Play.configuration.getProperty("mapa.mosaicos", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.jpg");
 
 	// External Frame
 	private static final int WIDTH = 312 * 2 + 40 * 3;
@@ -690,7 +690,7 @@ public class MapaImagem {
 		TMSMap map = new TMSMap();
 
 		try {
-			map.addLayer(TMSLayer.from(new URL(URL_MOSAICOS)));
+			map.addLayer(TMSLayer.from(new URL(URL_MOSAICOS), false));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
