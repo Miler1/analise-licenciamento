@@ -12,7 +12,7 @@ public class ComunicadoSerializer {
             "analiseGeo.analise.processo.empreendimento.pessoa.cpf",
             "analiseGeo.analise.processo.empreendimento.denominacao",
             "analiseGeo.analise.processo.empreendimento.municipio.nome",
-            "analiseGeo.analise.processo.empreendimento.municipio.nome",
+            "analiseGeo.analise.processo.empreendimento.municipio.estado.codigo",
             "atividadeCaracterizacao.id",
             "tipoSobreposicao.nome",
             "valido");
