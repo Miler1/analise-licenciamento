@@ -705,8 +705,20 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
 						a.click();
 
-						$location.path('/analise-geo');
-						mensagem.setMensagemProximaTela('success', response.data.texto);
+						documentoAnaliseService.generatePDFCartaImagemGeo(params)
+							.then(function(data, status, headers){
+
+								var a = document.createElement('a');
+								a.href = URL.createObjectURL(data.data.response.blob);
+								a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pd.pdf';
+								a.click();
+
+								$location.path('/analise-geo');
+								mensagem.setMensagemProximaTela('success', response.data.texto);
+
+							},function(error){
+								mensagem.error(error.data.texto);
+							});
 
 					},function(error){
 							mensagem.error(error.data.texto);

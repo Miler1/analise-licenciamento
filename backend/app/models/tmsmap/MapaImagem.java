@@ -359,7 +359,7 @@ public class MapaImagem {
 			grupoDataLayersOrder.add(grupoDataLayer);
 		});
 
-		int height = 120 * (dataLayers.size()/5);
+		int height = 120 * ((dataLayers.size()/5) + 5);
 
 		int frameWidth = (WIDTH - HORIZONTAL_MARGIN_SIZE * 2 - HORIZONTAL_MARGIN_SIZE / 2) / 2;
 		createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, height, grupoDataLayersOrder);
