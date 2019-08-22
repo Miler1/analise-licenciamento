@@ -75,10 +75,10 @@ public class MapaImagem {
 	private static final String URL_MOSAICOS = Play.configuration.getProperty("mapa.mosaicos", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{x}/{y}.jpg");
 
 	// External Frame
-	private static final int WIDTH = 312 * 2 + 40 * 2;
+	private static final int WIDTH = 312 * 2 + 40 * 3;
 	private static final int HEIGHT = 312 * 2 + 340;
 	private static final int HORIZONTAL_MARGIN_SIZE = 15 * 2;
-	private static final int VERTICAL_MARGIN_SIZE = 10 * 2;
+	private static final int VERTICAL_MARGIN_SIZE = 10 * 5;
 
 	// Map
 	private static final int MAP_WIDTH = WIDTH - HORIZONTAL_MARGIN_SIZE * 2;
@@ -359,9 +359,11 @@ public class MapaImagem {
 			grupoDataLayersOrder.add(grupoDataLayer);
 		});
 
+		int height = 120 * (dataLayers.size()/5);
+
 		int frameWidth = (WIDTH - HORIZONTAL_MARGIN_SIZE * 2 - HORIZONTAL_MARGIN_SIZE / 2) / 2;
-		createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, 120, grupoDataLayersOrder);
-		createAreasTable(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, 120, crs, grupoDataLayersOrder);
+		createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, height, grupoDataLayersOrder);
+		createAreasTable(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, height, crs, grupoDataLayersOrder);
 
 		// Fim rodapé
 
