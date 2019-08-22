@@ -2,6 +2,7 @@ package models.tmsmap;
 
 import br.ufla.tmsmap.*;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import models.CamadaGeo;
@@ -687,7 +688,7 @@ public class MapaImagem {
 		TMSMap map = new TMSMap();
 
 		try {
-			map.addLayer(TMSLayer.from(new URL(URL_MOSAICOS), false));
+			map.addLayer(TMSLayer.from(new URL(URL_MOSAICOS)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

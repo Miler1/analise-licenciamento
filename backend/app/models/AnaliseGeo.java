@@ -739,14 +739,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao = new HashMap<>();
 
-//        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
-//
-//            if (camadaAtividade.restricoes != null &&  camadaAtividade.restricoes.size() > 0) {
-//                geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaAtividade.restricoes);
-//            }
-//
-//            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
-//        }
+        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
+
+            if (camadaAtividade.restricoes != null &&  camadaAtividade.restricoes.size() > 0) {
+                geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaAtividade.restricoes);
+            }
+
+            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
+        }
 
         geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
 
