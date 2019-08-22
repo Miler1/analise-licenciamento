@@ -1,4 +1,41 @@
 div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
-    button.btn.btn-default(ng-click="showMensagem()")
-        i.glyphicon.glyphicon-arrow-left
-        | &nbsp;Click aqui!
+    
+ .row
+    .col-md-6
+        h4 PROCESSO
+
+        div.row
+            label.col-sm-4 Número:
+            span.col-sm-8 {{ctrl.analiseGeo.analise.processo.numero ? ctrl.analiseGeo.analise.processo.numero : ctrl.analiseGeo.analise.processo.numeroProcesso}}
+
+        div.row
+            label.col-sm-4 CPF/CNPJ:
+            span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf : ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
+
+        div.row
+            label.col-sm-4 Interessado:
+            span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.denominacao}}
+
+        div.row
+            label.col-sm-4 Município:
+            span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{ctrl.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
+
+div
+    label Áreas de restrição da atividade
+
+    table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+        thead
+            tr
+            th.col-md-4 Item
+
+        tbody(ng-repeat="sobreposicao in camadaDadosAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades")
+            tr
+                td.col-md-4 {{sobreposicao.tipoSobreposicao.nome}}
+         
+
+button.btn.btn-default(ng-click="showMensagem()")
+    i.glyphicon.glyphicon-arrow-left
+    | &nbsp;Voltar
+button.btn.btn-success.pull-right(ng-click="enviar()")
+    i.glyphicon.glyphicon-ok
+    | &nbsp;Enviar          

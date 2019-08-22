@@ -38,7 +38,9 @@ html(lang='pt-br')
 
 				div(ng-if='isRoute("/parecer-orgao")')
 					div.col-xs-12.main-container__parecer-orgao
-						include features/parecerOrgao/parecerOrgao
+						section.container.main-container
+							include features/parecerOrgao/parecerOrgao
+						
 
 				div(ng-if='!isRoute("/parecer-orgao")')
 
