@@ -72,7 +72,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ListagemProcessoManejoController,
 			controllerAs: 'listagemProcessoManejo'
 		})
-		.when("/parecer-orgao", {
+		.when("/parecer-orgao/:idComunicado", {
 			templateUrl: "features/parecerOrgao/parecerOrgao.html",
 			controller: controllers.ParecerOrgaoController,
 			controllerAs: 'parecerOrgao'
@@ -142,13 +142,13 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 		var appController = this;
 
-		if (!$rootScope.usuarioSessao && $rootScope.location.$$url !== '/parecer-orgao') {
+		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-orgao')) {
 			window.location = $rootScope.config.baseURL;
 		}
 
 		$rootScope.isRoute = function(path) {
 
-			return $location.path() === path;
+			return $location.path().includes(path);
 		};
 
 		$rootScope.itensMenuPrincipal = [{

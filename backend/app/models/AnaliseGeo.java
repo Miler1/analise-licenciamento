@@ -461,7 +461,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
                 comunicado.save();
-                comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao";
+                comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
 
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
