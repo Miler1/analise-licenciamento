@@ -681,27 +681,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		analiseGeoService.concluir(ctrl.analiseGeo)
 			.then(function(response) {
-
-				var params = {
-					id: $scope.analiseGeo.id,
-					parecer: $scope.analiseGeo.parecer
-				};
-
-				documentoAnaliseService.generatePDFParecerGeo(params)
-					.then(function(data, status, headers){
-
-						var a = document.createElement('a');
-						a.href = URL.createObjectURL(data.data.response.blob);
-						a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-						a.click();
-
-						$location.path('/analise-geo');
-						mensagem.setMensagemProximaTela('success', response.data.texto);
-
-					},function(error){
-							mensagem.error(error.data.texto);
-					});
-
+				$location.path('/analise-geo');
+				mensagem.setMensagemProximaTela('success', response.data.texto);
 			}, function(error){
 
 				mensagem.error(error.data.texto);

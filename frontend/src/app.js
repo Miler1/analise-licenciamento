@@ -129,8 +129,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	});
 });
 
-licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
-	function($injector, $scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
+licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", "applicationService", "$location","$routeParams","$route", "breadcrumb", "mensagem", "$timeout", "$window",
+	function($injector, $scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout,$routeParams,$route, $window) {
 
 		$rootScope.location = $location;
 		$rootScope.confirmacao = {};
