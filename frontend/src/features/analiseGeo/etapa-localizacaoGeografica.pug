@@ -63,24 +63,22 @@ include ../../layout/components/mapPanel
                                                 | &nbsp;
 
                             br
-                            div(ng-if="camadaDadosAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.length > 0")
+                            div(ng-if="camadaDadosAtividade.restricoes.length > 0")
                                 label Áreas de restrição da atividade
 
                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                     thead
                                         tr
                                          th.col-md-4 Item
+                                         th.col-md-5 Descrição
                                          th.col-md-1.text-right Ações
 
-                                    tbody(ng-repeat="sobreposicao in camadaDadosAtividade.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades")
-                                        tr(ng-repeat="orgao in sobreposicao.tipoSobreposicao.orgaosResponsaveis")
-                                            td.col-md-4 {{sobreposicao.tipoSobreposicao.nome}} 
-                                             td.col-md-2.text-right
-                                                 i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione uma inconsistência e notifique ao interessado para que procure o órgao {{orgao.sigla.toUpperCase()}}', 
-                                                                                        ng-if="orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA",
-                                                                                        ng-click="addInconsistenciaAtividade(ctrl.categoria.RESTRICAO, camadaDadosAtividade.atividadeCaracterizacao.id, camadaGeo.geometriaAtividade.id)",
-                                                                                        ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(ctrl.categoria.RESTRICAO,camadaDadosAtividade.atividadeCaracterizacao.id,camadaGeo.geometriaAtividade.id)}")
-                                                 |
-                                                 i.glyphicon.glyphicon-envelope(title='O órgão {{orgao.sigla.toUpperCase()}} será comunicado sobre a restrição {{sobreposicao.tipoSobreposicao.nome.toUpperCase()}}', 
-                                                                                ng-if="orgao.sigla.toUpperCase() !== ctrl.orgaos.IPHAN && orgao.sigla.toUpperCase() !== ctrl.orgaos.IBAMA")
-                                                 | &nbsp;&nbsp;
+                                    tbody(ng-repeat="restricao in camadaDadosAtividade.restricoes")
+                                        tr
+                                            td.col-md-5 {{restricao.item}}
+                                            td.col-md-5 {{restricao.descricao}}
+                                            td.col-md-2.text-right
+                                                i.glyphicon.glyphicon-alert(title='Sobreposição encontrada. Emitir notificação ao interessado')
+                                                | &nbsp;&nbsp;
+                                                i.glyphicon.glyphicon-envelope(title='Será comunicado ao órgão competente sobre a restrição declarada')
+                                                | &nbsp;&nbsp;

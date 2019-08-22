@@ -376,6 +376,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 									adicionarGeometriaNoMapa(camadaGeo);
 								});
 
+								if (camadaAtividade.restricoes !== null && camadaAtividade.restricoes.length > 0) {
+
+									camadaAtividade.restricoes.forEach(function (restricao) {
+
+										restricao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
+
+										adicionarGeometriaNoMapa(restricao);
+									});
+								}
+
 								tiposSobreposicaoService.getTiposSobreposicao()
 									.then(function (response) {
 										ctrl.TiposSobreposicao = response.data;
@@ -531,8 +541,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
-			ctrl.situacaoFundiaria = undefined;
-			ctrl.analiseTemporal = undefined;
+			ctrl.analiseGeo.situacaoFundiaria = undefined;
+            ctrl.analiseGeo.analiseTemporal = undefined;
 
 		} else {
 			$('#situacaoFundiaria').summernote('enable');
@@ -697,8 +707,20 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
 						a.click();
 
-						$location.path('/analise-geo');
-						mensagem.setMensagemProximaTela('success', response.data.texto);
+						documentoAnaliseService.generatePDFCartaImagemGeo(params)
+							.then(function(data, status, headers){
+
+								var a = document.createElement('a');
+								a.href = URL.createObjectURL(data.data.response.blob);
+								a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pd.pdf';
+								a.click();
+
+								$location.path('/analise-geo');
+								mensagem.setMensagemProximaTela('success', response.data.texto);
+
+							},function(error){
+								mensagem.error(error.data.texto);
+							});
 
 					},function(error){
 							mensagem.error(error.data.texto);
