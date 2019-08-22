@@ -375,6 +375,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 									adicionarGeometriaNoMapa(camadaGeo);
 								});
 
+								if (camadaAtividade.restricoes !== null && camadaAtividade.restricoes.length > 0) {
+
+									camadaAtividade.restricoes.forEach(function (restricao) {
+
+										restricao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
+
+										adicionarGeometriaNoMapa(restricao);
+									});
+								}
+
 								tiposSobreposicaoService.getTiposSobreposicao()
 									.then(function (response) {
 										ctrl.TiposSobreposicao = response.data;
@@ -529,8 +539,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		if(ctrl.analiseGeo.inconsistencias.length > 0){
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
-			ctrl.situacaoFundiaria = undefined;
-			ctrl.analiseTemporal = undefined;
+			ctrl.analiseGeo.situacaoFundiaria = undefined;
+            ctrl.analiseGeo.analiseTemporal = undefined;
 
 		} else {
 			$('#situacaoFundiaria').summernote('enable');

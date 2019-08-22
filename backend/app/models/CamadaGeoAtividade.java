@@ -10,9 +10,12 @@ public class CamadaGeoAtividade {
 
 	public List<CamadaGeo> camadasGeo;
 
-	public CamadaGeoAtividade(AtividadeCaracterizacao atividadeCaracterizacao, List<CamadaGeo> camadasGeo) {
+	public List<CamadaGeo> restricoes;
+
+	public CamadaGeoAtividade(AtividadeCaracterizacao atividadeCaracterizacao, List<CamadaGeo> camadasGeo, List<CamadaGeo> restricoes) {
 
 		this.atividadeCaracterizacao = atividadeCaracterizacao;
 		this.camadasGeo = camadasGeo;
+		this.restricoes = restricoes;
 	}
 }
