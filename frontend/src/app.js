@@ -72,11 +72,10 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ListagemProcessoManejoController,
 			controllerAs: 'listagemProcessoManejo'
 		})
-
-		.when("/parecer-orgao", {
-			templateUrl: "features/analiseManejo/listagem/listagem-processo-manejo.html",
-			controller: controllers.ListagemProcessoManejoController,
-			controllerAs: 'listagemProcessoManejo'
+		.when("/parecer-orgao/:idComunicado", {
+			templateUrl: "features/parecerOrgao/parecerOrgao.html",
+			controller: controllers.ParecerOrgaoController,
+			controllerAs: 'parecerOrgao'
 		})
 		.otherwise({
 			redirectTo: "/"
@@ -130,8 +129,8 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	});
 });
 
-licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", "applicationService", "$location", "breadcrumb", "mensagem", "$timeout", "$window",
-	function($injector, $scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout, $window) {
+licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", "applicationService", "$location","$routeParams","$route", "breadcrumb", "mensagem", "$timeout", "$window",
+	function($injector, $scope, $rootScope, applicationService, $location, breadcrumb, mensagem, $timeout,$routeParams,$route, $window) {
 
 		$rootScope.location = $location;
 		$rootScope.confirmacao = {};
@@ -143,9 +142,14 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 		var appController = this;
 
-		if (!$rootScope.usuarioSessao) {
-			window.location = $rootScope.config.baseUrl;
+		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-orgao')) {
+			window.location = $rootScope.config.baseURL;
 		}
+
+		$rootScope.isRoute = function(path) {
+
+			return $location.path().includes(path);
+		};
 
 		$rootScope.itensMenuPrincipal = [{
 
@@ -480,7 +484,8 @@ utils.services(licenciamento)
 	.add('empreendimentoService', services.EmpreendimentoService)
 	.add('desvinculoService', services.DesvinculoService)
 	.add('wmsTileService', services.WMSTileService)
-	.add('tiposSobreposicaoService', services.TiposSobreposicaoService);
+	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
+	.add('parecerOrgaoService', services.ParecerOrgaoService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -502,6 +507,7 @@ licenciamento
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
 	.controller('desvinculoController', controllers.DesvinculoController)
+	.controller('parecerOrgaoController', controllers.ParecerOrgaoController),
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController);
 
 

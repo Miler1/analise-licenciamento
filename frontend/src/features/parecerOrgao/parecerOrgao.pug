@@ -1,0 +1,47 @@
+div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')  
+    .row
+        .col-md-6
+            h4 PROCESSO
+
+            div.row
+                label.col-sm-4 Número:
+                span.col-sm-8 {{comunicado.analiseGeo.analise.processo.numero ? comunicado.analiseGeo.analise.processo.numero : comunicado.analiseGeo.analise.processo.numeroProcesso}}
+
+            div.row
+                label.col-sm-4 CPF/CNPJ:
+                span.col-sm-8 {{comunicado.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? comunicado.analiseGeo.analise.processo.empreendimento.pessoa.cpf : comunicado.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
+
+            div.row
+                label.col-sm-4 Interessado:
+                span.col-sm-8 {{comunicado.analiseGeo.analise.processo.empreendimento.denominacao}}
+
+            div.row
+                label.col-sm-4 Município:
+                span.col-sm-8 {{comunicado.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{comunicado.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
+
+    div
+        br
+        br
+        label Áreas de Restrição
+
+        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;margin: 0px; width: 811px; height: 88px;")
+            thead
+                tr
+                th.col-md-4 Item 
+
+            tbody
+                tr
+                    td.col-md-4 {{comunicado.tipoSobreposicao.nome}}
+            
+    div
+        label(style="font-size:13px;") Descrição do Parecer*:
+        br
+        textarea(name="descricaoParecer", ng-model="descricaoParecer", style="margin: 0px; width: 811px; height: 88px;")
+
+    div
+        button.btn.btn-default.pull(ng-click="voltar()",style="margin-left: 610px; margin-top: 15px;")
+            i.glyphicon.glyphicon-arrow-left
+            | &nbsp;Voltar
+        button.btn.btn-success.pull-right(ng-click="enviar()",style="margin-right: 38px; margin-top: 15px;")
+            i.glyphicon.glyphicon-ok
+            | &nbsp;Enviar          

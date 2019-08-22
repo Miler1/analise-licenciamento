@@ -2,6 +2,7 @@ package models;
 
 import models.licenciamento.*;
 import play.db.jpa.GenericModel;
+import utils.Helper;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class Comunicado extends GenericModel {
 
     @Column(name="data_leitura")
     @Temporal(TemporalType.TIMESTAMP)
-    public Date dataLeitura;
+    public Date dataVencimento;
 
     @Column(name="data_resposta")
     @Temporal(TemporalType.TIMESTAMP)
@@ -54,12 +55,16 @@ public class Comunicado extends GenericModel {
     @JoinColumn(name="id_orgao", referencedColumnName="id")
     public Orgao orgao;
 
+    @Transient
+    public String linkComunicado;
 
+    @Transient
+    public boolean valido;
 
     public Comunicado(AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
         this.tipoSobreposicao = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao;
         this.dataCadastro = new Date();
-        this.dataCadastro.getTime();
+        this.dataVencimento = Helper.somarDias(new Date(), 30);
         this.atividadeCaracterizacao = atividadeCaracterizacao;
         this.ativo = true;
         this.analiseGeo = analiseGeo;
@@ -67,6 +72,9 @@ public class Comunicado extends GenericModel {
         this.orgao = orgao;
     }
 
+    public boolean isValido() {
+        return this.dataVencimento.after(new Date());
+    }
 
 
 }
