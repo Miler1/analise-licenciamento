@@ -1,4 +1,4 @@
-var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,categoriaInconsistencia,idGeometriaAtividade, idAtividadeCaracterizacao, documentoService, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
+var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,categoriaInconsistencia,idGeometriaAtividade, idSobreposicao,idAtividadeCaracterizacao, documentoService, inconsistencia,tamanhoMaximoArquivoAnaliseMB,uploadService, inconsistenciaService, mensagem) {
 
 	var inconsistenciaController = this;
 	inconsistenciaController.anexos = [];
@@ -62,7 +62,8 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 				categoria: categoriaInconsistencia,
 				anexos: inconsistenciaController.anexos,
 				atividadeCaracterizacao: {id: idAtividadeCaracterizacao},
-				geometriaAtividade: {id: idGeometriaAtividade}
+				geometriaAtividade: {id: idGeometriaAtividade},
+				sobreposicaoCaracterizacaoAtividade: {id: idSobreposicao}
 			};
 		}else{
 			params = {
@@ -72,7 +73,8 @@ var InconsistenciaController = function ($scope,$uibModalInstance,analiseGeo,cat
 				categoria: categoriaInconsistencia,
 				anexos: inconsistenciaController.anexos,
 				atividadeCaracterizacao: {id: idAtividadeCaracterizacao},
-				geometriaAtividade: {id: idGeometriaAtividade}
+				geometriaAtividade: {id: idGeometriaAtividade},
+				sobreposicaoCaracterizacaoAtividade: {id: idSobreposicao}
 			};
 		}
 		inconsistenciaService.salvarInconsistencia(params)

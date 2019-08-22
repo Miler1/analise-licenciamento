@@ -26,7 +26,7 @@ public class Comunicado extends GenericModel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataCadastro;
 
-    @Column(name="data_leitura")
+    @Column(name="data_vencimento")
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataVencimento;
 
