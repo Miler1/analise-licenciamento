@@ -18,7 +18,7 @@ header
 						img.img-responsive.img-custom-align(src='images/logo.png')
 				div.col-sm-6
 
-					nav.navbar.navbar-right.navbar-inverse.navbar-global.hidden-xs(role='navigation')
+					nav.navbar.navbar-right.navbar-inverse.navbar-global.hidden-xs(role='navigation', ng-if='!isRoute("/parecer-orgao")')
 						ul.nav.navbar-nav
 							li.hidden-sm(style='margin-right: 16px;')
 								p.navbar-text.pull-right
