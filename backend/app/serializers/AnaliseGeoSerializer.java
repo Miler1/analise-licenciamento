@@ -118,7 +118,9 @@ public class AnaliseGeoSerializer {
             "inconsistencias.anexos.tipo.id",
             "inconsistencias.categoria",
             "inconsistencias.atividadeCaracterizacao.id",
-            "inconsistencias.geometriaAtividade.id"
+            "inconsistencias.geometriaAtividade.id",
+            "inconsistencias.sobreposicaoCaracterizacaoAtividade.id",
+            "inconsistencias.sobreposicaoCaracterizacaoAtividade"
 
     ).transform(new GeometryTransformer(), Geometry.class);
 

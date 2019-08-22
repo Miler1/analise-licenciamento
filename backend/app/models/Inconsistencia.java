@@ -3,6 +3,7 @@ package models;
 import exceptions.ValidacaoException;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.GeometriaAtividade;
+import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -59,6 +60,10 @@ public class Inconsistencia extends GenericModel{
     @JoinColumn(name="id_geometria_atividade")
     public GeometriaAtividade geometriaAtividade;
 
+    @OneToOne
+    @JoinColumn(name="id_sobreposicao")
+    public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
+
 
     public Inconsistencia(AnaliseGeo analiseGeo) {
 
@@ -76,14 +81,13 @@ public class Inconsistencia extends GenericModel{
 
     }
 
-    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, GeometriaAtividade geometriaAtividade) {
-
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
         this.analiseGeo = analiseGeo;
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;
         this.categoria = categoria;
         this.atividadeCaracterizacao =atividadeCaracterizacao;
-        this.geometriaAtividade = geometriaAtividade;
+        this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
 
     }
 
@@ -95,13 +99,14 @@ public class Inconsistencia extends GenericModel{
         this.categoria = categoria;
     }
 
-    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, List<Documento> anexos) {
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, GeometriaAtividade geometriaAtividade) {
 
         this.analiseGeo = analiseGeo;
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;
         this.categoria = categoria;
-        this.anexos = anexos;
+        this.atividadeCaracterizacao = atividadeCaracterizacao;
+        this.geometriaAtividade = geometriaAtividade;
     }
 
     public void saveAnexos(List<Documento> novosAnexos) {
