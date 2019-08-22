@@ -78,7 +78,7 @@ public class MapaImagem {
 	private static final int WIDTH = 312 * 2 + 40 * 3;
 	private static final int HEIGHT = 312 * 2 + 340;
 	private static final int HORIZONTAL_MARGIN_SIZE = 15 * 2;
-	private static final int VERTICAL_MARGIN_SIZE = 10 * 5;
+	private static final int VERTICAL_MARGIN_SIZE = 10 * 2;
 
 	// Map
 	private static final int MAP_WIDTH = WIDTH - HORIZONTAL_MARGIN_SIZE * 2;
