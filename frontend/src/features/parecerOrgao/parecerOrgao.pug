@@ -32,16 +32,18 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
             tbody
                 tr
                     td.col-md-4 {{comunicado.tipoSobreposicao.nome}}
-            
-    div
-        label(style="font-size:13px;") Descrição do Parecer*:
-        br
-        textarea(name="descricaoParecer", ng-model="descricaoParecer", style="margin: 0px; width: 811px; height: 88px;")
+    div(ng-if="comunicado.valido == false ? disabled=false: disabled = true")        
+        div(ng-if="comunicado.resolvido == true ? disabled=false: disabled = true")
+            label(style="font-size:13px;") Descrição do Parecer*: 
+            br
+            textarea(name="descricaoParecer", ng-model="descricaoParecer", style="margin: 0px; width: 811px; height: 88px;")
 
-    div
-        button.btn.btn-default.pull(ng-click="voltar()",style="margin-left: 610px; margin-top: 15px;")
-            i.glyphicon.glyphicon-arrow-left
-            | &nbsp;Voltar
-        button.btn.btn-success.pull-right(ng-click="enviar()",style="margin-right: 38px; margin-top: 15px;")
-            i.glyphicon.glyphicon-ok
-            | &nbsp;Enviar          
+        div
+            button.btn.btn-default.pull(ng-click="cancelar()",style="margin-left: 610px; margin-top: 15px;",ng-if="comunicado.resolvido == true ? disabled=false: disabled = true")
+                i.glyphicon.glyphicon-arrow-left
+                | &nbsp;Cancelar
+            button.btn.btn-success.pull-right(type="button",ng-click="enviar()",style="margin-right: 38px; margin-top: 15px;",ng-if="comunicado.resolvido == true ? disabled=false: disabled = true")
+                i.glyphicon.glyphicon-ok
+                | &nbsp;Enviar
+            h2.text-center(ng-if="comunicado.resolvido == true ? disabled=true: disabled = false") Resposta já cadastrada!
+    h4.text-center(ng-if="comunicado.valido == false ? disabled=true: disabled = false") Prazo para resposta expirado!       

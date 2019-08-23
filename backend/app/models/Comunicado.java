@@ -73,6 +73,7 @@ public class Comunicado extends GenericModel {
     }
 
     public boolean isValido() {
+
         return this.dataVencimento.after(new Date());
     }
 
