@@ -488,7 +488,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			modalInstance.result.then(function(data){
 
 				if (data.isExclusao) {
-					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.indexOf(data.inconsistencia), 1);
+					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+						return i.id === data.inconsistencia.id;
+					}), 1);
 				} else if (data.isEdicao) {
 
 					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
@@ -549,7 +551,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			modalInstance.result.then(function(data){
 
 				if (data.isExclusao) {
-					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.indexOf(data.inconsistencia), 1);
+
+					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+						return i.id === data.inconsistencia.id;
+					}), 1);
+
 				} else if (data.isEdicao) {
 
 					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
@@ -606,7 +612,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				modalInstance.result.then(function(data){
 
 					if (data.isExclusao) {
-						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.indexOf(data.inconsistencia), 1);
+						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+							return i.id === data.inconsistencia.id;
+						}), 1);
+
 					} else if (data.isEdicao) {
 
 						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){

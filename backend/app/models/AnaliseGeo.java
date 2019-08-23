@@ -749,7 +749,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
         }
 
-        geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
+        if ( camadasGeoEmpreedimento.size() > 0) {
+            geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
+        }
 
         MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaPropriedade, geometriesCaracterizacao);
 
