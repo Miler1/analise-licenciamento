@@ -131,7 +131,8 @@ body.corpo
 
                 .legenda-carta-imagem
                     | \#{list items:grupoDataLayers, as:'grupo'}
-                    p ${grupo.titulo}
+                    p
+                        strong ${grupo.titulo}
                     | \#{list items:grupo.dataLayers, as:'dataLayer'}
                     span.icon-legenda(style= "background: ${dataLayer.colorCode}; color: ${dataLayer.colorCode};") .
                     span(style="padding-left:5px;") ${dataLayer.name}
