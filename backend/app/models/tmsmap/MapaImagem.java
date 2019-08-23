@@ -37,6 +37,18 @@ public class MapaImagem {
 		public Color color;
 		public Color fillColor;
 		public Stroke stroke;
+		String colorCode;
+
+		public DataLayer(String name, Geometry geometry, Color color, String colorCode) {
+
+			super();
+			this.name = name;
+			this.geometry = geometry;
+			this.color = color;
+			this.stroke = new BasicStroke();
+			this.colorCode = colorCode;
+
+		}
 
 		public DataLayer(String name, Geometry geometry, Color color) {
 
@@ -204,9 +216,10 @@ public class MapaImagem {
 					continue;
 				}
 
-				Color color = Color.decode(getColorTemaCiclo());
+				String colorCode = getColorTemaCiclo();
+				Color color = Color.decode(colorCode);
 				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-				dataLayers.add(new DataLayer(camadaGeo.item, camadaGeo.geometria, color).fillColor(fillColor));
+				dataLayers.add(new DataLayer(camadaGeo.item, camadaGeo.geometria, color, colorCode).fillColor(fillColor));
 			}
 
 			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
@@ -338,7 +351,7 @@ public class MapaImagem {
 
 		}
 
-		DataLayer newDataLayer = new DataLayer("Limite", geometryAreaImovel, Color.YELLOW).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 ));
+		DataLayer newDataLayer = new DataLayer("Limite", geometryAreaImovel, Color.YELLOW, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 ));
 		dataLayers.addFirst(newDataLayer);
 
 		List<DataLayer> newDataLayers = new ArrayList<>();

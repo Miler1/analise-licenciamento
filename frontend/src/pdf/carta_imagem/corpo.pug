@@ -5,6 +5,7 @@ html(lang="pt-br")
         title Análise - Licenciamento Ambiental - Amazonas
         link(rel='stylesheet' href='${templatePath}/style/estilo.css')
         style.
+
             * {
                 margin: 0;
                 padding:0;
@@ -90,15 +91,12 @@ html(lang="pt-br")
             div.mapa-carta-imagem{
                 width: 70%;
                 display: inline-block;
-                font-size: 3vw;
                 text-align: left;
             }
 
             div.legenda-carta-imagem {
                 width: 25%;
                 display: inline-block;
-                margin-right: 0vw;
-                font-size: 3vw;
                 text-align: left;
             }
 
@@ -107,10 +105,11 @@ html(lang="pt-br")
             }
 
             .icon-legenda {
-                font-size: 0.7em;
-                padding: 4px 8px 0px 0px;
+                font-size: 6px;
+                color: transparent;
+                padding-left: 5px;
+                padding-top: 2px;
             }
-
 
 body.corpo
     div.titulo
@@ -131,8 +130,12 @@ body.corpo
                     img(src='${imagemCaracterizacao}', alt='Red dot')
 
                 .legenda-carta-imagem
-                    span.fa.fa-square.icon-legenda(ng-style="{'color': 'red'}")
-                    span {{camada.item}}
-
-
+                    | \#{list items:grupoDataLayers, as:'grupo'}
+                    p ${grupo.titulo}
+                    | \#{list items:grupo.dataLayers, as:'dataLayer'}
+                    span.icon-legenda(style= "background: ${dataLayer.colorCode}; color: ${dataLayer.colorCode};") .
+                    span(style="padding-left:5px;") ${dataLayer.name}
+                    br
+                    | \#{/list}
+                    | \#{/list}
     p.align-right Manaus, ${dataCartaImagem}
