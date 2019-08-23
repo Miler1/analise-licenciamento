@@ -751,15 +751,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
 
-        String imagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaPropriedade, geometriesCaracterizacao);
+        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaPropriedade, geometriesCaracterizacao);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
                 .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
                 .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
-                .addParam("imagemCaracterizacao", imagemCaracterizacao)
-                .setPageSize(30.0D, 21.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+                .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
+                .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
+                .setPageSize(30.0D, 21.0D, 0.5D, 0.5D, 1.0D, 3.7D);
 
         pdf.generate();
 

@@ -25,6 +25,7 @@ html(lang="pt-br")
             .conteudo-item {
                 font-size: 14px;
                 font-weight: normal;
+                padding-bottom: 5px;
             }
 
             td {
@@ -66,25 +67,49 @@ html(lang="pt-br")
                 margin-top: 20px;
                 margin-bottom: 20px;
                 text-align: center;
+
+            }
+
+            table {
                 width: 100%;
+            }
+
+            table, th, td {
+                border: none;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+            }
+            .container-flex {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            div.mapa-carta-imagem{
+                width: 70%;
+                display: inline-block;
+                font-size: 3vw;
+                text-align: left;
+            }
+
+            div.legenda-carta-imagem {
+                width: 25%;
+                display: inline-block;
+                margin-right: 0vw;
+                font-size: 3vw;
+                text-align: left;
             }
 
             img {
-                width: 60%;
+                width: 70%;
             }
 
-            .row {
-                width: 100%;
+            .icon-legenda {
+                font-size: 0.7em;
+                padding: 4px 8px 0px 0px;
             }
-
-            .col-md-8 {
-                width: 60%;
-            }
-
-            .col-md-4 {
-                width: 30%;
-            }
-
 
 
 body.corpo
@@ -100,11 +125,14 @@ body.corpo
                 strong Município:
                 | ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM
 
-        .col-md-8.align-left
-            .imagem
-                img(src='${imagemCaracterizacao}', alt='Red dot')
-        .col-md-4.align-right
-             p LEGENDA
-             P QUADRO AREAS
+        .container
+            .container-flex
+                .mapa-carta-imagem
+                    img(src='${imagemCaracterizacao}', alt='Red dot')
+
+                .legenda-carta-imagem
+                    span.fa.fa-square.icon-legenda(ng-style="{'color': 'red'}")
+                    span {{camada.item}}
+
 
     p.align-right Manaus, ${dataCartaImagem}

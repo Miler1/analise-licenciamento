@@ -63,7 +63,7 @@ public class MapaImagem {
 	public class GrupoDataLayer {
 
 		public String titulo;
-		List<DataLayer> dataLayers;
+		public  List<DataLayer> dataLayers;
 
 		public GrupoDataLayer(String titulo, List<DataLayer> dataLayers) {
 			this.titulo = titulo;
@@ -72,11 +72,24 @@ public class MapaImagem {
 
 	}
 
+	public class GrupoDataLayerImagem {
+
+		public String imagem;
+		public  List<GrupoDataLayer> grupoDataLayers;
+
+		public GrupoDataLayerImagem(String imagem, List<GrupoDataLayer> grupoDataLayers) {
+			this.imagem = imagem;
+			this.grupoDataLayers = grupoDataLayers;
+		}
+
+	}
+
 	private static final String URL_MOSAICOS = Play.configuration.getProperty("mapa.mosaicos", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.jpg");
 
 	// External Frame
 	private static final int WIDTH = 312 * 2 + 40 * 3;
-	private static final int HEIGHT = 312 * 2 + 340;
+	private static final int HEIGHT = 312 * 2 + 40 * 3;
+	//private static final int HEIGHT = 312 * 2 + 340;
 	private static final int HORIZONTAL_MARGIN_SIZE = 15 * 2;
 	private static final int VERTICAL_MARGIN_SIZE = 10 * 2;
 
@@ -175,7 +188,7 @@ public class MapaImagem {
 
 	}
 
-	public String createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao) {
+	public GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao) {
 
 		LinkedList<GrupoDataLayer> grupoDataLayers = new LinkedList<>();
 
@@ -282,7 +295,7 @@ public class MapaImagem {
 
 	}
 
-	private String createMapCaracterizacaoImovel(Geometry geometryAreaImovel, LinkedList<GrupoDataLayer> grupoDataLayers) {
+	private GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, LinkedList<GrupoDataLayer> grupoDataLayers) {
 
 		BufferedImage newImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = newImage.createGraphics();
@@ -362,8 +375,8 @@ public class MapaImagem {
 		int height = 120 * ((dataLayers.size()/5) + 5);
 
 		int frameWidth = (WIDTH - HORIZONTAL_MARGIN_SIZE * 2 - HORIZONTAL_MARGIN_SIZE / 2) / 2;
-		createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, height, grupoDataLayersOrder);
-		createAreasTable(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, height, crs, grupoDataLayersOrder);
+		//createLegendTable(graphics, HORIZONTAL_MARGIN_SIZE, topY, frameWidth, height, grupoDataLayersOrder);
+		//createAreasTable(graphics, WIDTH - HORIZONTAL_MARGIN_SIZE - frameWidth, topY, frameWidth, height, crs, grupoDataLayersOrder);
 
 		// Fim rodapé
 
@@ -375,7 +388,7 @@ public class MapaImagem {
 			throw new RuntimeException(e);
 		}
 
-		return "data:image/png;base64," + Base64.encodeBase64String(out.toByteArray());
+		return new GrupoDataLayerImagem("data:image/png;base64," + Base64.encodeBase64String(out.toByteArray()), grupoDataLayersOrder);
 
 	}
 
