@@ -10,7 +10,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $ro
 			$scope.comunicado = response.data;
 			
 			if (!comunicado.valido) {
-				window.location = $rootScope.config.baseURL;
+				window.open("http://www.ipaam.am.gov.br/");
 			}
 
 		}).catch(function(response){
@@ -22,7 +22,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $ro
 	}, 100);
 	
 	$scope.voltar = function () {
-		window.location = $rootScope.config.baseURL;
+		window.open("http://www.ipaam.am.gov.br/");
 	};
 
 	$scope.enviar = function () {
@@ -32,7 +32,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $ro
 		parecerOrgaoService.enviar(params)
 			.then(function (response) {
 
-				window.location = $rootScope.config.baseURL;
+				window.open("http://www.ipaam.am.gov.br/");
 		});
 	};
 

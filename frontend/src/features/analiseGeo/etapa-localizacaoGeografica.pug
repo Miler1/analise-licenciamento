@@ -79,7 +79,7 @@ include ../../layout/components/mapPanel
                                             td.col-md-5 {{restricao.item}} 
                                             td.col-md-5 {{restricao.descricao}} 
                                             td.col-md-2.text-right
-                                                i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione uma inconsistência e notifique ao interessado para que procure o órgao {{orgao.sigla.toUpperCase()}}', 
+                                                i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione inconsistência para notificar o interessado que procure o {{orgao.sigla.toUpperCase()}}', 
 
                                                                                         ng-if="orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA",
 

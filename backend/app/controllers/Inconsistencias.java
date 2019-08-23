@@ -8,6 +8,8 @@ import serializers.InconsistenciaSerializer;
 import utils.Mensagem;
 import utils.ModelUtil;
 
+import java.util.Objects;
+
 public class Inconsistencias extends GenericController{
 
 
@@ -31,9 +33,9 @@ public class Inconsistencias extends GenericController{
             i.categoria = inconsistencia.categoria;
             i.analiseGeo = inconsistencia.analiseGeo;
             i.id = inconsistencia.id;
-            i.atividadeCaracterizacao = inconsistencia.atividadeCaracterizacao;
-            i.geometriaAtividade = inconsistencia.geometriaAtividade;
-            i.sobreposicaoCaracterizacaoAtividade = inconsistencia.sobreposicaoCaracterizacaoAtividade;
+            i.atividadeCaracterizacao = Objects.nonNull(inconsistencia.atividadeCaracterizacao.id) ? inconsistencia.atividadeCaracterizacao : null;
+            i.geometriaAtividade = Objects.nonNull(inconsistencia.geometriaAtividade.id) ? inconsistencia.geometriaAtividade :null;
+            i.sobreposicaoCaracterizacaoAtividade = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) ? inconsistencia.sobreposicaoCaracterizacaoAtividade : null;
             i.saveAnexos(inconsistencia.anexos);
             i.save();
 
