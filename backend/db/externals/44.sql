@@ -5,7 +5,6 @@ BEGIN;
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo DROP NOT NULL;
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET DEFAULT NULL;
 ALTER TABLE licenciamento.empreendimento RENAME COLUMN possui_anexo TO possui_shape;
-ALTER TABLE analise.empreendimento_camada_geo RENAME CONSTRAINT fk_aga_empreendimento TO fk_ecg_empreendimento;
 COMMENT ON COLUMN licenciamento.empreendimento.possui_shape IS 'Boooleano que indica se o empreendimento posui ou não upload de shapes, se é nulo o empreendimento nunca cadastrou shapes';
 
 COMMIT;

@@ -11,8 +11,8 @@ UPDATE licenciamento.empreendimento SET possui_anexo = false WHERE possui_anexo 
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET NOT NULL;
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET DEFAULT FALSE;
 
-ALTER TABLE analise.analise_geo_anexo
-    ADD CONSTRAINT fk_aga_empreendimento FOREIGN KEY (id_empreendimento)
+ALTER TABLE analise.empreendimento_camada_geo
+    ADD CONSTRAINT fk_ecg_empreendimento FOREIGN KEY (id_empreendimento)
         REFERENCES licenciamento.empreendimento (id);
 
 GRANT USAGE ON SCHEMA analise TO tramitacao;
@@ -26,7 +26,7 @@ BEGIN;
 
 ALTER TABLE licenciamento.empreendimento DROP COLUMN possui_anexo;
 
-ALTER TABLE analise.analise_geo_anexo DROP CONSTRAINT fk_aga_empreendimento;
+ALTER TABLE analise.empreendimento_camada_geo DROP CONSTRAINT fk_ecg_empreendimento;
 
 REVOKE USAGE ON SCHEMA analise FROM tramitacao;
 REVOKE SELECT ON ALL TABLES IN SCHEMA analise FROM tramitacao;
