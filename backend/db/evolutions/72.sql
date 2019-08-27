@@ -118,6 +118,7 @@ CREATE TABLE analise.analista_geo
 ALTER TABLE analise.analista_geo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analista_geo TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_geo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analista_geo_id_seq TO licenciamento_am;
 
 COMMENT ON TABLE analise.analista_geo IS 'Entidade responsável por armazenar o analista da analise geo.';
 COMMENT ON COLUMN analise.analista_geo.id IS 'Identificador único da entidade.';
