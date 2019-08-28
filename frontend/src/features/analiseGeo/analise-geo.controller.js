@@ -651,16 +651,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
 			.then(function(response){
 
-					if(response.data === null) {
+					if(response.data.parecer === undefined) {
 
 							ctrl.analiseGeo.parecer = null;
-							mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+							mensagem.error(response.data.texto);
 							return;
+					}else{
+						ctrl.analiseGeo.parecer = response.data.parecer;
+						ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
+						ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
 					}
-					ctrl.analiseGeo.parecer = response.data.parecer;
-					ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
-					ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
-
 			}, function(error){
 
 					mensagem.error(error.data.texto);
@@ -746,6 +746,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
 			return false;
+		}
+		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+			return true;
 		}
 
 		return ((ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||

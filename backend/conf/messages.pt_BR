@@ -41,6 +41,8 @@ DESVINCULO_SOLICITADO_COM_SUCESSO=Seu desvínculo foi solicitado com sucesso!
 INCONSISTENCIA_SALVA_SUCESSO=A inconsistência foi salva com sucesso.
 INCONSISTENCIA_EXCLUIDA_SUCESSO=A inconsistência foi excluída com sucesso.
 CAMPOS_OBRIGATORIOS= Verifique os campos obrigatórios!
+CLONAR_PARECER_COM_INCONSISTENCIA=Não é possível clonar este parecer. O processo possui inconsistência cadastrada.
+PARECER_NAO_ENCONTRADO=Não foi encontrado um parecer para esse número de processo.
 #
 # Gerentes
 #

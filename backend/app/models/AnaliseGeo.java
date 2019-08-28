@@ -379,9 +379,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public static AnaliseGeo findByNumeroProcesso(String numeroProcesso) {
 
         return AnaliseGeo.find("analise.processo.numero = :numeroProcesso AND ativo = true AND " +
-                "tipoResultadoAnalise.id in (:idsTipoResultadoAnalise) AND situacaoFundiaria != null AND analiseTemporal != null")
+                "tipoResultadoAnalise.id in (:idsTipoResultadoAnalise)")
                 .setParameter("numeroProcesso", numeroProcesso)
-                .setParameter("idsTipoResultadoAnalise", Arrays.asList(TipoResultadoAnalise.DEFERIDO, TipoResultadoAnalise.INDEFERIDO))
+                .setParameter("idsTipoResultadoAnalise", Arrays.asList(TipoResultadoAnalise.DEFERIDO, TipoResultadoAnalise.INDEFERIDO, TipoResultadoAnalise.EMITIR_NOTIFICACAO))
                 .first();
     }
 
@@ -427,19 +427,19 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         } else {
 
-            Notificacao.criarNotificacoesAnaliseGeo(analise);
+//            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-
-            HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
-
-            List<Notificacao> notificacoes = Notificacao.find("analiseGeo.id", this.id).fetch();
-            Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
-
-            HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
-
-            enviarEmailNotificacao();
+//
+//            HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
+//
+//            List<Notificacao> notificacoes = Notificacao.find("analiseGeo.id", this.id).fetch();
+//            Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
+//
+//            HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
+//
+//            enviarEmailNotificacao();
         }
     }
 
