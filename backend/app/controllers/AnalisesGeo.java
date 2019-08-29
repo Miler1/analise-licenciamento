@@ -60,7 +60,7 @@ public class AnalisesGeo extends InternalController {
 
             renderMensagem(Mensagem.CLONAR_PARECER_COM_INCONSISTENCIA);
 
-        }else if(analise.inconsistencias.isEmpty() && analise!=null){
+        }else if(analise.inconsistencias.isEmpty()){
 
             renderJSON(analise, AnaliseGeoSerializer.parecer);
         }

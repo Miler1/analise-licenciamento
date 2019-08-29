@@ -426,6 +426,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             }
 
         } else {
+              //TODO Tribo Puma - SQD-1 - Implementar envio de email com notificação ao interessado
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
