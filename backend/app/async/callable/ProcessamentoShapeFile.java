@@ -7,6 +7,7 @@ import com.github.junrar.exception.RarException;
 import com.github.junrar.rarfile.FileHeader;
 import com.vividsolutions.jts.geom.Geometry;
 import enums.InformacoesNecessariasShapeEnum;
+import models.licenciamento.Empreendimento;
 import models.licenciamento.Municipio;
 import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
@@ -24,8 +25,10 @@ import org.opengis.filter.Filter;
 import play.Logger;
 import play.Play;
 import play.i18n.Messages;
+import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.GeoCalc;
+import utils.GeoJsonUtils;
 import utils.StringUtils;
 
 import java.io.*;
@@ -52,10 +55,11 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 	private boolean incluiGeometriaNoResultado;
 	private InformacoesNecessariasShapeEnum informacoesNecessarias;
 	private Long idMunicipio;
+	private Long idEmpreendimento;
 
 	private static final int BUFFER_SIZE = Integer.valueOf(Play.configuration.getProperty("sistema.constTamanhoMaximoArquivoUpload"));
 
-	public ProcessamentoShapeFile(File arquivo, String keyTemp, boolean incluiGeometriaNoResultado, InformacoesNecessariasShapeEnum informacoesNecessarias, Long idMunicipio) throws IOException {
+	public ProcessamentoShapeFile(File arquivo, String keyTemp, boolean incluiGeometriaNoResultado, InformacoesNecessariasShapeEnum informacoesNecessarias, Long idMunicipio, Long idEmpreendimento) throws IOException {
 
 		String realType = null;
 
@@ -76,6 +80,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		this.resultado.mensagens = new ArrayList<String>();
 		this.informacoesNecessarias = informacoesNecessarias;
 		this.idMunicipio = idMunicipio;
+		this.idEmpreendimento = idEmpreendimento;
 	}
 
 	@Override
@@ -109,6 +114,9 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		if (this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
 			this.validarGeometriasSobrepostas();
 		}
+		if (this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
+			this.validarGeometriaDentroEmpreendimento();
+		}
 		if (this.informacoesNecessarias == InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA) {
 			if (this.resultado.status != ResultadoProcessamentoShapeFile.Status.ERRO) {
 				//O Analista não precisa de um shape vinculado ao usuário logado
@@ -129,6 +137,29 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 		this.removeArquivosTemporarios();
 
 		return this.resultado;
+	}
+
+	private void validarGeometriaDentroEmpreendimento() {
+
+		boolean isForaEmpreendimento = false;
+
+		if (this.idEmpreendimento != null) {
+
+			Empreendimento empreendimentoBanco = Empreendimento.findById(this.idEmpreendimento);
+			IntegracaoEntradaUnicaService integracaoEntradaUnicaService = new IntegracaoEntradaUnicaService();
+			main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnicaService.findEmpreendimentosByCpfCnpj(empreendimentoBanco.getCpfCnpj());
+			Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
+
+			isForaEmpreendimento = getTodasAsGeometriasDoShape()
+					.stream()
+					.anyMatch(geometriaShape -> !geometriaEmpreendimento.contains(geometriaShape));
+		}
+
+		if (isForaEmpreendimento) {
+
+			this.fireError(Messages.get("error.shapefile.fora.empreendimento"), null);
+			return;
+		}
 	}
 
 	/**

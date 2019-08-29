@@ -9,6 +9,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.shapesUploaded = 0;
 	uploadShapes.doesntHasShapes = false;
 	uploadShapes.idMunicipio = '';
+	uploadShapes.idEmpreendimento = '';
 
 	uploadShapes.estiloMapa = app.utils.EstiloMapa;
 
@@ -31,6 +32,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 				uploadShapes.processo = response.data;
 
 				uploadShapes.idMunicipio = uploadShapes.processo.empreendimento.municipio.id;
+				uploadShapes.idEmpreendimento = uploadShapes.processo.empreendimento.id;
 
 				$scope.$emit('mapa:adicionar-geometria-base', {
 					geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 

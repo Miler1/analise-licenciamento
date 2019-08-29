@@ -1,7 +1,7 @@
 /**
  * Controller para a validação de shapes
  **/
-var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope, $rootScope) {
+var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope, $rootScope, processoService, $routeParams) {
 
 	var validacaoShape = this;
 
@@ -18,11 +18,23 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	validacaoShape.resultadoProcessamento = null;
 
 	/** Declaração das funções **/
-	function init(tipo,cor,popupText,idMunicipio){
+	function init(tipo,cor,popupText, inMunicipio, inEmpreendimento){
 		validacaoShape.tipo = tipo;
 		validacaoShape.cor = cor;
 		validacaoShape.popupText = popupText;
-		validacaoShape.idMunicipio = idMunicipio;
+
+		if (inMunicipio && inEmpreendimento) {
+
+			processoService.getInfoProcesso(parseInt($routeParams.idProcesso))
+				.then(function(response){
+
+					var processo = response.data;
+
+					validacaoShape.idMunicipio = inMunicipio ? processo.empreendimento.municipio.id : undefined;
+					validacaoShape.idEmpreendimento = inEmpreendimento ? processo.empreendimento.id : undefined;
+				});
+		}
+
 	}
 
 	function atualizaBarraProgresso(evt) {
@@ -72,7 +84,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 		var arquivoEnviar = validacaoShape.arquivoSelecionado.arquivo = fileValidate;
 
-		validacaoShapeService.uploadShapeFile(arquivoEnviar, validacaoShape.idMunicipio)
+		validacaoShapeService.uploadShapeFile(arquivoEnviar, validacaoShape.idMunicipio, validacaoShape.idEmpreendimento)
 			.then(function (response) {
 
 				var resultado = response.data;
@@ -129,8 +141,9 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 							restartUploadOnError('O arquivo enviado é inválido. Não possui uma estrutura válida de shapes');
 						} else if( response.data.data.mensagens[0] === "error.shapefile.not.sirgas2000") {
 							restartUploadOnError('O arquivo enviado é inválido. Não está no formato SIRGAS 2000');
-						}
-						else { 
+						} else if( response.data.data.mensagens[0] === "error.shapefile.fora.empreendimento") {
+							restartUploadOnError('O arquivo enviado está fora do empreendimento');
+						} else {
 							restartUploadOnError(response.data.data.mensagens[0]);
 						}
 					}

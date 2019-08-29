@@ -10,8 +10,15 @@ var ValidacaoShapeService = function(request, config, Upload) {
 	validacaoShape.abortEnvioPublicacao = abortEnvioPublicacao;
 	validacaoShape.salvarGeometrias = salvarGeometrias;
 
-	function uploadShapeFile(arquivo, idMunicipio) {
-		return request.uploadFileWithCity(config.BASE_URL() + 'shapefile/enviar', arquivo, idMunicipio, Upload);
+	function uploadShapeFile(arquivo, idMunicipio, idEmpreendimento) {
+
+		var data = {
+			file: arquivo,
+			idMunicipio: idMunicipio,
+			idEmpreendimento: idEmpreendimento
+		};
+
+		return request.uploadData(config.BASE_URL() + 'shapefile/enviar', data, Upload);
 	}
 
 	function abortEnvioPublicacao() {
