@@ -34,10 +34,10 @@ div(ng-init='ctrl.init()')
 			div.modal-body
 
 			ul.nav.nav-tabs(role="tablist")
-				li#localizacaoGeografica.active(role="presentation")
+				li#localizacaoGeografica.active(role="presentation", ng-click="ctrl.validacaoAbaVoltar()")
 					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Análise Geo
 					
-				li#conclusao(role="tab")
+				li#conclusao(role="tab", ng-click="ctrl.validacaoAbaAvancar()")
 					a(data-toggle="tab", data-target="#tabConclusao") Conclusão da análise
 
 			.tab-content

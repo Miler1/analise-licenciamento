@@ -82,10 +82,10 @@ div
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Deferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO}}", disabled="true")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length == 0')
                     | Emitir notificação
     hr
 div#conclusao
@@ -102,44 +102,15 @@ div#conclusao
     div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()")
         #lista-restricoes
             #accordion.panel-group
-                h4.panel-title Inconsistências adicionadas:
-                br
-                div(ng-repeat="caracterizacao in ctrl.analiseGeo.analise.processo.caracterizacoes") 
-                    div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
-
-                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#dadosInconsistenciaTipo', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
-                            .panel.panel-default
-                                .panel-heading
-                                    h4.panel-title
-                                        | Propriedade
-                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}") 
-                        #dadosInconsistenciaTipo.collapse
-                                table.table.table-striped.table-condensed.no-margin.table-responsive
-                                    thead
-                                        tr
-                                            th.col-md-12 Item
-
-                                    tbody
-                                        tr
-                                            td.col-md-12 Área do projeto
-                                            
-                br
                 div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion',aria-expanded='false', data-target='#inconsistenciaAtividade', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
-                        .panel.panel-default
-                            .panel-heading
-                                h4.panel-title
-                                    | Atividades
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
-                    #inconsistenciaAtividade.collapse
-                            table.table.table-striped.table-condensed.no-margin.table-responsive
-                                thead
-                                    tr
-                                        th.col-md-12 Descrição
-
-                                tbody
-                                    tr
-                                        td.col-md-12 ........
-
- 
-
+                    label Prazo para atendimento da notificação: 
+                    select.prazo-dias(ng-model="ctrl.prazoNotificacao", name="prazo")
+                        option(value="")
+                        option(value="15") 15 dias
+                        option(value="30") 30 dias
+                        option(value="45") 45 dias
+                        option(value="60") 60 dias
+                br
+                label Descrição da Solicitação*:
+                br
+                textarea.tamanho-obs(name="descricaoSolicitacao", ng-model="ctrl.analiseGeo.descricaoSolicitacao")
