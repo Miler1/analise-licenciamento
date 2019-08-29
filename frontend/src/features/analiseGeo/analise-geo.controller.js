@@ -443,6 +443,37 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		return inconsitenciaEncontrada !== undefined;
 	};
 
+	ctrl.validacaoAbaAvancar = function() {
+
+		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+		if(ctrl.analiseGeo.inconsistencias.length > 0){
+			$('#situacaoFundiaria').summernote('disable');
+			$('#analiseTemporal').summernote('disable');
+			ctrl.analiseGeo.situacaoFundiaria = undefined;
+      ctrl.analiseGeo.analiseTemporal = undefined;
+
+		} else {
+			$('#situacaoFundiaria').summernote('enable');
+			$('#analiseTemporal').summernote('enable');
+		}
+		scrollTop();
+	};
+
+	ctrl.validacaoAbaVoltar = function() {
+
+		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+		if(ctrl.analiseGeo.inconsistencias.length > 0){
+			$('#situacaoFundiaria').summernote('disable');
+			$('#analiseTemporal').summernote('disable');
+			ctrl.analiseGeo.situacaoFundiaria = undefined;
+      ctrl.analiseGeo.analiseTemporal = undefined;
+
+		} else {
+			$('#situacaoFundiaria').summernote('enable');
+			$('#analiseTemporal').summernote('enable');
+		}
+		scrollTop();
+	};
 
 	$scope.addInconsistenciaRestricao = function (categoriaInconsistencia, idAtividadeCaracterizacao , idSobreposicao) {
 
@@ -547,7 +578,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					}
 				}
 			});
-
 			modalInstance.result.then(function(data){
 
 				if (data.isExclusao) {
@@ -637,7 +667,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
 			ctrl.analiseGeo.situacaoFundiaria = undefined;
-            ctrl.analiseGeo.analiseTemporal = undefined;
+      ctrl.analiseGeo.analiseTemporal = undefined;
 
 		} else {
 			$('#situacaoFundiaria').summernote('enable');
@@ -645,22 +675,21 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 	}
 
-
 	ctrl.clonarParecerGeo = function() {
 
 		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
 			.then(function(response){
 
-					if(response.data === null) {
+					if(response.data.parecer === undefined) {
 
 							ctrl.analiseGeo.parecer = null;
-							mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+							mensagem.error(response.data.texto);
 							return;
+					}else{
+						ctrl.analiseGeo.parecer = response.data.parecer;
+						ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
+						ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
 					}
-					ctrl.analiseGeo.parecer = response.data.parecer;
-					ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
-					ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
-
 			}, function(error){
 
 					mensagem.error(error.data.texto);
@@ -711,11 +740,13 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 
-	ctrl.avancarProximaEtapa= function() {
-		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
-		$('.nav-tabs > .active').next('li').find('a').trigger('click');
-		controleCamposParecerEmpreedimento();
-		scrollTop();
+	ctrl.avancarProximaEtapa = function() {
+		$timeout(function() {
+			$('.nav-tabs > .active').next('li').find('a').trigger('click');
+      controleCamposParecerEmpreedimento();
+			ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+			scrollTop();
+    }, 0);
 	};
 
 
@@ -729,9 +760,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	}
 
 	ctrl.voltarEtapaAnterior = function(){
+		$timeout(function() {
 			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+			controleCamposParecerEmpreedimento();
 			scrollTop();
 			ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+		}, 0);
 	};
 
 	function analiseValida() {
@@ -746,6 +780,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
 			return false;
+		}
+		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+			return true;
 		}
 
 		return ((ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||

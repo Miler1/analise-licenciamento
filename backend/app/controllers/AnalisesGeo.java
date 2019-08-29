@@ -52,7 +52,18 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analise = AnaliseGeo.findByNumeroProcesso(numeroProcesso);
 
-        renderJSON(analise, AnaliseGeoSerializer.parecer);
+        if(analise == null){
+
+            renderMensagem(Mensagem.PARECER_NAO_ENCONTRADO);
+
+        }else if(!analise.inconsistencias.isEmpty()){
+
+            renderMensagem(Mensagem.CLONAR_PARECER_COM_INCONSISTENCIA);
+
+        }else if(analise.inconsistencias.isEmpty()){
+
+            renderJSON(analise, AnaliseGeoSerializer.parecer);
+        }
 
     }
 
