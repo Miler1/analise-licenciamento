@@ -3,9 +3,13 @@ package models;
 import models.licenciamento.*;
 import play.db.jpa.GenericModel;
 import utils.Helper;
+import utils.ListUtil;
+import utils.ModelUtil;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -79,6 +83,49 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
     }
+
+    public void saveAnexos(List<Documento> novosAnexos) {
+
+        TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_COMUNICADO);
+
+        if (this.anexos == null)
+            this.anexos = new ArrayList<>();
+
+        Iterator<Documento> docsCadastrados = anexos.iterator();
+        List<Documento> documentosDeletar = new ArrayList<>();
+
+        while (docsCadastrados.hasNext()) {
+
+            Documento docCadastrado = docsCadastrados.next();
+
+            if (ListUtil.getById(docCadastrado.id, novosAnexos) == null) {
+
+                docsCadastrados.remove();
+
+                // remove o documeto do banco apenas se ele não estiver relacionado
+                // com outra análises
+                List<Comunicado> analiseGeoRelacionadas = docCadastrado.getComunicadosRelacionados();
+                if(analiseGeoRelacionadas.size() == 0) {
+
+                    documentosDeletar.add(docCadastrado);
+                }
+
+            }
+        }
+        for (Documento novoAnexo : novosAnexos) {
+
+            if (novoAnexo.id == null) {
+
+                novoAnexo.tipo = tipo;
+
+                novoAnexo.save();
+                this.anexos.add(novoAnexo);
+            }
+        }
+
+        ModelUtil.deleteAll(documentosDeletar);
+    }
+
 
     public boolean isValido() {
 

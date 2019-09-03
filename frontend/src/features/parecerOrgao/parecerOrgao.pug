@@ -41,7 +41,7 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
             i.glyphicon.glyphicon-open.glyphicon--with-right-margin
             | Anexar arquivo na inconsistência
 
-        table.table.table-condensed
+        table.table.table-condensed(ng-if="anexos.length > 0")
             thead
 
                 tr
@@ -54,7 +54,7 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
 
                     td.col-md-10 {{anexo.nomeDoArquivo}}
                     td.col-md-2.text-right
-                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Baixar anexo", ng-click="baixarDocumentoInconsistencia(anexo)")
+                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Baixar anexo", ng-click="baixarDocumento(anexo)")
                             i.glyphicon.glyphicon-save
 
                         a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="removerDocumento($index,anexo.id)")

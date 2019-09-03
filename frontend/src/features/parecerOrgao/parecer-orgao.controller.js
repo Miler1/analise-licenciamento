@@ -57,14 +57,9 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 		$scope.anexos.splice(indiceDocumento,1);
 	};
 
-	$scope.baixarDocumentoInconsistencia= function(anexo) {
-
-		if(!anexo.id){
-			documentoService.download(anexo.key, anexo.nomeDoArquivo);
-		}else{
-			documentoService.download(anexo.id);
-		}
-
+	$scope.baixarDocumento= function(anexo) {
+		
+		documentoService.download(anexo.key, anexo.nomeDoArquivo);
 	};
 
 
