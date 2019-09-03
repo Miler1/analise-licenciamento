@@ -6,6 +6,7 @@ import utils.Helper;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema="analise", name="comunicado")
@@ -54,6 +55,13 @@ public class Comunicado extends GenericModel {
     @OneToOne
     @JoinColumn(name="id_orgao", referencedColumnName="id")
     public Orgao orgao;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(schema="analise", name="rel_documento_comunicado",
+            joinColumns=@JoinColumn(name="id_comunicado"),
+            inverseJoinColumns=@JoinColumn(name="id_documento"))
+    public List<Documento> anexos;
+
 
     @Transient
     public String linkComunicado;

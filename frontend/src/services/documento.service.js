@@ -14,6 +14,12 @@ var DocumentoService = function(request, $window, config, Upload) {
 	this.download = function(key,nome) {
 
         $window.open(config.BASE_URL() + "download/"+key+"/documento/"+nome, '_blank');
+    };
+    
+    this.download = function(idDocumento) {
+
+        $window.open(config.BASE_URL() + 'documentos/' + idDocumento + '/download', '_blank');
+
 	};
 };
 
