@@ -107,15 +107,11 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 						for (var i = 0; i < validacaoShape.resultadoEnvio.atributos.length; i++) {
 
-
-							if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Geometry') {
-
-								validacaoShape.resultadoEnvio.atributos[i].nomeBanco = 'the_geom';
-								validacaoShape.resultadoEnvio.atributos[i].tipoGeometria = true;
+							if (validacaoShape.resultadoEnvio.registros[i][0].nome === 'the_geom') {
 
 								// Linha para converter de texto para JSON de geometria
-								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
-								validacaoShape.shapeEnviado = validacaoShape.resultadoEnvio.registros[i][i].valor;
+								validacaoShape.resultadoEnvio.registros[i][0].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][0].valor);
+								validacaoShape.shapeEnviado = validacaoShape.resultadoEnvio.registros[i][0].valor;
 								
 								$scope.$emit('shapefile:uploaded', {
 									geometria: validacaoShape.shapeEnviado, 

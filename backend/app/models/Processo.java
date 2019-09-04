@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
+import java.text.DecimalFormat;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
@@ -712,6 +713,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return descricao;
 	}
 
+	private String getDescricaoRestricao(Geometry restricao, Geometry empreendimento) {
 
+		DecimalFormat formatador = new DecimalFormat("#.##");
+
+		return "Distância " + formatador.format(empreendimento.distance(restricao) * 100) + " km";
+
+	}
 
 }
