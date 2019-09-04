@@ -75,6 +75,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Transient
 	public Analise analise;
 
+	@Transient
+	public static int index;
+
 	@Override
 	public Processo save() {
 
@@ -626,7 +629,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
-	private List<CamadaGeoAtividade> preencheListaGeometriasAtividade(List<AtividadeCaracterizacao> atividadesCaracterizacao, int index) {
+	private List<CamadaGeoAtividade> preencheListaAtividades(List<AtividadeCaracterizacao> atividadesCaracterizacao) {
 
 		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
 		List<CamadaGeo> camadasGeo = new ArrayList<>();
@@ -637,7 +640,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 				for (Geometry geometrie : GeoCalc.getGeometries(geometria.geometria)) {
 
-					index = index + 1;
+					index++;
 
 					CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.ATIVIDADE.nome +"_" + index, CamadaGeoEnum.ATIVIDADE.tipo +"_" + index,
 							getDescricaoAtividade(geometrie), GeoCalc.areaHectare(geometrie), geometrie);
@@ -657,14 +660,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	private List<CamadaGeoAtividade> preencheListaGeometriasRestricoes(List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividades, int index) {
+	private List<CamadaGeoAtividade> preencheListaRestricoes(List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividades) {
 
 		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
 		List<CamadaGeo> restricoes = new ArrayList<>();
 
 		for(SobreposicaoCaracterizacaoAtividade sobreposicao : sobreposicaoCaracterizacaoAtividades) {
 
-			index = index + 1;
+			index++;
 			CamadaGeo restricao = new CamadaGeo(sobreposicao.tipoSobreposicao.nome, sobreposicao.tipoSobreposicao.codigo + "_" + index, getDescricaoAtividade(sobreposicao.geometria), GeoCalc.areaHectare(sobreposicao.geometria), sobreposicao.geometria, sobreposicao);
 			restricoes.add(restricao);
 
@@ -679,12 +682,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public List<CamadaGeoAtividade> getDadosAreaProjeto (){
 
-		int index = 0;
-
 		Caracterizacao caracterizacao = this.getCaracterizacao();
 
-		List<CamadaGeoAtividade> dadosAreaProjeto = preencheListaGeometriasAtividade(caracterizacao.atividadesCaracterizacao, index);
-		dadosAreaProjeto.addAll(preencheListaGeometriasRestricoes(caracterizacao.sobreposicaoCaracterizacaoAtividades, index));
+		List<CamadaGeoAtividade> dadosAreaProjeto = preencheListaAtividades(caracterizacao.atividadesCaracterizacao);
+		dadosAreaProjeto.addAll(preencheListaRestricoes(caracterizacao.sobreposicaoCaracterizacaoAtividades));
 
 		return dadosAreaProjeto;
 
