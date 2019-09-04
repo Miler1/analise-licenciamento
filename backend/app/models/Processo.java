@@ -10,6 +10,7 @@ import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
+import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -625,17 +626,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
-	public List<CamadaGeoAtividade> getDadosAreaProjeto (){
+	private List<CamadaGeoAtividade> preencheListaGeometriasAtividade(List<AtividadeCaracterizacao> atividadesCaracterizacao, int index) {
 
 		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
+		List<CamadaGeo> camadasGeo = new ArrayList<>();
 
-		Caracterizacao caracterizacao = this.getCaracterizacao();
-
-		int index = 0;
-
-		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
-
-			List<CamadaGeo> camadasGeo= new ArrayList<>();
+		for (AtividadeCaracterizacao atividadeCaracterizacao : atividadesCaracterizacao) {
 
 			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
 
@@ -652,21 +648,46 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			}
 
-			List<CamadaGeo> restricoes = new ArrayList<>();
-			index = 0;
-			for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade: atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
-				index = index + 1;
-				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo +"_" + index, getDescricaoAtividade(sobreposicaoCaracterizacaoAtividade.geometria), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria,sobreposicaoCaracterizacaoAtividade);
-				restricoes.add(restricao);
-			}
-
-			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao, camadasGeo, restricoes);
-
+			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao, camadasGeo);
 			dadosAreaProjeto.add(camadaGeoAtividade);
 
 		}
 
 		return dadosAreaProjeto;
+
+	}
+
+	private List<CamadaGeoAtividade> preencheListaGeometriasRestricoes(List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividades, int index) {
+
+		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
+		List<CamadaGeo> restricoes = new ArrayList<>();
+
+		for(SobreposicaoCaracterizacaoAtividade sobreposicao : sobreposicaoCaracterizacaoAtividades) {
+
+			index = index + 1;
+			CamadaGeo restricao = new CamadaGeo(sobreposicao.tipoSobreposicao.nome, sobreposicao.tipoSobreposicao.codigo + "_" + index, getDescricaoAtividade(sobreposicao.geometria), GeoCalc.areaHectare(sobreposicao.geometria), sobreposicao.geometria, sobreposicao);
+			restricoes.add(restricao);
+
+		}
+
+		CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(restricoes);
+		dadosAreaProjeto.add(camadaGeoAtividade);
+
+		return dadosAreaProjeto;
+
+	}
+
+	public List<CamadaGeoAtividade> getDadosAreaProjeto (){
+
+		int index = 0;
+
+		Caracterizacao caracterizacao = this.getCaracterizacao();
+
+		List<CamadaGeoAtividade> dadosAreaProjeto = preencheListaGeometriasAtividade(caracterizacao.atividadesCaracterizacao, index);
+		dadosAreaProjeto.addAll(preencheListaGeometriasRestricoes(caracterizacao.sobreposicaoCaracterizacaoAtividades, index));
+
+		return dadosAreaProjeto;
+
 	}
 
 	private String getDescricaoAtividade (Geometry geometry) {

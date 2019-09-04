@@ -23,14 +23,14 @@ private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_ati
 
     @ManyToOne
     @JoinColumn(name = "id_atividade_caracterizacao", referencedColumnName="id")
-    public AtividadeCaracterizacao atividadeCaracterizacao;
+    public Caracterizacao caracterizacao;
 
     @Column(name = "geometria", columnDefinition="Geometry")
     public Geometry geometria;
 
-    public SobreposicaoCaracterizacaoAtividade(TipoSobreposicao tipoSobreposicao, AtividadeCaracterizacao atividadeCaracterizacao, Geometry geometria) {
+    public SobreposicaoCaracterizacaoAtividade(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
         this.tipoSobreposicao = tipoSobreposicao;
-        this.atividadeCaracterizacao = atividadeCaracterizacao;
+        this.caracterizacao = caracterizacao;
         this.geometria = geometria;
     }
 }
