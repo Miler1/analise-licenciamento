@@ -11,6 +11,9 @@ import notifiers.Emails;
 import org.apache.commons.lang.StringUtils;
 import services.IntegracaoEntradaUnicaService;
 
+import javax.mail.util.ByteArrayDataSource;
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +23,14 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
     private AnaliseGeo analiseGeo;
     private Comunicado comunicado;
+    private Documento pdfParecer;
+    private Documento cartaImagem;
 
-    public EmailComunicarOrgaoResponsavelAnaliseGeo(AnaliseGeo analiseGeo, Comunicado comunicado, List<String> emailsDestinatarios) {
+    public EmailComunicarOrgaoResponsavelAnaliseGeo(AnaliseGeo analiseGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
 
         super(emailsDestinatarios);
+        this.pdfParecer = analiseGeo.gerarPDFParecer();
+        this.cartaImagem = analiseGeo.gerarPDFCartaImagem();
         this.analiseGeo = analiseGeo;
         this.comunicado = comunicado;
 
@@ -58,7 +65,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
                 }
             }
 
-            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio).get()) {
+            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio, this.pdfParecer.arquivo, this.cartaImagem.arquivo).get()) {
 
                 throw new AppException();
 
