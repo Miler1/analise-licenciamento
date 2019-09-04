@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
+import java.text.DecimalFormat;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
@@ -656,7 +657,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			index = 0;
 			for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade: atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
 				index = index + 1;
-				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo +"_" + index, getDescricaoAtividade(sobreposicaoCaracterizacaoAtividade.geometria), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria,sobreposicaoCaracterizacaoAtividade);
+				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo +"_" + index, getDescricaoRestricao(sobreposicaoCaracterizacaoAtividade.geometria, caracterizacao.empreendimento.coordenadas), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria,sobreposicaoCaracterizacaoAtividade);
 				restricoes.add(restricao);
 			}
 
@@ -690,6 +691,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return descricao;
 	}
 
+	private String getDescricaoRestricao(Geometry restricao, Geometry empreendimento) {
 
+		DecimalFormat formatador = new DecimalFormat("#.##");
+
+		return "Distância " + formatador.format(empreendimento.distance(restricao) * 100) + " km";
+
+	}
 
 }
