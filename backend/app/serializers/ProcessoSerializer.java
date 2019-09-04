@@ -14,6 +14,7 @@ public class ProcessoSerializer {
 			"empreendimento.municipio.estado.codigo",
 			"empreendimento.pessoa.cpf",
 			"empreendimento.pessoa.cnpj",
+			"objetoTramitavel",
 			"empreendimento.denominacao");
 
 	public static JSONSerializer getInfo = SerializerUtil.create(
@@ -160,6 +161,7 @@ public class ProcessoSerializer {
 			"empreendimento.empreendedor.pessoa.enderecos.municipio.estado.codigo",
 			"empreendimento.empreendedor.pessoa.enderecos.roteiroAcesso",
 			"empreendimento.empreendedor.pessoa.enderecos.tipo",
+			"objetoTramitavel",
 			"caracterizacoes.documentosEnviados.id",
 			"caracterizacoes.documentosEnviados.nome",
 			"caracterizacoes.documentosEnviados.tipo.id",

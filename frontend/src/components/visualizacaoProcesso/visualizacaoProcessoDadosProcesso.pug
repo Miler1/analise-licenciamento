@@ -77,55 +77,55 @@
 										b {{modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise == null ? ' - ' : modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise}}
 
 	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
+		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus")
+			h4 Tramitação:
 
-		h4 Tramitação:
+			div(uib-accordion class="accordion")
+				div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual")
+					uib-accordion-heading(ng-click="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual=!modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual")
+						div Tramitação do Processo Atual
+							i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual}")
 
-		div(uib-accordion class="accordion")
-			div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual")
-				uib-accordion-heading(ng-click="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual=!modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual")
-					div Tramitação do Processo Atual
-						i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual}")
+					div
+						table.table.table-striped.table-condensed
 
-				div
-					table.table.table-striped.table-condensed
+							thead
+								tr
+									th Data Entrada
+									th Data Saída
+									th Status
+									th Ação
+									th Tempo do Status
+									th Responsável
+									th Setor
+									th Notificação
 
-						thead
-							tr
-								th Data Entrada
-								th Data Saída
-								th Status
-								th Ação
-								th Tempo do Status
-								th Responsável
-								th Setor
-								th Notificação
+							tbody
+								tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
+									td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
+									td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
+									td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
+									td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
+									td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+									td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
+									td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
+									td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
 
-						tbody
-							tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
-								td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
-								td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
-								td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
-								td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
-								td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
-								td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
-								td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
-								td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
+										i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",
+										title="Gerar PDF da notificação")
 
-									i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",
-									title="Gerar PDF da notificação")
+										.dropdown.action-table.pull-right.margin-right-xs.margin-left-xs(ng-if="tramitacao.documentosCorrigidos !== null")
+											i.notificacao-icone.glyphicon.glyphicon-duplicate(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true',
+											title="Documentos recebidos após notificação")
+											ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+												li(ng-repeat="documentoCorrigido in tramitacao.documentosCorrigidos")
+													a(ng-click="modalVisualizacaoProcessoCtrl.downloadDocumentoLicenciamento(documentoCorrigido.id)")
+														i.glyphicon.glyphicon-save-file
+														span(title="{{ documentoCorrigido.tipo.nome }}") {{ (documentoCorrigido.tipo.nome.length > 80 ? documentoCorrigido.tipo.nome.substring(0, 70) + '...' : documentoCorrigido.tipo.nome) }}
 
-									.dropdown.action-table.pull-right.margin-right-xs.margin-left-xs(ng-if="tramitacao.documentosCorrigidos !== null")
-										i.notificacao-icone.glyphicon.glyphicon-duplicate(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true',
-										title="Documentos recebidos após notificação")
-										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li(ng-repeat="documentoCorrigido in tramitacao.documentosCorrigidos")
-												a(ng-click="modalVisualizacaoProcessoCtrl.downloadDocumentoLicenciamento(documentoCorrigido.id)")
-													i.glyphicon.glyphicon-save-file
-													span(title="{{ documentoCorrigido.tipo.nome }}") {{ (documentoCorrigido.tipo.nome.length > 80 ? documentoCorrigido.tipo.nome.substring(0, 70) + '...' : documentoCorrigido.tipo.nome) }}
-
-								td.col-md-1.text-center(ng-if="!tramitacao.hasNotificacoes")
-									span.notificacao-sem-icone
-										| -
+									td.col-md-1.text-center(ng-if="!tramitacao.hasNotificacoes")
+										span.notificacao-sem-icone
+											| -
 
 
 		div(uib-accordion class="accordion" ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacaoAnterior.length > 0")
