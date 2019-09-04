@@ -695,7 +695,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		DecimalFormat formatador = new DecimalFormat("#.##");
 
-		return "Distância: " + formatador.format(empreendimento.distance(restricao) * 100) + " km";
+		return "Distância " + formatador.format(empreendimento.distance(restricao) * 100) + " km";
 
 	}
 
