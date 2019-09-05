@@ -44,7 +44,10 @@ public class Comunicado extends GenericModel {
     @Column(name="ativo")
     public Boolean ativo;
 
-    @OneToMany(mappedBy = "comunicado")
+    @OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="rel_comunicado_atividade_caracterizacao",
+			joinColumns={@JoinColumn(name="id_comunicado", referencedColumnName="id")},
+			inverseJoinColumns={@JoinColumn(name="id_atividade_caracterizacao", referencedColumnName="id")})
     public List<AtividadeCaracterizacao> atividadesCaracterizacao;
 
     @OneToOne

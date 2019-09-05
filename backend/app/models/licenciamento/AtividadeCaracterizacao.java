@@ -35,10 +35,6 @@ public class AtividadeCaracterizacao extends GenericModel {
 	public Caracterizacao caracterizacao;
 
 	@ManyToOne
-	@JoinColumn(name = "id_comunicado", referencedColumnName = "id")
-	public Comunicado comunicado;
-
-	@ManyToOne
 	@JoinColumn(name="id_porte_empreendimento")
 	public PorteEmpreendimento porteEmpreendimento;
 
