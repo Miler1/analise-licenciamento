@@ -12,6 +12,7 @@ public class Comunicados extends GenericController{
             Comunicado comunicadoBanco = Comunicado.findById(comunicado.id);
             comunicadoBanco.parecerOrgao = comunicado.parecerOrgao;
             comunicadoBanco.resolvido =true;
+            comunicadoBanco.saveAnexos(comunicado.anexos);
             comunicadoBanco.save();
             renderJSON(true);
         }

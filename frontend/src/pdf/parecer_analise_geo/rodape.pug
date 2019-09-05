@@ -30,15 +30,14 @@ html(lang="pt-br")
   body
     div.rodape
             p
-                img.logo(src='/public/app/images/rodape-barra-horizontal.png' height="20" width="700")
+                hr
+            div(style="display:inline-flex;")
 
-            p.in-left
-                span Av. Mario Ypiranga Monteiro, 3280 - Parque 10 de Novembro
-                br
-                span Fone: (92) 2123-6721 / (92) 2123-6731 / (92) 2123-6778
-                br
-                span Manaus - AM - CEP: 69.050-030
-                br
-                span web: www.ipaam.am.gov.br
-            p.in-right
-                img.logo(src='/public/app/images/logo-ipaam-preto.png' height="50" width="100")
+              span.pull-left Análise do Licenciamento - Amazonas
+
+              span(style="text-align:center;margin-left:100px;") Gerado em: ${new Date().format('dd/MM/yyyy HH:mm:ss')}
+
+              span.pull-right(style="margin-left:140px;") Página:
+                    pagenumber
+                    span /
+                    pagecount               
