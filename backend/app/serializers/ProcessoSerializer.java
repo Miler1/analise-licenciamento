@@ -27,6 +27,7 @@ public class ProcessoSerializer {
 			"analise.dataCadastro",
 			"analise.dataVencimentoPrazo",
 			"analise.analiseGeo.id",
+			"analise.analiseGeo.despacho",
 			"analise.analiseTecnica.id",
 			"analise.analiseJuridica.id",
 			"analises.analisesJuridica.dataVencimentoPrazo",
