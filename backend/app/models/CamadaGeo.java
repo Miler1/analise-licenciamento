@@ -1,9 +1,8 @@
 package models;
 
 import com.vividsolutions.jts.geom.Geometry;
-import models.licenciamento.Atividade;
 import models.licenciamento.GeometriaAtividade;
-import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
+import models.licenciamento.SobreposicaoCaracterizacao;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class CamadaGeo {
 
 	public GeometriaAtividade geometriaAtividade;
 
-	public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
+	public SobreposicaoCaracterizacao sobreposicaoCaracterizacao;
 
 	public CamadaGeo(String item, String tipo, String descricao, Double area, Geometry geometria) {
 
@@ -33,14 +32,14 @@ public class CamadaGeo {
 
 	}
 
-	public CamadaGeo(String item, String tipo, String descricao, Double area, Geometry geometria, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+	public CamadaGeo(String item, String tipo, String descricao, Double area, Geometry geometria, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) {
 
 		this.item = item;
 		this.tipo = tipo;
 		this.descricao = descricao;
 		this.area = area;
 		this.geometria = geometria;
-		this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
+		this.sobreposicaoCaracterizacao = sobreposicaoCaracterizacao;
 
 	}
 }

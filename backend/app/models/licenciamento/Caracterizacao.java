@@ -52,8 +52,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
 	public List<AtividadeCaracterizacao> atividadesCaracterizacao;
 
-	@OneToMany(mappedBy = "atividadeCaracterizacao", cascade = CascadeType.ALL)
-	public List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividades;
+	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
+	public List<SobreposicaoCaracterizacao> sobreposicoesCaracterizacao;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(schema = "licenciamento", name = "rel_caracterizacao_resposta",

@@ -2,6 +2,7 @@ package models;
 
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
+import com.google.common.collect.Lists;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
@@ -9,6 +10,8 @@ import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import java.text.DecimalFormat;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
@@ -630,12 +633,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
-	private List<CamadaGeoAtividade> preencheListaAtividades(List<AtividadeCaracterizacao> atividadesCaracterizacao) {
+	private List<CamadaGeoAtividade> preencheListaAtividades(Caracterizacao caracterizacao) {
 
 		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
 		List<CamadaGeo> camadasGeo = new ArrayList<>();
 
-		for (AtividadeCaracterizacao atividadeCaracterizacao : atividadesCaracterizacao) {
+		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
 			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
 
@@ -661,15 +664,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	private List<CamadaGeoAtividade> preencheListaRestricoes(List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividades) {
+	private List<CamadaGeoAtividade> preencheListaRestricoes(Caracterizacao caracterizacao) {
 
 		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
 		List<CamadaGeo> restricoes = new ArrayList<>();
 
-		for(SobreposicaoCaracterizacaoAtividade sobreposicao : sobreposicaoCaracterizacaoAtividades) {
+		for(SobreposicaoCaracterizacao sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
 
 			index++;
-			CamadaGeo restricao = new CamadaGeo(sobreposicao.tipoSobreposicao.nome, sobreposicao.tipoSobreposicao.codigo + "_" + index, getDescricaoAtividade(sobreposicao.geometria), GeoCalc.areaHectare(sobreposicao.geometria), sobreposicao.geometria, sobreposicao);
+			CamadaGeo restricao = new CamadaGeo(sobreposicao.tipoSobreposicao.nome, sobreposicao.tipoSobreposicao.codigo + "_" + index, getDescricaoRestricao(sobreposicao.geometria, caracterizacao.empreendimento.coordenadas), GeoCalc.areaHectare(sobreposicao.geometria), sobreposicao.geometria, sobreposicao);
 			restricoes.add(restricao);
 
 		}
@@ -685,8 +688,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		Caracterizacao caracterizacao = this.getCaracterizacao();
 
-		List<CamadaGeoAtividade> dadosAreaProjeto = preencheListaAtividades(caracterizacao.atividadesCaracterizacao);
-		dadosAreaProjeto.addAll(preencheListaRestricoes(caracterizacao.sobreposicaoCaracterizacaoAtividades));
+		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
+		Stream.of(preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao)).forEach(dadosAreaProjeto::addAll);
 
 		return dadosAreaProjeto;
 

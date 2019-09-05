@@ -1,5 +1,6 @@
 package models;
 
+import java.util.List;
 import models.licenciamento.*;
 import play.db.jpa.GenericModel;
 import utils.Helper;
@@ -43,9 +44,8 @@ public class Comunicado extends GenericModel {
     @Column(name="ativo")
     public Boolean ativo;
 
-    @OneToOne
-    @JoinColumn(name="id_atividade_caracterizacao", referencedColumnName="id")
-    public AtividadeCaracterizacao atividadeCaracterizacao;
+    @OneToMany(mappedBy = "comunicado")
+    public List<AtividadeCaracterizacao> atividadesCaracterizacao;
 
     @OneToOne
     @JoinColumn(name="id_tipo_sobreposicao", referencedColumnName="id")
@@ -61,21 +61,23 @@ public class Comunicado extends GenericModel {
     @Transient
     public boolean valido;
 
-    public Comunicado(AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
-        this.tipoSobreposicao = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao;
+    public Comunicado(AnaliseGeo analiseGeo, List<AtividadeCaracterizacao> atividadesCaracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao, Orgao orgao){
+
+        this.tipoSobreposicao = sobreposicaoCaracterizacao.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
-        this.atividadeCaracterizacao = atividadeCaracterizacao;
+        this.atividadesCaracterizacao = atividadesCaracterizacao;
         this.ativo = true;
         this.analiseGeo = analiseGeo;
         this.resolvido = false;
         this.orgao = orgao;
+
     }
 
     public boolean isValido() {
 
         return this.dataVencimento.after(new Date());
-    }
 
+    }
 
 }

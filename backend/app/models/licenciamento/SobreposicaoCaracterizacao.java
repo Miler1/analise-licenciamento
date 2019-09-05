@@ -7,10 +7,10 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(schema = "licenciamento", name = "sobreposicao_caracterizacao_atividade")
-public class SobreposicaoCaracterizacaoAtividade extends GenericModel{
+@Table(schema = "licenciamento", name = "sobreposicao_caracterizacao")
+public class SobreposicaoCaracterizacao extends GenericModel{
 
-private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_atividade_id_seq";
+private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_id_seq";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
@@ -22,13 +22,13 @@ private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_ati
     public TipoSobreposicao tipoSobreposicao;
 
     @ManyToOne
-    @JoinColumn(name = "id_atividade_caracterizacao", referencedColumnName="id")
+    @JoinColumn(name = "id_caracterizacao", referencedColumnName="id")
     public Caracterizacao caracterizacao;
 
     @Column(name = "geometria", columnDefinition="Geometry")
     public Geometry geometria;
 
-    public SobreposicaoCaracterizacaoAtividade(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
+    public SobreposicaoCaracterizacao(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
         this.tipoSobreposicao = tipoSobreposicao;
         this.caracterizacao = caracterizacao;
         this.geometria = geometria;

@@ -398,18 +398,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
-            for (AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.getCaracterizacao().atividadesCaracterizacao) {
+                List<SobreposicaoCaracterizacao> sobreposicoesCaracterizacao = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacao.stream().distinct()
+                        .filter(distinctByKey(sobreposicaoCaracterizacao -> sobreposicaoCaracterizacao.tipoSobreposicao.codigo)).collect(Collectors.toList());
 
-                List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividadesList = atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.stream().distinct()
-                        .filter(distinctByKey(sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo)).collect(Collectors.toList());
+                for (SobreposicaoCaracterizacao sobreposicaoCaracterizacao : sobreposicoesCaracterizacao ){
 
-                for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicaoCaracterizacaoAtividadesList ){
-
-                    if (sobreposicaoCaracterizacaoAtividade != null){
-                        enviarEmailComunicado(atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade);
+                    if (sobreposicaoCaracterizacao != null){
+                        enviarEmailComunicado(this.analise.processo.getCaracterizacao().atividadesCaracterizacao, sobreposicaoCaracterizacao);
                     }
                 }
-            }
 
             if(this.usuarioValidacaoGerente != null) {
 
@@ -454,17 +451,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         notificacao.enviar();
     }
 
-    public void enviarEmailComunicado(AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+    public void enviarEmailComunicado(List<AtividadeCaracterizacao> atividadeCaracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) {
 
-        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
+        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis) {
 
             if(!orgaoResponsavel.sigla.equals("IPHAN")  && !orgaoResponsavel.sigla.equals("IBAMA")) {
 
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
 
-
-                Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
+                Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacao, orgaoResponsavel);
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
 

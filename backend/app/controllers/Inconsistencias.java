@@ -1,12 +1,9 @@
 package controllers;
 
 import exceptions.ValidacaoException;
-import models.AnaliseGeo;
-import models.Documento;
 import models.Inconsistencia;
 import serializers.InconsistenciaSerializer;
 import utils.Mensagem;
-import utils.ModelUtil;
 
 import java.util.Objects;
 
@@ -33,13 +30,12 @@ public class Inconsistencias extends GenericController{
             i.categoria = inconsistencia.categoria;
             i.analiseGeo = inconsistencia.analiseGeo;
             i.id = inconsistencia.id;
-            i.atividadeCaracterizacao = Objects.nonNull(inconsistencia.atividadeCaracterizacao.id) ? inconsistencia.atividadeCaracterizacao : null;
-            i.geometriaAtividade = Objects.nonNull(inconsistencia.geometriaAtividade.id) ? inconsistencia.geometriaAtividade :null;
-            i.sobreposicaoCaracterizacaoAtividade = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) ? inconsistencia.sobreposicaoCaracterizacaoAtividade : null;
+            i.caracterizacao = Objects.nonNull(inconsistencia.caracterizacao) ? inconsistencia.caracterizacao : null;
+            i.sobreposicaoCaracterizacao = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacao.id) ? inconsistencia.sobreposicaoCaracterizacao : null;
             i.saveAnexos(inconsistencia.anexos);
             i.save();
 
-            renderJSON(i,InconsistenciaSerializer.findInconsistencia);
+            renderJSON(i, InconsistenciaSerializer.findInconsistencia);
 
         } else {
             Inconsistencia novaInconsistencia = null;
@@ -53,7 +49,7 @@ public class Inconsistencias extends GenericController{
 
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo,inconsistencia.atividadeCaracterizacao, inconsistencia.geometriaAtividade);
+                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao);
 
                 novaInconsistencia.saveAnexos(inconsistencia.anexos);
                 novaInconsistencia.save();
@@ -61,7 +57,7 @@ public class Inconsistencias extends GenericController{
             }
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
 
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.atividadeCaracterizacao, inconsistencia.sobreposicaoCaracterizacaoAtividade);
+                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacao);
 
                 novaInconsistencia.saveAnexos(inconsistencia.anexos);
                 novaInconsistencia.save();
@@ -79,27 +75,27 @@ public class Inconsistencias extends GenericController{
 
         if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
              i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria")
-                    .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                    .setParameter("categoria",inconsistencia.categoria).first();
-
+                     .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
+                     .setParameter("categoria",inconsistencia.categoria).first();
         }
+
         if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)){
-             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and atividadeCaracterizacao.id = :atividadeCaracterizacao and  geometriaAtividade.id = :geometriaAtividade")
-                    .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                    .setParameter("atividadeCaracterizacao",inconsistencia.atividadeCaracterizacao.id)
-                    .setParameter("geometriaAtividade",inconsistencia.geometriaAtividade.id)
-                    .setParameter("categoria",inconsistencia.categoria).first();
-
+             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao")
+                     .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
+                     .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
+                     .setParameter("categoria",inconsistencia.categoria).first();
         }
+
         if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
-             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and atividadeCaracterizacao.id = :atividadeCaracterizacao and  sobreposicaoCaracterizacaoAtividade.id = :sobreposicaoCaracterizacaoAtividade")
-                    .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                    .setParameter("atividadeCaracterizacao",inconsistencia.atividadeCaracterizacao.id)
-                    .setParameter("sobreposicaoCaracterizacaoAtividade",inconsistencia.sobreposicaoCaracterizacaoAtividade.id)
-                    .setParameter("categoria",inconsistencia.categoria).first();
+             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacao.id = :sobreposicaoCaracterizacao")
+                     .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
+                     .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
+                     .setParameter("sobreposicaoCaracterizacao",inconsistencia.sobreposicaoCaracterizacao.id)
+                     .setParameter("categoria",inconsistencia.categoria).first();
         }
 
         renderJSON(i, InconsistenciaSerializer.findInconsistencia);
+
     }
 
     public static void excluirInconsistencia(Long id) {

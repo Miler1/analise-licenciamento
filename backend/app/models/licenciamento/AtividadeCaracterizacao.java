@@ -1,5 +1,6 @@
 package models.licenciamento;
 
+import models.Comunicado;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -32,6 +33,10 @@ public class AtividadeCaracterizacao extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id")
 	public Caracterizacao caracterizacao;
+
+	@ManyToOne
+	@JoinColumn(name = "id_comunicado", referencedColumnName = "id")
+	public Comunicado comunicado;
 
 	@ManyToOne
 	@JoinColumn(name="id_porte_empreendimento")
