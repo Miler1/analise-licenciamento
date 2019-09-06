@@ -1,5 +1,8 @@
 package models.licenciamento;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -27,6 +30,8 @@ public class TipoSobreposicao extends GenericModel {
 	public static final long AUTO_DE_INFRACAO_IBAMA = 16l;
 	public static final long SAUIM_DE_COLEIRA = 17l;
 	public static final long SITIOS_ARQUEOLOGICOS = 18l;
+
+
 
 	@Id
 	public Long id;
