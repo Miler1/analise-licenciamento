@@ -9,6 +9,20 @@ div.modal-header
 
 div.modal-body
 
+    div(ng-if="!modalCtrl.habilitaExcluir", style="width: 811px;")
+        label(style="font-size:13px;") Categoria da inconsistência*:
+        select.form-control(ng-model="modalCtrl.categoriaInconsistencia", name="selectCategoriaInconsistencia")
+            option(value="") Selecione o a categoria da inconsistência
+            option(value="PROPRIEDADE") Propriedade
+            option(value="RESTRICAO") Restrição
+
+    div(ng-if="!modalCtrl.habilitaExcluir && modalCtrl.categoriaInconsistencia === 'RESTRICAO'", style="width: 811px;")
+        label(style="font-size:13px;") Item da Restrição*:
+        select.form-control(ng-model="modalCtrl.idSobreposicao", name="selectItemRestricao",
+                ng-options="restricao.sobreposicaoCaracterizacaoAtividade.id as restricao.item for restricao in modalCtrl.getRestricoes() track by restricao.sobreposicaoCaracterizacaoAtividade.id")
+            option(value="") Selecione o item da Restrição
+
+
     div
         label(style="font-size:13px;") Descrição da inconsistência*:
         br
