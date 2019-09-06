@@ -152,8 +152,8 @@ COMMENT ON COLUMN analise.parecer_geo_restricao.codigo_camada IS 'Código da cam
 COMMENT ON COLUMN analise.parecer_geo_restricao.parecer IS 'Descrição do parecer de restrição geográfico.';
 
 INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
-(16,'Parecer análise geo', 'parecer analise geo', 'parecer analise geo' ),
-(17,'Notificação análise geo', 'notificacao analise geo', 'notificacao analise geo' );
+(16,'Parecer análise geo', 'parecer_analise_geo', 'parecer_analise_geo' ),
+(17,'Notificação análise geo', 'notificacao_analise_geo', 'notificacao_analise_geo' );
 
 ALTER TABLE analise.notificacao
 

@@ -14,7 +14,8 @@ var DocumentoService = function(request, $window, config, Upload) {
 	this.download = function(key,nome) {
 
         $window.open(config.BASE_URL() + "download/"+key+"/documento/"+nome, '_blank');
-	};
+    };
+    
 };
 
 exports.services.DocumentoService = DocumentoService;
