@@ -34,11 +34,11 @@ div(ng-init='ctrl.init()')
 			div.modal-body
 
 			ul.nav.nav-tabs(role="tablist")
-				li#localizacaoGeografica.active(role="presentation", ng-click="ctrl.validacaoAbaVoltar()")
+				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="ctrl.validacaoAbaVoltar()")
 					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Análise Geo
 					
-				li#conclusao(role="tab", ng-click="ctrl.validacaoAbaAvancar()")
-					a(data-toggle="tab", data-target="#tabConclusao") Conclusão da análise
+				li#conclusao.aba-clicavel(role="tab", ng-click="ctrl.validacaoAbaAvancar()", ng-class="{'disabled': !ctrl.passoValido()}")
+					a(data-toggle="{{ctrl.passoValido() ? 'tab' : ''}}" data-target="#tabConclusao") Conclusão da análise
 
 			.tab-content
 				#tabLocalizacaoGeografica.tab-pane.fade.in.active
@@ -51,7 +51,9 @@ div
 	button.btn.btn-default.pull-left(style="margin-bottom:15px;",ng-click="ctrl.cancelar()")
 		i.glyphicon.glyphicon-remove
 		| &nbsp;Cancelar
-	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.avancarProximaEtapa()", ng-if="ctrl.controleVisualizacao === 'ETAPA_LOCALIZACAO_GEOGRAFICA'")
+	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.avancarProximaEtapa()",
+			ng-if="ctrl.controleVisualizacao === 'ETAPA_LOCALIZACAO_GEOGRAFICA'",
+			ng-disabled="!ctrl.passoValido()")
 		i.glyphicon.glyphicon-ok
 		| &nbsp;Avançar
 	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.concluir()",ng-if="ctrl.controleVisualizacao === 'ETAPA_CONCLUSAO'")
