@@ -77,7 +77,7 @@ public class Inconsistencias extends GenericController{
 
         Inconsistencia i = null;
 
-        if(inconsistencia.categoria == null || (inconsistencia.categoria != null && (inconsistencia.atividadeCaracterizacao != null && inconsistencia.atividadeCaracterizacao.id == null))) {
+        if(inconsistencia.categoria == null || (inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO) && (inconsistencia.atividadeCaracterizacao != null && inconsistencia.atividadeCaracterizacao.id == null))) {
             throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
         }
 

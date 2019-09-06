@@ -468,34 +468,17 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.validacaoAbaAvancar = function() {
-
-		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
-		if(ctrl.analiseGeo.inconsistencias.length > 0){
-			$('#situacaoFundiaria').summernote('disable');
-			$('#analiseTemporal').summernote('disable');
-			ctrl.analiseGeo.situacaoFundiaria = undefined;
-      ctrl.analiseGeo.analiseTemporal = undefined;
-
-		} else {
-			$('#situacaoFundiaria').summernote('enable');
-			$('#analiseTemporal').summernote('enable');
+		if(ctrl.passoValido()) {
+			ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+			controleCamposParecerEmpreedimento();
+			scrollTop();
 		}
-		scrollTop();
 	};
 
 	ctrl.validacaoAbaVoltar = function() {
-
+		
 		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
-		if(ctrl.analiseGeo.inconsistencias.length > 0){
-			$('#situacaoFundiaria').summernote('disable');
-			$('#analiseTemporal').summernote('disable');
-			ctrl.analiseGeo.situacaoFundiaria = undefined;
-      ctrl.analiseGeo.analiseTemporal = undefined;
-
-		} else {
-			$('#situacaoFundiaria').summernote('enable');
-			$('#analiseTemporal').summernote('enable');
-		}
+		controleCamposParecerEmpreedimento();
 		scrollTop();
 	};
 
@@ -693,13 +676,18 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.avancarProximaEtapa = function() {
 		$timeout(function() {
-			$('.nav-tabs > .active').next('li').find('a').trigger('click');
-      controleCamposParecerEmpreedimento();
-			ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
-			scrollTop();
+			if(ctrl.passoValido()) {
+				$('.nav-tabs > .active').next('li').find('a').trigger('click');
+				controleCamposParecerEmpreedimento();
+				ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+				scrollTop();
+			}
     }, 0);
 	};
 
+	ctrl.passoValido = function() {
+		return ctrl.getRestricoes().length === 0; 
+	};
 
 	ctrl.cancelar= function() {
 		$location.path('/analise-geo');
@@ -834,6 +822,37 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		setTimeout( function(){
 		  document.execCommand( 'insertText', false, bufferText );
 		}, 10 );
+	};
+
+	ctrl.getRestricoes = function() {
+		var restricoes = [];
+		var orgaoEnable = false;
+		var restricaoEnable = true;
+		
+		_.forEach(ctrl.camadasDadosAtividade, function(camadaDadosAtividade){
+			_.forEach(camadaDadosAtividade.restricoes, function(restricao){
+				_.forEach(restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis, function(orgao){
+					//verifica se o orgão da restrição é IPHAN ou IBAMA
+					if(orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA){
+						orgaoEnable = true;
+					}
+				});
+				if(orgaoEnable){
+					_.forEach(ctrl.analiseGeo.inconsistencias, function(i){
+						//verifica se uma restrição já possui inconsistência
+						if(i.sobreposicaoCaracterizacaoAtividade && (i.sobreposicaoCaracterizacaoAtividade.id === restricao.sobreposicaoCaracterizacaoAtividade.id)){
+							restricaoEnable = false;
+						}
+					});
+					if(restricaoEnable){
+						restricoes.push(restricao);
+					}
+				}
+				orgaoEnable = false;
+				restricaoEnable = true;
+			});
+		});
+		return restricoes;
 	};
 
 };
