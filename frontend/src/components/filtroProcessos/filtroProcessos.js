@@ -97,7 +97,6 @@ var FiltroProcessos = {
 
 		function setFiltrosPadrao(){
 
-
 			ctrl.filtro = {};
 
 			if (ctrl.filtrarPorUsuario) {
