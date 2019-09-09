@@ -186,11 +186,10 @@ var InconsistenciaController = function ($scope,
 		}
 	};
 
-	inconsistenciaController.getRestricoes = function() {
+	inconsistenciaController.getRestricoesComInconsistencia = function() {
+		var orgaoEnable;
 		var restricoes = [];
-		var orgaoEnable = false;
-		var restricaoEnable = true;
-		
+
 		_.forEach(camadasDadosAtividade, function(camadaDadosAtividade){
 			_.forEach(camadaDadosAtividade.restricoes, function(restricao){
 				_.forEach(restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis, function(orgao){
@@ -200,21 +199,43 @@ var InconsistenciaController = function ($scope,
 					}
 				});
 				if(orgaoEnable){
-					_.forEach(analiseGeo.inconsistencias, function(i){
-						//verifica se uma restrição já possui inconsistência
-						if(i.sobreposicaoCaracterizacaoAtividade && (i.sobreposicaoCaracterizacaoAtividade.id === restricao.sobreposicaoCaracterizacaoAtividade.id)){
-							restricaoEnable = false;
-						}
-					});
-					if(restricaoEnable){
-						restricoes.push(restricao);
-					}
+					restricoes.push(restricao);
 				}
 				orgaoEnable = false;
-				restricaoEnable = true;
 			});
 		});
+
 		return restricoes;
+	};
+
+	inconsistenciaController.getRestricoesSemInconsistencia = function() {
+		var restricoes = [];
+		var restricaoEnable = true;
+		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
+			_.forEach(analiseGeo.inconsistencias, function(i){
+
+				//verifica se uma restrição já possui inconsistência
+				if(i.sobreposicaoCaracterizacaoAtividade && (i.sobreposicaoCaracterizacaoAtividade.id === restricao.sobreposicaoCaracterizacaoAtividade.id)){
+					restricaoEnable = false;
+				}
+			});
+			if(restricaoEnable){
+				restricoes.push(restricao);
+			}
+			restricaoEnable = true;
+		});
+		return restricoes;
+	};
+
+	inconsistenciaController.getItemRestricao = function(idSobreposicao) {
+		var itemRestricao = {};
+
+		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
+			if (idSobreposicao === restricao.sobreposicaoCaracterizacaoAtividade.id) {
+				itemRestricao = restricao.item;
+			}
+		});
+		return itemRestricao;
 	};
 
 };

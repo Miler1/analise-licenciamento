@@ -589,10 +589,33 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	};
 
-	$scope.addInconsistencia = function(){
+	$scope.addInconsistencia = function() {
 
 		openModal(ctrl.analiseGeo, null, null, null, null, null, ctrl.camadasDadosAtividade);
 
+	};
+
+	$scope.excluirInconsistencia = function(idInconsistencia) {
+	
+		inconsistenciaService.excluirInconsistencia(idInconsistencia)
+			.then(function (response) {
+				mensagem.success(response.data);
+
+				ctrl.analiseGeo.inconsistencias = _.remove(ctrl.analiseGeo.inconsistencias, function(inconsistencia) {
+					return(inconsistencia.id !== idInconsistencia);
+				});
+
+			}).catch(function (response) {
+			mensagem.error(response.data.texto);
+
+		});
+	};
+
+	$scope.verificarTamanhoInconsistencias = function() {
+		var inconsistencias = angular.copy(ctrl.analiseGeo.inconsistencias);
+		return _.remove(inconsistencias, function(i){
+			return(i.categoria !== 'ATIVIDADE');
+		}).length > 0;
 	};
 
 	function controleCamposParecerEmpreedimento() {

@@ -68,24 +68,32 @@ include ../../layout/components/mapPanel
                                     |  Incluir Inconsistência
                                 
                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                                        thead
-                                            tr
-                                            th.col-md-4 Item
-                                            th.col-md-3 Categoria
-                                            th.col-md-4 Descrição
-                                            th.col-md-1.text-right Ações
+                                    thead
+                                        tr
+                                        th.col-md-4 Item
+                                        th.col-md-3 Categoria
+                                        th.col-md-4 Descrição
+                                        th.col-md-1.text-right Ações
 
-                                        tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
-                                            tr
-                                                td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getItemRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : 'Propriedade'}}
-                                                td.col-md-3 {{inconsistencia.categoria}}
-                                                td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : '-'}}
-                                                td.col-md-2.text-right
-                                                    i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'PROPRIEDADE'",
-                                                            ng-click='addInconsistenciaPropriedade(ctrl.categoria.PROPRIEDADE)', title='Editar inconsistência')
-                                                    i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'RESTRICAO'",
-                                                            ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia.atividadeCaracterizacao.id, inconsistencia.sobreposicaoCaracterizacaoAtividade.id)", title='Editar inconsistência')
-                                                    |&nbsp;
+                                    tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
+                                        tr
+                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getItemRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : 'Propriedade'}}
+                                            td.col-md-3 {{inconsistencia.categoria}}
+                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : '-'}}
+                                            td.col-md-2.text-right
+                                                i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'PROPRIEDADE'",
+                                                        ng-click='addInconsistenciaPropriedade(ctrl.categoria.PROPRIEDADE)', title='Editar inconsistência')
+                                                i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'RESTRICAO'",
+                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia.atividadeCaracterizacao.id, inconsistencia.sobreposicaoCaracterizacaoAtividade.id)", title='Editar inconsistência')
+                                                i.glyphicon.glyphicon-trash.icone-inconsistencia-clicavel(title='Excluir inconsistência',
+                                                        ng-bootbox-title='Confirmação',
+                                                        ng-bootbox-confirm='Deseja realmente excluir esta inconsistência ?',
+                                                        ng-bootbox-confirm-action="excluirInconsistencia(inconsistencia.id)")
+                                                    
+                                                
+                                                |&nbsp;
+                                div.info-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
+                                    i Nenhuma inconsistência adicionada.
 
             br
             #lista-camadas-atividades
