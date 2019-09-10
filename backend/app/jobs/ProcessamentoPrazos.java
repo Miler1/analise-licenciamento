@@ -68,7 +68,7 @@ public class ProcessamentoPrazos extends GenericJob {
 
 								if (notificacao != null) {
 
-									int verificaDiasCorretos = CalculaDiferencaDias(notificacao.dataCadastro, new Date());
+									int verificaDiasCorretos = CalculaDiferencaDias(notificacao.dataNotificacao, new Date());
 									analise.diasAnalise.qtdeDiasNotificacao = verificaDiasCorretos;
 								}
 							}

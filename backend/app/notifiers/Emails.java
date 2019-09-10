@@ -1,12 +1,15 @@
 package notifiers;
 
 import main.java.br.ufla.lemaf.beans.Empreendimento;
+import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
 import models.*;
 import models.licenciamento.Licenca;
+import org.apache.commons.mail.EmailAttachment;
 import play.Play;
 import play.mvc.Mailer;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -26,7 +29,7 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> notificarRequerenteAnaliseGeo(List<String> destinatarios, String licencas,
-																	 List<AnaliseDocumento> documentosAnalisados, AnaliseGeo analiseGeo, Notificacao notificacao) {
+																AnaliseGeo analiseGeo, Endereco enderecoCompleto, File pdfNotificacao) {
 
 		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -34,7 +37,11 @@ public class Emails extends Mailer {
 
 			addRecipient(email);
 		}
-		return send(licencas, documentosAnalisados, analiseGeo, notificacao);
+		EmailAttachment attachment = new EmailAttachment();
+		attachment.setPath(Play.getFile(pdfNotificacao.getPath()).getPath());
+		addAttachment(attachment);
+
+		return send(licencas, analiseGeo, enderecoCompleto);
 	}
 	
 	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas, 
