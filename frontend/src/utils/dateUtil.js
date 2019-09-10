@@ -63,6 +63,35 @@ DateUtil = {
 		var b = moment(dataInicio, 'DD/MM/YYYY');
 		
 		return a.diff(b, 'year');
+	},
+
+	getDataFormatada: function(data) {
+
+		var dateParts = data.split("/");
+
+		dateParts[2] = dateParts[2].split(' ')[0];
+
+		var dateObject = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+
+		return dateObject;
+
+	},
+
+	getContaDiasRestantesData:  function(data) { 
+
+		var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+		var diasRestantes = diferencaTempo / (1000 * 3600 * 24).toString();
+
+		return diasRestantes.toString().substring(0, diasRestantes.toString().indexOf('.'));
+
+	},
+
+	verificaPrazoMinimoData: function (data, prazo) {
+
+		var diferencaTempo = new Date().getTime() - this.getDataFormatada(data).getTime();
+
+		return diferencaTempo / (1000 * 3600 * 24) > prazo;
+
 	}
 };
 
