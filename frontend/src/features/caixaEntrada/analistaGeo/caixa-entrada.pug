@@ -35,10 +35,10 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntAnalistaGeo.PrazoAnalise.ANALISE)}}
-							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimo(processo.diasAnaliseGeo, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
-								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantes(processo.diasAnaliseGeo,cxEntAnalistaGeo.PrazoAnalise.ANALISE_GEO)}}
+							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
 							td
 								span.pull-right
 
