@@ -15,7 +15,16 @@ import java.util.stream.Stream;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
+import models.sicar.Geo;
 import models.tramitacao.*;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeocentricCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
@@ -718,9 +727,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	private String getDescricaoRestricao(Geometry restricao, Geometry empreendimento) {
 
+		Geometry geometriaRestricaoTransformada = GeoCalc.transform(restricao, GeoCalc.detecteCRS(restricao)[0]);
+		Geometry geometriaEmpreendimentoTransformada = GeoCalc.transform(empreendimento, GeoCalc.detecteCRS(empreendimento)[0]);
+
 		DecimalFormat formatador = new DecimalFormat("#.##");
 
-		return "Distância " + formatador.format(empreendimento.distance(restricao) * 100) + " km";
+		return "Distância " + formatador.format(geometriaEmpreendimentoTransformada.distance(geometriaRestricaoTransformada) / 100000) + " km";
 
 	}
 

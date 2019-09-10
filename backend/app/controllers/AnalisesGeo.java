@@ -4,6 +4,8 @@ import models.*;
 import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.TransformException;
 import security.Acao;
 import serializers.AnaliseGeoSerializer;
 import serializers.CamadaGeoAtividadeSerializer;
@@ -205,7 +207,7 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void buscaDadosAreaProjeto(Long idProcesso) {
+    public static void buscaDadosAreaProjeto(Long idProcesso) throws FactoryException, TransformException {
 
         returnIfNull(idProcesso, "Long");
 
