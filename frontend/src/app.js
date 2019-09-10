@@ -181,7 +181,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE;
+					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
@@ -309,8 +309,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			deveFiltrarPorUsuario: true
 		},
 		{
-			titulo: 'Consultar títulos emitidos',
-			icone: 'glyphicon glyphicon-list-alt',
+			titulo: 'Consultar licenças emitidas',
+			icone: 'glyphicon glyphicon-search',
 			url: function() {
 
 				return '/consultar-licencas-emitidas';
@@ -322,11 +322,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.COORDENADOR_JURIDICO,
-					app.utils.Perfis.ADMINISTRATIVO_JURIDICO,
-					app.utils.Perfis.CONSULTOR_JURIDICO,
-					app.utils.Perfis.COORDENADOR_TECNICO,
-					app.utils.Perfis.GERENTE_TECNICO,
+					app.utils.Perfis.GERENTE,
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.APROVADOR
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
