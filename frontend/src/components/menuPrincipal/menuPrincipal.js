@@ -47,8 +47,14 @@ var MenuPrincipal = {
 
 			var filtro = {};
 
-			if(_.isFunction(item.condicaoTramitacao))
+			if(_.isFunction(item.condicaoTramitacao) && _.isArray(item.condicaoTramitacao())) {
+
+				filtro.listaIdCondicaoTramitacao = item.condicaoTramitacao();
+
+			} else if(_.isFunction(item.condicaoTramitacao))
+
 				filtro.idCondicaoTramitacao = item.condicaoTramitacao();
+				
 			else
 				filtro.idCondicaoTramitacao = item.condicaoTramitacao;
 
@@ -64,6 +70,7 @@ var MenuPrincipal = {
 				filtro.isAnaliseJuridica = isAnaliseJuridica(codigoPerfilSelecionado);
 				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
 				filtro.isAnaliseGeo = isAnaliseGeo(codigoPerfilSelecionado);
+				filtro.isGerente = isGerente(codigoPerfilSelecionado);
 			}
 
 			processoService.getProcessosCount(filtro)
@@ -87,14 +94,18 @@ var MenuPrincipal = {
 		function isAnaliseTecnica(codigoPerfilSelecionado) {
 
 			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR_TECNICO ||
-				codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO ||
-				codigoPerfilSelecionado === app.utils.Perfis.GERENTE_TECNICO;
+				codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_TECNICO;
 		}
 
 		function isAnaliseGeo(codigoPerfilSelecionado) {
 
-			return codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_GEO||
-				codigoPerfilSelecionado === app.utils.Perfis.GERENTE;
+			return codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_GEO;
+		}
+
+		function isGerente(codigoPerfilSelecionado) {
+
+			return codigoPerfilSelecionado === app.utils.Perfis.GERENTE;
+
 		}
 
 		$scope.$on('atualizarContagemProcessos', function(event){
