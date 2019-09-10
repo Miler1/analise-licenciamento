@@ -672,32 +672,43 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return dadosAreaProjeto;
 	}
 
-	private String getDescricaoAtividade (Geometry geometry) {
+	private String getDescricaoSobreposicao(Geometry geometry) {
 
 		String descricao = "";
 
 		switch (geometry.getGeometryType().toUpperCase()) {
 
 			case "POINT" :
+
 				descricao = "Coordenadas [" + String.valueOf(((Point) geometry).getY()) + ", " + String.valueOf(((Point) geometry).getX()) + "]";
 				break;
+
 			case "LINESTRING":
 
 				descricao = "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
 				break;
+
 			case "POLYGON":
+
 				descricao = "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
 				break;
+
 		}
 
 		return descricao;
+
+	}
+
+	private String getDescricaoAtividade (Geometry geometry) {
+
+		return getDescricaoSobreposicao(geometry);
 	}
 
 	private String getDescricaoRestricao(String codigoTipoSobreposicao, Geometry restricao, Geometry empreendimento) {
 
 		if(ComunicadoOrgaoEnum.getList().contains(codigoTipoSobreposicao)) {
 
-			return "Sobreposição";
+			return getDescricaoSobreposicao(restricao);
 
 		}
 
