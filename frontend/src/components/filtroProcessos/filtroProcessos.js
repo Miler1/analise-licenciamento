@@ -11,6 +11,7 @@ var FiltroProcessos = {
 		isAnaliseTecnica: '<',
 		isAnaliseGeo: '<',
 		isAnaliseTecnicaOpcional: '<',
+		isGerente: '<',
 		onAfterUpdate: '=',
 		isGerenteLogado: '<',
 		pesquisarTodasGerencias: '<',
@@ -103,7 +104,12 @@ var FiltroProcessos = {
 				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 			}
 
-			if (ctrl.condicaoTramitacao) {
+			if (_.isArray(ctrl.condicaoTramitacao)) {
+
+				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
+
+			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
@@ -114,6 +120,7 @@ var FiltroProcessos = {
 			ctrl.filtro.isAnaliseTecnicaOpcional = !!ctrl.isAnaliseTecnicaOpcional;
 			ctrl.filtro.isAnaliseGeo = !!ctrl.isAnaliseGeo;
 			ctrl.filtro.isAnaliseGeoOpcional = !!ctrl.isAnaliseGeoOpcional;
+			ctrl.filtro.isGerente = !!ctrl.isGerente;
 		}
 
 		this.limparFiltros = function(){

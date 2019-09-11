@@ -1,34 +1,33 @@
-var CxEntGerenteTecnicoController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal, $rootScope, processoService) {
+var CxEntGerenteController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
+	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE GERENTE';
 
-	var cxEntGerenteTecnico = this;
+	var cxEntGerente = this;
 
-	cxEntGerenteTecnico.atualizarListaProcessos = atualizarListaProcessos;
-	cxEntGerenteTecnico.atualizarPaginacao = atualizarPaginacao;
-	cxEntGerenteTecnico.selecionarTodosProcessos = selecionarTodosProcessos;
-	cxEntGerenteTecnico.vincularAnalista = vincularAnalista;
-	cxEntGerenteTecnico.onPaginaAlterada = onPaginaAlterada;
-	cxEntGerenteTecnico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
-	cxEntGerenteTecnico.visualizarProcesso = visualizarProcesso;
-
-	cxEntGerenteTecnico.processos = [];
-	cxEntGerenteTecnico.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE;
-	cxEntGerenteTecnico.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
-	cxEntGerenteTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
-	cxEntGerenteTecnico.PrazoAnalise = app.utils.PrazoAnalise;
-	cxEntGerenteTecnico.dateUtil = app.utils.DateUtil;
-	cxEntGerenteTecnico.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
-	cxEntGerenteTecnico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	cxEntGerente.atualizarListaProcessos = atualizarListaProcessos;
+	cxEntGerente.atualizarPaginacao = atualizarPaginacao;
+	cxEntGerente.selecionarTodosProcessos = selecionarTodosProcessos;
+	cxEntGerente.vincularAnalista = vincularAnalista;
+	cxEntGerente.onPaginaAlterada = onPaginaAlterada;
+	cxEntGerente.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
+	cxEntGerente.visualizarProcesso = visualizarProcesso;
+	cxEntGerente.processos = [];
+	cxEntGerente.condicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
+	cxEntGerente.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
+	cxEntGerente.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
+	cxEntGerente.PrazoAnalise = app.utils.PrazoAnalise;
+	cxEntGerente.dateUtil = app.utils.DateUtil;
+	cxEntGerente.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
+	cxEntGerente.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
 
 	function atualizarListaProcessos(processos) {
 
-		cxEntGerenteTecnico.processos = processos;
+		cxEntGerente.processos = processos;
 	}
 
 	function atualizarPaginacao(totalItens, paginaAtual) {
 
-		cxEntGerenteTecnico.paginacao.update(totalItens, paginaAtual);
+		cxEntGerente.paginacao.update(totalItens, paginaAtual);
 	}
 
 	function onPaginaAlterada(){
@@ -38,15 +37,15 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService,ger
 
 	function selecionarTodosProcessos() {
 
-		_.each(cxEntGerenteTecnico.processos, function(processo){
+		_.each(cxEntGerente.processos, function(processo){
 
-			processo.selecionado = cxEntGerenteTecnico.todosProcessosSelecionados;
+			processo.selecionado = cxEntGerente.todosProcessosSelecionados;
 		});
 	}
 
 	function hasAtLeastOneProcessoSelected() {
 
-		return _.some(cxEntGerenteTecnico.processos, {selecionado: true});		
+		return _.some(cxEntGerente.processos, {selecionado: true});		
 	}
 
 	function vincularAnalista(processoSelecionado) {
@@ -59,7 +58,7 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService,ger
 
 		} else {
 
-		 	_.each(cxEntGerenteTecnico.processos, function(processo){
+		 	_.each(cxEntGerente.processos, function(processo){
 
 				 if (processo.selecionado) {
 
@@ -130,9 +129,9 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService,ger
 
 	function verificarTodosProcessosMarcados() {
 
-		cxEntGerenteTecnico.todosProcessosSelecionados = 
+		cxEntGerente.todosProcessosSelecionados = 
 			
-			_.reduce(cxEntGerenteTecnico.processos, function(resultado, p){
+			_.reduce(cxEntGerente.processos, function(resultado, p){
 			
 				return resultado && p;
 
@@ -140,4 +139,4 @@ var CxEntGerenteTecnicoController = function($scope, config, analistaService,ger
 	}
 };
 
-exports.controllers.CxEntGerenteTecnicoController = CxEntGerenteTecnicoController;
+exports.controllers.CxEntGerenteController = CxEntGerenteController;
