@@ -863,6 +863,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 				mensagem.error(error.data.texto);
 			});
+			
+			$location.path('/analise-geo');
+
 	};
 
 	$scope.optionsText = {
