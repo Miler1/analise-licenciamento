@@ -1,0 +1,45 @@
+doctype html
+html(lang="pt-br")
+  head
+      meta(charset='utf-8')
+      title Análise - Licenciamento Ambiental - Amazonas
+      link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+      style.
+        * {
+          margin: 0px;
+          padding:0px;
+        }
+
+        .footer {
+            margin-top: 30px;
+        }
+
+        .in-left {
+          text-align: left;
+          float: left;
+           margin-top: 30px;
+
+        }
+
+        .in-right {
+          text-align: right;
+          float: right;
+          margin-top: 30px;
+        }
+        .nota-rodape{
+          font-size:10px;
+        }
+
+  body
+    div.footer
+            span.nota-rodape <i>Alertamos ao interessado que deixar de atender a exigências legais ou regulamentares quando devidamente notificado pela autoridade ambiental competente no prazo concedido, acarretará em sanções previstas no Decreto Federal no 6.514, de 22 de julho de 2008. Se depois de notificado pelo IPAAM, o interessado deixar transcorrer mais de 180 (cento e oitenta) dias sem movimentar o processo, os autos serão arquivados, conforme Art. 23, §4o da Lei Estadual no 3.785/2012.</i> 
+            hr
+            p.in-left
+                span.pull-left Análise do Licenciamento - Amazonas
+
+                span(style="text-align:center;margin-left:100px;") Gerado em: ${new Date().format('dd/MM/yyyy HH:mm:ss')}
+
+            p.in-right
+                pagenumber
+                span /
+                pagecount               

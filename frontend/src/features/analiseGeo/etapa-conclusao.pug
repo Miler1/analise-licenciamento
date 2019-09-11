@@ -1,6 +1,6 @@
 #etapa-conclusao
     div.col-md-5.pull-right.margin-right-xs.text-cloneParecer
-        label.pull-left Informe o número do processo para clonar o parecer
+        label.pull-left Informe o número do processo para copiar as informações do parecer
         br
         div.pull-right.display-clone
             input.form-control.textArea-clone(type='text',name="numeroProcesso", ng-model="ctrl.numeroProcessoClone", ng-disabled = "ctrl.analiseGeo.inconsistencias.length > 0")
@@ -103,14 +103,14 @@ div#conclusao
         #lista-restricoes
             #accordion.panel-group
                 div
-                    label Prazo para atendimento da notificação: 
-                    select.prazo-dias(ng-model="ctrl.prazoNotificacao", name="prazo")
+                    label Prazo para atendimento da notificação:*
+                    select.prazo-dias(ng-model="ctrl.analiseGeo.prazoNotificacao", name="prazo")
                         option(value="")
                         option(value="15") 15 dias
                         option(value="30") 30 dias
                         option(value="45") 45 dias
                         option(value="60") 60 dias
                 br
-                label Descrição da Solicitação*:
+                label Descrição da Solicitação:*
                 br
-                textarea.tamanho-obs(name="descricaoSolicitacao", ng-model="ctrl.analiseGeo.descricaoSolicitacao")
+                textarea.tamanho-obs(name="despacho", ng-model="ctrl.analiseGeo.despacho")

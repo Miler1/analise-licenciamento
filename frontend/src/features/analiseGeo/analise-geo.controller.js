@@ -833,11 +833,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 				documentoAnaliseService.generatePDFParecerGeo(params)
 					.then(function(data, status, headers){
-
-						var a = document.createElement('a');
-						a.href = URL.createObjectURL(data.data.response.blob);
-						a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-						a.click();
+						if(_isEmpty(ctrl.analiseGeo.inconsistencias)){
+							var a = document.createElement('a');
+							a.href = URL.createObjectURL(data.data.response.blob);
+							a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+							a.click();
+					  }
 
 						documentoAnaliseService.generatePDFCartaImagemGeo(params)
 							.then(function(data, status, headers){
@@ -862,6 +863,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 				mensagem.error(error.data.texto);
 			});
+			
+			$location.path('/analise-geo');
+
 	};
 
 	$scope.optionsText = {
