@@ -42,11 +42,11 @@ div
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
 
-							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise ,consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{consultarProcesso.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, consultarProcesso.PrazoAnalise.ANALISE)}}
+							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise ,consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
 
-							td(ng-class="{'error-message': processo.dataConclusaoAnaliseGeo ? false : consultarProcesso.dateUtil.verificaPrazoMinimo(processo.diasAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
-								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída em ' + consultarProcesso.dateUtil.formatarData(processo.dataConclusaoAnaliseGeo) : consultarProcesso.dateUtil.getContaDiasRestantes(processo.diasAnaliseGeo, consultarProcesso.PrazoAnalise.ANALISE_GEO)}}
+							td(ng-class="{'error-message': processo.dataConclusaoAnaliseGeo ? false : consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída em ' + consultarProcesso.dateUtil.formatarData(processo.dataConclusaoAnaliseGeo) : consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
 							td
 								span.pull-right
 
