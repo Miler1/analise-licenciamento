@@ -34,9 +34,7 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
-								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
-								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
-								span(ng-class="{'icone-renovacao': processo.renovacao}")
+								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE}")
 							td
 								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntGerente.verificarTodosProcessosMarcados()")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
@@ -59,12 +57,12 @@ div
 											li
 												a
 													i.glyphicon.glyphicon-ok-circle
-													span Vincular análise geo
+													span Validar análise geo
 											li
 
 												a
 													i.glyphicon.glyphicon-ok-circle
-													span Visualizar análise técnica
+													span Validar análise técnica
 											li
 
 												a

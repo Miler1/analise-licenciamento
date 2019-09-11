@@ -72,7 +72,7 @@ DateUtil = {
 
 		return (diferencaTempo / (1000 * 3600 * 24)) <= -1;
 
-	}
+	},
 
 	verificaPrazoMinimo: function (dias, prazoMinimo) {
 
