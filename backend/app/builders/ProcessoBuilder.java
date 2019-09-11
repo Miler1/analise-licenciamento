@@ -918,6 +918,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		public Long idUsuarioLogado;
+		public boolean isConsultarProcessos;
 
 		public FiltroProcesso() {
 

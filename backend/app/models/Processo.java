@@ -157,7 +157,21 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
 
+		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
+
 		return processoBuilder;
+	}
+
+	private static void commonFilterConsultarProcesso(ProcessoBuilder processoBuilder, FiltroProcesso filtroProcesso, UsuarioAnalise usuarioSessao) {
+
+		if(!filtroProcesso.isConsultarProcessos) {
+
+			return;
+
+		}
+
+		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
 	}
 
 	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
@@ -404,9 +418,24 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		listWithFilterGerente(processoBuilder, filtro);
 
+		listWithFilterConsultaProcessos(processoBuilder, filtro);
+
 		return processoBuilder
 				.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
 				.list();
+	}
+
+	private static void listWithFilterConsultaProcessos(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isConsultarProcessos) {
+
+			return;
+		}
+
+		processoBuilder
+				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByPrazoAnaliseGerente();
+
 	}
 
 	private static void listWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {

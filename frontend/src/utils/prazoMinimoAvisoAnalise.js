@@ -6,7 +6,7 @@ var PrazoMinimoAvisoAnalise = {
 	APROVADOR: 5,
 	ANALISE_GEO: 7,
 	GERENTE: 30,
-	GERENTE_ANALISE: 7
+	ANALISE_GERENTE: 7
 };
 
 exports.utils.PrazoMinimoAvisoAnalise = PrazoMinimoAvisoAnalise;

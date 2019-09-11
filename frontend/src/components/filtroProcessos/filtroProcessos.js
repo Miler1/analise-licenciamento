@@ -16,7 +16,8 @@ var FiltroProcessos = {
 		isGerenteLogado: '<',
 		pesquisarTodasGerencias: '<',
 		tipoSetor: '<',
-		filtrarPorUsuario: '<'
+		filtrarPorUsuario: '<',
+		consultarProcessos: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -117,6 +118,7 @@ var FiltroProcessos = {
 			ctrl.filtro.isAnaliseGeo = !!ctrl.isAnaliseGeo;
 			ctrl.filtro.isAnaliseGeoOpcional = !!ctrl.isAnaliseGeoOpcional;
 			ctrl.filtro.isGerente = !!ctrl.isGerente;
+			ctrl.filtro.isConsultarProcessos = !!ctrl.consultarProcessos;
 		}
 
 		this.limparFiltros = function(){

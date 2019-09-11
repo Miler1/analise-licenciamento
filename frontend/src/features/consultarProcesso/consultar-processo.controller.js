@@ -4,6 +4,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 	var consultarProcesso = this;
 
+	consultarProcesso.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 	consultarProcesso.atualizarListaProcessos = atualizarListaProcessos;
 	consultarProcesso.atualizarPaginacao = atualizarPaginacao;
 	consultarProcesso.selecionarTodosProcessos = selecionarTodosProcessos;
@@ -21,7 +22,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.PrazoAnalise = app.utils.PrazoAnalise;
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO,
-		app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO];
+		app.DISABLED_FILTER_FIELDS.GERENCIA];
 
 	function atualizarListaProcessos(processos) {
 
