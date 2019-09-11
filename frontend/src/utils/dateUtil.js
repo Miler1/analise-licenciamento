@@ -98,6 +98,42 @@ DateUtil = {
 		var b = moment(dataInicio, 'DD/MM/YYYY');
 		
 		return a.diff(b, 'year');
+	},
+
+	getDataFormatada: function(data) {
+
+		var dateParts = data.split("/");
+
+		dateParts[2] = dateParts[2].split(' ')[0];
+
+		var dateObject = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+
+		return dateObject;
+
+	},
+
+	getContaDiasRestantesData:  function(data) { 
+
+		var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+		var diasRestantes = (diferencaTempo / (1000 * 3600 * 24));
+
+		if(diasRestantes < 0 && diasRestantes > -1) {
+			diasRestantes = 0;
+			return diasRestantes.toString();
+		} else if(diasRestantes >= 0) {
+			diasRestantes++;
+		}
+
+		return diasRestantes.toString().substring(0, diasRestantes.toString().indexOf('.'));
+
+	},
+
+	verificaPrazoMinimoData: function (data) {
+
+		var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+
+		return (diferencaTempo / (1000 * 3600 * 24)) <= -1;
+
 	}
 };
 
