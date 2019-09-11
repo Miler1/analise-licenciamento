@@ -62,12 +62,12 @@ include ../../layout/components/mapPanel
                             
                             br
                             div.inconsistencias
-                                label.title-inconsistencia Inconsistências Encontradas
+                                label.title-inconsistencia(ng-if="verificarTamanhoInconsistencias()") Inconsistências Encontradas
                                 button.btn.btn-default.pull-right.btn-incluir-inconsistencia(ng-click="addInconsistencia()")
                                     i.glyphicon.glyphicon-plus
                                     |  Incluir Inconsistência
                                 
-                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="verificarTamanhoInconsistencias()")
                                     thead
                                         tr
                                         th.col-md-4 Item
@@ -92,8 +92,8 @@ include ../../layout/components/mapPanel
                                                     
                                                 
                                                 |&nbsp;
-                                div.info-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
-                                    i Nenhuma inconsistência adicionada.
+                            div.info-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
+                                i Nenhuma inconsistência adicionada.
 
             br
             #lista-camadas-atividades
