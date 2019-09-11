@@ -277,6 +277,30 @@ form{
   }
 }
 
+.icone-solicitacao-ajustes {
+  color: #757575;
+  font-style: italic;
+
+&:before {
+  content: "";
+    background-color: red;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+
+  &.legenda {
+    margin-left: 5px;
+
+    &:before {
+      margin-right: 5px;
+    }
+  }
+}
+
 .no-margin {
 	margin:0px !important;
 }

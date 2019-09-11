@@ -36,7 +36,8 @@ div
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
-								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.legendaDesvinculo }")
+								span(ng-class="{ 'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.legendaDesvinculo }")
+								span(ng-class="{ 'icone-solicitacao-ajustes': processo.idCondicaoTramitacao === consultarProcesso.legendaAjustes }")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -46,7 +47,7 @@ div
 								| {{consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
 
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
-								| {{consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
+								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída' : consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
 
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
 								| -
@@ -74,7 +75,7 @@ div
 				div
 
 					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação de desvínculo
-					span.icone-revisao-atendida.legenda Solicitação de ajustes		
+					span.icone-solicitacao-ajustes.legenda Solicitação de ajustes		
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
