@@ -371,6 +371,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 							ctrl.camadasDadosAtividade = response.data;
 							ctrl.camadasDadosAtividade.forEach(function (camadaAtividade) {
+								
+								//instancia para controlar abertura do collapse no frontend
+								camadaAtividade.openedAccordion = false;
+								
 								camadaAtividade.camadasGeo.forEach(function (camadaGeo) {
 									camadaGeo.estilo = ctrl.estiloMapa.ATIVIDADE;
 									adicionarGeometriaNoMapa(camadaGeo);
@@ -394,6 +398,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						});
 				});
 
+				$rootScope.$broadcast('atualizarContagemProcessos');
 		});
 
 	};
