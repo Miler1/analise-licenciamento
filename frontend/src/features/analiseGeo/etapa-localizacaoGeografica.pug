@@ -39,14 +39,14 @@ include ../../layout/components/mapPanel
                     br
                     hr(style="margin-top:2px;")
                     div(ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
-                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto{{$index}}', ng-click = 'camadaDadosAtividade.openedAccordion = !camadaDadosAtividade.openedAccordion')
                             .panel.panel-default
                                 .panel-heading
                                     h4.panel-title
                                         | Atividade: {{camadaDadosAtividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}}
-                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': camadaDadosAtividade.openedAccordion, 'glyphicon-chevron-right': !camadaDadosAtividade.openedAccordion}")
 
-                        #dadosAreaProjeto.collapse
+                        .collapse(id='dadosAreaProjeto{{$index}}')
                             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                 thead
                                     tr
@@ -91,4 +91,3 @@ include ../../layout/components/mapPanel
 
                                                                                 ng-if="orgao.sigla.toUpperCase() !== ctrl.orgaos.IPHAN && orgao.sigla.toUpperCase() !== ctrl.orgaos.IBAMA")
                                                 |&nbsp;
-
