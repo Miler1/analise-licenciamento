@@ -444,7 +444,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             }
 
         } else {
-              //TODO Tribo Puma - SQD-1 - Implementar envio de email com notificação ao interessado
+
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
@@ -466,11 +466,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.addAll(Collections.singleton(this.analise.processo.empreendimento.empreendedor.pessoa.contato.email));
-//        destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
         Notificacao notificacao = new Notificacao(this, prazoNotificacao);
-//        notificacao.save();
+        notificacao.save();
         this.prazoNotificacao = prazoNotificacao;
 
         EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, destinatarios, notificacao);

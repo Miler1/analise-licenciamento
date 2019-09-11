@@ -6,6 +6,7 @@ import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
 import models.*;
 import models.licenciamento.Licenca;
 import org.apache.commons.mail.EmailAttachment;
+import play.Logger;
 import play.Play;
 import play.mvc.Mailer;
 
@@ -38,7 +39,7 @@ public class Emails extends Mailer {
 			addRecipient(email);
 		}
 		EmailAttachment attachment = new EmailAttachment();
-		attachment.setPath(Play.getFile(pdfNotificacao.getPath()).getPath());
+		attachment.setPath(new File(pdfNotificacao.getPath()).getPath());
 		addAttachment(attachment);
 
 		return send(licencas, analiseGeo, enderecoCompleto);
