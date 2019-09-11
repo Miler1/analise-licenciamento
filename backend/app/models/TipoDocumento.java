@@ -30,6 +30,7 @@ public class TipoDocumento extends Model {
 	public static Long NOTIFICACAO_ANALISE_GEO = 17l;
 	public static Long DOCUMENTO_INCONSISTENCIA = 18l;
 	public static Long CARTA_IMAGEM = 19l;
+	public static Long DOCUMENTO_COMUNICADO = 20l;
 
 	@Required
 	public String nome;

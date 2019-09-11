@@ -235,7 +235,14 @@ public class Documento extends GenericModel implements Identificavel {
 
 	public List<AnaliseGeo> getAnaliseGeoRelacionadas() {
 
-		return AnaliseJuridica.find("select at from AnaliseGeo at inner join at.documentos documento where documento.id = :idDocumento")
+		return AnaliseGeo.find("select at from AnaliseGeo at inner join at.documentos documento where documento.id = :idDocumento")
+				.setParameter("idDocumento", this.id)
+				.fetch();
+	}
+
+	public List<Comunicado> getComunicadosRelacionados() {
+
+		return Comunicado.find("select c from Comunicado c inner join c.documentos documento where documento.id = :idDocumento")
 				.setParameter("idDocumento", this.id)
 				.fetch();
 	}

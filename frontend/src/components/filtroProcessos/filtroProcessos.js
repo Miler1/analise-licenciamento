@@ -99,6 +99,10 @@ var FiltroProcessos = {
 
 			ctrl.filtro = {};
 
+			if (ctrl.filtrarPorUsuario) {
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
+			}
+
 			if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;

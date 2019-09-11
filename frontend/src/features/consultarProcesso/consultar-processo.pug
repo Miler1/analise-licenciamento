@@ -34,6 +34,8 @@ div
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
 								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.legendaDesvinculo}")
+								span(ng-class="{'icone-soliciacao-finalizada': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
+								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -68,7 +70,8 @@ div
 				div
 
 					span.icone-soliciacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
-					//- span.icone-revisao-atendida.legenda Notificação Atendida		
+					span.icone-soliciacao-finalizada.legenda Análise GEO finalizada
+					span.icone-revisao-atendida.legenda Notificado		
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
