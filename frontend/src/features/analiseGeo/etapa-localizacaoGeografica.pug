@@ -22,14 +22,14 @@ include ../../layout/components/mapPanel
                                     tr
                                         th.col-md-5 Item
                                         th.col-md-5 Área (ha)
-                                        th.col-md-2.text-right Ações
+                                        th.col-md-2.text-right Alertas
 
                                 tbody
                                     tr(ng-repeat='camada in ctrl.camadasDadosEmpreendimento')
                                         td.col-md-5 {{camada.item}}
                                         td.col-md-5 {{camada.descricao}}
                                         td.col-md-2.text-right
-                                            i.glyphicon.glyphicon-alert(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE" , title='Adicionar inconsistência', )
+                                            i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
                                             | &nbsp;&nbsp;
                             
                             br
@@ -42,7 +42,7 @@ include ../../layout/components/mapPanel
                                             tr
                                             th.col-md-4 Item
                                             th.col-md-5 Descrição
-                                            th.col-md-1.text-right Ações
+                                            th.col-md-1.text-right Alertas
 
                                         tbody(ng-repeat="restricao in camadaDadosAtividade.restricoes")
                                             tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
