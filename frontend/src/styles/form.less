@@ -251,21 +251,43 @@ form{
 	}
 }
 
+.icone-soliciacao-finalizada {
+	color: #757575;
+	font-style: italic;
 
+	&:before {
+		content: "";
+    background-color: green;
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
+	}
+
+	&.legenda {
+		margin-left: 5px;
+
+		&:before {
+			margin-right: 5px;
+		}
+	}
+}
 
 .icone-revisao-atendida {
     color: #757575;
-	font-style: italic;
+	  font-style: italic;
 
   &:before {
     content: "";
-    background-color: #80A413;
+    background-color: blue;
     border-radius: 50%;
     width: 12px;
     height: 12px;
     display: inline-block;
 	vertical-align: middle;
-	margin-left: 10px;
+	margin-left: 0px;
   }
 
   &.legenda {
@@ -361,8 +383,6 @@ form{
     }
   }
 }
-
-
 
 .input-dias {
   width: 250%;

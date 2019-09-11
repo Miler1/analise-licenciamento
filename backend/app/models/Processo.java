@@ -7,8 +7,10 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
+import enums.ComunicadoOrgaoEnum;
 import exceptions.ValidacaoException;
 import java.text.DecimalFormat;
+import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
@@ -346,6 +348,21 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		}
+
+
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
@@ -657,7 +674,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			index = 0;
 			for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade: atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
 				index = index + 1;
-				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo +"_" + index, getDescricaoRestricao(sobreposicaoCaracterizacaoAtividade.geometria, caracterizacao.empreendimento.coordenadas), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria,sobreposicaoCaracterizacaoAtividade);
+				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo +"_" + index, getDescricaoRestricao(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo, sobreposicaoCaracterizacaoAtividade.geometria, caracterizacao.empreendimento.coordenadas), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria,sobreposicaoCaracterizacaoAtividade);
 				restricoes.add(restricao);
 			}
 
@@ -670,32 +687,47 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return dadosAreaProjeto;
 	}
 
-	private String getDescricaoAtividade (Geometry geometry) {
+	private String getDescricaoSobreposicao(Geometry geometry) {
 
 		String descricao = "";
 
 		switch (geometry.getGeometryType().toUpperCase()) {
 
 			case "POINT" :
+
 				descricao = "Coordenadas [" + String.valueOf(((Point) geometry).getY()) + ", " + String.valueOf(((Point) geometry).getX()) + "]";
 				break;
+
 			case "LINESTRING":
 
 				descricao = "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
 				break;
+
 			case "POLYGON":
+
 				descricao = "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
 				break;
+
 		}
 
 		return descricao;
+
 	}
 
-	private String getDescricaoRestricao(Geometry restricao, Geometry empreendimento) {
+	private String getDescricaoAtividade (Geometry geometry) {
 
-		DecimalFormat formatador = new DecimalFormat("#.##");
+		return getDescricaoSobreposicao(geometry);
+	}
 
-		return "Distância " + formatador.format(empreendimento.distance(restricao) * 100) + " km";
+	private String getDescricaoRestricao(String codigoTipoSobreposicao, Geometry restricao, Geometry empreendimento) {
+
+		if(ComunicadoOrgaoEnum.getList().contains(codigoTipoSobreposicao)) {
+
+			return getDescricaoSobreposicao(restricao);
+
+		}
+
+		return "Distância " + new DecimalFormat("#.##").format(empreendimento.distance(restricao) * 100) + " km";
 
 	}
 

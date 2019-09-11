@@ -1,6 +1,7 @@
 div#dadosProcesso
   form
     .form-group
-      label(uib-tooltip="A justificativa só é feita pelo coordenador técnico quando o mesmo vincula o processo diretamente a um analista técnico sem antes passar por um gerente técnico.", tooltip-placement="right-bottom") Justificativa
-      textarea.form-control.textarea--no-resize(readonly="", ng-model="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador", ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador")
-      p.i(ng-if="!modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador") Não há nenhuma justificativa
+      label Justificativa
+      textarea.form-control.textarea--no-resize(readonly="", ng-model="modalVisualizacaoProcessoCtrl.processo.analise.analiseTecnica.justificativaCoordenador", ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador")
+      p.i(ng-if="!modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho") Não há nenhuma justificativa
+      p.i(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho") {{modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho}}

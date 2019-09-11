@@ -105,7 +105,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 							return;
 						}
 
-						for (var i = 0; i < validacaoShape.resultadoEnvio.atributos.length; i++) {
+						for (var i = 0; i < validacaoShape.resultadoEnvio.registros.length; i++) {
 
 							if (validacaoShape.resultadoEnvio.registros[i][0].nome === 'the_geom') {
 

@@ -27,7 +27,7 @@ public class Documentos extends InternalController {
 		   File documentoBinary = documento.getFile();
 		   renderBinary(documentoBinary, documentoBinary.getName());
 	   }
-		   
+
 	   renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
 	   
    }
