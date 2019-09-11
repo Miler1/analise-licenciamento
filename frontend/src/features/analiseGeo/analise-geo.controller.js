@@ -777,8 +777,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
 				'<ul>' +
-				'<li>Para concluir é necessário descrever o parecer na conclusão.</li>' +
-				'<li>Selecione um parecer para o processo (Deferido, Indeferido, Emitir notificação).</li>' +
+				'<li>Para concluir é necessário inserir uma descrição nos seguintes campos: Situação fundiária, Análise temporal e Conclusão.</li>' +
+				'<li>Selecione uma Análise final do processo (Deferido, Indeferido, Emitir notificação) e em seguida sua respectiva descrição.</li>' +
 				'</ul>', { ttl: 10000 });
 			return;
 		}
