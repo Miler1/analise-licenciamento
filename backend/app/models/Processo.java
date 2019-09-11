@@ -311,6 +311,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
 	}
 
 	private static void commonFilterProcessoAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
