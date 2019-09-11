@@ -398,6 +398,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						});
 				});
 
+				$rootScope.$broadcast('atualizarContagemProcessos');
 		});
 
 	};
