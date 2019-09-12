@@ -44,7 +44,7 @@ div
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.prazoAnaliseGerente, cxEntGerente.PrazoMinimoAvisoAnalise.GERENTE)}")
 								| {{cxEntGerente.dateUtil.getContaDiasRestantesData(processo.prazoAnaliseGerente)}}
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntGerente.PrazoMinimoAvisoAnalise.GERENTE_ANALISE)}")
+							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
 								| {{cxEntGerente.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,cxEntGerente.PrazoAnalise.ANALISE_TECNICA)}}
 							td
 								span.pull-right
@@ -74,7 +74,7 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
-					span.icone-soliciacao-desvinculo-pendente.legenda Solicitação de desvínculo
+					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação de desvínculo
 
 				+paginacao('cxEntGerente.paginacao', 'cxEntGerente.onPaginaAlterada')
 

@@ -8,5 +8,7 @@ public class UsuarioSerializer {
 	public static JSONSerializer getConsultoresAnalistasGerentes = SerializerUtil.create(
 			"id",
 			"login",
-			"nome");
+			"nome",
+			"pessoa.id",
+			"pessoa.nome");
 }
