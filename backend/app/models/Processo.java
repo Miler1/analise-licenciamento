@@ -147,7 +147,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
 				.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
 
-
 //		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, usuarioSessao.id);
 
 		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, usuarioSessao);
@@ -156,7 +155,23 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
 
+		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
+
+		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
+
 		return processoBuilder;
+	}
+
+	private static void commonFilterConsultarProcesso(ProcessoBuilder processoBuilder, FiltroProcesso filtroProcesso, UsuarioAnalise usuarioSessao) {
+
+		if(!filtroProcesso.isConsultarProcessos) {
+
+			return;
+
+		}
+
+		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
 	}
 
 	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
@@ -281,6 +296,35 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 	}
 
+	private static void commonFilterProcessoGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+													UsuarioAnalise usuarioSessao) {
+
+		if (!filtro.isGerente) {
+
+			return;
+
+		}
+
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
+			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
+
+		}
+
+		if (filtro.filtrarPorUsuario) {
+
+			processoBuilder.filtrarIdGerente(usuarioSessao.id);
+
+		}
+
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
+
+			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
+
+		}
+
+	}
+
 	private static void commonFilterProcessoAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 													   UsuarioAnalise usuarioSessao) {
 
@@ -372,11 +416,41 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		listWithFilterAprovador(processoBuilder, usuarioSessao);
 
+		listWithFilterGerente(processoBuilder, filtro);
+
+		listWithFilterConsultaProcessos(processoBuilder, filtro);
+
 		return processoBuilder
 				.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
 				.list();
 	}
 
+	private static void listWithFilterConsultaProcessos(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isConsultarProcessos) {
+
+			return;
+		}
+
+		processoBuilder
+				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByDataFinalAnaliseGeo()
+				.groupByPrazoAnaliseGerente();
+
+	}
+
+	private static void listWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isGerente) {
+
+			return;
+		}
+
+		processoBuilder
+				.groupByPrazoAnaliseGerente()
+				.orderByPrazoAnaliseGerente();
+
+	}
 
 	private static void listWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
@@ -453,6 +527,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		countWithFilterAnaliseGeo(processoBuilder, filtro);
 
+		countWithFilterGerente(processoBuilder, filtro);
+
 		Object qtdeTotalItens = processoBuilder.unique();
 
 		return ((Map<String, Long>) qtdeTotalItens).get("total");
@@ -476,6 +552,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
+	}
+
+	private static void countWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isGerente) {
+
+			return;
+
+		}
+
 	}
 
 	private static void countWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {

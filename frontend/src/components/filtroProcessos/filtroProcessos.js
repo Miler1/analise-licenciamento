@@ -11,11 +11,13 @@ var FiltroProcessos = {
 		isAnaliseTecnica: '<',
 		isAnaliseGeo: '<',
 		isAnaliseTecnicaOpcional: '<',
+		isGerente: '<',
 		onAfterUpdate: '=',
 		isGerenteLogado: '<',
 		pesquisarTodasGerencias: '<',
 		tipoSetor: '<',
-		filtrarPorUsuario: '<'
+		filtrarPorUsuario: '<',
+		consultarProcessos: '<'
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
@@ -99,7 +101,12 @@ var FiltroProcessos = {
 
 			ctrl.filtro = {};
 
-			if (ctrl.condicaoTramitacao) {
+			if (_.isArray(ctrl.condicaoTramitacao)) {
+
+				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
+
+			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
@@ -110,6 +117,8 @@ var FiltroProcessos = {
 			ctrl.filtro.isAnaliseTecnicaOpcional = !!ctrl.isAnaliseTecnicaOpcional;
 			ctrl.filtro.isAnaliseGeo = !!ctrl.isAnaliseGeo;
 			ctrl.filtro.isAnaliseGeoOpcional = !!ctrl.isAnaliseGeoOpcional;
+			ctrl.filtro.isGerente = !!ctrl.isGerente;
+			ctrl.filtro.isConsultarProcessos = !!ctrl.consultarProcessos;
 		}
 
 		this.limparFiltros = function(){

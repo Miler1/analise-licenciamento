@@ -4,14 +4,18 @@ import models.Processo;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.StringType;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.hibernate.type.Type;
 
 public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
@@ -249,16 +253,6 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-
-	public ProcessoBuilder addGerenteAlias() {
-
-		addAnaliseTecnicaAlias(false);
-
-		addAlias(ANALISE_TECNICA_ALIAS+".gerentes", GERENTE_ALIAS);
-
-		return this;
-	}
-
 	public ProcessoBuilder comTiposLicencas(){
 
 		StringBuilder sb = new StringBuilder();
@@ -375,6 +369,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".dataFim").as("dataConclusaoAnaliseGeo"));
 
 		return this;
+	}
+
+	public ProcessoBuilder groupByPrazoAnaliseGerente() {
+
+		addObjetoTramitavelAlias();
+		addProjection(Projections.groupProperty(ANALISE_ALIAS + ".dataVencimentoPrazo").as("prazoAnaliseGerente"));
+
+		return this;
+
 	}
 
 	public ProcessoBuilder groupByDataFinalAnaliseTecnica(boolean isLeftOuterJoin) {
@@ -599,6 +602,18 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder filtrarPorListaIdCondicao(List<Long> listaIdCondicao) {
+
+		if (!listaIdCondicao.isEmpty()) {
+
+			addObjetoTramitavelAlias();
+			addRestriction(Restrictions.in(OBJETO_TRAMITAVEL_ALIAS + ".condicao.idCondicao", listaIdCondicao));
+
+		}
+
+		return this;
+	}
+
 	public ProcessoBuilder filtrarPorIdConsultorJuridico(Long idConsultorJuridico) {
 
 		if (idConsultorJuridico != null) {
@@ -619,6 +634,19 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		}
 
 		return this;
+	}
+
+	public ProcessoBuilder filtrarIdGerente(Long idUsuarioGerente) {
+
+		if (idUsuarioGerente != null) {
+
+			addObjetoTramitavelAlias();
+			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioGerente));
+
+		}
+
+		return this;
+
 	}
 
 	public ProcessoBuilder filtrarPorPeriodoProcesso(Date periodoInicial, Date periodoFinal) {
@@ -776,9 +804,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		
 		if (idGerente != null) {
 
-			addGerenteAlias();
 			addRestriction(Restrictions.eq(GERENTE_ALIAS+".usuario.id", idGerente));
 		}
+
+		return this;
+	}
+
+	public ProcessoBuilder orderByPrazoAnaliseGerente() {
+
+		addOrder(Order.asc("prazoAnaliseGerente"));
 
 		return this;
 	}
@@ -866,6 +900,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idTipologiaEmpreendimento;
 		public Long idAtividadeEmpreendimento;
 		public Long idCondicaoTramitacao;
+		public List<Long> listaIdCondicaoTramitacao;
 		public Boolean filtrarPorUsuario;
 		public Date periodoInicial;
 		public Date periodoFinal;
@@ -877,11 +912,13 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idAnalistaTecnico;
 		public boolean isAnaliseGeo;
 		public boolean isAnaliseGeoOpcional;
+		public boolean isGerente;
 		public Long idAnalistaGeo;
 		public String siglaSetorGerencia;
 		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		public Long idUsuarioLogado;
+		public boolean isConsultarProcessos;
 
 		public FiltroProcesso() {
 

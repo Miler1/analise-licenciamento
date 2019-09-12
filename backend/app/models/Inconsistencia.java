@@ -1,12 +1,10 @@
 package models;
 
-import exceptions.ValidacaoException;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.GeometriaAtividade;
 import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
 import utils.*;
 
 import javax.persistence.*;

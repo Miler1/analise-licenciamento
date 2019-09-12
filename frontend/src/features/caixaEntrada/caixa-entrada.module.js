@@ -35,7 +35,7 @@ caixasEntrada
 	.controller('modalVincularConsultorController', controllers.ModalVincularConsultorController)
 	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController)
 	.controller('cxEntAnalistaTecnicoController', controllers.CxEntAnalistaTecnicoController)
-	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteTecnicoController)
+	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteController)
 	.controller('cxEntAnalistaGeoController', controllers.CxEntAnalistaGeoController);
 
 caixasEntrada
