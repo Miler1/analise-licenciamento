@@ -1,27 +1,35 @@
 package models;
 
+import com.vividsolutions.jts.geom.Geometry;
 import models.licenciamento.AtividadeCaracterizacao;
+import models.licenciamento.GeometriaAtividade;
+import models.licenciamento.SobreposicaoCaracterizacao;
 
 import java.util.List;
+import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
 
 public class CamadaGeoAtividade {
 
+	public String item;
+
+	public String tipo;
+
+	public String descricao;
+
+	public Double area;
+
+	public Geometry geometria;
+
 	public AtividadeCaracterizacao atividadeCaracterizacao;
 
-	public List<CamadaGeo> camadasGeo;
+	public CamadaGeoAtividade(String item, String tipo, String descricao, Double area, Geometry geometria) {
 
-	public List<CamadaGeo> restricoes;
-
-	public CamadaGeoAtividade(AtividadeCaracterizacao atividadeCaracterizacao, List<CamadaGeo> camadasGeo) {
-
-		this.atividadeCaracterizacao = atividadeCaracterizacao;
-		this.camadasGeo = camadasGeo;
-
-	}
-
-	public CamadaGeoAtividade(List<CamadaGeo> restricoes) {
-
-		this.restricoes = restricoes;
+		this.item = item;
+		this.tipo = tipo;
+		this.descricao = descricao;
+		this.area = area;
+		this.geometria = geometria;
 
 	}
+
 }

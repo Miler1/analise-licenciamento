@@ -2,29 +2,14 @@ package models;
 
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
-import com.google.common.collect.Lists;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import java.text.DecimalFormat;
-import java.util.stream.Collector;
-import java.util.stream.Stream;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
-import models.manejoDigital.analise.analiseShape.Sobreposicao;
-import models.sicar.Geo;
 import models.tramitacao.*;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeocentricCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
@@ -644,8 +629,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	private List<CamadaGeoAtividade> preencheListaAtividades(Caracterizacao caracterizacao) {
 
-		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
-		List<CamadaGeo> camadasGeo = new ArrayList<>();
+		List<CamadaGeoAtividade> atividades = new ArrayList<>();
 
 		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
@@ -655,52 +639,47 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 					index++;
 
-					CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.ATIVIDADE.nome +"_" + index, CamadaGeoEnum.ATIVIDADE.tipo +"_" + index,
+					CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(CamadaGeoEnum.ATIVIDADE.nome +"_" + index, CamadaGeoEnum.ATIVIDADE.tipo +"_" + index,
 							getDescricaoAtividade(geometrie), GeoCalc.areaHectare(geometrie), geometrie);
-					camadaGeo.geometriaAtividade = geometria;
 
-					camadasGeo.add(camadaGeo);
+					atividades.add(camadaGeoAtividade);
 				}
 
 			}
 
-			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao, camadasGeo);
-			dadosAreaProjeto.add(camadaGeoAtividade);
-
 		}
 
-		return dadosAreaProjeto;
+		return atividades;
 
 	}
 
-	private List<CamadaGeoAtividade> preencheListaRestricoes(Caracterizacao caracterizacao) {
+	private List<CamadaGeoRestricao> preencheListaRestricoes(Caracterizacao caracterizacao) {
 
-		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
-		List<CamadaGeo> restricoes = new ArrayList<>();
+		List<CamadaGeoRestricao> restricoes = new ArrayList<>();
 
 		for(SobreposicaoCaracterizacao sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
 
 			index++;
-			CamadaGeo restricao = new CamadaGeo(sobreposicao.tipoSobreposicao.nome, sobreposicao.tipoSobreposicao.codigo + "_" + index, getDescricaoRestricao(sobreposicao.geometria, caracterizacao.empreendimento.coordenadas), GeoCalc.areaHectare(sobreposicao.geometria), sobreposicao.geometria, sobreposicao);
+
+			CamadaGeoRestricao restricao = new CamadaGeoRestricao(sobreposicao.tipoSobreposicao.nome,
+					sobreposicao.tipoSobreposicao.codigo + "_" + index,
+					getDescricaoRestricao(sobreposicao.geometria, caracterizacao.empreendimento.coordenadas),
+					GeoCalc.areaHectare(sobreposicao.geometria),
+					sobreposicao);
+
 			restricoes.add(restricao);
 
 		}
 
-		CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(restricoes);
-		dadosAreaProjeto.add(camadaGeoAtividade);
-
-		return dadosAreaProjeto;
+		return restricoes;
 
 	}
 
-	public List<CamadaGeoAtividade> getDadosAreaProjeto (){
+	public DadosProjeto getDadosProjeto (){
 
 		Caracterizacao caracterizacao = this.getCaracterizacao();
 
-		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
-		Stream.of(preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao)).forEach(dadosAreaProjeto::addAll);
-
-		return dadosAreaProjeto;
+		return new DadosProjeto(preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
 
 	}
 

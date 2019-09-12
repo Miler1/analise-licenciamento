@@ -699,16 +699,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public Documento gerarPDFParecer() throws Exception {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
-        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        List<DadosProjeto> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
+        DadosProjeto dadosAreaProjeto =  processo.getDadosProjeto();
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
                 .addParam("analiseArea", "ANALISE_GEO")
                 .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
-                .addParam("camadasGeoAtividade", camadasGeoAtividade)
+                .addParam("camadasGeoAtividade", dadosAreaProjeto)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
@@ -720,22 +720,22 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Documento gerarPDFCartaImagem() throws Exception {
+    public Documento gerarPDFCartaImagem() {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
 
-        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        List<DadosProjeto> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
+        DadosProjeto camadasGeoAtividade =  processo.getDadosProjeto();
 
-        CamadaGeo camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
+        DadosProjeto camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
                 .findAny().orElse(null);
 
         Geometry geometriaAreaPropriedade = camadaPropriedade.geometria;
 
         camadasGeoEmpreedimento.removeIf(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
 
-        Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao = new HashMap<>();
+        Map<LayerType, List<DadosProjeto>> geometriesCaracterizacao = new HashMap<>();
 
         for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
 

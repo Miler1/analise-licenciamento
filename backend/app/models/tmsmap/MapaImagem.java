@@ -2,10 +2,9 @@ package models.tmsmap;
 
 import br.ufla.tmsmap.*;
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
-import models.CamadaGeo;
+import models.DadosProjeto;
 import org.apache.commons.codec.binary.Base64;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -20,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -200,26 +198,26 @@ public class MapaImagem {
 
 	}
 
-	public GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao) {
+	public GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<DadosProjeto>> geometriesCaracterizacao) {
 
 		LinkedList<GrupoDataLayer> grupoDataLayers = new LinkedList<>();
 
-		for(Entry<LayerType, List<CamadaGeo>> entry : geometriesCaracterizacao.entrySet()) {
+		for(Entry<LayerType, List<DadosProjeto>> entry : geometriesCaracterizacao.entrySet()) {
 
-			List<CamadaGeo> camadaGeos = entry.getValue();
+			List<DadosProjeto> dadosProjeto = entry.getValue();
 			LayerType layerType = entry.getKey();
 			LinkedList<DataLayer> dataLayers = new LinkedList<>();
 
-			for (CamadaGeo camadaGeo : camadaGeos) {
+			for (DadosProjeto dadosProjeto : dadosProjeto) {
 
-				if(camadaGeo.geometria == null) {
+				if(dadosProjeto.geometria == null) {
 					continue;
 				}
 
 				String colorCode = getColorTemaCiclo();
 				Color color = Color.decode(colorCode);
 				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-				dataLayers.add(new DataLayer(camadaGeo.item, camadaGeo.geometria, color, colorCode).fillColor(fillColor));
+				dataLayers.add(new DataLayer(dadosProjeto.item, dadosProjeto.geometria, color, colorCode).fillColor(fillColor));
 			}
 
 			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
