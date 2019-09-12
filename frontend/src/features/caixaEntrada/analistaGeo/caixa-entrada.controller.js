@@ -89,7 +89,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 		analiseGeoService.getPossuiAnexo(cpfCnpjEmpreendimento)
 			.then(function(response){
-				console.log(response);
 				// Caso possua null - nenhuma ação foi realizada no empreendimento
 				if(response.data === null){
 					cxEntAnalistaGeo.iniciarUploadShapes(processo);

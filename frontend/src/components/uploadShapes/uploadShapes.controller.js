@@ -77,7 +77,6 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, cpfCnpjEmpreendimento)
 			.then(function(response){
-				console.log(response);
 
 				// Aqui vai trocar a tramitacao de caixa de entrada pra análise
 				var idAnaliseGeo = uploadShapes.processo.analise.analiseGeo.id;
