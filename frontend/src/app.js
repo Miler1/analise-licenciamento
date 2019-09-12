@@ -139,7 +139,6 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 		$rootScope.usuarioSessao = LICENCIAMENTO_CONFIG.usuarioSessao;
 		$rootScope.config = LICENCIAMENTO_CONFIG.configuracoes;
 		$rootScope.perfis = app.utils.Perfis;
-
 		var appController = this;
 
 		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-orgao')) {

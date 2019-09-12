@@ -825,13 +825,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					},function(error){
 							mensagem.error(error.data.texto);
 					});
-
+					$location.path('/analise-geo');
 			}, function(error){
 
-				mensagem.error(error.data.texto);
+				mensagem.error(error.data.texto, {referenceId: 5});
 			});
 			
-			$location.path('/analise-geo');
 
 	};
 
