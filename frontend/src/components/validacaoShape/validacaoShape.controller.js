@@ -105,27 +105,62 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 							return;
 						}
 
-						for (var i = 0; i < validacaoShape.resultadoEnvio.atributos.length; i++) {
+						if(validacaoShape.resultadoEnvio.registros[0][0].tipo.toLowerCase() === 'multipolygon') {
 
-							if (validacaoShape.resultadoEnvio.registros[i][0].nome === 'the_geom') {
+							var coordenadas = [];
+							validacaoShape.resultadoEnvio.registros.forEach(function(registro) {
 
-								// Linha para converter de texto para JSON de geometria
-								validacaoShape.resultadoEnvio.registros[i][0].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][0].valor);
-								validacaoShape.shapeEnviado = validacaoShape.resultadoEnvio.registros[i][0].valor;
-								
-								$scope.$emit('shapefile:uploaded', {
-									geometria: validacaoShape.shapeEnviado, 
-									tipo: validacaoShape.tipo, 
-									estilo: {
-										style: {
-											fillColor: validacaoShape.cor,
-											color: validacaoShape.cor,
-											fillOpacity: 0.2
-										}
-									},
-									popupText: validacaoShape.popupText,
-									specificShape: true
-								});
+								feature = JSON.parse(registro[0].valor);
+								coordenadas.push(feature.coordinates[0]);
+
+							});
+
+							var geometria = {
+
+								type: validacaoShape.resultadoEnvio.registros[0][0].tipo,
+								coordinates: coordenadas
+
+							};
+
+							validacaoShape.shapeEnviado = geometria;
+
+							$scope.$emit('shapefile:uploaded', {
+								geometria: validacaoShape.shapeEnviado, 
+								tipo: validacaoShape.tipo, 
+								estilo: {
+									style: {
+										fillColor: validacaoShape.cor,
+										color: validacaoShape.cor,
+										fillOpacity: 0.2
+									}
+								},
+								popupText: validacaoShape.popupText,
+								specificShape: true
+							});
+
+						} else {
+
+							for (var i = 0; i < validacaoShape.resultadoEnvio.registros.length; i++) {
+
+								if (validacaoShape.resultadoEnvio.registros[i][0].nome === 'the_geom') {
+
+									// Linha para converter de texto para JSON de geometria
+									validacaoShape.shapeEnviado = JSON.parse(validacaoShape.resultadoEnvio.registros[i][0].valor);
+									
+									$scope.$emit('shapefile:uploaded', {
+										geometria: validacaoShape.shapeEnviado, 
+										tipo: validacaoShape.tipo, 
+										estilo: {
+											style: {
+												fillColor: validacaoShape.cor,
+												color: validacaoShape.cor,
+												fillOpacity: 0.2
+											}
+										},
+										popupText: validacaoShape.popupText,
+										specificShape: true
+									});
+								}
 							}
 						}
 					}

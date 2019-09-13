@@ -30,7 +30,7 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void concluir(AnaliseGeo analise) {
+    public static void concluir(AnaliseGeo analise) throws Exception {
 
         verificarPermissao(Acao.INICIAR_PARECER_GEO);
 

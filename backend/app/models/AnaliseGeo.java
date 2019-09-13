@@ -385,7 +385,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .first();
     }
 
-    public void finalizar(AnaliseGeo analise, UsuarioAnalise usuarioExecutor) {
+    public void finalizar(AnaliseGeo analise, UsuarioAnalise usuarioExecutor) throws Exception {
 
         this.update(analise);
         validarParecer();
@@ -463,6 +463,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacao, orgaoResponsavel);
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
+
 
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();

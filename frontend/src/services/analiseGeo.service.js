@@ -69,7 +69,7 @@ var AnaliseGeoService = function(request, $window ,config) {
 	this.getDadosAreaProjeto = function(idProcesso) {
 
 		return request
-			.post(config.BASE_URL() + 'analisesGeo/processo/buscaDadosProjeto/' + idProcesso);
+			.post(config.BASE_URL() + 'analisesGeo/processo/buscaDadosProcesso/' + idProcesso);
 	};
 };
 

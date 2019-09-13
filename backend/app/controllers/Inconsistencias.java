@@ -73,6 +73,10 @@ public class Inconsistencias extends GenericController{
 
         Inconsistencia i = null;
 
+        if(inconsistencia.categoria == null || (inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO) && (inconsistencia.atividadeCaracterizacao != null && inconsistencia.atividadeCaracterizacao.id == null))) {
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+        }
+
         if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
              i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria")
                      .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)

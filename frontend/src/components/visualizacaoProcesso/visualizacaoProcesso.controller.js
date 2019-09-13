@@ -11,7 +11,7 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $timeout
 	modalCtrl.abreDocumentacao = true;
 	modalCtrl.abreTramitacaoProcessoAtual = true;
 	modalCtrl.abreTramitacaoProcessoAnterior = false;
-
+	modalCtrl.comparaStatus = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 
 	var estiloPoligono = {

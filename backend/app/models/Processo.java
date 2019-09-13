@@ -5,8 +5,10 @@ import builders.ProcessoBuilder.FiltroProcesso;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
+import enums.ComunicadoOrgaoEnum;
 import exceptions.ValidacaoException;
 import java.text.DecimalFormat;
+import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
@@ -347,6 +349,21 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		}
+
+
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
@@ -639,8 +656,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 					index++;
 
-					CamadaGeoAtividadeVO camadaGeoAtividade = new CamadaGeoAtividadeVO(CamadaGeoEnum.ATIVIDADE.nome +"_" + index, CamadaGeoEnum.ATIVIDADE.tipo +"_" + index,
-							getDescricaoAtividade(geometrie), GeoCalc.areaHectare(geometrie), geometrie, atividadeCaracterizacao);
+					CamadaGeoAtividadeVO camadaGeoAtividade = new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometrie);
 
 					atividades.add(camadaGeoAtividade);
 				}
@@ -661,13 +677,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			index++;
 
-//			CamadaGeoRestricaoVO restricao = new CamadaGeoRestricaoVO(sobreposicao.tipoSobreposicao.nome,
-//					sobreposicao.tipoSobreposicao.codigo + "_" + index,
-//					getDescricaoRestricao(sobreposicao.geometria, caracterizacao.empreendimento.coordenadas),
-//					GeoCalc.areaHectare(sobreposicao.geometria),
-//					sobreposicao);
-
-			CamadaGeoRestricaoVO restricao = new CamadaGeoRestricaoVO(sobreposicao, getDescricaoRestricao(sobreposicao.geometria, caracterizacao.empreendimento.coordenadas));
+			CamadaGeoRestricaoVO restricao = new CamadaGeoRestricaoVO(sobreposicao);
 
 			restricoes.add(restricao);
 
@@ -685,35 +695,45 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	private String getDescricaoAtividade (Geometry geometry) {
+	public static String getDescricaoSobreposicao(Geometry geometry) {
 
 		String descricao = "";
 
 		switch (geometry.getGeometryType().toUpperCase()) {
 
 			case "POINT" :
+
 				descricao = "Coordenadas [" + String.valueOf(((Point) geometry).getY()) + ", " + String.valueOf(((Point) geometry).getX()) + "]";
 				break;
+
 			case "LINESTRING":
 
 				descricao = "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
 				break;
+
 			case "POLYGON":
+
 				descricao = "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
 				break;
+
 		}
 
 		return descricao;
+
 	}
 
-	private String getDescricaoRestricao(Geometry restricao, Geometry empreendimento) {
+	public static String getDescricaoRestricao(SobreposicaoCaracterizacao sobreposicaoCaracterizacao) {
 
-		Geometry geometriaRestricaoTransformada = GeoCalc.transform(restricao, GeoCalc.detecteCRS(restricao)[0]);
-		Geometry geometriaEmpreendimentoTransformada = GeoCalc.transform(empreendimento, GeoCalc.detecteCRS(empreendimento)[0]);
+		if(ComunicadoOrgaoEnum.getList().contains(sobreposicaoCaracterizacao.tipoSobreposicao.codigo)) {
 
-		DecimalFormat formatador = new DecimalFormat("#.##");
+			return getDescricaoSobreposicao(sobreposicaoCaracterizacao.geometria);
 
-		return "Distância " + formatador.format(geometriaEmpreendimentoTransformada.distance(geometriaRestricaoTransformada) / 100000) + " km";
+		}
+
+		Geometry geometriaRestricaoTransformada = GeoCalc.transform(sobreposicaoCaracterizacao.geometria, GeoCalc.detecteCRS(sobreposicaoCaracterizacao.geometria)[0]);
+		Geometry geometriaEmpreendimentoTransformada = GeoCalc.transform(sobreposicaoCaracterizacao.caracterizacao.empreendimento.coordenadas, GeoCalc.detecteCRS(sobreposicaoCaracterizacao.caracterizacao.empreendimento.coordenadas)[0]);
+
+		return "Distância " + new DecimalFormat("#.##").format(geometriaEmpreendimentoTransformada.distance(geometriaRestricaoTransformada) / 100000) + " km";
 
 	}
 

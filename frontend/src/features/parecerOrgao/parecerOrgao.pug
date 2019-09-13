@@ -37,6 +37,29 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
             br
             textarea(name="descricaoParecer", ng-model="descricaoParecer", style="margin: 0px; width: 811px; height: 88px;")
 
+            div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+                i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+                | Anexar arquivo na inconsistência
+
+            table.table.table-condensed(ng-if="anexos.length > 0")
+                thead
+
+                    tr
+                        th.col-md-10 Arquivo anexado
+                        th.col-md-2.text-right Ações
+
+                tbody
+
+                    tr(ng-model="anexo",ng-repeat="anexo in anexos")
+
+                        td.col-md-10 {{anexo.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Baixar anexo", ng-click="baixarDocumento(anexo)")
+                                i.glyphicon.glyphicon-save
+
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="removerDocumento($index,anexo.id)")
+                                i.glyphicon.glyphicon-trash
+
         div
             button.btn.btn-default.pull(ng-click="cancelar()",style="margin-left: 610px; margin-top: 15px;",ng-if="comunicado.resolvido == true ? disabled=false: disabled = true")
                 i.glyphicon.glyphicon-arrow-left
