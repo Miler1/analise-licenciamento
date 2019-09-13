@@ -1,4 +1,4 @@
-var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$rootScope,$routeParams, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
+var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$routeParams, $rootScope, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
 
 	$scope.comunicado = null;
 	$scope.anexos = [];
@@ -28,7 +28,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 		if(file) {
 
-				uploadService.save(file)
+				uploadService.saveExterno(file)
 						.then(function(response) {
 
 							$scope.anexos.push({

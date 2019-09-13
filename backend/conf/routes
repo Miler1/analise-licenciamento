@@ -164,6 +164,7 @@ GET     /favicon.ico                            404
 
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
+POST	/external/upload/save						Application.upload
 
 # Notificacoes
 
