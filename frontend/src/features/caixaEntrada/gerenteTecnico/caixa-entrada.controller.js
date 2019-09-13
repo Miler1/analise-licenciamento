@@ -1,10 +1,11 @@
-var CxEntGerenteController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal, $rootScope, processoService) {
+var CxEntGerenteController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal,$rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE GERENTE';
 
 	var cxEntGerente = this;
 
 	cxEntGerente.atualizarListaProcessos = atualizarListaProcessos;
+	cxEntGerente.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
 	cxEntGerente.atualizarPaginacao = atualizarPaginacao;
 	cxEntGerente.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntGerente.vincularAnalista = vincularAnalista;
@@ -45,7 +46,7 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 
 	function hasAtLeastOneProcessoSelected() {
 
-		return _.some(cxEntGerente.processos, {selecionado: true});		
+		return _.some(cxEntGerente.processos, {selecionado: true});
 	}
 
 	function vincularAnalista(processoSelecionado) {
@@ -82,11 +83,11 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data.texto);						
+						mensagem.success(response.data.texto);
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
-					});				
+					});
 			})
 			.catch(function(){ });
 	}
@@ -137,6 +138,27 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 
 			}, true);
 	}
+
+	cxEntGerente.atenderSolicitacaoDesvinculo =  function(processo){
+
+		var modalInstance = $uibModal.open({
+			controller: 'desvinculoGerenteController',
+			controllerAs: 'desvinculoGerenteCtrl',
+			templateUrl: 'features/caixaEntrada/gerenteTecnico/modalDesvinculo.html',
+			size: 'lg',
+			resolve: {
+
+				processo: function(){
+					return processo;
+				}
+			}
+			
+		});
+	};
+
+	cxEntGerente.verificarSolicitacaoDesvinculo = function(processo) {
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo;
+	};
 };
 
 exports.controllers.CxEntGerenteController = CxEntGerenteController;

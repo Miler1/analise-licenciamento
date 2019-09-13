@@ -1,0 +1,69 @@
+div.modal-header
+
+    button.close(type='button', ng-click="desvinculoGerenteCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Atender Solicitação de Desvínculo
+    div(growl inline="true" reference='5')
+  
+
+div.modal-body
+
+    .dados-processo
+        .info-dados-processo
+            label.label-dados-processo Processo: 
+            span.span-dados-processo {{desvinculoGerenteCtrl.processo.numero}}
+
+        .info-dados-processo
+            label.label-dados-processo CPF/CNPJ: 
+            span.span-dados-processo {{desvinculoGerenteCtrl.processo.cpfEmpreendimento}}
+
+        .info-dados-processo
+            label.label-dados-processo Empreendimento: 
+            span.span-dados-processo {{desvinculoGerenteCtrl.processo.denominacaoEmpreendimento}}
+
+        .info-dados-processo
+            label.label-dados-processo Município/UF: 
+            span.span-dados-processo {{desvinculoGerenteCtrl.processo.municipioEmpreendimento}}/{{desvinculoGerenteCtrl.processo.siglaEstadoEmpreendimento}}
+
+        .info-dados-solicitante
+            label.label-dados-solicitante Solicitação de desvínculo pelo analista: 
+            span.span-dados-solicitante {{desvinculoGerenteCtrl.desvinculo.analistaGeo.pessoa.nome}}
+
+    div#justificativa-desvinculo
+        label.label-justificativa Justificativa do desvínculo:
+        br
+        textarea.text-justificativa(name="justificativa-desvinculo", ng-model="desvinculoGerenteCtrl.desvinculo.justificativa", disabled)
+
+    .confirmacao-desvinculo
+        label.label-desvinculo-aceito Aceita o desvínculo? *
+
+        label(for="radio_desvinculo_aceito")
+            input#radio_desvinculo_aceito(type="radio", name="desvinculoAceito", ng-value="true", ng-model="desvinculoGerenteCtrl.desvinculoAceito", ng-required="desvinculoGerenteCtrl.desvinculoAceito === undefined" )
+            |  Sim
+        label(for="radio_desvinculo_nao_aceito")
+            input#radio_desvinculo_nao_aceito(type="radio", name="desvinculoAceito", ng-value="false", ng-model="desvinculoGerenteCtrl.desvinculoAceito", ng-required="desvinculoGerenteCtrl.desvinculoAceito === undefined")
+            |  Não
+
+    .selecao-analista(ng-if="desvinculoGerenteCtrl.desvinculoAceito === undefined || desvinculoGerenteCtrl.desvinculoAceito")
+        label.label-selecao-analista Selecionar analista: *
+        select.form-control(ng-model="desvinculoGerenteCtrl.analistaEscolhido", name="selectAnalista",
+                                    ng-options="analistaGeo.id as analistaGeo.pessoa.nome for analistaGeo in desvinculoGerenteCtrl.analistasGeo | orderBy:'pessoa.nome' track by analistaGeo.id")
+                    option(value="") Selecione o analista
+
+    div#resposta-gerente
+        label.label-resposta-gerente Justificativa: *
+        br
+        textarea.text-justificativa(name="resposta-gerente", ng-model="desvinculoGerenteCtrl.respostaGerente", ng-required="desvinculoGerenteCtrl.respostaGerente === undefined")
+
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="desvinculoGerenteCtrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        |  Cancelar
+    
+    button.btn.btn-success.pull-right(ng-click="desvinculoGerenteCtrl.concluir()", ng-disabled="!desvinculoGerenteCtrl.validarModalParaConcluir()")
+        i.glyphicon.glyphicon-ok
+        |  Confirmar

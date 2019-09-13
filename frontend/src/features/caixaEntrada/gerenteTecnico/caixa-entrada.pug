@@ -34,7 +34,7 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
-								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE}")
+								span(ng-class="{'icone-soliciacao-desvinculo-pendente': cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
 							td
 								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntGerente.verificarTodosProcessosMarcados()")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
@@ -65,9 +65,10 @@ div
 													span Validar análise técnica
 											li
 
-												a
+												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? cxEntGerente.atenderSolicitacaoDesvinculo(processo) : ''",
+														ng-class="{'disable-acoes': !cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
 													i.glyphicon.glyphicon-sort
-													span Alterar analista
+													span Atender solicitação de desvínculo
 											li
 
 												a

@@ -74,6 +74,10 @@ POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.download
 
 
 POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
+GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
+GET     /analisesGeo/desvinculo/buscarAnalistasGeo/{idProcesso}                     Desvinculos.buscarAnalistasGeo
+POST    /analisesGeo/desvinculo/respondersolicitacaoDesvinculo                      Desvinculos.respondersolicitacaoDesvinculo
+
 
 POST    /analisesGeo/inconsistencia/salvarInconsistencia                            Inconsistencias.salvarInconsistencia
 POST    /analisesGeo/inconsistencia/findInconsistencia                              Inconsistencias.findInconsistencia

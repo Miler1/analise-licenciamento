@@ -53,4 +53,8 @@ public class Desvinculo extends GenericModel {
     @Column(name="data_resposta")
     public Date dataResposta;
 
+    @ManyToOne
+    @JoinColumn(name="id_usuario")
+    public UsuarioAnalise analistaGeo;
+
 }
