@@ -48,7 +48,7 @@ div.modal-body
 
     .selecao-analista(ng-if="desvinculoGerenteCtrl.desvinculoAceito === undefined || desvinculoGerenteCtrl.desvinculoAceito")
         label.label-selecao-analista Selecionar analista: *
-        select.form-control(ng-model="desvinculoGerenteCtrl.analistaEscolhido", name="selectAnalista",
+        select.form-control(ng-model="desvinculoGerenteCtrl.analistaGeoDestino.id", name="selectAnalista",
                                     ng-options="analistaGeo.id as analistaGeo.pessoa.nome for analistaGeo in desvinculoGerenteCtrl.analistasGeo | orderBy:'pessoa.nome' track by analistaGeo.id")
                     option(value="") Selecione o analista
 

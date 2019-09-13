@@ -103,22 +103,23 @@ public class Desvinculos extends GenericController {
             desvinculo.dataResposta = c.getTime();
         }
 
-        String siglaSetor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla;
-        desvinculo.gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor);
-
-        desvinculo.analistaGeo =  UsuarioAnalise.findById(desvinculo.analistaGeo.id);
-
-        desvinculo.refresh();
-
-        desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
         if(desvinculo.aprovada) {
-            desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeo);
-        } else {
-            desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeo);
+            desvinculo.analistaGeoDestino = UsuarioAnalise.findById(desvinculo.analistaGeoDestino.id);
         }
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
-        renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
+        Desvinculo desvinculoAlterar = Desvinculo.findById(desvinculo.id);
+
+        desvinculoAlterar.update(desvinculo);
+
+        desvinculoAlterar.analiseGeo = AnaliseGeo.findById(desvinculoAlterar.analiseGeo.id);
+        if(desvinculoAlterar.aprovada) {
+            desvinculoAlterar.analiseGeo.analise.processo.tramitacao.tramitar(desvinculoAlterar.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculoAlterar.analistaGeoDestino);
+        } else {
+            desvinculoAlterar.analiseGeo.analise.processo.tramitacao.tramitar(desvinculoAlterar.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculoAlterar.analistaGeo);
+        }
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculoAlterar.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+        renderText(Mensagem.DESVINCULO_RESPONDIDO_COM_SUCESSO.getTexto());
 
     }
 

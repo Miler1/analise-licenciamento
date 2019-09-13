@@ -57,4 +57,18 @@ public class Desvinculo extends GenericModel {
     @JoinColumn(name="id_usuario")
     public UsuarioAnalise analistaGeo;
 
+    @ManyToOne
+    @JoinColumn(name="id_usuario_destino")
+    public UsuarioAnalise analistaGeoDestino;
+
+    public void update(Desvinculo novoDesvinculo) {
+
+        this.respostaGerente = novoDesvinculo.respostaGerente;
+        this.aprovada = novoDesvinculo.aprovada;
+        this.dataResposta = novoDesvinculo.dataResposta;
+        this.analistaGeoDestino = novoDesvinculo.analistaGeoDestino;
+
+        this._save();
+    }
+
 }

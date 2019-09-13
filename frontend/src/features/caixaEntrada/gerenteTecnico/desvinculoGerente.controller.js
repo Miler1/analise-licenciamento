@@ -6,6 +6,7 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 	desvinculoGerenteController.pessoa = null;
 	desvinculoGerenteController.desvinculo = null;
 	desvinculoGerenteController.analistasGeo = null;
+	desvinculoGerenteController.analistaGeoDestino = {};
 
 	function onInit() {
 		// desvinculoGerenteController.buscarAgenteSolicitante();
@@ -25,7 +26,8 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 
 		var params = desvinculoGerenteController.desvinculo;
 		if(desvinculoGerenteController.desvinculoAceito) {
-			params.analistaGeo.id = desvinculoGerenteController.analistaEscolhido;
+			params.analistaGeoDestino = {};
+			params.analistaGeoDestino.id = desvinculoGerenteController.analistaGeoDestino.id;
 		}
 		params.aprovada = desvinculoGerenteController.desvinculoAceito;
 		params.respostaGerente = desvinculoGerenteController.respostaGerente;
@@ -43,13 +45,6 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 		});
 
 	};
-
-	// desvinculoGerenteController.buscarAgenteSolicitante = function() {
-	// 	desvinculoService.buscarAgenteSolicitante(processo.idProcesso)
-	// 		.then(function(response) {
-	// 			desvinculoGerenteController.pessoa = response.data;
-	// 		});
-	// };
 
 	desvinculoGerenteController.buscarDesvinculoPeloProcesso = function() {
 		desvinculoService.buscarDesvinculoPeloProcesso(processo.idProcesso)
@@ -69,14 +64,14 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 		var valido = false;
 
 		if(desvinculoGerenteController.desvinculoAceito){
-			valido = desvinculoGerenteController.analistaEscolhido &&
-					 desvinculoGerenteController.analistaEscolhido != "" &&
+			valido = desvinculoGerenteController.analistaGeoDestino.id &&
+					 desvinculoGerenteController.analistaGeoDestino.id != "" &&
 					 desvinculoGerenteController.respostaGerente;
 		} else {
 			valido = desvinculoGerenteController.desvinculoAceito != undefined &&
 					desvinculoGerenteController.respostaGerente;
 			
-			desvinculoGerenteController.analistaEscolhido = undefined;
+			desvinculoGerenteController.analistaGeoDestino.id = undefined;
 		}
 
 		return valido;
