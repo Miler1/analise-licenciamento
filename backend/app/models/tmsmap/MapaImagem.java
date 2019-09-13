@@ -4,7 +4,7 @@ import br.ufla.tmsmap.*;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
-import models.DadosProjeto;
+import models.DadosProcessoVO;
 import org.apache.commons.codec.binary.Base64;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -198,26 +198,26 @@ public class MapaImagem {
 
 	}
 
-	public GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<DadosProjeto>> geometriesCaracterizacao) {
+	public GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<DadosProcessoVO>> geometriesCaracterizacao) {
 
 		LinkedList<GrupoDataLayer> grupoDataLayers = new LinkedList<>();
 
-		for(Entry<LayerType, List<DadosProjeto>> entry : geometriesCaracterizacao.entrySet()) {
+		for(Entry<LayerType, List<DadosProcessoVO>> entry : geometriesCaracterizacao.entrySet()) {
 
-			List<DadosProjeto> dadosProjeto = entry.getValue();
+			List<DadosProcessoVO> dadosProcesso = entry.getValue();
 			LayerType layerType = entry.getKey();
 			LinkedList<DataLayer> dataLayers = new LinkedList<>();
 
-			for (DadosProjeto dadosProjeto : dadosProjeto) {
+			for (DadosProcessoVO dadosProcesso : dadosProcesso) {
 
-				if(dadosProjeto.geometria == null) {
+				if(dadosProcesso.geometria == null) {
 					continue;
 				}
 
 				String colorCode = getColorTemaCiclo();
 				Color color = Color.decode(colorCode);
 				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-				dataLayers.add(new DataLayer(dadosProjeto.item, dadosProjeto.geometria, color, colorCode).fillColor(fillColor));
+				dataLayers.add(new DataLayer(dadosProcesso.item, dadosProcesso.geometria, color, colorCode).fillColor(fillColor));
 			}
 
 			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));

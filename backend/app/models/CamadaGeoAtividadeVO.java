@@ -4,9 +4,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.GeometriaAtividade;
 import models.licenciamento.SobreposicaoCaracterizacao;
+
+import java.util.List;
 import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
 
-public class CamadaGeoRestricao {
+public class CamadaGeoAtividadeVO {
 
 	public String item;
 
@@ -18,15 +20,16 @@ public class CamadaGeoRestricao {
 
 	public Geometry geometria;
 
-	public SobreposicaoCaracterizacao sobreposicaoCaracterizacao;
+	public AtividadeCaracterizacao atividadeCaracterizacao;
 
-	public CamadaGeoRestricao(String item, String tipo, String descricao, Double area, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) {
+	public CamadaGeoAtividadeVO(String item, String tipo, String descricao, Double area, Geometry geometria, AtividadeCaracterizacao atividadeCaracterizacao) {
 
 		this.item = item;
 		this.tipo = tipo;
 		this.descricao = descricao;
 		this.area = area;
-		this.sobreposicaoCaracterizacao = sobreposicaoCaracterizacao;
+		this.geometria = geometria;
+		this.atividadeCaracterizacao = atividadeCaracterizacao;
 
 	}
 

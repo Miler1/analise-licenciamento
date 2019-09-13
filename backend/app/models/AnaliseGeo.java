@@ -699,9 +699,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public Documento gerarPDFParecer() throws Exception {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
-        List<DadosProjeto> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        List<DadosProcessoVO> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        DadosProjeto dadosAreaProjeto =  processo.getDadosProjeto();
+        DadosProcessoVO dadosAreaProjeto =  processo.getDadosProjeto();
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
@@ -724,20 +724,20 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
 
-        List<DadosProjeto> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        List<DadosProcessoVO> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        DadosProjeto camadasGeoAtividade =  processo.getDadosProjeto();
+        DadosProcessoVO camadasGeoAtividade =  processo.getDadosProjeto();
 
-        DadosProjeto camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
+        DadosProcessoVO camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
                 .findAny().orElse(null);
 
         Geometry geometriaAreaPropriedade = camadaPropriedade.geometria;
 
         camadasGeoEmpreedimento.removeIf(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
 
-        Map<LayerType, List<DadosProjeto>> geometriesCaracterizacao = new HashMap<>();
+        Map<LayerType, List<DadosProcessoVO>> geometriesCaracterizacao = new HashMap<>();
 
-        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
+        for (CamadaGeoAtividadeVO camadaAtividade : camadasGeoAtividade) {
 
             if (camadaAtividade.restricoes != null &&  camadaAtividade.restricoes.size() > 0) {
                 geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaAtividade.restricoes);

@@ -205,15 +205,16 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void buscaDadosAreaProjeto(Long idProcesso) {
+    public static void buscaDadosProcesso(Long idProcesso) {
 
         returnIfNull(idProcesso, "Long");
 
         Processo processo = Processo.findById(idProcesso);
 
-        DadosProjeto dadosProjeto =  processo.getDadosProjeto();
+        DadosProcessoVO dadosProcesso =  processo.getDadosProcesso();
 
-        renderJSON(dadosProjeto, CamadaGeoAtividadeSerializer.getDadosGeoAtividade);
+        renderJSON(dadosProcesso, CamadaGeoAtividadeSerializer.getDadosProjeto);
+
     }
 
 }

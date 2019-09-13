@@ -7,33 +7,32 @@ import utils.flexjson.GeometryTransformer;
 
 public class CamadaGeoAtividadeSerializer {
 	
-	public static JSONSerializer getDadosGeoAtividade = SerializerUtil.create(
-			"atividadeCaracterizacao.id",
-			"atividadeCaracterizacao.atividade.id",
-			"atividadeCaracterizacao.atividade.nome",
-			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.id",
-			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.codigo",
-			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.nome",
-			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.orgaosResponsaveis",
-			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.orgaosResponsaveis.sigla",
-			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.id",
-			"atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.geometria",
-			"camadasGeo.item",
-			"camadasGeo.descricao",
-			"camadasGeo.area",
-			"camadasGeo.geometria",
-			"camadasGeo.tipo",
-			"camadasGeo.geometriaAtividade.id",
+	public static JSONSerializer getDadosProjeto = SerializerUtil.create(
+			"atividades.item",
+			"atividades.tipo",
+			"atividades.descricao",
+			"atividades.area",
+			"atividades.geometria",
+			"atividades.atividadeCaracterizacao.id",
+			"atividades.atividadeCaracterizacao.atividade.id",
+			"atividades.atividadeCaracterizacao.atividade.nome",
+			"atividades.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.id",
+			"atividades.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.codigo",
+			"atividades.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.nome",
+			"atividades.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.orgaosResponsaveis",
+			"atividades.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.orgaosResponsaveis.sigla",
+			"atividades.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.id",
+			"atividades.atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.geometria",
 			"restricoes.item",
+			"restricoes.tipo",
 			"restricoes.descricao",
 			"restricoes.area",
 			"restricoes.geometria",
-			"restricoes.tipo",
-			"restricoes.sobreposicaoCaracterizacaoAtividade.id",
-			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id",
-			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis",
-			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis.sigla",
-			"restricoes.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo")
+			"restricoes.sobreposicaoCaracterizacao.id",
+			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.id",
+			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis",
+			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis.sigla",
+			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.codigo")
 			.transform(new GeometryTransformer(), Geometry.class);
 
 }
