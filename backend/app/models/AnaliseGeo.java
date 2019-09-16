@@ -412,7 +412,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this._save();
 
-        this.usuarioValidacaoGerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla);
+        this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this));
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
