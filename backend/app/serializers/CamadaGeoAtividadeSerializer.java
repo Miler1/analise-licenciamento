@@ -8,11 +8,12 @@ import utils.flexjson.GeometryTransformer;
 public class CamadaGeoAtividadeSerializer {
 	
 	public static JSONSerializer getDadosProjeto = SerializerUtil.create(
-			"atividades.item",
-			"atividades.tipo",
-			"atividades.descricao",
-			"atividades.area",
-			"atividades.geometria",
+			"caracterizacao.id",
+			"atividades.geometrias.item",
+			"atividades.geometrias.tipo",
+			"atividades.geometrias.descricao",
+			"atividades.geometrias.area",
+			"atividades.geometrias.geometria",
 			"atividades.atividadeCaracterizacao.id",
 			"atividades.atividadeCaracterizacao.atividade.id",
 			"atividades.atividadeCaracterizacao.atividade.nome",
@@ -26,8 +27,8 @@ public class CamadaGeoAtividadeSerializer {
 			"restricoes.item",
 			"restricoes.tipo",
 			"restricoes.descricao",
-			"restricoes.area",
 			"restricoes.geometria",
+			"restricoes.area",
 			"restricoes.sobreposicaoCaracterizacao.id",
 			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.id",
 			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis",

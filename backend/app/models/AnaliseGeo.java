@@ -437,7 +437,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 //
 //            HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
 //
-//            enviarEmailNotificacao();
+            enviarEmailNotificacao();
         }
     }
 
@@ -451,7 +451,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         notificacao.enviar();
     }
 
-    public void enviarEmailComunicado(List<AtividadeCaracterizacao> atividadeCaracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) {
+    public void enviarEmailComunicado(List<AtividadeCaracterizacao> atividadeCaracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis) {
 
@@ -700,16 +700,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public Documento gerarPDFParecer() throws Exception {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
-        List<DadosProcessoVO> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        DadosProcessoVO dadosAreaProjeto =  processo.getDadosProjeto();
+        DadosProcessoVO dadosProcesso =  processo.getDadosProcesso();
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
                 .addParam("analiseArea", "ANALISE_GEO")
-                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
-                .addParam("camadasGeoAtividade", dadosAreaProjeto)
+                .addParam("empreendimento", empreendimento)
+                .addParam("atividades", dadosProcesso.atividades)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
@@ -724,39 +724,46 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public Documento gerarPDFCartaImagem() {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
-
-        List<DadosProcessoVO> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        DadosProcessoVO camadasGeoAtividade =  processo.getDadosProjeto();
 
-        DadosProcessoVO camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
-                .findAny().orElse(null);
+        DadosProcessoVO dadosProcesso =  processo.getDadosProcesso();
+        List<CamadaGeoAtividadeVO> camadasGeoEmpreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        List<CamadaGeoAtividadeVO> camadasGeoAtividades = dadosProcesso.atividades;
 
-        Geometry geometriaAreaPropriedade = camadaPropriedade.geometria;
+        CamadaGeoAtividadeVO camadaPropriedade = camadasGeoEmpreendimento.stream().filter(camada -> {
+            return camada.geometrias.stream().anyMatch(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
+        }).findAny().orElse(null);
 
-        camadasGeoEmpreedimento.removeIf(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
+        camadasGeoAtividades.removeIf(camada -> camada.geometrias.stream().anyMatch(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo)));
 
-        Map<LayerType, List<DadosProcessoVO>> geometriesCaracterizacao = new HashMap<>();
+        Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
+        Map<LayerType, CamadaGeoRestricaoVO> geometriesRestricoes = new HashMap<>();
+        Map<LayerType, CamadaGeoAtividadeVO> geometriesAtividades = new HashMap<>();
 
-        for (CamadaGeoAtividadeVO camadaAtividade : camadasGeoAtividade) {
+        for (CamadaGeoAtividadeVO camadaAtividade : dadosProcesso.atividades) {
 
-            if (camadaAtividade.restricoes != null &&  camadaAtividade.restricoes.size() > 0) {
-                geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaAtividade.restricoes);
-            }
+            geometriesAtividades.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade);
 
-            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
         }
 
-        if ( camadasGeoEmpreedimento.size() > 0) {
-            geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
+        for (CamadaGeoRestricaoVO camadaRestricao : dadosProcesso.restricoes) {
+
+            geometriesRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaRestricao);
+
         }
 
-        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaPropriedade, geometriesCaracterizacao);
+        if(!camadasGeoEmpreendimento.isEmpty()) {
+
+            geometriasEmpreendimento.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreendimento);
+
+        }
+
+        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasEmpreendimento, geometriesAtividades, geometriesRestricoes);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
-                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
+                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreendimento)
                 .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
@@ -774,4 +781,5 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
+
 }

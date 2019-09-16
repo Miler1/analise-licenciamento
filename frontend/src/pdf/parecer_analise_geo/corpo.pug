@@ -91,26 +91,28 @@ body.corpo
                         div.lista-itens
                             table
                                 tbody
-                                    | \#{list items:camadasGeoEmpreedimento, as:'camadaEmp'}
+                                    | \#{list items:empreendimento, as:'camadaEmp'}
                                     tr
+                                        | \#{list items:camadaEmp.geometrias, as:'geometria'}
                                         td.col-item-titulo
-                                            |${camadaEmp.item}
+                                            |${geometria.item}
                                         td.col-item-conteudo
-                                            |${camadaEmp.descricao}
+                                            |${geometria.descricao}
+                                        | \#{/list}    
                                     | \#{/list}
 
                     p.titulo-item DA ÁREA DA ATIVIDADE
-                        | \#{list items:camadasGeoAtividade, as:'camadaAti'}
+                        | \#{list items:atividades, as:'atividade'}
                         div.lista-itens
                             table
                                 tbody
-                                    tr Atividade: ${camadaAti.atividadeCaracterizacao.atividade.nome.toUpperCase()}
-                                        | \#{list items:camadaAti.camadasGeo, as:'camadaGeoAti'}
+                                    tr Atividade: ${atividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}
+                                        | \#{list items:atividade.geometrias, as:'geometria'}
                                     tr
                                         td.col-item-titulo
-                                            | ${camadaGeoAti.item}
+                                            | ${geometria.item}
                                         td.col-item-conteudo
-                                            | ${camadaGeoAti.descricao}
+                                            | ${geometria.descricao}
                                     | \#{/list}
                         | \#{/list}
 

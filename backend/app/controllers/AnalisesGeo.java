@@ -167,7 +167,7 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) throws Exception {
+    public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) {
 
         verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
@@ -211,7 +211,7 @@ public class AnalisesGeo extends InternalController {
 
         Processo processo = Processo.findById(idProcesso);
 
-        DadosProcessoVO dadosProcesso =  processo.getDadosProcesso();
+        DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
 
         renderJSON(dadosProcesso, CamadaGeoAtividadeSerializer.getDadosProjeto);
 

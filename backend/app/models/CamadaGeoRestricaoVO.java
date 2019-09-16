@@ -15,9 +15,9 @@ public class CamadaGeoRestricaoVO {
 
 	public String descricao;
 
-	public Double area;
-
 	public Geometry geometria;
+
+	public Double area;
 
 	public SobreposicaoCaracterizacao sobreposicaoCaracterizacao;
 
@@ -25,8 +25,9 @@ public class CamadaGeoRestricaoVO {
 
 		this.sobreposicaoCaracterizacao = sobreposicaoCaracterizacao;
 		this.item = sobreposicaoCaracterizacao.tipoSobreposicao.nome;
-		this.tipo = sobreposicaoCaracterizacao.tipoSobreposicao.codigo + "_" + Processo.index;
+		this.tipo = sobreposicaoCaracterizacao.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacao.geometria);
+		this.geometria = sobreposicaoCaracterizacao.geometria;
 		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacao);
 
 	}

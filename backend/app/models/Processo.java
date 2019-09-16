@@ -76,7 +76,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public Analise analise;
 
 	@Transient
-	public static int index;
+	public static int indexDadosRestricoes;
+
+	@Transient
+	public static int indexDadosAtividades;
 
 	@Override
 	public Processo save() {
@@ -644,24 +647,30 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
-	private List<CamadaGeoAtividadeVO> preencheListaAtividades(Caracterizacao caracterizacao) {
+	private static List<CamadaGeoAtividadeVO> preencheListaAtividades(Caracterizacao caracterizacao) {
 
 		List<CamadaGeoAtividadeVO> atividades = new ArrayList<>();
 
 		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
+			indexDadosAtividades = 0;
+			List<GeometriaAtividadeVO> geometriasAtividade = new ArrayList<>();
+
 			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
 
 				for (Geometry geometrie : GeoCalc.getGeometries(geometria.geometria)) {
 
-					index++;
+					indexDadosAtividades++;
 
-					CamadaGeoAtividadeVO camadaGeoAtividade = new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometrie);
+					GeometriaAtividadeVO geometriaAtividade = new GeometriaAtividadeVO(geometrie);
+					geometriasAtividade.add(geometriaAtividade);
 
-					atividades.add(camadaGeoAtividade);
 				}
 
 			}
+
+			CamadaGeoAtividadeVO camadaGeoAtividade = new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometriasAtividade);
+			atividades.add(camadaGeoAtividade);
 
 		}
 
@@ -675,7 +684,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		for(SobreposicaoCaracterizacao sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
 
-			index++;
+			indexDadosRestricoes++;
 
 			CamadaGeoRestricaoVO restricao = new CamadaGeoRestricaoVO(sobreposicao);
 
@@ -691,7 +700,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		Caracterizacao caracterizacao = this.getCaracterizacao();
 
-		return new DadosProcessoVO(preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
+		indexDadosRestricoes = 0;
+
+		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
 
 	}
 

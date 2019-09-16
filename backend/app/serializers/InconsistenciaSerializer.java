@@ -17,11 +17,11 @@ public class InconsistenciaSerializer {
             "anexos.tipo.nome",
             "anexos.tipo.id",
             "categoria",
-            "sobreposicaoCaracterizacaoAtividade.id",
-            "sobreposicaoCaracterizacaoAtividade",
-            "atividadeCaracterizacao.id",
+            "sobreposicaoCaracterizacao.id",
+            "sobreposicaoCaracterizacao",
+            "caracterizacao.id",
             "geometriaAtividade.id",
-            "atividadeCaracterizacao",
+            "caracterizacao",
             "geometriaAtividade",
             "analiseGeo.id");
 }

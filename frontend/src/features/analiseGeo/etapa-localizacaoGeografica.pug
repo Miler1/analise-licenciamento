@@ -26,39 +26,39 @@ include ../../layout/components/mapPanel
 
                                 tbody
                                     tr(ng-repeat='camada in ctrl.camadasDadosEmpreendimento')
-                                        td.col-md-5 {{camada.item}}
-                                        td.col-md-5 {{camada.descricao}}
+                                        td.col-md-5 {{camada.geometrias[0].item}}
+                                        td.col-md-5 {{camada.geometrias[0].descricao}}
                                         td.col-md-2.text-right
                                             i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
                                             | &nbsp;&nbsp;
                             
                             br
-                            div(ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
-                                div(ng-if="camadaDadosAtividade.restricoes.length > 0")
-                                    label Áreas de restrição
+                            div(ng-repeat="restricao in ctrl.dadosProjeto.restricoes")
 
-                                    table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                                        thead
-                                            tr
-                                            th.col-md-4 Item
-                                            th.col-md-5 Descrição
-                                            th.col-md-1.text-right Alertas
+                                label Áreas de restrição
 
-                                        tbody(ng-repeat="restricao in camadaDadosAtividade.restricoes")
-                                            tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
-                                                td.col-md-5 {{restricao.item}} 
-                                                td.col-md-5 {{restricao.descricao}} 
-                                                td.col-md-2.text-right
-                                                    i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione inconsistência para notificar o interessado que procure o {{orgao.sigla.toUpperCase()}}', 
+                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                    thead
+                                        tr
+                                        th.col-md-4 Item
+                                        th.col-md-5 Descrição
+                                        th.col-md-1.text-right Alertas
 
-                                                                                            ng-if="orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA",
+                                    tbody
+                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis")
+                                            td.col-md-5 {{ restricao.item }} 
+                                            td.col-md-5 {{ restricao.descricao }} 
+                                            td.col-md-2.text-right
+                                                i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione inconsistência para notificar o interessado que procure o {{orgao.sigla.toUpperCase()}}', 
 
-                                                                                            ng-class="{'temInconsistencia' : verificaInconsistenciaRestricao(ctrl.categoria.RESTRICAO,camadaDadosAtividade.atividadeCaracterizacao.id,restricao.sobreposicaoCaracterizacaoAtividade.id)}")
-                                                    |&nbsp;
-                                                    i.glyphicon.glyphicon-envelope(title='O órgão {{orgao.sigla.toUpperCase()}} será comunicado sobre a restrição {{restricao.item.toUpperCase()}}', 
+                                                                                        ng-if="orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA",
 
-                                                                                    ng-if="orgao.sigla.toUpperCase() !== ctrl.orgaos.IPHAN && orgao.sigla.toUpperCase() !== ctrl.orgaos.IBAMA")
-                                                    |&nbsp;
+                                                                                        ng-class="{'temInconsistencia' : verificaInconsistenciaRestricao(ctrl.categoria.RESTRICAO,camadaDadosAtividade.atividadeCaracterizacao.id,restricao.sobreposicaoCaracterizacao.id)}")
+                                                |&nbsp;
+                                                i.glyphicon.glyphicon-envelope(title='O órgão {{orgao.sigla.toUpperCase()}} será comunicado sobre a restrição {{restricao.item.toUpperCase()}}', 
+
+                                                                                ng-if="orgao.sigla.toUpperCase() !== ctrl.orgaos.IPHAN && orgao.sigla.toUpperCase() !== ctrl.orgaos.IBAMA")
+                                                |&nbsp;
                             
                             br
                             div.inconsistencias
@@ -77,14 +77,14 @@ include ../../layout/components/mapPanel
 
                                     tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
                                         tr
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getItemRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : 'Propriedade'}}
+                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacao.id ? getItemRestricao(inconsistencia.sobreposicaoCaracterizacao.id) : 'Propriedade'}}
                                             td.col-md-3 {{inconsistencia.categoria}}
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : '-'}}
+                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacao.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacao.id) : '-'}}
                                             td.col-md-2.text-right
                                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'PROPRIEDADE'",
                                                         ng-click='addInconsistenciaPropriedade(ctrl.categoria.PROPRIEDADE)', title='Editar inconsistência')
                                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'RESTRICAO'",
-                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia.atividadeCaracterizacao.id, inconsistencia.sobreposicaoCaracterizacaoAtividade.id)", title='Editar inconsistência')
+                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia.caracterizacao.id, inconsistencia.sobreposicaoCaracterizacao.id)", title='Editar inconsistência')
                                                 i.glyphicon.glyphicon-trash.icone-inconsistencia-clicavel(title='Excluir inconsistência',
                                                         ng-bootbox-title='Confirmação',
                                                         ng-bootbox-confirm='Deseja realmente excluir esta inconsistência ?',
@@ -101,27 +101,22 @@ include ../../layout/components/mapPanel
                     h5(style="margin-bottom:0px") Dados da área do projeto
                     br
                     hr(style="margin-top:2px;")
-                    div(ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
-                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto', ng-init = 'ctrl.openedAccordion = false', ng-click = 'ctrl.openedAccordion = !ctrl.openedAccordion')
+                    div.collapse-atividade(ng-repeat="atividade in ctrl.dadosProjeto.atividades")
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
                             .panel.panel-default
                                 .panel-heading
                                     h4.panel-title
-                                        | Atividade: {{camadaDadosAtividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}}
-                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordion, 'glyphicon-chevron-right': !ctrl.openedAccordion}")
+                                        | Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
 
-                        #dadosAreaProjeto.collapse
+                        .collapse(id='dadosAreaProjeto{{$index}}')
                             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                 thead
                                     tr
                                         th.col-md-4 Item
                                         th.col-md-5 Declarado
-                                        th.col-md-1.text-right Ações
 
-                                tbody(ng-repeat="camadaGeo in camadaDadosAtividade.camadasGeo")
+                                tbody(ng-repeat="geometria in atividade.geometrias")
                                     tr
-                                        td.col-md-5 {{camadaGeo.item}}
-                                        td.col-md-5 {{camadaGeo.descricao}}
-                                        td.col-md-2.text-right
-                                            i.glyphicon.glyphicon-alert.icone-inconsistencia-clicavel(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(ctrl.categoria.ATIVIDADE,camadaDadosAtividade.atividadeCaracterizacao.id,camadaGeo.geometriaAtividade.id)}", 
-                                                                        ng-click='addInconsistenciaAtividade(ctrl.categoria.ATIVIDADE, camadaDadosAtividade.atividadeCaracterizacao.id, camadaGeo.geometriaAtividade.id)', title='Adicionar inconsistência')
-                                                | &nbsp;
+                                        td.col-md-5 {{ geometria.item }}
+                                        td.col-md-5 {{ geometria.descricao }}
