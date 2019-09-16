@@ -40,7 +40,7 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
 
             div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                 i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-                | Anexar arquivo na inconsistência
+                | Anexar arquivo no parecer
 
             table.table.table-condensed(ng-if="anexos.length > 0")
                 thead

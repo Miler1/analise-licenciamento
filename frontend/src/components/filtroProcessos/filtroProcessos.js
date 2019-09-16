@@ -27,6 +27,8 @@ var FiltroProcessos = {
 		var ctrl = this;
 
 		ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
+		ctrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+		ctrl.perfis = app.utils.Perfis;
 
 		ctrl.openedAccordion = false;
 		ctrl.municipios = [];
@@ -166,7 +168,7 @@ var FiltroProcessos = {
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
-
+		if(ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_GEO){
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
 				if(ctrl.isAnaliseTecnicaOpcional){
 					analistaService.getAnalistasTecnicos()
@@ -190,6 +192,7 @@ var FiltroProcessos = {
 
 				}
 			}
+		}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
 

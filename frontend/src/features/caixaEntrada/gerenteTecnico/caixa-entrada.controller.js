@@ -12,6 +12,7 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 	cxEntGerente.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
 	cxEntGerente.visualizarProcesso = visualizarProcesso;
 	cxEntGerente.processos = [];
+	cxEntGerente.legendas = app.utils.CondicaoTramitacao;
 	cxEntGerente.condicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
 	cxEntGerente.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntGerente.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;

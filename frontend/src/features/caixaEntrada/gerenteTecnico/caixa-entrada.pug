@@ -23,14 +23,14 @@ div
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
-							th.col-md-2 Licenças
+							th.col-md-2 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise gerente
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
-								span(ng-class="{'icone-soliciacao-desvinculo-pendente': processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE}")
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -64,11 +64,11 @@ div
 													span Alterar analista
 											li
 
-												a
+												a(ng-click="cxEntGerente.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
 				div
-					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação de desvínculo
+					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
 
 				+paginacao('cxEntGerente.paginacao', 'cxEntGerente.onPaginaAlterada')
 

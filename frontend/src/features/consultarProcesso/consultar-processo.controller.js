@@ -5,6 +5,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	var consultarProcesso = this;
 
 	consultarProcesso.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+	consultarProcesso.perfis = app.utils.Perfis;
 	consultarProcesso.atualizarListaProcessos = atualizarListaProcessos;
 	consultarProcesso.atualizarPaginacao = atualizarPaginacao;
 	consultarProcesso.selecionarTodosProcessos = selecionarTodosProcessos;
@@ -12,7 +13,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.visualizarProcesso = visualizarProcesso;
 
 	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
-	consultarProcesso.legendaAjustes = app.utils.CondicaoTramitacao.NOTIFICADO;
+
 	consultarProcesso.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	consultarProcesso.processos = [];
 	consultarProcesso.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);

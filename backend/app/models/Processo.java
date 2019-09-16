@@ -172,6 +172,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		if(!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+
+			filtroProcesso.isAnaliseGeo = true;
+			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id,filtroProcesso.isAnaliseGeo);
+
+		}
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 	}

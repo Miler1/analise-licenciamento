@@ -8,7 +8,7 @@ div
 		pesquisar-ao-inicializar="true",
 		is-analise-juridica="false",
 		is-analise-tecnica="false",
-		is-analise-geo="false",
+		is-analise-geo="usuarioLogadoCodigoPerfil === app.utils.Perfis.ANALISTA_GEO",
 		is-gerente="false",
 		is-gerente-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE",
 		consultar-processos="true",
@@ -28,7 +28,7 @@ div
 							th.col-md-1 Processo
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
-							th.col-md-2 Licenças
+							th.col-md-2 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise GEO
 							th.col-md-1 Prazo análise técnica
@@ -36,8 +36,11 @@ div
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
-								span(ng-class="{ 'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.legendaDesvinculo }")
-								span(ng-class="{ 'icone-solicitacao-ajustes': processo.idCondicaoTramitacao === consultarProcesso.legendaAjustes }")
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE}")
+								span(ng-class="{'icone-solicitacao-ajustes': false }")
+								span(ng-class="{'icone-solicitacao-finalizada': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
+								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO}")
+
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -72,10 +75,17 @@ div
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.fa.fa-download
 													span Baixar carta imagem
-				div
 
-					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação desvínculo pendente
-					span.icone-solicitacao-ajustes.legenda Solicitação de ajustes		
+				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO")
+
+					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
+					span.icone-.icone-solicitacao-finalizada.legenda Análise GEO finalizada
+					span.icone-revisao-atendida.legenda Notificado
+
+				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE")
+
+					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
+					span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
