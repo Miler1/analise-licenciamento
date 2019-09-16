@@ -799,7 +799,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo, Notificacao notificacao) throws Exception {
+    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo, Notificacao notificacao) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
