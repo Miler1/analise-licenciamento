@@ -1,8 +1,17 @@
 package models;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Polygon;
+import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
+import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
+import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.*;
 import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
@@ -13,6 +22,7 @@ import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
 import javax.persistence.*;
@@ -21,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema="analise", name="analise_geo")
@@ -146,6 +158,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     @OneToMany(mappedBy="analiseGeo", cascade=CascadeType.ALL)
     public List<Inconsistencia> inconsistencias;
+
+    @Transient
+    public String linkNotificacao;
+
+    @Transient
+    public int prazoNotificacao;
 
     private void validarParecer() {
 
@@ -423,12 +441,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             }
 
         } else {
-              //TODO Tribo Puma - SQD-1 - Implementar envio de email com notificação ao interessado
+
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
-            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+//            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
+//            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 //
 //            HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
 //
@@ -437,18 +455,22 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 //
 //            HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
 //
-            enviarEmailNotificacao();
+            enviarEmailNotificacao(analise.prazoNotificacao);
         }
     }
 
-    public void enviarEmailNotificacao() {
+    public void enviarEmailNotificacao(int prazoNotificacao) throws Exception {
 
         List<String> destinatarios = new ArrayList<String>();
-        destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
-        destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
+        destinatarios.addAll(Collections.singleton(this.analise.processo.empreendimento.empreendedor.pessoa.contato.email));
 
-        EmailNotificacaoAnaliseGeo notificacao = new EmailNotificacaoAnaliseGeo(this, destinatarios);
-        notificacao.enviar();
+        this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
+        Notificacao notificacao = new Notificacao(this, prazoNotificacao);
+        notificacao.save();
+        this.prazoNotificacao = prazoNotificacao;
+
+        EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, destinatarios, notificacao);
+        emailNotificacaoAnaliseGeo.enviar();
     }
 
     public void enviarEmailComunicado(List<AtividadeCaracterizacao> atividadeCaracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) throws Exception {
@@ -768,6 +790,41 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
                 .setPageSize(30.0D, 21.0D, 0.5D, 0.5D, 1.0D, 3.7D);
+
+        pdf.generate();
+
+        Documento documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+
+    }
+
+    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo, Notificacao notificacao) throws Exception {
+
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
+
+        IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+        main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+        Endereco enderecoCompleto = null;
+        for(Endereco endereco : empreendimentoEU.enderecos){
+            if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){
+                enderecoCompleto = endereco;
+            }
+        }
+
+        Geometry geometriaEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria);
+        Coordinate coordenadasEmpreendimento = geometriaEmpreendimento.getCentroid().getCoordinate();
+        UsuarioAnalise analista = getUsuarioSessao();
+        String localizacaoEmpreendimento = "["+coordenadasEmpreendimento.x+", "+coordenadasEmpreendimento.y+"]";
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("analiseGeo", analiseGeo)
+                .addParam("enderecoCompleto", enderecoCompleto)
+                .addParam("analista", analista)
+                .addParam("localizacaoEmpreendimento",localizacaoEmpreendimento)
+                .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
         pdf.generate();
 

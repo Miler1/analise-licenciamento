@@ -185,25 +185,25 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void downloadPDFNotificacao(AnaliseGeo analiseGeo) throws Exception {
+   public static void downloadPDFNotificacao(AnaliseGeo analiseGeo) throws Exception {
 
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
+       verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
-        analiseGeo.analise = Analise.findById(analiseGeo.analise.id);
+       analiseGeo.analise = Analise.findById(analiseGeo.analise.id);
 
-        List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseGeo);
+       List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseGeo);
 
-        Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseGeo);
+       Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseGeo);
 
-        String nome = pdfNotificacao.tipo.nome +  "_" + analiseGeo.id + ".pdf";
-        nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
-        response.setHeader("Content-Transfer-Encoding", "binary");
-        response.setHeader("Content-Type", "application/pdf");
+       String nome = pdfNotificacao.tipo.nome +  "_" + analiseGeo.id + ".pdf";
+       nome = nome.replace(' ', '_');
+       response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+       response.setHeader("Content-Transfer-Encoding", "binary");
+       response.setHeader("Content-Type", "application/pdf");
 
-        renderBinary(pdfNotificacao.arquivo, nome);
+       renderBinary(pdfNotificacao.arquivo, nome);
 
-    }
+   }
 
     public static void buscaDadosProcesso(Long idProcesso) {
 

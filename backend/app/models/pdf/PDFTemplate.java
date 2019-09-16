@@ -13,7 +13,8 @@ public enum PDFTemplate {
     NOTIFICACAO_ANALISE_TECNICA (TipoDocumento.NOTIFICACAO_ANALISE_TECNICA),
     NOTIFICACAO_ANALISE_JURIDICA (TipoDocumento.NOTIFICACAO_ANALISE_JURIDICA),
     ANALISE_MANEJO (TipoDocumento.DOCUMENTO_ANALISE_MANEJO),
-    CARTA_IMAGEM (TipoDocumento.CARTA_IMAGEM);
+    CARTA_IMAGEM (TipoDocumento.CARTA_IMAGEM),
+    NOTIFICACAO_ANALISE_GEO (TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
     private static final File TEMPLATES_FOLDER = new File(Configuracoes.PDF_TEMPLATES_FOLDER_PATH);
     private static final String LIBS_PATH = new File(TEMPLATES_FOLDER, "libs").getPath();
