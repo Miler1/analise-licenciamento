@@ -25,7 +25,8 @@ div
 							th.col-md-2 Município
 							th.col-md-2 Licença
 							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise gerente
+							th.col-md-1 Prazo análise GEO
+							th.col-md-1 Prazo análise técnica
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
@@ -36,10 +37,14 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.prazoAnaliseGerente, cxEntGerente.PrazoMinimoAvisoAnalise.GERENTE)}")
-								| {{cxEntGerente.dateUtil.getContaDiasRestantesData(processo.prazoAnaliseGerente)}}
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
-								| {{cxEntGerente.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,cxEntGerente.PrazoAnalise.ANALISE_TECNICA)}}
+							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{cxEntGerente.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+
+							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
+
+							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
+								| -
 							td
 								span.pull-right
 
