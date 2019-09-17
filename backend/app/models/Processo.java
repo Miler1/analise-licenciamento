@@ -4,11 +4,8 @@ import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
-import enums.CamadaGeoEnum;
-import enums.ComunicadoOrgaoEnum;
+import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.ValidacaoException;
-import java.text.DecimalFormat;
-import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
@@ -653,8 +650,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
-			indexDadosAtividades = 0;
 			List<GeometriaAtividadeVO> geometriasAtividade = new ArrayList<>();
+			indexDadosAtividades = 0;
 
 			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
 
@@ -678,9 +675,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	private List<CamadaGeoRestricaoVO> preencheListaRestricoes(Caracterizacao caracterizacao) {
+	private static List<CamadaGeoRestricaoVO> preencheListaRestricoes(Caracterizacao caracterizacao) {
 
 		List<CamadaGeoRestricaoVO> restricoes = new ArrayList<>();
+		indexDadosRestricoes = 0;
 
 		for(SobreposicaoCaracterizacao sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
 
@@ -699,8 +697,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public DadosProcessoVO getDadosProcesso (){
 
 		Caracterizacao caracterizacao = this.getCaracterizacao();
-
-		indexDadosRestricoes = 0;
 
 		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
 
@@ -735,16 +731,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public static String getDescricaoRestricao(SobreposicaoCaracterizacao sobreposicaoCaracterizacao) {
 
-		if(ComunicadoOrgaoEnum.getList().contains(sobreposicaoCaracterizacao.tipoSobreposicao.codigo)) {
+		if(TipoSobreposicaoDistanciaEnum.getList().contains(sobreposicaoCaracterizacao.tipoSobreposicao.codigo)) {
 
-			return getDescricaoSobreposicao(sobreposicaoCaracterizacao.geometria);
+			return "Distância " + Helper.formatBrDecimal(GeoCalc.distance(sobreposicaoCaracterizacao.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacao.geometria) / 1000, 2) + " km";
 
 		}
 
-		Geometry geometriaRestricaoTransformada = GeoCalc.transform(sobreposicaoCaracterizacao.geometria, GeoCalc.detecteCRS(sobreposicaoCaracterizacao.geometria)[0]);
-		Geometry geometriaEmpreendimentoTransformada = GeoCalc.transform(sobreposicaoCaracterizacao.caracterizacao.empreendimento.coordenadas, GeoCalc.detecteCRS(sobreposicaoCaracterizacao.caracterizacao.empreendimento.coordenadas)[0]);
-
-		return "Distância " + new DecimalFormat("#.##").format(geometriaEmpreendimentoTransformada.distance(geometriaRestricaoTransformada) / 100000) + " km";
+		return getDescricaoSobreposicao(sobreposicaoCaracterizacao.geometria);
 
 	}
 
