@@ -31,13 +31,7 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
-<<<<<<< HEAD
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE}")
-=======
-								span(ng-class="{'icone-soliciacao-desvinculo-pendente': cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
-							td
-								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntGerente.verificarTodosProcessosMarcados()")
->>>>>>> 95115077bde6ec13df0286a2a4e3d31140cf29f3
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
