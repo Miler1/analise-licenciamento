@@ -133,10 +133,10 @@ public class GeoCalc {
 
 	public static double distance(Geometry fromGeometry, Geometry toGeometry) {
 
-		Geometry fromGeometryTransformed = GeoCalc.transform(fromGeometry, GeoCalc.detecteCRS(fromGeometry)[0]);
-		Geometry toGeometryTransformed = GeoCalc.transform(toGeometry, GeoCalc.detecteCRS(toGeometry)[0]);
+		Geometry fromTransformedGeometry = GeoCalc.transform(fromGeometry, GeoCalc.detecteCRS(fromGeometry)[0]);
+		Geometry toTransformedGeometry = GeoCalc.transform(toGeometry, GeoCalc.detecteCRS(toGeometry)[0]);
 
-		return fromGeometryTransformed.distance(toGeometryTransformed);
+		return fromTransformedGeometry.distance(toTransformedGeometry);
 
 	}
 

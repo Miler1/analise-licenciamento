@@ -658,16 +658,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				for (Geometry geometrie : GeoCalc.getGeometries(geometria.geometria)) {
 
 					indexDadosAtividades++;
-
-					GeometriaAtividadeVO geometriaAtividade = new GeometriaAtividadeVO(geometrie);
-					geometriasAtividade.add(geometriaAtividade);
+					geometriasAtividade.add(new GeometriaAtividadeVO(geometrie));
 
 				}
 
 			}
 
-			CamadaGeoAtividadeVO camadaGeoAtividade = new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometriasAtividade);
-			atividades.add(camadaGeoAtividade);
+			atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometriasAtividade));
 
 		}
 
@@ -683,10 +680,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		for(SobreposicaoCaracterizacao sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
 
 			indexDadosRestricoes++;
-
-			CamadaGeoRestricaoVO restricao = new CamadaGeoRestricaoVO(sobreposicao);
-
-			restricoes.add(restricao);
+			restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
 
 		}
 
