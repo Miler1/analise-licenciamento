@@ -732,7 +732,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("empreendimento", empreendimento)
                 .addParam("atividades", dadosProcesso.atividades)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
-                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
         pdf.generate();
 
@@ -785,7 +785,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
-                .setPageSize(30.0D, 21.0D, 0.5D, 0.5D, 1.0D, 3.7D);
+                .setPageSize(30.0D, 21.0D, 0.5D, 0.5D, 2.0D, 3.9D);
 
         pdf.generate();
 

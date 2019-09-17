@@ -131,11 +131,11 @@ public class Emails extends Mailer {
 			addRecipient(email);
 		}
 		EmailAttachment attachment = new EmailAttachment();
-		attachment.setPath(Play.getFile(filePdfParecer.getPath()).getPath());
+		attachment.setPath(new File(filePdfParecer.getPath()).getPath());
 		addAttachment(attachment);
 
 		EmailAttachment attachmentCartaImagem = new EmailAttachment();
-		attachmentCartaImagem.setPath(Play.getFile(cartaImagem.getPath()).getPath());
+		attachmentCartaImagem.setPath(new File(cartaImagem.getPath()).getPath());
 		addAttachment(attachmentCartaImagem);
 
 		return send(analiseGeo, comunicado, municipio);
