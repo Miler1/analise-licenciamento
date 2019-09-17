@@ -13,6 +13,7 @@ import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.*;
+import models.licenciamento.Pessoa;
 import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
@@ -445,10 +446,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         } else {
 
-            if(analise.despacho == null || analise.despacho.equals(""))
-                throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
-            if(analise.prazoNotificacao == null)
-                throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
+            this.validarIndeferimento(analise);
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
             enviarEmailNotificacao(analise.prazoNotificacao);
 
@@ -469,7 +467,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public void enviarEmailNotificacao(int prazoNotificacao) throws Exception {
 
         List<String> destinatarios = new ArrayList<String>();
-        destinatarios.addAll(Collections.singleton(this.analise.processo.empreendimento.empreendedor.pessoa.contato.email));
+        Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
+        destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
         Notificacao notificacao = new Notificacao(this, prazoNotificacao);
@@ -508,6 +507,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         tiposResultadosAnalise.setNext(new ParecerNaoValidadoGeo());
 
         tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
+    }
+
+    public void validarIndeferimento(AnaliseGeo analise){
+        if(analise.despacho == null || analise.despacho.equals(""))
+            throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
+        if(analise.prazoNotificacao == null)
+            throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
     }
 
     public void validaParecerGerente(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
