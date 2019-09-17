@@ -35,6 +35,7 @@ ANALISTA_DIFERENTE_DE_ANALISTA_TECNICO=O Analista informado não tem perfil de a
 ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
 ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista técnico pelo coordenador a justificativa é obrigatória.
 DESVINCULO_SOLICITADO_COM_SUCESSO=Seu desvínculo foi solicitado com sucesso!
+DESVINCULO_RESPONDIDO_COM_SUCESSO=O desvínculo foi respondido com sucesso!
 #
 # Inconsistencia
 #

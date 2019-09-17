@@ -78,6 +78,9 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 						idAnaliseGeo: function(){
 							return processo.idAnaliseGeo;
+						},
+						idProcesso: function(){
+							return processo.idProcesso;
 						}
 					}
 					
