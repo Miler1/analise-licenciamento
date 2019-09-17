@@ -5,6 +5,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import enums.CamadaGeoEnum;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import models.CamadaGeoAtividadeVO;
@@ -126,6 +127,7 @@ public class MapaImagem {
 	private Font brandPrimaryFont1;
 	private Font brandSecondaryFont;
 	private BufferedImage brandBufferedImage;
+	private String NOME_PROPRIEDADE_EMPREENDIMENTO = "Limites da propriedade";
 
 	public MapaImagem() {
 
@@ -268,10 +270,17 @@ public class MapaImagem {
 
 				e.geometrias.forEach(geometriaEmpreendimento -> {
 
-					String colorCode = getColorTemaCiclo();
-					Color color = Color.decode(colorCode);
-					Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-					dataLayers.add(new DataLayer(geometriaEmpreendimento.item, geometriaEmpreendimento.geometria, color, colorCode).fillColor(fillColor));
+					if(geometriaEmpreendimento.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo)) {
+
+						dataLayers.add(new DataLayer("Limites da propriedade", geometriaEmpreendimento.geometria, Color.YELLOW, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+
+					} else {
+
+						String colorCode = getColorTemaCiclo();
+						Color color = Color.decode(colorCode);
+						Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
+						dataLayers.add(new DataLayer(geometriaEmpreendimento.item, geometriaEmpreendimento.geometria, color, colorCode).fillColor(fillColor));
+					}
 
 				});
 
@@ -280,8 +289,8 @@ public class MapaImagem {
 			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
 
 			grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers));
-		}
 
+		}
 
 		return createMapCaracterizacaoImovel(geometryAreaImovel, grupoDataLayers);
 
@@ -404,18 +413,12 @@ public class MapaImagem {
 
 		for(DataLayer dataLayer : dataLayers) {
 
-			PolygonStyle polygonStyle1 = (PolygonStyle)new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
-			map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+			if(!dataLayer.name.equals(NOME_PROPRIEDADE_EMPREENDIMENTO)) {
+				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
+				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+			}
 
 		}
-
-		DataLayer newDataLayer = new DataLayer("Limite", geometryAreaImovel, Color.YELLOW, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 ));
-		dataLayers.addFirst(newDataLayer);
-
-		List<DataLayer> newDataLayers = new ArrayList<>();
-		newDataLayers.add(newDataLayer);
-
-		grupoDataLayers.add(new GrupoDataLayer("Área total da propriedade", newDataLayers));
 
 		createMainCoordinates(map, geometryAreaImovel, crs);
 
@@ -423,7 +426,7 @@ public class MapaImagem {
 		for(DataLayer dataLayer : dataLayers) {
 
 			if (dataLayer.geometry instanceof Point){
-				createPointCoordinates(map, dataLayer.geometry , dataLayer.name, crs);
+				createPointCoordinates(map, dataLayer.geometry, dataLayer.name, crs);
 			}
 		}
 

@@ -821,7 +821,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 				documentoAnaliseService.generatePDFParecerGeo(params)
 					.then(function(data, status, headers){
-						if(_isEmpty(ctrl.analiseGeo.inconsistencias)){
+						if(ctrl.analiseGeo.inconsistencias && ctrl.analiseGeo.inconsistencias.length === 0){
 							var a = document.createElement('a');
 							a.href = URL.createObjectURL(data.data.response.blob);
 							a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';

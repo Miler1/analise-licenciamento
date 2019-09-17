@@ -422,7 +422,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 for (SobreposicaoCaracterizacao sobreposicaoCaracterizacao : sobreposicoesCaracterizacao ){
 
                     if (sobreposicaoCaracterizacao != null){
-                        enviarEmailComunicado(this.analise.processo.getCaracterizacao().atividadesCaracterizacao, sobreposicaoCaracterizacao);
+                        enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacao);
                     }
                 }
 
@@ -473,7 +473,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         emailNotificacaoAnaliseGeo.enviar();
     }
 
-    public void enviarEmailComunicado(List<AtividadeCaracterizacao> atividadeCaracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis) {
 
@@ -482,10 +482,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
 
-                Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacao, orgaoResponsavel);
+                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacao, orgaoResponsavel);
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
-
 
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
@@ -750,13 +749,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         DadosProcessoVO dadosProcesso =  processo.getDadosProcesso();
         List<CamadaGeoAtividadeVO> camadasGeoEmpreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
-        List<CamadaGeoAtividadeVO> camadasGeoAtividades = dadosProcesso.atividades;
 
         CamadaGeoAtividadeVO camadaPropriedade = camadasGeoEmpreendimento.stream().filter(camada -> {
             return camada.geometrias.stream().anyMatch(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
         }).findAny().orElse(null);
-
-        camadasGeoAtividades.removeIf(camada -> camada.geometrias.stream().anyMatch(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo)));
 
         Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
         Map<LayerType, CamadaGeoRestricaoVO> geometriesRestricoes = new HashMap<>();

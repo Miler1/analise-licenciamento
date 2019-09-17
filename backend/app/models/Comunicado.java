@@ -49,11 +49,9 @@ public class Comunicado extends GenericModel {
     @Column(name="ativo")
     public Boolean ativo;
 
-    @OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name="rel_comunicado_atividade_caracterizacao",
-			joinColumns={@JoinColumn(name="id_comunicado", referencedColumnName="id")},
-			inverseJoinColumns={@JoinColumn(name="id_atividade_caracterizacao", referencedColumnName="id")})
-    public List<AtividadeCaracterizacao> atividadesCaracterizacao;
+    @OneToOne
+    @JoinColumn(name="id_caracterizacao", referencedColumnName="id")
+    public Caracterizacao caracterizacao;
 
     @OneToOne
     @JoinColumn(name="id_tipo_sobreposicao", referencedColumnName="id")
@@ -69,19 +67,18 @@ public class Comunicado extends GenericModel {
             inverseJoinColumns=@JoinColumn(name="id_documento"))
     public List<Documento> anexos;
 
-
     @Transient
     public String linkComunicado;
 
     @Transient
     public boolean valido;
 
-    public Comunicado(AnaliseGeo analiseGeo, List<AtividadeCaracterizacao> atividadesCaracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao, Orgao orgao){
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao, Orgao orgao){
 
         this.tipoSobreposicao = sobreposicaoCaracterizacao.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
-        this.atividadesCaracterizacao = atividadesCaracterizacao;
+        this.caracterizacao = caracterizacao;
         this.ativo = true;
         this.analiseGeo = analiseGeo;
         this.resolvido = false;
