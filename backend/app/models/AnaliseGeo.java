@@ -446,7 +446,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         } else {
 
-            this.validarIndeferimento(analise);
+
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
             enviarEmailNotificacao(analise.prazoNotificacao);
 
@@ -508,14 +508,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
     }
-
-    public void validarIndeferimento(AnaliseGeo analise){
-        if(analise.despacho == null || analise.despacho.equals(""))
-            throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
-        if(analise.prazoNotificacao == null)
-            throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
-    }
-
+    
     public void validaParecerGerente(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
 
         TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new ParecerValidadoGeoGerente();

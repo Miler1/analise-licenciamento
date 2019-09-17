@@ -741,6 +741,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
+		if (!ctrl.analiseGeo.prazoNotificacao || ctrl.analiseGeo.prazoNotificacao === undefined){
+			return false;
+		}
+
+		if(!ctrl.analiseGeo.despacho || ctrl.analiseGeo.despacho === undefined){
+			return false;
+		}
+
 		if (!ctrl.analiseGeo.parecer) {
 			return false;
 		}
