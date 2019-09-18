@@ -17,7 +17,7 @@ div.modal-body
 
         .info-dados-processo
             label.label-dados-processo CPF/CNPJ: 
-            span.span-dados-processo {{desvinculoGerenteCtrl.processo.cpfEmpreendimento}}
+            span.span-dados-processo {{desvinculoGerenteCtrl.processo.cpfEmpreendimento ? desvinculoGerenteCtrl.processo.cpfEmpreendimento : desvinculoGerenteCtrl.processo.cnpjEmpreendimento | brCpfCnpj}}
 
         .info-dados-processo
             label.label-dados-processo Empreendimento: 
