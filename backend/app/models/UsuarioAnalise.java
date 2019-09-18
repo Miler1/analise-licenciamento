@@ -84,4 +84,9 @@ public class UsuarioAnalise extends GenericModel  {
 
 		return false;
 	}
+
+	public static UsuarioAnalise findByGerente(Gerente gerente) {
+		return UsuarioAnalise.find("id = :id_gerente")
+				.setParameter("id_gerente", gerente.usuario.id).first();
+	}
 }

@@ -56,7 +56,8 @@ div(uib-accordion class="accordion")
                                     ng-options="consultorJuridico.id as consultorJuridico.pessoa.nome for consultorJuridico in $ctrl.consultoresJuridicos | orderBy:'pessoa.nome'")
                     option(value="") Selecione o consultor jurídico
 
-        .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_TECNICO)")
+        //- .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_TECNICO) ")
+        .row.form-group(ng-if="$ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_GEO")
             .col-md-12
                 label.control-label Analista técnico:
                 select.form-control(ng-model="$ctrl.filtro.idAnalistaTecnico", name="selectAnalista",

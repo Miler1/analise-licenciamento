@@ -8,7 +8,6 @@ import models.licenciamento.Licenca;
 import org.apache.commons.mail.EmailAttachment;
 import play.Play;
 import play.mvc.Mailer;
-
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeBodyPart;
 import play.Logger;

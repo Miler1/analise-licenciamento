@@ -1,5 +1,6 @@
 div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')  
     .row
+        div(growl inline="true" reference='5')
         .col-md-6
             h4 PROCESSO
 
@@ -23,7 +24,7 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
         br
         br
 
-        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;margin: 0px; width: 811px; height: 88px;")
+        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;margin: 0px; width: 850px; height: 88px;")
             thead
                 tr
                 th.col-md-4 Áreas de Restrição 
@@ -33,13 +34,13 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
                     td.col-md-4 {{comunicado.tipoSobreposicao.nome}}
     div(ng-if="comunicado.valido == false ? disabled=false: disabled = true")        
         div(ng-if="comunicado.resolvido == true ? disabled=false: disabled = true")
-            label(style="font-size:13px;") Descrição do Parecer*: 
+            label(style="font-size:13px;") Descrição do Parecer*:
             br
-            textarea(name="descricaoParecer", ng-model="descricaoParecer", style="margin: 0px; width: 811px; height: 88px;")
+            textarea(id="descricaoParecer", style="margin: 0px; width: 850px; height: 88px;")
 
             div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                 i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-                | Anexar arquivo na inconsistência
+                | Anexar arquivo no parecer
 
             table.table.table-condensed(ng-if="anexos.length > 0")
                 thead

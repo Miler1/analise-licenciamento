@@ -91,6 +91,11 @@ public class Empreendimento extends GenericModel {
 	@OneToMany(mappedBy = "empreendimento", targetEntity = Proprietario.class, orphanRemoval=true)
 	public List<Proprietario> proprietarios;
 
+	@Required
+	@ManyToOne
+	@JoinColumn(name = "id_cadastrante", referencedColumnName = "id")
+	public Pessoa cadastrante;
+
 	@Column(name = "houve_alteracoes")
 	public boolean houveAlteracoes;
 	

@@ -72,12 +72,16 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 				var modalInstance = $uibModal.open({
 					controller: 'desvinculoController',
 					controllerAs: 'desvinculoCtrl',
+					backdrop: 'static',
 					templateUrl: 'features/caixaEntrada/analistaGeo/modalDesvinculo.html',
 					size: 'lg',
 					resolve: {
 
 						idAnaliseGeo: function(){
 							return processo.idAnaliseGeo;
+						},
+						idProcesso: function(){
+							return processo.idProcesso;
 						}
 					}
 					

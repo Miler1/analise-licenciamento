@@ -25,4 +25,5 @@ public class GeometriaAtividade extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name = "id_atividade_caracterizacao", referencedColumnName = "id")
 	public AtividadeCaracterizacao atividadeCaracterizacao;
+
 }

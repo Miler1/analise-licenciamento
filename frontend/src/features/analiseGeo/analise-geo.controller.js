@@ -471,6 +471,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			});
 
+				$rootScope.$broadcast('atualizarContagemProcessos');
 		});
 
 	};
@@ -580,6 +581,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var modalInstance = $uibModal.open({
 			controller: 'inconsistenciaController',
 			controllerAs: 'modalCtrl',
+			backdrop: 'static',
 			templateUrl: 'features/analiseGeo/modalInconsistencia.html',
 			size: 'lg',
 			resolve: {
@@ -827,6 +829,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
+		if (!ctrl.analiseGeo.prazoNotificacao || ctrl.analiseGeo.prazoNotificacao === undefined){
+			return false;
+		}
+
+		if(!ctrl.analiseGeo.despacho || ctrl.analiseGeo.despacho === undefined){
+			return false;
+		}
+
 		if (!ctrl.analiseGeo.parecer) {
 			return false;
 		}
@@ -911,13 +921,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					},function(error){
 							mensagem.error(error.data.texto);
 					});
-
+					$location.path('/analise-geo');
 			}, function(error){
 
-				mensagem.error(error.data.texto);
+				mensagem.error(error.data.texto, {referenceId: 5});
 			});
 			
-			$location.path('/analise-geo');
 
 	};
 

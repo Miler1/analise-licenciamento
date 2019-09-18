@@ -98,7 +98,7 @@ public class Gerente extends GenericModel {
 		return copia;
 	}
 
-	public static UsuarioAnalise distribuicaoAutomaticaGerente(String setorAtividade) {
+	public static Gerente distribuicaoAutomaticaGerente(String setorAtividade, AnaliseGeo analiseGeo) {
 
 		List<UsuarioAnalise> gerentes = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, setorAtividade);
 
@@ -123,7 +123,7 @@ public class Gerente extends GenericModel {
 
 		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
 
-		return  UsuarioAnalise.findById(distribuicaoProcessoVO.id);
+		return new Gerente(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
 
 	}
 

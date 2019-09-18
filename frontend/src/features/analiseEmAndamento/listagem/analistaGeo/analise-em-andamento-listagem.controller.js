@@ -45,6 +45,8 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 
 	function continuarAnalise(idAnaliseJuridica) {
 
+		$rootScope.$broadcast('atualizarContagemProcessos');
+
 		$location.path('/analise-geo/' + idAnaliseJuridica.toString());
 	}	
 

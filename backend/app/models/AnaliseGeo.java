@@ -8,6 +8,7 @@ import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.*;
+import models.licenciamento.Pessoa;
 import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
@@ -158,9 +159,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public String linkNotificacao;
 
     @Transient
-    public int prazoNotificacao;
+    public Integer prazoNotificacao;
 
-    private void validarParecer() {
+    private void validarParecer(AnaliseGeo analise) {
 
         if(StringUtils.isBlank(this.parecer))
             throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
@@ -401,13 +402,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public void finalizar(AnaliseGeo analise, UsuarioAnalise usuarioExecutor) throws Exception {
 
         this.update(analise);
-        validarParecer();
+        validarParecer(analise);
         validarParecerEmpreendimento();
         validarTipoResultadoAnalise();
 
         this._save();
 
-        this.usuarioValidacaoGerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla);
+        this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this));
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
@@ -439,9 +440,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
+            enviarEmailNotificacao(analise.prazoNotificacao);
 
-//            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
-//            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 //
 //            HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
 //
@@ -450,14 +452,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 //
 //            HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
 //
-            enviarEmailNotificacao(analise.prazoNotificacao);
+
         }
     }
 
     public void enviarEmailNotificacao(int prazoNotificacao) throws Exception {
 
         List<String> destinatarios = new ArrayList<String>();
-        destinatarios.addAll(Collections.singleton(this.analise.processo.empreendimento.empreendedor.pessoa.contato.email));
+        Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
+        destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
         Notificacao notificacao = new Notificacao(this, prazoNotificacao);

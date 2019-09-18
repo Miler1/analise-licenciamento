@@ -39,6 +39,18 @@ DateUtil = {
 		return diasRestantes >= 0 ? diasRestantes : Math.abs(diasRestantes) + ' dia(s) atraso';
 	},
 
+	getDataFormatada: function(data) {
+		
+		var dateParts = data.split("/");
+
+		dateParts[2] = dateParts[2].split(' ')[0];
+
+		var dateObject = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+
+		return dateObject;
+
+	},
+
 	verificaPrazoMinimo: function (dias, prazoMinimo) {
 
 		if(dias >= prazoMinimo)
@@ -65,39 +77,36 @@ DateUtil = {
 		return a.diff(b, 'year');
 	},
 
-	getDataFormatada: function(data) {
+	getContaDiasRestantesData:  function(data) {
 
-		var dateParts = data.split("/");
+		if(data){
 
-		dateParts[2] = dateParts[2].split(' ')[0];
+			var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+			var diasRestantes = (diferencaTempo / (1000 * 3600 * 24));
 
-		var dateObject = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+			if(diasRestantes < 0 && diasRestantes > -1) {
+				diasRestantes = 0;
+				return diasRestantes.toString();
+			} else if(diasRestantes >= 0) {
+				diasRestantes++;
+			}
 
-		return dateObject;
-
-	},
-
-	getContaDiasRestantesData:  function(data) { 
-
-		var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
-		var diasRestantes = (diferencaTempo / (1000 * 3600 * 24));
-
-		if(diasRestantes < 0 && diasRestantes > -1) {
-			diasRestantes = 0;
-			return diasRestantes.toString();
-		} else if(diasRestantes >= 0) {
-			diasRestantes++;
+			return diasRestantes.toString().substring(0, diasRestantes.toString().indexOf('.'));
 		}
 
-		return diasRestantes.toString().substring(0, diasRestantes.toString().indexOf('.'));
+		return 0;
 
 	},
 
 	verificaPrazoMinimoData: function (data) {
 
-		var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+		if(data){
 
-		return (diferencaTempo / (1000 * 3600 * 24)) <= -1;
+			var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+
+			return (diferencaTempo / (1000 * 3600 * 24)) <= -1;
+
+		}
 
 	}
 };

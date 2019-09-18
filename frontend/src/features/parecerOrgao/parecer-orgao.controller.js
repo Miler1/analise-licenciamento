@@ -1,8 +1,8 @@
-var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$rootScope,$routeParams, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
+var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$routeParams, $rootScope, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
 
 	$scope.comunicado = null;
 	$scope.anexos = [];
-	
+		
 	$timeout(function () {
 		
 		parecerOrgaoService.findComunicado($routeParams.idComunicado)
@@ -28,7 +28,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 		if(file) {
 
-				uploadService.save(file)
+				uploadService.saveExterno(file)
 						.then(function(response) {
 
 							$scope.anexos.push({
@@ -72,13 +72,18 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 	$scope.enviar = function () {
 
+		var parecerOrgao = document.getElementById('descricaoParecer').value;
+
 		var params = {id: $routeParams.idComunicado,
-					  parecerOrgao: $scope.descricaoParecer,
+					  parecerOrgao: parecerOrgao,
 					  anexos: $scope.anexos};
 		parecerOrgaoService.enviar(params)
 			.then(function (response) {
-
-				$window.location.href="http://www.ipaam.am.gov.br/";
+				if(response.data ==true){
+					$window.location.href="http://www.ipaam.am.gov.br/";
+				}else{
+					mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
+				}
 		});
 	};
 

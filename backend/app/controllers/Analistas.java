@@ -6,6 +6,7 @@ import models.UsuarioAnalise;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import security.Acao;
+import security.Auth;
 import serializers.UsuarioSerializer;
 import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;

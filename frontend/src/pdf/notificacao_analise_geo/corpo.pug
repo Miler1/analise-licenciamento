@@ -7,7 +7,6 @@ doctype html
 |    empreendimentoCPF = empreendimento.pessoa.getCpfCnpj();
 |    enderecoCompleto = enderecoCompleto;
 |    localizacaoEmpreendimento = localizacaoEmpreendimento;
-
 |}%
 html(lang='en')
   head
@@ -52,7 +51,7 @@ html(lang='en')
           .container
             .container-flex
                 .container-left    
-                    span <strong>Rua:</strong> ${enderecoCompleto.logradouro}
+                    span <strong>Rua:</strong> ${enderecoCompleto.logradouro}, ${enderecoCompleto.numero}
                 .container-right
                     span <strong>Bairro:</strong> ${enderecoCompleto.bairro}
 
@@ -68,7 +67,7 @@ html(lang='en')
                 .container-left    
                     span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
                 .container-right    
-                    span <strong>Email:</strong>  ${empreendimento.contato.email}
+                    span <strong>Email:</strong>  ${empreendimento.cadastrante.contato.email}
             br
 
           div     
