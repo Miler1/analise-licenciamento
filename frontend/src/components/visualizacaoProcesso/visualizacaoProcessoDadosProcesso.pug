@@ -77,7 +77,7 @@
 										b {{modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise == null ? ' - ' : modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise}}
 
 	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
-		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus")
+		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
 			h4 Tramitação:
 
 			div(uib-accordion class="accordion")

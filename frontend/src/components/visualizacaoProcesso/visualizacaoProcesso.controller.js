@@ -1,4 +1,4 @@
-var VisualizacaoProcessoController = function ($location,$anchorScroll, $timeout,$uibModalInstance, processo, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService, notificacaoService) {
+var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootScope, $timeout,$uibModalInstance, processo, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService, notificacaoService) {
 
 	var modalCtrl = this;
 
@@ -8,10 +8,13 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $timeout
 	modalCtrl.PrazoAnalise = app.utils.PrazoAnalise;
 	modalCtrl.getMaiorPotencialPoluidor = getMaiorPotencialPoluidor;
 
+	modalCtrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+	modalCtrl.perfis = app.utils.Perfis;
+
 	modalCtrl.abreDocumentacao = true;
 	modalCtrl.abreTramitacaoProcessoAtual = true;
 	modalCtrl.abreTramitacaoProcessoAnterior = false;
-	modalCtrl.comparaStatus = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE;
+	modalCtrl.comparaStatus = app.utils.CondicaoTramitacao;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 
 	var estiloPoligono = {

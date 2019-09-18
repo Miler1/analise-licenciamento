@@ -33,7 +33,7 @@ include ../../layout/components/mapPanel
                                             | &nbsp;&nbsp;
                             
                             br
-                            div(ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
+                            div(style="margin-top:10px;",ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
                                 div(ng-if="camadaDadosAtividade.restricoes.length > 0")
                                     label Áreas de restrição
 
@@ -101,7 +101,7 @@ include ../../layout/components/mapPanel
                     h5(style="margin-bottom:0px") Dados da área do projeto
                     br
                     hr(style="margin-top:2px;")
-                    div(ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
+                    div(style="margin-bottom:20px;",ng-repeat="camadaDadosAtividade in ctrl.camadasDadosAtividade")
                         a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto{{$index}}', ng-click = 'camadaDadosAtividade.openedAccordion = !camadaDadosAtividade.openedAccordion')
                             .panel.panel-default
                                 .panel-heading
