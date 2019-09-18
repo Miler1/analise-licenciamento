@@ -41,20 +41,20 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
         try {
 
-//            List<String> tiposlicenca = new ArrayList<String>();
-//            for(Caracterizacao caracterizacao : this.analiseGeo.analise.processo.caracterizacoes) {
-//
-//                tiposlicenca.add(caracterizacao.tipoLicenca.nome);
-//            }
-//            String licencas = StringUtils.join(tiposlicenca, ",");
-//
-//            List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
-//            for(AnaliseDocumento analiseDocumento : this.analiseGeo.analisesDocumentos) {
-//
-//                if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.GEO) && !analiseDocumento.validado) {
-//                    documentosInvalidados.add(analiseDocumento);
-//                }
-//            }
+            List<String> tiposlicenca = new ArrayList<String>();
+            for(Caracterizacao caracterizacao : this.analiseGeo.analise.processo.caracterizacoes) {
+
+                tiposlicenca.add(caracterizacao.tipoLicenca.nome);
+            }
+            String licencas = StringUtils.join(tiposlicenca, ",");
+
+            List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
+            for(AnaliseDocumento analiseDocumento : this.analiseGeo.analisesDocumentos) {
+
+                if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.GEO) && !analiseDocumento.validado) {
+                    documentosInvalidados.add(analiseDocumento);
+                }
+            }
 
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
             main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
