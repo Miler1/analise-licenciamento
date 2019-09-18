@@ -146,6 +146,7 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 			controller: 'desvinculoGerenteController',
 			controllerAs: 'desvinculoGerenteCtrl',
 			templateUrl: 'features/caixaEntrada/gerenteTecnico/modalDesvinculo.html',
+			backdrop: 'static',
 			size: 'lg',
 			resolve: {
 

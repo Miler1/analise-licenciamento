@@ -492,6 +492,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var modalInstance = $uibModal.open({
 			controller: 'inconsistenciaController',
 			controllerAs: 'modalCtrl',
+			backdrop: 'static',
 			templateUrl: 'features/analiseGeo/modalInconsistencia.html',
 			size: 'lg',
 			resolve: {
