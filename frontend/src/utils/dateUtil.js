@@ -77,27 +77,36 @@ DateUtil = {
 		return a.diff(b, 'year');
 	},
 
-	getContaDiasRestantesData:  function(data) { 
+	getContaDiasRestantesData:  function(data) {
 
-		var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
-		var diasRestantes = (diferencaTempo / (1000 * 3600 * 24));
+		if(data){
 
-		if(diasRestantes < 0 && diasRestantes > -1) {
-			diasRestantes = 0;
-			return diasRestantes.toString();
-		} else if(diasRestantes >= 0) {
-			diasRestantes++;
+			var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+			var diasRestantes = (diferencaTempo / (1000 * 3600 * 24));
+
+			if(diasRestantes < 0 && diasRestantes > -1) {
+				diasRestantes = 0;
+				return diasRestantes.toString();
+			} else if(diasRestantes >= 0) {
+				diasRestantes++;
+			}
+
+			return diasRestantes.toString().substring(0, diasRestantes.toString().indexOf('.'));
 		}
 
-		return diasRestantes.toString().substring(0, diasRestantes.toString().indexOf('.'));
+		return 0;
 
 	},
 
 	verificaPrazoMinimoData: function (data) {
 
-		var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+		if(data){
 
-		return (diferencaTempo / (1000 * 3600 * 24)) <= -1;
+			var diferencaTempo = this.getDataFormatada(data).getTime() - new Date().getTime();
+
+			return (diferencaTempo / (1000 * 3600 * 24)) <= -1;
+
+		}
 
 	}
 };
