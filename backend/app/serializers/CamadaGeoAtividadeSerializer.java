@@ -29,11 +29,11 @@ public class CamadaGeoAtividadeSerializer {
 			"restricoes.descricao",
 			"restricoes.geometria",
 			"restricoes.area",
-			"restricoes.sobreposicaoCaracterizacao.id",
-			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.id",
-			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis",
-			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis.sigla",
-			"restricoes.sobreposicaoCaracterizacao.tipoSobreposicao.codigo")
+			"restricoes.sobreposicaoCaracterizacaoEmpreendimento.id",
+			"restricoes.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id",
+			"restricoes.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis",
+			"restricoes.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis.sigla",
+			"restricoes.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo")
 			.transform(new GeometryTransformer(), Geometry.class);
 
 }

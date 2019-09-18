@@ -74,7 +74,7 @@ var InconsistenciaController = function ($scope,
 		var id;
 
 		_.forEach(dadosProjeto.restricoes, function(restricao){
-			if(inconsistenciaController.idSobreposicao === restricao.sobreposicaoCaracterizacao.id){
+			if(inconsistenciaController.idSobreposicao === restricao.sobreposicaoCaracterizacaoEmpreendimento.id){
 				id = dadosProjeto.caracterizacao.id;
 			}
 		});
@@ -92,7 +92,7 @@ var InconsistenciaController = function ($scope,
 			categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
 			caracterizacao: {id: inconsistenciaController.idCaracterizacao},
 			analiseGeo: {id: analiseGeo.id},
-			sobreposicaoCaracterizacao: {id: inconsistenciaController.idSobreposicao}
+			sobreposicaoCaracterizacaoEmpreendimento: {id: inconsistenciaController.idSobreposicao}
 		};
 
 		inconsistenciaService.findInconsistencia(paramsInconsistencia)
@@ -111,7 +111,7 @@ var InconsistenciaController = function ($scope,
 					anexos: inconsistenciaController.anexos,
 					caracterizacao: {id: inconsistenciaController.idCaracterizacao},
 					geometriaAtividade: {id: idGeometriaAtividade},
-					sobreposicaoCaracterizacao: {id: inconsistenciaController.idSobreposicao}
+					sobreposicaoCaracterizacaoEmpreendimento: {id: inconsistenciaController.idSobreposicao}
 				};
 
 			}else{
@@ -124,7 +124,7 @@ var InconsistenciaController = function ($scope,
 					anexos: inconsistenciaController.anexos,
 					caracterizacao: {id: inconsistenciaController.idCaracterizacao},
 					geometriaAtividade: {id: idGeometriaAtividade},
-					sobreposicaoCaracterizacao: {id: inconsistenciaController.idSobreposicao}
+					sobreposicaoCaracterizacaoEmpreendimento: {id: inconsistenciaController.idSobreposicao}
 				};
 
 			}
@@ -198,7 +198,7 @@ var InconsistenciaController = function ($scope,
 		var restricoes = [];
 
 		_.forEach(dadosProjeto.restricoes, function(restricao){
-			_.forEach(restricao.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis, function(orgao){
+			_.forEach(restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis, function(orgao){
 				//verifica se o orgão da restrição é IPHAN ou IBAMA
 				if(orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA){
 					orgaoEnable = true;
@@ -220,7 +220,7 @@ var InconsistenciaController = function ($scope,
 			_.forEach(analiseGeo.inconsistencias, function(i){
 
 				//verifica se uma restrição já possui inconsistência
-				if(i.sobreposicaoCaracterizacao && (i.sobreposicaoCaracterizacao.id === restricao.sobreposicaoCaracterizacao.id)){
+				if(i.sobreposicaoCaracterizacaoEmpreendimento && (i.sobreposicaoCaracterizacaoEmpreendimento.id === restricao.sobreposicaoCaracterizacaoEmpreendimento.id)){
 					restricaoEnable = false;
 				}
 			});
@@ -241,7 +241,7 @@ var InconsistenciaController = function ($scope,
 		var itemRestricao = {};
 
 		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
-			if (idSobreposicao === restricao.sobreposicaoCaracterizacao.id) {
+			if (idSobreposicao === restricao.sobreposicaoCaracterizacaoEmpreendimento.id) {
 				itemRestricao = restricao.item;
 			}
 		});

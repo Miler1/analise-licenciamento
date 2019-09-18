@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(schema = "licenciamento", name = "sobreposicao_caracterizacao")
-public class SobreposicaoCaracterizacao extends GenericModel{
+@Table(schema = "licenciamento", name = "sobreposicao_caracterizacao_empreendimento")
+public class SobreposicaoCaracterizacaoEmpreendimento extends GenericModel{
 
 private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_id_seq";
 
@@ -28,7 +28,7 @@ private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_id_
     @Column(name = "geometria", columnDefinition="Geometry")
     public Geometry geometria;
 
-    public SobreposicaoCaracterizacao(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
+    public SobreposicaoCaracterizacaoEmpreendimento(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
         this.tipoSobreposicao = tipoSobreposicao;
         this.caracterizacao = caracterizacao;
         this.geometria = geometria;

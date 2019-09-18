@@ -516,7 +516,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
 			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() && 
 						 inconsistencia.caracterizacao.id === idCaracterizacao && 
-						 inconsistencia.sobreposicaoCaracterizacao.id === idSobreposicao;
+						 inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao;
 		});
 
 		return inconsitenciaEncontrada !== undefined;
@@ -529,8 +529,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		_.forEach(ctrl.analiseGeo.inconsistencias, function(inconsistencia){
 
-			if (inconsistencia.sobreposicaoCaracterizacao && 
-				inconsistencia.sobreposicaoCaracterizacao.id === idSobreposicao) {
+			if (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento && 
+				inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) {
 
 				item = inconsistencia.tipoInconsistencia;
 
@@ -548,8 +548,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		_.forEach(ctrl.analiseGeo.inconsistencias, function(inconsistencia){
 			
-			if (inconsistencia.sobreposicaoCaracterizacao && 
-				inconsistencia.sobreposicaoCaracterizacao.id === idSobreposicao) {
+			if (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento && 
+				inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) {
 
 				descricao = inconsistencia.descricaoInconsistencia;
 
@@ -635,7 +635,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			analiseGeo: {id: analiseGeo.id},
 			caracterizacao: {id: idCaracterizacao},
 			geometriaAtividade: {id: null},
-			sobreposicaoCaracterizacao: {id: idSobreposicao}
+			sobreposicaoCaracterizacaoEmpreendimento: {id: idSobreposicao}
 		};
 
 		inconsistenciaService.findInconsistencia(params)
@@ -654,7 +654,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			analiseGeo: {id: analiseGeo.id},
 			caracterizacao: {id: idCaracterizacao},
 			geometriaAtividade: {id: idGeometriaAtividade},
-			sobreposicaoCaracterizacao: {id: null}			
+			sobreposicaoCaracterizacaoEmpreendimento: {id: null}			
 		};
 
 		inconsistenciaService.findInconsistencia(params)
@@ -956,9 +956,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var orgaoEnable = false;
 		var restricaoEnable = true;
 		
-		_.forEach(ctrl.camadasDadosAtividade, function(camadaDadosAtividade){
-			_.forEach(camadaDadosAtividade.restricoes, function(restricao){
-				_.forEach(restricao.sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis, function(orgao){
+		_.forEach(ctrl.dadosProjeto, function(dadoProjeto){
+			_.forEach(dadoProjeto.restricoes, function(restricao){
+				_.forEach(restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis, function(orgao){
 					//verifica se o orgão da restrição é IPHAN ou IBAMA
 					if(orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA){
 						orgaoEnable = true;
@@ -967,7 +967,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				if(orgaoEnable){
 					_.forEach(ctrl.analiseGeo.inconsistencias, function(i){
 						//verifica se uma restrição já possui inconsistência
-						if(i.sobreposicaoCaracterizacao && (i.sobreposicaoCaracterizacao.id === restricao.sobreposicaoCaracterizacao.id)){
+						if(i.sobreposicaoCaracterizacaoEmpreendimento && (i.sobreposicaoCaracterizacaoEmpreendimento.id === restricao.sobreposicaoCaracterizacaoEmpreendimento.id)){
 							restricaoEnable = false;
 						}
 					});

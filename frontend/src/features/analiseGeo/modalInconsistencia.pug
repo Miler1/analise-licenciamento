@@ -19,7 +19,7 @@ div.modal-body
     div.area-modal(ng-if="modalCtrl.categoriaInconsistencia === 'RESTRICAO'")
         label.label-modal Item da Restrição*:
         select.form-control(ng-model="modalCtrl.idSobreposicao", name="selectItemRestricao", ng-if="!modalCtrl.habilitaExcluir",
-                ng-options="restricao.sobreposicaoCaracterizacao.id as restricao.item for restricao in modalCtrl.getRestricoesSemInconsistencia() track by restricao.sobreposicaoCaracterizacao.id")
+                ng-options="restricao.sobreposicaoCaracterizacaoEmpreendimento.id as restricao.item for restricao in modalCtrl.getRestricoesSemInconsistencia() track by restricao.sobreposicaoCaracterizacaoEmpreendimento.id")
             option(value="") Selecione o item da Restrição
         br(ng-if="modalCtrl.habilitaExcluir")
         span.span-modal(ng-if="modalCtrl.habilitaExcluir") {{modalCtrl.getItemRestricao(modalCtrl.idSobreposicao)}}

@@ -8,7 +8,6 @@ import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.*;
-import models.licenciamento.Pessoa;
 import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
@@ -412,13 +411,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
-                List<SobreposicaoCaracterizacao> sobreposicoesCaracterizacao = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacao.stream().distinct()
+                List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacao = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacao.stream().distinct()
                         .filter(distinctByKey(sobreposicaoCaracterizacao -> sobreposicaoCaracterizacao.tipoSobreposicao.codigo)).collect(Collectors.toList());
 
-                for (SobreposicaoCaracterizacao sobreposicaoCaracterizacao : sobreposicoesCaracterizacao ){
+                for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacao ){
 
-                    if (sobreposicaoCaracterizacao != null){
-                        enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacao);
+                    if (sobreposicaoCaracterizacaoEmpreendimento != null){
+                        enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoEmpreendimento);
                     }
                 }
 
@@ -471,16 +470,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         emailNotificacaoAnaliseGeo.enviar();
     }
 
-    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) throws Exception {
 
-        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacao.tipoSobreposicao.orgaosResponsaveis) {
+        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis) {
 
             if(!orgaoResponsavel.sigla.equals("IPHAN")  && !orgaoResponsavel.sigla.equals("IBAMA")) {
 
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
 
-                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacao, orgaoResponsavel);
+                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
 

@@ -31,7 +31,7 @@ public class Inconsistencias extends GenericController{
             i.analiseGeo = inconsistencia.analiseGeo;
             i.id = inconsistencia.id;
             i.caracterizacao = Objects.nonNull(inconsistencia.caracterizacao) ? inconsistencia.caracterizacao : null;
-            i.sobreposicaoCaracterizacao = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacao.id) ? inconsistencia.sobreposicaoCaracterizacao : null;
+            i.sobreposicaoCaracterizacaoEmpreendimento = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : null;
             i.saveAnexos(inconsistencia.anexos);
             i.save();
 
@@ -57,7 +57,7 @@ public class Inconsistencias extends GenericController{
             }
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
 
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacao);
+                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoEmpreendimento);
 
                 novaInconsistencia.saveAnexos(inconsistencia.anexos);
                 novaInconsistencia.save();
@@ -91,10 +91,10 @@ public class Inconsistencias extends GenericController{
         }
 
         if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
-             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacao.id = :sobreposicaoCaracterizacao")
+             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoEmpreendimento.id = :sobreposicaoCaracterizacaoEmpreendimento")
                      .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
                      .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                     .setParameter("sobreposicaoCaracterizacao",inconsistencia.sobreposicaoCaracterizacao.id)
+                     .setParameter("sobreposicaoCaracterizacaoEmpreendimento",inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id)
                      .setParameter("categoria",inconsistencia.categoria).first();
         }
 

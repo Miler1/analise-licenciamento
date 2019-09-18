@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 @Entity
 @Table(schema="analise", name="comunicado")
@@ -73,9 +72,9 @@ public class Comunicado extends GenericModel {
     @Transient
     public boolean valido;
 
-    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacao sobreposicaoCaracterizacao, Orgao orgao){
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
 
-        this.tipoSobreposicao = sobreposicaoCaracterizacao.tipoSobreposicao;
+        this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
         this.caracterizacao = caracterizacao;

@@ -772,7 +772,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		List<CamadaGeoRestricaoVO> restricoes = new ArrayList<>();
 		indexDadosRestricoes = 0;
 
-		for(SobreposicaoCaracterizacao sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
+		for(SobreposicaoCaracterizacaoEmpreendimento sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
 
 			indexDadosRestricoes++;
 			restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
@@ -818,15 +818,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	public static String getDescricaoRestricao(SobreposicaoCaracterizacao sobreposicaoCaracterizacao) {
+	public static String getDescricaoRestricao(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
 
-		if(TipoSobreposicaoDistanciaEnum.getList().contains(sobreposicaoCaracterizacao.tipoSobreposicao.codigo)) {
+		if(TipoSobreposicaoDistanciaEnum.getList().contains(sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo)) {
 
-			return "Distância " + Helper.formatBrDecimal(GeoCalc.distance(sobreposicaoCaracterizacao.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacao.geometria) / 1000, 2) + " km";
+			return "Distância " + Helper.formatBrDecimal(GeoCalc.distance(sobreposicaoCaracterizacaoEmpreendimento.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoEmpreendimento.geometria) / 1000, 2) + " km";
 
 		}
 
-		return getDescricaoSobreposicao(sobreposicaoCaracterizacao.geometria);
+		return getDescricaoSobreposicao(sobreposicaoCaracterizacaoEmpreendimento.geometria);
 
 	}
 
