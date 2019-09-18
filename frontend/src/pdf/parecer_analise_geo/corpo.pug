@@ -74,7 +74,7 @@ body.corpo
             li
                 .titulo-item DO REQUERIMENTO
                 .conteudo-item
-                    span O interessado requer ${analiseEspecifica.analise.processo.getCaracterizacao().tipoLicenca.sigla}, para atividade(s) de
+                    span O interessado requer ${analiseEspecifica.analise.processo.getCaracterizacao().tipoLicenca.sigla}, para atividade(s) de 
                     | \#{list items:analiseEspecifica.analise.processo.getCaracterizacao().atividadesCaracterizacao, as:'atividadeCaracterizacao'}
                     span ${atividadeCaracterizacao.atividade.nome.toUpperCase()}
                     | \#{/list}

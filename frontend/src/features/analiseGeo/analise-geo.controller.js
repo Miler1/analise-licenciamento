@@ -21,6 +21,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.controleVisualizacao = null;
 	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 	ctrl.TiposSobreposicao = [];
+	ctrl.numPoints = 0;
 
 	var getLayer = function(descricao){
 
@@ -267,20 +268,59 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		processo.numeroProcesso = processo.numero;
 
 		processoService.visualizarProcesso(processo);
-    };
+
+	};
+	
+	var esconderCamada = function(camada) {
+
+		var tipoGeometria = JSON.parse(camada.geometria).type.toLowerCase();
+
+		if(tipoGeometria === 'point') {
+
+			$scope.$emit('mapa:remover-geometria-base-cluster', camada);
+
+		} else {
+
+			$scope.$emit('mapa:remover-geometria-base', camada);
+
+		}
+
+	};
+
+	var mostrarCamada = function(camada) {
+
+		var tipoGeometria = JSON.parse(camada.geometria).type.toLowerCase();
+
+		if(tipoGeometria === 'point') {
+
+			adicionarPointNoCluster(camada);
+
+		} else {
+
+			adicionarGeometriaNoMapa(camada, true);
+
+		}
+
+	};
 
 	this.controlaExibicaoCamadas = function(camada) {
 
 		if (camada.visivel) {
-			$scope.$emit('mapa:remover-geometria-base', camada);
+			
+			esconderCamada(camada);
+			
 		} else {
-			adicionarGeometriaNoMapa(camada, true);
+
+			mostrarCamada(camada);
+
 		}
+
 	};
 
 	this.controlaExibicaoLayer = function(tipoSobreposicao) {
 
 		$scope.$emit('mapa:controla-exibicao-wmslayer', tipoSobreposicao);
+
 	};
 
 	this.getCamadasSobreposicoes = function() {
@@ -307,10 +347,17 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				style: ctrl.estiloMapa[camada.tipo] || camada.estilo
 			},
 			popupText: camada.item,
-			disableCentralizarGeometrias:disable
+			disableCentralizarGeometrias:disable,
+			numPoints: ctrl.numPoints
 		});
 	}
 
+	function adicionarPointNoCluster (camada) {
+
+		camada.visivel = true;
+		$scope.$emit('mapa:adicionar-geometria-base-cluster', camada);
+
+	}
 
 	function adicionarWmsLayerNoMapa (tipoSobreposicao) {
 
@@ -323,6 +370,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		tipoSobreposicao.disableCentralizarGeometrias=false;
 
 		$scope.$emit('mapa:adicionar-wmslayer-mapa', tipoSobreposicao, true);
+	}
+
+	function contaQuantidadeCamadasPoint (camadas) {
+
+		return camadas.filter(function(camada) {
+
+			return JSON.parse(camada.geometria).type.toLowerCase() === 'point';
+
+		}).length;
+
 	}
 
 	this.init = function() {
@@ -375,6 +432,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					analiseGeoService.getDadosProjeto($scope.analiseGeo.analise.processo.id).then(function (response) {
 
 						ctrl.dadosProjeto = response.data;
+
+						ctrl.dadosProjeto.atividades.forEach(function(atividade) {
+
+							ctrl.numPoints += contaQuantidadeCamadasPoint(atividade.geometrias);
+
+						});
+
+						ctrl.numPoints += contaQuantidadeCamadasPoint(ctrl.dadosProjeto.restricoes);
 
 						ctrl.dadosProjeto.atividades.forEach(function (atividade) {
 
