@@ -38,7 +38,7 @@ public class Desvinculos extends GenericController {
             desvinculo.dataSolicitacao = c.getTime();
         }
         String siglaSetor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla;
-//        Gerente gerente = UsuarioAnalise.findByGerente(Gerente.distribuicaoAutomaticaGerente(siglaSetor, desvinculo.analiseGeo));
+        
         Gerente gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor, desvinculo.analiseGeo);
 
         gerente.save();
