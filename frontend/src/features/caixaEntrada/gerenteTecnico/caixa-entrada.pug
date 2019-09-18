@@ -54,12 +54,12 @@ div
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a
+												a(ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo
 											li
-
-												a(ng-class="{'disable-acoes': !cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
+												//- habilitar só quando o processo passar pela análise técnica
+												a.disable-acoes 
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li
