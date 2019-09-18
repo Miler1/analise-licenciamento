@@ -167,7 +167,7 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) throws Exception {
+    public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) {
 
         verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
@@ -205,15 +205,16 @@ public class AnalisesGeo extends InternalController {
 
    }
 
-    public static void buscaDadosAreaProjeto(Long idProcesso) {
+    public static void buscaDadosProcesso(Long idProcesso) {
 
         returnIfNull(idProcesso, "Long");
 
         Processo processo = Processo.findById(idProcesso);
 
-      List<CamadaGeoAtividade> dadosAreaProjeto =  processo.getDadosAreaProjeto();
+        DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
 
-        renderJSON(dadosAreaProjeto, CamadaGeoAtividadeSerializer.getDadosGeoAtividade);
+        renderJSON(dadosProcesso, CamadaGeoAtividadeSerializer.getDadosProjeto);
+
     }
 
 }

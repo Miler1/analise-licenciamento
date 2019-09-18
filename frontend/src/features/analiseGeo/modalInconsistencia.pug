@@ -14,16 +14,15 @@ div.modal-body
         select.form-control(ng-if="modalCtrl.categoriaInconsistencia !== 'ATIVIDADE'", ng-model="modalCtrl.categoriaInconsistencia", name="selectCategoriaInconsistencia", ng-disabled="modalCtrl.habilitaExcluir")
             option(value="") Selecione o a categoria da inconsistência
             option(value="PROPRIEDADE") Propriedade
-            option(value="RESTRICAO") Restrição
+            option(ng-if="modalCtrl.getRestricoesSemInconsistencia().length > 0" value="RESTRICAO") Restrição
 
     div.area-modal(ng-if="modalCtrl.categoriaInconsistencia === 'RESTRICAO'")
         label.label-modal Item da Restrição*:
         select.form-control(ng-model="modalCtrl.idSobreposicao", name="selectItemRestricao", ng-if="!modalCtrl.habilitaExcluir",
-                ng-options="restricao.sobreposicaoCaracterizacaoAtividade.id as restricao.item for restricao in modalCtrl.getRestricoesSemInconsistencia() track by restricao.sobreposicaoCaracterizacaoAtividade.id")
+                ng-options="restricao.sobreposicaoCaracterizacaoEmpreendimento.id as restricao.item for restricao in modalCtrl.getRestricoesSemInconsistencia() track by restricao.sobreposicaoCaracterizacaoEmpreendimento.id")
             option(value="") Selecione o item da Restrição
         br(ng-if="modalCtrl.habilitaExcluir")
         span.span-modal(ng-if="modalCtrl.habilitaExcluir") {{modalCtrl.getItemRestricao(modalCtrl.idSobreposicao)}}
-
 
     div.area-modal
         label.label-modal Descrição da inconsistência*:
@@ -58,7 +57,6 @@ div.modal-body
 
                     a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="modalCtrl.removerDocumento($index,anexo.id)")
                         i.glyphicon.glyphicon-trash
-
 
 div.modal-footer
 
