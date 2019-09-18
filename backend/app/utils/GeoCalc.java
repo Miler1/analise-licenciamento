@@ -27,14 +27,14 @@ public class GeoCalc {
 	public static final double BUFFER = 0.00000001;
 	protected static final STRtree index = new STRtree(2);
 	public static final String ILLEGAL_GEOMETRY_TYPE = "Resultado inapropiado para a categoria!";
-	protected static CoordinateReferenceSystem CRS_DEFAUL = null;
+	protected static CoordinateReferenceSystem CRS_DEFAULT = null;
 
 	static {
 		String key, value;
 		int indexOf;
 
 		try {
-			CRS_DEFAUL = CRS.parseWKT(Play.configuration.getProperty("CRS:DEFAULT"));
+			CRS_DEFAULT = CRS.parseWKT(Play.configuration.getProperty("CRS:DEFAULT"));
 		} catch (FactoryException e) {
 			throw new RuntimeException(e);
 		}
@@ -109,7 +109,7 @@ public class GeoCalc {
 
 		MathTransform mathTransform;
 		try {
-			mathTransform = CRS.findMathTransform(CRS_DEFAUL, crs, true);
+			mathTransform = CRS.findMathTransform(CRS_DEFAULT, crs, true);
 		} catch (FactoryException e) {
 			throw new RuntimeException(e);
 		}
@@ -131,6 +131,15 @@ public class GeoCalc {
 		return crs;
 	}
 
+	public static double distance(Geometry fromGeometry, Geometry toGeometry) {
+
+		Geometry fromTransformedGeometry = GeoCalc.transform(fromGeometry, GeoCalc.detecteCRS(fromGeometry)[0]);
+		Geometry toTransformedGeometry = GeoCalc.transform(toGeometry, GeoCalc.detecteCRS(toGeometry)[0]);
+
+		return fromTransformedGeometry.distance(toTransformedGeometry);
+
+	}
+
 	public static double length(Geometry geometry) {
 		CoordinateReferenceSystem[] crs = detecteCRS(geometry);
 
@@ -143,7 +152,7 @@ public class GeoCalc {
 	public static double length(Geometry geometry, CoordinateReferenceSystem crs) {
 		MathTransform mathTransform = null;
 		try {
-			mathTransform = CRS.findMathTransform(CRS_DEFAUL, crs);
+			mathTransform = CRS.findMathTransform(CRS_DEFAULT, crs);
 		} catch (FactoryException e) {
 			throw new RuntimeException(e);
 		}
@@ -247,7 +256,7 @@ public class GeoCalc {
 
 		MathTransform mathTransform;
 		try {
-			mathTransform = CRS.findMathTransform(CRS_DEFAUL, crs, true);
+			mathTransform = CRS.findMathTransform(CRS_DEFAULT, crs, true);
 		} catch(FactoryException e) {
 			throw new RuntimeException(e);
 		}

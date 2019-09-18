@@ -1,19 +1,13 @@
 package models;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.*;
-import models.licenciamento.Pessoa;
 import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
@@ -417,18 +411,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
-            for (AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.getCaracterizacao().atividadesCaracterizacao) {
+                List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacao = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacao.stream().distinct()
+                        .filter(distinctByKey(sobreposicaoCaracterizacao -> sobreposicaoCaracterizacao.tipoSobreposicao.codigo)).collect(Collectors.toList());
 
-                List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividadesList = atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.stream().distinct()
-                        .filter(distinctByKey(sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo)).collect(Collectors.toList());
+                for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacao ){
 
-                for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicaoCaracterizacaoAtividadesList ){
-
-                    if (sobreposicaoCaracterizacaoAtividade != null){
-                        enviarEmailComunicado(atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade);
+                    if (sobreposicaoCaracterizacaoEmpreendimento != null){
+                        enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoEmpreendimento);
                     }
                 }
-            }
 
             if(this.usuarioValidacaoGerente != null) {
 
@@ -479,20 +470,18 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         emailNotificacaoAnaliseGeo.enviar();
     }
 
-    public void enviarEmailComunicado(AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) throws Exception {
 
-        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
+        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis) {
 
             if(!orgaoResponsavel.sigla.equals("IPHAN")  && !orgaoResponsavel.sigla.equals("IBAMA")) {
 
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
 
-
-                Comunicado comunicado = new Comunicado(this, atividadeCaracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
+                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
-
 
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
@@ -729,16 +718,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public Documento gerarPDFParecer() throws Exception {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
-        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
+        List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
+        DadosProcessoVO dadosProcesso =  processo.getDadosProcesso();
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
                 .addParam("analiseArea", "ANALISE_GEO")
-                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
-                .addParam("camadasGeoAtividade", camadasGeoAtividade)
+                .addParam("empreendimento", empreendimento)
+                .addParam("atividades", dadosProcesso.atividades)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
@@ -750,42 +739,46 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Documento gerarPDFCartaImagem() throws Exception {
+    public Documento gerarPDFCartaImagem() {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
-
-        List<CamadaGeo> camadasGeoEmpreedimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         Processo processo = Processo.findById(this.analise.processo.id);
-        List<CamadaGeoAtividade> camadasGeoAtividade =  processo.getDadosAreaProjeto();
 
-        CamadaGeo camadaPropriedade = camadasGeoEmpreedimento.stream().filter(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo))
-                .findAny().orElse(null);
+        DadosProcessoVO dadosProcesso =  processo.getDadosProcesso();
+        List<CamadaGeoAtividadeVO> camadasGeoEmpreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
 
-        Geometry geometriaAreaPropriedade = camadaPropriedade.geometria;
+        CamadaGeoAtividadeVO camadaPropriedade = camadasGeoEmpreendimento.stream().filter(camada -> {
+            return camada.geometrias.stream().anyMatch(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
+        }).findAny().orElse(null);
 
-        camadasGeoEmpreedimento.removeIf(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
+        Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
+        Map<LayerType, CamadaGeoRestricaoVO> geometriesRestricoes = new HashMap<>();
+        Map<LayerType, CamadaGeoAtividadeVO> geometriesAtividades = new HashMap<>();
 
-        Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao = new HashMap<>();
+        for (CamadaGeoAtividadeVO camadaAtividade : dadosProcesso.atividades) {
 
-        for (CamadaGeoAtividade camadaAtividade : camadasGeoAtividade) {
+            geometriesAtividades.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade);
 
-            if (camadaAtividade.restricoes != null &&  camadaAtividade.restricoes.size() > 0) {
-                geometriesCaracterizacao.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaAtividade.restricoes);
-            }
-
-            geometriesCaracterizacao.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade.camadasGeo);
         }
 
-        if ( camadasGeoEmpreedimento.size() > 0) {
-            geometriesCaracterizacao.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreedimento);
+        for (CamadaGeoRestricaoVO camadaRestricao : dadosProcesso.restricoes) {
+
+            geometriesRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaRestricao);
+
         }
 
-        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(geometriaAreaPropriedade, geometriesCaracterizacao);
+        if(!camadasGeoEmpreendimento.isEmpty()) {
+
+            geometriasEmpreendimento.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreendimento);
+
+        }
+
+        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasEmpreendimento, geometriesAtividades, geometriesRestricoes);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
-                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreedimento)
+                .addParam("camadasGeoEmpreedimento", camadasGeoEmpreendimento)
                 .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
@@ -799,7 +792,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo, Notificacao notificacao) throws Exception {
+    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo, Notificacao notificacao) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
@@ -838,4 +831,5 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
+
 }

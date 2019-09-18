@@ -111,6 +111,11 @@ html(lang="pt-br")
                 padding-top: 2px;
             }
 
+            .titulo-legenda {
+                margin-top: 20px;
+                margin-bottom: 5px;
+            }
+
 body.corpo
     div.titulo
         h2 CARTA IMAGEM Nº ${analiseEspecifica.analise.processo.numero}
@@ -131,7 +136,7 @@ body.corpo
 
                 .legenda-carta-imagem
                     | \#{list items:grupoDataLayers, as:'grupo'}
-                    p
+                    p.titulo-legenda
                         strong ${grupo.titulo}
                     | \#{list items:grupo.dataLayers, as:'dataLayer'}
                     span.icon-legenda(style= "background: ${dataLayer.colorCode}; color: ${dataLayer.colorCode};") .

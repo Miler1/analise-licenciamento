@@ -8,11 +8,11 @@ import utils.flexjson.GeometryTransformer;
 public class EmpreendimentoSerializer {
 	
 	public static JSONSerializer getDadosGeoEmpreendimento = SerializerUtil.create(
-			"item",
-			"descricao",
-			"area",
-			"geometria",
-			"tipo",
+			"geometrias.item",
+			"geometrias.descricao",
+			"geometrias.area",
+			"geometrias.geometria",
+			"geometrias.tipo",
 			"restricoes.item",
 			"restricoes.descricao",
 			"restricoes.area",

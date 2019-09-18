@@ -4,6 +4,9 @@
 var PainelMapaController = function ($scope, wmsTileService) {
 	var painelMapa = this;
 	painelMapa.map = null;
+	painelMapa.cluster = null;
+	painelMapa.markers = [];
+	painelMapa.numPoints = 0;	
 	// Lista para conter as geometrias que precisam de atenção especial durante a renderização
 	painelMapa.specificGeometries = [];
 
@@ -25,10 +28,12 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		painelMapa.listaGeometriasBase = [];
 		painelMapa.listaWmsLayers = [];
 		painelMapa.instanciaMapa();
+
 	};
 
 	// Start do mapa
 	function instanciaMapa() {
+
 		painelMapa.map = new L.Map(painelMapa.id, {
 			zoomControl: true,
 			minZoom: 5,
@@ -36,11 +41,20 @@ var PainelMapaController = function ($scope, wmsTileService) {
 			scrollWheelZoom: true
 		}).setView([-3, -52.497545], 6);
 
-	
 		/* Termos de uso: http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf */
 		L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 			attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 		}).addTo(painelMapa.map);
+
+		painelMapa.cluster = L.markerClusterGroup({
+
+			disableClusteringAtZoom: 15,
+			removeOutsideVisibleBounds: true,
+			zoomToBoundsOnClick: true,
+			spiderfyOnMaxZoom: false,
+			showCoverageOnHover: false
+
+		});
 	
 		painelMapa.map.on('moveend click', function() {
 			if (!painelMapa.map.scrollWheelZoom.enabled()) {
@@ -124,11 +138,16 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 		var geometria = painelMapa.listaGeometriasBase[camada.tipo];
 
-        var latLngBounds = new L.latLngBounds();
+		if(geometria.getLatLng) {
 
-        latLngBounds.extend(geometria.getBounds());
+			// painelMapa.map.setView(geometria.getLatLng(), 17, { maxZoom: 17 });
+			painelMapa.map.flyTo(geometria.getLatLng(), 17);
 
-        painelMapa.map.fitBounds(latLngBounds, {maxZoom: 17});
+		} else {
+
+			painelMapa.map.flyToBounds(geometria.getBounds(), { maxZoom: 17 });
+
+		}
     }
 
 	function adicionarBotaoCentralizar () {
@@ -139,15 +158,40 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		}, 'Centralizar no imóvel').addTo(painelMapa.map);
 	}
 
+	function adicionarPointCluster(point) {
+
+		painelMapa.markers.push(point);
+		painelMapa.cluster.addLayer(point);
+
+		if(painelMapa.numPoints > 0 && painelMapa.markers.length === painelMapa.numPoints) {
+
+			painelMapa.map.addLayer(painelMapa.cluster);
+
+		}
+
+	}
+
 	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
 	function adicionarGeometriasBase(event, shape){
 
-		painelMapa.listaGeometriasBase[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
+		if(shape.geometria && shape.geometria.type.toLowerCase() === 'point') {
 
-		if(shape.popupText){
-			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo].bindPopup(shape.popupText));
+			painelMapa.listaGeometriasBase[shape.tipo] = L.marker(shape.geometria.coordinates.reverse());
+			if(shape.popupText){
+				painelMapa.listaGeometriasBase[shape.tipo].bindPopup(shape.popupText);
+			}
+
+			adicionarPointCluster(painelMapa.listaGeometriasBase[shape.tipo]);
+
 		} else {
+
+			painelMapa.listaGeometriasBase[shape.tipo] = L.geoJSON(shape.geometria, shape.estilo);
+			if(shape.popupText){
+				painelMapa.listaGeometriasBase[shape.tipo].bindPopup(shape.popupText);
+			}
+
 			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo]);
+
 		}
 
 		if (!shape.disableCentralizarGeometrias) {
@@ -156,7 +200,15 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		}
 	}
 
+	function adicionarGeometriasBaseCluster(event, point) {
+
+		painelMapa.cluster.addLayer(painelMapa.listaGeometriasBase[point.tipo]);
+
+	}
+
 	$scope.$on('mapa:adicionar-geometria-base', adicionarGeometriasBase);
+
+	$scope.$on('mapa:adicionar-geometria-base-cluster', adicionarGeometriasBaseCluster);
 
 	/** Centraliza geometrias base de um mapa **/
 	function centralizaGeometriasBase(maxZoom){
@@ -164,7 +216,9 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		var latLngBounds = new L.latLngBounds();
 
 		Object.keys(painelMapa.listaGeometriasBase).forEach(function(index){
-			latLngBounds.extend(painelMapa.listaGeometriasBase[index].getBounds());
+			if(painelMapa.listaGeometriasBase[index].getBounds) {
+				latLngBounds.extend(painelMapa.listaGeometriasBase[index].getBounds());
+			}
 		});
 
 		if (maxZoom) {
@@ -248,9 +302,19 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		delete painelMapa.listaGeometriasBase[shape.tipo];
 
 	}
+
+	function removerGeometriaMapaBaseCluster(event, shape) {
+
+		shape.visivel = false;
+		painelMapa.cluster.removeLayer(painelMapa.listaGeometriasBase[shape.tipo]);
+
+	}
+
 	$scope.$on('mapa:removerGeometriaMapa', removerGeometriaMapa);
 
 	$scope.$on('mapa:remover-geometria-base', removerGeometriaMapaBase);
+
+	$scope.$on('mapa:remover-geometria-base-cluster', removerGeometriaMapaBaseCluster);
 
 	/** O parâmetro centralizarEspecifico remete a possibilidade de centralizar apenas 
 	 * as geometrias relacionadas ao upload, não referente aos dados do empreendimento **/
