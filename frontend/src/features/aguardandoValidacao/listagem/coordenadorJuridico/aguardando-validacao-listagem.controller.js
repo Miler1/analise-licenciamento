@@ -17,7 +17,7 @@ var AguardandoValidacaoJuridicoListController = function($scope, config, $locati
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
-	listagem.disabledFields = _.concat($scope.aguardandoValidacaoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	listagem.disabledFields = _.concat($scope.aguardandoValidacaoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
 
 	function atualizarListaProcessos(processos) {
 

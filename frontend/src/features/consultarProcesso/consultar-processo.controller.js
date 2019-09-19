@@ -24,7 +24,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.PrazoAnalise = app.utils.PrazoAnalise;
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO,
-		app.DISABLED_FILTER_FIELDS.GERENCIA];
+		app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO];
 
 	function atualizarListaProcessos(processos) {
 

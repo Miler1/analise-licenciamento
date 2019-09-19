@@ -1,6 +1,6 @@
-var AguardandoValidacaoGerenteTecnicoListController = function($scope, config, $location, $rootScope, processoService) {
+var AnaliseEmAndamentoGerenteListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VALIDACÃO TÉCNICA';
+	$rootScope.tituloPagina = 'EM ANÁLISE GERENTE';
 
 	var listagem = this;
 
@@ -8,16 +8,17 @@ var AguardandoValidacaoGerenteTecnicoListController = function($scope, config, $
 	listagem.atualizarPaginacao = atualizarPaginacao;
 	listagem.selecionarTodosProcessos = selecionarTodosProcessos;
 	listagem.onPaginaAlterada = onPaginaAlterada;
-	listagem.validarAnalise = validarAnalise;
+	listagem.continuarAnalise = continuarAnalise;
 
+	listagem.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 	listagem.processos = [];
-	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
+	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
-	listagem.disabledFields = _.concat($scope.aguardandoValidacaoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
 
 	function atualizarListaProcessos(processos) {
 
@@ -42,9 +43,9 @@ var AguardandoValidacaoGerenteTecnicoListController = function($scope, config, $
 		});
 	}
 
-	function validarAnalise(idAnaliseTecnica) {
+	function continuarAnalise(idAnalise) {
 
-		$location.path('/aguardando-validacao/' + idAnaliseTecnica.toString());
+		$location.path('/analise-gerente/' + idAnalise.toString());
 	}	
 
 	function exibirDadosProcesso(processo) {
@@ -53,4 +54,4 @@ var AguardandoValidacaoGerenteTecnicoListController = function($scope, config, $
     }
 };
 
-exports.controllers.AguardandoValidacaoGerenteTecnicoListController = AguardandoValidacaoGerenteTecnicoListController;
+exports.controllers.AnaliseEmAndamentoGerenteListController = AnaliseEmAndamentoGerenteListController;

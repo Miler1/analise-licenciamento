@@ -19,7 +19,7 @@ var AguardandoAssinaturaAprovadorListController = function($scope, config, $loca
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.dataAtual = Date.now();
-	listagem.disabledFields = [app.DISABLED_FILTER_FIELDS.SITUACAO, app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO];    
+	listagem.disabledFields = [app.DISABLED_FILTER_FIELDS.SITUACAO, app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO];    
 
 	function atualizarListaProcessos(processos) {
 
