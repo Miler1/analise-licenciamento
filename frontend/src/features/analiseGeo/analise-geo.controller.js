@@ -22,6 +22,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 	ctrl.TiposSobreposicao = [];
 	ctrl.numPoints = 0;
+	ctrl.LegendasTipoSobreposicao = app.utils.LegendasTipoSobreposicao;
 
 	var getLayer = function(descricao){
 
@@ -326,6 +327,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	this.getCamadasSobreposicoes = function() {
 
 		ctrl.TiposSobreposicao.forEach(function (tipo) {
+			tipo.legenda = ctrl.LegendasTipoSobreposicao[tipo.codigo];
 			adicionarWmsLayerNoMapa(tipo);
 		});
 	};
