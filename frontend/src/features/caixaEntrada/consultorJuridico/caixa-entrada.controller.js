@@ -17,7 +17,7 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 	cxEntConsultorJuridico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntConsultorJuridico.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntConsultorJuridico.dateUtil = app.utils.DateUtil;
-	cxEntConsultorJuridico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	cxEntConsultorJuridico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
 
 	function atualizarListaProcessos(processos) {
 

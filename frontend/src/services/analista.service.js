@@ -7,6 +7,12 @@ var AnalistaService = function(request, config) {
 			.get(config.BASE_URL() + "analistas");
 	};
 
+	this.getAnalistasGeo = function() {
+
+		return request
+			.get(config.BASE_URL() + "analistasGeo");
+	};
+
     	this.getAnalistasTecnicosByProcesso = function(idProcesso) {
 
 		return request
@@ -17,6 +23,12 @@ var AnalistaService = function(request, config) {
 
 		return request
 			.get(config.BASE_URL() + "analistas/perfil?isGerente=" + isGerenteLogado);
+	};
+
+	this.getAnalistasGeoByPerfil = function(isGerenteLogado) {
+
+		return request
+			.get(config.BASE_URL() + "analistasGeo/perfil?isGerente=" + isGerenteLogado);
 	};
 
     this.vincularAnaliseAnalistaTecnico = function(idAnalista, justificativaCoordenador, idsProcessos) {
