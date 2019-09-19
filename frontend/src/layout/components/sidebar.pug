@@ -34,7 +34,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 
 							div.sidebar-body
 								.row.no-margin-left-right.camadas-mapa(ng-repeat="camada in " + controller + ".camadasDadosEmpreendimento")
-									div(ng-if="camada.geometrias.length > 0" ng-repeat="geometria in camada.geometrias")
+									div(ng-if="camada.geometrias.length > 0 && geometria.geometria" ng-repeat="geometria in camada.geometrias")
 										.col-sm-9.col-xs-9.descricao
 											span.fa.fa-square.icon-legenda(ng-style="{'color': geometria.color}")
 											span {{ geometria.item }}

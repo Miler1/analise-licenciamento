@@ -29,7 +29,7 @@ include ../../layout/components/mapPanel
                                         td.col-md-5 {{camada.geometrias[0].item}}
                                         td.col-md-5 {{camada.geometrias[0].descricao}}
                                         td.col-md-2.text-right
-                                            i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
+                                            i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.geometrias[0].item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
                                             | &nbsp;&nbsp;
                             
                             br
