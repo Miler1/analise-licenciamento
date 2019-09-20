@@ -10,6 +10,8 @@ import play.Play;
 import play.mvc.Mailer;
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeBodyPart;
+import play.Logger;
+
 import java.io.File;
 import java.util.Date;
 import java.util.List;

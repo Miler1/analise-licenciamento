@@ -1,5 +1,6 @@
 package models;
 
+import java.util.List;
 import models.licenciamento.*;
 import play.db.jpa.GenericModel;
 import utils.Helper;
@@ -10,7 +11,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 @Entity
 @Table(schema="analise", name="comunicado")
@@ -49,8 +49,8 @@ public class Comunicado extends GenericModel {
     public Boolean ativo;
 
     @OneToOne
-    @JoinColumn(name="id_atividade_caracterizacao", referencedColumnName="id")
-    public AtividadeCaracterizacao atividadeCaracterizacao;
+    @JoinColumn(name="id_caracterizacao", referencedColumnName="id")
+    public Caracterizacao caracterizacao;
 
     @OneToOne
     @JoinColumn(name="id_tipo_sobreposicao", referencedColumnName="id")
@@ -66,22 +66,23 @@ public class Comunicado extends GenericModel {
             inverseJoinColumns=@JoinColumn(name="id_documento"))
     public List<Documento> anexos;
 
-
     @Transient
     public String linkComunicado;
 
     @Transient
     public boolean valido;
 
-    public Comunicado(AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
-        this.tipoSobreposicao = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao;
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
+
+        this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
-        this.atividadeCaracterizacao = atividadeCaracterizacao;
+        this.caracterizacao = caracterizacao;
         this.ativo = true;
         this.analiseGeo = analiseGeo;
         this.resolvido = false;
         this.orgao = orgao;
+
     }
 
     public void saveAnexos(List<Documento> novosAnexos) {
@@ -130,7 +131,7 @@ public class Comunicado extends GenericModel {
     public boolean isValido() {
 
         return this.dataVencimento.after(new Date());
-    }
 
+    }
 
 }

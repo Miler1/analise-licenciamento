@@ -85,7 +85,7 @@ POST    /analisesGeo/inconsistencia/findInconsistencia                          
 POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistencia
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
-POST    /analisesGeo/processo/buscaDadosAreaProjeto/{idProcesso}                    AnalisesGeo.buscaDadosAreaProjeto
+POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
 
 
 # Empreendimento
@@ -119,6 +119,8 @@ POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
 GET     /analistas/perfil                           Analistas.getAnalistaTecnicoPerfilSetores
 GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
 GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
+GET     /analistasGeo                               Analistas.getAnalistaGeoPerfil
+GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
 
 
 # Gerentes

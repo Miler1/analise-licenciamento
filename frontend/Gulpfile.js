@@ -75,7 +75,10 @@ var config = {
 				"./bower_components/leaflet-graphicscale/dist/Leaflet.GraphicScale.min.*",
 				"./bower_components/shp/dist/shp.min.js",
 				"./bower_components/leaflet-measure/dist/leaflet-measure.css",
-				"./bower_components/leaflet-measure/dist/leaflet-measure.min.js"
+				"./bower_components/leaflet-measure/dist/leaflet-measure.min.js",
+				"./bower_components/leaflet.markercluster/dist/leaflet.markercluster.js",
+				"./bower_components/leaflet.markercluster/dist/MarkerCluster.css",
+				"./bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css"
 			],
 			images: [
 				"./bower_components/leaflet/dist/images/**",
