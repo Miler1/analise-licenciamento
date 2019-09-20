@@ -181,7 +181,7 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 		}
 
-		var item = shape.item || 'Item';
+		var item = shape.item || 'item';
 
 		if(shape.geometria && shape.geometria.type.toLowerCase() === 'point') {
 
@@ -216,12 +216,12 @@ var PainelMapaController = function ($scope, wmsTileService) {
 	$scope.$on('mapa:adicionar-geometria-base-cluster', adicionarGeometriasBaseCluster);
 
 	/** Centraliza geometrias base de um mapa **/
-	function centralizaGeometriasBase(event, maxZoom){
+	function centralizaGeometriasBase(event, maxZoom) {
 
 		if (maxZoom) {
-			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase["EMP-CIDADE"].Item.getBounds(), {maxZoom: maxZoom});
+			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase["EMP-CIDADE"].item.getBounds(), {maxZoom: maxZoom});
 		} else {
-			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase["EMP-CIDADE"].Item.getBounds());
+			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase["EMP-CIDADE"].item.getBounds());
 		}
 
 	}
@@ -229,17 +229,24 @@ var PainelMapaController = function ($scope, wmsTileService) {
 	// Função para atualizar o mapa
 	function atualizarMapa(event, shape) {
 
-		painelMapa.listaGeometriasMapa[shape.tipo][shape.item] = L.geoJSON(shape.geometria, shape.estilo);
+		if(painelMapa.listaGeometriasMapa[shape.tipo] === undefined) {
+
+			painelMapa.listaGeometriasMapa[shape.tipo] = {};
+
+		}
+
+		painelMapa.listaGeometriasMapa[shape.tipo].item = L.geoJSON(shape.geometria, shape.estilo);
 
 		if(shape.popupText){
-			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo][shape.item].bindPopup(shape.popupText));
+			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo].item.bindPopup(shape.popupText));
 		} else {
-			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo][shape.item]);
+			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[shape.tipo].item);
 		}
 
 		if(shape.specificShape){
 
 			painelMapa.specificGeometries.push(shape.tipo);
+
 		}
 		
 		centralizarGeometrias(shape.specificShape);
@@ -258,30 +265,34 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	// Função para exibir as geometrias nao basicas do mapa
 	function exibeGeometriasNaoBaseMapa(){
-		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
-			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[index]);
-		});
 		centralizarGeometrias(true);
 	}
 
 	function removerGeometriaMapa(event, shape) {
-		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo][shape.item]);
+		
+		var item = shape.tipo || 'item';
+
+		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo].item);
 
 		// Limpeza do elemento da lista de centralização especial
 		painelMapa.specificGeometries.forEach(function(index, item) {
 			if(index === shape.tipo){
 				// Deleta o item da lista
-				painelMapa.specificGeometries.splice(item,1);
+				painelMapa.specificGeometries.splice(item, 1);
 			}
 		});
 
-		delete painelMapa.listaGeometriasMapa[shape.tipo][shape.item];
-		
+		delete painelMapa.listaGeometriasMapa[shape.tipo][item];
+
 		// Caso não haja nenhuma geometria que necessite de centralização especial, volta centralizando tudo
 		if(painelMapa.specificGeometries.length > 0){
+
 			centralizarGeometrias(true);
-		}else{
+
+		} else {
+
 			centralizarGeometrias(false);
+
 		}
 		
 	}
@@ -294,10 +305,14 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 		// Limpeza do elemento da lista de centralização especial
 		painelMapa.specificGeometries.forEach(function(index, item) {
-			if(index === shape.tipo){
+
+			if(index === shape.tipo) {
+
 				// Deleta o item da lista
 				painelMapa.specificGeometries.splice(item,1);
+
 			}
+
 		});
 
 		delete painelMapa.listaGeometriasBase[shape.tipo][shape.item];
@@ -320,28 +335,35 @@ var PainelMapaController = function ($scope, wmsTileService) {
 	/** O parâmetro centralizarEspecifico remete a possibilidade de centralizar apenas 
 	 * as geometrias relacionadas ao upload, não referente aos dados do empreendimento **/
 	function centralizarGeometrias(centralizarEspecifico) {
+
 		var latLngBounds = new L.latLngBounds();
 
 		if(centralizarEspecifico){
 
-			Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
-				painelMapa.specificGeometries.forEach(function(item) {
-					if(index === item){
-						latLngBounds.extend(painelMapa.listaGeometriasMapa[index].getBounds());
+			Object.keys(painelMapa.listaGeometriasMapa).forEach(function(tipo){
+				painelMapa.specificGeometries.forEach(function(tipoAdicionado) {
+
+					if(tipo === tipoAdicionado){
+						
+						Object.keys(painelMapa.listaGeometriasMapa[tipo]).forEach(function(item){
+
+							latLngBounds.extend(painelMapa.listaGeometriasMapa[tipo][item].getBounds());
+
+						});
+						
 					}
+
 				});
 			});
 
-		}else {
+			painelMapa.map.fitBounds(latLngBounds);
 
-			Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
-				latLngBounds.extend(painelMapa.listaGeometriasMapa[index].getBounds());
-			});
-			
+		} else {
+
 			centralizaGeometriasBase();
+
 		}
 
-		painelMapa.map.fitBounds(latLngBounds);
 	}
 
 };
