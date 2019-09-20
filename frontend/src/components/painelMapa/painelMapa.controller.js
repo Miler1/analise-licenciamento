@@ -96,7 +96,7 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	$scope.$on('mapa:adicionar-botao-centralizar-mapa-base', adicionarBotaoCentralizar);
 
-    $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
+  $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
 	
 	$scope.$on('mapa:adicionar-wmslayer-mapa', adicionarWmsLayer);
 
@@ -121,7 +121,9 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 		if (painelMapa.listaWmsLayers.length === 0) {
 
-			var wmsLayer = wmsTileService.novoTile(null, camada.nomeLayer, 5, 20, null, null);
+			var styles = camada.tipo === "TERRA_INDIGENA" || camada.tipo === "TERRA_INDIGENA_ZA" ? "terra_indigena_filled" : null;
+
+			var wmsLayer = wmsTileService.novoTile(null, camada.nomeLayer, 5, 20, null, styles, null);
 
 			camada.layer = wmsLayer;
 			camada.legend = wmsLayer.legend;
