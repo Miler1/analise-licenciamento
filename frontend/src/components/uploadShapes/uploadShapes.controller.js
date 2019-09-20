@@ -65,12 +65,14 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 		var listaGeometrias = [];
 
-		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(index){
-			var geometria = {type:'', geometry:''};
+		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(tipo){
 
-			geometria.type = index;
-			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry);
+			var geometria = {type:'', geometry:''};
+			geometria.type = tipo;
+			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[tipo].item.getLayers()[0].feature.geometry);
+
 			listaGeometrias.push(geometria);
+
 		});
 
 		var cpfCnpjEmpreendimento = uploadShapes.processo.empreendimento.pessoa.cpf ? uploadShapes.processo.empreendimento.pessoa.cpf : uploadShapes.processo.empreendimento.pessoa.cnpj;
