@@ -29,11 +29,11 @@ include ../../layout/components/mapPanel
                                         td.col-md-5 {{camada.geometrias[0].item}}
                                         td.col-md-5 {{camada.geometrias[0].descricao}}
                                         td.col-md-2.text-right
-                                            i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
+                                            i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.geometrias[0].item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
                                             | &nbsp;&nbsp;
                             
                             br
-                            div(ng-repeat="restricao in ctrl.dadosProjeto.restricoes")
+                            div
 
                                 label Áreas de restrição
 
@@ -44,7 +44,7 @@ include ../../layout/components/mapPanel
                                         th.col-md-5 Descrição
                                         th.col-md-1.text-right Alertas
 
-                                    tbody
+                                    tbody(ng-repeat="restricao in ctrl.dadosProjeto.restricoes")
                                         tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
                                             td.col-md-5 {{ restricao.item }} 
                                             td.col-md-5 {{ restricao.descricao }} 

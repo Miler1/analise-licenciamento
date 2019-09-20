@@ -34,7 +34,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 
 							div.sidebar-body
 								.row.no-margin-left-right.camadas-mapa(ng-repeat="camada in " + controller + ".camadasDadosEmpreendimento")
-									div(ng-if="camada.geometrias.length > 0" ng-repeat="geometria in camada.geometrias")
+									div(ng-if="camada.geometrias.length > 0 && geometria.geometria" ng-repeat="geometria in camada.geometrias")
 										.col-sm-9.col-xs-9.descricao
 											span.fa.fa-square.icon-legenda(ng-style="{'color': geometria.color}")
 											span {{ geometria.item }}
@@ -86,7 +86,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 					.row.no-margin-left-right.camadas-mapa(ng-repeat="tipoSobreposicao in " + controller + ".TiposSobreposicao")
 						.col-sm-9.col-xs-9
 							.col-sm-2.col-xs-2.imagem-legenda
-								img(src="tipoSobreposicao.legend[0].src" alt="Sobreposição")
+								div(class="{{ tipoSobreposicao.legenda }}")
 							.col-sm-10.col-xs-10.descricao-legenda
 								span {{tipoSobreposicao.nome}}
 

@@ -30,7 +30,7 @@ public class Inconsistencias extends GenericController{
             i.categoria = inconsistencia.categoria;
             i.analiseGeo = inconsistencia.analiseGeo;
             i.id = inconsistencia.id;
-            i.caracterizacao = Objects.nonNull(inconsistencia.caracterizacao) ? inconsistencia.caracterizacao : null;
+            i.caracterizacao = Objects.nonNull(inconsistencia.caracterizacao) && Objects.nonNull(inconsistencia.caracterizacao.id) ? inconsistencia.caracterizacao : null;
             i.sobreposicaoCaracterizacaoEmpreendimento = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : null;
             i.saveAnexos(inconsistencia.anexos);
             i.save();

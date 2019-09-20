@@ -22,6 +22,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 	ctrl.TiposSobreposicao = [];
 	ctrl.numPoints = 0;
+	ctrl.LegendasTipoSobreposicao = app.utils.LegendasTipoSobreposicao;
 
 	var getLayer = function(descricao){
 
@@ -326,13 +327,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	this.getCamadasSobreposicoes = function() {
 
 		ctrl.TiposSobreposicao.forEach(function (tipo) {
+			tipo.legenda = ctrl.LegendasTipoSobreposicao[tipo.codigo];
 			adicionarWmsLayerNoMapa(tipo);
 		});
 	};
 
 	this.controlaCentralizacaoCamadas = function (camada) {
 
-		$scope.$emit('mapa:centralizar-camada', camada);
+		$scope.$emit('mapa:centralizar-camada', camada.geometria);
 	};
 
 	function adicionarGeometriaNoMapa (camada, disable) {
@@ -343,6 +345,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		$scope.$emit('mapa:adicionar-geometria-base', {
 			geometria: JSON.parse(camada.geometria),
 			tipo: camada.tipo,
+			item: camada.item,
 			estilo: {
 				style: ctrl.estiloMapa[camada.tipo] || camada.estilo
 			},
@@ -468,6 +471,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						});
 
 					});
+
+					$scope.$emit('mapa:centralizar-mapa');
 
 			});
 
