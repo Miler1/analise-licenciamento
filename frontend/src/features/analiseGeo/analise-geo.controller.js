@@ -334,7 +334,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	this.controlaCentralizacaoCamadas = function (camada) {
 
-		$scope.$emit('mapa:centralizar-camada', camada);
+		$scope.$emit('mapa:centralizar-camada', camada.geometria);
 	};
 
 	function adicionarGeometriaNoMapa (camada, disable) {
@@ -345,6 +345,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		$scope.$emit('mapa:adicionar-geometria-base', {
 			geometria: JSON.parse(camada.geometria),
 			tipo: camada.tipo,
+			item: camada.item,
 			estilo: {
 				style: ctrl.estiloMapa[camada.tipo] || camada.estilo
 			},
@@ -470,6 +471,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						});
 
 					});
+
+					$scope.$emit('mapa:centralizar-mapa');
 
 			});
 
