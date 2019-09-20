@@ -221,6 +221,21 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public void iniciar(UsuarioAnalise usuarioExecutor) {
 
+        verificarDataInicio();
+
+        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GEO, usuarioExecutor);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+    }
+
+    public void iniciarAnaliseGerente(UsuarioAnalise usuarioExecutor) {
+
+        verificarDataInicio();
+
+        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GERENTE, usuarioExecutor);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+    }
+
+    public void verificarDataInicio() {
         if(this.dataInicio == null) {
 
             Calendar c = Calendar.getInstance();
@@ -232,9 +247,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             iniciarLicencas();
         }
-
-        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GEO, usuarioExecutor);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
     public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {

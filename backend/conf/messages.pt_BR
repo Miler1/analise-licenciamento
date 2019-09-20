@@ -49,6 +49,7 @@ PARECER_NAO_ENCONTRADO=Não foi encontrado um parecer para esse número de proce
 #
 GERENTE_DIFERENTE_DE_GERENTE_TECNICO=O gerente informado não tem perfil de gerente técnico.
 GERENTE_VINCULADO_SUCESSO=Gerente vinculado com sucesso.
+GERENTE_INICIOU_ANALISE_SUCESSO=Gerente iniciou a Análise com sucesso.
 
 #
 # Upload

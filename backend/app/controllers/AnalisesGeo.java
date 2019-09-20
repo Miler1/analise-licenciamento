@@ -20,13 +20,25 @@ public class AnalisesGeo extends InternalController {
 
         verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
-        AnaliseGeo analiseAAlterar = AnaliseGeo.findById(analise.id);
+        AnaliseGeo analiseAlterar = AnaliseGeo.findById(analise.id);
 
         UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
-        analiseAAlterar.iniciar(usuarioExecutor);
+        analiseAlterar.iniciar(usuarioExecutor);
 
         renderMensagem(Mensagem.ANALISE_GEO_INICIADA_SUCESSO);
+
+    }
+
+    public static void iniciarAnaliseGerente(AnaliseGeo analise) {
+
+        AnaliseGeo analiseAlterar = AnaliseGeo.findById(analise.id);
+
+        UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
+        analiseAlterar.iniciarAnaliseGerente(usuarioExecutor);
+
+        renderMensagem(Mensagem.GERENTE_INICIOU_ANALISE_SUCESSO);
 
     }
 

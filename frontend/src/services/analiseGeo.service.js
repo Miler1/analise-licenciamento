@@ -10,7 +10,13 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 		return request
                 	.post(config.BASE_URL() + 'analisesGeo/iniciar', analise);
-	};	
+	};
+
+	this.iniciarAnaliseGerente = function(analise) {
+
+		return request
+                	.post(config.BASE_URL() + 'analisesGeo/iniciarAnaliseGerente', analise);
+	};
 
 	this.getAnaliseGeo = function(idAnaliseGeo) {
 
