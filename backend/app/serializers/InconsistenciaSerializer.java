@@ -17,8 +17,6 @@ public class InconsistenciaSerializer {
             "anexos.tipo.nome",
             "anexos.tipo.id",
             "categoria",
-            "sobreposicaoCaracterizacaoEmpreendimento.id",
-            "sobreposicaoCaracterizacaoEmpreendimento",
             "caracterizacao.id",
             "geometriaAtividade.id",
             "caracterizacao",

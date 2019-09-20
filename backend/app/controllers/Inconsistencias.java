@@ -31,7 +31,6 @@ public class Inconsistencias extends GenericController{
             i.analiseGeo = inconsistencia.analiseGeo;
             i.id = inconsistencia.id;
             i.caracterizacao = Objects.nonNull(inconsistencia.caracterizacao) && Objects.nonNull(inconsistencia.caracterizacao.id) ? inconsistencia.caracterizacao : null;
-            i.sobreposicaoCaracterizacaoEmpreendimento = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : null;
             i.saveAnexos(inconsistencia.anexos);
             i.save();
 
@@ -57,7 +56,7 @@ public class Inconsistencias extends GenericController{
             }
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
 
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoEmpreendimento);
+                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao);
 
                 novaInconsistencia.saveAnexos(inconsistencia.anexos);
                 novaInconsistencia.save();
@@ -83,18 +82,10 @@ public class Inconsistencias extends GenericController{
                      .setParameter("categoria",inconsistencia.categoria).first();
         }
 
-        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)){
+        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE) || inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
              i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao")
                      .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
                      .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                     .setParameter("categoria",inconsistencia.categoria).first();
-        }
-
-        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
-             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoEmpreendimento.id = :sobreposicaoCaracterizacaoEmpreendimento")
-                     .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                     .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                     .setParameter("sobreposicaoCaracterizacaoEmpreendimento",inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id)
                      .setParameter("categoria",inconsistencia.categoria).first();
         }
 
