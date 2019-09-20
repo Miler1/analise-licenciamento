@@ -102,14 +102,14 @@ include ../../layout/components/mapPanel
                     br
                     hr(style="margin-top:2px;")
                     div.collapse-atividade(ng-repeat="atividade in ctrl.dadosProjeto.atividades")
-                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAtividadesProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
                             .panel.panel-default
                                 .panel-heading
                                     h4.panel-title
                                         | Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
                                         i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
 
-                        .collapse(id='dadosAreaProjeto{{$index}}')
+                        .collapse(id='dadosAtividadesProjeto{{$index}}')
                             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                 thead
                                     tr

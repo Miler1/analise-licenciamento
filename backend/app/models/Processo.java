@@ -8,6 +8,7 @@ import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
+import models.sicar.Geo;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -18,6 +19,10 @@ import utils.*;
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -742,6 +747,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
+	public DadosProcessoVO getDadosProcesso (){
+
+		Caracterizacao caracterizacao = this.getCaracterizacao();
+
+		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
+
+	}
+
 	private static List<CamadaGeoAtividadeVO> preencheListaAtividades(Caracterizacao caracterizacao) {
 
 		List<CamadaGeoAtividadeVO> atividades = new ArrayList<>();
@@ -777,10 +790,36 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		List<CamadaGeoRestricaoVO> restricoes = new ArrayList<>();
 		indexDadosRestricoes = 0;
 
-		for(SobreposicaoCaracterizacaoEmpreendimento sobreposicao : caracterizacao.sobreposicoesCaracterizacao) {
+		if(caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
 
-			indexDadosRestricoes++;
-			restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
+			for(SobreposicaoCaracterizacaoEmpreendimento sobreposicao : caracterizacao.sobreposicoesCaracterizacaoEmpreendimento) {
+
+				indexDadosRestricoes++;
+				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
+
+			}
+
+		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
+
+			for(AtividadeCaracterizacao atividadeCaracterizacao: caracterizacao.atividadesCaracterizacao) {
+
+				for(SobreposicaoCaracterizacaoAtividade sobreposicao : atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
+
+					indexDadosRestricoes++;
+					restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
+
+				}
+
+			}
+
+		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)){
+
+			for(SobreposicaoCaracterizacaoComplexo sobreposicao : caracterizacao.sobreposicoesCaracterizacaoComplexo) {
+
+				indexDadosRestricoes++;
+				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
+
+			}
 
 		}
 
@@ -788,50 +827,39 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	public DadosProcessoVO getDadosProcesso (){
+	public static String getDescricaoRestricao(TipoSobreposicao tipoSobreposicao, Geometry empreendimento, Geometry sobreposicao) {
 
-		Caracterizacao caracterizacao = this.getCaracterizacao();
+		if(TipoSobreposicaoDistanciaEnum.getList().contains(tipoSobreposicao.codigo)) {
 
-		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
+			return "Distância " + Helper.formatBrDecimal(GeoCalc.distance(empreendimento, sobreposicao) / 1000, 2) + " km";
+
+		}
+
+		return getDescricao(sobreposicao);
 
 	}
 
-	public static String getDescricaoSobreposicao(Geometry geometry) {
-
-		String descricao = "";
+	public static String getDescricao(Geometry geometry) {
 
 		switch (geometry.getGeometryType().toUpperCase()) {
 
 			case "POINT" :
 
-				descricao = "Coordenadas [" + String.valueOf(((Point) geometry).getY()) + ", " + String.valueOf(((Point) geometry).getX()) + "]";
-				break;
+				return Helper.formatarCoordenada(geometry.getCoordinate());
 
 			case "LINESTRING":
 
-				descricao = "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
-				break;
+				return "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
 
 			case "POLYGON":
 
-				descricao = "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
-				break;
+				return "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
+
+			default:
+
+				return "";
 
 		}
-
-		return descricao;
-
-	}
-
-	public static String getDescricaoRestricao(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
-
-		if(TipoSobreposicaoDistanciaEnum.getList().contains(sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo)) {
-
-			return "Distância " + Helper.formatBrDecimal(GeoCalc.distance(sobreposicaoCaracterizacaoEmpreendimento.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoEmpreendimento.geometria) / 1000, 2) + " km";
-
-		}
-
-		return getDescricaoSobreposicao(sobreposicaoCaracterizacaoEmpreendimento.geometria);
 
 	}
 
