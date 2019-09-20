@@ -1,130 +1,131 @@
-var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecnicaService, $route, $scope, 
+var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoService ,analiseTecnicaService, $route, $scope, 
 		mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService) {
 
-    var validacaoAnaliseTecnicaGerente = this;
+    var validacaoAnaliseGeoGerente = this;
 
-    validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao = {};
+    validacaoAnaliseGeoGerente.analiseTecnicaValidacao = {};
 
-    validacaoAnaliseTecnicaGerente.init = init;
-    validacaoAnaliseTecnicaGerente.exibirDadosProcesso = exibirDadosProcesso; 
-    validacaoAnaliseTecnicaGerente.exibirAnaliseJuridica = exibirAnaliseJuridica;
-    validacaoAnaliseTecnicaGerente.downloadDocumentoAnalise = downloadDocumentoAnalise;
-	validacaoAnaliseTecnicaGerente.isParecerNaoValidado = isParecerNaoValidado;
-	validacaoAnaliseTecnicaGerente.isObrigatorio = isObrigatorio;
-	validacaoAnaliseTecnicaGerente.cancelar = cancelar;
-	validacaoAnaliseTecnicaGerente.concluir = concluir;
+    validacaoAnaliseGeoGerente.init = init;
+    validacaoAnaliseGeoGerente.exibirDadosProcesso = exibirDadosProcesso; 
+    // validacaoAnaliseGeoGerente.exibirAnaliseJuridica = exibirAnaliseJuridica;
+    // validacaoAnaliseGeoGerente.downloadDocumentoAnalise = downloadDocumentoAnalise;
+	// validacaoAnaliseGeoGerente.isParecerNaoValidado = isParecerNaoValidado;
+	// validacaoAnaliseGeoGerente.isObrigatorio = isObrigatorio;
+	// validacaoAnaliseGeoGerente.cancelar = cancelar;
+	validacaoAnaliseGeoGerente.concluir = concluir;
 
-    validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;  
+    validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
     function init() {
 
-		analiseTecnicaService.getAnaliseTecnica($route.current.params.idAnalise)
+		analiseGeoService.getAnliseGeoByAnalise($route.current.params.idAnalise)
 			.then(function(response){
-				validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
+				validacaoAnaliseGeoGerente.analiseGeo = response.data;
 
-				validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.idAnalistaTecnico =
-					validacaoAnaliseTecnicaGerente.analiseTecnica.analistasTecnicos[0].usuario.id;
+				validacaoAnaliseGeoGerente.analiseGeoValidacao.idAnalistaTecnico =
+					validacaoAnaliseGeoGerente.analiseGeo.analistasTecnicos[0].usuario.id;
                 
-                if (validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoValidacaoGerente) {
+                if (validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente) {
 
-                    validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente =
-                        validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoValidacaoGerente.id;
+                    validacaoAnaliseGeoGerente.analiseGeoValidacao.idTipoResultadoValidacaoGerente =
+                        validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id;
                 }
                 
-                validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.parecerValidacaoGerente =
-                    validacaoAnaliseTecnicaGerente.analiseTecnica.parecerValidacaoGerente;
+                validacaoAnaliseGeoGerente.analiseGeoValidacao.parecerValidacaoGerente =
+                    validacaoAnaliseGeoGerente.analiseGeo.parecerValidacaoGerente;
 
-                analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id)
+                analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
                     .then(function(response){
-                        validacaoAnaliseTecnicaGerente.analistas = response.data;
+                        validacaoAnaliseGeoGerente.analistas = response.data;
                 });            
 		    
 
 			});
-
+        
+        $('#situacao-fundiaria').summernote('disable');
 		
-		$rootScope.$broadcast('atualizarContagemProcessos');        
+		$rootScope.$broadcast('atualizarContagemProcessos');
     }
 
 	function exibirDadosProcesso() {
 
         var processo = {
 
-            idProcesso: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id,
-            numero: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.numero,
-            denominacaoEmpreendimento: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.denominacao
+            idProcesso: validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id,
+            numero: validacaoAnaliseGeoGerente.analiseGeo.analise.processo.numero,
+            denominacaoEmpreendimento: validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.pessoa.cnpj) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.pessoa.cpf;
         }		
 
         processoService.visualizarProcesso(processo);
     }    
 
-    function exibirAnaliseJuridica() {
+    // function exibirAnaliseJuridica() {
 
-        processoService.getAnaliseJuridica(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id)
-            .then(function(response){
+    //     processoService.getAnaliseJuridica(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
+    //         .then(function(response){
 
-                var modalInstance = $uibModal.open({
+    //             var modalInstance = $uibModal.open({
 
-                    component: 'modalInformacoesAnaliseJuridica',
-                    size: 'lg',
-                    backdrop: 'static',
-                    resolve: {
+    //                 component: 'modalInformacoesAnaliseJuridica',
+    //                 size: 'lg',
+    //                 backdrop: 'static',
+    //                 resolve: {
 
-                        idAnalise: function() {
+    //                     idAnalise: function() {
 
-                            return response.data.id;
-                        }
-                    }    
-                });    
-            });
-    }
+    //                         return response.data.id;
+    //                     }
+    //                 }    
+    //             });    
+    //         });
+    // }
 
-    function downloadDocumentoAnalise(idDocumento) {
+    // function downloadDocumentoAnalise(idDocumento) {
 
-        documentoAnaliseService.download(idDocumento);
-    }
+    //     documentoAnaliseService.download(idDocumento);
+    // }
 
-	function isParecerNaoValidado() {
+	// function isParecerNaoValidado() {
 
-		return validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente === 
-                                validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO;
-	}
+	// 	return validacaoAnaliseGeoGerente.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente === 
+    //                             validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO;
+	// }
 
-	function isObrigatorio() {
+	// function isObrigatorio() {
 		
-        return [validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO,
-				validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.SOLICITAR_AJUSTES]
-				.indexOf(validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente) !== -1;
-	}
+    //     return [validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO,
+	// 			validacaoAnaliseGeoGerente.TiposResultadoAnalise.SOLICITAR_AJUSTES]
+	// 			.indexOf(validacaoAnaliseGeoGerente.analiseTecnicaValidacao.idTipoResultadoValidacaoGerente) !== -1;
+	// }
 
-    function cancelar() {
+    // function cancelar() {
 
-        $location.path('aguardando-validacao');
-    }
+    //     $location.path('aguardando-validacao');
+    // }
 
-	function montarAnaliseTecnica(analiseTecnicaValidacao){
-		return {
-			id: validacaoAnaliseTecnicaGerente.analiseTecnica.id,
-			tipoResultadoValidacaoGerente: { id : analiseTecnicaValidacao.idTipoResultadoValidacaoGerente},
-			parecerValidacaoGerente: analiseTecnicaValidacao.parecerValidacaoGerente,
-			analistasTecnicos:[ 
-				{
-					usuario: {
-						id: analiseTecnicaValidacao.idAnalistaTecnico
-					}
-				}
-			]
-		};
-	}   
+	// function montarAnaliseTecnica(analiseTecnicaValidacao){
+	// 	return {
+	// 		id: validacaoAnaliseGeoGerente.analiseTecnica.id,
+	// 		tipoResultadoValidacaoGerente: { id : analiseTecnicaValidacao.idTipoResultadoValidacaoGerente},
+	// 		parecerValidacaoGerente: analiseTecnicaValidacao.parecerValidacaoGerente,
+	// 		analistasTecnicos:[ 
+	// 			{
+	// 				usuario: {
+	// 					id: analiseTecnicaValidacao.idAnalistaTecnico
+	// 				}
+	// 			}
+	// 		]
+	// 	};
+	// }   
 
 	function concluir() {
 
@@ -136,7 +137,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
 			return;
         }
 
-        var analiseTecnica = montarAnaliseTecnica(validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao);
+        var analiseTecnica = montarAnaliseTecnica(validacaoAnaliseGeoGerente.analiseTecnicaValidacao);
 
 		analiseTecnicaService.validarParecerGerente(analiseTecnica)
             .then(function(response) {
@@ -151,4 +152,4 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope, analiseTecni
     }
 };
 
-exports.controllers.ValidacaoAnaliseTecnicaGerenteController = ValidacaoAnaliseTecnicaGerenteController;
+exports.controllers.ValidacaoAnaliseGeoGerenteController = ValidacaoAnaliseGeoGerenteController;

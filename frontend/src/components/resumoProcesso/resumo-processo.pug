@@ -8,15 +8,15 @@ mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica, 
             h3.col-md-6 Resumo do processo
 
             .col-md-6(style="margin-top: 20px; margin-bottom: 10px")
-                if !exibirBotaoAnaliseJuridica
-                    button.btn.btn-default.col-md-offset-2(data-toggle="modal", data-target="#modalLegislacao")
-                        i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
-                        | Legislações
+                //- if !exibirBotaoAnaliseJuridica
+                //-     button.btn.btn-default.col-md-offset-2(data-toggle="modal", data-target="#modalLegislacao")
+                //-         i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
+                //-         | Legislações
                 if exibirBotaoAnaliseJuridica
                     button.btn.btn-default.col-md-offset-1(ng-click=exibirAnaliseJuridica)
                         i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
                         | Análise Jurídica                    
-                button.btn.btn-default.col-md-offset-1(ng-click=abrirDadosProcesso)
+                button.btn.btn-default.col-md-offset-1.float-right(ng-click=abrirDadosProcesso)
                     i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
                     | Dados do processo
 

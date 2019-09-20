@@ -6,6 +6,6 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === valida
     ng-controller='validacaoAnaliseTecnicaController as validacaoAnaliseTecnica', ng-init="validacaoAnaliseTecnica.init()")
     include coordenadorTecnico/validacao-analise
 
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === validacaoAnalise.perfis.GERENTE_TECNICO",
-    ng-controller='validacaoAnaliseTecnicaGerenteController as validacaoAnaliseTecnicaGerente', ng-init="validacaoAnaliseTecnicaGerente.init()")
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === validacaoAnalise.perfis.GERENTE",
+    ng-controller='validacaoAnaliseGeoGerenteController as validacaoAnaliseGeoGerente', ng-init="validacaoAnaliseGeoGerente.init()")
     include gerenteTecnico/validacao-analise

@@ -1,0 +1,242 @@
+#localizacaoGeografica
+    .row
+        .col-md-12
+
+            .label-analista
+                span.title-info Analista Geo: 
+                span {{validacaoAnaliseGeoGerente.analiseGeo.analistasGeo[0].usuario.pessoa.nome}}
+
+            #accordion-empreendimento.panel-group
+                div
+                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-empreendimento', aria-expanded='false', data-target='#dados-empreendimento', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionEmpreendimento = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionEmpreendimento = !validacaoAnaliseGeoGerente.openedAccordionEmpreendimento' )
+                        .panel.panel-default.panel-analise
+                            .panel-heading
+                                h4.panel-title
+                                    | Resumo da análise
+                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionEmpreendimento}")
+
+                    #dados-empreendimento.collapse
+                        #lista-camadas-empreendimento
+                            span.title-info Empreendimento
+                            div.area-info.row
+                                .icon-area-info.col-md-1
+                                    .icon-alert.glyphicon.glyphicon-alert.temInconsistencia
+                                .label-area-info.col-md-10 
+                                    b Dados do empreendimento
+                                .icon-open-info.col-md-1
+                                    .icon-eye.glyphicon.glyphicon-eye-open
+
+                        #lista-camadas-restricoes
+                            span.title-info Restrições
+                            div.area-info.row
+                                .icon-area-info.col-md-1
+                                    .icon-alert.glyphicon.glyphicon-alert.temInconsistencia
+                                .label-area-info.col-md-10 
+                                    b UC Federal
+                                .icon-open-info.col-md-1
+                                    .icon-eye.glyphicon.glyphicon-eye-open
+
+            #accordion-area.panel-group
+                div
+                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-area', aria-expanded='false', data-target='#lista-camadas-areas', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionArea = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionArea = !validacaoAnaliseGeoGerente.openedAccordionArea' )
+                        .panel.panel-default.panel-analise
+                            .panel-heading
+                                h4.panel-title
+                                    | Dados da área do projeto
+                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionArea, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionArea}")
+            
+                    #lista-camadas-areas.collapse
+                        div.area-info.row
+                            .icon-area-info.col-md-1
+                                .icon-alert.glyphicon.glyphicon-alert.temInconsistencia
+                            .label-area-info.col-md-10 
+                                b Área do projeto
+                            .icon-open-info.col-md-1
+                                .icon-eye.glyphicon.glyphicon-eye-open
+
+            #accordion-resultado.panel-group
+                div
+                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-resultado', aria-expanded='false', data-target='#resultatdo-analise', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionResultado = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionResultado = !validacaoAnaliseGeoGerente.openedAccordionResultado' )
+                        .panel.panel-default.panel-analise
+                            .panel-heading
+                                h4.panel-title
+                                    | Resultado da análise
+                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionResultado, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionResultado}")
+                    
+                    #resultatdo-analise.collapse
+                        .label-situacao
+                            span.title-info Situação: 
+                            span {{validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.nome | uppercase}}
+                        
+                        .botoes-download
+                            button.btn.btn-success.btn-download(type="button")
+                                .glyphicon.glyphicon-file.icon-download
+                                | Parecer Geo
+                            br
+                            button.btn.btn-success.btn-download(type="button")
+                                .glyphicon.glyphicon-file.icon-download
+                                | Carta Imagem
+
+                        #camposAnaliseGeo
+                            div
+                                label.label-parecer Da situação fundiária:
+                                br
+                                .area
+                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.situacaoFundiaria")
+
+                            div
+                                label.label-parecer Da análise temporal:
+                                br
+                                .area
+                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.analiseTemporal")
+
+                            div
+                                label.label-parecer Conclusão:
+                                br
+                                .area
+                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.parecer")
+
+                        table.table.table-condensed(ng-if="validacaoAnaliseGeoGerente.analiseGeo.documentos.length > 0")
+
+                            thead
+
+                                tr
+                                    th.col-md-10 Documento anexado
+                                    th.col-md-2.text-right Ações
+
+                            tbody
+
+                                tr(ng-repeat="documento in validacaoAnaliseGeoGerente.analiseGeo.documentos")
+
+                                    td.col-md-10 {{documento.nomeDoArquivo}}
+                                    td.col-md-2.text-right
+                                        a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
+                                            i.glyphicon.glyphicon-save
+
+                                        a.d-inline.margin-right-xs(title="Remover anexo", ng-click="validacaoAnaliseGeoGerente.removerDocumento($index. documento.id)")
+                                            i.glyphicon.glyphicon-trash
+
+                        #camposAnaliseGeoObservacao
+                            div
+                                label.label-parecer Observação:
+                                br
+                                .area
+                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
+
+                //- #accordion-empreendimento.panel-group
+                    div
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-empreendimento', aria-expanded='false', data-target='#meusDados', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionEmpreendimento = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionEmpreendimento = !validacaoAnaliseGeoGerente.openedAccordionEmpreendimento' )
+                            .panel.panel-default.panel-analise
+                                .panel-heading
+                                    h4.panel-title
+                                        | Dados do empreendimento
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionEmpreendimento}")
+                        #meusDados.collapse
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                thead
+                                    tr
+                                        th.col-md-5 Item
+                                        th.col-md-5 Área (ha)
+                                        th.col-md-2.text-right Alertas
+
+                                tbody
+                                    tr(ng-repeat='camada in validacaoAnaliseGeoGerente.camadasDadosEmpreendimento')
+                                        td.col-md-5 {{camada.item}}
+                                        td.col-md-5 {{camada.descricao}}
+                                        td.col-md-2.text-right
+                                            i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.item.toUpperCase() === validacaoAnaliseGeoGerente.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
+                                            | &nbsp;&nbsp;
+                            
+                            br
+                            div(style="margin-top:10px;",ng-repeat="camadaDadosAtividade in validacaoAnaliseGeoGerente.camadasDadosAtividade")
+                                div(ng-if="camadaDadosAtividade.restricoes.length > 0")
+                                    label Áreas de restrição
+
+                                    table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                        thead
+                                            tr
+                                            th.col-md-4 Item
+                                            th.col-md-5 Descrição
+                                            th.col-md-1.text-right Alertas
+
+                                        tbody(ng-repeat="restricao in camadaDadosAtividade.restricoes")
+                                            tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
+                                                td.col-md-5 {{restricao.item}} 
+                                                td.col-md-5 {{restricao.descricao}} 
+                                                td.col-md-2.text-right
+                                                    i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione inconsistência para notificar o interessado que procure o {{orgao.sigla.toUpperCase()}}', 
+
+                                                                                            ng-if="orgao.sigla.toUpperCase() === validacaoAnaliseGeoGerente.orgaos.IPHAN || orgao.sigla.toUpperCase() === validacaoAnaliseGeoGerente.orgaos.IBAMA",
+
+                                                                                            ng-class="{'temInconsistencia' : verificaInconsistenciaRestricao(validacaoAnaliseGeoGerente.categoria.RESTRICAO,camadaDadosAtividade.atividadeCaracterizacao.id,restricao.sobreposicaoCaracterizacaoAtividade.id)}")
+                                                    |&nbsp;
+                                                    i.glyphicon.glyphicon-envelope(title='O órgão {{orgao.sigla.toUpperCase()}} será comunicado sobre a restrição {{restricao.item.toUpperCase()}}', 
+
+                                                                                    ng-if="orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IPHAN && orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IBAMA")
+                                                    |&nbsp;
+                            
+                            br
+                            div.inconsistencias
+                                label.title-inconsistencia(ng-if="verificarTamanhoInconsistencias()") Inconsistências Encontradas
+                                button.btn.btn-default.pull-right.btn-incluir-inconsistencia(ng-click="addInconsistencia()")
+                                    i.glyphicon.glyphicon-plus
+                                    |  Incluir Inconsistência
+                                
+                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="verificarTamanhoInconsistencias()")
+                                    thead
+                                        tr
+                                        th.col-md-4 Item
+                                        th.col-md-3 Categoria
+                                        th.col-md-4 Descrição
+                                        th.col-md-1.text-right Ações
+
+                                    tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
+                                        tr
+                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getItemRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : 'Propriedade'}}
+                                            td.col-md-3 {{inconsistencia.categoria}}
+                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoAtividade.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacaoAtividade.id) : '-'}}
+                                            td.col-md-2.text-right
+                                                i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'PROPRIEDADE'",
+                                                        ng-click='addInconsistenciaPropriedade(validacaoAnaliseGeoGerente.categoria.PROPRIEDADE)', title='Editar inconsistência')
+                                                i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'RESTRICAO'",
+                                                        ng-click="addInconsistenciaRestricao(validacaoAnaliseGeoGerente.categoria.RESTRICAO, inconsistencia.atividadeCaracterizacao.id, inconsistencia.sobreposicaoCaracterizacaoAtividade.id)", title='Editar inconsistência')
+                                                i.glyphicon.glyphicon-trash.icone-inconsistencia-clicavel(title='Excluir inconsistência',
+                                                        ng-bootbox-title='Confirmação',
+                                                        ng-bootbox-confirm='Deseja realmente excluir esta inconsistência ?',
+                                                        ng-bootbox-confirm-action="excluirInconsistencia(inconsistencia.id)")
+                                                    
+                                                
+                                                |&nbsp;
+                            div.info-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
+                                i Nenhuma inconsistência adicionada.
+
+            //- br
+            //- #lista-camadas-atividades
+                #accordion-atividades.panel-group
+                    h5(style="margin-bottom:0px") Dados da área do projeto
+                    br
+                    hr
+                    div(style="margin-bottom:20px;",ng-repeat="camadaDadosAtividade in validacaoAnaliseGeoGerente.camadasDadosAtividade")
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto{{$index}}', ng-click = 'camadaDadosAtividade.openedAccordion = !camadaDadosAtividade.openedAccordion')
+                            .panel.panel-default
+                                .panel-heading
+                                    h4.panel-title
+                                        | Atividade: {{camadaDadosAtividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}}
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': camadaDadosAtividade.openedAccordion, 'glyphicon-chevron-right': !camadaDadosAtividade.openedAccordion}")
+
+                        .collapse(id='dadosAreaProjeto{{$index}}')
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                thead
+                                    tr
+                                        th.col-md-4 Item
+                                        th.col-md-5 Declarado
+                                        th.col-md-1.text-right Ações
+
+                                tbody(ng-repeat="camadaGeo in camadaDadosAtividade.camadasGeo")
+                                    tr
+                                        td.col-md-5 {{camadaGeo.item}}
+                                        td.col-md-5 {{camadaGeo.descricao}}
+                                        td.col-md-2.text-right
+                                            i.glyphicon.glyphicon-alert.icone-inconsistencia-clicavel(ng-class="{'temInconsistencia' : verificaInconsistenciaAtividade(validacaoAnaliseGeoGerente.categoria.ATIVIDADE,camadaDadosAtividade.atividadeCaracterizacao.id,camadaGeo.geometriaAtividade.id)}", 
+                                                                        ng-click='addInconsistenciaAtividade(validacaoAnaliseGeoGerente.categoria.ATIVIDADE, camadaDadosAtividade.atividadeCaracterizacao.id, camadaGeo.geometriaAtividade.id)', title='Adicionar inconsistência')
+                                                | &nbsp;

@@ -71,6 +71,7 @@ GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}       
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.downloadPDFCartaImagem
+GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
 
 
 POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
