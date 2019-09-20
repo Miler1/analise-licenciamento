@@ -118,6 +118,8 @@ POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
 GET     /analistas/perfil                           Analistas.getAnalistaTecnicoPerfilSetores
 GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
 GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
+GET     /analistasGeo                               Analistas.getAnalistaGeoPerfil
+GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
 
 
 # Gerentes

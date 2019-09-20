@@ -36,6 +36,7 @@ public class Condicao extends GenericModel {
 	public static final Long AGUARDANDO_VALIDACAO_GERENTE = 28l;
 	public static final Long AGUARDANDO_VALIDACAO_DIRETORIA = 29l;
 	public static final Long SOLICITACAO_DESVINCULO_PENDENTE = 30l;
+	public static final Long EM_ANALISE_GERENTE = 31l;
 
 	
 	@Id

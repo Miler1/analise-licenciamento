@@ -35,6 +35,7 @@ var FiltroProcessos = {
 		ctrl.tipologias = [];
 		ctrl.atividades = [];
 		ctrl.analistasTecnicos = [];
+		ctrl.analistasGeo = [];
 		ctrl.condicoes = [];
 		ctrl.Gerencias = [];
 		ctrl.Coordenadorias = [];
@@ -192,6 +193,31 @@ var FiltroProcessos = {
 
 				}
 			}
+
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GERENTE)){
+				if(ctrl.isAnaliseTecnicaOpcional){
+					analistaService.getAnalistasGeo()
+						.then(function(response){
+
+							ctrl.analistasGeo = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas GEO.');
+						});
+				}
+				else{
+					analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
+						.then(function(response){
+
+							ctrl.analistasGeo = response.data;
+						})
+						.catch(function(){
+							mensagem.warning('Não foi possível obter a lista de analistas GEO.');
+						});
+
+				}
+			}
+
 		}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
