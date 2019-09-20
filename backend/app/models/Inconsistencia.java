@@ -1,6 +1,7 @@
 package models;
 
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
 import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -54,7 +55,7 @@ public class Inconsistencia extends GenericModel{
 
     @OneToOne
     @JoinColumn(name="id_sobreposicao")
-    public SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento;
+    public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
 
     public Inconsistencia(AnaliseGeo analiseGeo) {
 
@@ -72,13 +73,13 @@ public class Inconsistencia extends GenericModel{
 
     }
 
-    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
         this.analiseGeo = analiseGeo;
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;
         this.categoria = categoria;
         this.caracterizacao = caracterizacao;
-        this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
+        this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
 
     }
 
