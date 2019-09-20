@@ -78,6 +78,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Transient
 	public static int indexDadosAtividades;
 
+	@Transient
+	public static int indexDadosGeometriasAtividade;
+
 	@Override
 	public Processo save() {
 
@@ -742,17 +745,19 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static List<CamadaGeoAtividadeVO> preencheListaAtividades(Caracterizacao caracterizacao) {
 
 		List<CamadaGeoAtividadeVO> atividades = new ArrayList<>();
+		indexDadosAtividades = 0;
 
 		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
 			List<GeometriaAtividadeVO> geometriasAtividade = new ArrayList<>();
-			indexDadosAtividades = 0;
+			indexDadosGeometriasAtividade = 0;
+			indexDadosAtividades++;
 
 			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
 
 				for (Geometry geometrie : GeoCalc.getGeometries(geometria.geometria)) {
 
-					indexDadosAtividades++;
+					indexDadosGeometriasAtividade++;
 					geometriasAtividade.add(new GeometriaAtividadeVO(geometrie));
 
 				}

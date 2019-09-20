@@ -19,7 +19,7 @@ public class GeometriaAtividadeVO {
 	public GeometriaAtividadeVO(Geometry geometria) {
 
 		this.geometria = geometria;
-		this.item = CamadaGeoEnum.ATIVIDADE.nome + "_" + Processo.indexDadosAtividades;
+		this.item = CamadaGeoEnum.ATIVIDADE.nome + "_" + Processo.indexDadosGeometriasAtividade;
 		this.tipo = CamadaGeoEnum.ATIVIDADE.tipo + "_" + Processo.indexDadosAtividades;
 		this.descricao = Processo.getDescricaoSobreposicao(geometria);
 		this.area = GeoCalc.area(geometria);
