@@ -1,6 +1,8 @@
 package models;
 
 import com.vividsolutions.jts.geom.Geometry;
+import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
+import models.licenciamento.SobreposicaoCaracterizacaoComplexo;
 import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import utils.GeoCalc;
 
@@ -18,6 +20,10 @@ public class CamadaGeoRestricaoVO {
 
 	public SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento;
 
+	public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
+
+	public SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo;
+
 	public CamadaGeoRestricaoVO(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
 
 		this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
@@ -25,7 +31,29 @@ public class CamadaGeoRestricaoVO {
 		this.tipo = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoEmpreendimento.geometria);
 		this.geometria = sobreposicaoCaracterizacaoEmpreendimento.geometria;
-		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoEmpreendimento);
+		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao, sobreposicaoCaracterizacaoEmpreendimento.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoEmpreendimento.geometria);
+
+	}
+
+	public CamadaGeoRestricaoVO(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+
+		this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
+		this.item = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome;
+		this.tipo = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
+		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria);
+		this.geometria = sobreposicaoCaracterizacaoAtividade.geometria;
+		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao, sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoAtividade.geometria);
+
+	}
+
+	public CamadaGeoRestricaoVO(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) {
+
+		this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
+		this.item = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.nome;
+		this.tipo = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
+		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoComplexo.geometria);
+		this.geometria = sobreposicaoCaracterizacaoComplexo.geometria;
+		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoComplexo.tipoSobreposicao, sobreposicaoCaracterizacaoComplexo.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoComplexo.geometria);
 
 	}
 
