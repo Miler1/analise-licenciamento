@@ -118,6 +118,12 @@ public class AnaliseGeoSerializer {
             "inconsistencias.anexos.tipo.id",
             "inconsistencias.categoria",
             "inconsistencias.caracterizacao.id",
+            "inconsistencias.atividadesCaracterizacao",
+            "inconsistencias.atividadesCaracterizacao.id",
+            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento",
+            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento.id",
+            "inconsistencias.sobreposicaoCaracterizacaoComplexo",
+            "inconsistencias.sobreposicaoCaracterizacaoComplexo.id",
             "inconsistencias.geometriaAtividade.id",
             "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento.id",
             "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento"

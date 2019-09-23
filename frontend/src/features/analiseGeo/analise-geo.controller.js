@@ -534,8 +534,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		_.forEach(ctrl.analiseGeo.inconsistencias, function(inconsistencia){
 
-			if (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento && 
-				inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) {
+			if (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) {
 
 				item = inconsistencia.tipoInconsistencia;
 
@@ -552,9 +551,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var descricao;
 
 		_.forEach(ctrl.analiseGeo.inconsistencias, function(inconsistencia){
-			
-			if (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento && 
-				inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) {
+
+			if (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) {
 
 				descricao = inconsistencia.descricaoInconsistencia;
 
