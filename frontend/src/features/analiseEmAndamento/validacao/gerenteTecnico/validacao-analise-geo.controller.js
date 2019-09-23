@@ -1,13 +1,17 @@
 var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoService ,analiseTecnicaService, $route, $scope, 
-        mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService) {
+        mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService, documentoService, empreendimentoService) {
 
     var validacaoAnaliseGeoGerente = this;
 
-    validacaoAnaliseGeoGerente.analiseTecnicaValidacao = {};
+    validacaoAnaliseGeoGerente.analiseGeoValidacao = {};
+    validacaoAnaliseGeoGerente.camadasDadosEmpreendimento = {};
+    validacaoAnaliseGeoGerente.dadosProjeto = {};
 
     validacaoAnaliseGeoGerente.init = init;
     validacaoAnaliseGeoGerente.exibirDadosProcesso = exibirDadosProcesso;
     validacaoAnaliseGeoGerente.concluir = concluir;
+    validacaoAnaliseGeoGerente.baixarDocumento = baixarDocumento;
+    validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias = verificarTamanhoInconsistencias;
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
@@ -17,9 +21,11 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
             .then(function(response){
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
 
-                validacaoAnaliseGeoGerente.analiseGeoValidacao.idAnalistaTecnico =
-                    validacaoAnaliseGeoGerente.analiseGeo.analistasTecnicos[0].usuario.id;
-                
+                if(validacaoAnaliseGeoGerente.analiseGeo.analistasTecnicos) {
+                    validacaoAnaliseGeoGerente.analiseGeoValidacao.idAnalistaTecnico =
+                        validacaoAnaliseGeoGerente.analiseGeo.analistasTecnicos[0].usuario.id;
+                }
+
                 if (validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente) {
 
                     validacaoAnaliseGeoGerente.analiseGeoValidacao.idTipoResultadoValidacaoGerente =
@@ -34,10 +40,9 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
                         validacaoAnaliseGeoGerente.analistas = response.data;
                 });            
             
+                getDadosVisualizar(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
 
             });
-        
-        $('#situacao-fundiaria').summernote('disable');
         
         $rootScope.$broadcast('atualizarContagemProcessos');
     }
@@ -86,6 +91,44 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
                 mensagem.error(error.data.texto);
             });
     }
+
+    function baixarDocumento(documento) {
+        if(!documento.id){
+			documentoService.download(documento.key, documento.nomeDoArquivo);
+		}else{
+			analiseGeoService.download(documento.id);
+		}
+    }
+
+    function getDadosVisualizar(processo) {
+        var pessoa = processo.empreendimento.pessoa;
+        var cpfCnpjEmpreendimento = pessoa.cpf ? pessoa.cpf : pessoa.cnpj;
+
+        var idProcesso = processo.id;
+
+        empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento)
+			.then(function(response) {
+
+                validacaoAnaliseGeoGerente.camadasDadosEmpreendimento = response.data;
+            });
+        
+        analiseGeoService.getDadosProjeto(idProcesso)
+            .then(function (response) {
+
+                validacaoAnaliseGeoGerente.dadosProjeto = response.data;
+            });
+    }
+
+    function verificarTamanhoInconsistencias () {
+        if(validacaoAnaliseGeoGerente.analiseGeo) {
+            var inconsistencias = angular.copy(validacaoAnaliseGeoGerente.analiseGeo.inconsistencias);
+            return _.remove(inconsistencias, function(i){
+                return(i.categoria !== 'ATIVIDADE');
+            }).length > 0;
+        } 
+        return false;
+	}
+
 };
 
 exports.controllers.ValidacaoAnaliseGeoGerenteController = ValidacaoAnaliseGeoGerenteController;
