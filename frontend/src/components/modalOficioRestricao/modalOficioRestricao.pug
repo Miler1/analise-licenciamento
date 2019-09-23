@@ -1,0 +1,39 @@
+.modal-header
+    h4 Visualizar Comunicado
+
+.modal-body
+    label.label-item-restricao {{$ctrl.restricao.item | uppercase}}
+
+    .documentacao-enviada
+        label.label-documentos Documentos enviados ao órgão
+        hr
+
+        button.btn.btn-success.btn-download(type="button")
+            .glyphicon.glyphicon-file.icon-download
+            | Ofício
+
+    .manifestacao-orgao
+        label.label-manifestacao Manifestação do órgão
+        hr
+
+        label.text-manifestacao Justificativa: 
+
+        span.text-manifestacao &nbsp;Documento comprobatório da sobreposição com sítios arqueológicos
+
+        table.table.table-condensed.table-docs
+
+            thead.border-head
+
+                tr
+                    th.col-md-10 Arquivos anexados
+                    th.col-md-2.text-right Ações
+
+            tbody.border-body
+
+                tr
+                    //- (ng-repeat="documento in validacaoAnaliseGeoGerente.analiseGeo.documentos")
+
+                    td.col-md-10 Sobreposição com sitios arqueológicos.pdf
+                    td.col-md-2.text-right
+                        a.d-inline.margin-right-xs.aba-clicavel(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                            i.glyphicon.glyphicon-save

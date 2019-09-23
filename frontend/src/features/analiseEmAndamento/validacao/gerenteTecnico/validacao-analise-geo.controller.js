@@ -12,6 +12,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
     validacaoAnaliseGeoGerente.concluir = concluir;
     validacaoAnaliseGeoGerente.baixarDocumento = baixarDocumento;
     validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias = verificarTamanhoInconsistencias;
+    validacaoAnaliseGeoGerente.openModalOficio = openModalOficio;
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
@@ -127,7 +128,22 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
             }).length > 0;
         } 
         return false;
-	}
+    }
+    
+    function openModalOficio(restricao) {
+        var modalInstance = $uibModal.open({
+
+            component: 'modalOficioRestricao',
+            size: 'lg',
+            resolve: {
+
+                restricao: function() {
+
+                    return restricao;
+                }
+            }    
+        });
+    }
 
 };
 

@@ -530,4 +530,5 @@ licenciamento
 	.component('modalFichaImovel', directives.ModalFichaImovel)
 	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas)
 	.component('tabelaLicencas', directives.TabelaLicencas)
-	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);
+	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca)
+	.component('modalOficioRestricao', directives.ModalOficioRestricao);
