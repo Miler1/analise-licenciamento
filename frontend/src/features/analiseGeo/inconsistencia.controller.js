@@ -213,6 +213,24 @@ var InconsistenciaController = function ($scope,
 		return restricoes;
 	};
 
+	inconsistenciaController.hasRestricoes = function() {
+
+		var inconsistenciasRestricoes = dadosProjeto.restricoes.filter(function(restricao) {
+
+			return restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis.filter(
+				function(orgao) {
+
+					return orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA';
+
+				}
+			);
+
+		});
+
+		return analiseGeo.inconsistencias.length < inconsistenciasRestricoes.length;
+
+	};
+
 	inconsistenciaController.getRestricoesSemInconsistencia = function() {
 		var restricoes = [];
 		var restricaoEnable = true;
