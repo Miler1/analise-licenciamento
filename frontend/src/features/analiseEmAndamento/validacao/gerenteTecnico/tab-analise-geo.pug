@@ -69,13 +69,13 @@
                             span {{validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.nome | uppercase}}
                         
                         .botoes-download
-                            button.btn.btn-success.btn-download(type="button")
+                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
                                 | Parecer Geo
                             br
-                            button.btn.btn-success.btn-download(type="button")
+                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
-                                | Carta Imagem
+                                | Carta Imagem 
 
                         #camposAnaliseGeo
                             div

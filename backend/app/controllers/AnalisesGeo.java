@@ -1,6 +1,9 @@
 package controllers;
 
+import enums.TipoSetor;
+import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.*;
+import models.EntradaUnica.CodigoPerfil;
 import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
@@ -163,7 +166,6 @@ public class AnalisesGeo extends InternalController {
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {
 
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
 
@@ -180,8 +182,6 @@ public class AnalisesGeo extends InternalController {
     }
 
     public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) {
-
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
 
