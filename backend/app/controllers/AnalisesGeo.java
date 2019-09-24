@@ -2,6 +2,7 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
@@ -214,6 +215,16 @@ public class AnalisesGeo extends InternalController {
         DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
 
         renderJSON(dadosProcesso, CamadaGeoAtividadeSerializer.getDadosProjeto);
+
+    }
+
+    public static void findAllRestricoesById(Long idProcesso) {
+
+        returnIfNull(idProcesso, "Long");
+
+        Processo processo = Processo.findById(idProcesso);
+
+        renderJSON(Processo.preencheListaRestricoes(processo.getCaracterizacao()), CamadaGeoAtividadeSerializer.getDadosRestricoesProjeto);
 
     }
 

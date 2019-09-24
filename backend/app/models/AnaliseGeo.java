@@ -751,9 +751,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             return camada.geometrias.stream().anyMatch(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
         }).findAny().orElse(null);
 
-        Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
-        Map<LayerType, CamadaGeoRestricaoVO> geometriesRestricoes = new HashMap<>();
         Map<LayerType, CamadaGeoAtividadeVO> geometriesAtividades = new HashMap<>();
+        Map<LayerType, List<CamadaGeoRestricaoVO>> geometriesRestricoes = new HashMap<>();
+        Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
 
         for (CamadaGeoAtividadeVO camadaAtividade : dadosProcesso.atividades) {
 
@@ -761,9 +761,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         }
 
-        for (CamadaGeoRestricaoVO camadaRestricao : dadosProcesso.restricoes) {
+        if(!dadosProcesso.restricoes.isEmpty()) {
 
-            geometriesRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), camadaRestricao);
+            geometriesRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), dadosProcesso.restricoes);
 
         }
 
@@ -773,7 +773,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         }
 
-        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasEmpreendimento, geometriesAtividades, geometriesRestricoes);
+        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriesAtividades, geometriesRestricoes, geometriasEmpreendimento);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())

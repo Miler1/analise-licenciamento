@@ -11,7 +11,8 @@ var InconsistenciaController = function ($scope,
 		uploadService,
 		inconsistenciaService,
 		mensagem,
-		dadosProjeto) {
+		dadosProjeto,
+		listaInconsistencias) {
 
 	var inconsistenciaController = this;
 	inconsistenciaController.anexos = [];
@@ -22,6 +23,7 @@ var InconsistenciaController = function ($scope,
 	inconsistenciaController.categoriaInconsistencia = categoriaInconsistencia;
 	
 	inconsistenciaController.habilitaExcluir = inconsistencia !== null;
+	inconsistenciaController.isEdicao = inconsistencia !== null && inconsistencia.isEdicao !== undefined ? inconsistencia.isEdicao : false;
 
 	if(inconsistencia){
 		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
@@ -74,7 +76,10 @@ var InconsistenciaController = function ($scope,
 		var id;
 
 		_.forEach(dadosProjeto.restricoes, function(restricao){
-			if(inconsistenciaController.idSobreposicao === restricao.sobreposicaoCaracterizacaoEmpreendimento.id){
+
+			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+			if(inconsistenciaController.idSobreposicao === sobreposicao.id){
 				id = dadosProjeto.caracterizacao.id;
 			}
 		});
@@ -83,16 +88,30 @@ var InconsistenciaController = function ($scope,
 	};
 
 	inconsistenciaController.concluir = function() {
+
 		var params;
 
 		inconsistenciaController.idCaracterizacao = idCaracterizacao ? idCaracterizacao : inconsistenciaController.buscarIdCaracterizacaoPorRestricao();
 		inconsistenciaController.idSobreposicao = idSobreposicao ? idSobreposicao : inconsistenciaController.idSobreposicao;
 
+		var restricao = _.find(dadosProjeto.restricoes, function(restricao) {
+
+			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+			
+			return sobreposicao.id === inconsistenciaController.idSobreposicao;
+
+		});
+
+		restricao = restricao || {};
+
 		var paramsInconsistencia = {
 			categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
 			caracterizacao: {id: inconsistenciaController.idCaracterizacao},
 			analiseGeo: {id: analiseGeo.id},
-			sobreposicaoCaracterizacaoEmpreendimento: {id: inconsistenciaController.idSobreposicao}
+			sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
+			sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
+			sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
+
 		};
 
 		inconsistenciaService.findInconsistencia(paramsInconsistencia)
@@ -111,7 +130,9 @@ var InconsistenciaController = function ($scope,
 					anexos: inconsistenciaController.anexos,
 					caracterizacao: {id: inconsistenciaController.idCaracterizacao},
 					geometriaAtividade: {id: idGeometriaAtividade},
-					sobreposicaoCaracterizacaoEmpreendimento: {id: inconsistenciaController.idSobreposicao}
+					sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
+					sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
+					sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
 				};
 
 			}else{
@@ -124,7 +145,9 @@ var InconsistenciaController = function ($scope,
 					anexos: inconsistenciaController.anexos,
 					caracterizacao: {id: inconsistenciaController.idCaracterizacao},
 					geometriaAtividade: {id: idGeometriaAtividade},
-					sobreposicaoCaracterizacaoEmpreendimento: {id: inconsistenciaController.idSobreposicao}
+					sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
+					sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
+					sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
 				};
 
 			}
@@ -137,6 +160,8 @@ var InconsistenciaController = function ($scope,
 						inconsistencia: response.data,
 						isEdicao: params.id !== undefined && params.id !== null
 					};
+
+					listaInconsistencias.push(retorno.inconsistencia);
 
 					$uibModalInstance.close(
 						retorno);
@@ -198,7 +223,10 @@ var InconsistenciaController = function ($scope,
 		var restricoes = [];
 
 		_.forEach(dadosProjeto.restricoes, function(restricao){
-			_.forEach(restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis, function(orgao){
+
+			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+			_.forEach(sobreposicao.tipoSobreposicao.orgaosResponsaveis, function(orgao){
 				//verifica se o orgão da restrição é IPHAN ou IBAMA
 				if(orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA){
 					orgaoEnable = true;
@@ -217,7 +245,9 @@ var InconsistenciaController = function ($scope,
 
 		var inconsistenciasRestricoes = dadosProjeto.restricoes.filter(function(restricao) {
 
-			return restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis.filter(
+			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+			return sobreposicao.tipoSobreposicao.orgaosResponsaveis.filter(
 				function(orgao) {
 
 					return orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA';
@@ -227,7 +257,13 @@ var InconsistenciaController = function ($scope,
 
 		});
 
-		return analiseGeo.inconsistencias.length < inconsistenciasRestricoes.length;
+		var inconsistencias = analiseGeo.inconsistencias.filter(function(inconsistencia) {
+
+			return inconsistencia.categoria !== 'PROPRIEDADE';
+
+		});
+
+		return inconsistencias.length < inconsistenciasRestricoes.length;
 
 	};
 
@@ -235,15 +271,22 @@ var InconsistenciaController = function ($scope,
 		var restricoes = [];
 		var restricaoEnable = true;
 		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
+
+			var sobreposicaoRestricao = {};
+
 			_.forEach(analiseGeo.inconsistencias, function(i){
 
 				//verifica se uma restrição já possui inconsistência
-				if(i.sobreposicaoCaracterizacaoEmpreendimento && (i.sobreposicaoCaracterizacaoEmpreendimento.id === restricao.sobreposicaoCaracterizacaoEmpreendimento.id)){
+				var sobreposicaoInconsistencia = i.sobreposicaoCaracterizacaoAtividade ? i.sobreposicaoCaracterizacaoAtividade : i.sobreposicaoCaracterizacaoEmpreendimento ? i.sobreposicaoCaracterizacaoEmpreendimento : i.sobreposicaoCaracterizacaoComplexo;
+				sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+				if(sobreposicaoInconsistencia && (sobreposicaoInconsistencia.id === sobreposicaoRestricao.id)){
 					restricaoEnable = false;
 				}
 			});
 
 			if(restricaoEnable){
+				restricao.sobreposicao = sobreposicaoRestricao;
 				restricoes.push(restricao);
 			}
 
@@ -259,7 +302,10 @@ var InconsistenciaController = function ($scope,
 		var itemRestricao = {};
 
 		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
-			if (idSobreposicao === restricao.sobreposicaoCaracterizacaoEmpreendimento.id) {
+			
+			var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+			if (idSobreposicao === sobreposicaoRestricao.id) {
 				itemRestricao = restricao.item;
 			}
 		});

@@ -77,14 +77,14 @@ include ../../layout/components/mapPanel
 
                                     tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
                                         tr
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id ? getItemRestricao(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) : 'Propriedade'}}
+                                            td.col-md-4 {{ getItemRestricao(inconsistencia) }}
                                             td.col-md-3 {{inconsistencia.categoria}}
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) : '-'}}
+                                            td.col-md-4 {{ getDescricaoRestricao(inconsistencia) }}
                                             td.col-md-2.text-right
                                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'PROPRIEDADE'",
                                                         ng-click='addInconsistenciaPropriedade(ctrl.categoria.PROPRIEDADE)', title='Editar inconsistência')
                                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'RESTRICAO'",
-                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia.caracterizacao.id, inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id)", title='Editar inconsistência')
+                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia, true)", title='Editar inconsistência')
                                                 i.glyphicon.glyphicon-trash.icone-inconsistencia-clicavel(title='Excluir inconsistência',
                                                         ng-bootbox-title='Confirmação',
                                                         ng-bootbox-confirm='Deseja realmente excluir esta inconsistência ?',

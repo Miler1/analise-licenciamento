@@ -36,4 +36,15 @@ public class CamadaGeoAtividadeSerializer {
 			"restricoes.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo")
 			.transform(new GeometryTransformer(), Geometry.class);
 
+	public static JSONSerializer getDadosRestricoesProjeto = SerializerUtil.create(
+			"item",
+			"tipo",
+			"descricao",
+			"sobreposicaoCaracterizacaoAtividades",
+			"sobreposicaoCaracterizacaoAtividades.id",
+			"sobreposicaoCaracterizacaoEmpreendimento",
+			"sobreposicaoCaracterizacaoEmpreendimento.id",
+			"sobreposicaoCaracterizacaoComplexo",
+			"sobreposicaoCaracterizacaoComplexo.id");
+
 }
