@@ -10,7 +10,13 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 		return request
                 	.post(config.BASE_URL() + 'analisesGeo/iniciar', analise);
-	};	
+	};
+
+	this.iniciarAnaliseGerente = function(analise) {
+
+		return request
+                	.post(config.BASE_URL() + 'analisesGeo/iniciarAnaliseGerente', analise);
+	};
 
 	this.getAnaliseGeo = function(idAnaliseGeo) {
 
@@ -47,6 +53,12 @@ var AnaliseGeoService = function(request, $window ,config) {
 		return request
 				.post(config.BASE_URL() + 'analisesGeo/validarParecer', analise);
 	};
+	
+	this.listaComunicadosByIdAnaliseGeo = function(params) {
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/" + params);
+	};
+
 
 	this.validarParecerGerente = function(analise) {
 
@@ -73,12 +85,21 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	};
 
+
+	this.getAnliseGeoByAnalise = function(idAnalise) {
+
+		return request
+			.get(config.BASE_URL() + 'analisesGeo/buscaAnaliseGeoByAnalise/' + idAnalise);
+
+	};
+
 	this.getDadosRestricoesProjeto = function(idProcesso) {
 
 		return request
                 .get(config.BASE_URL() + 'analisesGeo/restricao/findAllById/' + idProcesso);
 
 	};
+
 
 };
 
