@@ -10,6 +10,8 @@ import serializers.ProcessoSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
+import services.IntegracaoEntradaUnicaService;
+import utils.GeoJsonUtils;
 
 public class Processos extends InternalController {
 
@@ -46,6 +48,9 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECER_GEO, Acao.INICIAR_PARECER_GEO,Acao.VALIDAR_PARECERES);
 
 		Processo processo = Processo.findById(id);
+
+		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(processo.empreendimento.getCpfCnpj());
+		processo.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
 		
 		renderJSON(processo, ProcessoSerializer.getInfo);
 	}

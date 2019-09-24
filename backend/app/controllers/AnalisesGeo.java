@@ -2,7 +2,6 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
-import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
