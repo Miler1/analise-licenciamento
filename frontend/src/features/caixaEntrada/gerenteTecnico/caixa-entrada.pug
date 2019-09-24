@@ -54,7 +54,11 @@ div
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
+
+												a(ng-click="cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo)")
+
 												a(ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
+
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo
 											li

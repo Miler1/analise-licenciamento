@@ -85,6 +85,13 @@ public class Comunicado extends GenericModel {
 
     }
 
+    public static List<Comunicado> findByAnaliseGeo(Long idAnaliseGeo) {
+        List<Comunicado> listaComunicados = null;
+        return listaComunicados = Comunicado.find("id_analise_geo = :analiseGeo")
+                .setParameter("analiseGeo", idAnaliseGeo).fetch();
+    }
+
+
     public void saveAnexos(List<Documento> novosAnexos) {
 
         TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_COMUNICADO);

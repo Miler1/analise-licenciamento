@@ -4,6 +4,7 @@ import models.Comunicado;
 import serializers.ComunicadoSerializer;
 
 import java.util.Date;
+import java.util.List;
 
 public class Comunicados extends GenericController{
 
@@ -34,5 +35,13 @@ public class Comunicados extends GenericController{
         renderJSON(comunicadoBanco, ComunicadoSerializer.findComunicado);
 
     }
+
+    public static void listaComunicadosByIdAnaliseGeo(Long id) {
+
+        List<Comunicado> comunicados = Comunicado.findByAnaliseGeo(id);
+        renderJSON(comunicados, ComunicadoSerializer.findComunicado);
+
+    }
+
 }
 

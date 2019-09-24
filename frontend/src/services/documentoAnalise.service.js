@@ -5,6 +5,11 @@ var DocumentoAnaliseService = function(request, config, $window) {
         $window.open(config.BASE_URL() + 'documentos/' + idDocumento + '/download', '_blank');
 
 	};
+	this.generatePDFOficioOrgao = function(comunicado) {
+
+		return request.postArrayBuffer(config.BASE_URL() + "analisesGeo/downloadPDFOficioOrgao/"+ comunicado);
+	};
+
 
 	this.generatePDFParecerJuridico = function(analiseJuridica) {
 

@@ -488,6 +488,7 @@ utils.services(licenciamento)
 	.add('desvinculoService', services.DesvinculoService)
 	.add('wmsTileService', services.WMSTileService)
 	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
+	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
 	.add('parecerOrgaoService', services.ParecerOrgaoService);
 
 utils.filters(licenciamento)
@@ -530,4 +531,5 @@ licenciamento
 	.component('modalFichaImovel', directives.ModalFichaImovel)
 	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas)
 	.component('tabelaLicencas', directives.TabelaLicencas)
-	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);
+	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca)
+	.component('modalOficioRestricao', directives.ModalOficioRestricao);

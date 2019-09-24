@@ -11,7 +11,8 @@ public class Empreendimentos extends InternalController {
 
 		returnIfNull(cpfCnpj, "String");
 
-		verificarPermissao(Acao.INICIAR_PARECER_GEO);
+//		TODO: quando criar as permissões do gerente, adicionar aqui e descomentar.
+//		verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
 		renderJSON(Empreendimento.buscaDadosGeoEmpreendimento(cpfCnpj), EmpreendimentoSerializer.getDadosGeoEmpreendimento);
 

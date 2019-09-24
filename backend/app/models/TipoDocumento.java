@@ -31,6 +31,7 @@ public class TipoDocumento extends Model {
 	public static Long DOCUMENTO_INCONSISTENCIA = 18l;
 	public static Long CARTA_IMAGEM = 19l;
 	public static Long DOCUMENTO_COMUNICADO = 20l;
+	public static Long DOCUMENTO_OFICIO_ORGAO = 21l;
 
 	@Required
 	public String nome;

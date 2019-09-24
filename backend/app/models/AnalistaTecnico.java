@@ -5,10 +5,14 @@ import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 import utils.Mensagem;
 
 import javax.persistence.*;
+import javax.xml.ws.WebServiceException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="analista_tecnico")
@@ -47,7 +51,57 @@ public class AnalistaTecnico extends GenericModel {
 		this.usuario = usuario;
 		this.dataVinculacao = new Date();
 		
-	}	
+	}
+
+	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, AnaliseGeo analiseGeo) {
+
+		List<UsuarioAnalise> analistasTecnico = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
+
+		if (analistasTecnico == null || analistasTecnico.size() == 0)
+			throw new WebServiceException("Não existe nenhum gerente ativado no sistema");
+
+		List<Long> idsAnalistasTecnico = analistasTecnico.stream()
+				.map(ang->ang.id)
+				.collect(Collectors.toList());
+
+		String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsAnalistasTecnico) +"]";
+
+		String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
+				"     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.analista_tecnico at) LIMIT 1), " +
+				"     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.analista_tecnico " +
+				"        WHERE id_usuario in ("+ getParameterLongAsStringDBArray(idsAnalistasTecnico) +") " +
+				"        GROUP BY id_usuario " +
+				"        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
+				"SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+
+		Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
+
+		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
+
+		return new AnalistaTecnico(analiseGeo.analise, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
+
+	}
+
+	public AnalistaTecnico(Analise analise, UsuarioAnalise usuario) {
+
+		super();
+		this.analiseTecnica = analise.analiseTecnica;
+		this.usuario = usuario;
+		this.dataVinculacao = new Date();
+
+	}
+
+	private static String getParameterLongAsStringDBArray(List<Long> lista) {
+
+		String retorno = "";
+
+		for (Long id : lista) {
+			retorno = retorno + "" + id + ", ";
+		}
+		retorno = retorno.substring(0, retorno.length() -2) ;
+
+		return retorno;
+	}
 	
 	public static void vincularAnalise(UsuarioAnalise usuario, AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
 

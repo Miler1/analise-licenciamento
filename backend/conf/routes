@@ -71,10 +71,12 @@ GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}       
 POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.downloadPDFCartaImagem
+POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.downloadPDFOficioOrgao
+GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
+POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
 
 POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
 GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
-GET     /analisesGeo/desvinculo/buscarAnalistasGeo/{idProcesso}                     Desvinculos.buscarAnalistasGeo
 POST    /analisesGeo/desvinculo/respondersolicitacaoDesvinculo                      Desvinculos.respondersolicitacaoDesvinculo
 
 
@@ -83,8 +85,11 @@ POST    /analisesGeo/inconsistencia/findInconsistencia                          
 POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistencia
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
+GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                 Comunicados.listaComunicadosByIdAnaliseGeo
 POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
+POST    /analisesGeo/gerente/concluirParecerGerente                                 AnalisesGeo.concluirParecerGerente
 GET     /analisesGeo/restricao/findAllById/{idProcesso}                             AnalisesGeo.findAllRestricoesById
+
 
 
 # Empreendimento
@@ -119,6 +124,7 @@ GET     /analistas/perfil                           Analistas.getAnalistaTecnico
 GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
 GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
 GET     /analistasGeo                               Analistas.getAnalistaGeoPerfil
+GET     /analistas/buscarAnalistasGeoByIdProcesso/{idProcesso}  Analistas.buscarAnalistasGeoByIdProcesso
 GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
 
 

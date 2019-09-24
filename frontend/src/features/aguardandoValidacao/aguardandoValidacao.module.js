@@ -11,11 +11,6 @@ aguardandoValidacao.config(['$routeProvider', function($routeProvider){
 			templateUrl: 'features/aguardandoValidacao/listagem/aguardando-validacao-listagem.html',
 			controller: controllers.AguardandoValidacaoListagemController,
 			controllerAs: 'aguardandoValidacaoListagem'
-		})
-		.when('/aguardando-validacao/:idAnalise', {
-			templateUrl: 'features/aguardandoValidacao/validacaoAnalise/validacao-analise.html',
-			controller: controllers.ValidacaoAnaliseController,
-			controllerAs: 'validacaoAnalise'
 		})		
 		.otherwise({
 			redirectTo: '/'
@@ -29,6 +24,4 @@ aguardandoValidacao
 	.controller('validacaoAnaliseTecnicaController', controllers.ValidacaoAnaliseTecnicaController)
 	.controller('validacaoAnaliseTecnicaGerenteController', controllers.ValidacaoAnaliseTecnicaGerenteController)
 	.controller('aguardandoValidacaoGerenteTecnicoListController', controllers.AguardandoValidacaoGerenteTecnicoListController)
-	.controller('aguardandoValidacaoGeoListController', controllers.AguardandoValidacaoGeoListController)
-	.controller('validacaoAnaliseGeoController', controllers.ValidacaoAnaliseGeoController)
-	.controller('validacaoAnaliseGeoGerenteController', controllers.ValidacaoAnaliseGeoGerenteController);
+	.controller('aguardandoValidacaoGeoListController', controllers.AguardandoValidacaoGeoListController);
