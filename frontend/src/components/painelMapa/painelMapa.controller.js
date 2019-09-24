@@ -290,6 +290,12 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 		delete painelMapa.listaGeometriasMapa[shape.tipo][item];
 
+		if(Object.keys(painelMapa.listaGeometriasMapa[shape.tipo]).length === 0) {
+
+			delete painelMapa.listaGeometriasMapa[shape.tipo];
+
+		}
+
 		// Caso não haja nenhuma geometria que necessite de centralização especial, volta centralizando tudo
 		if(painelMapa.specificGeometries.length > 0){
 

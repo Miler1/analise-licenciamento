@@ -17,6 +17,7 @@ var InconsistenciaController = function ($scope,
 	var inconsistenciaController = this;
 	inconsistenciaController.anexos = [];
 	inconsistenciaController.idCaracterizacao = null;
+	inconsistenciaController.idSobreposicao = null;
 
 	inconsistenciaController.orgaos = app.utils.Orgao;
 	
@@ -31,7 +32,6 @@ var InconsistenciaController = function ($scope,
 		inconsistenciaController.anexos = inconsistencia.anexos;
 		inconsistenciaController.id = inconsistencia.id;
 		inconsistenciaController.idSobreposicao = idSobreposicao;
-		
 	}
 	inconsistenciaController.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 
@@ -272,13 +272,12 @@ var InconsistenciaController = function ($scope,
 		var restricaoEnable = true;
 		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
 
-			var sobreposicaoRestricao = {};
+			var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
 
 			_.forEach(analiseGeo.inconsistencias, function(i){
 
 				//verifica se uma restrição já possui inconsistência
 				var sobreposicaoInconsistencia = i.sobreposicaoCaracterizacaoAtividade ? i.sobreposicaoCaracterizacaoAtividade : i.sobreposicaoCaracterizacaoEmpreendimento ? i.sobreposicaoCaracterizacaoEmpreendimento : i.sobreposicaoCaracterizacaoComplexo;
-				sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
 
 				if(sobreposicaoInconsistencia && (sobreposicaoInconsistencia.id === sobreposicaoRestricao.id)){
 					restricaoEnable = false;

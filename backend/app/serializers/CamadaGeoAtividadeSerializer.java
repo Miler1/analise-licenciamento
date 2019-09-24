@@ -42,9 +42,18 @@ public class CamadaGeoAtividadeSerializer {
 			"descricao",
 			"sobreposicaoCaracterizacaoAtividades",
 			"sobreposicaoCaracterizacaoAtividades.id",
+			"sobreposicaoCaracterizacaoAtividades.tipoSobreposicao",
+			"sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.orgaosResponsaveis",
+			"sobreposicaoCaracterizacaoAtividades.tipoSobreposicao.orgaosResponsaveis.sigla",
 			"sobreposicaoCaracterizacaoEmpreendimento",
 			"sobreposicaoCaracterizacaoEmpreendimento.id",
+			"sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao",
+			"sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis",
+			"sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis.sigla",
 			"sobreposicaoCaracterizacaoComplexo",
-			"sobreposicaoCaracterizacaoComplexo.id");
+			"sobreposicaoCaracterizacaoComplexo.id",
+			"sobreposicaoCaracterizacaoComplexo.tipoSobreposicao",
+			"sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis",
+			"sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis.sigla");
 
 }
