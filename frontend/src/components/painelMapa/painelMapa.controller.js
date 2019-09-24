@@ -136,7 +136,7 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		}
 	}
 
-    function centralizarCamadaEspecifica(event, geometria) {
+  function centralizarCamadaEspecifica(event, geometria) {
 
 			var layer = L.geoJSON(JSON.parse(geometria));
 
@@ -186,8 +186,11 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		if(shape.geometria && shape.geometria.type.toLowerCase() === 'point') {
 
 			painelMapa.listaGeometriasBase[shape.tipo][item] = L.marker(shape.geometria.coordinates.reverse());
+
 			if(shape.popupText){
+
 				painelMapa.listaGeometriasBase[shape.tipo][item].bindPopup(shape.popupText);
+
 			}
 
 			adicionarPointCluster(painelMapa.listaGeometriasBase[shape.tipo][item]);
@@ -195,8 +198,11 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		} else {
 
 			painelMapa.listaGeometriasBase[shape.tipo][item] = L.geoJSON(shape.geometria, shape.estilo);
+
 			if(shape.popupText){
+
 				painelMapa.listaGeometriasBase[shape.tipo][item].bindPopup(shape.popupText);
+
 			}
 
 			painelMapa.map.addLayer(painelMapa.listaGeometriasBase[shape.tipo][item]);
@@ -270,9 +276,9 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	function removerGeometriaMapa(event, shape) {
 		
-		var item = shape.tipo || 'item';
+		var item = shape.item || 'item';
 
-		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo].item);
+		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo][item]);
 
 		// Limpeza do elemento da lista de centralização especial
 		painelMapa.specificGeometries.forEach(function(index, item) {

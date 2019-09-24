@@ -4,6 +4,8 @@ import br.com.caelum.stella.format.CNPJFormatter;
 import br.com.caelum.stella.format.CPFFormatter;
 import br.com.caelum.stella.format.Formatter;
 import br.com.caelum.stella.validation.CNPJValidator;
+import com.vividsolutions.jts.geom.Coordinate;
+import java.awt.*;
 import org.apache.commons.lang.StringUtils;
 import play.Play;
 
@@ -63,6 +65,12 @@ public class Helper {
 		}
 
 		return  cpfCnpj;
+
+	}
+
+	public static String formatarCoordenada(Coordinate coordinate) {
+
+		return "Coordenadas [" + coordinate.y + ", " + coordinate.x + "]";
 
 	}
 

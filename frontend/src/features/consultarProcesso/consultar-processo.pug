@@ -24,14 +24,14 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th
+							th.col-md-1
 							th.col-md-1 Processo
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
 							th.col-md-2 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise GEO
-							th.col-md-1 Prazo análise técnica
+							th.col-md-1(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO") Prazo análise técnica
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
@@ -52,7 +52,7 @@ div
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
 								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída' : consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
 
-							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
+							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO" ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
 								| -
 
 							td

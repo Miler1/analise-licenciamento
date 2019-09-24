@@ -31,14 +31,15 @@ public class Inconsistencias extends GenericController{
             i.analiseGeo = inconsistencia.analiseGeo;
             i.id = inconsistencia.id;
             i.caracterizacao = Objects.nonNull(inconsistencia.caracterizacao) && Objects.nonNull(inconsistencia.caracterizacao.id) ? inconsistencia.caracterizacao : null;
-            i.sobreposicaoCaracterizacaoEmpreendimento = Objects.nonNull(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : null;
             i.saveAnexos(inconsistencia.anexos);
             i.save();
 
             renderJSON(i, InconsistenciaSerializer.findInconsistencia);
 
         } else {
+
             Inconsistencia novaInconsistencia = null;
+
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
 
                 novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo);
@@ -49,7 +50,7 @@ public class Inconsistencias extends GenericController{
 
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao);
+                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoAtividade);
 
                 novaInconsistencia.saveAnexos(inconsistencia.anexos);
                 novaInconsistencia.save();
@@ -57,10 +58,23 @@ public class Inconsistencias extends GenericController{
             }
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
 
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoEmpreendimento);
+                if(inconsistencia.sobreposicaoCaracterizacaoAtividade != null) {
+
+                    novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoAtividade);
+
+                } else if(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento != null) {
+
+                    novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoEmpreendimento);
+
+                } else if(inconsistencia.sobreposicaoCaracterizacaoComplexo != null) {
+
+                    novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoComplexo);
+
+                }
 
                 novaInconsistencia.saveAnexos(inconsistencia.anexos);
                 novaInconsistencia.save();
+
             }
 
             renderJSON(novaInconsistencia,InconsistenciaSerializer.findInconsistencia);
@@ -73,7 +87,7 @@ public class Inconsistencias extends GenericController{
 
         Inconsistencia i = null;
 
-        if(inconsistencia.categoria == null || (inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO) && (inconsistencia.caracterizacao != null && inconsistencia.caracterizacao.id == null))) {
+        if(inconsistencia.categoria == null || (inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO) && (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento != null && inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id == null))) {
             throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
         }
 
@@ -83,19 +97,41 @@ public class Inconsistencias extends GenericController{
                      .setParameter("categoria",inconsistencia.categoria).first();
         }
 
-        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)){
+        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)) {
              i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao")
                      .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
                      .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
                      .setParameter("categoria",inconsistencia.categoria).first();
         }
 
-        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
-             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoEmpreendimento.id = :sobreposicaoCaracterizacaoEmpreendimento")
-                     .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                     .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                     .setParameter("sobreposicaoCaracterizacaoEmpreendimento",inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id)
-                     .setParameter("categoria",inconsistencia.categoria).first();
+        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)) {
+
+            if(inconsistencia.sobreposicaoCaracterizacaoAtividade != null) {
+
+                i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoAtividade.id = :sobreposicaoCaracterizacaoAtividade")
+                        .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
+                        .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
+                        .setParameter("categoria",inconsistencia.categoria)
+                        .setParameter("sobreposicaoCaracterizacaoAtividade", inconsistencia.sobreposicaoCaracterizacaoAtividade.id).first();
+
+            } else if(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento != null) {
+
+                i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoEmpreendimento.id = :sobreposicaoCaracterizacaoEmpreendimento")
+                        .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
+                        .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
+                        .setParameter("categoria",inconsistencia.categoria)
+                        .setParameter("sobreposicaoCaracterizacaoEmpreendimento", inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id).first();
+
+            } else if(inconsistencia.sobreposicaoCaracterizacaoComplexo != null) {
+
+                i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoComplexo.id = :sobreposicaoCaracterizacaoComplexo")
+                        .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
+                        .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
+                        .setParameter("categoria",inconsistencia.categoria)
+                        .setParameter("sobreposicaoCaracterizacaoComplexo", inconsistencia.sobreposicaoCaracterizacaoComplexo.id).first();
+
+            }
+
         }
 
         renderJSON(i, InconsistenciaSerializer.findInconsistencia);
