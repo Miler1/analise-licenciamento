@@ -54,9 +54,9 @@ var AnaliseGeoService = function(request, $window ,config) {
 				.post(config.BASE_URL() + 'analisesGeo/validarParecer', analise);
 	};
 	
-	this.listaComunicados = function(params) {
+	this.listaComunicadosByIdAnaliseGeo = function(params) {
 		return request
-			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicados/" + params);
+			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/" + params);
 	};
 
 

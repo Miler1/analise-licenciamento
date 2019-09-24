@@ -86,7 +86,7 @@ POST    /analisesGeo/inconsistencia/findInconsistencia                          
 POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistencia
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
-GET     /analisesGeo/comunicado/listaComunicados/{id}                               Comunicados.listaComunicados
+GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                 Comunicados.listaComunicadosByIdAnaliseGeo
 POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
 POST    /analisesGeo/gerente/concluirParecerGerente                                 AnalisesGeo.concluirParecerGerente
 
@@ -122,7 +122,7 @@ GET     /analistas/perfil                           Analistas.getAnalistaTecnico
 GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
 GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
 GET     /analistasGeo                               Analistas.getAnalistaGeoPerfil
-GET     /analistas/buscarAnalistasGeo/{idProcesso}  Analistas.buscarAnalistasGeo
+GET     /analistas/buscarAnalistasGeoByIdProcesso/{idProcesso}  Analistas.buscarAnalistasGeoByIdProcesso
 GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
 
 

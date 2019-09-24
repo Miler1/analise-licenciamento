@@ -7,9 +7,9 @@ var AnalistaService = function(request, config) {
 			.get(config.BASE_URL() + "analistas");
 	};
 
-	this.buscarAnalistasGeo = function(idProcesso) {
+	this.buscarAnalistasGeoByIdProcesso = function(idProcesso) {
 		return request
-			.get(config.BASE_URL() + "analistas/buscarAnalistasGeo/" + idProcesso);
+			.get(config.BASE_URL() + "analistas/buscarAnalistasGeoByIdProcesso/" + idProcesso);
 	};
 
 	this.getAnalistasGeo = function() {

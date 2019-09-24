@@ -118,13 +118,13 @@ public class Analistas extends InternalController {
 
 	}
 
-	public static void buscarAnalistasGeo(Long idProcesso) {
+	public static void buscarAnalistasGeoByIdProcesso(Long idProcesso) {
 
 		Processo processo = Processo.findById(idProcesso);
 
 		String siglaSetor = processo.getCaracterizacao().atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
-		List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeo(siglaSetor);
+		List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeoByIdProcesso(siglaSetor);
 
 		renderJSON(analistasGeo);
 	}

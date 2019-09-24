@@ -142,7 +142,7 @@ public class AnalistaGeo extends GenericModel {
         return retorno;
     }
 
-    public static List<UsuarioAnalise> buscarAnalistasGeo(String setorAtividade) {
+    public static List<UsuarioAnalise> buscarAnalistasGeoByIdProcesso(String setorAtividade) {
 
         List<UsuarioAnalise> todosAnalistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 

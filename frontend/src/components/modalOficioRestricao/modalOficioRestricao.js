@@ -15,7 +15,7 @@ var ModalOficioRestricao = {
 
         ctrl.$onInit =  function() {
 
-            analiseGeoService.listaComunicados(ctrl.resolve.idAnaliseGeo)
+            analiseGeoService.listaComunicadosByIdAnaliseGeo(ctrl.resolve.idAnaliseGeo)
                 .then(function(response){
                     var comunicados = response.data;
                     _.forEach(comunicados, function(comunicado) {
@@ -36,7 +36,7 @@ var ModalOficioRestricao = {
 
         ctrl.downloadPDFOficioOrgao = function () {
              
-            analiseGeoService.listaComunicados(ctrl.idAnaliseGeo)
+            analiseGeoService.listaComunicadosByIdAnaliseGeo(ctrl.idAnaliseGeo)
                 .then(function(response){
     
                     var comunicados = response.data;

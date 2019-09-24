@@ -36,7 +36,7 @@ public class Comunicados extends GenericController{
 
     }
 
-    public static void listaComunicados(Long id) {
+    public static void listaComunicadosByIdAnaliseGeo(Long id) {
 
         List<Comunicado> comunicados = Comunicado.findByAnaliseGeo(id);
         renderJSON(comunicados, ComunicadoSerializer.findComunicado);

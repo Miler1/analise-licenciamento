@@ -55,8 +55,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         $rootScope.$broadcast('atualizarContagemProcessos');
     }
 
-    validacaoAnaliseGeoGerente.buscarAnalistasGeo = function() {
-		analistaService.buscarAnalistasGeo(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
+    validacaoAnaliseGeoGerente.buscarAnalistasGeoByIdProcesso = function() {
+		analistaService.buscarAnalistasGeoByIdProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
 			.then(function(response) {
 				validacaoAnaliseGeoGerente.analistasGeo = response.data;
 			});

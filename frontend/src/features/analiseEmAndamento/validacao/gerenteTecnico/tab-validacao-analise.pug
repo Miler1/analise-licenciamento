@@ -9,7 +9,7 @@
                     input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id', value="{{validacaoAnaliseGeoGerente.TiposResultadoAnalise.SOLICITAR_AJUSTES}}")
                     | Solicitar AJUSTES
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id', value="{{validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO}}", ng-click="validacaoAnaliseGeoGerente.buscarAnalistasGeo()")
+                    input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id', value="{{validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO}}", ng-click="validacaoAnaliseGeoGerente.buscarAnalistasGeoByIdProcesso()")
                     | Parecer NÃO APROVADO
     hr
     div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_VALIDADO.toString()")
