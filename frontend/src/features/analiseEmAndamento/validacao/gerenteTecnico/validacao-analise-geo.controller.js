@@ -1,5 +1,5 @@
 var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoService ,analiseTecnicaService, $route, $scope, 
-        mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService) {
+        mensagem, $location, documentoAnaliseService, processoService,validacaoAnaliseGerenteService, analistaService) {
 
     var validacaoAnaliseGeoGerente = this;
 
@@ -8,6 +8,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
     validacaoAnaliseGeoGerente.init = init;
     validacaoAnaliseGeoGerente.exibirDadosProcesso = exibirDadosProcesso;
     validacaoAnaliseGeoGerente.concluir = concluir;
+    validacaoAnaliseGeoGerente.analistasGeo = null;
+    validacaoAnaliseGeoGerente.analistaGeoDestino = {};
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
@@ -41,6 +43,13 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         
         $rootScope.$broadcast('atualizarContagemProcessos');
     }
+
+    validacaoAnaliseGeoGerente.buscarAnalistasGeo = function() {
+		analistaService.buscarAnalistasGeo(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
+			.then(function(response) {
+				validacaoAnaliseGeoGerente.analistasGeo = response.data;
+			});
+	};
 
     function exibirDadosProcesso() {
 
@@ -103,26 +112,20 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
     function concluir() {
 
-        $scope.formularioValidacao.$setSubmitted();
+        var params = {
+            id: validacaoAnaliseGeoGerente.analiseGeo.id,
+            idAnalistaDestino: validacaoAnaliseGeoGerente.analistaGeoDestino.id,
+            parecerValidacaoGerente: validacaoAnaliseGeoGerente.analiseGeo.parecerValidacaoGerente,
+            tipoResultadoValidacaoGerente: {id: validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id}
+        };
 
-        if (!$scope.formularioValidacao.$valid){
+        validacaoAnaliseGerenteService.concluir(params)
+			.then(function(response){
 
-            mensagem.error('Preencha os campos destacados em vermelho para prosseguir com a validação.');
-            return;
-        }
+                mensagem.success("Analise GEO finalizada!");
+                $location.path("analise-gerente");
 
-        var analiseTecnica = montarAnaliseTecnica(validacaoAnaliseGeoGerente.analiseTecnicaValidacao);
-
-        analiseTecnicaService.validarParecerGerente(analiseTecnica)
-            .then(function(response) {
-
-                mensagem.success(response.data.texto);
-                $location.path('aguardando-validacao');
-
-            }, function(error){
-
-                mensagem.error(error.data.texto);
-            });
+			});
     }
 };
 

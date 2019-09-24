@@ -77,7 +77,6 @@ POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarA
 
 POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
 GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
-GET     /analisesGeo/desvinculo/buscarAnalistasGeo/{idProcesso}                     Desvinculos.buscarAnalistasGeo
 POST    /analisesGeo/desvinculo/respondersolicitacaoDesvinculo                      Desvinculos.respondersolicitacaoDesvinculo
 
 
@@ -87,7 +86,7 @@ POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                  
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
 POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
-
+POST    /analisesGeo/gerente/concluirParecerGerente                                 AnalisesGeo.concluirParecerGerente
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
@@ -121,6 +120,7 @@ GET     /analistas/perfil                           Analistas.getAnalistaTecnico
 GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
 GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
 GET     /analistasGeo                               Analistas.getAnalistaGeoPerfil
+GET     /analistas/buscarAnalistasGeo/{idProcesso}  Analistas.buscarAnalistasGeo
 GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
 
 

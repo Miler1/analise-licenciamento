@@ -13,6 +13,7 @@ import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ObjetoTramitavel;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
@@ -159,6 +160,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     @Transient
     public Integer prazoNotificacao;
+
+    @Transient
+    public Long idAnalistaDestino;
 
     private void validarParecer(AnaliseGeo analise) {
 
@@ -447,7 +451,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
-        } else {
+        } else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.EMITIR_NOTIFICACAO) {
 
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
@@ -843,5 +847,41 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
+
+    public void finalizarAnaliseGerente(AnaliseGeo analise, UsuarioAnalise gerente) throws Exception {
+
+        UsuarioAnalise analistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
+
+        if(analistaTecnico != null) {
+
+            if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_VALIDADO) {
+
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, getUsuarioSessao(), analistaTecnico);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+            } else if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.SOLICITAR_AJUSTES) {
+
+                ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.analise.processo.idObjetoTramitavel);
+                UsuarioAnalise analistaGeo = UsuarioAnalise.findById(objetoTramitavel.usuarioResponsavel.id);
+
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+
+            } else if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_NAO_VALIDADO){
+
+                UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analise.idAnalistaDestino);
+
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+
+            }
+            this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;
+            this.parecerValidacaoGerente = analise.parecerValidacaoGerente;
+            this.usuarioValidacaoGerente = gerente;
+            this.save();
+
+        }
+    }
+
 
 }

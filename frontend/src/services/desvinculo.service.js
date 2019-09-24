@@ -10,10 +10,6 @@ var DesvinculoService = function(request, config) {
 			.get(config.BASE_URL() + "analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/" + idProcesso);
 	};
 
-	this.buscarAnalistasGeo = function(idProcesso) {
-		return request
-			.get(config.BASE_URL() + "analisesGeo/desvinculo/buscarAnalistasGeo/" + idProcesso);
-	};
 
 	this.respondersolicitacaoDesvinculo = function(params) {
 		return request

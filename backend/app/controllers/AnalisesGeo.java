@@ -236,4 +236,18 @@ public class AnalisesGeo extends InternalController {
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
     }
 
+    public static void concluirParecerGerente(AnaliseGeo analiseGeo) throws Exception {
+
+        returnIfNull(analiseGeo, "AnaliseGeo");
+
+        AnaliseGeo analiseGerente= AnaliseGeo.findById(analiseGeo.id);
+
+        UsuarioAnalise gerente =  getUsuarioSessao();
+
+        analiseGerente.finalizarAnaliseGerente(analiseGeo, gerente);
+
+        renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+
+    }
+
 }

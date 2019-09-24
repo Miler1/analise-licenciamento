@@ -69,17 +69,6 @@ public class Desvinculos extends GenericController {
         renderJSON(desvinculo, DesvinculoSerializar.list);
     }
 
-    public static void buscarAnalistasGeo(Long idProcesso) {
-
-        Processo processo = Processo.findById(idProcesso);
-
-        String siglaSetor = processo.getCaracterizacao().atividadesCaracterizacao.get(0).atividade.siglaSetor;
-
-        List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeo(siglaSetor);
-
-        renderJSON(analistasGeo);
-    }
-
     public static void respondersolicitacaoDesvinculo(Desvinculo desvinculo) {
 
         returnIfNull(desvinculo, "Desvinculo");
