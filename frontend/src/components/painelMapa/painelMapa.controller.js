@@ -270,9 +270,9 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	function removerGeometriaMapa(event, shape) {
 		
-		var item = shape.tipo || 'item';
+		var item = shape.item || 'item';
 
-		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo].item);
+		painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[shape.tipo][item]);
 
 		// Limpeza do elemento da lista de centralização especial
 		painelMapa.specificGeometries.forEach(function(index, item) {
