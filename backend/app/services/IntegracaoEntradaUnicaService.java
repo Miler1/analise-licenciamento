@@ -202,7 +202,6 @@ public class IntegracaoEntradaUnicaService {
 
 			filtro.ordenacao = "DENOMINACAO_ASC";
 
-
 			EmpreendimentoFiltroResult listaEmpEU = CadastroUnificadoWS.ws.buscarEmpreendimentosComFiltro(filtro);
 
 			return listaEmpEU.totalItems > 0 ? listaEmpEU.pageItems.get(0) : null;

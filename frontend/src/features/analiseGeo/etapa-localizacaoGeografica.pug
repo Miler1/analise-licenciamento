@@ -77,20 +77,19 @@ include ../../layout/components/mapPanel
 
                                     tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
                                         tr
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id ? getItemRestricao(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) : 'Propriedade'}}
+                                            td.col-md-4 {{ getItemRestricao(inconsistencia) }}
                                             td.col-md-3 {{inconsistencia.categoria}}
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) : '-'}}
+                                            td.col-md-4 {{ getDescricaoRestricao(inconsistencia) }}
                                             td.col-md-2.text-right
                                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'PROPRIEDADE'",
                                                         ng-click='addInconsistenciaPropriedade(ctrl.categoria.PROPRIEDADE)', title='Editar inconsistência')
                                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'RESTRICAO'",
-                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia.caracterizacao.id, inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id)", title='Editar inconsistência')
+                                                        ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia, true)", title='Editar inconsistência')
                                                 i.glyphicon.glyphicon-trash.icone-inconsistencia-clicavel(title='Excluir inconsistência',
                                                         ng-bootbox-title='Confirmação',
                                                         ng-bootbox-confirm='Deseja realmente excluir esta inconsistência ?',
                                                         ng-bootbox-confirm-action="excluirInconsistencia(inconsistencia.id)")
-                                                    
-                                                
+
                                                 |&nbsp;
                             div.info-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
                                 i Nenhuma inconsistência adicionada.
@@ -102,14 +101,14 @@ include ../../layout/components/mapPanel
                     br
                     hr(style="margin-top:2px;")
                     div.collapse-atividade(ng-repeat="atividade in ctrl.dadosProjeto.atividades")
-                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAreaProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAtividadesProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
                             .panel.panel-default
                                 .panel-heading
                                     h4.panel-title
                                         | Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
                                         i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
 
-                        .collapse(id='dadosAreaProjeto{{$index}}')
+                        .collapse(id='dadosAtividadesProjeto{{$index}}')
                             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                 thead
                                     tr

@@ -267,6 +267,15 @@ public class AnalisesGeo extends InternalController {
 
         renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
 
+    public static void findAllRestricoesById(Long idProcesso) {
+
+        returnIfNull(idProcesso, "Long");
+
+        Processo processo = Processo.findById(idProcesso);
+
+        renderJSON(Processo.preencheListaRestricoes(processo.getCaracterizacao()), CamadaGeoAtividadeSerializer.getDadosRestricoesProjeto);
+
+
     }
 
 }

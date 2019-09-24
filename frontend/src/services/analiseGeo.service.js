@@ -85,12 +85,22 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	};
 
+
 	this.getAnliseGeoByAnalise = function(idAnalise) {
 
 		return request
 			.get(config.BASE_URL() + 'analisesGeo/buscaAnaliseGeoByAnalise/' + idAnalise);
 
 	};
+
+	this.getDadosRestricoesProjeto = function(idProcesso) {
+
+		return request
+                .get(config.BASE_URL() + 'analisesGeo/restricao/findAllById/' + idProcesso);
+
+	};
+
+
 };
 
 exports.services.AnaliseGeoService = AnaliseGeoService;
