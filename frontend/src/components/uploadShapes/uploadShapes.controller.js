@@ -26,35 +26,39 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	
 
 	function buscaProcesso() {
-		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso))
-			.then(function(response){
 
-				uploadShapes.processo = response.data;
+		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso)).then(function(response){
 
-				uploadShapes.idMunicipio = uploadShapes.processo.empreendimento.municipio.id;
-				uploadShapes.idEmpreendimento = uploadShapes.processo.empreendimento.id;
+			uploadShapes.processo = response.data;
 
-				$scope.$emit('mapa:adicionar-geometria-base', {
-					geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
-					tipo: 'EMP-LOCAL',
-					estilo: {
-						style: {
-						}
-					},
-					popupText: 'Empreendimento',
-				});
+			uploadShapes.idMunicipio = uploadShapes.processo.empreendimento.municipio.id;
+			uploadShapes.idEmpreendimento = uploadShapes.processo.empreendimento.id;
 
-				$scope.$emit('mapa:adicionar-geometria-base', {
-					geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
-					tipo: 'EMP-CIDADE',
-					estilo: {
-						style: {
-							fillColor: 'transparent',
-							color: '#FFF',
-						}
-					},
-				});
+			$scope.$emit('mapa:adicionar-geometria-base', {
+				geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
+				tipo: 'EMP-LOCAL',
+				estilo: {
+					style: {
+					}
+				},
+				popupText: 'Empreendimento'
+			});
+
+			$scope.$emit('mapa:adicionar-geometria-base', {
+				geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
+				tipo: 'EMP-CIDADE',
+				estilo: {
+					style: {
+						fillColor: 'transparent',
+						color: '#FFF',
+					}
+				}
+			});
+
+			$scope.$emit('mapa:centralizar-mapa');
+
 		});
+
 	}
 
 	function abrirModal() {

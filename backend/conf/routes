@@ -72,7 +72,6 @@ POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.download
 POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
 POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.downloadPDFCartaImagem
 
-
 POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
 GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
 GET     /analisesGeo/desvinculo/buscarAnalistasGeo/{idProcesso}                     Desvinculos.buscarAnalistasGeo
