@@ -207,7 +207,7 @@ public class MapaImagem {
 
 	}
 
-	public GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometryAreaImovel, Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento, Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades, Map<LayerType, CamadaGeoRestricaoVO> geometriasRestricoes) {
+	public GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometryAreaImovel, Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades, Map<LayerType, List<CamadaGeoRestricaoVO>> geometriasRestricoes, Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento) {
 
 		LinkedList<GrupoDataLayer> grupoDataLayers = new LinkedList<>();
 
@@ -236,24 +236,29 @@ public class MapaImagem {
 
 		}
 
-		for(Entry<LayerType, CamadaGeoRestricaoVO> entry : geometriasRestricoes.entrySet()) {
+		for(Entry<LayerType, List<CamadaGeoRestricaoVO>> entry : geometriasRestricoes.entrySet()) {
 
-			CamadaGeoRestricaoVO restricao = entry.getValue();
+			List<CamadaGeoRestricaoVO> restricao = entry.getValue();
 			LayerType layerType = entry.getKey();
 			LinkedList<DataLayer> dataLayers = new LinkedList<>();
 
-			if(restricao.geometria == null) {
-				continue;
-			}
+			for (CamadaGeoRestricaoVO r : restricao) {
 
-			String colorCode = getColorTemaCiclo();
-			Color color = Color.decode(colorCode);
-			Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-			dataLayers.add(new DataLayer(restricao.item, restricao.geometria, color, colorCode).fillColor(fillColor));
+				if(r.geometria == null) {
+					continue;
+				}
+
+				String colorCode = getColorTemaCiclo();
+				Color color = Color.decode(colorCode);
+				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
+				dataLayers.add(new DataLayer(r.item, r.geometria, color, colorCode).fillColor(fillColor));
+
+			}
 
 			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
 
 			grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers));
+
 		}
 
 		for(Entry<LayerType, List<CamadaGeoAtividadeVO>> entry : geometriasEmpreendimento.entrySet()) {

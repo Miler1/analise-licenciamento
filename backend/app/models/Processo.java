@@ -797,7 +797,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	private static List<CamadaGeoRestricaoVO> preencheListaRestricoes(Caracterizacao caracterizacao) {
+	public static List<CamadaGeoRestricaoVO> preencheListaRestricoes(Caracterizacao caracterizacao) {
 
 		List<CamadaGeoRestricaoVO> restricoes = new ArrayList<>();
 		indexDadosRestricoes = 0;
