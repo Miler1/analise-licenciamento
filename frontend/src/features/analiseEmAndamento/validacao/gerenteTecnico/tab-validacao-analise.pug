@@ -2,13 +2,13 @@
     label Análise final do processo*:
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
-                label.opDla.radio-inline.posicao-primeiroItem
+                label.opDla.radio-inline.posicao-primeiroItem-gerente
                     input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id', value="{{validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_VALIDADO}}")
                     | Parecer APROVADO
-                label.opDla.radio-inline
+                label.opDla.radio-inline(style="margin-left:90px;")
                     input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id', value="{{validacaoAnaliseGeoGerente.TiposResultadoAnalise.SOLICITAR_AJUSTES}}")
                     | Solicitar AJUSTES
-                label.opDla.radio-inline
+                label.opDla.radio-inline(style="margin-left:90px;")
                     input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id', value="{{validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO}}", ng-click="validacaoAnaliseGeoGerente.buscarAnalistasGeoByIdProcesso()")
                     | Parecer NÃO APROVADO
     hr
