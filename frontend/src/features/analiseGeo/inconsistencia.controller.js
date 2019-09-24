@@ -161,7 +161,9 @@ var InconsistenciaController = function ($scope,
 						isEdicao: params.id !== undefined && params.id !== null
 					};
 
-					listaInconsistencias.push(retorno.inconsistencia);
+					if(listaInconsistencias) {
+						listaInconsistencias.push(retorno.inconsistencia);
+					}
 
 					$uibModalInstance.close(
 						retorno);
