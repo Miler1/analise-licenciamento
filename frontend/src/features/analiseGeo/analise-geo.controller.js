@@ -686,8 +686,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	$scope.excluirInconsistencia = function(idInconsistencia) {
 
-		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { return inconsistencia.id === idInconsistencia; });
-		ctrl.listaInconsistencias = ctrl.listaInconsistencias.splice(index, 1);
+		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
+			return inconsistencia.id === idInconsistencia;
+		});
+		ctrl.listaInconsistencias.splice(index, 1);
 	
 		inconsistenciaService.excluirInconsistencia(idInconsistencia)
 			.then(function (response) {
@@ -846,7 +848,19 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	$scope.passoValido = function() {
 
-		return ctrl.listaInconsistencias.length === ctrl.dadosRestricoesProjeto.length;
+		var restricoes = _.filter(ctrl.dadosRestricoesProjeto, function(restricao) {
+
+			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+			return sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+
+				return orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA;
+
+			});
+
+		});
+
+		return ctrl.listaInconsistencias.length === restricoes.length;
 
 	};
 
