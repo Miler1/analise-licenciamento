@@ -1,6 +1,9 @@
 package controllers;
 
+import enums.TipoSetor;
+import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.*;
+import models.EntradaUnica.CodigoPerfil;
 import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
@@ -163,7 +166,6 @@ public class AnalisesGeo extends InternalController {
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {
 
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
 
@@ -180,8 +182,6 @@ public class AnalisesGeo extends InternalController {
     }
 
     public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) {
-
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
 
@@ -217,6 +217,25 @@ public class AnalisesGeo extends InternalController {
 
    }
 
+    public static void downloadPDFOficioOrgao(Long id) {
+
+//        verificarPermissao(Acao.INICIAR_PARECER_GEO);
+        Comunicado comunicado = Comunicado.findById(id);
+
+        AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(comunicado.analiseGeo.id);
+
+        Documento pdfParecer = analiseGeoSalva.gerarPDFOficioOrgao(comunicado);
+
+        String nome = pdfParecer.tipo.nome + "_" + analiseGeoSalva.id + ".pdf";
+        nome = nome.replace(' ', '_');
+        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Transfer-Encoding", "binary");
+        response.setHeader("Content-Type", "application/pdf");
+
+        renderBinary(pdfParecer.arquivo, nome);
+    }
+
+
     public static void buscaDadosProcesso(Long idProcesso) {
 
         returnIfNull(idProcesso, "Long");
@@ -234,6 +253,20 @@ public class AnalisesGeo extends InternalController {
                 .setParameter("id_analise", idAnalise).first();
 
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
+    }
+
+    public static void concluirParecerGerente(AnaliseGeo analiseGeo) throws Exception {
+
+        returnIfNull(analiseGeo, "AnaliseGeo");
+
+        AnaliseGeo analiseGerente= AnaliseGeo.findById(analiseGeo.id);
+
+        UsuarioAnalise gerente =  getUsuarioSessao();
+
+        analiseGerente.finalizarAnaliseGerente(analiseGeo, gerente);
+
+        renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+
     }
 
 }

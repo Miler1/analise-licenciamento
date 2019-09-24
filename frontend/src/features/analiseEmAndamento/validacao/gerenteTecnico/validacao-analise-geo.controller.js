@@ -1,5 +1,7 @@
 var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoService ,analiseTecnicaService, $route, $scope, 
-        mensagem, $location, documentoAnaliseService, processoService, $uibModal, analistaService, documentoService, empreendimentoService) {
+        mensagem, $location, documentoAnaliseService, processoService, $uibModal, documentoService, empreendimentoService,
+        validacaoAnaliseGerenteService, analistaService) {
+
 
     var validacaoAnaliseGeoGerente = this;
 
@@ -10,9 +12,14 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
     validacaoAnaliseGeoGerente.init = init;
     validacaoAnaliseGeoGerente.exibirDadosProcesso = exibirDadosProcesso;
     validacaoAnaliseGeoGerente.concluir = concluir;
+
     validacaoAnaliseGeoGerente.baixarDocumento = baixarDocumento;
     validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias = verificarTamanhoInconsistencias;
     validacaoAnaliseGeoGerente.openModalOficio = openModalOficio;
+
+    validacaoAnaliseGeoGerente.analistasGeo = null;
+    validacaoAnaliseGeoGerente.analistaGeoDestino = {};
+
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
@@ -48,6 +55,13 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         $rootScope.$broadcast('atualizarContagemProcessos');
     }
 
+    validacaoAnaliseGeoGerente.buscarAnalistasGeo = function() {
+		analistaService.buscarAnalistasGeo(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
+			.then(function(response) {
+				validacaoAnaliseGeoGerente.analistasGeo = response.data;
+			});
+	};
+
     function exibirDadosProcesso() {
 
         var processo = {
@@ -69,28 +83,60 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         processoService.visualizarProcesso(processo);
     }
 
+    validacaoAnaliseGeoGerente.downloadPDFparecer = function (analiseGeo) {
+
+		var params = {
+			id: analiseGeo.id
+		};
+
+		documentoAnaliseService.generatePDFParecerGeo(params)
+			.then(function(data, status, headers){
+
+				var a = document.createElement('a');
+				a.href = URL.createObjectURL(data.data.response.blob);
+				a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+				a.click();
+
+			},function(error){
+				mensagem.error(error.data.texto);
+			});
+	};
+
+	validacaoAnaliseGeoGerente.downloadPDFCartaImagem = function (analiseGeo) {
+
+		var params = {
+			id: analiseGeo.id
+		};
+
+		documentoAnaliseService.generatePDFCartaImagemGeo(params)
+			.then(function(data, status, headers){
+
+				var a = document.createElement('a');
+				a.href = URL.createObjectURL(data.data.response.blob);
+				a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pdf';
+				a.click();
+
+			},function(error){
+				mensagem.error(error.data.texto);
+			});
+	};
+
     function concluir() {
 
-        $scope.formularioValidacao.$setSubmitted();
+        var params = {
+            id: validacaoAnaliseGeoGerente.analiseGeo.id,
+            idAnalistaDestino: validacaoAnaliseGeoGerente.analistaGeoDestino.id,
+            parecerValidacaoGerente: validacaoAnaliseGeoGerente.analiseGeo.parecerValidacaoGerente,
+            tipoResultadoValidacaoGerente: {id: validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id}
+        };
 
-        if (!$scope.formularioValidacao.$valid){
+        validacaoAnaliseGerenteService.concluir(params)
+			.then(function(response){
 
-            mensagem.error('Preencha os campos destacados em vermelho para prosseguir com a validação.');
-            return;
-        }
+                mensagem.success("Analise GEO finalizada!");
+                $location.path("analise-gerente");
 
-        var analiseTecnica = montarAnaliseTecnica(validacaoAnaliseGeoGerente.analiseTecnicaValidacao);
-
-        analiseTecnicaService.validarParecerGerente(analiseTecnica)
-            .then(function(response) {
-
-                mensagem.success(response.data.texto);
-                $location.path('aguardando-validacao');
-
-            }, function(error){
-
-                mensagem.error(error.data.texto);
-            });
+			});
     }
 
     function baixarDocumento(documento) {
@@ -130,7 +176,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         return false;
     }
     
-    function openModalOficio(restricao) {
+    function openModalOficio(restricao, processo) {
         var modalInstance = $uibModal.open({
 
             component: 'modalOficioRestricao',
@@ -140,6 +186,9 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
                 restricao: function() {
 
                     return restricao;
+                },
+                idAnaliseGeo: function(){
+                    return validacaoAnaliseGeoGerente.analiseGeo.id;
                 }
             }    
         });

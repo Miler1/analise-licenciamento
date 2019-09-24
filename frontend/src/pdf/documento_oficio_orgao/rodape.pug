@@ -1,0 +1,55 @@
+doctype html
+|%{
+|	numeroProcesso = analiseGeo.analise.processo.numero;
+|	dataCadastro = comunicado.dataCadastro;
+|	restricao = comunicado.tipoSobreposicao.nome;
+|	orgaoResponsavel = comunicado.orgao;
+|	empreendimento = analiseGeo.analise.processo.empreendimento;
+|	empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+|	atividadesCaracterizacao = comunicado.caracterizacao.atividadesCaracterizacao;
+|	municipio = municipio;
+|}%
+html(lang="pt-br")
+  head
+      meta(charset='utf-8')
+      title Análise - Licenciamento Ambiental - Amazonas
+      link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+      style.
+        * {
+          margin: 0px;
+          padding:0px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size:13px;
+        }
+
+        .in-left {
+          text-align: left;
+          float: left;
+           margin-top: 30px;
+
+        }
+
+        .in-right {
+          text-align: right;
+          float: right;
+          margin-top: 30px;
+        }
+        .nota-rodape{
+          font-size:10px;
+        }
+
+  body
+    div.footer
+            hr
+            p.in-left
+                span.pull-left Análise do Licenciamento - Amazonas
+
+                span(style="text-align:center;margin-left:100px;") Gerado em: ${dataCadastro.format('dd/MM/yyyy HH:mm:ss')}
+
+            p.in-right
+                pagenumber
+                span /
+                pagecount

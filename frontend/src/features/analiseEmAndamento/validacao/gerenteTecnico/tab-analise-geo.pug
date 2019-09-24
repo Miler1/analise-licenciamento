@@ -45,7 +45,7 @@
                                             td.col-md-5 {{ restricao.descricao }} 
                                             td.col-md-2.text-right
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
-                                                    ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)")
+                                                    ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")
 
                             div.inconsistencias
                                 label.title-inconsistencia Inconsistências Encontradas
@@ -103,13 +103,13 @@
                             span {{validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.nome | uppercase}}
                         
                         .botoes-download
-                            button.btn.btn-success.btn-download(type="button")
+                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
                                 | Parecer Geo
                             br
-                            button.btn.btn-success.btn-download(type="button")
+                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
-                                | Carta Imagem
+                                | Carta Imagem 
 
                         #camposAnaliseGeo
                             div

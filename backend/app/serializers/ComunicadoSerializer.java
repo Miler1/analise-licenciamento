@@ -16,8 +16,10 @@ public class ComunicadoSerializer {
             "analiseGeo.analise.processo.empreendimento.municipio.estado.codigo",
             "atividadeCaracterizacao.id",
             "tipoSobreposicao.nome",
+            "orgao.sigla",
             "ativo",
             "resolvido",
+            "parecerOrgao",
             "dataVencimento",
             "valido");
 }

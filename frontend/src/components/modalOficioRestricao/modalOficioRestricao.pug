@@ -8,7 +8,7 @@
         label.label-documentos Documentos enviados ao órgão
         hr
 
-        button.btn.btn-success.btn-download(type="button")
+        button.btn.btn-success.btn-download(type="button",ng-click="$ctrl.downloadPDFOficioOrgao()")
             .glyphicon.glyphicon-file.icon-download
             | Ofício
 
@@ -18,22 +18,21 @@
 
         label.text-manifestacao Justificativa: 
 
-        span.text-manifestacao &nbsp;Documento comprobatório da sobreposição com sítios arqueológicos
+        span.text-manifestacao &nbsp; {{$ctrl.justificativaOrgao}}
 
-        table.table.table-condensed.table-docs
+        table.area-modal.table.table-condensed(ng-if="ctrl.anexos.length > 0")
 
-            thead.border-head
+                thead
 
-                tr
-                    th.col-md-10 Arquivos anexados
-                    th.col-md-2.text-right Ações
+                    tr
+                        th.col-md-10 Arquivo anexado
+                        th.col-md-2.text-right Ações
 
-            tbody.border-body
+                tbody
 
-                tr
-                    //- (ng-repeat="documento in validacaoAnaliseGeoGerente.analiseGeo.documentos")
+                    tr(ng-model="ctrl.anexo",ng-repeat="anexo in ctrl.anexos")
 
-                    td.col-md-10 Sobreposição com sitios arqueológicos.pdf
-                    td.col-md-2.text-right
-                        a.d-inline.margin-right-xs.aba-clicavel(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
-                            i.glyphicon.glyphicon-save
+                        td.col-md-10 {{anexo.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Baixar anexo", ng-click="ctrl.baixarDocumentoInconsistencia(anexo)")
+                                i.glyphicon.glyphicon-save

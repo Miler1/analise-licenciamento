@@ -1,4 +1,4 @@
-var DesvinculoGerenteController = function ($uibModalInstance, processo, $location ,$window,$rootScope, mensagem, desvinculoService) {
+var DesvinculoGerenteController = function ($uibModalInstance, processo, $location ,$window,$rootScope, mensagem, desvinculoService,analistaService) {
 
 	var desvinculoGerenteController = this;
 
@@ -54,7 +54,7 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 	};
 
 	desvinculoGerenteController.buscarAnalistasGeo = function() {
-		desvinculoService.buscarAnalistasGeo(processo.idProcesso)
+		analistaService.buscarAnalistasGeo(processo.idProcesso)
 			.then(function(response) {
 				desvinculoGerenteController.analistasGeo = response.data;
 			});

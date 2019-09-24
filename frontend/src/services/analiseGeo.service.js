@@ -53,6 +53,12 @@ var AnaliseGeoService = function(request, $window ,config) {
 		return request
 				.post(config.BASE_URL() + 'analisesGeo/validarParecer', analise);
 	};
+	
+	this.listaComunicados = function(params) {
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicados/" + params);
+	};
+
 
 	this.validarParecerGerente = function(analise) {
 
