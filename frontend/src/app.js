@@ -532,4 +532,5 @@ licenciamento
 	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas)
 	.component('tabelaLicencas', directives.TabelaLicencas)
 	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca)
-	.component('modalOficioRestricao', directives.ModalOficioRestricao);
+	.component('modalOficioRestricao', directives.ModalOficioRestricao)
+	.component('modalNotificacaoRestricao', directives.ModalNotificacaoRestricao);

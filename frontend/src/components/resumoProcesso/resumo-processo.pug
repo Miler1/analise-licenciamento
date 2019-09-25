@@ -19,22 +19,21 @@ mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica, 
                 button.btn.btn-default.col-md-offset-1.float-right(ng-click=abrirDadosProcesso)
                     i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
                     | Dados do processo
-
         div
 
             div
-                label.not-bold.margin-right-xs(for="texto_numero_processo") Número: 
+                strong Número: 
                 span#texto_numero_processo
-                    strong {{#{processo}.numero}}
+                    label.not-bold.margin-right-xs(for="texto_numero_processo",style="margin-left:113px;") {{#{processo}.numero}}
             div
-                label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
+                strong CPF/CNPJ: 
                 span#texto_cpf_ou_cnpj
-                    strong {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
+                    label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj",style="margin-left:100px;") {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
             div
-                label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Empreendimento: 
+                strong Empreendimento: 
                 span#texto_nome_empreendimento
-                    strong {{#{processo}.empreendimento.denominacao}}
+                    label.not-bold.margin-right-xs(for="texto_nome_empreendimento",style="margin-left:61px;") {{#{processo}.empreendimento.denominacao}}
             div
-                label.not-bold.margin-right-xs(for="texto_municipio_estado") Município: 
+                strong Município: 
                 span#texto_municipio_estado   
-                    strong {{#{processo}.empreendimento.municipio.nome}} / {{#{processo}.empreendimento.municipio.estado.codigo}}
+                    label.not-bold.margin-right-xs(for="texto_municipio_estado",style="margin-left:104px;") {{#{processo}.empreendimento.municipio.nome}} / {{#{processo}.empreendimento.municipio.estado.codigo}}

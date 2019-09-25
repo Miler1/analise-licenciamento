@@ -1,4 +1,4 @@
-var ModalOficioRestricao = {
+var ModalNotificacaoRestricao = {
 
     bindings: {
 
@@ -7,34 +7,33 @@ var ModalOficioRestricao = {
         dismiss: '&'
     },
 
-    controller: function(documentoService,analiseGeoService, documentoAnaliseService, mensagem) {
+    controller: function(documentoService,analiseGeoService,inconsistenciaService, documentoAnaliseService, mensagem) {
 
         var ctrl = this;
-        ctrl.justificativaOrgao = null;
+
         ctrl.anexos = [];
-        ctrl.comunicados = [];
 
         ctrl.$onInit =  function() {
 
-            analiseGeoService.listaComunicadosByIdAnaliseGeo(ctrl.resolve.idAnaliseGeo)
-                .then(function(response){
-                    ctrl.comunicados = response.data;
-                    _.forEach(ctrl.comunicados, function(comunicado) {
-
-                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
-
-                    });
-            });
-
-            ctrl.restricao = ctrl.resolve.restricao;
+            ctrl.inconsistencia = ctrl.resolve.inconsistencia;
             ctrl.idAnaliseGeo = ctrl.resolve.idAnaliseGeo;
-
+            
         };
 
-        ctrl.baixarDocumento = function (documento) {
-            documentoService.downloadById(documento.id);
+        ctrl.baixarDocumentoInconsistencia= function(anexo) {
+
+            if(!anexo.id){
+                documentoService.download(anexo.key, anexo.nomeDoArquivo);
+            }else{
+                inconsistenciaService.download(anexo.id);
+            }
+    
         };
+
+		ctrl.fechar = function() {
+			ctrl.dismiss({$value: 'cancel'});
+		};
+
 
         ctrl.downloadPDFOficioOrgao = function () {
              
@@ -60,16 +59,13 @@ var ModalOficioRestricao = {
                                 mensagem.error(error.data.texto);
                             });		
                     }			
+                    });
                 });
-            });
         };
-
-        ctrl.fechar = function() {
-			ctrl.dismiss({$value: 'cancel'});
-		};
+    
 
     },
-    templateUrl: 'components/modalOficioRestricao/modalOficioRestricao.html'
+    templateUrl: 'components/modalNotificacaoRestricao/modalNotificacaoRestricao.html'
 };
 
-exports.directives.ModalOficioRestricao = ModalOficioRestricao;
+exports.directives.ModalNotificacaoRestricao = ModalNotificacaoRestricao;
