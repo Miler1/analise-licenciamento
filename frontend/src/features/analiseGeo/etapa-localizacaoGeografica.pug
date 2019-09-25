@@ -45,7 +45,37 @@ include ../../layout/components/mapPanel
                                         th.col-md-1.text-right Alertas
 
                                     tbody(ng-repeat="restricao in ctrl.dadosProjeto.restricoes")
+                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
+                                            td.col-md-5 {{ restricao.item }} 
+                                            td.col-md-5 {{ restricao.descricao }} 
+                                            td.col-md-2.text-right
+                                                i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione inconsistência para notificar o interessado que procure o {{orgao.sigla.toUpperCase()}}', 
+
+                                                                                        ng-if="orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA",
+
+                                                                                        ng-class="{'temInconsistencia' : verificaInconsistenciaRestricao(ctrl.categoria.RESTRICAO,camadaDadosAtividade.atividadeCaracterizacao.id,restricao.sobreposicaoCaracterizacaoEmpreendimento.id)}")
+                                                |&nbsp;
+                                                i.glyphicon.glyphicon-envelope(title='O órgão {{orgao.sigla.toUpperCase()}} será comunicado sobre a restrição {{restricao.item.toUpperCase()}}', 
+
+                                                                                ng-if="orgao.sigla.toUpperCase() !== ctrl.orgaos.IPHAN && orgao.sigla.toUpperCase() !== ctrl.orgaos.IBAMA")
+                                                |&nbsp;
+
                                         tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
+                                            td.col-md-5 {{ restricao.item }} 
+                                            td.col-md-5 {{ restricao.descricao }} 
+                                            td.col-md-2.text-right
+                                                i.glyphicon.glyphicon-exclamation-sign(title='Sobreposição encontrada. Adicione inconsistência para notificar o interessado que procure o {{orgao.sigla.toUpperCase()}}', 
+
+                                                                                        ng-if="orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA",
+
+                                                                                        ng-class="{'temInconsistencia' : verificaInconsistenciaRestricao(ctrl.categoria.RESTRICAO,camadaDadosAtividade.atividadeCaracterizacao.id,restricao.sobreposicaoCaracterizacaoEmpreendimento.id)}")
+                                                |&nbsp;
+                                                i.glyphicon.glyphicon-envelope(title='O órgão {{orgao.sigla.toUpperCase()}} será comunicado sobre a restrição {{restricao.item.toUpperCase()}}', 
+
+                                                                                ng-if="orgao.sigla.toUpperCase() !== ctrl.orgaos.IPHAN && orgao.sigla.toUpperCase() !== ctrl.orgaos.IBAMA")
+                                                |&nbsp;
+
+                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis")
                                             td.col-md-5 {{ restricao.item }} 
                                             td.col-md-5 {{ restricao.descricao }} 
                                             td.col-md-2.text-right
