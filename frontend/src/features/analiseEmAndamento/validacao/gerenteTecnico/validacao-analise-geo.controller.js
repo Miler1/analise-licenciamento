@@ -125,9 +125,40 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 			},function(error){
 				mensagem.error(error.data.texto);
 			});
-	};
+    };
+    
+    function analiseValida(analiseGeo) {
+
+        if(analiseGeo.tipoResultadoValidacaoGerente === null || analiseGeo.tipoResultadoValidacaoGerente === undefined) {
+
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+            return false;
+
+        }
+        
+        if(analiseGeo.parecerValidacaoGerente === "" || analiseGeo.parecerValidacaoGerente === null || analiseGeo.parecerValidacaoGerente === undefined) {
+
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+            return false;
+
+        }
+
+        if(analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && validacaoAnaliseGeoGerente.analistaGeoDestino.id === null || validacaoAnaliseGeoGerente.analistaGeoDestino.id === undefined) {
+
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+            return false;
+
+        }
+        
+        return true;
+
+    }
 
     function concluir() {
+
+        if(!analiseValida(validacaoAnaliseGeoGerente.analiseGeo)){
+            return;
+        }
 
         var params = {
             id: validacaoAnaliseGeoGerente.analiseGeo.id,
@@ -142,6 +173,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
                 mensagem.success("Analise GEO finalizada!");
                 $location.path("analise-gerente");
 
+            },function(error){
+				mensagem.error(error.data.texto);
 			});
     }
 
