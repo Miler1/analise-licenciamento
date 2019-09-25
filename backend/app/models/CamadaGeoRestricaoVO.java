@@ -31,7 +31,7 @@ public class CamadaGeoRestricaoVO {
 		this.tipo = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoEmpreendimento.geometria);
 		this.geometria = sobreposicaoCaracterizacaoEmpreendimento.geometria;
-		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao, sobreposicaoCaracterizacaoEmpreendimento.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoEmpreendimento.geometria);
+		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao, sobreposicaoCaracterizacaoEmpreendimento.geometria, sobreposicaoCaracterizacaoEmpreendimento.distancia);
 
 	}
 
@@ -42,7 +42,7 @@ public class CamadaGeoRestricaoVO {
 		this.tipo = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria);
 		this.geometria = sobreposicaoCaracterizacaoAtividade.geometria;
-		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao, sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoAtividade.geometria);
+		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao, sobreposicaoCaracterizacaoAtividade.geometria, sobreposicaoCaracterizacaoAtividade.distancia);
 
 	}
 
@@ -53,7 +53,7 @@ public class CamadaGeoRestricaoVO {
 		this.tipo = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoComplexo.geometria);
 		this.geometria = sobreposicaoCaracterizacaoComplexo.geometria;
-		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoComplexo.tipoSobreposicao, sobreposicaoCaracterizacaoComplexo.caracterizacao.empreendimento.coordenadas, sobreposicaoCaracterizacaoComplexo.geometria);
+		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoComplexo.tipoSobreposicao, sobreposicaoCaracterizacaoComplexo.geometria, sobreposicaoCaracterizacaoComplexo.distancia);
 
 	}
 

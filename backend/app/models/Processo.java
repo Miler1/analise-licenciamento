@@ -181,12 +181,26 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		if(!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
 
-			filtroProcesso.isAnaliseGeo = true;
-			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id,filtroProcesso.isAnaliseGeo);
+			if(filtroProcesso.idAnalistaGeo != null) {
+
+				processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
+
+			}
+
+			if(filtroProcesso.idAnalistaTecnico != null) {
+
+				processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
+
+			}
+
+		} else {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
 
 		}
+
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 	}
@@ -839,11 +853,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	public static String getDescricaoRestricao(TipoSobreposicao tipoSobreposicao, Geometry empreendimento, Geometry sobreposicao) {
+	public static String getDescricaoRestricao(TipoSobreposicao tipoSobreposicao, Geometry sobreposicao, Double distancia) {
 
 		if(TipoSobreposicaoDistanciaEnum.getList().contains(tipoSobreposicao.codigo)) {
 
-			return "Distância " + Helper.formatBrDecimal(GeoCalc.distance(empreendimento, sobreposicao) / 1000, 2) + " km";
+			return "Distância " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
 
 		}
 

@@ -28,6 +28,9 @@ public class SobreposicaoCaracterizacaoAtividade extends GenericModel{
     @Column(name = "geometria", columnDefinition="Geometry")
     public Geometry geometria;
 
+    @Column(name = "distancia")
+    public Double distancia;
+
     public SobreposicaoCaracterizacaoAtividade(TipoSobreposicao tipoSobreposicao, AtividadeCaracterizacao atividadeCaracterizacao, Geometry geometria) {
         this.tipoSobreposicao = tipoSobreposicao;
         this.atividadeCaracterizacao = atividadeCaracterizacao;
