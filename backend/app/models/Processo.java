@@ -827,11 +827,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	public static String getDescricaoRestricao(TipoSobreposicao tipoSobreposicao, Geometry empreendimento, Geometry sobreposicao) {
+	public static String getDescricaoRestricao(TipoSobreposicao tipoSobreposicao, Geometry sobreposicao, Double distancia) {
 
 		if(TipoSobreposicaoDistanciaEnum.getList().contains(tipoSobreposicao.codigo)) {
 
-			return "Distância " + Helper.formatBrDecimal(GeoCalc.distance(empreendimento, sobreposicao) / 1000, 2) + " km";
+			return "Distância " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
 
 		}
 
