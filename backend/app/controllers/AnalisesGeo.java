@@ -264,12 +264,8 @@ public class AnalisesGeo extends InternalController {
 
         renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
     }
-<<<<<<< HEAD
 
     public static void findAllRestricoesById(Long idProcesso) {
-=======
-        public static void findAllRestricoesById(Long idProcesso) {
->>>>>>> 3b8d862f9f77b2a90a82afc182e4dcb5f8b95454
 
         returnIfNull(idProcesso, "Long");
 
