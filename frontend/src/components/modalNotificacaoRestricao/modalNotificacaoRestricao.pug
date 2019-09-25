@@ -1,0 +1,42 @@
+.modal-header
+    h4 Visualizar Inconsistência
+
+
+    .documentacao-enviada
+        hr
+        label.label-documentos Categoria da Inconsistência:
+        br
+        span &nbsp;{{$ctrl.inconsistencia.categoria}}
+        br
+
+        label.label-documentos Descrição da Inconsistência:
+        br
+        span &nbsp;{{$ctrl.inconsistencia.descricaoInconsistencia}}
+        br
+
+        label.label-documentos Tipo da Inconsistência:
+        br
+        span &nbsp;{{$ctrl.inconsistencia.tipoInconsistencia}}
+        br
+        hr
+
+        table.area-modal.table.table-condensed(ng-if="$ctrl.inconsistencia.anexos.length > 0")
+
+                thead
+
+                    tr
+                        th.col-md-10 Arquivo anexado
+                        th.col-md-2.text-right Ações
+
+                tbody
+
+                    tr(ng-model="$ctrl.anexo",ng-repeat="anexo in $ctrl.inconsistencia.anexos")
+
+                        td.col-md-10 {{anexo.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;', ng-click="$ctrl.baixarDocumentoInconsistencia(anexo)")
+                                i.glyphicon.glyphicon-save
+
+        button.btn.btn-default.pull-right(ng-click="$ctrl.fechar()")
+            i.glyphicon.glyphicon-remove
+            |  Fechar
