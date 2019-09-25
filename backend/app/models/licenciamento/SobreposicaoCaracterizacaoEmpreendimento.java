@@ -28,6 +28,9 @@ private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_id_
     @Column(name = "geometria", columnDefinition="Geometry")
     public Geometry geometria;
 
+    @Column(name = "distancia")
+    public Double distancia;
+
     public SobreposicaoCaracterizacaoEmpreendimento(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
         this.tipoSobreposicao = tipoSobreposicao;
         this.caracterizacao = caracterizacao;
