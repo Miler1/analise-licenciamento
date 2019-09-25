@@ -1,9 +1,7 @@
 package models.licenciamento;
 
-import exceptions.AppException;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
 
 import javax.persistence.*;
 import java.util.Date;
