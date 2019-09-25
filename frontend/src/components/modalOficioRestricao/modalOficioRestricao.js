@@ -16,6 +16,7 @@ var ModalOficioRestricao = {
         ctrl.$onInit =  function() {
 
             ctrl.restricao = ctrl.resolve.restricao;
+            ctrl.idAnaliseGeo = ctrl.resolve.idAnaliseGeo;
 
             analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento.id)
                 .then(function(response){

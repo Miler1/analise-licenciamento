@@ -231,6 +231,11 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
                     return restricao;
 
+                },
+
+                idAnaliseGeo: function() {
+
+                    return validacaoAnaliseGeoGerente.analiseGeo.id;
                 }
 
             }    
