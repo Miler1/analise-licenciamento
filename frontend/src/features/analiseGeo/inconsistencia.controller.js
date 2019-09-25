@@ -161,7 +161,18 @@ var InconsistenciaController = function ($scope,
 						isEdicao: params.id !== undefined && params.id !== null
 					};
 
-					if(listaInconsistencias) {
+					var sobreposicao = retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade ? retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade : retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : retorno.inconsistencia.sobreposicaoCaracterizacaoComplexo;
+					var inconsistenciaValida = false;
+
+					if(sobreposicao) {
+						inconsistenciaValida = sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+
+							return orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA;
+
+						});
+					}
+
+					if(listaInconsistencias && inconsistenciaValida) {						
 						listaInconsistencias.push(retorno.inconsistencia);
 					}
 
@@ -249,11 +260,9 @@ var InconsistenciaController = function ($scope,
 
 			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
 
-			return sobreposicao.tipoSobreposicao.orgaosResponsaveis.filter(
+			return sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(
 				function(orgao) {
-
-					return orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA';
-
+					return orgao.sigla === inconsistenciaController.orgaos.IPHAN || orgao.sigla === inconsistenciaController.orgaos.IBAMA;
 				}
 			);
 
