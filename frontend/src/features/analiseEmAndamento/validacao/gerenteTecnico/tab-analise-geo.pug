@@ -30,7 +30,7 @@
                                         td.col-md-5 {{camada.geometrias[0].descricao}}
 
                         #lista-camadas-restricoes
-                            div
+                            div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
                                 label Áreas de restrição
                                 table.table.table-striped.table-condensed.table-responsive.table-empreendimento
                                     thead

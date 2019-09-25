@@ -448,8 +448,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             if(this.usuarioValidacaoGerente != null) {
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+//                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
+//                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
         } else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.EMITIR_NOTIFICACAO) {
@@ -892,8 +892,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             } else if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.SOLICITAR_AJUSTES) {
 
-                ObjetoTramitavel objetoTramitavel = ObjetoTramitavel.findById(this.analise.processo.idObjetoTramitavel);
-                UsuarioAnalise analistaGeo = UsuarioAnalise.findById(objetoTramitavel.usuarioResponsavel.id);
+                AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(analise.id);
+                UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
