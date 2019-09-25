@@ -130,6 +130,12 @@ public class AnalistaGeo extends GenericModel {
 
     }
 
+    public static AnalistaGeo findByAnaliseGeo(Long idAnaliseGeo) {
+
+        return AnalistaGeo.find("id_analise_geo = :analiseGeo")
+                .setParameter("analiseGeo", idAnaliseGeo).first();
+    }
+
     private static String getParameterLongAsStringDBArray(List<Long> lista) {
 
         String retorno = "";
