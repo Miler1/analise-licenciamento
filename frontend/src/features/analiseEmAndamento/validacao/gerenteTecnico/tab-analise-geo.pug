@@ -42,7 +42,7 @@
                                     tbody(ng-repeat="restricao in validacaoAnaliseGeoGerente.dadosProjeto.restricoes")
                                         tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
                                             td.col-md-5 {{ restricao.item }} 
-                                            td.col-md-5 {{ restricao.descricao }} 
+                                            td.col-md-5 {{ restricao.descricao }}
                                             td.col-md-2.text-right
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                                     ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")
@@ -64,7 +64,8 @@
                                             td.col-md-3 {{inconsistencia.categoria}}
                                             td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id ? getDescricaoRestricao(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id) : '-'}}
                                             td.col-md-2.text-right
-                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open
+                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
+                                                    ng-click="(orgao.sigla !== 'IPHAN' || orgao.sigla !== 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(inconsistencia) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")
                             
                             div.info-inconsistencia.margin-inconsistencia(ng-if="!validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
                                 i Nenhuma inconsistência adicionada.

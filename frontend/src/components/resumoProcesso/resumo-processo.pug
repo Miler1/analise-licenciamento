@@ -19,7 +19,6 @@ mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica, 
                 button.btn.btn-default.col-md-offset-1.float-right(ng-click=abrirDadosProcesso)
                     i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
                     | Dados do processo
-
         div
 
             div
@@ -37,4 +36,5 @@ mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica, 
             div
                 strong Município: 
                 span#texto_municipio_estado   
-                    abel.not-bold.margin-right-xs(for="texto_municipio_estado",style="margin-left:104px;") {{#{processo}.empreendimento.municipio.nome}} / {{#{processo}.empreendimento.municipio.estado.codigo}}
+                    label.not-bold.margin-right-xs(for="texto_municipio_estado",style="margin-left:104px;") {{#{processo}.empreendimento.municipio.nome}} / {{#{processo}.empreendimento.municipio.estado.codigo}}
+
