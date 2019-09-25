@@ -1,9 +1,6 @@
 package controllers;
 
-import enums.TipoSetor;
-import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.*;
-import models.EntradaUnica.CodigoPerfil;
 import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.io.FileUtils;
@@ -259,13 +256,14 @@ public class AnalisesGeo extends InternalController {
 
         returnIfNull(analiseGeo, "AnaliseGeo");
 
-        AnaliseGeo analiseGerente= AnaliseGeo.findById(analiseGeo.id);
+        AnaliseGeo analiseGerente = AnaliseGeo.findById(analiseGeo.id);
 
-        UsuarioAnalise gerente =  getUsuarioSessao();
+        UsuarioAnalise gerente = getUsuarioSessao();
 
         analiseGerente.finalizarAnaliseGerente(analiseGeo, gerente);
 
         renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+    }
 
     public static void findAllRestricoesById(Long idProcesso) {
 

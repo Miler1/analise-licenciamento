@@ -21,5 +21,8 @@ public class ComunicadoSerializer {
             "resolvido",
             "parecerOrgao",
             "dataVencimento",
-            "valido");
+            "valido",
+            "anexos",
+            "anexos.id",
+            "anexos.nomeDoArquivo");
 }
