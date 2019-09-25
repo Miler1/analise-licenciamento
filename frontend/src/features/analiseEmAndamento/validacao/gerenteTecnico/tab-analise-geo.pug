@@ -149,8 +149,13 @@
                                             i.glyphicon.glyphicon-save
 
                         #camposAnaliseGeoObservacao
-                            div
-                                label.label-parecer Observação:
+                            div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
+                                label.label-parecer Despacho*:
+                                br
+                                .area
+                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
+                            div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.INDEFERIDO")
+                                label.label-parecer Justificativa*:
                                 br
                                 .area
                                     p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
