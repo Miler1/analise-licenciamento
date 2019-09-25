@@ -30,7 +30,7 @@
                                         td.col-md-5 {{camada.geometrias[0].descricao}}
 
                         #lista-camadas-restricoes
-                            div
+                            div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
                                 label Áreas de restrição
                                 table.table.table-striped.table-condensed.table-responsive.table-empreendimento
                                     thead
@@ -148,8 +148,13 @@
                                             i.glyphicon.glyphicon-save
 
                         #camposAnaliseGeoObservacao
-                            div
-                                label.label-parecer Observação:
+                            div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
+                                label.label-parecer Despacho*:
+                                br
+                                .area
+                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
+                            div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.INDEFERIDO")
+                                label.label-parecer Justificativa*:
                                 br
                                 .area
                                     p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
