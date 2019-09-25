@@ -59,6 +59,12 @@ var AnaliseGeoService = function(request, $window ,config) {
 			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/" + params);
 	};
 
+	this.getComunicadoByIdSobreposicaoEmpreendimento = function(id) {
+
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/" + id);
+
+	};
 
 	this.validarParecerGerente = function(analise) {
 
