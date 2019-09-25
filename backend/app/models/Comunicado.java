@@ -78,24 +78,11 @@ public class Comunicado extends GenericModel {
     @JoinColumn(name="id_sobreposicao_complexo")
     public SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo;
 
-
     @Transient
     public String linkComunicado;
 
     @Transient
     public boolean valido;
-
-    @OneToOne
-    @JoinColumn(name="id_sobreposicao_atividade")
-    public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
-
-    @OneToOne
-    @JoinColumn(name="id_sobreposicao_empreendimento")
-    public SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento;
-
-    @OneToOne
-    @JoinColumn(name="id_sobreposicao_complexo")
-    public SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo;
 
     public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
 
