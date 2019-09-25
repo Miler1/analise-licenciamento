@@ -267,7 +267,6 @@ public class AnalisesGeo extends InternalController {
 
     public static void findAllRestricoesById(Long idProcesso) {
 
-
         returnIfNull(idProcesso, "Long");
 
         Processo processo = Processo.findById(idProcesso);

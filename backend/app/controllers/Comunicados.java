@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Comunicado;
+import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import serializers.ComunicadoSerializer;
 
 import java.util.Date;
@@ -33,6 +34,14 @@ public class Comunicados extends GenericController{
         Comunicado comunicadoBanco =  Comunicado.findById(id);
         comunicadoBanco.valido =comunicadoBanco.isValido();
         renderJSON(comunicadoBanco, ComunicadoSerializer.findComunicado);
+
+    }
+
+    public static void findByIdSobreposicaoEmpreendimento(Long id) {
+
+        Comunicado comunicado = Comunicado.find("sobreposicaoCaracterizacaoEmpreendimento.id", id).first();
+
+        renderJSON(comunicado, ComunicadoSerializer.findComunicado);
 
     }
 

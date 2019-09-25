@@ -220,7 +220,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         return false;
     }
     
-    function openModalOficio(restricao, processo) {
+    function openModalOficio(restricao) {
         var modalInstance = $uibModal.open({
 
             component: 'modalOficioRestricao',
@@ -230,10 +230,9 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
                 restricao: function() {
 
                     return restricao;
-                },
-                idAnaliseGeo: function(){
-                    return validacaoAnaliseGeoGerente.analiseGeo.id;
+
                 }
+
             }    
         });
     }
