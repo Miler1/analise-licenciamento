@@ -24,23 +24,22 @@ section.margin-bottom-md
 				#tabValidacaoDaAnalise.tab-pane
 					include tab-validacao-analise
 
-section.margin-bottom-xl
+section
 
-	button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseGeoGerente.cancelar()",
-				ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_ANALISE_GEO'")
+	button.btn.btn-default.pull-left.posicao-cancelar-gerente(ng-click="validacaoAnaliseGeoGerente.cancelar()")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
-
-	button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseGeoGerente.voltarEtapaAnterior()",
-			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
-		i.glyphicon.glyphicon-arrow-left
-		| Voltar		
 	
-	button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseGeoGerente.concluir()",
+	button.btn.btn-success.posicao-avancar-concluir-gerente(ng-click="validacaoAnaliseGeoGerente.concluir()",
 			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
 		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
 		| Concluir
-	button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseGeoGerente.avancarProximaEtapa()",
+
+	button.btn.btn-default.posicao-voltar-gerente(ng-click="validacaoAnaliseGeoGerente.voltarEtapaAnterior()",
+			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
+		i.glyphicon.glyphicon-arrow-left
+		| Voltar
+	button.btn.btn-success.posicao-avancar-gerente(style="margin-bottom:52px;",ng-click="validacaoAnaliseGeoGerente.avancarProximaEtapa()",
 			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_ANALISE_GEO'")
 		i.glyphicon.glyphicon-arrow-right
 		| &nbsp;Avançar                    
