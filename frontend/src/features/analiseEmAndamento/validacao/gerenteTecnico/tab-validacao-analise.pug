@@ -1,5 +1,5 @@
 #conclusao
-    label Análise final do processo*:
+    label.obrigatorio Análise final do processo:
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
                 label.opDla.radio-inline.posicao-primeiroItem-gerente
@@ -13,7 +13,7 @@
                     | Parecer NÃO APROVADO
     hr
     div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_VALIDADO.toString()")
-        label(style="font-size:13px") Despacho*: 
+        label.obrigatorio(style="font-size:13px") Despacho:
         br
         summernote.form-control(id="conclusao",
                     on-paste="snPaste(evt)",
@@ -25,7 +25,7 @@
                     class="editable",
                     contenteditable="true")
     div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.SOLICITAR_AJUSTES.toString()")
-        label(style="font-size:13px") Observações*: 
+        label.obrigatorio(style="font-size:13px") Observações:
         br
         summernote.form-control(id="conclusao",
                     on-paste="snPaste(evt)",
@@ -38,7 +38,7 @@
                     contenteditable="true")
     div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString()")
 
-        label(style="font-size:13px") Justificativa*: 
+        label.obrigatorio(style="font-size:13px") Justificativa:
         br
         summernote.form-control(id="conclusao",
                     on-paste="snPaste(evt)",
@@ -51,7 +51,7 @@
                     contenteditable="true")
 
 
-        label.label-selecao-analista Selecionar analista*:
+        label.label-selecao-analista.obrigatorio Selecionar analista:
         select.form-control(ng-model="validacaoAnaliseGeoGerente.analistaGeoDestino.id", name="selectAnalista",
                                 ng-options="analistaGeo.id as analistaGeo.pessoa.nome for analistaGeo in validacaoAnaliseGeoGerente.analistasGeo | orderBy:'pessoa.nome' track by analistaGeo.id")
                 option(value="") Selecione o analista            

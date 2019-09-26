@@ -32,12 +32,12 @@ div.modal-body
             span.span-dados-solicitante {{desvinculoGerenteCtrl.desvinculo.analistaGeo.pessoa.nome}}
 
     div#justificativa-desvinculo
-        label.label-justificativa Justificativa do desvínculo:
+        label.label-justificativa.obrigatorio Justificativa do desvínculo:
         br
         textarea.text-justificativa(name="justificativa-desvinculo", ng-model="desvinculoGerenteCtrl.desvinculo.justificativa", disabled)
 
     .confirmacao-desvinculo
-        label.label-desvinculo-aceito Aceita o desvínculo? *
+        label.label-desvinculo-aceito.obrigatorio Aceita o desvínculo? 
 
         label(for="radio_desvinculo_aceito")
             input#radio_desvinculo_aceito(type="radio", name="desvinculoAceito", ng-value="true", ng-model="desvinculoGerenteCtrl.desvinculoAceito", ng-required="desvinculoGerenteCtrl.desvinculoAceito === undefined" )
@@ -47,13 +47,13 @@ div.modal-body
             |  Não
 
     .selecao-analista(ng-if="desvinculoGerenteCtrl.desvinculoAceito === undefined || desvinculoGerenteCtrl.desvinculoAceito")
-        label.label-selecao-analista Selecionar analista: *
+        label.label-selecao-analista.obrigatorio Selecionar analista:
         select.form-control(ng-model="desvinculoGerenteCtrl.analistaGeoDestino.id", name="selectAnalista",
                                     ng-options="analistaGeo.id as analistaGeo.pessoa.nome for analistaGeo in desvinculoGerenteCtrl.analistasGeo | orderBy:'pessoa.nome' track by analistaGeo.id")
                     option(value="") Selecione o analista
 
     div#resposta-gerente
-        label.label-resposta-gerente Justificativa: *
+        label.label-resposta-gerente.obrigatorio Justificativa:
         br
         textarea.text-justificativa(name="resposta-gerente", ng-model="desvinculoGerenteCtrl.respostaGerente", ng-required="desvinculoGerenteCtrl.respostaGerente === undefined")
 

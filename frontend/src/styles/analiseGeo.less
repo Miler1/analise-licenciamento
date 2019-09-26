@@ -141,7 +141,14 @@
 		margin: 0px; 
 		width: 150px;
 	}
-
+	
+	.obrigatorio{
+		&:after{
+			content: '*';
+			color: @vermelho-erro;
+			margin-left: 5px;
+		}
+	}
 #mapa-restricoes{
 	width: 100%;
 	height: 500px;
