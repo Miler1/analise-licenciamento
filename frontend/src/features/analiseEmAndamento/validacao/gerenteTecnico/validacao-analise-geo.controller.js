@@ -21,6 +21,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
     validacaoAnaliseGeoGerente.analistasGeo = null;
     validacaoAnaliseGeoGerente.analistaGeoDestino = {};
+    validacaoAnaliseGeoGerente.dadosRestricoesProjeto = [];
 
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
@@ -30,6 +31,13 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         analiseGeoService.getAnliseGeoByAnalise($route.current.params.idAnalise)
             .then(function(response){
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
+
+                analiseGeoService.getDadosRestricoesProjeto(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
+                .then(function(response) {
+        
+                    validacaoAnaliseGeoGerente.dadosRestricoesProjeto = response.data;
+        
+                });
 
                 if(validacaoAnaliseGeoGerente.analiseGeo.analistasTecnicos) {
                     validacaoAnaliseGeoGerente.analiseGeoValidacao.idAnalistaTecnico =
@@ -190,6 +198,50 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 			analiseGeoService.download(documento.id);
 		}
     }
+
+    $scope.getItemRestricao = function(inconsistencia) {
+
+		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+
+		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+
+			restricao = validacaoAnaliseGeoGerente.dadosRestricoesProjeto.find(function(restricao) {
+
+				var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+				return sobreposicaoInconsistencia.id === sobreposicaoRestricao.id;
+
+			});
+
+			return restricao && restricao.item ? restricao.item : '';
+
+		}
+
+		return 'Propriedade';
+	
+	};
+
+	$scope.getDescricaoRestricao = function(inconsistencia) {
+
+		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+
+		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+
+			restricao = validacaoAnaliseGeoGerente.dadosRestricoesProjeto.find(function(restricao) {
+
+				var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+				return sobreposicaoInconsistencia.id === sobreposicaoRestricao.id;
+
+			});
+
+			return restricao && restricao.descricao ? restricao.descricao : '';
+
+		}
+
+		return '-';
+	
+	};
 
     function getDadosVisualizar(processo) {
         var pessoa = processo.empreendimento.pessoa;
