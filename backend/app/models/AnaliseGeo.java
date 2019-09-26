@@ -21,6 +21,9 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 
 import javax.persistence.*;
 import java.util.*;
@@ -428,15 +431,45 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
-                List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacao = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacaoEmpreendimento.stream().distinct()
-                        .filter(distinctByKey(sobreposicaoCaracterizacao -> sobreposicaoCaracterizacao.tipoSobreposicao.codigo)).collect(Collectors.toList());
+            if(this.analise.processo.getCaracterizacao().origemSobreposicao.equals(EMPREENDIMENTO)){
 
-                for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacao ){
+                List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacaoEmpreendimento = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacaoEmpreendimento.stream().distinct()
+                        .filter(distinctByKey(sobreposicaoCaracterizacaoEmpreendimento -> sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo)).collect(Collectors.toList());
+
+                for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacaoEmpreendimento ){
 
                     if (sobreposicaoCaracterizacaoEmpreendimento != null){
                         enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoEmpreendimento);
                     }
                 }
+            }else if (this.analise.processo.getCaracterizacao().origemSobreposicao.equals(ATIVIDADE)){
+
+                for(AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.getCaracterizacao().atividadesCaracterizacao){
+
+                    List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade = atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.stream().distinct()
+                            .filter(distinctByKey(sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo)).collect(Collectors.toList());
+
+                    for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade){
+
+                        if(sobreposicaoCaracterizacaoAtividade != null){
+                            enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoAtividade);
+                        }
+                    }
+                }
+
+            } else if (this.analise.processo.getCaracterizacao().origemSobreposicao.equals(COMPLEXO)) {
+
+                List<SobreposicaoCaracterizacaoComplexo> sobreposicoesCaracterizacaoComplexo = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacaoComplexo.stream().distinct()
+                        .filter(distinctByKey(sobreposicaoCaracterizacaoComplexo -> sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.codigo)).collect(Collectors.toList());
+
+                for(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo : sobreposicoesCaracterizacaoComplexo){
+
+                    if(sobreposicaoCaracterizacaoComplexo != null){
+                        enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoComplexo);
+                    }
+                }
+            }
+
 
             if(this.usuarioValidacaoGerente != null) {
 
@@ -497,6 +530,44 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 destinatarios.add(orgaoResponsavel.email);
 
                 Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
+                comunicado.save();
+                comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
+
+                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
+                emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
+            }
+        }
+    }
+
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) throws Exception {
+
+        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis) {
+
+            if(!orgaoResponsavel.sigla.equals("IPHAN")  && !orgaoResponsavel.sigla.equals("IBAMA")) {
+
+                List<String> destinatarios = new ArrayList<String>();
+                destinatarios.add(orgaoResponsavel.email);
+
+                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
+                comunicado.save();
+                comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
+
+                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
+                emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
+            }
+        }
+    }
+
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) throws Exception {
+
+        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
+
+            if(!orgaoResponsavel.sigla.equals("IPHAN")  && !orgaoResponsavel.sigla.equals("IBAMA")) {
+
+                List<String> destinatarios = new ArrayList<String>();
+                destinatarios.add(orgaoResponsavel.email);
+
+                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL +"app/index.html#!/parecer-orgao/" + comunicado.id;
 
