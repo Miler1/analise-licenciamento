@@ -904,7 +904,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analise.idAnalistaDestino);
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
             }
             this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;
