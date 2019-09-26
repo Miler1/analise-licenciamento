@@ -30,7 +30,7 @@
                                         td.col-md-5 {{camada.geometrias[0].descricao}}
 
                         #lista-camadas-restricoes
-                            div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
+                            div(ng-if="getRestricoes().length > 0")
                                 label Áreas de restrição
                                 table.table.table-striped.table-condensed.table-responsive.table-empreendimento
                                     thead
@@ -39,7 +39,7 @@
                                         th.col-md-5 Descrição
                                         th.col-md-1
 
-                                    tbody(ng-repeat="restricao in validacaoAnaliseGeoGerente.dadosProjeto.restricoes")
+                                    tbody(ng-repeat="restricao in getRestricoes()")
                                         tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
                                             td.col-md-5 {{ restricao.item }} 
                                             td.col-md-5 {{ restricao.descricao }}

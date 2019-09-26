@@ -768,29 +768,30 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             return camada.geometrias.stream().anyMatch(c -> c.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo));
         }).findAny().orElse(null);
 
-        Map<LayerType, CamadaGeoAtividadeVO> geometriesAtividades = new HashMap<>();
-        Map<LayerType, List<CamadaGeoRestricaoVO>> geometriesRestricoes = new HashMap<>();
+        Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades = new HashMap<>();
+        Map<LayerType, List<CamadaGeoRestricaoVO>> geometriasRestricoes = new HashMap<>();
         Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
 
         for (CamadaGeoAtividadeVO camadaAtividade : dadosProcesso.atividades) {
 
-            geometriesAtividades.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade);
+            geometriasAtividades.put(new Tema(camadaAtividade.atividadeCaracterizacao.atividade.nome, MapaImagem.getColorTemaCiclo()), camadaAtividade);
 
         }
 
         if(!dadosProcesso.restricoes.isEmpty()) {
 
-            geometriesRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), dadosProcesso.restricoes);
+            geometriasRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), dadosProcesso.restricoes);
 
         }
 
         if(!camadasGeoEmpreendimento.isEmpty()) {
 
-            geometriasEmpreendimento.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasGeoEmpreendimento);
+            List<CamadaGeoAtividadeVO> camadasEmpreendimento = camadasGeoEmpreendimento.stream().filter(camada -> camada.geometrias.stream().allMatch(g -> g.geometria != null)).collect(Collectors.toList());
+            geometriasEmpreendimento.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasEmpreendimento);
 
         }
 
-        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriesAtividades, geometriesRestricoes, geometriasEmpreendimento);
+        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasAtividades, geometriasRestricoes, geometriasEmpreendimento);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
@@ -903,7 +904,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analise.idAnalistaDestino);
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
             }
             this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;

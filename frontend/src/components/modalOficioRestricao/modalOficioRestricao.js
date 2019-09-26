@@ -35,29 +35,26 @@ var ModalOficioRestricao = {
 
         ctrl.downloadPDFOficioOrgao = function () {
              
-            analiseGeoService.listaComunicadosByIdAnaliseGeo(ctrl.idAnaliseGeo)
+            analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento.id)
                 .then(function(response){
     
-                    var comunicados = response.data;
+                    var comunicado = response.data;
     
-                    _.forEach(comunicados, function(comunicado) {
-                        
-                        if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
-                            return;
-                        }else{
-                            documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
-                            .then(function(data, status, headers){
-                
-                                var a = document.createElement('a');
-                                a.href = URL.createObjectURL(data.data.response.blob);
-                                a.download = data.data.response.fileName ? data.data.response.fileName : 'oficio_orgao.pdf';
-                                a.click();
-                
-                            },function(error){
-                                mensagem.error(error.data.texto);
-                            });		
+                    if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
+                        return;
+                    } else {
+                        documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
+                        .then(function(data, status, headers){
+            
+                            var a = document.createElement('a');
+                            a.href = URL.createObjectURL(data.data.response.blob);
+                            a.download = data.data.response.fileName ? data.data.response.fileName : 'oficio_orgao.pdf';
+                            a.click();
+            
+                        },function(error){
+                            mensagem.error(error.data.texto);
+                        });
                     }			
-                });
             });
         };
 

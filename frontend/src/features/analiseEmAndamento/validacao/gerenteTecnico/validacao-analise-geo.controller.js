@@ -22,6 +22,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
     validacaoAnaliseGeoGerente.analistasGeo = null;
     validacaoAnaliseGeoGerente.analistaGeoDestino = {};
     validacaoAnaliseGeoGerente.dadosRestricoesProjeto = [];
+    validacaoAnaliseGeoGerente.orgaos = app.utils.Orgao;
 
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
@@ -262,6 +263,27 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
                 validacaoAnaliseGeoGerente.dadosProjeto = response.data;
             });
     }
+
+    $scope.getRestricoes = function() {
+
+        if(validacaoAnaliseGeoGerente.dadosProjeto.restricoes) {
+
+            return validacaoAnaliseGeoGerente.dadosProjeto.restricoes.filter(function(restricao) {
+
+                var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+                return sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+
+                    return orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IPHAN && orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IBAMA;
+
+                });
+
+            });
+        }
+
+        return [];
+
+    };
 
     function verificarTamanhoInconsistencias () {
         if(validacaoAnaliseGeoGerente.analiseGeo) {
