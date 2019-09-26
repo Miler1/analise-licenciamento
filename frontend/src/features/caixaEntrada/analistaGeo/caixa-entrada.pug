@@ -23,7 +23,7 @@ div
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Interessado
 							th.col-md-2 Município
-							th.col-md-2 Licenças
+							th.col-md-2 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise GEO
 							th.col-md-1.text-right Ações
@@ -35,10 +35,10 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntAnalistaGeo.PrazoAnalise.ANALISE)}}
-							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimo(processo.diasAnaliseGeo, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
-								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantes(processo.diasAnaliseGeo,cxEntAnalistaGeo.PrazoAnalise.ANALISE_GEO)}}
+							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}")
+								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
 							td
 								span.pull-right
 
@@ -46,7 +46,7 @@ div
 										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
 											| Ações &nbsp;
 											span.caret
-										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1',style="padding-bottom:0px;")
 											li
 												a(ng-click="cxEntAnalistaGeo.primeiroAcesso(processo)")
 													i.glyphicon.glyphicon-ok-circle

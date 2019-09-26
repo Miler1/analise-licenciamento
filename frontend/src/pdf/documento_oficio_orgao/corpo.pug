@@ -1,0 +1,232 @@
+doctype html
+|%{
+|	numeroProcesso = analiseGeo.analise.processo.numero;
+|	dataCadastro = comunicado.dataCadastro;
+|	restricao = comunicado.tipoSobreposicao.nome;
+|	orgaoResponsavel = comunicado.orgao;
+|	empreendimento = analiseGeo.analise.processo.empreendimento;
+|	empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+|	atividadesCaracterizacao = comunicado.caracterizacao.atividadesCaracterizacao;
+|	municipio = municipio;
+|}%
+html(lang='en')
+	head
+		title Análise - Licenciamento Ambiental - Amazonas
+		link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+		meta(charset='UTF-8')
+		style.
+			.container {
+				display: flex;
+				flex-direction: column;
+			}
+			.container-flex {
+				display: flex;
+				justify-content: space-between;
+			}
+
+			div.container-left{
+				width: 60%;
+				display: inline-block;
+				text-align: left;
+			}
+
+			div.container-center{
+				text-align:center; 
+			}
+			
+			div.container-right {
+				width: 35%;
+				display: inline-block;
+				text-align: left;
+			}
+			.config-textos{
+				font-size: 14px;
+				line-height:22px;
+				letter-spacing: 5px;
+				word-spacing: 10px;
+			}
+	body.config-textos
+		| \#{if orgaoResponsavel.sigla == 'FUNAI'}
+
+		div
+			body
+				br
+				.container
+					.container-flex
+						.container-center(style="margin-bottom:0px;line-height:0px;")
+							|	<strong>OFÍCIO Nº: ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019/IPAAM-DT</strong>
+						.container-center
+							|	<p>Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)}</p>
+				.container
+					.container-flex
+						.container-left
+						|	<p>À <br> <strong> Coordenadoria Regional de Manaus - ${orgaoResponsavel.sigla} </strong><br> Rua Maceió, 224 - Adrianópolis <br> CEP: 69057-010 - Manaus/AM<br><br></p>
+
+				.container
+					.container-flex
+						.container-left  
+						|	<strong> Prezada Coordenadoria,</strong>
+
+				.container
+					.container-flex
+						.container-left
+						|	 Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°.<strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de 
+						|	 \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, 
+						|	 \#{/list} 
+						|	  no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+
+				br
+		
+			div
+				|   Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				br
+				br
+		| \#{/if}
+
+		|\#{if orgaoResponsavel.sigla == 'DEMUC'}
+
+		div
+			body
+				.container
+					.container-flex
+						.container-center(style="margin-bottom:3px;margin-top:5px;line-height:0px;")
+							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+						
+						.container-center
+							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+
+				.container
+					.container-flex
+						.container-left
+						|	À <br> <strong> Secretaria de Estado do Meio Ambiente - SEMA<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Manaus/AM<br><br>					
+
+				.container
+					.container-flex
+						.container-left  
+						|	<strong> Prezada Coordenadoria,</strong>
+
+				.container
+					.container-flex
+						.container-left
+						|	Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+
+					br
+
+			div
+				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				br
+				br
+
+		| \#{/if} 
+
+		|\#{if orgaoResponsavel.sigla == 'ICMBIO'}
+		div
+			body
+				.container
+					.container-flex
+						.container-center(style=" margin-top:5px;margin-bottom:3px;line-height:0px;")
+							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+						
+						.container-center
+							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+
+				.container
+					.container-flex
+						.container-left
+						|	Ao <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Avenida Lauro Sodré, 6500 - Aeroporto<br> CEP: 76803-260 – Porto Velho/RO<br><br>
+							
+				.container
+					.container-flex
+						.container-left
+						|	<strong> Prezada Coordenadoria,</strong>
+
+				.container
+					.container-flex
+						.container-left
+						|	Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+
+					br
+			div
+				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				br
+				br
+
+		| \#{/if}
+
+		|\#{if orgaoResponsavel.sigla == 'INCRA'}
+
+		div
+			body
+				.container
+					.container-flex
+						.container-center(style="margin-bottom:3px; margin-top: 5px; line-height:0px;")
+							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+						
+						.container-center
+							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+
+				.container
+					.container-flex
+						.container-left
+						|	Ao <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Av. Andre Araujo, 901 – Aleixo<br> CEP: 69060-000 Manaus/AM<br><br>
+							
+				.container
+					.container-flex
+						.container-left
+						|	<strong> Prezada Coordenadoria,</strong>
+
+				.container
+					.container-flex
+						.container-left
+						|	Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para manifestação quanto a situação fundiária do imóvel.
+
+					br
+			div
+				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				br
+				br
+
+		| \#{/if}	 
+
+		|\#{if orgaoResponsavel.sigla == 'SPF'}
+
+		div
+			body
+				.container
+					.container-flex
+						.container-center(style="margin-bottom:3px; margin-top:5px; line-height:0px;")
+							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+						
+						.container-center
+							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+
+				.container
+					.container-flex
+						.container-left
+						|	À <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Rodovia Deputado Vital de Mendonça, S/N, KM-09 (Ao lado da Expoagro)<br> Bairro de Flores <br> Manaus/AM<br><br>
+
+				.container
+					.container-flex
+						.container-left
+						|	<strong> Prezada Secretaria,</strong>
+
+				.container
+					.container-flex
+						.container-left
+						|	Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.	
+
+					br
+			div
+				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				br
+				br
+
+		| \#{/if}
+	br
+	br
+	br
+	div(style="text-align: center")
+		span <strong> Juliano Marcos Valente de Souza</strong>
+		br
+		span <strong> Diretor Presidente</strong>
+	br

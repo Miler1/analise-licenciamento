@@ -2,11 +2,18 @@ package models.tmsmap;
 
 import br.ufla.tmsmap.*;
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import models.CamadaGeo;
+import enums.CamadaGeoEnum;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import models.CamadaGeoAtividadeVO;
+import models.CamadaGeoRestricaoVO;
+import models.DadosProcessoVO;
+import models.GeometriaAtividadeVO;
 import org.apache.commons.codec.binary.Base64;
+import org.geotools.graph.util.geom.GeometryUtil;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import play.Play;
@@ -20,7 +27,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -121,6 +127,7 @@ public class MapaImagem {
 	private Font brandPrimaryFont1;
 	private Font brandSecondaryFont;
 	private BufferedImage brandBufferedImage;
+	private String NOME_PROPRIEDADE_EMPREENDIMENTO = "Limites da propriedade";
 
 	public MapaImagem() {
 
@@ -200,31 +207,94 @@ public class MapaImagem {
 
 	}
 
-	public GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, Map<LayerType, List<CamadaGeo>> geometriesCaracterizacao) {
+	public GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometryAreaImovel, Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades, Map<LayerType, List<CamadaGeoRestricaoVO>> geometriasRestricoes, Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento) {
 
 		LinkedList<GrupoDataLayer> grupoDataLayers = new LinkedList<>();
 
-		for(Entry<LayerType, List<CamadaGeo>> entry : geometriesCaracterizacao.entrySet()) {
+		for(Entry<LayerType, CamadaGeoAtividadeVO> entry : geometriasAtividades.entrySet()) {
 
-			List<CamadaGeo> camadaGeos = entry.getValue();
+			CamadaGeoAtividadeVO atividade = entry.getValue();
 			LayerType layerType = entry.getKey();
 			LinkedList<DataLayer> dataLayers = new LinkedList<>();
 
-			for (CamadaGeo camadaGeo : camadaGeos) {
+			if(atividade.geometrias.isEmpty()) {
+				continue;
+			}
 
-				if(camadaGeo.geometria == null) {
+			for(GeometriaAtividadeVO geometriaAtividade : atividade.geometrias) {
+
+				String colorCode = getColorTemaCiclo();
+				Color color = Color.decode(colorCode);
+				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
+				dataLayers.add(new DataLayer(geometriaAtividade.item, geometriaAtividade.geometria, color, colorCode).fillColor(fillColor));
+
+			}
+
+			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
+
+			grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers));
+
+		}
+
+		for(Entry<LayerType, List<CamadaGeoRestricaoVO>> entry : geometriasRestricoes.entrySet()) {
+
+			List<CamadaGeoRestricaoVO> restricao = entry.getValue();
+			LayerType layerType = entry.getKey();
+			LinkedList<DataLayer> dataLayers = new LinkedList<>();
+
+			for (CamadaGeoRestricaoVO r : restricao) {
+
+				if(r.geometria == null) {
 					continue;
 				}
 
 				String colorCode = getColorTemaCiclo();
 				Color color = Color.decode(colorCode);
 				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-				dataLayers.add(new DataLayer(camadaGeo.item, camadaGeo.geometria, color, colorCode).fillColor(fillColor));
+				dataLayers.add(new DataLayer(r.item, r.geometria, color, colorCode).fillColor(fillColor));
+
 			}
 
 			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
 
 			grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers));
+
+		}
+
+		for(Entry<LayerType, List<CamadaGeoAtividadeVO>> entry : geometriasEmpreendimento.entrySet()) {
+
+			List<CamadaGeoAtividadeVO> empreendimento = entry.getValue();
+			LayerType layerType = entry.getKey();
+			LinkedList<DataLayer> dataLayers = new LinkedList<>();
+
+			for (CamadaGeoAtividadeVO e : empreendimento) {
+
+				if(e.geometrias.isEmpty()) {
+					continue;
+				}
+
+				e.geometrias.forEach(geometriaEmpreendimento -> {
+
+					if(geometriaEmpreendimento.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo)) {
+
+						dataLayers.add(new DataLayer("Limites da propriedade", geometriaEmpreendimento.geometria, Color.YELLOW, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+
+					} else {
+
+						String colorCode = getColorTemaCiclo();
+						Color color = Color.decode(colorCode);
+						Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
+						dataLayers.add(new DataLayer(geometriaEmpreendimento.item, geometriaEmpreendimento.geometria, color, colorCode).fillColor(fillColor));
+					}
+
+				});
+
+			}
+
+			dataLayers.sort((o1, o2) -> o1.name.compareTo(o2.name));
+
+			grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers));
+
 		}
 
 		return createMapCaracterizacaoImovel(geometryAreaImovel, grupoDataLayers);
@@ -308,7 +378,7 @@ public class MapaImagem {
 
 	}
 
-	private GrupoDataLayerImagem createMapCaracterizacaoImovel(Geometry geometryAreaImovel, LinkedList<GrupoDataLayer> grupoDataLayers) {
+	private GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometriaImovel, LinkedList<GrupoDataLayer> grupoDataLayers) {
 
 		BufferedImage newImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = newImage.createGraphics();
@@ -329,6 +399,8 @@ public class MapaImagem {
 
 		// Inicio Mapa
 
+		Geometry geometryAreaImovel = new GeometryFactory().createGeometryCollection(geometriaImovel.geometrias.stream().map(geometria -> geometria.geometria).toArray(Geometry[]::new));
+
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
 
 		TMSMap map = createMap(crs);
@@ -346,18 +418,12 @@ public class MapaImagem {
 
 		for(DataLayer dataLayer : dataLayers) {
 
-			PolygonStyle polygonStyle1 = (PolygonStyle)new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
-			map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+			if(!dataLayer.name.equals(NOME_PROPRIEDADE_EMPREENDIMENTO)) {
+				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
+				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+			}
 
 		}
-
-		DataLayer newDataLayer = new DataLayer("Limite", geometryAreaImovel, Color.YELLOW, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 ));
-		dataLayers.addFirst(newDataLayer);
-
-		List<DataLayer> newDataLayers = new ArrayList<>();
-		newDataLayers.add(newDataLayer);
-
-		grupoDataLayers.add(new GrupoDataLayer("Área total da propriedade", newDataLayers));
 
 		createMainCoordinates(map, geometryAreaImovel, crs);
 
@@ -365,7 +431,7 @@ public class MapaImagem {
 		for(DataLayer dataLayer : dataLayers) {
 
 			if (dataLayer.geometry instanceof Point){
-				createPointCoordinates(map, dataLayer.geometry , dataLayer.name, crs);
+				createPointCoordinates(map, dataLayer.geometry, dataLayer.name, crs);
 			}
 		}
 
@@ -396,9 +462,13 @@ public class MapaImagem {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		try {
+
 			ImageIO.write(newImage, Format.PNG.formatName, out);
+
 		} catch(IOException e) {
+
 			throw new RuntimeException(e);
+
 		}
 
 		return new GrupoDataLayerImagem("data:image/png;base64," + Base64.encodeBase64String(out.toByteArray()), grupoDataLayersOrder);

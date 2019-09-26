@@ -6,7 +6,7 @@
     orgaoResponsavel = comunicado.orgao;
     empreendimento = analiseGeo.analise.processo.empreendimento;
     empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-    nomeAtividade = comunicado.atividadeCaracterizacao.atividade.nome;
+    atividadesCaracterizacao = comunicado.caracterizacao.atividadesCaracterizacao;
     municipio = municipio;
 }%
 
@@ -21,8 +21,11 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/logo_governo_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'80', width:'250' /}
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
 </h1>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
 
 <p><strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong> </p>
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
@@ -33,7 +36,7 @@
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de <strong>${nomeAtividade.toUpperCase()}</strong>, no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
+<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
 
 <p>Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.</p>
 
@@ -55,8 +58,13 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/logo_governo_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'80', width:'250' /}
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
 </h1>
+
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+
 <p><strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong> </p>
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
@@ -66,7 +74,7 @@
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de <strong>${nomeAtividade.toUpperCase()}</strong>, no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
+<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
 
 <p>Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.</p>
 
@@ -88,8 +96,13 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/logo_governo_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'80', width:'250' /}
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
 </h1>
+
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+
 <p><strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong> </p>
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
@@ -99,7 +112,7 @@
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de <strong>${nomeAtividade.toUpperCase()}</strong>, no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
+<p> Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
 
 <p>Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.</p>
 
@@ -121,8 +134,14 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/logo_governo_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'80', width:'250' /}
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
 </h1>
+
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+
+
 <p><strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong> </p>
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
@@ -132,7 +151,7 @@
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de <strong>${nomeAtividade.toUpperCase()}</strong>, no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para
+<p> Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para
     manifestação quanto a situação fundiária do imóvel.</p>
 
 <p>Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.</p>
@@ -155,8 +174,11 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/logo_governo_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'80', width:'250' /}
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
 </h1>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
 
 <p><strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong> </p>
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
@@ -167,7 +189,7 @@
 <p><strong> Prezada Secretaria,</strong></p>
 
 
-<p> Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de <strong>${nomeAtividade.toUpperCase()}</strong>, no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.</p>
+<p> Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.</p>
 
 <p>Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.</p>
 

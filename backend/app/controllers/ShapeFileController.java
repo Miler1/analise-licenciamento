@@ -20,7 +20,7 @@ import utils.GeoCalc;
 
 public class ShapeFileController extends InternalController {
 
-	public static void enviar(Upload file, Long idMunicipio) throws IOException {
+	public static void enviar(Upload file, Long idMunicipio, Long idEmpreendimento) throws IOException {
 
 		String realType = null;
 
@@ -37,7 +37,7 @@ public class ShapeFileController extends InternalController {
 			String key = FileManager.getInstance().createFile(data, extension);
 
 			// Processamento do arquivo zip
-			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, idMunicipio);
+			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, idMunicipio, idEmpreendimento);
 
 			// Executa o processamento
 			ResultadoProcessamentoShapeFile resultadoProcessamentoShapeFile = async(processamentoShapeFile);

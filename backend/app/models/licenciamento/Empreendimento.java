@@ -91,6 +91,11 @@ public class Empreendimento extends GenericModel {
 	@OneToMany(mappedBy = "empreendimento", targetEntity = Proprietario.class, orphanRemoval=true)
 	public List<Proprietario> proprietarios;
 
+	@Required
+	@ManyToOne
+	@JoinColumn(name = "id_cadastrante", referencedColumnName = "id")
+	public Pessoa cadastrante;
+
 	@Column(name = "houve_alteracoes")
 	public boolean houveAlteracoes;
 	
@@ -136,7 +141,7 @@ public class Empreendimento extends GenericModel {
 				.first();
 	}
 
-	public static List<CamadaGeo> buscaDadosGeoEmpreendimento(String cpfCnpj) {
+	public static  List<CamadaGeoAtividadeVO> buscaDadosGeoEmpreendimento(String cpfCnpj) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
@@ -144,14 +149,16 @@ public class Empreendimento extends GenericModel {
 
 		Empreendimento empreendimentoLicenciamento = Empreendimento.buscaEmpreendimentoByCpfCnpj(cpfCnpj);
 
-		List<CamadaGeo> dadosGeoEmpreendimento = new ArrayList<>();
+		List<CamadaGeoAtividadeVO> dadosGeoEmpreendimento = new ArrayList<>();
 
 		Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
 		Double areaEmpreendimento = GeoCalc.area(geometriaEmpreendimento) / 10000;
 
-		CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.PROPRIEDADE.nome, CamadaGeoEnum.PROPRIEDADE.tipo, Helper.formatBrDecimal(areaEmpreendimento, 2) + " ha", areaEmpreendimento, geometriaEmpreendimento);
+		GeometriaAtividadeVO geometriaAtividade = new GeometriaAtividadeVO(CamadaGeoEnum.PROPRIEDADE.nome, CamadaGeoEnum.PROPRIEDADE.tipo, Helper.formatBrDecimal(areaEmpreendimento, 2) + " ha", areaEmpreendimento, geometriaEmpreendimento);
 
-		dadosGeoEmpreendimento.add(camadaGeo);
+		CamadaGeoAtividadeVO camadaGeoEmpreendimento = new CamadaGeoAtividadeVO(Arrays.asList(geometriaAtividade));
+
+		dadosGeoEmpreendimento.add(camadaGeoEmpreendimento);
 
 		List<EmpreendimentoCamandaGeo> listaAnexos = EmpreendimentoCamandaGeo.find("byEmpreendimento", empreendimentoLicenciamento).fetch();
 
@@ -166,13 +173,15 @@ public class Empreendimento extends GenericModel {
 
 			if (empreendimentoCamandaGeo != null) {
 
-				camadaGeo = new CamadaGeo(empreendimentoCamandaGeo.tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(empreendimentoCamandaGeo.tipoAreaGeometria.codigo), Helper.formatBrDecimal(empreendimentoCamandaGeo.areaGeometria, 2)+ " ha",empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria);
-				dadosGeoEmpreendimento.add(camadaGeo);
+				GeometriaAtividadeVO geometria = new GeometriaAtividadeVO(empreendimentoCamandaGeo.tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(empreendimentoCamandaGeo.tipoAreaGeometria.codigo), Helper.formatBrDecimal(empreendimentoCamandaGeo.areaGeometria, 2)+ " ha",empreendimentoCamandaGeo.areaGeometria, empreendimentoCamandaGeo.geometria);
+				camadaGeoEmpreendimento = new CamadaGeoAtividadeVO(Arrays.asList(geometria));
+				dadosGeoEmpreendimento.add(camadaGeoEmpreendimento);
 
 			} else {
 
-				camadaGeo = new CamadaGeo(tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(tipoAreaGeometria.codigo), "não possui", 0.00, null);
-				dadosGeoEmpreendimento.add(camadaGeo);
+				GeometriaAtividadeVO geometria = new GeometriaAtividadeVO(tipoAreaGeometria.nome, CamadaGeoEnum.tipoFromCodigo(tipoAreaGeometria.codigo), "não possui", 0.00, null);
+				camadaGeoEmpreendimento = new CamadaGeoAtividadeVO(Arrays.asList(geometria));
+				dadosGeoEmpreendimento.add(camadaGeoEmpreendimento);
 			}
 
 		}

@@ -3,10 +3,7 @@ package models;
 import builders.ProcessoBuilder;
 import builders.ProcessoBuilder.FiltroProcesso;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import enums.CamadaGeoEnum;
+import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
@@ -20,6 +17,10 @@ import utils.*;
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -73,6 +74,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	@Transient
 	public Analise analise;
+
+	@Transient
+	public static int indexDadosRestricoes;
+
+	@Transient
+	public static int indexDadosAtividades;
+
+	@Transient
+	public static int indexDadosGeometriasAtividade;
 
 	@Override
 	public Processo save() {
@@ -146,7 +156,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
 				.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
 
-
 //		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, usuarioSessao.id);
 
 		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, usuarioSessao);
@@ -155,7 +164,43 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
 
+		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
+
+		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
+
 		return processoBuilder;
+	}
+
+	private static void commonFilterConsultarProcesso(ProcessoBuilder processoBuilder, FiltroProcesso filtroProcesso, UsuarioAnalise usuarioSessao) {
+
+		if(!filtroProcesso.isConsultarProcessos) {
+
+			return;
+
+		}
+
+		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+
+			if(filtroProcesso.idAnalistaGeo != null) {
+
+				processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
+
+			}
+
+			if(filtroProcesso.idAnalistaTecnico != null) {
+
+				processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
+
+			}
+
+		} else {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
+
+		}
+
+		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
 	}
 
 	private static void commonFilterProcessoAprovador(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
@@ -280,6 +325,49 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 	}
 
+	private static void commonFilterProcessoGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+													UsuarioAnalise usuarioSessao) {
+
+		if (!filtro.isGerente) {
+
+			return;
+
+		}
+
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
+			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
+
+		}
+
+		if (filtro.filtrarPorUsuario) {
+
+			processoBuilder.filtrarIdGerente(usuarioSessao.id);
+
+		}
+
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
+
+			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
+
+		}
+
+		if (filtro.idAnalistaGeo != null) {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+
+		}
+
+		if (filtro.idAnalistaTecnico != null) {
+
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
+
+		}
+
+		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+	}
+
 	private static void commonFilterProcessoAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 													   UsuarioAnalise usuarioSessao) {
 
@@ -345,6 +433,21 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
+		}
+
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+
+			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		}
+
+
 	}
 
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
@@ -358,6 +461,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
+				.groupByDataVencimentoPrazoAnaliseGeo()
 				.groupByIdAnalise()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
@@ -371,11 +475,41 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		listWithFilterAprovador(processoBuilder, usuarioSessao);
 
+		listWithFilterGerente(processoBuilder, filtro);
+
+		listWithFilterConsultaProcessos(processoBuilder, filtro);
+
 		return processoBuilder
 				.fetch(filtro.paginaAtual.intValue(), filtro.itensPorPagina.intValue())
 				.list();
 	}
 
+	private static void listWithFilterConsultaProcessos(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isConsultarProcessos) {
+
+			return;
+		}
+
+		processoBuilder
+				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByDataFinalAnaliseGeo()
+				.groupByPrazoAnaliseGerente();
+
+	}
+
+	private static void listWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isGerente) {
+
+			return;
+		}
+
+		processoBuilder.groupByIdAnaliseGeo()
+				.groupByPrazoAnaliseGerente()
+				.orderByPrazoAnaliseGerente();
+
+	}
 
 	private static void listWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
@@ -452,6 +586,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		countWithFilterAnaliseGeo(processoBuilder, filtro);
 
+		countWithFilterGerente(processoBuilder, filtro);
+
 		Object qtdeTotalItens = processoBuilder.unique();
 
 		return ((Map<String, Long>) qtdeTotalItens).get("total");
@@ -475,6 +611,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
+	}
+
+	private static void countWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isGerente) {
+
+			return;
+
+		}
+
 	}
 
 	private static void countWithFilterAnaliseJuridica(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
@@ -625,71 +771,120 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
-	public List<CamadaGeoAtividade> getDadosAreaProjeto (){
-
-		List<CamadaGeoAtividade> dadosAreaProjeto = new ArrayList<>();
+	public DadosProcessoVO getDadosProcesso (){
 
 		Caracterizacao caracterizacao = this.getCaracterizacao();
 
-		int index = 0;
+		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
+
+	}
+
+	private static List<CamadaGeoAtividadeVO> preencheListaAtividades(Caracterizacao caracterizacao) {
+
+		List<CamadaGeoAtividadeVO> atividades = new ArrayList<>();
+		indexDadosAtividades = 0;
 
 		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
-			List<CamadaGeo> camadasGeo= new ArrayList<>();
+			List<GeometriaAtividadeVO> geometriasAtividade = new ArrayList<>();
+			indexDadosGeometriasAtividade = 0;
+			indexDadosAtividades++;
 
 			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
 
 				for (Geometry geometrie : GeoCalc.getGeometries(geometria.geometria)) {
 
-					index = index + 1;
+					indexDadosGeometriasAtividade++;
+					geometriasAtividade.add(new GeometriaAtividadeVO(geometrie));
 
-					CamadaGeo camadaGeo = new CamadaGeo(CamadaGeoEnum.ATIVIDADE.nome +"_" + index, CamadaGeoEnum.ATIVIDADE.tipo +"_" + index,
-							getDescricaoAtividade(geometrie), GeoCalc.areaHectare(geometrie), geometrie);
-					camadaGeo.geometriaAtividade = geometria;
-
-					camadasGeo.add(camadaGeo);
 				}
 
 			}
 
-			List<CamadaGeo> restricoes = new ArrayList<>();
-			index = 0;
-			for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade: atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
-				index = index + 1;
-				CamadaGeo restricao = new CamadaGeo(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome, sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo +"_" + index, getDescricaoAtividade(sobreposicaoCaracterizacaoAtividade.geometria), GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria), sobreposicaoCaracterizacaoAtividade.geometria,sobreposicaoCaracterizacaoAtividade);
-				restricoes.add(restricao);
-			}
-
-			CamadaGeoAtividade camadaGeoAtividade = new CamadaGeoAtividade(atividadeCaracterizacao, camadasGeo, restricoes);
-
-			dadosAreaProjeto.add(camadaGeoAtividade);
+			atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometriasAtividade));
 
 		}
 
-		return dadosAreaProjeto;
+		return atividades;
+
 	}
 
-	private String getDescricaoAtividade (Geometry geometry) {
+	public static List<CamadaGeoRestricaoVO> preencheListaRestricoes(Caracterizacao caracterizacao) {
 
-		String descricao = "";
+		List<CamadaGeoRestricaoVO> restricoes = new ArrayList<>();
+		indexDadosRestricoes = 0;
+
+		if(caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
+
+			for(SobreposicaoCaracterizacaoEmpreendimento sobreposicao : caracterizacao.sobreposicoesCaracterizacaoEmpreendimento) {
+
+				indexDadosRestricoes++;
+				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
+
+			}
+
+		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
+
+			for(AtividadeCaracterizacao atividadeCaracterizacao: caracterizacao.atividadesCaracterizacao) {
+
+				for(SobreposicaoCaracterizacaoAtividade sobreposicao : atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
+
+					indexDadosRestricoes++;
+					restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
+
+				}
+
+			}
+
+		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)){
+
+			for(SobreposicaoCaracterizacaoComplexo sobreposicao : caracterizacao.sobreposicoesCaracterizacaoComplexo) {
+
+				indexDadosRestricoes++;
+				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
+
+			}
+
+		}
+
+		return restricoes;
+
+	}
+
+	public static String getDescricaoRestricao(TipoSobreposicao tipoSobreposicao, Geometry sobreposicao, Double distancia) {
+
+		if(TipoSobreposicaoDistanciaEnum.getList().contains(tipoSobreposicao.codigo)) {
+
+			return "Distância " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
+
+		}
+
+		return getDescricao(sobreposicao);
+
+	}
+
+	public static String getDescricao(Geometry geometry) {
 
 		switch (geometry.getGeometryType().toUpperCase()) {
 
 			case "POINT" :
-				descricao = "Coordenadas [" + String.valueOf(((Point) geometry).getY()) + ", " + String.valueOf(((Point) geometry).getX()) + "]";
-				break;
+
+				return Helper.formatarCoordenada(geometry.getCoordinate());
+
 			case "LINESTRING":
 
-				descricao = "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
-				break;
+				return "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
+
 			case "POLYGON":
-				descricao = "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
-				break;
+
+				return "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
+
+			default:
+
+				return "";
+
 		}
 
-		return descricao;
 	}
-
-
 
 }

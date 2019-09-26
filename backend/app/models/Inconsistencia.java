@@ -1,12 +1,11 @@
 package models;
 
-import exceptions.ValidacaoException;
-import models.licenciamento.AtividadeCaracterizacao;
-import models.licenciamento.GeometriaAtividade;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
+import models.licenciamento.SobreposicaoCaracterizacaoComplexo;
+import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
 import utils.*;
 
 import javax.persistence.*;
@@ -46,24 +45,26 @@ public class Inconsistencia extends GenericModel{
             inverseJoinColumns=@JoinColumn(name="id_documento"))
     public List<Documento> anexos;
 
-
     @Required
     @Enumerated(EnumType.STRING)
     @Column(name="categoria")
     public Categoria categoria;
 
     @OneToOne
-    @JoinColumn(name="id_atividade_caracterizacao")
-    public AtividadeCaracterizacao atividadeCaracterizacao;
-
-    @OneToOne
-    @JoinColumn(name="id_geometria_atividade")
-    public GeometriaAtividade geometriaAtividade;
+    @JoinColumn(name="id_caracterizacao")
+    public Caracterizacao caracterizacao;
 
     @OneToOne
     @JoinColumn(name="id_sobreposicao")
     public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
 
+    @OneToOne
+    @JoinColumn(name="id_sobreposicao_empreendimento")
+    public SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento;
+
+    @OneToOne
+    @JoinColumn(name="id_sobreposicao_complexo")
+    public SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo;
 
     public Inconsistencia(AnaliseGeo analiseGeo) {
 
@@ -81,16 +82,6 @@ public class Inconsistencia extends GenericModel{
 
     }
 
-    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
-        this.analiseGeo = analiseGeo;
-        this.descricaoInconsistencia = descricaoInconsistencia;
-        this.tipoInconsistencia = tipoInconsistencia;
-        this.categoria = categoria;
-        this.atividadeCaracterizacao =atividadeCaracterizacao;
-        this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
-
-    }
-
     public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo) {
 
         this.analiseGeo = analiseGeo;
@@ -99,14 +90,46 @@ public class Inconsistencia extends GenericModel{
         this.categoria = categoria;
     }
 
-    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao, GeometriaAtividade geometriaAtividade) {
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao) {
 
         this.analiseGeo = analiseGeo;
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;
         this.categoria = categoria;
-        this.atividadeCaracterizacao = atividadeCaracterizacao;
-        this.geometriaAtividade = geometriaAtividade;
+        this.caracterizacao = caracterizacao;
+
+    }
+
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = descricaoInconsistencia;
+        this.tipoInconsistencia = tipoInconsistencia;
+        this.categoria = categoria;
+        this.caracterizacao = caracterizacao;
+        this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
+
+    }
+
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
+
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = descricaoInconsistencia;
+        this.tipoInconsistencia = tipoInconsistencia;
+        this.categoria = categoria;
+        this.caracterizacao = caracterizacao;
+        this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
+
+    }
+
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) {
+
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = descricaoInconsistencia;
+        this.tipoInconsistencia = tipoInconsistencia;
+        this.categoria = categoria;
+        this.caracterizacao = caracterizacao;
+        this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
+
     }
 
     public void saveAnexos(List<Documento> novosAnexos) {

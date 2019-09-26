@@ -21,6 +21,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.controleVisualizacao = null;
 	ctrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 	ctrl.TiposSobreposicao = [];
+	ctrl.numPoints = 0;
+	ctrl.LegendasTipoSobreposicao = app.utils.LegendasTipoSobreposicao;
+	ctrl.dadosRestricoesProjeto = [];
+	ctrl.listaInconsistencias = [];
 
 	var getLayer = function(descricao){
 
@@ -267,32 +271,72 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		processo.numeroProcesso = processo.numero;
 
 		processoService.visualizarProcesso(processo);
-    };
+
+	};
+	
+	var esconderCamada = function(camada) {
+
+		var tipoGeometria = JSON.parse(camada.geometria).type.toLowerCase();
+
+		if(tipoGeometria === 'point') {
+
+			$scope.$emit('mapa:remover-geometria-base-cluster', camada);
+
+		} else {
+
+			$scope.$emit('mapa:remover-geometria-base', camada);
+
+		}
+
+	};
+
+	var mostrarCamada = function(camada) {
+
+		var tipoGeometria = JSON.parse(camada.geometria).type.toLowerCase();
+
+		if(tipoGeometria === 'point') {
+
+			adicionarPointNoCluster(camada);
+
+		} else {
+
+			adicionarGeometriaNoMapa(camada, true);
+
+		}
+
+	};
 
 	this.controlaExibicaoCamadas = function(camada) {
 
 		if (camada.visivel) {
-			$scope.$emit('mapa:remover-geometria-base', camada);
+			
+			esconderCamada(camada);
+			
 		} else {
-			adicionarGeometriaNoMapa(camada, true);
+
+			mostrarCamada(camada);
+
 		}
+
 	};
 
 	this.controlaExibicaoLayer = function(tipoSobreposicao) {
 
 		$scope.$emit('mapa:controla-exibicao-wmslayer', tipoSobreposicao);
+
 	};
 
 	this.getCamadasSobreposicoes = function() {
 
 		ctrl.TiposSobreposicao.forEach(function (tipo) {
+			tipo.legenda = ctrl.LegendasTipoSobreposicao[tipo.codigo];
 			adicionarWmsLayerNoMapa(tipo);
 		});
 	};
 
 	this.controlaCentralizacaoCamadas = function (camada) {
 
-		$scope.$emit('mapa:centralizar-camada', camada);
+		$scope.$emit('mapa:centralizar-camada', camada.geometria);
 	};
 
 	function adicionarGeometriaNoMapa (camada, disable) {
@@ -303,14 +347,22 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		$scope.$emit('mapa:adicionar-geometria-base', {
 			geometria: JSON.parse(camada.geometria),
 			tipo: camada.tipo,
+			item: camada.item,
 			estilo: {
 				style: ctrl.estiloMapa[camada.tipo] || camada.estilo
 			},
 			popupText: camada.item,
-			disableCentralizarGeometrias:disable
+			disableCentralizarGeometrias:disable,
+			numPoints: ctrl.numPoints
 		});
 	}
 
+	function adicionarPointNoCluster (camada) {
+
+		camada.visivel = true;
+		$scope.$emit('mapa:adicionar-geometria-base-cluster', camada);
+
+	}
 
 	function adicionarWmsLayerNoMapa (tipoSobreposicao) {
 
@@ -325,6 +377,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		$scope.$emit('mapa:adicionar-wmslayer-mapa', tipoSobreposicao, true);
 	}
 
+	function contaQuantidadeCamadasPoint (camadas) {
+
+		return camadas.filter(function(camada) {
+
+			return JSON.parse(camada.geometria).type.toLowerCase() === 'point';
+
+		}).length;
+
+	}
+
 	this.init = function() {
 
 		$scope.analiseGeo = analiseGeo;
@@ -336,6 +398,19 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			if(parecerTecnicoRestricao !== undefined)
 				restricao.properties.parecer = parecerTecnicoRestricao.parecer;
+		});
+
+		analiseGeoService.getDadosRestricoesProjeto(analiseGeo.analise.processo.id)
+		.then(function(response) {
+
+			ctrl.dadosRestricoesProjeto = response.data;
+
+		});
+
+		ctrl.listaInconsistencias = analiseGeo.inconsistencias.filter(function(inconsistencia) {
+
+			return inconsistencia.categoria !== 'PROPRIEDADE';
+
 		});
 
 		$timeout(function() {
@@ -363,37 +438,60 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					ctrl.camadasDadosEmpreendimento = response.data;
 
 					ctrl.camadasDadosEmpreendimento.forEach(function (camada) {
-						adicionarGeometriaNoMapa(camada);
+						
+						camada.geometrias.forEach(function(e) {
+							
+							adicionarGeometriaNoMapa(e);
+
+						});
+
 					});
 
-					analiseGeoService.getDadosAreaProjeto($scope.analiseGeo.analise.processo.id)
-						.then(function (response) {
+					analiseGeoService.getDadosProjeto($scope.analiseGeo.analise.processo.id).then(function (response) {
 
-							ctrl.camadasDadosAtividade = response.data;
-							ctrl.camadasDadosAtividade.forEach(function (camadaAtividade) {
-								camadaAtividade.camadasGeo.forEach(function (camadaGeo) {
-									camadaGeo.estilo = ctrl.estiloMapa.ATIVIDADE;
-									adicionarGeometriaNoMapa(camadaGeo);
-								});
+						ctrl.dadosProjeto = response.data;
 
-								if (camadaAtividade.restricoes !== null && camadaAtividade.restricoes.length > 0) {
+						ctrl.dadosProjeto.atividades.forEach(function(atividade) {
 
-									camadaAtividade.restricoes.forEach(function (restricao) {
+							ctrl.numPoints += contaQuantidadeCamadasPoint(atividade.geometrias);
 
-										restricao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
-
-										adicionarGeometriaNoMapa(restricao);
-									});
-								}
-
-								tiposSobreposicaoService.getTiposSobreposicao()
-									.then(function (response) {
-										ctrl.TiposSobreposicao = response.data;
-									});
-							});
 						});
-				});
 
+						ctrl.numPoints += contaQuantidadeCamadasPoint(ctrl.dadosProjeto.restricoes);
+
+						ctrl.dadosProjeto.atividades.forEach(function (atividade) {
+
+							atividade.openedAccordion = false;
+							
+							atividade.geometrias.forEach(function(a) {
+								
+								a.estilo = ctrl.estiloMapa.ATIVIDADE;
+								adicionarGeometriaNoMapa(a);
+
+							});
+
+						});
+
+						ctrl.dadosProjeto.restricoes.forEach(function (restricao) {
+
+							restricao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
+							adicionarGeometriaNoMapa(restricao);
+
+						});
+
+						tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
+
+							ctrl.TiposSobreposicao = response.data;
+
+						});
+
+					});
+
+					$scope.$emit('mapa:centralizar-mapa');
+
+			});
+
+				$rootScope.$broadcast('atualizarContagemProcessos');
 		});
 
 	};
@@ -411,7 +509,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		return inconsitenciaEncontrada !== undefined;
 	};
 
-	$scope.verificaInconsistenciaAtividade = function ( categoriaInconsistencia, idAtividadeCaracterizacao, idGeometriaAtividade) {
+	$scope.verificaInconsistenciaAtividade = function ( categoriaInconsistencia, idCaracterizacao, idGeometriaAtividade) {
 
 		if (ctrl.analiseGeo.inconsistencias === undefined  || ctrl.analiseGeo.inconsistencias.length === 0) {
 			return false;
@@ -419,216 +517,243 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var verificaCategoria = categoriaInconsistencia;
 		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
 			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() && 
-						 inconsistencia.atividadeCaracterizacao.id === idAtividadeCaracterizacao && 
+						 inconsistencia.caracterizacao.id === idCaracterizacao && 
 						 inconsistencia.geometriaAtividade.id === idGeometriaAtividade;
 		});
 
-
 		return inconsitenciaEncontrada !== undefined;
+
 	};
 
-	$scope.verificaInconsistenciaRestricao = function ( categoriaInconsistencia, idAtividadeCaracterizacao, idSobreposicao) {
+	$scope.verificaInconsistenciaRestricao = function (categoriaInconsistencia, idCaracterizacao, idSobreposicao) {
 
 		if (ctrl.analiseGeo.inconsistencias === undefined  || ctrl.analiseGeo.inconsistencias.length === 0) {
 			return false;
 		}
+
 		var verificaCategoria = categoriaInconsistencia;
+
 		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
 			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() && 
-						 inconsistencia.atividadeCaracterizacao.id === idAtividadeCaracterizacao && 
-						 inconsistencia.sobreposicaoCaracterizacaoAtividade.id === idSobreposicao;
+						 inconsistencia.caracterizacao.id === idCaracterizacao && 
+						 (inconsistencia.sobreposicaoCaracterizacaoAtividade && inconsistencia.sobreposicaoCaracterizacaoAtividade.id === idSobreposicao) ||
+						 (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento && inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) ||
+						 (inconsistencia.sobreposicaoCaracterizacaoComplexo && inconsistencia.sobreposicaoCaracterizacaoComplexo.id === idSobreposicao);
 		});
 
-
 		return inconsitenciaEncontrada !== undefined;
+
 	};
 
+	ctrl.validacaoAbaAvancar = function() {
+		if($scope.passoValido()) {
+			ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+			controleCamposParecerEmpreedimento();
+			scrollTop();
+		}
+	};
 
-	$scope.addInconsistenciaRestricao = function (categoriaInconsistencia, idAtividadeCaracterizacao , idSobreposicao) {
+	ctrl.validacaoAbaVoltar = function() {
+		
+		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+		controleCamposParecerEmpreedimento();
+		scrollTop();
+	};
 
+	function openModal(analiseGeoModal, categoriaInconsistenciaModal, inconsistenciaModal, idCaracterizacaoModal, idGeometriaAtividadeModal, idSobreposicaoModal, dadosProjeto, listaInconsistencias) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'inconsistenciaController',
+			controllerAs: 'modalCtrl',
+			backdrop: 'static',
+			templateUrl: 'features/analiseGeo/modalInconsistencia.html',
+			size: 'lg',
+			resolve: {
+				analiseGeo: function () {
+					return analiseGeoModal;
+				},
+				categoriaInconsistencia: function(){
+					return categoriaInconsistenciaModal;
+				},
+				inconsistencia: function(){
+					return inconsistenciaModal;
+				},
+				idCaracterizacao: function(){
+					return idCaracterizacaoModal;
+				},
+				idGeometriaAtividade: function(){
+					return idGeometriaAtividadeModal;
+				},
+				idSobreposicao: function(){
+					return idSobreposicaoModal;
+				},
+				dadosProjeto: function(){
+					return dadosProjeto;
+				},
+				listaInconsistencias: function() {
+					return listaInconsistencias;
+				}
+			}
+		});
+
+		modalInstance.result.then(function(data){
+
+			if (data.isExclusao) {
+				ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+					return i.id === data.inconsistencia.id;
+				}), 1);
+			} else if (data.isEdicao) {
+
+				ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
+					return i.id === data.inconsistencia.id;
+				}), 1);
+				ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+			} else {
+				ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
+			}
+
+		});
+
+	}
+
+	$scope.addInconsistenciaRestricao = function (categoriaInconsistencia, inconsistencia, isEdicao) {
+
+		var idCaracterizacao = inconsistencia.caracterizacao.id;
+		var idSobreposicao = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade.id : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id : i.sobreposicaoCaracterizacaoComplexo.id;
 
 		params = {
 			categoria:categoriaInconsistencia,
 			analiseGeo: {id: analiseGeo.id},
-			atividadeCaracterizacao: {id: idAtividadeCaracterizacao},
+			caracterizacao: {id: idCaracterizacao},
 			geometriaAtividade: {id: null},
-			sobreposicaoCaracterizacaoAtividade: {id: idSobreposicao}			
+			sobreposicaoCaracterizacaoAtividade: inconsistencia.sobreposicaoCaracterizacaoAtividade,
+			sobreposicaoCaracterizacaoEmpreendimento: inconsistencia.sobreposicaoCaracterizacaoEmpreendimento,
+			sobreposicaoCaracterizacaoComplexo: inconsistencia.sobreposicaoCaracterizacaoComplexo
 		};
 
 		inconsistenciaService.findInconsistencia(params)
 		.then(function(response){
 
-			var modalInstance = $uibModal.open({
-				controller: 'inconsistenciaController',
-				controllerAs: 'modalCtrl',
-				templateUrl: 'features/analiseGeo/modalInconsistencia.html',
-				size: 'lg',
-				resolve: {
-					analiseGeo: function () {
-						return ctrl.analiseGeo;
-					},
-					categoriaInconsistencia: function(){
-						return categoriaInconsistencia;
-					},
-					inconsistencia: function(){
-						return response.data;
-					},
-					idAtividadeCaracterizacao: function(){
-						return idAtividadeCaracterizacao;
-					},
-					idGeometriaAtividade: function(){
-						return null;
-					},
-					idSobreposicao: function(){
-						return idSobreposicao;
-					}
-				}
-			});
+			var inconsistencia = response.data;
+			inconsistencia.isEdicao = isEdicao;
 
-			modalInstance.result.then(function(data){
+			openModal(ctrl.analiseGeo, categoriaInconsistencia, inconsistencia, idCaracterizacao, null, idSobreposicao, ctrl.dadosProjeto, null);
 
-				if (data.isExclusao) {
-					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
-						return i.id === data.inconsistencia.id;
-					}), 1);
-				} else if (data.isEdicao) {
-
-					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
-						return i.id === data.inconsistencia.id;
-					}), 1);
-					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
-				} else {
-					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
-				}
-
-			});
-			
-		});		
+		});
 
 	};
 
-	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idAtividadeCaracterizacao , idGeometriaAtividade) {
-
+	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idCaracterizacao , idGeometriaAtividade) {
 
 		params = {
-			categoria:categoriaInconsistencia,
+			categoria: categoriaInconsistencia,
 			analiseGeo: {id: analiseGeo.id},
-			atividadeCaracterizacao: {id: idAtividadeCaracterizacao},
+			caracterizacao: {id: idCaracterizacao},
 			geometriaAtividade: {id: idGeometriaAtividade},
-			sobreposicaoCaracterizacaoAtividade: {id: null}			
+			sobreposicaoCaracterizacaoEmpreendimento: {id: null}			
 		};
 
 		inconsistenciaService.findInconsistencia(params)
 		.then(function(response){
 
-			var modalInstance = $uibModal.open({
-				controller: 'inconsistenciaController',
-				controllerAs: 'modalCtrl',
-				templateUrl: 'features/analiseGeo/modalInconsistencia.html',
-				size: 'lg',
-				resolve: {
-					analiseGeo: function () {
-						return ctrl.analiseGeo;
-					},
-					categoriaInconsistencia: function(){
-						return categoriaInconsistencia;
-					},
-					inconsistencia: function(){
-						return response.data;
-					},
-					idAtividadeCaracterizacao: function(){
-						return idAtividadeCaracterizacao;
-					},
-					idGeometriaAtividade: function(){
-						return idGeometriaAtividade;
-					},
-					idSobreposicao: function(){
-						return null;
-					}
-				}
-			});
-
-			modalInstance.result.then(function(data){
-
-				if (data.isExclusao) {
-
-					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
-						return i.id === data.inconsistencia.id;
-					}), 1);
-
-				} else if (data.isEdicao) {
-
-					ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
-						return i.id === data.inconsistencia.id;
-					}), 1);
-					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
-				} else {
-					ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
-				}
-
-			});
+			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, idCaracterizacao, idGeometriaAtividade, null, ctrl.dadosProjeto, null);
 			
 		});		
 
 	};
 
-	$scope.addInconsistencia = function(categoriaInconsistencia){
-			
-			params = {
-				categoria: categoriaInconsistencia,
-				analiseGeo: {id: analiseGeo.id}
-			};
+	$scope.addInconsistenciaPropriedade = function(categoriaInconsistencia){
+
+		params = {
+			categoria: categoriaInconsistencia,
+			analiseGeo: {id: analiseGeo.id}
+		};
+
+		inconsistenciaService.findInconsistencia(params)
+		.then(function(response){
+
+			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, null, null, null, ctrl.dadosProjeto, null);
+
+		});
+
+	};
+
+	$scope.addInconsistencia = function() {
+
+		openModal(ctrl.analiseGeo, null, null, null, null, null, ctrl.dadosProjeto, ctrl.listaInconsistencias);
+
+	};
+
+	$scope.excluirInconsistencia = function(idInconsistencia) {
+
+		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
+			return inconsistencia.id === idInconsistencia;
+		});
+		ctrl.listaInconsistencias.splice(index, 1);
 	
-			inconsistenciaService.findInconsistencia(params)
-			.then(function(response){
+		inconsistenciaService.excluirInconsistencia(idInconsistencia)
+			.then(function (response) {
+				mensagem.success(response.data);
 
-				var modalInstance = $uibModal.open({
-					controller: 'inconsistenciaController',
-					controllerAs: 'modalCtrl',
-					templateUrl: 'features/analiseGeo/modalInconsistencia.html',
-					size: 'lg',
-					resolve: {
-						analiseGeo: function () {
-							return ctrl.analiseGeo;
-						},
-						categoriaInconsistencia: function(){
-							return categoriaInconsistencia;
-						},
-						inconsistencia: function(){
-							return response.data;
-						},
-						idAtividadeCaracterizacao: function(){
-							return null;
-						},
-						idGeometriaAtividade: function(){
-							return null;
-						},
-						idSobreposicao: function(){
-							return null;
-						}
-					}
+				ctrl.analiseGeo.inconsistencias = _.remove(ctrl.analiseGeo.inconsistencias, function(inconsistencia) {
+					return(inconsistencia.id !== idInconsistencia);
 				});
 
-				modalInstance.result.then(function(data){
+			}).catch(function (response) {
+			mensagem.error(response.data.texto);
 
-					if (data.isExclusao) {
-						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
-							return i.id === data.inconsistencia.id;
-						}), 1);
+		});
+	};
 
-					} else if (data.isEdicao) {
+	$scope.verificarTamanhoInconsistencias = function() {
+		var inconsistencias = angular.copy(ctrl.analiseGeo.inconsistencias);
+		return _.remove(inconsistencias, function(i){
+			return(i.categoria !== 'ATIVIDADE');
+		}).length > 0;
+	};
 
-						ctrl.analiseGeo.inconsistencias.splice(ctrl.analiseGeo.inconsistencias.findIndex(function(i){
-							return i.id === data.inconsistencia.id;
-						}), 1);
-						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
-					} else {
-						ctrl.analiseGeo.inconsistencias.push(data.inconsistencia);
-					}
+	$scope.getItemRestricao = function(inconsistencia) {
 
-				});
-				
+		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+
+		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+
+			restricao = ctrl.dadosRestricoesProjeto.find(function(restricao) {
+
+				var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+				return sobreposicaoInconsistencia.id === sobreposicaoRestricao.id;
+
 			});
+
+			return restricao && restricao.item ? restricao.item : '';
+
+		}
+
+		return 'Propriedade';
+	
+	};
+
+	$scope.getDescricaoRestricao = function(inconsistencia) {
+
+		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+
+		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+
+			restricao = ctrl.dadosRestricoesProjeto.find(function(restricao) {
+
+				var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+				return sobreposicaoInconsistencia.id === sobreposicaoRestricao.id;
+
+			});
+
+			return restricao && restricao.descricao ? restricao.descricao : '';
+
+		}
+
+		return '-';
+	
 	};
 
 	function controleCamposParecerEmpreedimento() {
@@ -637,7 +762,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			$('#situacaoFundiaria').summernote('disable');
 			$('#analiseTemporal').summernote('disable');
 			ctrl.analiseGeo.situacaoFundiaria = undefined;
-            ctrl.analiseGeo.analiseTemporal = undefined;
+      ctrl.analiseGeo.analiseTemporal = undefined;
 
 		} else {
 			$('#situacaoFundiaria').summernote('enable');
@@ -645,22 +770,21 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 	}
 
-
 	ctrl.clonarParecerGeo = function() {
 
 		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
 			.then(function(response){
 
-					if(response.data === null) {
+					if(response.data.parecer === undefined) {
 
 							ctrl.analiseGeo.parecer = null;
-							mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+							mensagem.error(response.data.texto);
 							return;
+					}else{
+						ctrl.analiseGeo.parecer = response.data.parecer;
+						ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
+						ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
 					}
-					ctrl.analiseGeo.parecer = response.data.parecer;
-					ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
-					ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
-
 			}, function(error){
 
 					mensagem.error(error.data.texto);
@@ -711,13 +835,34 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 
-	ctrl.avancarProximaEtapa= function() {
-		ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
-		$('.nav-tabs > .active').next('li').find('a').trigger('click');
-		controleCamposParecerEmpreedimento();
-		scrollTop();
+	ctrl.avancarProximaEtapa = function() {
+		$timeout(function() {
+			if($scope.passoValido()) {
+				$('.nav-tabs > .active').next('li').find('a').trigger('click');
+				controleCamposParecerEmpreedimento();
+				ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
+				scrollTop();
+			}
+    }, 0);
 	};
 
+	$scope.passoValido = function() {
+
+		var restricoes = _.filter(ctrl.dadosRestricoesProjeto, function(restricao) {
+
+			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+			return sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+
+				return orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA;
+
+			});
+
+		});
+
+		return ctrl.listaInconsistencias.length === restricoes.length;
+
+	};
 
 	ctrl.cancelar= function() {
 		$location.path('/analise-geo');
@@ -729,14 +874,25 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	}
 
 	ctrl.voltarEtapaAnterior = function(){
+		$timeout(function() {
 			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+			controleCamposParecerEmpreedimento();
 			scrollTop();
 			ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+		}, 0);
 	};
 
 	function analiseValida() {
 
 		if ((!ctrl.analiseGeo.inconsistencias || ctrl.analiseGeo.inconsistencias.length === 0) && (!ctrl.analiseGeo.analiseTemporal || !ctrl.analiseGeo.situacaoFundiaria)) {
+			return false;
+		}
+
+		if (!ctrl.analiseGeo.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO || ctrl.analiseGeo.prazoNotificacao === undefined && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO){
+			return false;
+		}
+
+		if(!ctrl.analiseGeo.despacho || ctrl.analiseGeo.despacho === undefined){
 			return false;
 		}
 
@@ -746,6 +902,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
 			return false;
+		}
+		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+			return true;
 		}
 
 		return ((ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
@@ -778,8 +937,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
 				'<ul>' +
-				'<li>Para concluir é necessário descrever o parecer na conclusão.</li>' +
-				'<li>Selecione um parecer para o processo (Deferido, Indeferido, Emitir notificação).</li>' +
+				'<li>Para concluir é necessário inserir uma descrição nos seguintes campos: Situação fundiária, Análise temporal e Conclusão.</li>' +
+				'<li>Selecione uma Análise final do processo (Deferido, Indeferido, Emitir notificação) e em seguida sua respectiva descrição.</li>' +
 				'</ul>', { ttl: 10000 });
 			return;
 		}
@@ -796,11 +955,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 				documentoAnaliseService.generatePDFParecerGeo(params)
 					.then(function(data, status, headers){
-
-						var a = document.createElement('a');
-						a.href = URL.createObjectURL(data.data.response.blob);
-						a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-						a.click();
+						if(ctrl.analiseGeo.inconsistencias && ctrl.analiseGeo.inconsistencias.length === 0){
+							var a = document.createElement('a');
+							a.href = URL.createObjectURL(data.data.response.blob);
+							a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+							a.click();
+					  }
 
 						documentoAnaliseService.generatePDFCartaImagemGeo(params)
 							.then(function(data, status, headers){
@@ -820,11 +980,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					},function(error){
 							mensagem.error(error.data.texto);
 					});
-
+					$location.path('/analise-geo');
 			}, function(error){
 
-				mensagem.error(error.data.texto);
+				mensagem.error(error.data.texto, {referenceId: 5});
 			});
+
+			$rootScope.$broadcast('atualizarContagemProcessos');
+
 	};
 
 	$scope.optionsText = {
@@ -846,6 +1009,43 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		setTimeout( function(){
 		  document.execCommand( 'insertText', false, bufferText );
 		}, 10 );
+	};
+
+	ctrl.getRestricoes = function() {
+		var restricoes = [];
+		var orgaoEnable = false;
+		var restricaoEnable = true;
+		
+		_.forEach(ctrl.dadosProjeto, function(dadoProjeto){
+			_.forEach(dadoProjeto.restricoes, function(restricao){
+				
+				var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+
+				_.forEach(sobreposicaoRestricao.tipoSobreposicao.orgaosResponsaveis, function(orgao){
+					//verifica se o orgão da restrição é IPHAN ou IBAMA
+					if(orgao.sigla.toUpperCase() === ctrl.orgaos.IPHAN || orgao.sigla.toUpperCase() === ctrl.orgaos.IBAMA){
+						orgaoEnable = true;
+					}
+				});
+				if(orgaoEnable){
+					_.forEach(ctrl.analiseGeo.inconsistencias, function(i){
+						//verifica se uma restrição já possui inconsistência
+
+						var sobreposicao = i.sobreposicaoCaracterizacaoAtividade ? i.sobreposicaoCaracterizacaoAtividade : i.sobreposicaoCaracterizacaoEmpreendimento ? i.sobreposicaoCaracterizacaoEmpreendimento : i.sobreposicaoCaracterizacaoComplexo;
+
+						if(sobreposicao && (sobreposicao.id === sobreposicaoRestricao.id)){
+							restricaoEnable = false;
+						}
+					});
+					if(restricaoEnable){
+						restricoes.push(restricao);
+					}
+				}
+				orgaoEnable = false;
+				restricaoEnable = true;
+			});
+		});
+		return restricoes;
 	};
 
 };

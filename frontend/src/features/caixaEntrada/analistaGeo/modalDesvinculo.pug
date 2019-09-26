@@ -13,10 +13,10 @@ div.modal-body
     div#justificativa-desvinculo
         label.label-justificativa Justificativa*:
         br
-        textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa")
+        textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa')
 
 
-div.modal-footer
+div.modal-footer(ng-if="desvinculoCtrl.respondido === false")
 
     button.btn.btn-default.pull-left(ng-click="desvinculoCtrl.fechar()")
         i.glyphicon.glyphicon-remove

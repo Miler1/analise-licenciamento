@@ -1,6 +1,7 @@
 div(ng-init='ctrl.init()')
 
 	.row
+		div(growl inline="true" reference='5')
 		.col-md-6
 			h4 PARECER GEO
 
@@ -34,11 +35,12 @@ div(ng-init='ctrl.init()')
 			div.modal-body
 
 			ul.nav.nav-tabs(role="tablist")
-				li#localizacaoGeografica.active(role="presentation")
+				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="ctrl.validacaoAbaVoltar()")
 					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Análise Geo
 					
-				li#conclusao(role="tab")
-					a(data-toggle="tab", data-target="#tabConclusao") Conclusão da análise
+				li#conclusao.aba-clicavel(role="tab", ng-click="ctrl.validacaoAbaAvancar()", ng-class="{'disabled': !passoValido()}",
+						title="{{passoValido() ? '' : 'Para prosseguir é necessário adicionar uma inconsistência para cada restrição relacionada ao IPHAN e/ou IBAMA.'}}")
+					a(data-toggle="{{passoValido() ? 'tab' : ''}}", data-target="#tabConclusao") Conclusão da análise
 
 			.tab-content
 				#tabLocalizacaoGeografica.tab-pane.fade.in.active
@@ -51,7 +53,9 @@ div
 	button.btn.btn-default.pull-left(style="margin-bottom:15px;",ng-click="ctrl.cancelar()")
 		i.glyphicon.glyphicon-remove
 		| &nbsp;Cancelar
-	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.avancarProximaEtapa()", ng-if="ctrl.controleVisualizacao === 'ETAPA_LOCALIZACAO_GEOGRAFICA'")
+	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.avancarProximaEtapa()",
+			ng-if="ctrl.controleVisualizacao === 'ETAPA_LOCALIZACAO_GEOGRAFICA'",
+			ng-disabled="!passoValido()", title="{{passoValido() ? '' : 'Para prosseguir é necessário adicionar uma inconsistência para cada restrição relacionada ao IPHAN e/ou IBAMA.'}}")
 		i.glyphicon.glyphicon-ok
 		| &nbsp;Avançar
 	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.concluir()",ng-if="ctrl.controleVisualizacao === 'ETAPA_CONCLUSAO'")

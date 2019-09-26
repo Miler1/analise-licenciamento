@@ -18,7 +18,7 @@
 			li(role="tab")
 				a(data-toggle="tab", data-target="#tabEmpreendimento") Empreendedor / Empreendimento
 			li(role="tab")
-				a(data-toggle="tab", data-target="#tabJustificativaCoordenador") Justificativa 
+				a(data-toggle="tab", data-target="#tabJustificativaCoordenador") Observações 
 
 		div.row#dadosProcesso
 			.col-xs-12.col-md-8
@@ -30,11 +30,11 @@
 
 					div.row
 						label.col-sm-4 CPF/CNPJ:
-						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento ? modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento : (modalVisualizacaoProcessoCtrl.processo.empreendimento.pessoa.cpf ? modalVisualizacaoProcessoCtrl.processo.empreendimento.pessoa.cpf : modalVisualizacaoProcessoCtrl.processo.empreendimento.pessoa.cnpj) | brCpfCnpj}}
+						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento ? modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento : (modalVisualizacaoProcessoCtrl.processo.empreendimento.pessoa.cpf ? modalVisualizacaoProcessoCtrl.processo.empreendimento.pessoa.cpf : modalVisualizacaoProcessoCtrl.processo.cnpjEmpreendimento) | brCpfCnpj}}
 
 					div.row
 						label.col-sm-4 Nome/Razão Social:
-						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.empreendimento.denominacao}}
+						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.denominacaoEmpreendimento}}
 
 		.tab-content
 

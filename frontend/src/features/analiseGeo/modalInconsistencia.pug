@@ -9,21 +9,36 @@ div.modal-header
 
 div.modal-body
 
-    div
-        label(style="font-size:13px;") Descrição da inconsistência*:
-        br
-        textarea(name="descricaoInconsistência", ng-model="modalCtrl.descricaoInconsistencia", style="margin: 0px; width: 811px; height: 88px")
+    div.area-modal
+        label.label-modal Categoria da inconsistência*:
+        select.form-control(ng-if="modalCtrl.categoriaInconsistencia !== 'ATIVIDADE'", ng-model="modalCtrl.categoriaInconsistencia", name="selectCategoriaInconsistencia", ng-disabled="modalCtrl.habilitaExcluir")
+            option(value="") Selecione o a categoria da inconsistência
+            option(value="PROPRIEDADE") Propriedade
+            option(ng-if="modalCtrl.hasRestricoes() || modalCtrl.isEdicao" value="RESTRICAO") Restrição
 
-    div
-        label(style="font-size:13px;") Tipo da inconsistência*:
-        br
-        textarea(name="tipoInconsistência", ng-model="modalCtrl.tipoInconsistencia", style="margin: 0px; width: 811px; height: 88px;")
+    div.area-modal(ng-if="modalCtrl.categoriaInconsistencia === 'RESTRICAO'")
+        label.label-modal Item da Restrição*:
+        select.form-control(ng-model="modalCtrl.idSobreposicao", name="selectItemRestricao", ng-if="!modalCtrl.habilitaExcluir",
+                ng-options="restricao.sobreposicao.id as restricao.item for restricao in modalCtrl.getRestricoesSemInconsistencia() track by restricao.sobreposicao.id")
+            option(value="") Selecione o item da Restrição
+        br(ng-if="modalCtrl.habilitaExcluir")
+        span.span-modal(ng-if="modalCtrl.habilitaExcluir") {{modalCtrl.getItemRestricao(modalCtrl.idSobreposicao)}}
 
-    div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+    div.area-modal
+        label.label-modal Descrição da inconsistência*:
+        br
+        textarea.textarea-modal(name="descricaoInconsistência", ng-model="modalCtrl.descricaoInconsistencia")
+
+    div.area-modal
+        label.label-modal Tipo da inconsistência*:
+        br
+        textarea.textarea-modal(name="tipoInconsistência", ng-model="modalCtrl.tipoInconsistencia")
+
+    div.button-upload-modal.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo na inconsistência
 
-    table.table.table-condensed(ng-if="modalCtrl.anexos.length > 0")
+    table.area-modal.table.table-condensed(ng-if="modalCtrl.anexos.length > 0")
 
         thead
 
@@ -43,7 +58,6 @@ div.modal-body
                     a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="modalCtrl.removerDocumento($index,anexo.id)")
                         i.glyphicon.glyphicon-trash
 
-
 div.modal-footer
 
     button.btn.btn-default.pull-left(ng-click="modalCtrl.fechar()")
@@ -54,6 +68,6 @@ div.modal-footer
         i.glyphicon.glyphicon-arrow-right
         | &nbsp;Confirmar
 
-    button.btn.btn-default.pull-right(ng-disabled = "!modalCtrl.habilitaExcluir", ng-bootbox-title='Confirmação', ng-bootbox-custom-dialog='Deseja realmente excluir esta inconsistência ?', ng-bootbox-buttons='modalCtrl.customDialogButtons')
-        i.glyphicon.glyphicon-trash
-        | &nbsp;Excluir
+    //- button.btn.btn-default.pull-right(ng-disabled = "!modalCtrl.habilitaExcluir", ng-bootbox-title='Confirmação', ng-bootbox-custom-dialog='Deseja realmente excluir esta inconsistência ?', ng-bootbox-buttons='modalCtrl.customDialogButtons')
+    //-     i.glyphicon.glyphicon-trash
+    //-     | &nbsp;Excluir

@@ -4,6 +4,8 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 	var consultarProcesso = this;
 
+	consultarProcesso.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+	consultarProcesso.perfis = app.utils.Perfis;
 	consultarProcesso.atualizarListaProcessos = atualizarListaProcessos;
 	consultarProcesso.atualizarPaginacao = atualizarPaginacao;
 	consultarProcesso.selecionarTodosProcessos = selecionarTodosProcessos;
@@ -11,6 +13,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.visualizarProcesso = visualizarProcesso;
 
 	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
+
 	consultarProcesso.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	consultarProcesso.processos = [];
 	consultarProcesso.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -21,7 +24,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.PrazoAnalise = app.utils.PrazoAnalise;
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO,
-		app.DISABLED_FILTER_FIELDS.PERIODO_PROCESSO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO];
+		app.DISABLED_FILTER_FIELDS.GERENCIA];
 
 	function atualizarListaProcessos(processos) {
 

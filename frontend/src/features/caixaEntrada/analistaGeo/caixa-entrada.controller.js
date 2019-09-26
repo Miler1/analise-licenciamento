@@ -19,7 +19,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntAnalistaGeo.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntAnalistaGeo.dateUtil = app.utils.DateUtil;
-	cxEntAnalistaGeo.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	cxEntAnalistaGeo.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
 
 	function atualizarListaProcessos(processos) {
 
@@ -57,6 +57,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	}
 	
 	function iniciarUploadShapes(processo){
+		$rootScope.processo = processo;
 
 		$location.path('/shape-upload/' + processo.idProcesso.toString());
 	}
@@ -71,12 +72,16 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 				var modalInstance = $uibModal.open({
 					controller: 'desvinculoController',
 					controllerAs: 'desvinculoCtrl',
+					backdrop: 'static',
 					templateUrl: 'features/caixaEntrada/analistaGeo/modalDesvinculo.html',
 					size: 'lg',
 					resolve: {
 
 						idAnaliseGeo: function(){
 							return processo.idAnaliseGeo;
+						},
+						idProcesso: function(){
+							return processo.idProcesso;
 						}
 					}
 					
@@ -88,7 +93,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 		analiseGeoService.getPossuiAnexo(cpfCnpjEmpreendimento)
 			.then(function(response){
-				console.log(response);
 				// Caso possua null - nenhuma ação foi realizada no empreendimento
 				if(response.data === null){
 					cxEntAnalistaGeo.iniciarUploadShapes(processo);

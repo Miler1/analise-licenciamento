@@ -7,8 +7,8 @@ div
 		atualizar-paginacao="listagem.atualizarPaginacao",
 		condicao-tramitacao="listagem.condicaoTramitacao",
 		pesquisar-ao-inicializar="true",
-		is-analise-tecnica="true",
-		is-gerente-logado="true")
+		is-gerente="usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE",
+		is-gerente-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE")
 
 	h4 Lista de processos
 
@@ -19,30 +19,28 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th
 							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
-							th.col-md-2 Licenças
+							th.col-md-2 Licença
 							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise GEO
 							th.col-md-1 Prazo análise técnica
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
-							td
-								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
-								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
-								span(ng-class="{'icone-renovacao': processo.renovacao}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero  | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{listagem.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, listagem.PrazoAnalise.ANALISE)}}
-							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,listagem.PrazoAnalise.ANALISE_TECNICA)}}
+								| {{ listagem.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, listagem.PrazoAnalise.ANALISE) }}
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
+								| {{ listagem.dataConclusaoAnaliseGeo ? 'Concluída' : listagem.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo) }}
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, listagem.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
+								| -
 							td
 								span.pull-right
 
@@ -52,17 +50,13 @@ div
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
-												a(ng-click="listagem.validarAnalise(processo.idAnaliseTecnica)")
+												a(ng-click="listagem.continuarAnalise(processo.idAnalise)")
 													i.glyphicon.glyphicon-play-circle
-													span Validar análise
+													span Continuar análise
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar processo
-				div
-					span.icone-revisao-solicitada.legenda Revisão Solicitada
-					span.icone-revisao-atendida.legenda Notificação Atendida
-					span.icone-renovacao.legenda Renovação
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

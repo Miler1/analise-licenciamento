@@ -64,7 +64,10 @@ public class AnaliseGeoSerializer {
             "pareceresGeoRestricoes.codigoCamada",
             "pareceresGeoRestricoes.parecer",
             "parecer",
+            "situacaoFundiaria",
+            "analiseTemporal",
             "parecerValidacaoGerente",
+            "despacho",
             "usuarioValidacaoGerente",
             "dataVencimentoPrazo",
             "revisaoSolicitada",
@@ -117,10 +120,16 @@ public class AnaliseGeoSerializer {
             "inconsistencias.anexos.tipo.nome",
             "inconsistencias.anexos.tipo.id",
             "inconsistencias.categoria",
-            "inconsistencias.atividadeCaracterizacao.id",
+            "inconsistencias.caracterizacao.id",
+            "inconsistencias.atividadesCaracterizacao",
+            "inconsistencias.atividadesCaracterizacao.id",
+            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento",
+            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento.id",
+            "inconsistencias.sobreposicaoCaracterizacaoComplexo",
+            "inconsistencias.sobreposicaoCaracterizacaoComplexo.id",
             "inconsistencias.geometriaAtividade.id",
-            "inconsistencias.sobreposicaoCaracterizacaoAtividade.id",
-            "inconsistencias.sobreposicaoCaracterizacaoAtividade"
+            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento.id",
+            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento"
 
     ).transform(new GeometryTransformer(), Geometry.class);
 

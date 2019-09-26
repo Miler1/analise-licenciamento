@@ -281,7 +281,7 @@ Request.prototype.upload = function(url, file, Upload, elem, comLoad) {
 	return upload;
 };
 
-Request.prototype.uploadFileWithCity = function(url, file, city, Upload, elem, comLoad) {
+Request.prototype.uploadData = function(url, data, Upload, elem, comLoad) {
 
 	if(comLoad === null || comLoad === undefined)
 		comLoad = true;
@@ -289,10 +289,7 @@ Request.prototype.uploadFileWithCity = function(url, file, city, Upload, elem, c
 	var upload = Upload.upload({
 
 		url: url,
-		data: { 
-			file: file,
-			idMunicipio: city
-		}
+		data: data
 	});
 
 	if(comLoad) {

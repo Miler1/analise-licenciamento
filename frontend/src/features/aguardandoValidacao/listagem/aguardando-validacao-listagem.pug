@@ -5,7 +5,3 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === aguard
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === aguardandoValidacaoListagem.perfis.COORDENADOR_TECNICO",
     ng-controller='aguardandoValidacaoTecnicaListController as listagem')
     include coordenadorTecnico/aguardando-validacao-listagem
-
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === aguardandoValidacaoListagem.perfis.GERENTE_TECNICO",
-    ng-controller='aguardandoValidacaoGerenteTecnicoListController as listagem')
-    include gerenteTecnico/aguardando-validacao-listagem

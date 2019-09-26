@@ -118,6 +118,7 @@ CREATE TABLE analise.analista_geo
 ALTER TABLE analise.analista_geo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analista_geo TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_geo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.analista_geo_id_seq TO licenciamento_am;
 
 COMMENT ON TABLE analise.analista_geo IS 'Entidade responsável por armazenar o analista da analise geo.';
 COMMENT ON COLUMN analise.analista_geo.id IS 'Identificador único da entidade.';
@@ -151,8 +152,8 @@ COMMENT ON COLUMN analise.parecer_geo_restricao.codigo_camada IS 'Código da cam
 COMMENT ON COLUMN analise.parecer_geo_restricao.parecer IS 'Descrição do parecer de restrição geográfico.';
 
 INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
-(16,'Parecer análise geo', 'parecer analise geo', 'parecer analise geo' ),
-(17,'Notificação análise geo', 'notificacao analise geo', 'notificacao analise geo' );
+(16,'Parecer análise geo', 'parecer_analise_geo', 'parecer_analise_geo' ),
+(17,'Notificação análise geo', 'notificacao_analise_geo', 'notificacao_analise_geo' );
 
 ALTER TABLE analise.notificacao
 

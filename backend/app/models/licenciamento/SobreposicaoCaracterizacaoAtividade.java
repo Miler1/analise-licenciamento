@@ -10,7 +10,7 @@ import java.util.List;
 @Table(schema = "licenciamento", name = "sobreposicao_caracterizacao_atividade")
 public class SobreposicaoCaracterizacaoAtividade extends GenericModel{
 
-private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_atividade_id_seq";
+    private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_atividade_id_seq";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
@@ -27,6 +27,9 @@ private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_ati
 
     @Column(name = "geometria", columnDefinition="Geometry")
     public Geometry geometria;
+
+    @Column(name = "distancia")
+    public Double distancia;
 
     public SobreposicaoCaracterizacaoAtividade(TipoSobreposicao tipoSobreposicao, AtividadeCaracterizacao atividadeCaracterizacao, Geometry geometria) {
         this.tipoSobreposicao = tipoSobreposicao;

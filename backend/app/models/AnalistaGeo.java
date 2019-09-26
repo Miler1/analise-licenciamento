@@ -10,6 +10,7 @@ import utils.Mensagem;
 
 import javax.persistence.*;
 import javax.xml.ws.WebServiceException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -108,15 +109,15 @@ public class AnalistaGeo extends GenericModel {
             throw new WebServiceException("Não existe nenhum analista geo para vincular automáticamente o processo.");
 
         List<Long> idsAnalistasGeo = analistasGeo.stream()
-                        .map(ang->ang.id)
-                        .collect(Collectors.toList());
+                .map(ang -> ang.id)
+                .collect(Collectors.toList());
 
-        String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsAnalistasGeo) +"]";
+        String parameter = "ARRAY[" + getParameterLongAsStringDBArray(idsAnalistasGeo) + "]";
 
-        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
+        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest(" + parameter + ") as id_usuario ORDER BY id_usuario), " +
                 "     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.analista_geo ag) LIMIT 1), " +
                 "     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.analista_geo " +
-                "        WHERE id_usuario in ("+ getParameterLongAsStringDBArray(idsAnalistasGeo) +") " +
+                "        WHERE id_usuario in (" + getParameterLongAsStringDBArray(idsAnalistasGeo) + ") " +
                 "        GROUP BY id_usuario " +
                 "        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
                 "SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
@@ -129,6 +130,12 @@ public class AnalistaGeo extends GenericModel {
 
     }
 
+    public static AnalistaGeo findByAnaliseGeo(Long idAnaliseGeo) {
+
+        return AnalistaGeo.find("id_analise_geo = :analiseGeo")
+                .setParameter("analiseGeo", idAnaliseGeo).first();
+    }
+
     private static String getParameterLongAsStringDBArray(List<Long> lista) {
 
         String retorno = "";
@@ -139,5 +146,20 @@ public class AnalistaGeo extends GenericModel {
         retorno = retorno.substring(0, retorno.length() -2) ;
 
         return retorno;
+    }
+
+    public static List<UsuarioAnalise> buscarAnalistasGeoByIdProcesso(String setorAtividade) {
+
+        List<UsuarioAnalise> todosAnalistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+
+        List<UsuarioAnalise> analistasGeo = new ArrayList<>();
+
+        for (UsuarioAnalise analistaGeo : todosAnalistasGeo) {
+            if(analistaGeo.pessoa != null) {
+                analistasGeo.add(analistaGeo);
+            }
+        }
+
+        return analistasGeo;
     }
 }

@@ -10,32 +10,50 @@ html(lang="pt-br")
           padding:0px;
         }
 
-        .footer {
-            margin-top: 30px;
+        .rodape{
+          margin-bottom:0px;
         }
 
-        .in-left {
-          text-align: left;
-          float: left;
-           margin-top: 30px;
-
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+        .container-flex {
+            display: flex;
+            justify-content: space-between;
         }
 
-        .in-right {
-          text-align: right;
-          float: right;
-          margin-top: 30px;
+        div.container-left{
+            width: 30%;
+            display: inline-block;
+            text-align: left;
         }
+
+        div.container-center {
+            width: 30%;
+            display: inline-block;
+            text-align: left;
+        }
+
+        div.container-right {
+            width: 30%;
+            display: inline-block;
+            text-align: right;
+        }
+
 
   body
     div.rodape
-            p.in-left
-                span Av. Mario Ypiranga Monteiro, 3280 - Parque 10 de Novembro
-                br
-                span Fone: (92) 2123-6721 / (92) 2123-6731 / (92) 2123-6778
-                br
-                span Manaus - AM - CEP: 69.050-030
-                br
-                span web: www.ipaam.am.gov.br
-            p.in-right
-                img.logo(src='/public/app/images/logo-ipaam-preto.png' height="50" width="100")
+            p
+                hr
+            .container
+              .container-flex
+                .container-left
+                    span.pull-left Análise do Licenciamento - Amazonas
+                .container-center
+                    span(style="text-align:center;margin-left:80px;") Gerado em: ${new Date().format('dd/MM/yyyy HH:mm:ss')}
+                .container-right
+                    span.pull-right(style="margin-left:160px;") Página:
+                          pagenumber
+                          span /
+                          pagecount               

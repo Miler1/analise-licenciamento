@@ -158,7 +158,7 @@ public class IntegracaoEntradaUnicaService {
 			UsuarioAnalise usuario = UsuarioAnalise.find("byLogin", Helper.desformatarCpfCnpj(usuarioEU.login)).first();
 
 			if (usuario == null) {
-				usuario =  new UsuarioAnalise();
+				continue;
 			}
 
 			usuario.login = usuarioEU.login;
@@ -201,7 +201,6 @@ public class IntegracaoEntradaUnicaService {
 			filtro.cpfsCnpjs.add(cpfCnpj);
 
 			filtro.ordenacao = "DENOMINACAO_ASC";
-
 
 			EmpreendimentoFiltroResult listaEmpEU = CadastroUnificadoWS.ws.buscarEmpreendimentosComFiltro(filtro);
 

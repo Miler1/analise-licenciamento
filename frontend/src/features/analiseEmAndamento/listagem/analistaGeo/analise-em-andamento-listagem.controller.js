@@ -17,6 +17,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
+	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
 
 	mensagem.verificaMensagemGlobal();
 
@@ -44,6 +45,8 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	}
 
 	function continuarAnalise(idAnaliseJuridica) {
+
+		$rootScope.$broadcast('atualizarContagemProcessos');
 
 		$location.path('/analise-geo/' + idAnaliseJuridica.toString());
 	}	

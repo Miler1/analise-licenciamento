@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+%{
+numeroProcesso = analiseGeo.analise.processo.numero;
+tipoLicenca = analiseGeo.analise.processo.getCaracterizacao().tipoLicenca.nome;
+empreendimento = analiseGeo.analise.processo.empreendimento;
+empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+endereco = enderecoCompleto;
+}%
+
+<html>
+
+
+
+
+<head>
+</head>
+
+<body>
+
+<h1 style="text-align: center">
+#{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'100', width:'70' /}
+</h1>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+
+
+<p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong> </p>
+<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
+
+<p><strong>À </strong><br> <strong> ${empreendimentoNome} </strong><br> End: ${endereco.logradouro} ${endereco.numero} - ${endereco.bairro}, ${endereco.municipio.nome} - ${endereco.municipio.estado.sigla} <br>CEP: ${endereco.cep}<br><br></p>
+
+<p> Em atenção ao processo protocolado, sob o nº do processo <strong>${numeroProcesso}</strong>, o qual solicita  <strong>${tipoLicenca}</strong>, notifico V.Sa que a referida licença foi <strong>NOTIFICADA</strong> </p>
+
+<p><strong>Descrição:</strong> ${analiseGeo.despacho}</p>
+
+<p><br>    <a href=${analiseGeo.linkNotificacao} target=_blank>CLIQUE AQUI PARA ATENDER SUA NOTIFICAÇÃO </a><br></p>
+
+<p>             Atenciosamente,  </p>
+
+<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+
+
+</body>
+
+
+
+
+
+</html>

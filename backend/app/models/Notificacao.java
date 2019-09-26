@@ -10,6 +10,7 @@ import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
 import utils.Configuracoes;
+import utils.Helper;
 import utils.QRCode;
 
 import javax.persistence.*;
@@ -25,7 +26,7 @@ public class Notificacao extends GenericModel {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name="id_analise_juridica", nullable=true)
 	public AnaliseJuridica analiseJuridica;
@@ -60,48 +61,67 @@ public class Notificacao extends GenericModel {
 	@Column(name="codigo_ano")
 	public Integer codigoAno;
 
+	@Column(name="justificativa")
 	public String justificativa;
 	
-	@Column(name="data_cadastro")
+	@Column(name="data_notificacao")
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataCadastro;
+	public Date dataNotificacao;
 
 	@OneToOne
 	@JoinColumn(name = "id_historico_tramitacao")
 	public HistoricoTramitacao historicoTramitacao;
 
-	@Column(name="data_leitura")
+	@Column(name="data_final_notificacao")
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataLeitura;
+	public Date dataFinalNotificacao;
+
+	@Column(name="resposta_notificacao")
+	public String respostaNotificacao;
+
+
+	public Notificacao(AnaliseGeo analiseGeo, int prazoNotificacao){
+		this.analiseGeo = analiseGeo;
+		this.resolvido = false;
+		this.ativo = true;
+		this.dataNotificacao = new Date();
+		this.justificativa = analiseGeo.despacho;
+		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, prazoNotificacao);
+
+	}
+
+	public Notificacao(){
+
+	}
 
 	public static void criarNotificacoesAnaliseJuridica(AnaliseJuridica analiseJuridica) {
-		
+
 		for(AnaliseDocumento analiseDocumento : analiseJuridica.analisesDocumentos) {
-			
+
 			if(analiseDocumento.validado == null || analiseDocumento.validado) {
 				continue;
 			}
 
 			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
-				
+
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseJuridica = analiseJuridica;
 			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
-			notificacao.dataCadastro = new Date();
+			notificacao.dataNotificacao = new Date();
 
 			Calendar calendario = new GregorianCalendar();
-			calendario.setTime(notificacao.dataCadastro);
+			calendario.setTime(notificacao.dataNotificacao);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
 			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseJuridica);
 			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
-			
+
 		}
-		
+
 		Analise analise = Analise.findById(analiseJuridica.analise.id);
 		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
@@ -115,7 +135,7 @@ public class Notificacao extends GenericModel {
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
-		
+
 	}
 
 	public static List<Notificacao> gerarNotificacoesTemporarias(AnaliseJuridica analiseJuridica) {
@@ -136,10 +156,10 @@ public class Notificacao extends GenericModel {
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
-			notificacao.dataCadastro = new Date();
+			notificacao.dataNotificacao = new Date();
 
 			Calendar calendario = new GregorianCalendar();
-			calendario.setTime(notificacao.dataCadastro);
+			calendario.setTime(notificacao.dataNotificacao);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
 			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseJuridica);
@@ -154,33 +174,33 @@ public class Notificacao extends GenericModel {
 	}
 
 	public static void criarNotificacoesAnaliseTecnica(AnaliseTecnica analiseTecnica) {
-		
+
 		for(AnaliseDocumento analiseDocumento : analiseTecnica.analisesDocumentos) {
-			
+
 			if(analiseDocumento.validado == null || analiseDocumento.validado) {
 				continue;
 			}
 
 			analiseDocumento.documento = DocumentoLicenciamento.findById(analiseDocumento.documento.id);
-				
+
 			Notificacao notificacao = new Notificacao();
 			notificacao.analiseTecnica = analiseTecnica;
 			notificacao.tipoDocumento = analiseDocumento.documento.tipo;
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
-			notificacao.dataCadastro = new Date();
+			notificacao.dataNotificacao = new Date();
 
 			Calendar calendario = new GregorianCalendar();
-			calendario.setTime(notificacao.dataCadastro);
+			calendario.setTime(notificacao.dataNotificacao);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
 			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
 			notificacao.codigoAno = anoDataCadastro;
 			notificacao.save();
-			
+
 		}
-		
+
 		Analise analise = Analise.findById(analiseTecnica.analise.id);
 		DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
@@ -194,7 +214,7 @@ public class Notificacao extends GenericModel {
 
 		analise.temNotificacaoAberta = true;
 		analise._save();
-		
+
 	}
 
 	public static void criarNotificacoesAnaliseGeo(AnaliseGeo analiseGeo) {
@@ -213,10 +233,10 @@ public class Notificacao extends GenericModel {
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
-			notificacao.dataCadastro = new Date();
+			notificacao.dataNotificacao = new Date();
 
 			Calendar calendario = new GregorianCalendar();
-			calendario.setTime(notificacao.dataCadastro);
+			calendario.setTime(notificacao.dataNotificacao);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
 			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseGeo);
@@ -261,10 +281,10 @@ public class Notificacao extends GenericModel {
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
-			notificacao.dataCadastro = new Date();
+			notificacao.dataNotificacao = new Date();
 
 			Calendar calendario = new GregorianCalendar();
-			calendario.setTime(notificacao.dataCadastro);
+			calendario.setTime(notificacao.dataNotificacao);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
 			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseGeo);
@@ -297,10 +317,10 @@ public class Notificacao extends GenericModel {
 			notificacao.analiseDocumento = analiseDocumento;
 			notificacao.resolvido = false;
 			notificacao.ativo = true;
-			notificacao.dataCadastro = new Date();
+			notificacao.dataNotificacao = new Date();
 
 			Calendar calendario = new GregorianCalendar();
-			calendario.setTime(notificacao.dataCadastro);
+			calendario.setTime(notificacao.dataNotificacao);
 			int anoDataCadastro = calendario.get(Calendar.YEAR);
 
 			notificacao.codigoSequencia = getProximaSequenciaCodigo(anoDataCadastro, analiseTecnica);
@@ -315,29 +335,29 @@ public class Notificacao extends GenericModel {
 	}
 
 	public static List<Notificacao> getByAnalise(Analise analise) {
-		
+
 		List<Notificacao> notificacoes;
-		
+
 		if(analise.getAnaliseTecnica() != null) {
-			
+
 			notificacoes = Notificacao.find("analiseTecnica.id = :idAnaliseTecnica AND ativo = true")
 					.setParameter("idAnaliseTecnica", analise.getAnaliseTecnica().id)
 					.fetch();
-			
+
 		} else{
 			notificacoes = Notificacao.find("analiseGeo.id = :idAnaliseGeo AND ativo = true")
 					.setParameter("idAnaliseGeo", analise.getAnaliseGeo().id)
 					.fetch();
 		}
-		
+
 		return notificacoes;
-		
+
 	}
 
 	public static Notificacao getByAnaliseDocumento(AnaliseDocumento analiseDocumento) {
-		
+
 		return Notificacao.find("byAnaliseDocumento", analiseDocumento).first();
-		
+
 	}
 
 	public static void setHistoricoAlteracoes(List<Notificacao> notificacoes, HistoricoTramitacao historicoTramitacao) {

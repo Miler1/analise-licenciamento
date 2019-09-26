@@ -28,6 +28,8 @@ public class TipoSobreposicao extends GenericModel {
 	public static final long SAUIM_DE_COLEIRA = 17l;
 	public static final long SITIOS_ARQUEOLOGICOS = 18l;
 
+
+
 	@Id
 	public Long id;
 

@@ -9,6 +9,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.shapesUploaded = 0;
 	uploadShapes.doesntHasShapes = false;
 	uploadShapes.idMunicipio = '';
+	uploadShapes.idEmpreendimento = '';
 
 	uploadShapes.estiloMapa = app.utils.EstiloMapa;
 
@@ -25,34 +26,39 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	
 
 	function buscaProcesso() {
-		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso))
-			.then(function(response){
 
-				uploadShapes.processo = response.data;
+		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso)).then(function(response){
 
-				uploadShapes.idMunicipio = uploadShapes.processo.empreendimento.municipio.id;
+			uploadShapes.processo = response.data;
 
-				$scope.$emit('mapa:adicionar-geometria-base', {
-					geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
-					tipo: 'EMP-LOCAL',
-					estilo: {
-						style: {
-						}
-					},
-					popupText: 'Empreendimento',
-				});
+			uploadShapes.idMunicipio = uploadShapes.processo.empreendimento.municipio.id;
+			uploadShapes.idEmpreendimento = uploadShapes.processo.empreendimento.id;
 
-				$scope.$emit('mapa:adicionar-geometria-base', {
-					geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
-					tipo: 'EMP-CIDADE',
-					estilo: {
-						style: {
-							fillColor: 'transparent',
-							color: '#FFF',
-						}
-					},
-				});
+			$scope.$emit('mapa:adicionar-geometria-base', {
+				geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
+				tipo: 'EMP-LOCAL',
+				estilo: {
+					style: {
+					}
+				},
+				popupText: 'Empreendimento'
+			});
+
+			$scope.$emit('mapa:adicionar-geometria-base', {
+				geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
+				tipo: 'EMP-CIDADE',
+				estilo: {
+					style: {
+						fillColor: 'transparent',
+						color: '#FFF',
+					}
+				}
+			});
+
+			$scope.$emit('mapa:centralizar-mapa');
+
 		});
+
 	}
 
 	function abrirModal() {
@@ -63,19 +69,20 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 		var listaGeometrias = [];
 
-		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(index){
-			var geometria = {type:'', geometry:''};
+		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(tipo){
 
-			geometria.type = index;
-			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[index].getLayers()[0].feature.geometry);
+			var geometria = {type:'', geometry:''};
+			geometria.type = tipo;
+			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[tipo].item.getLayers()[0].feature.geometry);
+
 			listaGeometrias.push(geometria);
+
 		});
 
 		var cpfCnpjEmpreendimento = uploadShapes.processo.empreendimento.pessoa.cpf ? uploadShapes.processo.empreendimento.pessoa.cpf : uploadShapes.processo.empreendimento.pessoa.cnpj;
 
 		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, cpfCnpjEmpreendimento)
 			.then(function(response){
-				console.log(response);
 
 				// Aqui vai trocar a tramitacao de caixa de entrada pra análise
 				var idAnaliseGeo = uploadShapes.processo.analise.analiseGeo.id;

@@ -52,6 +52,12 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
 	public List<AtividadeCaracterizacao> atividadesCaracterizacao;
 
+	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
+	public List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacaoEmpreendimento;
+
+	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
+	public List<SobreposicaoCaracterizacaoComplexo> sobreposicoesCaracterizacaoComplexo;
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(schema = "licenciamento", name = "rel_caracterizacao_resposta",
 			joinColumns = @JoinColumn(name = "id_caracterizacao"),
@@ -85,6 +91,19 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	@Column(name = "numero_processo_antigo")
 	public String numeroProcessoAntigo;
+
+	public enum OrigemSobreposicao {
+
+		EMPREENDIMENTO,
+		ATIVIDADE,
+		COMPLEXO,
+		SEM_SOBREPOSICAO;
+
+	}
+
+	@Enumerated(EnumType.STRING)
+	@Column(name="origem_sobreposicao")
+	public OrigemSobreposicao origemSobreposicao;
 
 	@Transient
 	public Dae dae;

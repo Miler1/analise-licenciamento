@@ -2,12 +2,19 @@ package controllers;
 
 import models.Notificacao;
 import models.UsuarioAnalise;
+import org.apache.tika.Tika;
 import play.Play;
+import play.data.Upload;
 import play.libs.Crypto;
+import play.libs.IO;
+import play.mvc.Http;
 import security.Auth;
 import serializers.ApplicationSerializer;
 import utils.Configuracoes;
+import utils.FileManager;
+import utils.Mensagem;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -110,5 +117,50 @@ public class Application extends GenericController {
 		}
 
 		return args;
+	}
+
+	public static void upload(Upload file) throws IOException {
+
+		returnIfNull(file, "Upload");
+
+		String realType = null;
+
+		// Detecta o tipo de arquivo pela assinatura (Magic)
+		Tika tika = new Tika();
+		realType = tika.detect(file.asFile());
+
+		if(realType == null){
+			response.status = Http.StatusCode.INTERNAL_ERROR;
+			renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
+		}
+
+		// Verifica se a extensão do arquivo é compatível com o tipo detectado,
+		// com exceção de arquivos BMP
+		if(!realType.contains("bmp")){
+			if(!realType.contentEquals(file.getContentType())){
+				response.status = Http.StatusCode.INTERNAL_ERROR;
+				renderMensagem(Mensagem.UPLOAD_EXTENSAO_NAO_SUPORTADA);
+			}
+		}
+
+		if(realType.contains("application/pdf") ||
+				realType.contains("application/zip") ||
+				realType.contains("image/jpeg") ||
+				realType.contains("image/jpg") ||
+				realType.contains("image/png") ||
+				realType.contains("bmp")) {
+
+			byte[] data = IO.readContent(file.asFile());
+			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
+			String key = FileManager.getInstance().createFile(data, extension);
+
+			renderText(key);
+		}
+
+		else {
+
+			response.status = Http.StatusCode.INTERNAL_ERROR;
+			renderMensagem(Mensagem.UPLOAD_ERRO);
+		}
 	}
 }

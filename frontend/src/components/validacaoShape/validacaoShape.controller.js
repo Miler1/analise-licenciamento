@@ -1,7 +1,7 @@
 /**
  * Controller para a validação de shapes
  **/
-var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope, $rootScope) {
+var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope, $rootScope, processoService, $routeParams) {
 
 	var validacaoShape = this;
 
@@ -18,11 +18,23 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	validacaoShape.resultadoProcessamento = null;
 
 	/** Declaração das funções **/
-	function init(tipo,cor,popupText,idMunicipio){
+	function init(tipo,cor,popupText, inMunicipio, inEmpreendimento){
 		validacaoShape.tipo = tipo;
 		validacaoShape.cor = cor;
 		validacaoShape.popupText = popupText;
-		validacaoShape.idMunicipio = idMunicipio;
+
+		if (inMunicipio && inEmpreendimento) {
+
+			processoService.getInfoProcesso(parseInt($routeParams.idProcesso))
+				.then(function(response){
+
+					var processo = response.data;
+
+					validacaoShape.idMunicipio = inMunicipio ? processo.empreendimento.municipio.id : undefined;
+					validacaoShape.idEmpreendimento = inEmpreendimento ? processo.empreendimento.id : undefined;
+				});
+		}
+
 	}
 
 	function atualizaBarraProgresso(evt) {
@@ -72,7 +84,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 
 		var arquivoEnviar = validacaoShape.arquivoSelecionado.arquivo = fileValidate;
 
-		validacaoShapeService.uploadShapeFile(arquivoEnviar, validacaoShape.idMunicipio)
+		validacaoShapeService.uploadShapeFile(arquivoEnviar, validacaoShape.idMunicipio, validacaoShape.idEmpreendimento)
 			.then(function (response) {
 
 				var resultado = response.data;
@@ -93,31 +105,62 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 							return;
 						}
 
-						for (var i = 0; i < validacaoShape.resultadoEnvio.atributos.length; i++) {
+						if(validacaoShape.resultadoEnvio.registros[0][0].tipo.toLowerCase() === 'multipolygon') {
 
+							var coordenadas = [];
+							validacaoShape.resultadoEnvio.registros.forEach(function(registro) {
 
-							if (validacaoShape.resultadoEnvio.atributos[i].tipo === 'Geometry') {
+								feature = JSON.parse(registro[0].valor);
+								coordenadas.push(feature.coordinates[0]);
 
-								validacaoShape.resultadoEnvio.atributos[i].nomeBanco = 'the_geom';
-								validacaoShape.resultadoEnvio.atributos[i].tipoGeometria = true;
+							});
 
-								// Linha para converter de texto para JSON de geometria
-								validacaoShape.resultadoEnvio.registros[i][i].valor = JSON.parse(validacaoShape.resultadoEnvio.registros[i][i].valor);
-								validacaoShape.shapeEnviado = validacaoShape.resultadoEnvio.registros[i][i].valor;
-								
-								$scope.$emit('shapefile:uploaded', {
-									geometria: validacaoShape.shapeEnviado, 
-									tipo: validacaoShape.tipo, 
-									estilo: {
-										style: {
-											fillColor: validacaoShape.cor,
-											color: validacaoShape.cor,
-											fillOpacity: 0.2
-										}
-									},
-									popupText: validacaoShape.popupText,
-									specificShape: true
-								});
+							var geometria = {
+
+								type: validacaoShape.resultadoEnvio.registros[0][0].tipo,
+								coordinates: coordenadas
+
+							};
+
+							validacaoShape.shapeEnviado = geometria;
+
+							$scope.$emit('shapefile:uploaded', {
+								geometria: validacaoShape.shapeEnviado, 
+								tipo: validacaoShape.tipo, 
+								estilo: {
+									style: {
+										fillColor: validacaoShape.cor,
+										color: validacaoShape.cor,
+										fillOpacity: 0.2
+									}
+								},
+								popupText: validacaoShape.popupText,
+								specificShape: true
+							});
+
+						} else {
+
+							for (var i = 0; i < validacaoShape.resultadoEnvio.registros.length; i++) {
+
+								if (validacaoShape.resultadoEnvio.registros[i][0].nome === 'the_geom') {
+
+									// Linha para converter de texto para JSON de geometria
+									validacaoShape.shapeEnviado = JSON.parse(validacaoShape.resultadoEnvio.registros[i][0].valor);
+									
+									$scope.$emit('shapefile:uploaded', {
+										geometria: validacaoShape.shapeEnviado, 
+										tipo: validacaoShape.tipo, 
+										estilo: {
+											style: {
+												fillColor: validacaoShape.cor,
+												color: validacaoShape.cor,
+												fillOpacity: 0.2
+											}
+										},
+										popupText: validacaoShape.popupText,
+										specificShape: true
+									});
+								}
 							}
 						}
 					}
@@ -129,8 +172,9 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 							restartUploadOnError('O arquivo enviado é inválido. Não possui uma estrutura válida de shapes');
 						} else if( response.data.data.mensagens[0] === "error.shapefile.not.sirgas2000") {
 							restartUploadOnError('O arquivo enviado é inválido. Não está no formato SIRGAS 2000');
-						}
-						else { 
+						} else if( response.data.data.mensagens[0] === "error.shapefile.fora.empreendimento") {
+							restartUploadOnError('O arquivo enviado está fora do empreendimento');
+						} else {
 							restartUploadOnError(response.data.data.mensagens[0]);
 						}
 					}

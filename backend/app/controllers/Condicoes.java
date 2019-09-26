@@ -1,8 +1,11 @@
 package controllers;
 
+import models.EntradaUnica.CodigoPerfil;
+import models.UsuarioAnalise;
 import models.tramitacao.Condicao;
 import org.hibernate.mapping.Array;
 import security.Acao;
+import security.Auth;
 import serializers.CondicaoSerializer;
 import utils.Configuracoes;
 
@@ -14,10 +17,26 @@ public class Condicoes extends InternalController {
 	public static void list() {
 
 		verificarPermissao(Acao.CONSULTAR_PROCESSO);
+		UsuarioAnalise user = Auth.getUsuarioSessao();
+		List<Condicao> condicoesVisiveis = null;
+		if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
 
-		List<Condicao> condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
-				.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO, Condicao.EM_ANALISE_GEO, Condicao.SOLICITACAO_DESVINCULO_PENDENTE, Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE))
-				.fetch();
+			 condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
+							Condicao.EM_ANALISE_GEO,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE,
+							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
+							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE))
+					.fetch();
+		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)){
+
+			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
+							Condicao.EM_ANALISE_GEO,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE,
+							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE))
+					.fetch();
+		}
 		
 		renderJSON(condicoesVisiveis, CondicaoSerializer.list);
 	}

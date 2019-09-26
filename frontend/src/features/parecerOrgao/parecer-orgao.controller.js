@@ -1,7 +1,8 @@
-var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$rootScope,$routeParams, $timeout) {
+var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$routeParams, $rootScope, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
 
 	$scope.comunicado = null;
-	
+	$scope.anexos = [];
+		
 	$timeout(function () {
 		
 		parecerOrgaoService.findComunicado($routeParams.idComunicado)
@@ -20,6 +21,50 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 		});
 		
 	}, 100);
+
+
+
+	$scope.upload = function(file, invalidFile) {
+
+		if(file) {
+
+				uploadService.saveExterno(file)
+						.then(function(response) {
+
+							$scope.anexos.push({
+
+										key: response.data,
+										nomeDoArquivo: file.name,
+										tipoDocumento: {
+
+												id: app.utils.TiposDocumentosAnalise.PARECER_ORGAO
+										}
+								});
+															
+						}, function(error){
+
+								mensagem.error(error.data.texto);
+						});
+
+		} else if(invalidFile && invalidFile.$error === 'maxSize'){
+
+				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+		}
+	};
+
+	$scope.removerDocumento = function (indiceDocumento) {
+
+		$scope.anexos.splice(indiceDocumento,1);
+	};
+
+	$scope.baixarDocumento= function(anexo) {
+		
+		documentoService.download(anexo.key, anexo.nomeDoArquivo);
+	};
+
+
+
+	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 	
 	$scope.cancelar = function () {
 		$window.location.href="http://www.ipaam.am.gov.br/";
@@ -27,12 +72,18 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 	$scope.enviar = function () {
 
+		var parecerOrgao = document.getElementById('descricaoParecer').value;
+
 		var params = {id: $routeParams.idComunicado,
-					  parecerOrgao: $scope.descricaoParecer};
+					  parecerOrgao: parecerOrgao,
+					  anexos: $scope.anexos};
 		parecerOrgaoService.enviar(params)
 			.then(function (response) {
-
-				$window.location.href="http://www.ipaam.am.gov.br/";
+				if(response.data ==true){
+					$window.location.href="http://www.ipaam.am.gov.br/";
+				}else{
+					mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
+				}
 		});
 	};
 

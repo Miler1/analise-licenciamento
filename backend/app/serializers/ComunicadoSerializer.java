@@ -10,13 +10,19 @@ public class ComunicadoSerializer {
             "id",
             "analiseGeo.analise.processo.numero",
             "analiseGeo.analise.processo.empreendimento.pessoa.cpf",
+            "analiseGeo.analise.processo.empreendimento.pessoa.cnpj",
             "analiseGeo.analise.processo.empreendimento.denominacao",
             "analiseGeo.analise.processo.empreendimento.municipio.nome",
             "analiseGeo.analise.processo.empreendimento.municipio.estado.codigo",
             "atividadeCaracterizacao.id",
             "tipoSobreposicao.nome",
+            "orgao.sigla",
             "ativo",
             "resolvido",
+            "parecerOrgao",
             "dataVencimento",
-            "valido");
+            "valido",
+            "anexos",
+            "anexos.id",
+            "anexos.nomeDoArquivo");
 }
