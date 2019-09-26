@@ -265,17 +265,22 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
     $scope.getRestricoes = function() {
 
-        return validacaoAnaliseGeoGerente.dadosProjeto.restricoes.filter(function(restricao) {
+        if(validacaoAnaliseGeoGerente.dadosProjeto.restricoes) {
 
-            var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+            return validacaoAnaliseGeoGerente.dadosProjeto.restricoes.filter(function(restricao) {
 
-            return sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+                var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
 
-                return orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IPHAN && orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IBAMA;
+                return sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+
+                    return orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IPHAN && orgao.sigla.toUpperCase() !== validacaoAnaliseGeoGerente.orgaos.IBAMA;
+
+                });
 
             });
+        }
 
-        });
+        return [];
 
     };
 
