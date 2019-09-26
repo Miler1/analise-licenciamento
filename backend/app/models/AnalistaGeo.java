@@ -6,6 +6,7 @@ import models.EntradaUnica.Setor;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import security.Auth;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -160,6 +161,8 @@ public class AnalistaGeo extends GenericModel {
             }
         }
 
-        return analistasGeo;
+        return analistasGeo.stream().filter(analista -> !analista.id.equals(Auth.getUsuarioSessao().id)).collect(Collectors.toList());
+
     }
+
 }
