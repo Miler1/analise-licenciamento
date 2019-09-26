@@ -10,14 +10,14 @@ div.modal-header
 div.modal-body
 
     div.area-modal
-        label.label-modal Categoria da inconsistência*:
+        label.label-modal.obrigatorio Categoria da inconsistência:
         select.form-control(ng-if="modalCtrl.categoriaInconsistencia !== 'ATIVIDADE'", ng-model="modalCtrl.categoriaInconsistencia", name="selectCategoriaInconsistencia", ng-disabled="modalCtrl.habilitaExcluir")
             option(value="") Selecione o a categoria da inconsistência
             option(value="PROPRIEDADE") Propriedade
             option(ng-if="modalCtrl.hasRestricoes() || modalCtrl.isEdicao" value="RESTRICAO") Restrição
 
     div.area-modal(ng-if="modalCtrl.categoriaInconsistencia === 'RESTRICAO'")
-        label.label-modal Item da Restrição*:
+        label.label-modal.obrigatorio Item da Restrição:
         select.form-control(ng-model="modalCtrl.idSobreposicao", name="selectItemRestricao", ng-if="!modalCtrl.habilitaExcluir",
                 ng-options="restricao.sobreposicao.id as restricao.item for restricao in modalCtrl.getRestricoesSemInconsistencia() track by restricao.sobreposicao.id")
             option(value="") Selecione o item da Restrição
@@ -25,12 +25,12 @@ div.modal-body
         span.span-modal(ng-if="modalCtrl.habilitaExcluir") {{modalCtrl.getItemRestricao(modalCtrl.idSobreposicao)}}
 
     div.area-modal
-        label.label-modal Descrição da inconsistência*:
+        label.label-modal.obrigatorio Descrição da inconsistência:
         br
         textarea.textarea-modal(name="descricaoInconsistência", ng-model="modalCtrl.descricaoInconsistencia")
 
     div.area-modal
-        label.label-modal Tipo da inconsistência*:
+        label.label-modal.obrigatorio Tipo da inconsistência:
         br
         textarea.textarea-modal(name="tipoInconsistência", ng-model="modalCtrl.tipoInconsistencia")
 
