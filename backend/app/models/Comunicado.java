@@ -66,6 +66,18 @@ public class Comunicado extends GenericModel {
             inverseJoinColumns=@JoinColumn(name="id_documento"))
     public List<Documento> anexos;
 
+    @OneToOne
+    @JoinColumn(name="id_sobreposicao_atividade")
+    public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
+
+    @OneToOne
+    @JoinColumn(name="id_sobreposicao_empreendimento")
+    public SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento;
+
+    @OneToOne
+    @JoinColumn(name="id_sobreposicao_complexo")
+    public SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo;
+
     @Transient
     public String linkComunicado;
 
@@ -82,8 +94,41 @@ public class Comunicado extends GenericModel {
         this.analiseGeo = analiseGeo;
         this.resolvido = false;
         this.orgao = orgao;
-
+        this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
     }
+
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
+
+        this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
+        this.dataCadastro = new Date();
+        this.dataVencimento = Helper.somarDias(new Date(), 30);
+        this.caracterizacao = caracterizacao;
+        this.ativo = true;
+        this.analiseGeo = analiseGeo;
+        this.resolvido = false;
+        this.orgao = orgao;
+        this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
+    }
+
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo, Orgao orgao){
+
+        this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
+        this.dataCadastro = new Date();
+        this.dataVencimento = Helper.somarDias(new Date(), 30);
+        this.caracterizacao = caracterizacao;
+        this.ativo = true;
+        this.analiseGeo = analiseGeo;
+        this.resolvido = false;
+        this.orgao = orgao;
+        this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
+    }
+
+    public static List<Comunicado> findByAnaliseGeo(Long idAnaliseGeo) {
+        List<Comunicado> listaComunicados = null;
+        return listaComunicados = Comunicado.find("id_analise_geo = :analiseGeo")
+                .setParameter("analiseGeo", idAnaliseGeo).fetch();
+    }
+
 
     public void saveAnexos(List<Documento> novosAnexos) {
 

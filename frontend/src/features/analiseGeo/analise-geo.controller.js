@@ -888,7 +888,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if (!ctrl.analiseGeo.prazoNotificacao || ctrl.analiseGeo.prazoNotificacao === undefined){
+		if (!ctrl.analiseGeo.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO || ctrl.analiseGeo.prazoNotificacao === undefined && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO){
 			return false;
 		}
 
@@ -985,7 +985,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 				mensagem.error(error.data.texto, {referenceId: 5});
 			});
-			
+
+			$rootScope.$broadcast('atualizarContagemProcessos');
 
 	};
 

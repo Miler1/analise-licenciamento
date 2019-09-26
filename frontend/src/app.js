@@ -202,21 +202,27 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					return '/analise-geo';
 
-				} else {
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO){
 
 					 return '/analise-tecnica';
+				} else {
+
+					return '/analise-gerente';
+
 				}
 			},
 			countItens: true,
 			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-geo') > -1 ||
-					$location.path().indexOf('/analise-tecnica') > -1;
+					$location.path().indexOf('/analise-tecnica') > -1 ||
+					$location.path().indexOf('/analise-gerente') > -1;
 			},
 			visivel: function() {
 
 				return [app.utils.Perfis.ANALISTA_GEO,
-				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				app.utils.Perfis.ANALISTA_TECNICO,
+				app.utils.Perfis.GERENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
@@ -224,6 +230,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					return app.utils.CondicaoTramitacao.EM_ANALISE_GEO;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -246,11 +254,11 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			},
 			visivel: function() {
 
-				return [app.utils.Perfis.GERENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				return [app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
-				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
 			},
 			deveFiltrarPorUsuario: true,
@@ -480,6 +488,7 @@ utils.services(licenciamento)
 	.add('desvinculoService', services.DesvinculoService)
 	.add('wmsTileService', services.WMSTileService)
 	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
+	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
 	.add('parecerOrgaoService', services.ParecerOrgaoService);
 
 utils.filters(licenciamento)
@@ -522,4 +531,6 @@ licenciamento
 	.component('modalFichaImovel', directives.ModalFichaImovel)
 	.component('filtroLicencasEmitidas', directives.FiltroLicencasEmitidas)
 	.component('tabelaLicencas', directives.TabelaLicencas)
-	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca);
+	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca)
+	.component('modalOficioRestricao', directives.ModalOficioRestricao)
+	.component('modalNotificacaoRestricao', directives.ModalNotificacaoRestricao);

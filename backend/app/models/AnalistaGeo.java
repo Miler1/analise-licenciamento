@@ -130,6 +130,12 @@ public class AnalistaGeo extends GenericModel {
 
     }
 
+    public static AnalistaGeo findByAnaliseGeo(Long idAnaliseGeo) {
+
+        return AnalistaGeo.find("id_analise_geo = :analiseGeo")
+                .setParameter("analiseGeo", idAnaliseGeo).first();
+    }
+
     private static String getParameterLongAsStringDBArray(List<Long> lista) {
 
         String retorno = "";
@@ -142,7 +148,7 @@ public class AnalistaGeo extends GenericModel {
         return retorno;
     }
 
-    public static List<UsuarioAnalise> buscarAnalistasGeo(String setorAtividade) {
+    public static List<UsuarioAnalise> buscarAnalistasGeoByIdProcesso(String setorAtividade) {
 
         List<UsuarioAnalise> todosAnalistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 

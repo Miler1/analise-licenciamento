@@ -6,6 +6,7 @@ import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
+import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.*;
 import models.pdf.PDFGenerator;
@@ -13,6 +14,7 @@ import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ObjetoTramitavel;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
@@ -160,6 +162,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Transient
     public Integer prazoNotificacao;
 
+    @Transient
+    public Long idAnalistaDestino;
+
     private void validarParecer(AnaliseGeo analise) {
 
         if(StringUtils.isBlank(this.parecer))
@@ -221,6 +226,21 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public void iniciar(UsuarioAnalise usuarioExecutor) {
 
+        verificarDataInicio();
+
+        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GEO, usuarioExecutor);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+    }
+
+    public void iniciarAnaliseGerente(UsuarioAnalise usuarioExecutor) {
+
+        verificarDataInicio();
+
+        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GERENTE, usuarioExecutor);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+    }
+
+    public void verificarDataInicio() {
         if(this.dataInicio == null) {
 
             Calendar c = Calendar.getInstance();
@@ -232,9 +252,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             iniciarLicencas();
         }
-
-        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GEO, usuarioExecutor);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
     public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {
@@ -431,11 +448,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             if(this.usuarioValidacaoGerente != null) {
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+               this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
+               HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
-        } else {
+        } else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.EMITIR_NOTIFICACAO) {
 
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
@@ -827,9 +844,75 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
+    public Documento gerarPDFOficioOrgao(Comunicado comunicado) {
+
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_OFICIO_ORGAO);
+        Documento documento =null;
+
+        IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+        Municipio municipio = null;
+
+        main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(comunicado.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+        for(Endereco endereco : empreendimentoEU.enderecos){
+            if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){
+                municipio = endereco.municipio;
+            }
+        }
+
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("analiseGeo", comunicado.analiseGeo)
+                .addParam("comunicado", comunicado)
+                .addParam("municipio", municipio)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+
+        pdf.generate();
+
+        documento = new Documento(tipoDocumento, pdf.getFile());
+
+        return documento;
+    }
+
+
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Map<Object,Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
+
+    public void finalizarAnaliseGerente(AnaliseGeo analise, UsuarioAnalise gerente) throws Exception {
+
+        UsuarioAnalise analistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
+
+        if(analistaTecnico != null) {
+
+            if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_VALIDADO) {
+
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, getUsuarioSessao(), analistaTecnico);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+            } else if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.SOLICITAR_AJUSTES) {
+
+                AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(analise.id);
+                UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
+
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+
+            } else if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_NAO_VALIDADO){
+
+                UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analise.idAnalistaDestino);
+
+                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
+                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+
+            }
+            this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;
+            this.parecerValidacaoGerente = analise.parecerValidacaoGerente;
+            this.usuarioValidacaoGerente = gerente;
+            this.save();
+
+        }
+    }
+
 
 }

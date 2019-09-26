@@ -64,6 +64,7 @@ div.modal-footer
         i.glyphicon.glyphicon-remove
         |  Cancelar
     
-    button.btn.btn-success.pull-right(ng-click="desvinculoGerenteCtrl.concluir()", ng-disabled="!desvinculoGerenteCtrl.validarModalParaConcluir()")
+    button.btn.btn-success.pull-right(ng-click="desvinculoGerenteCtrl.concluir()", ng-disabled="!desvinculoGerenteCtrl.validarModalParaConcluir()",
+            ng-attr-title="{{!desvinculoGerenteCtrl.validarModalParaConcluir() ? 'Preencha todos os campos obrigatórios para atender a solicitação de desvínculo.' : ''}}")
         i.glyphicon.glyphicon-ok
         |  Confirmar

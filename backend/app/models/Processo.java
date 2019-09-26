@@ -338,6 +338,18 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		if (filtro.idAnalistaGeo != null) {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+
+		}
+
+		if (filtro.idAnalistaTecnico != null) {
+
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
+
+		}
+
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 	}
@@ -479,7 +491,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder
+		processoBuilder.groupByIdAnaliseGeo()
 				.groupByPrazoAnaliseGerente()
 				.orderByPrazoAnaliseGerente();
 

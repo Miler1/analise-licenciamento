@@ -1,0 +1,46 @@
+include ../../../../layout/components/panel
+include ../../../../components/resumoProcesso/resumo-processo
+include ../../../../layout/components/inputErrors
+
++resumo-processo('validacaoAnaliseGeoGerente.analiseGeo.analise.processo','validacaoAnaliseGeoGerente.exibirDadosProcesso()')
+
+section.margin-bottom-md
+
+	.row
+		div(style="padding:15px;")
+			div.modal-body
+
+			ul.nav.nav-tabs(role="tablist")
+				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="validacaoAnaliseGeoGerente.validacaoAbaVoltar()")
+					a(data-toggle="tab", data-target="#tabAnaliseGeo") Análise Geo
+					
+				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseGeoGerente.validacaoAbaAvancar()")
+					a(data-toggle="tab", data-target="#tabValidacaoDaAnalise") Validação da Análise
+
+			.tab-content
+				#tabAnaliseGeo.tab-pane.fade.in.active
+					include tab-analise-geo
+
+				#tabValidacaoDaAnalise.tab-pane
+					include tab-validacao-analise
+
+section.margin-bottom-xl
+
+	button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseGeoGerente.cancelar()",
+				ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_ANALISE_GEO'")
+		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
+		| Cancelar
+
+	button.btn.btn-default.col-md-2(ng-click="validacaoAnaliseGeoGerente.voltarEtapaAnterior()",
+			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
+		i.glyphicon.glyphicon-arrow-left
+		| Voltar		
+	
+	button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseGeoGerente.concluir()",
+			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
+		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+		| Concluir
+	button.btn.btn-success.col-md-2.col-md-offset-8(ng-click="validacaoAnaliseGeoGerente.avancarProximaEtapa()",
+			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_ANALISE_GEO'")
+		i.glyphicon.glyphicon-arrow-right
+		| &nbsp;Avançar                    

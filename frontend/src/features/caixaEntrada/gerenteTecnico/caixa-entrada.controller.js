@@ -1,4 +1,4 @@
-var CxEntGerenteController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal,$rootScope, processoService) {
+var CxEntGerenteController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal,$rootScope, processoService, analiseGeoService, $location) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE GERENTE';
 
@@ -20,7 +20,7 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 	cxEntGerente.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntGerente.dateUtil = app.utils.DateUtil;
 	cxEntGerente.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
-	cxEntGerente.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	cxEntGerente.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
 
 	function atualizarListaProcessos(processos) {
 
@@ -160,6 +160,20 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 
 	cxEntGerente.verificarSolicitacaoDesvinculo = function(processo) {
 		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo;
+	};
+
+	cxEntGerente.iniciarAnaliseGerente = function(idAnalise, idAnaliseGeo) {
+
+		analiseGeoService.iniciarAnaliseGerente({ id : idAnaliseGeo })
+			.then(function(response){
+
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				$location.path('/analise-gerente/' + idAnalise.toString());
+			
+			}, function(error){
+				mensagem.error(error.data.texto);
+			});
+		
 	};
 };
 
