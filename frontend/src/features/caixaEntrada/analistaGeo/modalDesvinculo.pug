@@ -4,13 +4,17 @@ div.modal-header
         span(aria-hidden='true') ×
         span.sr-only Fechar
 
-    h4.modal-title Solicitar desvínculo do processo
+    h4.modal-title Solicitação de desvínculo do processo
     div(growl inline="true" reference='5')
   
 
 div.modal-body
 
     div#justificativa-desvinculo
+
+        span.pull-center.visualizar-justificativa(ng-if="desvinculoCtrl.respondido === true") A solicitação de desvínculo do processo foi recusada pelo gerente. Veja a justificativa abaixo. 
+        br
+        br
         label.label-justificativa Justificativa*:
         br
         textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa')

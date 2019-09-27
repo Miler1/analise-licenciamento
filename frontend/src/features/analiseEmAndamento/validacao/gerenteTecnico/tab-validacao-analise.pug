@@ -52,6 +52,6 @@
 
 
         label.label-selecao-analista Selecionar analista*:
-        select.form-control(ng-model="validacaoAnaliseGeoGerente.analistaGeoDestino.id", name="selectAnalista",
+        select.form-control(ng-model="validacaoAnaliseGeoGerente.analistaGeoDestino.id", name="selectAnalista", style="margin-bottom:40px;"
                                 ng-options="analistaGeo.id as analistaGeo.pessoa.nome for analistaGeo in validacaoAnaliseGeoGerente.analistasGeo | orderBy:'pessoa.nome' track by analistaGeo.id")
                 option(value="") Selecione o analista            

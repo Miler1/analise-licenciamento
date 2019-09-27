@@ -39,7 +39,7 @@ section
 			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
 		i.glyphicon.glyphicon-arrow-left
 		| Voltar
-	button.btn.btn-success.posicao-avancar-gerente(style="margin-bottom:52px;",ng-click="validacaoAnaliseGeoGerente.avancarProximaEtapa()",
+	button.btn.btn-success.posicao-avancar-gerente(ng-click="validacaoAnaliseGeoGerente.avancarProximaEtapa()",
 			ng-if="validacaoAnaliseGeoGerente.controleVisualizacao === 'ETAPA_ANALISE_GEO'")
 		i.glyphicon.glyphicon-arrow-right
 		| &nbsp;Avançar                    

@@ -40,6 +40,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String GERENTE_ALIAS = "gte";
 	private static final String DIA_ANALISE_ALIAS = "da";
 	private static final String CONDICAO_ALIAS = "ca";
+	private static final String DESVINCULO_ALIAS = "dea";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
@@ -87,6 +88,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder addAnaliseAlias() {
 
 		addAlias("analises", ANALISE_ALIAS);
+
+		return this;
+	}
+
+	public ProcessoBuilder addDesvinculoAlias() {
+
+		addAnaliseGeoAlias();
+		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 	}
@@ -516,6 +525,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByDesvinculo() {
+
+		addDesvinculoAlias();
+		addProjection(Projections.groupProperty(DESVINCULO_ALIAS+".respostaGerente").as("desvinculoRespondido"));
+
+		return this;
+	}
+
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
 
 		if (StringUtils.isNotEmpty(numeroProcesso)) {
@@ -920,6 +937,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idUsuarioLogado;
 		public Long idSituacao;
 		public boolean isConsultarProcessos;
+		public boolean desvinculoRespondido;
 
 		public FiltroProcesso() {
 
