@@ -860,7 +860,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		});
 
-		return ctrl.listaInconsistencias.length === restricoes.length;
+		var inconsistenciasRestricao = _.filter(ctrl.analiseGeo.inconsistencias, function(inconsistencia) {
+			return inconsistencia.categoria == 'RESTRICAO';
+		});
+
+		return inconsistenciasRestricao.length === restricoes.length;
 
 	};
 
