@@ -11,9 +11,18 @@ div.modal-header
 div.modal-body
 
     div#justificativa-desvinculo
-        label.label-justificativa.obrigatorio Justificativa:
-        br
-        textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa')
+        div(ng-if="desvinculoCtrl.respondido === true")
+            span.pull-center.visualizar-justificativa A solicitação de desvínculo do processo foi recusada pelo gerente. Veja a justificativa abaixo. 
+            br
+            br
+            label.label-justificativa(ng-if="desvinculoCtrl.respondido === true") Justificativa:
+            br
+            textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa')
+
+        div(ng-if="desvinculoCtrl.respondido === false")
+            label.label-justificativa.obrigatorio(ng-if="desvinculoCtrl.respondido === false")  Justificativa:
+            br
+            textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa')            
 
 
 div.modal-footer(ng-if="desvinculoCtrl.respondido === false")

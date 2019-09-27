@@ -159,6 +159,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @OneToMany(mappedBy="analiseGeo", cascade=CascadeType.ALL)
     public List<Inconsistencia> inconsistencias;
 
+    @OneToMany(mappedBy="analiseGeo", fetch = FetchType.LAZY)
+    public List<Desvinculo> desvinculos;
+
     @Transient
     public String linkNotificacao;
 

@@ -150,12 +150,12 @@
 
                         #camposAnaliseGeoObservacao
                             div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
-                                label.label-parecer Despacho*:
+                                label.label-parecer.obrigatorio Despacho:
                                 br
                                 .area
                                     p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
                             div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.INDEFERIDO")
-                                label.label-parecer Justificativa*:
+                                label.label-parecer.obrigatorio Justificativa:
                                 br
                                 .area
                                     p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
