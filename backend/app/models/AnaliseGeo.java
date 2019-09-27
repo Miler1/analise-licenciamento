@@ -976,6 +976,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             } else if(analise.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_NAO_VALIDADO){
 
                 UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analise.idAnalistaDestino);
+                
+                AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
+                        .setParameter("id_analise_geo", analise.id).first();
+
+                analistaGeo.usuario = analistaGeoDestino;
+
+                analistaGeo._save();
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
