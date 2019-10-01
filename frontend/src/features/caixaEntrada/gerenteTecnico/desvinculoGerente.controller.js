@@ -38,8 +38,7 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 				mensagem.success(response.data);
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$location.path('/caixa-entrada');
-				$uibModalInstance.close();	
-				$window.location.reload();
+				$uibModalInstance.close();
 		}).catch(function(response){
 			mensagem.error(response.data.texto, {referenceId: 5});
 		});
