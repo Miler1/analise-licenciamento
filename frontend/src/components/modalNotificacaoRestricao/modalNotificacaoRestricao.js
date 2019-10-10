@@ -16,6 +16,7 @@ var ModalNotificacaoRestricao = {
         ctrl.$onInit =  function() {
 
             ctrl.inconsistencia = ctrl.resolve.inconsistencia;
+            ctrl.restricao = ctrl.resolve.restricao;
             ctrl.idAnaliseGeo = ctrl.resolve.idAnaliseGeo;
             
         };
