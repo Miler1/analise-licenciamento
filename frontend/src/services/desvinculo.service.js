@@ -11,9 +11,9 @@ var DesvinculoService = function(request, config) {
 	};
 
 
-	this.respondersolicitacaoDesvinculo = function(params) {
+	this.responderSolicitacaoDesvinculo = function(params) {
 		return request
-			.post(config.BASE_URL() + "analisesGeo/desvinculo/respondersolicitacaoDesvinculo",params);
+			.post(config.BASE_URL() + "analisesGeo/desvinculo/responderSolicitacaoDesvinculo",params);
 	};
 };
 
