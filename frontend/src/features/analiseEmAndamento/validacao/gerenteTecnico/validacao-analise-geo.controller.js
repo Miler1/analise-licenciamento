@@ -179,9 +179,11 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
         validacaoAnaliseGerenteService.concluir(params)
 			.then(function(response){
-
-                mensagem.success("Analise GEO finalizada!");
                 $location.path("analise-gerente");
+                mensagem.setMensagemProximaTela('success', response.data.texto, {referenceId: 5});
+                mensagem.success("Analise Gerente finalizada!", {referenceId: 5});
+                mensagem.setMensagemProximaTela('success', response.data.texto);
+                mensagem.success("Analise Gerente finalizada!");
 
             },function(error){
 				mensagem.error(error.data.texto);
