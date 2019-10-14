@@ -179,10 +179,10 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
         validacaoAnaliseGerenteService.concluir(params)
 			.then(function(response){
-
-                mensagem.success("Analise GEO finalizada!");
                 $location.path("analise-gerente");
-
+                $timeout(function() {
+                    mensagem.success("Analise Gerente finalizada!", {referenceId: 5});
+                }, 0);
             },function(error){
 				mensagem.error(error.data.texto);
 			});
