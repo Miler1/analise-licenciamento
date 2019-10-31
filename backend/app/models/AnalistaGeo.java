@@ -3,6 +3,7 @@ package models;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -104,7 +105,8 @@ public class AnalistaGeo extends GenericModel {
 
     public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
-        List<UsuarioAnalise> analistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+        List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+        List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findAnalistasGeo(usuariosAnalise, CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
         if (analistasGeo == null || analistasGeo.size() == 0)
             throw new WebServiceException("Não existe nenhum analista geo para vincular automáticamente o processo.");

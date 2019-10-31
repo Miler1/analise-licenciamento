@@ -2,16 +2,22 @@ package controllers;
 
 import exceptions.AppException;
 import models.EntradaUnica.Usuario;
+import models.PerfilUsuarioAnalise;
 import models.Pessoa;
+import models.SetorUsuarioAnalise;
 import models.UsuarioAnalise;
 import play.Logger;
 import play.Play;
 import play.cache.Cache;
 import play.mvc.Before;
 import security.*;
+import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.Helper;
 import utils.Mensagem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Login extends GenericController {
 
@@ -71,6 +77,38 @@ public class Login extends GenericController {
 		session.clear();
 	}
 
+	private static List<PerfilUsuarioAnalise> preenchePerfis(UsuarioAnalise usuarioAnalise, Usuario usuario) {
+
+		List<PerfilUsuarioAnalise> perfis = new ArrayList<>();
+
+		usuario.perfis.forEach(perfil -> {
+			PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise();
+			perfilUsuarioAnalise.codigoPerfil = perfil.codigo;
+			perfilUsuarioAnalise.usuarioAnalise = usuarioAnalise;
+
+			perfilUsuarioAnalise.save();
+		});
+
+		return perfis;
+
+	}
+
+	private static List<SetorUsuarioAnalise> preencheSetores(UsuarioAnalise usuarioAnalise, Usuario usuario) {
+
+		List<SetorUsuarioAnalise> setores = new ArrayList<>();
+
+		usuario.setores.forEach(setor -> {
+			SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise();
+			setorUsuarioAnalise.siglaSetor = setor.sigla;
+			setorUsuarioAnalise.usuarioAnalise = usuarioAnalise;
+
+			setorUsuarioAnalise.save();
+		});
+
+		return setores;
+
+	}
+
 
 	/**
 	 * Executa serviço de autenticação configurado no sistema via application.conf se o usuário não estiver autenticado
@@ -94,7 +132,24 @@ public class Login extends GenericController {
 			pessoa.nome = usuario.nome;
 			pessoa.save();
 			usuarioAnalise.pessoa = pessoa;
+			usuarioAnalise = usuarioAnalise.save();
+
+			usuarioAnalise.perfis = preenchePerfis(usuarioAnalise, usuario);
+			usuarioAnalise.setores = preencheSetores(usuarioAnalise,usuario);
+			usuarioAnalise.pessoa = pessoa;
 			usuarioAnalise.save();
+		}
+
+		if (usuarioAnalise.perfis == null || usuarioAnalise.perfis.isEmpty()) {
+
+			usuarioAnalise.perfis = preenchePerfis(usuarioAnalise,usuario);
+
+		}
+
+		if(usuarioAnalise.setores == null || usuarioAnalise.setores.isEmpty()){
+
+			usuarioAnalise.setores = preencheSetores(usuarioAnalise,usuario);
+
 		}
 
 		usuarioAnalise.usuarioEntradaUnica = usuario;

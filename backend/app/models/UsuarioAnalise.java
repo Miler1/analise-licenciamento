@@ -1,7 +1,10 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Setor;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Usuario;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
@@ -12,6 +15,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema = "analise", name = "usuario_analise")
@@ -32,6 +36,14 @@ public class UsuarioAnalise extends GenericModel  {
 	@OneToOne
 	@JoinColumn(name = "id_pessoa")
 	public Pessoa pessoa;
+
+	@OneToMany(mappedBy="usuarioAnalise", fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	public List <SetorUsuarioAnalise> setores;
+
+	@OneToMany(mappedBy="usuarioAnalise", fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	public List <PerfilUsuarioAnalise> perfis;
 
 	public static transient ExecutorService executorService = new ScheduledThreadPoolExecutor(Integer.valueOf(Play.configuration.getProperty("usuario.threads", "3")));
 
@@ -93,5 +105,15 @@ public class UsuarioAnalise extends GenericModel  {
 	public static UsuarioAnalise findByAnalistaTecnico(AnalistaTecnico analistaTecnico) {
 		return UsuarioAnalise.find("id = :id_analista_tecnico")
 				.setParameter("id_analista_tecnico", analistaTecnico.usuario.id).first();
+	}
+
+	public static List<UsuarioAnalise> findAnalistasGeo(List <UsuarioAnalise> usuarios, String codigoPerfil, String siglaSetor) {
+
+		return usuarios.stream().filter(usuarioAnalise -> usuarioAnalise.setores.stream().anyMatch(setor -> setor.siglaSetor.equals(siglaSetor) && usuarioAnalise.perfis.stream().anyMatch(perfil -> perfil.codigoPerfil.equals(codigoPerfil)))).collect(Collectors.toList());
+	}
+
+	public static List<UsuarioAnalise> findGerentes(List <UsuarioAnalise> usuarios, String codigoPerfil, String siglaSetor) {
+
+		return usuarios.stream().filter(usuarioAnalise -> usuarioAnalise.setores.stream().anyMatch(setor -> setor.siglaSetor.equals(siglaSetor) && usuarioAnalise.perfis.stream().anyMatch(perfil -> perfil.codigoPerfil.equals(codigoPerfil)))).collect(Collectors.toList());
 	}
 }

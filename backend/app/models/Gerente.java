@@ -100,7 +100,8 @@ public class Gerente extends GenericModel {
 
 	public static Gerente distribuicaoAutomaticaGerente(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> gerentes = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, setorAtividade);
+		List<UsuarioAnalise> listaGerentes = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, setorAtividade);
+		List<UsuarioAnalise> gerentes = UsuarioAnalise.findGerentes(listaGerentes,CodigoPerfil.GERENTE, setorAtividade);
 
 		if (gerentes == null || gerentes.size() == 0)
 			throw new WebServiceException("Não existe nenhum gerente ativado no sistema");
