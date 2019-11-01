@@ -79,14 +79,42 @@ public class Notificacao extends GenericModel {
 	@Column(name="resposta_notificacao")
 	public String respostaNotificacao;
 
+	@Column(name="documentacao")
+	public Boolean documentacao;
 
-	public Notificacao(AnaliseGeo analiseGeo, int prazoNotificacao){
+	@Column(name="retificacao_empreendimento")
+	public Boolean retificacaoEmpreendimento;
+
+	@Column(name="retificacao_solitacao")
+	public Boolean retificacaoSolitacao;
+
+	@Column(name="retificacao_solitacao_com_geo")
+	public Boolean retificacaoSolitacaoComGeo;
+
+	@ManyToMany
+	@JoinTable(schema="analise", name="rel_documento_notificacao",
+			joinColumns=@JoinColumn(name="id_notificacao"),
+			inverseJoinColumns=@JoinColumn(name="id_documento"))
+	public List<Documento> documentos;
+
+	public Notificacao(AnaliseGeo analiseGeo, int prazoNotificacao, Notificacao notificacao, List<Documento> documentos){
 		this.analiseGeo = analiseGeo;
 		this.resolvido = false;
 		this.ativo = true;
 		this.dataNotificacao = new Date();
 		this.justificativa = analiseGeo.despacho;
 		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, prazoNotificacao);
+		this.documentacao = notificacao.documentacao;
+		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
+		this.retificacaoSolitacao = notificacao.retificacaoSolitacao;
+		this.retificacaoSolitacaoComGeo = notificacao.retificacaoSolitacaoComGeo;
+		this.documentos = new ArrayList<>();
+
+		documentos.stream().forEach(documento -> {
+			if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
+				this.documentos.add(documento);
+			}
+		});
 
 	}
 
@@ -551,4 +579,5 @@ public class Notificacao extends GenericModel {
 
 		return notificacao.codigoSequencia + 1;
 	}
+
 }

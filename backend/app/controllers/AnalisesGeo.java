@@ -200,9 +200,9 @@ public class AnalisesGeo extends InternalController {
 
        analiseGeo.analise = Analise.findById(analiseGeo.analise.id);
 
-       List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseGeo);
+       List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseGeo);
 
-       Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseGeo);
+       Documento pdfNotificacao = Notificacao.gerarPDF(notificacoes, analiseGeo);
 
        String nome = pdfNotificacao.tipo.nome +  "_" + analiseGeo.id + ".pdf";
        nome = nome.replace(' ', '_');

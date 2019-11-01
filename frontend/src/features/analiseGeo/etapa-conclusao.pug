@@ -49,11 +49,11 @@ div
                 class="editable",
                 contenteditable="true")
 
-    div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+    div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, 'PARECER')", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo ao parecer
 
-    table.table.table-condensed(ng-if="ctrl.analiseGeo.documentos.length > 0")
+    table.table.table-condensed(ng-if="ctrl.getDocumentosParecer().length > 0")
 
         thead
 
@@ -63,7 +63,7 @@ div
 
         tbody
 
-            tr(ng-repeat="documento in ctrl.analiseGeo.documentos")
+            tr(ng-repeat="documento in ctrl.getDocumentosParecer()")
 
                 td.col-md-10 {{documento.nomeDoArquivo}}
                 td.col-md-2.text-right
@@ -102,6 +102,28 @@ div#conclusao
     div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()")
         #lista-restricoes
             #accordion.panel-group
+                .atendimento-notificacao
+                    div.label-atendimento-notificacao
+                        label.obrigatorio Atendimento:
+                    div.check-atendimento-notificacao
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Documentação', ng-model='ctrl.notificacao.documentacao')
+                            |  Documentação
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento')
+                            |  Retificação do empreendimento
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()")
+                            |  Retificação da solitação
+                        div.retificacao-com-geo(ng-if='ctrl.notificacao.retificacaoSolitacao')
+                            label.radio-inline
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolitacaoComGeo', value="true")
+                                | Com alteração GEO
+                            label.radio-inline
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolitacaoComGeo', value="false")
+                                | Sem alteração GEO
+
+                br
                 div
                     label.obrigatorio Prazo para atendimento da notificação:
                     select.prazo-dias(ng-model="ctrl.analiseGeo.prazoNotificacao", name="prazo")
@@ -114,3 +136,27 @@ div#conclusao
                 label.obrigatorio Descrição da Solicitação:
                 br
                 textarea.tamanho-obs(name="despacho", ng-model="ctrl.analiseGeo.despacho")
+    
+        div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, 'NOTIFICACAO')", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+            i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+            | Anexar arquivos a notificação
+
+        table.table.table-condensed(ng-if="ctrl.getDocumentosNotificacao().length > 0")
+
+            thead
+
+                tr
+                    th.col-md-10 Documento anexado
+                    th.col-md-2.text-right Ações
+
+            tbody
+
+                tr(ng-repeat="documento in ctrl.getDocumentosNotificacao()")
+
+                    td.col-md-10 {{documento.nomeDoArquivo}}
+                    td.col-md-2.text-right
+                        a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                            i.glyphicon.glyphicon-save
+
+                        a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
+                            i.glyphicon.glyphicon-trash
