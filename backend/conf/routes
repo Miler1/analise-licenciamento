@@ -77,7 +77,7 @@ POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarA
 
 POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
 GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
-POST    /analisesGeo/desvinculo/respondersolicitacaoDesvinculo                      Desvinculos.respondersolicitacaoDesvinculo
+POST    /analisesGeo/desvinculo/responderSolicitacaoDesvinculo                      Desvinculos.responderSolicitacaoDesvinculo
 
 
 POST    /analisesGeo/inconsistencia/salvarInconsistencia                            Inconsistencias.salvarInconsistencia
