@@ -82,21 +82,13 @@ public class Login extends GenericController {
 
 	private static List<PerfilUsuarioAnalise> preenchePerfis(UsuarioAnalise usuarioAnalise, Usuario usuario) {
 
-		List<PerfilUsuarioAnalise> perfis = new ArrayList<>();
-
-		usuario.salvarPerfis(usuarioAnalise);
-
-		return perfis;
+		return usuario.salvarPerfis(usuarioAnalise);
 
 	}
 
 	private static List<SetorUsuarioAnalise> preencheSetores(UsuarioAnalise usuarioAnalise, Usuario usuario) {
 
-		List<SetorUsuarioAnalise> setores = new ArrayList<>();
-
-		usuario.salvarSetores(usuarioAnalise);
-
-		return setores;
+		return usuario.salvarSetores(usuarioAnalise);
 
 	}
 
