@@ -85,11 +85,11 @@ public class Notificacao extends GenericModel {
 	@Column(name="retificacao_empreendimento")
 	public Boolean retificacaoEmpreendimento;
 
-	@Column(name="retificacao_solitacao")
-	public Boolean retificacaoSolitacao;
+	@Column(name="retificacao_solicitacao")
+	public Boolean retificacaoSolicitacao;
 
-	@Column(name="retificacao_solitacao_com_geo")
-	public Boolean retificacaoSolitacaoComGeo;
+	@Column(name="retificacao_solicitacao_com_geo")
+	public Boolean retificacaoSolicitacaoComGeo;
 
 	@ManyToMany
 	@JoinTable(schema="analise", name="rel_documento_notificacao",
@@ -106,8 +106,8 @@ public class Notificacao extends GenericModel {
 		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, prazoNotificacao);
 		this.documentacao = notificacao.documentacao;
 		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
-		this.retificacaoSolitacao = notificacao.retificacaoSolitacao;
-		this.retificacaoSolitacaoComGeo = notificacao.retificacaoSolitacaoComGeo;
+		this.retificacaoSolicitacao = notificacao.retificacaoSolicitacao;
+		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
 		this.documentos = new ArrayList<>();
 
 		documentos.stream().forEach(documento -> {
