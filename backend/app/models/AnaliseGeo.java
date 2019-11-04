@@ -508,7 +508,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
             List<Notificacao> notificacoes =  analise.notificacoes;
-            notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList()).;
+            notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList());
 
             if(notificacoes.size() != 1){
                 throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
