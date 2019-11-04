@@ -10,7 +10,10 @@ import play.Logger;
 import play.Play;
 import play.cache.Cache;
 import play.mvc.Before;
-import security.*;
+import security.Auth;
+import security.AuthService;
+import security.AuthServiceFactory;
+import security.ExternalServiceSecurity;
 import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.Helper;
@@ -81,13 +84,7 @@ public class Login extends GenericController {
 
 		List<PerfilUsuarioAnalise> perfis = new ArrayList<>();
 
-		usuario.perfis.forEach(perfil -> {
-			PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise();
-			perfilUsuarioAnalise.codigoPerfil = perfil.codigo;
-			perfilUsuarioAnalise.usuarioAnalise = usuarioAnalise;
-
-			perfilUsuarioAnalise.save();
-		});
+		usuario.salvarPerfis(usuarioAnalise);
 
 		return perfis;
 
@@ -97,13 +94,7 @@ public class Login extends GenericController {
 
 		List<SetorUsuarioAnalise> setores = new ArrayList<>();
 
-		usuario.setores.forEach(setor -> {
-			SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise();
-			setorUsuarioAnalise.siglaSetor = setor.sigla;
-			setorUsuarioAnalise.usuarioAnalise = usuarioAnalise;
-
-			setorUsuarioAnalise.save();
-		});
+		usuario.salvarSetores(usuarioAnalise);
 
 		return setores;
 

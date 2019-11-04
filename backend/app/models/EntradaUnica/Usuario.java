@@ -2,6 +2,9 @@ package models.EntradaUnica;
 
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
+import models.PerfilUsuarioAnalise;
+import models.SetorUsuarioAnalise;
+import models.UsuarioAnalise;
 
 import java.io.Serializable;
 import java.util.List;
@@ -56,4 +59,29 @@ public class Usuario  implements Serializable{
 
         return false;
     }
+
+    public void salvarPerfis( UsuarioAnalise usuarioAnalise ) {
+
+        this.perfis.forEach(perfil -> {
+            PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise();
+            perfilUsuarioAnalise.codigoPerfil = perfil.codigo;
+            perfilUsuarioAnalise.usuarioAnalise = usuarioAnalise;
+
+            perfilUsuarioAnalise.save();
+        });
+
+    }
+
+    public void salvarSetores( UsuarioAnalise usuarioAnalise ) {
+
+        this.setores.forEach(setor -> {
+            SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise();
+            setorUsuarioAnalise.siglaSetor = setor.sigla;
+            setorUsuarioAnalise.usuarioAnalise = usuarioAnalise;
+
+            setorUsuarioAnalise.save();
+        });
+
+    }
+
 }

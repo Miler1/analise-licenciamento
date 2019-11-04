@@ -10,7 +10,18 @@ import play.db.jpa.JPA;
 import security.Auth;
 import utils.Mensagem;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Query;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.ws.WebServiceException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,11 +116,10 @@ public class AnalistaGeo extends GenericModel {
 
     public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
-        List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
-        List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findAnalistasGeo(usuariosAnalise, CodigoPerfil.ANALISTA_GEO, setorAtividade);
+        List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findAnalistasGeo(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
         if (analistasGeo == null || analistasGeo.size() == 0)
-            throw new WebServiceException("Não existe nenhum analista geo para vincular automáticamente o processo.");
+            throw new WebServiceException(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto());
 
         List<Long> idsAnalistasGeo = analistasGeo.stream()
                 .map(ang -> ang.id)
