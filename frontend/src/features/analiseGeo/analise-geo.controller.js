@@ -30,6 +30,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoEmpreendimento = null;
 	ctrl.notificacao.retificacaoSolitacao = null;
 	ctrl.notificacao.retificacaoSolitacaoComGeo = null;
+	ctrl.tiposUpload = app.utils.TiposUpload;
 
 	var getLayer = function(descricao){
 
@@ -803,7 +804,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				uploadService.save(file)
 						.then(function(response) {
 
-							if(tipoUpload === "PARECER") {
+							if(tipoUpload === app.utils.TiposUpload.PARECER_ANALISE_GEO) {
 
 								ctrl.analiseGeo.documentos.push({
 
@@ -815,7 +816,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 									}
 								});
 
-							} else if(tipoUpload === "NOTIFICACAO"){
+							} else if(tipoUpload === app.utils.TiposUpload.NOTIFICACAO){
 
 								ctrl.analiseGeo.documentos.push({
 

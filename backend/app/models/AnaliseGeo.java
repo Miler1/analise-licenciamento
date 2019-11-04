@@ -508,9 +508,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
             List<Notificacao> notificacoes =  analise.notificacoes;
-            notificacoes.stream().filter(n -> n.id == null);
+            notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList()).;
 
-            enviarEmailNotificacao(analise.prazoNotificacao, notificacoes.get(0), analise.documentos);
+            if(notificacoes.size() != 1){
+                throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+            }
+
+            Notificacao novaNotificacao = notificacoes.get(0);
+
+            enviarEmailNotificacao(analise.prazoNotificacao, novaNotificacao, analise.documentos);
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
