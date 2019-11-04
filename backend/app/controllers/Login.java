@@ -80,19 +80,6 @@ public class Login extends GenericController {
 		session.clear();
 	}
 
-	private static List<PerfilUsuarioAnalise> preenchePerfis(UsuarioAnalise usuarioAnalise, Usuario usuario) {
-
-		return usuario.salvarPerfis(usuarioAnalise);
-
-	}
-
-	private static List<SetorUsuarioAnalise> preencheSetores(UsuarioAnalise usuarioAnalise, Usuario usuario) {
-
-		return usuario.salvarSetores(usuarioAnalise);
-
-	}
-
-
 	/**
 	 * Executa serviço de autenticação configurado no sistema via application.conf se o usuário não estiver autenticado
 	 * @return
@@ -117,21 +104,22 @@ public class Login extends GenericController {
 			usuarioAnalise.pessoa = pessoa;
 			usuarioAnalise = usuarioAnalise.save();
 
-			usuarioAnalise.perfis = preenchePerfis(usuarioAnalise, usuario);
-			usuarioAnalise.setores = preencheSetores(usuarioAnalise,usuario);
+			usuarioAnalise.perfis = usuario.salvarPerfis(usuarioAnalise);
+			usuarioAnalise.setores = usuario.salvarSetores(usuarioAnalise);
 			usuarioAnalise.pessoa = pessoa;
 			usuarioAnalise.save();
+
 		}
 
 		if (usuarioAnalise.perfis == null || usuarioAnalise.perfis.isEmpty()) {
 
-			usuarioAnalise.perfis = preenchePerfis(usuarioAnalise,usuario);
+			usuarioAnalise.perfis = usuario.salvarPerfis(usuarioAnalise);
 
 		}
 
 		if(usuarioAnalise.setores == null || usuarioAnalise.setores.isEmpty()){
 
-			usuarioAnalise.setores = preencheSetores(usuarioAnalise,usuario);
+			usuarioAnalise.setores = usuario.salvarSetores(usuarioAnalise);
 
 		}
 
