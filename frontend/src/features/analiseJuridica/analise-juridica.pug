@@ -52,9 +52,9 @@ div(ng-init="ctrl.init()")
 
         form
             div.form-group
-                label(for="input_numero_processo") Número do processo para clonar parecer
+                label(for="input_numero_processo") Número do protocolo para clonar parecer
                 div.input-group
-                    input#input_numero_processo(type="text", class="form-control", placeholder="Digite o número do processo do qual você deseja clonar o parecer", ng-model="ctrl.numeroProcesso")
+                    input#input_numero_processo(type="text", class="form-control", placeholder="Digite o número do protocolo do qual você deseja clonar o parecer", ng-model="ctrl.numeroProcesso")
                     span.input-group-btn
                         button.btn.btn-default(type="button", ng-click="ctrl.clonarParecer()")
                             i.glyphicon.glyphicon-refresh.glyphicon--with-right-margin

@@ -27,7 +27,7 @@ include ../../layout/components/inputErrors
 			p {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
 			p Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
 		blockquote
-			label.tituloMaior Informações do Processo:
+			label.tituloMaior Informações do Protocolo:
 			p Número: {{$ctrl.resolve.dadosLicenca.numeroProcesso ? $ctrl.resolve.dadosLicenca.numeroProcesso : '-'}}
 			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj ? ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj | brCpfCnpj) : ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cpf | brCpfCnpj)}}
 			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}

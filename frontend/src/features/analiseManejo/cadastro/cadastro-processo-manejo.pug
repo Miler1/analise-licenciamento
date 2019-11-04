@@ -9,8 +9,8 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 
 	.row.form-group
 		.col-md-12.col-sm-12
-			label.control-label Número do processo: *
-			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo.numeroProcesso', placeholder='Número do processo', maxlength="15", required, ng-blur="cadastroProcessoManejo.conferirNumeroProcesso(cadastroProcessoManejo.processo.numeroProcesso)")
+			label.control-label Número do protocolo: *
+			input.form-control(type='text', name='numProcesso', ng-model='cadastroProcessoManejo.processo.numeroProcesso', placeholder='Número do protocolo', maxlength="15", required, ng-blur="cadastroProcessoManejo.conferirNumeroProcesso(cadastroProcessoManejo.processo.numeroProcesso)")
 	.row.form-group
 
 		.col-md-6.col-sm-6
@@ -21,7 +21,7 @@ form(name="formularioCadastroProcessoManejo", novalidate)
 			label.control-label Atividade: *
 			select.form-control(ng-model="cadastroProcessoManejo.processo.atividadeManejo.id", ng-disabled="!cadastroProcessoManejo.tipologia", name="selectAtividade",
 								ng-options="atividade.id as atividade.nome for atividade in cadastroProcessoManejo.atividades | orderBy:'nome' track by atividade.id", required)
-				option(value="") Selecione a atividade do processo
+				option(value="") Selecione a atividade do protocolo
 
 	.row.form-group
 

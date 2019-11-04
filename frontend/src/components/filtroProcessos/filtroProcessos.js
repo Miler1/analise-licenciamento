@@ -78,7 +78,7 @@ var FiltroProcessos = {
 					if(!!response.data.texto)
 						mensagem.warning(response.data.texto);
 					else
-						mensagem.error("Ocorreu um erro ao buscar a lista de processos.");
+						mensagem.error("Ocorreu um erro ao buscar a lista de protocolos.");
 				});
 
 			processoService.getProcessosCount(ctrl.filtro)
@@ -89,7 +89,7 @@ var FiltroProcessos = {
 					if(!!response.data.texto)
 						mensagem.warning(response.data.texto);
 					else
-						mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
+						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
 
 			$rootScope.$broadcast('atualizarContagemProcessos');

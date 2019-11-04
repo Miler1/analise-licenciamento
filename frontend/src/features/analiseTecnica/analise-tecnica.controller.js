@@ -135,7 +135,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
             '<ul>' +
                 '<li>Para concluir é necessário descrever o parecer.</li>' + 
-                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' + 
+                '<li>Selecione um parecer para o protocolo (Deferido, Indeferido, Notificação).</li>' + 
                 '<li>Para DEFERIDO, todos os documentos de validação técnica devem ter sido validados.</li>' + 
                 '<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' + 
             '</ul>', { ttl: 10000 });
@@ -146,7 +146,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
             '<ul>' +
                 '<li>Para o status Deferido, ao menos uma licença deve ser emitida.</li>' + 
-                '<li>Se desejar indeferir o processo, marque a opção "Indeferido".</li>' + 
+                '<li>Se desejar indeferir o protocolo, marque a opção "Indeferido".</li>' + 
             '</ul>', { ttl: 10000 });
             return; 
         }

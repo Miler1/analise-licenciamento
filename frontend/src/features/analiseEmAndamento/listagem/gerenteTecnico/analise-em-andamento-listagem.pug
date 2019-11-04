@@ -10,7 +10,7 @@ div
 		is-gerente="usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE",
 		is-gerente-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE")
 
-	h4 Lista de processos
+	h4 Lista de protocolo
 
 	hr
 	.row
@@ -19,7 +19,7 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th.col-md-1 Processo
+							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
@@ -56,7 +56,7 @@ div
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
+													span Visualizar protocolo
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

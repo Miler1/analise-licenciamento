@@ -90,7 +90,7 @@ var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, 
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro ao obter dados do processo.");
+					mensagem.error("Ocorreu um erro ao obter dados do protocolo.");
 			});
 	};
 

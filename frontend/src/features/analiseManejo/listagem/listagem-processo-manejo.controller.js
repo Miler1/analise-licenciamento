@@ -65,7 +65,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro obter dados do processo.");
+					mensagem.error("Ocorreu um erro obter dados do protocolo.");
 			});
 	};
 
@@ -139,7 +139,7 @@ var ListagemProcessoManejoController = function($scope, config, $rootScope, proc
 					mensagem.warning(response.data.texto);
 
 				else
-					mensagem.error("Ocorreu um erro ao iniciar a análise técnica do processo.");
+					mensagem.error("Ocorreu um erro ao iniciar a análise técnica do protocolo.");
 			});
 	};
 };

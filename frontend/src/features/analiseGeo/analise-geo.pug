@@ -6,7 +6,7 @@ div(ng-init='ctrl.init()')
 			h4 PARECER GEO
 
 			div.row
-				label.col-sm-4 Processo:
+				label.col-sm-4 Protocolo:
 				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.numero ? ctrl.analiseGeo.analise.processo.numero : ctrl.analiseGeo.analise.processo.numeroProcesso}}
 
 			div.row
@@ -25,7 +25,7 @@ div(ng-init='ctrl.init()')
 
 			button.btn.btn-sm.btn-default.pull-right(ng-click="ctrl.visualizarProcesso(ctrl.analiseGeo.analise.processo)")
 				i.fa.fa-eye
-				| &nbsp;Visualizar Processo
+				| &nbsp;Visualizar Protocolo
 			a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
 				i.fa.fa-bars
 				| &nbsp;Legislação

@@ -13,7 +13,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 	uploadShapes.estiloMapa = app.utils.EstiloMapa;
 
-	/** Utiliza o ID do processo salvo na URL para não perder a referência de buscar os dados **/
+	/** Utiliza o ID do protocolo salvo na URL para não perder a referência de buscar os dados **/
 	uploadShapes.idProcesso = $route.current.params.idProcesso;
 
 	/** Atribuição de funções **/
@@ -103,7 +103,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		$location.path('/caixa-entrada');
 	}
 
-	// Função para preencher o processo em função do ID da URL
+	// Função para preencher o protocolo em função do ID da URL
 	function onInit(){
 		$rootScope.$broadcast('atualizarContagemProcessos');
 		uploadShapes.buscaProcesso();

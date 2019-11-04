@@ -19,14 +19,14 @@ html(lang='en')
     div
       p
       | \#{if analiseArea == "ANALISE_JURIDICA"}
-      | PARECER JURÍDICO referente ao processo abaixo:
+      | PARECER JURÍDICO referente ao protocolo abaixo:
       | \#{/if}
       | \#{else}
-      | PARECER TÉCNICO referente ao processo abaixo:
+      | PARECER TÉCNICO referente ao protocolo abaixo:
       | \#{/else}
 
       p
-        | PROCESSO
+        | PROTOCOLO
       p
         | Número:
         b  ${analiseEspecifica.analise.processo.numero}

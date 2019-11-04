@@ -10,7 +10,7 @@ div
 		pesquisar-ao-inicializar="true",
 		is-analise-juridica="true")
 
-	h4 Lista de processos
+	h4 Lista de protocolos
 
 	hr
 	.row
@@ -23,7 +23,7 @@ div
 								input(type='checkbox',
 									ng-model='cxEntCoordenadorJuridico.todosProcessosSelecionados',
 									ng-click='cxEntCoordenadorJuridico.selecionarTodosProcessos()')
-							th.col-md-1 Processo
+							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
@@ -60,11 +60,11 @@ div
 
 												a(ng-click="cxEntCoordenadorJuridico.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
+													span Visualizar protocolo
 				div
 					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorJuridico.vincularConsultor()", 
 																  ng-disabled="!cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected()",
-																  ng-attr-title="{{!cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao consultor.' : ''}}" 
+																  ng-attr-title="{{!cxEntCoordenadorJuridico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um protocolo para vinculá-lo ao consultor.' : ''}}" 
 																  tabindex="0")
 						span.glyphicon.glyphicon-share
 						| &nbsp; Vincular consultor

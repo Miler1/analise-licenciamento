@@ -13,7 +13,7 @@ var VisualizacaoProcessoManejoController = function ($location, $anchorScroll, $
 				modalCtrl.dadosProcesso = response.data;
 			})
 			.catch(function(){
-				mensagem.error("Ocorreu um erro ao buscar dados do processo do manejo.");
+				mensagem.error("Ocorreu um erro ao buscar dados do protocolo do manejo.");
 			});
 
 	}

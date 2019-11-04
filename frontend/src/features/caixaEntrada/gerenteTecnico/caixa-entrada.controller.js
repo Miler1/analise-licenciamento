@@ -71,7 +71,7 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao analista.');
+			mensagem.warning('É necessário selecionar ao menos um protocolo para vinculá-lo ao analista.');
 			return;
 		}
 

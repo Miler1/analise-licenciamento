@@ -6,7 +6,7 @@ div(uib-accordion class="accordion")
                 i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordionPesquisaRapida, 'glyphicon-chevron-right': !$ctrl.openedAccordionPesquisaRapida}")
 
         .input-group
-            input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', enter="$ctrl.pesquisar(1)" placeholder='Pesquisar por número do título, processo, CPF/CNPJ, empreendimento e município', maxlength="15")
+            input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', enter="$ctrl.pesquisar(1)" placeholder='Pesquisar por número do título, protocolo, CPF/CNPJ, empreendimento e município', maxlength="15")
             span.input-group-btn
                 button.btn.btn-success(ng-click="$ctrl.pesquisar(1)", tabindex="0")
                     span.glyphicon.glyphicon-search
@@ -23,8 +23,8 @@ div(uib-accordion class="accordion")
                 input.form-control(type='text', name='numtitulo', ng-model='$ctrl.filtro.numeroLicenca', placeholder='Número do título', maxlength="15")
 
             .col-md-6
-                label.control-label Número do processo:
-                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numeroProcesso', placeholder='Número do processo', maxlength="15")
+                label.control-label Número do protocolo:
+                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numeroProcesso', placeholder='Número do protocolo', maxlength="15")
 
         .row.form-group
             .col-md-6.col-sm-6

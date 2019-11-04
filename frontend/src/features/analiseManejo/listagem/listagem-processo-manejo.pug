@@ -7,12 +7,12 @@ div
 		pesquisar-ao-inicializar="true")
 
 div(style="margin-top: 30px;")
-	h4.col-md-6 Lista de processos
+	h4.col-md-6 Lista de protocolos
 
 	.col-md-6.pull-right(style="padding-right: 0px;")
 		button.pull-right.btn.btn-default.btn-success(ng-if="listagemProcessoManejo.permissaoCadastrar", ng-click="listagemProcessoManejo.cadastrarProcessoManejo()" tabindex="0")
 			span.glyphicon.glyphicon-plus
-			| &nbsp; Cadastrar Processo
+			| &nbsp; Cadastrar Protocolo
 
 	hr
 	.row(style="margin-top: 60px;")
@@ -23,7 +23,7 @@ div(style="margin-top: 30px;")
 						tr
 							th
 							th.col-md-2 Status
-							th.col-md-1 Processo
+							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-1 Município
@@ -62,7 +62,7 @@ div(style="margin-top: 30px;")
 											li
 												a(ng-click="listagemProcessoManejo.visualizarProcesso(processoManejo)", ng-if="listagemProcessoManejo.permissaoVisualizar")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
+													span Visualizar protocolo
 											li
 												a(ng-click="listagemProcessoManejo.downloadPdfAnaliseTecnica(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 19")
 													i.glyphicon.glyphicon-save-file
@@ -70,7 +70,7 @@ div(style="margin-top: 30px;")
 											li
 												a(ng-click="listagemProcessoManejo.indeferir(processoManejo)", ng-if="listagemProcessoManejo.permissaoAnalisar && processoManejo.idCondicao === 22 && processoManejo.revisaoSolicitada")
 													i.glyphicon.glyphicon-remove
-													span Indeferir processo
+													span Indeferir protocolo
 
 				div.margin-top-xs
 					span.icone-revisao-solicitada.legenda Revisão Solicitada
