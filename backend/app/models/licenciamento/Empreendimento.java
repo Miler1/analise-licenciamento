@@ -75,6 +75,9 @@ public class Empreendimento extends GenericModel {
 	
 	@OneToMany(mappedBy = "empreendimento", targetEntity = ResponsavelEmpreendimento.class, orphanRemoval = true)
 	public List<ResponsavelEmpreendimento> responsaveis;
+
+	@OneToMany(mappedBy = "empreendimento", targetEntity = Caracterizacao.class, orphanRemoval = true)
+	public List<Caracterizacao> caracterizacoes;
 	
 	public boolean ativo;
 	

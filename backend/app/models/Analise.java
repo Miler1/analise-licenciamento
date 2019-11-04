@@ -21,8 +21,8 @@ public class Analise extends GenericModel {
 	public Long id;
 	
 	@Required
-	@ManyToOne
-	@JoinColumn(name="id_processo")
+	@OneToOne
+	@JoinColumn(name = "id_processo", referencedColumnName = "id")
 	public Processo processo;
 	
 	@Required

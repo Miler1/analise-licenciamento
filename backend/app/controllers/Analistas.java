@@ -71,7 +71,7 @@ public class Analistas extends InternalController {
 
 		Processo processo = Processo.findById(idProcesso);
 
-		List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacoes.get(0).atividadesCaracterizacao;
+		List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacao.atividadesCaracterizacao;
 
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao =
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
@@ -98,7 +98,7 @@ public class Analistas extends InternalController {
 
 		Processo processo = Processo.findById(idProcesso);
 
-		List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacoes.get(0).atividadesCaracterizacao;
+		List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacao.atividadesCaracterizacao;
 
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao =
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
@@ -122,7 +122,7 @@ public class Analistas extends InternalController {
 
 		Processo processo = Processo.findById(idProcesso);
 
-		String siglaSetor = processo.getCaracterizacao().atividadesCaracterizacao.get(0).atividade.siglaSetor;
+		String siglaSetor = processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
 		List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeoByIdProcesso(siglaSetor);
 

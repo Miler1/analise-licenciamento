@@ -198,7 +198,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 		List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();
 		
-		for (Caracterizacao caracterizacao : this.analise.processo.caracterizacoes) {
+		for (Caracterizacao caracterizacao : this.analise.processo.empreendimento.caracterizacoes) {
 			
 			LicencaAnalise novaLicencaAnalise = new LicencaAnalise();
 			novaLicencaAnalise.caracterizacao = caracterizacao;

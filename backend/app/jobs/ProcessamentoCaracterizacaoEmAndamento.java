@@ -48,7 +48,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		boolean deveTramitar = false;
 
-
 		if (processo == null) {
 			
 			processo = criarNovoProcesso(caracterizacao);
@@ -88,16 +87,13 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 			deveTramitar = true;
 
-		} else if(processo.caracterizacoes.contains(caracterizacao)) {
+		} else if(processo.caracterizacao.id.equals(caracterizacao.id)) {
 			
 			return;
 			
 		} else {
 			
-			if(processo.caracterizacoes == null)
-				processo.caracterizacoes = new ArrayList<>();
-			
-			processo.caracterizacoes.add(caracterizacao);
+			processo.caracterizacao = caracterizacao;
 
 			processo._save();
 		}
@@ -148,8 +144,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		processo.empreendimento = caracterizacao.empreendimento;
 		processo.dataCadastro = new Date();
 		
-		processo.caracterizacoes = new ArrayList<>();
-		processo.caracterizacoes.add(caracterizacao);
+		processo.caracterizacao = caracterizacao;
 		processo._save();
 
 		return processo;
@@ -172,7 +167,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 	private AnaliseGeo clonarAnaliseGeo(Analise analise, Processo processoAntigo) {
 
-		AnaliseGeo analiseGeoAntiga = processoAntigo.getAnalise().getAnaliseGeo();
+		AnaliseGeo analiseGeoAntiga = processoAntigo.analise.getAnaliseGeo();
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 
 		List<AnaliseDocumento> analisesDocumentos = new ArrayList<>();
@@ -231,7 +226,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
 
-		String siglaSetor = analise.processo.getCaracterizacao().atividadesCaracterizacao.get(0).atividade.siglaSetor;
+		String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
 		analiseGeo.analistasGeo = new ArrayList<>();
 

@@ -36,7 +36,7 @@ public class ParecerValidadoTecnico extends TipoResultadoAnaliseChain<AnaliseTec
 		
 		if (analiseTecnica.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 			
-			List<Long> idsCaracterizacoes = ListUtil.getIds(analiseTecnica.analise.processo.caracterizacoes);
+			List<Long> idsCaracterizacoes = ListUtil.getIds(analiseTecnica.analise.processo.empreendimento.caracterizacoes);
 			
 			Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
 			

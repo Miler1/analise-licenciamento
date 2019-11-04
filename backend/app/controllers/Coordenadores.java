@@ -22,7 +22,7 @@ public class Coordenadores extends InternalController {
 			
 			Processo processo = Processo.findById(idProcesso);
 			
-			List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacoes.get(0).atividadesCaracterizacao;
+			List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacao.atividadesCaracterizacao;
 			
 			TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 					TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
