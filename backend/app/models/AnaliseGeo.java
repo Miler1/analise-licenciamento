@@ -162,6 +162,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @OneToMany(mappedBy="analiseGeo", fetch = FetchType.LAZY)
     public List<Desvinculo> desvinculos;
 
+    @OneToMany(mappedBy = "analiseGeo", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    public List<Notificacao> notificacoes;
+
     @Transient
     public String linkNotificacao;
 
@@ -374,10 +377,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     private void updateDocumentos(List<Documento> novosDocumentos) {
 
-        TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+        TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+        TipoDocumento tipoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
 
-        if (this.documentos == null)
+
+        if (this.documentos == null) {
             this.documentos = new ArrayList<>();
+        }
 
         Iterator<Documento> docsCadastrados = documentos.iterator();
         List<Documento> documentosDeletar = new ArrayList<>();
@@ -403,9 +409,17 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             if (novoDocumento.id == null) {
 
-                novoDocumento.tipo = tipo;
+                if(novoDocumento.tipo.id.equals(tipoParecer.id)){
+
+                    novoDocumento.tipo = tipoParecer;
+                    this.documentos.add(novoDocumento);
+
+                } else if(novoDocumento.tipo.id.equals(tipoNotificacao.id)) {
+
+                    novoDocumento.tipo = tipoNotificacao;
+                }
+
                 novoDocumento.save();
-                this.documentos.add(novoDocumento);
             }
         }
 
@@ -432,7 +446,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this));
 
-        if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+        if(this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
             if(this.analise.processo.getCaracterizacao().origemSobreposicao.equals(EMPREENDIMENTO)){
 
@@ -492,7 +506,18 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
-            enviarEmailNotificacao(analise.prazoNotificacao);
+
+            List<Notificacao> notificacoes =  analise.notificacoes;
+            notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList());
+
+            if(notificacoes.size() != 1){
+                
+                throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+            }
+
+            Notificacao novaNotificacao = notificacoes.get(0);
+
+            enviarEmailNotificacao(analise.prazoNotificacao, novaNotificacao, analise.documentos);
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor,  this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -508,18 +533,18 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         }
     }
 
-    public void enviarEmailNotificacao(int prazoNotificacao) throws Exception {
+    public void enviarEmailNotificacao(int prazoNotificacao, Notificacao notificacao, List<Documento> documentos) throws Exception {
 
         List<String> destinatarios = new ArrayList<String>();
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
         destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
-        Notificacao notificacao = new Notificacao(this, prazoNotificacao);
-        notificacao.save();
+        Notificacao notificacaoSave = new Notificacao(this, prazoNotificacao, notificacao, documentos);
+        notificacaoSave .save();
         this.prazoNotificacao = prazoNotificacao;
 
-        EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, destinatarios, notificacao);
+        EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, destinatarios, notificacaoSave);
         emailNotificacaoAnaliseGeo.enviar();
     }
 
