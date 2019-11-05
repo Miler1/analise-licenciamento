@@ -7,7 +7,18 @@ import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import utils.Mensagem;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Query;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.ws.WebServiceException;
 import java.util.Date;
 import java.util.List;
@@ -100,10 +111,10 @@ public class Gerente extends GenericModel {
 
 	public static Gerente distribuicaoAutomaticaGerente(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> gerentes = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, setorAtividade);
+		List<UsuarioAnalise> gerentes = UsuarioAnalise.findGerentes(CodigoPerfil.GERENTE, setorAtividade);
 
 		if (gerentes == null || gerentes.size() == 0)
-			throw new WebServiceException("Não existe nenhum gerente ativado no sistema");
+			throw new WebServiceException(Mensagem.NENHUM_GERENTE_ENCONTRADO.getTexto());
 
 		List<Long> idsGerentes = gerentes.stream()
 				.map(ang->ang.id)

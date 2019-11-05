@@ -50,7 +50,10 @@ div(ng-init='ctrl.init()')
 					include etapa-conclusao
 						
 div
-	button.btn.btn-default.pull-left(style="margin-bottom:15px;",ng-click="ctrl.cancelar()")
+	button.btn.btn-default.pull-left(style="margin-bottom:15px;", title='Cancelar análise',
+                                    ng-bootbox-title='Confirmação',
+                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                    ng-bootbox-confirm-action="ctrl.cancelar()")
 		i.glyphicon.glyphicon-remove
 		| &nbsp;Cancelar
 	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.avancarProximaEtapa()",

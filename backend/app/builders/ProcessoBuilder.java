@@ -185,7 +185,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		} else {
 
-			addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS);
+ 			addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS);
 		}
 
 		return this;

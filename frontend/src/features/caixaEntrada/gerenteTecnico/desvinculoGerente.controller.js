@@ -32,13 +32,15 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 		params.aprovada = desvinculoGerenteController.desvinculoAceito;
 		params.respostaGerente = desvinculoGerenteController.respostaGerente;
 
-		desvinculoService.respondersolicitacaoDesvinculo(params)
+		desvinculoService.responderSolicitacaoDesvinculo(params)
 			.then(function(response){
 
 				mensagem.success(response.data);
 				$rootScope.$broadcast('atualizarContagemProcessos');
+				$rootScope.$broadcast('rootPesquisarProcessos');
 				$location.path('/caixa-entrada');
-				$uibModalInstance.close();
+				$uibModalInstance.dismiss();
+
 		}).catch(function(response){
 			mensagem.error(response.data.texto, {referenceId: 5});
 		});

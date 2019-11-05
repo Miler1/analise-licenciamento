@@ -69,7 +69,7 @@ public class Desvinculos extends GenericController {
         renderJSON(desvinculo, DesvinculoSerializar.list);
     }
 
-    public static void respondersolicitacaoDesvinculo(Desvinculo desvinculo) {
+    public static void responderSolicitacaoDesvinculo(Desvinculo desvinculo) {
 
         returnIfNull(desvinculo, "Desvinculo");
 
