@@ -975,8 +975,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 								a.click();
 
 								$location.path('/analise-geo');
-								mensagem.setMensagemProximaTela('success', response.data.texto);
-
 							},function(error){
 								mensagem.error(error.data.texto);
 							});
@@ -985,6 +983,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 							mensagem.error(error.data.texto);
 					});
 					$location.path('/analise-geo');
+					mensagem.setMensagemProximaTela('success', response.data.texto);
 			}, function(error){
 
 				mensagem.error(error.data.texto, {referenceId: 5});
