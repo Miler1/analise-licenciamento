@@ -38,7 +38,7 @@ public class ParecerValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
 
         if (analiseGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 
-            List<Long> idsCaracterizacoes = ListUtil.getIds(analiseGeo.analise.processo.caracterizacoes);
+            List<Long> idsCaracterizacoes = ListUtil.getIds(analiseGeo.analise.processo.empreendimento.caracterizacoes);
 
             Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
 

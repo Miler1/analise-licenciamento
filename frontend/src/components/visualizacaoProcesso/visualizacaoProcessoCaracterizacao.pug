@@ -41,8 +41,7 @@
 							th Documento
 							th
 						tbody
-							tr(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
-							tr(ng-repeat="documento in caracterizacao.documentosEnviados")
+							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
 								td {{ documento.tipo.nome}}
 								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
 									i.glyphicon.glyphicon-download-alt

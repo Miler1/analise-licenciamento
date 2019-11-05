@@ -3,7 +3,7 @@ doctype html
 | processo = analiseEspecifica.analise.processo;
 | empreendimento = analiseEspecifica.analise.processo.empreendimento;
 | empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-| atividadesCaracerizacao = analiseEspecifica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
+| atividadesCaracerizacao = analiseEspecifica.analise.processo.caracterizacao.atividadesCaracterizacao;
 | bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
 | numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
 | cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;

@@ -48,14 +48,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@JoinColumn(name = "id_objeto_tramitavel", referencedColumnName = "id_objeto_tramitavel", insertable=false, updatable=false)
 	public ObjetoTramitavel objetoTramitavel;
 
-	@ManyToMany
-	@JoinTable(schema="analise", name="rel_processo_caracterizacao",
-			joinColumns= @JoinColumn(name="id_processo"),
-			inverseJoinColumns = @JoinColumn(name="id_caracterizacao"))
-	public List<Caracterizacao> caracterizacoes;
+	@OneToOne
+	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id")
+	public Caracterizacao caracterizacao;
 
-	@OneToMany(mappedBy="processo")
-	public List<Analise> analises;
+	@OneToOne(mappedBy = "processo")
+	public Analise analise;
 
 	@Column
 	public Boolean renovacao;
@@ -73,11 +71,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public transient Tramitacao tramitacao = new Tramitacao();
 
 	@Transient
-	public Analise analise;
-
-	@Transient
 	public Desvinculo desvinculoRespondido;
-
 
 	@Transient
 	public static int indexDadosRestricoes;
@@ -160,8 +154,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.filtrarPorIdCondicao(filtro.idCondicaoTramitacao)
 				.filtrarPorPeriodoProcesso(filtro.periodoInicial, filtro.periodoFinal);
 
-//		commonFilterProcessoAnaliseJuridica(processoBuilder, filtro, usuarioSessao.id);
-
 		commonFilterProcessoAnaliseTecnica(processoBuilder, filtro, usuarioSessao);
 
 		commonFilterProcessoAnaliseGeo(processoBuilder, filtro, usuarioSessao);
@@ -240,32 +232,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			}
 		}
 	}
-
-//	private static void commonFilterProcessoAnaliseJuridica(ProcessoBuilder processoBuilder,
-//			FiltroProcesso filtro, Long idUsuarioLogado) {
-//
-//		if (!filtro.isAnaliseJuridica) {
-//
-//			return;
-//		}
-//
-//		processoBuilder.filtrarAnaliseJuridicaAtiva();
-//
-//		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null &&
-//		   (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_JURIDICA) ||
-//			filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_JURIDICA))) {
-//
-//			processoBuilder.filtrarPorIdConsultorJuridico(idUsuarioLogado);
-//		}
-//
-//		if (filtro.idCondicaoTramitacao != null &&
-//			   filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_JURIDICA)) {
-//
-//				processoBuilder.filtrarPorIdUsuarioValidacao(idUsuarioLogado);
-//		}
-//
-//
-//	}
 
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 														   UsuarioAnalise usuarioSessao) {
@@ -639,27 +605,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		processoBuilder.addAnaliseJuridicaAlias();
 	}
 
-	public Caracterizacao getCaracterizacao() {
-		return caracterizacoes.get(0);
-	}
-
-	public Analise getAnalise() {
-
-		if(this.analise != null)
-			return this.analise;
-
-		if(this.analises != null && !this.analises.isEmpty())
-			for(Analise analise : this.analises)
-				if(analise.ativo)
-					this.analise = analise;
-
-		if(this.analise == null)
-			this.analise = Analise.findByProcesso(this);
-
-		return this.analise;
-
-	}
-
 	//Retorna o historico da tramitação com o tempo que o objeto tramitavel permaneceu na condição
 	public List<HistoricoTramitacao> getHistoricoTramitacao() {
 
@@ -723,26 +668,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return historicosTramitacoes;
 	}
 
-	public List<String> getTiposLicenca() {
-
-		List<String> tiposLicenca = new ArrayList<>();
-
-		for(Caracterizacao caracterizacao : this.caracterizacoes) {
-
-			String temp = caracterizacao.tipoLicenca.nome + " (" + caracterizacao.tipoLicenca.validadeEmAnos + " anos)";
-			tiposLicenca.add(temp);
-
-		}
-
-		return tiposLicenca;
-
-	}
-
 	public List<Caracterizacao> getCaracterizacoesNaoArquivadas() {
 
 		List<Caracterizacao> caracterizacoes = new ArrayList<>();
 
-		for(Caracterizacao caracterizacao : this.caracterizacoes)
+		for(Caracterizacao caracterizacao : this.empreendimento.caracterizacoes)
 			if(!caracterizacao.isArquivada())
 				caracterizacoes.add(caracterizacao);
 
@@ -752,7 +682,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public boolean isProrrogacao() {
 
-		long diff = Math.abs(this.caracterizacoes.get(0).getLicenca().dataValidade.getTime() - new Date().getTime());
+		long diff = Math.abs(this.caracterizacao.getLicenca().dataValidade.getTime() - new Date().getTime());
 		long dias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 5l;
 
 		return Configuracoes.DIAS_PRORROGACAO < dias;
@@ -760,7 +690,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public boolean isArquivavel() {
 
-		for (Caracterizacao caracterizacao : this.caracterizacoes) {
+		for (Caracterizacao caracterizacao : this.empreendimento.caracterizacoes) {
 
 			if (caracterizacao.numeroProcessoAntigo == null && !caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
 					&& !caracterizacao.status.nome.equals(StatusCaracterizacao.CANCELADO)) {
@@ -777,9 +707,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return Processo.find("numero", numProcesso).first();
 	}
 
-	public DadosProcessoVO getDadosProcesso (){
+	public DadosProcessoVO getDadosProcesso() {
 
-		Caracterizacao caracterizacao = this.getCaracterizacao();
+		Caracterizacao caracterizacao = this.caracterizacao;
 
 		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
 
