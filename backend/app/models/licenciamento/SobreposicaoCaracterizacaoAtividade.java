@@ -21,7 +21,7 @@ public class SobreposicaoCaracterizacaoAtividade extends GenericModel{
     @JoinColumn(name = "id_tipo_sobreposicao", referencedColumnName="id")
     public TipoSobreposicao tipoSobreposicao;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_atividade_caracterizacao", referencedColumnName="id")
     public AtividadeCaracterizacao atividadeCaracterizacao;
 

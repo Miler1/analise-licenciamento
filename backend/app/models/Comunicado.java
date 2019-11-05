@@ -99,7 +99,7 @@ public class Comunicado extends GenericModel {
 
     public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
 
-        this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
+        this.tipoSobreposicao = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
         this.caracterizacao = caracterizacao;
@@ -108,11 +108,12 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
         this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
+
     }
 
     public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo, Orgao orgao){
 
-        this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
+        this.tipoSobreposicao = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
         this.caracterizacao = caracterizacao;
@@ -121,6 +122,7 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
         this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
+
     }
 
     public static List<Comunicado> findByAnaliseGeo(Long idAnaliseGeo) {

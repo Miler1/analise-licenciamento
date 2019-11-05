@@ -462,18 +462,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             }else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
 
-                for(AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.caracterizacao.atividadesCaracterizacao){
+                List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade =  this.analise.processo.caracterizacao.atividadesCaracterizacao.stream().map(atividadeCaracterizacao -> atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
 
-                    List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade = atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.stream().distinct()
-                            .filter(distinctByKey(sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo)).collect(Collectors.toList());
+                for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
 
-                    for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
-
-                        if(sobreposicaoCaracterizacaoAtividade != null){
-                            enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoAtividade);
-                        }
-
+                    if(sobreposicaoCaracterizacaoAtividade != null){
+                        enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoAtividade);
                     }
+
                 }
 
             } else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)) {

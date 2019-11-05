@@ -38,6 +38,8 @@ public class AnaliseGeoSerializer {
             "analise.processo.caracterizacao.atividadesCaracterizacao.atividade.parametros.codigo",
             "analise.processo.caracterizacao.atividadesCaracterizacao.atividade.parametros.nome",
             "analise.processo.caracterizacao.atividadesCaracterizacao.atividadeCaracterizacaoParametros.valorParametro",
+            "analise.processo.caracterizacao.atividadesCaracterizacao.sobreposicaoCaracterizacaoAtividade.",
+            "analise.processo.caracterizacao.atividadesCaracterizacao.sobreposicaoCaracterizacaoAtividade.id",
             "analise.processo.numero",
             "analise.processo.empreendimento.id",
             "analise.processo.empreendimento.denominacao",

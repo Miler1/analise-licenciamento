@@ -882,7 +882,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		});
 
 		var inconsistenciasRestricao = _.filter(ctrl.analiseGeo.inconsistencias, function(inconsistencia) {
-			return inconsistencia.categoria == 'RESTRICAO';
+			return inconsistencia.categoria === 'RESTRICAO';
 		});
 
 		return inconsistenciasRestricao.length === restricoes.length;
@@ -929,7 +929,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo !== undefined))) {
+		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() && !(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo !== undefined))) {
 			return false;
 		}
 

@@ -17,6 +17,7 @@ import utils.*;
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
@@ -761,14 +762,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
 
-			for(AtividadeCaracterizacao atividadeCaracterizacao: caracterizacao.atividadesCaracterizacao) {
+			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = caracterizacao.atividadesCaracterizacao.stream().map(a -> a.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
 
-				for(SobreposicaoCaracterizacaoAtividade sobreposicao : atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades) {
+			for(SobreposicaoCaracterizacaoAtividade sobreposicao : sobreposicoesCaracterizacaoAtividades) {
 
-					indexDadosRestricoes++;
-					restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
-
-				}
+				indexDadosRestricoes++;
+				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
 
 			}
 
