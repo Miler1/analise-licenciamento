@@ -44,8 +44,8 @@ NENHUM_GERENTE_ENCONTRADO=Não existe nenhum gerente para ser vinculado.
 INCONSISTENCIA_SALVA_SUCESSO=A inconsistência foi salva com sucesso.
 INCONSISTENCIA_EXCLUIDA_SUCESSO=A inconsistência foi excluída com sucesso.
 CAMPOS_OBRIGATORIOS= Verifique os campos obrigatórios!
-CLONAR_PARECER_COM_INCONSISTENCIA=Não é possível clonar este parecer. O processo possui inconsistência cadastrada.
-PARECER_NAO_ENCONTRADO=Não foi encontrado um parecer para esse número de processo.
+CLONAR_PARECER_COM_INCONSISTENCIA=Não é possível clonar este parecer. O protocolo possui inconsistência cadastrada.
+PARECER_NAO_ENCONTRADO=Não foi encontrado um parecer para esse número de protocolo.
 #
 # Gerentes
 #
@@ -76,7 +76,7 @@ ANALISE_CADASTRADA_SUCESSO=Análise cadastrada com sucesso.
 ANALISE_PARECER_NAO_PREENCHIDO=O parecer não foi preenchido.
 ANALISE_ANALISE_TEMPORAL_NAO_PREENCHIDA=O campo análise temporal não foi preenchido.
 ANALISE_SITUACAO_FUNDIARIA_NAO_PREENCHIDA=O campo situação fundiária não foi preenchido.
-ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA=Não foi informada a análise final do processo.
+ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA=Não foi informada a análise final do protocolo.
 ANALISE_DESPACHO_NAO_PREENCHIDO= O campo despacho não foi preenchido.
 ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA = O campo justificativa não foi preenchido.
 ANALISE_CONCLUSAO_NAO_PREENCHIDA= O campo conclusão não foi preenchido.
@@ -151,10 +151,10 @@ ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA=É obrigatório informar a conclusão da a
 #
 # Processo Manejo
 #
-PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
-PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
-PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Processo indeferido com sucesso.
-ERRO_PROCESSAR_ANEXO_PROCESSO_MANEJO=Erro ao processar o anéxo do processo do manejo vindo da análise shape.
+PROCESSO_ANALISE_USUARIO_DIFERENTE=Protocolo em análise por um usuário diferente.
+PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Protocolo cadastrado com sucesso.
+PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Protocolo indeferido com sucesso.
+ERRO_PROCESSAR_ANEXO_PROCESSO_MANEJO=Erro ao processar o anéxo do protocolo do manejo vindo da análise shape.
 
 #
 # Observações

@@ -49,7 +49,7 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootSco
 
 		})
 		.catch(function(){
-			mensagem.error("Ocorreu um erro ao buscar dados do processo.");
+			mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
 		});
 	}
 

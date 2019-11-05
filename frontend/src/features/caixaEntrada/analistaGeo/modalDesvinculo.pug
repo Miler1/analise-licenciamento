@@ -4,7 +4,7 @@ div.modal-header
         span(aria-hidden='true') ×
         span.sr-only Fechar
 
-    h4.modal-title Solicitação de desvínculo do processo
+    h4.modal-title Solicitação de desvínculo do protocolo
     div(growl inline="true" reference='5')
   
 
@@ -12,7 +12,7 @@ div.modal-body
 
     div#justificativa-desvinculo
         div(ng-if="desvinculoCtrl.respondido === true")
-            span.pull-center.visualizar-justificativa A solicitação de desvínculo do processo foi recusada pelo gerente. Veja a justificativa abaixo. 
+            span.pull-center.visualizar-justificativa A solicitação de desvínculo do protocolo foi recusada pelo gerente. Veja a justificativa abaixo. 
             br
             br
             label.label-justificativa(ng-if="desvinculoCtrl.respondido === true") Justificativa:

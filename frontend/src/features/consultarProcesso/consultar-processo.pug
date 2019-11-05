@@ -15,7 +15,7 @@ div
 		pesquisar-todas-gerencias="false",
 		filtrar-por-usuario="false")
 
-	h4 Lista de processos
+	h4 Lista de protocolos
 
 	hr
 	.row
@@ -25,7 +25,7 @@ div
 					thead
 						tr
 							th.col-md-1
-							th.col-md-1 Processo
+							th.col-md-1 Protocolo
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
 							th.col-md-2 Licença
@@ -66,7 +66,7 @@ div
 											li
 												a(ng-click="consultarProcesso.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
+													span Visualizar protocolo
 											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE")
 												a(ng-click="consultarProcesso.downloadPDFparecer(processo)")
 													i.fa.fa-download

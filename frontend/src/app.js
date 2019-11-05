@@ -292,7 +292,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
             deveFiltrarPorUsuario: true
 		},
 		{
-			titulo: 'Consultar processo',
+			titulo: 'Consultar protocolo',
 			icone: 'glyphicon glyphicon-search',
 			url: function() {
 

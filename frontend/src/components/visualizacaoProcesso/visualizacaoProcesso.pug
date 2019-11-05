@@ -6,13 +6,13 @@
 			span(aria-hidden='true') ×
 			span.sr-only Fechar
 
-		h4.modal-title Visualizar Processo
+		h4.modal-title Visualizar Protocolo
 
 	div.modal-body
 
 		ul.nav.nav-tabs(role="tablist")
 			li.active(role="presentation")
-				a(data-toggle="tab", data-target="#tabDadosProcesso") Dados do Processo
+				a(data-toggle="tab", data-target="#tabDadosProcesso") Dados do Protocolo
 			li(role="tab")
 				a(data-toggle="tab", data-target="#tabCaracterizacao") Solicitação
 			li(role="tab")
@@ -25,7 +25,7 @@
 				blockquote.success
 
 					div.row
-						label.col-sm-4 Processo:
+						label.col-sm-4 Protocolo:
 						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.numero ? modalVisualizacaoProcessoCtrl.processo.numero : modalVisualizacaoProcessoCtrl.processo.numeroProcesso}}
 
 					div.row

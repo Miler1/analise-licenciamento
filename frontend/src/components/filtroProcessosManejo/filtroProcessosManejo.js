@@ -64,7 +64,7 @@ var FiltroProcessosManejo = {
 				ctrl.statusLicenca = response.data;
 			})
 			.catch(function(){
-				mensagem.warning('Não foi possível obter a lista de status do processo do manejo.');
+				mensagem.warning('Não foi possível obter a lista de status do protocolo do manejo.');
 			});
 
 		this.pesquisar = function(pagina){
@@ -85,7 +85,7 @@ var FiltroProcessosManejo = {
 					if(!!response.data.texto)
 						mensagem.warning(response.data.texto);
 					else
-						mensagem.error("Ocorreu um erro ao buscar a lista de processos do manejo.");
+						mensagem.error("Ocorreu um erro ao buscar a lista de protocolos do manejo.");
 				});
 
 			processoManejoService.getProcessosCount(ctrl.filtro)
@@ -96,7 +96,7 @@ var FiltroProcessosManejo = {
 				if(!!response.data.texto)
 					mensagem.warning(response.data.texto);
 				else
-					mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
+					mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 			});
 
 			$rootScope.$broadcast('atualizarContagemProcessosManejo');

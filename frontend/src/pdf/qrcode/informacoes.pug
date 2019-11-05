@@ -42,7 +42,7 @@ body
 			h4 Secretaria de Estado de Meio Ambiente e Sustentabilidade
 			h4 Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR
 	p
-		strong Processo Nº:
+		strong Protocolo Nº:
 		|	${processo.numero}
 	p
 		strong Requerente / Arrendatário:
@@ -57,7 +57,7 @@ body
 		strong Referente a pendência:
 		br
 		| \#{if analiseArea == "ANALISE_JURIDICA"}
-		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+		| Em atenção a solicitação protocolada nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
 		| no qual solicita ${licencas} para
 		| \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
 		| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
@@ -66,12 +66,12 @@ body
 		| \#{/if}
 
 		| \#{else}
-		| Em atenção ao processo protocolado nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
+		| Em atenção a solicitação protocolada nesta secretaria, sob o nº ${processo.numero} em ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)},
 		| no qual solicita ${licencas} para
 		| \#{list atividadesCaracerizacao, as:'atividadeCaracterizacao'}
 		| ${atividadeCaracterizacao.atividade.nome} - ${atividadeCaracterizacao.atividade.parametro.codigo} - ${atividadeCaracterizacao.atividade.potencialPoluidor.codigo},
 		| \#{/list}
-		| no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do processo.
+		| no município de ${empreendimento.endereco.municipio.nome}, notificamos V.Sa. a atender, dentro do prazo estabelecido, as exigências relacionadas abaixo, para que possamos dar prosseguimento à análise do protocolo.
 		| \#{/else}
 
 	p
@@ -83,10 +83,10 @@ body
 
 	p
 		| \#{if analiseArea == 'ANALISE_JURIDICA'}
-		| Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido processo.
+		| Outrossim, informamos que o não cumprimento da solicitação supracitada, no prazo estipulado acima, implicará no arquivamento do referido protocolo.
 		| \#{/if}
 		| \#{if analiseArea == 'ANALISE_TECNICA'}
-		| Outrossim, informo que o não comprimento da solicitação supracitada, noprazo estipulado acima, implicará no arquivamento do referido processo.
+		| Outrossim, informo que o não comprimento da solicitação supracitada, noprazo estipulado acima, implicará no arquivamento do referido protocolo.
 		| \#{/if}
 
 	div.rodape

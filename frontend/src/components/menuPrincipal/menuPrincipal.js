@@ -81,7 +81,7 @@ var MenuPrincipal = {
 					if(!!response.data.texto)
 						mensagem.warning(response.data.texto);
 					else
-						mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
+						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
 		}
 

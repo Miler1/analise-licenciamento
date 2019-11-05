@@ -106,7 +106,7 @@ var Parecer = {
                     if(response.data === null) {
 
                         ctrl.analiseTecnica.parecer = null;
-                        mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+                        mensagem.error('Não foi encontrado um parecer para esse número de protocolo.');
                         return;
                     }
                     ctrl.analiseTecnica.parecer = response.data.parecer;

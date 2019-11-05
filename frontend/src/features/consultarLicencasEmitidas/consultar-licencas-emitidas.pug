@@ -16,7 +16,7 @@ div
 					thead
 						tr
 							th.col-md-2 Nº título
-							th.col-md-2 Processo
+							th.col-md-2 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-3 Empreendimento
 							th.col-md-1 Município
@@ -42,7 +42,7 @@ div
 											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO")
 												a(ng-click="consultarLicencas.visualizarProcesso(licenca)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
+													span Visualizar protocolo
 											li(ng-if="consultarLicencas.isSuspensaoVisivel(licenca)")
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
 													i.glyphicon.glyphicon-lock
