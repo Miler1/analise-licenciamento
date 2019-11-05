@@ -113,14 +113,14 @@ div#conclusao
                             input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento')
                             |  Retificação do empreendimento
                         label.checkbox-inline
-                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()")
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolicitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()")
                             |  Retificação da solitação
-                        div.retificacao-com-geo(ng-if='ctrl.notificacao.retificacaoSolitacao')
+                        div.retificacao-com-geo(ng-if='ctrl.notificacao.retificacaoSolicitacao')
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolitacaoComGeo', value="true")
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="true")
                                 | Com alteração GEO
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolitacaoComGeo', value="false")
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="false")
                                 | Sem alteração GEO
 
                 br

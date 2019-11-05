@@ -28,8 +28,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao = {};
 	ctrl.notificacao.documentacao = null;
 	ctrl.notificacao.retificacaoEmpreendimento = null;
-	ctrl.notificacao.retificacaoSolitacao = null;
-	ctrl.notificacao.retificacaoSolitacaoComGeo = null;
+	ctrl.notificacao.retificacaoSolicitacao = null;
+	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	ctrl.tiposUpload = app.utils.TiposUpload;
 
 	var getLayer = function(descricao){
@@ -929,7 +929,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolitacao && ctrl.notificacao.retificacaoSolitacaoComGeo !== undefined))) {
+		if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo !== undefined))) {
 			return false;
 		}
 
@@ -1105,7 +1105,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.checkedRetificacaoSolicitacao = function() {
 
-		ctrl.notificacao.retificacaoSolitacaoComGeo = null;
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	};
 
 };
