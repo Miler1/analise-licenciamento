@@ -556,7 +556,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis) {
 
-            if (!orgaoResponsavel.sigla.equals("IPHAN") && !orgaoResponsavel.sigla.equals("IBAMA")) {
+            if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
 
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
@@ -575,7 +575,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis) {
 
-            if (!orgaoResponsavel.sigla.equals("IPHAN") && !orgaoResponsavel.sigla.equals("IBAMA")) {
+            if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
 
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
@@ -594,7 +594,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
 
-            if (!orgaoResponsavel.sigla.equals("IPHAN") && !orgaoResponsavel.sigla.equals("IBAMA")) {
+            if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
 
                 List<String> destinatarios = new ArrayList<String>();
                 destinatarios.add(orgaoResponsavel.email);
