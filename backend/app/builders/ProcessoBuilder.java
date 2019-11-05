@@ -4,18 +4,14 @@ import models.Processo;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
-import org.hibernate.type.IntegerType;
-import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.StringType;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.hibernate.type.Type;
 
 public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
@@ -25,7 +21,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ESTADO_EMPREENDIMENTO_ALIAS = "est";
 	private static final String ANALISE_ALIAS = "ana";
 	private static final String ANALISE_JURIDICA_ALIAS = "anj";
-	private static final String CARACTERIZACOES_ALIAS = "carac";
+	private static final String CARACTERIZACAO_ALIAS = "carac";
 	private static final String ATIVIDADE_CARACTERIZACAO_ALIAS = "atc";
 	private static final String ATIVIDADE_ALIAS = "atv";
 	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
@@ -87,7 +83,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder addAnaliseAlias() {
 
-		addAlias("analises", ANALISE_ALIAS);
+		addAlias("analise", ANALISE_ALIAS);
 
 		return this;
 	}
@@ -127,18 +123,18 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addCaracterizacoesAlias() {
+	public ProcessoBuilder addCaracterizacaoAlias() {
 
-		addAlias("caracterizacoes", CARACTERIZACOES_ALIAS);
+		addAlias("caracterizacao", CARACTERIZACAO_ALIAS);
 
 		return this;
 	}
 
 	public ProcessoBuilder addAtividadeCaracterizacaoAlias() {
 
-		addCaracterizacoesAlias();
+		addCaracterizacaoAlias();
 
-		addAlias(CARACTERIZACOES_ALIAS+".atividadesCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
+		addAlias(CARACTERIZACAO_ALIAS +".atividadesCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
 
 		return this;
 	}
@@ -151,7 +147,6 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		return this;
 	}
-
 
 	public ProcessoBuilder addTipologiaAtividadeAlias() {
 
@@ -190,7 +185,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		} else {
 
-			addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS);
+ 			addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS);
 		}
 
 		return this;
@@ -269,8 +264,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		sb.append("(SELECT string_agg(t.sigla, '-') ");
 		sb.append("FROM licenciamento.tipo_licenca t ");
 		sb.append("INNER JOIN licenciamento.caracterizacao c ON t.id = c.id_tipo_licenca ");
-		sb.append("INNER JOIN analise.rel_processo_caracterizacao r ON c.id = r.id_caracterizacao ");
-		sb.append("WHERE r.id_processo = {alias}.id) AS licencas");
+		sb.append("INNER JOIN analise.processo p ON c.id = p.id_caracterizacao ");
+		sb.append("WHERE p.id = {alias}.id) AS licencas");
 
 		addProjection(Projections.sqlProjection(sb.toString(), new String[]{"licencas"}, new org.hibernate.type.Type[]{StringType.INSTANCE}));
 

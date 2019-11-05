@@ -330,6 +330,12 @@ var FiltroProcessos = {
 
 			ctrl.pesquisar();
 		});
+
+		$rootScope.$on('rootPesquisarProcessos', function(event){
+
+			ctrl.pesquisar();
+		});
+
 	},
 
 	templateUrl: 'components/filtroProcessos/filtroProcessos.html'

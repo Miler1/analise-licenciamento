@@ -60,9 +60,9 @@ public class VerificarNotificacoes extends GenericJob {
 					analise.temNotificacaoAberta = false;
 					analise._save();
 
-					List<Long> idsCaracterizacoes = ListUtil.getIds(analise.processo.caracterizacoes);
-
-					Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
+					Caracterizacao caracterizacao = Caracterizacao.findById(analise.processo.caracterizacao.id);
+					caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.ARQUIVADO);
+					caracterizacao._save();
 
 					enviarEmailArquivamento(analise);
 
@@ -75,8 +75,7 @@ public class VerificarNotificacoes extends GenericJob {
 					for(Notificacao notificacao : notificacoes) {
 						
 						SolicitacaoDocumentoCaracterizacao solicitacaoDocumentoCaracterizacao = 
-								SolicitacaoDocumentoCaracterizacao.findByTipoAndCaracterizacao(notificacao.tipoDocumento, analise.processo.getCaracterizacao());
-
+								SolicitacaoDocumentoCaracterizacao.findByTipoAndCaracterizacao(notificacao.tipoDocumento, analise.processo.caracterizacao);
 						
 						if(notificacao.documentoCorrigido != null) {
 							
@@ -98,11 +97,9 @@ public class VerificarNotificacoes extends GenericJob {
 						AnaliseJuridica novaAnaliseJuridica = analise.analiseJuridica.gerarCopia(true);
 						novaAnaliseJuridica._save();
 
-						for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
-
-							caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
-							caracterizacao._save();
-						}
+						Caracterizacao caracterizacao = Caracterizacao.findById(analise.processo.caracterizacao.id);
+						caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
+						caracterizacao._save();
 
 						analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.RESOLVER_NOTIFICACAO_JURIDICA);
 						
@@ -114,11 +111,9 @@ public class VerificarNotificacoes extends GenericJob {
 						AnaliseTecnica novaAnaliseTecnica = analise.analiseTecnica.gerarCopia(true);
 						novaAnaliseTecnica._save();
 
-						for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
-
-							caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
-							caracterizacao._save();
-						}
+						Caracterizacao caracterizacao = Caracterizacao.findById(analise.processo.caracterizacao.id);
+						caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
+						caracterizacao._save();
 						
 						/**
 						 * Workaround para persistir as licenças e os pareceres técnicos restrições

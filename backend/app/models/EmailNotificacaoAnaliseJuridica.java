@@ -28,7 +28,7 @@ public class EmailNotificacaoAnaliseJuridica extends EmailNotificacao {
 		try {
 		
 			List<String> tiposlicenca = new ArrayList<String>();
-			for(Caracterizacao caracterizacao : this.analiseJuridica.analise.processo.caracterizacoes) {
+			for(Caracterizacao caracterizacao : this.analiseJuridica.analise.processo.empreendimento.caracterizacoes) {
 				
 				tiposlicenca.add(caracterizacao.tipoLicenca.nome);
 			}

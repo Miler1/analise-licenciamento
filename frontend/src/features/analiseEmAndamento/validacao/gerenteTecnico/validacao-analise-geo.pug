@@ -26,7 +26,10 @@ section.margin-bottom-md
 
 section
 
-	button.btn.btn-default.pull-left.posicao-cancelar-gerente(ng-click="validacaoAnaliseGeoGerente.cancelar()")
+	button.btn.btn-default.pull-left.posicao-cancelar-gerente(title='Cancelar análise',
+                                    ng-bootbox-title='Confirmação',
+                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                    ng-bootbox-confirm-action="validacaoAnaliseGeoGerente.cancelar()")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
 	

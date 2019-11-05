@@ -459,7 +459,7 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 			
 			if (tipoResultadoAnalise.id == tipoResultadoAnalise.INDEFERIDO) {
 				
-				List<Long> idsCaracterizacoes = ListUtil.getIds(analise.processo.caracterizacoes);
+				List<Long> idsCaracterizacoes = ListUtil.getIds(analise.processo.empreendimento.caracterizacoes);
 				
 				Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
 				

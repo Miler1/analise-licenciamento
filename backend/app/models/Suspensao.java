@@ -119,7 +119,7 @@ public class Suspensao extends GenericModel {
 
 		int numLicencasSuspensas = 0;
 
-		for(Caracterizacao caracterizacao : processo.caracterizacoes) {
+		for(Caracterizacao caracterizacao : processo.empreendimento.caracterizacoes) {
 			if(caracterizacao.isSuspensa())
 				numLicencasSuspensas++;
 		}

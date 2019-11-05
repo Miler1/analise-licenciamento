@@ -92,7 +92,7 @@ var Parecer = {
         function setAnaliseTecnica(value) {
 
             ctrl.analiseTecnica.documentos = value.documentos || [];
-            ctrl.analiseTecnica.analisesDocumentos = !_.isEmpty(value.analisesDocumentos) ? value.analisesDocumentos : criarAnalisesDocumentos(value.analise.processo.caracterizacoes[0].documentosEnviados);
+            ctrl.analiseTecnica.analisesDocumentos = !_.isEmpty(value.analisesDocumentos) ? value.analisesDocumentos : criarAnalisesDocumentos(value.analise.processo.caracterizacao.documentosEnviados);
 
             ctrl.formParecer = ctrl.formularioParecer;
             ctrl.formResultado = ctrl.formularioResultado;

@@ -179,10 +179,10 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
         validacaoAnaliseGerenteService.concluir(params)
 			.then(function(response){
-
-                mensagem.success("Analise GEO finalizada!");
                 $location.path("analise-gerente");
-
+                $timeout(function() {
+                    mensagem.success("Analise Gerente finalizada!", {referenceId: 5});
+                }, 0);
             },function(error){
 				mensagem.error(error.data.texto);
 			});
@@ -349,7 +349,14 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 };
 
     function openModalNotificacao(inconsistencia) {
-        var modalInstance = $uibModal.open({
+
+        var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+
+        var restricao = this.dadosRestricoesProjeto.find(function(restricao) {
+            return restricao.sobreposicaoCaracterizacaoEmpreendimento.id === sobreposicaoInconsistencia.id;
+        });
+
+        $uibModal.open({
 
             component: 'modalNotificacaoRestricao',
             size: 'lg',
@@ -358,9 +365,14 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
                 inconsistencia: function() {
 
                     return inconsistencia;
+                },
+
+                restricao: function() {
+                    return restricao;
                 }
             }    
         });
+
     }
 
 };

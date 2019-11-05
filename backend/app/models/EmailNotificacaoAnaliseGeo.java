@@ -34,10 +34,8 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
         try {
 
             List<String> tiposlicenca = new ArrayList<String>();
-            for(Caracterizacao caracterizacao : this.analiseGeo.analise.processo.caracterizacoes) {
+            tiposlicenca.add(this.analiseGeo.analise.processo.caracterizacao.tipoLicenca.nome);
 
-                tiposlicenca.add(caracterizacao.tipoLicenca.nome);
-            }
             String licencas = StringUtils.join(tiposlicenca, ",");
 
 //            List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
