@@ -64,15 +64,15 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analise = AnaliseGeo.findByNumeroProcesso(numeroProcesso);
 
-        if(analise == null){
+        if(analise == null) {
 
             renderMensagem(Mensagem.PARECER_NAO_ENCONTRADO);
 
-        }else if(!analise.inconsistencias.isEmpty()){
+        } else if(!analise.inconsistencias.isEmpty()) {
 
             renderMensagem(Mensagem.CLONAR_PARECER_COM_INCONSISTENCIA);
 
-        }else if(analise.inconsistencias.isEmpty()){
+        } else {
 
             renderJSON(analise, AnaliseGeoSerializer.parecer);
         }
@@ -239,9 +239,7 @@ public class AnalisesGeo extends InternalController {
 
         Processo processo = Processo.findById(idProcesso);
 
-        DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
-
-        renderJSON(dadosProcesso, CamadaGeoAtividadeSerializer.getDadosProjeto);
+        renderJSON(processo.getDadosProcesso(), CamadaGeoAtividadeSerializer.getDadosProjeto);
 
     }
 
@@ -271,8 +269,7 @@ public class AnalisesGeo extends InternalController {
 
         Processo processo = Processo.findById(idProcesso);
 
-        renderJSON(Processo.preencheListaRestricoes(processo.getCaracterizacao()), CamadaGeoAtividadeSerializer.getDadosRestricoesProjeto);
-
+        renderJSON(Processo.preencheListaRestricoes(processo.caracterizacao), CamadaGeoAtividadeSerializer.getDadosRestricoesProjeto);
 
     }
 

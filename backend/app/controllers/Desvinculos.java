@@ -62,8 +62,8 @@ public class Desvinculos extends GenericController {
         Processo processo = Processo.findById(idProcesso);
 
         Desvinculo desvinculo = Desvinculo.find("id_analise_geo = :id and id_usuario = :idUsuario")
-                .setParameter("id", processo.analises.get(0).analisesGeo.get(0).id)
-                .setParameter("idUsuario",processo.analises.get(0).analisesGeo.get(0).analistasGeo.get(0).usuario.id)
+                .setParameter("id", processo.analise.analisesGeo.get(0).id)
+                .setParameter("idUsuario",processo.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
                 .first();
 
         renderJSON(desvinculo, DesvinculoSerializar.list);

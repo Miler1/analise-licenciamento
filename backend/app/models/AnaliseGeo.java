@@ -273,15 +273,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     private void iniciarLicencas() {
 
         List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();
-
-        for (Caracterizacao caracterizacao : this.analise.processo.caracterizacoes) {
-
-            LicencaAnalise novaLicencaAnalise = new LicencaAnalise();
-            novaLicencaAnalise.caracterizacao = caracterizacao;
-            novaLicencaAnalise.validade = caracterizacao.tipoLicenca.validadeEmAnos;
-
-            novasLicencasAnalise.add(novaLicencaAnalise);
-        }
+        LicencaAnalise novaLicencaAnalise = new LicencaAnalise();
+        novaLicencaAnalise.caracterizacao = this.analise.processo.caracterizacao;
+        novaLicencaAnalise.validade = this.analise.processo.caracterizacao.tipoLicenca.validadeEmAnos;
+        novasLicencasAnalise.add(novaLicencaAnalise);
 
         updateLicencasAnalise(novasLicencasAnalise);
     }
@@ -434,20 +429,20 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
-            if(this.analise.processo.getCaracterizacao().origemSobreposicao.equals(EMPREENDIMENTO)){
+            if(this.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)){
 
-                List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacaoEmpreendimento = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacaoEmpreendimento.stream().distinct()
+                List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacaoEmpreendimento = this.analise.processo.caracterizacao.sobreposicoesCaracterizacaoEmpreendimento.stream().distinct()
                         .filter(distinctByKey(sobreposicaoCaracterizacaoEmpreendimento -> sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo)).collect(Collectors.toList());
 
                 for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacaoEmpreendimento ){
 
                     if (sobreposicaoCaracterizacaoEmpreendimento != null){
-                        enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoEmpreendimento);
+                        enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoEmpreendimento);
                     }
                 }
-            }else if (this.analise.processo.getCaracterizacao().origemSobreposicao.equals(ATIVIDADE)){
+            }else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
 
-                for(AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.getCaracterizacao().atividadesCaracterizacao){
+                for(AtividadeCaracterizacao atividadeCaracterizacao : this.analise.processo.caracterizacao.atividadesCaracterizacao){
 
                     List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade = atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividades.stream().distinct()
                             .filter(distinctByKey(sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo)).collect(Collectors.toList());
@@ -455,20 +450,20 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                     for(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade){
 
                         if(sobreposicaoCaracterizacaoAtividade != null){
-                            enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoAtividade);
+                            enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoAtividade);
                         }
                     }
                 }
 
-            } else if (this.analise.processo.getCaracterizacao().origemSobreposicao.equals(COMPLEXO)) {
+            } else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
 
-                List<SobreposicaoCaracterizacaoComplexo> sobreposicoesCaracterizacaoComplexo = this.analise.processo.getCaracterizacao().sobreposicoesCaracterizacaoComplexo.stream().distinct()
+                List<SobreposicaoCaracterizacaoComplexo> sobreposicoesCaracterizacaoComplexo = this.analise.processo.caracterizacao.sobreposicoesCaracterizacaoComplexo.stream().distinct()
                         .filter(distinctByKey(sobreposicaoCaracterizacaoComplexo -> sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.codigo)).collect(Collectors.toList());
 
                 for(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo : sobreposicoesCaracterizacaoComplexo){
 
                     if(sobreposicaoCaracterizacaoComplexo != null){
-                        enviarEmailComunicado(this.analise.processo.getCaracterizacao(), sobreposicaoCaracterizacaoComplexo);
+                        enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoComplexo);
                     }
                 }
             }

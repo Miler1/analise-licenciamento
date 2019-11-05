@@ -80,8 +80,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@Column(name="declaracao_veracidade_informacoes")
 	public Boolean declaracaoVeracidadeInformacoes;
 
-	@ManyToMany(mappedBy="caracterizacoes")
-	public List<Processo> processos;	
+	@OneToOne(mappedBy="caracterizacao")
+	public Processo processo;
 	
 	@OneToMany(mappedBy="caracterizacao")
 	public List<Licenca> licencas;

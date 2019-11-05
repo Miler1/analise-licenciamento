@@ -275,7 +275,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
                     var documentosProcesso = angular.copy(ctrl.analiseJuridica
                                                 .analise
                                                 .processo
-                                                .caracterizacoes[0]
+                                                .caracterizacao
                                                 .documentosEnviados);
 
                     ctrl.analisesDocumentos = documentosProcesso.map(function(documento){

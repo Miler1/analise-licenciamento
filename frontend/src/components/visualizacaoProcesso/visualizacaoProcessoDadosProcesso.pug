@@ -6,7 +6,7 @@
 			blockquote.success
 				div.row
 					label.col-sm-4 Tipo do Licenciamento:
-					span.col-sm-8(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes") {{caracterizacao.tipo.nome}} 
+					span.col-sm-8 {{ modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.tipo.nome }} 
 
 				div.row
 					label.col-sm-4 Licença Solicitada:
@@ -16,13 +16,13 @@
 			blockquote.success
 				div.row
 					label.col-sm-4 Tipologia:
-					span.col-sm-8(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
-						div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.tipologia.nome}} 
+					span.col-sm-8
+						div(ng-repeat="atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.tipologia.nome}} 
 				div.row
 					label.col-sm-4 Atividade(s) Licenciada(s):
 					.col-sm-8
-						div(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
-							span(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.nome}} 
+						div
+							span(ng-repeat="atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.nome}} 
 									div(ng-repeat='atividadeCnae in atividadeCaracterizacao.atividadesCnae')
 										label CNAE
 										ul
@@ -35,8 +35,8 @@
 				div.panel-footer.text-center
 					.media-div
 						.media-context
-							div(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
-								div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao")
+							div
+								div(ng-repeat="atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao")
 									h5.info {{atividadeCaracterizacao.atividade.nome}}
 									div(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
 										ul(style="margin-left:25px")
@@ -49,8 +49,8 @@
 				div.panel-footer.text-center
 					.media-div
 						.media-context
-							div(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
-								div(ng-repeat="atividadeCaracterizacao in caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.getMaiorPotencialPoluidor(caracterizacao.atividadesCaracterizacao).codigo}}
+							div
+								div(ng-repeat="atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.getMaiorPotencialPoluidor(modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao).codigo}}
 	div.row
 		.col-xs-12.col-md-6
 			blockquote.success
