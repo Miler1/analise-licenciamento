@@ -170,3 +170,8 @@ MUNICIPIO_INVALIDO_NAO_INFORMADO=Município não informado ou inválido.
 #Entrada Única
 PERFIL_NAO_VINCULADO_AO_USUARIO=Este perfil não está vinculado a este login no Entrada Única.
 ERRO_COMUNICACAO_ENTRADA_UNICA = Não foi possível efetuar a comunicação com o Entrada Única.
+
+#
+# Notificacao
+#
+ERRO_SALVAMENTO_NOTIFICACAO=Não foi possível salvar a notificação, contate o administrador do sistema.

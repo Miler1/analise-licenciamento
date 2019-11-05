@@ -253,4 +253,9 @@ public class Documento extends GenericModel implements Identificavel {
 
 		return this.arquivo.getName();
 	}
+
+	public Boolean getIsType(Long idTipo) {
+
+		return idTipo == this.tipo.id;
+	}
 }

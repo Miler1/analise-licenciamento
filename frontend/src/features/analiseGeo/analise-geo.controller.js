@@ -25,6 +25,12 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.LegendasTipoSobreposicao = app.utils.LegendasTipoSobreposicao;
 	ctrl.dadosRestricoesProjeto = [];
 	ctrl.listaInconsistencias = [];
+	ctrl.notificacao = {};
+	ctrl.notificacao.documentacao = null;
+	ctrl.notificacao.retificacaoEmpreendimento = null;
+	ctrl.notificacao.retificacaoSolicitacao = null;
+	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+	ctrl.tiposUpload = app.utils.TiposUpload;
 
 	var getLayer = function(descricao){
 
@@ -791,22 +797,37 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			});
 	};
 
-	ctrl.upload = function(file, invalidFile) {
+	ctrl.upload = function(file, invalidFile, tipoUpload) {
 
 		if(file) {
 
 				uploadService.save(file)
 						.then(function(response) {
 
-							ctrl.analiseGeo.documentos.push({
+							if(tipoUpload === app.utils.TiposUpload.PARECER_ANALISE_GEO) {
 
-										key: response.data,
-										nomeDoArquivo: file.name,
-										tipoDocumento: {
+								ctrl.analiseGeo.documentos.push({
 
-												id: app.utils.TiposDocumentosAnalise.ANALISE_GEO
-										}
+									key: response.data,
+									nomeDoArquivo: file.name,
+									tipo: {
+
+											id: app.utils.TiposDocumentosAnalise.PARECER_ANALISE_GEO
+									}
 								});
+
+							} else if(tipoUpload === app.utils.TiposUpload.NOTIFICACAO){
+
+								ctrl.analiseGeo.documentos.push({
+
+									key: response.data,
+									nomeDoArquivo: file.name,
+									tipo: {
+
+											id: app.utils.TiposDocumentosAnalise.NOTIFICACAO
+									}
+								});
+							}
 
 						}, function(error){
 
@@ -907,6 +928,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
 			return false;
 		}
+
+		if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo !== undefined))) {
+			return false;
+		}
+
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 			return true;
 		}
@@ -948,6 +974,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 
 		ctrl.analiseGeo.analise.processo.empreendimento = null;
+		
+		ctrl.analiseGeo.notificacoes = [];
+		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
 
 		analiseGeoService.concluir(ctrl.analiseGeo)
 			.then(function(response) {
@@ -964,7 +993,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 							a.href = URL.createObjectURL(data.data.response.blob);
 							a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
 							a.click();
-					  }
+						}
 
 						documentoAnaliseService.generatePDFCartaImagemGeo(params)
 							.then(function(data, status, headers){
@@ -1049,6 +1078,33 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			});
 		});
 		return restricoes;
+	};
+
+	ctrl.getDocumentosParecer = function() {
+		
+		var documentosParecer = [];
+
+		documentosParecer = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+			return documento.tipo.id === app.utils.TiposDocumentosAnalise.PARECER_ANALISE_GEO;
+		});
+
+		return documentosParecer;
+	};
+
+	ctrl.getDocumentosNotificacao = function() {
+		
+		var documentosNotificacao = [];
+
+		documentosNotificacao = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+			return documento.tipo.id === app.utils.TiposDocumentosAnalise.NOTIFICACAO;
+		});
+
+		return documentosNotificacao;
+	};
+
+	ctrl.checkedRetificacaoSolicitacao = function() {
+
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	};
 
 };
