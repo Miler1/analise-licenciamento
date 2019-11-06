@@ -154,7 +154,7 @@ public class Analistas extends InternalController {
 			 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
 			 */
 			default:
-				pessoas = UsuarioAnalise.findAnalistasByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+				pessoas = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 				break;
 
 		}

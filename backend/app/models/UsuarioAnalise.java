@@ -119,7 +119,7 @@ public class UsuarioAnalise extends GenericModel  {
 			.setParameter("id_analista_tecnico", analistaTecnico.usuario.id).first();
 	}
 
-	public static List<UsuarioAnalise> findAnalistasByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
+	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
 
 		List<UsuarioAnalise> usuarios = UsuarioAnalise.getUsuarios(codigoPerfil, siglaSetor);
 

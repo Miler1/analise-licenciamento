@@ -114,7 +114,7 @@ public class AnalistaGeo extends GenericModel {
 
 	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findAnalistasByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
 		if (analistasGeo == null || analistasGeo.size() == 0)
 			throw new WebServiceException(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto());
@@ -161,7 +161,7 @@ public class AnalistaGeo extends GenericModel {
 
 	public static List<UsuarioAnalise> buscarAnalistasGeoByIdProcesso(String setorAtividade) {
 
-		List<UsuarioAnalise> usuarios = UsuarioAnalise.findAnalistasByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+		List<UsuarioAnalise> usuarios = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
 		return usuarios.stream().filter(usuario -> !usuario.id.equals(Auth.getUsuarioSessao().id)).collect(Collectors.toList());
 
