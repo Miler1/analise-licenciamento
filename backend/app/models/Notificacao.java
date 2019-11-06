@@ -76,9 +76,6 @@ public class Notificacao extends GenericModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataFinalNotificacao;
 
-	@Column(name="resposta_notificacao")
-	public String respostaNotificacao;
-
 	@Column(name="documentacao")
 	public Boolean documentacao;
 
@@ -97,17 +94,30 @@ public class Notificacao extends GenericModel {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 
-	public Notificacao(AnaliseGeo analiseGeo, int prazoNotificacao, Notificacao notificacao, List<Documento> documentos){
+	@Column(name="prazo_notificacao")
+	public Integer prazoNotificacao;
+
+	@Column(name="justificativa_documentacao")
+	public String justificativaDocumentacao;
+
+	@Column(name="justificativa_retificacao_empreendimento")
+	public String justificativaRetificacaoEmpreendimento;
+
+	@Column(name="justificativa_retificacao_solicitacao")
+	public String justificativaRetificacaoSolicitacao;
+
+	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos){
 		this.analiseGeo = analiseGeo;
 		this.resolvido = false;
 		this.ativo = true;
 		this.dataNotificacao = new Date();
 		this.justificativa = analiseGeo.despacho;
-		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, prazoNotificacao);
+		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
 		this.documentacao = notificacao.documentacao;
 		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
 		this.retificacaoSolicitacao = notificacao.retificacaoSolicitacao;
 		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
+		this.prazoNotificacao = notificacao.prazoNotificacao;
 		this.documentos = new ArrayList<>();
 
 		documentos.stream().forEach(documento -> {

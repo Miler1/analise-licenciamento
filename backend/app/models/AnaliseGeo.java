@@ -446,8 +446,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this._save();
 
-        alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
-
         this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this));
 
         if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
@@ -521,7 +519,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             Notificacao novaNotificacao = notificacoes.get(0);
 
-            enviarEmailNotificacao(analise.prazoNotificacao, novaNotificacao, analise.documentos);
+            enviarEmailNotificacao(novaNotificacao, analise.documentos);
+
+            alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -537,16 +537,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         }
     }
 
-    public void enviarEmailNotificacao(int prazoNotificacao, Notificacao notificacao, List<Documento> documentos) throws Exception {
+    public void enviarEmailNotificacao(Notificacao notificacao, List<Documento> documentos) throws Exception {
 
         List<String> destinatarios = new ArrayList<String>();
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
         destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
-        Notificacao notificacaoSave = new Notificacao(this, prazoNotificacao, notificacao, documentos);
+        Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);
         notificacaoSave.save();
-        this.prazoNotificacao = prazoNotificacao;
+        this.prazoNotificacao = notificacao.prazoNotificacao;
 
         EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, destinatarios, notificacaoSave);
         emailNotificacaoAnaliseGeo.enviar();

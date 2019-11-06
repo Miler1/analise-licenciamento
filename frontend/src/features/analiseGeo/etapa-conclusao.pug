@@ -113,20 +113,20 @@ div#conclusao
                             input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento')
                             |  Retificação do empreendimento
                         label.checkbox-inline
-                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolicitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()")
-                            |  Retificação da solitação
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolicitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()", ng-checked = 'ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                            |  Retificação da solicitação
                         div.retificacao-com-geo(ng-if='ctrl.notificacao.retificacaoSolicitacao')
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="true")
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="true", ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disable='ctrl.notificacao.retificacaoEmpreendimento')
                                 | Com alteração GEO
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="false")
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="false", ng-disable='ctrl.notificacao.retificacaoEmpreendimento')
                                 | Sem alteração GEO
 
                 br
                 div
                     label.obrigatorio Prazo para atendimento da notificação:
-                    select.prazo-dias(ng-model="ctrl.analiseGeo.prazoNotificacao", name="prazo")
+                    select.prazo-dias(ng-model="ctrl.notificacao.prazoNotificacao", name="prazo")
                         option(value="")
                         option(value="15") 15 dias
                         option(value="30") 30 dias
