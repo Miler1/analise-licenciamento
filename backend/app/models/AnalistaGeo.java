@@ -3,7 +3,6 @@ package models;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
-import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -23,7 +22,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -116,7 +114,7 @@ public class AnalistaGeo extends GenericModel {
 
 	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findAnalistasGeo(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findAnalistasByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
 		if (analistasGeo == null || analistasGeo.size() == 0)
 			throw new WebServiceException(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto());
@@ -163,17 +161,9 @@ public class AnalistaGeo extends GenericModel {
 
 	public static List<UsuarioAnalise> buscarAnalistasGeoByIdProcesso(String setorAtividade) {
 
-		List<UsuarioAnalise> todosAnalistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+		List<UsuarioAnalise> usuarios = UsuarioAnalise.findAnalistasByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-		List<UsuarioAnalise> analistasGeo = new ArrayList<>();
-
-		for (UsuarioAnalise analistaGeo : todosAnalistasGeo) {
-			if(analistaGeo.pessoa != null) {
-				analistasGeo.add(analistaGeo);
-			}
-		}
-
-		return analistasGeo.stream().filter(analista -> !analista.id.equals(Auth.getUsuarioSessao().id)).collect(Collectors.toList());
+		return usuarios.stream().filter(usuario -> !usuario.id.equals(Auth.getUsuarioSessao().id)).collect(Collectors.toList());
 
 	}
 

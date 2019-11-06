@@ -82,7 +82,7 @@ public class UsuarioAnalise extends GenericModel  {
 		return integracaoEntradaUnica.findUsuariosByPerfil(codigoPerfil);
 	}
 	
-	public static List<UsuarioAnalise> getUsuariosByPerfilSetor(String codigoPerfil, String siglaSetor) {
+	public static List<UsuarioAnalise> getUsuarios(String codigoPerfil, String siglaSetor) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
@@ -119,17 +119,12 @@ public class UsuarioAnalise extends GenericModel  {
 			.setParameter("id_analista_tecnico", analistaTecnico.usuario.id).first();
 	}
 
-	public static List<UsuarioAnalise> findAnalistasGeo(String codigoPerfil, String siglaSetor) {
+	public static List<UsuarioAnalise> findAnalistasByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
 
-		List<UsuarioAnalise> usuarios = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, siglaSetor);
-
-		return usuarios.stream().filter(usuarioAnalise -> usuarioAnalise.setores.stream().anyMatch(setor -> setor.siglaSetor.equals(siglaSetor) && usuarioAnalise.perfis.stream().anyMatch(perfil -> perfil.codigoPerfil.equals(codigoPerfil)))).collect(Collectors.toList());
-	}
-
-	public static List<UsuarioAnalise> findGerentes(String codigoPerfil, String siglaSetor) {
-
-		List<UsuarioAnalise> usuarios = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, siglaSetor);
+		List<UsuarioAnalise> usuarios = UsuarioAnalise.getUsuarios(codigoPerfil, siglaSetor);
 
 		return usuarios.stream().filter(usuarioAnalise -> usuarioAnalise.setores.stream().anyMatch(setor -> setor.siglaSetor.equals(siglaSetor) && usuarioAnalise.perfis.stream().anyMatch(perfil -> perfil.codigoPerfil.equals(codigoPerfil)))).collect(Collectors.toList());
+
 	}
+
 }

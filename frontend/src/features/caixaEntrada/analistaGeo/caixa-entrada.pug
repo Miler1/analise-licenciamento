@@ -55,14 +55,10 @@ div
 												a(ng-click="cxEntAnalistaGeo.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-											li(ng-if="!processo.desvinculoRespondido")
+											li
 												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculo(processo)")
 													i.glyphicon.glyphicon-link
-													span Solicitar desvínculo
-											li(ng-if="processo.desvinculoRespondido")
-												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculo(processo)")
-													i.glyphicon.glyphicon-link
-													span Visualizar solicitação de desvínculo
+													span {{ cxEntAnalistaGeo.textoDesvinculo(processo) }}
 				div
 				+paginacao('cxEntAnalistaGeo.paginacao', 'cxEntAnalistaGeo.onPaginaAlterada')
 

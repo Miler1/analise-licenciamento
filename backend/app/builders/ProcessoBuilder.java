@@ -37,6 +37,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String DIA_ANALISE_ALIAS = "da";
 	private static final String CONDICAO_ALIAS = "ca";
 	private static final String DESVINCULO_ALIAS = "dea";
+	private static final String DESVINCULO_ANALISTA_GEO_ALIAS = "dag";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
@@ -221,6 +222,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		}
 
 		return this;
+	}
+
+	public ProcessoBuilder addAnalistaGeoAlias() {
+
+		addDesvinculoAlias();
+		addAlias(DESVINCULO_ALIAS + ".analistaGeo", DESVINCULO_ANALISTA_GEO_ALIAS);
+
+		return this;
+
 	}
 
 	public ProcessoBuilder addAnalistaTecnicoAlias(boolean isLeftOuterJoin) {
@@ -523,7 +533,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder groupByDesvinculo() {
 
 		addDesvinculoAlias();
-		addProjection(Projections.groupProperty(DESVINCULO_ALIAS+".respostaGerente").as("desvinculoRespondido"));
+		addProjection(Projections.groupProperty(DESVINCULO_ALIAS + ".respostaGerente").as("desvinculoRespondido"));
+		addAnalistaGeoAlias();
+		addProjection(Projections.groupProperty(DESVINCULO_ANALISTA_GEO_ALIAS + ".login").as("loginUsuarioAnterior"));
 
 		return this;
 	}

@@ -12,7 +12,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
 	cxEntAnalistaGeo.primeiroAcesso = primeiroAcesso;
-
 	cxEntAnalistaGeo.processos = [];
 	cxEntAnalistaGeo.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_GEO;
 	cxEntAnalistaGeo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -86,6 +85,18 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 					}
 					
 				});
+	};
+
+	cxEntAnalistaGeo.textoDesvinculo = function(processo) {
+
+		var texto = 'Solicitar desvínculo';
+
+		if(processo.desvinculoRespondido && processo.loginUsuarioAnterior === $rootScope.usuarioSessao.usuarioEntradaUnica.login) {
+			texto = 'Visualizar solicitação de desvínculo';
+		}
+
+		return texto;
+
 	};
 
 	function primeiroAcesso(processo) {

@@ -70,7 +70,7 @@ public class Analistas extends InternalController {
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao =
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 
-		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, tipoAtividadeCaracterizacao.atividade.siglaSetor);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuarios(CodigoPerfil.ANALISTA_TECNICO, tipoAtividadeCaracterizacao.atividade.siglaSetor);
 
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 
@@ -97,7 +97,7 @@ public class Analistas extends InternalController {
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao =
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 
-		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, tipoAtividadeCaracterizacao.atividade.siglaSetor);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuarios(CodigoPerfil.ANALISTA_GEO, tipoAtividadeCaracterizacao.atividade.siglaSetor);
 
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 
@@ -121,7 +121,7 @@ public class Analistas extends InternalController {
 
 		List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeoByIdProcesso(siglaSetor);
 
-		renderJSON(analistasGeo);
+		renderJSON(analistasGeo, UsuarioSerializer.getConsultoresAnalistasGeo);
 
 	}
 
@@ -154,7 +154,7 @@ public class Analistas extends InternalController {
 			 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
 			 */
 			default:
-				pessoas = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+				pessoas = UsuarioAnalise.findAnalistasByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 				break;
 
 		}
@@ -192,7 +192,7 @@ public class Analistas extends InternalController {
 			 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
 			 */
 			default:
-				pessoas = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+				pessoas = UsuarioAnalise.getUsuarios(CodigoPerfil.ANALISTA_GEO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 				break;
 
 		}
