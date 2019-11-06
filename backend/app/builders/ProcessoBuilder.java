@@ -227,7 +227,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder addAnalistaGeoAlias() {
 
 		addDesvinculoAlias();
-		addAlias(DESVINCULO_ALIAS + ".analistaGeo", DESVINCULO_ANALISTA_GEO_ALIAS);
+		addAlias(DESVINCULO_ALIAS + ".analistaGeo", DESVINCULO_ANALISTA_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 

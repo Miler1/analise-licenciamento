@@ -45,7 +45,7 @@ public class Gerentes extends InternalController {
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 		
-		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, tipoAtividadeCaracterizacao.atividade.siglaSetor);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, tipoAtividadeCaracterizacao.atividade.siglaSetor);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}	

@@ -29,7 +29,7 @@ public class Coordenadores extends InternalController {
 
 			br.ufla.lemaf.beans.pessoa.Setor setor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado;
 
-			renderJSON(UsuarioAnalise.getUsuariosByPerfilSetor(codigoPerfil, setor.sigla),
+			renderJSON(UsuarioAnalise.findUsuariosByPerfilAndSetor(codigoPerfil, setor.sigla),
 					UsuarioSerializer.getConsultoresAnalistasGerentes);
 		}
 		
