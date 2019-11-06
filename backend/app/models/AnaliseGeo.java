@@ -995,7 +995,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             } else if (analiseGeo.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.SOLICITAR_AJUSTES) {
 
-                AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(analise.id);
+                AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(this.id);
                 UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);

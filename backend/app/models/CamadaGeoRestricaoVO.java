@@ -28,7 +28,7 @@ public class CamadaGeoRestricaoVO {
 
 		this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
 		this.item = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.nome;
-		this.tipo = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
+		this.tipo = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes++;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoEmpreendimento.geometria);
 		this.geometria = sobreposicaoCaracterizacaoEmpreendimento.geometria;
 		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao, sobreposicaoCaracterizacaoEmpreendimento.geometria, sobreposicaoCaracterizacaoEmpreendimento.distancia);
@@ -39,7 +39,7 @@ public class CamadaGeoRestricaoVO {
 
 		this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
 		this.item = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.nome;
-		this.tipo = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
+		this.tipo = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes++;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoAtividade.geometria);
 		this.geometria = sobreposicaoCaracterizacaoAtividade.geometria;
 		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoAtividade.tipoSobreposicao, sobreposicaoCaracterizacaoAtividade.geometria, sobreposicaoCaracterizacaoAtividade.distancia);
@@ -50,7 +50,7 @@ public class CamadaGeoRestricaoVO {
 
 		this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
 		this.item = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.nome;
-		this.tipo = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes;
+		this.tipo = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.codigo + "_" + Processo.indexDadosRestricoes++;
 		this.area = GeoCalc.areaHectare(sobreposicaoCaracterizacaoComplexo.geometria);
 		this.geometria = sobreposicaoCaracterizacaoComplexo.geometria;
 		this.descricao = Processo.getDescricaoRestricao(sobreposicaoCaracterizacaoComplexo.tipoSobreposicao, sobreposicaoCaracterizacaoComplexo.geometria, sobreposicaoCaracterizacaoComplexo.distancia);

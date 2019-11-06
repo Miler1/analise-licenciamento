@@ -1,6 +1,7 @@
 package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
+import models.CamadaGeoRestricaoVO;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -36,4 +37,11 @@ private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_id_
         this.caracterizacao = caracterizacao;
         this.geometria = geometria;
     }
+
+    public CamadaGeoRestricaoVO convertToVO() {
+
+        return new CamadaGeoRestricaoVO(this);
+
+    }
+
 }

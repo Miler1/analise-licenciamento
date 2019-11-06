@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import models.CamadaGeoRestricaoVO;
 import play.db.jpa.GenericModel;
 
 @Entity
@@ -42,4 +44,11 @@ public class SobreposicaoCaracterizacaoComplexo extends GenericModel {
 		this.caracterizacao = caracterizacao;
 		this.geometria = geometria;
 	}
+
+	public CamadaGeoRestricaoVO convertToVO() {
+
+		return new CamadaGeoRestricaoVO(this);
+
+	}
+
 }

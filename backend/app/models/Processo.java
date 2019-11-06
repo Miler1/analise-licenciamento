@@ -753,32 +753,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		if(caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
 
-			for(SobreposicaoCaracterizacaoEmpreendimento sobreposicao : caracterizacao.sobreposicoesCaracterizacaoEmpreendimento) {
-
-				indexDadosRestricoes++;
-				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
-
-			}
+			restricoes.addAll(caracterizacao.sobreposicoesCaracterizacaoEmpreendimento.stream().map(SobreposicaoCaracterizacaoEmpreendimento::convertToVO).collect(Collectors.toList()));
 
 		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
 
 			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = caracterizacao.atividadesCaracterizacao.stream().map(a -> a.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
+			restricoes.addAll(sobreposicoesCaracterizacaoAtividades.stream().map(SobreposicaoCaracterizacaoAtividade::convertToVO).collect(Collectors.toList()));
 
-			for(SobreposicaoCaracterizacaoAtividade sobreposicao : sobreposicoesCaracterizacaoAtividades) {
+		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
 
-				indexDadosRestricoes++;
-				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
-
-			}
-
-		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)){
-
-			for(SobreposicaoCaracterizacaoComplexo sobreposicao : caracterizacao.sobreposicoesCaracterizacaoComplexo) {
-
-				indexDadosRestricoes++;
-				restricoes.add(new CamadaGeoRestricaoVO(sobreposicao));
-
-			}
+			restricoes.addAll(caracterizacao.sobreposicoesCaracterizacaoComplexo.stream().map(SobreposicaoCaracterizacaoComplexo::convertToVO).collect(Collectors.toList()));
 
 		}
 
