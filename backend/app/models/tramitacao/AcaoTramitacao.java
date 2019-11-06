@@ -25,7 +25,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE = 15l;
 	public static final Long VALIDAR_DEFERIMENTO_TECNICO_PELO_GERENTE = 16l;
 	public static final Long VALIDAR_INDEFERIMENTO_TECNICO_PELO_GERENTE = 17l;
-	public static final Long INICIAR_PROCESSO = 18l;
+	public static final Long INICIAR_PROTOCOLO = 18l;
 	public static final Long VINCULAR_GERENTE = 19l;
 	public static final Long INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 20l;
 	public static final Long DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 21l;
@@ -39,12 +39,12 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long DEFERIR_ANALISE_JURIDICA_COORDENADOR_APROVADOR = 29l;
 	public static final Long SOLICITAR_AJUSTES_ANALISE_TECNICA_APROVADOR = 30l;
 	public static final Long EMITIR_LICENCA = 31l;
-	public static final Long SUSPENDER_PROCESSO = 32l;
+	public static final Long SUSPENDER_PROTOCOLO = 32l;
 	public static final Long REEMITIR_LICENCA = 33l;
-	public static final Long CANCELAR_PROCESSO = 34l;
+	public static final Long CANCELAR_PROTOCOLO = 34l;
 	public static final Long RESOLVER_NOTIFICACAO_JURIDICA = 35l;
 	public static final Long RESOLVER_NOTIFICACAO_TECNICA = 36l;
-	public static final Long ARQUIVAR_PROCESSO = 37l;
+	public static final Long ARQUIVAR_PROTOCOLO = 37l;
 	public static final Long ARQUIVAR_POR_RENOVACAO = 38l;
 	public static final Long RENOVAR_SEM_ALTERACAO = 39l;
 	public static final Long INICIAR_ANALISE_TECNICA_MANEJO = 40l;

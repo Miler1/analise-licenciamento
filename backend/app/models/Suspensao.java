@@ -84,7 +84,7 @@ public class Suspensao extends GenericModel {
 
 			if(deveSuspenderProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
-				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROCESSO, usuarioExecutor);
+				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROTOCOLO, usuarioExecutor);
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 			}
 

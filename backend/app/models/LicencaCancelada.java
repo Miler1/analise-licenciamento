@@ -66,7 +66,7 @@ public class LicencaCancelada extends GenericModel{
 			
 			if(deveCancelarProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
-				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROCESSO);
+				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROTOCOLO);
 			}
 			
 			enviarNotificacaoCanceladoPorEmail();

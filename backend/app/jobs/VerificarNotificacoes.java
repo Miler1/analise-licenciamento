@@ -11,7 +11,6 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
-import utils.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +55,7 @@ public class VerificarNotificacoes extends GenericJob {
 				if (verificaDiasAnalise.qtdeDiasNotificacao > 20 || (notificacaoArquivamento != null && notificacaoArquivamento.dataFinalNotificacao !=null
 						&& CalculaDiferencaDias(notificacaoArquivamento.dataFinalNotificacao, new Date()) > 10)) {
 
-					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
+					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 					analise.temNotificacaoAberta = false;
 					analise._save();
 
