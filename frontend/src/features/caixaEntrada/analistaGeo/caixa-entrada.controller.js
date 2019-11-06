@@ -68,7 +68,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 	cxEntAnalistaGeo.solicitarDesvinculo =  function(processo){
 
-				var modalInstance = $uibModal.open({
+				$uibModal.open({
 					controller: 'desvinculoController',
 					controllerAs: 'desvinculoCtrl',
 					backdrop: 'static',
@@ -91,7 +91,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 		var texto = 'Solicitar desvínculo';
 
-		if(processo.desvinculoRespondido && processo.loginUsuarioAnterior === $rootScope.usuarioSessao.usuarioEntradaUnica.login) {
+		if(processo.loginUsuarioAnterior === $rootScope.usuarioSessao.usuarioEntradaUnica.login) {
 			texto = 'Visualizar solicitação de desvínculo';
 		}
 

@@ -8,6 +8,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.type.StringType;
+import security.Auth;
 
 import java.util.Date;
 import java.util.List;
@@ -532,8 +533,6 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder groupByDesvinculo() {
 
-		addDesvinculoAlias();
-		addProjection(Projections.groupProperty(DESVINCULO_ALIAS + ".respostaGerente").as("desvinculoRespondido"));
 		addAnalistaGeoAlias();
 		addProjection(Projections.groupProperty(DESVINCULO_ANALISTA_GEO_ALIAS + ".login").as("loginUsuarioAnterior"));
 
@@ -732,6 +731,16 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder filtrarPorDesvinculo(boolean isLeftOuterJoin) {
+
+		addAnaliseGeoAlias(isLeftOuterJoin);
+		addDesvinculoAlias();
+
+		addRestriction(Restrictions.eq(DESVINCULO_ALIAS + ".analistaGeo.id", Auth.getUsuarioSessao().id));
+
+		return this;
+
+	}
 
 	public ProcessoBuilder filtrarAnaliseGeoAtiva(boolean isLeftOuterJoin) {
 

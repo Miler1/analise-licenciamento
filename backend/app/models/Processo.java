@@ -349,6 +349,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
+		processoBuilder.filtrarPorDesvinculo(true);
 		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
