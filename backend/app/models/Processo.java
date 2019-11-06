@@ -130,18 +130,17 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public void vincularAnalista(UsuarioAnalise analista, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
 
 		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
-
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
 	}
 
-	
 	public void vincularGerente(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
 		
 		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
+
 	}
 
 	private static ProcessoBuilder commonFilterProcesso(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
@@ -166,6 +165,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
 
 		return processoBuilder;
+
 	}
 
 	private static void commonFilterConsultarProcesso(ProcessoBuilder processoBuilder, FiltroProcesso filtroProcesso, UsuarioAnalise usuarioSessao) {
@@ -434,7 +434,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo()
                 .groupByIdAnalise()
-                .groupByDesvinculo()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByRenovacao();
