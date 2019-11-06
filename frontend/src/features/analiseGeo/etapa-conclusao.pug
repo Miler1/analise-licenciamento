@@ -78,10 +78,16 @@ div
     label.obrigatorio Análise final do protocolo:
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
-                label.opDla.radio-inline.posicao-primeiroItem
+                label.opDla.radio-inline.posicao-primeiroItem(ng-if="ctrl.analiseGeo.inconsistencias.length > 0")
+                    input(type='radio', name='analiseFinalRadio', data-toggle="tooltip", title="O processo não pode ser deferido, pois há uma inconsistência.", ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    | Deferido
+                label.opDla.radio-inline.posicao-primeiroItem(ng-if="ctrl.analiseGeo.inconsistencias.length === 0")
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Deferido
-                label.opDla.radio-inline
+                label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length > 0")
+                    input(type='radio', name='analiseFinalRadio', data-toggle="tooltip", title="O processo não pode ser indeferido, pois há uma inconsistência.", ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    | Indeferido
+                label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length === 0")
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Indeferido
                 label.opDla.radio-inline
