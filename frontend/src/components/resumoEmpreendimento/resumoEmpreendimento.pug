@@ -22,7 +22,9 @@ include ./endereco
 .panel.panel-default(name='proprietarios')
 	.panel-heading
 		h4.panel-title Proprietários
-	.panel-body
+	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.proprietarios.length < 1 ")
+		i Não existem proprietários	
+	.panel-body(ng-if="$ctrl.empreendimento.proprietarios.length > 0")
 		div.row
 			div.col-md-12
 				table.table.table-striped
