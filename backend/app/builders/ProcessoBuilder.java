@@ -39,6 +39,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String CONDICAO_ALIAS = "ca";
 	private static final String DESVINCULO_ALIAS = "dea";
 	private static final String DESVINCULO_ANALISTA_GEO_ALIAS = "dag";
+	private static final String USUARIO_ANALISE_ALIAS = "ua";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
@@ -94,6 +95,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAnaliseGeoAlias();
 		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
+	public ProcessoBuilder addUsuarioAnaliseAlias() {
+
+		addAnaliseGeoAlias();
+		addAnalistaGeoAlias(true);
+		addAlias(ANALISTA_GEO_ALIAS + ".usuario", USUARIO_ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 	}
@@ -735,8 +745,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addDesvinculoAlias();
+		addUsuarioAnaliseAlias();
 
-		addRestriction(Restrictions.eq(DESVINCULO_ALIAS + ".analistaGeo.id", Auth.getUsuarioSessao().id));
+		addRestriction(Restrictions.eq(USUARIO_ANALISE_ALIAS + ".id", Auth.getUsuarioSessao().id));
 
 		return this;
 
