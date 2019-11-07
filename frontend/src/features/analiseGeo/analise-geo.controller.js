@@ -30,6 +30,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoEmpreendimento = null;
 	ctrl.notificacao.retificacaoSolicitacao = null;
 	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+	ctrl.notificacao.prazoNotificacao = null;
 	ctrl.tiposUpload = app.utils.TiposUpload;
 
 	var getLayer = function(descricao){
@@ -913,7 +914,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if (!ctrl.analiseGeo.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO || ctrl.analiseGeo.prazoNotificacao === undefined && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO){
+		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO || ctrl.notificacao.prazoNotificacao === undefined && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO){
 			return false;
 		}
 
@@ -965,12 +966,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		if(!analiseValida()) {
 
-			mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
-				'<ul>' +
-				'<li>Para concluir é necessário inserir uma descrição nos seguintes campos: Situação fundiária, Análise temporal e Conclusão.</li>' +
-				'<li>Selecione uma Análise final do protocolo (Deferido, Indeferido, Emitir notificação) e em seguida sua respectiva descrição.</li>' +
-				'</ul>', { ttl: 10000 });
+			mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 10000 });
 			return;
+
 		}
 
 		ctrl.analiseGeo.analise.processo.empreendimento = null;
