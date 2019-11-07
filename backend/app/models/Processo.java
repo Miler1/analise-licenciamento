@@ -683,6 +683,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public boolean isProrrogacao() {
 
+		if(this.caracterizacao.getLicenca() == null || this.caracterizacao.getLicenca() != null && this.caracterizacao.getLicenca().dataValidade == null)
+			return false;
+
 		long diff = Math.abs(this.caracterizacao.getLicenca().dataValidade.getTime() - new Date().getTime());
 		long dias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 5l;
 

@@ -80,7 +80,7 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@Column(name="declaracao_veracidade_informacoes")
 	public Boolean declaracaoVeracidadeInformacoes;
 
-	@OneToOne(mappedBy="caracterizacao")
+	@OneToOne(mappedBy="caracterizacao", targetEntity = Processo.class, orphanRemoval = true)
 	public Processo processo;
 	
 	@OneToMany(mappedBy="caracterizacao")
@@ -91,6 +91,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	@Column(name = "numero_processo_antigo")
 	public String numeroProcessoAntigo;
+
+	@Column(name = "id_origem")
+	public Long idCaracterizacaoOrigem;
 
 	public enum OrigemSobreposicao {
 

@@ -150,7 +150,9 @@ public enum Mensagem {
 	ERRO_SALVAMENTO_NOTIFICACAO,
 
 	//Entrada Única
-	ERRO_COMUNICACAO_ENTRADA_UNICA;
+	ERRO_COMUNICACAO_ENTRADA_UNICA,
+
+	ERRO_NAO_HA_SOLICITACAO_ANTERIOR;
 
 	public String getTexto(Object ... args) {
 

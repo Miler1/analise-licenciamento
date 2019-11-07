@@ -2,19 +2,21 @@ package jobs;
 
 import models.*;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.Empreendimento;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
+
+	private List<Caracterizacao> caracterizacoes;
 
 	@Override
 	public void executar() {
@@ -24,7 +26,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 
 		// Licenças com status EM_ANALISE
-		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
+		caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 		
 		for(Caracterizacao caracterizacao : caracterizacoes) {
 			
@@ -54,10 +56,10 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			analise = criarNovaAnalise(processo);
 
-
 			if (caracterizacao.renovacao) {
 
-				processoAntigo = Processo.find("numero", caracterizacao.numeroProcessoAntigo).first();
+				Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
+				processoAntigo = Processo.findByNumProcesso(caracterizacaoAnterior.numeroProcesso);
 				processo.processoAnterior = processoAntigo;
 				processo.renovacao = true;
 
@@ -70,17 +72,19 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 					} catch (Exception e) {
 
 						Logger.error(e, e.getMessage());
-					}
 
+					}
 
 				} else {
 
 					criarNovaAnaliseGeo(analise);
+
 				}
 
 			} else {
 
 				criarNovaAnaliseGeo(analise);
+
 			}
 
 			criarNovoDiasAnalise(analise);
@@ -183,6 +187,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analiseGeo.analiseGeoRevisada = null;
 		analiseGeo.dataInicio = new Date();
 		analiseGeo.dataFim = new Date();
+		analiseGeo.dataCadastro = new Date();
 		analiseGeo.tipoResultadoAnalise = analiseGeoAntiga.tipoResultadoAnalise;
 		analiseGeo.tipoResultadoValidacao = analiseGeoAntiga.tipoResultadoValidacao;
 		analiseGeo.parecerValidacao = analiseGeoAntiga.parecerValidacao;
