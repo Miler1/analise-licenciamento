@@ -441,7 +441,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this._save();
 
-        this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this));
+        Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this);
+
+        this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(gerente);
 
         if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
@@ -487,6 +489,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             if (this.usuarioValidacaoGerente != null) {
 
+                gerente.save();
+
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
@@ -494,6 +498,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         } else if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 
             if (this.usuarioValidacaoGerente != null) {
+
+                gerente.save();
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -1024,11 +1030,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         }
     }
 
-    public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
-        CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
-
-        new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
-    }
+//    public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
+//        CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
+//
+//        new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
+//    }
 
 
 }
