@@ -3,9 +3,11 @@ package models;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import play.Logger;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import play.i18n.Messages;
 import security.Auth;
 import utils.Mensagem;
 
@@ -21,7 +23,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.ws.WebServiceException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -117,7 +118,7 @@ public class AnalistaGeo extends GenericModel {
 		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
 		if (analistasGeo == null || analistasGeo.size() == 0)
-			throw new WebServiceException(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto());
+			Logger.info(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
 
 		List<Long> idsAnalistasGeo = analistasGeo.stream()
 				.map(ang -> ang.id)

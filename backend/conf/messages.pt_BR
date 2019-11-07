@@ -36,7 +36,7 @@ ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
 ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista técnico pelo coordenador a justificativa é obrigatória.
 DESVINCULO_SOLICITADO_COM_SUCESSO=Seu desvínculo foi solicitado com sucesso!
 DESVINCULO_RESPONDIDO_COM_SUCESSO=O desvínculo foi respondido com sucesso!
-NENHUM_ANALISTA_ENCONTRADO=Não existe nenhum analista geo para vincular automáticamente o processo.
+NENHUM_ANALISTA_ENCONTRADO=Não existe nenhum analista geo para vincular automaticamente o protocolo com número %s no setor %s.
 NENHUM_GERENTE_ENCONTRADO=Não existe nenhum gerente para ser vinculado.
 #
 # Inconsistencia
