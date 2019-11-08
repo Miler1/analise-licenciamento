@@ -114,7 +114,7 @@ div#conclusao
                             |  Retificação do empreendimento
                         label.checkbox-inline
                             input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolicitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()", ng-checked = 'ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
-                            |  Retificação da solicitação {{ctrl.notificacao.retificacaoSolicitacao}} {{ctrl.notificacao.retificacaoEmpreendimento}}
+                            |  Retificação da solicitação
                         div.retificacao-com-geo(ng-show='ctrl.notificacao.retificacaoSolicitacao || ctrl.notificacao.retificacaoEmpreendimento')
                             label.radio-inline
                                 input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value=true, ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
