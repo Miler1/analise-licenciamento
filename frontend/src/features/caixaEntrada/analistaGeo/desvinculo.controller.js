@@ -36,6 +36,7 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
         desvinculoService.solicitarDesvinculo(params)
             .then(function(response){
 
+                $rootScope.$broadcast('rootPesquisarProcessos');
                 $rootScope.$broadcast('atualizarContagemProcessos');
                 mensagem.success(response.data);
                 $location.path('/caixa-entrada');
