@@ -973,6 +973,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		ctrl.analiseGeo.analise.processo.empreendimento = null;
 		
 		ctrl.analiseGeo.notificacoes = [];
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
 		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
 
 		analiseGeoService.concluir(ctrl.analiseGeo)
@@ -1108,7 +1109,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.checkedRetificacaoEmpreendimento = function() {
 
 		if (!ctrl.notificacao.retificacaoEmpreendimento) {
-			ctrl.notificacao.retificacaoSolicitacao = null;
+			ctrl.notificacao.retificacaoSolicitacao = false;
+		} else {
+			ctrl.notificacao.retificacaoSolicitacao = true;
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = "true";
 		}
 	};
 

@@ -117,10 +117,10 @@ div#conclusao
                             |  Retificação da solicitação
                         div.retificacao-com-geo(ng-show='ctrl.notificacao.retificacaoSolicitacao || ctrl.notificacao.retificacaoEmpreendimento')
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value=true, ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='true', ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
                                 | Com alteração GEO
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value=false, ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
                                 | Sem alteração GEO
 
                 br
