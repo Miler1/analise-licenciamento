@@ -110,17 +110,17 @@ div#conclusao
                             input.checkbox-notificacao(type='checkbox', placeholder='Documentação', ng-model='ctrl.notificacao.documentacao')
                             |  Documentação
                         label.checkbox-inline
-                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento')
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento', ng-click = "ctrl.checkedRetificacaoEmpreendimento()")
                             |  Retificação do empreendimento
                         label.checkbox-inline
                             input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolicitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()", ng-checked = 'ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
                             |  Retificação da solicitação
-                        div.retificacao-com-geo(ng-if='ctrl.notificacao.retificacaoSolicitacao || ctrl.notificacao.retificacaoEmpreendimento')
+                        div.retificacao-com-geo(ng-show='ctrl.notificacao.retificacaoSolicitacao || ctrl.notificacao.retificacaoEmpreendimento')
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="true", ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='true', ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
                                 | Com alteração GEO
                             label.radio-inline
-                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value="false", ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
                                 | Sem alteração GEO
 
                 br

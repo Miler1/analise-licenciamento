@@ -914,7 +914,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO || ctrl.notificacao.prazoNotificacao === undefined && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO){
+		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
 			return false;
 		}
 
@@ -930,11 +930,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() && !(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo !== undefined))) {
-			return false;
-		}
-
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+			if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
+				return false;
+			}
 			return true;
 		}
 
@@ -974,6 +973,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		ctrl.analiseGeo.analise.processo.empreendimento = null;
 		
 		ctrl.analiseGeo.notificacoes = [];
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
 		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
 
 		analiseGeoService.concluir(ctrl.analiseGeo)
@@ -1103,6 +1103,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.checkedRetificacaoSolicitacao = function() {
 
 		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+	};
+
+	ctrl.checkedRetificacaoEmpreendimento = function() {
+
+		if (!ctrl.notificacao.retificacaoEmpreendimento) {
+			ctrl.notificacao.retificacaoSolicitacao = false;
+		} else {
+			ctrl.notificacao.retificacaoSolicitacao = true;
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = "true";
+		}
 	};
 
 };
