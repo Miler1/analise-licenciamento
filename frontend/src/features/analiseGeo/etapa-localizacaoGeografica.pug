@@ -121,7 +121,7 @@ include ../../layout/components/mapPanel
                                                         ng-bootbox-confirm-action="excluirInconsistencia(inconsistencia.id)")
 
                                                 |&nbsp;
-                            div.info-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
+                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
                                 i Nenhuma inconsistência adicionada.
 
             br
