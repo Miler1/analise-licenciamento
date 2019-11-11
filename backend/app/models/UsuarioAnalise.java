@@ -1,8 +1,6 @@
 package models;
 
-import br.ufla.lemaf.beans.pessoa.Setor;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
-import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Usuario;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -82,7 +80,7 @@ public class UsuarioAnalise extends GenericModel  {
 		return integracaoEntradaUnica.findUsuariosByPerfil(codigoPerfil);
 	}
 	
-	public static List<UsuarioAnalise> getUsuarios(String codigoPerfil, String siglaSetor) {
+	public static List<UsuarioAnalise> getUsuariosEntradaUnica(String codigoPerfil, String siglaSetor) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
@@ -121,9 +119,13 @@ public class UsuarioAnalise extends GenericModel  {
 
 	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
 
-		List<UsuarioAnalise> usuarios = UsuarioAnalise.getUsuarios(codigoPerfil, siglaSetor);
-
-		return usuarios.stream().filter(usuarioAnalise -> usuarioAnalise.setores.stream().anyMatch(setor -> setor.siglaSetor.equals(siglaSetor) && usuarioAnalise.perfis.stream().anyMatch(perfil -> perfil.codigoPerfil.equals(codigoPerfil)))).collect(Collectors.toList());
+		return UsuarioAnalise.find("SELECT u FROM UsuarioAnalise u " +
+				"LEFT JOIN PerfilUsuarioAnalise p ON p.usuarioAnalise.id = u.id " +
+				"LEFT JOIN SetorUsuarioAnalise s ON s.usuarioAnalise.id = u.id " +
+				"WHERE p.codigoPerfil = :codigoPerfil AND s.siglaSetor = :siglaSetor")
+				.setParameter("codigoPerfil", codigoPerfil)
+				.setParameter("siglaSetor", siglaSetor)
+				.fetch();
 
 	}
 
