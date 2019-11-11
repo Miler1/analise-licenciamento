@@ -117,7 +117,7 @@ public class AnalistaGeo extends GenericModel {
 
 		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-		if (analistasGeo == null || analistasGeo.size() == 0) {
+		if (analistasGeo.isEmpty()) {
 
 			Logger.info(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
 
