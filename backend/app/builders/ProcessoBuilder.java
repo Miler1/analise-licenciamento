@@ -99,15 +99,6 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addUsuarioAnaliseAlias() {
-
-		addAnaliseGeoAlias();
-		addAnalistaGeoAlias(true);
-		addAlias(ANALISTA_GEO_ALIAS + ".usuario", USUARIO_ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
-
-		return this;
-	}
-
 	public ProcessoBuilder addDiasAnaliseAlias() {
 
 		addAnaliseAlias();
@@ -745,9 +736,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addDesvinculoAlias();
-		addUsuarioAnaliseAlias();
+		addAnalistaGeoAlias();
 
-		addRestriction(Restrictions.eq(USUARIO_ANALISE_ALIAS + ".id", Auth.getUsuarioSessao().id));
+		addRestriction(Restrictions.eq(DESVINCULO_ANALISTA_GEO_ALIAS + ".login", Auth.getUsuarioSessao().login));
 
 		return this;
 
