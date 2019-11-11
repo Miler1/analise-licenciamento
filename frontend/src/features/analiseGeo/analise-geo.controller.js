@@ -914,7 +914,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO || ctrl.notificacao.prazoNotificacao === undefined && ctrl.analiseGeo.tipoResultadoAnalise === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO){
+		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
 			return false;
 		}
 
