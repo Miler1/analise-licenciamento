@@ -165,11 +165,11 @@ public class AnalistaGeo extends GenericModel {
 		return retorno;
 	}
 
-	public static List<UsuarioAnalise> buscarAnalistasGeoByIdProcesso(String setorAtividade) {
+	public static List<UsuarioAnalise> buscarAnalistasGeoParaDesvinculo(String setorAtividade, Long idUltimoAnalistaGeo) {
 
 		List<UsuarioAnalise> usuarios = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-		return usuarios.stream().filter(usuario -> !usuario.id.equals(Auth.getUsuarioSessao().id)).collect(Collectors.toList());
+		return usuarios.stream().filter(usuario -> !usuario.id.equals(Auth.getUsuarioSessao().id) && !usuario.id.equals(idUltimoAnalistaGeo)).collect(Collectors.toList());
 
 	}
 

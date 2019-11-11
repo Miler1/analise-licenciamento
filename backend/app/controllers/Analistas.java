@@ -119,7 +119,7 @@ public class Analistas extends InternalController {
 
 		String siglaSetor = processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
-		List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeoByIdProcesso(siglaSetor);
+		List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeoParaDesvinculo(siglaSetor, processo.analise.getAnaliseGeo().getAnalistaGeo().usuario.id);
 
 		renderJSON(analistasGeo, UsuarioSerializer.getConsultoresAnalistasGeo);
 

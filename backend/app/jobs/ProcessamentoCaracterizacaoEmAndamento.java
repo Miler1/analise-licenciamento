@@ -47,7 +47,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
 		Processo processoAntigo = null;
 		Analise analise = null;
-		AnaliseGeo analiseGeo = new AnaliseGeo();
+		AnaliseGeo analiseGeo;
 
 		boolean deveTramitar = false;
 
@@ -64,39 +64,18 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 				processo.processoAnterior = processoAntigo;
 				processo.renovacao = true;
 
-				if (!caracterizacao.empreendimento.houveAlteracoes) {
-
-					try {
-
-						clonarAnaliseGeo(analise, processoAntigo);
-
-					} catch (Exception e) {
-
-						Logger.error(e, e.getMessage());
-
-					}
-
-				} else {
-
-					analiseGeo = criarNovaAnaliseGeo(analise);
-
-				}
-
-			} else {
-
-				analiseGeo = criarNovaAnaliseGeo(analise);
-
 			}
 
 			criarNovoDiasAnalise(analise);
-			deveTramitar = true;
+			analiseGeo = criarNovaAnaliseGeo(analise);
 
 			if(analiseGeo == null) {
 
 				rollbackTransaction();
-				deveTramitar = false;
 
 			}
+
+			deveTramitar = analiseGeo != null;
 
 		} else if(processo.caracterizacao.id.equals(caracterizacao.id)) {
 			
