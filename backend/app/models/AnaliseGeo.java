@@ -1030,11 +1030,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         }
     }
 
-//    public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
-//        CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
-//
-//        new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
-//    }
+    public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
+        CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
+
+        new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
+    }
 
 
 }

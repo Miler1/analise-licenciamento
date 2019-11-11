@@ -47,6 +47,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
 		Processo processoAntigo = null;
 		Analise analise = null;
+		AnaliseGeo analiseGeo = new AnaliseGeo();
 
 		boolean deveTramitar = false;
 
@@ -77,19 +78,25 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 				} else {
 
-					criarNovaAnaliseGeo(analise);
+					analiseGeo = criarNovaAnaliseGeo(analise);
 
 				}
 
 			} else {
 
-				criarNovaAnaliseGeo(analise);
+				analiseGeo = criarNovaAnaliseGeo(analise);
 
 			}
 
 			criarNovoDiasAnalise(analise);
-			
 			deveTramitar = true;
+
+			if(analiseGeo == null) {
+
+				rollbackTransaction();
+				deveTramitar = false;
+
+			}
 
 		} else if(processo.caracterizacao.id.equals(caracterizacao.id)) {
 			
@@ -233,9 +240,15 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
+		AnalistaGeo analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+
+		if(analistaGeo == null) {
+			return null;
+		}
+
 		analiseGeo.analistasGeo = new ArrayList<>();
 
-		analiseGeo.analistasGeo.add(AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo));
+		analiseGeo.analistasGeo.add(analistaGeo);
 
 		analiseGeo.save();
 		

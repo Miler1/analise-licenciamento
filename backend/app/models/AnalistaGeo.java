@@ -117,8 +117,13 @@ public class AnalistaGeo extends GenericModel {
 
 		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-		if (analistasGeo == null || analistasGeo.size() == 0)
+		if (analistasGeo == null || analistasGeo.size() == 0) {
+
 			Logger.info(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
+
+			return null;
+
+		}
 
 		List<Long> idsAnalistasGeo = analistasGeo.stream()
 				.map(ang -> ang.id)
