@@ -930,7 +930,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			return false;
 		}
 
-		if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo !== undefined))) {
+		if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
 			return false;
 		}
 
