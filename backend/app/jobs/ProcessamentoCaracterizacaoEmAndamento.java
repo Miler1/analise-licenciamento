@@ -46,7 +46,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
 		Processo processoAntigo = null;
-		Analise analise = null;
+		Analise analise;
 		AnaliseGeo analiseGeo;
 
 		boolean deveTramitar = false;
@@ -92,39 +92,38 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			processo.save();
 
-			if (caracterizacao.renovacao) {
+			// TODO: VERIFICAR CÓDIGO COMENTADO ABAIXO
 
-				if (processo.isProrrogacao()) {
+//			if (caracterizacao.renovacao) {
+//
+//				if (processo.isProrrogacao()) {
+//
+//					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)
+//							&& processoAntigo.isArquivavel()) {
+//
+//						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
+//
+//					}
+//
+//					Licenca.prorrogar(caracterizacao.getLicenca().id);
+//
+//				} else {
+//
+//					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
+//							&& processoAntigo.isArquivavel()) {
+//
+//						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
+//
+//					}
+//
+//				}
+//
+//			}
 
-					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)
-							&& processoAntigo.isArquivavel()) {
-
-						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
-					}
-
-					Licenca.prorrogar(caracterizacao.getLicenca().id);
-
-				} else {
-
-					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
-							&& processoAntigo.isArquivavel()) {
-
-						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
-					}
-				}
-
-				if (!caracterizacao.empreendimento.houveAlteracoes) {
-
-					processo.tramitacao.tramitar(processo, AcaoTramitacao.RENOVAR_SEM_ALTERACAO);
-
-					AnaliseGeo analiseGeoRenovacao = new AnaliseGeo();
-					analiseGeoRenovacao.analise = analise;
-					analiseGeoRenovacao.save();
-				}
-			}
 		}
 
 		commitTransaction();
+
 	}
 	
 	private Processo criarNovoProcesso(Caracterizacao caracterizacao) {
@@ -133,8 +132,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		processo.numero = caracterizacao.numeroProcesso;
 		processo.empreendimento = caracterizacao.empreendimento;
 		processo.dataCadastro = new Date();
-		
 		processo.caracterizacao = caracterizacao;
+
 		processo._save();
 
 		return processo;
