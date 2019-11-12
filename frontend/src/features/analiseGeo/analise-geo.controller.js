@@ -905,7 +905,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	function analiseValida() {
 
-		if(ctrl.analiseGeo.analiseTemporal !== '') {
+		if(ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null) {
 			var verificaDocAnaliseTemp = false;
 				_.forEach(ctrl.analiseGeo.documentos, function(documentoAnaliseTemporal){
 
