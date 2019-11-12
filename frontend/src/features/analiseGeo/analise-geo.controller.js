@@ -32,7 +32,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	ctrl.notificacao.prazoNotificacao = null;
 	ctrl.tiposUpload = app.utils.TiposUpload;
-	ctrl.analiseGeo.documentoAnaliseTemporal = [];
 
 	var getLayer = function(descricao){
 
