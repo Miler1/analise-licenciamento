@@ -15,7 +15,7 @@ h5 Análise GEO
 div
 #camposAnaliseGeo
     div
-        label.label-parecer.obrigatorio Da situação fundiária:
+        label.label-parecer Da situação fundiária:
         br
         summernote.campos-parecer(id="situacaoFundiaria",
                     on-paste="snPaste(evt)",
@@ -26,7 +26,7 @@ div
                     config="optionsText")
 
     div
-        label.label-parecer.obrigatorio Da análise temporal:
+        label.label-parecer Da análise temporal:
         br
         summernote.campos-parecer(id="analiseTemporal",
                     on-paste="snPaste(evt)",
@@ -35,6 +35,28 @@ div
                     height="200",
                     ng-model="ctrl.analiseGeo.analiseTemporal",
                     config="optionsText")
+        div.obrigatorio.btn.btn-default(ng-show="ctrl.analiseGeo.analiseTemporal !== ''",style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.DOCUMENTO_ANALISE_TEMPORAL)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+            i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+            | Anexar arquivo na análise temporal
+        table.table.table-condensed(ng-if="ctrl.getDocumentosAnaliseTemporal().length > 0")
+
+                thead
+
+                    tr
+                        th.col-md-10 Documento anexado
+                        th.col-md-2.text-right Ações
+
+                tbody
+
+                    tr(ng-repeat="documento in ctrl.getDocumentosAnaliseTemporal()")
+
+                        td.col-md-10 {{documento.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                                i.glyphicon.glyphicon-save
+
+                            a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
+                                i.glyphicon.glyphicon-trash
 
 div
     label.obrigatorio(style="font-size:13px") Conclusão: 
