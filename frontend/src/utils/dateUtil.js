@@ -109,6 +109,18 @@ DateUtil = {
 		}
 
 	}
+	
+	/* Recebe valor em ms e transforma em Dias e Horas
+	transformaDataHora: function(data) {
+
+		days = Math.floor(data / (24*60*60*1000));
+		daysms=data % (24*60*60*1000);
+		hours = Math.floor((daysms)/(60*60*1000));
+		hoursms=data % (60*60*1000);
+		minutes = Math.floor((hoursms)/(60*1000));
+
+		return days + " dias, " + hours + ":" + minutes + "h"; 
+	}*/
 };
 
 exports.utils.DateUtil = DateUtil;

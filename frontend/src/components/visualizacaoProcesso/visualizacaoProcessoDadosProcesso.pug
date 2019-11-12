@@ -5,10 +5,6 @@
 		.col-xs-12.col-md-8
 			blockquote.success
 				div.row
-					label.col-sm-4 Tipo do Licenciamento:
-					span.col-sm-8 {{ modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.tipo.nome }} 
-
-				div.row
 					label.col-sm-4 Licença Solicitada:
 					div.col-sm-8
 						span(ng-repeat="licenca in modalVisualizacaoProcessoCtrl.processo.licencas") {{licenca}}
@@ -17,16 +13,18 @@
 				div.row
 					label.col-sm-4 Tipologia:
 					span.col-sm-8
-						div(ng-repeat="atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.tipologia.nome}} 
+						div {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome}} 
 				div.row
 					label.col-sm-4 Atividade(s) Licenciada(s):
 					.col-sm-8
 						div
 							span(ng-repeat="atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.atividade.nome}} 
+								div(ng-if="!modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento")
 									div(ng-repeat='atividadeCnae in atividadeCaracterizacao.atividadesCnae')
-										label CNAE
-										ul
-											li {{atividadeCnae.codigo}} - {{atividadeCnae.nome}}
+										ul CNAE: {{atividadeCnae.codigo}} - {{atividadeCnae.nome}}
+								div(ng-if="modalVisualizacaoProcessoCtrl.processo.cpfEmpreendimento")
+									div(ng-repeat='atividadeCnae in atividadeCaracterizacao.atividadesCnae')
+										ul CNAE: {{atividadeCnae.nome}}
 
 		.col-xs-12.col-md-4
 			div.panel.panel-success
@@ -45,36 +43,12 @@
 
 			div.panel.panel-success
 				div.panel-body
-					| Porte/Potencial Poluidor Degradador
+					| Porte - Potencial Poluidor/Degradador
 				div.panel-footer.text-center
 					.media-div
 						.media-context
 							div
-								div(ng-repeat="atividadeCaracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao") {{atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.getMaiorPotencialPoluidor(modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadesCaracterizacao).codigo}}
-	div.row
-		.col-xs-12.col-md-6
-			blockquote.success
-				h4 Histórico do protocolo
-				label Data: &nbsp;
-				span {{modalVisualizacaoProcessoCtrl.dateUtil.getTodaysStringDate()}}
-
-				div.panel.panel-success
-					div.panel-body
-						| Análise do protocolo em dias
-					div.panel-footer
-						.row
-							.col-xs-4.col-md-4.text-center
-								span Análise GEO
-									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.processo.diasAnaliseGeo , modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_GEO)}")
-										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseGeo == null ? ' - ' : modalVisualizacaoProcessoCtrl.processo.diasAnaliseGeo}}
-							.col-xs-4.col-md-4.text-center
-								span Análise técnica
-									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica , modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_TECNICA)}")
-										b {{modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica == null ? ' - ' : modalVisualizacaoProcessoCtrl.processo.diasAnaliseTecnica}}
-							.col-xs-4.col-md-4.text-center
-								span Análise total
-									div
-										b {{modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise == null ? ' - ' : modalVisualizacaoProcessoCtrl.processo.totalDiasAnalise}}
+								div {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.codigo}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}}
 
 	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
 		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
