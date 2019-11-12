@@ -1,6 +1,6 @@
 var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal, TiposSetores, documentoAnaliseService, mensagem) {
 
-	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
+	$rootScope.tituloPagina = 'CONSULTAR PROTOCOLO';
 
 	var consultarProcesso = this;
 
