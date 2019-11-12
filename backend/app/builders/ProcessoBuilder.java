@@ -38,8 +38,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String DIA_ANALISE_ALIAS = "da";
 	private static final String CONDICAO_ALIAS = "ca";
 	private static final String DESVINCULO_ALIAS = "dea";
-	private static final String DESVINCULO_ANALISTA_GEO_ALIAS = "dag";
-	private static final String USUARIO_ANALISE_ALIAS = "ua";
+	private static final String DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS = "dagd";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
@@ -73,6 +72,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAlias(EMPREENDIMENTO_ALIAS+".municipio", MUNICIPIO_EMPREENDIMENTO_ALIAS);
 
 		return this;
+
 	}
 
 	public ProcessoBuilder addEstadoEmpreendimentoAlias() {
@@ -229,7 +229,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder addAnalistaGeoAlias() {
 
 		addDesvinculoAlias();
-		addAlias(DESVINCULO_ALIAS + ".analistaGeo", DESVINCULO_ANALISTA_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(DESVINCULO_ALIAS + ".analistaGeoDestino", DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 
@@ -535,9 +535,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder groupByDesvinculo() {
 
 		addAnalistaGeoAlias();
-		addProjection(Projections.groupProperty(DESVINCULO_ANALISTA_GEO_ALIAS + ".login").as("loginUsuarioAnterior"));
+		addProjection(Projections.groupProperty(DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS + ".login").as("loginUsuarioDestino"));
 
 		return this;
+
 	}
 
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
@@ -739,7 +740,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAnalistaGeoAlias();
 
 		addRestriction(Restrictions.or(Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
-										Restrictions.eq(DESVINCULO_ANALISTA_GEO_ALIAS + ".login", Auth.getUsuarioSessao().login)));
+										Restrictions.eq(DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS + ".login", Auth.getUsuarioSessao().login)));
 
 		return this;
 
