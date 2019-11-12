@@ -100,13 +100,16 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		EMPREENDIMENTO,
 		ATIVIDADE,
 		COMPLEXO,
-		SEM_SOBREPOSICAO;
+		SEM_SOBREPOSICAO
 
 	}
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="origem_sobreposicao")
 	public OrigemSobreposicao origemSobreposicao;
+
+	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
+	public List<GeometriaComplexo> geometriasComplexo;
 
 	@Transient
 	public Dae dae;
