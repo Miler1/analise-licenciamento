@@ -18,6 +18,8 @@ public class GeometriaAtividadeVO {
 
 	public GeometriaAtividadeVO(Geometry geometria) {
 
+		Processo.indexDadosGeometriasAtividade++;
+
 		this.geometria = geometria;
 		this.item = CamadaGeoEnum.ATIVIDADE.nome + "_" + Processo.indexDadosGeometriasAtividade;
 		this.tipo = CamadaGeoEnum.ATIVIDADE.tipo + "_" + Processo.indexDadosAtividades;

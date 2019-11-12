@@ -359,6 +359,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				style: ctrl.estiloMapa[camada.tipo] || camada.estilo
 			},
 			popupText: camada.item,
+			area: camada.area,
 			disableCentralizarGeometrias:disable,
 			numPoints: ctrl.numPoints
 		});

@@ -14,26 +14,21 @@ import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
-import models.tramitacao.ObjetoTramitavel;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.libs.WS;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
-
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import static security.Auth.getUsuarioSessao;
 
 @Entity
