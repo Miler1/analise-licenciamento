@@ -75,6 +75,10 @@ div
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.fa.fa-download
 													span Baixar carta imagem
+											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO")
+												a(ng-click="consultarProcesso.visualizarNotificacao(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar notificação
 
 				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO")
 
