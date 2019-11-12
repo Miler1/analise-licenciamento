@@ -376,6 +376,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
         TipoDocumento tipoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
+        TipoDocumento tipoDocumentoAnaliseTemporal = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL);
 
 
         if (this.documentos == null) {
@@ -1031,6 +1032,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     }
 
     public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
+
         CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
 
         new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
