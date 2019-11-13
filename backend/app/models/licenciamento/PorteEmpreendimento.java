@@ -17,7 +17,9 @@ public class PorteEmpreendimento extends Model implements Comparable<PorteEmpree
 	public int compareTo(PorteEmpreendimento porteEmpreendimento) {
 
 		if(this.equals(porteEmpreendimento)) {
+
 			return 0;
+
 		}
 
 		if(this.codigo.equals("MICRO")) {
@@ -81,6 +83,7 @@ public class PorteEmpreendimento extends Model implements Comparable<PorteEmpree
 		}
 
 		return 0;
+
 	}
 	
 }

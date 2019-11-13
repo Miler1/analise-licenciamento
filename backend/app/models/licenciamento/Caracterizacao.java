@@ -223,5 +223,7 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		}
 
 		return atividadeCaracterizacaoMaiorPPDPorte;
+
 	}
+
 }
