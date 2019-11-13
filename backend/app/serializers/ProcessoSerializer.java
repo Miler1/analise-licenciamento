@@ -185,7 +185,7 @@ public class ProcessoSerializer {
 			"caracterizacao.atividadesCaracterizacao.atividade.parametros.nome",
 			"caracterizacao.atividadesCaracterizacao.atividade.parametros.codigo",
 			"caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome",
-			"caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.codigo")
+			"caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome")
 	        .transform(GeometrySerializer.getTransformer(), Geometry.class)
 			.exclude("*");
 
