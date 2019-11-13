@@ -519,9 +519,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
             }
 
-            Notificacao novaNotificacao = notificacoes.get(0);
-
-            enviarEmailNotificacao(novaNotificacao, analise.documentos);
+            enviarEmailNotificacao(notificacoes.get(0), analise.documentos);
 
             alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
 
