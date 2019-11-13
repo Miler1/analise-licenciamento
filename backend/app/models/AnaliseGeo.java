@@ -182,18 +182,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
     }
 
-    private void validarParecerEmpreendimento() {
-
-        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.analiseTemporal.equals(""))) {
-            throw new ValidacaoException(Mensagem.ANALISE_ANALISE_TEMPORAL_NAO_PREENCHIDA);
-        }
-
-        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.situacaoFundiaria.equals(""))) {
-            throw new ValidacaoException(Mensagem.ANALISE_SITUACAO_FUNDIARIA_NAO_PREENCHIDA);
-        }
-
-    }
-
     private void validarTipoResultadoAnalise() {
 
         if (this.tipoResultadoAnalise == null) {
@@ -437,7 +425,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this.update(analise);
         validarParecer(analise);
-        validarParecerEmpreendimento();
         validarTipoResultadoAnalise();
 
         this._save();
@@ -524,6 +511,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             enviarEmailNotificacao(novaNotificacao, analise.documentos);
 
             alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
+
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
