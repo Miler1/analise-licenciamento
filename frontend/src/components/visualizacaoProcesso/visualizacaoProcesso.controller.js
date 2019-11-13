@@ -20,6 +20,10 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	modalCtrl.numPoints = 0;
 	modalCtrl.dadosProjeto = {};
 	modalCtrl.TiposSobreposicao = [];
+	modalCtrl.openedAccordionGeo = false;
+	modalCtrl.openedAccordionGerente = false;
+	modalCtrl.labelAnalistaGeo = '';
+	modalCtrl.labelGerente = '';
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -37,6 +41,7 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 				modalCtrl.init('mapa-visualizacao-protocolo', true, true);
 				modalCtrl.iniciarMapa();
+				modalCtrl.setLabelObservacoes(modalCtrl.dadosProcesso);
 
 			})
 			.catch(function(){
@@ -52,12 +57,60 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 			modalCtrl.init('mapa-visualizacao-protocolo', true, true);
 			modalCtrl.iniciarMapa();
+			modalCtrl.setLabelObservacoes(modalCtrl.dadosProcesso);
 	
 		})
 		.catch(function(){
 			mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
 		});
+
 	}
+
+	var setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
+
+		if(tipoResultadoAnalistaGeo.id === 1) {
+
+			modalCtrl.labelAnalistaGeo = 'Despacho';
+
+		} else if(tipoResultadoAnalistaGeo.id === 2) {
+
+			modalCtrl.labelAnalistaGeo = 'Justificativa';
+
+		} else if(tipoResultadoAnalistaGeo.id === 3) {
+
+			modalCtrl.labelAnalistaGeo = 'Descrição da solicitação';
+
+		}
+
+	};
+
+	var setLabelAnalistaGerente = function(tipoResultadoGerente) {
+
+		if(tipoResultadoGerente.id === 4) {
+
+			modalCtrl.labelGerente = 'Despacho';
+
+		} else if(tipoResultadoGerente.id === 5) {
+
+			modalCtrl.labelGerente = 'Observações';
+
+		} else if(tipoResultadoGerente.id === 6) {
+
+			modalCtrl.labelGerente = 'Justificativa';
+
+		}
+
+	};
+
+	this.setLabelObservacoes = function(dadosProcesso) {
+
+		var tipoResultadoAnalistaGeo = dadosProcesso.analise.analiseGeo.tipoResultadoAnalise;
+		var tipoResultadoGerente = dadosProcesso.analise.analiseGeo.tipoResultadoValidacaoGerente;
+
+		setLabelAnalistaGeo(tipoResultadoAnalistaGeo);
+		setLabelAnalistaGerente(tipoResultadoGerente);
+
+	};
 
 	// Métodos referentes ao Mapa da caracterização
 	this.iniciarMapa = function() {

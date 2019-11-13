@@ -1,7 +1,33 @@
-div#dadosProcesso
-  form
-    .form-group
-      label Justificativa
-      textarea.form-control.textarea--no-resize(readonly="", ng-model="modalVisualizacaoProcessoCtrl.processo.analise.analiseTecnica.justificativaCoordenador", ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.justificativaCoordenador")
-      p.i(ng-if="!modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho") Não há nenhuma justificativa
-      p.i(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho") {{modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho}}
+div
+	label.titulo Resultados das análises
+	#accordion-analista-geo.panel-group(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho")
+		div
+			a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-analista-geo', aria-expanded='false', data-target='#dados-analista-geo', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionGeo = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionGeo = !validacaoAnaliseGeoGerente.openedAccordionGeo' )
+				.panel.panel-default.panel-analise
+					.panel-heading
+						h4.panel-title
+							| ANALISTA GEO: {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analisesGeo[0].analistasGeo[0].usuario.pessoa.nome }}
+							i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGeo, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGeo}")
+			#dados-analista-geo.collapse
+				.panel-group
+					label Situação:
+					p {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.tipoResultadoAnalise.nome }}
+
+					label {{ modalVisualizacaoProcessoCtrl.labelAnalistaGeo }}:
+					p.i {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho }}
+
+	#accordion-gerente.panel-group(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.parecerValidacaoGerente")
+		div
+			a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente', aria-expanded='false', data-target='#dados-gerente', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionGerente = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionGerente = !validacaoAnaliseGeoGerente.openedAccordionGerente' )
+				.panel.panel-default.panel-analise
+					.panel-heading
+						h4.panel-title
+							| GERENTE: {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.usuarioValidacaoGerente.pessoa.nome }}
+							i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGerente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGerente}")
+			#dados-gerente.collapse
+				.panel-group
+					label Situação:
+					p {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.tipoResultadoValidacaoGerente.nome }}
+
+					label {{ modalVisualizacaoProcessoCtrl.labelGerente }}:
+					p.i {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.parecerValidacaoGerente }}

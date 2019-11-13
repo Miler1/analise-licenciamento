@@ -66,7 +66,13 @@ public class UsuarioAnalise extends GenericModel  {
 	@Transient
 	public String nome;
 
-	public static UsuarioAnalise getUsuarioByLogin(String login) {
+	public static UsuarioAnalise getUsuarioAnaliseById(Long id) {
+
+		return UsuarioAnalise.findById(id);
+
+	}
+
+	public static UsuarioAnalise getUsuarioEntradaUnicaByLogin(String login) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica= new IntegracaoEntradaUnicaService();
 

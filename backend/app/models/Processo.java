@@ -802,4 +802,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
+	public Processo getInfoProcesso() {
+
+		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
+		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
+
+		return this;
+
+	}
+
 }

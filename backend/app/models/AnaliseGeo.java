@@ -16,6 +16,8 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
@@ -40,6 +42,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
+    @Column(name = "id")
     public Long id;
 
     @ManyToOne
@@ -97,7 +100,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "parecer_validacao")
     public String parecerValidacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
     public UsuarioAnalise usuarioValidacao;
 
@@ -117,7 +120,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "parecer_validacao_gerente")
     public String parecerValidacaoGerente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
     public UsuarioAnalise usuarioValidacaoGerente;
 
@@ -160,6 +163,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public List<Desvinculo> desvinculos;
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     public List<Notificacao> notificacoes;
 
     @Transient
@@ -1031,6 +1035,5 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
     }
-
 
 }

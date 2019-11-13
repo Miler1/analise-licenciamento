@@ -20,7 +20,7 @@ public class Analistas extends InternalController {
 
 		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
 
-		UsuarioAnalise analista = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
+		UsuarioAnalise analista = UsuarioAnalise.getUsuarioEntradaUnicaByLogin(usuarioAnalise.login);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
@@ -43,7 +43,7 @@ public class Analistas extends InternalController {
 
 		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
 
-		UsuarioAnalise analista = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
+		UsuarioAnalise analista = UsuarioAnalise.getUsuarioEntradaUnicaByLogin(usuarioAnalise.login);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
