@@ -175,7 +175,11 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	function criarPopup(shape) {
 
-		if(shape.geometria && shape.geometria.type.toLowerCase() === 'point') {
+		if(shape.tipo.toUpperCase() === 'EMP-CIDADE') {
+
+			return shape.popupText;
+
+		} else if(shape.geometria && shape.geometria.type.toLowerCase() === 'point') {
 
 			return '<p style="text-align:center;"><b>' + shape.popupText + '</b><br>' +
 				   '<hr>' +
