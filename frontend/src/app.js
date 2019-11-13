@@ -503,6 +503,7 @@ licenciamento
 	.controller('breadcrumbController', controllers.BreadcrumbController)
 	.controller('modalSimplesController', controllers.ModalSimplesController)
 	.controller('visualizacaoProcessoController', controllers.VisualizacaoProcessoController)
+	.controller('visualizacaoNotificacaoController', controllers.VisualizacaoNotificacaoController)
 	.controller('analiseGeoController', controllers.AnaliseGeoController)
 	.controller('legislacaoController', controllers.LegislacaoController)
 	.controller('legislacaoController', controllers.LegislacaoController)

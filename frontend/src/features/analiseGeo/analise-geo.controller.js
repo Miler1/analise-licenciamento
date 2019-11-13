@@ -971,8 +971,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 
 		ctrl.analiseGeo.analise.processo.empreendimento = null;
-		
-		ctrl.analiseGeo.notificacoes = [];
+
 		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
 		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
 

@@ -441,11 +441,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this._save();
 
-        Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this);
-
-        this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(gerente);
-
         if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
+
+            Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this);
+
+            this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(gerente);
 
             if(this.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)){
 
@@ -497,6 +497,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         } else if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 
+            Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this);
+
+            this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(gerente);
+
             if (this.usuarioValidacaoGerente != null) {
 
                 gerente.save();
@@ -507,9 +511,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         } else if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.EMITIR_NOTIFICACAO) {
 
-
-//            Notificacao.criarNotificacoesAnaliseGeo(analise);
-
             List<Notificacao> notificacoes = analise.notificacoes;
             notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList());
 
@@ -518,22 +519,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
             }
 
-            Notificacao novaNotificacao = notificacoes.get(0);
-
-            enviarEmailNotificacao(novaNotificacao, analise.documentos);
+            enviarEmailNotificacao(notificacoes.get(0), analise.documentos);
 
             alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-//
-//            HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
-//
-//            List<Notificacao> notificacoes = Notificacao.find("analiseGeo.id", this.id).fetch();
-//            Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
-//
-//            HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
-//
 
         }
     }

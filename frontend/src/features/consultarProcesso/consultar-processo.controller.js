@@ -1,6 +1,6 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal, TiposSetores, documentoAnaliseService, mensagem) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService, TiposSetores, documentoAnaliseService, mensagem) {
 
-	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
+	$rootScope.tituloPagina = 'CONSULTAR PROTOCOLO';
 
 	var consultarProcesso = this;
 
@@ -11,6 +11,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.selecionarTodosProcessos = selecionarTodosProcessos;
 	consultarProcesso.onPaginaAlterada = onPaginaAlterada;
 	consultarProcesso.visualizarProcesso = visualizarProcesso;
+	consultarProcesso.visualizarNotificacao = visualizarNotificacao;
 
 	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
 
@@ -52,6 +53,11 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	function visualizarProcesso(processo) {
 
 		return processoService.visualizarProcesso(processo);
+	}
+
+	function visualizarNotificacao(processo) {
+
+		return processoService.visualizarNotificacao(processo);
 	}
 
 	function getDiasRestantes(processo, dataVencimento, dataConclusao) {

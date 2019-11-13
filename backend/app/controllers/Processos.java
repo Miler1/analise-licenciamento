@@ -51,7 +51,7 @@ public class Processos extends InternalController {
 
 		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(processo.empreendimento.getCpfCnpj());
 		processo.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
-		
+
 		renderJSON(processo, ProcessoSerializer.getInfo);
 	}
 
