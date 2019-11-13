@@ -13,7 +13,7 @@
 			.panel-group(id='accordion-notificacoes-{{notificacao.id}}')
 				div
 					a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-notificacoes-{{notificacao.id}}', 
-						aria-expanded='false', data-target='#meus-dados-notificacao-{{notificacao.id}}', 
+						aria-expanded='false', data-target='#meus-dados-notificacao-{{notificacao.id}}'
 						ng-init = 'modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id] = false', 
 						ng-click = 'modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id] = !modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id]' )
 						.panel.panel-default
