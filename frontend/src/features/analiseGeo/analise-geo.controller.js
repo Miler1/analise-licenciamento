@@ -383,6 +383,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		tipoSobreposicao.disableCentralizarGeometrias=false;
 
 		$scope.$emit('mapa:adicionar-wmslayer-mapa', tipoSobreposicao, true);
+
 	}
 
 	function contaQuantidadeCamadasPoint (camadas) {
@@ -499,7 +500,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			});
 
-				$rootScope.$broadcast('atualizarContagemProcessos');
+			$rootScope.$broadcast('atualizarContagemProcessos');
+
 		});
 
 	};

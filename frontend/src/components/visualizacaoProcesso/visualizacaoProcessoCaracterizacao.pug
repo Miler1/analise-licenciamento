@@ -1,6 +1,7 @@
+include ../../layout/components/mapPanel
 #dadosProcesso
 
-	div.row
+	.row
 
 		.col-md-12
 
@@ -16,11 +17,9 @@
 					div.col-md-2(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel.codigo")
 						button.btn.btn-sm.btn-link.pull-right(ng-click="modalVisualizacaoProcessoCtrl.visualizarFichaImovel()") Ficha do Imóvel
 
-	div.row
+	+mapPanel-sidebar("mapa-visualizacao-protocolo", '400', true, 'modalVisualizacaoProcessoCtrl')
 
-		div.mapa#mapa-processo
-
-	div.row
+	.row
 
 		.col-md-12
 
