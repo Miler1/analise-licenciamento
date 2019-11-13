@@ -983,9 +983,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public void finalizarAnaliseGerente(AnaliseGeo analiseGeo, UsuarioAnalise gerente) throws Exception {
 
         UsuarioAnalise analistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
+
         if (analistaTecnico != null) {
 
-            if (analiseGeo.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_VALIDADO) {
+            if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
                 AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
 
@@ -994,7 +995,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 new AnalistaTecnico(analiseGeoBanco.analise.analiseTecnica, analistaTecnico);
 
-            } else if (analiseGeo.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.SOLICITAR_AJUSTES) {
+            } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
 
                 AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(this.id);
                 UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
@@ -1002,7 +1003,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
 
-            } else if (analiseGeo.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_NAO_VALIDADO) {
+            } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
 
                 UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analiseGeo.idAnalistaDestino);
 
