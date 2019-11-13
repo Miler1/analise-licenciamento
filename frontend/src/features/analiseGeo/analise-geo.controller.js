@@ -32,6 +32,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	ctrl.notificacao.prazoNotificacao = null;
 	ctrl.tiposUpload = app.utils.TiposUpload;
+	ctrl.labelDadosProjeto = 'Dados da área do projeto';
 
 	var getLayer = function(descricao){
 
@@ -458,6 +459,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					analiseGeoService.getDadosProjeto($scope.analiseGeo.analise.processo.id).then(function (response) {
 
 						ctrl.dadosProjeto = response.data;
+
+						var isComplexo = ctrl.dadosProjeto.restricoes.some(function(restricao) { 
+							return restricao.sobreposicaoCaracterizacaoComplexo;
+						});
+						
+						if(isComplexo) {
+							ctrl.labelDadosProjeto = ctrl.labelDadosProjeto.concat(': Complexo');
+						}
 
 						ctrl.dadosProjeto.atividades.forEach(function(atividade) {
 
