@@ -1,5 +1,6 @@
 package models;
 
+import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import deserializers.GeometryDeserializer;
@@ -26,6 +27,9 @@ import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 import javax.persistence.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -365,7 +369,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         TipoDocumento tipoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
         TipoDocumento tipoDocumentoAnaliseTemporal = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL);
 
-
         if (this.documentos == null) {
             this.documentos = new ArrayList<>();
         }
@@ -402,6 +405,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 } else if (novoDocumento.tipo.id.equals(tipoNotificacao.id)) {
 
                     novoDocumento.tipo = tipoNotificacao;
+
+                } else if (novoDocumento.tipo.id.equals(tipoDocumentoAnaliseTemporal.id)) {
+
+                    novoDocumento.tipo = tipoDocumentoAnaliseTemporal;
+
                 }
 
                 novoDocumento.save();
@@ -494,7 +502,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         } else if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.EMITIR_NOTIFICACAO) {
 
-
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
             List<Notificacao> notificacoes = analise.notificacoes;
@@ -510,7 +517,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             enviarEmailNotificacao(novaNotificacao, analise.documentos);
 
             alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
-
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -825,7 +831,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return this.gerentes.get(0);
     }
 
-    public Documento gerarPDFParecer() throws Exception {
+    public Documento gerarPDFParecer() throws IOException, DocumentException {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
         List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
@@ -842,6 +848,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
         pdf.generate();
+
+        List<File> documentos = new ArrayList<>();
+        documentos.add(pdf.getFile());
+        List<Documento> documentosAnaliseTemporal = this.documentos.stream().filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL)).collect(Collectors.toList());
+        documentos.addAll(documentosAnaliseTemporal.stream().map(Documento::getFile).collect(Collectors.toList()));
+        FileOutputStream fos = PDFGenerator.mergePDF(documentos, pdf.getFile().getName());
 
         Documento documento = new Documento(tipoDocumento, pdf.getFile());
 
