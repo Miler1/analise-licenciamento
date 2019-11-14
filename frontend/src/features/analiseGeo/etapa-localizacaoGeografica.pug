@@ -127,7 +127,7 @@ include ../../layout/components/mapPanel
             br
             #lista-camadas-atividades
                 #accordion-atividades.panel-group
-                    h5(style="margin-bottom:0px") Dados da área do projeto
+                    h5(style="margin-bottom:0px") {{ ctrl.labelDadosProjeto }}
                     br
                     hr(style="margin-top:2px;")
                     div.collapse-atividade(ng-repeat="atividade in ctrl.dadosProjeto.atividades")

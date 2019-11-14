@@ -2,10 +2,7 @@ package jobs;
 
 import models.*;
 import models.licenciamento.Caracterizacao;
-import models.licenciamento.Empreendimento;
-import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
-import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
@@ -34,18 +31,19 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 		}
 		
-		Long[] ids = new ListUtil().getIdsAsArray(caracterizacoes);
+		Long[] ids = ListUtil.getIdsAsArray(caracterizacoes);
 		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
 
 		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
+
 	}
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
 
-		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numeroProcesso);
-		
-		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
-		Processo processoAntigo = null;
+		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
+
+		Processo processo = Processo.find("byNumero", caracterizacao.numero).first();
+		Processo processoAntigo;
 		Analise analise;
 		AnaliseGeo analiseGeo;
 
@@ -60,7 +58,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			if (caracterizacao.renovacao) {
 
 				Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
-				processoAntigo = Processo.findByNumProcesso(caracterizacaoAnterior.numeroProcesso);
+				processoAntigo = Processo.find("numero", caracterizacaoAnterior.numero).first();
 				processo.processoAnterior = processoAntigo;
 				processo.renovacao = true;
 
@@ -129,7 +127,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	private Processo criarNovoProcesso(Caracterizacao caracterizacao) {
 		
 		Processo processo = new Processo();
-		processo.numero = caracterizacao.numeroProcesso;
+		processo.numero = caracterizacao.numero;
 		processo.empreendimento = caracterizacao.empreendimento;
 		processo.dataCadastro = new Date();
 		processo.caracterizacao = caracterizacao;

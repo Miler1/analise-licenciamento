@@ -1,10 +1,14 @@
 package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
+import models.GeometriaAtividadeVO;
 import org.hibernate.annotations.Type;
 import play.db.jpa.GenericModel;
+import utils.GeoCalc;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema = "licenciamento", name = "geometria_atividade")
@@ -25,5 +29,11 @@ public class GeometriaAtividade extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name = "id_atividade_caracterizacao", referencedColumnName = "id")
 	public AtividadeCaracterizacao atividadeCaracterizacao;
+
+	public GeometriaAtividadeVO convertToVO() {
+
+		return new GeometriaAtividadeVO(this.geometria);
+
+	}
 
 }

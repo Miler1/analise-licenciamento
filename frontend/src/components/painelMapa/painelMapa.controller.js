@@ -2,11 +2,12 @@
  * Controller para a painel de mapa
  **/
 var PainelMapaController = function ($scope, wmsTileService) {
+
 	var painelMapa = this;
 	painelMapa.map = null;
 	painelMapa.cluster = null;
 	painelMapa.markers = [];
-	painelMapa.numPoints = 0;	
+	painelMapa.numPoints = 0;
 	// Lista para conter as geometrias que precisam de atenção especial durante a renderização
 	painelMapa.specificGeometries = [];
 
@@ -136,20 +137,20 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		}
 	}
 
-  function centralizarCamadaEspecifica(event, geometria) {
+	function centralizarCamadaEspecifica(event, geometria) {
 
-			var layer = L.geoJSON(JSON.parse(geometria));
+		var layer = L.geoJSON(JSON.parse(geometria));
 
-			if(layer.getLatLng) {
+		if(layer.getLatLng) {
 
-				painelMapa.map.flyTo(layer.getLatLng(), 17);
+			painelMapa.map.flyTo(layer.getLatLng(), 17);
 
-			} else {
+		} else {
 
-				painelMapa.map.flyToBounds(layer.getBounds(), { maxZoom: 17 });
+			painelMapa.map.flyToBounds(layer.getBounds(), { maxZoom: 17 });
 
-			}
-  }
+		}
+	}
 
 	function adicionarBotaoCentralizar () {
 
@@ -172,6 +173,28 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	}
 
+	function criarPopup(shape) {
+
+		if(shape.tipo.toUpperCase() === 'EMP-CIDADE') {
+
+			return shape.popupText;
+
+		} else if(shape.geometria && shape.geometria.type.toLowerCase() === 'point') {
+
+			return '<p style="text-align:center;"><b>' + shape.popupText + '</b><br>' +
+				   '<hr>' +
+				   '<b>Coordenadas:</b> [' + shape.geometria.coordinates[0] + ', ' + shape.geometria.coordinates[1] + ']</p>';
+
+		} else {
+
+			return '<p style="text-align:center;"><b>' + shape.popupText + '</b><br> ' +
+				   '<hr>' +
+				   '<b>Área:</b> ' + shape.area.toFixed(2) + ' ha</p>';
+
+		}
+
+	}
+
 	/** Adiciona geometrias base no mapa (que o usuário não fez upload por exemplo) **/
 	function adicionarGeometriasBase(event, shape){
 
@@ -189,7 +212,7 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 			if(shape.popupText){
 
-				painelMapa.listaGeometriasBase[shape.tipo][item].bindPopup(shape.popupText);
+				painelMapa.listaGeometriasBase[shape.tipo][item].bindPopup(criarPopup(shape));
 
 			}
 
@@ -201,7 +224,7 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 			if(shape.popupText){
 
-				painelMapa.listaGeometriasBase[shape.tipo][item].bindPopup(shape.popupText);
+				painelMapa.listaGeometriasBase[shape.tipo][item].bindPopup(criarPopup(shape));
 
 			}
 
