@@ -17,6 +17,7 @@ include ../../layout/components/mapPanel
 					div.col-md-2(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel.codigo")
 						button.btn.btn-sm.btn-link.pull-right(ng-click="modalVisualizacaoProcessoCtrl.visualizarFichaImovel()") Ficha do Imóvel
 
+	label.titulo Localização do empreendimento
 	+mapPanel-sidebar("mapa-visualizacao-protocolo", '400', true, 'modalVisualizacaoProcessoCtrl')
 
 	.row
@@ -34,7 +35,6 @@ include ../../layout/components/mapPanel
 							| Documentação
 							i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.abreDocumentacao, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.abreDocumentacao}")
 
-
 					table.table.table-striped.table-condensed
 						thead
 							th Requisitos Administrativos
@@ -50,9 +50,9 @@ include ../../layout/components/mapPanel
 							th Requisitos Técnicos
 							th
 						tbody
-							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
-								td {{ documento.tipo.nome}}
-								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
+							tr(ng-repeat="solicitacaoGrupo in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo")
+								td {{ solicitacaoGrupo.tipoDocumento.nome}}
+								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(solicitacaoGrupo.documento.id)")
 									i.glyphicon.glyphicon-download-alt
 
 	div#ficha

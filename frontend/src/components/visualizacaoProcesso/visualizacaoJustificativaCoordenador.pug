@@ -16,7 +16,7 @@ div
 					label {{ modalVisualizacaoProcessoCtrl.labelAnalistaGeo }}:
 					p.i {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho }}
 
-	#accordion-gerente.panel-group(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.parecerValidacaoGerente")
+	#accordion-gerente.panel-group(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.parecerValidacaoGerente && modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil === modalVisualizacaoProcessoCtrl.GERENTE")
 		div
 			a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente', aria-expanded='false', data-target='#dados-gerente', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionGerente = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionGerente = !validacaoAnaliseGeoGerente.openedAccordionGerente' )
 				.panel.panel-default.panel-analise

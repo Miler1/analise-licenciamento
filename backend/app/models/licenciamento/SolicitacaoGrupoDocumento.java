@@ -29,10 +29,4 @@ public class SolicitacaoGrupoDocumento extends GenericModel {
 	@JoinColumn(name="id_caracterizacao", referencedColumnName="id")
 	public Caracterizacao caracterizacao;
 
-	public static SolicitacaoGrupoDocumento findByTipoAndCaracterizacao(TipoDocumentoLicenciamento tipo, Caracterizacao caracterizacao) {
-
-		return SolicitacaoGrupoDocumento.find("byTipoDocumentoAndCaracterizacao", tipo, caracterizacao).first();
-
-	}
-
 }

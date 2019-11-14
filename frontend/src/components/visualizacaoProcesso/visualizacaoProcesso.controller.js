@@ -328,9 +328,10 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	};
 
 	modalCtrl.downloadDocumentoLicenciamento = function (idDocumento) {
-		documentoLicenciamentoService.download(idDocumento);
-	};
 
+		documentoLicenciamentoService.download(idDocumento);
+
+	};
 
 	function baixarDocumento(idDocumento) {
 
