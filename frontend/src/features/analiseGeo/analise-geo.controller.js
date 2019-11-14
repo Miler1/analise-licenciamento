@@ -563,17 +563,15 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.validacaoAbaAvancar = function() {
-		if($scope.passoValido()) {
+
 			ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
-			controleCamposParecerEmpreedimento();
 			scrollTop();
-		}
+
 	};
 
 	ctrl.validacaoAbaVoltar = function() {
 		
 		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
-		controleCamposParecerEmpreedimento();
 		scrollTop();
 	};
 
@@ -773,20 +771,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	
 	};
 
-	function controleCamposParecerEmpreedimento() {
-
-		if(ctrl.analiseGeo.inconsistencias.length > 0){
-			$('#situacaoFundiaria').summernote('disable');
-			$('#analiseTemporal').summernote('disable');
-			ctrl.analiseGeo.situacaoFundiaria = undefined;
-      ctrl.analiseGeo.analiseTemporal = undefined;
-
-		} else {
-			$('#situacaoFundiaria').summernote('enable');
-			$('#analiseTemporal').summernote('enable');
-		}
-	}
-
 	ctrl.clonarParecerGeo = function() {
 
 		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
@@ -838,6 +822,17 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 											id: app.utils.TiposDocumentosAnalise.NOTIFICACAO
 									}
 								});
+							} else if(tipoUpload === app.utils.TiposUpload.DOCUMENTO_ANALISE_TEMPORAL){
+
+								ctrl.analiseGeo.documentos.push({
+
+									key: response.data,
+									nomeDoArquivo: file.name,
+									tipo: {
+
+											id: app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL
+									}
+								});
 							}
 
 						}, function(error){
@@ -869,12 +864,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.avancarProximaEtapa = function() {
 		$timeout(function() {
-			if($scope.passoValido()) {
+
 				$('.nav-tabs > .active').next('li').find('a').trigger('click');
-				controleCamposParecerEmpreedimento();
 				ctrl.controleVisualizacao = "ETAPA_CONCLUSAO";
 				scrollTop();
-			}
+
     }, 0);
 	};
 
@@ -911,17 +905,28 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.voltarEtapaAnterior = function(){
 		$timeout(function() {
+
 			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
-			controleCamposParecerEmpreedimento();
 			scrollTop();
 			ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
+
 		}, 0);
 	};
 
 	function analiseValida() {
 
-		if ((!ctrl.analiseGeo.inconsistencias || ctrl.analiseGeo.inconsistencias.length === 0) && (!ctrl.analiseGeo.analiseTemporal || !ctrl.analiseGeo.situacaoFundiaria)) {
-			return false;
+		if(ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null) {
+			var verificaDocAnaliseTemp = false;
+				_.forEach(ctrl.analiseGeo.documentos, function(documentoAnaliseTemporal){
+
+						if(documentoAnaliseTemporal.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL){
+							verificaDocAnaliseTemp = true;
+						}
+				});
+
+				if (verificaDocAnaliseTemp === false){
+					return false;
+				}
 		}
 
 		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
@@ -1097,6 +1102,17 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		});
 
 		return documentosParecer;
+	};
+
+	ctrl.getDocumentosAnaliseTemporal = function() {
+		
+		var documentosAnaliseTemporal = [];
+
+		documentosAnaliseTemporal = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+			return documento.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL;
+		});
+
+		return documentosAnaliseTemporal;
 	};
 
 	ctrl.getDocumentosNotificacao = function() {

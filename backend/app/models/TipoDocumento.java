@@ -33,6 +33,7 @@ public class TipoDocumento extends Model {
 	public static Long DOCUMENTO_COMUNICADO = 20l;
 	public static Long DOCUMENTO_OFICIO_ORGAO = 21l;
 	public static Long DOCUMENTO_NOTIFICACAO_ANALISE_GEO = 22l;
+	public static Long DOCUMENTO_ANALISE_TEMPORAL = 23l;
 
 	@Required
 	public String nome;
