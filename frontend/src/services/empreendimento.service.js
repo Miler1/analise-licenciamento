@@ -4,7 +4,9 @@ var EmpreendimentoService =  function (request, config) {
 
 		return request
 			.post(config.BASE_URL() + 'empreendimento/buscaDadosGeo/' + cpfCnpj);
+
 	};
+
 };
 
 exports.services.EmpreendimentoService = EmpreendimentoService;

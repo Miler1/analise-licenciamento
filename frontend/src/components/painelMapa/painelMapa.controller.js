@@ -182,14 +182,14 @@ var PainelMapaController = function ($scope, wmsTileService) {
 		} else if(shape.geometria && shape.geometria.type.toLowerCase() === 'point') {
 
 			return '<p style="text-align:center;"><b>' + shape.popupText + '</b><br>' +
-				   '<hr>' +
-				   '<b>Coordenadas:</b> [' + shape.geometria.coordinates[0] + ', ' + shape.geometria.coordinates[1] + ']</p>';
+				'<hr>' +
+				'<b>Coordenadas:</b> [' + shape.geometria.coordinates[0] + ', ' + shape.geometria.coordinates[1] + ']</p>';
 
 		} else {
 
 			return '<p style="text-align:center;"><b>' + shape.popupText + '</b><br> ' +
-				   '<hr>' +
-				   '<b>Área:</b> ' + shape.area.toFixed(2) + ' ha</p>';
+				'<hr>' +
+				'<b>Área:</b> ' + shape.area.toFixed(2) + ' ha</p>';
 
 		}
 
