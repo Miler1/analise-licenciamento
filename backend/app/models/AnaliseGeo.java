@@ -181,18 +181,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
     }
 
-    private void validarParecerEmpreendimento() {
-
-        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.analiseTemporal.equals(""))) {
-            throw new ValidacaoException(Mensagem.ANALISE_ANALISE_TEMPORAL_NAO_PREENCHIDA);
-        }
-
-        if ((this.inconsistencias == null || this.inconsistencias.size() == 0) && (this.situacaoFundiaria.equals(""))) {
-            throw new ValidacaoException(Mensagem.ANALISE_SITUACAO_FUNDIARIA_NAO_PREENCHIDA);
-        }
-
-    }
-
     private void validarTipoResultadoAnalise() {
 
         if (this.tipoResultadoAnalise == null) {
@@ -375,6 +363,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
         TipoDocumento tipoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
+        TipoDocumento tipoDocumentoAnaliseTemporal = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL);
 
 
         if (this.documentos == null) {
@@ -435,7 +424,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         this.update(analise);
         validarParecer(analise);
-        validarParecerEmpreendimento();
         validarTipoResultadoAnalise();
 
         this._save();
@@ -522,6 +510,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             enviarEmailNotificacao(novaNotificacao, analise.documentos);
 
             alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
+
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, this.usuarioValidacaoGerente);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -1031,6 +1020,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     }
 
     public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
+
         CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
 
         new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
