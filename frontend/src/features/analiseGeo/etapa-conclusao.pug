@@ -139,7 +139,7 @@ div#conclusao
     
         div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.NOTIFICACAO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
             i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-            | Anexar arquivos a notificação
+            | Anexar arquivos à notificação
 
         table.table.table-condensed(ng-if="ctrl.getDocumentosNotificacao().length > 0")
 
