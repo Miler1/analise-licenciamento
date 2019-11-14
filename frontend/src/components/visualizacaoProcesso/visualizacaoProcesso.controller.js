@@ -1,4 +1,10 @@
-var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootScope, $timeout,$uibModalInstance, processo, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService, notificacaoService) {
+var VisualizacaoProcessoController = function ($location, $anchorScroll, 
+											   $rootScope, $uibModal,
+											   $timeout, $uibModalInstance, 
+											   processo, processoService, 
+											   mensagem, notificacaoService,
+											   documentoLicenciamentoService, 
+											   analiseGeoService) {
 
 	var modalCtrl = this;
 
@@ -16,6 +22,7 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootSco
 	modalCtrl.abreTramitacaoProcessoAnterior = false;
 	modalCtrl.comparaStatus = app.utils.CondicaoTramitacao;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
+	modalCtrl.acaoTramitacao = app.utils.AcaoTramitacao;
 
 	var estiloPoligono = {
 		color: 'tomato',
@@ -197,6 +204,42 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootSco
 	this.downloadNotificacao = function(idTramitacao) {
 
 		notificacaoService.downloadNotificacao(idTramitacao);
+	};
+
+	this.visualizarJustificativas =  function(processo, tramitacao){
+
+		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+			.then(function(response){
+
+				$uibModal.open({
+					controller: 'visualizarJustificativasController',
+					controllerAs: 'visualizarJustificativasCtlr',
+					templateUrl: 'components/visualizacaoProcesso/modalVisualizarObservacao.html',
+					size: 'lg',
+					resolve: {
+
+						analiseGeo: function(){
+							return response.data;
+						}
+					}				
+				});
+			});
+	};
+
+	this.validaJustificativas = function (tramitacao){
+
+		if(tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO) {
+
+				return true;
+
+		   }else {
+
+			   return false;
+
+		   }
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {
