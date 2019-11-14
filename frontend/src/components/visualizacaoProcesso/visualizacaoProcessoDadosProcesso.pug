@@ -30,7 +30,7 @@
 			div.panel.panel-success
 				div.panel-body
 					| Parâmetro
-				div.panel-footer.text-center
+				div#panelResumo.panel-footer.allign-left
 					.media-div
 						.media-context
 							div
@@ -44,14 +44,14 @@
 			div.panel.panel-success
 				div.panel-body
 					| Porte - Potencial Poluidor/Degradador
-				div.panel-footer.text-center
+				div.panel-footer.allign-left
 					.media-div
 						.media-context
 							div
 								div {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}}
 
 	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
-		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
+		div#accordionPanel(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
 			h4 Tramitação:
 
 			div(uib-accordion class="accordion")
@@ -103,7 +103,7 @@
 
 
 		div(uib-accordion class="accordion" ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacaoAnterior.length > 0")
-			div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior")
+			div#accordionPanel(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior")
 				uib-accordion-heading(ng-click="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior=!modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior")
 					div Tramitação do Protocolo Anterior
 						i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior}")
