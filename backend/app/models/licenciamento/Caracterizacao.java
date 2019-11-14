@@ -197,4 +197,29 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public Boolean isArquivada() {
 		return this.status.id.equals(StatusCaracterizacao.ARQUIVADO);
 	}
+
+	public AtividadeCaracterizacao getAtividadeCaracterizacaoMaiorPotencialPoluidorEPorte() {
+
+		AtividadeCaracterizacao atividadeCaracterizacaoMaiorPPDPorte = null;
+
+		for (AtividadeCaracterizacao atividadeCaracterizacao : this.atividadesCaracterizacao) {
+
+			if (atividadeCaracterizacaoMaiorPPDPorte == null) {
+				atividadeCaracterizacaoMaiorPPDPorte = atividadeCaracterizacao;
+			} else if (atividadeCaracterizacao.atividade.potencialPoluidor.compareTo(atividadeCaracterizacaoMaiorPPDPorte.atividade.potencialPoluidor) == 1) {
+				atividadeCaracterizacaoMaiorPPDPorte = atividadeCaracterizacao;
+			} else if (atividadeCaracterizacao.atividade.potencialPoluidor.compareTo(atividadeCaracterizacaoMaiorPPDPorte.atividade.potencialPoluidor) == 0) {
+				// Caso PPD seja igual, comparar os portes.
+				if (atividadeCaracterizacao.porteEmpreendimento.compareTo(atividadeCaracterizacaoMaiorPPDPorte.porteEmpreendimento) == 0
+						|| atividadeCaracterizacao.porteEmpreendimento.compareTo(atividadeCaracterizacaoMaiorPPDPorte.porteEmpreendimento) == 1) {
+					atividadeCaracterizacaoMaiorPPDPorte = atividadeCaracterizacao;
+				}
+			}
+
+		}
+
+		return atividadeCaracterizacaoMaiorPPDPorte;
+
+	}
+
 }
