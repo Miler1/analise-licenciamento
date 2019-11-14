@@ -696,7 +696,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		for (Caracterizacao caracterizacao : this.empreendimento.caracterizacoes) {
 
-			if (caracterizacao.numeroProcessoAntigo == null && !caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
+			if (!caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
 					&& !caracterizacao.status.nome.equals(StatusCaracterizacao.CANCELADO)) {
 
 				return false;
