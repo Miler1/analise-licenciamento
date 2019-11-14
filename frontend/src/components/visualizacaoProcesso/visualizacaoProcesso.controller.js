@@ -25,6 +25,7 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	modalCtrl.openedAccordionGerente = false;
 	modalCtrl.labelAnalistaGeo = '';
 	modalCtrl.labelGerente = '';
+	modalCtrl.acaoTramitacao = app.utils.AcaoTramitacao;
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -364,6 +365,42 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	this.downloadNotificacao = function(idTramitacao) {
 
 		notificacaoService.downloadNotificacao(idTramitacao);
+	};
+
+	this.visualizarJustificativas =  function(processo, tramitacao){
+
+		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+			.then(function(response){
+
+				$uibModal.open({
+					controller: 'visualizarJustificativasController',
+					controllerAs: 'visualizarJustificativasCtlr',
+					templateUrl: 'components/visualizacaoProcesso/modalVisualizarObservacao.html',
+					size: 'lg',
+					resolve: {
+
+						analiseGeo: function(){
+							return response.data;
+						}
+					}				
+				});
+			});
+	};
+
+	this.validaJustificativas = function (tramitacao){
+
+		if(tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO) {
+
+				return true;
+
+		   }else {
+
+			   return false;
+
+		   }
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {
