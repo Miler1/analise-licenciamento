@@ -931,6 +931,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+			if(ctrl.notificacao.retificacaoSolicitacao && !ctrl.notificacao.retificacaoSolicitacaoComGeo) {
+				return false;
+			}
 			if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
 				return false;
 			}
@@ -972,8 +975,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		ctrl.analiseGeo.analise.processo.empreendimento = null;
 
-		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
-		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
+		tratarDadosNotificacao();
 
 		analiseGeoService.concluir(ctrl.analiseGeo)
 			.then(function(response) {
@@ -1018,6 +1020,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			$rootScope.$broadcast('atualizarContagemProcessos');
 
 	};
+
+	function tratarDadosNotificacao() {
+
+		ctrl.notificacao.documentacao = (ctrl.notificacao.documentacao === null ? false :true);
+		ctrl.notificacao.retificacaoEmpreendimento = (ctrl.notificacao.retificacaoEmpreendimento === null ? false :true);
+		ctrl.notificacao.retificacaoSolicitacao = (ctrl.notificacao.retificacaoSolicitacao === null ? false :true);
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
+		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
+
+	}
 
 	$scope.optionsText = {
 		toolbar: [
