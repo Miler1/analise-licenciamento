@@ -40,9 +40,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
 
-		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numeroProcesso);
-		
-		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
+		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
+
+		Processo processo = Processo.find("byNumero", caracterizacao.numero).first();
 		Processo processoAntigo;
 		Analise analise;
 		AnaliseGeo analiseGeo;
@@ -58,7 +58,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			if (caracterizacao.renovacao) {
 
 				Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
-				processoAntigo = Processo.findByNumProcesso(caracterizacaoAnterior.numeroProcesso);
+				processoAntigo = Processo.find("numero", caracterizacaoAnterior.numero).first();
 				processo.processoAnterior = processoAntigo;
 				processo.renovacao = true;
 
@@ -127,7 +127,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	private Processo criarNovoProcesso(Caracterizacao caracterizacao) {
 		
 		Processo processo = new Processo();
-		processo.numero = caracterizacao.numeroProcesso;
+		processo.numero = caracterizacao.numero;
 		processo.empreendimento = caracterizacao.empreendimento;
 		processo.dataCadastro = new Date();
 		processo.caracterizacao = caracterizacao;
