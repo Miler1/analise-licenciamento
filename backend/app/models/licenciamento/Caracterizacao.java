@@ -21,8 +21,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
 
-	@Column(name = "numero_processo")
-	public String numeroProcesso;
+	@Column(name = "numero")
+	public String numero;
 
 	@Column(name = "data_cadastro")
 	public Date dataCadastro;
@@ -64,10 +64,6 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 			inverseJoinColumns = @JoinColumn(name = "id_resposta"))
 	public List<Resposta> respostas;
 
-	@ManyToOne
-	@JoinColumn(name="id_grupo")
-	public GrupoCaracterizacao grupo;
-
 	@ManyToMany
 	@JoinTable(schema = "licenciamento", name = "rel_tipo_licenca_caracterizacao_andamento",
 			joinColumns = @JoinColumn(name = "id_caracterizacao"),
@@ -88,9 +84,6 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	@Column
 	public boolean renovacao;
-
-	@Column(name = "numero_processo_antigo")
-	public String numeroProcessoAntigo;
 
 	public enum OrigemSobreposicao {
 
