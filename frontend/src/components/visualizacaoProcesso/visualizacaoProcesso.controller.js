@@ -16,6 +16,7 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	modalCtrl.PrazoAnalise = app.utils.PrazoAnalise;
 	modalCtrl.LegendasTipoSobreposicao = app.utils.LegendasTipoSobreposicao;
 	modalCtrl.camadasSobreposicao = app.utils.CamadaSobreposicao;
+	modalCtrl.tiposResultadoAnaliseUtils = app.utils.TiposResultadoAnalise;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 	modalCtrl.numPoints = 0;
 	modalCtrl.dadosProjeto = {};
@@ -68,15 +69,15 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 
 	var setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
 
-		if(tipoResultadoAnalistaGeo.id === 1) {
+		if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
 
 			modalCtrl.labelAnalistaGeo = 'Despacho';
 
-		} else if(tipoResultadoAnalistaGeo.id === 2) {
+		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
 
 			modalCtrl.labelAnalistaGeo = 'Justificativa';
 
-		} else if(tipoResultadoAnalistaGeo.id === 3) {
+		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
 
 			modalCtrl.labelAnalistaGeo = 'Descrição da solicitação';
 
@@ -86,15 +87,15 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 
 	var setLabelAnalistaGerente = function(tipoResultadoGerente) {
 
-		if(tipoResultadoGerente.id === 4) {
+		if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
 
 			modalCtrl.labelGerente = 'Despacho';
 
-		} else if(tipoResultadoGerente.id === 5) {
+		} else if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
 
 			modalCtrl.labelGerente = 'Observações';
 
-		} else if(tipoResultadoGerente.id === 6) {
+		} else if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO) {
 
 			modalCtrl.labelGerente = 'Justificativa';
 

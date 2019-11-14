@@ -37,7 +37,17 @@ include ../../layout/components/mapPanel
 
 					table.table.table-striped.table-condensed
 						thead
-							th Documento
+							th Requisitos Administrativos
+							th
+						tbody
+							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
+								td {{ documento.tipo.nome}}
+								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
+									i.glyphicon.glyphicon-download-alt
+
+					table.table.table-striped.table-condensed
+						thead
+							th Requisitos Técnicos
 							th
 						tbody
 							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
