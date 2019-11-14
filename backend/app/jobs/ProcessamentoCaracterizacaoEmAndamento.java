@@ -2,10 +2,7 @@ package jobs;
 
 import models.*;
 import models.licenciamento.Caracterizacao;
-import models.licenciamento.Empreendimento;
-import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
-import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
@@ -34,10 +31,11 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			
 		}
 		
-		Long[] ids = new ListUtil().getIdsAsArray(caracterizacoes);
+		Long[] ids = ListUtil.getIdsAsArray(caracterizacoes);
 		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
 
 		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
+
 	}
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
@@ -45,7 +43,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numeroProcesso);
 		
 		Processo processo = Processo.find("byNumero", caracterizacao.numeroProcesso).first();
-		Processo processoAntigo = null;
+		Processo processoAntigo;
 		Analise analise;
 		AnaliseGeo analiseGeo;
 
