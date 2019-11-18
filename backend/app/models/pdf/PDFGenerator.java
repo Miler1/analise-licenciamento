@@ -1,8 +1,14 @@
 package models.pdf;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfSmartCopy;
 import org.allcolor.yahp.converter.IHtmlToPdfTransformer;
 import org.allcolor.yahp.converter.IHtmlToPdfTransformer.PageSize;
 import org.apache.commons.collections.FastHashMap;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import play.Play;
 import play.exceptions.TemplateNotFoundException;
@@ -13,7 +19,6 @@ import play.templates.Template;
 import play.templates.TemplateLoader;
 import utils.Configuracoes;
 import utils.FileManager;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -270,4 +275,50 @@ public class PDFGenerator {
         List<IHtmlToPdfTransformer.CHeaderFooter> headerFooterList = new LinkedList<IHtmlToPdfTransformer.CHeaderFooter>();
         String content;
     }
+
+    public static File mergePDF(List<File> filesToMerge) throws DocumentException, IOException {
+
+        byte[] mergedDocument;
+
+        try (ByteArrayOutputStream memoryStream = new ByteArrayOutputStream()) {
+
+            Document document = new Document();
+            PdfSmartCopy pdfSmartCopy = new PdfSmartCopy(document, memoryStream);
+            document.open();
+
+            for (File docPath : filesToMerge) {
+
+                PdfReader reader = new PdfReader(docPath.toString());
+
+                try {
+
+                    reader.consolidateNamedDestinations();
+
+                    int numberOfPages = reader.getNumberOfPages();
+
+                    for (int page = 0; page < numberOfPages;) {
+
+                        PdfImportedPage pdfImportedPage = pdfSmartCopy.getImportedPage(reader, ++page);
+                        pdfSmartCopy.addPage(pdfImportedPage);
+
+                    }
+
+                } finally {
+                    reader.close();
+                }
+
+            }
+
+            document.close();
+            mergedDocument = memoryStream.toByteArray();
+
+        }
+
+        File documentosMergeados = new File("documento-parecer.pdf");
+        FileUtils.writeByteArrayToFile(documentosMergeados, mergedDocument);
+
+        return documentosMergeados;
+
+    }
+
 }
