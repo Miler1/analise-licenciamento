@@ -21,8 +21,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
 
-	@Column(name = "numero_processo")
-	public String numeroProcesso;
+	@Column(name = "numero")
+	public String numero;
 
 	@Column(name = "data_cadastro")
 	public Date dataCadastro;
@@ -64,10 +64,6 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 			inverseJoinColumns = @JoinColumn(name = "id_resposta"))
 	public List<Resposta> respostas;
 
-	@ManyToOne
-	@JoinColumn(name="id_grupo")
-	public GrupoCaracterizacao grupo;
-
 	@ManyToMany
 	@JoinTable(schema = "licenciamento", name = "rel_tipo_licenca_caracterizacao_andamento",
 			joinColumns = @JoinColumn(name = "id_caracterizacao"),
@@ -89,9 +85,6 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@Column
 	public boolean renovacao;
 
-	@Column(name = "numero_processo_antigo")
-	public String numeroProcessoAntigo;
-
 	@Column(name = "id_origem")
 	public Long idCaracterizacaoOrigem;
 
@@ -100,13 +93,16 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		EMPREENDIMENTO,
 		ATIVIDADE,
 		COMPLEXO,
-		SEM_SOBREPOSICAO;
+		SEM_SOBREPOSICAO
 
 	}
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="origem_sobreposicao")
 	public OrigemSobreposicao origemSobreposicao;
+
+	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
+	public List<GeometriaComplexo> geometriasComplexo;
 
 	@Transient
 	public Dae dae;
@@ -201,4 +197,29 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public Boolean isArquivada() {
 		return this.status.id.equals(StatusCaracterizacao.ARQUIVADO);
 	}
+
+	public AtividadeCaracterizacao getAtividadeCaracterizacaoMaiorPotencialPoluidorEPorte() {
+
+		AtividadeCaracterizacao atividadeCaracterizacaoMaiorPPDPorte = null;
+
+		for (AtividadeCaracterizacao atividadeCaracterizacao : this.atividadesCaracterizacao) {
+
+			if (atividadeCaracterizacaoMaiorPPDPorte == null) {
+				atividadeCaracterizacaoMaiorPPDPorte = atividadeCaracterizacao;
+			} else if (atividadeCaracterizacao.atividade.potencialPoluidor.compareTo(atividadeCaracterizacaoMaiorPPDPorte.atividade.potencialPoluidor) == 1) {
+				atividadeCaracterizacaoMaiorPPDPorte = atividadeCaracterizacao;
+			} else if (atividadeCaracterizacao.atividade.potencialPoluidor.compareTo(atividadeCaracterizacaoMaiorPPDPorte.atividade.potencialPoluidor) == 0) {
+				// Caso PPD seja igual, comparar os portes.
+				if (atividadeCaracterizacao.porteEmpreendimento.compareTo(atividadeCaracterizacaoMaiorPPDPorte.porteEmpreendimento) == 0
+						|| atividadeCaracterizacao.porteEmpreendimento.compareTo(atividadeCaracterizacaoMaiorPPDPorte.porteEmpreendimento) == 1) {
+					atividadeCaracterizacaoMaiorPPDPorte = atividadeCaracterizacao;
+				}
+			}
+
+		}
+
+		return atividadeCaracterizacaoMaiorPPDPorte;
+
+	}
+
 }

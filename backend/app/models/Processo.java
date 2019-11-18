@@ -702,7 +702,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		for (Caracterizacao caracterizacao : this.empreendimento.caracterizacoes) {
 
-			if (caracterizacao.numeroProcessoAntigo == null && !caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
+			if (!caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
 					&& !caracterizacao.status.nome.equals(StatusCaracterizacao.CANCELADO)) {
 
 				return false;
@@ -732,22 +732,19 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		for (AtividadeCaracterizacao atividadeCaracterizacao : caracterizacao.atividadesCaracterizacao) {
 
-			List<GeometriaAtividadeVO> geometriasAtividade = new ArrayList<>();
 			indexDadosGeometriasAtividade = 0;
 			indexDadosAtividades++;
 
-			for (GeometriaAtividade geometria : atividadeCaracterizacao.geometriasAtividade) {
+			if(caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
 
-				for (Geometry geometrie : GeoCalc.getGeometries(geometria.geometria)) {
+				caracterizacao.geometriasComplexo.forEach(geometriaComplexo -> atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometriaComplexo.convertToVO())));
 
-					indexDadosGeometriasAtividade++;
-					geometriasAtividade.add(new GeometriaAtividadeVO(geometrie));
+			} else {
 
-				}
+				List<GeometriaAtividadeVO> geometrias = atividadeCaracterizacao.geometriasAtividade.stream().map(GeometriaAtividade::convertToVO).collect(Collectors.toList());
+				atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometrias));
 
 			}
-
-			atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometriasAtividade));
 
 		}
 
@@ -803,13 +800,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 				return "Extensão " + Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
 
-			case "POLYGON":
-
-				return "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
-
 			default:
 
-				return "";
+				return "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
 
 		}
 

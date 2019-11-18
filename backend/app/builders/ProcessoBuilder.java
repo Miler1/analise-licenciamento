@@ -9,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.type.StringType;
 import security.Auth;
-
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;

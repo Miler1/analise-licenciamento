@@ -76,6 +76,7 @@ public class AnaliseGeoSerializer {
             "ativo",
             "dataInicio",
             "dataFim",
+            "tipoResultadoAnalise",
             "tipoResultadoAnalise.id",
             "tipoResultadoAnalise.nome"	,
             "documentos.id",
@@ -154,7 +155,12 @@ public class AnaliseGeoSerializer {
             "notificacoes.prazoNotificacao",
             "notificacoes.justificativaDocumentacao",
             "notificacoes.justificativaRetificacaoEmpreendimento",
-            "notificacoes.justificativaRetificacaoSolicitacao"
+            "notificacoes.justificativaRetificacaoSolicitacao",
+            "desvinculos.id",
+            "desvinculos.analiseGeo",
+            "desvinculos.justificativa",
+            "desvinculos.respostaGerente"
+
 
     ).transform(new GeometryTransformer(), Geometry.class);
 

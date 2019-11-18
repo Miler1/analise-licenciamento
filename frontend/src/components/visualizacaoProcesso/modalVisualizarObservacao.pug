@@ -1,0 +1,43 @@
+div.modal-header
+
+    button.close(type='button', ng-click="visualizarJustificativasCtlr.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Visualizar observação
+
+div.modal-body(ng-if="visualizarJustificativasCtlr.analiseGeo.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO")
+    div.row
+        label.col-sm-4 Despacho:
+        br
+        div.col-sm-12.espacamento-visualizar-obs
+            span {{visualizarJustificativasCtlr.despacho}}
+
+div.modal-body(ng-if="visualizarJustificativasCtlr.analiseGeo.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.INDEFERIDO")
+    div.row
+        label.col-sm-4 Justificativa:
+        br
+        div.col-sm-12.espacamento-visualizar-obs
+            span {{visualizarJustificativasCtlr.justificativa}}
+
+div.modal-body(ng-if="visualizarJustificativasCtlr.analiseGeo.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.EMITIR_NOTIFICACAO")
+    div.row
+        label.col-sm-4 Descrição da solicitação:
+        br
+        div.col-sm-12.espacamento-visualizar-obs
+            span {{visualizarJustificativasCtlr.descricaoSolicitacao}}
+
+div.modal-body(ng-if="visualizarJustificativasCtlr.analiseGeo.despacho === null")
+    div.row
+        label.col-sm-4 Justificativa:
+        br
+        div.col-sm-12.espacamento-visualizar-obs
+            span {{visualizarJustificativasCtlr.justificativaDesvinculo}}
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="visualizarJustificativasCtlr.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Voltar
+    
+
