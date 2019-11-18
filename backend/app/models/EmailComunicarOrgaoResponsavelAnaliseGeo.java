@@ -41,13 +41,6 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
         try {
 
-            List<String> tiposlicenca = new ArrayList<String>();
-            for(Caracterizacao caracterizacao : this.analiseGeo.analise.processo.empreendimento.caracterizacoes) {
-
-                tiposlicenca.add(caracterizacao.tipoLicenca.nome);
-            }
-            String licencas = StringUtils.join(tiposlicenca, ",");
-
             List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
             for(AnaliseDocumento analiseDocumento : this.analiseGeo.analisesDocumentos) {
 
