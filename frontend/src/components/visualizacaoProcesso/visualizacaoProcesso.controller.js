@@ -26,7 +26,6 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	modalCtrl.openedAccordionGerente = false;
 	modalCtrl.labelAnalistaGeo = '';
 	modalCtrl.labelGerente = '';
-	modalCtrl.acaoTramitacao = app.utils.AcaoTramitacao;
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
