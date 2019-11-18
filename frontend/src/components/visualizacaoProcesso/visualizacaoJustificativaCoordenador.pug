@@ -1,5 +1,7 @@
 div
 	label.titulo(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho") Resultados das análises
+	div.info-sem-dados-para-exibir(ng-else) 
+		i Não há análises para este protocolo
 	#accordion-analista-geo.panel-group(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho")
 		div
 			.panel.panel-default.panel-analise
