@@ -86,7 +86,7 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 
 	};
 
-	var setLabelAnalistaGerente = function(tipoResultadoGerente) {
+	var setLabelGerente = function(tipoResultadoGerente) {
 
 		if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
 
@@ -109,8 +109,13 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 		var tipoResultadoAnalistaGeo = dadosProcesso.analise.analiseGeo.tipoResultadoAnalise;
 		var tipoResultadoGerente = dadosProcesso.analise.analiseGeo.tipoResultadoValidacaoGerente;
 
-		setLabelAnalistaGeo(tipoResultadoAnalistaGeo);
-		setLabelAnalistaGerente(tipoResultadoGerente);
+		if(tipoResultadoAnalistaGeo !== null && tipoResultadoAnalistaGeo !== undefined) {
+			setLabelAnalistaGeo(tipoResultadoAnalistaGeo);
+		}
+
+		if(tipoResultadoGerente !== null && tipoResultadoGerente !== undefined) {
+			setLabelGerente(tipoResultadoGerente);
+		}
 
 	};
 
