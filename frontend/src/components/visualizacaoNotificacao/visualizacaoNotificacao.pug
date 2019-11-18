@@ -9,7 +9,7 @@
 		h4.modal-title Notificações
 
 	div.modal-body
-		div(ng-repeat='notificacao in modalVisualizacaoNotificacaoCtrl.notificacoes')
+		div(ng-repeat="notificacao in modalVisualizacaoNotificacaoCtrl.notificacoes")
 			.panel-group(id='accordion-notificacoes-{{notificacao.id}}')
 				div
 					a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-notificacoes-{{notificacao.id}}', 
@@ -45,9 +45,9 @@
 											input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='true')
 											| Sem alteração GEO
 						
-						.panel-group
-							.prazo-notificacao
-								label Prazo solicitado para atendimento a notificação: {{notificacao.prazoNotificacao}} dias
+						#prazoNotificacao.panel-group
+								label.label-text Prazo solicitado para atendimento a notificação: 
+									i {{notificacao.prazoNotificacao}} dias
 
 						.panel-group
 							.descricao
@@ -63,7 +63,7 @@
 								thead
 
 									tr
-										th.col-md-10 Documentos de notificação
+										th.col-md-10 Documentos da notificação
 										th.col-md-2.text-right Ações
 
 								tbody

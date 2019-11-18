@@ -6,6 +6,12 @@ import models.Processo;
 import security.Acao;
 import serializers.NotificacaoSerializer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Notificacoes extends InternalController {
 
     public static void downloadPDF(Integer idTramitacao) throws Exception {
@@ -29,7 +35,8 @@ public class Notificacoes extends InternalController {
 
         Processo processo = Processo.findById(id);
 
-        renderJSON(processo.analise.analiseGeo.notificacoes, NotificacaoSerializer.findAll);
+        Collections.reverse(processo.analise.getAnaliseGeo().notificacoes);
+        renderJSON(processo.analise.getAnaliseGeo().notificacoes, NotificacaoSerializer.findAll);
     }
 
 }
