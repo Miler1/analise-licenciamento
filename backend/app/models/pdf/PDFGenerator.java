@@ -20,6 +20,7 @@ import play.templates.TemplateLoader;
 import utils.Configuracoes;
 import utils.FileManager;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -314,7 +315,12 @@ public class PDFGenerator {
 
         }
 
-        File documentosMergeados = new File("documento-parecer.pdf");
+        File documentosMergeados = new File(Configuracoes.ARQUIVOS_ANALISE_PATH + "/documento-parecer.pdf");
+
+        if(documentosMergeados.exists()) {
+            Files.delete(documentosMergeados.toPath());
+        }
+
         FileUtils.writeByteArrayToFile(documentosMergeados, mergedDocument);
 
         return documentosMergeados;
