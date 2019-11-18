@@ -16,6 +16,7 @@ import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -400,7 +401,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 if (novoDocumento.tipo.id.equals(tipoParecer.id)) {
 
                     novoDocumento.tipo = tipoParecer;
-                    this.documentos.add(novoDocumento);
 
                 } else if (novoDocumento.tipo.id.equals(tipoNotificacao.id)) {
 
@@ -412,7 +412,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 }
 
+                this.documentos.add(novoDocumento);
                 novoDocumento.save();
+
             }
         }
 
@@ -490,7 +492,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
-        } else if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
+        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
             if (this.usuarioValidacaoGerente != null) {
 
@@ -500,7 +502,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
-        } else if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.EMITIR_NOTIFICACAO) {
+        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
 //            Notificacao.criarNotificacoesAnaliseGeo(analise);
 
@@ -835,8 +837,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
         List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
-        Processo processo = Processo.findById(this.analise.processo.id);
-        DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
+        DadosProcessoVO dadosProcesso = this.analise.processo.getDadosProcesso();
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
@@ -853,11 +854,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         documentos.add(pdf.getFile());
         List<Documento> documentosAnaliseTemporal = this.documentos.stream().filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL)).collect(Collectors.toList());
         documentos.addAll(documentosAnaliseTemporal.stream().map(Documento::getFile).collect(Collectors.toList()));
-        FileOutputStream fos = PDFGenerator.mergePDF(documentos, pdf.getFile().getName());
 
-        Documento documento = new Documento(tipoDocumento, pdf.getFile());
-
-        return documento;
+        return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
 
     }
 
@@ -909,9 +907,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         pdf.generate();
 
-        Documento documento = new Documento(tipoDocumento, pdf.getFile());
-
-        return documento;
+        return new Documento(tipoDocumento, pdf.getFile());
 
     }
 
@@ -974,9 +970,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         pdf.generate();
 
-        documento = new Documento(tipoDocumento, pdf.getFile());
-
-        return documento;
+        return new Documento(tipoDocumento, pdf.getFile());
     }
 
 
@@ -1029,6 +1023,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             this.save();
 
         }
+
     }
 
     public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
@@ -1036,6 +1031,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
 
         new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
+
     }
 
 }
