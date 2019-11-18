@@ -1,5 +1,5 @@
 div
-	label.titulo Resultados das análises
+	label.titulo(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho") Resultados das análises
 	#accordion-analista-geo.panel-group(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.despacho")
 		div
 			.panel.panel-default.panel-analise
