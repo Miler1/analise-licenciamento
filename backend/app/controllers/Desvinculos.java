@@ -101,17 +101,15 @@ public class Desvinculos extends GenericController {
 
         if(desvinculo.aprovada) {
             desvinculo.analistaGeoDestino = UsuarioAnalise.findById(desvinculo.analistaGeoDestino.id);
-
             AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
                     .setParameter("id_analise_geo", desvinculo.analiseGeo.id).first();
-
             analistaGeo.usuario = desvinculo.analistaGeoDestino;
-
             analistaGeo._save();
         }
 
         Desvinculo desvinculoAlterar = Desvinculo.findById(desvinculo.id);
 
+        desvinculo.analistaGeoDestino = desvinculo.analistaGeo;
         desvinculoAlterar.update(desvinculo);
 
         desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
