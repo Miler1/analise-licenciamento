@@ -757,7 +757,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
 
-			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = caracterizacao.atividadesCaracterizacao.stream().map(a -> a.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
+			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = caracterizacao.atividadesCaracterizacao.stream().filter(a -> a.sobreposicaoCaracterizacaoAtividade != null).map(a -> a.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
 			restricoes.addAll(sobreposicoesCaracterizacaoAtividades.stream().map(SobreposicaoCaracterizacaoAtividade::convertToVO).collect(Collectors.toList()));
 
 		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
