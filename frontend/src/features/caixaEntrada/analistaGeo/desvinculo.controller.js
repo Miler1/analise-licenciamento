@@ -2,7 +2,7 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
 
     var desvinculoController = this;
     desvinculoController.respondido =null;
-    
+    desvinculoController.errorJustificativa = false;
 
         desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
         .then(function(response){
@@ -32,6 +32,11 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
             justificativa: desvinculoController.justificativa,
             analiseGeo: {id: idAnaliseGeo}
         };
+        if (desvinculoController.justificativa === '' || !desvinculoController.justificativa){
+            desvinculoController.errorJustificativa = true;
+            return false;
+        }
+        
 
         desvinculoService.solicitarDesvinculo(params)
             .then(function(response){

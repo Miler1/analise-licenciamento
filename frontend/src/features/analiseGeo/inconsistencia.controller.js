@@ -20,6 +20,12 @@ var InconsistenciaController = function ($scope,
 	inconsistenciaController.idSobreposicao = null;
 
 	inconsistenciaController.orgaos = app.utils.Orgao;
+	inconsistenciaController.errors = {
+		categoria:false,
+		descricao:false,
+		tipo:false,
+		item:false
+	};
 	
 	inconsistenciaController.categoriaInconsistencia = categoriaInconsistencia;
 	
@@ -87,6 +93,38 @@ var InconsistenciaController = function ($scope,
 		return id;
 	};
 
+	function verificaCampos(restricao) {
+
+		if(!inconsistenciaController.categoriaInconsistencia || inconsistenciaController.categoriaInconsistencia === ''){
+			inconsistenciaController.errors.categoria = true;
+		}else {
+			inconsistenciaController.errors.categoria = false;
+		}
+
+		if(!restricao.item || restricao.item === null){
+			inconsistenciaController.errors.item = true;
+		}else {
+			inconsistenciaController.errors.item = false;
+		}
+
+		if(!inconsistenciaController.descricaoInconsistencia || inconsistenciaController.descricaoInconsistencia === ''){
+			inconsistenciaController.errors.descricao = true;
+		}else {
+			inconsistenciaController.errors.descricao = false;
+		}
+
+		if(!inconsistenciaController.tipoInconsistencia || inconsistenciaController.tipoInconsistencia === ''){
+			inconsistenciaController.errors.tipo = true;
+		}else {
+			inconsistenciaController.errors.tipo = false;
+		}
+
+		if (inconsistenciaController.errors.categoria === true || inconsistenciaController.errors.item === true || inconsistenciaController.errors.descricao === true || inconsistenciaController.errors.tipo === true){
+			return false;
+		}
+
+	}
+
 	inconsistenciaController.concluir = function() {
 
 		var params;
@@ -113,80 +151,82 @@ var InconsistenciaController = function ($scope,
 			sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
 
 		};
+		if(verificaCampos(restricao)){
+			return;
+		}else{
+		
+			inconsistenciaService.findInconsistencia(paramsInconsistencia)
+			.then(function(inconsistenciaResponse){
 
-		inconsistenciaService.findInconsistencia(paramsInconsistencia)
-		.then(function(inconsistenciaResponse){
+				inconsistencia = inconsistenciaResponse.data;
 
-			inconsistencia = inconsistenciaResponse.data;
+				if(inconsistencia){
 
-			if(inconsistencia){
-
-				params = {
-					id : inconsistencia.id,
-					analiseGeo: {id: analiseGeo.id},
-					tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
-					descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-					categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
-					anexos: inconsistenciaController.anexos,
-					caracterizacao: {id: inconsistenciaController.idCaracterizacao},
-					geometriaAtividade: {id: idGeometriaAtividade},
-					sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
-					sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
-					sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
-				};
-
-			}else{
-
-				params = {
-					analiseGeo: {id: analiseGeo.id},
-					tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
-					descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-					categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
-					anexos: inconsistenciaController.anexos,
-					caracterizacao: {id: inconsistenciaController.idCaracterizacao},
-					geometriaAtividade: {id: idGeometriaAtividade},
-					sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
-					sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
-					sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
-				};
-
-			}
-
-			inconsistenciaService.salvarInconsistencia(params)
-				.then(function(response){
-					mensagem.success("Inconsistência salva com sucesso!");
-
-					var retorno = {
-						inconsistencia: response.data,
-						isEdicao: params.id !== undefined && params.id !== null
+					params = {
+						id : inconsistencia.id,
+						analiseGeo: {id: analiseGeo.id},
+						tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+						descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+						categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
+						anexos: inconsistenciaController.anexos,
+						caracterizacao: {id: inconsistenciaController.idCaracterizacao},
+						geometriaAtividade: {id: idGeometriaAtividade},
+						sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
+						sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
+						sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
 					};
 
-					var sobreposicao = retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade ? retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade : retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : retorno.inconsistencia.sobreposicaoCaracterizacaoComplexo;
-					var inconsistenciaValida = false;
+				}else{
 
-					if(sobreposicao) {
-						inconsistenciaValida = sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+					params = {
+						analiseGeo: {id: analiseGeo.id},
+						tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+						descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+						categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
+						anexos: inconsistenciaController.anexos,
+						caracterizacao: {id: inconsistenciaController.idCaracterizacao},
+						geometriaAtividade: {id: idGeometriaAtividade},
+						sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
+						sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
+						sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
+					};
 
-							return orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA;
+				}
+				inconsistenciaService.salvarInconsistencia(params)
+					.then(function(response){
+						mensagem.success("Inconsistência salva com sucesso!");
+						var retorno = {
+							inconsistencia: response.data,
+							isEdicao: params.id !== undefined && params.id !== null
+						};
 
-						});
-					}
+						var sobreposicao = retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade ? retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade : retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : retorno.inconsistencia.sobreposicaoCaracterizacaoComplexo;
+						var inconsistenciaValida = false;
 
-					if(listaInconsistencias && inconsistenciaValida) {						
-						listaInconsistencias.push(retorno.inconsistencia);
-					}
+						if(sobreposicao) {
+							inconsistenciaValida = sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
 
-					$uibModalInstance.close(
-						retorno);
+								return orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA;
 
-				}).catch(function(response){
-					mensagem.error(response.data.texto, {referenceId: 5});
-					
-				});
-		}).catch(function(response){
-			mensagem.error(response.data.texto, {referenceId: 5});
-			
-		});
+							});
+						}
+
+						if(listaInconsistencias && inconsistenciaValida) {						
+							listaInconsistencias.push(retorno.inconsistencia);
+						}
+
+						$uibModalInstance.close(
+							retorno);
+
+					}).catch(function(response){
+						mensagem.error(response.data.texto, {referenceId: 5});
+						
+					});
+			}).catch(function(response){
+				mensagem.error(response.data.texto, {referenceId: 5});
+				
+			});
+		}
 	};
 
 	inconsistenciaController.baixarDocumentoInconsistencia= function(anexo) {

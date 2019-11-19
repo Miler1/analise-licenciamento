@@ -22,7 +22,7 @@ div.modal-body
         div(ng-if="desvinculoCtrl.respondido === false")
             label.label-justificativa.obrigatorio(ng-if="desvinculoCtrl.respondido === false")  Justificativa:
             br
-            textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa')            
+            textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa', ng-class="{'error': desvinculoCtrl.errorJustificativa === true }")            
 
 
 div.modal-footer(ng-if="desvinculoCtrl.respondido === false")
