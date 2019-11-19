@@ -87,18 +87,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 				});
 	};
 
-	cxEntAnalistaGeo.textoDesvinculo = function(processo) {
-
-		var texto = 'Solicitar desvínculo';
-
-		if(processo.loginUsuarioAnterior === $rootScope.usuarioSessao.usuarioEntradaUnica.login) {
-			texto = 'Visualizar solicitação de desvínculo';
-		}
-
-		return texto;
-
-	};
-
 	function primeiroAcesso(processo) {
 		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
 

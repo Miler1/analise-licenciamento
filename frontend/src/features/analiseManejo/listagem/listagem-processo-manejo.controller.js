@@ -1,6 +1,6 @@
 var ListagemProcessoManejoController = function($scope, config, $rootScope, processoManejoService, mensagem, $location, $uibModal) {
 
-	$rootScope.tituloPagina = 'CONSULTAR PROCESSO MANEJO DIGITAL';
+	$rootScope.tituloPagina = 'CONSULTAR PROTOCOLO MANEJO DIGITAL';
 
 	var listagemProcessoManejo = this;
 

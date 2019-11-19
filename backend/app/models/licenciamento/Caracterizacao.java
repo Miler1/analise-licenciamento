@@ -72,6 +72,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	@OneToMany(mappedBy="caracterizacao", cascade = CascadeType.ALL)
 	public List<SolicitacaoDocumentoCaracterizacao> solicitacoesDocumento;
+
+	@OneToMany(mappedBy="caracterizacao", cascade = CascadeType.ALL)
+	public List<SolicitacaoGrupoDocumento> documentosSolicitacaoGrupo;
 	
 	@Column(name="declaracao_veracidade_informacoes")
 	public Boolean declaracaoVeracidadeInformacoes;

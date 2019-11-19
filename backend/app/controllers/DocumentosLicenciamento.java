@@ -5,10 +5,12 @@ import security.Acao;
 import utils.Mensagem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class DocumentosLicenciamento extends InternalController {
 
-	public static void download(Long idDocumento) {
+	public static void download(Long idDocumento) throws FileNotFoundException {
 		
 		verificarPermissao(Acao.LISTAR_PROCESSO, Acao.CONSULTAR_PROCESSO, Acao.INICIAR_PARECER_JURIDICO,
 				Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECER_JURIDICO, Acao.VALIDAR_PARECER_TECNICO,
@@ -20,10 +22,11 @@ public class DocumentosLicenciamento extends InternalController {
 			
 		if(documento != null) {
 			File file = documento.getFile();
-			renderBinary(file, file.getName());
+			renderBinary(new FileInputStream(file), file.getName(), true);
 		}
 		
 		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
 	}
 
 }

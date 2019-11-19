@@ -49,10 +49,8 @@ public class Processos extends InternalController {
 
 		Processo processo = Processo.findById(id);
 
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(processo.empreendimento.getCpfCnpj());
-		processo.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
+		renderJSON(processo.getInfoProcesso(), ProcessoSerializer.getInfo);
 
-		renderJSON(processo, ProcessoSerializer.getInfo);
 	}
 
 	public static void findAnaliseJuridica(Long idProcesso) {
@@ -64,5 +62,7 @@ public class Processos extends InternalController {
 		AnaliseJuridica analise = AnaliseJuridica.findByProcesso(processo);
 		
 		renderJSON(analise, AnaliseJuridicaSerializer.findInfo);
+
 	}
+
 }

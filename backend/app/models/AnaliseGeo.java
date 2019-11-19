@@ -16,6 +16,8 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
@@ -40,6 +42,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
+    @Column(name = "id")
     public Long id;
 
     @ManyToOne
@@ -97,7 +100,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "parecer_validacao")
     public String parecerValidacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
     public UsuarioAnalise usuarioValidacao;
 
@@ -117,7 +120,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "parecer_validacao_gerente")
     public String parecerValidacaoGerente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
     public UsuarioAnalise usuarioValidacaoGerente;
 
@@ -160,6 +163,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public List<Desvinculo> desvinculos;
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     public List<Notificacao> notificacoes;
 
     @Transient
@@ -963,9 +967,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public void finalizarAnaliseGerente(AnaliseGeo analiseGeo, UsuarioAnalise gerente) throws Exception {
 
         UsuarioAnalise analistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
+
         if (analistaTecnico != null) {
 
-            if (analiseGeo.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_VALIDADO) {
+            if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
                 AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
 
@@ -974,7 +979,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 new AnalistaTecnico(analiseGeoBanco.analise.analiseTecnica, analistaTecnico);
 
-            } else if (analiseGeo.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.SOLICITAR_AJUSTES) {
+            } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
 
                 AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(this.id);
                 UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
@@ -982,7 +987,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
                 HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
 
-            } else if (analiseGeo.tipoResultadoValidacaoGerente.id == TipoResultadoAnalise.PARECER_NAO_VALIDADO) {
+            } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
 
                 UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analiseGeo.idAnalistaDestino);
 
@@ -1011,6 +1016,5 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
     }
-
 
 }

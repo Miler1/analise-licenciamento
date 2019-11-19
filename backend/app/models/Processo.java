@@ -763,7 +763,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
 
-			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = caracterizacao.atividadesCaracterizacao.stream().map(a -> a.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
+			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = caracterizacao.atividadesCaracterizacao.stream().filter(a -> a.sobreposicaoCaracterizacaoAtividade != null).map(a -> a.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
 			restricoes.addAll(sobreposicoesCaracterizacaoAtividades.stream().map(SobreposicaoCaracterizacaoAtividade::convertToVO).collect(Collectors.toList()));
 
 		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
@@ -805,6 +805,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				return "Área " + Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
 
 		}
+
+	}
+
+	public Processo getInfoProcesso() {
+
+		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
+		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
+
+		return this;
 
 	}
 

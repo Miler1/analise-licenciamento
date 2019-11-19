@@ -58,7 +58,7 @@ public class AnalistaTecnico extends GenericModel {
 		List<UsuarioAnalise> analistasTecnico = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
 
 		if (analistasTecnico == null || analistasTecnico.size() == 0)
-			throw new WebServiceException("Não existe nenhum gerente ativado no sistema");
+			throw new WebServiceException("Não existe nenhum analista técnico ativado no sistema");
 
 		List<Long> idsAnalistasTecnico = analistasTecnico.stream()
 				.map(ang->ang.id)
