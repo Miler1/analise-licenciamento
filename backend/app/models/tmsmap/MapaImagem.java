@@ -277,7 +277,7 @@ public class MapaImagem {
 
 					if(geometriaEmpreendimento.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo)) {
 
-						dataLayers.add(new DataLayer("Limites da propriedade", geometriaEmpreendimento.geometria, Color.RED, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+						dataLayers.add(new DataLayer("Limites da propriedade", geometriaEmpreendimento.geometria, Color.RED, "#FF0000").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
 
 					} else {
 
