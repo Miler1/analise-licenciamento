@@ -1140,7 +1140,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.checkedRetificacaoSolicitacao = function() {
-		// ctrl.notificacao.retificacaoSolicitacao = null;
+		if (!ctrl.notificacao.retificacaoSolicitacao) {
+			ctrl.notificacao.retificacaoSolicitacao = null;
+		} 
 		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	};
 
