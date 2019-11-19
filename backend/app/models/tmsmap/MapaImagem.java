@@ -277,7 +277,7 @@ public class MapaImagem {
 
 					if(geometriaEmpreendimento.tipo.equals(CamadaGeoEnum.PROPRIEDADE.tipo)) {
 
-						dataLayers.add(new DataLayer("Limites da propriedade", geometriaEmpreendimento.geometria, Color.YELLOW, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+						dataLayers.add(new DataLayer("Limites da propriedade", geometriaEmpreendimento.geometria, Color.RED, "#FFFF00").stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
 
 					} else {
 
@@ -327,7 +327,7 @@ public class MapaImagem {
 		TMSMap map = createMap(crs);
 		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
-		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
+		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.RED).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
 
 		for(DataLayer dataLayer : dataLayers) {
@@ -417,7 +417,7 @@ public class MapaImagem {
 			dataLayers.addAll(grupoDataLayer.dataLayers);
 		}
 
-		float pontilhado = 4f;
+		float pontilhado = 2f;
 
 		//Para inserir as áreas de restrições no mapa
 		for(DataLayer dataLayer : dataLayers) {
@@ -427,7 +427,7 @@ public class MapaImagem {
 				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.3f).dashArray(pontilhado).color(dataLayer.color).width(2).opacity(1f);
 				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
 
-				pontilhado += 2f;
+				pontilhado += 1f;
 
 			}
 		}
@@ -544,7 +544,7 @@ public class MapaImagem {
 		TMSMap map = createMap(crs);
 		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
-		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
+		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.RED).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
 
 		for(DataLayer dataLayer : dataLayers) {
@@ -554,7 +554,7 @@ public class MapaImagem {
 
 		}
 
-		dataLayers.addFirst(new DataLayer("Área total do imóvel", geometryAreaImovel, Color.YELLOW).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+		dataLayers.addFirst(new DataLayer("Área total do imóvel", geometryAreaImovel, Color.RED).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
 
 		//Setando os pontos do poligono
 		int index = 1;
