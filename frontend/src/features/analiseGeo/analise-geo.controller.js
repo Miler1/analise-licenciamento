@@ -801,12 +801,22 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				uploadService.save(file)
 						.then(function(response) {
 
+							var nomeDoArquivo = file.name;
+
+							var quantidadeDocumentosComMesmoNome = ctrl.analiseGeo.documentos.filter(function(documento) { 
+								return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+							}).length;
+
+							if(quantidadeDocumentosComMesmoNome > 0) {
+								nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+							}
+
 							if(tipoUpload === app.utils.TiposUpload.PARECER_ANALISE_GEO) {
 
 								ctrl.analiseGeo.documentos.push({
 
 									key: response.data,
-									nomeDoArquivo: file.name,
+									nomeDoArquivo: nomeDoArquivo,
 									tipo: {
 
 											id: app.utils.TiposDocumentosAnalise.PARECER_ANALISE_GEO
@@ -818,7 +828,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 								ctrl.analiseGeo.documentos.push({
 
 									key: response.data,
-									nomeDoArquivo: file.name,
+									nomeDoArquivo: nomeDoArquivo,
 									tipo: {
 
 											id: app.utils.TiposDocumentosAnalise.NOTIFICACAO
@@ -829,7 +839,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 								ctrl.analiseGeo.documentos.push({
 
 									key: response.data,
-									nomeDoArquivo: file.name,
+									nomeDoArquivo: nomeDoArquivo,
 									tipo: {
 
 											id: app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL

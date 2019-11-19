@@ -394,6 +394,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             }
         }
 
+        List<Documento> documentosSalvos = new ArrayList<>();
+
         for (Documento novoDocumento : novosDocumentos) {
 
             if (novoDocumento.id == null) {
@@ -412,13 +414,20 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 }
 
+                long quantidadeDocumentosComMesmoNome = documentosSalvos.stream().filter(documento -> documento.nomeDoArquivo.contains(novoDocumento.nomeDoArquivo.split("\\.")[0])).count();
+
+                if(quantidadeDocumentosComMesmoNome > 0) {
+                    novoDocumento.nomeDoArquivo = novoDocumento.nomeDoArquivo.split("\\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + novoDocumento.nomeDoArquivo.split("\\.")[1];
+                }
+
                 this.documentos.add(novoDocumento);
-                novoDocumento.save();
+                documentosSalvos.add(novoDocumento.save());
 
             }
         }
 
         ModelUtil.deleteAll(documentosDeletar);
+
     }
 
     public static AnaliseGeo findByNumeroProcesso(String numeroProcesso) {
