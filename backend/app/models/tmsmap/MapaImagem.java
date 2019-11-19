@@ -175,7 +175,7 @@ public class MapaImagem {
 		TMSMap map = createMap(crs);
 		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
-		Style polygonStyle = new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
+		Style polygonStyle = new PolygonStyle().fillOpacity(0f).color(Color.RED).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
 
 		Collection<Coordinate> mainCoordinates = createMainCoordinates(map, geometryAreaImovel, crs);
