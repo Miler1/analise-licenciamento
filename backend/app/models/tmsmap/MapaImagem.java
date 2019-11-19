@@ -105,11 +105,11 @@ public class MapaImagem {
 	private static final String URL_MOSAICOS = Play.configuration.getProperty("mapa.mosaicos", "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.jpg");
 
 	// External Frame
-	private static final int WIDTH = 312 * 2 + 40 * 3;
-	private static final int HEIGHT = 312 * 2 + 40 * 3;
+	private static final int WIDTH = 362 * 2 + 40 * 3;
+	private static final int HEIGHT = 362 * 2 + 40 * 3;
 	//private static final int HEIGHT = 312 * 2 + 340;
-	private static final int HORIZONTAL_MARGIN_SIZE = 15 * 2;
-	private static final int VERTICAL_MARGIN_SIZE = 10 * 2;
+	private static final int HORIZONTAL_MARGIN_SIZE = -1;
+	private static final int VERTICAL_MARGIN_SIZE = 9;
 
 	// Map
 	private static final int MAP_WIDTH = WIDTH - HORIZONTAL_MARGIN_SIZE * 2;
@@ -406,7 +406,8 @@ public class MapaImagem {
 		TMSMap map = createMap(crs);
 		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
-		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.YELLOW).width(2).dashArray(2f).opacity(1f);
+		//Para inserir a geometria do empreendimento no mapa
+		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.RED).width(4).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
 
 		//Uni todas as dataLayer de todos os grupos dataLayer
@@ -416,13 +417,30 @@ public class MapaImagem {
 			dataLayers.addAll(grupoDataLayer.dataLayers);
 		}
 
+		float pontilhado = 4f;
+
+		//Para inserir as áreas de restrições no mapa
 		for(DataLayer dataLayer : dataLayers) {
 
-			if(!dataLayer.name.equals(NOME_PROPRIEDADE_EMPREENDIMENTO)) {
+			if (!dataLayer.name.equals(NOME_PROPRIEDADE_EMPREENDIMENTO) && !dataLayer.name.contains("Geometria_")) {
+
+				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.3f).dashArray(pontilhado).color(dataLayer.color).width(2).opacity(1f);
+				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+
+				pontilhado += 2f;
+
+			}
+		}
+
+		//Para inserir as geometrias de atividades no mapa
+		for(DataLayer dataLayer : dataLayers) {
+
+			if (dataLayer.name.contains("Geometria_")) {
+
 				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
 				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
-			}
 
+			}
 		}
 
 		createMainCoordinates(map, geometryAreaImovel, crs);
@@ -857,7 +875,7 @@ public class MapaImagem {
 			Font font = new Font("Dialog", Font.PLAIN, 10);
 			graphics.setFont(font);
 			graphics.setStroke(new BasicStroke());
-			graphics.setColor(Color.RED);
+			graphics.setColor(Color.WHITE);
 
 			int coordinateNumber = 1;
 			LinkedHashSet<Coordinate> resultCoordinates = new LinkedHashSet<>(mainCoordinates.values());

@@ -14,7 +14,7 @@ html(lang="pt-br")
                 text-align: center;
             }
             .conteudo {
-                margin: 15px 20px 20px 60px;
+                margin: 0;
             }
 
             .titulo-item {
@@ -27,6 +27,10 @@ html(lang="pt-br")
                 font-size: 14px;
                 font-weight: normal;
                 padding-bottom: 5px;
+                position: absolute;
+                top: 20px;
+                left:  780px;
+                height: 725px;
             }
 
             td {
@@ -64,12 +68,12 @@ html(lang="pt-br")
                 text-align: left;
             }
 
-            .imagem {
+            /* .imagem {
                 margin-top: 20px;
                 margin-bottom: 20px;
                 text-align: center;
 
-            }
+            }*/
 
             table {
                 width: 100%;
@@ -80,28 +84,28 @@ html(lang="pt-br")
             }
 
             .container {
-                display: flex;
-                flex-direction: column;
             }
+
             .container-flex {
                 display: flex;
-                justify-content: space-between;
+                flex-direction: row;
             }
 
             div.mapa-carta-imagem{
-                width: 60%;
-                display: inline-block;
-                text-align: left;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
             }
 
             div.legenda-carta-imagem {
-                width: 35%;
+                width: 100%;
                 display: inline-block;
                 text-align: left;
             }
 
             img {
-                width: 70%;
+                height: 770px;
             }
 
             .icon-legenda {
@@ -116,24 +120,48 @@ html(lang="pt-br")
                 margin-bottom: 5px;
             }
 
+            .logos {
+                display: flex;
+                text-align: center;
+                margin: 25px;
+            }
+
+            .logo {
+                margin: 0 5px;
+            }
+
+            .logo-ipaam {
+                margin-bottom: 10px;
+            }
+
+            .logo-amazonas {
+                margin-right: 20px;
+            }
+
+            .footer {
+                position: absolute;
+                bottom: 0; 
+            }
+
+
+            table {
+                border: none;
+            }
+
+            th {
+                width: 110px;
+                vertical-align: top;
+            }
+
 body.corpo
-    div.titulo
-        h2 CARTA IMAGEM Nº ${analiseEspecifica.analise.processo.numero}
-    div.conteudo
-
+    .container-flex
+        .mapa-carta-imagem
+            img(src='${imagemCaracterizacao}', alt='Red dot')
         .conteudo-item
-            p
-                strong Interessado:
-                | ${analiseEspecifica.analise.processo.empreendimento.denominacao}
-            p
-                strong Município:
-                | ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM
-
-        .container
-            .container-flex
-                .mapa-carta-imagem
-                    img(src='${imagemCaracterizacao}', alt='Red dot')
-
+            div.titulo
+                h2 CARTA IMAGEM Nº ${analiseEspecifica.analise.processo.numero}
+            div.conteudo
+                
                 .legenda-carta-imagem
                     | \#{list items:grupoDataLayers, as:'grupo'}
                     p.titulo-legenda
@@ -144,4 +172,19 @@ body.corpo
                     br
                     | \#{/list}
                     | \#{/list}
-    p.align-right Manaus, ${dataCartaImagem}
+
+            .footer
+                .logos
+                    img.logo.logo-ipaam(src='/public/app/images/logo-ipaam-preto.png' height="33")
+                    img.logo.logo-amazonas(src='/public/app/images/logo_governo_am.png' height="63")
+                
+                table
+                    tr
+                        th INTERESSADO:
+                        td ${analiseEspecifica.analise.processo.empreendimento.denominacao} LOREM IPASUM DOT NET COLR SI AMETSSS
+                    tr
+                        th MUNICÍCPIO:
+                        td ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM
+                    tr
+                        th DATA:
+                        td ${dataCartaImagem}
