@@ -5,6 +5,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import utils.CoordenadaUtil;
 import utils.GeoCalc;
 
 import java.awt.*;
@@ -158,10 +159,10 @@ public class GridLayer implements CustomLayer {
 
 		DecimalFormat df = new DecimalFormat("#");
 
-		String line1xLabel = String.valueOf(df.format(worldUtmCoordinate1.x));
-		String line1yLabel = String.valueOf(df.format(worldUtmCoordinate1.y));
-		String line2xLabel = String.valueOf(df.format(worldUtmCoordinate2.x));
-		String line2yLabel = String.valueOf(df.format(worldUtmCoordinate2.y));
+		String line1xLabel = CoordenadaUtil.formataLongitudeString(worldCoordinate1.x);
+		String line1yLabel = CoordenadaUtil.formataLatitudeString(worldCoordinate1.y);
+		String line2xLabel = CoordenadaUtil.formataLongitudeString(worldCoordinate2.x);
+		String line2yLabel = CoordenadaUtil.formataLatitudeString(worldCoordinate2.y);
 
 		int line1xLabelWidth = fm.stringWidth(line1xLabel);
 		int line2xLabelWidth = fm.stringWidth(line2xLabel);

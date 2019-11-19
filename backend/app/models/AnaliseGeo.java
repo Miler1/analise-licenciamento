@@ -909,10 +909,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
                 .addParam("camadasGeoEmpreedimento", camadasGeoEmpreendimento)
-                .addParam("dataCartaImagem", Helper.getDataPorExtenso(new Date()))
+                .addParam("dataCartaImagem", Helper.formatarData(new Date(), "dd/MM/YYYY"))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
-                .setPageSize(30.0D, 21.0D, 0.5D, 0.5D, 2.0D, 3.9D);
+                .setPageSize(30.0D, 21.0D, 0.2D, 0D, 0D, 0.2D);
 
         pdf.generate();
 
