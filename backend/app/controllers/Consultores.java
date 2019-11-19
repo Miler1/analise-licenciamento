@@ -17,7 +17,7 @@ public class Consultores extends InternalController {
 
 		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
 
-		UsuarioAnalise consultor = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
+		UsuarioAnalise consultor = UsuarioAnalise.getUsuarioEntradaUnicaByLogin(usuarioAnalise.login);
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
 		for(Long idProcesso : idsProcesso) {

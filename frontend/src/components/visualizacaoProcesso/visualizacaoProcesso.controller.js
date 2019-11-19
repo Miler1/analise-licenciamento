@@ -1,28 +1,38 @@
-var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootScope, $timeout,$uibModalInstance, processo, processoService, mensagem, municipioService, documentoLicenciamentoService, imovelService, notificacaoService) {
+var VisualizacaoProcessoController = function ($location, $injector, $anchorScroll, $uibModal, $scope, $rootScope, $timeout, $uibModalInstance, processo, processoService, mensagem, empreendimentoService, documentoLicenciamentoService, notificacaoService, analiseGeoService, tiposSobreposicaoService) {
 
 	var modalCtrl = this;
 
 	modalCtrl.processo = processo;
 	modalCtrl.baixarDocumento = baixarDocumento;
-	modalCtrl.dateUtil = app.utils.DateUtil;
-	modalCtrl.PrazoAnalise = app.utils.PrazoAnalise;
 	modalCtrl.getMaiorPotencialPoluidor = getMaiorPotencialPoluidor;
-
 	modalCtrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
-	modalCtrl.perfis = app.utils.Perfis;
-
 	modalCtrl.abreDocumentacao = true;
 	modalCtrl.abreTramitacaoProcessoAtual = true;
 	modalCtrl.abreTramitacaoProcessoAnterior = false;
+	modalCtrl.perfis = app.utils.Perfis;
 	modalCtrl.comparaStatus = app.utils.CondicaoTramitacao;
+	modalCtrl.estiloMapa = app.utils.EstiloMapa;
+	modalCtrl.dateUtil = app.utils.DateUtil;
+	modalCtrl.PrazoAnalise = app.utils.PrazoAnalise;
+	modalCtrl.LegendasTipoSobreposicao = app.utils.LegendasTipoSobreposicao;
+	modalCtrl.camadasSobreposicao = app.utils.CamadaSobreposicao;
+	modalCtrl.tiposResultadoAnaliseUtils = app.utils.TiposResultadoAnalise;
+	modalCtrl.acaoTramitacao = app.utils.AcaoTramitacao;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
+	modalCtrl.numPoints = 0;
+	modalCtrl.dadosProjeto = {};
+	modalCtrl.TiposSobreposicao = [];
+	modalCtrl.openedAccordionGeo = false;
+	modalCtrl.openedAccordionGerente = false;
+	modalCtrl.labelAnalistaGeo = '';
+	modalCtrl.labelGerente = '';
 
-	var estiloPoligono = {
-		color: 'tomato',
-		opacity: 1,
-		weight: 3,
-		fillOpacity: 0.2
-	};
+	$injector.invoke(exports.controllers.PainelMapaController, this,
+		{
+			$scope: $scope,
+			$timeout: $timeout
+		}
+	);
 
 	if (processo.idProcesso) {
 
@@ -31,11 +41,13 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootSco
 
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-				modalCtrl.inicializarMapa();
+				modalCtrl.init('mapa-visualizacao-protocolo', true, true);
+				modalCtrl.iniciarMapa();
+				modalCtrl.setLabelObservacoes(modalCtrl.dadosProcesso);
 
 			})
 			.catch(function(){
-				mensagem.error("Ocorreu um erro ao buscar dados do processo.");
+				mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
 			});
 
 	} else {
@@ -45,66 +57,292 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootSco
 
 			modalCtrl.dadosProcesso = response.data;
 			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-			modalCtrl.inicializarMapa();
-
+			modalCtrl.init('mapa-visualizacao-protocolo', true, true);
+			modalCtrl.iniciarMapa();
+			modalCtrl.setLabelObservacoes(modalCtrl.dadosProcesso);
+	
 		})
 		.catch(function(){
 			mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
 		});
+
 	}
+
+	var setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
+
+		if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
+
+			modalCtrl.labelAnalistaGeo = 'Despacho';
+
+		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
+
+			modalCtrl.labelAnalistaGeo = 'Justificativa';
+
+		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
+
+			modalCtrl.labelAnalistaGeo = 'Descrição da solicitação';
+
+		}
+
+	};
+
+	var setLabelGerente = function(tipoResultadoGerente) {
+
+		if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
+
+			modalCtrl.labelGerente = 'Despacho';
+
+		} else if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
+
+			modalCtrl.labelGerente = 'Observações';
+
+		} else if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO) {
+
+			modalCtrl.labelGerente = 'Justificativa';
+
+		}
+
+	};
+
+	this.setLabelObservacoes = function(dadosProcesso) {
+
+		var tipoResultadoAnalistaGeo = dadosProcesso.analise.analiseGeo.tipoResultadoAnalise;
+		var tipoResultadoGerente = dadosProcesso.analise.analiseGeo.tipoResultadoValidacaoGerente;
+
+		if(tipoResultadoAnalistaGeo !== null && tipoResultadoAnalistaGeo !== undefined) {
+			setLabelAnalistaGeo(tipoResultadoAnalistaGeo);
+		}
+
+		if(tipoResultadoGerente !== null && tipoResultadoGerente !== undefined) {
+			setLabelGerente(tipoResultadoGerente);
+		}
+
+	};
+
+	// Métodos referentes ao Mapa da caracterização
+	this.iniciarMapa = function() {
+
+		$timeout(function() {
+
+			var empreendimento = modalCtrl.dadosProcesso.empreendimento;
+
+			$scope.$emit('mapa:adicionar-geometria-base', {
+				geometria: JSON.parse(empreendimento.municipio.limite),
+				tipo: 'EMP-CIDADE',
+				estilo: {
+					style: {
+						fillColor: 'transparent',
+						color: '#FFF'
+					}
+				},
+				popupText: empreendimento.municipio.nome + ' - AM'
+			});
+
+			var cpfCnpjEmpreendimento = empreendimento.pessoa.cpf || empreendimento.pessoa.cnpj;
+
+			empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento).then(function(response) {
+
+				modalCtrl.camadasDadosEmpreendimento = response.data;
+
+				modalCtrl.camadasDadosEmpreendimento.forEach(function (camada) {
+					
+					camada.geometrias.forEach(function(e) {
+						
+						adicionarGeometriaNoMapa(e);
+
+					});
+
+				});
+
+				analiseGeoService.getDadosProjeto(modalCtrl.processo.idProcesso).then(function (response) {
+
+					modalCtrl.dadosProjeto = response.data;
+
+					modalCtrl.dadosProjeto.atividades.forEach(function(atividade) {
+
+						modalCtrl.numPoints += contaQuantidadeCamadasPoint(atividade.geometrias);
+
+					});
+
+					modalCtrl.numPoints += contaQuantidadeCamadasPoint(modalCtrl.dadosProjeto.restricoes);
+
+					modalCtrl.dadosProjeto.atividades.forEach(function (atividade) {
+
+						atividade.openedAccordion = false;
+						
+						atividade.geometrias.forEach(function(a) {
+							
+							a.estilo = modalCtrl.estiloMapa.ATIVIDADE;
+							adicionarGeometriaNoMapa(a);
+
+						});
+
+					});
+
+					modalCtrl.dadosProjeto.restricoes.forEach(function (restricao) {
+
+						restricao.estilo = modalCtrl.estiloMapa.SOBREPOSICAO;
+						adicionarGeometriaNoMapa(restricao);
+
+					});
+
+					tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
+
+						modalCtrl.TiposSobreposicao = response.data;
+
+					});
+
+				});
+
+			});
+
+		});		
+
+	};
+
+	function contaQuantidadeCamadasPoint (camadas) {
+
+		return camadas.filter(function(camada) {
+
+			return JSON.parse(camada.geometria).type.toLowerCase() === 'point';
+
+		}).length;
+
+	}
+
+	function adicionarWmsLayerNoMapa (tipoSobreposicao) {
+
+		tipoSobreposicao.visivel = false;
+		tipoSobreposicao.color = modalCtrl.estiloMapa.SOBREPOSICAO.color;
+		tipoSobreposicao.nomeLayer = modalCtrl.camadasSobreposicao[tipoSobreposicao.codigo];
+		tipoSobreposicao.tipo = tipoSobreposicao.codigo;
+		tipoSobreposicao.estilo = {style: modalCtrl.estiloMapa.SOBREPOSICAO};
+		tipoSobreposicao.popupText = tipoSobreposicao.nome;
+		tipoSobreposicao.disableCentralizarGeometrias=false;
+
+		$scope.$emit('mapa:adicionar-wmslayer-mapa', tipoSobreposicao, true);
+
+	}
+
+	function adicionarGeometriaNoMapa (camada, disable) {
+
+		camada.visivel = true;
+		camada.color = modalCtrl.estiloMapa[camada.tipo] != undefined ? modalCtrl.estiloMapa[camada.tipo].color : camada.estilo.color;
+
+		$scope.$emit('mapa:adicionar-geometria-base', {
+			geometria: JSON.parse(camada.geometria),
+			tipo: camada.tipo,
+			item: camada.item,
+			estilo: {
+				style: modalCtrl.estiloMapa[camada.tipo] || camada.estilo
+			},
+			popupText: camada.item,
+			area: camada.area,
+			disableCentralizarGeometrias:disable,
+			numPoints: modalCtrl.numPoints
+		});
+
+	}
+
+	function adicionarPointNoCluster (camada) {
+
+		camada.visivel = true;
+		$scope.$emit('mapa:adicionar-geometria-base-cluster', camada);
+
+	}
+
+	this.getCamadasSobreposicoes = function() {
+
+		modalCtrl.TiposSobreposicao.forEach(function (tipo) {
+			tipo.legenda = modalCtrl.LegendasTipoSobreposicao[tipo.codigo];
+			adicionarWmsLayerNoMapa(tipo);
+		});
+
+	};
+
+	this.controlaCentralizacaoCamadas = function (camada) {
+
+		$scope.$emit('mapa:centralizar-camada', camada.geometria);
+
+	};
+
+	this.controlaExibicaoLayer = function(tipoSobreposicao) {
+
+		$scope.$emit('mapa:controla-exibicao-wmslayer', tipoSobreposicao);
+
+	};
+
+	var esconderCamada = function(camada) {
+
+		var tipoGeometria = JSON.parse(camada.geometria).type.toLowerCase();
+
+		if(tipoGeometria === 'point') {
+
+			$scope.$emit('mapa:remover-geometria-base-cluster', camada);
+
+		} else {
+
+			$scope.$emit('mapa:remover-geometria-base', camada);
+
+		}
+
+	};
+
+	var mostrarCamada = function(camada) {
+
+		var tipoGeometria = JSON.parse(camada.geometria).type.toLowerCase();
+
+		if(tipoGeometria === 'point') {
+
+			adicionarPointNoCluster(camada);
+
+		} else {
+
+			adicionarGeometriaNoMapa(camada, true);
+
+		}
+
+	};
+
+	this.controlaExibicaoCamadas = function(camada) {
+
+		if (camada.visivel) {
+			
+			esconderCamada(camada);
+			
+		} else {
+
+			mostrarCamada(camada);
+
+		}
+
+	};
+
+	this.resize = function(){
+
+		if(modalCtrl.map) {
+
+			modalCtrl.map._onResize();
+			$scope.$emit('mapa:centralizar-mapa');
+
+		}
+
+	};
 
 	modalCtrl.fechar = function () {
 		$uibModalInstance.dismiss('cancel');
 	};
 
 	modalCtrl.downloadDocumentoLicenciamento = function (idDocumento) {
-		documentoLicenciamentoService.download(idDocumento);
-	};
 
+		documentoLicenciamentoService.download(idDocumento);
+
+	};
 
 	function baixarDocumento(idDocumento) {
 
 		documentoLicenciamentoService.download(idDocumento);
 	}
-
-
-	// Métodos referentes ao Mapa da caracterização
-	this.inicializarMapa = function() {
-
-		modalCtrl.map = new L.Map('mapa-processo', {
-			zoomControl: false,
-			minZoom: 5,
-			maxZoom: 16,
-			scrollWheelZoom: false
-		}).setView([-3, -52.497545], 6);
-
-		/* Termos de uso: http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf */
-		L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-			attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-		}).addTo(modalCtrl.map);
-
-		modalCtrl.map.on('moveend click', function() {
-
-			if (!modalCtrl.map.scrollWheelZoom.enabled()) {
-
-				modalCtrl.map.scrollWheelZoom.enable();
-
-			}
-
-		});
-
-		window.onscroll = function () {
-
-			if (modalCtrl.map.scrollWheelZoom.enabled()) {
-
-				modalCtrl.map.scrollWheelZoom.disable();
-
-			}
-
-		};
-
-		modalCtrl.atualizarMapa();
-	};
 
 	$(document).on( 'shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
 
@@ -113,75 +351,10 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootSco
 		if(target === '#tabCaracterizacao') {
 
 			modalCtrl.resize();
+
 		}
 	});
 
-	this.resize = function(){
-
-		if(modalCtrl.map) {
-
-			modalCtrl.map._onResize();
-
-			modalCtrl.centralizarGeometria();
-
-		}
-
-	};
-
-
-	this.atualizarMapa = function() {
-
-		modalCtrl.inserirGeometria(modalCtrl.limite);
-
-		modalCtrl.inserirEmpreendimento(modalCtrl.dadosProcesso.empreendimento.coordenadas);
-
-		modalCtrl.map._onResize();
-	};
-
-	this.inserirGeometria = function(geo) {
-
-		if(geo && modalCtrl.map) {
-
-			var objectGeo = JSON.parse(geo);
-
-			modalCtrl.areaGeometria = L.geoJson({
-				'type': 'Feature',
-				'geometry': objectGeo
-			}, estiloPoligono);
-
-
-			modalCtrl.map.addLayer(modalCtrl.areaGeometria);
-
-		}
-
-	};
-
-	this.centralizarGeometria = function() {
-
-		if(modalCtrl.areaGeometria){
-			$timeout(function(){
-				modalCtrl.map.fitBounds(modalCtrl.areaGeometria.getBounds());
-			}, 200);
-		}
-
-	};
-
-	this.inserirEmpreendimento = function(localizacao) {
-
-		if(localizacao && modalCtrl.map) {
-
-			var objectGeo = JSON.parse(localizacao);
-
-			modalCtrl.localizacao = L.geoJson({
-				'type': 'Feature',
-				'geometry': objectGeo
-			});
-
-			modalCtrl.map.addLayer(modalCtrl.localizacao);
-
-		}
-
-	};
 
 	this.visualizarFichaImovel = function() {
 
@@ -197,6 +370,42 @@ var VisualizacaoProcessoController = function ($location,$anchorScroll, $rootSco
 	this.downloadNotificacao = function(idTramitacao) {
 
 		notificacaoService.downloadNotificacao(idTramitacao);
+	};
+
+	this.visualizarJustificativas =  function(processo, tramitacao){
+
+		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+			.then(function(response){
+
+				$uibModal.open({
+					controller: 'visualizarJustificativasController',
+					controllerAs: 'visualizarJustificativasCtlr',
+					templateUrl: 'components/visualizacaoProcesso/modalVisualizarObservacao.html',
+					size: 'lg',
+					resolve: {
+
+						analiseGeo: function(){
+							return response.data;
+						}
+					}				
+				});
+			});
+	};
+
+	this.validaJustificativas = function (tramitacao){
+
+		if(tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO) {
+
+				return true;
+
+		   }else {
+
+			   return false;
+
+		   }
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {

@@ -19,7 +19,7 @@ public class Gerentes extends InternalController {
 
 		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
 
-		UsuarioAnalise gerente = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
+		UsuarioAnalise gerente = UsuarioAnalise.getUsuarioEntradaUnicaByLogin(usuarioAnalise.login);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		

@@ -76,6 +76,7 @@ public class AnaliseGeoSerializer {
             "ativo",
             "dataInicio",
             "dataFim",
+            "tipoResultadoAnalise",
             "tipoResultadoAnalise.id",
             "tipoResultadoAnalise.nome"	,
             "documentos.id",
@@ -131,7 +132,12 @@ public class AnaliseGeoSerializer {
             "inconsistencias.sobreposicaoCaracterizacaoComplexo.id",
             "inconsistencias.geometriaAtividade.id",
             "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento.id",
-            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento"
+            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento",
+            "desvinculos.id",
+            "desvinculos.analiseGeo",
+            "desvinculos.justificativa",
+            "desvinculos.respostaGerente"
+
 
     ).transform(new GeometryTransformer(), Geometry.class);
 
