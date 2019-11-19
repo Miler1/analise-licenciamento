@@ -30,7 +30,7 @@
 			div.panel.panel-success
 				div.panel-body
 					| Parâmetro
-				div.panel-footer.text-center
+				div#panelResumo.panel-footer.allign-left
 					.media-div
 						.media-context
 							div
@@ -44,7 +44,7 @@
 			div.panel.panel-success
 				div.panel-body
 					| Porte - Potencial Poluidor/Degradador
-				div.panel-footer.text-center
+				div.panel-footer.allign-left
 					.media-div
 						.media-context
 							div
@@ -52,7 +52,7 @@
 
 	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
 		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
-			h4 Tramitação:
+			h4 Tramitação do protocolo
 
 			div(uib-accordion class="accordion")
 				div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAtual")
@@ -71,8 +71,7 @@
 									th Ação
 									th Tempo do Status
 									th Responsável
-									th Setor
-									th Notificação
+									th Observação
 
 							tbody
 								tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
@@ -82,28 +81,13 @@
 									td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
 									td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 									td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
-									td.col-md-1 {{tramitacao.setor.sigla ? tramitacao.setor.sigla : '-'}}
-									td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
-
-										i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",
-										title="Gerar PDF da notificação")
-
-										.dropdown.action-table.pull-right.margin-right-xs.margin-left-xs(ng-if="tramitacao.documentosCorrigidos !== null")
-											i.notificacao-icone.glyphicon.glyphicon-duplicate(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true',
-											title="Documentos recebidos após notificação")
-											ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-												li(ng-repeat="documentoCorrigido in tramitacao.documentosCorrigidos")
-													a(ng-click="modalVisualizacaoProcessoCtrl.downloadDocumentoLicenciamento(documentoCorrigido.id)")
-														i.glyphicon.glyphicon-save-file
-														span(title="{{ documentoCorrigido.tipo.nome }}") {{ (documentoCorrigido.tipo.nome.length > 80 ? documentoCorrigido.tipo.nome.substring(0, 70) + '...' : documentoCorrigido.tipo.nome) }}
-
-									td.col-md-1.text-center(ng-if="!tramitacao.hasNotificacoes")
-										span.notificacao-sem-icone
-											| -
-
-
+									td.col-md-1 
+										button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-if="modalVisualizacaoProcessoCtrl.validaJustificativas(tramitacao)", 
+																		  								ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo, tramitacao)")
+											i.glyphicon.glyphicon-list-alt
+																													
 		div(uib-accordion class="accordion" ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacaoAnterior.length > 0")
-			div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior")
+			div#accordionPanel(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior")
 				uib-accordion-heading(ng-click="modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior=!modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior")
 					div Tramitação do Protocolo Anterior
 						i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.abreTramitacaoProcessoAnterior}")
@@ -120,8 +104,7 @@
 								th Ação
 								th Tempo do Status
 								th Responsável
-								th Setor
-								th Notificação
+								th Observação
 
 						tbody
 							tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacaoAnterior")
@@ -131,21 +114,7 @@
 								td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
 								td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 								td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
-								td.col-md-1 {{tramitacao.relHistoricoTramitacaoSetor.siglaSetor ? tramitacao.relHistoricoTramitacaoSetor.siglaSetor : '-'}}
-								td.col-md-1.text-center(ng-if="tramitacao.hasNotificacoes")
-
-									i.notificacao-icone.glyphicon.glyphicon-save-file(ng-click="modalVisualizacaoProcessoCtrl.downloadNotificacao(tramitacao.idHistorico)",
-									title="Gerar PDF da notificação")
-
-									.dropdown.action-table.pull-right.margin-right-xs.margin-left-xs(ng-if="tramitacao.documentosCorrigidos !== null")
-										i.notificacao-icone.glyphicon.glyphicon-duplicate(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true',
-										title="Documentos recebidos após notificação")
-										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li(ng-repeat="documentoCorrigido in tramitacao.documentosCorrigidos")
-												a(ng-click="modalVisualizacaoProcessoCtrl.downloadDocumentoLicenciamento(documentoCorrigido.id)")
-													i.glyphicon.glyphicon-save-file
-													span(title="{{ documentoCorrigido.tipo.nome }}") {{ (documentoCorrigido.tipo.nome.length > 80 ? documentoCorrigido.tipo.nome.substring(0, 70) + '...' : documentoCorrigido.tipo.nome) }}
-
-								td.col-md-1.text-center(ng-if="!tramitacao.hasNotificacoes")
-									span.notificacao-sem-icone
-										| -
+								td.col-md-1 
+									button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-if="modalVisualizacaoProcessoCtrl.validaJustificativas(tramitacao)", 
+																									ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo, tramitacao)")
+										i.glyphicon.glyphicon-list-alt

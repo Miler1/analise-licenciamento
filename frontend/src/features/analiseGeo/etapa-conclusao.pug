@@ -55,7 +55,7 @@ div
                             a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
                                 i.glyphicon.glyphicon-save
 
-                            a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
+                            a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                                 i.glyphicon.glyphicon-trash
 
 div
@@ -92,7 +92,7 @@ div
                     a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
                         i.glyphicon.glyphicon-save
 
-                    a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
+                    a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                         i.glyphicon.glyphicon-trash
 div
 #conclusao
@@ -100,10 +100,16 @@ div
     label.obrigatorio Análise final do protocolo:
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
-                label.opDla.radio-inline.posicao-primeiroItem
+                label.opDla.radio-inline.posicao-primeiroItem(ng-if="ctrl.analiseGeo.inconsistencias.length > 0")
+                    input(type='radio', name='analiseFinalRadio', data-toggle="tooltip", title="O processo não pode ser deferido, pois há uma inconsistência.", ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    | Deferido
+                label.opDla.radio-inline.posicao-primeiroItem(ng-if="ctrl.analiseGeo.inconsistencias.length === 0")
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Deferido
-                label.opDla.radio-inline
+                label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length > 0")
+                    input(type='radio', name='analiseFinalRadio', data-toggle="tooltip", title="O processo não pode ser indeferido, pois há uma inconsistência.", ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    | Indeferido
+                label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length === 0")
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Indeferido
                 label.opDla.radio-inline
@@ -161,7 +167,7 @@ div#conclusao
     
         div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.NOTIFICACAO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
             i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-            | Anexar arquivos a notificação
+            | Anexar arquivos à notificação
 
         table.table.table-condensed(ng-if="ctrl.getDocumentosNotificacao().length > 0")
 
@@ -180,5 +186,5 @@ div#conclusao
                         a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
                             i.glyphicon.glyphicon-save
 
-                        a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
+                        a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                             i.glyphicon.glyphicon-trash

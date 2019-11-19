@@ -13,6 +13,7 @@ require:
     - org.geotools -> gt-epsg-hsql 14.3
     - org.hibernate -> hibernate-spatial 5.2.13.Final
     - play -> pdf 0.9
+    - com.itextpdf -> itextpdf 5.5.10
     - org.geotools -> gt-shapefile 14.3
     - com.google.zxing -> core 3.2.1
     - com.google.zxing -> javase 2.2

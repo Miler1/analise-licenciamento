@@ -5,7 +5,6 @@ import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoDocumentoLicenciamento;
 import models.pdf.PDFGenerator;
-import models.AnaliseGeo;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
