@@ -43,7 +43,7 @@ include ../../layout/components/mapPanel
 							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
 								td {{ documento.tipo.nome}}
 								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
-									i.glyphicon.glyphicon-eye-open
+									i.glyphicon.glyphicon-eye-open.pointer
 
 					table.table.table-striped.table-condensed
 						thead
@@ -53,7 +53,7 @@ include ../../layout/components/mapPanel
 							tr(ng-repeat="solicitacaoGrupo in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo")
 								td {{ solicitacaoGrupo.tipoDocumento.nome}}
 								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(solicitacaoGrupo.documento.id)")
-									i.glyphicon.glyphicon-eye-open
+									i.glyphicon.glyphicon-eye-open.pointer
 
 	div#ficha
 
