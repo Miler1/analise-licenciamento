@@ -39,10 +39,10 @@
 										|  Retificação da solicitação
 									div.retificacao-com-geo(ng-show='notificacao.retificacaoSolicitacao || notificacao.retificacaoEmpreendimento')
 										label.radio-inline
-											input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='notificacao.retificacaoSolicitacaoComGeo', value='true', ng-disabled='true')
+											input(type='radio', name='retificacaoSolicitacaoGeo{{$index}}', ng-model='notificacao.retificacaoSolicitacaoComGeo', value='true', ng-disabled='true')
 											| Com alteração GEO
 										label.radio-inline
-											input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='true')
+											input(type='radio', name='retificacaoSolicitacaoGeo{{$index}}', ng-model='notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='true')
 											| Sem alteração GEO
 						
 						#prazoNotificacao.panel-group
