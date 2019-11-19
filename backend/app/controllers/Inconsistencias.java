@@ -22,7 +22,7 @@ public class Inconsistencias extends GenericController{
             throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
         }
 
-        if(inconsistencia.sobreposicaoCaracterizacaoAtividade == null && inconsistencia.sobreposicaoCaracterizacaoEmpreendimento == null && inconsistencia.sobreposicaoCaracterizacaoComplexo == null) {
+        if(!inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE) && inconsistencia.sobreposicaoCaracterizacaoAtividade == null && inconsistencia.sobreposicaoCaracterizacaoEmpreendimento == null && inconsistencia.sobreposicaoCaracterizacaoComplexo == null) {
 
             throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
         }

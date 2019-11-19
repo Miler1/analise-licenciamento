@@ -848,9 +848,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 	};
 
-	 ctrl.removerDocumento = function (indiceDocumento) {
+	ctrl.removerDocumento = function (documento) {
 
-		ctrl.analiseGeo.documentos.splice(indiceDocumento,1);
+		var indexDocumento = ctrl.analiseGeo.documentos.indexOf(documento);
+
+		ctrl.analiseGeo.documentos.splice(indexDocumento, 1);
 
 	};
 
