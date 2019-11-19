@@ -29,7 +29,7 @@ include ../../layout/components/mapPanel
 			br
 
 			div(uib-accordion class="accordion")
-				div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreDocumentacao")
+				div#accordionPanel(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreDocumentacao")
 					uib-accordion-heading(ng-click="modalVisualizacaoProcessoCtrl.abreDocumentacao=!modalVisualizacaoProcessoCtrl.abreDocumentacao")
 						div(role="button", ng-click="$ctrl.visualizarFichaImovel()")
 							| Documentação
