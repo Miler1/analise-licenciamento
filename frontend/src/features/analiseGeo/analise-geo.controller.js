@@ -1038,9 +1038,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	function tratarDadosNotificacao() {
 
-		ctrl.notificacao.documentacao = (ctrl.notificacao.documentacao === null ? false :true);
-		ctrl.notificacao.retificacaoEmpreendimento = (ctrl.notificacao.retificacaoEmpreendimento === null ? false :true);
-		ctrl.notificacao.retificacaoSolicitacao = (ctrl.notificacao.retificacaoSolicitacao === null ? false :true);
+		ctrl.notificacao.documentacao = ctrl.notificacao.documentacao === null ? false : true;
+		ctrl.notificacao.retificacaoEmpreendimento = ctrl.notificacao.retificacaoEmpreendimento === null ? false : true;
+		ctrl.notificacao.retificacaoSolicitacao = ctrl.notificacao.retificacaoSolicitacao === null ? false : true;
 		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
 		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
 
@@ -1138,18 +1138,21 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.checkedRetificacaoSolicitacao = function() {
-
+		ctrl.notificacao.retificacaoSolicitacao = null;
 		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	};
 
 	ctrl.checkedRetificacaoEmpreendimento = function() {
 
 		if (!ctrl.notificacao.retificacaoEmpreendimento) {
-			ctrl.notificacao.retificacaoSolicitacao = false;
+			ctrl.notificacao.retificacaoEmpreendimento = null;
+			ctrl.notificacao.retificacaoSolicitacao = null;
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 		} else {
 			ctrl.notificacao.retificacaoSolicitacao = true;
-			ctrl.notificacao.retificacaoSolicitacaoComGeo = "true";
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = 'true';
 		}
+
 	};
 
 };
