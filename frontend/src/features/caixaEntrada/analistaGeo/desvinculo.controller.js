@@ -1,8 +1,8 @@
-var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso, $location ,$window,$rootScope, mensagem, desvinculoService) {
+var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso, $location,$rootScope, mensagem, desvinculoService) {
 
     var desvinculoController = this;
     desvinculoController.respondido =null;
-    
+    desvinculoController.errorJustificativa = false;
 
         desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
         .then(function(response){
@@ -32,6 +32,12 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
             justificativa: desvinculoController.justificativa,
             analiseGeo: {id: idAnaliseGeo}
         };
+        if (desvinculoController.justificativa === '' || !desvinculoController.justificativa){
+            mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
+            desvinculoController.errorJustificativa = true;
+            return false;
+        }
+        
 
         desvinculoService.solicitarDesvinculo(params)
             .then(function(response){

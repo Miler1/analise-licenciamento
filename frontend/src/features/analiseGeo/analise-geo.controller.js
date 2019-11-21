@@ -33,6 +33,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.prazoNotificacao = null;
 	ctrl.tiposUpload = app.utils.TiposUpload;
 	ctrl.labelDadosProjeto = 'Dados da área do projeto';
+	ctrl.errors = {
+		conclusao: false,
+		despacho: false,
+		resultadoAnalise: false,
+		prazoNotificacao: false,
+		docAnaliseTemporal:false,
+		atendimento: false
+};
 
 	var getLayer = function(descricao){
 
@@ -939,32 +947,58 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				});
 
 				if (verificaDocAnaliseTemp === false){
+					ctrl.errors.docAnaliseTemporal = true;
 					return false;
+					
+				}else {
+					ctrl.errors.docAnaliseTemporal = false;
 				}
 		}
 
-		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
-			return false;
-		}
-
-		if(!ctrl.analiseGeo.despacho || ctrl.analiseGeo.despacho === undefined){
-			return false;
-		}
-
 		if (!ctrl.analiseGeo.parecer) {
+			ctrl.errors.conclusao = true;
 			return false;
+
+		}else{
+			ctrl.errors.conclusao = false;
 		}
 
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
+			ctrl.errors.resultadoAnalise = true;
 			return false;
+
+		}else{
+			ctrl.errors.resultadoAnalise = false;
+		}
+
+		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
+			ctrl.errors.prazoNotificacao = true;
+			return false;
+
+		}else{
+			ctrl.errors.prazoNotificacao = false;
+		}
+
+		if(!ctrl.analiseGeo.despacho || ctrl.analiseGeo.despacho === undefined){
+			ctrl.errors.despacho = true;
+			return false;
+
+		}else{
+			ctrl.errors.despacho = false;
 		}
 
 		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+			
 			if(ctrl.notificacao.retificacaoSolicitacao && !ctrl.notificacao.retificacaoSolicitacaoComGeo) {
 				return false;
 			}
+			
 			if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
+				ctrl.errors.atendimento = true;
 				return false;
+
+			}else{
+				ctrl.errors.atendimento = false;
 			}
 			return true;
 		}

@@ -34,9 +34,9 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
                     td.col-md-4 {{comunicado.tipoSobreposicao.nome}}
     div(ng-if="comunicado.valido == false ? disabled=false: disabled = true")        
         div(ng-if="comunicado.resolvido == true ? disabled=false: disabled = true")
-            label(style="font-size:13px;") Descrição do Parecer*:
+            label.obrigatorio(style="font-size:13px;") Descrição do Parecer:
             br
-            textarea(id="descricaoParecer", style="margin: 0px; width: 850px; height: 88px;")
+            textarea.resposta-orgao(id="descricaoParecer", ng-class="{'error': comunicado.parecerOrgao === true}")
 
             div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                 i.glyphicon.glyphicon-open.glyphicon--with-right-margin
