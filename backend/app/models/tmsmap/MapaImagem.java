@@ -872,10 +872,9 @@ public class MapaImagem {
 
 		map.addLayer((CustomLayer)(graphics, mapContent, mapViewport) -> {
 
-			Font font = new Font("Dialog", Font.PLAIN, 10);
-			graphics.setFont(font);
+			Font fontPlain = new Font("Dialog", Font.PLAIN, 12);
+			Font fontBold = new Font("Dialog", Font.BOLD, 12);
 			graphics.setStroke(new BasicStroke());
-			graphics.setColor(Color.WHITE);
 
 			int coordinateNumber = 1;
 			LinkedHashSet<Coordinate> resultCoordinates = new LinkedHashSet<>(mainCoordinates.values());
@@ -888,8 +887,15 @@ public class MapaImagem {
 				Point2D resultPoint = new Point2D.Double();
 				mapViewport.getWorldToScreen().transform(new Point2D.Double(coordinate.x, coordinate.y), resultPoint);
 
-				graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 2, resultPoint.getY() - 2, 4, 4));
+				graphics.setFont(fontBold);
+				graphics.setColor(Color.BLACK);
+				graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 2, resultPoint.getY() - 2, 6, 6));
 				graphics.drawString("P" + coordinateNumber, (float)resultPoint.getX() + 3, (float)resultPoint.getY() + 3);
+
+				graphics.setFont(fontPlain);
+				graphics.setColor(Color.WHITE);
+				graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 1, resultPoint.getY() - 1, 4, 4));
+				graphics.drawString("P" + coordinateNumber, (float)resultPoint.getX() + 4, (float)resultPoint.getY() + 3);
 
 				Coordinate worldUtmCoordinate = GeoCalc.transform(coordinate, DefaultGeographicCRS.WGS84, crs);
 				mainCoordinatesResult.add(worldUtmCoordinate);
