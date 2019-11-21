@@ -309,11 +309,11 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder groupByObjetoTramitavel(){
 
-		addCondicaoAlias();
-
-		addProjection(Projections.groupProperty(CONDICAO_ALIAS+".id").as("idCondicaoTramitacao"));
+		addObjetoTramitavelAlias();
+		addProjection(Projections.groupProperty(OBJETO_TRAMITAVEL_ALIAS + ".condicao.id").as("idCondicaoTramitacao"));
 
 		return this;
+
 	}
 
 	public ProcessoBuilder groupByDenominacaoEmpreendimento(){
@@ -621,9 +621,11 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 			addObjetoTramitavelAlias();
 			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao", idCondicao));
+
 		}
 
 		return this;
+
 	}
 
 	public ProcessoBuilder filtrarPorListaIdCondicao(List<Long> listaIdCondicao) {

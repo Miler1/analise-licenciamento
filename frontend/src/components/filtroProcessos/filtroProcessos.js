@@ -62,6 +62,19 @@ var FiltroProcessos = {
 				}
 			}
 
+			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+
+				if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
+					
+					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
+					ctrl.filtro.idCondicaoTramitacao = null;
+				
+				} else {
+					ctrl.filtro.listaIdCondicaoTramitacao = null;
+				}
+
+			}
+
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
 			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
 
@@ -169,56 +182,57 @@ var FiltroProcessos = {
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
-		if(ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_GEO){
-			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
-				if(ctrl.isAnaliseTecnicaOpcional){
-					analistaService.getAnalistasTecnicos()
-						.then(function(response){
 
-							ctrl.analistasTecnicos = response.data;
-						})
-						.catch(function(){
-							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
-						});
+			if(ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_GEO){
+				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
+					if(ctrl.isAnaliseTecnicaOpcional){
+						analistaService.getAnalistasTecnicos()
+							.then(function(response){
+
+								ctrl.analistasTecnicos = response.data;
+							})
+							.catch(function(){
+								mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+							});
+					}
+					else{
+						analistaService.getAnalistasTecnicosByPerfil(ctrl.isGerenteLogado)
+							.then(function(response){
+
+								ctrl.analistasTecnicos = response.data;
+							})
+							.catch(function(){
+								mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
+							});
+
+					}
 				}
-				else{
-					analistaService.getAnalistasTecnicosByPerfil(ctrl.isGerenteLogado)
-						.then(function(response){
 
-							ctrl.analistasTecnicos = response.data;
-						})
-						.catch(function(){
-							mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
-						});
+				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GERENTE)){
+					if(ctrl.isAnaliseTecnicaOpcional){
+						analistaService.getAnalistasGeo()
+							.then(function(response){
 
+								ctrl.analistasGeo = response.data;
+							})
+							.catch(function(){
+								mensagem.warning('Não foi possível obter a lista de analistas GEO.');
+							});
+					}
+					else{
+						analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
+							.then(function(response){
+
+								ctrl.analistasGeo = response.data;
+							})
+							.catch(function(){
+								mensagem.warning('Não foi possível obter a lista de analistas GEO.');
+							});
+
+					}
 				}
+
 			}
-
-			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GERENTE)){
-				if(ctrl.isAnaliseTecnicaOpcional){
-					analistaService.getAnalistasGeo()
-						.then(function(response){
-
-							ctrl.analistasGeo = response.data;
-						})
-						.catch(function(){
-							mensagem.warning('Não foi possível obter a lista de analistas GEO.');
-						});
-				}
-				else{
-					analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
-						.then(function(response){
-
-							ctrl.analistasGeo = response.data;
-						})
-						.catch(function(){
-							mensagem.warning('Não foi possível obter a lista de analistas GEO.');
-						});
-
-				}
-			}
-
-		}
 
 			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.SITUACAO)) {
 
@@ -226,6 +240,13 @@ var FiltroProcessos = {
 					function(response){
 						
 						ctrl.condicoes = response.data;
+
+						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+							ctrl.condicoes.push({
+								idCondicao: 'ANALISE_GEO_FINALIZADA',
+								nomeCondicao: 'Analise GEO finalizada'
+							});
+						}
 					})
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de situações.');
@@ -325,6 +346,16 @@ var FiltroProcessos = {
 				ctrl.pesquisar(1);
 			}
 		};
+
+		function getCondicoesAnaliseGeoFinalizada() {
+			return [
+				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
+				app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE
+			];
+		}
 
 		$scope.$on('pesquisarProcessos', function(event){
 

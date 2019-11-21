@@ -8,3 +8,5 @@
 * OS40 - US517 - [Customizações Visualizar Processo] Abas "Solicitação" e "Observações"
 * OS40 - US541 - [Customizações análise GEO] Tramitação de processo
 * OS40 - US526 - [Customizações Análise GEO] Documentos da análise
+* OS40 - US524 - [Customizações Análise GEO] Conclusão da análise
+* OS40 - US525 - [Customizações Análise GEO] Consultar processo

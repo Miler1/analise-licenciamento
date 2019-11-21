@@ -2,6 +2,12 @@ package controllers;
 
 import models.Documento;
 import models.Notificacao;
+import models.Processo;
+import security.Acao;
+import serializers.NotificacaoSerializer;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Notificacoes extends InternalController {
 
@@ -18,6 +24,15 @@ public class Notificacoes extends InternalController {
         response.setHeader("Content-Type", "application/pdf");
 
         renderBinary(pdfNotificacao.arquivo, nome);
+    }
+
+    public static void findByIdProcesso(Long id) {
+
+        verificarPermissao(Acao.VISUALIZAR_NOTIFICACAO);
+
+        Processo processo = Processo.findById(id);
+
+        renderJSON(processo.analise.getAnaliseGeo().notificacoes.stream().sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList()), NotificacaoSerializer.findAll);
     }
 
 }

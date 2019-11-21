@@ -406,6 +406,12 @@ public class Notificacao extends GenericModel {
 		}
 	}
 
+	public Date getDataNotificacao(){
+
+		return this.dataNotificacao;
+
+	}
+
 	public Documento gerarPDF() throws Exception {
 
 		Long analiseId;

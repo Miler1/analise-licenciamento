@@ -135,7 +135,7 @@ div#conclusao
                         label.obrigatorio Atendimento:
                     div.check-atendimento-notificacao
                         label.checkbox-inline
-                            input.checkbox-notificacao(type='checkbox', placeholder='Documentação', ng-model='ctrl.notificacao.documentacao')
+                            input.checkbox-notificacao(type='checkbox', placeholder='Documentação', ng-model='ctrl.notificacao.documentacao', ng-click = "ctrl.checkedDocumentacao()")
                             |  Documentação
                         label.checkbox-inline
                             input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento', ng-click = "ctrl.checkedRetificacaoEmpreendimento()")

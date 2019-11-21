@@ -58,6 +58,23 @@ var ProcessoService = function(request, config, $uibModal) {
 		});
 
 	};
+
+	this.visualizarNotificacao = function(processo) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'visualizacaoNotificacaoController',
+			controllerAs: 'modalVisualizacaoNotificacaoCtrl',
+			templateUrl: 'components/visualizacaoNotificacao/visualizacaoNotificacao.html',
+			windowClass: 'modalVisualizarNotificacao',
+			size: 'lg',
+			resolve: {
+				processo: function() {
+					return processo;
+				}
+			}
+		});
+
+	};
 };
 
 exports.services.ProcessoService = ProcessoService;

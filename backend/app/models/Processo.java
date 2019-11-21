@@ -357,6 +357,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			filtro.idAnalistaGeo = filtro.idUsuarioLogado;
 		}
 
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
+
+			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
+
+		}
+
 		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);

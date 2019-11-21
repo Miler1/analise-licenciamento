@@ -1,0 +1,82 @@
+#modalNotificacao
+
+	div.modal-header
+
+		button.close(type='button', ng-click="modalVisualizacaoNotificacaoCtrl.fechar()")
+			span(aria-hidden='true') ×
+			span.sr-only Fechar
+
+		h4.modal-title Notificações
+
+	div.modal-body
+		div(ng-repeat="notificacao in modalVisualizacaoNotificacaoCtrl.notificacoes")
+			.panel-group(id='accordion-notificacoes-{{notificacao.id}}')
+				div
+					a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-notificacoes-{{notificacao.id}}', 
+						aria-expanded='false', data-target='#meus-dados-notificacao-{{notificacao.id}}'
+						ng-init = 'modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id] = false', 
+						ng-click = 'modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id] = !modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id]' )
+						.panel.panel-default
+							.panel-heading
+								h4.panel-title
+									| Notificação do dia {{notificacao.dataNotificacao}}
+									i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id], 'glyphicon-chevron-right': !modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id]}")
+					.collapse.dados-notificacao(ng-class="{in: modalVisualizacaoNotificacaoCtrl.notificacoes[0].id === notificacao.id}",id='meus-dados-notificacao-{{modalVisualizacaoNotificacaoCtrl.notificacoes[0].id}}')
+					
+						#accordion.panel-group
+							.atendimento-notificacao
+								div.label-atendimento-notificacao
+									label.obrigatorio Atendimento:
+								div.check-atendimento-notificacao
+									label.checkbox-inline
+										input.checkbox-notificacao(type='checkbox', placeholder='Documentação', ng-model='notificacao.documentacao', ng-disabled='true')
+										|  Documentação
+									label.checkbox-inline
+										input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='notificacao.retificacaoEmpreendimento', ng-disabled='true')
+										|  Retificação do empreendimento
+									label.checkbox-inline
+										input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='notificacao.retificacaoSolicitacao', ng-disabled='true')
+										|  Retificação da solicitação
+									div.retificacao-com-geo(ng-show='notificacao.retificacaoSolicitacao || notificacao.retificacaoEmpreendimento')
+										label.radio-inline
+											input(type='radio', name='retificacaoSolicitacaoGeo{{$index}}', ng-model='notificacao.retificacaoSolicitacaoComGeo', value='true', ng-disabled='true')
+											| Com alteração GEO
+										label.radio-inline
+											input(type='radio', name='retificacaoSolicitacaoGeo{{$index}}', ng-model='notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='true')
+											| Sem alteração GEO
+						
+						#prazoNotificacao.panel-group
+								label.label-text Prazo solicitado para atendimento a notificação: 
+									i {{notificacao.prazoNotificacao}} dias
+
+						.panel-group
+							.descricao
+								.label-descricao
+									label Descrição das solicitações:
+								
+								.form-group
+									span {{notificacao.justificativa}}
+						
+						.panel-group
+							table.area-modal.table.table-condensed(ng-if="notificacao.documentos.length > 0")
+
+								thead
+
+									tr
+										th.col-md-10 Documentos da notificação
+										th.col-md-2.text-right Ações
+
+								tbody
+
+									tr(ng-repeat="anexo in notificacao.documentos")
+
+										td.col-md-10 {{anexo.nomeDoArquivo}}
+										td.col-md-2.text-right
+											a.d-inline.margin-right-xs(style='cursor: pointer;', ng-click="modalVisualizacaoNotificacaoCtrl.baixarDocumento(anexo.id)")
+												i.glyphicon.glyphicon-save
+
+	div.modal-footer#footer-modal
+
+		button.btn.btn-default.pull-left(ng-click="modalVisualizacaoNotificacaoCtrl.fechar()")
+			i.glyphicon.glyphicon-arrow-left
+			| &nbsp;Fechar
