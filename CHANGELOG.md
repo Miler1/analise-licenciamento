@@ -10,3 +10,7 @@
 * OS40 - US526 - [Customizações Análise GEO] Documentos da análise
 * OS40 - US524 - [Customizações Análise GEO] Conclusão da análise
 * OS40 - US525 - [Customizações Análise GEO] Consultar processo
+* OS40 - US777 - [Gestão de Demandas - AM] Considerações de homologação
+* OS40 - US769 - [Customizações análise GEO] Notificações 
+-----------------------------------------------------------------------------------------------------
+
