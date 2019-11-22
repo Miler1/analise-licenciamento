@@ -13,4 +13,4 @@
 * OS40 - US777 - [Gestão de Demandas - AM] Considerações de homologação
 * OS40 - US769 - [Customizações análise GEO] Notificações 
 -----------------------------------------------------------------------------------------------------
-
+* OS40 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo. 
