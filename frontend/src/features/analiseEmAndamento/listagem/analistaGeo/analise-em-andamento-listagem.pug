@@ -43,7 +43,7 @@ div
 								| {{listagem.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo)}").text-center
 								| {{listagem.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
-							td
+							td( ng-init="listagem.verificaSolicitacaoAjustes(processo)")
 								span.pull-right
 
 									.dropdown.action-table
@@ -55,6 +55,10 @@ div
 												a(ng-click="listagem.continuarAnalise(processo.idAnaliseGeo)")
 													i.glyphicon.glyphicon-play-circle
 													span Continuar análise
+											li(ng-if="listagem.verificaAnalise === true")
+												a(ng-click="listagem.visualizarSolicitacaoAjustes(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar Solicitação de Ajustes
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
