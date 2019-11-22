@@ -982,48 +982,44 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public void finalizarAnaliseGerente(AnaliseGeo analiseGeo, UsuarioAnalise gerente) throws Exception {
 
-        UsuarioAnalise analistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
+        if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
-        if (analistaTecnico != null) {
+            UsuarioAnalise analistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
 
-            if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
+            AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
 
-                AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
+            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), analistaTecnico);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), analistaTecnico);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+            new AnalistaTecnico(analiseGeoBanco.analise.analiseTecnica, analistaTecnico);
 
-                new AnalistaTecnico(analiseGeoBanco.analise.analiseTecnica, analistaTecnico);
+        } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
 
-            } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
+            AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(this.id);
+            UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
 
-                AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(this.id);
-                UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
+           this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+        } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
 
-            } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
+            UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analiseGeo.idAnalistaDestino);
 
-                UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analiseGeo.idAnalistaDestino);
+            AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
+                    .setParameter("id_analise_geo", analise.id).first();
 
-                AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
-                        .setParameter("id_analise_geo", analise.id).first();
+            analistaGeo.usuario = analistaGeoDestino;
 
-                analistaGeo.usuario = analistaGeoDestino;
+            analistaGeo._save();
 
-                analistaGeo._save();
-
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
-
-            }
-            this.tipoResultadoValidacaoGerente = analiseGeo.tipoResultadoValidacaoGerente;
-            this.parecerValidacaoGerente = analiseGeo.parecerValidacaoGerente;
-            this.usuarioValidacaoGerente = gerente;
-            this.save();
+            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
         }
+        this.tipoResultadoValidacaoGerente = analiseGeo.tipoResultadoValidacaoGerente;
+        this.parecerValidacaoGerente = analiseGeo.parecerValidacaoGerente;
+        this.usuarioValidacaoGerente = gerente;
+        this.save();
 
     }
 
