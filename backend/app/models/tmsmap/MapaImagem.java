@@ -8,15 +8,19 @@ import com.vividsolutions.jts.geom.Point;
 import enums.CamadaGeoEnum;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import enums.CorRestricaoEnum;
 import models.CamadaGeoAtividadeVO;
 import models.CamadaGeoRestricaoVO;
 import models.DadosProcessoVO;
 import models.GeometriaAtividadeVO;
+import models.licenciamento.TipoSobreposicao;
 import org.apache.commons.codec.binary.Base64;
 import org.geotools.graph.util.geom.GeometryUtil;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import play.Play;
+import utils.ColorUtils;
 import utils.GeoCalc;
 
 import javax.imageio.ImageIO;
@@ -248,10 +252,10 @@ public class MapaImagem {
 					continue;
 				}
 
-				String colorCode = getColorTemaCiclo();
-				Color color = Color.decode(colorCode);
+				Color color = CorRestricaoEnum.getCorPeloNomeRestricao(r.item);
+
 				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-				dataLayers.add(new DataLayer(r.item, r.geometria, color, colorCode).fillColor(fillColor));
+				dataLayers.add(new DataLayer(r.item, r.geometria, color, ColorUtils.getHexByColor(color)).fillColor(fillColor));
 
 			}
 
@@ -417,14 +421,16 @@ public class MapaImagem {
 			dataLayers.addAll(grupoDataLayer.dataLayers);
 		}
 
-		float pontilhado = 2f;
+		float pontilhado = 4f;
 
 		//Para inserir as áreas de restrições no mapa
 		for(DataLayer dataLayer : dataLayers) {
 
 			if (!dataLayer.name.equals(NOME_PROPRIEDADE_EMPREENDIMENTO) && !dataLayer.name.contains("Geometria_")) {
 
-				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.3f).dashArray(pontilhado).color(dataLayer.color).width(2).opacity(1f);
+				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor)
+						.fillOpacity(0.3f).dashArray(pontilhado)
+						.color(dataLayer.color).width(2).opacity(1f);
 				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
 
 				pontilhado += 1f;
@@ -437,7 +443,8 @@ public class MapaImagem {
 
 			if (dataLayer.name.contains("Geometria_")) {
 
-				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor).fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
+				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor)
+						.fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
 				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
 
 			}
