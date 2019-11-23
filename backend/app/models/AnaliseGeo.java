@@ -16,7 +16,6 @@ import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -29,7 +28,6 @@ import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIME
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 import javax.persistence.*;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,6 +79,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "data_fim")
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFim;
+
+    @Column(name = "data_parecer_gerente")
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date dataParecerGerente;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_analise")
