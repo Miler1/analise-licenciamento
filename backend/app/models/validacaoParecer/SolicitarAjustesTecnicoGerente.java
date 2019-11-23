@@ -6,7 +6,7 @@ import models.ParecerTecnicoRestricao;
 import models.TipoResultadoAnalise;
 import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 
 import java.util.ArrayList;
 
@@ -50,6 +50,6 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 		copia.updatePareceresTecnicosRestricoes(pareceresTecnicosRestricoesSalvar);
 			
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 }

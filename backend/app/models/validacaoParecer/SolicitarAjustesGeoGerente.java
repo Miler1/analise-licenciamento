@@ -2,7 +2,7 @@ package models.validacaoParecer;
 
 import models.*;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,6 @@ public class SolicitarAjustesGeoGerente extends TipoResultadoAnaliseChain<Analis
         copia.updatePareceresGeoRestricoes(pareceresGeoRestricoesSalvar);
 
         analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, usuarioExecutor);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 }

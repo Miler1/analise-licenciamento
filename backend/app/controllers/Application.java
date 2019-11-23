@@ -95,7 +95,7 @@ public class Application extends GenericController {
 				.fetch();
 
 		Notificacao notificacao = notificacoes.get(0);
-		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(notificacao.historicoTramitacao.idHistorico))
+		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(notificacao.viewHistoricoTramitacao.idHistorico))
 				+ "/download";
 
 		String urlImageLogo = Configuracoes.APP_URL + "app/images/brasao_pa.png";

@@ -4,7 +4,7 @@ import models.AnaliseJuridica;
 import models.TipoResultadoAnalise;
 import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 
 public class SolicitarAjustesJuridicoAprovador extends TipoResultadoAnaliseChain<AnaliseJuridica> {
 
@@ -36,6 +36,6 @@ public class SolicitarAjustesJuridicoAprovador extends TipoResultadoAnaliseChain
 		copia._save();
 			
 		analiseJuridica.analise.processo.tramitacao.tramitar(analiseJuridica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_ANALISE_JURIDICA_APROVADOR, usuarioExecutor);
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseJuridica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseJuridica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 }

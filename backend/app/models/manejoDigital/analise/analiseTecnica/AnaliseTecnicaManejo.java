@@ -13,7 +13,7 @@ import models.manejoDigital.analise.analiseShape.FeatureQueryResumoNDFI;
 import models.manejoDigital.analise.analiseShape.FeatureQuerySobreposicao;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import org.apache.tika.Tika;
 import play.data.Upload;
 import play.data.validation.Required;
@@ -453,12 +453,12 @@ public class AnaliseTecnicaManejo extends GenericModel {
         if (analise.apto) {
 
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.DEFERIR_PROCESSO_MANEJO, this.analistaTecnico.usuario);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
 
         } else {
 
             this.processoManejo.tramitacao.tramitar(this.processoManejo, AcaoTramitacao.INDEFERIR_PROCESS_MANEJO_ANALISE_TECNICA, this.analistaTecnico.usuario);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
+            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.processoManejo.idObjetoTramitavel), this.analistaTecnico.usuario);
         }
 
         this._save();

@@ -5,7 +5,7 @@ import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoDocumentoLicenciamento;
 import models.pdf.PDFGenerator;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
 import utils.Configuracoes;
@@ -69,7 +69,7 @@ public class Notificacao extends GenericModel {
 
 	@OneToOne
 	@JoinColumn(name = "id_historico_tramitacao")
-	public HistoricoTramitacao historicoTramitacao;
+	public ViewHistoricoTramitacao viewHistoricoTramitacao;
 
 	@Column(name="data_final_notificacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -397,11 +397,11 @@ public class Notificacao extends GenericModel {
 
 	}
 
-	public static void setHistoricoAlteracoes(List<Notificacao> notificacoes, HistoricoTramitacao historicoTramitacao) {
+	public static void setHistoricoAlteracoes(List<Notificacao> notificacoes, ViewHistoricoTramitacao viewHistoricoTramitacao) {
 
 		for (Notificacao notificacao : notificacoes) {
 
-			notificacao.historicoTramitacao = historicoTramitacao;
+			notificacao.viewHistoricoTramitacao = viewHistoricoTramitacao;
 			notificacao._save();
 		}
 	}

@@ -3,7 +3,7 @@ package models.validacaoParecer;
 import exceptions.ValidacaoException;
 import models.*;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import utils.Mensagem;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ParecerNaoValidadoGeoGerente extends TipoResultadoAnaliseChain<Anal
         criarNovaAnalise(analiseGeo, novaAnaliseGeo.getAnalistaGeo().usuario, usuarioExecutor);
 
         analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
     private void criarNovaAnalise(AnaliseGeo analiseGeo, UsuarioAnalise usuarioAnalista, UsuarioAnalise usuarioValidacao) {

@@ -50,7 +50,7 @@ div
 								| {{consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
 
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
-								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída' : consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
+								| {{ consultarProcesso.getPrazoAnaliseGeo(processo) }}
 
 							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO" ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}").text-center
 								| -

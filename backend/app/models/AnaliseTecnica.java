@@ -5,7 +5,7 @@ import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Required;
@@ -181,7 +181,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}	
 
 	public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {
@@ -388,13 +388,13 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			if(this.usuarioValidacaoGerente != null) {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 			else {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 		} else if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
@@ -402,13 +402,13 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			if(this.usuarioValidacaoGerente != null) {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 			else {
 
 				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 		} else {
@@ -416,14 +416,14 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			Notificacao.criarNotificacoesAnaliseTecnica(analise);
 		
 			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
-			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
-			HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
+			ViewHistoricoTramitacao viewHistoricoTramitacao = ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
 
 			List<Notificacao> notificacoes = Notificacao.find("analiseTecnica.id", this.id).fetch();
-			Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
+			Notificacao.setHistoricoAlteracoes(notificacoes, viewHistoricoTramitacao);
 
-			HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
+			ViewHistoricoTramitacao.setSetor(viewHistoricoTramitacao, usuarioExecutor);
 
 			enviarEmailNotificacao();
 		}

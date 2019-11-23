@@ -1,14 +1,14 @@
 package builders;
 
 import models.Processo;
+import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
 import org.hibernate.type.StringType;
 import security.Auth;
+
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +26,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ATIVIDADE_ALIAS = "atv";
 	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
 	private static final String OBJETO_TRAMITAVEL_ALIAS = "obt";
+	private static final String HISTORICO_OBJETO_TRAMITAVEL_ALIAS = "hot";
+	private static final String CRITERIA_HISTORICO_OBJETO_TRAMITAVEL_ALIAS = "cht";
 	private static final String CONSULTOR_JURIDICO_ALIAS = "coj";
 	private static final String ANALISE_TECNICA_ALIAS = "ant";
 	private static final String ANALISE_GEO_ALIAS = "ang";
@@ -166,6 +168,24 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAlias("objetoTramitavel", OBJETO_TRAMITAVEL_ALIAS);
 
 		return this;
+	}
+
+	public ProcessoBuilder addHistoricoObjetoTramitavelAlias(boolean isLeftOuterJoin) {
+
+		addAtividadeCaracterizacaoAlias();
+
+		if(isLeftOuterJoin) {
+
+			addAlias(OBJETO_TRAMITAVEL_ALIAS + ".historicoTramitacoes", HISTORICO_OBJETO_TRAMITAVEL_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		} else {
+
+			addAlias(OBJETO_TRAMITAVEL_ALIAS + ".historicoTramitacoes", HISTORICO_OBJETO_TRAMITAVEL_ALIAS);
+
+		}
+
+		return this;
+
 	}
 
 	public ProcessoBuilder addConsultorJuridicoAlias() {
@@ -316,6 +336,24 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
+	public ProcessoBuilder groupByHistoricoObjetoTramitavel() {
+
+		addObjetoTramitavelAlias();
+		addHistoricoObjetoTramitavelAlias(true);
+
+		DetachedCriteria historicoTramitacaoCriteria = DetachedCriteria.forClass(HistoricoTramitacao.class, CRITERIA_HISTORICO_OBJETO_TRAMITAVEL_ALIAS);
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("");
+
+		historicoTramitacaoCriteria.setProjection(Projections.sqlProjection(stringBuilder.toString(), new String[] { "diascongelamento" }, new org.hibernate.type.Type[]{ StringType.INSTANCE }));
+
+		addRestriction(Subqueries.propertyEq(HISTORICO_OBJETO_TRAMITAVEL_ALIAS + ".dataCadastro", historicoTramitacaoCriteria));
+
+		return this;
+
+	}
+
 	public ProcessoBuilder groupByDenominacaoEmpreendimento(){
 
 		addEmpreendimentoAlias();
@@ -344,7 +382,6 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		return this;
 	}
-
 
 	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseGeo(){
 
@@ -956,9 +993,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		public Long idUsuarioLogado;
-		public Long idSituacao;
 		public boolean isConsultarProcessos;
-		public boolean desvinculoRespondido;
 
 		public FiltroProcesso() {
 

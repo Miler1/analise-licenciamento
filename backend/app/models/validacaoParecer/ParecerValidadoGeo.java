@@ -1,13 +1,12 @@
 package models.validacaoParecer;
 
 import models.AnaliseGeo;
-import models.AnaliseTecnica;
 import models.TipoResultadoAnalise;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.StatusCaracterizacao;
 import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import utils.ListUtil;
 
 import java.util.Calendar;
@@ -43,14 +42,14 @@ public class ParecerValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
             Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_TECNICO_PELO_COORDENADOR, usuarioExecutor);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
             return;
         }
 
         if (analiseGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_TECNICO_PELO_COORDENADOR, usuarioExecutor);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
         }
 
     }

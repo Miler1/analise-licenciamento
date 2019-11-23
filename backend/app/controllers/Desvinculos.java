@@ -4,19 +4,14 @@ package controllers;
 import exceptions.ValidacaoException;
 import models.*;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
-import play.db.jpa.GenericModel;
-import security.Acao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import serializers.DesvinculoSerializar;
 import utils.Mensagem;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static controllers.InternalController.getUsuarioSessao;
-import static controllers.InternalController.verificarPermissao;
 
 public class Desvinculos extends GenericController {
 
@@ -51,7 +46,7 @@ public class Desvinculos extends GenericController {
 
         desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
         desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, getUsuarioSessao(), desvinculo.gerente);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 
@@ -118,7 +113,7 @@ public class Desvinculos extends GenericController {
         } else {
             desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeo);
         }
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_RESPONDIDO_COM_SUCESSO.getTexto());
 

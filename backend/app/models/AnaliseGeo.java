@@ -14,9 +14,8 @@ import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import models.validacaoParecer.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -29,7 +28,6 @@ import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIME
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 import javax.persistence.*;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -232,7 +230,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         verificarDataInicio();
 
         this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GEO, usuarioExecutor);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
     public void iniciarAnaliseGerente(UsuarioAnalise usuarioExecutor) {
@@ -240,7 +238,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         verificarDataInicio();
 
         this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GERENTE, usuarioExecutor);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
     public void verificarDataInicio() {
@@ -498,7 +496,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 gerente.save();
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+                ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
         } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
@@ -512,7 +510,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 gerente.save();
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+                ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
             }
 
         } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
@@ -530,7 +528,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, this.usuarioValidacaoGerente);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
         }
     }
@@ -991,7 +989,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), analistaTecnico);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+                ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
                 new AnalistaTecnico(analiseGeoBanco.analise.analiseTecnica, analistaTecnico);
 
@@ -1001,7 +999,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
+                ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), this.analise.processo.objetoTramitavel.usuarioResponsavel);
 
             } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
 
@@ -1015,7 +1013,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 analistaGeo._save();
 
                 this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+                ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
             }
             this.tipoResultadoValidacaoGerente = analiseGeo.tipoResultadoValidacaoGerente;

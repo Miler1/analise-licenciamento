@@ -172,9 +172,9 @@ public class Tramitacao {
 	}
 	
 	// Retorna o historico do objeto tramitavél
-	public List<HistoricoTramitacao> findHistorico(Tramitavel tramitavel) {
+	public List<ViewHistoricoTramitacao> findHistorico(Tramitavel tramitavel) {
 		
-		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel) order by data desc")
+		return ViewHistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel) order by data desc")
 				.setParameter("idObjetoTramitavel", tramitavel.getIdObjetoTramitavel())
 				.fetch();
 	}

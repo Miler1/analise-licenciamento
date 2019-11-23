@@ -6,7 +6,7 @@ import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
+import models.tramitacao.ViewHistoricoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
 import utils.DateUtil;
@@ -85,7 +85,7 @@ public class Suspensao extends GenericModel {
 			if(deveSuspenderProcesso(this.licenca)) {
 				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROTOCOLO, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
+				ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
 			enviarNotificacaoSuspensaoPorEmail();

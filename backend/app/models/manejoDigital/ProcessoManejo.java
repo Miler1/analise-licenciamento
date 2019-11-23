@@ -151,7 +151,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
         this.enviarProcessoAnaliseShape(token);
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_SHAPE, this.getAnaliseTecnica().analistaTecnico.usuario);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         this.revisaoSolicitada = false;
         this._save();
@@ -162,7 +162,7 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
     public ProcessoManejo iniciarAnaliseTecnica() {
 
         tramitacao.tramitar(this, AcaoTramitacao.INICIAR_ANALISE_TECNICA_MANEJO, this.getAnaliseTecnica().analistaTecnico.usuario);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
+        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.idObjetoTramitavel), this.getAnaliseTecnica().analistaTecnico.usuario);
 
         return this.refresh();
     }
