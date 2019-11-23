@@ -35,7 +35,15 @@ div
                     height="200",
                     ng-model="ctrl.analiseGeo.analiseTemporal",
                     config="optionsText")
-        div.obrigatorio.btn.btn-default(ng-show="ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null",style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.DOCUMENTO_ANALISE_TEMPORAL)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+        div.obrigatorio.btn.btn-default(ng-disabled="ctrl.getDocumentosAnaliseTemporal().length === 1",
+                                        ng-show="ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null",
+                                        title='Permitido apenas upload de 1 arquivo com extensão .pdf'
+                                        style="margin-bottom:10px",
+                                        type="file", name="arquivo", 
+                                        ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.DOCUMENTO_ANALISE_TEMPORAL)", 
+                                        ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", 
+                                        ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+
             i.glyphicon.glyphicon-open.glyphicon--with-right-margin
             | Anexar arquivo na análise temporal
         table.table.table-condensed(ng-if="ctrl.getDocumentosAnaliseTemporal().length > 0")
@@ -57,8 +65,9 @@ div
 
                             a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                                 i.glyphicon.glyphicon-trash
+        i.info-sem-dados-para-exibir(style="color:red; display:flex;", ng-if="ctrl.verificaExtensao === true || ctrl.getDocumentosAnaliseTemporal().length > 1") Permitido apenas upload de 1 arquivo com extensão .pdf                      
 
-div
+div(style="padding-top:15px;")
     label.obrigatorio(style="font-size:13px") Conclusão: 
     br
     div(ng-class="{'error-summernote': ctrl.errors.conclusao === true}")
