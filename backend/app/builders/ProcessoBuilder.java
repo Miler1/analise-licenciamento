@@ -492,6 +492,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnico(boolean isLeftOuterJoin) {
+
+		addAnaliseGeoAlias(isLeftOuterJoin);
+		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS + ".dataParecerGerente").as("dataParecerGerente"));
+
+		return this;
+
+	}
+
 	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
@@ -710,6 +719,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 			addAnalistaGeoAlias(isLeftOuterJoin);
 			addRestriction(Restrictions.eq(ANALISTA_GEO_ALIAS+".usuario.id", idAnalistaGeo));
+
 		}
 
 		return this;
