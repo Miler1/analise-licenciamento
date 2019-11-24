@@ -14,3 +14,5 @@
 * OS40 - US769 - [Customizações análise GEO] Notificações 
 -----------------------------------------------------------------------------------------------------
 * OS40 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo. 
+* OS40 - US851 - [Analista GEO] Eu, Analista Geo, devo visualizar a justificativa do gerente para ver a justificativa da solicitação de ajustes e inserir apenas 1 arquivo por análise temporal
+

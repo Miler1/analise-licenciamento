@@ -1,4 +1,7 @@
-var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $rootScope, processoService, mensagem) {
+var AnaliseEmAndamentoGeoListController = function($scope, config, $location, 
+												   $rootScope, processoService,
+												   analiseGeoService, mensagem,
+												   $uibModal) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE GEO';
 
@@ -9,6 +12,9 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	listagem.selecionarTodosProcessos = selecionarTodosProcessos;
 	listagem.onPaginaAlterada = onPaginaAlterada;
 	listagem.continuarAnalise = continuarAnalise;
+	listagem.visualizarSolicitacaoAjustes = visualizarSolicitacaoAjustes;
+	listagem.verificaSolicitacaoAjustes = verificaSolicitacaoAjustes;
+	listagem.verificaAnalise = null;
 
 	listagem.processos = [];
 	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_GEO;
@@ -24,6 +30,18 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	function atualizarListaProcessos(processos) {
 
 		listagem.processos = processos;
+	}
+
+	function verificaSolicitacaoAjustes(processo) {
+
+		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+			.then(function(response){
+				if(response.data.parecerValidacaoGerente === null){
+					listagem.verificaAnalise = false;
+				}else{
+					listagem.verificaAnalise=true;
+				}
+			});
 	}
 
 	function atualizarPaginacao(totalItens) {
@@ -54,7 +72,28 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);
-    }	
+	}
+	
+	function visualizarSolicitacaoAjustes(processo) {
+
+		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+			.then(function(response){
+
+				$uibModal.open({
+					controller: 'visualizarAjustesController',
+					controllerAs: 'visualizarAjustesController',
+					backdrop: 'static',
+					templateUrl: 'components/modalVisualizarSolicitacaoAjustes/modalVisualizarSolicitacaoAjustes.html',
+					size: 'lg',
+					resolve: {
+						analiseGeo: function () {
+							return response.data;
+						}
+						
+					}
+				});
+		});
+	}
 };
 
 exports.controllers.AnaliseEmAndamentoGeoListController = AnaliseEmAndamentoGeoListController;
