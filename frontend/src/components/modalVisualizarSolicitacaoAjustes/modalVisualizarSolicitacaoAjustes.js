@@ -6,7 +6,6 @@ visualizarAjustesController.justificativa = analiseGeo.parecerValidacaoGerente;
 
 visualizarAjustesController.fechar = function() {
     $uibModalInstance.dismiss('cancel');
-    console.log(analiseGeo);
 };
 
 };
