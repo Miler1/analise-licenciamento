@@ -232,7 +232,6 @@ public class AnalisesGeo extends InternalController {
         renderBinary(pdfParecer.arquivo, nome);
     }
 
-
     public static void buscaDadosProcesso(Long idProcesso) {
 
         returnIfNull(idProcesso, "Long");

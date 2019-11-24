@@ -1,6 +1,8 @@
 ## [Unreleased]
 ### [Unreleased-beta]
 
+## OS40
+
 * OS40 - US548 - Correções pendentes da sprint anterior
 * OS40 - US778 - [Customizações análise GEO] Refatoração de código
 * OS40 - US536 - [Customizações Análise GEO] Visualizar Processo - Dados do Processo
@@ -12,5 +14,12 @@
 * OS40 - US525 - [Customizações Análise GEO] Consultar processo
 * OS40 - US777 - [Gestão de Demandas - AM] Considerações de homologação
 * OS40 - US769 - [Customizações análise GEO] Notificações 
------------------------------------------------------------------------------------------------------
-* OS40 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo. 
+
+## OS44
+
+* OS44 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo.
+
+
+## OS35
+
+* OS35 - US294 - Eu, analista técnico, devo acessar caixa de entrada para acessar listagem dos novos processos
