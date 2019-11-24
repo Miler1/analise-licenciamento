@@ -495,7 +495,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnico(boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
-		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS + ".dataParecerGerente").as("dataParecerGerente"));
+		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS + ".dataParecerGerenteAnaliseGeo").as("dataParecerGerenteAnaliseGeo"));
 
 		return this;
 
