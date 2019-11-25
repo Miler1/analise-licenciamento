@@ -36,7 +36,7 @@ div
 							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{cxEntAnalistaTecnico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntAnalistaTecnico.PrazoAnalise.ANALISE)}}
 							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ cxEntAnalistaTecnico.getPrazoAnaliseTecnica(processo.dataParecerGerente, cxEntAnalistaTecnico.PrazoAnalise.ANALISE_TECNICA) }}
+								| {{ cxEntAnalistaTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica, cxEntAnalistaTecnico.PrazoAnalise.ANALISE_TECNICA) }}
 							td
 								span.pull-right
 
