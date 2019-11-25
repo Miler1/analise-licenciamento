@@ -178,7 +178,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 									
 			this._save();
 			
-			iniciarLicencas();
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);

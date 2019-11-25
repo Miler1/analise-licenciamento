@@ -23,3 +23,4 @@
 ## OS35
 
 * OS35 - US294 - Eu, analista técnico, devo acessar caixa de entrada para acessar listagem dos novos processos
+* OS35 - US875 - Eu, analista técnico, devo acessar a ação iniciar análise para acessar a tela em análise
