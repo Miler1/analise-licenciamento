@@ -1031,7 +1031,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analiseGeo.idAnalistaDestino);
 
             AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
-                    .setParameter("id_analise_geo", analise.id).first();
+                    .setParameter("id_analise_geo", analiseGeo.id).first();
 
             analistaGeo.usuario = analistaGeoDestino;
 
