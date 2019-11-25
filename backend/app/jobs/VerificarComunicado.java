@@ -44,34 +44,40 @@ public class VerificarComunicado extends GenericJob {
 
 		for (AnaliseGeo analiseGeo:analisesGeoComunicado) {
 
-				Boolean podeTramitar = true;
+			Boolean podeTramitar = true;
 
-				List<Comunicado> comunicadosAnalise = Comunicado.findByAnaliseGeo(analiseGeo.id);
+			List<Comunicado> comunicadosAnalise = Comunicado.findByAnaliseGeo(analiseGeo.id);
 
-				for (Comunicado comunicado: comunicadosAnalise) {
-					if(comunicado.ativo) {
-						if (CalculaDiferencaDias(comunicado.dataVencimento, new Date()) > 0 || !comunicado.resolvido) {
-							podeTramitar = false;
-						} else {
-							comunicado.ativo = false;
-							comunicado.validateAndSave();
-						}
+			for (Comunicado comunicado: comunicadosAnalise) {
+
+				if(comunicado.ativo) {
+
+					if (CalculaDiferencaDias(comunicado.dataVencimento, new Date()) > 0 || !comunicado.resolvido) {
+						podeTramitar = false;
+
+					} else {
+						comunicado.ativo = false;
+						comunicado.validateAndSave();
+
 					}
+
 				}
 
-				if(podeTramitar) {
-					AnalistaGeo analistaGeo = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
+			}
 
-					Gerente gerente = Gerente.distribuicaoAutomaticaGerente(analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor, analiseGeo);
+			if(podeTramitar) {
+				AnalistaGeo analistaGeo = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
 
-					analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_COMUNICADO, analistaGeo.usuario, gerente.usuario);
-					HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), analiseGeo);
+				Gerente gerente = Gerente.distribuicaoAutomaticaGerente(analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor, analiseGeo);
 
-					gerente.save();
-				}
+				analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_COMUNICADO, analistaGeo.usuario, gerente.usuario);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), analiseGeo);
+
+				gerente.save();
+
+			}
+				
 		}
-
-
 
 	}
 
