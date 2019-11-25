@@ -332,7 +332,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 				Licenca.setAnteriorInativa(processo.caracterizacao.id);
 			}
 			
-			lAnalise.analiseTecnica.dataFimValidacaoAprovador = new Date();
 			lAnalise.analiseTecnica._save();
 
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
