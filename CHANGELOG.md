@@ -14,3 +14,4 @@
 * OS40 - US769 - [Customizações análise GEO] Notificações 
 -----------------------------------------------------------------------------------------------------
 
+* OS40 - US856 - [TODOS PERFIS] Eu, usuário do sistema devo ter meus perfis e setores sempre sincronizados entre EU e Análise Licenciamento.

@@ -1,11 +1,14 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -56,6 +59,17 @@ public class AnalistaTecnico extends GenericModel {
 	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, AnaliseGeo analiseGeo) {
 
 		List<UsuarioAnalise> analistasTecnico = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
+
+		List<Usuario> usuariosEU = CadastroUnificadoWS.ws.getUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO).stream().map(Usuario::new).collect(Collectors.toList());
+
+		for( UsuarioAnalise analistaTecnico : analistasTecnico){
+
+			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(analistaTecnico.login)).findAny().orElseThrow(PortalSegurancaException::new);
+
+			usuario.salvarPerfis(analistaTecnico);
+			usuario.salvarSetores(analistaTecnico);
+
+		}
 
 		if (analistasTecnico == null || analistasTecnico.size() == 0)
 			throw new WebServiceException("Não existe nenhum analista técnico ativado no sistema");
