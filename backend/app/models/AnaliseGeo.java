@@ -1005,7 +1005,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
 
             AnaliseTecnica analiseTecnica = analiseGeoBanco.geraAnaliseTecnica().save();
-            analiseTecnica.geraLicencasAnaliseTecnica(analiseGeoBanco.licencasAnalise);
+            analiseTecnica.updateLicencasAnalise(analiseGeoBanco.licencasAnalise);
             analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, usuarioAnalistaTecnico).save();
 
             this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
