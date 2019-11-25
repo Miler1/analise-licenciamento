@@ -86,6 +86,8 @@ POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                  
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
 GET     /analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/{id}             Comunicados.findByIdSobreposicaoEmpreendimento
+GET     /analisesGeo/comunicado/findByIdSobreposicaoAtividade/{id}             Comunicados.findByIdSobreposicaoAtividade
+GET     /analisesGeo/comunicado/findByIdSobreposicaoComplexo/{id}             Comunicados.findByIdSobreposicaoComplexo
 GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                 Comunicados.listaComunicadosByIdAnaliseGeo
 POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
 POST    /analisesGeo/gerente/concluirParecerGerente                                 AnalisesGeo.concluirParecerGerente

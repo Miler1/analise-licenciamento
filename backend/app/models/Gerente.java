@@ -111,6 +111,9 @@ public class Gerente extends GenericModel {
 
 	public static Gerente distribuicaoAutomaticaGerente(String setorAtividade, AnaliseGeo analiseGeo) {
 
+		if(setorAtividade == null)
+			throw new WebServiceException(Mensagem.NENHUM_SETOR_CADASTRADO.getTexto());
+
 		List<UsuarioAnalise> gerentes = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
 
 		if (gerentes == null || gerentes.size() == 0)

@@ -14,6 +14,7 @@ import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
 import org.apache.commons.io.FileUtils;
@@ -27,6 +28,8 @@ import utils.*;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.SEM_SOBREPOSICAO;
+import static models.tramitacao.Condicao.AGUARDANDO_RESPOSTA_COMUNICADO;
 import javax.persistence.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -232,6 +235,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         verificarDataInicio();
 
         this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GEO, usuarioExecutor);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+    }
+
+    public void aguardarResposta(UsuarioAnalise usuarioExecutor){
+
+        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO, usuarioExecutor);
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
@@ -462,9 +471,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                     if (sobreposicaoCaracterizacaoEmpreendimento != null){
                         enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoEmpreendimento);
+
                     }
                     
                 }
+                this.aguardarResposta(usuarioExecutor);
+                this.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
 
             }else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
 
@@ -474,9 +486,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                     if(sobreposicaoCaracterizacaoAtividade != null){
                         enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoAtividade);
+
                     }
 
                 }
+                this.aguardarResposta(usuarioExecutor);
+                this.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
 
             } else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
 
@@ -487,19 +502,21 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                     if(sobreposicaoCaracterizacaoComplexo != null){
                         enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoComplexo);
+
                     }
-
                 }
+                this.aguardarResposta(usuarioExecutor);
+                this.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
 
+            } else if(this.analise.processo.caracterizacao.origemSobreposicao.equals(SEM_SOBREPOSICAO)) {
+                if (this.usuarioValidacaoGerente != null) {
+                    gerente.save();
+
+                    this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
+                    HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+                }
             }
 
-            if (this.usuarioValidacaoGerente != null) {
-
-                gerente.save();
-
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-            }
 
         } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 

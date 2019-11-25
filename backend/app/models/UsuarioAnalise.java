@@ -123,6 +123,11 @@ public class UsuarioAnalise extends GenericModel  {
 			.setParameter("id_analista_tecnico", analistaTecnico.usuario.id).first();
 	}
 
+	public static UsuarioAnalise findByAnalistaGeo(AnalistaGeo analistaGeo) {
+		return UsuarioAnalise.find("id = :id_analista_geo")
+				.setParameter("id_analista_geo", analistaGeo.usuario.id).first();
+	}
+
 	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
 
 		return UsuarioAnalise.find("SELECT u FROM UsuarioAnalise u " +

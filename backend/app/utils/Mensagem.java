@@ -152,7 +152,9 @@ public enum Mensagem {
 	//Entrada Única
 	ERRO_COMUNICACAO_ENTRADA_UNICA,
 
-	ERRO_NAO_HA_SOLICITACAO_ANTERIOR;
+	ERRO_NAO_HA_SOLICITACAO_ANTERIOR,
+
+	NENHUM_SETOR_CADASTRADO;
 
 	public String getTexto(Object ... args) {
 

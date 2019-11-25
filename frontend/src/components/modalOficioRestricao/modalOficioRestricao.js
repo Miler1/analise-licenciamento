@@ -17,15 +17,35 @@ var ModalOficioRestricao = {
 
             ctrl.restricao = ctrl.resolve.restricao;
             ctrl.idAnaliseGeo = ctrl.resolve.idAnaliseGeo;
+            var sobreposicaoRestricao = ctrl.restricao.sobreposicaoCaracterizacaoAtividade ? ctrl.restricao.sobreposicaoCaracterizacaoAtividade : ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento ? ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento : ctrl.restricao.sobreposicaoCaracterizacaoComplexo;
+            if(sobreposicaoRestricao === ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
+                analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(sobreposicaoRestricao.id)
+                    .then(function(response){
 
-            analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento.id)
-                .then(function(response){
+                        var comunicado = response.data;
+                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
 
-                    var comunicado = response.data;
-                    ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                    ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+                });
+            }else if(sobreposicaoRestricao === ctrl.restricao.sobreposicaoCaracterizacaoAtividade){
+                analiseGeoService.getComunicadoByIdSobreposicaoAtividade(sobreposicaoRestricao.id)
+                    .then(function(response){
 
-            });
+                        var comunicado = response.data;
+                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+
+                });
+            }else {
+                analiseGeoService.getComunicadoByIdSobreposicaoComplexo(sobreposicaoRestricao.id)
+                    .then(function(response){
+
+                        var comunicado = response.data;
+                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+
+                });
+            }
 
         };
 
