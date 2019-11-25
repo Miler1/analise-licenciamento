@@ -231,7 +231,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 2));
 			}
+
 		}
+
 	}
 
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
@@ -243,7 +245,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseTecnicaOpcional);
+		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
 		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
@@ -257,7 +259,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) ||
 					filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
 
-				processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
+				processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, true);
 				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 			} else if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
@@ -280,7 +282,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			}
 
-			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaTecnico, false);
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
 
 		}
 
@@ -503,13 +505,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.groupByIdAnaliseGeo(filtro.isAnaliseTecnicaOpcional)
-				.groupByDataVencimentoPrazoAnaliseTecnico(filtro.isAnaliseTecnicaOpcional)
-				.groupByRevisaoSolicitadaAnaliseGeo(filtro.isAnaliseTecnicaOpcional)
-				.groupByDataFinalAnaliseGeo(filtro.isAnaliseTecnicaOpcional)
-				.groupByDiasAnaliseGeo()
-				.groupByNotificacaoAtendidaAnaliseGeo(filtro.isAnaliseTecnicaOpcional)
-				.orderByDataVencimentoPrazoAnaliseGeo();
+		processoBuilder.groupByIdAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByDataVencimentoPrazoAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByDiasAnaliseTecnica()
+				.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.orderByDataVencimentoPrazoAnaliseTecnica();
 
 	}
 
