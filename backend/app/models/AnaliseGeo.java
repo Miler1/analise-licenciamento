@@ -16,7 +16,6 @@ import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -29,7 +28,6 @@ import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIME
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 import javax.persistence.*;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -974,24 +972,40 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return new Documento(tipoDocumento, pdf.getFile());
     }
 
-
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Map<Object, Boolean> seen = new ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
-    public void finalizarAnaliseGerente(AnaliseGeo analiseGeo, UsuarioAnalise gerente) throws Exception {
+    private AnaliseTecnica geraAnaliseTecnica() {
+
+        AnaliseTecnica analiseTecnica = new AnaliseTecnica();
+        analiseTecnica.analise = this.analise;
+        analiseTecnica.ativo = true;
+        analiseTecnica.dataCadastro = new Date();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(analiseTecnica.dataCadastro);
+        calendar.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
+        analiseTecnica.dataVencimentoPrazo = calendar.getTime();
+
+        return analiseTecnica;
+
+    }
+
+    public void finalizarAnaliseGerente(AnaliseGeo analiseGeo, UsuarioAnalise gerente) {
 
         if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
-            UsuarioAnalise analistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
-
+            UsuarioAnalise usuarioAnalistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
             AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
 
-            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), analistaTecnico);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+            AnaliseTecnica analiseTecnica = analiseGeoBanco.geraAnaliseTecnica().save();
+            analiseTecnica.geraLicencasAnaliseTecnica(analiseGeoBanco.licencasAnalise);
+            analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, usuarioAnalistaTecnico).save();
 
-            new AnalistaTecnico(analiseGeoBanco.analise.analiseTecnica, analistaTecnico);
+            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
         } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
 
@@ -1016,6 +1030,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
         }
+
         this.tipoResultadoValidacaoGerente = analiseGeo.tipoResultadoValidacaoGerente;
         this.parecerValidacaoGerente = analiseGeo.parecerValidacaoGerente;
         this.usuarioValidacaoGerente = gerente;
