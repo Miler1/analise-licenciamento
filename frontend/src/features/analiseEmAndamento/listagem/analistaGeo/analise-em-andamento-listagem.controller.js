@@ -14,7 +14,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	listagem.continuarAnalise = continuarAnalise;
 	listagem.visualizarSolicitacaoAjustes = visualizarSolicitacaoAjustes;
 	listagem.verificaSolicitacaoAjustes = verificaSolicitacaoAjustes;
-	listagem.verificaAnalise = null;
+	listagem.verificaAnalise = false;
 
 	listagem.processos = [];
 	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_GEO;
@@ -36,7 +36,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 
 		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
-				if(response.data.parecerValidacaoGerente === null){
+				if(!response.data.parecerValidacaoGerente || response.data.parecerValidacaoGerente === ''){
 					listagem.verificaAnalise = false;
 				}else{
 					listagem.verificaAnalise=true;
