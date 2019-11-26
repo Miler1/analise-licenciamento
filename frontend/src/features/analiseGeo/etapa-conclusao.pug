@@ -22,7 +22,7 @@ div
                     name="situacaoFundiaria",
                     lang="pt-BR",
                     height="200",
-                    ng-model="ctrl.analiseGeo.situacaoFundiaria",
+                    ng-model="ctrl.parecer.situacaoFundiaria",
                     config="optionsText")
 
     div
@@ -33,10 +33,10 @@ div
                     name="analiseTemporal",
                     lang="pt-BR",
                     height="200",
-                    ng-model="ctrl.analiseGeo.analiseTemporal",
+                    ng-model="ctrl.parecer.analiseTemporal",
                     config="optionsText")
         div.obrigatorio.btn.btn-default(ng-class="{'error-summernote': ctrl.errors.docAnaliseTemporal}",
-                                        ng-show="ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null",
+                                        ng-show="ctrl.parecer.analiseTemporal !== '' && ctrl.parecer.analiseTemporal !== null",
                                         style="margin-bottom:10px",type="file", name="arquivo", 
                                         ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.DOCUMENTO_ANALISE_TEMPORAL)", 
                                         ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", 
@@ -72,7 +72,7 @@ div
                     name="conclusao",
                     lang="pt-BR",
                     height="200",
-                    ng-model="ctrl.analiseGeo.parecer",
+                    ng-model="ctrl.parecer.parecer",
                     config="optionsText",
                     class="editable",
                     contenteditable="true")
@@ -107,30 +107,30 @@ div
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo(ng-class="{'error': ctrl.errors.resultadoAnalise === true}")
                 label.opDla.radio-inline.posicao-primeiroItem
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Deferido
                 label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length > 0")
-                    input(type='radio', name='analiseFinalRadio', data-toggle="tooltip", title="O processo não pode ser indeferido, pois há uma inconsistência.", ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    input(type='radio', name='analiseFinalRadio', data-toggle="tooltip", title="O processo não pode ser indeferido, pois há uma inconsistência.", ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Indeferido
                 label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length === 0")
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length == 0')
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length == 0')
                     | Emitir notificação
     hr
 div#conclusao
-    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()")
+    div(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()")
         label.obrigatorio Justificativa:
         br
-        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.analiseGeo.despacho", ng-class="{'error': ctrl.errors.despacho === true}")
+        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.parecer.despacho", ng-class="{'error': ctrl.errors.despacho === true}")
 
-    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString()")
+    div(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString()")
         label.obrigatorio Despacho:
         br
-        textarea.tamanho-obs(name="despacho", ng-model="ctrl.analiseGeo.despacho",ng-class="{'error': ctrl.errors.despacho === true}")
+        textarea.tamanho-obs(name="despacho", ng-model="ctrl.parecer.despacho",ng-class="{'error': ctrl.errors.despacho === true}")
 
-    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()")
+    div(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()")
         #lista-restricoes
             #accordion.panel-group
                 .atendimento-notificacao
@@ -166,7 +166,7 @@ div#conclusao
                 br
                 label.obrigatorio Descrição da Solicitação:
                 br
-                textarea.tamanho-obs(name="despacho", ng-model="ctrl.analiseGeo.despacho",ng-class="{'error': ctrl.errors.despacho === true}")
+                textarea.tamanho-obs(name="despacho", ng-model="ctrl.parecer.despacho",ng-class="{'error': ctrl.errors.despacho === true}")
     
         div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.NOTIFICACAO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
             i.glyphicon.glyphicon-open.glyphicon--with-right-margin
