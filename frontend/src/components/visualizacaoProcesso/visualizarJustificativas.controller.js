@@ -26,6 +26,18 @@ var VisualizarJustificativasController = function ($uibModalInstance,
         
         visualizarJustificativasCtlr.labelParecer = 'Descrição da solicitação';
 
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_VALIDADO){
+        
+        visualizarJustificativasCtlr.labelParecer = 'Despacho';
+
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.SOLICITAR_AJUSTES){
+
+        visualizarJustificativasCtlr.labelParecer = 'Observações';
+
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_NAO_VALIDADO){
+        
+        visualizarJustificativasCtlr.labelParecer = 'Justificativa';
+
     }
 
     visualizarJustificativasCtlr.fechar = function () {
