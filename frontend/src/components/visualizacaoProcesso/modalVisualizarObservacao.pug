@@ -11,7 +11,7 @@ div.modal-body(ng-if="visualizarJustificativasCtlr.parecer.parecer !== null")
         label.col-sm-4 {{ visualizarJustificativasCtlr.labelParecer }}:
         br
         div.col-sm-12.espacamento-visualizar-obs
-            span {{ visualizarJustificativasCtlr.parecer.parecer }}
+            span(ng-bind-html="visualizarJustificativasCtlr.parecer.parecer")
 
 div.modal-body(ng-if="visualizarJustificativasCtlr.parecer.parecer === null")
     div.row
@@ -25,5 +25,3 @@ div.modal-footer
     button.btn.btn-default.pull-left(ng-click="visualizarJustificativasCtlr.fechar()")
         i.glyphicon.glyphicon-arrow-left
         | &nbsp;Voltar
-    
-
