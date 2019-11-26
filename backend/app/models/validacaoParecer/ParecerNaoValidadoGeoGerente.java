@@ -17,9 +17,6 @@ public class ParecerNaoValidadoGeoGerente extends TipoResultadoAnaliseChain<Anal
     @Override
     protected void validaParecer(AnaliseGeo analiseGeo, AnaliseGeo novaAnaliseGeo, UsuarioAnalise usuarioExecutor) {
 
-        analiseGeo.tipoResultadoValidacaoGerente = novaAnaliseGeo.tipoResultadoValidacaoGerente;
-        analiseGeo.parecerValidacaoGerente = novaAnaliseGeo.parecerValidacaoGerente;
-        analiseGeo.usuarioValidacaoGerente = usuarioExecutor;
         analiseGeo.ativo = false;
 
         validarAnaliseTecnica(analiseGeo, novaAnaliseGeo);
@@ -42,8 +39,6 @@ public class ParecerNaoValidadoGeoGerente extends TipoResultadoAnaliseChain<Anal
         novaAnalise.revisaoSolicitada = true;
         novaAnalise.ativo = true;
         novaAnalise.usuarioValidacao = analiseGeo.usuarioValidacao;
-        novaAnalise.usuarioValidacaoGerente = usuarioValidacao;
-
         novaAnalise.analistasGeo = new ArrayList<>();
         AnalistaGeo analistaGeo = new AnalistaGeo(novaAnalise, usuarioAnalista);
         novaAnalise.analistasGeo.add(analistaGeo);

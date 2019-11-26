@@ -27,10 +27,10 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
     private Documento pdfParecer;
     private Documento cartaImagem;
 
-    public EmailComunicarOrgaoResponsavelAnaliseGeo(AnaliseGeo analiseGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
+    public EmailComunicarOrgaoResponsavelAnaliseGeo(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
 
         super(emailsDestinatarios);
-        this.pdfParecer = analiseGeo.gerarPDFParecer();
+        this.pdfParecer = analiseGeo.gerarPDFParecer(parecerAnalistaGeo);
         this.cartaImagem = analiseGeo.gerarPDFCartaImagem();
         this.analiseGeo = analiseGeo;
         this.comunicado = comunicado;

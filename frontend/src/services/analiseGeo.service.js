@@ -42,10 +42,10 @@ var AnaliseGeoService = function(request, $window ,config) {
 				.post(config.BASE_URL() + 'analisesGeo', analise);
 	};
 
-	this.concluir = function(analise) {
+	this.concluir = function(parecer) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesGeo/concluir', analise);
+				.post(config.BASE_URL() + 'parecer/analistaGeo/concluir', parecer);
 	};	
 
 	this.validarParecer = function(analise) {

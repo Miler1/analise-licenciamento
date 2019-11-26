@@ -1,6 +1,18 @@
-var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoService ,analiseTecnicaService, $route, $scope, 
-        mensagem, $location, documentoAnaliseService, 	$anchorScroll,processoService, $uibModal, documentoService, empreendimentoService,
-        validacaoAnaliseGerenteService,$timeout, analistaService) {
+var ValidacaoAnaliseGeoGerenteController = function($rootScope,
+                                                    analiseGeoService, 
+                                                    $timeout,
+                                                    $route, 
+                                                    $scope,
+                                                    mensagem, 
+                                                    $location,
+                                                    documentoAnaliseService, 
+                                                    $anchorScroll,
+                                                    processoService, 
+                                                    $uibModal, 
+                                                    empreendimentoService, 
+                                                    documentoService,
+                                                    validacaoAnaliseGerenteService, 
+                                                    analistaService) {
 
 
     var validacaoAnaliseGeoGerente = this;
@@ -23,6 +35,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
     validacaoAnaliseGeoGerente.analistaGeoDestino = {};
     validacaoAnaliseGeoGerente.dadosRestricoesProjeto = [];
     validacaoAnaliseGeoGerente.orgaos = app.utils.Orgao;
+    validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
@@ -180,10 +193,12 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
         }
 
         var params = {
-            id: validacaoAnaliseGeoGerente.analiseGeo.id,
-            idAnalistaDestino: validacaoAnaliseGeoGerente.analistaGeoDestino.id,
-            parecerValidacaoGerente: validacaoAnaliseGeoGerente.analiseGeo.parecerValidacaoGerente,
-            tipoResultadoValidacaoGerente: {id: validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id}
+            analiseGeo: {
+                id: validacaoAnaliseGeoGerente.analiseGeo.id,
+                idAnalistaDestino: validacaoAnaliseGeoGerente.analistaGeoDestino.id
+            },
+            parecer: validacaoAnaliseGeoGerente.analiseGeo.parecerValidacaoGerente,
+            tipoResultadoAnalise: {id: validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id}
         };
 
         validacaoAnaliseGerenteService.concluir(params)
@@ -372,9 +387,13 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope, analiseGeoServic
 
         var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
 
-        var restricao = this.dadosRestricoesProjeto.find(function(restricao) {
-            return restricao.sobreposicaoCaracterizacaoEmpreendimento.id === sobreposicaoInconsistencia.id;
-        });
+        if(inconsistencia.categoria !== validacaoAnaliseGeoGerente.enumCategoria.PROPRIEDADE){
+
+              var restricao = this.dadosRestricoesProjeto.find(function(restricao) {
+                return restricao.sobreposicaoCaracterizacaoEmpreendimento.id === sobreposicaoInconsistencia.id;
+            });
+
+        }
 
         $uibModal.open({
 

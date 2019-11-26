@@ -35,7 +35,12 @@ div
                     height="200",
                     ng-model="ctrl.analiseGeo.analiseTemporal",
                     config="optionsText")
-        div.obrigatorio.btn.btn-default(ng-show="ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null",style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.DOCUMENTO_ANALISE_TEMPORAL)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+        div.obrigatorio.btn.btn-default(ng-class="{'error-summernote': ctrl.errors.docAnaliseTemporal}",
+                                        ng-show="ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null",
+                                        style="margin-bottom:10px",type="file", name="arquivo", 
+                                        ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.DOCUMENTO_ANALISE_TEMPORAL)", 
+                                        ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", 
+                                        ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
             i.glyphicon.glyphicon-open.glyphicon--with-right-margin
             | Anexar arquivo na análise temporal
         table.table.table-condensed(ng-if="ctrl.getDocumentosAnaliseTemporal().length > 0")
@@ -72,7 +77,7 @@ div
                     class="editable",
                     contenteditable="true")
 
-    div.btn.btn-default(style="margin-bottom:10px",ng-class="{'error-summernote': ctrl.errors.docAnaliseTemporal}",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.PARECER_ANALISE_GEO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+    div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.PARECER_ANALISE_GEO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo ao parecer
 

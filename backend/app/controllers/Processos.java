@@ -7,11 +7,7 @@ import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
-
-import java.util.ArrayList;
 import java.util.List;
-import services.IntegracaoEntradaUnicaService;
-import utils.GeoJsonUtils;
 
 public class Processos extends InternalController {
 
