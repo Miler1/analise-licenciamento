@@ -12,7 +12,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.restricoes = restricoes;
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
-	ctrl.analiseGeo.tipoResultadoAnalise = {id:undefined};
+	ctrl.tipoResultadoAnalise = {id:undefined};
 	ctrl.categoria = app.utils.Inconsistencia;
 	ctrl.orgaos = app.utils.Orgao;
 	ctrl.camadas = [];
@@ -33,6 +33,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.prazoNotificacao = null;
 	ctrl.tiposUpload = app.utils.TiposUpload;
 	ctrl.labelDadosProjeto = 'Dados da área do projeto';
+	ctrl.despacho = null;
 	ctrl.errors = {
 		conclusao: false,
 		despacho: false,
@@ -1040,12 +1041,22 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		tratarDadosNotificacao();
 
-		analiseGeoService.concluir(ctrl.analiseGeo)
+		var parecer = {
+			analiseGeo: ctrl.analiseGeo,
+			tipoResultadoAnalise: {
+				id: ctrl.analiseGeo.tipoResultadoAnalise.id
+			},
+			situacaoFundiaria: ctrl.analiseGeo.situacaoFundiaria,
+			analiseTemporal: ctrl.analiseGeo.analiseTemporal,
+			conclusao: ctrl.analiseGeo.parecer,
+			parecer: ctrl.analiseGeo.despacho
+		};
+
+		analiseGeoService.concluir(parecer)
 			.then(function(response) {
 
 				var params = {
-					id: $scope.analiseGeo.id,
-					parecer: $scope.analiseGeo.parecer
+					id: $scope.analiseGeo.id
 				};
 
 				documentoAnaliseService.generatePDFParecerGeo(params)
@@ -1075,6 +1086,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					});
 					$location.path('/analise-geo');
 					mensagem.setMensagemProximaTela('success', response.data.texto);
+					
 			}, function(error){
 
 				mensagem.error(error.data.texto, {referenceId: 5});
