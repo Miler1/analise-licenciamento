@@ -10,10 +10,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import enums.CorRestricaoEnum;
-import models.CamadaGeoAtividadeVO;
-import models.CamadaGeoRestricaoVO;
-import models.DadosProcessoVO;
-import models.GeometriaAtividadeVO;
+import enums.GeometriaFocoEnum;
+import models.*;
 import models.licenciamento.TipoSobreposicao;
 import org.apache.commons.codec.binary.Base64;
 import org.geotools.graph.util.geom.GeometryUtil;
@@ -85,11 +83,18 @@ public class MapaImagem {
 	public class GrupoDataLayer {
 
 		public String titulo;
-		public  List<DataLayer> dataLayers;
+		public List<DataLayer> dataLayers;
+		public List<String> atividades;
 
 		public GrupoDataLayer(String titulo, List<DataLayer> dataLayers) {
 			this.titulo = titulo;
 			this.dataLayers = dataLayers;
+		}
+
+		public GrupoDataLayer(String titulo, List<DataLayer> dataLayers, List<String> atividades) {
+			this.titulo = titulo;
+			this.dataLayers = dataLayers;
+			this.atividades = atividades;
 		}
 
 	}
@@ -211,7 +216,7 @@ public class MapaImagem {
 
 	}
 
-	public GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometryAreaImovel, Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades, Map<LayerType, List<CamadaGeoRestricaoVO>> geometriasRestricoes, Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento) {
+	public GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometryAreaImovel, Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades, Map<LayerType, List<CamadaGeoRestricaoVO>> geometriasRestricoes, Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento, Map<LayerType, CamadaGeoComplexoVO> geometriasComplexo, GeometriaFocoEnum geometriaFoco) {
 
 		LinkedList<GrupoDataLayer> grupoDataLayers = new LinkedList<>();
 
@@ -239,6 +244,39 @@ public class MapaImagem {
 			grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers));
 
 		}
+
+        for(Entry<LayerType, CamadaGeoComplexoVO> entry : geometriasComplexo.entrySet()) {
+
+            CamadaGeoComplexoVO complexo = entry.getValue();
+            LayerType layerType = entry.getKey();
+            LinkedList<DataLayer> dataLayers = new LinkedList<>();
+			List<String> atividades = new ArrayList<>();
+
+            if(complexo.geometrias.isEmpty()) {
+                continue;
+            }
+
+            for(GeometriaAtividadeVO geometriaComplexo : complexo.geometrias) {
+
+                String colorCode = "#5ae615";
+                Color color = Color.decode(colorCode);
+                Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
+
+                dataLayers.add(new DataLayer(geometriaComplexo.item, geometriaComplexo.geometria, color, colorCode).fillColor(fillColor));
+
+            }
+
+			for(Entry<LayerType, CamadaGeoAtividadeVO> entryAtividade : geometriasAtividades.entrySet()) {
+
+				CamadaGeoAtividadeVO atividade = entryAtividade.getValue();
+				atividades.add(atividade.atividadeCaracterizacao.atividade.nome);
+				atividades.sort((a1, a2) -> a1.compareTo(a2));
+
+			}
+
+            grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers, atividades));
+
+        }
 
 		for(Entry<LayerType, List<CamadaGeoRestricaoVO>> entry : geometriasRestricoes.entrySet()) {
 
@@ -301,7 +339,7 @@ public class MapaImagem {
 
 		}
 
-		return createMapCaracterizacaoImovel(geometryAreaImovel, grupoDataLayers);
+		return createMapCaracterizacaoImovel(geometryAreaImovel, grupoDataLayers, geometriasAtividades, geometriasComplexo, geometriaFoco);
 
 	}
 
@@ -382,7 +420,7 @@ public class MapaImagem {
 
 	}
 
-	private GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometriaImovel, LinkedList<GrupoDataLayer> grupoDataLayers) {
+	private GrupoDataLayerImagem createMapCaracterizacaoImovel(CamadaGeoAtividadeVO geometriaImovel, LinkedList<GrupoDataLayer> grupoDataLayers, Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades, Map<LayerType, CamadaGeoComplexoVO> geometriasComplexo, GeometriaFocoEnum geometriaFoco) {
 
 		BufferedImage newImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = newImage.createGraphics();
@@ -395,24 +433,73 @@ public class MapaImagem {
 
 		int topY = VERTICAL_MARGIN_SIZE - 10;
 
-		// Inicio Header
+		Geometry geometryAreaFoco = null;
 
-		// topY = createHeader(graphics, 0, topY, 0);
+		if(geometriaFoco.equals(GeometriaFocoEnum.EMPREENDIMENTO)) {
 
-		// Fim Header
+			geometryAreaFoco = new GeometryFactory().createGeometryCollection(geometriaImovel.geometrias.stream().map(geometria -> geometria.geometria).toArray(Geometry[]::new));
 
-		// Inicio Mapa
+		} else if(geometriaFoco.equals(GeometriaFocoEnum.ATIVIDADE)) {
+
+			List<Geometry> geometryAreasAtividades = new ArrayList<>();
+
+			for(Entry<LayerType, CamadaGeoAtividadeVO> entry : geometriasAtividades.entrySet()) {
+
+				CamadaGeoAtividadeVO atividade = entry.getValue();
+
+				if(atividade.geometrias.isEmpty()) {
+					continue;
+				}
+
+				for (GeometriaAtividadeVO atividadeGeometria : atividade.geometrias) {
+
+					geometryAreasAtividades.add(atividadeGeometria.geometria.union());
+
+				}
+
+			}
+
+			geometryAreaFoco = new GeometryFactory().createGeometryCollection(geometryAreasAtividades.stream().toArray(Geometry[]::new));
+
+		} else {
+
+			List<Geometry> geometryAreasComplexo = new ArrayList<>();
+
+			for(Entry<LayerType, CamadaGeoComplexoVO> entry : geometriasComplexo.entrySet()) {
+
+				CamadaGeoComplexoVO atividade = entry.getValue();
+
+				if(atividade.geometrias.isEmpty()) {
+					continue;
+				}
+
+				for (GeometriaAtividadeVO atividadeGeometria : atividade.geometrias) {
+
+					geometryAreasComplexo.add(atividadeGeometria.geometria.union());
+
+				}
+
+			}
+
+			geometryAreaFoco = new GeometryFactory().createGeometryCollection(geometryAreasComplexo.stream().toArray(Geometry[]::new));
+
+		}
+
 
 		Geometry geometryAreaImovel = new GeometryFactory().createGeometryCollection(geometriaImovel.geometrias.stream().map(geometria -> geometria.geometria).toArray(Geometry[]::new));
 
-		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaImovel)[0];
+		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaFoco)[0];
 
 		TMSMap map = createMap(crs);
-		map.zoomTo(geometryAreaImovel.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
+		map.zoomTo(geometryAreaFoco.getEnvelopeInternal(), MAP_WIDTH, MAP_HEIGHT, 0, 16, 256, 256);
 
-		//Para inserir a geometria do empreendimento no mapa
-		PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.RED).width(4).opacity(1f);
-		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
+		//Para inserir a geometria do empreendimento no mapa se o foco for no empreendimento
+		if(geometriaFoco.equals(GeometriaFocoEnum.EMPREENDIMENTO)){
+
+			PolygonStyle polygonStyle = (PolygonStyle)new PolygonStyle().fillOpacity(0f).color(Color.RED).width(4).opacity(1f);
+			map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
+
+		}
 
 		//Uni todas as dataLayer de todos os grupos dataLayer
 		LinkedList<DataLayer> dataLayers = new LinkedList<>();
@@ -450,7 +537,7 @@ public class MapaImagem {
 			}
 		}
 
-		createMainCoordinates(map, geometryAreaImovel, crs);
+		createMainCoordinates(map, geometryAreaFoco, crs);
 
 		//Setando os pontos do poligono
 		for(DataLayer dataLayer : dataLayers) {

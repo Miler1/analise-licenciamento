@@ -5,6 +5,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
+import enums.GeometriaFocoEnum;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
@@ -866,6 +867,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Processo processo = Processo.findById(this.analise.processo.id);
 
         DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
+
+        GeometriaFocoEnum geometriaFoco = getOndeFocar(dadosProcesso.caracterizacao);
+
         List<CamadaGeoAtividadeVO> camadasGeoEmpreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
 
         CamadaGeoAtividadeVO camadaPropriedade = camadasGeoEmpreendimento.stream().filter(camada -> {
@@ -875,6 +879,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades = new HashMap<>();
         Map<LayerType, List<CamadaGeoRestricaoVO>> geometriasRestricoes = new HashMap<>();
         Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
+        Map<LayerType, CamadaGeoComplexoVO> geometriasComplexo = new HashMap<>();
 
         for (CamadaGeoAtividadeVO camadaAtividade : dadosProcesso.atividades) {
 
@@ -884,18 +889,23 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if (!dadosProcesso.restricoes.isEmpty()) {
 
-            geometriasRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), dadosProcesso.restricoes);
+            geometriasRestricoes.put(new Tema("Áreas de restrições", MapaImagem.getColorTemaCiclo()), dadosProcesso.restricoes);
 
         }
 
-        if (!camadasGeoEmpreendimento.isEmpty()) {
+        if (!camadasGeoEmpreendimento.isEmpty() && geometriaFoco.equals(GeometriaFocoEnum.EMPREENDIMENTO)) {
 
             List<CamadaGeoAtividadeVO> camadasEmpreendimento = camadasGeoEmpreendimento.stream().filter(camada -> camada.geometrias.stream().allMatch(g -> g.geometria != null)).collect(Collectors.toList());
             geometriasEmpreendimento.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasEmpreendimento);
 
         }
 
-        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasAtividades, geometriasRestricoes, geometriasEmpreendimento);
+        if(dadosProcesso.complexo != null && !dadosProcesso.complexo.geometrias.isEmpty()){
+
+            geometriasComplexo.put(new Tema("Complexo das atividades:", MapaImagem.getColorTemaCiclo()), dadosProcesso.complexo);
+        }
+
+        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasAtividades, geometriasRestricoes, geometriasEmpreendimento, geometriasComplexo, geometriaFoco);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
@@ -909,6 +919,44 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         pdf.generate();
 
         return new Documento(tipoDocumento, pdf.getFile());
+
+    }
+
+    public GeometriaFocoEnum getOndeFocar(Caracterizacao caracterizacao) {
+
+        if (caracterizacao.origemSobreposicao.equals(GeometriaFocoEnum.EMPREENDIMENTO.codigo)) {
+
+            return GeometriaFocoEnum.EMPREENDIMENTO;
+
+        } else if (caracterizacao.origemSobreposicao.equals(GeometriaFocoEnum.ATIVIDADE.codigo)) {
+
+            return GeometriaFocoEnum.ATIVIDADE;
+
+        } else if (caracterizacao.origemSobreposicao.equals(GeometriaFocoEnum.COMPLEXO.codigo)){
+
+            return GeometriaFocoEnum.COMPLEXO;
+
+        } else {
+
+            if(caracterizacao.atividadesCaracterizacao.get(0).atividade.dentroEmpreendimento) {
+
+                return GeometriaFocoEnum.EMPREENDIMENTO;
+
+            } else {
+
+                if(caracterizacao.geometriasComplexo != null && !caracterizacao.geometriasComplexo.isEmpty()) {
+
+                    return GeometriaFocoEnum.COMPLEXO;
+
+                } else {
+
+                    return GeometriaFocoEnum.ATIVIDADE;
+
+                }
+
+            }
+
+        }
 
     }
 

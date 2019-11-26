@@ -116,6 +116,11 @@ html(lang="pt-br")
                 margin-bottom: 5px;
             }
 
+            .label-atividade {
+                margin-top: 6px;
+                margin-bottom: 2px;
+            }
+
             .logos {
                 display: flex;
                 text-align: center;
@@ -162,6 +167,12 @@ body.corpo
                     | \#{list items:grupoDataLayers, as:'grupo'}
                     p.titulo-legenda
                         strong ${grupo.titulo}
+                    | \#{if grupo.atividades != null && !grupo.atividades.isEmpty()}
+                    | \#{list items:grupo.atividades, as:'atividade'}
+                    div.label-atividade
+                        strong ${atividade}
+                    | \#{/list}
+                    | \#{/if}
                     | \#{list items:grupo.dataLayers, as:'dataLayer'}
                     | \#{if dataLayer.name.equals("Limites da propriedade")}
                     div.icon-legenda(style= "border: 3px solid ${dataLayer.colorCode};") .
