@@ -1,4 +1,4 @@
-var ParecerAnalistaGeo = function(request, config, Upload) {
+var ParecerAnalistaGeo = function(request, config) {
 
 	this.findParecerByIdHistoricoTramitacao = function(id) {
 
