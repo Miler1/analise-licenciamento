@@ -41,14 +41,14 @@ ALTER TABLE analise.parecer_gerente_analise_geo_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE analise.parecer_gerente_analise_geo_id_seq OWNED BY analise.parecer_gerente_analise_geo.id;
 
-GRANT SELECT, USAGE ON SEQUENCE analise.parecer_gerente_analise_geo_id_seq TO licenciamento_am; --erro
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_gerente_analise_geo_id_seq TO licenciamento_am; 
 
 SELECT setval('analise.parecer_gerente_analise_geo_id_seq', coalesce(max(id), 1)) FROM analise.parecer_gerente_analise_geo;
 
 
 # --- !Downs
 
-ALTER TABLE analise.parecer_gerente_analise_geo_id_seq ALTER COLUMN id DROP DEFAULT; --erro
+ALTER TABLE analise.parecer_gerente_analise_geo_id_seq ALTER COLUMN id DROP DEFAULT; 
 DROP SEQUENCE analise.parecer_gerente_analise_geo_id_seq;
 
 DROP TABLE analise.parecer_gerente_analise_geo;
