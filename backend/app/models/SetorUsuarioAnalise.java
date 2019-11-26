@@ -1,5 +1,6 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Setor;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -25,4 +26,18 @@ public class SetorUsuarioAnalise extends GenericModel {
 
 	@Column(name = "nome_setor")
 	public String nomeSetor;
+
+
+
+	public SetorUsuarioAnalise (Setor setor, UsuarioAnalise usuarioAnalise){
+
+		this.usuarioAnalise = usuarioAnalise;
+		this.siglaSetor = setor.sigla;
+		this.nomeSetor = setor.nome;
+
+	}
+
+	public SetorUsuarioAnalise (){
+
+	}
 }
