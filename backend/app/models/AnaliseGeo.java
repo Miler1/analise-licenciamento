@@ -52,8 +52,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @JoinColumn(name = "id_analise")
     public Analise analise;
 
-    public String parecer;
-
     @Required
     @Column(name = "data_vencimento_prazo")
     public Date dataVencimentoPrazo;
@@ -83,10 +81,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "data_parecer_gerente_analise_geo")
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataParecerGerenteAnaliseGeo;
-
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_resultado_analise")
-    public TipoResultadoAnalise tipoResultadoAnalise;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
@@ -120,17 +114,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "justificativa_coordenador")
     public String justificativaCoordenador;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_resultado_validacao_gerente")
-    public TipoResultadoAnalise tipoResultadoValidacaoGerente;
-
-    @Column(name = "parecer_validacao_gerente")
-    public String parecerValidacaoGerente;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario_validacao_gerente", referencedColumnName = "id")
-    public UsuarioAnalise usuarioValidacaoGerente;
-
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL)
     public List<Gerente> gerentes;
 
@@ -154,15 +137,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFimValidacaoAprovador;
 
-    @Column(name = "situacao_fundiaria")
-    public String situacaoFundiaria;
-
-    @Column(name = "analise_temporal")
-    public String analiseTemporal;
-
-    @Column(name = "despacho_analista")
-    public String despacho;
-
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL)
     public List<Inconsistencia> inconsistencias;
 
@@ -173,6 +147,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Fetch(FetchMode.SUBSELECT)
     public List<Notificacao> notificacoes;
 
+    @OneToMany(mappedBy = "analiseGeo")
+    @Fetch(FetchMode.SUBSELECT)
+    public List<ParecerGerenteAnaliseGeo> pareceresGerenteAnaliseGeo;
+
+    @OneToMany(mappedBy = "analiseGeo")
+    @Fetch(FetchMode.SUBSELECT)
+    public List<ParecerAnalistaGeo> pareceresAnalistaGeo;
+
     @Transient
     public String linkNotificacao;
 
@@ -181,30 +163,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     @Transient
     public Long idAnalistaDestino;
-
-    private void validarParecer(AnaliseGeo analise) {
-
-        if (StringUtils.isBlank(this.parecer))
-            throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
-    }
-
-    private void validarTipoResultadoAnalise() {
-
-        if (this.tipoResultadoAnalise == null) {
-            throw new ValidacaoException(Mensagem.ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA);
-        }
-
-        if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO) && this.despacho.equals("")) {
-            throw new ValidacaoException(Mensagem.ANALISE_DESPACHO_NAO_PREENCHIDO);
-        }
-
-        if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO) && this.despacho.equals("")) {
-            throw new ValidacaoException(Mensagem.ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA);
-        }
-
-        //TODO PUMA-SQ1 Adicionar validacao para o Tipo Resultado Análise "EMITIR NOTIFICACAO"
-
-    }
 
     public static AnaliseGeo findByProcesso(Processo processo) {
         return AnaliseGeo.find("analise.processo.id = :idProcesso AND ativo = true")
@@ -284,17 +242,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if (this.dataFim != null) {
             throw new ValidacaoException(Mensagem.ANALISE_GEO_CONCLUIDA);
-        }
-
-        this.parecer = novaAnalise.parecer;
-        this.situacaoFundiaria = novaAnalise.situacaoFundiaria;
-        this.analiseTemporal = novaAnalise.analiseTemporal;
-        this.despacho = novaAnalise.despacho;
-
-        if (novaAnalise.tipoResultadoAnalise != null &&
-                novaAnalise.tipoResultadoAnalise.id != null) {
-
-            this.tipoResultadoAnalise = novaAnalise.tipoResultadoAnalise;
         }
 
         updateDocumentos(novaAnalise.documentos);
@@ -398,33 +345,35 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         List<Documento> documentosSalvos = new ArrayList<>();
 
-        for (Documento novoDocumento : novosDocumentos) {
+        if(novosDocumentos != null && !novosDocumentos.isEmpty()) {
+            for (Documento novoDocumento : novosDocumentos) {
 
-            if (novoDocumento.id == null) {
+                if (novoDocumento.id == null) {
 
-                if (novoDocumento.tipo.id.equals(tipoParecer.id)) {
+                    if (novoDocumento.tipo.id.equals(tipoParecer.id)) {
 
-                    novoDocumento.tipo = tipoParecer;
+                        novoDocumento.tipo = tipoParecer;
 
-                } else if (novoDocumento.tipo.id.equals(tipoNotificacao.id)) {
+                    } else if (novoDocumento.tipo.id.equals(tipoNotificacao.id)) {
 
-                    novoDocumento.tipo = tipoNotificacao;
+                        novoDocumento.tipo = tipoNotificacao;
 
-                } else if (novoDocumento.tipo.id.equals(tipoDocumentoAnaliseTemporal.id)) {
+                    } else if (novoDocumento.tipo.id.equals(tipoDocumentoAnaliseTemporal.id)) {
 
-                    novoDocumento.tipo = tipoDocumentoAnaliseTemporal;
+                        novoDocumento.tipo = tipoDocumentoAnaliseTemporal;
+
+                    }
+
+                    long quantidadeDocumentosComMesmoNome = documentosSalvos.stream().filter(documento -> documento.nomeDoArquivo.contains(novoDocumento.nomeDoArquivo.split("\\.")[0])).count();
+
+                    if (quantidadeDocumentosComMesmoNome > 0) {
+                        novoDocumento.nomeDoArquivo = novoDocumento.nomeDoArquivo.split("\\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + novoDocumento.nomeDoArquivo.split("\\.")[1];
+                    }
+
+                    this.documentos.add(novoDocumento);
+                    documentosSalvos.add(novoDocumento.save());
 
                 }
-
-                long quantidadeDocumentosComMesmoNome = documentosSalvos.stream().filter(documento -> documento.nomeDoArquivo.contains(novoDocumento.nomeDoArquivo.split("\\.")[0])).count();
-
-                if(quantidadeDocumentosComMesmoNome > 0) {
-                    novoDocumento.nomeDoArquivo = novoDocumento.nomeDoArquivo.split("\\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + novoDocumento.nomeDoArquivo.split("\\.")[1];
-                }
-
-                this.documentos.add(novoDocumento);
-                documentosSalvos.add(novoDocumento.save());
-
             }
         }
 
@@ -441,103 +390,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .first();
     }
 
-    public void finalizar(AnaliseGeo analise, UsuarioAnalise usuarioExecutor) throws Exception {
-
-        this.update(analise);
-        validarParecer(analise);
-        validarTipoResultadoAnalise();
-
-        this._save();
-
-        if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
-
-            Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this);
-
-            this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(gerente);
-
-            if(this.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)){
-
-                List<SobreposicaoCaracterizacaoEmpreendimento> sobreposicoesCaracterizacaoEmpreendimento = this.analise.processo.caracterizacao.sobreposicoesCaracterizacaoEmpreendimento.stream().distinct()
-                        .filter(distinctByKey(sobreposicaoCaracterizacaoEmpreendimento -> sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.codigo)).collect(Collectors.toList());
-
-                for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacaoEmpreendimento) {
-
-                    if (sobreposicaoCaracterizacaoEmpreendimento != null){
-                        enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoEmpreendimento);
-                    }
-                    
-                }
-
-            }else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
-
-                List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade =  this.analise.processo.caracterizacao.atividadesCaracterizacao.stream().map(atividadeCaracterizacao -> atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
-
-                for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
-
-                    if(sobreposicaoCaracterizacaoAtividade != null){
-                        enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoAtividade);
-                    }
-
-                }
-
-            } else if (this.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
-
-                List<SobreposicaoCaracterizacaoComplexo> sobreposicoesCaracterizacaoComplexo = this.analise.processo.caracterizacao.sobreposicoesCaracterizacaoComplexo.stream().distinct()
-                        .filter(distinctByKey(sobreposicaoCaracterizacaoComplexo -> sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.codigo)).collect(Collectors.toList());
-
-                for (SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo : sobreposicoesCaracterizacaoComplexo) {
-
-                    if(sobreposicaoCaracterizacaoComplexo != null){
-                        enviarEmailComunicado(this.analise.processo.caracterizacao, sobreposicaoCaracterizacaoComplexo);
-                    }
-
-                }
-
-            }
-
-            if (this.usuarioValidacaoGerente != null) {
-
-                gerente.save();
-
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-            }
-
-        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
-
-            Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, this);
-
-            this.usuarioValidacaoGerente = UsuarioAnalise.findByGerente(gerente);
-
-            if (this.usuarioValidacaoGerente != null) {
-
-                gerente.save();
-
-                this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, this.usuarioValidacaoGerente);
-                HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-            }
-
-        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
-
-            List<Notificacao> notificacoes = analise.notificacoes;
-            notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList());
-
-            if (notificacoes.size() != 1) {
-
-                throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
-            }
-
-            enviarEmailNotificacao(notificacoes.get(0), analise.documentos);
-
-            alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analise.analise.processo.numero);
-
-            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, this.usuarioValidacaoGerente);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-
-        }
-    }
-
-    public void enviarEmailNotificacao(Notificacao notificacao, List<Documento> documentos) throws Exception {
+    public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaGeo parecerAnalistaGeo, List<Documento> documentos) throws Exception {
 
         List<String> destinatarios = new ArrayList<String>();
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
@@ -548,30 +401,30 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         notificacaoSave.save();
         this.prazoNotificacao = notificacao.prazoNotificacao;
 
-        EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, destinatarios, notificacaoSave);
+        EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
         emailNotificacaoAnaliseGeo.enviar();
     }
 
-    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis) {
 
             if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
 
-                List<String> destinatarios = new ArrayList<String>();
+                List<String> destinatarios = new ArrayList<>();
                 destinatarios.add(orgaoResponsavel.email);
 
                 Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
-                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
+                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
             }
         }
     }
 
-    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis) {
 
@@ -584,13 +437,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
-                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
+                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
             }
         }
     }
 
-    public void enviarEmailComunicado(Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
 
@@ -603,7 +456,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 comunicado.save();
                 comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
-                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, comunicado, destinatarios);
+                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
             }
         }
@@ -628,44 +481,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
     }
 
-    private void validarLicencasAnalise() {
-
-        if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
-
-            for (LicencaAnalise licencaAnalise : this.licencasAnalise) {
-
-                if (licencaAnalise.emitir == null) {
-
-                    throw new ValidacaoException(Mensagem.ANALISE_GEO_LICENCA_SEM_VALIDACAO);
-                }
-            }
-        }
-    }
-
-    private void validarResultado() {
-
-        if (this.tipoResultadoAnalise == null)
-            throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO);
-
-        boolean todosDocumentosValidados = true;
-        for (AnaliseDocumento analise : this.analisesDocumentos) {
-
-            if (analise.documento.tipo.tipoAnalise.equals(TipoAnalise.GEO)) {
-
-                if (analise.validado == null || (!analise.validado && StringUtils.isBlank(analise.parecer))) {
-
-                    throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
-                }
-                todosDocumentosValidados &= analise.validado;
-            }
-        }
-
-        if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO && !todosDocumentosValidados) {
-
-            throw new ValidacaoException(Mensagem.TODOS_OS_DOCUMENTOS_VALIDOS);
-        }
-    }
-
     private void validarAnaliseDocumentos() {
 
         if (this.analisesDocumentos == null || this.analisesDocumentos.size() == 0)
@@ -684,7 +499,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Override
     public TipoResultadoAnalise getTipoResultadoValidacao() {
 
-        return this.tipoResultadoValidacao != null ? this.tipoResultadoValidacao : this.tipoResultadoValidacaoGerente;
+        return this.tipoResultadoValidacao;
     }
 
     public void validarTipoResultadoValidacao() {
@@ -705,15 +520,20 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public void validarTipoResultadoValidacaoGerente() {
 
-        if (tipoResultadoValidacaoGerente == null) {
+        ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = ParecerGerenteAnaliseGeo.find("analiseGeo", this).first();
+
+        if (parecerGerenteAnaliseGeo == null) {
 
             throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO_VALIDACAO);
         }
+
     }
 
     public void validarParecerValidacaoGerente() {
 
-        if (StringUtils.isEmpty(parecerValidacaoGerente)) {
+        ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = ParecerGerenteAnaliseGeo.find("analiseGeo", this).first();
+
+        if (StringUtils.isEmpty(parecerGerenteAnaliseGeo.parecer)) {
 
             throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
         }
@@ -747,7 +567,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         AnaliseGeo copia = new AnaliseGeo();
 
         copia.analise = this.analise;
-        copia.parecer = this.parecer;
         copia.dataCadastro = this.dataCadastro;
         copia.dataVencimentoPrazo = this.dataVencimentoPrazo;
         copia.revisaoSolicitada = !notificacao;
@@ -755,11 +574,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         copia.ativo = true;
         copia.analiseGeoRevisada = this;
         copia.dataInicio = this.dataInicio;
-        copia.tipoResultadoAnalise = this.tipoResultadoAnalise;
         copia.documentos = new ArrayList<>(this.documentos);
         copia.analisesDocumentos = new ArrayList<>();
         copia.usuarioValidacao = this.usuarioValidacao;
-        copia.usuarioValidacaoGerente = this.usuarioValidacaoGerente;
 
         for (AnaliseDocumento analiseDocumento : this.analisesDocumentos) {
 
@@ -809,12 +626,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return copia;
     }
 
-    public void setValidacaoGerente(AnaliseGeo analise) {
-
-        this.tipoResultadoValidacaoGerente = analise.tipoResultadoValidacaoGerente;
-        this.parecerValidacaoGerente = analise.parecerValidacaoGerente;
-    }
-
     public void setValidacaoCoordenador(AnaliseGeo analise) {
 
         this.tipoResultadoValidacao = analise.tipoResultadoValidacao;
@@ -836,7 +647,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return this.gerentes.get(0);
     }
 
-    public Documento gerarPDFParecer() throws IOException, DocumentException {
+    public Documento gerarPDFParecer(ParecerAnalistaGeo parecerAnalistaGeo) throws IOException, DocumentException {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
         List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
@@ -845,6 +656,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
+                .addParam("parecer", parecerAnalistaGeo)
                 .addParam("analiseArea", "ANALISE_GEO")
                 .addParam("empreendimento", empreendimento)
                 .addParam("atividades", dadosProcesso.atividades)
@@ -914,7 +726,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo, Notificacao notificacao) {
+    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
@@ -943,9 +755,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         pdf.generate();
 
-        Documento documento = new Documento(tipoDocumento, pdf.getFile());
-
-        return documento;
+        return new Documento(tipoDocumento, pdf.getFile());
 
     }
 
@@ -976,12 +786,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return new Documento(tipoDocumento, pdf.getFile());
     }
 
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
-    private AnaliseTecnica geraAnaliseTecnica() {
+    public AnaliseTecnica geraAnaliseTecnica() {
 
         AnaliseTecnica analiseTecnica = new AnaliseTecnica();
         analiseTecnica.analise = this.analise;
@@ -994,52 +799,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         analiseTecnica.dataVencimentoPrazo = calendar.getTime();
 
         return analiseTecnica;
-
-    }
-
-    public void finalizarAnaliseGerente(AnaliseGeo analiseGeo, UsuarioAnalise gerente) {
-
-        if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
-
-            UsuarioAnalise usuarioAnalistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, this));
-            AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
-
-            AnaliseTecnica analiseTecnica = analiseGeoBanco.geraAnaliseTecnica().save();
-            analiseTecnica.updateLicencasAnalise(analiseGeoBanco.licencasAnalise);
-            analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, usuarioAnalistaTecnico).save();
-
-            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
-
-        } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
-
-            AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(this.id);
-            UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
-
-           this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
-
-        } else if (analiseGeo.tipoResultadoValidacaoGerente.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
-
-            UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analiseGeo.idAnalistaDestino);
-
-            AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
-                    .setParameter("id_analise_geo", analiseGeo.id).first();
-
-            analistaGeo.usuario = analistaGeoDestino;
-
-            analistaGeo._save();
-
-            this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), getUsuarioSessao());
-
-        }
-
-        this.tipoResultadoValidacaoGerente = analiseGeo.tipoResultadoValidacaoGerente;
-        this.parecerValidacaoGerente = analiseGeo.parecerValidacaoGerente;
-        this.dataParecerGerenteAnaliseGeo = new Date();
-        this.usuarioValidacaoGerente = gerente;
-        this.save();
 
     }
 

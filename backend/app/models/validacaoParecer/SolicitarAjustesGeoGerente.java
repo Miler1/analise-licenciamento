@@ -17,11 +17,7 @@ public class SolicitarAjustesGeoGerente extends TipoResultadoAnaliseChain<Analis
     @Override
     protected void validaParecer(AnaliseGeo analiseGeo, AnaliseGeo novaAnaliseGeo, UsuarioAnalise usuarioExecutor) {
 
-        analiseGeo.tipoResultadoValidacaoGerente = novaAnaliseGeo.tipoResultadoValidacaoGerente;
-        analiseGeo.parecerValidacaoGerente = novaAnaliseGeo.parecerValidacaoGerente;
-        analiseGeo.usuarioValidacaoGerente = usuarioExecutor;
         analiseGeo.ativo = false;
-
         analiseGeo.validarTipoResultadoValidacaoGerente();
         analiseGeo.validarParecerValidacaoGerente();
 
