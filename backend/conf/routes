@@ -61,7 +61,6 @@ POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.dow
 GET		/analisesGeo/parecer							    AnalisesGeo.findByNumeroProcesso
 POST	/analisesGeo/iniciar 							    AnalisesGeo.iniciar
 POST	/analisesGeo									    AnalisesGeo.alterar
-POST	/analisesGeo/concluir							    AnalisesGeo.concluir
 GET		/analisesGeo/{idAnaliseGeo}				            AnalisesGeo.findById
 GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	        AnalisesGeo.getRestricoesGeo
 POST	/analisesGeo/validarParecer					        AnalisesGeo.validarParecer
@@ -88,10 +87,12 @@ GET     /analisesGeo/comunicado/findComunicado/{id}                             
 GET     /analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/{id}             Comunicados.findByIdSobreposicaoEmpreendimento
 GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                 Comunicados.listaComunicadosByIdAnaliseGeo
 POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
-POST    /analisesGeo/gerente/concluirParecerGerente                                 AnalisesGeo.concluirParecerGerente
 GET     /analisesGeo/restricao/findAllById/{idProcesso}                             AnalisesGeo.findAllRestricoesById
 
-
+# Pareceres
+POST    /parecer/gerente/concluirParecerGerente                                 PareceresGerentes.concluirParecerGerente
+POST	/parecer/analistaGeo/concluir							                PareceresAnalistasGeo.concluir
+GET     /parecer/analistaGeo/{idHistoricoTramitacao}                            PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento

@@ -18,13 +18,15 @@ import java.util.concurrent.ExecutionException;
 public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
 
     private AnaliseGeo analiseGeo;
+    private ParecerAnalistaGeo parecerAnalistaGeo;
     private Documento pdfNotificacao;
 
-    public EmailNotificacaoAnaliseGeo(AnaliseGeo analiseGeo, List<String> emailsDestinatarios, Notificacao notificacao) throws Exception {
+    public EmailNotificacaoAnaliseGeo(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, List<String> emailsDestinatarios, Notificacao notificacao) throws Exception {
 
         super(emailsDestinatarios);
         this.analiseGeo = analiseGeo;
-        this.pdfNotificacao = analiseGeo.gerarPDFNotificacao(analiseGeo, notificacao);
+        this.parecerAnalistaGeo = parecerAnalistaGeo;
+        this.pdfNotificacao = analiseGeo.gerarPDFNotificacao(analiseGeo);
 
     }
 
@@ -46,18 +48,18 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
 //                }
 //            }
 
-            Notificacao notificacao = Notificacao.find("id_analise_geo", this.analiseGeo.id).first();
-
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
             main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+
             Endereco enderecoCompleto = null;
+
             for(Endereco endereco : empreendimentoEU.enderecos){
-                if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){
+                if(endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)) {
                     enderecoCompleto = endereco;
                 }
             }
 
-            if(!Emails.notificarRequerenteAnaliseGeo(this.emailsDestinatarios, licencas, this.analiseGeo, enderecoCompleto, this.pdfNotificacao.arquivo).get()) {
+            if(!Emails.notificarRequerenteAnaliseGeo(this.emailsDestinatarios, licencas, this.analiseGeo, this.parecerAnalistaGeo, enderecoCompleto, this.pdfNotificacao.arquivo).get()) {
 
                 throw new AppException();
 
