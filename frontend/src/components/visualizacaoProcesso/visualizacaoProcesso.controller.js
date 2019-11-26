@@ -1,4 +1,4 @@
-var VisualizacaoProcessoController = function ($location, $injector, $anchorScroll, $uibModal, $scope, $rootScope, $timeout, $uibModalInstance, processo, processoService, mensagem, empreendimentoService, documentoLicenciamentoService, notificacaoService, analiseGeoService, tiposSobreposicaoService) {
+var VisualizacaoProcessoController = function ($location, $injector, $anchorScroll, $uibModal, $scope, $rootScope, $timeout, $uibModalInstance, processo, processoService, mensagem, empreendimentoService, documentoLicenciamentoService, notificacaoService, analiseGeoService, parecerAnalistaGeo, tiposSobreposicaoService) {
 
 	var modalCtrl = this;
 
@@ -26,6 +26,7 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	modalCtrl.openedAccordionGerente = false;
 	modalCtrl.labelAnalistaGeo = '';
 	modalCtrl.labelGerente = '';
+	modalCtrl.parecer = {};
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -43,7 +44,6 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 				modalCtrl.init('mapa-visualizacao-protocolo', true, true);
 				modalCtrl.iniciarMapa();
-				modalCtrl.setLabelObservacoes(modalCtrl.dadosProcesso);
 
 			})
 			.catch(function(){
@@ -59,7 +59,6 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 			modalCtrl.init('mapa-visualizacao-protocolo', true, true);
 			modalCtrl.iniciarMapa();
-			modalCtrl.setLabelObservacoes(modalCtrl.dadosProcesso);
 	
 		})
 		.catch(function(){
@@ -68,53 +67,38 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 
 	}
 
-	var setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
+	modalCtrl.setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
 
 		if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
 
-			modalCtrl.labelAnalistaGeo = 'Despacho';
+			return 'Despacho';
 
 		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
 
-			modalCtrl.labelAnalistaGeo = 'Justificativa';
+			return 'Justificativa';
 
 		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
 
-			modalCtrl.labelAnalistaGeo = 'Descrição da solicitação';
+			return 'Descrição da solicitação';
 
 		}
 
 	};
 
-	var setLabelGerente = function(tipoResultadoGerente) {
+	modalCtrl.setLabelGerente = function(tipoResultadoAnaliseGerente) {
 
-		if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
+		if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
 
-			modalCtrl.labelGerente = 'Despacho';
+			return 'Despacho';
 
-		} else if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
+		} else if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
 
-			modalCtrl.labelGerente = 'Observações';
+			return 'Observações';
 
-		} else if(tipoResultadoGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO) {
+		} else if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO) {
 
-			modalCtrl.labelGerente = 'Justificativa';
+			return 'Justificativa';
 
-		}
-
-	};
-
-	this.setLabelObservacoes = function(dadosProcesso) {
-
-		var tipoResultadoAnalistaGeo = dadosProcesso.analise.analiseGeo.tipoResultadoAnalise;
-		var tipoResultadoGerente = dadosProcesso.analise.analiseGeo.tipoResultadoValidacaoGerente;
-
-		if(tipoResultadoAnalistaGeo !== null && tipoResultadoAnalistaGeo !== undefined) {
-			setLabelAnalistaGeo(tipoResultadoAnalistaGeo);
-		}
-
-		if(tipoResultadoGerente !== null && tipoResultadoGerente !== undefined) {
-			setLabelGerente(tipoResultadoGerente);
 		}
 
 	};
@@ -372,9 +356,11 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 		notificacaoService.downloadNotificacao(idTramitacao);
 	};
 
-	this.visualizarJustificativas =  function(processo, tramitacao){
+	this.visualizarJustificativas =  function(idProcesso,tramitacao){
 
-		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+		// parecerAnalistaGeo.findParecerByIdHistoricoTramitacao(tramitacao.idHistorico)
+		// 	.then(function(response){
+			analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
 
 				$uibModal.open({
@@ -384,15 +370,24 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 					size: 'lg',
 					resolve: {
 
-						analiseGeo: function(){
-							return response.data;
-						},
+						// parecer: function(){
+						// 	return response.data;
+						// },
 						idAcaoTramitacao: function(){
 							return tramitacao.idAcao;
+						},
+						idProcesso: function() {
+							return idProcesso;
+						},
+						analiseGeo: function(){
+							return response.data;
 						}
+
 					}				
 				});
+
 			});
+
 	};
 
 	this.validaJustificativas = function (tramitacao){

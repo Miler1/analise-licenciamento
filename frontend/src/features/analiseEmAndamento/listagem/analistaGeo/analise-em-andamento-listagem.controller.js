@@ -37,11 +37,14 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 
 		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
-				if(response.data.tipoResultadoValidacaoGerente.id === null || response.data.tipoResultadoValidacaoGerente.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
-					listagem.verificaAnalise = false;
-				}else{
-					listagem.verificaAnalise=true;
-				}
+
+				_.forEach(response.data.pareceresGerenteAnaliseGeo, function(parecerGerente) {
+					if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+						listagem.verificaAnalise = false;
+					}else{
+						listagem.verificaAnalise=true;
+					}
+				});
 			});
 	}
 
