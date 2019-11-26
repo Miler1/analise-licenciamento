@@ -193,10 +193,12 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         }
 
         var params = {
-            id: validacaoAnaliseGeoGerente.analiseGeo.id,
-            idAnalistaDestino: validacaoAnaliseGeoGerente.analistaGeoDestino.id,
-            parecerValidacaoGerente: validacaoAnaliseGeoGerente.analiseGeo.parecerValidacaoGerente,
-            tipoResultadoValidacaoGerente: {id: validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id}
+            analiseGeo: {
+                id: validacaoAnaliseGeoGerente.analiseGeo.id,
+                idAnalistaDestino: validacaoAnaliseGeoGerente.analistaGeoDestino.id
+            },
+            parecer: validacaoAnaliseGeoGerente.analiseGeo.parecerValidacaoGerente,
+            tipoResultadoAnalise: {id: validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoValidacaoGerente.id}
         };
 
         validacaoAnaliseGerenteService.concluir(params)
