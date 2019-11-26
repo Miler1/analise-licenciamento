@@ -5,7 +5,9 @@ import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
 import models.licenciamento.SobreposicaoCaracterizacaoComplexo;
 import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import models.licenciamento.StatusCaracterizacaoEnum;
+
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
@@ -21,6 +23,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
+import static models.tramitacao.Condicao.AGUARDANDO_RESPOSTA_COMUNICADO;
 
 @Entity
 @Table(schema = "analise", name = "parecer_analista_geo")
@@ -104,6 +107,14 @@ public class ParecerAnalistaGeo extends GenericModel {
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 	}
 
+	public void aguardarResposta(UsuarioAnalise usuarioExecutor){
+		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
+
+		analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
+	}
+
+
 	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
 
 		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
@@ -126,10 +137,13 @@ public class ParecerAnalistaGeo extends GenericModel {
 				for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacaoEmpreendimento) {
 
 					if (sobreposicaoCaracterizacaoEmpreendimento != null){
-						analiseGeoBanco.enviarEmailComunicado(this.analiseGeo.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento);
+						analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento);
 					}
 
 				}
+				this.aguardarResposta(usuarioExecutor);
+				analiseGeoBanco.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
+
 
 			} else if (analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
 
@@ -138,10 +152,13 @@ public class ParecerAnalistaGeo extends GenericModel {
 				for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
 
 					if(sobreposicaoCaracterizacaoAtividade != null){
-						analiseGeoBanco.enviarEmailComunicado(this.analiseGeo.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade);
+						analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade);
 					}
 
 				}
+				this.aguardarResposta(usuarioExecutor);
+				analiseGeoBanco.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
+
 
 			} else if (analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
 
@@ -155,14 +172,17 @@ public class ParecerAnalistaGeo extends GenericModel {
 					}
 
 				}
+				this.aguardarResposta(usuarioExecutor);
+				analiseGeoBanco.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
+
+
+			} else if(analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(SEM_SOBREPOSICAO)) {
+				gerente.save();
+
+				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 			}
-
-			gerente.save();
-
-			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
-			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
-
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
 			Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
