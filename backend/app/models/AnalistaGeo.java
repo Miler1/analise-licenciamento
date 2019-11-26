@@ -1,8 +1,11 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
+import jobs.ProcessamentoCaracterizacaoEmAndamento;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import models.EntradaUnica.Usuario;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.Logger;
@@ -11,6 +14,8 @@ import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import play.i18n.Messages;
 import security.Auth;
+import security.cadastrounificado.CadastroUnificadoWS;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -107,6 +112,18 @@ public class AnalistaGeo extends GenericModel {
 	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
 		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+
+		List<Usuario> usuariosEU = CadastroUnificadoWS.ws.getUsuariosByPerfil(CodigoPerfil.ANALISTA_GEO).stream().map(Usuario::new).collect(Collectors.toList());
+
+
+		for( UsuarioAnalise analistaGeo : analistasGeo){
+
+			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(analistaGeo.login)).findAny().orElseThrow(PortalSegurancaException::new);
+
+			usuario.salvarPerfis(analistaGeo);
+			usuario.salvarSetores(analistaGeo);
+
+		}
 
 		if (analistasGeo.isEmpty()) {
 
