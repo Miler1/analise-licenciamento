@@ -33,14 +33,13 @@ CREATE SEQUENCE analise.parecer_analista_geo_id_seq
     CACHE 1;
 ALTER TABLE analise.parecer_analista_geo ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.parecer_analista_geo_id_seq');
 ALTER TABLE analise.parecer_analista_geo_id_seq OWNER TO postgres;
-ALTER SEQUENCE analise.parecer_analista_geo_id_seq OWNED BY analise.parecer_analista_geo.id; 
 GRANT SELECT, USAGE ON SEQUENCE analise.parecer_analista_geo_id_seq TO licenciamento_am; 
 SELECT setval('analise.parecer_analista_geo_id_seq', coalesce(max(id), 1)) FROM analise.parecer_analista_geo;   
 
 
 # --- !Downs
 
-ALTER TABLE analise.parecer_analista_geo_id_seq ALTER COLUMN id DROP DEFAULT; 
+ALTER TABLE analise.parecer_analista_geo ALTER COLUMN id DROP DEFAULT; 
 DROP SEQUENCE analise.parecer_analista_geo_id_seq;
 
 DROP TABLE analise.parecer_analista_geo;
