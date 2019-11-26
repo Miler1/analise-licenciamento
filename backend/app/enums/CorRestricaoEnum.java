@@ -1,11 +1,11 @@
 package enums;
 
 import models.tmsmap.MapaImagem;
-
 import java.awt.*;
 import java.util.stream.Stream;
 
 public enum CorRestricaoEnum {
+
     TERRA_INDIGENA("Terra indígena", Color.decode("#845050")),
     UC_FEDERAL("Unidade de conservação federal", Color.decode("#ffaa4d")),
     UC_ESTADUAL("Unidade de conservação estadual", Color.decode("#ffaa4d")),
@@ -25,7 +25,6 @@ public enum CorRestricaoEnum {
     SAUIM_DE_COLEIRA("Sauim de coleira", Color.decode("#502274")),
     SITIOS_ARQUEOLOGICOS("Sítios arqueológicos", Color.decode("#502274")),
     UC_ESTADUAL_ZA_PI_FORA("Unidade de conservação estadual ZA fora PI", Color.decode("#39FF14"));
-
 
     public String nomeRestricao;
     public Color codigoCor;
@@ -49,4 +48,5 @@ public enum CorRestricaoEnum {
     public Color getCodigoCor() {
         return codigoCor;
     }
+
 }

@@ -5,7 +5,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
-import enums.GeometriaFocoEnum;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
@@ -678,7 +677,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
 
-        GeometriaFocoEnum geometriaFoco = ondeFocar(dadosProcesso.caracterizacao);
+        Caracterizacao.OrigemSobreposicao geometriaFoco = ondeFocar(dadosProcesso.caracterizacao);
 
         List<CamadaGeoAtividadeVO> camadasGeoEmpreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
 
@@ -703,7 +702,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         }
 
-        if (!camadasGeoEmpreendimento.isEmpty() && geometriaFoco.equals(GeometriaFocoEnum.EMPREENDIMENTO)) {
+        if (!camadasGeoEmpreendimento.isEmpty() && geometriaFoco.equals(Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO)) {
 
             List<CamadaGeoAtividadeVO> camadasEmpreendimento = camadasGeoEmpreendimento.stream().filter(camada -> camada.geometrias.stream().allMatch(g -> g.geometria != null)).collect(Collectors.toList());
             geometriasEmpreendimento.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasEmpreendimento);
@@ -732,41 +731,31 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public GeometriaFocoEnum ondeFocar(Caracterizacao caracterizacao) {
+    public Caracterizacao.OrigemSobreposicao ondeFocar(Caracterizacao caracterizacao) {
 
-        if (caracterizacao.origemSobreposicao.equals(GeometriaFocoEnum.EMPREENDIMENTO.codigo)) {
-
-            return GeometriaFocoEnum.EMPREENDIMENTO;
-
-        } else if (caracterizacao.origemSobreposicao.equals(GeometriaFocoEnum.ATIVIDADE.codigo)) {
-
-            return GeometriaFocoEnum.ATIVIDADE;
-
-        } else if (caracterizacao.origemSobreposicao.equals(GeometriaFocoEnum.COMPLEXO.codigo)){
-
-            return GeometriaFocoEnum.COMPLEXO;
-
-        } else {
+        if(caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.SEM_SOBREPOSICAO)) {
 
             if(caracterizacao.atividadesCaracterizacao.get(0).atividade.dentroEmpreendimento) {
 
-                return GeometriaFocoEnum.EMPREENDIMENTO;
+                return Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
 
             } else {
 
                 if(caracterizacao.geometriasComplexo != null && !caracterizacao.geometriasComplexo.isEmpty()) {
 
-                    return GeometriaFocoEnum.COMPLEXO;
+                    return Caracterizacao.OrigemSobreposicao.COMPLEXO;
 
                 } else {
 
-                    return GeometriaFocoEnum.ATIVIDADE;
+                    return Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 
                 }
 
             }
 
         }
+
+        return caracterizacao.origemSobreposicao;
 
     }
 
