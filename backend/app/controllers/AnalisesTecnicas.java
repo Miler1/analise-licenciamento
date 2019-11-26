@@ -136,11 +136,11 @@ public class AnalisesTecnicas extends InternalController {
 
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
 
-		String novoParecer = analiseTecnica.parecer;
+		String novoParecer = analiseTecnica.parecerAnalista;
 
 		AnaliseTecnica analiseTecnicaSalva = AnaliseTecnica.findById(analiseTecnica.id);
 
-		analiseTecnicaSalva.parecer = novoParecer;
+		analiseTecnicaSalva.parecerAnalista = novoParecer;
 
 		Documento pdfParecer = analiseTecnicaSalva.gerarPDFParecer();
 
