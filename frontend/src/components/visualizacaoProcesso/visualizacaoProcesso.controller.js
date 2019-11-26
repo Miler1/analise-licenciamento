@@ -386,6 +386,9 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 
 						analiseGeo: function(){
 							return response.data;
+						},
+						idAcaoTramitacao: function(){
+							return tramitacao.idAcao;
 						}
 					}				
 				});
@@ -393,12 +396,13 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 	};
 
 	this.validaJustificativas = function (tramitacao){
-
+		
 		if(tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO) {
-
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES) {
+		
 				return true;
 
 		   }else {

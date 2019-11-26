@@ -37,7 +37,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 
 		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
-				if(response.data.tipoResultadoValidacaoGerente === null || response.data.tipoResultadoValidacaoGerente !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+				if(response.data.tipoResultadoValidacaoGerente.id === null || response.data.tipoResultadoValidacaoGerente.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
 					listagem.verificaAnalise = false;
 				}else{
 					listagem.verificaAnalise=true;
