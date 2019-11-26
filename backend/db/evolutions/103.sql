@@ -2,17 +2,7 @@
 # --- !Ups
 
 ALTER TABLE analise.parecer_gerente_analise_geo ADD COLUMN id_historico_tramitacao integer NOT NULL;
-COMMENT ON COLUMN analise.parecer_analista_geo.id_historico_tramitacao IS 'Identificador da tramitação gerada pelo parecer.';
-
-ALTER TABLE analise.parecer_analista_geo ADD COLUMN situacao_fundiaria TEXT;
-COMMENT ON COLUMN analise.parecer_analista_geo.situacao_fundiaria IS 'Situação fundiária do empreendimento da análise GEO.';
-
-ALTER TABLE analise.parecer_analista_geo ADD COLUMN analise_temporal TEXT;
-COMMENT ON COLUMN analise.parecer_analista_geo.analise_temporal IS 'Análise temporal do empreendimento da análise GEO';
-
-ALTER TABLE analise.parecer_analista_geo ADD COLUMN conclusao TEXT NOT NULL;
-COMMENT ON COLUMN analise.parecer_analista_geo.conclusao IS 'Notas de conclusão da análise.';
-
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id_historico_tramitacao IS 'Identificador da tramitação gerada pelo parecer.';
 
 ALTER TABLE analise.analise_geo DROP COLUMN parecer, DROP COLUMN id_tipo_resultado_analise, DROP COLUMN situacao_fundiaria, DROP COLUMN analise_temporal, DROP COLUMN despacho_analista;
 
@@ -24,6 +14,9 @@ CREATE TABLE analise.parecer_analista_geo (
     data_parecer timestamp default now(),
     id_usuario_analista_geo integer NOT NULL,
     id_historico_tramitacao integer NOT NULL,
+    situacao_fundiaria TEXT,
+    analise_temporal TEXT,
+    conclusao TEXT NOT NULL,
     CONSTRAINT pk_parecer_analista_geo PRIMARY KEY(id),
     CONSTRAINT fk_pag_analise_geo FOREIGN KEY(id_analise_geo)
         REFERENCES analise.analise_geo, 
@@ -34,6 +27,9 @@ CREATE TABLE analise.parecer_analista_geo (
 );
 ALTER TABLE analise.parecer_analista_geo OWNER TO postgres;
 ALTER TABLE analise.parecer_analista_geo OWNER TO licenciamento_am;
+COMMENT ON COLUMN analise.parecer_analista_geo.situacao_fundiaria IS 'Situação fundiária do empreendimento da análise GEO.';
+COMMENT ON COLUMN analise.parecer_analista_geo.analise_temporal IS 'Análise temporal do empreendimento da análise GEO';
+COMMENT ON COLUMN analise.parecer_analista_geo.conclusao IS 'Notas de conclusão da análise.';
 
 
 CREATE SEQUENCE analise.parecer_analista_geo_id_seq 
