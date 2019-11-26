@@ -1,4 +1,4 @@
-var VisualizacaoProcessoController = function ($location, $injector, $anchorScroll, $uibModal, $scope, $rootScope, $timeout, $uibModalInstance, processo, processoService, mensagem, empreendimentoService, documentoLicenciamentoService, notificacaoService, analiseGeoService, parecerAnalistaGeo, tiposSobreposicaoService) {
+var VisualizacaoProcessoController = function ($location, $injector, $anchorScroll, $uibModal, $scope, $rootScope, $timeout, $uibModalInstance, processo, processoService, mensagem, empreendimentoService, documentoLicenciamentoService, notificacaoService, analiseGeoService, parecerAnalistaGeo, parecerGerente, tiposSobreposicaoService) {
 
 	var modalCtrl = this;
 
@@ -356,30 +356,47 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 		notificacaoService.downloadNotificacao(idTramitacao);
 	};
 
-	this.visualizarJustificativas =  function(idProcesso, idHistorico){
+	var abrirModal = function(parecer, idProcesso) {
 
-		parecerAnalistaGeo.findParecerByIdHistoricoTramitacao(idHistorico)
-			.then(function(response){
+		$uibModal.open({
+			controller: 'visualizarJustificativasController',
+			controllerAs: 'visualizarJustificativasCtlr',
+			templateUrl: 'components/visualizacaoProcesso/modalVisualizarObservacao.html',
+			size: 'lg',
+			resolve: {
 
-				$uibModal.open({
-					controller: 'visualizarJustificativasController',
-					controllerAs: 'visualizarJustificativasCtlr',
-					templateUrl: 'components/visualizacaoProcesso/modalVisualizarObservacao.html',
-					size: 'lg',
-					resolve: {
+				parecer: function(){
+					return parecer;
+				},
 
-						parecer: function(){
-							return response.data;
-						},
+				idProcesso: function() {
+					return idProcesso;
+				}
 
-						idProcesso: function() {
-							return idProcesso;
-						}
+			}
+		});
 
-					}				
+	};
+
+	this.visualizarJustificativas =  function(idProcesso, historico){
+
+		if(historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
+			historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
+			historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
+
+			parecerGerente.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				.then(function(response){
+					abrirModal(response.data, idProcesso);
 				});
 
-			});
+		} else {
+
+			parecerAnalistaGeo.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				.then(function(response){
+					abrirModal(response.data, idProcesso);
+				});
+
+		}
 
 	};
 
@@ -388,7 +405,10 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 		if(tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO) {
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
 				return true;
 

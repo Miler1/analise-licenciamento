@@ -3,11 +3,12 @@ package controllers;
 import models.AnaliseGeo;
 import models.ParecerGerenteAnaliseGeo;
 import models.UsuarioAnalise;
+import serializers.ParecerGerenteSerializer;
 import utils.Mensagem;
 
 public class PareceresGerentes extends InternalController {
 
-		public static void concluirParecerGerente(ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo) {
+	public static void concluirParecerGerente(ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo) {
 
 		returnIfNull(parecerGerenteAnaliseGeo, "ParecerGerenteAnaliseGeo");
 
@@ -18,6 +19,14 @@ public class PareceresGerentes extends InternalController {
 		parecerGerenteAnaliseGeo.finalizar(analiseGeo, gerente);
 
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+
+	}
+
+	public static void findParecerByIdHistoricoTramitacao(Long idHistoricoTramitacao) {
+
+		ParecerGerenteAnaliseGeo parecerAnalistaGeo = ParecerGerenteAnaliseGeo.find("idHistoricoTramitacao", idHistoricoTramitacao).first();
+
+		renderJSON(parecerAnalistaGeo, ParecerGerenteSerializer.findByIdHistoricoTramitacao);
 
 	}
 
