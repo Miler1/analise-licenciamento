@@ -14,11 +14,13 @@ var VisualizarJustificativasController = function ($uibModalInstance,
                 visualizarJustificativasCtlr.justificativaDesvinculo = response.data.justificativa;
         });
          
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO){
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO ||
+        visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_VALIDADO){
         
         visualizarJustificativasCtlr.labelParecer = 'Despacho';
 
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.INDEFERIDO){
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.INDEFERIDO ||
+        visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_NAO_VALIDADO){
 
         visualizarJustificativasCtlr.labelParecer = 'Justificativa';
 
@@ -26,17 +28,9 @@ var VisualizarJustificativasController = function ($uibModalInstance,
         
         visualizarJustificativasCtlr.labelParecer = 'Descrição da solicitação';
 
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_VALIDADO){
-        
-        visualizarJustificativasCtlr.labelParecer = 'Despacho';
-
     } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.SOLICITAR_AJUSTES){
 
         visualizarJustificativasCtlr.labelParecer = 'Observações';
-
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_NAO_VALIDADO){
-        
-        visualizarJustificativasCtlr.labelParecer = 'Justificativa';
 
     }
 
