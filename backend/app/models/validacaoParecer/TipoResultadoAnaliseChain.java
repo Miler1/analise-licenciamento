@@ -26,7 +26,7 @@ public abstract class TipoResultadoAnaliseChain<T extends Analisavel> {
 	public void validarParecer(T analise, T novaAnalise, UsuarioAnalise usuarioExecultor) {
 		
 		if (novaAnalise.getTipoResultadoValidacao().id.equals(idResultadoAnalise)) {
-							
+
 			validaParecer(analise, novaAnalise, usuarioExecultor);
 			
 		} else if (next != null) {

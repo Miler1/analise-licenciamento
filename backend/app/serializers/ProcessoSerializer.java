@@ -5,6 +5,8 @@ import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 import utils.flexjson.GeometryTransformer;
 
+import java.util.Date;
+
 public class ProcessoSerializer {
 	
 	public static JSONSerializer list = SerializerUtil.create(
@@ -27,14 +29,18 @@ public class ProcessoSerializer {
 			"analise.dataCadastro",
 			"analise.dataVencimentoPrazo",
 			"analise.analiseGeo.id",
-			"analise.analisesGeo.analistasGeo.usuario.pessoa.nome",
-			"analise.analiseGeo.tipoResultadoAnalise.id",
-			"analise.analiseGeo.tipoResultadoAnalise.nome",
-			"analise.analiseGeo.despacho",
-			"analise.analiseGeo.usuarioValidacaoGerente.pessoa.nome",
-			"analise.analiseGeo.tipoResultadoValidacaoGerente.id",
-			"analise.analiseGeo.tipoResultadoValidacaoGerente.nome",
-			"analise.analiseGeo.parecerValidacaoGerente",
+			"analise.analiseGeo.pareceresGerenteAnaliseGeo.id",
+			"analise.analiseGeo.pareceresGerenteAnaliseGeo.tipoResultadoAnalise.id",
+			"analise.analiseGeo.pareceresGerenteAnaliseGeo.tipoResultadoAnalise.nome",
+			"analise.analiseGeo.pareceresGerenteAnaliseGeo.parecer",
+			"analise.analiseGeo.pareceresGerenteAnaliseGeo.usuario.pessoa.nome",
+			"analise.analiseGeo.pareceresGerenteAnaliseGeo.dataParecer",
+			"analise.analiseGeo.pareceresAnalistaGeo.id",
+			"analise.analiseGeo.pareceresAnalistaGeo.tipoResultadoAnalise.id",
+			"analise.analiseGeo.pareceresAnalistaGeo.tipoResultadoAnalise.nome",
+			"analise.analiseGeo.pareceresAnalistaGeo.parecer",
+			"analise.analiseGeo.pareceresAnalistaGeo.usuario.pessoa.nome",
+			"analise.analiseGeo.pareceresAnalistaGeo.dataParecer",
 			"analise.analiseTecnica.id",
 			"analise.analiseJuridica.id",
 			"analise.analisesJuridica.dataVencimentoPrazo",
@@ -198,6 +204,7 @@ public class ProcessoSerializer {
 			"caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome",
 			"caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome")
 	        .transform(GeometrySerializer.getTransformer(), Geometry.class)
+			.transform(DateSerializer.getTransformerWithDateTime(), Date.class)
 			.exclude("*");
 
 }
