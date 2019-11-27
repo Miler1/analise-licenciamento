@@ -157,7 +157,7 @@ public class AnalisesGeo extends InternalController {
 
         String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
@@ -173,7 +173,7 @@ public class AnalisesGeo extends InternalController {
 
         String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
@@ -193,7 +193,7 @@ public class AnalisesGeo extends InternalController {
 
        String nome = pdfNotificacao.tipo.nome +  "_" + analiseGeo.id + ".pdf";
        nome = nome.replace(' ', '_');
-       response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+       response.setHeader("Content-Disposition", "inline; filename=" + nome);
        response.setHeader("Content-Transfer-Encoding", "binary");
        response.setHeader("Content-Type", "application/pdf");
 
@@ -212,7 +212,7 @@ public class AnalisesGeo extends InternalController {
 
         String nome = pdfParecer.tipo.nome + "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
