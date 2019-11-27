@@ -14,3 +14,4 @@
 * OS40 - US769 - [Customizações análise GEO] Notificações 
 -----------------------------------------------------------------------------------------------------
 * OS40 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo. 
+* OS40 - US999 - [Analista GEO] Eu, Analista Geo, ao baixar a CARTA IMAGEM, devo visualizar a área da(s) atividade(s) fora do empreendimento

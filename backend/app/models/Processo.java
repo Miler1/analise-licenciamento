@@ -721,7 +721,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		Caracterizacao caracterizacao = this.caracterizacao;
 
-		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
+		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao), preencheComplexo(caracterizacao));
 
 	}
 
@@ -735,16 +735,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			indexDadosGeometriasAtividade = 0;
 			indexDadosAtividades++;
 
-			if(caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
-
-				caracterizacao.geometriasComplexo.forEach(geometriaComplexo -> atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometriaComplexo.convertToVO())));
-
-			} else {
-
-				List<GeometriaAtividadeVO> geometrias = atividadeCaracterizacao.geometriasAtividade.stream().map(GeometriaAtividade::convertToVO).collect(Collectors.toList());
-				atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometrias));
-
-			}
+			List<GeometriaAtividadeVO> geometrias = atividadeCaracterizacao.geometriasAtividade.stream().map(GeometriaAtividade::convertToVO).collect(Collectors.toList());
+			atividades.add(new CamadaGeoAtividadeVO(atividadeCaracterizacao, geometrias));
 
 		}
 
@@ -815,6 +807,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return this;
 
+	}
+
+	public static CamadaGeoComplexoVO preencheComplexo(Caracterizacao caracterizacao) {
+
+		return new CamadaGeoComplexoVO(caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
 	}
 
 }
