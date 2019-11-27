@@ -356,31 +356,24 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 		notificacaoService.downloadNotificacao(idTramitacao);
 	};
 
-	this.visualizarJustificativas =  function(idProcesso,tramitacao){
+	var abrirModal = function(parecer, idProcesso) {
 
-		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
-		.then(function(response){
+		$uibModal.open({
+			controller: 'visualizarJustificativasController',
+			controllerAs: 'visualizarJustificativasCtlr',
+			templateUrl: 'components/visualizacaoProcesso/modalVisualizarObservacao.html',
+			size: 'lg',
+			resolve: {
 
-			$uibModal.open({
-				controller: 'visualizarJustificativasController',
-				controllerAs: 'visualizarJustificativasCtlr',
-				templateUrl: 'components/visualizacaoProcesso/modalVisualizarObservacao.html',
-				size: 'lg',
-				resolve: {
-
-					idAcaoTramitacao: function(){
-						return tramitacao.idAcao;
-					},
-					idProcesso: function() {
-						return idProcesso;
-					},
-					analiseGeo: function(){
-						return response.data;
-					}
-
+				parecer: function() {
+					return parecer;
+				},
+				
+				idProcesso: function() {
+					return idProcesso;
 				}
-			});
 
+			}
 		});
 
 	};
@@ -409,19 +402,14 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 
 	this.validaJustificativas = function (tramitacao){
 		
-		if(tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
+		return tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE) {
-		
-				return true;
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO;
 
-		   }else {
-
-			   return false;
-
-		   }
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {

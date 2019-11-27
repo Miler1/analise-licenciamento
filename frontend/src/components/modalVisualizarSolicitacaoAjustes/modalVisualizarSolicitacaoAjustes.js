@@ -1,16 +1,14 @@
 var VisualizarAjustesController = function (analiseGeo, $uibModalInstance) {
 
-var visualizarAjustesController = this;
+    var visualizarAjustesController = this;
 
-    visualizarAjustesController.justificativa = _.find(analiseGeo.pareceresGerenteAnaliseGeo, function(parecer) {
-        if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.SOLICITAR_AJUSTES){
-            return parecer.parecer;
-        }
+    visualizarAjustesController.justificativa = _.findLast(analiseGeo.pareceresGerenteAnaliseGeo, function(parecer) {
+        return parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.SOLICITAR_AJUSTES;
     });
 
-visualizarAjustesController.fechar = function() {
-    $uibModalInstance.dismiss('cancel');
-};
+    visualizarAjustesController.fechar = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
 
 };
 
