@@ -1,4 +1,4 @@
-var VisualizacaoProcessoController = function ($location, $injector, $anchorScroll, $uibModal, $scope, $rootScope, $timeout, $uibModalInstance, processo, processoService, mensagem, empreendimentoService, documentoLicenciamentoService, notificacaoService, analiseGeoService, parecerAnalistaGeo, parecerGerente, tiposSobreposicaoService) {
+var VisualizacaoProcessoController = function ($location, $injector, $anchorScroll, $uibModal, $scope, $rootScope, $timeout, $uibModalInstance, processo, processoService, mensagem, empreendimentoService, documentoLicenciamentoService, notificacaoService, analiseGeoService, parecerAnalistaGeoService, parecerGerenteService, tiposSobreposicaoService) {
 
 	var modalCtrl = this;
 
@@ -384,14 +384,14 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 			historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
 			historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
-			parecerGerente.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
 					abrirModal(response.data, idProcesso);
 				});
 
 		} else {
 
-			parecerAnalistaGeo.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+			parecerAnalistaGeoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
 					abrirModal(response.data, idProcesso);
 				});

@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService, tiposSobreposicaoService) {
+var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService, tiposSobreposicaoService, parecerAnalistaGeoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -36,14 +36,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.parecer = {
 		situacaoFundiaria: null,
 		analiseTemporal: null,
+		conclusao: null,
 		parecer: null,
-		despacho: null,
 		documentos: []
 	};
 	ctrl.despacho = null;
 	ctrl.errors = {
 		conclusao: false,
-		despacho: false,
+		parecer: false,
 		resultadoAnalise: false,
 		prazoNotificacao: false,
 		docAnaliseTemporal:false,
@@ -433,6 +433,13 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		});
 
+		parecerAnalistaGeoService.findParecerByIdProcesso(analiseGeo.analise.processo.id)
+		.then(function(response) {
+
+			ctrl.parecer = response.data;
+
+		});
+
 		ctrl.listaInconsistencias = analiseGeo.inconsistencias.filter(function(inconsistencia) {
 
 			return inconsistencia.categoria !== 'PROPRIEDADE';
@@ -791,23 +798,30 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.clonarParecerGeo = function() {
 
-		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
-			.then(function(response){
+		if(ctrl.numeroProcessoClone) {
 
-					if(response.data.parecer === undefined) {
+			parecerAnalistaGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
+				.then(function(response){
+
+						if(response.data.parecer === undefined) {
 
 							ctrl.parecer.parecer = null;
 							mensagem.error(response.data.texto);
-							return;
-					}else{
-						ctrl.parecer.parecer = response.data.parecer;
-						ctrl.parecer.situacaoFundiaria = response.data.situacaoFundiaria;
-						ctrl.parecer.analiseTemporal = response.data.analiseTemporal;
-					}
-			}, function(error){
 
+							return;
+
+						} else{
+
+							ctrl.parecer = response.data;
+
+						}
+
+				}, function(error){
 					mensagem.error(error.data.texto);
-			});
+				});
+
+		}
+
 	};
 
 	ctrl.upload = function(file, invalidFile, tipoUpload) {
@@ -818,6 +832,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						.then(function(response) {
 
 							var nomeDoArquivo = file.name;
+
+							if(ctrl.parecer.documentos === null || ctrl.parecer.documentos === undefined) {
+								ctrl.parecer.documentos = [];
+							}
 
 							var quantidadeDocumentosComMesmoNome = ctrl.parecer.documentos.filter(function(documento) { 
 								return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
@@ -970,7 +988,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		}
 
-		if (!ctrl.parecer.parecer) {
+		if (!ctrl.parecer.conclusao) {
 
 			ctrl.errors.conclusao = true;
 			return false;
@@ -1003,14 +1021,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		}
 
-		if(!ctrl.parecer.despacho || ctrl.parecer.despacho === undefined){
+		if(!ctrl.parecer.parecer || ctrl.parecer.parecer === undefined){
 
-			ctrl.errors.despacho = true;
+			ctrl.errors.parecer = true;
 			return false;
 
 		}else{
 
-			ctrl.errors.despacho = false;
+			ctrl.errors.parecer = false;
 
 		}
 
@@ -1021,23 +1039,25 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 				return false;
 
 			}
-			
+
 			if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
-				
+
 				ctrl.errors.atendimento = true;
 				return false;
 
 			} else{
-				
+
 				ctrl.errors.atendimento = false;
 
 			}
 
 			return true;
+
 		}
 
 		return ((ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
-			ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()) && ctrl.parecer.despacho);
+			ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()) && ctrl.parecer.parecer);
+
 	}
 
 	ctrl.downloadPDFParecer = function() {
@@ -1058,6 +1078,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			},function(error){
 				mensagem.error(error.data.texto);
 			});
+
 	};
 
 	ctrl.concluir = function(){
@@ -1073,18 +1094,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		tratarDadosNotificacao();
 
-		var parecer = {
-			analiseGeo: ctrl.analiseGeo,
-			tipoResultadoAnalise: {
-				id: ctrl.parecer.tipoResultadoAnalise.id
-			},
-			situacaoFundiaria: ctrl.parecer.situacaoFundiaria,
-			analiseTemporal: ctrl.parecer.analiseTemporal,
-			conclusao: ctrl.parecer.parecer,
-			parecer: ctrl.parecer.despacho
-		};
+		ctrl.parecer.analiseGeo = ctrl.analiseGeo;
 
-		analiseGeoService.concluir(parecer)
+		analiseGeoService.concluir(ctrl.parecer)
 			.then(function(response) {
 
 				var params = {

@@ -490,8 +490,8 @@ utils.services(licenciamento)
 	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
 	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
 	.add('parecerOrgaoService', services.ParecerOrgaoService)
-	.add('parecerAnalistaGeo', services.ParecerAnalistaGeo)
-	.add('parecerGerente', services.ParecerGerente);
+	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
+	.add('parecerGerenteService', services.ParecerGerenteService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
