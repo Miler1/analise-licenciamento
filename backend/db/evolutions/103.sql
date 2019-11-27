@@ -19,11 +19,11 @@ CREATE TABLE analise.parecer_analista_geo (
     conclusao TEXT NOT NULL,
     CONSTRAINT pk_parecer_analista_geo PRIMARY KEY(id),
     CONSTRAINT fk_pag_analise_geo FOREIGN KEY(id_analise_geo)
-        REFERENCES analise.analise_geo, 
+        REFERENCES analise.analise_geo(id), 
     CONSTRAINT fk_pag_tipo_resultado_analise FOREIGN KEY(id_tipo_resultado_analise)
-        REFERENCES analise.tipo_resultado_analise,
+        REFERENCES analise.tipo_resultado_analise(id),
     CONSTRAINT fk_pag_usuario_analise FOREIGN KEY(id_usuario_analista_geo)
-        REFERENCES analise.usuario_analise    
+        REFERENCES analise.usuario_analise(id)    
 );
 ALTER TABLE analise.parecer_analista_geo OWNER TO postgres;
 ALTER TABLE analise.parecer_analista_geo OWNER TO licenciamento_am;
