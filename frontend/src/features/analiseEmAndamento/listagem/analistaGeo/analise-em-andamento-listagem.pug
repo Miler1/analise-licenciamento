@@ -33,7 +33,7 @@ div
 								//- span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseGeo}")
 								//- span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
 								//- span(ng-class="{'icone-renovacao': processo.renovacao}")
-								span(ng-class="{'icone-solicitacao-ajustes': listagem.verificaAnalise === true }")
+								span(ng-class="{'icone-solicitacao-ajustes': processo.verificaAnalise === true }")
 
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero | textoTruncado : 4:3}}
 							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
@@ -56,7 +56,7 @@ div
 												a(ng-click="listagem.continuarAnalise(processo.idAnaliseGeo)")
 													i.glyphicon.glyphicon-play-circle
 													span Continuar análise
-											li(ng-if="listagem.verificaAnalise === true")
+											li(ng-if="processo.verificaAnalise === true")
 												a(ng-click="listagem.visualizarSolicitacaoAjustes(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar Solicitação de Ajustes

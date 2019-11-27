@@ -14,7 +14,6 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	listagem.continuarAnalise = continuarAnalise;
 	listagem.visualizarSolicitacaoAjustes = visualizarSolicitacaoAjustes;
 	listagem.verificaSolicitacaoAjustes = verificaSolicitacaoAjustes;
-	listagem.verificaAnalise = false;
 	listagem.tipoResultadoAnalise = app.utils.TiposResultadoAnalise;
 
 	listagem.processos = [];
@@ -38,13 +37,20 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
 
-				_.forEach(response.data.pareceresGerenteAnaliseGeo, function(parecerGerente) {
-					if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
-						listagem.verificaAnalise = false;
-					}else{
-						listagem.verificaAnalise=true;
-					}
-				});
+				if(_.isEmpty(response.data.pareceresGerenteAnaliseGeo)){
+					processo.verificaAnalise = false;
+					
+				}else{
+					_.find(response.data.pareceresGerenteAnaliseGeo, function(parecerGerente) {
+						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+							processo.verificaAnalise = false;
+							
+						}else{
+							processo.verificaAnalise=true;
+							
+						}
+					});
+				}
 			});
 	}
 

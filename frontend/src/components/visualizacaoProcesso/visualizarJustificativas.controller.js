@@ -17,7 +17,7 @@ visualizarJustificativasCtlr.labelParecer = '';
         visualizarJustificativasCtlr.labelParecer = 'Despacho';
 
     }else if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.INDEFERIR_ANALISE_GEO){
-console.log(analiseGeo);
+
         visualizarJustificativasCtlr.parecer = _.find(analiseGeo.pareceresAnalistaGeo, function(parecer) {
             if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.INDEFERIDO){
                 return parecer.parecer;
