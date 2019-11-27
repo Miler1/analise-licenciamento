@@ -108,11 +108,8 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
 
-		analiseGeoBanco.update(this.analiseGeo);
 		validarParecer(this.analiseGeo);
 		validarTipoResultadoAnalise();
-
-		analiseGeoBanco._save();
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
@@ -190,7 +187,6 @@ public class ParecerAnalistaGeo extends GenericModel {
 		}
 
 		this.usuario = usuarioExecutor;
-		this.documentos = this.analiseGeo.documentos.stream().filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL) || documento.tipo.id.equals(TipoDocumento.PARECER_ANALISE_GEO)).collect(Collectors.toList());
 		this.dataParecer = new Date();
 
 		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id);
