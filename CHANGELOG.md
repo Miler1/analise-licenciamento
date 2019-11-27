@@ -22,6 +22,7 @@
 ## OS44
 
 * OS44 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo.
+* OS44 - US847 - Eu, usuário do sistema, devo visualizar e gerar comunicados com todas suas informações e fluxo de tramitação
 
 ## OS35
 

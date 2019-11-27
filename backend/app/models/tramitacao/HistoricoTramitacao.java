@@ -1,5 +1,6 @@
 package models.tramitacao;
 
+import models.AnaliseGeo;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;
@@ -219,6 +220,26 @@ public class HistoricoTramitacao extends GenericModel {
 				rel = new RelHistoricoTramitacaoSetor();
 
 				rel.siglaSetor = usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla;
+				rel.historicoTramitacao = historicoTramitacao;
+
+				rel.save();
+			}
+		}
+	}
+
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, AnaliseGeo analiseGeo) {
+
+		if (analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor != null) {
+
+			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND siglaSetor = :y")
+					.setParameter("x", historicoTramitacao.idHistorico)
+					.setParameter("y", analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor).first();
+
+			if (rel == null) {
+
+				rel = new RelHistoricoTramitacaoSetor();
+
+				rel.siglaSetor = analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 				rel.historicoTramitacao = historicoTramitacao;
 
 				rel.save();
