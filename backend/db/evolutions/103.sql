@@ -27,6 +27,16 @@ CREATE TABLE analise.parecer_analista_geo (
 );
 ALTER TABLE analise.parecer_analista_geo OWNER TO postgres;
 ALTER TABLE analise.parecer_analista_geo OWNER TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_analista_geo TO licenciamento_am;
+GRANT ALL ON TABLE analise.parecer_analista_geo TO postgres;
+COMMENT ON TABLE analise.parecer_analista_geo IS 'Entidade responsável por armazenar informações sobre o parecer do analista geo em uma análise técnica';
+COMMENT ON COLUMN analise.parecer_analista_geo.id IS 'Id do parecer do analista';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_analise_geo IS 'Id da analise';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_tipo_resultado_analise IS 'Tipo do resultado da análise';
+COMMENT ON COLUMN analise.parecer_analista_geo.parecer IS 'Descrição do parecer feito pelo analista';
+COMMENT ON COLUMN analise.parecer_analista_geo.data_parecer IS 'Data do parecer';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_usuario_analista_geo IS 'Id do analista geo responsável pelo parecer';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_historico_tramitacao IS 'Identificador da tramitação gerada pelo parecer.';
 COMMENT ON COLUMN analise.parecer_analista_geo.situacao_fundiaria IS 'Situação fundiária do empreendimento da análise GEO.';
 COMMENT ON COLUMN analise.parecer_analista_geo.analise_temporal IS 'Análise temporal do empreendimento da análise GEO';
 COMMENT ON COLUMN analise.parecer_analista_geo.conclusao IS 'Notas de conclusão da análise.';

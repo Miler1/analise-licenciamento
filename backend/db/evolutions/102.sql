@@ -12,14 +12,16 @@ CREATE TABLE analise.parecer_gerente_analise_geo (
     id_analise_geo integer NOT NULL,
     CONSTRAINT pk_parecer_gerente_analise_geo PRIMARY KEY(id),
     CONSTRAINT fk_pgag_tipo_resultado_analise FOREIGN KEY(id_tipo_resultado_analise) 
-        REFERENCES  analise.tipo_resultado_analise,
+        REFERENCES  analise.tipo_resultado_analise(id),
     CONSTRAINT fk_pgag_usuario_analise FOREIGN KEY(id_usuario_gerente) 
-        REFERENCES  analise.usuario_analise,
+        REFERENCES  analise.usuario_analise(id),
     CONSTRAINT fk_pgag_analise_geo FOREIGN KEY(id_analise_geo) 
-        REFERENCES  analise.analise_geo
+        REFERENCES  analise.analise_geo(id)
 );
 ALTER TABLE analise.parecer_gerente_analise_geo OWNER TO postgres;
 ALTER TABLE analise.parecer_gerente_analise_geo OWNER TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_gerente_analise_geo TO licenciamento_am;
+GRANT ALL ON TABLE analise.parecer_gerente_analise_geo TO postgres;
 COMMENT ON TABLE analise.parecer_gerente_analise_geo is 'Entidade responsável por armazenar informações sobre o parecer do gerente em uma análise técnica';
 COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id is 'Id do parecer do gerente';
 COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id_tipo_resultado_analise is 'Tipo do resultado da análise';
