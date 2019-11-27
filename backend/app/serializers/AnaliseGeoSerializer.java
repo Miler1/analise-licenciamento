@@ -5,10 +5,11 @@ import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 import utils.flexjson.GeometryTransformer;
 
+import java.util.Date;
+
 public class AnaliseGeoSerializer {
 
     public static JSONSerializer findInfo = SerializerUtil.create(
-
             "id",
             "analise.id",
             "analise.dataVencimentoPrazo",
@@ -108,9 +109,10 @@ public class AnaliseGeoSerializer {
             "gerentesGeo.usuario.pessoa.cpf",
             "gerentesGeo.usuario.pessoa.id",
             "gerentesGeo.usuario.pessoa.nome",
-            "pareceresGerenteAnaliseGeo.tipoResultadoAnalise.id",
-            "pareceresGerenteAnaliseGeo.parecer",
-            "pareceresGerenteAnaliseGeo.usuarioValidacaoGerente",
+            "pareceresAnalistaGeo.situacaoFundiaria",
+            "pareceresAnalistaGeo.analiseTemporal",
+            "pareceresAnalistaGeo.conclusao",
+            "pareceresAnalistaGeo.dataParecer",
             "analiseGeoRevisada",
             "usuarioValidacao.pessoa.nome",
             "inconsistencias.id",
@@ -160,9 +162,8 @@ public class AnaliseGeoSerializer {
             "desvinculos.analiseGeo",
             "desvinculos.justificativa",
             "desvinculos.respostaGerente"
-
-
-    ).transform(new GeometryTransformer(), Geometry.class);
+    ).transform(new GeometryTransformer(), Geometry.class)
+     .transform(DateSerializer.getTransformerWithDateTime(), Date.class);
 
     public static JSONSerializer parecer = SerializerUtil.create(
 

@@ -1,37 +1,58 @@
-var VisualizarJustificativasController = function ($uibModalInstance, 
-                                                   parecer, idProcesso, desvinculoService) {
+var VisualizarJustificativasController = function ($uibModalInstance, idAcaoTramitacao,
+                                                   analiseGeo, desvinculoService) {
 
-    var visualizarJustificativasCtlr = this;
+var visualizarJustificativasCtlr = this;
+visualizarJustificativasCtlr.enumAcaoTramitacao = app.utils.AcaoTramitacao;
+visualizarJustificativasCtlr.analiseGeo = analiseGeo;
+visualizarJustificativasCtlr.acaoTramitacao = idAcaoTramitacao;
+visualizarJustificativasCtlr.labelParecer = '';
 
-    visualizarJustificativasCtlr.resultadoAnalise = app.utils.TiposResultadoAnalise;
-    visualizarJustificativasCtlr.parecer = parecer;
-    visualizarJustificativasCtlr.labelParecer = '';
+    if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.DEFERIR_ANALISE_GEO){
 
-    if(visualizarJustificativasCtlr.parecer.parecer === null || visualizarJustificativasCtlr.parecer.parecer === undefined){
-
-        desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
-            .then(function(response){
-                visualizarJustificativasCtlr.justificativaDesvinculo = response.data.justificativa;
+        visualizarJustificativasCtlr.parecer = _.find(analiseGeo.pareceresAnalistaGeo, function(parecer) {
+            if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.DEFERIDO){
+                return parecer.parecer;
+            }
         });
-         
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO ||
-        visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_VALIDADO){
-        
         visualizarJustificativasCtlr.labelParecer = 'Despacho';
 
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.INDEFERIDO ||
-        visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_NAO_VALIDADO){
+    }else if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.INDEFERIR_ANALISE_GEO){
 
+        visualizarJustificativasCtlr.parecer = _.find(analiseGeo.pareceresAnalistaGeo, function(parecer) {
+            if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.INDEFERIDO){
+                return parecer.parecer;
+            }
+        });
         visualizarJustificativasCtlr.labelParecer = 'Justificativa';
 
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.EMITIR_NOTIFICACAO){
-        
+    }else if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.EMITIR_NOTIFICACAO){
+
+        visualizarJustificativasCtlr.parecer = _.find(analiseGeo.pareceresAnalistaGeo, function(parecer) {
+            if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO){
+                return parecer.parecer;
+            }
+        });
         visualizarJustificativasCtlr.labelParecer = 'Descrição da solicitação';
 
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.SOLICITAR_AJUSTES){
+    }else if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.SOLICITAR_DESVINCULO){
 
-        visualizarJustificativasCtlr.labelParecer = 'Observações';
+        desvinculoService.buscarDesvinculoPeloProcesso(analiseGeo.analise.processo.id)
+            .then(function(response){
+                visualizarJustificativasCtlr.parecer = _.find(analiseGeo.pareceresAnalistaGeo, function(parecer) {
+                    if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.SOLICITAR_DESVINCULO){
+                        return parecer.parecer;
+                    }
+                });
+                visualizarJustificativasCtlr.labelParecer = 'Justificativa';
+        });
 
+    }else if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE){
+        visualizarJustificativasCtlr.parecer = _.find(analiseGeo.pareceresGerenteAnaliseGeo, function(parecer) {
+            if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.SOLICITAR_AJUSTES){
+                return parecer.parecer;
+            }
+        });
+        visualizarJustificativasCtlr.labelParecer = 'Justificativa';
     }
 
     visualizarJustificativasCtlr.fechar = function () {

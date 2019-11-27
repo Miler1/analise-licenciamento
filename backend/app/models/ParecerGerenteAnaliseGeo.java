@@ -66,7 +66,7 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
 
-			UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(analiseGeo.idAnalistaDestino);
+			UsuarioAnalise analistaGeoDestino = UsuarioAnalise.findById(this.analiseGeo.idAnalistaDestino);
 			AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
 					.setParameter("id_analise_geo", analiseGeo.id).first();
 
