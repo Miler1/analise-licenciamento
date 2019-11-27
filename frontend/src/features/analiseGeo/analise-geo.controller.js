@@ -38,7 +38,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		situacaoFundiaria: null,
 		analiseTemporal: null,
 		parecer: null,
-		despacho: null
+		despacho: null,
+		documentos: []
 	};
 	ctrl.despacho = null;
 	ctrl.errors = {
@@ -823,7 +824,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 							var nomeDoArquivo = file.name;
 
-							var quantidadeDocumentosComMesmoNome = ctrl.analiseGeo.documentos.filter(function(documento) { 
+							var quantidadeDocumentosComMesmoNome = ctrl.parecer.documentos.filter(function(documento) { 
 								return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
 							}).length;
 
@@ -833,7 +834,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 							if(tipoUpload === app.utils.TiposUpload.PARECER_ANALISE_GEO) {
 
-								ctrl.analiseGeo.documentos.push({
+								ctrl.parecer.documentos.push({
 
 									key: response.data,
 									nomeDoArquivo: nomeDoArquivo,
@@ -845,7 +846,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 							} else if(tipoUpload === app.utils.TiposUpload.NOTIFICACAO){
 
-								ctrl.analiseGeo.documentos.push({
+								ctrl.parecer.documentos.push({
 
 									key: response.data,
 									nomeDoArquivo: nomeDoArquivo,
@@ -856,7 +857,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 								});
 							} else if(tipoUpload === app.utils.TiposUpload.DOCUMENTO_ANALISE_TEMPORAL){
 
-								ctrl.analiseGeo.documentos.push({
+								ctrl.parecer.documentos.push({
 
 									key: response.data,
 									nomeDoArquivo: nomeDoArquivo,
@@ -880,10 +881,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.removerDocumento = function (documento) {
 
-		var indexDocumento = ctrl.analiseGeo.documentos.indexOf(documento);
+		var indexDocumento = ctrl.parecer.documentos.indexOf(documento);
 
-		ctrl.analiseGeo.documentos.splice(indexDocumento, 1);
-		
+		ctrl.parecer.documentos.splice(indexDocumento, 1);
+
 	};
 
 	ctrl.baixarDocumento= function(documento) {
@@ -950,68 +951,93 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	function analiseValida() {
 
 		if(ctrl.parecer.analiseTemporal !== '' && ctrl.parecer.analiseTemporal !== null) {
+
 			var verificaDocAnaliseTemp = false;
-				_.forEach(ctrl.analiseGeo.documentos, function(documentoAnaliseTemporal){
 
-						if(documentoAnaliseTemporal.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL){
-							verificaDocAnaliseTemp = true;
-						}
-				});
+			_.forEach(ctrl.parecer.documentos, function(documentoAnaliseTemporal){
 
-				if (verificaDocAnaliseTemp === false){
-					ctrl.errors.docAnaliseTemporal = true;
-					return false;
-					
-				}else {
-					ctrl.errors.docAnaliseTemporal = false;
+				if(documentoAnaliseTemporal.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL){
+					verificaDocAnaliseTemp = true;
 				}
+
+			});
+
+			if (verificaDocAnaliseTemp === false){
+
+				ctrl.errors.docAnaliseTemporal = true;
+				return false;
+
+			} else {
+
+				ctrl.errors.docAnaliseTemporal = false;
+
+			}
+
 		}
 
 		if (!ctrl.parecer.parecer) {
+
 			ctrl.errors.conclusao = true;
 			return false;
 
-		}else{
+		} else{
+
 			ctrl.errors.conclusao = false;
+
 		}
 
 		if(ctrl.parecer.tipoResultadoAnalise.id === undefined) {
+
 			ctrl.errors.resultadoAnalise = true;
 			return false;
 
-		}else{
+		} else{
+
 			ctrl.errors.resultadoAnalise = false;
+
 		}
 
 		if (!ctrl.notificacao.prazoNotificacao && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
+			
 			ctrl.errors.prazoNotificacao = true;
 			return false;
 
-		}else{
+		} else{
+
 			ctrl.errors.prazoNotificacao = false;
+
 		}
 
 		if(!ctrl.parecer.despacho || ctrl.parecer.despacho === undefined){
+
 			ctrl.errors.despacho = true;
 			return false;
 
 		}else{
+
 			ctrl.errors.despacho = false;
+
 		}
 
 		if(ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 			
 			if(ctrl.notificacao.retificacaoSolicitacao && !ctrl.notificacao.retificacaoSolicitacaoComGeo) {
+				
 				return false;
+
 			}
 			
 			if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
+				
 				ctrl.errors.atendimento = true;
 				return false;
 
-			}else{
+			} else{
+				
 				ctrl.errors.atendimento = false;
+
 			}
+
 			return true;
 		}
 
@@ -1179,7 +1205,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		
 		var documentosParecer = [];
 
-		documentosParecer = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+		documentosParecer = _.filter(ctrl.parecer.documentos, function(documento) {
 			return documento.tipo.id === app.utils.TiposDocumentosAnalise.PARECER_ANALISE_GEO;
 		});
 
@@ -1190,7 +1216,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		
 		var documentosAnaliseTemporal = [];
 
-		documentosAnaliseTemporal = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+		documentosAnaliseTemporal = _.filter(ctrl.parecer.documentos, function(documento) {
 			return documento.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL;
 		});
 
@@ -1201,7 +1227,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		
 		var documentosNotificacao = [];
 
-		documentosNotificacao = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+		documentosNotificacao = _.filter(ctrl.parecer.documentos, function(documento) {
 			return documento.tipo.id === app.utils.TiposDocumentosAnalise.NOTIFICACAO;
 		});
 
