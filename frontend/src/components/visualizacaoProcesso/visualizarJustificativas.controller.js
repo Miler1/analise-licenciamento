@@ -46,7 +46,7 @@ visualizarJustificativasCtlr.labelParecer = '';
                 visualizarJustificativasCtlr.labelParecer = 'Justificativa';
         });
 
-    }else if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.SOLICITAR_AJUSTES){
+    }else if (visualizarJustificativasCtlr.acaoTramitacao === visualizarJustificativasCtlr.enumAcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE){
         visualizarJustificativasCtlr.parecer = _.find(analiseGeo.pareceresGerenteAnaliseGeo, function(parecer) {
             if(parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.SOLICITAR_AJUSTES){
                 return parecer.parecer;
