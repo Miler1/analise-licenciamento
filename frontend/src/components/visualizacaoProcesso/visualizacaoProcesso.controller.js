@@ -396,7 +396,7 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES) {
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE) {
 		
 				return true;
 
