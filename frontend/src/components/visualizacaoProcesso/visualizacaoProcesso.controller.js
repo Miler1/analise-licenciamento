@@ -91,7 +91,7 @@ var VisualizacaoProcessoController = function ($location, $injector, $anchorScro
 
 			return 'Despacho';
 
-		} else if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE) {
+		} else if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
 
 			return 'Observações';
 
