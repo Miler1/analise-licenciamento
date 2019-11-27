@@ -21,4 +21,10 @@ public class CamadaGeoAtividadeVO {
 
 	}
 
+	public List<GeometriaAtividadeVO> getGeometrias() {
+
+		return this.geometrias;
+
+	}
+
 }

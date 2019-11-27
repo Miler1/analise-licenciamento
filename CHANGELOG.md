@@ -20,6 +20,7 @@
 ## OS44
 
 * OS44 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo.
+* OS44 - US999 - [Analista GEO] Eu, Analista Geo, ao baixar a CARTA IMAGEM, devo visualizar a área da(s) atividade(s) fora do empreendimento
 
 ## OS35
 
