@@ -76,13 +76,16 @@ public class ParecerAnalistaGeo extends GenericModel {
 	public Long idHistoricoTramitacao;
 
 	public Date getDataParecer() {
+
 		return this.dataParecer;
+
 	}
 
-	private void validarParecer(AnaliseGeo analise) {
+	private void validarParecer() {
 
 		if (StringUtils.isBlank(this.parecer))
 			throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
+
 	}
 
 	private void validarTipoResultadoAnalise() {
@@ -113,6 +116,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+
 	}
 
 	public void aguardarResposta(UsuarioAnalise usuarioExecutor){
@@ -128,7 +132,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
 
-		validarParecer(this.analiseGeo);
+		validarParecer();
 		validarTipoResultadoAnalise();
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
