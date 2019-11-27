@@ -34,7 +34,8 @@ public class Condicoes extends InternalController {
 					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE,
-							Condicao.NOTIFICADO))
+							Condicao.NOTIFICADO,
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO))
 					.fetch();
 		}
 		

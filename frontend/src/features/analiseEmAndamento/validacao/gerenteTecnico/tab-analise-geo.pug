@@ -40,7 +40,7 @@
                                         th.col-md-1
 
                                     tbody(ng-repeat="restricao in getRestricoes()")
-                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
+                                        tr(ng-repeat="orgao in getOrgaos(restricao)")
                                             td.col-md-5 {{ restricao.item }} 
                                             td.col-md-5 {{ restricao.descricao }}
                                             td.col-md-2.text-right
@@ -60,9 +60,9 @@
 
                                     tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
                                         tr
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id ? getItemRestricao(inconsistencia) : 'Propriedade'}}
-                                            td.col-md-3 {{inconsistencia.categoria}}
-                                            td.col-md-4 {{inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id ? getDescricaoRestricao(inconsistencia) : '-'}}
+                                            td.col-md-4 {{ getItemRestricao(inconsistencia) }}
+                                            td.col-md-3 {{ inconsistencia.categoria }}
+                                            td.col-md-4 {{ getDescricaoRestricao(inconsistencia) }}
                                             td.col-md-2.text-right
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                                     ng-click="(orgao.sigla !== 'IPHAN' || orgao.sigla !== 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(inconsistencia) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")

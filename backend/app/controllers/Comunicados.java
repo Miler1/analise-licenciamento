@@ -1,7 +1,10 @@
 package controllers;
 
+import models.Analise;
+import models.AnaliseGeo;
 import models.Comunicado;
 import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
+import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import serializers.ComunicadoSerializer;
 
 import java.util.Date;
@@ -40,6 +43,22 @@ public class Comunicados extends GenericController{
     public static void findByIdSobreposicaoEmpreendimento(Long id) {
 
         Comunicado comunicado = Comunicado.find("sobreposicaoCaracterizacaoEmpreendimento.id", id).first();
+
+        renderJSON(comunicado, ComunicadoSerializer.findComunicado);
+
+    }
+
+    public static void findByIdSobreposicaoAtividade(Long id) {
+
+        Comunicado comunicado = Comunicado.find("sobreposicaoCaracterizacaoAtividade.id", id).first();
+
+        renderJSON(comunicado, ComunicadoSerializer.findComunicado);
+
+    }
+
+    public static void findByIdSobreposicaoComplexo(Long id) {
+
+        Comunicado comunicado = Comunicado.find("sobreposicaoCaracterizacaoComplexo.id", id).first();
 
         renderJSON(comunicado, ComunicadoSerializer.findComunicado);
 
