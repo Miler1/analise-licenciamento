@@ -1,4 +1,4 @@
-var ParecerGerente = function(request, config) {
+var ParecerGerenteService = function(request, config) {
 
 	this.findParecerByIdHistoricoTramitacao = function(id) {
 
@@ -9,4 +9,4 @@ var ParecerGerente = function(request, config) {
 
 };
 
-exports.services.ParecerGerente = ParecerGerente;
+exports.services.ParecerGerenteService = ParecerGerenteService;

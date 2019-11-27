@@ -72,11 +72,12 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 		});
 	}
 
-	function continuarAnalise(idAnaliseJuridica) {
+	function continuarAnalise(idAnaliseGeo) {
 
 		$rootScope.$broadcast('atualizarContagemProcessos');
 
-		$location.path('/analise-geo/' + idAnaliseJuridica.toString());
+		$location.path('/analise-geo/' + idAnaliseGeo.toString());
+		
 	}	
 
 	function exibirDadosProcesso(processo) {

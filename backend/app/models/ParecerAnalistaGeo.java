@@ -11,12 +11,12 @@ import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
 import utils.Mensagem;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import javax.validation.ValidationException;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
 import static models.tramitacao.Condicao.AGUARDANDO_RESPOSTA_COMUNICADO;
+import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE;
 
 @Entity
 @Table(schema = "analise", name = "parecer_analista_geo")
@@ -99,6 +100,12 @@ public class ParecerAnalistaGeo extends GenericModel {
 		}
 
 		//TODO PUMA-SQ1 Adicionar validacao para o Tipo Resultado Análise "EMITIR NOTIFICACAO"
+
+	}
+
+	public static ParecerAnalistaGeo getUltimoParecer(List<ParecerAnalistaGeo> pareceresAnalistaGeos) {
+
+		return pareceresAnalistaGeos.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
 
 	}
 
@@ -217,8 +224,65 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id);
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
+		this.updateDocumentos(this.documentos);
 
 		this._save();
+
+	}
+
+	private List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
+
+		TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_GEO);
+		TipoDocumento tipoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
+		TipoDocumento tipoDocumentoAnaliseTemporal = TipoDocumento.findById(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL);
+
+		this.documentos = new ArrayList<>();
+
+		for (Documento documento : novosDocumentos) {
+
+			if(documento.id != null) {
+
+				documento = Documento.findById(documento.id);
+
+			} else {
+
+				if (documento.tipo.id.equals(tipoParecer.id)) {
+
+					documento.tipo = tipoParecer;
+
+				} else if (documento.tipo.id.equals(tipoNotificacao.id)) {
+
+					documento.tipo = tipoNotificacao;
+
+				} else if (documento.tipo.id.equals(tipoDocumentoAnaliseTemporal.id)) {
+
+					documento.tipo = tipoDocumentoAnaliseTemporal;
+
+				}
+
+				documento = documento.save();
+
+			}
+
+			this.documentos.add(documento);
+
+		}
+
+		return this.documentos;
+
+	}
+
+	public static ParecerAnalistaGeo findParecerByProcesso(Processo processo) {
+
+		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
+
+		if(historicoTramitacao.idAcao.equals(SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE)) {
+
+			return ParecerAnalistaGeo.getUltimoParecer(processo.analise.analiseGeo.pareceresAnalistaGeo);
+
+		}
+
+		return new ParecerAnalistaGeo();
 
 	}
 
