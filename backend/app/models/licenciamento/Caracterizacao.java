@@ -225,4 +225,8 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	}
 
+	public Boolean isComplexo() {
+		return this.geometriasComplexo != null && !this.geometriasComplexo.isEmpty();
+	}
+
 }

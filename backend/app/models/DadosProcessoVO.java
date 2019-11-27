@@ -13,6 +13,14 @@ public class DadosProcessoVO {
 
 	public CamadaGeoComplexoVO complexo;
 
+	public DadosProcessoVO(Caracterizacao caracterizacao, List<CamadaGeoAtividadeVO> atividades, List<CamadaGeoRestricaoVO> restricoes) {
+
+		this.caracterizacao = caracterizacao;
+		this.atividades = atividades;
+		this.restricoes = restricoes;
+
+	}
+
 	public DadosProcessoVO(Caracterizacao caracterizacao, List<CamadaGeoAtividadeVO> atividades, List<CamadaGeoRestricaoVO> restricoes, CamadaGeoComplexoVO complexo) {
 
 		this.caracterizacao = caracterizacao;
