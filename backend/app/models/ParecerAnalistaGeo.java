@@ -198,7 +198,10 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id);
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
-		this.updateDocumentos(this.documentos);
+
+		if(this.documentos != null && !this.documentos.isEmpty()) {
+			this.updateDocumentos(this.documentos);
+		}
 
 		this._save();
 
