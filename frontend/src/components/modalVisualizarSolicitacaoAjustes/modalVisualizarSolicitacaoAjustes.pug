@@ -17,7 +17,9 @@ div.modal-body
             br
             label.label-justificativa Justificativa:
             br
-            textarea.text-justificativa(name="justificativa", ng-model="visualizarAjustesController.parecerValidacaoGerente", id='justificativa', ng-disabled="true")
+            div.visualizar-solicitacao-ajustes
+                .area
+                    p(ng-bind-html="visualizarAjustesController.justificativa.parecer")
 
 div.modal-footer
 
