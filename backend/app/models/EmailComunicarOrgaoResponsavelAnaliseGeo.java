@@ -1,6 +1,5 @@
 package models;
 
-import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.AppException;
 import main.java.br.ufla.lemaf.beans.Empreendimento;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;

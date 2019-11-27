@@ -18,7 +18,9 @@ var ModalOficioRestricao = {
             ctrl.restricao = ctrl.resolve.restricao;
             ctrl.idAnaliseGeo = ctrl.resolve.idAnaliseGeo;
             var sobreposicaoRestricao = ctrl.restricao.sobreposicaoCaracterizacaoAtividade ? ctrl.restricao.sobreposicaoCaracterizacaoAtividade : ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento ? ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento : ctrl.restricao.sobreposicaoCaracterizacaoComplexo;
+            
             if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
+                
                 analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(sobreposicaoRestricao.id)
                     .then(function(response){
 
@@ -28,6 +30,7 @@ var ModalOficioRestricao = {
 
                 });
             }else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade){
+                
                 analiseGeoService.getComunicadoByIdSobreposicaoAtividade(sobreposicaoRestricao.id)
                     .then(function(response){
 
@@ -37,6 +40,7 @@ var ModalOficioRestricao = {
 
                 });
             }else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo){
+                
                 analiseGeoService.getComunicadoByIdSobreposicaoComplexo(sobreposicaoRestricao.id)
                     .then(function(response){
 
@@ -50,6 +54,7 @@ var ModalOficioRestricao = {
         };
 
         ctrl.baixarDocumento = function (documento) {
+            
             documentoService.downloadById(documento.id);
         };
 

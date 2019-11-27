@@ -1,6 +1,5 @@
 package jobs;
 
-
 import models.*;
 
 import models.tramitacao.AcaoTramitacao;
@@ -32,8 +31,10 @@ public class VerificarComunicado extends GenericJob {
 	}
 
 	private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+
 	}
 	
 	public void verificarStatusComunicado() {
@@ -53,9 +54,11 @@ public class VerificarComunicado extends GenericJob {
 				if(comunicado.ativo) {
 
 					if (CalculaDiferencaDias(comunicado.dataVencimento, new Date()) > 0 || !comunicado.resolvido) {
+
 						podeTramitar = false;
 
 					} else {
+
 						comunicado.ativo = false;
 						comunicado.validateAndSave();
 
@@ -66,6 +69,7 @@ public class VerificarComunicado extends GenericJob {
 			}
 
 			if(podeTramitar) {
+
 				AnalistaGeo analistaGeo = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
 
 				Gerente gerente = Gerente.distribuicaoAutomaticaGerente(analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor, analiseGeo);
@@ -86,12 +90,14 @@ public class VerificarComunicado extends GenericJob {
 		if (dataInicial == null || dataFinal == null) {
 
 			return 0;
+
 		}
 
 		LocalDate dataInicio = new LocalDate(dataInicial.getTime());
 		LocalDate dataFim = new LocalDate(dataFinal.getTime());
 
 		return Days.daysBetween(dataInicio, dataFim).getDays();
+
 	}
 
 }

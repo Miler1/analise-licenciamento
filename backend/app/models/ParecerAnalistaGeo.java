@@ -103,11 +103,13 @@ public class ParecerAnalistaGeo extends GenericModel {
 	}
 
 	private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 	}
 
 	public void aguardarResposta(UsuarioAnalise usuarioExecutor){
+
 		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
 
 		analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO, usuarioExecutor);
@@ -137,6 +139,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 				for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacaoEmpreendimento) {
 
 					if (sobreposicaoCaracterizacaoEmpreendimento != null){
+
 						analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento);
 					}
 
@@ -152,6 +155,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 				for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
 
 					if(sobreposicaoCaracterizacaoAtividade != null){
+
 						analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade);
 					}
 
@@ -168,6 +172,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 				for (SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo : sobreposicoesCaracterizacaoComplexo) {
 
 					if(sobreposicaoCaracterizacaoComplexo != null){
+
 						analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoComplexo);
 					}
 
@@ -177,6 +182,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 
 			} else if(analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(SEM_SOBREPOSICAO)) {
+
 				gerente.save();
 
 				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
