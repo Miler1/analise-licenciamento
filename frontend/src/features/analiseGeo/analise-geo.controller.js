@@ -31,6 +31,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoSolicitacao = null;
 	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	ctrl.notificacao.prazoNotificacao = null;
+	ctrl.isPdf = false;
 	ctrl.tiposUpload = app.utils.TiposUpload;
 	ctrl.labelDadosProjeto = 'Dados da área do projeto';
 	ctrl.parecer = {
@@ -826,10 +827,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.upload = function(file, invalidFile, tipoUpload) {
 
-		if(file) {
+		if(invalidFile){
+			ctrl.isPdf = true;
+		}
 
+		if(file) {
+			  ctrl.isPdf = false;
 				uploadService.save(file)
-						.then(function(response) {
+						.then(function(response) { 
 
 							var nomeDoArquivo = file.name;
 

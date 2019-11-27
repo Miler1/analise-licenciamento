@@ -517,7 +517,8 @@ licenciamento
 	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
 	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
-	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController);
+	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
+	.controller('visualizarAjustesController',controllers.VisualizarAjustesController);
 
 
 licenciamento

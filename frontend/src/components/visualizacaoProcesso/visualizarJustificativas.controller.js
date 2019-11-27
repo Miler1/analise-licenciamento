@@ -1,20 +1,12 @@
-var VisualizarJustificativasController = function ($uibModalInstance, 
-                                                   parecer, idProcesso, desvinculoService) {
+var VisualizarJustificativasController = function ($uibModalInstance, parecer, idProcesso, desvinculoService) {
 
     var visualizarJustificativasCtlr = this;
 
-    visualizarJustificativasCtlr.resultadoAnalise = app.utils.TiposResultadoAnalise;
     visualizarJustificativasCtlr.parecer = parecer;
     visualizarJustificativasCtlr.labelParecer = '';
+    visualizarJustificativasCtlr.resultadoAnalise = app.utils.TiposResultadoAnalise;
 
-    if(visualizarJustificativasCtlr.parecer.parecer === null || visualizarJustificativasCtlr.parecer.parecer === undefined){
-
-        desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
-            .then(function(response){
-                visualizarJustificativasCtlr.justificativaDesvinculo = response.data.justificativa;
-        });
-         
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO ||
+    if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO ||
         visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_VALIDADO){
         
         visualizarJustificativasCtlr.labelParecer = 'Despacho';
@@ -24,13 +16,24 @@ var VisualizarJustificativasController = function ($uibModalInstance,
 
         visualizarJustificativasCtlr.labelParecer = 'Justificativa';
 
-    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.EMITIR_NOTIFICACAO){
-        
+    }else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.EMITIR_NOTIFICACAO){
+
         visualizarJustificativasCtlr.labelParecer = 'Descrição da solicitação';
 
     } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.SOLICITAR_AJUSTES){
 
         visualizarJustificativasCtlr.labelParecer = 'Observações';
+
+    } else {
+
+        desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
+            .then(function(response){
+
+                var desvinculo = response.data;
+                visualizarJustificativasCtlr.parecer.parecer = desvinculo.justificativa;
+                visualizarJustificativasCtlr.labelParecer = 'Justificativa';
+
+        });
 
     }
 
