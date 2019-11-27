@@ -489,7 +489,9 @@ utils.services(licenciamento)
 	.add('wmsTileService', services.WMSTileService)
 	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
 	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
-	.add('parecerOrgaoService', services.ParecerOrgaoService);
+	.add('parecerOrgaoService', services.ParecerOrgaoService)
+	.add('parecerAnalistaGeo', services.ParecerAnalistaGeo)
+	.add('parecerGerente', services.ParecerGerente);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

@@ -1,26 +1,42 @@
 var VisualizarJustificativasController = function ($uibModalInstance, 
-                                                   analiseGeo, desvinculoService) {
+                                                   parecer, idProcesso, desvinculoService) {
 
-var visualizarJustificativasCtlr = this;
+    var visualizarJustificativasCtlr = this;
 
-visualizarJustificativasCtlr.resultadoAnalise = app.utils.TiposResultadoAnalise;
-visualizarJustificativasCtlr.analiseGeo = analiseGeo;
+    visualizarJustificativasCtlr.resultadoAnalise = app.utils.TiposResultadoAnalise;
+    visualizarJustificativasCtlr.parecer = parecer;
+    visualizarJustificativasCtlr.labelParecer = '';
 
-    if(visualizarJustificativasCtlr.analiseGeo.despacho === null || visualizarJustificativasCtlr.analiseGeo.despacho === undefined){
+    if(visualizarJustificativasCtlr.parecer.parecer === null || visualizarJustificativasCtlr.parecer.parecer === undefined){
 
-        desvinculoService.buscarDesvinculoPeloProcesso(analiseGeo.analise.processo.id)
+        desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
             .then(function(response){
                 visualizarJustificativasCtlr.justificativaDesvinculo = response.data.justificativa;
         });
          
-    }else if (visualizarJustificativasCtlr.analiseGeo.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO){
-        visualizarJustificativasCtlr.despacho = visualizarJustificativasCtlr.analiseGeo.despacho;
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO){
+        
+        visualizarJustificativasCtlr.labelParecer = 'Despacho';
 
-    }else if (visualizarJustificativasCtlr.analiseGeo.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.INDEFERIDO){
-        visualizarJustificativasCtlr.justificativa = visualizarJustificativasCtlr.analiseGeo.despacho;
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.INDEFERIDO){
 
-    }else if (visualizarJustificativasCtlr.analiseGeo.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.EMITIR_NOTIFICACAO){
-        visualizarJustificativasCtlr.descricaoSolicitacao = visualizarJustificativasCtlr.analiseGeo.despacho;
+        visualizarJustificativasCtlr.labelParecer = 'Justificativa';
+
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.EMITIR_NOTIFICACAO){
+        
+        visualizarJustificativasCtlr.labelParecer = 'Descrição da solicitação';
+
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_VALIDADO){
+        
+        visualizarJustificativasCtlr.labelParecer = 'Despacho';
+
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.SOLICITAR_AJUSTES){
+
+        visualizarJustificativasCtlr.labelParecer = 'Observações';
+
+    } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_NAO_VALIDADO){
+        
+        visualizarJustificativasCtlr.labelParecer = 'Justificativa';
 
     }
 

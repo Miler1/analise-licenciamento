@@ -29,7 +29,7 @@ public class AnalistaTecnico extends GenericModel {
 	public Long id;
 	
 	@Required
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="id_analise_tecnica")
 	public AnaliseTecnica analiseTecnica;
 	
@@ -131,7 +131,6 @@ public class AnalistaTecnico extends GenericModel {
 				throw new ValidacaoException(Mensagem.ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA);
 			}
 			
-			analiseTecnica.justificativaCoordenador = justificativaCoordenador;
 		}
 		
 		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
@@ -141,16 +140,13 @@ public class AnalistaTecnico extends GenericModel {
 		 * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
 		 * caso contrário atribui o usuário executor para o campo do coordenador. 
 		 */
-		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
-			
+		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+
 			analiseTecnica.usuarioValidacaoGerente = usuarioExecutor;
-			
-		} else {
-			
-			analiseTecnica.usuarioValidacao = usuarioExecutor;
+
 		}
 		
-		analiseTecnica._save();
+
 	}
 	
 	public AnalistaTecnico gerarCopia() {

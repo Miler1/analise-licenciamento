@@ -4,9 +4,10 @@
 .body
     label.tituloTexto Categoria da Inconsistência:
     span.descricao {{ $ctrl.inconsistencia.categoria }}
-
-    label.tituloTexto Item da Restrição:
-    span.descricao {{ $ctrl.restricao.item }}
+    
+    div(ng-if="$ctrl.inconsistencia.categoria !== 'PROPRIEDADE'")
+        label.tituloTexto Item da Restrição:
+        span.descricao {{ $ctrl.restricao.item }}
 
     label.tituloTexto Descrição da Inconsistência:
     span.descricao {{ $ctrl.inconsistencia.descricaoInconsistencia }}

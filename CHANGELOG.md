@@ -15,3 +15,4 @@
 -----------------------------------------------------------------------------------------------------
 
 * OS40 - US856 - [TODOS PERFIS] Eu, usuário do sistema devo ter meus perfis e setores sempre sincronizados entre EU e Análise Licenciamento.
+* OS40 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo. 

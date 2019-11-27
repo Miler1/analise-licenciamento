@@ -62,30 +62,6 @@ public class AnalistaGeo extends GenericModel {
 
 	}
 
-	public static void vincularAnalise(UsuarioAnalise usuario, AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
-
-		if (!usuario.hasPerfil(CodigoPerfil.ANALISTA_GEO))
-			throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_GEO);
-
-		AnalistaGeo analistaGeo = new AnalistaGeo(analiseGeo, usuario);
-		analistaGeo.save();
-
-		/**
-		 * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
-		 * caso contrário atribui o usuário executor para o campo do coordenador.
-		 */
-		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
-
-			analiseGeo.usuarioValidacaoGerente = usuarioExecutor;
-
-		} else {
-
-			analiseGeo.usuarioValidacao = usuarioExecutor;
-		}
-
-		analiseGeo._save();
-	}
-
 	public AnalistaGeo gerarCopia() {
 
 		AnalistaGeo copia = new AnalistaGeo();
