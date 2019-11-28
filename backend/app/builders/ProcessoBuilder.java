@@ -260,11 +260,11 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		if (isLeftOuterJoin){
 
-			addAlias(ANALISE_TECNICA_ALIAS+".analistasTecnicos", ANALISTA_TECNICO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+			addAlias(ANALISE_TECNICA_ALIAS + ".analistaTecnico", ANALISTA_TECNICO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		} else {
 
-			addAlias(ANALISE_TECNICA_ALIAS+".analistasTecnicos", ANALISTA_TECNICO_ALIAS);
+			addAlias(ANALISE_TECNICA_ALIAS + ".analistaTecnico", ANALISTA_TECNICO_ALIAS);
 		}
 
 		return this;
@@ -529,6 +529,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnico(boolean isLeftOuterJoin) {
+
+		addAnaliseGeoAlias(isLeftOuterJoin);
+		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS + ".dataParecerGerenteAnaliseGeo").as("dataParecerGerenteAnaliseGeo"));
+
+		return this;
+
+	}
+
 	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
@@ -735,7 +744,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		if (idAnalistaTecnico != null) {
 
 			addAnalistaTecnicoAlias(isLeftOuterJoin);
-			addRestriction(Restrictions.eq(ANALISTA_TECNICO_ALIAS+".usuario.id", idAnalistaTecnico));
+			addRestriction(Restrictions.eq(ANALISTA_TECNICO_ALIAS + ".usuario.id", idAnalistaTecnico));
 		}
 
 		return this;
@@ -747,6 +756,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 			addAnalistaGeoAlias(isLeftOuterJoin);
 			addRestriction(Restrictions.eq(ANALISTA_GEO_ALIAS+".usuario.id", idAnalistaGeo));
+
 		}
 
 		return this;

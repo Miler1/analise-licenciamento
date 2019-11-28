@@ -110,7 +110,6 @@ public class Notificacao extends GenericModel {
 		this.resolvido = false;
 		this.ativo = true;
 		this.dataNotificacao = new Date();
-		this.justificativa = analiseGeo.despacho;
 		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
 		this.documentacao = notificacao.documentacao;
 		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
@@ -118,6 +117,12 @@ public class Notificacao extends GenericModel {
 		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
 		this.prazoNotificacao = notificacao.prazoNotificacao;
 		this.documentos = new ArrayList<>();
+
+		ParecerAnalistaGeo parecerAnalistaGeo = ParecerAnalistaGeo.find("analiseGeo", analiseGeo).first();
+
+		if(parecerAnalistaGeo != null) {
+			this.justificativa = parecerAnalistaGeo.parecer;
+		}
 
 		documentos.stream().forEach(documento -> {
 			if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {

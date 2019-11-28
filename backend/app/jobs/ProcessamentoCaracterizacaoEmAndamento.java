@@ -162,7 +162,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		analiseGeo.id = null;
 		analiseGeo.analise = analise;
-		analiseGeo.parecer = analiseGeoAntiga.parecer;
 		analiseGeo.dataVencimentoPrazo = new Date();
 		analiseGeo.revisaoSolicitada = false;
 		analiseGeo.notificacaoAtendida = false;
@@ -171,7 +170,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analiseGeo.dataInicio = new Date();
 		analiseGeo.dataFim = new Date();
 		analiseGeo.dataCadastro = new Date();
-		analiseGeo.tipoResultadoAnalise = analiseGeoAntiga.tipoResultadoAnalise;
 		analiseGeo.tipoResultadoValidacao = analiseGeoAntiga.tipoResultadoValidacao;
 		analiseGeo.parecerValidacao = analiseGeoAntiga.parecerValidacao;
 		analiseGeo.usuarioValidacao = analiseGeoAntiga.usuarioValidacao;

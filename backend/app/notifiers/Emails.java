@@ -32,7 +32,7 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> notificarRequerenteAnaliseGeo(List<String> destinatarios, String licencas,
-																AnaliseGeo analiseGeo, Endereco enderecoCompleto, File pdfNotificacao) {
+																AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, File pdfNotificacao) {
 
 		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -44,7 +44,8 @@ public class Emails extends Mailer {
 		attachment.setPath(new File(pdfNotificacao.getPath()).getPath());
 		addAttachment(attachment);
 
-		return send(licencas, analiseGeo, enderecoCompleto);
+		return send(licencas, analiseGeo, parecerAnalistaGeo, enderecoCompleto);
+
 	}
 	
 	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas, 

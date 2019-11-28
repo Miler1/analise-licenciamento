@@ -32,7 +32,6 @@ public class SolicitarAjustesGeoAprovador extends TipoResultadoAnaliseChain<Anal
          * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador e gerente
          */
         copia.setValidacaoCoordenador(analiseGeo);
-        copia.setValidacaoGerente(analiseGeo);
 
         copia._save();
 

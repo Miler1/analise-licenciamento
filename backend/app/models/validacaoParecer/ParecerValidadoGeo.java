@@ -1,10 +1,8 @@
 package models.validacaoParecer;
 
-import models.AnaliseGeo;
-import models.TipoResultadoAnalise;
+import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.StatusCaracterizacao;
-import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.ViewHistoricoTramitacao;
 import utils.ListUtil;
@@ -35,7 +33,9 @@ public class ParecerValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
 
         analiseGeo._save();
 
-        if (analiseGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
+        ParecerAnalistaGeo parecerAnalistaGeo = ParecerAnalistaGeo.find("analiseGeo", analiseGeo).first();
+
+        if (parecerAnalistaGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 
             List<Long> idsCaracterizacoes = ListUtil.getIds(analiseGeo.analise.processo.empreendimento.caracterizacoes);
 
@@ -46,7 +46,7 @@ public class ParecerValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
             return;
         }
 
-        if (analiseGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
+        if (parecerAnalistaGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_TECNICO_PELO_COORDENADOR, usuarioExecutor);
             ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);

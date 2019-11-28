@@ -4,7 +4,13 @@ DateUtil = {
 
         return moment(stringDate, 'DD/MM/yyyy').startOf('day')
             .diff(moment(Date.now()).startOf('day'), 'days');		
-    },
+	},
+	
+	somaPrazoEmDias: function(date, prazo) {
+
+		return moment(date, 'DD/MM/yyyy').startOf('day').add(prazo, 'days').format('DD/MM/YYYY');
+
+	},
 
 	getDiasRestantes: function(dataVencimento){
 
