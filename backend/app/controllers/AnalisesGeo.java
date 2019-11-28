@@ -230,10 +230,12 @@ public class AnalisesGeo extends InternalController {
     }
 
     public static void buscaAnaliseGeoByAnalise(Long idAnalise) {
+
         AnaliseGeo analiseGeo = AnaliseGeo.find("id_analise = :id_analise")
                 .setParameter("id_analise", idAnalise).first();
 
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
+
     }
 
     public static void findAllRestricoesById(Long idProcesso) {

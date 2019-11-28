@@ -1,0 +1,29 @@
+div.modal-header
+
+    button.close(type='button', ng-click="visualizarAjustesController.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Visualizar solicitação de ajustes do Gerente
+    div(growl inline="true" reference='5')
+  
+
+div.modal-body
+
+    div#justificativa-desvinculo
+        div
+            span.pull-center.visualizar-justificativa É necessário ajustar a análise, conforme a justificativa do gerente.
+            br
+            br
+            label.label-justificativa Justificativa:
+            br
+            div.visualizar-solicitacao-ajustes
+                .area
+                    p(ng-bind-html="visualizarAjustesController.justificativa.parecer")
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="visualizarAjustesController.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Voltar
+    
