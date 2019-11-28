@@ -33,6 +33,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import static security.Auth.getUsuarioSessao;
 
@@ -77,6 +78,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "data_fim")
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFim;
+
+    @Column(name = "data_parecer_gerente_analise_geo")
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date dataParecerGerenteAnaliseGeo;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
@@ -666,8 +671,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         List<File> documentos = new ArrayList<>();
         documentos.add(pdf.getFile());
-        List<Documento> documentosAnaliseTemporal = this.documentos.stream().filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL)).collect(Collectors.toList());
-        documentos.addAll(documentosAnaliseTemporal.stream().map(Documento::getFile).collect(Collectors.toList()));
+
+        Documento documentoAnaliseTemporal = this.documentos.stream()
+                .filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL))
+                .findAny().orElse(null);
+
+        if (documentoAnaliseTemporal != null){
+            documentos.add(documentoAnaliseTemporal.arquivo);
+        }
 
         return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
 

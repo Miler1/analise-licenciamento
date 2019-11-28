@@ -10,4 +10,25 @@ public class ParecerAnalistaGeoSerializer {
 			"parecer"
 	);
 
+	public static JSONSerializer findByIdNumeroProcesso = SerializerUtil.create(
+			"parecer",
+			"situacaoFundiaria",
+			"analiseTemporal",
+			"conclusao"
+	);
+
+	public static JSONSerializer findByIdProcesso = SerializerUtil.create(
+			"parecer",
+			"situacaoFundiaria",
+			"analiseTemporal",
+			"conclusao",
+			"documentos",
+			"documentos.id",
+			"documentos.nomeDoArquivo",
+			"documentos.caminho",
+			"documentos.tipo.id",
+			"documentos.tipo.nome"
+
+	);
+
 }

@@ -2,7 +2,7 @@ include ../../../../layout/components/paginacao
 
 div
 	filtro-processos(paginacao="listagem.paginacao",
-		disabled-fields="analiseEmAndamentoListagem.disabledFields"
+		disabled-fields="listagem.disabledFields"
 		atualizar-lista="listagem.atualizarListaProcessos",
 		atualizar-paginacao="listagem.atualizarPaginacao",
 		condicao-tramitacao="listagem.condicaoTramitacao",
@@ -18,7 +18,6 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th
 							th.col-md-1 Protocolos
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
@@ -29,11 +28,6 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
-							td
-								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
-								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
-								span(ng-class="{'icone-renovacao': processo.renovacao}")
-
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -59,10 +53,6 @@ div
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-				div
-					span.icone-revisao-solicitada.legenda Revisão Solicitada
-					span.icone-revisao-atendida.legenda Notificação Atendida
-					span.icone-renovacao.legenda Renovação
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

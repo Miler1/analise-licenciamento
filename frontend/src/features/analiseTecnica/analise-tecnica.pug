@@ -15,41 +15,39 @@ div(ng-init="ctrl.init()")
     section.margin-bottom-md
 
         uib-tabset(active='ctrl.tabAtiva')
-            uib-tab(index="0", heading="Análise geo")
+            uib-tab(index="0", heading="Análise técnica")
                 div(ng-if='ctrl.tabAtiva === 0')
-                    //include analiseGeo/analise-geo
+                    //- include analiseGeo/analise-tecnica
 
-            uib-tab(index="1", heading="Parecer")
-                parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
+            uib-tab(index="1", heading="Vistoria")
+                //- include vistoria...
 
-                a.btn(ng-click="ctrl.tabAtiva = 0")
-                    | << Etapa anterior
-
+            uib-tab(index="2", heading="Conclusão da análise")
+                //- parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
 
     section.margin-bottom-xl.alone
 
-        button.btn.btn-default.col-md-2.col-md-offset-0(ng-click="ctrl.cancelar()")
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs(ng-click="ctrl.cancelar()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
 
-        button.btn.btn-success.pull-right.col-md-2(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 1")
+        button.btn.btn-default.col-md-2.col-md-offset-0(ng-if="ctrl.tabAtiva > 0", ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1")
+            | << Etapa anterior
+
+        button.btn.btn-success.pull-right.col-md-2(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 2")
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
 
-        button.btn.btn-success.pull-right.col-md-2.margin-right-xs(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
-            i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
-            | Salvar
+        //- button.btn.btn-success.pull-right.col-md-2.margin-right-xs(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
+        //-     i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
+        //-     | Salvar
 
         button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO && ctrl.validarAnalise()" ng-click="ctrl.downloadPDFNotificacao()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
             | Visualizar notificação
 
-        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.tabAtiva = 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 0")
+        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
             | Próxima etapa
 
         i.pull-right(ng-if="ctrl.analiseTecnica.dataFim") Esta análise foi concluida em {{ctrl.analiseTecnica.dataFim}} e não pode mais ser alterada.
-
-
-
-
