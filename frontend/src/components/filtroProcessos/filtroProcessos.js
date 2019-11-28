@@ -208,7 +208,7 @@ var FiltroProcessos = {
 					}
 				}
 
-				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GERENTE)){
+				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GERENTE) && !ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GEO)){
 					if(ctrl.isAnaliseTecnicaOpcional){
 						analistaService.getAnalistasGeo()
 							.then(function(response){

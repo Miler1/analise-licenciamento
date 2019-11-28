@@ -113,6 +113,11 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	};
 
+	this.findParecerAjustesByAnaliseGeo = function(analiseGeo){
+		return request
+			.get(config.BASE_URL() + 'analisesGeo/findParecerAjustesByAnaliseGeo',analiseGeo);
+	};
+
 	this.getDadosRestricoesProjeto = function(idProcesso) {
 
 		return request

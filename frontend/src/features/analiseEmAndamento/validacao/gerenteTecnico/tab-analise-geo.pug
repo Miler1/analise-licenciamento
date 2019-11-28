@@ -101,7 +101,7 @@
                     #resultatdo-analise.collapse
                         .label-situacao
                             span.title-info Situação: 
-                            span {{validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.nome | uppercase}}
+                            span {{validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
                         
                         .botoes-download
                             button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
@@ -116,22 +116,22 @@
                             div
                                 label.label-parecer Da situação fundiária:
                                 br
-                                .area
-                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.situacaoFundiaria")
+                                p(ng-if="validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria", ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria")
+                                div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria") 
+                                    i Não há situação fundiária
 
                             div
                                 label.label-parecer Da análise temporal:
                                 br
-                                .area
-                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.analiseTemporal")
-
+                                p(ng-if="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal", ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal")
+                                div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal") 
+                                    i Não há análise temporal
                             div
                                 label.label-parecer Conclusão:
                                 br
-                                .area
-                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.parecer")
+                                p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.conclusao")
 
-                        table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.analiseGeo.documentos.length > 0")
+                        table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.parecerGeo.documentos.length > 0")
 
                             thead
 
@@ -141,21 +141,19 @@
 
                             tbody
 
-                                tr(ng-repeat="documento in validacaoAnaliseGeoGerente.analiseGeo.documentos")
+                                tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos")
 
-                                    td.col-md-10 {{documento.nomeDoArquivo}}
+                                    td.col-md-10 {{ documento.nomeDoArquivo }}
                                     td.col-md-2.text-right
                                         a.d-inline.margin-right-xs.aba-clicavel(title="Baixar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
                                             i.glyphicon.glyphicon-save
 
                         #camposAnaliseGeoObservacao
-                            div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
+                            div(ng-show="validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
                                 label.label-parecer Despacho:
                                 br
-                                .area
-                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
-                            div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.INDEFERIDO")
+                                p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.parecer")
+                            div(ng-show="validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.INDEFERIDO")
                                 label.label-parecer Justificativa:
                                 br
-                                .area
-                                    p(ng-bind-html="validacaoAnaliseGeoGerente.analiseGeo.despacho")
+                                p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.parecer")

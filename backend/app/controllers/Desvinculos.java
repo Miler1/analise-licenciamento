@@ -108,8 +108,6 @@ public class Desvinculos extends GenericController {
         }
 
         Desvinculo desvinculoAlterar = Desvinculo.findById(desvinculo.id);
-
-        desvinculo.analistaGeoDestino = desvinculo.analistaGeo;
         desvinculoAlterar.update(desvinculo);
 
         desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);

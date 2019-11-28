@@ -231,69 +231,61 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(setor.sigla, 2));
 			}
+
 		}
+
 	}
 
 	private static void commonFilterProcessoAnaliseTecnica(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 														   UsuarioAnalise usuarioSessao) {
 
-		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-
 		if (!filtro.isAnaliseTecnica) {
 
 			return;
+
 		}
 
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
-		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
-
-			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
-
-			return;
-		}
-
 		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
 
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_USUARIO_SEM_SETOR);
+
 		}
 
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) ||
-				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
+		if(filtro.idCondicaoTramitacao != null) {
 
-			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, filtro.isAnaliseTecnicaOpcional);
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_TECNICA) ||
+					filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_TECNICA)) {
 
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+				processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, true);
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+			} else if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+			} else if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+			}
+
 		} else {
 
+			if(filtro.idAnalistaTecnico == null) {
+
+				filtro.idAnalistaTecnico = usuarioSessao.id;
+
+			}
+
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
+
 		}
 
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
-
-		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR)) {
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoTecnica(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoTecnicaGerente(usuarioSessao.id);
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
 	}
 
 	private static void commonFilterProcessoGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
@@ -520,6 +512,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDiasAnaliseTecnica()
 				.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.orderByDataVencimentoPrazoAnaliseTecnica();
+
 	}
 
 	private static void listWithFilterAnaliseGeo(ProcessoBuilder processoBuilder,
@@ -579,7 +572,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);
+		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
+
 	}
 
 	private static void countWithFilterAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
