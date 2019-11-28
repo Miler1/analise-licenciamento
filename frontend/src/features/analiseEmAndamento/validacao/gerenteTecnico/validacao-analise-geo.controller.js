@@ -126,7 +126,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		documentoAnaliseService.generatePDFParecerGeo(params)
 			.then(function(data, status, headers){
 
-				
+				var url = URL.createObjectURL(data.data.response.blob);
+                window.open(url, '_blank');
 
 			},function(error){
 				mensagem.error(error.data.texto);

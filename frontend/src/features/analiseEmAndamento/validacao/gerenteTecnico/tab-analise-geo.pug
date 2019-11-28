@@ -145,8 +145,8 @@
 
                                     td.col-md-10 {{documento.nomeDoArquivo}}
                                     td.col-md-2.text-right
-                                        a.d-inline.margin-right-xs.aba-clicavel(title="Baixar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
-                                            i.glyphicon.glyphicon-save
+                                        a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
+                                            i.glyphicon.glyphicon-eye-open
 
                         #camposAnaliseGeoObservacao
                             div(ng-show="validacaoAnaliseGeoGerente.analiseGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
