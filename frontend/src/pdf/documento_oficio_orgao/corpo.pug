@@ -7,6 +7,7 @@ doctype html
 |	empreendimento = analiseGeo.analise.processo.empreendimento;
 |	empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 |	atividadesCaracterizacao = comunicado.caracterizacao.atividadesCaracterizacao;
+|	distanciaRestricao = distancia;
 |	municipio = municipio;
 |}%
 html(lang='en')
@@ -78,7 +79,7 @@ html(lang='en')
 				br
 		
 			div
-				|   Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				|   Informamos ainda, que o empreendimento ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
 				br
 				br
 		| \#{/if}
