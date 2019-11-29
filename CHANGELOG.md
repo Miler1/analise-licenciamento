@@ -15,6 +15,7 @@
 * OS40 - US777 - [Gestão de Demandas - AM] Considerações de homologação
 * OS40 - US769 - [Customizações análise GEO] Notificações
 * OS40 - US851 - [Analista GEO] Eu, Analista Geo, devo visualizar a justificativa do gerente para ver a justificativa da solicitação de ajustes e inserir apenas 1 arquivo por análise temporal
+* OS40 - US846 - [Analista GEO] Eu, Analista Geo, ao baixar o parecer, devo visualizar a área do complexo, no tópico 2 (Das Áreas Resultantes da caracterização)
 
 ## OS44
 
