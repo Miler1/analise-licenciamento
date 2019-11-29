@@ -2,7 +2,6 @@ package builders;
 
 import models.Processo;
 import models.tramitacao.HistoricoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;

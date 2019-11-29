@@ -1,6 +1,6 @@
 package models;
 
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -12,7 +12,7 @@ public class RelHistoricoTramitacaoSetor extends GenericModel {
     @Id
     @OneToOne
     @JoinColumn(name="id_historico_tramitacao")
-    public ViewHistoricoTramitacao viewHistoricoTramitacao;
+    public HistoricoTramitacao historicoTramitacao;
 
     @Column(name="sigla_setor")
     public String siglaSetor;

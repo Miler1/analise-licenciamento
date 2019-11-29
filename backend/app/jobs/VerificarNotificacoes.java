@@ -6,7 +6,7 @@ import models.licenciamento.Caracterizacao;
 import models.licenciamento.SolicitacaoDocumentoCaracterizacao;
 import models.licenciamento.StatusCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
@@ -144,8 +144,8 @@ public class VerificarNotificacoes extends GenericJob {
 		destinatarios.addAll(analise.processo.empreendimento.emailsProprietarios());
 		destinatarios.addAll(analise.processo.empreendimento.emailsResponsaveis());
 
-		ViewHistoricoTramitacao arquivamento = ViewHistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel);
-		ViewHistoricoTramitacao historicoAnalise = ViewHistoricoTramitacao.getPenultimaTramitacao(analise.processo.idObjetoTramitavel);
+		HistoricoTramitacao arquivamento = HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel);
+		HistoricoTramitacao historicoAnalise = HistoricoTramitacao.getPenultimaTramitacao(analise.processo.idObjetoTramitavel);
 
 		List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
 

@@ -3,7 +3,7 @@ package jobs;
 
 import models.*;
 import models.licenciamento.Licenca;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.Logger;
 import play.jobs.On;
@@ -70,8 +70,8 @@ public class ReenvioEmailJob extends GenericJob {
 
 					Processo processo = Processo.findById(reenvioEmail.idItensEmail);
 
-					ViewHistoricoTramitacao arquivamento = ViewHistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
-					ViewHistoricoTramitacao historicoAnalise = ViewHistoricoTramitacao.getPenultimaTramitacao(processo.idObjetoTramitavel);
+					HistoricoTramitacao arquivamento = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
+					HistoricoTramitacao historicoAnalise = HistoricoTramitacao.getPenultimaTramitacao(processo.idObjetoTramitavel);
 
 					List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
 

@@ -19,9 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -123,7 +121,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
 
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
-		ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
 	}
 
@@ -131,7 +129,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
-		ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
 	}
 
@@ -139,7 +137,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		
 		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
-		ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
 	}
 
@@ -608,9 +606,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	//Retorna o historico da tramitação com o tempo que o objeto tramitavel permaneceu na condição
-	public List<ViewHistoricoTramitacao> getHistoricoTramitacao() {
+	public List<HistoricoTramitacao> getHistoricoTramitacao() {
 
-		List<ViewHistoricoTramitacao> historicosTramitacoes = ViewHistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
+		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
 
 		Date dataAtual = new Date();
 
@@ -637,7 +635,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	//Retorna o historico da tramitação com o tempo que o objeto tramitavel anterior permaneceu na condição
-	public List<ViewHistoricoTramitacao> getHistoricoTramitacaoAnterior() {
+	public List<HistoricoTramitacao> getHistoricoTramitacaoAnterior() {
 
 		if (this.processoAnterior == null) {
 
@@ -645,7 +643,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		Processo processoAnterior = Processo.findById(this.processoAnterior.id);
-		List<ViewHistoricoTramitacao> historicosTramitacoes = ViewHistoricoTramitacao.getByObjetoTramitavel(processoAnterior.idObjetoTramitavel);
+		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(processoAnterior.idObjetoTramitavel);
 
 		Date dataAtual = new Date();
 

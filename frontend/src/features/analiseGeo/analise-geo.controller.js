@@ -33,7 +33,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.prazoNotificacao = null;
 	ctrl.isPdf = false;
 	ctrl.tiposUpload = app.utils.TiposUpload;
-	ctrl.labelDadosProjeto = 'Dados da área do projeto';
+	ctrl.labelDadosProjeto = 'Dados da área';
 	ctrl.parecer = {
 		situacaoFundiaria: null,
 		analiseTemporal: null,
@@ -485,12 +485,18 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						ctrl.dadosProjeto = response.data;
 
-						var isComplexo = ctrl.dadosProjeto.restricoes.some(function(restricao) { 
-							return restricao.sobreposicaoCaracterizacaoComplexo;
-						});
-						
-						if(isComplexo) {
-							ctrl.labelDadosProjeto = ctrl.labelDadosProjeto.concat(': Complexo');
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO) {
+
+							ctrl.labelDadosProjeto = ctrl.labelDadosProjeto.concat(' do complexo');
+
+						} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
+
+							ctrl.labelDadosProjeto = ctrl.labelDadosProjeto.concat(' do empreendimento');
+
+						} else {
+
+							ctrl.labelDadosProjeto = ctrl.labelDadosProjeto.concat(' da atividade');
+
 						}
 
 						ctrl.dadosProjeto.atividades.forEach(function(atividade) {

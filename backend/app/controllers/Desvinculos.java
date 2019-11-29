@@ -4,14 +4,22 @@ package controllers;
 import exceptions.ValidacaoException;
 import models.*;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import serializers.DesvinculoSerializar;
+import utils.Configuracoes;
+import utils.DateUtil;
 import utils.Mensagem;
 
+import javax.validation.ValidationException;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static controllers.InternalController.getUsuarioSessao;
+import static models.tramitacao.AcaoTramitacao.INICIAR_ANALISE_GERENTE;
+import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO;
 
 public class Desvinculos extends GenericController {
 
@@ -45,8 +53,8 @@ public class Desvinculos extends GenericController {
         desvinculo.save();
 
         desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
-        desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, getUsuarioSessao(), desvinculo.gerente);
-        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+        desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, SOLICITAR_DESVINCULO, getUsuarioSessao(), desvinculo.gerente);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 
@@ -62,6 +70,35 @@ public class Desvinculos extends GenericController {
                 .first();
 
         renderJSON(desvinculo, DesvinculoSerializar.list);
+    }
+
+    private static int prazoCongelamentoDesvinculo(Desvinculo desvinculo) {
+
+        List<HistoricoTramitacao> historicoTramitacao = desvinculo.analiseGeo.analise.processo.getHistoricoTramitacao().stream().sorted(Comparator.comparing(HistoricoTramitacao::getDataInicial).reversed()).collect(Collectors.toList());
+
+        if(!historicoTramitacao.isEmpty()) {
+
+            HistoricoTramitacao historicoInicialGerente = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(SOLICITAR_DESVINCULO))
+                    .findFirst().orElseThrow(ValidationException::new);
+
+            String prazo = DateUtil.getDiferencaEmDiasHorasMinutos(historicoInicialGerente.dataInicial, new Date());
+
+            return Integer.parseInt(prazo.split(",")[0].split(" ")[0]);
+
+        }
+
+        return 0;
+
+    }
+
+    private static Date somaDataEmDias(Date data, Integer prazo) {
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        c.add(Calendar.DAY_OF_MONTH, prazo);
+
+        return c.getTime();
+
     }
 
     public static void responderSolicitacaoDesvinculo(Desvinculo desvinculo) {
@@ -106,12 +143,24 @@ public class Desvinculos extends GenericController {
         desvinculoAlterar.update(desvinculo);
 
         desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
+
         if(desvinculo.aprovada) {
+
+            desvinculo.analiseGeo.dataVencimentoPrazo = somaDataEmDias(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
+            desvinculo.analiseGeo._save();
+
             desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeoDestino);
+
         } else {
+
+            desvinculo.analiseGeo.dataVencimentoPrazo = somaDataEmDias(desvinculo.analiseGeo.dataVencimentoPrazo, prazoCongelamentoDesvinculo(desvinculo));
+            desvinculo.analiseGeo._save();
+
             desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeo);
+
         }
-        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_RESPONDIDO_COM_SUCESSO.getTexto());
 

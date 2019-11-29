@@ -3,7 +3,7 @@ package models.validacaoParecer;
 import exceptions.ValidacaoException;
 import models.*;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
 
 import java.util.ArrayList;
@@ -31,14 +31,14 @@ public class ParecerNaoValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo>
             criarNovaAnaliseComGerente(analiseGeo, novaAnaliseGeo.getGerente().usuario, usuarioExecutor);
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_PELO_GERENTE, usuarioExecutor);
-            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
         } else {
 
             criarNovaAnaliseComAnalista(analiseGeo, novaAnaliseGeo.getAnalistaGeo().usuario, usuarioExecutor);
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, usuarioExecutor);
-            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
         }
     }
 

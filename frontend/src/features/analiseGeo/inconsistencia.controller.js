@@ -27,10 +27,24 @@ var InconsistenciaController = function ($scope,
 		item:false
 	};
 	
+	inconsistenciaController.tiposInconsistencia = app.utils.Inconsistencia;
 	inconsistenciaController.categoriaInconsistencia = categoriaInconsistencia;
-	
 	inconsistenciaController.habilitaExcluir = inconsistencia !== null;
 	inconsistenciaController.isEdicao = inconsistencia !== null && inconsistencia.isEdicao !== undefined ? inconsistencia.isEdicao : false;
+
+	if(dadosProjeto.categoria === inconsistenciaController.tiposInconsistencia.COMPLEXO) {
+
+		inconsistenciaController.categoriaProjeto = 'Complexo';
+
+	} else if(dadosProjeto.categoria === inconsistenciaController.tiposInconsistencia.PROPRIEDADE) {
+
+		inconsistenciaController.categoriaProjeto = 'Propriedade';
+
+	} else {
+
+		inconsistenciaController.categoriaProjeto = 'Atividade';
+
+	}
 
 	if(inconsistencia){
 		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;

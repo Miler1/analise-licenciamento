@@ -9,7 +9,6 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
 import utils.Mensagem;
 
 import javax.persistence.*;

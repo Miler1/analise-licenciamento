@@ -5,7 +5,7 @@ import models.ParecerAnalistaGeo;
 import models.TipoResultadoAnalise;
 import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 
 public class ParecerValidadoGeoGerente extends TipoResultadoAnaliseChain<AnaliseGeo> {
 
@@ -25,14 +25,14 @@ public class ParecerValidadoGeoGerente extends TipoResultadoAnaliseChain<Analise
         if (parecerAnalistaGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_INDEFERIMENTO_GEO_PELO_GERENTE, usuarioExecutor);
-            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
             return;
         }
 
         if (parecerAnalistaGeo.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 
             analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_DEFERIMENTO_GEO_PELO_GERENTE, usuarioExecutor);
-            ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
         }
 
     }

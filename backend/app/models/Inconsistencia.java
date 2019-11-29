@@ -20,7 +20,7 @@ public class Inconsistencia extends GenericModel{
 
     public static final String SEQ = "analise.inconsistencia_id_seq";
 
-    public enum Categoria { PROPRIEDADE, ATIVIDADE, RESTRICAO }
+    public enum Categoria { PROPRIEDADE, COMPLEXO, ATIVIDADE, RESTRICAO }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
@@ -68,13 +68,10 @@ public class Inconsistencia extends GenericModel{
 
     public Inconsistencia(AnaliseGeo analiseGeo) {
 
-        if(this.analiseGeo == null){
-
-            this.analiseGeo = analiseGeo;
-            this.descricaoInconsistencia = "";
-            this.tipoInconsistencia = "";
-            this.anexos = null;
-        }
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = "";
+        this.tipoInconsistencia = "";
+        this.anexos = null;
 
     }
 
@@ -88,6 +85,7 @@ public class Inconsistencia extends GenericModel{
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;
         this.categoria = categoria;
+
     }
 
     public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao) {
@@ -101,6 +99,7 @@ public class Inconsistencia extends GenericModel{
     }
 
     public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+
         this.analiseGeo = analiseGeo;
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;

@@ -7,7 +7,7 @@ import models.Gerente;
 import models.TipoResultadoAnalise;
 import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
 
 import java.util.ArrayList;
@@ -35,14 +35,14 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 			criarNovaAnaliseComGerente(analiseTecnica, novaAnaliseTecnica.getGerente().usuario, usuarioExecutor);
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_GERENTE, usuarioExecutor);
-			ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		} else {
 			
 			criarNovaAnaliseComAnalista(analiseTecnica, novaAnaliseTecnica.analistaTecnico.usuario, usuarioExecutor);
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO, usuarioExecutor);
-			ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		}
 	}
 

@@ -7,7 +7,7 @@ import models.licenciamento.Licenca;
 import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -18,7 +18,6 @@ import utils.validacao.Validacao;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -335,7 +334,7 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 			lAnalise.analiseTecnica._save();
 
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.EMITIR_LICENCA, usuarioExecutor);
-			ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 
 		} catch (Exception e) {
 			

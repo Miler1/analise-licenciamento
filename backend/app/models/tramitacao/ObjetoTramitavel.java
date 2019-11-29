@@ -28,9 +28,6 @@ public class ObjetoTramitavel extends GenericModel {
  	@ManyToOne
  	@JoinColumn(name = "ID_PAI", referencedColumnName = "ID_OBJETO_TRAMITAVEL")
 	public ObjetoTramitavel objetoTramitavelPai;
-
- 	@OneToMany(mappedBy = "objetoTramitavel", fetch = FetchType.EAGER)
-    public List<HistoricoTramitacao> historicoTramitacoes;
 	
  	@Column(name = "ID_FLUXO")
 	public Long idFluxo;

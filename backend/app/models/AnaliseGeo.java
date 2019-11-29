@@ -14,7 +14,7 @@ import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
@@ -23,17 +23,11 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+
 import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import static security.Auth.getUsuarioSessao;
 
@@ -193,7 +187,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         verificarDataInicio();
 
         this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GEO, usuarioExecutor);
-        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
     public void iniciarAnaliseGerente(UsuarioAnalise usuarioExecutor) {
@@ -201,7 +195,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         verificarDataInicio();
 
         this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GERENTE, usuarioExecutor);
-        ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
     public void verificarDataInicio() {

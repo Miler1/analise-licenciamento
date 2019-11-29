@@ -6,10 +6,8 @@ import models.AnalistaTecnico;
 import models.TipoResultadoAnalise;
 import models.UsuarioAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.ViewHistoricoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
-
-import java.util.ArrayList;
 
 public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
@@ -32,7 +30,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.analistaTecnico.usuario, usuarioExecutor);
 		
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
-		ViewHistoricoTramitacao.setSetor(ViewHistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 
 	private void criarNovaAnalise(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioAnalista, UsuarioAnalise usuarioValidacao) {
