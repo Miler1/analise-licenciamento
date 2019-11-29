@@ -82,10 +82,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFim;
 
-    @Column(name = "data_parecer_gerente_analise_geo")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataParecerGerenteAnaliseGeo;
-
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
     public TipoResultadoAnalise tipoResultadoValidacao;
@@ -830,7 +826,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
         Municipio municipio = null;
-
+        String distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
         main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(comunicado.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
         for (Endereco endereco : empreendimentoEU.enderecos) {
             if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
@@ -842,6 +838,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseGeo", comunicado.analiseGeo)
                 .addParam("comunicado", comunicado)
+                .addParam("distancia", distancia)
                 .addParam("municipio", municipio)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 

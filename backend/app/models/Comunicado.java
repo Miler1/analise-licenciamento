@@ -116,6 +116,7 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
         this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoAtividade.distancia);
 
     }
 
@@ -130,10 +131,11 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
         this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoComplexo.distancia);
 
     }
 
-    private String getDistancia(Double distancia) {
+    public String getDistancia(Double distancia) {
 
         if(TipoSobreposicaoDistanciaEnum.getList().contains(this.tipoSobreposicao.codigo)) {
             return "dista " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
