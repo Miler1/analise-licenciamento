@@ -53,7 +53,7 @@ public class VerificarComunicado extends GenericJob {
 
 				if(comunicado.ativo) {
 
-					if (CalculaDiferencaDias(comunicado.dataVencimento, new Date()) > 0 || !comunicado.resolvido) {
+					if (VencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
 
 						podeTramitar = false;
 
@@ -85,18 +85,18 @@ public class VerificarComunicado extends GenericJob {
 
 	}
 
-	public int CalculaDiferencaDias(Date dataInicial, Date dataFinal) {
+	public Boolean VencimentoPrazo(Date dataInicio, Date dataFim) {
 
-		if (dataInicial == null || dataFinal == null) {
+		LocalDate dataVencimento = new LocalDate(dataInicio.getTime());
+		LocalDate dataAtual = new LocalDate(dataFim.getTime());
 
-			return 0;
-
+		// Prazo de 30 dias para resposta do orgão venceu
+		if(dataVencimento.isBefore(dataAtual)) {
+			return false;
 		}
 
-		LocalDate dataInicio = new LocalDate(dataInicial.getTime());
-		LocalDate dataFim = new LocalDate(dataFinal.getTime());
-
-		return Days.daysBetween(dataInicio, dataFim).getDays();
+		// Prazo de 30 dias para resposta do orgão ainda não venceu
+		return true;
 
 	}
 
