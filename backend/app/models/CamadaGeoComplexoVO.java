@@ -5,7 +5,6 @@ import java.util.List;
 
 public class CamadaGeoComplexoVO {
 
-
     public Caracterizacao caracterizacao;
     public List<GeometriaAtividadeVO> geometrias;
 
@@ -27,7 +26,5 @@ public class CamadaGeoComplexoVO {
         return this.geometrias;
 
     }
-
-
 
 }
