@@ -22,6 +22,8 @@ public class Desvinculos extends GenericController {
 
     public static void solicitarDesvinculoAnaliseGeo(DesvinculoAnaliseGeo desvinculoAnaliseGeo) {
 
+        verificarPermissao(Acao.SOLICITAR_DESVINCULO_GEO);
+
         returnIfNull(desvinculoAnaliseGeo, "Desvinculo");
 
         if(desvinculoAnaliseGeo.justificativa == null || desvinculoAnaliseGeo.justificativa.equals("")){
@@ -70,6 +72,8 @@ public class Desvinculos extends GenericController {
     }
 
     public static void responderSolicitacaoDesvinculoAnaliseGeo(DesvinculoAnaliseGeo desvinculoAnaliseGeo) {
+
+        verificarPermissao(Acao.RESPONDER_SOLICITACAO_DESVINCULO);
 
         returnIfNull(desvinculoAnaliseGeo, "DesvinculoAnaliseGeo");
 
@@ -129,6 +133,8 @@ public class Desvinculos extends GenericController {
 
     public static void solicitarDesvinculoAnaliseTecnica(DesvinculoAnaliseTecnica desvinculoAnaliseTecnica) {
 
+        verificarPermissao(Acao.SOLICITAR_DESVINCULO_TECNICO);
+
         returnIfNull(desvinculoAnaliseTecnica, "Desvinculo");
 
         if(desvinculoAnaliseTecnica.justificativa == null || desvinculoAnaliseTecnica.justificativa.equals("")){
@@ -177,6 +183,8 @@ public class Desvinculos extends GenericController {
     }
 
     public static void responderSolicitacaoDesvinculoAnaliseTecnica(DesvinculoAnaliseTecnica desvinculoAnaliseTecnica) {
+
+        verificarPermissao(Acao.RESPONDER_SOLICITACAO_DESVINCULO);
 
         returnIfNull(desvinculoAnaliseTecnica, "Desvinculo");
 
