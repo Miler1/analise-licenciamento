@@ -142,7 +142,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public List<Inconsistencia> inconsistencias;
 
     @OneToMany(mappedBy = "analiseGeo", fetch = FetchType.LAZY)
-    public List<Desvinculo> desvinculos;
+    public List<DesvinculoAnaliseGeo> desvinculos;
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)

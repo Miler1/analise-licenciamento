@@ -26,7 +26,7 @@ var VisualizarJustificativasController = function ($uibModalInstance, parecer, i
 
     } else {
 
-        desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
+        desvinculoService.buscarDesvinculoPeloProcessoGeo(idProcesso)
             .then(function(response){
 
                 var desvinculo = response.data;

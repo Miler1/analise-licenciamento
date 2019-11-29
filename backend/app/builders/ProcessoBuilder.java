@@ -36,7 +36,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String GERENTE_ALIAS = "gte";
 	private static final String DIA_ANALISE_ALIAS = "da";
 	private static final String CONDICAO_ALIAS = "ca";
-	private static final String DESVINCULO_ALIAS = "dea";
+	private static final String DESVINCULO_ANALISE_GEO_ALIAS = "dea";
 	private static final String DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS = "dagd";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
@@ -90,10 +90,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addDesvinculoAlias() {
+	public ProcessoBuilder addDesvinculoAnaliseGeoAlias() {
 
 		addAnaliseGeoAlias();
-		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 	}
@@ -227,8 +227,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder addAnalistaGeoAlias() {
 
-		addDesvinculoAlias();
-		addAlias(DESVINCULO_ALIAS + ".analistaGeoDestino", DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addDesvinculoAnaliseGeoAlias();
+		addAlias(DESVINCULO_ANALISE_GEO_ALIAS + ".analistaGeoDestino", DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 
@@ -540,7 +540,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByDesvinculo() {
+	public ProcessoBuilder groupByDesvinculoAnaliseGeo() {
 
 		addAnalistaGeoAlias();
 		addProjection(Projections.groupProperty(DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS + ".login").as("loginUsuarioDestino"));
@@ -744,10 +744,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorDesvinculo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarDesvinculoAnaliseGeo(boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
-		addDesvinculoAlias();
+		addDesvinculoAnaliseGeoAlias();
 		addAnalistaGeoAlias();
 
 		addRestriction(Restrictions.or(Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),

@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(schema="analise", name="desvinculo")
-public class Desvinculo extends GenericModel {
+@Table(schema="analise", name="desvinculo_analise_geo")
+public class DesvinculoAnaliseGeo extends GenericModel {
 
     public static final String SEQ = "analise.desvinculo_id_seq";
 
@@ -61,7 +61,7 @@ public class Desvinculo extends GenericModel {
     @JoinColumn(name="id_usuario_destino")
     public UsuarioAnalise analistaGeoDestino;
 
-    public void update(Desvinculo novoDesvinculo) {
+    public void update(DesvinculoAnaliseGeo novoDesvinculo) {
 
         this.respostaGerente = novoDesvinculo.respostaGerente;
         this.aprovada = novoDesvinculo.aprovada;

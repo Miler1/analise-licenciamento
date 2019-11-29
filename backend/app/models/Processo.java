@@ -72,7 +72,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public transient Tramitacao tramitacao = new Tramitacao();
 
 	@Transient
-	public Desvinculo desvinculoRespondido;
+	public DesvinculoAnaliseGeo desvinculoAnaliseGeoRespondido;
 
 	@Transient
 	public static int indexDadosRestricoes;
@@ -341,7 +341,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.filtrarPorDesvinculo(true);
+		processoBuilder.filtrarDesvinculoAnaliseGeo(true);
 		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -528,7 +528,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByRevisaoSolicitadaAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.groupByDataFinalAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.groupByDiasAnaliseGeo()
-				.groupByDesvinculo()
+				.groupByDesvinculoAnaliseGeo()
 				.groupByNotificacaoAtendidaAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.orderByDataVencimentoPrazoAnaliseGeo();
 	}
