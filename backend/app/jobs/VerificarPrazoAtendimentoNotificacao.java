@@ -14,8 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@On("cron.verificarPrazoAtendimentoNotificacao")
-@OnApplicationStart
+@On("cron.verificarPrazoAtendimentoNotificacao")
 public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
 
     @Override
