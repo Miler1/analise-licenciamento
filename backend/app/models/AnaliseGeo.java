@@ -73,10 +73,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFim;
 
-    @Column(name = "data_parecer_gerente_analise_geo")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataParecerGerenteAnaliseGeo;
-
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
     public TipoResultadoAnalise tipoResultadoValidacao;
