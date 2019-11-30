@@ -1,0 +1,51 @@
+.col-xs-12
+    .marginProcesso
+
+        div.row
+            label.col-sm-2 Analista Técnico:
+            span.col-sm-8 Aqui lem vem o nome do homi
+        br    
+        hr
+
+        div.row
+
+            table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                thead
+                    tr
+                    th.col-md-9 Fase
+                    th.col-md-2 Validar
+
+
+                tbody
+                    tr
+                        td.col-md-6 LP - Licença Prévia
+                        td.col-md-2
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
+                                ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)")
+
+        br
+
+        div.row
+            strong.col-sm-2 Atividades/Parâmetros:
+            br
+            hr
+            table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                thead
+                    tr
+                    th.col-md-9 Atividade/Parâmetro
+                    th.col-md-2 Valor
+                    th.col-md-2 Validar
+
+
+                tbody
+                    tr
+                        td.col-md-6 Nome Atividade
+                        td.col-md-2 64.500,02 reais
+                        td.col-md-2
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
+                                ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)")
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
+                                ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)")
+
+        br              
+        
