@@ -10,6 +10,7 @@ import models.licenciamento.*;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
@@ -193,6 +194,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		} else {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
+			processoBuilder.filtrarPorDesvinculoSemResposta();
 
 		}
 
@@ -341,7 +343,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.filtrarDesvinculoAnaliseGeo(true);
+		 processoBuilder.filtrarDesvinculoAnaliseGeo(true);
 		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -610,6 +612,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public List<HistoricoTramitacao> getHistoricoTramitacao() {
 
 		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
+//		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getHistoricoTramitacaoByPerfil(this.idObjetoTramitavel, Auth.getUsuarioSessao().usuarioEntradaUnica.perfilSelecionado.codigo);
+
 
 		Date dataAtual = new Date();
 
@@ -806,6 +810,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
 		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
+		this.getHistoricoTramitacao();
 
 		return this;
 

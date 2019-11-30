@@ -1,5 +1,6 @@
 package models.tramitacao;
 
+import enums.PerfilAcoesEnum;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //View que possui informações sobre o histórico do objeto tramitavel
 
@@ -127,6 +129,30 @@ public class HistoricoTramitacao extends GenericModel {
 		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by dataInicial desc, idHistorico desc")
 									  .setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch();
 	}
+
+
+	public static List<HistoricoTramitacao> getHistoricoTramitacaoByPerfil(Long idObjetoTramitavel, String perfil){
+
+		List<HistoricoTramitacao> historicoTramitacao = getByObjetoTramitavel(idObjetoTramitavel);
+
+		return historicoTramitacao.stream().filter(historico -> {
+
+			if(perfil.equals(PerfilAcoesEnum.ANALISTA_GEO.name())) {
+
+				return PerfilAcoesEnum.ANALISTA_GEO.getAcoesHistoricoTramitacao().contains(historico.idAcao);
+
+			} else if(perfil.equals(PerfilAcoesEnum.GERENTE.name())) {
+
+				return PerfilAcoesEnum.GERENTE.getAcoesHistoricoTramitacao().contains(historico.idAcao);
+
+			}
+
+			return PerfilAcoesEnum.ANALISTA_TECNICO.getAcoesHistoricoTramitacao().contains(historico.idAcao);
+
+		}).collect(Collectors.toList());
+
+	}
+
 
 	private static String consultarHistoricoUltimaCondicaoAcao(List listCondicao, List listAcao, boolean inout){
 		StringBuilder retorno = new StringBuilder("");

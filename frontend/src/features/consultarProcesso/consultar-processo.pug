@@ -36,7 +36,7 @@ div
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
-								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO}")
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
 								span(ng-class="{'icone-solicitacao-ajustes': false }")
 								span(ng-class="{'icone-solicitacao-finalizada': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO}")
