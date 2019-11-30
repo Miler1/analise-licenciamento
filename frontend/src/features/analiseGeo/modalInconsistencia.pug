@@ -4,25 +4,33 @@ div.modal-header
         span(aria-hidden='true') ×
         span.sr-only Fechar
 
-    h4.modal-title Adicionar Inconsistência
+    h4.modal-title {{ modalCtrl.isEdicao ? 'Editar' : 'Adicionar' }} inconsistência
     div(growl inline="true" reference='5')
 
 div.modal-body
 
     div.area-modal
         label.label-modal.obrigatorio Categoria da inconsistência:
-        select.form-control(ng-class="{'error': modalCtrl.errors.categoria === true}", ng-if="modalCtrl.categoriaInconsistencia !== 'ATIVIDADE'", ng-model="modalCtrl.categoriaInconsistencia", name="selectCategoriaInconsistencia", ng-disabled="modalCtrl.habilitaExcluir")
+        select.form-control(ng-class="{'error': modalCtrl.errors.categoria === true}", ng-model="modalCtrl.categoriaInconsistencia", name="selectCategoriaInconsistencia", ng-disabled="modalCtrl.habilitaExcluir")
             option(value="") Selecione o a categoria da inconsistência
-            option(value="modalCtrl.dadosProjeto.categoria") {{ modalCtrl.categoriaProjeto }}
+            option(ng-if="modalCtrl.verificaInconsistenciaCategoria(modalCtrl.dadosProjeto.categoria)", value="{{ modalCtrl.dadosProjeto.categoria }}") {{ modalCtrl.categoriaProjeto }}
             option(ng-if="modalCtrl.hasRestricoes() || modalCtrl.isEdicao" value="RESTRICAO") Restrição
 
-    div.area-modal(ng-if="modalCtrl.categoriaInconsistencia === 'RESTRICAO'")
+    div.area-modal(ng-if="modalCtrl.categoriaInconsistencia === modalCtrl.tiposInconsistencia.ATIVIDADE")
+        label.label-modal.obrigatorio Item da Atividade:
+        select.form-control(ng-class="{'error': modalCtrl.errors.atividade === true}", ng-model="modalCtrl.idAtividadeCaracterizacao", name="selectItemAtividade", ng-if="!modalCtrl.habilitaExcluir",
+                ng-options="atividade.atividadeCaracterizacao.id as atividade.atividadeCaracterizacao.atividade.nome for atividade in modalCtrl.getAtividadesSemInconsistencia() track by atividade.atividadeCaracterizacao.id")
+            option(value="") Selecione o item da Atividade
+        br(ng-if="modalCtrl.habilitaExcluir")
+        span.span-modal(ng-if="modalCtrl.habilitaExcluir") {{ modalCtrl.getItemAtividade(modalCtrl.idAtividadeCaracterizacao) }}
+
+    div.area-modal(ng-if="modalCtrl.categoriaInconsistencia === modalCtrl.tiposInconsistencia.RESTRICAO")
         label.label-modal.obrigatorio Item da Restrição:
         select.form-control(ng-class="{'error': modalCtrl.errors.item === true}",ng-model="modalCtrl.idSobreposicao", name="selectItemRestricao", ng-if="!modalCtrl.habilitaExcluir",
                 ng-options="restricao.sobreposicao.id as restricao.item for restricao in modalCtrl.getRestricoesSemInconsistencia() track by restricao.sobreposicao.id")
             option(value="") Selecione o item da Restrição
         br(ng-if="modalCtrl.habilitaExcluir")
-        span.span-modal(ng-if="modalCtrl.habilitaExcluir") {{modalCtrl.getItemRestricao(modalCtrl.idSobreposicao)}}
+        span.span-modal(ng-if="modalCtrl.habilitaExcluir") {{ modalCtrl.getItemRestricao(modalCtrl.idSobreposicao) }}
 
     div.area-modal
         label.label-modal.obrigatorio Descrição da inconsistência:

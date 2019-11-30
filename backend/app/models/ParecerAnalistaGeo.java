@@ -187,6 +187,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 			if (notificacoes.size() != 1) {
 
 				throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+
 			}
 
 			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this, this.analiseGeo.documentos);

@@ -31,36 +31,57 @@ include ../../layout/components/mapPanel
                                         i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.geometrias[0].item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
                                         | &nbsp;&nbsp;
 
-            #accordion-dados.panel-group
+            #accordion-complexo.panel-group(ng-if="ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO")
                  div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-dados', aria-expanded='false', data-target='#meusDados', ng-init = 'ctrl.openedAccordionDados = false', ng-click = 'ctrl.openedAccordionDados = !ctrl.openedAccordionDados' )
+                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-complexo', aria-expanded='false', data-target='#meusDadosComplexo', ng-init = 'ctrl.openedAccordionDadosComplexo = false', ng-click = 'ctrl.openedAccordionDadosComplexo = !ctrl.openedAccordionDadosComplexo' )
                         .panel.panel-default
                             .panel-heading
                                 h4.panel-title 
                                     | {{ ctrl.labelDadosProjeto }}
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordionDados, 'glyphicon-chevron-right': !ctrl.openedAccordionDados}")
-                    #meusDados.collapse   
-                        div.collapse-atividade(ng-repeat="atividade in ctrl.dadosProjeto.atividades")
-                            a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAtividadesProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
-                                .panel.panel-default
-                                    .panel-heading
-                                        h4.panel-title
-                                            | Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
-                                            i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
+                                    i(class="pull-right glyphicon" ng-class="{ 'glyphicon-chevron-down': ctrl.openedAccordionDadosComplexo, 'glyphicon-chevron-right': !ctrl.openedAccordionDadosComplexo }")
 
-                            .collapse(id='dadosAtividadesProjeto{{$index}}')
-                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                                    thead
-                                        tr
-                                            th.col-md-4 Item
-                                            th.col-md-5 Declarado
+                    #meusDadosComplexo.collapse
+                        span.atividades Atividades:
+                        .div-list(style="margin-left: 10px",  ng-repeat="atividade in ctrl.dadosProjeto.atividades")
+                            label {{ atividade.atividadeCaracterizacao.atividade.nome }}
 
-                                    tbody(ng-repeat="geometria in atividade.geometrias")
-                                        tr
-                                            td.col-md-5 {{ geometria.item }}
-                                            td.col-md-5 {{ geometria.descricao }}
+                        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                            thead
+                                tr
+                                    th.col-md-4 Item
+                                    th.col-md-5 Declarado
 
-            br
+                            tbody
+                                tr(ng-repeat="geometria in ctrl.dadosProjeto.atividades[0].geometrias")
+                                    td.col-md-5 {{ geometria.item }}
+                                    td.col-md-5 {{ geometria.descricao }}
+
+            #lista-camadas-atividades(ng-if="ctrl.dadosProjeto.categoria !== ctrl.categoria.COMPLEXO")
+                #accordion-atividades.panel-group
+                    h5(style="margin-bottom:0px") {{ ctrl.labelDadosProjeto }}
+                    br
+                    hr(style="margin-top:2px;")
+                    div.collapse-atividade(ng-repeat="atividade in ctrl.dadosProjeto.atividades")
+                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAtividadesProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
+                            .panel.panel-default
+                                .panel-heading
+                                    h4.panel-title
+                                        | Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
+
+                        .collapse(id='dadosAtividadesProjeto{{$index}}')
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                thead
+                                    tr
+                                        th.col-md-4 Item
+                                        th.col-md-5 Declarado
+
+                                tbody(ng-repeat="geometria in atividade.geometrias")
+                                    tr
+                                        td.col-md-5 {{ geometria.item }}
+                                        td.col-md-5 {{ geometria.descricao }}
+
+            hr
 
             div(ng-if="ctrl.dadosProjeto.restricoes.length > 0")
 
@@ -121,12 +142,12 @@ include ../../layout/components/mapPanel
             
             br
             div.inconsistencias
-                label.title-inconsistencia(ng-if="verificarTamanhoInconsistencias()") Inconsistências Encontradas
+                label.title-inconsistencia(ng-if="ctrl.analiseGeo.inconsistencias.length > 0") Inconsistências Encontradas
                 button.btn.btn-default.pull-right.btn-incluir-inconsistencia(ng-click="addInconsistencia()")
                     i.glyphicon.glyphicon-plus
                     |  Incluir Inconsistência
                 
-                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="verificarTamanhoInconsistencias()")
+                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="ctrl.analiseGeo.inconsistencias.length > 0")
                     thead
                         tr
                         th.col-md-4 Item
@@ -134,14 +155,14 @@ include ../../layout/components/mapPanel
                         th.col-md-4 Descrição
                         th.col-md-1.text-right Ações
 
-                    tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
+                    tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias")
                         tr
                             td.col-md-4 {{ getItemRestricao(inconsistencia) }}
-                            td.col-md-3 {{inconsistencia.categoria}}
+                            td.col-md-3 {{ inconsistencia.categoria }}
                             td.col-md-4 {{ getDescricaoRestricao(inconsistencia) }}
                             td.col-md-2.text-right
-                                i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'PROPRIEDADE'",
-                                        ng-click='addInconsistenciaPropriedade(ctrl.categoria.PROPRIEDADE)', title='Editar inconsistência')
+                                i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria !== 'RESTRICAO'",
+                                        ng-click='addInconsistenciaGeral(inconsistencia)', title='Editar inconsistência')
                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria === 'RESTRICAO'",
                                         ng-click="addInconsistenciaRestricao(ctrl.categoria.RESTRICAO, inconsistencia, true)", title='Editar inconsistência')
                                 i.glyphicon.glyphicon-trash.icone-inconsistencia-clicavel(title='Excluir inconsistência',
@@ -150,5 +171,5 @@ include ../../layout/components/mapPanel
                                         ng-bootbox-confirm-action="excluirInconsistencia(inconsistencia.id)")
 
                                 |&nbsp;
-            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")
+            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="ctrl.analiseGeo.inconsistencias.length <= 0")
                 i Nenhuma inconsistência adicionada.

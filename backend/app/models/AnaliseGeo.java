@@ -387,9 +387,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaGeo parecerAnalistaGeo, List<Documento> documentos) throws Exception {
 
-        List<String> destinatarios = new ArrayList<String>();
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
-        destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
+        List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
         Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);

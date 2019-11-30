@@ -1,11 +1,10 @@
 package models;
 
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
-import models.licenciamento.SobreposicaoCaracterizacaoComplexo;
-import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
+import exceptions.ValidacaoException;
+import models.licenciamento.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import serializers.InconsistenciaSerializer;
 import utils.*;
 
 import javax.persistence.*;
@@ -13,6 +12,7 @@ import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 @Entity
 @Table(schema="analise", name="inconsistencia")
@@ -55,6 +55,10 @@ public class Inconsistencia extends GenericModel{
     public Caracterizacao caracterizacao;
 
     @OneToOne
+    @JoinColumn(name = "id_atividade_caracterizacao")
+    public AtividadeCaracterizacao atividadeCaracterizacao;
+
+    @OneToOne
     @JoinColumn(name="id_sobreposicao")
     public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
 
@@ -95,6 +99,16 @@ public class Inconsistencia extends GenericModel{
         this.tipoInconsistencia = tipoInconsistencia;
         this.categoria = categoria;
         this.caracterizacao = caracterizacao;
+
+    }
+
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao) {
+
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = descricaoInconsistencia;
+        this.tipoInconsistencia = tipoInconsistencia;
+        this.categoria = categoria;
+        this.atividadeCaracterizacao = atividadeCaracterizacao;
 
     }
 
@@ -182,4 +196,82 @@ public class Inconsistencia extends GenericModel{
         }
 
     }
+
+    public Inconsistencia salvaInconsistencia() {
+
+        if (this.descricaoInconsistencia == null || this.descricaoInconsistencia.equals("")) {
+
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+        }
+
+        if(this.tipoInconsistencia == null || this.tipoInconsistencia.equals("")){
+
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+        }
+
+        if(this.categoria.equals(Inconsistencia.Categoria.RESTRICAO) && this.sobreposicaoCaracterizacaoAtividade == null && this.sobreposicaoCaracterizacaoEmpreendimento == null && this.sobreposicaoCaracterizacaoComplexo == null) {
+
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+
+        }
+
+        if (this.id != null) {
+
+            Inconsistencia inconsistencia = Inconsistencia.findById(this.id);
+            inconsistencia.descricaoInconsistencia = this.descricaoInconsistencia;
+            inconsistencia.tipoInconsistencia = this.tipoInconsistencia;
+            inconsistencia.categoria = this.categoria;
+            inconsistencia.analiseGeo = this.analiseGeo;
+            inconsistencia.id = this.id;
+            inconsistencia.caracterizacao = Objects.nonNull(this.caracterizacao) && Objects.nonNull(this.caracterizacao.id) ? this.caracterizacao : null;
+            inconsistencia.atividadeCaracterizacao = Objects.nonNull(this.atividadeCaracterizacao) ? AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id) : null;
+            inconsistencia.saveAnexos(this.anexos);
+
+            return inconsistencia.save();
+
+        } else {
+
+            Inconsistencia novaInconsistencia;
+
+            if(this.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE) || this.categoria.equals(Inconsistencia.Categoria.COMPLEXO)){
+
+                novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo);
+                novaInconsistencia.saveAnexos(this.anexos);
+
+                return novaInconsistencia.save();
+
+            } else if(this.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)) {
+
+                this.atividadeCaracterizacao = AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id);
+                novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.atividadeCaracterizacao);
+                novaInconsistencia.saveAnexos(this.anexos);
+
+                return novaInconsistencia.save();
+
+            } else {
+
+                if(this.sobreposicaoCaracterizacaoAtividade != null) {
+
+                    novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.caracterizacao, this.sobreposicaoCaracterizacaoAtividade);
+
+                } else if(this.sobreposicaoCaracterizacaoEmpreendimento != null) {
+
+                    novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.caracterizacao, this.sobreposicaoCaracterizacaoEmpreendimento);
+
+                } else {
+
+                    novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.caracterizacao, this.sobreposicaoCaracterizacaoComplexo);
+
+                }
+
+                novaInconsistencia.saveAnexos(this.anexos);
+
+                return novaInconsistencia.save();
+
+            }
+
+        }
+
+    }
+
 }
