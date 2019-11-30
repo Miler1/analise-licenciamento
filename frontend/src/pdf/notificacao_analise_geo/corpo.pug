@@ -80,25 +80,17 @@ html(lang='en')
 
                   li
                        h3 Descrição do(s) fato(s):
-                      
-                          | \#{list items:analiseGeo.inconsistencias, as:'inconsistencia'}
                           p
                             span  ${inconsistencia.descricaoInconsistencia}
-
-                          | \#{/list}
                   li
                        h3 Descrição da(s) solicitação(ões):
-                      
-                          | \#{list items:analiseGeo.inconsistencias, as:'inconsistencia'}
                           p
                             span  ${inconsistencia.tipoInconsistencia}
-
-                          | \#{/list}
                           
     div(style="text-align: center")
-        span <strong>Analisado por:</strong> ${analista.pessoa.nome}
+        span <strong>Analisado por:</strong> ${analista.nomeAnalista}
         br
-        span ${analista.usuarioEntradaUnica.perfilSelecionado.nome} - ${analista.usuarioEntradaUnica.setorSelecionado.sigla}
+        span ${analista.perfilAnalista} - ${analista.setorAnalista}
     br
     div(style="text-align: center")
         span <strong> Juliano Marcos Valente de Souza</strong>
