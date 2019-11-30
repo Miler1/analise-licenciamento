@@ -32,8 +32,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@ManyToOne
 	@JoinColumn(name="id_analise")
 	public Analise analise;
-	
-	public String parecer;
+
+	@Column(name = "parecer")
+	public String parecerAnalista;
 	
 	@Required
 	@Column(name="data_vencimento_prazo")
@@ -78,8 +79,8 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
 	public List<AnaliseDocumento> analisesDocumentos;
 	
-	@OneToMany(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
-	public List<AnalistaTecnico> analistasTecnicos;
+	@OneToOne(mappedBy="analiseTecnica", cascade=CascadeType.ALL)
+	public AnalistaTecnico analistaTecnico;
 	
 	@Column(name="parecer_validacao")
 	public String parecerValidacao;
@@ -87,7 +88,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
  	@ManyToOne(fetch=FetchType.LAZY)
  	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
 	public UsuarioAnalise usuarioValidacao;
-	
+
 	@OneToMany(mappedBy="analiseTecnica", orphanRemoval = true)
 	public List<LicencaAnalise> licencasAnalise;
 	
@@ -115,7 +116,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Column(name="data_cadastro")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
-	
+
 	@ManyToOne
 	@JoinColumn(name="id_tipo_resultado_validacao_aprovador")
 	public TipoResultadoAnalise tipoResultadoValidacaoAprovador;
@@ -133,7 +134,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 	private void validarParecer() {
 		
-		if(StringUtils.isBlank(this.parecer)) 
+		if(StringUtils.isBlank(this.parecerAnalista))
 			throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
 	}	
 	
@@ -177,7 +178,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 									
 			this._save();
 			
-			iniciarLicencas();
 		}
 		
 		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA, usuarioExecutor);
@@ -185,13 +185,18 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	}	
 
 	public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {
+
 		for(int i = 0; i < licencas.size() ; i++ ) {
+
 			LicencaAnalise licencaVerificar = licencas.get(i);
 			if (licencaVerificar.emitir) {
 				return true;
 			}
+
 		}
+
 		throw new ValidacaoException(Mensagem.ERRO_NENHUMA_LICENCA_EMITIDA);
+
 	}
 	
 	private void iniciarLicencas() {
@@ -216,7 +221,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONCLUIDA);
 		}
 			
-		this.parecer = novaAnalise.parecer;
+		this.parecerAnalista = novaAnalise.parecerAnalista;
 		
 		if(novaAnalise.tipoResultadoAnalise != null &&
 				novaAnalise.tipoResultadoAnalise.id != null) {
@@ -310,8 +315,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 				novaLicencaAnalise.save();
 				
 				this.licencasAnalise.add(novaLicencaAnalise);
-			}			
+			}
+
 		}
+
 	}
 
 	private void updateDocumentos(List<Documento> novosDocumentos) {
@@ -380,8 +387,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 		
 		this._save();
-		
-		
 		
 		if(this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
 			
@@ -481,7 +486,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 		if(this.tipoResultadoAnalise == null)
 			throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO);
-		
+
 		boolean todosDocumentosValidados = true;
 		for(AnaliseDocumento analise : this.analisesDocumentos) {
 			
@@ -575,7 +580,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		AnaliseTecnica copia = new AnaliseTecnica();
 		
 		copia.analise = this.analise;
-		copia.parecer = this.parecer;
+		copia.parecerAnalista = this.parecerAnalista;
 		copia.dataCadastro = this.dataCadastro;
 		copia.dataVencimentoPrazo = this.dataVencimentoPrazo;
 		copia.revisaoSolicitada = !notificacao;
@@ -595,16 +600,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			copiaAnaliseDoc.analiseTecnica = copia;
 			copia.analisesDocumentos.add(copiaAnaliseDoc);
 		}
-		
-		copia.analistasTecnicos = new ArrayList<>();
-		
-		for (AnalistaTecnico analistaTecnico: this.analistasTecnicos) {
+
+		AnalistaTecnico copiaAnalistaTec = analistaTecnico.gerarCopia();
 			
-			AnalistaTecnico copiaAnalistaTec = analistaTecnico.gerarCopia();
-			
-			copiaAnalistaTec.analiseTecnica = copia;
-			copia.analistasTecnicos.add(copiaAnalistaTec);
-		}
+		copiaAnalistaTec.analiseTecnica = copia;
 		
 		copia.gerentes = new ArrayList<>();
 		
@@ -625,16 +624,8 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			copia.licencasAnalise.add(copiaLicencaAnalise);				
 		}
 		
-		copia.pareceresTecnicosRestricoes = new ArrayList<>();
-		for (ParecerTecnicoRestricao parecerTecnicoRestricao : this.pareceresTecnicosRestricoes) {
-			
-			ParecerTecnicoRestricao copiaParecerTecnicoRestricao = parecerTecnicoRestricao.gerarCopia();
-			
-			copiaParecerTecnicoRestricao.analiseTecnica = copia;
-			copia.pareceresTecnicosRestricoes.add(copiaParecerTecnicoRestricao);				
-		}		
-		
 		return copia;
+
 	}
 
 	public void setValidacaoGerente(AnaliseTecnica analise) {
@@ -647,11 +638,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		
 		this.tipoResultadoValidacao = analise.tipoResultadoValidacao;
 		this.parecerValidacao = analise.parecerValidacao;	
-	}	
-	
-	public AnalistaTecnico getAnalistaTecnico() {
-		
-		return this.analistasTecnicos.get(0);
 	}
 	
 	public boolean hasGerentes() {
@@ -681,4 +667,17 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return documento;
 
 	}
+
+	public void geraLicencasAnaliseTecnica(List<LicencaAnalise> licencasAnalise) {
+
+		licencasAnalise.forEach(licencaAnalise -> {
+
+			LicencaAnalise l = LicencaAnalise.findById(licencaAnalise.id);
+			l.analiseTecnica = this;
+			l._save();
+
+		});
+
+	}
+
 }

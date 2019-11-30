@@ -330,7 +330,6 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return [
 					app.utils.Perfis.GERENTE,
-					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.APROVADOR
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
@@ -489,7 +488,9 @@ utils.services(licenciamento)
 	.add('wmsTileService', services.WMSTileService)
 	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
 	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
-	.add('parecerOrgaoService', services.ParecerOrgaoService);
+	.add('parecerOrgaoService', services.ParecerOrgaoService)
+	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
+	.add('parecerGerenteService', services.ParecerGerenteService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -515,7 +516,8 @@ licenciamento
 	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
 	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
-	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController);
+	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
+	.controller('visualizarAjustesController',controllers.VisualizarAjustesController);
 
 
 licenciamento

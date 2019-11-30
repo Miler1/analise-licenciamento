@@ -39,7 +39,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 
 		} else {
 			
-			criarNovaAnaliseComAnalista(analiseTecnica, novaAnaliseTecnica.getAnalistaTecnico().usuario, usuarioExecutor);
+			criarNovaAnaliseComAnalista(analiseTecnica, novaAnaliseTecnica.analistaTecnico.usuario, usuarioExecutor);
 			
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO, usuarioExecutor);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -72,14 +72,10 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 	private void criarNovaAnaliseComAnalista(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioAnalista, UsuarioAnalise usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
-		
-		novaAnalise.analistasTecnicos = new ArrayList<>();
-		AnalistaTecnico analistaTecnico = new AnalistaTecnico(novaAnalise, usuarioAnalista);
-		novaAnalise.analistasTecnicos.add(analistaTecnico);
+		novaAnalise.analistaTecnico = new AnalistaTecnico(novaAnalise, usuarioAnalista);
 		
 		salvarNovaAnalise(novaAnalise, analiseTecnica, usuarioValidacao);
-	}	
-	
+	}
 
 	private void validarAnaliseTecnica(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica) {
 		
@@ -88,7 +84,7 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		analiseTecnica.validarParecerValidacao();
 		
 		if ((novaAnaliseTecnica.gerentes == null || novaAnaliseTecnica.gerentes.isEmpty()) &&
-			(novaAnaliseTecnica.analistasTecnicos == null || novaAnaliseTecnica.analistasTecnicos.isEmpty())) {
+			(novaAnaliseTecnica.analistaTecnico == null)) {
 			
 			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO);
 		}		

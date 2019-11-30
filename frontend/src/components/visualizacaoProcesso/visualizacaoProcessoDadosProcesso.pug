@@ -83,7 +83,7 @@
 									td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 									td.col-md-1 
 										button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-if="modalVisualizacaoProcessoCtrl.validaJustificativas(tramitacao)", 
-																		  								ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo, tramitacao)")
+																		  								ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo.idProcesso, tramitacao)")
 											i.glyphicon.glyphicon-list-alt
 																													
 		div(uib-accordion class="accordion" ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacaoAnterior.length > 0")
@@ -116,5 +116,5 @@
 								td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 								td.col-md-1 
 									button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-if="modalVisualizacaoProcessoCtrl.validaJustificativas(tramitacao)", 
-																									ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo, tramitacao)")
+																									ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo.idProcesso, tramitacao)")
 										i.glyphicon.glyphicon-list-alt

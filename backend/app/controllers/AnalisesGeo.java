@@ -10,8 +10,10 @@ import serializers.CamadaGeoAtividadeSerializer;
 import serializers.EmpreendimentoSerializer;
 import utils.Mensagem;
 
+import javax.validation.ValidationException;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Comparator;
 import java.util.List;
 
 public class AnalisesGeo extends InternalController {
@@ -39,20 +41,6 @@ public class AnalisesGeo extends InternalController {
         analiseAlterar.iniciarAnaliseGerente(usuarioExecutor);
 
         renderMensagem(Mensagem.GERENTE_INICIOU_ANALISE_SUCESSO);
-
-    }
-
-    public static void concluir(AnaliseGeo analise) throws Exception {
-
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
-
-        AnaliseGeo analiseAAlterar = AnaliseGeo.findById(analise.id);
-
-        UsuarioAnalise usuarioExecutor = getUsuarioSessao();
-
-        analiseAAlterar.finalizar(analise, usuarioExecutor);
-
-        renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
 
     }
 
@@ -163,10 +151,9 @@ public class AnalisesGeo extends InternalController {
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {
 
-
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
-
-        Documento pdfParecer = analiseGeoSalva.gerarPDFParecer();
+        ParecerAnalistaGeo ultimoParecer = analiseGeoSalva.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
+        Documento pdfParecer = analiseGeoSalva.gerarPDFParecer(ultimoParecer);
 
         String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
@@ -232,7 +219,6 @@ public class AnalisesGeo extends InternalController {
         renderBinary(pdfParecer.arquivo, nome);
     }
 
-
     public static void buscaDadosProcesso(Long idProcesso) {
 
         returnIfNull(idProcesso, "Long");
@@ -244,23 +230,12 @@ public class AnalisesGeo extends InternalController {
     }
 
     public static void buscaAnaliseGeoByAnalise(Long idAnalise) {
+
         AnaliseGeo analiseGeo = AnaliseGeo.find("id_analise = :id_analise")
                 .setParameter("id_analise", idAnalise).first();
 
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
-    }
 
-    public static void concluirParecerGerente(AnaliseGeo analiseGeo) throws Exception {
-
-        returnIfNull(analiseGeo, "AnaliseGeo");
-
-        AnaliseGeo analiseGerente = AnaliseGeo.findById(analiseGeo.id);
-
-        UsuarioAnalise gerente = getUsuarioSessao();
-
-        analiseGerente.finalizarAnaliseGerente(analiseGeo, gerente);
-
-        renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
     }
 
     public static void findAllRestricoesById(Long idProcesso) {
