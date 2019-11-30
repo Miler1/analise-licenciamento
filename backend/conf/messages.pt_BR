@@ -132,7 +132,7 @@ ERRO_CANCELAR_DLA=Erro ao cancelar DLA, contate a SEMAS ou tente novamente mais 
 # Emails
 #
 ERRO_ENVIAR_EMAIL=O seguinte erro ocorreu ao tentar enviar o email: %s
-ERRO_ENVIAR_SEGUNDO_EMAIL_NOTIFICACAO=Ocorreu um erro ao tentar enviar o email após o vencimento do prazo da notificação %s
+ERRO_ENVIAR_SEGUNDO_EMAIL_NOTIFICACAO=Ocorreu um erro ao tentar enviar o email após o vencimento do prazo da notificação: %s
 
 #
 # Analises Manejo
@@ -176,3 +176,8 @@ ERRO_COMUNICACAO_ENTRADA_UNICA = Não foi possível efetuar a comunicação com 
 # Notificacao
 #
 ERRO_SALVAMENTO_NOTIFICACAO=Não foi possível salvar a notificação, contate o administrador do sistema.
+
+#
+# Arquivar
+#
+ERRO_ARQUIVAR_PROCESSO=Não foi possível arquivar o processo %s

@@ -1,11 +1,9 @@
 package jobs;
 
-import models.AnaliseGeo;
 import models.Notificacao;
 import models.ParecerAnalistaGeo;
 import play.Logger;
 import play.jobs.On;
-import play.jobs.OnApplicationStart;
 import utils.Helper;
 import utils.Mensagem;
 
@@ -22,7 +20,7 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
 
         Logger.info("[INICIO-JOB] ::VerificarPrazoAtendimentoNotificacao:: [INICIO-JOB]");
 
-        List<Notificacao> notificacoes = Notificacao.find("resolvido", false).fetch();
+        List<Notificacao> notificacoes = Notificacao.find("resolvido AND segundo_email_enviado", false, false).fetch();
 
         notificacoes.forEach(notificacao -> {
 
@@ -46,9 +44,9 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
 
     public void verificarPrazoAtendimento(Notificacao notificacao) throws Exception {
 
-        int diasCorridos = new Long((new Date().getTime() - notificacao.dataNotificacao.getTime()) / (1000*60*60*24)).intValue();
+        int diasCorridos = new Long((Helper.getDiferencaDias(new Date(), notificacao.dataNotificacao)) / (1000*60*60*24)).intValue();
 
-        if(diasCorridos >= notificacao.prazoNotificacao && !notificacao.segundoEmailEnviado) {
+        if(diasCorridos >= notificacao.prazoNotificacao) {
 
             List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", notificacao.analiseGeo.id).fetch();
 

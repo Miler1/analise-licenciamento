@@ -9,10 +9,7 @@ import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
-import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
-import models.EntradaUnica.CodigoPerfil;
-import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
@@ -25,20 +22,12 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import static security.Auth.getUsuarioSessao;
 
@@ -850,14 +839,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         analiseTecnica.dataVencimentoPrazo = calendar.getTime();
 
         return analiseTecnica;
-
-    }
-
-    public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
-
-        CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
-
-        new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
 
     }
 

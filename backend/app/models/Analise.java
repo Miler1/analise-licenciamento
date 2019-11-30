@@ -3,6 +3,7 @@ package models;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
+import utils.WebService;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -216,6 +217,14 @@ public class Analise extends GenericModel {
 		}
 		
 		return false;
+
+	}
+
+	public static void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
+
+		CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
+
+		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
 
 	}
 }
