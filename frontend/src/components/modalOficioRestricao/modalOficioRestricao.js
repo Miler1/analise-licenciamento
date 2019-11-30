@@ -71,10 +71,9 @@ var ModalOficioRestricao = {
                         documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
                         .then(function(data, status, headers){
             
-                            var a = document.createElement('a');
-                            a.href = URL.createObjectURL(data.data.response.blob);
-                            a.download = data.data.response.fileName ? data.data.response.fileName : 'oficio_orgao.pdf';
-                            a.click();
+                            var url = URL.createObjectURL(data.data.response.blob);
+                            window.open(url, '_blank');
+                            
             
                         },function(error){
                             mensagem.error(error.data.texto);
