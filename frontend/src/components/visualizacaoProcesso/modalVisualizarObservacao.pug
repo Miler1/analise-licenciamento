@@ -6,13 +6,20 @@ div.modal-header
 
     h4.modal-title Visualizar observação
 
-div.modal-body
+div.modal-body(ng-if="visualizarJustificativasCtlr.parecer.parecer")
     div.row
         label.col-sm-4 {{ visualizarJustificativasCtlr.labelParecer }}:
         br
         div.col-sm-12.espacamento-visualizar-obs
             .area
-                p(ng-bind-html="visualizarJustificativasCtlr.parecer.parecer") 
+                p(ng-bind-html="visualizarJustificativasCtlr.parecer.parecer")
+div.modal-body(ng-if="!visualizarJustificativasCtlr.parecer.parecer")
+    div.row
+        label.col-sm-4 {{ visualizarJustificativasCtlr.labelParecer }}:
+        br
+        div.col-sm-12.espacamento-visualizar-obs
+            .area
+                p(ng-bind-html="visualizarJustificativasCtlr.parecer.justificativa")                  
 
 div.modal-footer
 

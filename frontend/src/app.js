@@ -513,6 +513,7 @@ licenciamento
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
 	.controller('desvinculoController', controllers.DesvinculoController)
+	.controller('desvinculoAnaliseTecnicaController', controllers.DesvinculoAnaliseTecnicaController)
 	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
 	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)

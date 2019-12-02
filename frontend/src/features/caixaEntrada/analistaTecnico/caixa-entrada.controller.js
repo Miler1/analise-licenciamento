@@ -1,4 +1,6 @@
-var CxEntAnalistaTecnicoController = function($scope, config, $location, analiseTecnicaService, mensagem, $rootScope, processoService) {
+var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
+											  $location, analiseTecnicaService, 
+											  mensagem, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'ANÁLISE TÉCNICA';
 
@@ -74,6 +76,27 @@ var CxEntAnalistaTecnicoController = function($scope, config, $location, analise
 		return '-';
 
 	};
+
+	cxEntAnalistaTecnico.solicitarDesvinculoAnaliseTecnica =  function(processo){
+
+		$uibModal.open({
+			controller: 'desvinculoAnaliseTecnicaController',
+			controllerAs: 'desvinculoCtrl',
+			backdrop: 'static',
+			templateUrl: 'features/caixaEntrada/analistaTecnico/modalDesvinculo.html',
+			size: 'lg',
+			resolve: {
+
+				idAnaliseTecnica: function(){
+					return processo.idAnaliseTecnica;
+				},
+				idProcesso: function(){
+					return processo.idProcesso;
+				}
+			}
+			
+		});
+};
 
 };
 

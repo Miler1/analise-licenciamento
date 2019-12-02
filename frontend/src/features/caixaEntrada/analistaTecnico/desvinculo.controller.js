@@ -1,10 +1,10 @@
-var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso, $location,$rootScope, mensagem, desvinculoService) {
+var DesvinculoAnaliseTecnicaController = function ($uibModalInstance,idAnaliseTecnica, idProcesso, $location,$rootScope, mensagem, desvinculoService) {
 
     var desvinculoController = this;
     desvinculoController.respondido =null;
     desvinculoController.errorJustificativa = false;
 
-        desvinculoService.buscarDesvinculoPeloProcessoGeo(idProcesso)
+        desvinculoService.buscarDesvinculoPeloProcessoTecnico(idProcesso)
         .then(function(response){
 
             desvinculoController.justificativa = response.data.respostaGerente;
@@ -30,7 +30,7 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
     desvinculoController.concluir = function() {
         var params={
             justificativa: desvinculoController.justificativa,
-            analiseGeo: {id: idAnaliseGeo}
+            analiseTecnica: {id: idAnaliseTecnica}
         };
         if (desvinculoController.justificativa === '' || !desvinculoController.justificativa){
             mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
@@ -39,7 +39,7 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
         }
         
 
-        desvinculoService.solicitarDesvinculoAnaliseGeo(params)
+        desvinculoService.solicitarDesvinculoAnaliseTecnica(params)
             .then(function(response){
 
                 $rootScope.$broadcast('rootPesquisarProcessos');
@@ -56,4 +56,4 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
 	
 };
 
-exports.controllers.DesvinculoController = DesvinculoController;
+exports.controllers.DesvinculoAnaliseTecnicaController = DesvinculoAnaliseTecnicaController;
