@@ -120,6 +120,7 @@ public class ProcessoSerializer {
 			"empreendimento.imovel.municipio.nome",
 			"empreendimento.imovel.municipio.estado.nome",
 			"empreendimento.coordenadas",
+			"empreendimento.area",
 			"empreendimento.responsaveis.pessoa.cpf",
 			"empreendimento.responsaveis.pessoa.nome",
 			"empreendimento.responsaveis.contato.email",

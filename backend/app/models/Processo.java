@@ -19,9 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -435,6 +433,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
                 .groupByIdAnalise()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
+				.groupByDataFinalAnaliseGeo()
 				.groupByRenovacao();
 
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
@@ -713,9 +712,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public DadosProcessoVO getDadosProcesso() {
 
-		Caracterizacao caracterizacao = this.caracterizacao;
-
-		return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
+		return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
 
 	}
 
@@ -806,6 +803,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
 		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
+		this.empreendimento.area = GeoCalc.area(this.empreendimento.coordenadas) / 1000;
 
 		return this;
 

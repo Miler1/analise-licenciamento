@@ -167,35 +167,7 @@ public class Analistas extends InternalController {
 
 		verificarPermissao(Acao.VINCULAR_PROCESSO);
 
-		UsuarioAnalise usuarioSessao = getUsuarioSessao();
-
-		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-
-		List<String> siglasSetoresFilhos;
-		List<UsuarioAnalise> pessoas;
-
-		switch (usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) {
-
-			case CodigoPerfil.APROVADOR:
-
-				siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,2);
-				pessoas = integracaoEntradaUnica.findUsuariosByPerfilAndSetores(CodigoPerfil.ANALISTA_GEO, siglasSetoresFilhos);
-
-				break;
-
-			case CodigoPerfil.COORDENADOR_TECNICO:
-
-				siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1);
-				pessoas = UsuarioAnalise.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_GEO, siglasSetoresFilhos);
-				break;
-			/**
-			 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
-			 */
-			default:
-				pessoas = UsuarioAnalise.getUsuariosEntradaUnica(CodigoPerfil.ANALISTA_GEO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-				break;
-
-		}
+		List<UsuarioAnalise> pessoas = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla);
 
 		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
 

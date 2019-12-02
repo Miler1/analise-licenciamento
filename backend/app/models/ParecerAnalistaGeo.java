@@ -9,7 +9,6 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -188,6 +187,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 			if (notificacoes.size() != 1) {
 
 				throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+
 			}
 
 			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this, this.analiseGeo.documentos);
