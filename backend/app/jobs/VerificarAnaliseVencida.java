@@ -33,6 +33,7 @@ public class VerificarAnaliseVencida extends GenericJob {
                 .setParameter("idCondicaoArquivada", Condicao.ARQUIVADO).fetch();
 
         processos.forEach(processo -> {
+
             try {
 
                 verificaPrazoDeVencimento(processo);
@@ -40,13 +41,14 @@ public class VerificarAnaliseVencida extends GenericJob {
 
             } catch (Exception e) {
 
-                Logger.error(Mensagem.ERRO_ARQUIVAR_PROCESSO.getTexto(), processo.numero);
+                Logger.error(Mensagem.ERRO_ARQUIVAR_PROCESSO.getTexto(processo.numero));
                 Logger.error(e.getMessage());
                 rollbackTransaction();
 
             }
 
         });
+
     }
 
     public void verificaPrazoDeVencimento(Processo processo) {
@@ -58,7 +60,6 @@ public class VerificarAnaliseVencida extends GenericJob {
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor);
 
             Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ARQUIVADO.codigo, processo.numero);
-
 
         }
 

@@ -20,7 +20,10 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
 
         Logger.info("[INICIO-JOB] ::VerificarPrazoAtendimentoNotificacao:: [INICIO-JOB]");
 
-        List<Notificacao> notificacoes = Notificacao.find("resolvido AND segundo_email_enviado", false, false).fetch();
+        List<Notificacao> notificacoes = Notificacao
+                .find("resolvido = :resolvido AND segundo_email_enviado = :segundo_email_enviado")
+                .setParameter("resolvido", false)
+                .setParameter("segundo_email_enviado", false).fetch();
 
         notificacoes.forEach(notificacao -> {
 
