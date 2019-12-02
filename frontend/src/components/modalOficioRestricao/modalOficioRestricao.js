@@ -60,7 +60,11 @@ var ModalOficioRestricao = {
 
         ctrl.downloadPDFOficioOrgao = function () {
              
-            analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento.id, ctrl.idAnaliseGeo)
+            var sobreposicaoRestricao = ctrl.restricao.sobreposicaoCaracterizacaoAtividade ? ctrl.restricao.sobreposicaoCaracterizacaoAtividade : ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento ? ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento : ctrl.restricao.sobreposicaoCaracterizacaoComplexo;
+            
+            if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
+                
+                analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
                 .then(function(response){
     
                     var comunicado = response.data;
@@ -71,17 +75,63 @@ var ModalOficioRestricao = {
                         documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
                         .then(function(data, status, headers){
             
-                            var a = document.createElement('a');
-                            a.href = URL.createObjectURL(data.data.response.blob);
-                            a.download = data.data.response.fileName ? data.data.response.fileName : 'oficio_orgao.pdf';
-                            a.click();
+                            var url = URL.createObjectURL(data.data.response.blob);
+                            window.open(url, '_blank');
+                            
             
                         },function(error){
                             mensagem.error(error.data.texto);
                         });
                     }			
-            });
+                });
+            }else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade){
+                
+                analiseGeoService.getComunicadoByIdSobreposicaoAtividade(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
+                .then(function(response){
+    
+                    var comunicado = response.data;
+    
+                    if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
+                        return;
+                    } else {
+                        documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
+                        .then(function(data, status, headers){
+            
+                            var url = URL.createObjectURL(data.data.response.blob);
+                            window.open(url, '_blank');
+                            
+            
+                        },function(error){
+                            mensagem.error(error.data.texto);
+                        });
+                    }			
+                });
+            }else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo){
+                
+                analiseGeoService.getComunicadoByIdSobreposicaoComplexo(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
+                .then(function(response){
+    
+                    var comunicado = response.data;
+    
+                    if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
+                        return;
+                    } else {
+                        documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
+                        .then(function(data, status, headers){
+            
+                            var url = URL.createObjectURL(data.data.response.blob);
+                            window.open(url, '_blank');
+                            
+            
+                        },function(error){
+                            mensagem.error(error.data.texto);
+                        });
+                    }			
+                });
+            }
+            
         };
+
 
         ctrl.fechar = function() {
 			ctrl.dismiss({$value: 'cancel'});
