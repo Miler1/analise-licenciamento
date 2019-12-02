@@ -130,30 +130,6 @@ public class HistoricoTramitacao extends GenericModel {
 									  .setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch();
 	}
 
-
-	public static List<HistoricoTramitacao> getHistoricoTramitacaoByPerfil(Long idObjetoTramitavel, String perfil){
-
-		List<HistoricoTramitacao> historicoTramitacao = getByObjetoTramitavel(idObjetoTramitavel);
-
-		return historicoTramitacao.stream().filter(historico -> {
-
-			if(perfil.equals(PerfilAcoesEnum.ANALISTA_GEO.name())) {
-
-				return PerfilAcoesEnum.ANALISTA_GEO.getAcoesHistoricoTramitacao().contains(historico.idAcao);
-
-			} else if(perfil.equals(PerfilAcoesEnum.GERENTE.name())) {
-
-				return PerfilAcoesEnum.GERENTE.getAcoesHistoricoTramitacao().contains(historico.idAcao);
-
-			}
-
-			return PerfilAcoesEnum.ANALISTA_TECNICO.getAcoesHistoricoTramitacao().contains(historico.idAcao);
-
-		}).collect(Collectors.toList());
-
-	}
-
-
 	private static String consultarHistoricoUltimaCondicaoAcao(List listCondicao, List listAcao, boolean inout){
 		StringBuilder retorno = new StringBuilder("");
 		StringBuilder sql = new StringBuilder("");
