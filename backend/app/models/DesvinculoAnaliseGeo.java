@@ -1,9 +1,14 @@
 package models;
 
+import exceptions.ValidacaoException;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Mensagem;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -61,6 +66,71 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         this.analistaGeoDestino = novoDesvinculo.analistaGeoDestino;
 
         this._save();
+    }
+
+    public void solicitaDesvinculoAnaliseGeo (UsuarioAnalise analistaGeo){
+
+        if(this.justificativa == null || this.justificativa.equals("")){
+
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+
+        }
+        this.dataSolicitacao = new Date();
+
+        String siglaSetor = analistaGeo.usuarioEntradaUnica.setorSelecionado.sigla;
+
+        Gerente gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor, this.analiseGeo);
+
+        gerente.save();
+
+        this.gerente = UsuarioAnalise.findByGerente(gerente);
+
+        this.analistaGeo =  analistaGeo;
+
+        this.save();
+
+        this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
+        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, analistaGeo, this.gerente);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeo);
+
+    }
+
+    public void respondeSolicitacaoDesvinculoAnaliseGeo(UsuarioAnalise analistaGeoDestino){
+
+        if(this.justificativa == null ||
+                this.justificativa.equals("") ||
+                this.respostaGerente== null  ||
+                this.respostaGerente.equals("") ||
+                this.aprovada == null){
+
+            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+
+        }
+
+        this.dataResposta = new Date();
+
+        DesvinculoAnaliseGeo desvinculoAlterar = DesvinculoAnaliseGeo.findById(this.id);
+        desvinculoAlterar.update(this);
+
+        this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
+
+        if(this.aprovada) {
+
+            this.analistaGeoDestino = UsuarioAnalise.findById(this.analistaGeoDestino.id);
+            AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
+                    .setParameter("id_analise_geo", this.analiseGeo.id).first();
+            analistaGeo.usuario = this.analistaGeoDestino;
+            analistaGeo._save();
+
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeoDestino);
+
+        }else {
+
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeo);
+
+        }
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeoDestino);
+
     }
 
 }

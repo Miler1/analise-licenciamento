@@ -816,4 +816,25 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
+
+	public DesvinculoAnaliseGeo buscaDesvinculoPeloProcessoGeo() {
+
+		DesvinculoAnaliseGeo desvinculoAnaliseGeo = DesvinculoAnaliseGeo.find("id_analise_geo = :id and id_usuario = :idUsuario")
+				.setParameter("id", this.analise.analisesGeo.get(0).id)
+				.setParameter("idUsuario", this.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
+				.first();
+
+		return desvinculoAnaliseGeo;
+	}
+
+	public DesvinculoAnaliseTecnica buscaDesvinculoPeloProcessoTecnico() {
+
+		DesvinculoAnaliseTecnica desvinculoAnaliseTecnica = DesvinculoAnaliseTecnica.find("id_analise_tecnica = :id and id_usuario = :idUsuario")
+				.setParameter("id", this.analise.analisesGeo.get(0).id)
+				.setParameter("idUsuario", this.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
+				.first();
+
+		return desvinculoAnaliseTecnica;
+	}
+
 }

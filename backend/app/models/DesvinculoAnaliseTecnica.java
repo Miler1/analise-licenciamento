@@ -1,9 +1,14 @@
 package models;
 
+import exceptions.ValidacaoException;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Mensagem;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -62,6 +67,75 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 		this.analistaTecnicoDestino = novoDesvinculo.analistaTecnicoDestino;
 
 		this._save();
+	}
+
+	public void solicitaDesvinculoSAnaliseTecnica (UsuarioAnalise analistaTecnico){
+
+		if(this.justificativa == null || this.justificativa.equals("")){
+
+			throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+
+		}
+
+		this.dataSolicitacao = new Date();
+
+		String siglaSetor = analistaTecnico.usuarioEntradaUnica.setorSelecionado.sigla;
+
+		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(siglaSetor, this.analiseTecnica);
+
+		gerente.save();
+
+		this.gerente = UsuarioAnalise.findByGerente(gerente);
+
+		this.analistaTecnico =  analistaTecnico;
+
+		this.save();
+
+		this.analiseTecnica = AnaliseTecnica.findById(this.analiseTecnica.id);
+		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, analistaTecnico, this.gerente);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), analistaTecnico);
+
+	}
+
+
+	public void respondeSolicitacaoDesvinculoAnaliseTecnica( UsuarioAnalise analistaTecnicoDestino ){
+
+		if(this.justificativa == null ||
+				this.justificativa.equals("") ||
+				this.respostaGerente== null  ||
+				this.respostaGerente.equals("") ||
+				this.aprovada == null){
+
+			throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+
+		}
+
+		this.dataResposta = new Date();
+
+		DesvinculoAnaliseTecnica desvinculoAlterar = DesvinculoAnaliseTecnica.findById(this.id);
+
+		desvinculoAlterar.update(this);
+
+		this.analiseTecnica = AnaliseTecnica.findById(this.analiseTecnica.id);
+
+		if(this.aprovada) {
+
+			this.analistaTecnicoDestino = UsuarioAnalise.findById(this.analistaTecnicoDestino.id);
+			AnalistaTecnico analistaTecnico = AnalistaTecnico.find("id_analise_tecnica = :id_analise_tecnica")
+					.setParameter("id_analise_tecnica", this.analiseTecnica.id).first();
+			analistaTecnico.usuario = this.analistaTecnicoDestino;
+			analistaTecnico._save();
+
+			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaTecnicoDestino, this.analistaTecnicoDestino);
+
+		}else {
+
+			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, analistaTecnicoDestino, this.analistaTecnico);
+
+		}
+
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), analistaTecnicoDestino);
+
 	}
 
 }
