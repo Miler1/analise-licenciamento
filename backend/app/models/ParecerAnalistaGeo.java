@@ -156,7 +156,10 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 			} else if (analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
 
-				List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade =  analiseGeoBanco.analise.processo.caracterizacao.atividadesCaracterizacao.stream().map(atividadeCaracterizacao -> atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
+				List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade = new ArrayList<>();
+				analiseGeoBanco.analise.processo.caracterizacao.atividadesCaracterizacao.stream()
+						.filter(atividadeCaracterizacao -> !atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade.isEmpty())
+						.forEach(atividadeCaracterizacao -> sobreposicoesCaracterizacaoAtividade.addAll(atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade));
 
 				for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
 
