@@ -106,6 +106,7 @@ public class Notificacao extends GenericModel {
 	public String justificativaRetificacaoSolicitacao;
 
 	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos){
+
 		this.analiseGeo = analiseGeo;
 		this.resolvido = false;
 		this.ativo = true;

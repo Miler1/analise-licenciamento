@@ -9,8 +9,6 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
 
-import java.util.ArrayList;
-
 public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
 	public ParecerNaoValidadoTecnicoGerente() {

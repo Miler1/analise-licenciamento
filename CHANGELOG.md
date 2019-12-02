@@ -19,6 +19,7 @@
 * OS40 - US999 - [Analista GEO] Eu, Analista Geo, ao baixar a CARTA IMAGEM, devo visualizar a área da(s) atividade(s) fora do empreendimento
 * OS40 - US846 - [Analista GEO] Eu, Analista Geo, ao baixar o parecer, devo visualizar a área do complexo, no tópico 2 (Das Áreas Resultantes da caracterização)
 * OS40 - US857 - Eu, usuário do sistema devo visualizar todos os arquivos antes de fazer o download
+* OS40 - US848 - Eu, Analista Geo, devo analisar atividades/complexos fora do empreendimento, listar analistas de um mesmo setor e visualizar prazo gasto pelos analistas
 
 ## OS44
 
