@@ -92,9 +92,9 @@ GET     /inconsistencia/excluirInconsistencia/{id}                              
 
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
-GET     /analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/{id}/{idAnaliseGeo}              Comunicados.findByIdSobreposicaoEmpreendimento
-GET     /analisesGeo/comunicado/findByIdSobreposicaoAtividade/{id}/{idAnaliseGeo}                   Comunicados.findByIdSobreposicaoAtividade
-GET     /analisesGeo/comunicado/findByIdSobreposicaoComplexo/{id}/{idAnaliseGeo}                    Comunicados.findByIdSobreposicaoComplexo
+GET     /analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/{id}/{idAnaliseGeo}  Comunicados.findByIdSobreposicaoEmpreendimento
+GET     /analisesGeo/comunicado/findByIdSobreposicaoAtividade/{id}/{idAnaliseGeo}       Comunicados.findByIdSobreposicaoAtividade
+GET     /analisesGeo/comunicado/findByIdSobreposicaoComplexo/{id}/{idAnaliseGeo}        Comunicados.findByIdSobreposicaoComplexo
 GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                 Comunicados.listaComunicadosByIdAnaliseGeo
 POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
 GET     /analisesGeo/restricao/findAllById/{idProcesso}                             AnalisesGeo.findAllRestricoesById
