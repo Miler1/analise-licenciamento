@@ -16,6 +16,8 @@ public class DadosProcessoVO {
 
 	public Categoria categoria;
 
+	public CamadaGeoComplexoVO complexo;
+
 	private static Categoria preencheCategoria(Caracterizacao caracterizacao) {
 
 		if(caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {

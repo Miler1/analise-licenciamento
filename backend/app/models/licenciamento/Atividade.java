@@ -74,9 +74,6 @@ public class Atividade extends GenericModel {
 	@Column(name = "sigla_setor")
 	public String siglaSetor;
 
-	@Column(name = "dentro_empreendimento")
-	public Boolean dentroEmpreendimento;
-
 	@Transient
 	public List<AtividadeCnae> atividadesCnae;
 	
