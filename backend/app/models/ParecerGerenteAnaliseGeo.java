@@ -117,8 +117,8 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 		}
 
 		this.usuario = gerente;
-		this.analiseGeo = analiseGeo.save();
 		this.dataParecer = new Date();
+		analiseGeo._save();
 
 		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id);
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
