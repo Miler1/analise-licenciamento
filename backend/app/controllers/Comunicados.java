@@ -7,6 +7,7 @@ import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import serializers.ComunicadoSerializer;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -40,27 +41,42 @@ public class Comunicados extends GenericController{
 
     }
 
-    public static void findByIdSobreposicaoEmpreendimento(Long id) {
+    public static void findByIdSobreposicaoEmpreendimento(Long id, Long idAnaliseGeo) {
 
-        Comunicado comunicado = Comunicado.find("sobreposicaoCaracterizacaoEmpreendimento.id", id).first();
+        List<Comunicado> comunicados = Comunicado.find("id_sobreposicao_empreendimento = :idSobreposicaoEmpreendimento AND id_analise_geo = :idAnaliseGeo")
+                                .setParameter("idSobreposicaoEmpreendimento",id)
+                                .setParameter("idAnaliseGeo",idAnaliseGeo)
+                                .fetch();
 
-        renderJSON(comunicado, ComunicadoSerializer.findComunicado);
+        Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
 
-    }
-
-    public static void findByIdSobreposicaoAtividade(Long id) {
-
-        Comunicado comunicado = Comunicado.find("sobreposicaoCaracterizacaoAtividade.id", id).first();
-
-        renderJSON(comunicado, ComunicadoSerializer.findComunicado);
+        renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
 
     }
 
-    public static void findByIdSobreposicaoComplexo(Long id) {
+    public static void findByIdSobreposicaoAtividade(Long id, Long idAnaliseGeo) {
 
-        Comunicado comunicado = Comunicado.find("sobreposicaoCaracterizacaoComplexo.id", id).first();
+        List<Comunicado> comunicados = Comunicado.find("id_sobreposicao_atividade = :idSobreposicaoAtividade AND id_analise_geo = :idAnaliseGeo")
+                                .setParameter("idSobreposicaoAtividade",id)
+                                .setParameter("idAnaliseGeo",idAnaliseGeo)
+                                .fetch();
 
-        renderJSON(comunicado, ComunicadoSerializer.findComunicado);
+        Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
+
+        renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
+
+    }
+
+    public static void findByIdSobreposicaoComplexo(Long id, Long idAnaliseGeo) {
+
+        List<Comunicado> comunicados = Comunicado.find("id_sobreposicao_complexo = :idSobreposicaoComplexo AND id_analise_geo = :idAnaliseGeo")
+                                .setParameter("idSobreposicaoComplexo",id)
+                                .setParameter("idAnaliseGeo",idAnaliseGeo)
+                                .fetch();
+
+        Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
+
+        renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
 
     }
 
