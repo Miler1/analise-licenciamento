@@ -21,7 +21,7 @@ var ModalOficioRestricao = {
             
             if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
                 
-                analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(sobreposicaoRestricao.id)
+                analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
                     .then(function(response){
 
                         var comunicado = response.data;
@@ -31,7 +31,7 @@ var ModalOficioRestricao = {
                 });
             }else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade){
                 
-                analiseGeoService.getComunicadoByIdSobreposicaoAtividade(sobreposicaoRestricao.id)
+                analiseGeoService.getComunicadoByIdSobreposicaoAtividade(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
                     .then(function(response){
 
                         var comunicado = response.data;
@@ -41,7 +41,7 @@ var ModalOficioRestricao = {
                 });
             }else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo){
                 
-                analiseGeoService.getComunicadoByIdSobreposicaoComplexo(sobreposicaoRestricao.id)
+                analiseGeoService.getComunicadoByIdSobreposicaoComplexo(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
                     .then(function(response){
 
                         var comunicado = response.data;
@@ -60,7 +60,7 @@ var ModalOficioRestricao = {
 
         ctrl.downloadPDFOficioOrgao = function () {
              
-            analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento.id)
+            analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento.id, ctrl.idAnaliseGeo)
                 .then(function(response){
     
                     var comunicado = response.data;
