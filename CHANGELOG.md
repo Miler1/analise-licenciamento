@@ -31,3 +31,4 @@
 * OS35 - US294 - Eu, analista técnico, devo acessar caixa de entrada para acessar listagem dos novos processos
 * OS35 - US875 - Eu, analista técnico, devo acessar a ação iniciar análise para acessar a tela em análise
 * OS35 - US882 - Eu, analista técnico, devo acessar o menu "Em análise" para acessar a listagem dos protocolos
+* OS35 - US298 -  Eu, analista técnico, devo solicitar o desvínculo do processo para rejeitar a análise do processo

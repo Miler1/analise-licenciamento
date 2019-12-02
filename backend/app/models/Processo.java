@@ -10,6 +10,7 @@ import models.licenciamento.*;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
@@ -70,7 +71,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public transient Tramitacao tramitacao = new Tramitacao();
 
 	@Transient
-	public Desvinculo desvinculoRespondido;
+	public DesvinculoAnaliseGeo desvinculoAnaliseGeoRespondido;
 
 	@Transient
 	public static int indexDadosRestricoes;
@@ -191,6 +192,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		} else {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
+			processoBuilder.filtrarPorDesvinculoSemResposta();
 
 		}
 
@@ -339,7 +341,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.filtrarPorDesvinculo(true);
+		 processoBuilder.filtrarDesvinculoAnaliseGeo(true);
 		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -527,7 +529,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByRevisaoSolicitadaAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.groupByDataFinalAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.groupByDiasAnaliseGeo()
-				.groupByDesvinculo()
+				.groupByDesvinculoAnaliseGeo()
 				.groupByNotificacaoAtendidaAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.orderByDataVencimentoPrazoAnaliseGeo();
 	}
@@ -609,6 +611,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public List<HistoricoTramitacao> getHistoricoTramitacao() {
 
 		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
+//		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getHistoricoTramitacaoByPerfil(this.idObjetoTramitavel, Auth.getUsuarioSessao().usuarioEntradaUnica.perfilSelecionado.codigo);
+
 
 		Date dataAtual = new Date();
 
@@ -812,6 +816,26 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public static CamadaGeoComplexoVO preencheComplexo(Caracterizacao caracterizacao) {
 
 		return new CamadaGeoComplexoVO(caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
+	}
+
+	public DesvinculoAnaliseGeo buscaDesvinculoPeloProcessoGeo() {
+
+		DesvinculoAnaliseGeo desvinculoAnaliseGeo = DesvinculoAnaliseGeo.find("id_analise_geo = :id and id_usuario = :idUsuario")
+				.setParameter("id", this.analise.analisesGeo.get(0).id)
+				.setParameter("idUsuario", this.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
+				.first();
+
+		return desvinculoAnaliseGeo;
+	}
+
+	public DesvinculoAnaliseTecnica buscaDesvinculoPeloProcessoTecnico() {
+
+		DesvinculoAnaliseTecnica desvinculoAnaliseTecnica = DesvinculoAnaliseTecnica.find("id_analise_tecnica = :id and id_usuario = :idUsuario")
+				.setParameter("id", this.analise.analisesGeo.get(0).id)
+				.setParameter("idUsuario", this.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
+				.first();
+
+		return desvinculoAnaliseTecnica;
 	}
 
 }

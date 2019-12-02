@@ -74,9 +74,15 @@ POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.download
 GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
 POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
 
-POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
-GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
-POST    /analisesGeo/desvinculo/responderSolicitacaoDesvinculo                      Desvinculos.responderSolicitacaoDesvinculo
+# Desvínculo
+
+POST    /desvinculo/analistaGeo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculoAnaliseGeo
+GET     /desvinculo/analistaGeo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcessoGeo
+POST    /desvinculo/analistaGeo/responderSolicitacaoDesvinculo                      Desvinculos.responderSolicitacaoDesvinculoAnaliseGeo
+
+POST    /desvinculo/analistaTecnico/solicitarDesvinculo	                            Desvinculos.solicitarDesvinculoAnaliseTecnica
+GET     /desvinculo/analistaTecnico/buscarDesvinculoPeloProcesso/{idProcesso}       Desvinculos.buscarDesvinculoPeloProcessoTecnico
+POST    /desvinculo/analistaTecnico/responderSolicitacaoDesvinculo                  Desvinculos.responderSolicitacaoDesvinculoAnaliseTecnica
 
 # Inconsistências
 POST    /inconsistencia/salvar                                                      Inconsistencias.salvarInconsistencia

@@ -1,6 +1,7 @@
 package models.tramitacao;
 
 import models.AnaliseGeo;
+import enums.PerfilAcoesEnum;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //View que possui informações sobre o histórico do objeto tramitavel
 
