@@ -335,24 +335,6 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
-	public ProcessoBuilder groupByHistoricoObjetoTramitavel() {
-
-		addObjetoTramitavelAlias();
-		addHistoricoObjetoTramitavelAlias(true);
-
-		DetachedCriteria historicoTramitacaoCriteria = DetachedCriteria.forClass(HistoricoTramitacao.class, CRITERIA_HISTORICO_OBJETO_TRAMITAVEL_ALIAS);
-
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("");
-
-		historicoTramitacaoCriteria.setProjection(Projections.sqlProjection(stringBuilder.toString(), new String[] { "diascongelamento" }, new org.hibernate.type.Type[]{ StringType.INSTANCE }));
-
-		addRestriction(Subqueries.propertyEq(HISTORICO_OBJETO_TRAMITAVEL_ALIAS + ".dataCadastro", historicoTramitacaoCriteria));
-
-		return this;
-
-	}
-
 	public ProcessoBuilder groupByDenominacaoEmpreendimento(){
 
 		addEmpreendimentoAlias();
