@@ -17,39 +17,15 @@ var ModalOficioRestricao = {
 
             ctrl.restricao = ctrl.resolve.restricao;
             ctrl.idAnaliseGeo = ctrl.resolve.idAnaliseGeo;
-            var sobreposicaoRestricao = ctrl.restricao.sobreposicaoCaracterizacaoAtividade ? ctrl.restricao.sobreposicaoCaracterizacaoAtividade : ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento ? ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento : ctrl.restricao.sobreposicaoCaracterizacaoComplexo;
-            
-            if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
                 
-                analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
-                    .then(function(response){
+            analiseGeoService.getComunicadoByIdAnaliseGeo(ctrl.idAnaliseGeo)
+                .then(function(response){
 
-                        var comunicado = response.data;
-                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+                    var comunicado = response.data;
+                    ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                    ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
 
-                });
-            }else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade){
-                
-                analiseGeoService.getComunicadoByIdSobreposicaoAtividade(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
-                    .then(function(response){
-
-                        var comunicado = response.data;
-                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
-
-                });
-            }else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo){
-                
-                analiseGeoService.getComunicadoByIdSobreposicaoComplexo(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
-                    .then(function(response){
-
-                        var comunicado = response.data;
-                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
-
-                });
-            }
+            });
 
         };
 
@@ -59,76 +35,27 @@ var ModalOficioRestricao = {
         };
 
         ctrl.downloadPDFOficioOrgao = function () {
-             
-            var sobreposicaoRestricao = ctrl.restricao.sobreposicaoCaracterizacaoAtividade ? ctrl.restricao.sobreposicaoCaracterizacaoAtividade : ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento ? ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento : ctrl.restricao.sobreposicaoCaracterizacaoComplexo;
-            
-            if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
-                
-                analiseGeoService.getComunicadoByIdSobreposicaoEmpreendimento(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
-                .then(function(response){
-    
-                    var comunicado = response.data;
-    
-                    if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
-                        return;
-                    } else {
-                        documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
-                        .then(function(data, status, headers){
-            
-                            var url = URL.createObjectURL(data.data.response.blob);
-                            window.open(url, '_blank');
-                            
-            
-                        },function(error){
-                            mensagem.error(error.data.texto);
-                        });
-                    }			
-                });
-            }else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade){
-                
-                analiseGeoService.getComunicadoByIdSobreposicaoAtividade(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
-                .then(function(response){
-    
-                    var comunicado = response.data;
-    
-                    if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
-                        return;
-                    } else {
-                        documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
-                        .then(function(data, status, headers){
-            
-                            var url = URL.createObjectURL(data.data.response.blob);
-                            window.open(url, '_blank');
-                            
-            
-                        },function(error){
-                            mensagem.error(error.data.texto);
-                        });
-                    }			
-                });
-            }else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo){
-                
-                analiseGeoService.getComunicadoByIdSobreposicaoComplexo(sobreposicaoRestricao.id, ctrl.idAnaliseGeo)
-                .then(function(response){
-    
-                    var comunicado = response.data;
-    
-                    if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
-                        return;
-                    } else {
-                        documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
-                        .then(function(data, status, headers){
-            
-                            var url = URL.createObjectURL(data.data.response.blob);
-                            window.open(url, '_blank');
-                            
-            
-                        },function(error){
-                            mensagem.error(error.data.texto);
-                        });
-                    }			
-                });
-            }
+                             
+            analiseGeoService.getComunicadoByIdAnaliseGeo(ctrl.idAnaliseGeo)
+            .then(function(response){
+
+                var comunicado = response.data;
+
+                if(comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IPHAN || comunicado.orgao.sigla.toUpperCase() === app.utils.Orgao.IBAMA){
+                    return;
+                } else {
+                    documentoAnaliseService.generatePDFOficioOrgao(comunicado.id)
+                    .then(function(data, status, headers){
+        
+                        var url = URL.createObjectURL(data.data.response.blob);
+                        window.open(url, '_blank');
+                        
+        
+                    },function(error){
+                        mensagem.error(error.data.texto);
+                    });
+                }			
+            });
             
         };
 
