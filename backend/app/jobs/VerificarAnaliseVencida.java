@@ -8,15 +8,13 @@ import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
 import play.jobs.On;
-import play.jobs.OnApplicationStart;
 import utils.Helper;
 import utils.Mensagem;
 
 import java.util.Date;
 import java.util.List;
 
-//@On("cron.verificarAnaliseVencida")
-@OnApplicationStart
+@On("cron.verificarAnaliseVencida")
 public class VerificarAnaliseVencida extends GenericJob {
 
     @Override
