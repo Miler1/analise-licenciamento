@@ -1,19 +1,34 @@
 var DesvinculoService = function(request, config) {
 
-	this.solicitarDesvinculo = function(params){
+	this.solicitarDesvinculoAnaliseGeo = function(params){
 		return request
-			.post(config.BASE_URL() + "analisesGeo/desvinculo/solicitarDesvinculo",params);
+			.post(config.BASE_URL() + "desvinculo/analistaGeo/solicitarDesvinculo",params);
 	};
 
-	this.buscarDesvinculoPeloProcesso = function(idProcesso) {
+	this.buscarDesvinculoPeloProcessoGeo = function(idProcesso) {
 		return request
-			.get(config.BASE_URL() + "analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/" + idProcesso);
+			.get(config.BASE_URL() + "desvinculo/analistaGeo/buscarDesvinculoPeloProcesso/" + idProcesso);
 	};
 
 
-	this.responderSolicitacaoDesvinculo = function(params) {
+	this.responderSolicitacaoDesvinculoAnaliseGeo = function(params) {
 		return request
-			.post(config.BASE_URL() + "analisesGeo/desvinculo/responderSolicitacaoDesvinculo",params);
+			.post(config.BASE_URL() + "desvinculo/analistaGeo/responderSolicitacaoDesvinculo",params);
+	};
+	
+	this.solicitarDesvinculoAnaliseTecnica = function(params){
+		return request
+			.post(config.BASE_URL() + "desvinculo/analistaTecnico/solicitarDesvinculo",params);
+	};
+
+	this.buscarDesvinculoPeloProcessoTecnico = function(idProcesso) {
+		return request
+			.get(config.BASE_URL() + "desvinculo/analistaTecnico/buscarDesvinculoPeloProcesso/" + idProcesso);
+	};
+
+	this.responderSolicitacaoDesvinculoAnaliseTecnica = function(params) {
+		return request
+			.post(config.BASE_URL() + "desvinculo/analistaTecnico/responderSolicitacaoDesvinculo",params);
 	};
 };
 

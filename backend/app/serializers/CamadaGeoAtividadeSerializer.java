@@ -9,6 +9,7 @@ public class CamadaGeoAtividadeSerializer {
 	
 	public static JSONSerializer getDadosProjeto = SerializerUtil.create(
 			"caracterizacao.id",
+			"categoria",
 			"atividades.geometrias.item",
 			"atividades.geometrias.tipo",
 			"atividades.geometrias.descricao",

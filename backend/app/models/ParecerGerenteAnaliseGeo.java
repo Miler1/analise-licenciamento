@@ -3,9 +3,15 @@ package models;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
-import javax.persistence.*;
-import java.util.Date;
+import utils.Configuracoes;
+import utils.DateUtil;
 
+import javax.persistence.*;
+import javax.validation.ValidationException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static models.tramitacao.AcaoTramitacao.*;
 import static security.Auth.getUsuarioSessao;
 
 @Entity
@@ -42,15 +48,43 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
+	private static int prazoCongelamentoAnaliseGeo(Processo processo) {
+
+		List<HistoricoTramitacao> historicoTramitacao = processo.getHistoricoTramitacao().stream().sorted(Comparator.comparing(HistoricoTramitacao::getDataInicial).reversed()).collect(Collectors.toList());
+
+		if(!historicoTramitacao.isEmpty()) {
+
+			HistoricoTramitacao historicoInicialGerente = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(DEFERIR_ANALISE_GEO_VIA_GERENTE) || tramitacao.idAcao.equals(INDEFERIR_ANALISE_GEO_VIA_GERENTE))
+					.findFirst().orElseThrow(ValidationException::new);
+
+			String prazo = DateUtil.getDiferencaEmDiasHorasMinutos(historicoInicialGerente.dataInicial, new Date());
+
+			return Integer.parseInt(prazo.split(",")[0].split(" ")[0]);
+
+		}
+
+		return 0;
+
+	}
+
+	private static Date somaDataEmDias(Date data, Integer prazo) {
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(data);
+		c.add(Calendar.DAY_OF_MONTH, prazo);
+
+		return c.getTime();
+
+	}
+
 	public void finalizar(AnaliseGeo analiseGeo, UsuarioAnalise gerente) {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
 			UsuarioAnalise usuarioAnalistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeo));
-			AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(analiseGeo.id);
 
-			AnaliseTecnica analiseTecnica = analiseGeoBanco.geraAnaliseTecnica().save();
-			analiseTecnica.geraLicencasAnaliseTecnica(analiseGeoBanco.licencasAnalise);
+			AnaliseTecnica analiseTecnica = analiseGeo.geraAnaliseTecnica().save();
+			analiseTecnica.geraLicencasAnaliseTecnica(analiseGeo.licencasAnalise);
 			analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, usuarioAnalistaTecnico).save();
 
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
@@ -60,6 +94,8 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 
 			AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
 			UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
+
+			analiseGeo.dataVencimentoPrazo = somaDataEmDias(analiseGeo.dataVencimentoPrazo, prazoCongelamentoAnaliseGeo(analiseGeo.analise.processo));
 
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
@@ -73,14 +109,16 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			analistaGeo.usuario = analistaGeoDestino;
 			analistaGeo._save();
 
+			analiseGeo.dataVencimentoPrazo = somaDataEmDias(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
+
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
 		}
 
 		this.usuario = gerente;
-		this.analiseGeo = analiseGeo;
 		this.dataParecer = new Date();
+		analiseGeo._save();
 
 		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id);
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
