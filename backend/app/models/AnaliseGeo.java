@@ -820,15 +820,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Municipio municipio = null;
         String distancia = null;
         
-        if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
+        if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO)) {
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
 
-        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
+        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.ATIVIDADE)){
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoAtividade.distancia);
 
-        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)){
+        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.COMPLEXO)){
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoComplexo.distancia);
 
