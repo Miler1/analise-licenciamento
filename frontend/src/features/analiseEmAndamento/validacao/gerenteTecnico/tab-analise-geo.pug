@@ -104,11 +104,11 @@
                             span {{validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
                         
                         .botoes-download
-                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
+                            button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
                                 | Parecer Geo
                             br
-                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
+                            button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
                                 | Carta Imagem 
 
