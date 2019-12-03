@@ -789,7 +789,21 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
         Municipio municipio = null;
-        String distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
+        String distancia = null;
+        if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
+
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
+
+        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
+
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoAtividade.distancia);
+
+        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)){
+
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoComplexo.distancia);
+
+        }
+
         main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(comunicado.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
         for (Endereco endereco : empreendimentoEU.enderecos) {
             if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
