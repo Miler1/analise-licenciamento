@@ -90,10 +90,12 @@ POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                   
 GET     /analisesGeo/restricao/findAllById/{idProcesso}                             AnalisesGeo.findAllRestricoesById
 
 # Pareceres
-POST    /parecer/gerente/concluirParecerGerente                                 PareceresGerentes.concluirParecerGerente
-GET     /parecer/gerente/{idHistoricoTramitacao}                                PareceresGerentes.findParecerByIdHistoricoTramitacao
-POST	/parecer/analistaGeo/concluir							                PareceresAnalistasGeo.concluir
-GET     /parecer/analistaGeo/{idHistoricoTramitacao}                            PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
+POST    /parecer/gerente/concluirParecerGerente                                                                     PareceresGerentes.concluirParecerGerente
+GET     /parecer/gerente/{idHistoricoTramitacao}                                                                    PareceresGerentes.findParecerByIdHistoricoTramitacao
+POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
+GET     /parecer/analistaGeo/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                             PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
+GET		/parecer/analistaGeo                                            							                PareceresAnalistasGeo.findByNumeroProcesso
+GET     /parecer/analistaGeo/findParecerByIdProcesso/{idProcesso}                                                   PareceresAnalistasGeo.findParecerByIdProcesso
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
