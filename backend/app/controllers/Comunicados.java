@@ -41,38 +41,9 @@ public class Comunicados extends GenericController{
 
     }
 
-    public static void findByIdSobreposicaoEmpreendimento(Long id, Long idAnaliseGeo) {
+    public static void findComunicadoByIdAnaliseGeo(Long idAnaliseGeo) {
 
-        List<Comunicado> comunicados = Comunicado.find("id_sobreposicao_empreendimento = :idSobreposicaoEmpreendimento AND id_analise_geo = :idAnaliseGeo")
-                                .setParameter("idSobreposicaoEmpreendimento",id)
-                                .setParameter("idAnaliseGeo",idAnaliseGeo)
-                                .fetch();
-
-        Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
-
-        renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
-
-    }
-
-    public static void findByIdSobreposicaoAtividade(Long id, Long idAnaliseGeo) {
-
-        List<Comunicado> comunicados = Comunicado.find("id_sobreposicao_atividade = :idSobreposicaoAtividade AND id_analise_geo = :idAnaliseGeo")
-                                .setParameter("idSobreposicaoAtividade",id)
-                                .setParameter("idAnaliseGeo",idAnaliseGeo)
-                                .fetch();
-
-        Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
-
-        renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
-
-    }
-
-    public static void findByIdSobreposicaoComplexo(Long id, Long idAnaliseGeo) {
-
-        List<Comunicado> comunicados = Comunicado.find("id_sobreposicao_complexo = :idSobreposicaoComplexo AND id_analise_geo = :idAnaliseGeo")
-                                .setParameter("idSobreposicaoComplexo",id)
-                                .setParameter("idAnaliseGeo",idAnaliseGeo)
-                                .fetch();
+        List<Comunicado> comunicados = Comunicado.findByAnaliseGeo(idAnaliseGeo);
 
         Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
 
