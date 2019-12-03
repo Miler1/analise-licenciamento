@@ -24,11 +24,6 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.SEM_SOBREPOSICAO;
-import static models.tramitacao.Condicao.AGUARDANDO_RESPOSTA_COMUNICADO;
 import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
@@ -791,15 +786,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Municipio municipio = null;
         String distancia = null;
         
-        if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
+        if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO)) {
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
 
-        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
+        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.ATIVIDADE)){
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoAtividade.distancia);
 
-        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(COMPLEXO)){
+        } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.COMPLEXO)){
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoComplexo.distancia);
 
