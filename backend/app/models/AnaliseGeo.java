@@ -790,6 +790,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
         Municipio municipio = null;
         String distancia = null;
+        
         if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
