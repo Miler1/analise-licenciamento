@@ -393,13 +393,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             notificacao._save();
 
-            if(notificacao.prazoNotificacao % 2 == 1) {
-
-                notificacao.prazoNotificacao++;
-
-            }
-
-            this.prazoNotificacao = ((notificacao.prazoNotificacao/2) + (notificacao.prazoNotificacao/6)) / 2;
+            this.prazoNotificacao = notificacao.prazoNotificacao/3;
 
             EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacao);
             emailNotificacaoAnaliseGeo.enviar();
@@ -764,7 +758,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             analista = UsuarioAnalise.findById(analistaGeo.usuario.id);
 
-            analistaVO = new AnalistaVO(analista.pessoa.nome, "Analista Geo", analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor);
+            analista.usuarioEntradaUnica.perfilSelecionado.nome = "Analista Geo";
+
+            analista.usuarioEntradaUnica.setorSelecionado.sigla = analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+
+            analistaVO = new AnalistaVO(analista.pessoa.nome, analista.usuarioEntradaUnica.perfilSelecionado.nome, analista.usuarioEntradaUnica.setorSelecionado.sigla);
 
         } else {
 

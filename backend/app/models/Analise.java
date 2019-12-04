@@ -224,7 +224,7 @@ public class Analise extends GenericModel {
 
 		CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
 
-		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
+		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_UPDATE_STATUS, caracterizacaoStatusVO);
 
 	}
 }

@@ -8,6 +8,7 @@ import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
 import play.jobs.On;
+import utils.Configuracoes;
 import utils.Helper;
 import utils.Mensagem;
 
@@ -19,12 +20,15 @@ public class VerificarAnaliseVencida extends GenericJob {
 
     @Override
     public void executar() {
+
         Logger.info("[INICIO-JOB] ::VerificarAnaliseVencida:: [INICIO-JOB]");
         verificarAnalisesVencidas();
         Logger.info("[FIM-JOB] ::VerificarAnaliseVencida:: [FIM-JOB]");
+
     }
 
     public void verificarAnalisesVencidas() {
+
         List<Processo> processos = Processo
                 .find("objetoTramitavel.condicao.id <> :idCondicaoFinalizada AND objetoTramitavel.condicao.id <> :idCondicaoArquivada")
                 .setParameter("idCondicaoFinalizada", Condicao.ANALISE_FINALIZADA)
@@ -51,7 +55,7 @@ public class VerificarAnaliseVencida extends GenericJob {
 
     public void verificaPrazoDeVencimento(Processo processo) {
 
-        if(Helper.getDiferencaDias(new Date(), processo.dataCadastro) > 180l) {
+        if(Helper.getDiferencaDias(new Date(), processo.dataCadastro) > Configuracoes.PRAZO_ANALISE) {
 
             processo.tramitacao.tramitar(processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 

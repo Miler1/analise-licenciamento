@@ -227,22 +227,23 @@ public class HistoricoTramitacao extends GenericModel {
 		}
 	}
 
-	public static void setSetor(HistoricoTramitacao historicoTramitacao, String siglasetor) {
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, String siglaSetor) {
 
-		if (siglasetor != null && !siglasetor.isEmpty()) {
+		if (siglaSetor != null && !siglaSetor.isEmpty()) {
 
 			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND siglaSetor = :y")
 					.setParameter("x", historicoTramitacao.idHistorico)
-					.setParameter("y", siglasetor).first();
+					.setParameter("y", siglaSetor).first();
 
 			if (rel == null) {
 
 				rel = new RelHistoricoTramitacaoSetor();
 
-				rel.siglaSetor = siglasetor;
+				rel.siglaSetor = siglaSetor;
 				rel.historicoTramitacao = historicoTramitacao;
 
 				rel.save();
+
 			}
 		}
 	}

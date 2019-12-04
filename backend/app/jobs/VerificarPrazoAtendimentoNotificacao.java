@@ -46,8 +46,7 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
     }
 
     public void verificarPrazoAtendimento(Notificacao notificacao) throws Exception {
-
-        int diasCorridos = new Long((Helper.getDiferencaDias(new Date(), notificacao.dataNotificacao)) / (1000*60*60*24)).intValue();
+        Long diasCorridos = Helper.getDiferencaDias(new Date(), notificacao.dataNotificacao);
 
         if(diasCorridos >= notificacao.prazoNotificacao) {
 
@@ -59,8 +58,6 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
             notificacao.segundoEmailEnviado = true;
             notificacao.dataFinalNotificacao = Helper.somarDias(notificacao.dataNotificacao, notificacao.prazoNotificacao);
             notificacao.analiseGeo.enviarEmailNotificacao(notificacao, ultimoParecer, notificacao.analiseGeo.documentos);
-
-
 
         }
 
