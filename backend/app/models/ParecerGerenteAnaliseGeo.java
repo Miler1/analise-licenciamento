@@ -7,11 +7,8 @@ import utils.Configuracoes;
 import utils.DateUtil;
 
 import javax.persistence.*;
-import javax.validation.ValidationException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static models.tramitacao.AcaoTramitacao.*;
 import static security.Auth.getUsuarioSessao;
 
 @Entity
@@ -48,35 +45,6 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
-	private static int prazoCongelamentoAnaliseGeo(Processo processo) {
-
-		List<HistoricoTramitacao> historicoTramitacao = processo.getHistoricoTramitacao().stream().sorted(Comparator.comparing(HistoricoTramitacao::getDataInicial).reversed()).collect(Collectors.toList());
-
-		if(!historicoTramitacao.isEmpty()) {
-
-			HistoricoTramitacao historicoInicialGerente = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(DEFERIR_ANALISE_GEO_VIA_GERENTE) || tramitacao.idAcao.equals(INDEFERIR_ANALISE_GEO_VIA_GERENTE))
-					.findFirst().orElseThrow(ValidationException::new);
-
-			String prazo = DateUtil.getDiferencaEmDiasHorasMinutos(historicoInicialGerente.dataInicial, new Date());
-
-			return Integer.parseInt(prazo.split(",")[0].split(" ")[0]);
-
-		}
-
-		return 0;
-
-	}
-
-	private static Date somaDataEmDias(Date data, Integer prazo) {
-
-		Calendar c = Calendar.getInstance();
-		c.setTime(data);
-		c.add(Calendar.DAY_OF_MONTH, prazo);
-
-		return c.getTime();
-
-	}
-
 	public void finalizar(AnaliseGeo analiseGeo, UsuarioAnalise gerente) {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
@@ -95,10 +63,12 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			AnalistaGeo analista = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
 			UsuarioAnalise analistaGeo = UsuarioAnalise.findById(analista.usuario.id);
 
-			analiseGeo.dataVencimentoPrazo = somaDataEmDias(analiseGeo.dataVencimentoPrazo, prazoCongelamentoAnaliseGeo(analiseGeo.analise.processo));
-
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, getUsuarioSessao(), analistaGeo);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+			analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(DateUtil.somaDiasEmData(analiseGeo.dataCadastro, Configuracoes.PRAZO_ANALISE_GEO) , DiasAnalise.intervalosTramitacoesAnaliseGeo(analiseGeo.analise.processo.getHistoricoTramitacao()));
+			analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+			analiseGeo.analise.diasAnalise._save();
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_NAO_VALIDADO)) {
 
@@ -109,10 +79,12 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			analistaGeo.usuario = analistaGeoDestino;
 			analistaGeo._save();
 
-			analiseGeo.dataVencimentoPrazo = somaDataEmDias(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
-
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO, getUsuarioSessao(), analistaGeoDestino);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+			analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
+			analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+			analiseGeo.analise.diasAnalise._save();
 
 		}
 
