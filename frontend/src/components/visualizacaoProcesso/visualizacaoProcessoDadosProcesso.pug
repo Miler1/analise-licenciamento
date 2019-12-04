@@ -66,11 +66,11 @@
 							.col-xs-4.col-md-4.text-center
 								span Análise GEO
 									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasGeo, modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_GEO)}")
-										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasGeo ? modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasGeo : '-' }}
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasGeo }}
 							.col-xs-4.col-md-4.text-center
 								span Análise técnica
 									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica, modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_TECNICA)}")
-										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica ? modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica : '-' }}
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica }}
 							.col-xs-4.col-md-4.text-center
 								span Análise total
 									div
