@@ -71,4 +71,8 @@ public class Desvinculo extends GenericModel {
         this._save();
     }
 
+    public Date getDataSolicitacao() {
+        return dataSolicitacao;
+    }
+
 }
