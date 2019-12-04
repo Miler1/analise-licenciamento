@@ -30,6 +30,7 @@ public class ProcessoSerializer {
 			"analise.dataVencimentoPrazo",
 			"analise.diasAnalise.qtdeDiasGeo",
 			"analise.diasAnalise.qtdeDiasTecnica",
+			"analise.diasAnalise.qtdeDiasAnalise",
 			"analise.analiseGeo.id",
 			"analise.analiseGeo.pareceresGerenteAnaliseGeo.id",
 			"analise.analiseGeo.pareceresGerenteAnaliseGeo.tipoResultadoAnalise.id",

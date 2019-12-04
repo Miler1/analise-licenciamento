@@ -74,7 +74,7 @@
 							.col-xs-4.col-md-4.text-center
 								span Análise total
 									div
-										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasGeo + modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica }}
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasAnalise }}
 
 	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
 		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
