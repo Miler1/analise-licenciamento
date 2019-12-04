@@ -10,15 +10,10 @@ import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
 
-import javax.validation.ValidationException;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static controllers.InternalController.getUsuarioSessao;
-import static models.tramitacao.AcaoTramitacao.INICIAR_ANALISE_GERENTE;
 import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO;
 
 public class Desvinculos extends GenericController {
@@ -72,35 +67,6 @@ public class Desvinculos extends GenericController {
         renderJSON(desvinculo, DesvinculoSerializar.list);
     }
 
-    private static int prazoCongelamentoDesvinculo(Desvinculo desvinculo) {
-
-        List<HistoricoTramitacao> historicoTramitacao = desvinculo.analiseGeo.analise.processo.getHistoricoTramitacao().stream().sorted(Comparator.comparing(HistoricoTramitacao::getDataInicial).reversed()).collect(Collectors.toList());
-
-        if(!historicoTramitacao.isEmpty()) {
-
-            HistoricoTramitacao historicoInicialGerente = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(SOLICITAR_DESVINCULO))
-                    .findFirst().orElseThrow(ValidationException::new);
-
-            String prazo = DateUtil.getDiferencaEmDiasHorasMinutos(historicoInicialGerente.dataInicial, new Date());
-
-            return Integer.parseInt(prazo.split(",")[0].split(" ")[0]);
-
-        }
-
-        return 0;
-
-    }
-
-    private static Date somaDataEmDias(Date data, Integer prazo) {
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(data);
-        c.add(Calendar.DAY_OF_MONTH, prazo);
-
-        return c.getTime();
-
-    }
-
     public static void responderSolicitacaoDesvinculo(Desvinculo desvinculo) {
 
         returnIfNull(desvinculo, "Desvinculo");
@@ -146,17 +112,21 @@ public class Desvinculos extends GenericController {
 
         if(desvinculo.aprovada) {
 
-            desvinculo.analiseGeo.dataVencimentoPrazo = somaDataEmDias(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
-            desvinculo.analiseGeo._save();
-
             desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeoDestino);
+
+            desvinculo.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
+            desvinculo.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+            desvinculo.analiseGeo.analise.diasAnalise._save();
+            desvinculo.analiseGeo._save();
 
         } else {
 
-            desvinculo.analiseGeo.dataVencimentoPrazo = somaDataEmDias(desvinculo.analiseGeo.dataVencimentoPrazo, prazoCongelamentoDesvinculo(desvinculo));
-            desvinculo.analiseGeo._save();
-
             desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeo);
+
+            desvinculo.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(DateUtil.somaDiasEmData(desvinculo.analiseGeo.dataCadastro, Configuracoes.PRAZO_ANALISE_GEO) , DiasAnalise.intervalosTramitacoesAnaliseGeo(desvinculo.analiseGeo.analise.processo.getHistoricoTramitacao()));
+            desvinculo.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+            desvinculo.analiseGeo.analise.diasAnalise._save();
+            desvinculo.analiseGeo._save();
 
         }
 

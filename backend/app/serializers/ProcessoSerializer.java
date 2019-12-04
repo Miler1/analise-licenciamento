@@ -28,6 +28,8 @@ public class ProcessoSerializer {
 			"analise.id",
 			"analise.dataCadastro",
 			"analise.dataVencimentoPrazo",
+			"analise.diasAnalise.qtdeDiasGeo",
+			"analise.diasAnalise.qtdeDiasTecnica",
 			"analise.analiseGeo.id",
 			"analise.analiseGeo.pareceresGerenteAnaliseGeo.id",
 			"analise.analiseGeo.pareceresGerenteAnaliseGeo.tipoResultadoAnalise.id",
