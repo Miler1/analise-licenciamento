@@ -79,7 +79,7 @@ public class DiasAnalise extends GenericModel{
 		} else if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
 
 			Processo processo = Processo.find("objetoTramitavel.id", ultimaTramitacao.idObjetoTramitavel).first();
-			Desvinculo ultimoDesvinculo = processo.analise.analiseGeo.desvinculos.stream().max(Comparator.comparing(Desvinculo::getDataSolicitacao)).orElseThrow(ValidationException::new);
+			DesvinculoAnaliseGeo ultimoDesvinculo = processo.analise.analiseGeo.desvinculos.stream().max(Comparator.comparing(DesvinculoAnaliseGeo::getDataSolicitacao)).orElseThrow(ValidationException::new);
 
 			if(ultimoDesvinculo.dataResposta == null) {
 

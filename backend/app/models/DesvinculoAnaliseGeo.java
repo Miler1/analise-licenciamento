@@ -65,6 +65,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
     @JoinColumn(name="id_usuario_destino")
     public UsuarioAnalise analistaGeoDestino;
 
+    public Date getDataSolicitacao() {
+        return dataSolicitacao;
+    }
+
     public void update(DesvinculoAnaliseGeo novoDesvinculo) {
 
         this.respostaGerente = novoDesvinculo.respostaGerente;
