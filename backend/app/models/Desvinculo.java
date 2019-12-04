@@ -75,7 +75,4 @@ public class Desvinculo extends GenericModel {
         return dataSolicitacao;
     }
 
-    public Date getDataResposta() {
-        return dataResposta;
-    }
 }
