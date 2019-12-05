@@ -11,12 +11,8 @@ import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
 
-import javax.validation.ValidationException;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static controllers.InternalController.getUsuarioSessao;
 import static controllers.InternalController.verificarPermissao;
