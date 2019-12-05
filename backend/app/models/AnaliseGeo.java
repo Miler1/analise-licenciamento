@@ -392,7 +392,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
-        Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);
+        Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos, parecerAnalistaGeo);
         notificacaoSave.save();
         this.prazoNotificacao = notificacao.prazoNotificacao;
 
