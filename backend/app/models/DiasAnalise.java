@@ -1,6 +1,7 @@
 package models;
 
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import utils.DateUtil;
@@ -76,7 +77,7 @@ public class DiasAnalise extends GenericModel{
 
 			}
 
-		} else if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
+		} else if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO) && ultimaTramitacao.idCondicaoFinal.equals(Condicao.AGUARDANDO_ANALISE_GEO)) {
 
 			Processo processo = Processo.find("objetoTramitavel.id", ultimaTramitacao.idObjetoTramitavel).first();
 			DesvinculoAnaliseGeo ultimoDesvinculo = processo.analise.analiseGeo.desvinculos.stream().max(Comparator.comparing(DesvinculoAnaliseGeo::getDataSolicitacao)).orElseThrow(ValidationException::new);
