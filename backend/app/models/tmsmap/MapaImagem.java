@@ -510,31 +510,18 @@ public class MapaImagem {
 
 		float pontilhado = 4f;
 
-		//Para inserir as áreas de restrições no mapa
-		for(DataLayer dataLayer : dataLayers) {
+		if(geometriaFoco.equals(Caracterizacao.OrigemSobreposicao.ATIVIDADE) || geometriaFoco.equals(Caracterizacao.OrigemSobreposicao.COMPLEXO)) {
 
-			if (!dataLayer.name.equals(NOME_PROPRIEDADE_EMPREENDIMENTO) && !dataLayer.name.contains("Geometria_")) {
+			desenharGeometriaAtividades(map, (LinkedList<DataLayer>) dataLayers);
 
-				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor)
-						.fillOpacity(0.3f).dashArray(pontilhado)
-						.color(dataLayer.color).width(2).opacity(1f);
-				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+			desenharGeometriaRestricoes(map, (LinkedList<DataLayer>) dataLayers, pontilhado);
 
-				pontilhado += 1f;
+		} else {
 
-			}
-		}
+			desenharGeometriaRestricoes(map, (LinkedList<DataLayer>) dataLayers, pontilhado);
 
-		//Para inserir as geometrias de atividades no mapa
-		for(DataLayer dataLayer : dataLayers) {
+			desenharGeometriaAtividades(map, (LinkedList<DataLayer>) dataLayers);
 
-			if (dataLayer.name.contains("Geometria_")) {
-
-				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor)
-						.fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
-				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
-
-			}
 		}
 
 		createMainCoordinates(map, geometryAreaFoco, crs);
@@ -587,6 +574,43 @@ public class MapaImagem {
 
 	}
 
+	//Para inserir as áreas de restrições no mapa
+	private void desenharGeometriaRestricoes(TMSMap map, LinkedList<DataLayer> dataLayers, float pontilhado) {
+
+		for(DataLayer dataLayer : dataLayers) {
+
+			if (!dataLayer.name.equals(NOME_PROPRIEDADE_EMPREENDIMENTO) && !dataLayer.name.contains("Geometria_")) {
+
+				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor)
+						.fillOpacity(0.3f).dashArray(pontilhado)
+						.color(dataLayer.color).width(2).opacity(1f);
+				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+
+				pontilhado += 1f;
+
+			}
+
+		}
+
+	}
+
+	//Para inserir as geometrias de atividades no mapa
+	private void desenharGeometriaAtividades(TMSMap map, LinkedList<DataLayer> dataLayers) {
+
+		for (DataLayer dataLayer : dataLayers) {
+
+			if (dataLayer.name.contains("Geometria_")) {
+
+				PolygonStyle polygonStyle1 = (PolygonStyle) new PolygonStyle().fillColor(dataLayer.fillColor)
+						.fillOpacity(0.5f).color(dataLayer.color).width(2).opacity(1f);
+				map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle1, dataLayer.geometry));
+
+			}
+
+		}
+
+	}
+
 	public String createMapPoligonosCicloRestauracaoImovel(Geometry geometryAreaImovel, List<Geometry> geometriesPoligonos, Map<LayerType, Geometry> geometriesCaracterizacao, int numeroCiclos) {
 
 		LinkedList<DataLayer> dataLayers = new LinkedList<>();
@@ -612,6 +636,7 @@ public class MapaImagem {
 		return createMapPoligonosCicloRestauracaoImovel(geometryAreaImovel, geometriesPoligonos, dataLayers, numeroCiclos);
 
 	}
+
 	private String createMapPoligonosCicloRestauracaoImovel(Geometry geometryAreaImovel, List<Geometry> geometriesPoligonos, LinkedList<DataLayer> dataLayers, int numeroCiclos) {
 
 		BufferedImage newImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
