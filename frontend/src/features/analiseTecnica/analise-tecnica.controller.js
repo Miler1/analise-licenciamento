@@ -1,6 +1,6 @@
 var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $window, $location,
     analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService,
-    documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica, TiposAnalise) {
+    documentoAnaliseService, documentoService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica, TiposAnalise) {
 
     $rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -20,6 +20,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.tabAtiva = 0;
     ctrl.tiposAnalise = TiposAnalise;
     ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
+    ctrl.tiposDocumentosAnalise = app.utils.TiposDocumentosAnalise;
 
     ctrl.vistoria = {
         vistoriaRealizada: null,
@@ -62,6 +63,18 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
         return analiseValida();
     };
 
+    ctrl.limparErrosVistoria = function() {
+
+        ctrl.errors.vistoria = {
+            vistoriaRealizada: false,
+            conclusao: false,
+            data: false,
+            hora: false,
+            descricao: false
+        };
+
+    };
+
     var vistoriaValida = function() {
 
         if(ctrl.vistoria.vistoriaRealizada === null || ctrl.vistoria.vistoriaRealizada === undefined) {
@@ -70,7 +83,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
         }
 
-        if(!ctrl.vistoria.vistoriaRealizada) {
+        if(ctrl.vistoria.vistoriaRealizada !== null && ctrl.vistoria.vistoriaRealizada === 'true') {
 
             if(ctrl.vistoria.conclusao === null || ctrl.vistoria.conclusao === '') {
 
@@ -78,14 +91,6 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     
             }
 
-        } else {
-
-            if(ctrl.vistoria.conclusao === null || ctrl.vistoria.conclusao === '') {
-
-                ctrl.errors.vistoria.conclusao = true;
-    
-            }
-    
             if(ctrl.vistoria.data === null) {
     
                 ctrl.errors.vistoria.data = true;
@@ -104,9 +109,17 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     
             }
 
+        } else {
+
+            if(ctrl.vistoria.conclusao === null || ctrl.vistoria.conclusao === '') {
+
+                ctrl.errors.vistoria.conclusao = true;
+    
+            }
+
         }        
 
-        return Object.keys(ctrl.errors.vistoria).some(function(key) {
+        return !Object.keys(ctrl.errors.vistoria).some(function(key) {
             return ctrl.errors.vistoria[key];
         });
 
@@ -114,7 +127,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     ctrl.avancar = function() {
 
-        if(ctrl.tabAtiva === 2 && vistoriaValida()) {
+        if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
 
@@ -129,7 +142,25 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 		  document.execCommand( 'insertText', false, bufferText );
 		}, 10 );
     };
+
+    ctrl.baixarDocumento = function(documento) {
+
+        documentoService.download(documento.key, documento.nome);
+
+    };
     
+    ctrl.removerDocumentoRit = function() {
+
+        ctrl.vistoria.documentoRit = null;
+
+    };
+
+    ctrl.removerDocumento = function(index) {
+
+        ctrl.vistoria.documentos.splice(index, 1);
+
+    };
+
     ctrl.upload = function(file, invalidFile, tiposDocumentosAnalise) {
 
         if(file) {
@@ -137,23 +168,23 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
             uploadService.save(file)
                 .then(function(response) {
 
-                    if(tiposDocumentosAnalise === app.utils.TiposDocumentosAnalise.DOCUMENTO_RIT) {
+                    if(tiposDocumentosAnalise === ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT) {
 
                         ctrl.vistoria.documentoRit = {
                             key: response.data,
                             nome: file.name,
                             tipoDocumento: {
-                                id: app.utils.TiposDocumentosAnalise.DOCUMENTO_RIT
+                                id: ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT
                             }
                         };
 
-                    } else if(tiposDocumentosAnalise === app.utils.TiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
+                    } else if(tiposDocumentosAnalise === ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
 
                         ctrl.vistoria.documentos.push({
                             key: response.data,
                             nome: file.name,
                             tipoDocumento: {
-                                id: app.utils.TiposDocumentosAnalise.DOCUMENTO_VISTORIA
+                                id: ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA
                             }
                         });
 
