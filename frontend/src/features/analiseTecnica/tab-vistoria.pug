@@ -1,0 +1,161 @@
+#vistoria
+
+	.vistoria-analista-tecnico
+		label Analista técnico:
+		span.nome {{ usuarioSessao.usuarioEntradaUnica.nome }}
+
+	hr
+
+	.vistoria-radio
+		label.titulo Vistoria realizada?
+		label.radio-inline(for="vistoriaRealizada")
+			input#vistoriaRealizada(type='radio', name='vistoriaRealizada', ng-model='ctrl.vistoria.vistoriaRealizada', value='true')
+			| Sim
+		label.radio-inline(for="vistoriaNaoRealizada")
+			input#vistoriaNaoRealizada(type='radio', name='vistoriaNaoRealizada', ng-model='ctrl.vistoria.vistoriaRealizada', value='false')
+			| Não
+
+	.vistoria-nao-realizada(ng-if="ctrl.vistoria.vistoriaRealizada === 'false'")
+		label Justificativa de não realização da vistoria: *
+		summernote.form-control(id="justificativa-nao-realizada",
+								on-paste="snPaste(evt)",
+								name="conclusao",
+								lang="pt-BR",
+								height="200",
+								ng-model="ctrl.vistoria.conclusao",
+								config="optionsText",
+								class="editable",
+								contenteditable="true")
+
+	.vistoria-realizada(ng-if="ctrl.vistoria.vistoriaRealizada === 'true'")
+
+		.upload
+			div.btn.btn-default(type="file", name="arquivo-rit", ngf-select="$ctrl.upload($file, $invalidFile, app.utils.TiposDocumentosAnalise.DOCUMENTO_RIT)", ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", ngf-max-size="15MB")
+				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+				| Anexar RIT (Registro de Inspeção Técnica)
+			i Tamanho máximo de 15 MB
+
+		.inconsistencia
+			label Existem inconsistências na vistoria?
+			i.item.pointer.pull-right.glyphicon.glyphicon-remove-sign
+			i.item.pointer.pull-right.glyphicon.glyphicon-ok-sign
+
+		.data-vistoria
+			.data
+				label.control-label Data da vistoria: *
+					.form-inline
+						.input-group
+							input.form-control(uib-datepicker-popup="dd/MM/yyyy",
+												required,
+												type='text',
+												name='dataVistoria',
+												ng-model="$ctrl.vistoria.data",
+												datepicker-options="{ maxDate: $ctrl.dataAtual }"
+												show-button-bar="false",
+												is-open='isOpenPeriodoInicial',
+												ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial',
+												mascara='data')
+							span.input-group-btn(ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial')
+								a.btn.btn-default
+									i.glyphicon.glyphicon-calendar
+			.hora
+				label.control-label Hora da vistoria: *
+				input.form-control(type="text", ng-model="ctrl.vistoria.hora")
+
+		.equipe
+			label.control-label Informe a equipe técnica para vistoria:
+			select.form-control
+				option(value="") Selecione
+
+		.informacoes
+			label Descrição da atividade: *
+			summernote.form-control(id="descricao-realizada",
+									on-paste="snPaste(evt)",
+									name="descricao",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.descricao",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			label Cursos D'água:
+			summernote.form-control(id="cursos-dagua-realizada",
+									on-paste="snPaste(evt)",
+									name="cursos-dagua",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.cursosDagua",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			label Tipologia vegetal:
+			summernote.form-control(id="tipologia-vegetal-realizada",
+									on-paste="snPaste(evt)",
+									name="tipologia-vegetal",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.tipologiaVegetal",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			label Áreas de Preservação Permanente - APP:
+			summernote.form-control(id="app-realizada",
+									on-paste="snPaste(evt)",
+									name="app",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.app",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			label Ocorrência de processos erosivos:
+			summernote.form-control(id="ocorrencia-realizada",
+									on-paste="snPaste(evt)",
+									name="ocorrencia",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.ocorrencia",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			label Gestão de resíduos sólidos e líquidos gerados na atividade produtiva:
+			summernote.form-control(id="residuos-liquidos-realizada",
+									on-paste="snPaste(evt)",
+									name="residuosLiquidos",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.residuosLiquidos",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			label Outras informações:
+			summernote.form-control(id="outras-informacoes-realizada",
+									on-paste="snPaste(evt)",
+									name="outras",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.outras",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			label Conclusão:
+			summernote.form-control(id="justificativa-nao-realizada",
+									on-paste="snPaste(evt)",
+									name="conclusao",
+									lang="pt-BR",
+									height="200",
+									ng-model="ctrl.vistoria.conclusao",
+									config="optionsText",
+									class="editable",
+									contenteditable="true")
+
+			div.btn.btn-default(type="file", name="arquivos", ngf-select="$ctrl.upload($file, $invalidFile, app.utils.TiposDocumentosAnalise.DOCUMENTO_VISTORIA)", ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", ngf-max-size="15MB")
+				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+				| Anexar arquivos

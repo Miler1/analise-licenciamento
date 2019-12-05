@@ -20,7 +20,37 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.tabAtiva = 0;
     ctrl.tiposAnalise = TiposAnalise;
     ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
-    
+
+    ctrl.vistoria = {
+        vistoriaRealizada: null,
+        documentoRit: null,
+        documentos: [],
+        conclusao: null,
+        data: null,
+        hora: null,
+        descricao: null,
+        cursosDagua: null,
+        tipologiaVegetal: null,
+        app: null,
+        ocorrencia: null,
+        residuosLiquidos: null,
+        outras: null
+    };
+
+    ctrl.errors = { 
+
+        vistoria: {
+            vistoriaRealizada: false,
+            conclusao: false,
+            data: false,
+            hora: false,
+            descricao: false
+        }
+
+    };
+
+    ctrl.dataAtual = new Date();
+
     ctrl.init = function () {
 
         ctrl.analiseTecnica = angular.copy(analiseTecnica);
@@ -30,6 +60,53 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.validarAnalise = function() {
 
         return analiseValida();
+    };
+
+    $scope.snPaste = function(e, model) {
+		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+		e.preventDefault();
+		setTimeout( function(){
+		  document.execCommand( 'insertText', false, bufferText );
+		}, 10 );
+    };
+    
+    ctrl.upload = function(file, invalidFile, tiposDocumentosAnalise) {
+
+        if(file) {
+
+            uploadService.save(file)
+                .then(function(response) {
+
+                    if(tiposDocumentosAnalise === app.utils.TiposDocumentosAnalise.DOCUMENTO_RIT) {
+
+                        ctrl.vistoria.documentoRit = {
+                            key: response.data,
+                            nome: file.name,
+                            tipoDocumento: {
+                                id: app.utils.TiposDocumentosAnalise.DOCUMENTO_RIT
+                            }
+                        };
+
+                    } else if(tiposDocumentosAnalise === app.utils.TiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
+
+                        ctrl.vistoria.documentos.push({
+                            key: response.data,
+                            nome: file.name,
+                            tipoDocumento: {
+                                id: app.utils.TiposDocumentosAnalise.DOCUMENTO_VISTORIA
+                            }
+                        });
+
+                    }
+
+                }, function(error){
+                    mensagem.error(error.data.texto);
+                });
+
+        } else if(invalidFile && invalidFile.$error === 'maxSize'){
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name);
+        }
+
     };
 
     ctrl.downloadPDFNotificacao = function() {
