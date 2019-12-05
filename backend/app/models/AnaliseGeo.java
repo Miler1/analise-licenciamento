@@ -667,7 +667,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         parecerAnalistaGeo.documentos.stream()
                 .filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL))
-                .findAny().ifPresent(documentoAnaliseTemporal -> documentos.add(documentoAnaliseTemporal.getFile()));
+                .findAny().ifPresent(documentoAnaliseTemporal -> {
+                    if(documentoAnaliseTemporal.caminho != null) {
+                        documentos.add(documentoAnaliseTemporal.getFile());
+                    } else {
+                        File arquivoTmp = new File(documentoAnaliseTemporal.key);
+                        documentos.add(arquivoTmp);
+                    }
+                });
 
         return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
 
