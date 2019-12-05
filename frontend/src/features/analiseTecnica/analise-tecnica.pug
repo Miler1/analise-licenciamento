@@ -46,7 +46,7 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
             | Visualizar notificação
 
-        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
+        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.avancar()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
             | Próxima etapa
 

@@ -62,6 +62,66 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
         return analiseValida();
     };
 
+    var vistoriaValida = function() {
+
+        if(ctrl.vistoria.vistoriaRealizada === null || ctrl.vistoria.vistoriaRealizada === undefined) {
+
+            ctrl.errors.vistoria.vistoriaRealizada = true;
+
+        }
+
+        if(!ctrl.vistoria.vistoriaRealizada) {
+
+            if(ctrl.vistoria.conclusao === null || ctrl.vistoria.conclusao === '') {
+
+                ctrl.errors.vistoria.conclusao = true;
+    
+            }
+
+        } else {
+
+            if(ctrl.vistoria.conclusao === null || ctrl.vistoria.conclusao === '') {
+
+                ctrl.errors.vistoria.conclusao = true;
+    
+            }
+    
+            if(ctrl.vistoria.data === null) {
+    
+                ctrl.errors.vistoria.data = true;
+    
+            }
+            
+            if(ctrl.vistoria.hora === null) {
+    
+                ctrl.errors.vistoria.hora = true;
+    
+            }
+
+            if(ctrl.vistoria.descricao === null) {
+    
+                ctrl.errors.vistoria.descricao = true;
+    
+            }
+
+        }        
+
+        return Object.keys(ctrl.errors.vistoria).some(function(key) {
+            return ctrl.errors.vistoria[key];
+        });
+
+    };
+
+    ctrl.avancar = function() {
+
+        if(ctrl.tabAtiva === 2 && vistoriaValida()) {
+
+            ctrl.tabAtiva = ctrl.tabAtiva + 1;
+
+        }
+
+    };
+
     $scope.snPaste = function(e, model) {
 		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
 		e.preventDefault();
