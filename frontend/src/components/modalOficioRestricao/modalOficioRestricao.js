@@ -66,7 +66,7 @@ var ModalOficioRestricao = {
             
             var sobreposicaoRestricao = ctrl.restricao.sobreposicaoCaracterizacaoAtividade ? ctrl.restricao.sobreposicaoCaracterizacaoAtividade : ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento ? ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento : ctrl.restricao.sobreposicaoCaracterizacaoComplexo;
             
-            if(ctrl.sobreposicaoCaracterizacaoEmpreendimento) {
+            if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
                 
                 analiseGeoService.getComunicadoByIdAnaliseGeoEmpreendimento(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
                     .then(function(response){
@@ -89,7 +89,7 @@ var ModalOficioRestricao = {
                     }			
                 });
 
-            } else if(ctrl.sobreposicaoCaracterizacaoAtividade) {
+            } else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade) {
                 
                 analiseGeoService.getComunicadoByIdAnaliseGeoAtividade(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
                     .then(function(response){
@@ -112,7 +112,7 @@ var ModalOficioRestricao = {
                     }			
                 });
 
-            } else if(ctrl.sobreposicaoCaracterizacaoComplexo) {
+            } else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo) {
                 
                 analiseGeoService.getComunicadoByIdAnaliseGeoAtividade(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
                     .then(function(response){
