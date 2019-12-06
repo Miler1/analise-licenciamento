@@ -41,9 +41,35 @@ public class Comunicados extends GenericController{
 
     }
 
-    public static void findComunicadoByIdAnaliseGeo(Long idAnaliseGeo) {
+    public static void findComunicadoByIdAnaliseGeoEmpreendimento(Long idAnaliseGeo, Long idEmpreendimento) {
 
-        List<Comunicado> comunicados = Comunicado.findByAnaliseGeo(idAnaliseGeo);
+        List<Comunicado> comunicados = Comunicado.find("id_analise_geo = :analiseGeo AND id_sobreposicao_empreendimento = :idSobreposicaoEmpreendimento")
+                .setParameter("idSobreposicaoEmpreendimento", idEmpreendimento)
+                .setParameter("analiseGeo", idAnaliseGeo).fetch();
+
+        Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
+
+        renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
+
+    }
+
+    public static void findComunicadoByIdAnaliseGeoAtividade(Long idAnaliseGeo, Long idAtividade) {
+
+        List<Comunicado> comunicados = Comunicado.find("id_analise_geo = :analiseGeo AND id_sobreposicao_atividade = :idSobreposicaoAtividade")
+                .setParameter("idSobreposicaoAtividade", idAtividade)
+                .setParameter("analiseGeo", idAnaliseGeo).fetch();
+
+        Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
+
+        renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
+
+    }
+
+    public static void findComunicadoByIdAnaliseGeoComplexo(Long idAnaliseGeo, Long idComplexo) {
+
+        List<Comunicado> comunicados = Comunicado.find("id_analise_geo = :analiseGeo AND id_sobreposicao_complexo = :idSobreposicaoComplexo")
+                .setParameter("idSobreposicaoComplexo", idComplexo)
+                .setParameter("analiseGeo", idAnaliseGeo).fetch();
 
         Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
 

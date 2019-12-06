@@ -59,10 +59,24 @@ var AnaliseGeoService = function(request, $window ,config) {
 			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/" + params);
 	};
 
-	this.getComunicadoByIdAnaliseGeo = function(idAnaliseGeo) {
+	this.getComunicadoByIdAnaliseGeoEmpreendimento = function(idAnaliseGeo, idEmpreendimento) {
 
 		return request
-			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeo/" + idAnaliseGeo);
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoEmpreendimento/" + idAnaliseGeo + "/" + idEmpreendimento);
+
+	};
+
+	this.getComunicadoByIdAnaliseGeoAtividade = function(idAnaliseGeo, idAtividade) {
+
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoAtividade/" + idAnaliseGeo + "/" + idAtividade);
+
+	};
+
+	this.getComunicadoByIdAnaliseGeoComplexo = function(idAnaliseGeo, idComplexo) {
+
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoComplexo/" + idAnaliseGeo + "/" + idComplexo);
 
 	};
 

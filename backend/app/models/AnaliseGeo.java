@@ -405,7 +405,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         } else {
 
-            Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);
+            Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos, parecerAnalistaGeo);
             notificacaoSave.save();
             this.prazoNotificacao = notificacaoSave.prazoNotificacao;
 
