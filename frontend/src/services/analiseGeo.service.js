@@ -80,6 +80,20 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	};
 
+	this.getComunicadoByIdSobreposicaoAtividade = function(id) {
+
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findByIdSobreposicaoAtividade/" + id);
+
+	};
+
+	this.getComunicadoByIdSobreposicaoComplexo = function(id) {
+
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findByIdSobreposicaoComplexo/" + id);
+
+	};
+
 	this.validarParecerGerente = function(analise) {
 
 		return request

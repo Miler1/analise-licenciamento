@@ -11,11 +11,13 @@ import utils.FileManager;
 import utils.Mensagem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Documentos extends InternalController {
 
-   public static void download(Long id) {
+   public static void download(Long id) throws FileNotFoundException {
 	   
 	   verificarPermissao(Acao.VALIDAR_PARECER_GEO,  Acao.INICIAR_PARECER_GEO);
 	   
@@ -25,7 +27,7 @@ public class Documentos extends InternalController {
 	   
 	   if(documento != null) {
 		   File documentoBinary = documento.getFile();
-		   renderBinary(documentoBinary, documentoBinary.getName());
+		   renderBinary(new FileInputStream(documentoBinary), documentoBinary.getName(), true);
 	   }
 
 	   renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
@@ -64,7 +66,7 @@ public class Documentos extends InternalController {
 		}
 	}
 
-	public static void downloadTmp(String key, String nome) {
+	public static void downloadTmp(String key, String nome) throws FileNotFoundException {
 
 		returnIfNull(key, "String");
 
@@ -72,7 +74,7 @@ public class Documentos extends InternalController {
 
 		if(file != null && file.exists()) {
 
-			renderBinary(file, nome);
+			renderBinary(new FileInputStream(file), nome, true);
 		}
 
 		throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);

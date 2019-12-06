@@ -61,10 +61,10 @@ div
 
                         td.col-md-10 {{documento.nomeDoArquivo}}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
-                                i.glyphicon.glyphicon-save
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                                i.glyphicon.glyphicon-eye-open
 
-                            a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                                 i.glyphicon.glyphicon-trash
         i.info-sem-dados-para-exibir(style="color:red; display:flex;", ng-if="ctrl.isPdf === true || ctrl.getDocumentosAnaliseTemporal().length > 1") Permitido apenas upload de 1 arquivo com extensão .pdf                      
 
@@ -100,10 +100,10 @@ div(style="padding-top:15px;")
 
                 td.col-md-10 {{documento.nomeDoArquivo}}
                 td.col-md-2.text-right
-                    a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
-                        i.glyphicon.glyphicon-save
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                        i.glyphicon.glyphicon-eye-open
 
-                    a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                         i.glyphicon.glyphicon-trash
 div
 #conclusao
@@ -191,8 +191,8 @@ div#conclusao
 
                     td.col-md-10 {{documento.nomeDoArquivo}}
                     td.col-md-2.text-right
-                        a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
-                            i.glyphicon.glyphicon-save
+                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                            i.glyphicon.glyphicon-eye-open
 
-                        a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
+                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                             i.glyphicon.glyphicon-trash
