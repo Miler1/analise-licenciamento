@@ -88,6 +88,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@Column
 	public boolean renovacao;
 
+	@Column
+	public boolean retificacao;
+
 	@Column(name = "id_origem")
 	public Long idCaracterizacaoOrigem;
 
