@@ -18,4 +18,12 @@ public class UsuarioSerializer {
 			"nome",
 			"pessoa.id",
 			"pessoa.nome");
+
+	public static JSONSerializer getAnalistasTecnico = SerializerUtil.create(
+			"id",
+			"login",
+			"nome",
+			"pessoa.id",
+			"pessoa.nome");
+
 }

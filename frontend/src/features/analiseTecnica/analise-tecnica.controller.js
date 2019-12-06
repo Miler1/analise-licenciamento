@@ -1,6 +1,6 @@
 var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $window, $location,
     analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService,
-    documentoAnaliseService, documentoService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica, TiposAnalise) {
+    documentoAnaliseService, inconsistenciaVistoriaService, documentoService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica, TiposAnalise, analistaService) {
 
     $rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -21,31 +21,20 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.tiposAnalise = TiposAnalise;
     ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
     ctrl.tiposDocumentosAnalise = app.utils.TiposDocumentosAnalise;
-
-    ctrl.vistoria = {
-        vistoriaRealizada: null,
-        documentoRit: null,
-        documentos: [],
-        conclusao: null,
-        data: null,
-        hora: null,
-        descricao: null,
-        cursosDagua: null,
-        tipologiaVegetal: null,
-        app: null,
-        ocorrencia: null,
-        residuosLiquidos: null,
-        outras: null
-    };
+    ctrl.semInconsistenciaVistoria = null;
+    ctrl.analistasTecnico = [];
+    $scope.analistaSelecionado = null;
 
     ctrl.errors = { 
 
         vistoria: {
-            vistoriaRealizada: false,
+            realizada: false,
             conclusao: false,
             data: false,
             hora: false,
-            descricao: false
+            descricao: false,
+            documentoRit: false,
+            inconsistenciaVistoria: false
         }
 
     };
@@ -55,7 +44,38 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.init = function () {
 
         ctrl.analiseTecnica = angular.copy(analiseTecnica);
-        
+
+        if(ctrl.analiseTecnica.vistoria === null) {
+
+            ctrl.analiseTecnica.vistoria = {
+                realizada: null,
+                documentoRit: null,
+                inconsistenciaVistoria: {
+                    descricaoInconsistencia: null,
+                    tipoInconsistencia: null,
+                    anexos: []
+                },
+                anexos: [],
+                equipe: [],
+                conclusao: null,
+                data: null,
+                hora: null,
+                descricao: null,
+                cursosDagua: null,
+                tipologiaVegetal: null,
+                app: null,
+                ocorrencia: null,
+                residuosLiquidos: null,
+                outrasInformacoes: null
+            };
+
+        }
+
+        analistaService.getAnalistasTecnicoBySetor()
+        .then(function(response) {
+            ctrl.analistasTecnico = response.data;
+        });
+
     };
 
     ctrl.validarAnalise = function() {
@@ -63,55 +83,148 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
         return analiseValida();
     };
 
+    ctrl.deletarInconsistenciaVistoria = function() {
+
+        if(ctrl.analiseTecnica.vistoria && ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id) {
+
+            inconsistenciaVistoriaService.deletar(ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id)
+                .then(function(response) {
+
+                    mensagem.success(response.data);
+                    ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = {
+                        descricaoInconsistencia: null,
+                        tipoInconsistencia: null,
+                        anexos: []
+                    };
+
+                });
+
+        }
+
+    };
+
+    ctrl.marcarSemInconsistencia = function() {
+
+        ctrl.deletarInconsistenciaVistoria();
+        ctrl.semInconsistenciaVistoria = true;
+
+    };
+
     ctrl.limparErrosVistoria = function() {
 
         ctrl.errors.vistoria = {
-            vistoriaRealizada: false,
+            realizada: false,
             conclusao: false,
             data: false,
             hora: false,
-            descricao: false
+            descricao: false,
+            documentoRit: false,
+            inconsistenciaVistoria: false
         };
+
+    };
+
+    ctrl.limparVistoria = function() {
+
+        ctrl.semInconsistenciaVistoria = null;
+        ctrl.limparErrosVistoria();
+        ctrl.deletarInconsistenciaVistoria();
+
+    };
+
+    $rootScope.$on('buscarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
+        ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
+        ctrl.semInconsistenciaVistoria = null;
+    });
+
+    ctrl.adicionarAnalistaEquipe = function(analistaSelecionado) {
+
+        var isAdded = _.some(ctrl.analiseTecnica.vistoria.equipe, function(analista) {
+            return analistaSelecionado && analista.usuario.id === analistaSelecionado.id;
+        });
+
+        if(!isAdded && analistaSelecionado) {
+
+            ctrl.analiseTecnica.vistoria.equipe.push({ usuario: analistaSelecionado });
+
+            _.remove(ctrl.analistasTecnico, function(analista) {
+                return analista.id === analistaSelecionado.id;
+            });
+
+        }
+
+    };
+
+    ctrl.removerAnalistaEquipe = function(analistaSelecionado) {
+
+        if(analistaSelecionado === undefined) {
+
+            ctrl.analistasTecnico = ctrl.analiseTecnica.vistoria.equipe.map(function(analista) {
+                return analista.usuario;
+            });
+            ctrl.analiseTecnica.vistoria.equipe = [];
+
+        } else {
+
+            ctrl.analistasTecnico.push(analistaSelecionado);
+
+            _.remove(ctrl.analiseTecnica.vistoria.equipe, function(analista) {
+                return analista.usuario.id === analistaSelecionado.id;
+            });
+
+        }
 
     };
 
     var vistoriaValida = function() {
 
-        if(ctrl.vistoria.vistoriaRealizada === null || ctrl.vistoria.vistoriaRealizada === undefined) {
+        if(ctrl.analiseTecnica.vistoria.realizada === null || ctrl.analiseTecnica.vistoria.realizada === undefined) {
 
-            ctrl.errors.vistoria.vistoriaRealizada = true;
+            ctrl.errors.vistoria.realizada = true;
 
         }
 
-        if(ctrl.vistoria.vistoriaRealizada !== null && ctrl.vistoria.vistoriaRealizada === 'true') {
+        if(ctrl.analiseTecnica.vistoria.realizada !== null && ctrl.analiseTecnica.vistoria.realizada === 'true') {
 
-            if(ctrl.vistoria.conclusao === null || ctrl.vistoria.conclusao === '') {
+            if(ctrl.analiseTecnica.vistoria.conclusao === null || ctrl.analiseTecnica.vistoria.conclusao === '') {
 
                 ctrl.errors.vistoria.conclusao = true;
-    
+
             }
 
-            if(ctrl.vistoria.data === null) {
+            if(ctrl.analiseTecnica.vistoria.documentoRit === null) {
+
+                ctrl.errors.vistoria.documentoRit = true;
+
+            }
+
+            if(ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === undefined || ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === null) {
+
+                ctrl.errors.vistoria.inconsistenciaVistoria = true;
+
+            }
+
+            if(ctrl.analiseTecnica.vistoria.data === null) {
     
                 ctrl.errors.vistoria.data = true;
     
             }
             
-            if(ctrl.vistoria.hora === null) {
+            if(ctrl.analiseTecnica.vistoria.hora === null) {
     
                 ctrl.errors.vistoria.hora = true;
     
             }
 
-            if(ctrl.vistoria.descricao === null) {
+            if(ctrl.analiseTecnica.vistoria.descricao === null) {
     
                 ctrl.errors.vistoria.descricao = true;
     
             }
 
-        } else {
+        } else if(ctrl.analiseTecnica.vistoria.realizada !== null) {
 
-            if(ctrl.vistoria.conclusao === null || ctrl.vistoria.conclusao === '') {
+            if(ctrl.analiseTecnica.vistoria.conclusao === null || ctrl.analiseTecnica.vistoria.conclusao === '') {
 
                 ctrl.errors.vistoria.conclusao = true;
     
@@ -125,11 +238,40 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     };
 
+    ctrl.openModalInconsistencia = function() {
+
+        ctrl.limparErrosVistoria();
+
+        $uibModal.open({
+			controller: 'modalInconsistenciaVistoriaController',
+			controllerAs: 'modalCtrl',
+			backdrop: 'static',
+			templateUrl: 'features/analiseTecnica/inconsistenciaVistoria/modal-inconsistencia-vistoria.html',
+			size: 'lg',
+			resolve: {
+				inconsistenciaVistoria: function(){
+					return ctrl.analiseTecnica.vistoria.inconsistenciaVistoria;
+				}
+            }
+		});
+
+    };
+
     ctrl.avancar = function() {
 
         if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
+
+            if(ctrl.analiseTecnica.vistoria.realizada === 'true') {
+
+                ctrl.analiseTecnica.vistoria.realizada = true;
+
+            } else {
+
+                ctrl.analiseTecnica.vistoria.realizada = false;
+
+            }
 
         }
 
@@ -139,25 +281,33 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
 		e.preventDefault();
 		setTimeout( function(){
-		  document.execCommand( 'insertText', false, bufferText );
+		  document.execCommand('insertText', false, bufferText );
 		}, 10 );
     };
 
-    ctrl.baixarDocumento = function(documento) {
+    ctrl.baixarDocumento = function(anexo) {
 
-        documentoService.download(documento.key, documento.nome);
+        if(!anexo.id){
+
+            documentoService.download(anexo.key, anexo.nomeDoArquivo);
+
+        } else {
+
+            documentoService.downloadById(anexo.id);
+
+        }
 
     };
     
     ctrl.removerDocumentoRit = function() {
 
-        ctrl.vistoria.documentoRit = null;
+        ctrl.analiseTecnica.vistoria.documentoRit = null;
 
     };
 
     ctrl.removerDocumento = function(index) {
 
-        ctrl.vistoria.documentos.splice(index, 1);
+        ctrl.analiseTecnica.vistoria.anexos.splice(index, 1);
 
     };
 
@@ -165,24 +315,28 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
         if(file) {
 
+            ctrl.limparErrosVistoria();
+
             uploadService.save(file)
                 .then(function(response) {
 
                     if(tiposDocumentosAnalise === ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT) {
 
-                        ctrl.vistoria.documentoRit = {
+                        ctrl.analiseTecnica.vistoria.documentoRit = {
                             key: response.data,
-                            nome: file.name,
+                            nomeDoArquivo: file.name,
                             tipoDocumento: {
                                 id: ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT
                             }
                         };
 
+                        ctrl.errors.vistoria.documentoRit = false;
+
                     } else if(tiposDocumentosAnalise === ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
 
-                        ctrl.vistoria.documentos.push({
+                        ctrl.analiseTecnica.vistoria.anexos.push({
                             key: response.data,
-                            nome: file.name,
+                            nomeDoArquivo: file.name,
                             tipoDocumento: {
                                 id: ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA
                             }
@@ -349,6 +503,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 
     function cancelar() {
 
+        ctrl.deletarInconsistenciaVistoria();
         $window.history.back();
     }
 

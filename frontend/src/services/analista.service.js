@@ -7,6 +7,13 @@ var AnalistaService = function(request, config) {
 			.get(config.BASE_URL() + "analistas");
 	};
 
+	this.getAnalistasTecnicoBySetor = function() {
+
+		return request
+			.get(config.BASE_URL() + "analistasTecnico/findAllBySetor");
+
+	};
+
 	this.buscarAnalistasGeoByIdProcesso = function(idProcesso) {
 		return request
 			.get(config.BASE_URL() + "analistas/buscarAnalistasGeoByIdProcesso/" + idProcesso);

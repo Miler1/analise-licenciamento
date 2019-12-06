@@ -175,3 +175,8 @@ ERRO_COMUNICACAO_ENTRADA_UNICA = Não foi possível efetuar a comunicação com 
 # Notificacao
 #
 ERRO_SALVAMENTO_NOTIFICACAO=Não foi possível salvar a notificação, contate o administrador do sistema.
+
+#
+# Inconsistência vistoria
+#
+INCONSISTENCIA_VISTORIA_EXCLUIDA_SUCESSO = A inconsistẽncia foi excluída com sucesso

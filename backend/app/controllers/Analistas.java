@@ -2,12 +2,15 @@ package controllers;
 
 import models.AnalistaGeo;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Usuario;
 import models.Processo;
 import models.UsuarioAnalise;
+import models.Vistoria;
 import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.TipoCaracterizacaoAtividade;
 import security.Acao;
 import serializers.UsuarioSerializer;
+import serializers.VistoriaSerializer;
 import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 import java.util.List;
@@ -36,6 +39,13 @@ public class Analistas extends InternalController {
 
 	}
 
+	public static void findAllBySetor() {
+
+		String setorUsuarioLogado = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla;
+
+		renderJSON(UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorUsuarioLogado), UsuarioSerializer.getAnalistasTecnico);
+
+	}
 
 	public static void vincularAnaliseAnalistaGeo(Long idUsuario, String justificativaCoordenador, Long... idsProcesso) {
 

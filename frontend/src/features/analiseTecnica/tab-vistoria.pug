@@ -7,24 +7,24 @@
 	hr
 
 	.vistoria-radio
-		label.titulo(ng-class="{ 'error-summernote': ctrl.errors.vistoria.vistoriaRealizada }") Vistoria realizada?
-		label.radio-inline(for="vistoriaRealizada", ng-click="ctrl.limparErrosVistoria()")
-			input#vistoriaRealizada(type='radio', name='vistoriaRealizada', ng-model='ctrl.vistoria.vistoriaRealizada', value='true')
+		label.titulo(ng-class="{ 'error-summernote': ctrl.errors.vistoria.realizada }") Vistoria realizada?
+		label.radio-inline(for="vistoriaRealizada", ng-click="ctrl.limparVistoria()")
+			input#vistoriaRealizada(type='radio', name='vistoriaRealizada', ng-model='ctrl.analiseTecnica.vistoria.realizada', value='true')
 			| Sim
-		label.radio-inline(for="vistoriaNaoRealizada", ng-click="ctrl.limparErrosVistoria()")
-			input#vistoriaNaoRealizada(type='radio', name='vistoriaNaoRealizada', ng-model='ctrl.vistoria.vistoriaRealizada', value='false')
+		label.radio-inline(for="vistoriaNaoRealizada", ng-click="ctrl.limparVistoria()")
+			input#vistoriaNaoRealizada(type='radio', name='vistoriaNaoRealizada', ng-model='ctrl.analiseTecnica.vistoria.realizada', value='false')
 			| Não
 
-	.vistoria-realizada(ng-if="ctrl.vistoria.vistoriaRealizada === 'true'")
+	.vistoria-realizada(ng-if="ctrl.analiseTecnica.vistoria.realizada === 'true'")
 
 		.upload
-			div.btn.btn-default(type="file", name="arquivo-rit", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT)", ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", ngf-max-size="15MB")
+			div.btn.btn-default(ng-class="{ 'error-summernote': ctrl.errors.vistoria.documentoRit }", type="file", name="arquivo-rit", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT)", ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", ngf-max-size="10MB")
 				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
 				| Anexar RIT (Registro de Inspeção Técnica)
-			i Tamanho máximo de 15 MB
+			i Tamanho máximo de 10 MB
 
 		.arquivosAdicionados
-			table.table.table-condensed(ng-if="ctrl.vistoria.documentoRit !== null")
+			table.table.table-condensed(ng-if="ctrl.analiseTecnica.vistoria.documentoRit !== null")
 
 				thead
 
@@ -36,18 +36,18 @@
 
 					tr
 
-						td.col-md-10 {{ ctrl.vistoria.documentoRit.nome }}
+						td.col-md-10 {{ ctrl.analiseTecnica.vistoria.documentoRit.nomeDoArquivo }}
 						td.col-md-2.text-right
-							a.d-inline.margin-right-xs(title="Baixar documento", ng-click="ctrl.baixarDocumento(ctrl.vistoria.documentoRit)")
+							a.d-inline.margin-right-xs(title="Baixar documento", ng-click="ctrl.baixarDocumento(ctrl.analiseTecnica.vistoria.documentoRit)")
 								i.pointer.glyphicon.glyphicon-save
 
 							a.d-inline.margin-right-xs(title="Remover documento", ng-click="ctrl.removerDocumentoRit()")
 								i.pointer.glyphicon.glyphicon-trash
 
-		.inconsistencia
+		.inconsistencia(ng-class="{ 'error-summernote': ctrl.errors.vistoria.inconsistenciaVistoria }")
 			label Existem inconsistências na vistoria?
-			i.item.pointer.pull-right.glyphicon.glyphicon-remove-sign
-			i.item.pointer.pull-right.glyphicon.glyphicon-ok-sign
+			i.item.pointer.pull-right.glyphicon.glyphicon-remove-sign(ng-click="ctrl.openModalInconsistencia()", ng-class=" { 'comInconsistenciaVistoria': ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id }")
+			i.item.pointer.pull-right.glyphicon.glyphicon-ok-sign(ng-click="ctrl.marcarSemInconsistencia()", ng-class=" { 'semInconsistenciaVistoria': ctrl.semInconsistenciaVistoria }")
 
 		.data-vistoria
 			.data
@@ -58,23 +58,38 @@
 												required,
 												type='text',
 												name='dataVistoria',
-												ng-model="ctrl.vistoria.data",
+												ng-model="ctrl.analiseTecnica.vistoria.data",
 												datepicker-options="{ maxDate: ctrl.dataAtual }"
 												show-button-bar="false",
 												is-open='isOpenPeriodoInicial',
-												ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial',
+												ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial; ctrl.limparErrosVistoria();',
 												mascara='data')
 							span.input-group-btn(ng-click='isOpenPeriodoInicial = !isOpenPeriodoInicial')
 								a.btn.btn-default
 									i.glyphicon.glyphicon-calendar
+
 			.hora
 				label.control-label Hora da vistoria: *
-				input.form-control(type="text", ng-model="ctrl.vistoria.hora", ng-class="{ 'error-summernote': ctrl.errors.vistoria.hora }")
+				input.form-control(type="time", ng-model="ctrl.analiseTecnica.vistoria.hora", ng-click="ctrl.limparErrosVistoria()", ng-class="{ 'error-summernote': ctrl.errors.vistoria.hora }")
 
 		.equipe
 			label.control-label Informe a equipe técnica para vistoria:
-			select.form-control
+			select.form-control(ng-model="analistaSelecionado", ng-change="ctrl.adicionarAnalistaEquipe(analistaSelecionado)", ng-options="tecnico as tecnico.pessoa.nome for tecnico in ctrl.analistasTecnico | orderBy:'pessoa.nome' track by tecnico.id")
 				option(value="") Selecione
+
+			.analistasSelecionados(ng-if="ctrl.analiseTecnica.vistoria.equipe.length > 0")
+				fieldset
+
+					legend Selecionados
+
+					div
+						label.item-adicionado(ng-if="ctrl.analistasTecnico.length > 0", ng-repeat="analista in ctrl.analiseTecnica.vistoria.equipe track by analista.id") {{ analista.pessoa.nome }}
+							button(type="button", class="close", aria-label="Close", ng-click="ctrl.removerAnalistaEquipe(analista)")
+							span.pointer(aria-hidden="true") &nbsp;&times;
+
+						label.item-adicionado.todos(ng-if="ctrl.analistasTecnico.length === 0") Todos
+							button(type="button", class="close", aria-label="Close", ng-click="ctrl.removerAnalistaEquipe()")
+							span.pointer(aria-hidden="true") &nbsp;&times;
 
 		.informacoes
 			label Descrição da atividade: *
@@ -84,10 +99,11 @@
 										name="descricao",
 										lang="pt-BR",
 										height="200",
-										ng-model="ctrl.vistoria.descricao",
+										ng-model="ctrl.analiseTecnica.vistoria.descricao",
 										config="optionsText",
 										class="editable",
-										contenteditable="true")
+										contenteditable="true",
+										on-keydown="ctrl.limparErrosVistoria()")
 
 			label Cursos D'água:
 			summernote.form-control(id="cursos-dagua-realizada",
@@ -95,10 +111,11 @@
 									name="cursos-dagua",
 									lang="pt-BR",
 									height="200",
-									ng-model="ctrl.vistoria.cursosDagua",
+									ng-model="ctrl.analiseTecnica.vistoria.cursosDagua",
 									config="optionsText",
 									class="editable",
-									contenteditable="true")
+									contenteditable="true",
+									on-keydown="ctrl.limparErrosVistoria()")
 
 			label Tipologia vegetal:
 			summernote.form-control(id="tipologia-vegetal-realizada",
@@ -106,10 +123,11 @@
 									name="tipologia-vegetal",
 									lang="pt-BR",
 									height="200",
-									ng-model="ctrl.vistoria.tipologiaVegetal",
+									ng-model="ctrl.analiseTecnica.vistoria.tipologiaVegetal",
 									config="optionsText",
 									class="editable",
-									contenteditable="true")
+									contenteditable="true",
+									on-keydown="ctrl.limparErrosVistoria()")
 
 			label Áreas de Preservação Permanente - APP:
 			summernote.form-control(id="app-realizada",
@@ -117,10 +135,11 @@
 									name="app",
 									lang="pt-BR",
 									height="200",
-									ng-model="ctrl.vistoria.app",
+									ng-model="ctrl.analiseTecnica.vistoria.app",
 									config="optionsText",
 									class="editable",
-									contenteditable="true")
+									contenteditable="true",
+									on-keydown="ctrl.limparErrosVistoria()")
 
 			label Ocorrência de processos erosivos:
 			summernote.form-control(id="ocorrencia-realizada",
@@ -128,10 +147,11 @@
 									name="ocorrencia",
 									lang="pt-BR",
 									height="200",
-									ng-model="ctrl.vistoria.ocorrencia",
+									ng-model="ctrl.analiseTecnica.vistoria.ocorrencia",
 									config="optionsText",
 									class="editable",
-									contenteditable="true")
+									contenteditable="true",
+									on-keydown="ctrl.limparErrosVistoria()")
 
 			label Gestão de resíduos sólidos e líquidos gerados na atividade produtiva:
 			summernote.form-control(id="residuos-liquidos-realizada",
@@ -139,10 +159,11 @@
 									name="residuosLiquidos",
 									lang="pt-BR",
 									height="200",
-									ng-model="ctrl.vistoria.residuosLiquidos",
+									ng-model="ctrl.analiseTecnica.vistoria.residuosLiquidos",
 									config="optionsText",
 									class="editable",
-									contenteditable="true")
+									contenteditable="true",
+									on-keydown="ctrl.limparErrosVistoria()")
 
 			label Outras informações:
 			summernote.form-control(id="outras-informacoes-realizada",
@@ -150,10 +171,11 @@
 									name="outras",
 									lang="pt-BR",
 									height="200",
-									ng-model="ctrl.vistoria.outras",
+									ng-model="ctrl.analiseTecnica.vistoria.outrasInformacoes",
 									config="optionsText",
 									class="editable",
-									contenteditable="true")
+									contenteditable="true",
+									on-keydown="ctrl.limparErrosVistoria()")
 
 			label Conclusão: *
 			.summernote(ng-class="{ 'error-summernote': ctrl.errors.vistoria.conclusao }")
@@ -162,18 +184,19 @@
 										name="conclusao",
 										lang="pt-BR",
 										height="200",
-										ng-model="ctrl.vistoria.conclusao",
+										ng-model="ctrl.analiseTecnica.vistoria.conclusao",
 										config="optionsText",
 										class="editable",
 										contenteditable="true",
-										ng-class="{ 'error-summernote': ctrl.errors.vistoria.conclusao }")
+										ng-class="{ 'error-summernote': ctrl.errors.vistoria.conclusao }",
+										on-keydown="ctrl.limparErrosVistoria()")
 
-			div.btn.btn-default(type="file", name="arquivos", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA)", ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", ngf-max-size="15MB")
+			div.btn.btn-default(type="file", name="arquivos", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="10MB")
 				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
 				| Anexar arquivos
 
 			.arquivosAdicionados
-				table.table.table-condensed(ng-if="ctrl.vistoria.documentos.length > 0")
+				table.table.table-condensed(ng-if="ctrl.analiseTecnica.vistoria.anexos.length > 0")
 
 					thead
 
@@ -183,9 +206,9 @@
 
 					tbody
 
-						tr(ng-repeat="documento in ctrl.vistoria.documentos")
+						tr(ng-repeat="documento in ctrl.analiseTecnica.vistoria.anexos")
 
-							td.col-md-10 {{ documento.nome }}
+							td.col-md-10 {{ documento.nomeDoArquivo }}
 							td.col-md-2.text-right
 								a.d-inline.margin-right-xs(title="Baixar documento", ng-click="ctrl.baixarDocumento(documento)")
 									i.pointer.glyphicon.glyphicon-save
@@ -193,7 +216,7 @@
 								a.d-inline.margin-right-xs(title="Remover documento", ng-click="ctrl.removerDocumento($index)")
 									i.pointer.glyphicon.glyphicon-trash
 
-	.vistoria-nao-realizada(ng-if="ctrl.vistoria.vistoriaRealizada === 'false'")
+	.vistoria-nao-realizada(ng-if="ctrl.analiseTecnica.vistoria.realizada === 'false'")
 		label Justificativa de não realização da vistoria: *
 		.summernote(ng-class="{ 'error-summernote': ctrl.errors.vistoria.conclusao }")
 			summernote.form-control(id="justificativa-nao-realizada",
@@ -201,7 +224,8 @@
 								name="conclusao",
 								lang="pt-BR",
 								height="200",
-								ng-model="ctrl.vistoria.conclusao",
+								ng-model="ctrl.analiseTecnica.vistoria.conclusao",
 								config="optionsText",
 								class="editable",
-								contenteditable="true")
+								contenteditable="true",
+								on-keydown="ctrl.limparErrosVistoria()")
