@@ -156,6 +156,10 @@ public enum Mensagem {
 
 	NENHUM_SETOR_CADASTRADO;
 
+	ERRO_ENVIAR_SEGUNDO_EMAIL_NOTIFICACAO,
+
+	ERRO_ARQUIVAR_PROCESSO;
+
 	public String getTexto(Object ... args) {
 
 		return Messages.get(name(), args);
