@@ -5,6 +5,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
@@ -23,17 +24,10 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
 import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import static security.Auth.getUsuarioSessao;
 
@@ -78,10 +72,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "data_fim")
     @Temporal(TemporalType.TIMESTAMP)
     public Date dataFim;
-
-    @Column(name = "data_parecer_gerente_analise_geo")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataParecerGerenteAnaliseGeo;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
@@ -398,12 +388,27 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
-        Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);
-        notificacaoSave.save();
-        this.prazoNotificacao = notificacao.prazoNotificacao;
 
-        EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
-        emailNotificacaoAnaliseGeo.enviar();
+        if(notificacao.segundoEmailEnviado){
+
+            notificacao._save();
+
+            this.prazoNotificacao = notificacao.prazoNotificacao/3;
+
+            EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacao);
+            emailNotificacaoAnaliseGeo.enviar();
+
+        } else {
+
+            Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);
+            notificacaoSave.save();
+            this.prazoNotificacao = notificacaoSave.prazoNotificacao;
+
+            EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
+            emailNotificacaoAnaliseGeo.enviar();
+
+        }
+
     }
 
     public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) throws Exception {
@@ -733,36 +738,62 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Documento gerarPDFNotificacao(AnaliseGeo analiseGeo) {
+    public List<Documento> gerarPDFNotificacao(AnaliseGeo analiseGeo) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
         main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.getCpfCnpj());
-        Endereco enderecoCompleto = null;
-        for (Endereco endereco : empreendimentoEU.enderecos) {
-            if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
-                enderecoCompleto = endereco;
-            }
-        }
+        final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
         Geometry geometriaEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria);
         Coordinate coordenadasEmpreendimento = geometriaEmpreendimento.getCentroid().getCoordinate();
-        UsuarioAnalise analista = getUsuarioSessao();
+
+        UsuarioAnalise analista;
+        AnalistaVO analistaVO;
+
+        if(analiseGeo.id != null) {
+
+            AnalistaGeo analistaGeo = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
+
+            analista = UsuarioAnalise.findById(analistaGeo.usuario.id);
+
+            analista.usuarioEntradaUnica.perfilSelecionado.nome = "Analista Geo";
+
+            analista.usuarioEntradaUnica.setorSelecionado.sigla = analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+
+            analistaVO = new AnalistaVO(analista.pessoa.nome, analista.usuarioEntradaUnica.perfilSelecionado.nome, analista.usuarioEntradaUnica.setorSelecionado.sigla);
+
+        } else {
+
+            analista = getUsuarioSessao();
+            analistaVO = new AnalistaVO(analista.pessoa.nome, analista.usuarioEntradaUnica.perfilSelecionado.nome, analista.usuarioEntradaUnica.setorSelecionado.sigla);
+
+        }
+
         String localizacaoEmpreendimento = "[" + coordenadasEmpreendimento.x + ", " + coordenadasEmpreendimento.y + "]";
 
-        PDFGenerator pdf = new PDFGenerator()
-                .setTemplate(tipoDocumento.getPdfTemplate())
-                .addParam("analiseGeo", analiseGeo)
-                .addParam("enderecoCompleto", enderecoCompleto)
-                .addParam("analista", analista)
-                .addParam("localizacaoEmpreendimento", localizacaoEmpreendimento)
-                .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
-                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+        List<Documento> documentosNotificacao = new ArrayList<>();
 
-        pdf.generate();
+        AnalistaVO finalAnalistaVO = analistaVO;
+        analiseGeo.inconsistencias.stream().forEach(inconsistencia -> {
 
-        return new Documento(tipoDocumento, pdf.getFile());
+            PDFGenerator pdf = new PDFGenerator()
+                    .setTemplate(tipoDocumento.getPdfTemplate())
+                    .addParam("analiseGeo", analiseGeo)
+                    .addParam("inconsistencia", inconsistencia)
+                    .addParam("enderecoCompleto", enderecoCompleto)
+                    .addParam("analista", finalAnalistaVO)
+                    .addParam("localizacaoEmpreendimento", localizacaoEmpreendimento)
+                    .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                    .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+
+            pdf.generate();
+
+            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile()));
+        });
+
+        return documentosNotificacao;
 
     }
 
@@ -806,14 +837,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         analiseTecnica.dataVencimentoPrazo = calendar.getTime();
 
         return analiseTecnica;
-
-    }
-
-    public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
-
-        CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
-
-        new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
 
     }
 

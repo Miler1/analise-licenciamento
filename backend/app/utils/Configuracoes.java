@@ -54,6 +54,7 @@ public class Configuracoes {
 	public static String URL_LICENCIAMENTO_CANCELAR_DLA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.cancelar.dla", null);
 	public static String URL_LICENCIAMENTO_PRORROGAR_LICENCA = URL_LICENCIAMENTO + getConfig("licenciamento.prorrogar.licenca", null);
 	public static String URL_LICENCIAMENTO_FINALIZAR_PRORROGACAO_LICENCAS = URL_LICENCIAMENTO + getConfig("licenciamento.finalizar.prorrogacao.licencas", null);
+	public static String URL_LICENCIAMENTO_UPDATE_STATUS = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.update.status", null);
 
 	public static String PDF_TEMPLATES_FOLDER_PATH = "templates" + File.separator + "pdf";
 	public static String PDF_TEMPLATES_FOLDER_ABSOLUTE = Play.applicationPath.getAbsolutePath() + File.separator + "app" + File.separator + "views" + File.separator;

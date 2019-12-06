@@ -1,5 +1,6 @@
 package models.tramitacao;
 
+import models.EntradaUnica.Setor;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;
@@ -88,7 +89,7 @@ public class HistoricoTramitacao extends GenericModel {
 	/** 
 	 * Consulta o histórico da tramitacao para um intervalo de tempo determinado e 
 	 * com uma ação e uma condição final específica.
-	 * @param processo
+	 * @param
 	 * @return
 	 */
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView
@@ -101,7 +102,7 @@ public class HistoricoTramitacao extends GenericModel {
 
 	/** 
 	 * Consulta o histórico da tramitacao para um intervalo com uma ação e uma condição final específica.
-	 * @param processo
+	 * @param
 	 * @return
 	 */
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView(Long acao, Long condicaoFinal){
@@ -222,6 +223,27 @@ public class HistoricoTramitacao extends GenericModel {
 				rel.historicoTramitacao = historicoTramitacao;
 
 				rel.save();
+			}
+		}
+	}
+
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, String siglaSetor) {
+
+		if (siglaSetor != null && !siglaSetor.isEmpty()) {
+
+			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND siglaSetor = :y")
+					.setParameter("x", historicoTramitacao.idHistorico)
+					.setParameter("y", siglaSetor).first();
+
+			if (rel == null) {
+
+				rel = new RelHistoricoTramitacaoSetor();
+
+				rel.siglaSetor = siglaSetor;
+				rel.historicoTramitacao = historicoTramitacao;
+
+				rel.save();
+
 			}
 		}
 	}
