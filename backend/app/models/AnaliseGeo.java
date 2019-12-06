@@ -36,6 +36,7 @@ import static security.Auth.getUsuarioSessao;
 public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public static final String SEQ = "analise.analise_geo_id_seq";
+    private static final String NOME_PERFIL = "Analista Geo";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
@@ -817,11 +818,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             analista = UsuarioAnalise.findById(analistaGeo.usuario.id);
 
-            analista.usuarioEntradaUnica.perfilSelecionado.nome = "Analista Geo";
-
-            analista.usuarioEntradaUnica.setorSelecionado.sigla = analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
-
-            analistaVO = new AnalistaVO(analista.pessoa.nome, analista.usuarioEntradaUnica.perfilSelecionado.nome, analista.usuarioEntradaUnica.setorSelecionado.sigla);
+            analistaVO = new AnalistaVO(analista.pessoa.nome, NOME_PERFIL, analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor);
 
         } else {
 
