@@ -35,7 +35,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-		Processo processo = Processo.find("byId_caracterizacao", caracterizacao.id).first();
+		Processo processo = Processo.find("id_caracterizacao", caracterizacao.id).first();
 		Processo processoAntigo;
 		Analise analise;
 		AnaliseGeo analiseGeo;
