@@ -12,6 +12,7 @@ import utils.Configuracoes;
 import utils.Helper;
 import utils.Mensagem;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,10 +30,15 @@ public class VerificarAnaliseVencida extends GenericJob {
 
     public void verificarAnalisesVencidas() {
 
+        List<Long> idCondicoes = Arrays.asList(Condicao.ANALISE_FINALIZADA,
+                Condicao.NOTIFICADO,
+                Condicao.LICENCA_EMITIDA,
+                Condicao.SUSPENSO,
+                Condicao.CANCELADO);
+
         List<Processo> processos = Processo
-                .find("objetoTramitavel.condicao.id <> :idCondicaoFinalizada AND objetoTramitavel.condicao.id <> :idCondicaoArquivada")
-                .setParameter("idCondicaoFinalizada", Condicao.ANALISE_FINALIZADA)
-                .setParameter("idCondicaoArquivada", Condicao.ARQUIVADO).fetch();
+                .find("objetoTramitavel.condicao.id NOT IN(:idCondicoes)")
+                .setParameter("idCondicoes", idCondicoes).fetch();
 
         processos.forEach(processo -> {
 
