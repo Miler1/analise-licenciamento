@@ -117,6 +117,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataCadastro;
 
+	@OneToMany(mappedBy = "analiseTecnica", fetch = FetchType.LAZY)
+	public List<DesvinculoAnaliseTecnica> desvinculos;
+
 	@ManyToOne
 	@JoinColumn(name="id_tipo_resultado_validacao_aprovador")
 	public TipoResultadoAnalise tipoResultadoValidacaoAprovador;

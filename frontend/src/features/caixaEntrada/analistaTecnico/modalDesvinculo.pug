@@ -1,0 +1,36 @@
+div.modal-header
+
+    button.close(type='button', ng-click="desvinculoCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Solicitação de desvínculo do protocolo
+    div(growl inline="true" reference='5')
+  
+
+div.modal-body
+
+    div#justificativa-desvinculo
+        div(ng-if="desvinculoCtrl.respondido === true")
+            span.pull-center.visualizar-justificativa A solicitação de desvínculo do protocolo foi recusada pelo gerente. Veja a justificativa abaixo. 
+            br
+            br
+            label.label-justificativa(ng-if="desvinculoCtrl.respondido === true") Justificativa:
+            br
+            textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa', ng-disabled="true")
+
+        div(ng-if="desvinculoCtrl.respondido === false")
+            label.label-justificativa.obrigatorio(ng-if="desvinculoCtrl.respondido === false")  Justificativa:
+            br
+            textarea.text-justificativa(name="justificativa", ng-model="desvinculoCtrl.justificativa", id='justificativa', ng-class="{'error': desvinculoCtrl.errorJustificativa === true }")            
+
+
+div.modal-footer(ng-if="desvinculoCtrl.respondido === false")
+
+    button.btn.btn-default.pull-left(ng-click="desvinculoCtrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        | &nbsp;Cancelar
+    
+    button.btn.btn-success.pull-right(ng-click="desvinculoCtrl.concluir()")
+        i.glyphicon.glyphicon-ok
+        | &nbsp;Confirmar
