@@ -20,7 +20,7 @@ div(ng-init="ctrl.init()")
                     //- include analiseGeo/analise-tecnica
 
             uib-tab(index="1", heading="Vistoria")
-                //- include vistoria...
+                include tab-vistoria
 
             uib-tab(index="2", heading="Conclusão da análise")
                 //- parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
@@ -46,7 +46,7 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
             | Visualizar notificação
 
-        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
+        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.avancar()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
             | Próxima etapa
 
