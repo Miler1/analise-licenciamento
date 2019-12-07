@@ -36,8 +36,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String GERENTE_ALIAS = "gte";
 	private static final String DIA_ANALISE_ALIAS = "da";
 	private static final String CONDICAO_ALIAS = "ca";
-	private static final String DESVINCULO_ALIAS = "dea";
+	private static final String DESVINCULO_ANALISE_GEO_ALIAS = "dea";
 	private static final String DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS = "dagd";
+	private static final String DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS = "dags";
+	private static final String DESVINCULO_ANALISE_TECNICO_ALIAS = "deat";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
@@ -90,10 +92,18 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addDesvinculoAlias() {
+	public ProcessoBuilder addDesvinculoAnaliseGeoAlias() {
 
 		addAnaliseGeoAlias();
-		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
+	public ProcessoBuilder addDesvinculoAnaliseTecnicaAlias() {
+
+		addAnaliseTecnicaAlias(true);
+		addAlias(ANALISE_TECNICA_ALIAS + ".desvinculos", DESVINCULO_ANALISE_TECNICO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 	}
@@ -209,7 +219,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addAnalistaGeoAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnalistaGeoDesvinculoDestinoAlias(boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 
@@ -225,10 +235,19 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addAnalistaGeoAlias() {
+	public ProcessoBuilder addAnalistaGeoDesvinculoDestinoAlias() {
 
-		addDesvinculoAlias();
-		addAlias(DESVINCULO_ALIAS + ".analistaGeoDestino", DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addDesvinculoAnaliseGeoAlias();
+		addAlias(DESVINCULO_ANALISE_GEO_ALIAS + ".analistaGeoDestino", DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder addAnalistaGeoDesvinculoSolicitanteAlias() {
+
+		addDesvinculoAnaliseGeoAlias();
+		addAlias(DESVINCULO_ANALISE_GEO_ALIAS + ".analistaGeo", DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 
@@ -531,9 +550,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByDesvinculo() {
+	public ProcessoBuilder groupByDesvinculoAnaliseGeo() {
 
-		addAnalistaGeoAlias();
+		addAnalistaGeoDesvinculoDestinoAlias();
 		addProjection(Projections.groupProperty(DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS + ".login").as("loginUsuarioDestino"));
 
 		return this;
@@ -708,7 +727,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		if (idAnalistaGeo != null) {
 
-			addAnalistaGeoAlias(isLeftOuterJoin);
+			addAnalistaGeoDesvinculoDestinoAlias(isLeftOuterJoin);
 			addRestriction(Restrictions.eq(ANALISTA_GEO_ALIAS+".usuario.id", idAnalistaGeo));
 
 		}
@@ -735,14 +754,39 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorDesvinculo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarDesvinculoAnaliseGeo(boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
-		addDesvinculoAlias();
-		addAnalistaGeoAlias();
+		addDesvinculoAnaliseGeoAlias();
+		addAnalistaGeoDesvinculoDestinoAlias();
+		addDesvinculoAnaliseTecnicaAlias();
+		addAnalistaGeoDesvinculoSolicitanteAlias();
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
 
-		addRestriction(Restrictions.or(Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
-										Restrictions.eq(DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS + ".login", Auth.getUsuarioSessao().login)));
+		addRestriction( Restrictions.and(Restrictions.isNull(DESVINCULO_ANALISE_TECNICO_ALIAS+ ".analiseTecnica"),
+				        Restrictions.or(Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
+						Restrictions.and(Restrictions.eq(DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS + ".login", Auth.getUsuarioSessao().login)),
+						Restrictions.isNull(DESVINCULO_ANALISE_GEO_ALIAS + ".aprovada")
+				)));
+
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarPorDesvinculoSemResposta() {
+
+		addAnaliseGeoAlias(true);
+		addDesvinculoAnaliseGeoAlias();
+		addAnalistaGeoDesvinculoSolicitanteAlias();
+		addDesvinculoAnaliseTecnicaAlias();
+
+		addRestriction( Restrictions.and(Restrictions.isNull(DESVINCULO_ANALISE_TECNICO_ALIAS+ ".analiseTecnica"),
+				        Restrictions.or(Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
+				        Restrictions.and(Restrictions.eq(DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS + ".login", Auth.getUsuarioSessao().login)),
+				        Restrictions.isNull(DESVINCULO_ANALISE_GEO_ALIAS + ".aprovada")
+				       )));
+
+
 
 		return this;
 
