@@ -118,7 +118,7 @@ include ../../layout/components/mapPanel
                                                 i.glyphicon.glyphicon-trash.icone-inconsistencia-clicavel(title='Excluir inconsistência',
                                                         ng-bootbox-title='Confirmação',
                                                         ng-bootbox-confirm='Deseja realmente excluir esta inconsistência ?',
-                                                        ng-bootbox-confirm-action="excluirInconsistencia(inconsistencia.id)")
+                                                        ng-bootbox-confirm-action="excluirInconsistenciaGeo(inconsistencia.id)")
 
                                                 |&nbsp;
                             div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="!verificarTamanhoInconsistencias()")

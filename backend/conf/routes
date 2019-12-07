@@ -78,10 +78,16 @@ POST    /analisesGeo/desvinculo/solicitarDesvinculo	                            
 GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
 POST    /analisesGeo/desvinculo/responderSolicitacaoDesvinculo                      Desvinculos.responderSolicitacaoDesvinculo
 
+# Inconsistencias
 
-POST    /analisesGeo/inconsistencia/salvarInconsistencia                            Inconsistencias.salvarInconsistencia
-POST    /analisesGeo/inconsistencia/findInconsistencia                              Inconsistencias.findInconsistencia
-POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistencia
+POST    /inconsistencia/analiseGeo/salvarInconsistencia                            Inconsistencias.salvarInconsistenciaGeo
+POST    /inconsistencia/analiseGeo/findInconsistencia                              Inconsistencias.findInconsistenciaGeo
+POST    /inconsistencia/analiseGeo/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistenciaGeo
+POST    /inconsistencia/analiseTecnica/salvarInconsistencia                        Inconsistencias.salvarInconsistenciaTecnica
+POST    /inconsistencia/analiseTecnica/findInconsistencia                          Inconsistencias.findInconsistenciaTecnica
+POST    /inconsistencia/analiseTecnica/excluirInconsistencia                       Inconsistencias.excluirInconsistenciaTecnica
+
+
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
 GET     /analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/{id}             Comunicados.findByIdSobreposicaoEmpreendimento

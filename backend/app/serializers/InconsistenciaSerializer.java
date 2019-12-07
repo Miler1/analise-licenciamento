@@ -36,5 +36,6 @@ public class InconsistenciaSerializer {
             "geometriaAtividade.id",
             "caracterizacao",
             "geometriaAtividade",
-            "analiseGeo.id");
+            "analiseGeo.id",
+            "tipoDeInconsistenciaTecnica");
 }

@@ -672,7 +672,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			sobreposicaoCaracterizacaoComplexo: inconsistencia.sobreposicaoCaracterizacaoComplexo
 		};
 
-		inconsistenciaService.findInconsistencia(params)
+		inconsistenciaService.findInconsistenciaGeo(params)
 		.then(function(response){
 
 			var inconsistencia = response.data;
@@ -694,7 +694,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			sobreposicaoCaracterizacaoEmpreendimento: {id: null}			
 		};
 
-		inconsistenciaService.findInconsistencia(params)
+		inconsistenciaService.findInconsistenciaGeo(params)
 		.then(function(response){
 
 			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, idCaracterizacao, idGeometriaAtividade, null, ctrl.dadosProjeto, null);
@@ -710,7 +710,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			analiseGeo: {id: analiseGeo.id}
 		};
 
-		inconsistenciaService.findInconsistencia(params)
+		inconsistenciaService.findInconsistenciaGeo(params)
 		.then(function(response){
 
 			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, null, null, null, ctrl.dadosProjeto, null);
@@ -725,14 +725,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	};
 
-	$scope.excluirInconsistencia = function(idInconsistencia) {
+	$scope.excluirInconsistenciaGeo = function(idInconsistencia) {
 
 		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
 			return inconsistencia.id === idInconsistencia;
 		});
 		ctrl.listaInconsistencias.splice(index, 1);
 	
-		inconsistenciaService.excluirInconsistencia(idInconsistencia)
+		inconsistenciaService.excluirInconsistenciaGeo(idInconsistencia)
 			.then(function (response) {
 				mensagem.success(response.data);
 

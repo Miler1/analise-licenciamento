@@ -517,7 +517,8 @@ licenciamento
 	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
 	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
-	.controller('visualizarAjustesController',controllers.VisualizarAjustesController);
+	.controller('visualizarAjustesController',controllers.VisualizarAjustesController)
+	.controller('inconsistenciaTecnicaController',controllers.InconsistenciaTecnicaController);
 
 
 licenciamento

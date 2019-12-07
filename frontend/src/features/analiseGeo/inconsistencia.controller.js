@@ -155,7 +155,7 @@ var InconsistenciaController = function ($scope,
 			return;
 		}else{
 		
-			inconsistenciaService.findInconsistencia(paramsInconsistencia)
+			inconsistenciaService.findInconsistenciaGeo(paramsInconsistencia)
 			.then(function(inconsistenciaResponse){
 
 				inconsistencia = inconsistenciaResponse.data;
@@ -192,7 +192,7 @@ var InconsistenciaController = function ($scope,
 					};
 
 				}
-				inconsistenciaService.salvarInconsistencia(params)
+				inconsistenciaService.salvarInconsistenciaGeo(params)
 					.then(function(response){
 						mensagem.success("Inconsistência salva com sucesso!");
 						var retorno = {
@@ -252,7 +252,7 @@ var InconsistenciaController = function ($scope,
 			className: "btn-success",
 			callback: function() {
 
-				inconsistenciaService.excluirInconsistencia(inconsistencia.id)
+				inconsistenciaService.excluirInconsistenciaGeo(inconsistencia.id)
 					.then(function (response) {
 						mensagem.success(response.data);
 
