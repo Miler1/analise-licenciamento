@@ -33,9 +33,9 @@ public class GeometriaComplexo extends GenericModel {
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id")
 	public Caracterizacao caracterizacao;
 
-	public List<GeometriaAtividadeVO> convertToVO() {
+	public GeometriaAtividadeVO convertToVO() {
 
-		return GeoCalc.getGeometries(this.geometria).stream().map(GeometriaAtividadeVO::new).collect(Collectors.toList());
+		return new GeometriaAtividadeVO(this.geometria);
 
 	}
 
