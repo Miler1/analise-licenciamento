@@ -780,11 +780,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAnalistaGeoDesvinculoSolicitanteAlias();
 		addDesvinculoAnaliseTecnicaAlias();
 
-		addRestriction( Restrictions.and(Restrictions.isNull(DESVINCULO_ANALISE_TECNICO_ALIAS+ ".analiseTecnica"),
-				        Restrictions.or(Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
-				        Restrictions.and(Restrictions.eq(DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS + ".login", Auth.getUsuarioSessao().login)),
-				        Restrictions.isNull(DESVINCULO_ANALISE_GEO_ALIAS + ".aprovada")
-				       )));
+		addRestriction(Restrictions.and(Restrictions.isNull(DESVINCULO_ANALISE_TECNICO_ALIAS+ ".analiseTecnica"),
+				       Restrictions.or(Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
+				       Restrictions.and(Restrictions.eq(DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS + ".login", Auth.getUsuarioSessao().login)),
+				       Restrictions.isNull(DESVINCULO_ANALISE_GEO_ALIAS + ".aprovada"))));
 
 
 

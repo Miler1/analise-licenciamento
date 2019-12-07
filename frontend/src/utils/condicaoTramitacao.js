@@ -1,4 +1,4 @@
-var CAIXA_ENTRADA_GERENTE = [ 27, 10, 30 ];
+var CAIXA_ENTRADA_GERENTE = [ 27, 10, 30, 33 ];
 
 var CondicaoTramitacao = {
 
