@@ -1,10 +1,13 @@
 package models;
 
 import exceptions.PermissaoNegadaException;
+import exceptions.PortalSegurancaException;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Mensagem;
 
 import javax.persistence.Column;
@@ -112,6 +115,17 @@ public class Gerente extends GenericModel {
 	public static Gerente distribuicaoAutomaticaGerente(String setorAtividade, AnaliseGeo analiseGeo) {
 
 		List<UsuarioAnalise> gerentes = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
+
+		List<Usuario> usuariosEU = CadastroUnificadoWS.ws.getUsuariosByPerfil(CodigoPerfil.GERENTE).stream().map(Usuario::new).collect(Collectors.toList());
+
+		for( UsuarioAnalise gerente : gerentes){
+
+			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(gerente.login)).findAny().orElseThrow(PortalSegurancaException::new);
+
+			usuario.salvarPerfis(gerente);
+			usuario.salvarSetores(gerente);
+
+		}
 
 		if (gerentes == null || gerentes.size() == 0)
 			throw new WebServiceException(Mensagem.NENHUM_GERENTE_ENCONTRADO.getTexto());

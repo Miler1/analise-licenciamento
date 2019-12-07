@@ -17,6 +17,8 @@
 * OS40 - US851 - [Analista GEO] Eu, Analista Geo, devo visualizar a justificativa do gerente para ver a justificativa da solicitação de ajustes e inserir apenas 1 arquivo por análise temporal
 * OS40 - US857 - Eu, usuário do sistema devo visualizar todos os arquivos antes de fazer o download
 * OS40 - US846 - [Analista GEO] Eu, Analista Geo, ao baixar o parecer, devo visualizar a área do complexo, no tópico 2 (Das Áreas Resultantes da caracterização)
+* OS40 - US856 - [TODOS PERFIS] Eu, usuário do sistema devo ter meus perfis e setores sempre sincronizados entre EU e Análise Licenciamento.
+
 
 ## OS44
 
@@ -28,3 +30,6 @@
 * OS35 - US875 - Eu, analista técnico, devo acessar a ação iniciar análise para acessar a tela em análise
 * OS35 - US882 - Eu, analista técnico, devo acessar o menu "Em análise" para acessar a listagem dos protocolos
 * OS35 - US298 -  Eu, analista técnico, devo solicitar o desvínculo do processo para rejeitar a análise do processo
+
+
+
