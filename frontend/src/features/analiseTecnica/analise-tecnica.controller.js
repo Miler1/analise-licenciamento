@@ -1,6 +1,6 @@
-var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $window, $location,
-    analiseTecnica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseTecnicaService,
-    documentoAnaliseService, inconsistenciaVistoriaService, documentoService, processoService, tamanhoMaximoArquivoAnaliseMB, restricoes, idAnaliseTecnica, TiposAnalise, analistaService) {
+var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
+    analiseTecnica, uploadService, mensagem, $uibModal, analiseTecnicaService,
+    documentoAnaliseService, inconsistenciaVistoriaService, documentoService, processoService, restricoes, idAnaliseTecnica, TiposAnalise, analistaService) {
 
     $rootScope.tituloPagina = 'PARECER TÉCNICO';
 

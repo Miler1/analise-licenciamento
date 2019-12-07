@@ -136,7 +136,6 @@ GET     /analistasGeo                               Analistas.getAnalistaGeoPerf
 GET     /analistas/buscarAnalistasGeoByIdProcesso/{idProcesso}  Analistas.buscarAnalistasGeoByIdProcesso
 GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
 GET     /analistasTecnico/findAllBySetor            Analistas.findAllBySetor
-POST    /teste                                      Analistas.teste
 
 # Gerentes
 POST	/gerentes/vincular							Gerentes.vincularAnaliseGerente

@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Table(schema = "analise", name = "equipe_vistoria")
 public class EquipeVistoria extends GenericModel {
 
-	public static final String SEQ = "analise.equipe_vistoria_id_seq";
-
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "id_vistoria")

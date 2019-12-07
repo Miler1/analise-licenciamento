@@ -5,7 +5,6 @@ import play.db.jpa.GenericModel;
 import utils.Mensagem;
 
 import javax.persistence.*;
-import javax.print.Doc;
 import java.util.List;
 import java.util.stream.Collectors;
 
