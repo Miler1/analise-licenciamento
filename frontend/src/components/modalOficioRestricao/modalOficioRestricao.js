@@ -114,7 +114,7 @@ var ModalOficioRestricao = {
 
             } else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo) {
                 
-                analiseGeoService.getComunicadoByIdAnaliseGeoAtividade(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
+                analiseGeoService.getComunicadoByIdAnaliseGeoComplexo(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
                     .then(function(response){
 
                     var comunicado = response.data;
