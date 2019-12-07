@@ -13,8 +13,6 @@ import java.util.List;
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
-	private List<Caracterizacao> caracterizacoes;
-
 	@Override
 	public void executar() {
 
@@ -23,16 +21,11 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 
 		// Licenças com status EM_ANALISE
-		caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
+		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 
-		for(Caracterizacao caracterizacao : caracterizacoes) {
+		caracterizacoes.forEach(this::processarCaracterizacao);
 
-			processarCaracterizacao(caracterizacao);
-			
-		}
-		
-		Long[] ids = ListUtil.getIdsAsArray(caracterizacoes);
-		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
+		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ListUtil.getIdsAsArray(caracterizacoes));
 
 		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
 
@@ -42,7 +35,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-		Processo processo = Processo.find("byNumero", caracterizacao.numero).first();
+		Processo processo = Processo.find("id_caracterizacao", caracterizacao.id).first();
 		Processo processoAntigo;
 		Analise analise;
 		AnaliseGeo analiseGeo;
@@ -55,12 +48,12 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			analise = criarNovaAnalise(processo);
 
-			if (caracterizacao.renovacao) {
+			if (caracterizacao.renovacao || caracterizacao.retificacao) {
 
 				Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
-				processoAntigo = Processo.find("numero", caracterizacaoAnterior.numero).first();
+				processoAntigo = Processo.find("numero ORDER BY id DESC", caracterizacaoAnterior.numero).first();
 				processo.processoAnterior = processoAntigo;
-				processo.renovacao = true;
+				processo.renovacao = caracterizacao.renovacao;
 
 			}
 
