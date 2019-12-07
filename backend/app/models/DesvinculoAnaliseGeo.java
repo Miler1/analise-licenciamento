@@ -128,8 +128,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         if(this.aprovada) {
 
             this.analistaGeoDestino = UsuarioAnalise.findById(this.analistaGeoDestino.id);
+
             AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
                     .setParameter("id_analise_geo", this.analiseGeo.id).first();
+
             analistaGeo.usuario = this.analistaGeoDestino;
             analistaGeo._save();
 
