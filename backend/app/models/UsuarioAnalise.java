@@ -135,15 +135,15 @@ public class UsuarioAnalise extends GenericModel  {
 
 	}
 
-	public boolean containsPerfil (String codigoPerfil ){
+	public boolean containsPerfil (String codigoPerfil, Usuario usuario){
 
-		return this.perfis.stream().filter(perfil ->  perfil.codigoPerfil.equals(codigoPerfil)).collect(Collectors.toList()).size() > 0;
+		return usuario.perfis.stream().filter(perfil ->  perfil.codigo.equals(codigoPerfil)).collect(Collectors.toList()).size() > 0;
 
 	}
 
-	public boolean containsSetor (String siglaSetor ){
+	public boolean containsSetor (String siglaSetor , Usuario usuario){
 
-		return this.setores.stream().filter(setor ->  setor.siglaSetor.equals(siglaSetor)).collect(Collectors.toList()).size() > 0;
+		return usuario.setores.stream().filter(setor ->  setor.sigla.equals(siglaSetor)).collect(Collectors.toList()).size() > 0;
 
 	}
 
