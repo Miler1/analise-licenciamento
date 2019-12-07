@@ -55,8 +55,8 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
 
                         td.col-md-10 {{anexo.nomeDoArquivo}}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Baixar anexo", ng-click="baixarDocumento(anexo)")
-                                i.glyphicon.glyphicon-save
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="baixarDocumento(anexo)")
+                                i.glyphicon.glyphicon-eye-open
 
                             a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="removerDocumento($index,anexo.id)")
                                 i.glyphicon.glyphicon-trash

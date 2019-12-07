@@ -5,7 +5,7 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 	var cxEntGerente = this;
 
 	cxEntGerente.atualizarListaProcessos = atualizarListaProcessos;
-	cxEntGerente.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
+	cxEntGerente.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO;
 	cxEntGerente.atualizarPaginacao = atualizarPaginacao;
 	cxEntGerente.selecionarTodosProcessos = selecionarTodosProcessos;
 	cxEntGerente.vincularAnalista = vincularAnalista;

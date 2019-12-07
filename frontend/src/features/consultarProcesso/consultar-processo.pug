@@ -36,7 +36,7 @@ div
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
-								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE}")
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
 								span(ng-class="{'icone-solicitacao-ajustes': false }")
 								span(ng-class="{'icone-solicitacao-finalizada': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO}")
@@ -69,12 +69,12 @@ div
 													span Visualizar protocolo
 											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE")
 												a(ng-click="consultarProcesso.downloadPDFparecer(processo)")
-													i.fa.fa-download
-													span Baixar parecer GEO
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar parecer GEO
 											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE")
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
-													i.fa.fa-download
-													span Baixar carta imagem
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar carta imagem
 											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO")
 												a(ng-click="consultarProcesso.visualizarNotificacao(processo)")
 													i.glyphicon.glyphicon-eye-open

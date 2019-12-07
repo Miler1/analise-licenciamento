@@ -74,9 +74,15 @@ POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.download
 GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
 POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
 
-POST    /analisesGeo/desvinculo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculo
-GET     /analisesGeo/desvinculo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcesso
-POST    /analisesGeo/desvinculo/responderSolicitacaoDesvinculo                      Desvinculos.responderSolicitacaoDesvinculo
+# Desvínculo
+
+POST    /desvinculo/analistaGeo/solicitarDesvinculo	                                Desvinculos.solicitarDesvinculoAnaliseGeo
+GET     /desvinculo/analistaGeo/buscarDesvinculoPeloProcesso/{idProcesso}           Desvinculos.buscarDesvinculoPeloProcessoGeo
+POST    /desvinculo/analistaGeo/responderSolicitacaoDesvinculo                      Desvinculos.responderSolicitacaoDesvinculoAnaliseGeo
+
+POST    /desvinculo/analistaTecnico/solicitarDesvinculo	                            Desvinculos.solicitarDesvinculoAnaliseTecnica
+GET     /desvinculo/analistaTecnico/buscarDesvinculoPeloProcesso/{idProcesso}       Desvinculos.buscarDesvinculoPeloProcessoTecnico
+POST    /desvinculo/analistaTecnico/responderSolicitacaoDesvinculo                  Desvinculos.responderSolicitacaoDesvinculoAnaliseTecnica
 
 
 POST    /analisesGeo/inconsistencia/salvarInconsistencia                            Inconsistencias.salvarInconsistencia
@@ -85,6 +91,8 @@ POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                  
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
 GET     /analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/{id}             Comunicados.findByIdSobreposicaoEmpreendimento
+GET     /analisesGeo/comunicado/findByIdSobreposicaoAtividade/{id}             Comunicados.findByIdSobreposicaoAtividade
+GET     /analisesGeo/comunicado/findByIdSobreposicaoComplexo/{id}             Comunicados.findByIdSobreposicaoComplexo
 GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                 Comunicados.listaComunicadosByIdAnaliseGeo
 POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
 GET     /analisesGeo/restricao/findAllById/{idProcesso}                             AnalisesGeo.findAllRestricoesById
