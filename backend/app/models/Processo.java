@@ -10,7 +10,6 @@ import models.licenciamento.*;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
@@ -18,7 +17,6 @@ import utils.*;
 import javax.persistence.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -176,24 +174,17 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
-
-			if(filtroProcesso.idAnalistaGeo != null) {
-
-				processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
-
-			}
-
-			if(filtroProcesso.idAnalistaTecnico != null) {
-
-				processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
-
-			}
-
-		} else {
+		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
-			processoBuilder.filtrarPorDesvinculoSemResposta();
+			processoBuilder.filtrarAnaliseGeoAtiva(false);
+			processoBuilder.filtrarDesvinculoAnaliseGeoSemResposta();
+
+		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
+
+			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, true);
+			processoBuilder.filtrarAnaliseTecnicaAtiva(false);
+			processoBuilder.filtrarDesvinculoAnaliseTecnicaSemResposta();
 
 		}
 
@@ -246,6 +237,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		processoBuilder.filtrarDesvinculoAnaliseTecnicaComResposta(true);
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -342,7 +334,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		 processoBuilder.filtrarDesvinculoAnaliseGeo(true);
+		processoBuilder.filtrarDesvinculoAnaliseGeoComResposta(true);
 		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 

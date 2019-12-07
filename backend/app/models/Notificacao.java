@@ -127,11 +127,13 @@ public class Notificacao extends GenericModel {
 		this.documentos = new ArrayList<>();
 		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
-		documentos.stream().forEach(documento -> {
-			if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
-				this.documentos.add(documento);
-			}
-		});
+		if(this.documentos != null && !this.documentos.isEmpty()) {
+			documentos.stream().forEach(documento -> {
+				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
+					this.documentos.add(documento);
+				}
+			});
+		}
 
 	}
 

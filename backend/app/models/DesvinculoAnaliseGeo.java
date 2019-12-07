@@ -118,28 +118,32 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
         }
 
-        this.dataResposta = new Date();
-
-        DesvinculoAnaliseGeo desvinculoAlterar = DesvinculoAnaliseGeo.findById(this.id);
-        desvinculoAlterar.update(this);
-
         this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
 
         if(this.aprovada) {
 
             this.analistaGeoDestino = UsuarioAnalise.findById(this.analistaGeoDestino.id);
+
             AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
                     .setParameter("id_analise_geo", this.analiseGeo.id).first();
+
             analistaGeo.usuario = this.analistaGeoDestino;
             analistaGeo._save();
 
-            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeoDestino);
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, this.analistaGeoDestino, this.analistaGeoDestino);
 
         }else {
 
-            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeo);
+            this.analistaGeoDestino = this.analistaGeo;
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, this.analistaGeoDestino, this.analistaGeo);
 
         }
+
+        this.dataResposta = new Date();
+
+        DesvinculoAnaliseGeo desvinculoAlterar = DesvinculoAnaliseGeo.findById(this.id);
+        desvinculoAlterar.update(this);
+
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeoDestino);
 
     }

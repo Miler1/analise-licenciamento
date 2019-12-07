@@ -181,3 +181,8 @@ ERRO_SALVAMENTO_NOTIFICACAO=Não foi possível salvar a notificação, contate o
 # Arquivar
 #
 ERRO_ARQUIVAR_PROCESSO=Não foi possível arquivar o processo %s
+
+#
+# Inconsistência vistoria
+#
+INCONSISTENCIA_VISTORIA_EXCLUIDA_SUCESSO=A inconsistẽncia foi excluída com sucesso
