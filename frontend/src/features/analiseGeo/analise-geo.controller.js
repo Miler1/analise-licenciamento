@@ -1101,6 +1101,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		ctrl.parecer.analiseGeo = ctrl.analiseGeo;
 
+		if(ctrl.parecer.documentos === null) {
+			ctrl.parecer.documentos = [];
+		}
+
 		analiseGeoService.concluir(ctrl.parecer)
 			.then(function(response) {
 

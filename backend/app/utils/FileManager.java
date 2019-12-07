@@ -68,13 +68,12 @@ public class FileManager {
     public String createFile(byte [] fileBytes, String extension) throws IOException {
 
         String fileName = generateFileName(extension);
-        String folderName = getFolderName();
-
-        File file = new File(TEMP_FILES_FOLDER_PATH + folderName, fileName);
+        File file = new File(TEMP_FILES_FOLDER_PATH, fileName);
 
         writeFile(file, fileBytes);
 
-        return generateFileKey(fileName, folderName);
+        return file.getAbsolutePath();
+
     }
 
     private void writeFile(File file, byte[] fileBytes) throws IOException {
@@ -96,19 +95,19 @@ public class FileManager {
 
     public File getFile(String fileKey) {
 
-    	return getFile(fileKey,TEMP_FILES_FOLDER_PATH);
+    	return getFile(fileKey, TEMP_FILES_FOLDER_PATH);
+
     }
 
     public File getFile(String fileKey, String diretorio) {
 
         String fileName = getFileNameByKey(fileKey);
-        String folderName = getFolderNameByKey(fileKey, diretorio);
 
-        if (fileName == null || folderName == null) {
+        if (fileName == null || diretorio == null) {
             return null;
         }
 
-        File file = new File (folderName, fileName);
+        File file = new File (diretorio, fileName);
 
         if (file.exists()) {
             return file;
@@ -205,13 +204,14 @@ public class FileManager {
     }
 
     public String generateFileKey(String fileName, String folderName) {
-        return folderName + FILE_KEY_SEPARATOR + fileName;
+        return folderName + fileName;
     }
 
     public String getFileNameByKey(String key) {
 
         try {
-            return key.substring(key.indexOf(FILE_KEY_SEPARATOR) + FILE_KEY_SEPARATOR.length());
+            return key.split(TEMP_FILES_FOLDER_PATH)[1];
+
         } catch (Exception e) {
             return null;
         }
@@ -248,12 +248,10 @@ public class FileManager {
 
     public String getFolderName() throws IOException {
 
-    	String folderName = UUID.randomUUID().toString();
-        File folder = new File(TEMP_FILES_FOLDER_PATH + folderName);
-
+        File folder = new File(TEMP_FILES_FOLDER_PATH);
         this.createFolderIfNotExists(folder);
 
-        return folderName;
+        return folder.getName();
     }
 
     private void createFolderIfNotExists(File folder) throws IOException {
