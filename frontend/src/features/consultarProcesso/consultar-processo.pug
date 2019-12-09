@@ -37,7 +37,6 @@ div
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
-								span(ng-class="{'icone-solicitacao-ajustes': false }")
 								span(ng-class="{'icone-solicitacao-finalizada': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO}")
 
@@ -90,8 +89,10 @@ div
 				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE")
 
 					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
-					span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
+					span.icone-.icone-solicitacao-finalizada.legenda Análise finalizada
 					span.icone-revisao-atendida.legenda Notificado
+					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
+					
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
