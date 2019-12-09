@@ -66,16 +66,20 @@ public class Usuario implements Serializable{
 
 	public List<PerfilUsuarioAnalise> salvarPerfis(UsuarioAnalise usuarioAnalise) {
 
+		List<PerfilUsuarioAnalise> perfisUsuarioAnalise = new ArrayList<>();
+
 		this.perfis.forEach(perfil -> {
 
 			if(PerfilEnum.getList().contains(perfil.codigo)){
 
-				if(!usuarioAnalise.containsPerfil(perfil.codigo)) {
+				if(usuarioAnalise.containsPerfil(perfil.codigo, this)) {
 
-					usuarioAnalise.perfis.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
+					perfisUsuarioAnalise.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
+
 				}
 			}
 		});
+		usuarioAnalise.perfis = perfisUsuarioAnalise;
 
 		usuarioAnalise.perfis.forEach(perfilUsuarioAnalise -> {
 
@@ -104,13 +108,13 @@ public class Usuario implements Serializable{
 
 			if(SetorEnum.getList().contains(setor.sigla)){
 
-				if(!usuarioAnalise.containsSetor(setor.sigla)) {
+				if(!usuarioAnalise.containsSetor(setor.sigla, this)) {
 
-					usuarioAnalise.setores.add(new SetorUsuarioAnalise(setor, usuarioAnalise));
+					setores.add(new SetorUsuarioAnalise(setor, usuarioAnalise));
 				}
 			}
 		});
-
+		usuarioAnalise.setores = setores;
 		usuarioAnalise.setores.forEach(setorUsuarioAnalise -> {
 
 			if(!this.containsSetor(setorUsuarioAnalise.siglaSetor)){
@@ -126,7 +130,7 @@ public class Usuario implements Serializable{
 
 		});
 
-		return setores;
+		return usuarioAnalise.setores;
 
 	}
 

@@ -5,6 +5,7 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
 
@@ -130,19 +131,23 @@ public class DesvinculoAnaliseGeo extends GenericModel {
             analistaGeo.usuario = this.analistaGeoDestino;
             analistaGeo._save();
 
-            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, this.analistaGeoDestino, this.analistaGeoDestino);
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeoDestino);
+            this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
+            this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+            this.analiseGeo.analise.diasAnalise._save();
+            this.analiseGeo._save();
 
         }else {
 
             this.analistaGeoDestino = this.analistaGeo;
             this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, this.analistaGeoDestino, this.analistaGeo);
 
+            this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(DateUtil.somaDiasEmData(this.analiseGeo.dataCadastro, Configuracoes.PRAZO_ANALISE_GEO) , DiasAnalise.intervalosTramitacoesAnaliseGeo(this.analiseGeo.analise.processo.getHistoricoTramitacao()));
+            this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+            this.analiseGeo.analise.diasAnalise._save();
+            this.analiseGeo._save();
+
         }
-
-        this.dataResposta = new Date();
-
-        DesvinculoAnaliseGeo desvinculoAlterar = DesvinculoAnaliseGeo.findById(this.id);
-        desvinculoAlterar.update(this);
 
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeoDestino);
 

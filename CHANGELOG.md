@@ -22,6 +22,7 @@
 * OS40 - US857 - Eu, usuário do sistema devo visualizar todos os arquivos antes de fazer o download
 * OS40 - US848 - Eu, Analista Geo, devo analisar atividades/complexos fora do empreendimento, listar analistas de um mesmo setor e visualizar prazo gasto pelos analistas
 * OS40 - US849 - Eu, Analista Geo, devo acompanhar o fluxo da notificação conforme as regras de prazo e analisar o pdf da notificação de diferentes origens (Empreendimento, atividade fora e complexo fora)
+* OS40 - US769 - [Customizações análise GEO] Notificações
 
 ## OS44
 

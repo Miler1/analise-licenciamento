@@ -814,7 +814,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return new CamadaGeoComplexoVO(caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
 	}
-
+	
 	public DesvinculoAnaliseGeo buscaDesvinculoPeloProcessoGeo() {
 
 		DesvinculoAnaliseGeo desvinculoAnaliseGeo = DesvinculoAnaliseGeo.find("id_analise_geo = :id and id_usuario = :idUsuario")

@@ -31,6 +31,7 @@ public class PerfilUsuarioAnalise extends GenericModel {
 		this.usuarioAnalise = usuarioAnalise;
 		this.codigoPerfil = perfil.codigo;
 		this.nomeCodigo = perfil.nome;
+		this.save();
 	}
 
 	public PerfilUsuarioAnalise (){
