@@ -55,7 +55,7 @@ modalCtrl.init = function(){
             inconsistenciaTecnica.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica.DOCUMENTO;
         }
 
-        inconsistenciaService.findInconsistenciaTecnica(inconsistenciaTecnica)
+        inconsistenciaService.findInconsistenciaTecnica(inconsistenciaTecnica.id)
         .then(function(response){
 
             inconsistenciaTecnica = response.data;

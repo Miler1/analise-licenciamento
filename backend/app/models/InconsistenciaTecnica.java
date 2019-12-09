@@ -68,19 +68,6 @@ public class InconsistenciaTecnica extends GenericModel{
 
 	public enum TipoDeInconsistenciaTecnica { TIPO_LICENCA, ATIVIDADE, PARAMETRO, QUESTIONARIO ,DOCUMENTO }
 
-	public InconsistenciaTecnica (String descricaoInconsistencia, String tipoInconsistencia, AnaliseTecnica analiseTecnica, List<Documento> anexos){
-
-		this.analiseTecnica = analiseTecnica;
-		this.tipoInconsistencia = tipoInconsistencia;
-		this.descricaoInconsistencia = descricaoInconsistencia;
-		this.anexos = anexos;
-
-	}
-
-	public InconsistenciaTecnica (){
-
-	}
-
 	public InconsistenciaTecnica salvaInconsistenciaTecnica() {
 
 		if (this.descricaoInconsistencia == null || this.descricaoInconsistencia.equals("")) {
@@ -105,118 +92,62 @@ public class InconsistenciaTecnica extends GenericModel{
 			novaInconsistenciaTecnica.saveAnexos(this.anexos);
 			novaInconsistenciaTecnica.save();
 
+			return novaInconsistenciaTecnica;
+
 		} else {
 
 			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.TIPO_LICENCA.name())) {
 
-				novaInconsistenciaTecnica = new InconsistenciaTecnica(this.descricaoInconsistencia, this.tipoInconsistencia, this.analiseTecnica, this.anexos);
+				this.saveAnexos(this.anexos);
 
-				novaInconsistenciaTecnica.saveAnexos(this.anexos);
+				this.inconsistenciaTecnicaTipoLicenca.inconsistenciaTecnica = this;
 
-				novaInconsistenciaTecnica.save();
-
-				InconsistenciaTecnicaTipoLicenca inconsistenciaTecnicaTipoLicenca = new InconsistenciaTecnicaTipoLicenca(this.inconsistenciaTecnicaTipoLicenca.tipoLicenca, novaInconsistenciaTecnica);
-
-				inconsistenciaTecnicaTipoLicenca.save();
-
-				novaInconsistenciaTecnica.tipoDeInconsistenciaTecnica = this.tipoDeInconsistenciaTecnica;
+				this.inconsistenciaTecnicaTipoLicenca.save();
 
 			}
 
 			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.ATIVIDADE.name())) {
 
-				novaInconsistenciaTecnica = new InconsistenciaTecnica(this.descricaoInconsistencia, this.tipoInconsistencia, this.analiseTecnica, this.anexos);
+				this.saveAnexos(this.anexos);
 
-				novaInconsistenciaTecnica.saveAnexos(this.anexos);
+				this.inconsistenciaTecnicaAtividade.inconsistenciaTecnica = this;
 
-				novaInconsistenciaTecnica.save();
-
-				InconsistenciaTecnicaAtividade inconsistenciaTecnicaAtividade = new InconsistenciaTecnicaAtividade(this.inconsistenciaTecnicaAtividade.atividadeCaracterizacao, novaInconsistenciaTecnica);
-
-				inconsistenciaTecnicaAtividade.save();
-
-				novaInconsistenciaTecnica.tipoDeInconsistenciaTecnica = this.tipoDeInconsistenciaTecnica;
+				this.inconsistenciaTecnicaAtividade.save();
 
 			}
 
 			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.PARAMETRO.name())) {
 
-				novaInconsistenciaTecnica = new InconsistenciaTecnica(this.descricaoInconsistencia, this.tipoInconsistencia, this.analiseTecnica, this.anexos);
+				this.saveAnexos(this.anexos);
 
-				novaInconsistenciaTecnica.saveAnexos(this.anexos);
+				this.inconsistenciaTecnicaParametro.inconsistenciaTecnica = this;
 
-				novaInconsistenciaTecnica.save();
-
-				InconsistenciaTecnicaParametro inconsistenciaTecnicaAtividadeParametro = new InconsistenciaTecnicaParametro(this.inconsistenciaTecnicaParametro.parametroAtividade, novaInconsistenciaTecnica);
-
-				inconsistenciaTecnicaAtividadeParametro.save();
-
-				novaInconsistenciaTecnica.tipoDeInconsistenciaTecnica = this.tipoDeInconsistenciaTecnica;
+				this.inconsistenciaTecnicaParametro.save();
 
 			}
 
 //            if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.QUESTIONARIO.name())) {
 //
-//                novaInconsistenciaTecnica = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.analiseTecnica, this.anexos);
+//				this.saveAnexos(this.anexos);
 //
-//                novaInconsistenciaTecnica.saveAnexos(inconsistenciaTecnica.anexos);
-//                novaInconsistenciaTecnica.save();
+//				this.inconsistenciaTecnicaQuestionario.inconsistenciaTecnica = this;
+//
+//				this.inconsistenciaTecnicaQuestionario.save();
 //
 //            }
 
 //            if (inconsistenciaTecnica.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO.name())) {
 //
-//                novaInconsistenciaTecnica = new InconsistenciaTecnica(this.descricaoInconsistencia, this.tipoInconsistencia, inconsistenciaTecnica.analiseTecnica, inconsistenciaTecnica.anexos);
+//				this.saveAnexos(this.anexos);
 //
-//                novaInconsistenciaTecnica.saveAnexos(this.anexos);
-//                novaInconsistenciaTecnica.save();
+//				this.inconsistenciaTecnicaDocumento.inconsistenciaTecnica = this;
+//
+//				this.inconsistenciaTecnicaDocumento.save();
 //
 //            }
 
 		}
-		return novaInconsistenciaTecnica;
-	}
-
-	public InconsistenciaTecnica buscarInconsistenciaTecnica (){
-
-		InconsistenciaTecnica inconsistenciaTecnica = InconsistenciaTecnica.findById(this.id);
-
-		if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.TIPO_LICENCA.name())) {
-			inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca = InconsistenciaTecnicaTipoLicenca.find("id_inconsistencia_tecnica = :idInconsistenciaTecnica ")
-					.setParameter("idInconsistenciaTecnica", this.id).first();
-		}
-
-        if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.ATIVIDADE.name())) {
-            inconsistenciaTecnica.inconsistenciaTecnicaAtividade = InconsistenciaTecnicaAtividade.find("id_inconsistencia_tecnica = :idInconsistenciaTecnica")
-                    .setParameter("idInconsistenciaTecnica", this.id).first();
-        }
-
-        if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.PARAMETRO.name())) {
-            inconsistenciaTecnica.inconsistenciaTecnicaParametro = InconsistenciaTecnicaParametro.find("id_inconsistencia_tecnica = :idInconsistenciaTecnica AND id_parametro = :idParametroAtividade")
-                    .setParameter("idInconsistenciaTecnica", this.id)
-					.setParameter("idParametroAtividade", this.inconsistenciaTecnicaParametro.parametroAtividade.id).first();
-
-            if(inconsistenciaTecnica.inconsistenciaTecnicaParametro == null ){
-            	inconsistenciaTecnica.tipoInconsistencia = "";
-            	inconsistenciaTecnica.descricaoInconsistencia = "";
-            	inconsistenciaTecnica.anexos = new ArrayList<>();
-            	inconsistenciaTecnica.id = null;
-
-			}
-        }
-
-		if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.QUESTIONARIO.name())) {
-			inconsistenciaTecnica.inconsistenciaTecnicaQuestionario = InconsistenciaTecnicaQuestionario.find("id_inconsistencia_tecnica = :idInconsistenciaTecnica")
-					.setParameter("idInconsistenciaTecnica", this.id).first();
-		}
-
-		if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO.name())) {
-			inconsistenciaTecnica.inconsistenciaTecnicaDocumento = InconsistenciaTecnicaDocumento.find("id_inconsistencia_tecnica = :idInconsistenciaTecnica")
-					.setParameter("idInconsistenciaTecnica", this.id).first();
-		}
-
-
-		return inconsistenciaTecnica;
+		return this;
 	}
 
 	public void excluiInconsistenciaTecnica (){
@@ -264,7 +195,7 @@ public class InconsistenciaTecnica extends GenericModel{
 		TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_INCONSISTENCIA_TECNICA);
 
 		if (this.anexos == null)
-			this.anexos = new ArrayList<>();
+		this.anexos = new ArrayList<>();
 
 		Iterator<Documento> docsCadastrados = anexos.iterator();
 		List<Documento> documentosDeletar = new ArrayList<>();

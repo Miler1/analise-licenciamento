@@ -18,7 +18,7 @@ var InconsistenciaService = function(request,$window,config) {
 
 	this.excluirInconsistenciaGeo = function(id){
 		return request
-			.post(config.BASE_URL() + 'inconsistencia/analisesGeo/excluirInconsistencia/' +  id);
+			.post(config.BASE_URL() + 'inconsistencia/analisesGeo/excluirInconsistencia/' + id);
 	};
 
 	this.salvarInconsistenciaTecnica = function(params){
@@ -26,9 +26,9 @@ var InconsistenciaService = function(request,$window,config) {
 			.post(config.BASE_URL() + 'inconsistencia/analiseTecnica/salvarInconsistencia', params);
 	};
 
-	this.findInconsistenciaTecnica = function(params){
+	this.findInconsistenciaTecnica = function(id){
 		return request
-			.post(config.BASE_URL() + 'inconsistencia/analiseTecnica/findInconsistencia', params);
+			.post(config.BASE_URL() + 'inconsistencia/analiseTecnica/findInconsistencia/' + id);
 	};
 
 	this.excluirInconsistenciaTecnica = function(inconsistenciaTecnica){

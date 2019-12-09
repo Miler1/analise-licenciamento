@@ -26,6 +26,8 @@ public class Inconsistencias extends InternalController{
 
     public static void findInconsistenciaGeo(Inconsistencia inconsistencia) {
 
+        verificarPermissao(Acao.BUSCAR_INCONSISTENCIA_GEO);
+
         returnIfNull(inconsistencia, "Inconsistencia");
 
         Inconsistencia novaInconsistenciaGeo = inconsistencia.buscarInconsistenciaGeo();
@@ -62,11 +64,13 @@ public class Inconsistencias extends InternalController{
 
     }
 
-    public static void findInconsistenciaTecnica(InconsistenciaTecnica inconsistenciaTecnica){
+    public static void findInconsistenciaTecnica(Long id){
 
-        returnIfNull(inconsistenciaTecnica, "InconsistenciaTecnica");
+        verificarPermissao(Acao.BUSCAR_INCONSISTENCIA_TECNICA);
 
-        InconsistenciaTecnica novaInconsistenciaTecnica = inconsistenciaTecnica.buscarInconsistenciaTecnica();
+        returnIfNull(id, "Long");
+
+        InconsistenciaTecnica novaInconsistenciaTecnica =  InconsistenciaTecnica.findById(id);
 
         renderJSON(novaInconsistenciaTecnica, InconsistenciaSerializer.findInconsistencia);
 

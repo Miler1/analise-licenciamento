@@ -22,7 +22,7 @@ public class InconsistenciaTecnicaParametro extends GenericModel{
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 
-	@ManyToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_inconsistencia_tecnica")
 	public InconsistenciaTecnica inconsistenciaTecnica;
 

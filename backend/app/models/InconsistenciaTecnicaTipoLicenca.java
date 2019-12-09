@@ -26,7 +26,7 @@ public class InconsistenciaTecnicaTipoLicenca extends GenericModel{
 	@JoinColumn(name="id_tipo_licenca")
 	public TipoLicenca tipoLicenca;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_inconsistencia_tecnica")
 	public InconsistenciaTecnica inconsistenciaTecnica;
 

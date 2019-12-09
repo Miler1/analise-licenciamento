@@ -84,7 +84,7 @@ POST    /inconsistencia/analiseGeo/salvarInconsistencia                         
 POST    /inconsistencia/analiseGeo/findInconsistencia                              Inconsistencias.findInconsistenciaGeo
 POST    /inconsistencia/analiseGeo/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistenciaGeo
 POST    /inconsistencia/analiseTecnica/salvarInconsistencia                        Inconsistencias.salvarInconsistenciaTecnica
-POST    /inconsistencia/analiseTecnica/findInconsistencia                          Inconsistencias.findInconsistenciaTecnica
+POST    /inconsistencia/analiseTecnica/findInconsistencia/{id}                     Inconsistencias.findInconsistenciaTecnica
 POST    /inconsistencia/analiseTecnica/excluirInconsistencia                       Inconsistencias.excluirInconsistenciaTecnica
 
 
