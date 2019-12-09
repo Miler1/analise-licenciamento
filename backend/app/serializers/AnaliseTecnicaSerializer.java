@@ -33,6 +33,35 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.caracterizacao.documentosEnviados.tipo.id",
 			"analise.processo.caracterizacao.documentosEnviados.tipo.nome",
 			"analise.processo.caracterizacao.documentosEnviados.tipo.tipoAnalise",
+			"analise.processo.caracterizacao.atividadesCaracterizacao.id",
+			"analise.processo.caracterizacao.atividadesCaracterizacao.atividade.nome",
+			"analise.processo.caracterizacao.atividadesCaracterizacao.atividadesCnae.nome",
+			"analise.processo.caracterizacao.atividadesCaracterizacao.atividade.parametros.id",
+			"analise.processo.caracterizacao.atividadesCaracterizacao.atividade.parametros.nome",
+			"analise.processo.caracterizacao.atividadesCaracterizacao.atividade.parametros.codigo",
+			"analise.processo.caracterizacao.atividadesCaracterizacao.atividadeCaracterizacaoParametros.valorParametro",
+			"inconsistenciasTecnica.id",
+			"inconsistenciasTecnica.tipoDeInconsistenciaTecnica",
+			"inconsistenciasTecnica.tipoInconsistencia",
+			"inconsistenciasTecnica.descricaoInconsistencia",
+			"inconsistenciasTecnica.anexos.id",
+			"inconsistenciasTecnica.anexos.nomeDoArquivo",
+			"inconsistenciasTecnica.anexos.caminho",
+			"inconsistenciasTecnica.anexos.tipo",
+			"inconsistenciasTecnica.anexos.tipo.nome",
+			"inconsistenciasTecnica.anexos.tipo.id",
+			"inconsistenciasTecnica.inconsistenciaTecnicaTipoLicenca.id",
+			"inconsistenciasTecnica.inconsistenciaTecnicaTipoLicenca.tipoLicenca",
+			"inconsistenciasTecnica.inconsistenciaTecnicaAtividade.id",
+			"inconsistenciasTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id",
+			"inconsistenciasTecnica.inconsistenciaTecnicaParametro.id",
+			"inconsistenciasTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id",
+			"inconsistenciasTecnica.inconsistenciaTecnicaParametro.parametroAtividade.nome",
+			"inconsistenciasTecnica.inconsistenciaTecnicaParametro.parametroAtividade.codigo",
+			"inconsistenciasTecnica.inconsistenciaTecnicaParametro.valor",
+//			"inconsistenciasTecnica.inconsistenciaTecnicaQuestionario",
+			"inconsistenciasTecnica.inconsistenciaTecnicaDocumento.id",
+			"inconsistenciasTecnica.inconsistenciaTecnicaDocumento.documento.id",
 			"analise.processo.numero",
 			"analise.processo.empreendimento.id",
 			"analise.processo.empreendimento.denominacao",
@@ -107,6 +136,6 @@ public class AnaliseTecnicaSerializer {
 		public static JSONSerializer parecer = SerializerUtil.create(
 		
 			"parecer"
-		);	
+		);
 
 }

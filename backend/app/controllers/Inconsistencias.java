@@ -2,150 +2,45 @@ package controllers;
 
 import exceptions.ValidacaoException;
 import models.Inconsistencia;
+import models.InconsistenciaTecnica;
+import models.licenciamento.AtividadeCaracterizacao;
+import security.Acao;
 import serializers.InconsistenciaSerializer;
 import utils.Mensagem;
 
 import java.util.Objects;
 
-public class Inconsistencias extends GenericController{
+public class Inconsistencias extends InternalController{
 
+    public static void salvarInconsistenciaGeo(Inconsistencia inconsistencia) {
 
-    public static void salvarInconsistencia(Inconsistencia inconsistencia) {
+        verificarPermissao(Acao.SALVAR_INCONSISTENCIA_GEO);
 
-        if (inconsistencia.descricaoInconsistencia == null || inconsistencia.descricaoInconsistencia.equals("")) {
+        returnIfNull(inconsistencia, "Inconsistencia");
 
-            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
-        }
+        Inconsistencia novaInconsistenciaGeo = inconsistencia.salvaInconsistenciaGeo();
 
-        if(inconsistencia.tipoInconsistencia == null || inconsistencia.tipoInconsistencia.equals("")){
-
-            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
-        }
-
-        if(!inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE) && inconsistencia.sobreposicaoCaracterizacaoAtividade == null && inconsistencia.sobreposicaoCaracterizacaoEmpreendimento == null && inconsistencia.sobreposicaoCaracterizacaoComplexo == null) {
-
-            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
-        }
-
-        if (inconsistencia.id != null) {
-
-            Inconsistencia i = Inconsistencia.findById(inconsistencia.id);
-            i.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
-            i.tipoInconsistencia = inconsistencia.tipoInconsistencia;
-            i.categoria = inconsistencia.categoria;
-            i.analiseGeo = inconsistencia.analiseGeo;
-            i.id = inconsistencia.id;
-            i.caracterizacao = Objects.nonNull(inconsistencia.caracterizacao) && Objects.nonNull(inconsistencia.caracterizacao.id) ? inconsistencia.caracterizacao : null;
-            i.saveAnexos(inconsistencia.anexos);
-            i.save();
-
-            renderJSON(i, InconsistenciaSerializer.findInconsistencia);
-
-        } else {
-
-            Inconsistencia novaInconsistencia = null;
-
-            if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
-
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo);
-
-                novaInconsistencia.saveAnexos(inconsistencia.anexos);
-                novaInconsistencia.save();
-            }
-
-            if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)){
-
-                novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoAtividade);
-
-                novaInconsistencia.saveAnexos(inconsistencia.anexos);
-                novaInconsistencia.save();
-
-            }
-            if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
-
-                if(inconsistencia.sobreposicaoCaracterizacaoAtividade != null) {
-
-                    novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoAtividade);
-
-                } else if(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento != null) {
-
-                    novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoEmpreendimento);
-
-                } else if(inconsistencia.sobreposicaoCaracterizacaoComplexo != null) {
-
-                    novaInconsistencia = new Inconsistencia(inconsistencia.descricaoInconsistencia, inconsistencia.tipoInconsistencia, inconsistencia.categoria, inconsistencia.analiseGeo, inconsistencia.caracterizacao, inconsistencia.sobreposicaoCaracterizacaoComplexo);
-
-                }
-
-                novaInconsistencia.saveAnexos(inconsistencia.anexos);
-                novaInconsistencia.save();
-
-            }
-
-            renderJSON(novaInconsistencia,InconsistenciaSerializer.findInconsistencia);
-
-        }
+        renderJSON(novaInconsistenciaGeo,InconsistenciaSerializer.findInconsistencia);
 
     }
 
-    public static void findInconsistencia(Inconsistencia inconsistencia) {
+    public static void findInconsistenciaGeo(Inconsistencia inconsistencia) {
 
-        Inconsistencia i = null;
+        verificarPermissao(Acao.BUSCAR_INCONSISTENCIA_GEO);
 
-        if(inconsistencia.categoria == null || (inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO) && (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento != null && inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id == null))) {
-            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
-        }
+        returnIfNull(inconsistencia, "Inconsistencia");
 
-        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
-             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria")
-                     .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                     .setParameter("categoria",inconsistencia.categoria).first();
-        }
+        Inconsistencia novaInconsistenciaGeo = inconsistencia.buscarInconsistenciaGeo();
 
-        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)) {
-             i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao")
-                     .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                     .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                     .setParameter("categoria",inconsistencia.categoria).first();
-        }
-
-        if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)) {
-
-            if(inconsistencia.sobreposicaoCaracterizacaoAtividade != null) {
-
-                i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoAtividade.id = :sobreposicaoCaracterizacaoAtividade")
-                        .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                        .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                        .setParameter("categoria",inconsistencia.categoria)
-                        .setParameter("sobreposicaoCaracterizacaoAtividade", inconsistencia.sobreposicaoCaracterizacaoAtividade.id).first();
-
-            } else if(inconsistencia.sobreposicaoCaracterizacaoEmpreendimento != null) {
-
-                i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoEmpreendimento.id = :sobreposicaoCaracterizacaoEmpreendimento")
-                        .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                        .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                        .setParameter("categoria",inconsistencia.categoria)
-                        .setParameter("sobreposicaoCaracterizacaoEmpreendimento", inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id).first();
-
-            } else if(inconsistencia.sobreposicaoCaracterizacaoComplexo != null) {
-
-                i = Inconsistencia.find("analiseGeo.id = :idAnaliseGeo and categoria = :categoria and caracterizacao.id = :caracterizacao and sobreposicaoCaracterizacaoComplexo.id = :sobreposicaoCaracterizacaoComplexo")
-                        .setParameter("idAnaliseGeo",inconsistencia.analiseGeo.id)
-                        .setParameter("caracterizacao",inconsistencia.caracterizacao.id)
-                        .setParameter("categoria",inconsistencia.categoria)
-                        .setParameter("sobreposicaoCaracterizacaoComplexo", inconsistencia.sobreposicaoCaracterizacaoComplexo.id).first();
-
-            }
-
-        }
-
-        renderJSON(i, InconsistenciaSerializer.findInconsistencia);
+        renderJSON(novaInconsistenciaGeo, InconsistenciaSerializer.findInconsistencia);
 
     }
 
-    public static void excluirInconsistencia(Long id) {
+    public static void excluirInconsistenciaGeo(Long id) {
 
         returnIfNull(id, "Long");
+
+        verificarPermissao(Acao.EXCLUIR_INCONSISTENCIA_GEO);
 
         Inconsistencia i = Inconsistencia.findById(id);
 
@@ -157,5 +52,40 @@ public class Inconsistencias extends GenericController{
 
     }
 
-}
+    public static void salvarInconsistenciaTecnica(InconsistenciaTecnica inconsistenciaTecnica) {
 
+        verificarPermissao(Acao.SALVAR_INCONSISTENCIA_TECNICA);
+
+        returnIfNull(inconsistenciaTecnica,"InconsistenciaTecnica");
+
+        InconsistenciaTecnica novaInconsistenciaTecnica = inconsistenciaTecnica.salvaInconsistenciaTecnica();
+
+        renderJSON(novaInconsistenciaTecnica, InconsistenciaSerializer.findInconsistencia);
+
+    }
+
+    public static void findInconsistenciaTecnica(Long id){
+
+        verificarPermissao(Acao.BUSCAR_INCONSISTENCIA_TECNICA);
+
+        returnIfNull(id, "Long");
+
+        InconsistenciaTecnica novaInconsistenciaTecnica =  InconsistenciaTecnica.findById(id);
+
+        renderJSON(novaInconsistenciaTecnica, InconsistenciaSerializer.findInconsistencia);
+
+    }
+
+    public static void excluirInconsistenciaTecnica(InconsistenciaTecnica inconsistenciaTecnica) {
+
+        verificarPermissao(Acao.EXCLUIR_INCONSISTENCIA_TECNICA);
+
+        returnIfNull(inconsistenciaTecnica, "InconsistenciaTecnica");
+
+        inconsistenciaTecnica.excluiInconsistenciaTecnica();
+
+        renderText(Mensagem.INCONSISTENCIA_EXCLUIDA_SUCESSO.getTexto());
+
+    }
+
+}

@@ -1,0 +1,100 @@
+.col-xs-12
+    .marginProcesso
+
+        div.row
+            label.col-sm-2 Analista Técnico:
+            span.col-sm-8 {{ ctrl.analistaTecnico }}
+        br    
+        hr
+
+        div.row
+
+            table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                thead
+                    tr
+                    th.col-md-11 Fase
+                    th.col-md-2 Validar
+
+
+                tbody
+                    tr
+                        td.col-md-6 {{ctrl.analiseTecnica.analise.processo.caracterizacao.tipoLicenca.nome}} 
+                        td.col-md-2
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === true}",
+                                                                                    ng-click="ctrl.adicionarInconsistenciaTecnicaTipoLicenca(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA)")
+                                | &nbsp;                        
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === true",
+                                                                                ng-class="{'naoTemInconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === false}"
+                                                                                title='Excluir inconsistência',
+                                                                                ng-bootbox-title='Confirmação',
+                                                                                ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA, null)")
+                                | &nbsp;
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === null || ctrl.itemValidoLicenca.tipoLicenca === false ",
+                                                                                ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA, null, ctrl.analiseTecnica)",
+                                                                                ng-class="{'naoTemInconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === false}")
+                                | &nbsp;                                
+        br
+
+        div.row
+            strong.col-sm-2 Atividades/Parâmetros:
+            br
+            br
+            hr
+            div(ng-repeat="atividadeCaracterizacao in ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao")
+                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividade-parametro', aria-expanded='false', data-target='#dados-atividade-parametro', ng-click = 'validacaoAnaliseTecnica.openedAccordionAtividadeParametro = !validacaoAnaliseTecnica.openedAccordionAtividadeParametro' )
+                    .panel.panel-default.panel-analise
+                        .panel-heading
+                            h4.panel-title
+                                | {{atividadeCaracterizacao.atividade.nome}}
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnica.openedAccordionAtividadeParametro, 'glyphicon-chevron-right': !validacaoAnaliseTecnica.openedAccordionAtividadeParametro}")
+
+                #dados-atividade-parametro.collapse  
+                    div
+                        table.table.table-striped.table-condensed.table-responsive
+                            thead
+                                tr
+                                th.col-md-9 Atividade/Parâmetro
+                                th.col-md-2 Valor
+                                th.col-md-2 Validar
+
+
+                            tbody
+                                tr
+                                    td.col-md-6 {{atividadeCaracterizacao.atividade.nome}}
+                                    td.col-md-2 -
+                                    td.col-md-2
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.atividade === true}",
+                                                                                                ng-click="ctrl.adicionarInconsistenciaTecnicaAtividade(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, atividadeCaracterizacao)")
+                                            | &nbsp;                        
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.atividade === true",
+                                                                                            ng-class="{'naoTemInconsistencia' : ctrl.itemValidoLicenca.atividade === false }",
+                                                                                            title='Excluir inconsistência',
+                                                                                            ng-bootbox-title='Confirmação',
+                                                                                            ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                            ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, null)")
+                                            | &nbsp;
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.atividade === null || ctrl.itemValidoLicenca.atividade === false",
+                                                                                            ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, null, ctrl.analiseTecnica)",
+                                                                                            ng-class="{'naoTemInconsistencia' : ctrl.itemValidoLicenca.atividade === false }")
+                                            | &nbsp;                                            
+                                tr(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
+                                    td.col-md-6 {{ atividadeCaracterizacao.atividade.parametros[$index].codigo }} - {{ atividadeCaracterizacao.atividade.parametros[$index].nome }}
+                                    td.col-md-2 {{ atividadeCaracterizacaoParametro.valorParametro }}
+                                    td.col-md-2
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.validarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index]) === false}",
+                                                                                                ng-click="ctrl.adicionarInconsistenciaTecnicaParametro(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index])")
+                                            | &nbsp;                        
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.validarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index]) === false",
+                                                                                            ng-class="{'naoTemInconsistencia' : ctrl.itemValidoLicenca.parametro === true }",
+                                                                                            title='Excluir inconsistência',
+                                                                                            ng-bootbox-title='Confirmação',
+                                                                                            ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                            ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.PARAMETRO,atividadeCaracterizacao.atividade.parametros[$index])")
+                                            | &nbsp;
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.parametro === null || ctrl.validarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index]) === true",
+                                                                                            ng-click="ctrl.validarItensLvalidarInconsistenciaParametroicenca(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index])",
+                                                                                            ng-class="{'naoTemInconsistencia' :  ctrl.itemValidoLicenca.parametro === true  }")
+                                            | &nbsp;                                            
+        br              
+        

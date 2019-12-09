@@ -3,18 +3,18 @@
 
 ## OS40
 
-* OS40 - US548 - Correções pendentes da sprint anterior
-* OS40 - US778 - [Customizações análise GEO] Refatoração de código
-* OS40 - US536 - [Customizações Análise GEO] Visualizar Processo - Dados do Processo
-* OS40 - US506 - [Customizações Análise GEO] MAPA
-* OS40 - US517 - [Customizações Visualizar Processo] Abas "Solicitação" e "Observações"
-* OS40 - US541 - [Customizações análise GEO] Tramitação de processo
-* OS40 - US526 - [Customizações Análise GEO] Documentos da análise
-* OS40 - US524 - [Customizações Análise GEO] Conclusão da análise
-* OS40 - US525 - [Customizações Análise GEO] Consultar processo
-* OS40 - US777 - [Gestão de Demandas - AM] Considerações de homologação
-* OS40 - US769 - [Customizações análise GEO] Notificações
-* OS40 - US851 - [Analista GEO] Eu, Analista Geo, devo visualizar a justificativa do gerente para ver a justificativa da solicitação de ajustes e inserir apenas 1 arquivo por análise temporal
+* OS40 - US548 - Correções pendentes da sprint anterior.
+* OS40 - US778 - [Customizações análise GEO] Refatoração de código.
+* OS40 - US536 - [Customizações Análise GEO] Visualizar Processo - Dados do Processo.
+* OS40 - US506 - [Customizações Análise GEO] MAPA.
+* OS40 - US517 - [Customizações Visualizar Processo] Abas "Solicitação" e "Observações".
+* OS40 - US541 - [Customizações análise GEO] Tramitação de processo.
+* OS40 - US526 - [Customizações Análise GEO] Documentos da análise.
+* OS40 - US524 - [Customizações Análise GEO] Conclusão da análise.
+* OS40 - US525 - [Customizações Análise GEO] Consultar processo.
+* OS40 - US777 - [Gestão de Demandas - AM] Considerações de homologação.
+* OS40 - US769 - [Customizações análise GEO] Notificações.
+* OS40 - US851 - [Analista GEO] Eu, Analista Geo, devo visualizar a justificativa do gerente para ver a justificativa da solicitação de ajustes e inserir apenas 1 arquivo por análise temporal.
 
 ## OS44
 
@@ -22,6 +22,8 @@
 
 ## OS35
 
-* OS35 - US294 - Eu, analista técnico, devo acessar caixa de entrada para acessar listagem dos novos processos
-* OS35 - US875 - Eu, analista técnico, devo acessar a ação iniciar análise para acessar a tela em análise
-* OS35 - US882 - Eu, analista técnico, devo acessar o menu "Em análise" para acessar a listagem dos protocolos
+* OS35 - US294 - [Analista Técnico] Eu, analista técnico, devo acessar caixa de entrada para acessar listagem dos novos processos.
+* OS35 - US875 - [Analista Técnico] Eu, analista técnico, devo acessar a ação iniciar análise para acessar a tela em análise.
+* OS35 - US882 - [Analista Técnico] Eu, analista técnico, devo acessar o menu "Em análise" para acessar a listagem dos protocolos.
+* OS35 - US302 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar tipo de licença, atividade e parâmetro.
+

@@ -17,7 +17,7 @@ div(ng-init="ctrl.init()")
         uib-tabset(active='ctrl.tabAtiva')
             uib-tab(index="0", heading="Análise técnica")
                 div(ng-if='ctrl.tabAtiva === 0')
-                    //- include analiseGeo/analise-tecnica
+                    include tab-analise-tecnica
 
             uib-tab(index="1", heading="Vistoria")
                 //- include vistoria...
