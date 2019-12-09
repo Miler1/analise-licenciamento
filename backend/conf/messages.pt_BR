@@ -180,4 +180,4 @@ ERRO_SALVAMENTO_NOTIFICACAO=Não foi possível salvar a notificação, contate o
 #
 # Arquivar
 #
-ERRO_ARQUIVAR_PROCESSO=Não foi possível arquivar o processo %s
+ERRO_ARQUIVAR_PROCESSO=Não foi possível arquivar o protocolo %s
