@@ -1,7 +1,7 @@
 # --- !Ups
 
-INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior)
-	SELECT 37, id_condicao, 6, null, null FROM tramitacao.condicao WHERE id_condicao NOT IN (6, 14, 15, 16, 32);
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) 
+	SELECT 37, id_condicao, 6, null, null FROM tramitacao.condicao WHERE id_condicao NOT IN (6, 14, 15, 16, 34);
 
 INSERT INTO tramitacao.etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (7, 1, 'Análise finalizada', NULL);
 
