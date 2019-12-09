@@ -12,7 +12,6 @@ import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -167,7 +166,10 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 			} else if (analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
 
-				List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade =  analiseGeoBanco.analise.processo.caracterizacao.atividadesCaracterizacao.stream().map(atividadeCaracterizacao -> atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
+				List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade = new ArrayList<>();
+				analiseGeoBanco.analise.processo.caracterizacao.atividadesCaracterizacao.stream()
+						.filter(atividadeCaracterizacao -> !atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade.isEmpty())
+						.forEach(atividadeCaracterizacao -> sobreposicoesCaracterizacaoAtividade.addAll(atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade));
 
 				for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
 
@@ -222,6 +224,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 			if (notificacoes.size() != 1) {
 
 				throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+
 			}
 
 			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.documentos);

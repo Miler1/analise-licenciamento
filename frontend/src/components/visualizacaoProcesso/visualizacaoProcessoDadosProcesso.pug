@@ -50,6 +50,32 @@
 							div
 								div {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}}
 
+	div.row
+		.col-xs-12.col-md-6
+			blockquote.success
+
+				h4 Histórico do processo
+				label Data: &nbsp;
+				span {{ modalVisualizacaoProcessoCtrl.dateUtil.formatarData(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.dataCadastro) }}
+
+				div.panel.panel-success
+					div.panel-body
+						| Análise do processo em dias
+					div.panel-footer
+						.row
+							.col-xs-4.col-md-4.text-center
+								span Análise GEO
+									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasGeo, modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_GEO)}")
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasGeo }}
+							.col-xs-4.col-md-4.text-center
+								span Análise técnica
+									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica, modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_TECNICA)}")
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica }}
+							.col-xs-4.col-md-4.text-center
+								span Análise total
+									div
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasAnalise }}
+
 	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
 		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
 			h4 Tramitação do protocolo

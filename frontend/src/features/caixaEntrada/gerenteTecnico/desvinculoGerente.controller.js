@@ -10,7 +10,7 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 
 	function onInit() {
 		// desvinculoGerenteController.buscarAgenteSolicitante();
-		desvinculoGerenteController.buscarDesvinculoPeloProcesso();
+		desvinculoGerenteController.buscarDesvinculoPeloProcessoGeo();
 		desvinculoGerenteController.buscarAnalistasGeoByIdProcesso();
 	}
 
@@ -32,7 +32,7 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 		params.aprovada = desvinculoGerenteController.desvinculoAceito;
 		params.respostaGerente = desvinculoGerenteController.respostaGerente;
 
-		desvinculoService.responderSolicitacaoDesvinculo(params)
+		desvinculoService.responderSolicitacaoDesvinculoAnaliseGeo(params)
 			.then(function(response){
 
 				mensagem.success(response.data);
@@ -47,8 +47,8 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 
 	};
 
-	desvinculoGerenteController.buscarDesvinculoPeloProcesso = function() {
-		desvinculoService.buscarDesvinculoPeloProcesso(processo.idProcesso)
+	desvinculoGerenteController.buscarDesvinculoPeloProcessoGeo = function() {
+		desvinculoService.buscarDesvinculoPeloProcessoGeo(processo.idProcesso)
 			.then(function(response) {
 				desvinculoGerenteController.desvinculo = response.data;
 			});

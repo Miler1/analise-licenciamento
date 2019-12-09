@@ -1,122 +1,72 @@
 package controllers;
 
 
-import exceptions.ValidacaoException;
 import models.*;
-import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
-import play.db.jpa.GenericModel;
 import security.Acao;
 import serializers.DesvinculoSerializar;
 import utils.Mensagem;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import static controllers.InternalController.getUsuarioSessao;
 import static controllers.InternalController.verificarPermissao;
 
 public class Desvinculos extends GenericController {
 
-    public static void solicitarDesvinculo(Desvinculo desvinculo) {
+    public static void solicitarDesvinculoAnaliseGeo(DesvinculoAnaliseGeo desvinculoAnaliseGeo) {
 
-        returnIfNull(desvinculo, "Desvinculo");
+        verificarPermissao(Acao.SOLICITAR_DESVINCULO_GEO);
 
-        if(desvinculo.justificativa == null || desvinculo.justificativa.equals("")){
+        returnIfNull(desvinculoAnaliseGeo, "DesvinculoAnaliseGeo");
 
-            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
-
-        }
-
-        if(desvinculo.dataSolicitacao == null) {
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(new Date());
-
-            desvinculo.dataSolicitacao = c.getTime();
-        }
-        String siglaSetor = getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla;
-        
-        Gerente gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor, desvinculo.analiseGeo);
-
-        gerente.save();
-
-        desvinculo.gerente = UsuarioAnalise.findByGerente(gerente);
-
-        desvinculo.analistaGeo =  getUsuarioSessao();
-
-        desvinculo.save();
-
-        desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
-        desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, getUsuarioSessao(), desvinculo.gerente);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+        desvinculoAnaliseGeo.solicitaDesvinculoAnaliseGeo( getUsuarioSessao() );
 
         renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 
     }
 
-    public static void buscarDesvinculoPeloProcesso(Long idProcesso) {
+    public static void buscarDesvinculoPeloProcessoGeo(Long idProcesso) {
 
         Processo processo = Processo.findById(idProcesso);
 
-        Desvinculo desvinculo = Desvinculo.find("id_analise_geo = :id and id_usuario = :idUsuario")
-                .setParameter("id", processo.analise.analisesGeo.get(0).id)
-                .setParameter("idUsuario",processo.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
-                .first();
-
-        renderJSON(desvinculo, DesvinculoSerializar.list);
+        renderJSON(processo.buscaDesvinculoPeloProcessoGeo(), DesvinculoSerializar.list);
     }
 
-    public static void responderSolicitacaoDesvinculo(Desvinculo desvinculo) {
+    public static void responderSolicitacaoDesvinculoAnaliseGeo(DesvinculoAnaliseGeo desvinculoAnaliseGeo) {
 
-        returnIfNull(desvinculo, "Desvinculo");
+        verificarPermissao(Acao.RESPONDER_SOLICITACAO_DESVINCULO);
 
-        if(desvinculo.justificativa == null ||
-                desvinculo.justificativa.equals("") ||
-                desvinculo.respostaGerente== null  ||
-                desvinculo.respostaGerente.equals("") ||
-                desvinculo.aprovada == null){
+        returnIfNull(desvinculoAnaliseGeo, "DesvinculoAnaliseGeo");
 
-            throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
+        desvinculoAnaliseGeo.respondeSolicitacaoDesvinculoAnaliseGeo( getUsuarioSessao() );
 
-        }
+        renderText(Mensagem.DESVINCULO_RESPONDIDO_COM_SUCESSO.getTexto());
 
-        if(desvinculo.dataSolicitacao == null) {
+    }
 
-            Calendar c = Calendar.getInstance();
-            c.setTime(new Date());
+    public static void solicitarDesvinculoAnaliseTecnica(DesvinculoAnaliseTecnica desvinculoAnaliseTecnica) {
 
-            desvinculo.dataSolicitacao = c.getTime();
-        }
+        verificarPermissao(Acao.SOLICITAR_DESVINCULO_TECNICO);
 
-        if(desvinculo.dataResposta == null) {
+        returnIfNull(desvinculoAnaliseTecnica, "DesvinculoAnaliseTecnica");
 
-            Calendar c = Calendar.getInstance();
-            c.setTime(new Date());
+        desvinculoAnaliseTecnica.solicitaDesvinculoSAnaliseTecnica( getUsuarioSessao() );
 
-            desvinculo.dataResposta = c.getTime();
-        }
+        renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 
-        if(desvinculo.aprovada) {
-            desvinculo.analistaGeoDestino = UsuarioAnalise.findById(desvinculo.analistaGeoDestino.id);
-            AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
-                    .setParameter("id_analise_geo", desvinculo.analiseGeo.id).first();
-            analistaGeo.usuario = desvinculo.analistaGeoDestino;
-            analistaGeo._save();
-        }
+    }
 
-        Desvinculo desvinculoAlterar = Desvinculo.findById(desvinculo.id);
-        desvinculoAlterar.update(desvinculo);
+    public static void buscarDesvinculoPeloProcessoTecnico(Long idProcesso) {
 
-        desvinculo.analiseGeo = AnaliseGeo.findById(desvinculo.analiseGeo.id);
-        if(desvinculo.aprovada) {
-            desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeoDestino);
-        } else {
-            desvinculo.analiseGeo.analise.processo.tramitacao.tramitar(desvinculo.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, getUsuarioSessao(), desvinculo.analistaGeo);
-        }
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(desvinculo.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+        Processo processo = Processo.findById(idProcesso);
+
+        renderJSON(processo.buscaDesvinculoPeloProcessoTecnico(), DesvinculoSerializar.list);
+    }
+
+    public static void responderSolicitacaoDesvinculoAnaliseTecnica(DesvinculoAnaliseTecnica desvinculoAnaliseTecnica) {
+
+        verificarPermissao(Acao.RESPONDER_SOLICITACAO_DESVINCULO);
+
+        returnIfNull(desvinculoAnaliseTecnica, "DesvinculoAnaliseTecnica");
+
+        desvinculoAnaliseTecnica.respondeSolicitacaoDesvinculoAnaliseTecnica( getUsuarioSessao() );
 
         renderText(Mensagem.DESVINCULO_RESPONDIDO_COM_SUCESSO.getTexto());
 
