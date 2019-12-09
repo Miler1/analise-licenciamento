@@ -45,6 +45,10 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
+	public Date getDataParecer() {
+		return dataParecer;
+	}
+
 	public void finalizar(AnaliseGeo analiseGeo, UsuarioAnalise gerente) {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {

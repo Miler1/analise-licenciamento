@@ -940,4 +940,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
+    public String getJustificativaUltimoParecer() {
+
+        ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = this.pareceresGerenteAnaliseGeo.stream()
+                .filter(parecer -> parecer.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES))
+                .max(Comparator.comparing(ParecerGerenteAnaliseGeo::getDataParecer))
+                .orElseThrow(() -> new ValidacaoException(Mensagem.PARECER_NAO_ENCONTRADO));
+
+        return parecerGerenteAnaliseGeo.parecer;
+
+    }
+
 }
