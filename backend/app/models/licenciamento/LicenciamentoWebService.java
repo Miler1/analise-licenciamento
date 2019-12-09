@@ -8,6 +8,7 @@ import utils.WebService;
 
 import javax.xml.ws.WebServiceException;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,10 @@ public class LicenciamentoWebService {
 	public List<Caracterizacao> getCaracterizacoesEmAndamento() {
 		
 		Type type = new TypeToken<List<Caracterizacao>>(){}.getType();
+
 		List<Caracterizacao> caracterizacoesRetorno = new WebService().getJson(Configuracoes.URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO, type);
-		
-		return caracterizacoesRetorno;
+
+		return caracterizacoesRetorno != null ? caracterizacoesRetorno : Collections.emptyList();
 	}
 	
 	public void adicionarCaracterizacoesEmAnalise(Long...ids) {
