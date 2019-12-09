@@ -31,7 +31,7 @@ public class VerificarAnaliseVencida extends GenericJob {
     public void verificarAnalisesVencidas() {
 
         List<Long> idCondicoes = Arrays.asList(Condicao.ANALISE_FINALIZADA,
-                Condicao.NOTIFICADO,
+                Condicao.ARQUIVADO,
                 Condicao.LICENCA_EMITIDA,
                 Condicao.SUSPENSO,
                 Condicao.CANCELADO);
