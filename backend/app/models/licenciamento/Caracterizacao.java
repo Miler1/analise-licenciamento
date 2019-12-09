@@ -85,6 +85,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@OneToMany(mappedBy="caracterizacao")
 	public List<Licenca> licencas;
 
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "caracterizacao", orphanRemoval = true)
+	public Questionario3 questionario3;
+
 	@Column
 	public boolean renovacao;
 
