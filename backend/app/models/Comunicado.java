@@ -90,6 +90,10 @@ public class Comunicado extends GenericModel {
     @Transient
     public String distancia;
 
+    @Transient
+    public ParecerAnalistaGeo parecerAnalistaGeo;
+
+
     public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
 
         this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;

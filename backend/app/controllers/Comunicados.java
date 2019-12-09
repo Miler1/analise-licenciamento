@@ -1,8 +1,6 @@
 package controllers;
 
-import models.Analise;
-import models.AnaliseGeo;
-import models.Comunicado;
+import models.*;
 import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import serializers.ComunicadoSerializer;
@@ -49,6 +47,8 @@ public class Comunicados extends GenericController{
 
         Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
 
+        comunicadoFinal.parecerAnalistaGeo = comunicadoFinal.analiseGeo.pareceresAnalistaGeo.stream().max( Comparator.comparing(comunicado -> comunicado.id )).get();
+
         renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
 
     }
@@ -61,6 +61,8 @@ public class Comunicados extends GenericController{
 
         Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
 
+        comunicadoFinal.parecerAnalistaGeo = comunicadoFinal.analiseGeo.pareceresAnalistaGeo.stream().max( Comparator.comparing(comunicado -> comunicado.id )).get();
+
         renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
 
     }
@@ -72,6 +74,8 @@ public class Comunicados extends GenericController{
                 .setParameter("analiseGeo", idAnaliseGeo).fetch();
 
         Comunicado comunicadoFinal = comunicados.stream().max( Comparator.comparing( comunicado -> comunicado.id )).get();
+
+        comunicadoFinal.parecerAnalistaGeo = comunicadoFinal.analiseGeo.pareceresAnalistaGeo.stream().max( Comparator.comparing(comunicado -> comunicado.id )).get();
 
         renderJSON(comunicadoFinal, ComunicadoSerializer.findComunicado);
 

@@ -11,6 +11,8 @@ var ModalOficioRestricao = {
 
         var ctrl = this;
         ctrl.justificativaOrgao = null;
+        ctrl.tipoResultadoAnalise = null;
+        ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
         ctrl.anexos = [];
 
         ctrl.$onInit =  function() {
@@ -27,6 +29,7 @@ var ModalOficioRestricao = {
 
                     var comunicado = response.data;
                     ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                    ctrl.tipoResultadoAnalise = comunicado.parecerAnalistaGeo.tipoResultadoAnalise.id;
                     ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
 
                 });
@@ -38,6 +41,7 @@ var ModalOficioRestricao = {
 
                     var comunicado = response.data;
                     ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                    ctrl.tipoResultadoAnalise = comunicado.parecerAnalistaGeo.tipoResultadoAnalise.id;
                     ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
 
                 });
@@ -49,6 +53,7 @@ var ModalOficioRestricao = {
 
                     var comunicado = response.data;
                     ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                    ctrl.tipoResultadoAnalise = comunicado.parecerAnalistaGeo.tipoResultadoAnalise.id;
                     ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
 
                 });
