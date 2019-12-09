@@ -25,7 +25,7 @@ public class Condicoes extends InternalController {
 					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO,
 							Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
-							Condicao.SOLICITACAO_DESVINCULO_PENDENTE,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
 							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
 							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE
 							))
@@ -35,7 +35,7 @@ public class Condicoes extends InternalController {
 			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
 					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
-							Condicao.SOLICITACAO_DESVINCULO_PENDENTE,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
 							Condicao.NOTIFICADO))
 					.fetch();
 		}

@@ -24,9 +24,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		// Licenças com status EM_ANALISE
 		caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
-		
+
 		for(Caracterizacao caracterizacao : caracterizacoes) {
-			
+
 			processarCaracterizacao(caracterizacao);
 			
 		}
@@ -215,6 +215,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
 		AnalistaGeo analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+
+		commitTransaction();
 
 		if(analistaGeo == null) {
 			return null;

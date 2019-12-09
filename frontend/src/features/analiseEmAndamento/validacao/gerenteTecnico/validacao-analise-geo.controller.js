@@ -138,10 +138,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		documentoAnaliseService.generatePDFParecerGeo(params)
 			.then(function(data, status, headers){
 
-				var a = document.createElement('a');
-				a.href = URL.createObjectURL(data.data.response.blob);
-				a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-				a.click();
+				var url = URL.createObjectURL(data.data.response.blob);
+                window.open(url, '_blank');
 
 			},function(error){
 				mensagem.error(error.data.texto);
@@ -157,10 +155,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		documentoAnaliseService.generatePDFCartaImagemGeo(params)
 			.then(function(data, status, headers){
 
-				var a = document.createElement('a');
-				a.href = URL.createObjectURL(data.data.response.blob);
-				a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pdf';
-				a.click();
+				var url = URL.createObjectURL(data.data.response.blob);
+                window.open(url, '_blank');
 
 			},function(error){
 				mensagem.error(error.data.texto);

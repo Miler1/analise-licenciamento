@@ -33,7 +33,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.prazoNotificacao = null;
 	ctrl.isPdf = false;
 	ctrl.tiposUpload = app.utils.TiposUpload;
-	ctrl.labelDadosProjeto = 'Dados da área do projeto';
+	ctrl.labelDadosProjeto = '';
+	ctrl.openedAccordionEmpreendimento = false;
+	ctrl.openedAccordionDadosComplexo = false;
 	ctrl.parecer = {
 		situacaoFundiaria: null,
 		analiseTemporal: null,
@@ -485,12 +487,18 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						ctrl.dadosProjeto = response.data;
 
-						var isComplexo = ctrl.dadosProjeto.restricoes.some(function(restricao) { 
-							return restricao.sobreposicaoCaracterizacaoComplexo;
-						});
-						
-						if(isComplexo) {
-							ctrl.labelDadosProjeto = ctrl.labelDadosProjeto.concat(': Complexo');
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO) {
+
+							ctrl.labelDadosProjeto = 'Dados da área do complexo';
+
+						} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
+
+							ctrl.labelDadosProjeto = 'Dados da área do empreendimento';
+
+						} else {
+
+							ctrl.labelDadosProjeto = 'Dados da(s) áreas da(s) atividade(s)';
+
 						}
 
 						ctrl.dadosProjeto.atividades.forEach(function(atividade) {
@@ -684,36 +692,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	};
 
-	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idCaracterizacao , idGeometriaAtividade) {
+	$scope.addInconsistenciaGeral = function(inconsistencia){
 
-		params = {
-			categoria: categoriaInconsistencia,
-			analiseGeo: {id: analiseGeo.id},
-			caracterizacao: {id: idCaracterizacao},
-			geometriaAtividade: {id: idGeometriaAtividade},
-			sobreposicaoCaracterizacaoEmpreendimento: {id: null}			
-		};
-
-		inconsistenciaService.findInconsistencia(params)
+		inconsistenciaService.findInconsistenciaById(inconsistencia.id)
 		.then(function(response){
 
-			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, idCaracterizacao, idGeometriaAtividade, null, ctrl.dadosProjeto, null);
-			
-		});		
+			var inconsistencia = response.data;
 
-	};
-
-	$scope.addInconsistenciaPropriedade = function(categoriaInconsistencia){
-
-		params = {
-			categoria: categoriaInconsistencia,
-			analiseGeo: {id: analiseGeo.id}
-		};
-
-		inconsistenciaService.findInconsistencia(params)
-		.then(function(response){
-
-			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, null, null, null, ctrl.dadosProjeto, null);
+			openModal(ctrl.analiseGeo, inconsistencia.categoria, inconsistencia, null, null, null, ctrl.dadosProjeto, null);
 
 		});
 
@@ -730,6 +716,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
 			return inconsistencia.id === idInconsistencia;
 		});
+
 		ctrl.listaInconsistencias.splice(index, 1);
 	
 		inconsistenciaService.excluirInconsistencia(idInconsistencia)
@@ -744,20 +731,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			mensagem.error(response.data.texto);
 
 		});
-	};
 
-	$scope.verificarTamanhoInconsistencias = function() {
-		var inconsistencias = angular.copy(ctrl.analiseGeo.inconsistencias);
-		return _.remove(inconsistencias, function(i){
-			return(i.categoria !== 'ATIVIDADE');
-		}).length > 0;
 	};
 
 	$scope.getItemRestricao = function(inconsistencia) {
 
-		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+		if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.RESTRICAO && ctrl.dadosRestricoesProjeto.length > 0) {
 
-		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+			var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
 
 			restricao = ctrl.dadosRestricoesProjeto.find(function(restricao) {
 
@@ -769,17 +750,33 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			return restricao && restricao.item ? restricao.item : '';
 
-		}
+		} else if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.ATIVIDADE && ctrl.dadosProjeto) {
 
-		return 'Propriedade';
+			var atividade = ctrl.dadosProjeto.atividades.find(function(atividade) {
+
+				return atividade.atividadeCaracterizacao.id === inconsistencia.atividadeCaracterizacao.id;
+
+			});
+
+			return atividade.atividadeCaracterizacao.atividade.nome;
+
+	 	} else if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.COMPLEXO) {
+
+			return 'Complexo';
+	
+		} else {
+	
+			return 'Propriedade';
+	
+		}
 	
 	};
 
 	$scope.getDescricaoRestricao = function(inconsistencia) {
 
-		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+		if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.RESTRICAO && ctrl.dadosRestricoesProjeto.length > 0) {
 
-		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+			var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
 
 			restricao = ctrl.dadosRestricoesProjeto.find(function(restricao) {
 
@@ -790,6 +787,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			});
 
 			return restricao && restricao.descricao ? restricao.descricao : '';
+
+		} else if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.ATIVIDADE) {
+
+			return inconsistencia.descricaoInconsistencia;
 
 		}
 

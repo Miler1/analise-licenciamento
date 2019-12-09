@@ -41,7 +41,8 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 					style: {
 					}
 				},
-				popupText: 'Empreendimento'
+				popupText: 'Empreendimento',
+				area: uploadShapes.processo.empreendimento.area
 			});
 
 			$scope.$emit('mapa:adicionar-geometria-base', {

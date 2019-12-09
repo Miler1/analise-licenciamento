@@ -104,11 +104,11 @@
                             span {{validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
                         
                         .botoes-download
-                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
+                            button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
                                 | Parecer Geo
                             br
-                            button.btn.btn-success.btn-download(type="button",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
+                            button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
                                 .glyphicon.glyphicon-file.icon-download
                                 | Carta Imagem 
 
@@ -145,8 +145,8 @@
 
                                     td.col-md-10 {{ documento.nomeDoArquivo }}
                                     td.col-md-2.text-right
-                                        a.d-inline.margin-right-xs.aba-clicavel(title="Baixar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
-                                            i.glyphicon.glyphicon-save
+                                        a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
+                                            i.glyphicon.glyphicon-eye-open
 
                         #camposAnaliseGeoObservacao
                             div(ng-show="validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")

@@ -18,27 +18,45 @@ var InconsistenciaController = function ($scope,
 	inconsistenciaController.anexos = [];
 	inconsistenciaController.idCaracterizacao = null;
 	inconsistenciaController.idSobreposicao = null;
-
+	inconsistenciaController.idAtividadeCaracterizacao = null;
+	inconsistenciaController.dadosProjeto = dadosProjeto;
 	inconsistenciaController.orgaos = app.utils.Orgao;
 	inconsistenciaController.errors = {
 		categoria:false,
 		descricao:false,
 		tipo:false,
-		item:false
+		item:false,
+		atividade: false
 	};
-	
+	inconsistenciaController.inconsistenciaEdicao = inconsistencia;
+	inconsistenciaController.tiposInconsistencia = app.utils.Inconsistencia;
 	inconsistenciaController.categoriaInconsistencia = categoriaInconsistencia;
-	
-	inconsistenciaController.habilitaExcluir = inconsistencia !== null;
-	inconsistenciaController.isEdicao = inconsistencia !== null && inconsistencia.isEdicao !== undefined ? inconsistencia.isEdicao : false;
+	inconsistenciaController.habilitaExcluir = inconsistencia !== null && inconsistencia.id !== null;
+	inconsistenciaController.isEdicao = inconsistencia !== null && inconsistencia.id !== null;
 
-	if(inconsistencia){
+	if(dadosProjeto.categoria === inconsistenciaController.tiposInconsistencia.COMPLEXO) {
+
+		inconsistenciaController.categoriaProjeto = 'Complexo';
+
+	} else if(dadosProjeto.categoria === inconsistenciaController.tiposInconsistencia.PROPRIEDADE) {
+
+		inconsistenciaController.categoriaProjeto = 'Propriedade';
+
+	} else {
+
+		inconsistenciaController.categoriaProjeto = 'Atividade';
+
+	}
+
+	if(inconsistencia) {
 		inconsistenciaController.descricaoInconsistencia = inconsistencia.descricaoInconsistencia;
 		inconsistenciaController.tipoInconsistencia = inconsistencia.tipoInconsistencia;
 		inconsistenciaController.anexos = inconsistencia.anexos;
 		inconsistenciaController.id = inconsistencia.id;
 		inconsistenciaController.idSobreposicao = idSobreposicao;
+		inconsistenciaController.idAtividadeCaracterizacao = inconsistencia.atividadeCaracterizacao ? inconsistencia.atividadeCaracterizacao.id : null;
 	}
+
 	inconsistenciaController.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 
 	inconsistenciaController.fechar = function () {
@@ -69,7 +87,8 @@ var InconsistenciaController = function ($scope,
 
 		} else if(invalidFile && invalidFile.$error === 'maxSize'){
 
-				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+			mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+			
 		}
 	};
 
@@ -93,44 +112,7 @@ var InconsistenciaController = function ($scope,
 		return id;
 	};
 
-	function verificaCampos(restricao) {
-
-		if(!inconsistenciaController.categoriaInconsistencia || inconsistenciaController.categoriaInconsistencia === ''){
-			inconsistenciaController.errors.categoria = true;
-		}else {
-			inconsistenciaController.errors.categoria = false;
-		}
-
-		if(!restricao.item || restricao.item === null){
-			inconsistenciaController.errors.item = true;
-		}else {
-			inconsistenciaController.errors.item = false;
-		}
-
-		if(!inconsistenciaController.descricaoInconsistencia || inconsistenciaController.descricaoInconsistencia === ''){
-			inconsistenciaController.errors.descricao = true;
-		}else {
-			inconsistenciaController.errors.descricao = false;
-		}
-
-		if(!inconsistenciaController.tipoInconsistencia || inconsistenciaController.tipoInconsistencia === ''){
-			inconsistenciaController.errors.tipo = true;
-		}else {
-			inconsistenciaController.errors.tipo = false;
-		}
-
-		if (inconsistenciaController.errors.categoria === true || inconsistenciaController.errors.item === true || inconsistenciaController.errors.descricao === true || inconsistenciaController.errors.tipo === true){
-			return false;
-		}
-
-	}
-
-	inconsistenciaController.concluir = function() {
-
-		var params;
-
-		inconsistenciaController.idCaracterizacao = idCaracterizacao ? idCaracterizacao : inconsistenciaController.buscarIdCaracterizacaoPorRestricao();
-		inconsistenciaController.idSobreposicao = idSobreposicao ? idSobreposicao : inconsistenciaController.idSobreposicao;
+	function hasErrors() {
 
 		var restricao = _.find(dadosProjeto.restricoes, function(restricao) {
 
@@ -142,91 +124,134 @@ var InconsistenciaController = function ($scope,
 
 		restricao = restricao || {};
 
-		var paramsInconsistencia = {
-			categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
-			caracterizacao: {id: inconsistenciaController.idCaracterizacao},
-			analiseGeo: {id: analiseGeo.id},
-			sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
-			sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
-			sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
+		if(!inconsistenciaController.categoriaInconsistencia || inconsistenciaController.categoriaInconsistencia === ''){
+			
+			inconsistenciaController.errors.categoria = true;
+			return true;
 
-		};
-		if(verificaCampos(restricao)){
-			return;
-		}else{
-		
-			inconsistenciaService.findInconsistencia(paramsInconsistencia)
-			.then(function(inconsistenciaResponse){
+		} else {
 
-				inconsistencia = inconsistenciaResponse.data;
+			inconsistenciaController.errors.categoria = false;
 
-				if(inconsistencia){
-
-					params = {
-						id : inconsistencia.id,
-						analiseGeo: {id: analiseGeo.id},
-						tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
-						descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-						categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
-						anexos: inconsistenciaController.anexos,
-						caracterizacao: {id: inconsistenciaController.idCaracterizacao},
-						geometriaAtividade: {id: idGeometriaAtividade},
-						sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
-						sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
-						sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
-					};
-
-				}else{
-
-					params = {
-						analiseGeo: {id: analiseGeo.id},
-						tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
-						descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-						categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
-						anexos: inconsistenciaController.anexos,
-						caracterizacao: {id: inconsistenciaController.idCaracterizacao},
-						geometriaAtividade: {id: idGeometriaAtividade},
-						sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
-						sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
-						sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
-					};
-
-				}
-				inconsistenciaService.salvarInconsistencia(params)
-					.then(function(response){
-						mensagem.success("Inconsistência salva com sucesso!");
-						var retorno = {
-							inconsistencia: response.data,
-							isEdicao: params.id !== undefined && params.id !== null
-						};
-
-						var sobreposicao = retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade ? retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade : retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : retorno.inconsistencia.sobreposicaoCaracterizacaoComplexo;
-						var inconsistenciaValida = false;
-
-						if(sobreposicao) {
-							inconsistenciaValida = sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
-
-								return orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA;
-
-							});
-						}
-
-						if(listaInconsistencias && inconsistenciaValida) {						
-							listaInconsistencias.push(retorno.inconsistencia);
-						}
-
-						$uibModalInstance.close(
-							retorno);
-
-					}).catch(function(response){
-						mensagem.error(response.data.texto, {referenceId: 5});
-						
-					});
-			}).catch(function(response){
-				mensagem.error(response.data.texto, {referenceId: 5});
-				
-			});
 		}
+
+		if(inconsistenciaController.categoriaInconsistencia === inconsistenciaController.tiposInconsistencia.ATIVIDADE && (!inconsistenciaController.idAtividadeCaracterizacao || inconsistenciaController.idAtividadeCaracterizacao === null)){
+			
+			inconsistenciaController.errors.atividade = true;
+			return true;
+
+		} else {
+
+			inconsistenciaController.errors.atividade = false;
+
+		}
+
+		if(inconsistenciaController.categoriaInconsistencia === inconsistenciaController.tiposInconsistencia.RESTRICAO && (!restricao.item || restricao.item === null)){
+			
+			inconsistenciaController.errors.item = true;
+			return true;
+
+		} else {
+
+			inconsistenciaController.errors.item = false;
+
+		}
+
+		if(!inconsistenciaController.descricaoInconsistencia || inconsistenciaController.descricaoInconsistencia === ''){
+			
+			inconsistenciaController.errors.descricao = true;
+			return true;
+
+		} else {
+
+			inconsistenciaController.errors.descricao = false;
+
+		}
+
+		if(!inconsistenciaController.tipoInconsistencia || inconsistenciaController.tipoInconsistencia === ''){
+			
+			inconsistenciaController.errors.tipo = true;
+
+		} else {
+
+			inconsistenciaController.errors.tipo = false;
+
+		}
+
+	}
+
+	inconsistenciaController.concluir = function() {
+
+		inconsistenciaController.idCaracterizacao = idCaracterizacao ? idCaracterizacao : inconsistenciaController.buscarIdCaracterizacaoPorRestricao();
+		inconsistenciaController.idSobreposicao = idSobreposicao ? idSobreposicao : inconsistenciaController.idSobreposicao;
+
+		if(hasErrors()){
+
+			return;
+
+		} else {
+
+			var restricao = _.find(dadosProjeto.restricoes, function(restricao) {
+
+				var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+				
+				return sobreposicao.id === inconsistenciaController.idSobreposicao;
+	
+			});
+	
+			restricao = restricao || {};
+
+			var inconsistencia = {
+				id: inconsistenciaController.inconsistenciaEdicao ? inconsistenciaController.inconsistenciaEdicao.id : null,
+				analiseGeo: {id: analiseGeo.id},
+				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+				categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
+				anexos: inconsistenciaController.anexos,
+				caracterizacao: {id: inconsistenciaController.idCaracterizacao},
+				atividadeCaracterizacao: { id: inconsistenciaController.idAtividadeCaracterizacao },
+				geometriaAtividade: {id: idGeometriaAtividade},
+				sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
+				sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
+				sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
+			};
+
+			inconsistenciaService.salvarInconsistencia(inconsistencia)
+				.then(function(response){
+
+					mensagem.success("Inconsistência salva com sucesso!");
+
+					var retorno = {
+						inconsistencia: response.data,
+						isEdicao: inconsistencia.id !== undefined && inconsistencia.id !== null
+					};
+
+					var sobreposicao = retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade ? retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade : retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : retorno.inconsistencia.sobreposicaoCaracterizacaoComplexo;
+					var inconsistenciaValida = false;
+
+					if(sobreposicao) {
+
+						inconsistenciaValida = sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+
+							return orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA;
+
+						});
+						
+					}
+
+					if(listaInconsistencias && inconsistenciaValida) {						
+						listaInconsistencias.push(retorno.inconsistencia);
+					}
+
+					$uibModalInstance.close(
+						retorno);
+
+				}).catch(function(response){
+					mensagem.error(response.data.texto, { referenceId: 5 });
+				});
+
+		}
+		
 	};
 
 	inconsistenciaController.baixarDocumentoInconsistencia= function(anexo) {
@@ -310,7 +335,9 @@ var InconsistenciaController = function ($scope,
 
 		var inconsistencias = analiseGeo.inconsistencias.filter(function(inconsistencia) {
 
-			return inconsistencia.categoria !== 'PROPRIEDADE';
+			return inconsistencia.categoria !== inconsistenciaController.tiposInconsistencia.PROPRIEDADE && 
+					inconsistencia.categoria !== inconsistenciaController.tiposInconsistencia.ATIVIDADE && 
+					inconsistencia.categoria !== inconsistenciaController.tiposInconsistencia.COMPLEXO;
 
 		});
 
@@ -318,9 +345,37 @@ var InconsistenciaController = function ($scope,
 
 	};
 
+	inconsistenciaController.verificaInconsistenciaCategoria = function(categoria) {
+
+		if(categoria === inconsistenciaController.tiposInconsistencia.ATIVIDADE && !inconsistenciaController.isEdicao) {
+
+			return dadosProjeto.atividades.length > analiseGeo.inconsistencias.filter(function(inconsistencia) { 
+				return inconsistencia.categoria === inconsistenciaController.tiposInconsistencia.ATIVIDADE;
+			}).length;
+
+		}
+
+		return true;
+
+	};
+
+	inconsistenciaController.getAtividadesSemInconsistencia = function() {
+
+		return _.filter(inconsistenciaController.dadosProjeto.atividades, function(atividade) {
+
+			return analiseGeo.inconsistencias.length === 0 || _.some(analiseGeo.inconsistencias, function(inconsistencia) {
+				return inconsistencia.atividadeCaracterizacao && inconsistencia.atividadeCaracterizacao.id !== atividade.atividadeCaracterizacao.id;
+			});
+
+		});
+
+	};
+
 	inconsistenciaController.getRestricoesSemInconsistencia = function() {
+		
 		var restricoes = [];
 		var restricaoEnable = true;
+
 		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
 
 			var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
@@ -348,7 +403,18 @@ var InconsistenciaController = function ($scope,
 		
 	};
 
+	inconsistenciaController.getItemAtividade = function(idAtividadeCaracterizacao) {
+
+		var atividade = _.find(analiseGeo.inconsistencias, function(inconsistencia) {
+			return inconsistencia.atividadeCaracterizacao && inconsistencia.atividadeCaracterizacao.id === idAtividadeCaracterizacao;
+		});
+
+		return atividade.atividadeCaracterizacao.atividade.nome;
+
+	};
+
 	inconsistenciaController.getItemRestricao = function(idSobreposicao) {
+		
 		var itemRestricao = {};
 
 		_.forEach(inconsistenciaController.getRestricoesComInconsistencia(), function(restricao) {
@@ -359,6 +425,7 @@ var InconsistenciaController = function ($scope,
 				itemRestricao = restricao.item;
 			}
 		});
+
 		return itemRestricao;
 	};
 

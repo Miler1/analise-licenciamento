@@ -1,5 +1,6 @@
 package models.tramitacao;
 
+import enums.PerfilAcoesEnum;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //View que possui informações sobre o histórico do objeto tramitavel
 
@@ -84,6 +86,9 @@ public class HistoricoTramitacao extends GenericModel {
 	@Transient
 	public Date dataFinal;
 
+	public Date getDataInicial() {
+		return this.dataInicial;
+	}
 
 	/** 
 	 * Consulta o histórico da tramitacao para um intervalo de tempo determinado e 
@@ -93,10 +98,10 @@ public class HistoricoTramitacao extends GenericModel {
 	 */
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView
 	(Date dataInicio, Date dataFim, Long acao, Long condicaoFinal){
-		List<HistoricoTramitacao> historicoTramitacao = 
+		List<HistoricoTramitacao> historicoTramitacao =
 				HistoricoTramitacao.find(" dataInicial >=? AND dataInicial <=? AND idCondicaoFinal=? AND idAcao=? ",
 						dataInicio,dataFim,condicaoFinal,acao).fetch();
-		return historicoTramitacao;		
+		return historicoTramitacao;
 	}
 
 	/** 
@@ -105,9 +110,9 @@ public class HistoricoTramitacao extends GenericModel {
 	 * @return
 	 */
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView(Long acao, Long condicaoFinal){
-		List<HistoricoTramitacao> historicoTramitacao = 
+		List<HistoricoTramitacao> historicoTramitacao =
 				HistoricoTramitacao.find(" idCondicaoFinal=? AND idAcao=? ", condicaoFinal, acao).fetch();
-		return historicoTramitacao;		
+		return historicoTramitacao;
 	}
 
 	public static HistoricoTramitacao getUltimaTramitacao (Long idObjetoTramitavel){
