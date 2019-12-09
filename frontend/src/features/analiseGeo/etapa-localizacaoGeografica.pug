@@ -52,7 +52,7 @@ include ../../layout/components/mapPanel
                                     th.col-md-5 Declarado
 
                             tbody
-                                tr(ng-repeat="geometria in ctrl.dadosProjeto.atividades[0].geometrias")
+                                tr(ng-repeat="geometria in ctrl.dadosProjeto.complexo.geometrias")
                                     td.col-md-5 {{ geometria.item }}
                                     td.col-md-5 {{ geometria.descricao }}
 

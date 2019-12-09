@@ -1,10 +1,8 @@
-var VisualizarAjustesController = function (analiseGeo, $uibModalInstance) {
+var VisualizarAjustesController = function (justificativa, $uibModalInstance) {
 
     var visualizarAjustesController = this;
 
-    visualizarAjustesController.justificativa = _.findLast(analiseGeo.pareceresGerenteAnaliseGeo, function(parecer) {
-        return parecer.tipoResultadoAnalise.id === app.utils.TiposResultadoAnalise.SOLICITAR_AJUSTES;
-    });
+    visualizarAjustesController.justificativa = justificativa;
 
     visualizarAjustesController.fechar = function() {
         $uibModalInstance.dismiss('cancel');

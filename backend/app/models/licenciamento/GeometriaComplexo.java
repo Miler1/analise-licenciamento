@@ -3,6 +3,7 @@ package models.licenciamento;
 import com.vividsolutions.jts.geom.Geometry;
 
 import com.vividsolutions.jts.io.WKBWriter;
+import enums.CamadaGeoEnum;
 import models.GeometriaAtividadeVO;
 import org.hibernate.annotations.Type;
 
@@ -35,7 +36,7 @@ public class GeometriaComplexo extends GenericModel {
 
 	public GeometriaAtividadeVO convertToVO() {
 
-		return new GeometriaAtividadeVO(this.geometria);
+		return new GeometriaAtividadeVO(this.geometria, CamadaGeoEnum.COMPLEXO);
 
 	}
 

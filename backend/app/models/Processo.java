@@ -81,6 +81,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Transient
 	public static int indexDadosGeometriasAtividade;
 
+	@Transient
+	public static int indexDadosGeometriasComplexo;
+
 	@Override
 	public Processo save() {
 
@@ -812,7 +815,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public static CamadaGeoComplexoVO preencheComplexo(Caracterizacao caracterizacao) {
 
-		return new CamadaGeoComplexoVO(caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
+		Processo.indexDadosGeometriasComplexo = 0;
+
+		return new CamadaGeoComplexoVO(caracterizacao, caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
+
 	}
 	
 	public DesvinculoAnaliseGeo buscaDesvinculoPeloProcessoGeo() {
