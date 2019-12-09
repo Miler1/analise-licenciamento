@@ -59,5 +59,9 @@ public class AtividadeCaracterizacao extends GenericModel {
 		
 		return maiorAC;
 	}
+
+	public Boolean isAtividadeDentroEmpreendimento() {
+		return this.atividade.dentroEmpreendimento;
+	}
 	
 }
