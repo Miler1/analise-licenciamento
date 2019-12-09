@@ -398,14 +398,14 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				  historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
 				  historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
-				parecerAnalistaGeoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
 					abrirModal(response.data, idProcesso);
 				});
 
 		} else {
 
-			parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+			parecerAnalistaGeoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 			.then(function(response){
 				abrirModal(response.data, idProcesso);
 			});
