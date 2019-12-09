@@ -30,7 +30,7 @@ public class InconsistenciaTecnicaDocumento extends GenericModel{
 	@JoinColumn(name="id_documento_administrativo")
 	public List<SolicitacaoDocumentoCaracterizacao> documentosAdministrativo;
 
-	@ManyToMany
+	@OneToMany
 	@JoinColumn(name="id_documento_tecnicos")
 	public List<SolicitacaoGrupoDocumento> documentosTecnicos;
 
