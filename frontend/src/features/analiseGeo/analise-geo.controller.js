@@ -497,7 +497,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						} else {
 
-							ctrl.labelDadosProjeto = 'Dados da(s) áreas da(s) atividade(s)';
+							ctrl.labelDadosProjeto = 'Dados da(s) área(s) da(s) atividade(s)';
 
 						}
 
@@ -528,6 +528,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 							adicionarGeometriaNoMapa(restricao);
 
 						});
+
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO) {
+
+							ctrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
+
+								adicionarGeometriaNoMapa(geometria);
+
+							});
+
+						}
 
 						tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
 

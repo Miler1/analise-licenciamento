@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 
+import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.Caracterizacao;
 import static models.Inconsistencia.Categoria;
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -34,21 +35,19 @@ public class DadosProcessoVO {
 
 		} else {
 
-			if(caracterizacao.atividadesCaracterizacao.get(0).atividade.dentroEmpreendimento) {
+			boolean isAtividadeDentroEmpreendimento = caracterizacao.atividadesCaracterizacao.stream().allMatch(AtividadeCaracterizacao::isAtividadeDentroEmpreendimento);
+
+			if(isAtividadeDentroEmpreendimento) {
 
 				return Categoria.PROPRIEDADE;
 
+			} else if(caracterizacao.isComplexo()) {
+
+				return Categoria.COMPLEXO;
+
 			} else {
 
-				if(caracterizacao.geometriasComplexo != null && !caracterizacao.geometriasComplexo.isEmpty()) {
-
-					return Categoria.COMPLEXO;
-
-				} else {
-
-					return Categoria.ATIVIDADE;
-
-				}
+				return Categoria.ATIVIDADE;
 
 			}
 
@@ -71,6 +70,7 @@ public class DadosProcessoVO {
 		this.atividades = atividades;
 		this.restricoes = restricoes;
 		this.complexo = complexo;
+		this.categoria = preencheCategoria(caracterizacao);
 
 	}
 
