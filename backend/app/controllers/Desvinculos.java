@@ -1,23 +1,11 @@
 package controllers;
 
-
-import exceptions.ValidacaoException;
 import models.*;
-import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
 import security.Acao;
 import serializers.DesvinculoSerializar;
-import utils.Configuracoes;
-import utils.DateUtil;
 import utils.Mensagem;
-
-import java.util.Calendar;
-import java.util.Date;
-
 import static controllers.InternalController.getUsuarioSessao;
 import static controllers.InternalController.verificarPermissao;
-import static models.tramitacao.AcaoTramitacao.INICIAR_ANALISE_GERENTE;
-import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO;
 
 public class Desvinculos extends GenericController {
 
