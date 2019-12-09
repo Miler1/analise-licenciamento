@@ -1,20 +1,10 @@
 package controllers;
 
 
-import exceptions.ValidacaoException;
 import models.*;
-import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.HistoricoTramitacao;
-import play.db.jpa.GenericModel;
 import security.Acao;
 import serializers.DesvinculoSerializar;
 import utils.Mensagem;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import static controllers.InternalController.getUsuarioSessao;
 import static controllers.InternalController.verificarPermissao;
 

@@ -40,8 +40,8 @@ public class AtividadeCaracterizacao extends GenericModel {
 	@OneToMany(mappedBy = "atividadeCaracterizacao", cascade = CascadeType.ALL)
 	public List<AtividadeCaracterizacaoParametros> atividadeCaracterizacaoParametros;
 
-	@OneToOne(mappedBy = "atividadeCaracterizacao", cascade = CascadeType.ALL)
-	public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
+	@OneToMany(mappedBy = "atividadeCaracterizacao", cascade = CascadeType.ALL)
+	public List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade;
 
 	public static AtividadeCaracterizacao getAtividadeCaracterizacaoWithMaiorPotencialPoluidor(List<AtividadeCaracterizacao> atividadesCaracterizacao) {
 		

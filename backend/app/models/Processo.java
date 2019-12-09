@@ -10,7 +10,6 @@ import models.licenciamento.*;
 import models.tramitacao.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
@@ -20,9 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
 
 @Entity
 @Table(schema="analise", name="processo")
@@ -437,6 +434,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
                 .groupByIdAnalise()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
+				.groupByDataFinalAnaliseGeo()
 				.groupByRenovacao();
 
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
@@ -717,15 +715,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public DadosProcessoVO getDadosProcesso() {
 
-		Caracterizacao caracterizacao = this.caracterizacao;
+		if(this.caracterizacao.isComplexo()) {
 
-		if(caracterizacao.isComplexo()) {
-
-			return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao), preencheComplexo(caracterizacao));
+			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao), preencheComplexo(this.caracterizacao));
 
 		} else {
 
-			return new DadosProcessoVO(caracterizacao, preencheListaAtividades(caracterizacao), preencheListaRestricoes(caracterizacao));
+			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
 
 		}
 
@@ -761,7 +757,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
 
-			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = caracterizacao.atividadesCaracterizacao.stream().filter(a -> a.sobreposicaoCaracterizacaoAtividade != null).map(a -> a.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
+			List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividades = new ArrayList<>();
+			caracterizacao.atividadesCaracterizacao.stream()
+					.filter(atividadeCaracterizacao -> !atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade.isEmpty())
+					.forEach(atividadeCaracterizacao -> sobreposicoesCaracterizacaoAtividades.addAll(atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade));
+
 			restricoes.addAll(sobreposicoesCaracterizacaoAtividades.stream().map(SobreposicaoCaracterizacaoAtividade::convertToVO).collect(Collectors.toList()));
 
 		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
@@ -811,6 +811,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
 		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
 		this.getHistoricoTramitacao();
+		this.empreendimento.area = GeoCalc.area(this.empreendimento.coordenadas) / 1000;
 
 		return this;
 

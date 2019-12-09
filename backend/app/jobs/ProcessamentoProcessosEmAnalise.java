@@ -26,7 +26,7 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 		List<DiasAnalise> dAnalise = DiasAnalise.findAll();
 
-		if(dAnalise.size() == 0) {
+		if(dAnalise.isEmpty()) {
 
 			List<Analise> analises = Analise.findAll();
 
@@ -83,6 +83,7 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 				diasAnalise.analise = analise;
 				diasAnalise._save();
+
 			}
 		}
 

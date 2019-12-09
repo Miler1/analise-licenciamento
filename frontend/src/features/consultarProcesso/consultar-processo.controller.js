@@ -85,6 +85,25 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 					consultarProcesso.PrazoMinimoAvisoAnalise[tipoAnalise]);
 	}
 
+	consultarProcesso.getPrazoAnaliseGeo = function(processo) {
+
+		if(processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GERENTE ||
+			processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || 
+			processo.dataConclusaoAnaliseGeo) {
+
+			return 'Concluída';
+
+		} else if(processo.idCondicaoInicialHistoricoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GEO &&
+				processo.idCondicaoFinalHistoricoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_ANALISE_GEO) {
+
+			return parseInt(consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)) + processo.diasCongelamento;
+
+		}
+
+		return consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo);
+
+	};
+
 	consultarProcesso.downloadPDFparecer = function (processo) {
 
 		var params = {

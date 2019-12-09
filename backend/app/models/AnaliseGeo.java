@@ -23,17 +23,11 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+
 import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import static security.Auth.getUsuarioSessao;
 
@@ -389,9 +383,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaGeo parecerAnalistaGeo, List<Documento> documentos) throws Exception {
 
-        List<String> destinatarios = new ArrayList<String>();
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
-        destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
+        List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
         Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);

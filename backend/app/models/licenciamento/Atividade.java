@@ -49,6 +49,9 @@ public class Atividade extends GenericModel {
 	@Column(name = "limite_superior_simplificado")
 	public Double limiteSuperiorLicenciamentoSimplificado;
 
+	@Column(name = "dentro_empreendimento")
+	public Boolean dentroEmpreendimento;
+
 	@ManyToMany
 	@JoinTable(schema = "licenciamento", name = "rel_atividade_parametro_atividade",
 			joinColumns = @JoinColumn(name = "id_atividade"),
