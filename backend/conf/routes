@@ -103,10 +103,12 @@ GET     /analisesGeo/restricao/findAllById/{idProcesso}                         
 POST    /inconsistenciaVistoria/salvar                                              InconsistenciasVistoria.salvar
 GET     /inconsistenciaVistoria/deletar/{id}                                        InconsistenciasVistoria.deletar
 
-# Pareceres
+# Pareceres gerente
 POST    /parecer/gerente/concluirParecerGerente                                                                     PareceresGerentes.concluirParecerGerente
-GET     /parecer/gerente/{idHistoricoTramitacao}                                                                    PareceresGerentes.findParecerByIdHistoricoTramitacao
+GET     /parecer/gerente/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                                 PareceresGerentes.findParecerByIdHistoricoTramitacao
 GET     /parecer/justificativa/gerente/findByIdAnaliseGeo/{idAnaliseGeo}                                            PareceresGerentes.findJustificativaParecerByIdAnaliseGeo
+
+# Pareceres analista geo
 POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
 GET     /parecer/analistaGeo/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                             PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
 GET		/parecer/analistaGeo                                            							                PareceresAnalistasGeo.findByNumeroProcesso
