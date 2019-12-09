@@ -22,9 +22,9 @@ public class VerificarNotificacoes extends GenericJob {
 	@Override
 	public void executar() throws Exception {
 		
-		Logger.info("[INICIO-JOB] ::VerificarNotificacoes:: [INICIO-JOB]");
-		verificarStatusNotificacoes();
-		Logger.info("[FIM-JOB] ::VerificarNotificacoes:: [FIM-JOB]");
+//		Logger.info("[INICIO-JOB] ::VerificarNotificacoes:: [INICIO-JOB]");
+//		verificarStatusNotificacoes();
+//		Logger.info("[FIM-JOB] ::VerificarNotificacoes:: [FIM-JOB]");
 		
 	}
 	
