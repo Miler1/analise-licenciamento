@@ -7,7 +7,10 @@ import play.Logger;
 import play.libs.Files;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class FileManager {
 
@@ -76,6 +79,26 @@ public class FileManager {
 
     }
 
+    public String createKey(byte [] fileBytes, String nomeDoArquivo) throws IOException {
+
+	    String key = generateKey();
+
+	    File diretorio = new File(TEMP_FILES_FOLDER_PATH + key);
+
+	    if(!diretorio.exists()) {
+
+	    	diretorio.mkdir();
+
+	    }
+
+	    File file = new File(TEMP_FILES_FOLDER_PATH + key, nomeDoArquivo);
+
+	    writeFile(file, fileBytes);
+
+	    return key;
+
+    }
+
     private void writeFile(File file, byte[] fileBytes) throws IOException {
 
     	BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
@@ -101,19 +124,20 @@ public class FileManager {
 
     public File getFile(String fileKey, String diretorio) {
 
-        String fileName = getFileNameByKey(fileKey);
-
-        if (fileName == null || diretorio == null) {
+        if (fileKey == null || diretorio == null) {
             return null;
         }
 
-        File file = new File (diretorio, fileName);
+	    Path path = Paths.get(diretorio + fileKey + "/");
 
-        if (file.exists()) {
-            return file;
+        if(!path.toFile().exists() || !path.toFile().isDirectory()) {
+
+        	return null;
+
         }
 
-        return null;
+        return Objects.requireNonNull(path.toFile().listFiles())[0];
+
     }
 
 	public File getFile(String fileKey, String folder, String extension) {
@@ -239,6 +263,12 @@ public class FileManager {
 
     	return UUID.randomUUID().toString() + ((extension != null) ? "." + extension : "");
     }
+
+	public String generateKey() {
+
+		return UUID.randomUUID().toString();
+
+	}
 
 	public String generateFileName(String name, String extension) {
 
