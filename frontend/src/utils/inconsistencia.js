@@ -2,7 +2,8 @@ var Inconsistencia = {
 
     PROPRIEDADE: 'PROPRIEDADE',
 	ATIVIDADE: 'ATIVIDADE',
-    RESTRICAO: 'RESTRICAO'
+    RESTRICAO: 'RESTRICAO',
+    COMPLEXO: 'COMPLEXO'
     
 };
 

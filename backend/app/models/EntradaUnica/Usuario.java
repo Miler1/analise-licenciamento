@@ -1,5 +1,7 @@
 package models.EntradaUnica;
 
+import enums.PerfilEnum;
+import enums.SetorEnum;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
 import models.PerfilUsuarioAnalise;
@@ -9,8 +11,9 @@ import models.UsuarioAnalise;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class Usuario  implements Serializable{
+public class Usuario implements Serializable{
 	public Integer id;
 	public String login;
 	public String nome;
@@ -61,19 +64,39 @@ public class Usuario  implements Serializable{
 		return false;
 	}
 
-	public List<PerfilUsuarioAnalise> salvarPerfis(UsuarioAnalise usuarioAnalise ) {
+	public List<PerfilUsuarioAnalise> salvarPerfis(UsuarioAnalise usuarioAnalise) {
 
-		List<PerfilUsuarioAnalise> perfis = new ArrayList<>();
+		List<PerfilUsuarioAnalise> perfisUsuarioAnalise = new ArrayList<>();
 
 		this.perfis.forEach(perfil -> {
-			PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise();
-			perfilUsuarioAnalise.codigoPerfil = perfil.codigo;
-			perfilUsuarioAnalise.usuarioAnalise = usuarioAnalise;
 
-			perfilUsuarioAnalise.save();
+			if(PerfilEnum.getList().contains(perfil.codigo)){
+
+				if(usuarioAnalise.containsPerfil(perfil.codigo, this)) {
+
+					perfisUsuarioAnalise.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
+
+				}
+			}
+		});
+		usuarioAnalise.perfis = perfisUsuarioAnalise;
+
+		usuarioAnalise.perfis.forEach(perfilUsuarioAnalise -> {
+
+			if(!this.containsPerfil(perfilUsuarioAnalise.codigoPerfil)){
+
+				if(PerfilUsuarioAnalise.findById(perfilUsuarioAnalise.id) != null ){
+
+					perfilUsuarioAnalise._delete();
+
+				}
+			}else{
+				perfilUsuarioAnalise.save();
+			}
+
 		});
 
-		return perfis;
+		return usuarioAnalise.perfis;
 
 	}
 
@@ -82,15 +105,44 @@ public class Usuario  implements Serializable{
 		List<SetorUsuarioAnalise> setores = new ArrayList<>();
 
 		this.setores.forEach(setor -> {
-			SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise();
-			setorUsuarioAnalise.siglaSetor = setor.sigla;
-			setorUsuarioAnalise.usuarioAnalise = usuarioAnalise;
 
-			setorUsuarioAnalise.save();
+			if(SetorEnum.getList().contains(setor.sigla)){
+
+				if(!usuarioAnalise.containsSetor(setor.sigla, this)) {
+
+					setores.add(new SetorUsuarioAnalise(setor, usuarioAnalise));
+				}
+			}
+		});
+		usuarioAnalise.setores = setores;
+		usuarioAnalise.setores.forEach(setorUsuarioAnalise -> {
+
+			if(!this.containsSetor(setorUsuarioAnalise.siglaSetor)){
+
+				if(SetorUsuarioAnalise.findById(setorUsuarioAnalise.id) != null ){
+
+					setorUsuarioAnalise._delete();
+
+				}
+			}else{
+				setorUsuarioAnalise.save();
+			}
+
 		});
 
-		return setores;
+		return usuarioAnalise.setores;
 
 	}
 
+	public boolean containsSetor (String siglaSetor ){
+
+		return this.setores.stream().filter(setor ->  setor.sigla.equals(siglaSetor)).collect(Collectors.toList()).size() > 0;
+
+	}
+
+	public boolean containsPerfil (String codigoPerfil ){
+
+		return this.perfis.stream().filter(perfil ->  perfil.codigo.equals(codigoPerfil)).collect(Collectors.toList()).size() > 0;
+
+	}
 }

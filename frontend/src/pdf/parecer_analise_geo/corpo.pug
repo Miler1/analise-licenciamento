@@ -9,9 +9,11 @@ html(lang="pt-br")
                 margin: 0;
                 padding:0;
             }
+
             .titulo{
                 text-align: center;
             }
+
             .conteudo {
                 margin: 20px 20px 20px 60px;
             }
@@ -22,6 +24,7 @@ html(lang="pt-br")
                 font-size: 14px;
                 font-weight: bold;
             }
+
             .conteudo-item {
                 font-size: 14px;
                 font-weight: normal;
@@ -49,10 +52,18 @@ html(lang="pt-br")
             .lista-itens {
                 padding-left: 100px;
                 padding-right: 100px;
+                padding-top: 10px
             }
+
+            .lista-itens-restricao {
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+
             .col-item-titulo {
                 width: 230px;
             }
+
             .col-item-conteudo {
                 width: 200px;
                 text-align: right;
@@ -60,6 +71,14 @@ html(lang="pt-br")
 
             .text-align-right {
                 text-align: right;
+            }
+
+            .margin-left-none {
+                margin-left: 0;
+            }
+
+            .margin-right-none {
+                margin-right: 0;
             }
 
 body.corpo
@@ -75,10 +94,13 @@ body.corpo
                 .titulo-item DO REQUERIMENTO
                 .conteudo-item
                     span O interessado requer ${analiseEspecifica.analise.processo.getCaracterizacao().tipoLicenca.sigla}, para atividade(s) de 
+                    | \#{if analiseEspecifica.analise.processo.getCaracterizacao().isComplexo()}
+                    span um COMPLEXO sendo
+                    | \#{/if} 
                     | \#{list items:analiseEspecifica.analise.processo.getCaracterizacao().atividadesCaracterizacao, as:'atividadeCaracterizacao'}
-                    span ${atividadeCaracterizacao.atividade.nome.toUpperCase()}
+                    span ${atividadeCaracterizacao.atividade.nome.toUpperCase()} 
                     | \#{/list}
-                    span  em um imóvel situado em ÁREA URBANA.
+                    span em um imóvel situado em ÁREA URBANA.
 
                     p Quanto ao município informo que o imóvel se encontra TOTALMENTE INSERIDO nos limites do município de ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM.
 
@@ -95,36 +117,113 @@ body.corpo
                                     tr
                                         | \#{list items:camadaEmp.geometrias, as:'geometria'}
                                         td.col-item-titulo
-                                            |${geometria.item}
-                                        td.col-item-conteudo
-                                            |${geometria.descricao}
-                                        | \#{/list}    
-                                    | \#{/list}
-
-                    p.titulo-item DA ÁREA DA ATIVIDADE
-                        | \#{list items:atividades, as:'atividade'}
-                        div.lista-itens
-                            table
-                                tbody
-                                    tr Atividade: ${atividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}
-                                        | \#{list items:atividade.geometrias, as:'geometria'}
-                                    tr
-                                        td.col-item-titulo
                                             | ${geometria.item}
                                         td.col-item-conteudo
                                             | ${geometria.descricao}
+                                        | \#{/list}    
                                     | \#{/list}
-                        | \#{/list}
+
+                    span.titulo-item.margin-right-none DA ÁREA DA ATIVIDADE
+                    | \#{if analiseEspecifica.analise.processo.getCaracterizacao().isComplexo()}
+                    span.titulo-item.margin-left-none : COMPLEXO
+                    | \#{list items:atividades, as:'atividade'}
+                    div.lista-itens
+                        table
+                            tbody
+                                | Atividade: ${atividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}
+                    | \#{/list}
+                    | \#{list items:complexo.geometrias, as:'geometria'}
+                    div.lista-itens
+                        table
+                            tbody
+                                tr
+                                    td.col-item-titulo
+                                        | ${geometria.item}
+                                    td.col-item-conteudo
+                                        | ${geometria.descricao}
+                    | \#{/list}
+                    | \#{/if}
+                    | \#{else}
+                    | \#{list items:atividades, as:'atividade'}
+                    div.lista-itens
+                        table
+                            tbody
+                                | Atividade: ${atividade.atividadeCaracterizacao.atividade.nome.toUpperCase()}
+                                | \#{list items:atividade.geometrias, as:'geometria'}
+                                tr
+                                    td.col-item-titulo
+                                        | ${geometria.item}
+                                    td.col-item-conteudo
+                                        | ${geometria.descricao}
+                                | \#{/list}
+                    | \#{/list}
+                    | \#{/else}
+
+            li
+                .titulo-item DAS ÁREAS DE RESTRIÇÃO
+                .conteudo-item
+                    | \#{if !areasDeRestricoes.isEmpty()}
+                    div.lista-itens
+                        table
+                            tbody
+                                |  O empreendimento sobrepõe a(s) área(s) de restrição:
+                    | \#{list items:areasDeRestricoes, as:'restricao'}
+                    div.lista-itens-restricao
+                        table
+                            tbody
+                                tr
+                                    td.col-item-titulo
+                                        | ${restricao.item}
+                                    td.col-item-conteudo
+                                        | ${restricao.descricao}
+                    | \#{/list}
+                    | \#{/if}
+                    | \#{else}
+                    | Não há sobreposição em área de restrição.
+                    | \#{/else}
+
+            li
+                .titulo-item DAS ZAs DE UNIDADES DE CONSERVAÇÃO E TERRA INDÍGENA
+                .conteudo-item
+                    | \#{if !unidadesConservacao.isEmpty()}
+                    div.lista-itens
+                        table
+                            tbody
+                                |  O empreendimento dista e/ou sobrepõe a(s) unidade(s) de conservação e/ou a(s) terra(s) indígena(s):
+                    | \#{list items:unidadesConservacao, as:'restricao'}
+                    div.lista-itens-restricao
+                        table
+                            tbody
+                                tr
+                                    td.col-item-titulo
+                                        | ${restricao.item}
+                                    td.col-item-conteudo
+                                        | ${restricao.descricao}
+                    | \#{/list}
+                    | \#{/if}
+                    | \#{else}
+                    | Não há sobreposição em zona de amortecimento em área de unidade de conservação e/ou terra indígena.
+                    | \#{/else}
 
             li
                 .titulo-item DA ANÁLISE DA SITUAÇÃO FUNDIÁRIA
                 .conteudo-item
+                    | \#{if parecer.situacaoFundiaria}
                     |\#{verbatim}${parecer.situacaoFundiaria}\#{/verbatim}
+                    | \#{/if}
+                    | \#{else}
+                    | Não há situação fundiária.
+                    | \#{/else}
 
             li
                 .titulo-item DA ANÁLISE TEMPORAL
                 .conteudo-item
+                    | \#{if parecer.analiseTemporal}
                     |\#{verbatim}${parecer.analiseTemporal}\#{/verbatim}
+                    | \#{/if}
+                    | \#{else}
+                    | Não há análise temporal.
+                    | \#{/else}
 
             li
                 .titulo-item CONCLUSÃO

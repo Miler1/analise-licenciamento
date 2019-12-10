@@ -59,9 +59,6 @@ public class Notificacao extends GenericModel {
 
 	@Column(name="codigo_ano")
 	public Integer codigoAno;
-
-	@Column(name="justificativa")
-	public String justificativa;
 	
 	@Column(name="data_notificacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -108,7 +105,11 @@ public class Notificacao extends GenericModel {
 	@Column(name="segundo_email_enviado")
 	public Boolean segundoEmailEnviado;
 
+	@Transient
+	public String justificativa;
+
 	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos){
+
 		this.analiseGeo = analiseGeo;
 		this.resolvido = false;
 		this.ativo = true;

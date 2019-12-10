@@ -31,7 +31,7 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
-								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE}")
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
