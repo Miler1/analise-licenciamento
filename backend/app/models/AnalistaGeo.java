@@ -98,6 +98,7 @@ public class AnalistaGeo extends GenericModel {
 
 		  	analistaGeo.perfis = usuario.salvarPerfis(analistaGeo);
 			analistaGeo.setores = usuario.salvarSetores(analistaGeo);
+			analistaGeo.save();
 
 		}
 

@@ -68,6 +68,7 @@ public class AnalistaTecnico extends GenericModel {
 
 			analistaTecnico.perfis = usuario.salvarPerfis(analistaTecnico);
 			analistaTecnico.setores = usuario.salvarSetores(analistaTecnico);
+			analistaTecnico.save();
 
 		}
 
