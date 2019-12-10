@@ -49,23 +49,23 @@ html(lang='en')
 
 				.container
 					.container-flex
-						.container-left		
+						.container-left
 							span <strong>Rua:</strong> ${enderecoCompleto.logradouro}, ${enderecoCompleto.numero}
 						.container-right
 							span <strong>Bairro:</strong> ${enderecoCompleto.bairro}
 
 				.container
 					.container-flex
-						.container-left	
+						.container-left
 							span <strong>Município:</strong> ${enderecoCompleto.municipio.nome} - ${enderecoCompleto.municipio.estado.sigla}
-						.container-right	
+						.container-right
 							span <strong>CEP:</strong> ${enderecoCompleto.cep}
 
 				.container
 					.container-flex
-						.container-left		
+						.container-left
 							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
-						.container-right		
+						.container-right
 							span <strong>Email:</strong> ${empreendimento.cadastrante.contato.email}
 					br
 
