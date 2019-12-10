@@ -399,16 +399,16 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				  historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
 				parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
-				.then(function(response){
-					abrirModal(response.data, idProcesso);
-				});
+					.then(function(response){
+						abrirModal(response.data, idProcesso);
+					});
 
 		} else {
 
 			parecerAnalistaGeoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
-			.then(function(response){
-				abrirModal(response.data, idProcesso);
-			});
+				.then(function(response){
+					abrirModal(response.data, idProcesso);
+				});
 
 		}
 

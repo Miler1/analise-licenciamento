@@ -3,6 +3,8 @@ package jobs;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
@@ -35,81 +37,47 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-		Processo processo = Processo.find("id_caracterizacao", caracterizacao.id).first();
+		Processo processo;
 		Processo processoAntigo;
 		Analise analise;
 		AnaliseGeo analiseGeo;
 
-		boolean deveTramitar = false;
+		boolean deveTramitar;
 
-		if (processo == null) {
-			
-			processo = criarNovoProcesso(caracterizacao);
+		processo = criarNovoProcesso(caracterizacao);
 
-			analise = criarNovaAnalise(processo);
+		analise = criarNovaAnalise(processo);
 
-			if (caracterizacao.renovacao || caracterizacao.retificacao) {
+		if (caracterizacao.renovacao || caracterizacao.retificacao) {
 
-				Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
-				processoAntigo = Processo.find("numero ORDER BY id DESC", caracterizacaoAnterior.numero).first();
-				processo.processoAnterior = processoAntigo;
-				processo.renovacao = caracterizacao.renovacao;
+			Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
+			processoAntigo = Processo.find("numero ORDER BY id DESC", caracterizacaoAnterior.numero).first();
+			processo.processoAnterior = processoAntigo;
+			processo.renovacao = caracterizacao.renovacao;
 
-			}
+			if(caracterizacao.retificacao) {
 
-			criarNovoDiasAnalise(analise);
-			analiseGeo = criarNovaAnaliseGeo(analise);
-
-			if(analiseGeo == null) {
-
-				rollbackTransaction();
+				caracterizacaoAnterior.processo.tramitacao.tramitar(processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(caracterizacaoAnterior.processo.objetoTramitavel.id), caracterizacaoAnterior.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor);
 
 			}
 
-			deveTramitar = analiseGeo != null;
-
-		} else if(processo.caracterizacao.id.equals(caracterizacao.id)) {
-			
-			return;
-			
-		} else {
-			
-			processo.caracterizacao = caracterizacao;
-
-			processo._save();
 		}
-		
+
+		criarNovoDiasAnalise(analise);
+		analiseGeo = criarNovaAnaliseGeo(analise);
+
+		if(analiseGeo == null) {
+
+			rollbackTransaction();
+
+		}
+
+		deveTramitar = analiseGeo != null;
+
 		if (deveTramitar) {
 
 			processo.save();
-
-			// TODO: VERIFICAR CÓDIGO COMENTADO ABAIXO
-
-//			if (caracterizacao.renovacao) {
-//
-//				if (processo.isProrrogacao()) {
-//
-//					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)
-//							&& processoAntigo.isArquivavel()) {
-//
-//						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
-//
-//					}
-//
-//					Licenca.prorrogar(caracterizacao.getLicenca().id);
-//
-//				} else {
-//
-//					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
-//							&& processoAntigo.isArquivavel()) {
-//
-//						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
-//
-//					}
-//
-//				}
-//
-//			}
 
 		}
 
