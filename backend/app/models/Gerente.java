@@ -125,8 +125,8 @@ public class Gerente extends GenericModel {
 
 			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(gerente.login)).findAny().orElseThrow(PortalSegurancaException::new);
 
-//			usuario.salvarPerfis(gerente);
-//			usuario.salvarSetores(gerente);
+			gerente.perfis = usuario.salvarPerfis(gerente);
+			gerente.setores = usuario.salvarSetores(gerente);
 
 		}
 
