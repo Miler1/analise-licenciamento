@@ -301,13 +301,17 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
     
     ctrl.removerDocumentoRit = function() {
 
+        documentoService.delete(ctrl.analiseTecnica.vistoria.documentoRit.key);
         ctrl.analiseTecnica.vistoria.documentoRit = null;
 
     };
 
     ctrl.removerDocumento = function(index) {
 
+        var anexo = ctrl.analiseTecnica.vistoria.anexos[index];
         ctrl.analiseTecnica.vistoria.anexos.splice(index, 1);
+
+        documentoService.delete(anexo.key);
 
     };
 
