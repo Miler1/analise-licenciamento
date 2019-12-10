@@ -18,7 +18,7 @@ public class DadosProcessoVO {
 
 	public Categoria categoria;
 
-	private static Categoria preencheCategoria(Caracterizacao caracterizacao) {
+	public static Categoria preencheCategoria(Caracterizacao caracterizacao) {
 
 		if(caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
 
