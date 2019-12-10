@@ -48,7 +48,7 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
     public void verificarPrazoAtendimento(Notificacao notificacao) throws Exception {
         Long diasCorridos = Helper.getDiferencaDias(new Date(), notificacao.dataNotificacao);
 
-        if(diasCorridos >= notificacao.prazoNotificacao) {
+        if(diasCorridos > notificacao.prazoNotificacao) {
 
             List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", notificacao.analiseGeo.id).fetch();
 
