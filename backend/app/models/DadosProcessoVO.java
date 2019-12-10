@@ -33,7 +33,7 @@ public class DadosProcessoVO {
 		this.atividades = atividades;
 		this.restricoes = restricoes;
 		this.complexo = complexo;
-		this.categoria = preencheCategoria(caracterizacao);
+		this.categoria = Categoria.preencheCategoria(caracterizacao);
 
 	}
 
