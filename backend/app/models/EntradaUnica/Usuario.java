@@ -11,6 +11,7 @@ import models.UsuarioAnalise;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Usuario implements Serializable{
@@ -68,6 +69,15 @@ public class Usuario implements Serializable{
 
 		List<PerfilUsuarioAnalise> perfisUsuarioAnalise = new ArrayList<>();
 
+		if(usuarioAnalise.perfis == null || usuarioAnalise.perfis.isEmpty()){
+			this.perfis.forEach(perfil -> {
+				  perfisUsuarioAnalise.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
+			});
+
+
+			return perfisUsuarioAnalise;
+		}
+
 		this.perfis.forEach(perfil -> {
 
 			if(PerfilEnum.getList().contains(perfil.codigo)){
@@ -83,15 +93,13 @@ public class Usuario implements Serializable{
 
 		usuarioAnalise.perfis.forEach(perfilUsuarioAnalise -> {
 
-			if(!this.containsPerfil(perfilUsuarioAnalise.codigoPerfil)){
+			if(this.containsPerfil(perfilUsuarioAnalise.codigoPerfil)){
 
 				if(PerfilUsuarioAnalise.findById(perfilUsuarioAnalise.id) != null ){
 
 					perfilUsuarioAnalise._delete();
 
 				}
-			}else{
-				perfilUsuarioAnalise.save();
 			}
 
 		});
@@ -104,11 +112,22 @@ public class Usuario implements Serializable{
 
 		List<SetorUsuarioAnalise> setores = new ArrayList<>();
 
+		if(usuarioAnalise.setores == null || usuarioAnalise.setores.isEmpty()){
+			this.setores.forEach(setor -> {
+				if(SetorEnum.getList().contains(setor.sigla)){
+
+					setores.add(new SetorUsuarioAnalise(setor, usuarioAnalise));
+				}
+			});
+
+			return setores;
+		}
+
 		this.setores.forEach(setor -> {
 
 			if(SetorEnum.getList().contains(setor.sigla)){
 
-				if(!usuarioAnalise.containsSetor(setor.sigla, this)) {
+				if(usuarioAnalise.containsSetor(setor.sigla, this)) {
 
 					setores.add(new SetorUsuarioAnalise(setor, usuarioAnalise));
 				}
@@ -117,7 +136,7 @@ public class Usuario implements Serializable{
 		usuarioAnalise.setores = setores;
 		usuarioAnalise.setores.forEach(setorUsuarioAnalise -> {
 
-			if(!this.containsSetor(setorUsuarioAnalise.siglaSetor)){
+			if(this.containsSetor(setorUsuarioAnalise.siglaSetor)){
 
 				if(SetorUsuarioAnalise.findById(setorUsuarioAnalise.id) != null ){
 
@@ -142,7 +161,7 @@ public class Usuario implements Serializable{
 
 	public boolean containsPerfil (String codigoPerfil ){
 
-		return this.perfis.stream().filter(perfil ->  perfil.codigo.equals(codigoPerfil)).collect(Collectors.toList()).size() > 0;
+		return this.perfis.stream().anyMatch(perfil ->  perfil.codigo.equals(codigoPerfil));
 
 	}
 }

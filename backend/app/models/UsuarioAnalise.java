@@ -125,7 +125,7 @@ public class UsuarioAnalise extends GenericModel  {
 
 	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
 
-		return UsuarioAnalise.find("SELECT u FROM UsuarioAnalise u " +
+		return UsuarioAnalise.find("SELECT DISTINCT u FROM UsuarioAnalise u " +
 				"LEFT JOIN PerfilUsuarioAnalise p ON p.usuarioAnalise.id = u.id " +
 				"LEFT JOIN SetorUsuarioAnalise s ON s.usuarioAnalise.id = u.id " +
 				"WHERE p.codigoPerfil = :codigoPerfil AND s.siglaSetor = :siglaSetor")
