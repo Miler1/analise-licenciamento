@@ -64,75 +64,75 @@ public class Usuario implements Serializable{
 		return false;
 	}
 
-	public List<PerfilUsuarioAnalise> salvarPerfis(UsuarioAnalise usuarioAnalise) {
+//	public List<PerfilUsuarioAnalise> salvarPerfis(UsuarioAnalise usuarioAnalise) {
 
-		List<PerfilUsuarioAnalise> perfisUsuarioAnalise = new ArrayList<>();
+//		List<PerfilUsuarioAnalise> perfisUsuarioAnalise = new ArrayList<>();
+//
+//		this.perfis.forEach(perfil -> {
+//
+//			if(PerfilEnum.getList().contains(perfil.codigo)){
+//
+//				if(usuarioAnalise.containsPerfil(perfil.codigo, this)) {
+//
+//					perfisUsuarioAnalise.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
+//
+//				}
+//			}
+//		});
+//		usuarioAnalise.perfis = perfisUsuarioAnalise;
+//
+//		usuarioAnalise.perfis.forEach(perfilUsuarioAnalise -> {
+//
+//			if(!this.containsPerfil(perfilUsuarioAnalise.codigoPerfil)){
+//
+//				if(PerfilUsuarioAnalise.findById(perfilUsuarioAnalise.id) != null ){
+//
+//					perfilUsuarioAnalise._delete();
+//
+//				}
+//			}else{
+//				perfilUsuarioAnalise.save();
+//			}
+//
+//		});
+//
+//		return usuarioAnalise.perfis;
 
-		this.perfis.forEach(perfil -> {
+//	}
 
-			if(PerfilEnum.getList().contains(perfil.codigo)){
+//	public List<SetorUsuarioAnalise> salvarSetores(UsuarioAnalise usuarioAnalise ) {
 
-				if(usuarioAnalise.containsPerfil(perfil.codigo, this)) {
+//		List<SetorUsuarioAnalise> setores = new ArrayList<>();
+//
+//		this.setores.forEach(setor -> {
+//
+//			if(SetorEnum.getList().contains(setor.sigla)){
+//
+//				if(!usuarioAnalise.containsSetor(setor.sigla, this)) {
+//
+//					setores.add(new SetorUsuarioAnalise(setor, usuarioAnalise));
+//				}
+//			}
+//		});
+//		usuarioAnalise.setores = setores;
+//		usuarioAnalise.setores.forEach(setorUsuarioAnalise -> {
+//
+//			if(!this.containsSetor(setorUsuarioAnalise.siglaSetor)){
+//
+//				if(SetorUsuarioAnalise.findById(setorUsuarioAnalise.id) != null ){
+//
+//					setorUsuarioAnalise._delete();
+//
+//				}
+//			}else{
+//				setorUsuarioAnalise.save();
+//			}
+//
+//		});
+//
+//		return usuarioAnalise.setores;
 
-					perfisUsuarioAnalise.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
-
-				}
-			}
-		});
-		usuarioAnalise.perfis = perfisUsuarioAnalise;
-
-		usuarioAnalise.perfis.forEach(perfilUsuarioAnalise -> {
-
-			if(!this.containsPerfil(perfilUsuarioAnalise.codigoPerfil)){
-
-				if(PerfilUsuarioAnalise.findById(perfilUsuarioAnalise.id) != null ){
-
-					perfilUsuarioAnalise._delete();
-
-				}
-			}else{
-				perfilUsuarioAnalise.save();
-			}
-
-		});
-
-		return usuarioAnalise.perfis;
-
-	}
-
-	public List<SetorUsuarioAnalise> salvarSetores(UsuarioAnalise usuarioAnalise ) {
-
-		List<SetorUsuarioAnalise> setores = new ArrayList<>();
-
-		this.setores.forEach(setor -> {
-
-			if(SetorEnum.getList().contains(setor.sigla)){
-
-				if(!usuarioAnalise.containsSetor(setor.sigla, this)) {
-
-					setores.add(new SetorUsuarioAnalise(setor, usuarioAnalise));
-				}
-			}
-		});
-		usuarioAnalise.setores = setores;
-		usuarioAnalise.setores.forEach(setorUsuarioAnalise -> {
-
-			if(!this.containsSetor(setorUsuarioAnalise.siglaSetor)){
-
-				if(SetorUsuarioAnalise.findById(setorUsuarioAnalise.id) != null ){
-
-					setorUsuarioAnalise._delete();
-
-				}
-			}else{
-				setorUsuarioAnalise.save();
-			}
-
-		});
-
-		return usuarioAnalise.setores;
-
-	}
+//	}
 
 	public boolean containsSetor (String siglaSetor ){
 

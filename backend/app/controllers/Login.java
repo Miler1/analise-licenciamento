@@ -104,8 +104,8 @@ public class Login extends GenericController {
 			usuarioAnalise.pessoa = pessoa;
 			usuarioAnalise = usuarioAnalise.save();
 
-			usuarioAnalise.perfis = usuario.salvarPerfis(usuarioAnalise);
-			usuarioAnalise.setores = usuario.salvarSetores(usuarioAnalise);
+//			usuarioAnalise.perfis = usuario.salvarPerfis(usuarioAnalise);
+//			usuarioAnalise.setores = usuario.salvarSetores(usuarioAnalise);
 			usuarioAnalise.pessoa = pessoa;
 			usuarioAnalise.save();
 
@@ -113,13 +113,13 @@ public class Login extends GenericController {
 
 		if (usuarioAnalise.perfis == null || usuarioAnalise.perfis.isEmpty()) {
 
-			usuarioAnalise.perfis = usuario.salvarPerfis(usuarioAnalise);
+//			usuarioAnalise.perfis = usuario.salvarPerfis(usuarioAnalise);
 
 		}
 
 		if(usuarioAnalise.setores == null || usuarioAnalise.setores.isEmpty()){
 
-			usuarioAnalise.setores = usuario.salvarSetores(usuarioAnalise);
+//			usuarioAnalise.setores = usuario.salvarSetores(usuarioAnalise);
 
 		}
 
