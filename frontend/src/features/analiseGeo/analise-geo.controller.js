@@ -912,6 +912,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		var indexDocumento = ctrl.parecer.documentos.indexOf(documento);
 
+		if(ctrl.parecer.documentos[indexDocumento].key) {
+			documentoService.delete(ctrl.parecer.documentos[indexDocumento].key);
+		}
+
 		ctrl.parecer.documentos.splice(indexDocumento, 1);
 
 	};
