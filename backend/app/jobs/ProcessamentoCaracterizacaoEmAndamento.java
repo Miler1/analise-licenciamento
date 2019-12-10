@@ -3,12 +3,12 @@ package jobs;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
+import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
@@ -30,54 +30,43 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
 
 	}
+
+	private Long coalesce(Long ...ids){
+		return Arrays.stream(ids).filter(Objects::nonNull).findFirst().orElse(null);
+	}
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
 
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-		Processo processo = Processo.find("id_caracterizacao", caracterizacao.id).first();
-		Processo processoAntigo;
-		Analise analise;
-		AnaliseGeo analiseGeo;
+		Processo processo = criarNovoProcesso(caracterizacao);
 
-		boolean deveTramitar = false;
+		Analise analise = criarNovaAnalise(processo);
 
-		if (processo == null) {
-			
-			processo = criarNovoProcesso(caracterizacao);
+		if (caracterizacao.renovacao || caracterizacao.retificacao) {
 
-			analise = criarNovaAnalise(processo);
+			Processo processoAnterior = Processo.find("numero ORDER BY id DESC", caracterizacao.numero).first();
 
-			if (caracterizacao.renovacao || caracterizacao.retificacao) {
-
-				Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
-				processoAntigo = Processo.find("numero ORDER BY id DESC", caracterizacaoAnterior.numero).first();
-				processo.processoAnterior = processoAntigo;
-				processo.renovacao = caracterizacao.renovacao;
-
+			if(caracterizacao.retificacao && caracterizacao.idCaracterizacaoOrigem != null) {
+				Analise analiseAntiga = Analise.findByProcesso(processoAnterior);
+				analiseAntiga.processo.tramitacao.tramitar(analiseAntiga.processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 			}
 
-			criarNovoDiasAnalise(analise);
-			analiseGeo = criarNovaAnaliseGeo(analise);
+			processo.processoAnterior = processoAnterior;
+			processo.renovacao = caracterizacao.renovacao;
 
-			if(analiseGeo == null) {
-
-				rollbackTransaction();
-
-			}
-
-			deveTramitar = analiseGeo != null;
-
-		} else if(processo.caracterizacao.id.equals(caracterizacao.id)) {
-			
-			return;
-			
-		} else {
-			
-			processo.caracterizacao = caracterizacao;
-
-			processo._save();
 		}
+
+		criarNovoDiasAnalise(analise);
+		AnaliseGeo analiseGeo = criarNovaAnaliseGeo(analise);
+
+		if(analiseGeo == null) {
+
+			rollbackTransaction();
+
+		}
+
+		Boolean deveTramitar = analiseGeo != null;
 		
 		if (deveTramitar) {
 
