@@ -66,8 +66,8 @@ public class AnalistaTecnico extends GenericModel {
 
 			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(analistaTecnico.login)).findAny().orElseThrow(PortalSegurancaException::new);
 
-			usuario.salvarPerfis(analistaTecnico);
-			usuario.salvarSetores(analistaTecnico);
+			analistaTecnico.perfis = usuario.salvarPerfis(analistaTecnico);
+			analistaTecnico.setores = usuario.salvarSetores(analistaTecnico);
 
 		}
 
