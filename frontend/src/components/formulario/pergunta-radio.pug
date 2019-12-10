@@ -1,0 +1,15 @@
+include titulo-pergunta
+
+mixin perguntaRadio(texto, labelClass, model, opcoes, optionClass, hasError, ngDisabled)
+	+tituloPergunta(texto, labelClass)
+	div(ng-class="{'color-red' : " + hasError + "}")
+		each val, index in opcoes
+			div.input-questionario
+				input(
+					id="radio"+"_"+model+"_"+index,
+					type="radio",
+					ng-model=model,
+					value=index,
+					ng-disabled=ngDisabled
+				)
+				label(for="radio"+"_"+model+"_"+index, class=optionClass, ng-class="{'radio-disabled' : " + ngDisabled + "}") #{val}

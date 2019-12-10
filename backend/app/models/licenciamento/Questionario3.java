@@ -1,7 +1,6 @@
 package models.licenciamento;
 
 import exceptions.ValidacaoException;
-import models.licenciamento.Caracterizacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;

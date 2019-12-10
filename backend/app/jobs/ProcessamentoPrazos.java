@@ -25,8 +25,8 @@ public class ProcessamentoPrazos extends GenericJob {
 	public void executar() throws Exception {
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoPrazos:: [INICIO-JOB]");
-		contarDiasAnalise();
-		verificaPrazoSuspensao();
+//		contarDiasAnalise();
+//		verificaPrazoSuspensao();
 		Logger.info("[FIM-JOB] ::ProcessamentoPrazos:: [FIM-JOB]");
 
 

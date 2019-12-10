@@ -1,0 +1,30 @@
+mixin perguntaUpload(texto, labelClass, model, filename, extensoes, onChange, maxSize, ngDisabled, infoTitle)
+	.pergunta-upload
+		.sub-pergunta
+			label(class=labelClass) #{texto}
+			if infoTitle !== null
+				span.icone-informacao-upload
+					i.fa.fa-info-circle(title=infoTitle)
+			div.margin-left(ng-if=model)
+				p.filename #{filename}
+
+			table(ng-hide=ngDisabled)
+				tr
+					td
+						.dropzone-validacao(ngf-drop,
+							ngf-select,
+							ng-model=model,
+							ngf-drag-over-class="'dragover'",
+							ngf-multiple="false",
+							ngf-allow-dir="false",
+							ngf-keep="false",
+							ngf-accept=extensoes,
+							ngf-pattern=extensoes,
+							ngf-change=onChange,
+							ngf-max-size=maxSize
+						)
+							i.fa.fa-upload
+							p(ng-hide=model) Selecionar arquivo...
+								span.subtitle Ou arraste um arquivo até esta área
+							p(ng-show=model) Alterar arquivo...
+								span.subtitle Ou arraste um arquivo até esta área

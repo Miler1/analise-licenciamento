@@ -22,6 +22,7 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,
     ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
     ctrl.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica;
     ctrl.analistaTecnico = $rootScope.usuarioSessao.usuarioEntradaUnica.nome;
+    ctrl.analiseTecnica = null;
    
     ctrl.itemValidoLicenca = {
         tipoLicenca: null,
@@ -36,6 +37,7 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,
         analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
             .then(function(response){
                 ctrl.analiseTecnica = response.data;
+                tratarDadosQuestionario(ctrl.analiseTecnica.analise.processo.caracterizacao.questionario3);
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.TIPO_LICENCA, null, ctrl.analiseTecnica);
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.ATIVIDADE, null, ctrl.analiseTecnica);
                 var parametros = _.find(ctrl.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
@@ -447,6 +449,27 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,
 
         });        
     };
+
+    ctrl.visualizarQuestionario = function() {
+        var modalInstance = $uibModal.open({
+
+			component: 'modalVisualizarQuestionario',
+			size: 'lg',
+			resolve: {
+				questionario: function() {
+					return ctrl.analiseTecnica.analise.processo.caracterizacao.questionario3;
+				}
+			}
+		});
+    };
+
+    function tratarDadosQuestionario(questionario) {
+		if(questionario){
+			questionario.consumoAgua = questionario.consumoAgua ? "true" : "false";
+			questionario.efluentes = questionario.efluentes ? "true" : "false";
+			questionario.residuosSolidos = questionario.residuosSolidos ? "true" : "false";
+		}
+	}
 
     $rootScope.$on('atualizarMarcacaoInconsistencia', function(event, tipoDeInconsistenciaTecnica) {
         ctrl.validarItensLicenca(tipoDeInconsistenciaTecnica, null, ctrl.analiseTecnica);
