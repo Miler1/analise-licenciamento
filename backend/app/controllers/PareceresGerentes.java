@@ -25,9 +25,9 @@ public class PareceresGerentes extends InternalController {
 
 	public static void findParecerByIdHistoricoTramitacao(Long idHistoricoTramitacao) {
 
-		ParecerGerenteAnaliseGeo parecerAnalistaGeo = ParecerGerenteAnaliseGeo.find("idHistoricoTramitacao", idHistoricoTramitacao).first();
+		ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = ParecerGerenteAnaliseGeo.find("idHistoricoTramitacao", idHistoricoTramitacao).first();
 
-		renderJSON(parecerAnalistaGeo, ParecerGerenteSerializer.findByIdHistoricoTramitacao);
+		renderJSON(parecerGerenteAnaliseGeo, ParecerGerenteSerializer.findByIdHistoricoTramitacao);
 
 	}
 

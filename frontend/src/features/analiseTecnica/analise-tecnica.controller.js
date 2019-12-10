@@ -311,7 +311,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
     };
 
-    ctrl.upload = function(file, invalidFile, tiposDocumentosAnalise) {
+    ctrl.upload = function(file, invalidFile, tipoDocumento) {
 
         if(file) {
 
@@ -320,7 +320,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
             uploadService.save(file)
                 .then(function(response) {
 
-                    if(tiposDocumentosAnalise === ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT) {
+                    if(tipoDocumento === ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT) {
 
                         ctrl.analiseTecnica.vistoria.documentoRit = {
                             key: response.data,
@@ -332,7 +332,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
                         ctrl.errors.vistoria.documentoRit = false;
 
-                    } else if(tiposDocumentosAnalise === ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
+                    } else if(tipoDocumento === ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
 
                         ctrl.analiseTecnica.vistoria.anexos.push({
                             key: response.data,
