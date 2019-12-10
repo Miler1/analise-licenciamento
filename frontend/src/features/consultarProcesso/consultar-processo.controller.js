@@ -85,6 +85,24 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 					consultarProcesso.PrazoMinimoAvisoAnalise[tipoAnalise]);
 	}
 
+	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
+
+		var CAIXA_ENTRADA_ANALISTA_GEO = [25, 26];	
+		
+		CAIXA_ENTRADA_ANALISTA_GEO.forEach(function(condicao){
+
+			if(idCondicaoTramitacao === condicao) {
+
+				return false;
+
+			}
+
+			return true;
+
+		});
+		
+	}
+
 	consultarProcesso.getPrazoAnaliseGeo = function(processo) {
 
 		if(processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GERENTE ||
