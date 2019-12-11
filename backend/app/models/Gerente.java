@@ -116,7 +116,7 @@ public class Gerente extends GenericModel {
 
 		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
 
 		if (usuariosAnalise == null || usuariosAnalise.size() == 0)
 			throw new WebServiceException(Mensagem.NENHUM_GERENTE_ENCONTRADO.getTexto());

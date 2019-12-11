@@ -1,10 +1,7 @@
 package models;
 
-import enums.PerfilEnum;
-import enums.SetorEnum;
 import exceptions.PortalSegurancaException;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
-import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Usuario;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -14,6 +11,7 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
+import utils.Configuracoes;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,13 +26,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Entity
@@ -145,19 +140,15 @@ public class UsuarioAnalise extends GenericModel  {
 
 	}
 
-	private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-
-		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
-		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-
-	}
-
 	public static void atualizaUsuariosAnalise() {
 
 		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
-		List<Usuario> usuariosEU = new ArrayList<>();
-		PerfilEnum.getList().forEach(perfil -> usuariosEU.addAll(CadastroUnificadoWS.ws.getUsuariosByPerfil(perfil).stream().map(Usuario::new).collect(Collectors.toList())));
-		List<Usuario> usuariosFiltrados = usuariosEU.stream().filter(distinctByKey(usuario -> usuario.login)).collect(Collectors.toList());
+
+		String url = Configuracoes.ENTRADA_UNICA_URL_PORTAL_SEGURANCA + "/external/usuario/" + Configuracoes.SIGLA_MODULO;
+		main.java.br.ufla.lemaf.beans.pessoa.Usuario[] usuariosPorModulo = CadastroUnificadoWS.ws.executeRequestGet(url, main.java.br.ufla.lemaf.beans.pessoa.Usuario[].class);
+
+		List<main.java.br.ufla.lemaf.beans.pessoa.Usuario> usuarioList = Arrays.asList(usuariosPorModulo);
+		List<Usuario> usuariosFiltrados = usuarioList.stream().map(Usuario::new).collect(Collectors.toList());
 
 		for (UsuarioAnalise usuarioAnalise : usuariosAnalise) {
 
@@ -173,18 +164,20 @@ public class UsuarioAnalise extends GenericModel  {
 
 	private List<PerfilUsuarioAnalise> salvarPerfis(Usuario usuario) {
 
+		if(this.perfis == null) {
+
+			this.perfis = new ArrayList<>();
+
+		}
+
 		this.perfis.forEach(PerfilUsuarioAnalise::_delete);
 		this.perfis.clear();
 		this._save();
 
 		usuario.perfis.forEach(perfil -> {
 
-			if(PerfilEnum.getList().contains(perfil.codigo)) {
-
-				PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise(perfil, this);
-				this.perfis.add(perfilUsuarioAnalise.save());
-
-			}
+			PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise(perfil, this);
+			this.perfis.add(perfilUsuarioAnalise.save());
 
 		});
 
@@ -194,22 +187,25 @@ public class UsuarioAnalise extends GenericModel  {
 
 	private List<SetorUsuarioAnalise> salvarSetores(Usuario usuario) {
 
+		if(this.setores == null) {
+
+			this.setores = new ArrayList<>();
+
+		}
+
 		this.setores.forEach(SetorUsuarioAnalise::_delete);
 		this.setores.clear();
 		this._save();
 
 		usuario.setores.forEach(setor -> {
 
-			if(SetorEnum.getList().contains(setor.sigla)) {
-
-				SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise(setor, this);
-				this.setores.add(setorUsuarioAnalise.save());
-
-			}
+			SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise(setor, this);
+			this.setores.add(setorUsuarioAnalise.save());
 
 		});
 
 		return this.setores;
 
 	}
+
 }
