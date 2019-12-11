@@ -144,10 +144,9 @@ public class UsuarioAnalise extends GenericModel  {
 
 		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
 
-		String url = Configuracoes.ENTRADA_UNICA_URL_PORTAL_SEGURANCA + "/external/usuario/" + Configuracoes.SIGLA_MODULO;
-		main.java.br.ufla.lemaf.beans.pessoa.Usuario[] usuariosPorModulo = CadastroUnificadoWS.ws.executeRequestGet(url, main.java.br.ufla.lemaf.beans.pessoa.Usuario[].class);
-
+		main.java.br.ufla.lemaf.beans.pessoa.Usuario[] usuariosPorModulo = CadastroUnificadoWS.ws.findUsuariosBySiglaModulo(Configuracoes.SIGLA_MODULO);
 		List<main.java.br.ufla.lemaf.beans.pessoa.Usuario> usuarioList = Arrays.asList(usuariosPorModulo);
+
 		List<Usuario> usuariosFiltrados = usuarioList.stream().map(Usuario::new).collect(Collectors.toList());
 
 		for (UsuarioAnalise usuarioAnalise : usuariosAnalise) {
