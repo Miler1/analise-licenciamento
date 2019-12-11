@@ -832,21 +832,33 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             List<String> localizacoes = new ArrayList<>();
 
-            if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
+            Inconsistencia.Categoria categoriaInconsistencia;
+
+            if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)) {
+                categoriaInconsistencia = Inconsistencia.Categoria.preencheCategoria(analiseGeo.analise.processo.caracterizacao);
+            } else {
+                categoriaInconsistencia = inconsistencia.categoria;
+            }
+
+            if(categoriaInconsistencia.equals(Inconsistencia.Categoria.PROPRIEDADE)){
 
                 Coordinate coordenadasEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria).getCentroid().getCoordinate();
                 localizacoes.add("[" + coordenadasEmpreendimento.x + ", " + coordenadasEmpreendimento.y + "]");
 
-            } else if(inconsistencia.categoria.equals(Inconsistencia.Categoria.COMPLEXO)){
+            } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.COMPLEXO)){
 
                 Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
                 localizacoes.add("[" + coordenadasComplexo.x + ", " + coordenadasComplexo.y + "]");
 
-            } else {
+            } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
                 Coordinate coordenadasAtividade;
 
-                for (GeometriaAtividade geometriaAtividade : inconsistencia.atividadeCaracterizacao.geometriasAtividade) {
+                List<GeometriaAtividade> geometriasAtividade = (inconsistencia.atividadeCaracterizacao != null) ?
+                        inconsistencia.atividadeCaracterizacao.geometriasAtividade :
+                        inconsistencia.sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.geometriasAtividade;
+
+                for (GeometriaAtividade geometriaAtividade : geometriasAtividade) {
 
                     coordenadasAtividade = geometriaAtividade.geometria.getCentroid().getCoordinate();
                     localizacoes.add("[" + coordenadasAtividade.x + ", " + coordenadasAtividade.y + "]");
