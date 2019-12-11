@@ -6,11 +6,13 @@ import models.licenciamento.LicenciamentoWebService;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
+import play.jobs.OnApplicationStart;
 import utils.ListUtil;
 
 import java.util.*;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
+@OnApplicationStart
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 	@Override
@@ -39,25 +41,29 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-		Processo processo = criarNovoProcesso(caracterizacao);
-
-		Analise analise = criarNovaAnalise(processo);
-
 		Boolean renovacao = caracterizacao.isRenovacao();
 		Boolean retificacao = caracterizacao.isRetificacao();
+		Processo processoAnterior = null;
 
 		if(renovacao || retificacao){
 
-			Caracterizacao anterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
-			processo.processoAnterior = Processo.find("numero ORDER BY id DESC", anterior.numero).first();
-			processo.renovacao = caracterizacao.renovacao;
+			// Carrega processo anterior
+			Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao.idCaracterizacaoOrigem, caracterizacao.id));
+			processoAnterior = Processo.find("numero = :num ORDER BY id DESC")
+					.setParameter("num",anterior.numero).first();
 
-			// Arquiva a análise antiga
+			// Arquiva o processo anterior
 			if (retificacao) {
-				Analise analiseAntiga = Analise.findByProcesso(processo.processoAnterior);
-				analiseAntiga.processo.tramitacao.tramitar(analiseAntiga.processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
+				Analise analiseAntiga = Analise.findByProcesso(processoAnterior);
+				analiseAntiga.processo.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 			}
+
 		}
+
+		Processo processo = criarNovoProcesso(caracterizacao);
+		Analise analise = criarNovaAnalise(processo);
+		processo.processoAnterior = processoAnterior;
+		processo.renovacao = renovacao;
 
 		criarNovoDiasAnalise(analise);
 		AnaliseGeo analiseGeo = criarNovaAnaliseGeo(analise);

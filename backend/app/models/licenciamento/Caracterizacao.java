@@ -240,18 +240,16 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		
 	}
 
+	private Boolean caracterizacaoAnteriorAtiva() {
+		return this.idCaracterizacaoOrigem != null && ((Caracterizacao)findById(this.idCaracterizacaoOrigem)).ativo;
+	}
+
 	public Boolean isRenovacao() {
-		if(this.renovacao && this.idCaracterizacaoOrigem != null){
-			return ((Caracterizacao)findById(this.idCaracterizacaoOrigem)).ativo;
-		}
-		return false;
+		return this.renovacao && this.caracterizacaoAnteriorAtiva();
 	}
 
 	public Boolean isRetificacao() {
-		if(this.retificacao && this.idCaracterizacaoOrigem != null){
-			return !((Caracterizacao)findById(this.idCaracterizacaoOrigem)).ativo;
-		}
-		return false;
+		return this.retificacao && (this.idCaracterizacaoOrigem == null || !this.caracterizacaoAnteriorAtiva());
 	}
 
 }
