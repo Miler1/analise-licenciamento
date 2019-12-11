@@ -212,5 +212,4 @@ public class UsuarioAnalise extends GenericModel  {
 		return this.setores;
 
 	}
-
 }

@@ -28,7 +28,8 @@ public class PerfilUsuarioAnalise extends GenericModel {
 	public String nomeCodigo;
 
 	public PerfilUsuarioAnalise (Perfil perfil, UsuarioAnalise usuarioAnalise){
-		this.usuarioAnalise = usuarioAnalise;
+
+		this.usuarioAnalise = UsuarioAnalise.findById(usuarioAnalise.id);
 		this.codigoPerfil = perfil.codigo;
 		this.nomeCodigo = perfil.nome;
 	}
