@@ -114,23 +114,14 @@ public class Gerente extends GenericModel {
 
 	public static Gerente distribuicaoAutomaticaGerente(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> gerentes = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
+		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		List<Usuario> usuariosEU = CadastroUnificadoWS.ws.getUsuariosByPerfil(CodigoPerfil.GERENTE).stream().map(Usuario::new).collect(Collectors.toList());
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
 
-		for( UsuarioAnalise gerente : gerentes){
-
-			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(gerente.login)).findAny().orElseThrow(PortalSegurancaException::new);
-
-			usuario.salvarPerfis(gerente);
-			usuario.salvarSetores(gerente);
-
-		}
-
-		if (gerentes == null || gerentes.size() == 0)
+		if (usuariosAnalise == null || usuariosAnalise.size() == 0)
 			throw new WebServiceException(Mensagem.NENHUM_GERENTE_ENCONTRADO.getTexto());
 
-		List<Long> idsGerentes = gerentes.stream()
+		List<Long> idsGerentes = usuariosAnalise.stream()
 				.map(ang->ang.id)
 				.collect(Collectors.toList());
 

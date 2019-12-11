@@ -17,6 +17,7 @@ public class Configuracoes {
 
 	private static String DEFAULT_LOGIN_URL = "/login";
 
+	public static String SIGLA_MODULO = getConfig("sigla.modulo", "MAL");
 	public static String AUTH_SERVICE = getConfig("auth.service", null);
 	public static String LOGIN_URL = getConfig("auth.login.url", DEFAULT_LOGIN_URL);
 	public static Boolean EXTERNAL_LOGIN = !LOGIN_URL.equals(DEFAULT_LOGIN_URL);

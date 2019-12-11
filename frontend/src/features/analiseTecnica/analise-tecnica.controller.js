@@ -211,4 +211,3 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
 };
 
 exports.controllers.AnaliseTecnicaController = AnaliseTecnicaController;
-
