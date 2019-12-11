@@ -21,13 +21,13 @@ public class Desvinculo extends GenericModel {
     @JoinColumn(name="id_analise_geo", nullable=true)
     public AnaliseGeo analiseGeo;
 
-   @ManyToOne
-   @JoinColumn(name="id_analise_tecnica", nullable=true)
-   public AnaliseTecnica analiseTecnica;
-
-   @ManyToOne
-   @JoinColumn(name="id_analise_juridica", nullable=true)
-   public AnaliseJuridica analiseJuridica;
+//   @ManyToOne
+//   @JoinColumn(name="id_analise_tecnica", nullable=true)
+//   public AnaliseTecnica analiseTecnica;
+//
+//   @ManyToOne
+//   @JoinColumn(name="id_analise_juridica", nullable=true)
+//   public AnaliseJuridica analiseJuridica;
 
     @Required
     @Column(name="justificativa")

@@ -125,6 +125,10 @@ public class Gerente extends GenericModel {
 			gerente.perfis = usuario.salvarPerfis(gerente);
 			gerente.setores = usuario.salvarSetores(gerente);
 			gerente.save();
+//			UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(gerente.id);
+//			usuarioAnalise.perfis = gerente.perfis;
+//			usuarioAnalise.setores = gerente.setores;
+//			usuarioAnalise._save();
 
 		}
 

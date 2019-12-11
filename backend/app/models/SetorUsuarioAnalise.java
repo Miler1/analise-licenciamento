@@ -34,7 +34,7 @@ public class SetorUsuarioAnalise extends GenericModel {
 		this.usuarioAnalise = usuarioAnalise;
 		this.siglaSetor = setor.sigla;
 		this.nomeSetor = setor.nome;
-		this.save();
+		super.save();
 
 	}
 

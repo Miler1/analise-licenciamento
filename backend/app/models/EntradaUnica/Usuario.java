@@ -71,7 +71,9 @@ public class Usuario implements Serializable{
 
 		if(usuarioAnalise.perfis == null || usuarioAnalise.perfis.isEmpty()){
 			this.perfis.forEach(perfil -> {
-				  perfisUsuarioAnalise.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
+
+				  PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise(perfil,usuarioAnalise);
+				  perfisUsuarioAnalise.add(perfilUsuarioAnalise.save());
 			});
 
 
@@ -84,7 +86,8 @@ public class Usuario implements Serializable{
 
 				if(usuarioAnalise.containsPerfil(perfil.codigo, this)) {
 
-					perfisUsuarioAnalise.add(new PerfilUsuarioAnalise(perfil, usuarioAnalise));
+					PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise(perfil,usuarioAnalise);
+					perfisUsuarioAnalise.add(perfilUsuarioAnalise.save());
 
 				}
 			}

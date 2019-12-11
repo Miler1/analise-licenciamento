@@ -146,5 +146,4 @@ public class UsuarioAnalise extends GenericModel  {
 		return usuario.setores.stream().filter(setor ->  setor.sigla.equals(siglaSetor)).collect(Collectors.toList()).size() > 0;
 
 	}
-
 }
