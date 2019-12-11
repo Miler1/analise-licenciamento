@@ -126,15 +126,15 @@ public class InconsistenciaTecnica extends GenericModel{
 
 			}
 
-//            if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.QUESTIONARIO.name())) {
-//
-//				this.saveAnexos(this.anexos);
-//
-//				this.inconsistenciaTecnicaQuestionario.inconsistenciaTecnica = this;
-//
-//				this.inconsistenciaTecnicaQuestionario.save();
-//
-//            }
+            if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.QUESTIONARIO.name())) {
+
+				this.saveAnexos(this.anexos);
+
+				this.inconsistenciaTecnicaQuestionario.inconsistenciaTecnica = this;
+
+				this.inconsistenciaTecnicaQuestionario.save();
+
+            }
 
 //            if (inconsistenciaTecnica.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO.name())) {
 //

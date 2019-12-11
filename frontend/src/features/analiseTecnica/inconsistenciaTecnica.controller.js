@@ -7,6 +7,7 @@ var InconsistenciaTecnicaController = function (
     inconsistenciaTecnica,
     atividadeCaracterizacao, 
     parametroAtividade,
+    questionario,
     $rootScope,
     inconsistenciaService,
     tipoDeInconsistenciaTecnica,
@@ -17,6 +18,7 @@ var modalCtrl = this;
 modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 modalCtrl.anexos = [];
 modalCtrl.tipoDeInconsistenciaTecnica = tipoDeInconsistenciaTecnica;
+modalCtrl.questionario = questionario;
 
 modalCtrl.errors = {
 
@@ -33,9 +35,6 @@ modalCtrl.fechar = function () {
 
 
 modalCtrl.init = function(){
-
-    // $rootScope.$broadcast('atualizarMarcacaoInconsistencia', analiseTecnica.id);
-
     if(inconsistenciaTecnica){
 
         if(inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca != null){
@@ -50,6 +49,7 @@ modalCtrl.init = function(){
 
         }else if(inconsistenciaTecnica.inconsistenciaTecnicaQuestionario != null){
             inconsistenciaTecnica.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica.QUESTIONARIO;
+            inconsistenciaTecnica.tipoDeInconsistenciaQuestionario.questionario = questionario;
             
         }else if(inconsistenciaTecnica.inconsistenciaTecnicaDocumento != null){
             inconsistenciaTecnica.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica.DOCUMENTO;
@@ -165,6 +165,9 @@ modalCtrl.concluir = function() {
             };
 
         }else if (modalCtrl.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.QUESTIONARIO){
+            params.inconsistenciaTecnicaQuestionario = {
+                questionario: questionario
+            };
 
         }else if (modalCtrl.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO){
             

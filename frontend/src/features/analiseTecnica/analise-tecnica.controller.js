@@ -291,18 +291,18 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,
 
     };
 
-    // Preparação para adicionar outros tipos de inconsistencia
+    ctrl.adicionarInconsistenciaTecnicaQuestionario = function (analiseTecnica,tipoDeInconsistenciaTecnica) {
 
-    // ctrl.adicionarInconsistenciaTecnicaQuestionario = function (analiseTecnica,tipoDeInconsistenciaTecnica) {
-
-    //     var inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+        var inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
     
-    //         return inconsistenciaTecnica.inconsistenciaTecnicaQuestionario;
-    //     });
+            return inconsistenciaTecnica.inconsistenciaTecnicaQuestionario;
+        });
    
-    //     openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, atividadeCaracterizacao, null);
+        openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, analiseTecnica.analise.processo.caracterizacao.questionario3);
 
-    // };
+    };
+
+    // Preparação para adicionar outros tipos de inconsistencia
 
     // ctrl.adicionarInconsistenciaTecnicaDocumento = function (analiseTecnica,tipoDeInconsistenciaTecnica) {
 
@@ -315,7 +315,7 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,
 
     // };
 
-    function openModal(analiseTecnicaModal, tipoDeInconsistenciaTecnicaModal, inconsistenciaTecnicaModal, atividadeCaracterizacaoModal, parametroAtividadeModal) {
+    function openModal(analiseTecnicaModal, tipoDeInconsistenciaTecnicaModal, inconsistenciaTecnicaModal, atividadeCaracterizacaoModal, parametroAtividadeModal, questionarioModal) {
             
         $uibModal.open({
             animation: true,
@@ -338,6 +338,9 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,
                 },
                 parametroAtividade: function(){
                     return parametroAtividadeModal;
+                },
+                questionario: function(){
+                    return questionarioModal;
                 }
             }
         });

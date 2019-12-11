@@ -26,9 +26,9 @@ public class InconsistenciaTecnicaQuestionario extends GenericModel{
 	@JoinColumn(name="id_inconsistencia_tecnica")
 	public InconsistenciaTecnica inconsistenciaTecnica;
 
-//	@OneToOne
-//	@JoinColumn(name="id_questionario")
-//	public Questionario questionario;
+	@OneToOne
+	@JoinColumn(name="id_questionario")
+	public Questionario3 questionario;
 
 
 
