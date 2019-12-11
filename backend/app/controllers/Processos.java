@@ -44,8 +44,6 @@ public class Processos extends InternalController {
 
 		Processo processo = Processo.findById(id);
 
-		UsuarioAnalise.atualizaUsuariosAnalise();
-
 		renderJSON(processo.getInfoProcesso(), ProcessoSerializer.getInfo);
 
 	}
