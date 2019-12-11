@@ -70,19 +70,19 @@ html(lang='en')
 					br
 
 				div
-					|\#{if categoriaInconsistencia.equals("PROPRIEDADE")}
+					|\#{if categoriaInconsistencia.name().equals("PROPRIEDADE")}
 					span <strong>Localização do empreendimento:
 						|\#{list items:localizacoes, as:'localizacao'}
 						</strong> ${localizacao}
 						|\#{/list}
 					|\#{/if}
-					|\#{if categoriaInconsistencia.equals("ATIVIDADE")}
+					|\#{if categoriaInconsistencia.name().equals("ATIVIDADE")}
 					span <strong>Localização da atividade ${inconsistencia.atividadeCaracterizacao.atividade.nome}: 
 						|\#{list items:localizacoes, as:'localizacao'}
 						</strong> ${localizacao}
 						|\#{/list}
 					|\#{/if}
-					|\#{if categoriaInconsistencia.equals("COMPLEXO")}
+					|\#{if categoriaInconsistencia.name().equals("COMPLEXO")}
 					span <strong>Localização do complexo:
 						|\#{list items:localizacoes, as:'localizacao'}
 						</strong> ${localizacao}
@@ -95,6 +95,27 @@ html(lang='en')
 
 					ol
 
+						li
+							h3 Categoria da inconsistência:
+								p
+									|\#{if inconsistencia.categoria.name().equals("PROPRIEDADE")}
+									span Propriedade
+									|\#{/if}
+									|\#{if inconsistencia.categoria.name().equals("COMPLEXO")}
+									span Complexo
+									|\#{/if}
+									|\#{if inconsistencia.categoria.name().equals("ATIVIDADE")}
+									span Atividade
+									|\#{/if}
+									|\#{if inconsistencia.categoria.name().equals("RESTRICAO")}
+									span Restrição
+									|\#{/if}
+						|\#{if inconsistencia.categoria.name().equals("RESTRICAO")}
+						li
+							h3 Item da Restrição:
+								p
+									span ${itemRestricao}
+						|\#{/if}
 						li
 							h3 Descrição do(s) fato(s):
 								p
