@@ -538,4 +538,3 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 };
 
 exports.controllers.AnaliseTecnicaController = AnaliseTecnicaController;
-
