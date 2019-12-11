@@ -45,8 +45,8 @@ div
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td.text-center {{processo.licencas}}
 
-							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
-								| {{consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(consultarProcesso.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, consultarProcesso.PrazoAnalise.ANALISE), consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ consultarProcesso.dateUtil.getContaDiasRestantesData(consultarProcesso.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, consultarProcesso.PrazoAnalise.ANALISE)) }}
 
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
 								| {{ consultarProcesso.getPrazoAnaliseGeo(processo) }}
