@@ -1,12 +1,12 @@
 package controllers;
 
-import models.AnaliseGeo;
-import models.ParecerAnalistaGeo;
-import models.Processo;
-import models.UsuarioAnalise;
+import models.*;
 import security.Acao;
 import serializers.ParecerAnalistaGeoSerializer;
 import utils.Mensagem;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class PareceresAnalistasGeo extends InternalController {
 
@@ -59,6 +59,17 @@ public class PareceresAnalistasGeo extends InternalController {
 		Processo processo = Processo.findById(idProcesso);
 
 		renderJSON(ParecerAnalistaGeo.findParecerByProcesso(processo), ParecerAnalistaGeoSerializer.findByIdProcesso);
+
+	}
+
+	public static void findParecerByIdAnaliseGeo(Long idAnaliseGeo) {
+
+		List<ParecerAnalistaGeo> pareceres = ParecerAnalistaGeo.find("id_analise_geo = :analiseGeo")
+				.setParameter("analiseGeo", idAnaliseGeo).fetch();
+
+		ParecerAnalistaGeo parecerFinal = pareceres.stream().max( Comparator.comparing(parecerAnalistaGeo -> parecerAnalistaGeo.analiseGeo.id )).get();
+
+		renderJSON(parecerFinal, ParecerAnalistaGeoSerializer.findByIdAnaliseGeo);
 
 	}
 

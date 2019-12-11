@@ -6,6 +6,13 @@ var ParecerAnalistaGeoService = function(request, config) {
 			.get(config.BASE_URL() + 'parecer/analistaGeo/findParecerByIdHistoricoTramitacao/' + id);
 
 	};
+
+	this.findParecerByIdAnaliseGeo = function(idAnaliseGeo) {
+
+		return request
+			.get(config.BASE_URL() + 'parecer/analistaGeo/findParecerByIdAnaliseGeo/' + idAnaliseGeo);
+
+	};
 	
 	this.getParecerByNumeroProcesso = function(numeroProcesso) {
 
