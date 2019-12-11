@@ -17,6 +17,11 @@ public class ParecerAnalistaGeoSerializer {
 			"conclusao"
 	);
 
+	public static JSONSerializer findByIdAnaliseGeo = SerializerUtil.create(
+			"tipoResultadoAnalise.id",
+			"parecer"
+	);
+
 	public static JSONSerializer findByIdProcesso = SerializerUtil.create(
 			"parecer",
 			"situacaoFundiaria",
