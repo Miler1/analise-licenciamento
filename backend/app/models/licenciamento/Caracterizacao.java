@@ -86,6 +86,12 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public List<Licenca> licencas;
 
 	@Column
+	public Boolean complexo = false;
+
+	@Column(name = "ativo")
+	public Boolean ativo = true;
+
+	@Column
 	public boolean renovacao;
 
 	@Column
@@ -229,9 +235,23 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	}
 
 	public Boolean isComplexo() {
-	    
-		return this.geometriasComplexo != null && !this.geometriasComplexo.isEmpty();
+
+		return this.complexo;
 		
+	}
+
+	public Boolean isRenovacao() {
+		if(this.renovacao && this.idCaracterizacaoOrigem != null){
+			return ((Caracterizacao)findById(this.idCaracterizacaoOrigem)).ativo;
+		}
+		return false;
+	}
+
+	public Boolean isRetificacao() {
+		if(this.retificacao && this.idCaracterizacaoOrigem != null){
+			return !((Caracterizacao)findById(this.idCaracterizacaoOrigem)).ativo;
+		}
+		return false;
 	}
 
 }

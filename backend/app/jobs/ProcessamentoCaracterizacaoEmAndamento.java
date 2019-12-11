@@ -43,18 +43,20 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		Analise analise = criarNovaAnalise(processo);
 
-		if (caracterizacao.renovacao || caracterizacao.retificacao) {
+		Boolean renovacao = caracterizacao.isRenovacao();
+		Boolean retificacao = caracterizacao.isRetificacao();
 
-			Processo processoAnterior = Processo.find("numero ORDER BY id DESC", caracterizacao.numero).first();
+		if(renovacao || retificacao){
 
-			if(caracterizacao.retificacao && caracterizacao.idCaracterizacaoOrigem != null) {
-				Analise analiseAntiga = Analise.findByProcesso(processoAnterior);
-				analiseAntiga.processo.tramitacao.tramitar(analiseAntiga.processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
-			}
-
-			processo.processoAnterior = processoAnterior;
+			Caracterizacao anterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
+			processo.processoAnterior = Processo.find("numero ORDER BY id DESC", anterior.numero).first();
 			processo.renovacao = caracterizacao.renovacao;
 
+			// Arquiva a análise antiga
+			if (retificacao) {
+				Analise analiseAntiga = Analise.findByProcesso(processo.processoAnterior);
+				analiseAntiga.processo.tramitacao.tramitar(analiseAntiga.processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
+			}
 		}
 
 		criarNovoDiasAnalise(analise);
