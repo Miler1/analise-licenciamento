@@ -26,6 +26,7 @@ import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -774,11 +775,22 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         analiseGeo.inconsistencias.forEach(inconsistencia -> {
 
             List<String> localizacoes = new ArrayList<>();
+            String itemRestricao = null;
 
             Inconsistencia.Categoria categoriaInconsistencia;
 
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.RESTRICAO)) {
                 categoriaInconsistencia = Inconsistencia.Categoria.preencheCategoria(analiseGeo.analise.processo.caracterizacao);
+
+                if(categoriaInconsistencia.equals(Inconsistencia.Categoria.ATIVIDADE)){
+
+                    for (AtividadeCaracterizacao atividadeCaracterizacao : analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao) {
+                        itemRestricao = atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade.stream()
+                                .filter( sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.id.equals(inconsistencia.sobreposicaoCaracterizacaoAtividade.id))
+                                .findFirst().orElseThrow(ValidationException::new).tipoSobreposicao.nome;
+                    }
+                }
+
             } else {
                 categoriaInconsistencia = inconsistencia.categoria;
             }
@@ -797,11 +809,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 Coordinate coordenadasAtividade;
 
-                List<GeometriaAtividade> geometriasAtividade = (inconsistencia.atividadeCaracterizacao != null) ?
-                        inconsistencia.atividadeCaracterizacao.geometriasAtividade :
-                        inconsistencia.sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.geometriasAtividade;
+                inconsistencia.atividadeCaracterizacao = (inconsistencia.atividadeCaracterizacao != null) ?
+                        inconsistencia.atividadeCaracterizacao :
+                        inconsistencia.sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao;
 
-                for (GeometriaAtividade geometriaAtividade : geometriasAtividade) {
+                for (GeometriaAtividade geometriaAtividade : inconsistencia.atividadeCaracterizacao.geometriasAtividade) {
 
                     coordenadasAtividade = geometriaAtividade.geometria.getCentroid().getCoordinate();
                     localizacoes.add("[" + coordenadasAtividade.x + ", " + coordenadasAtividade.y + "]");
@@ -819,6 +831,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                     .addParam("localizacoes", localizacoes)
                     .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                     .addParam("categoriaInconsistencia", categoriaInconsistencia)
+                    .addParam("itemRestricao", itemRestricao)
                     .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
             pdf.generate();
