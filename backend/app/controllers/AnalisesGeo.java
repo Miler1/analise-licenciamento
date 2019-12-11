@@ -157,7 +157,7 @@ public class AnalisesGeo extends InternalController {
 
         String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
@@ -173,7 +173,7 @@ public class AnalisesGeo extends InternalController {
 
         String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
@@ -193,7 +193,7 @@ public class AnalisesGeo extends InternalController {
 
        String nome = pdfNotificacao.tipo.nome +  "_" + analiseGeo.id + ".pdf";
        nome = nome.replace(' ', '_');
-       response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+       response.setHeader("Content-Disposition", "inline; filename=" + nome);
        response.setHeader("Content-Transfer-Encoding", "binary");
        response.setHeader("Content-Type", "application/pdf");
 
@@ -212,13 +212,12 @@ public class AnalisesGeo extends InternalController {
 
         String nome = pdfParecer.tipo.nome + "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
         renderBinary(pdfParecer.arquivo, nome);
     }
-
 
     public static void buscaDadosProcesso(Long idProcesso) {
 
@@ -231,10 +230,12 @@ public class AnalisesGeo extends InternalController {
     }
 
     public static void buscaAnaliseGeoByAnalise(Long idAnalise) {
+
         AnaliseGeo analiseGeo = AnaliseGeo.find("id_analise = :id_analise")
                 .setParameter("id_analise", idAnalise).first();
 
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
+
     }
 
     public static void findAllRestricoesById(Long idProcesso) {

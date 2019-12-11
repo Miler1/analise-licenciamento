@@ -30,12 +30,12 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias = verificarTamanhoInconsistencias;
     validacaoAnaliseGeoGerente.openModalOficio = openModalOficio;
     validacaoAnaliseGeoGerente.openModalNotificacao = openModalNotificacao;
-
     validacaoAnaliseGeoGerente.analistasGeo = null;
     validacaoAnaliseGeoGerente.analistaGeoDestino = {};
     validacaoAnaliseGeoGerente.dadosRestricoesProjeto = [];
     validacaoAnaliseGeoGerente.orgaos = app.utils.Orgao;
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
+    validacaoAnaliseGeoGerente.parecerGeo = {};
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
@@ -45,12 +45,24 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
+    var getUltimoParecerGeo = function(pareceresAnalistaGeo) {
+
+        var pareceresOrdenados = pareceresAnalistaGeo.sort(function(dataParecer1, dataParecer2){
+            return dataParecer1 - dataParecer2;
+        });
+
+        return pareceresOrdenados[pareceresOrdenados.length - 1];
+
+    };
+
     function init() {
         validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 
         analiseGeoService.getAnliseGeoByAnalise($route.current.params.idAnalise)
             .then(function(response){
+
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
+                validacaoAnaliseGeoGerente.parecerGeo = getUltimoParecerGeo(validacaoAnaliseGeoGerente.analiseGeo.pareceresAnalistaGeo);
 
                 analiseGeoService.getDadosRestricoesProjeto(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
                 .then(function(response) {
@@ -126,10 +138,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		documentoAnaliseService.generatePDFParecerGeo(params)
 			.then(function(data, status, headers){
 
-				var a = document.createElement('a');
-				a.href = URL.createObjectURL(data.data.response.blob);
-				a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-				a.click();
+				var url = URL.createObjectURL(data.data.response.blob);
+                window.open(url, '_blank');
 
 			},function(error){
 				mensagem.error(error.data.texto);
@@ -145,10 +155,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		documentoAnaliseService.generatePDFCartaImagemGeo(params)
 			.then(function(data, status, headers){
 
-				var a = document.createElement('a');
-				a.href = URL.createObjectURL(data.data.response.blob);
-				a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pdf';
-				a.click();
+				var url = URL.createObjectURL(data.data.response.blob);
+                window.open(url, '_blank');
 
 			},function(error){
 				mensagem.error(error.data.texto);

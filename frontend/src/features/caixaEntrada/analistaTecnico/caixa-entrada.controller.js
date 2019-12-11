@@ -1,6 +1,8 @@
-var CxEntAnalistaTecnicoController = function($scope, config, $location, analiseTecnicaService, mensagem, $rootScope, processoService) {
+var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
+											  $location, analiseTecnicaService, 
+											  mensagem, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
+	$rootScope.tituloPagina = 'ANÁLISE TÉCNICA';
 
 	var cxEntAnalistaTecnico = this;
 
@@ -17,7 +19,7 @@ var CxEntAnalistaTecnicoController = function($scope, config, $location, analise
 	cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntAnalistaTecnico.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntAnalistaTecnico.dateUtil = app.utils.DateUtil;
-	cxEntAnalistaTecnico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	cxEntAnalistaTecnico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO);
 
 	function atualizarListaProcessos(processos) {
 
@@ -59,7 +61,43 @@ var CxEntAnalistaTecnicoController = function($scope, config, $location, analise
 	function visualizarProcesso(processo) {
 
 		return processoService.visualizarProcesso(processo);
-	}	
+	}
+
+	cxEntAnalistaTecnico.getPrazoAnaliseTecnica = function(dataParecerGerente, prazo) {
+
+		if(dataParecerGerente) {
+
+			var dataVencimento = cxEntAnalistaTecnico.dateUtil.somaPrazoEmDias(dataParecerGerente, prazo);
+
+			return cxEntAnalistaTecnico.dateUtil.getDiasRestantes(dataVencimento);
+
+		}
+
+		return '-';
+
+	};
+
+	cxEntAnalistaTecnico.solicitarDesvinculoAnaliseTecnica =  function(processo){
+
+		$uibModal.open({
+			controller: 'desvinculoAnaliseTecnicaController',
+			controllerAs: 'desvinculoCtrl',
+			backdrop: 'static',
+			templateUrl: 'features/caixaEntrada/analistaTecnico/modalDesvinculo.html',
+			size: 'lg',
+			resolve: {
+
+				idAnaliseTecnica: function(){
+					return processo.idAnaliseTecnica;
+				},
+				idProcesso: function(){
+					return processo.idProcesso;
+				}
+			}
+			
+		});
+};
+
 };
 
 exports.controllers.CxEntAnalistaTecnicoController = CxEntAnalistaTecnicoController;

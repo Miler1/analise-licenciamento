@@ -33,6 +33,7 @@ div
 								//- span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseGeo}")
 								//- span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
 								//- span(ng-class="{'icone-renovacao': processo.renovacao}")
+								span(ng-class="{'icone-solicitacao-ajustes': processo.verificaAnalise === true }")
 
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero | textoTruncado : 4:3}}
 							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
@@ -43,7 +44,7 @@ div
 								| {{listagem.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo)}").text-center
 								| {{listagem.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
-							td
+							td( ng-init="listagem.verificaSolicitacaoAjustes(processo)")
 								span.pull-right
 
 									.dropdown.action-table
@@ -55,6 +56,10 @@ div
 												a(ng-click="listagem.continuarAnalise(processo.idAnaliseGeo)")
 													i.glyphicon.glyphicon-play-circle
 													span Continuar análise
+											li(ng-if="processo.verificaAnalise === true")
+												a(ng-click="listagem.visualizarSolicitacaoAjustes(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar Solicitação de Ajustes
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
@@ -63,6 +68,7 @@ div
 					//- span.icone-revisao-solicitada.legenda Revisão Solicitada
 					//- span.icone-revisao-atendida.legenda Notificação Atendida
 					//- span.icone-renovacao.legenda Renovação
+					span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

@@ -9,7 +9,6 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 	listagem.selecionarTodosProcessos = selecionarTodosProcessos;
 	listagem.onPaginaAlterada = onPaginaAlterada;
 	listagem.continuarAnalise = continuarAnalise;
-
 	listagem.processos = [];
 	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -17,6 +16,7 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
+	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO);
 
 	function atualizarListaProcessos(processos) {
 
@@ -41,15 +41,16 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 		});
 	}
 
-	function continuarAnalise(idAnaliseJuridica) {
+	function continuarAnalise(idAnaliseTecnica) {
 
-		$location.path('/analise-tecnica/' + idAnaliseJuridica.toString());
+		$location.path('/analise-tecnica/' + idAnaliseTecnica.toString());
 	}	
 
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);
-    }	
+	}
+
 };
 
 exports.controllers.AnaliseEmAndamentoTecnicaListController = AnaliseEmAndamentoTecnicaListController;

@@ -5,10 +5,11 @@ import flexjson.JSONSerializer;
 import utils.SerializerUtil;
 import utils.flexjson.GeometryTransformer;
 
+import java.util.Date;
+
 public class AnaliseGeoSerializer {
 
     public static JSONSerializer findInfo = SerializerUtil.create(
-
             "id",
             "analise.id",
             "analise.dataVencimentoPrazo",
@@ -108,9 +109,28 @@ public class AnaliseGeoSerializer {
             "gerentesGeo.usuario.pessoa.cpf",
             "gerentesGeo.usuario.pessoa.id",
             "gerentesGeo.usuario.pessoa.nome",
+            "pareceresAnalistaGeo.situacaoFundiaria",
+            "pareceresAnalistaGeo.analiseTemporal",
+            "pareceresAnalistaGeo.conclusao",
+            "pareceresAnalistaGeo.dataParecer",
+            "pareceresAnalistaGeo.tipoResultadoAnalise.id",
+            "pareceresAnalistaGeo.tipoResultadoAnalise.nome",
+            "pareceresAnalistaGeo.parecer",
+            "pareceresAnalistaGeo.usuario",
+            "pareceresAnalistaGeo.documentos.id",
+            "pareceresAnalistaGeo.documentos.caminho",
+            "pareceresAnalistaGeo.documentos.tipo.id",
+            "pareceresAnalistaGeo.documentos.tipo.nome",
+            "pareceresAnalistaGeo.documentos.nomeDoArquivo",
             "pareceresGerenteAnaliseGeo.tipoResultadoAnalise.id",
+            "pareceresGerenteAnaliseGeo.tipoResultadoAnalise.nome",
             "pareceresGerenteAnaliseGeo.parecer",
-            "pareceresGerenteAnaliseGeo.usuarioValidacaoGerente",
+            "pareceresGerenteAnaliseGeo.usuario",
+            "pareceresGerenteAnaliseGeo.documentos.id",
+            "pareceresGerenteAnaliseGeo.documentos.caminho",
+            "pareceresGerenteAnaliseGeo.documentos.tipo.id",
+            "pareceresGerenteAnaliseGeo.documentos.tipo.nome",
+            "pareceresGerenteAnaliseGeo.documentos.nomeDoArquivo",
             "analiseGeoRevisada",
             "usuarioValidacao.pessoa.nome",
             "inconsistencias.id",
@@ -124,15 +144,14 @@ public class AnaliseGeoSerializer {
             "inconsistencias.anexos.tipo.id",
             "inconsistencias.categoria",
             "inconsistencias.caracterizacao.id",
-            "inconsistencias.atividadesCaracterizacao",
-            "inconsistencias.atividadesCaracterizacao.id",
-            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento",
+            "inconsistencias.atividadeCaracterizacao",
+            "inconsistencias.atividadeCaracterizacao.id",
+            "inconsistencias.atividadeCaracterizacao.atividade.nome",
             "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento.id",
             "inconsistencias.sobreposicaoCaracterizacaoComplexo",
             "inconsistencias.sobreposicaoCaracterizacaoComplexo.id",
             "inconsistencias.geometriaAtividade.id",
-            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento.id",
-            "inconsistencias.sobreposicaoCaracterizacaoEmpreendimento",
+            "inconsistencias.sobreposicaoCaracterizacaoAtividade.id",
             "notificacoes.id",
             "notificacoes.analiseJuridica.id",
             "notificacoes.analiseTecnica.id",
@@ -160,9 +179,8 @@ public class AnaliseGeoSerializer {
             "desvinculos.analiseGeo",
             "desvinculos.justificativa",
             "desvinculos.respostaGerente"
-
-
-    ).transform(new GeometryTransformer(), Geometry.class);
+    ).transform(new GeometryTransformer(), Geometry.class)
+     .transform(DateSerializer.getTransformerWithDateTime(), Date.class);
 
     public static JSONSerializer parecer = SerializerUtil.create(
 

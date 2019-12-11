@@ -1,6 +1,10 @@
 package models;
 
+import enums.PerfilEnum;
+import enums.SetorEnum;
+import exceptions.PortalSegurancaException;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
+import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Usuario;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -8,6 +12,7 @@ import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
 
 import javax.persistence.Column;
@@ -22,9 +27,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Entity
@@ -135,15 +145,71 @@ public class UsuarioAnalise extends GenericModel  {
 
 	}
 
-	public boolean containsPerfil (String codigoPerfil, Usuario usuario){
+	private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
 
-		return usuario.perfis.stream().filter(perfil ->  perfil.codigo.equals(codigoPerfil)).collect(Collectors.toList()).size() > 0;
+		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 
 	}
 
-	public boolean containsSetor (String siglaSetor , Usuario usuario){
+	public static void atualizaUsuariosAnalise() {
 
-		return usuario.setores.stream().filter(setor ->  setor.sigla.equals(siglaSetor)).collect(Collectors.toList()).size() > 0;
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
+		List<Usuario> usuariosEU = new ArrayList<>();
+		PerfilEnum.getList().forEach(perfil -> usuariosEU.addAll(CadastroUnificadoWS.ws.getUsuariosByPerfil(perfil).stream().map(Usuario::new).collect(Collectors.toList())));
+		List<Usuario> usuariosFiltrados = usuariosEU.stream().filter(distinctByKey(usuario -> usuario.login)).collect(Collectors.toList());
+
+		for (UsuarioAnalise usuarioAnalise : usuariosAnalise) {
+
+			Usuario usuario = usuariosFiltrados.stream().filter(usuarioEU -> usuarioEU.login.equals(usuarioAnalise.login)).findAny().orElseThrow(PortalSegurancaException::new);
+
+			usuarioAnalise.perfis = usuarioAnalise.salvarPerfis(usuario);
+			usuarioAnalise.setores = usuarioAnalise.salvarSetores(usuario);
+			usuarioAnalise._save();
+
+		}
+
+	}
+
+	private List<PerfilUsuarioAnalise> salvarPerfis(Usuario usuario) {
+
+		this.perfis.forEach(PerfilUsuarioAnalise::_delete);
+		this.perfis.clear();
+		this._save();
+
+		usuario.perfis.forEach(perfil -> {
+
+			if(PerfilEnum.getList().contains(perfil.codigo)) {
+
+				PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise(perfil, this);
+				this.perfis.add(perfilUsuarioAnalise.save());
+
+			}
+
+		});
+
+		return this.perfis;
+
+	}
+
+	private List<SetorUsuarioAnalise> salvarSetores(Usuario usuario) {
+
+		this.setores.forEach(SetorUsuarioAnalise::_delete);
+		this.setores.clear();
+		this._save();
+
+		usuario.setores.forEach(setor -> {
+
+			if(SetorEnum.getList().contains(setor.sigla)) {
+
+				SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise(setor, this);
+				this.setores.add(setorUsuarioAnalise.save());
+
+			}
+
+		});
+
+		return this.setores;
 
 	}
 

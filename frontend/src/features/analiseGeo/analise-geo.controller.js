@@ -1,4 +1,4 @@
-var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService, tiposSobreposicaoService) {
+var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService, tiposSobreposicaoService, parecerAnalistaGeoService) {
 	
 	var idMapa = 'mapa-restricoes',
 	mapa,
@@ -31,17 +31,27 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoSolicitacao = null;
 	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	ctrl.notificacao.prazoNotificacao = null;
+	ctrl.isPdf = false;
 	ctrl.tiposUpload = app.utils.TiposUpload;
-	ctrl.labelDadosProjeto = 'Dados da área do projeto';
+	ctrl.labelDadosProjeto = '';
+	ctrl.openedAccordionEmpreendimento = false;
+	ctrl.openedAccordionDadosComplexo = false;
+	ctrl.parecer = {
+		situacaoFundiaria: null,
+		analiseTemporal: null,
+		conclusao: null,
+		parecer: null,
+		documentos: []
+	};
 	ctrl.despacho = null;
 	ctrl.errors = {
 		conclusao: false,
-		despacho: false,
+		parecer: false,
 		resultadoAnalise: false,
 		prazoNotificacao: false,
 		docAnaliseTemporal:false,
 		atendimento: false
-};
+	};
 
 	var getLayer = function(descricao){
 
@@ -426,6 +436,13 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		});
 
+		parecerAnalistaGeoService.findParecerByIdProcesso(analiseGeo.analise.processo.id)
+		.then(function(response) {
+
+			ctrl.parecer = response.data;
+
+		});
+
 		ctrl.listaInconsistencias = analiseGeo.inconsistencias.filter(function(inconsistencia) {
 
 			return inconsistencia.categoria !== 'PROPRIEDADE';
@@ -470,12 +487,18 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						ctrl.dadosProjeto = response.data;
 
-						var isComplexo = ctrl.dadosProjeto.restricoes.some(function(restricao) { 
-							return restricao.sobreposicaoCaracterizacaoComplexo;
-						});
-						
-						if(isComplexo) {
-							ctrl.labelDadosProjeto = ctrl.labelDadosProjeto.concat(': Complexo');
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO) {
+
+							ctrl.labelDadosProjeto = 'Dados da área do complexo';
+
+						} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
+
+							ctrl.labelDadosProjeto = 'Dados da área do empreendimento';
+
+						} else {
+
+							ctrl.labelDadosProjeto = 'Dados da(s) áreas da(s) atividade(s)';
+
 						}
 
 						ctrl.dadosProjeto.atividades.forEach(function(atividade) {
@@ -669,36 +692,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	};
 
-	$scope.addInconsistenciaAtividade = function (categoriaInconsistencia, idCaracterizacao , idGeometriaAtividade) {
+	$scope.addInconsistenciaGeral = function(inconsistencia){
 
-		params = {
-			categoria: categoriaInconsistencia,
-			analiseGeo: {id: analiseGeo.id},
-			caracterizacao: {id: idCaracterizacao},
-			geometriaAtividade: {id: idGeometriaAtividade},
-			sobreposicaoCaracterizacaoEmpreendimento: {id: null}			
-		};
-
-		inconsistenciaService.findInconsistencia(params)
+		inconsistenciaService.findInconsistenciaById(inconsistencia.id)
 		.then(function(response){
 
-			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, idCaracterizacao, idGeometriaAtividade, null, ctrl.dadosProjeto, null);
-			
-		});		
+			var inconsistencia = response.data;
 
-	};
-
-	$scope.addInconsistenciaPropriedade = function(categoriaInconsistencia){
-
-		params = {
-			categoria: categoriaInconsistencia,
-			analiseGeo: {id: analiseGeo.id}
-		};
-
-		inconsistenciaService.findInconsistencia(params)
-		.then(function(response){
-
-			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, null, null, null, ctrl.dadosProjeto, null);
+			openModal(ctrl.analiseGeo, inconsistencia.categoria, inconsistencia, null, null, null, ctrl.dadosProjeto, null);
 
 		});
 
@@ -715,6 +716,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
 			return inconsistencia.id === idInconsistencia;
 		});
+
 		ctrl.listaInconsistencias.splice(index, 1);
 	
 		inconsistenciaService.excluirInconsistencia(idInconsistencia)
@@ -729,20 +731,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			mensagem.error(response.data.texto);
 
 		});
-	};
 
-	$scope.verificarTamanhoInconsistencias = function() {
-		var inconsistencias = angular.copy(ctrl.analiseGeo.inconsistencias);
-		return _.remove(inconsistencias, function(i){
-			return(i.categoria !== 'ATIVIDADE');
-		}).length > 0;
 	};
 
 	$scope.getItemRestricao = function(inconsistencia) {
 
-		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+		if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.RESTRICAO && ctrl.dadosRestricoesProjeto.length > 0) {
 
-		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+			var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
 
 			restricao = ctrl.dadosRestricoesProjeto.find(function(restricao) {
 
@@ -754,17 +750,33 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			return restricao && restricao.item ? restricao.item : '';
 
-		}
+		} else if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.ATIVIDADE && ctrl.dadosProjeto) {
 
-		return 'Propriedade';
+			var atividade = ctrl.dadosProjeto.atividades.find(function(atividade) {
+
+				return atividade.atividadeCaracterizacao.id === inconsistencia.atividadeCaracterizacao.id;
+
+			});
+
+			return atividade.atividadeCaracterizacao.atividade.nome;
+
+	 	} else if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.COMPLEXO) {
+
+			return 'Complexo';
+	
+		} else {
+	
+			return 'Propriedade';
+	
+		}
 	
 	};
 
 	$scope.getDescricaoRestricao = function(inconsistencia) {
 
-		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
+		if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.RESTRICAO && ctrl.dadosRestricoesProjeto.length > 0) {
 
-		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
+			var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
 
 			restricao = ctrl.dadosRestricoesProjeto.find(function(restricao) {
 
@@ -776,6 +788,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			return restricao && restricao.descricao ? restricao.descricao : '';
 
+		} else if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.ATIVIDADE) {
+
+			return inconsistencia.descricaoInconsistencia;
+
 		}
 
 		return '-';
@@ -784,35 +800,50 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.clonarParecerGeo = function() {
 
-		analiseGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
-			.then(function(response){
+		if(ctrl.numeroProcessoClone) {
 
-					if(response.data.parecer === undefined) {
+			parecerAnalistaGeoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
+				.then(function(response){
 
-							ctrl.analiseGeo.parecer = null;
+						if(response.data.parecer === undefined) {
+
+							ctrl.parecer.parecer = null;
 							mensagem.error(response.data.texto);
-							return;
-					}else{
-						ctrl.analiseGeo.parecer = response.data.parecer;
-						ctrl.analiseGeo.situacaoFundiaria = response.data.situacaoFundiaria;
-						ctrl.analiseGeo.analiseTemporal = response.data.analiseTemporal;
-					}
-			}, function(error){
 
+							return;
+
+						} else{
+
+							ctrl.parecer = response.data;
+
+						}
+
+				}, function(error){
 					mensagem.error(error.data.texto);
-			});
+				});
+
+		}
+
 	};
 
 	ctrl.upload = function(file, invalidFile, tipoUpload) {
 
-		if(file) {
+		if(invalidFile){
+			ctrl.isPdf = true;
+		}
 
+		if(file) {
+			  ctrl.isPdf = false;
 				uploadService.save(file)
-						.then(function(response) {
+						.then(function(response) { 
 
 							var nomeDoArquivo = file.name;
 
-							var quantidadeDocumentosComMesmoNome = ctrl.analiseGeo.documentos.filter(function(documento) { 
+							if(ctrl.parecer.documentos === null || ctrl.parecer.documentos === undefined) {
+								ctrl.parecer.documentos = [];
+							}
+
+							var quantidadeDocumentosComMesmoNome = ctrl.parecer.documentos.filter(function(documento) { 
 								return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
 							}).length;
 
@@ -822,7 +853,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 							if(tipoUpload === app.utils.TiposUpload.PARECER_ANALISE_GEO) {
 
-								ctrl.analiseGeo.documentos.push({
+								ctrl.parecer.documentos.push({
 
 									key: response.data,
 									nomeDoArquivo: nomeDoArquivo,
@@ -834,7 +865,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 							} else if(tipoUpload === app.utils.TiposUpload.NOTIFICACAO){
 
-								ctrl.analiseGeo.documentos.push({
+								ctrl.parecer.documentos.push({
 
 									key: response.data,
 									nomeDoArquivo: nomeDoArquivo,
@@ -845,7 +876,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 								});
 							} else if(tipoUpload === app.utils.TiposUpload.DOCUMENTO_ANALISE_TEMPORAL){
 
-								ctrl.analiseGeo.documentos.push({
+								ctrl.parecer.documentos.push({
 
 									key: response.data,
 									nomeDoArquivo: nomeDoArquivo,
@@ -869,9 +900,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	ctrl.removerDocumento = function (documento) {
 
-		var indexDocumento = ctrl.analiseGeo.documentos.indexOf(documento);
+		var indexDocumento = ctrl.parecer.documentos.indexOf(documento);
 
-		ctrl.analiseGeo.documentos.splice(indexDocumento, 1);
+		ctrl.parecer.documentos.splice(indexDocumento, 1);
 
 	};
 
@@ -938,74 +969,101 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	function analiseValida() {
 
-		if(ctrl.analiseGeo.analiseTemporal !== '' && ctrl.analiseGeo.analiseTemporal !== null) {
+		if(ctrl.parecer.analiseTemporal !== '' && ctrl.parecer.analiseTemporal !== null) {
+
 			var verificaDocAnaliseTemp = false;
-				_.forEach(ctrl.analiseGeo.documentos, function(documentoAnaliseTemporal){
 
-						if(documentoAnaliseTemporal.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL){
-							verificaDocAnaliseTemp = true;
-						}
-				});
+			_.forEach(ctrl.parecer.documentos, function(documentoAnaliseTemporal){
 
-				if (verificaDocAnaliseTemp === false){
-					ctrl.errors.docAnaliseTemporal = true;
-					return false;
-					
-				}else {
-					ctrl.errors.docAnaliseTemporal = false;
+				if(documentoAnaliseTemporal.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL){
+					verificaDocAnaliseTemp = true;
 				}
+
+			});
+
+			if (verificaDocAnaliseTemp === false){
+
+				ctrl.errors.docAnaliseTemporal = true;
+				return false;
+
+			} else {
+
+				ctrl.errors.docAnaliseTemporal = false;
+
+			}
+
 		}
 
-		if (!ctrl.analiseGeo.parecer) {
+		if (!ctrl.parecer.conclusao) {
+
 			ctrl.errors.conclusao = true;
 			return false;
 
-		}else{
+		} else{
+
 			ctrl.errors.conclusao = false;
+
 		}
 
-		if(ctrl.analiseGeo.tipoResultadoAnalise.id === undefined) {
+		if(ctrl.parecer.tipoResultadoAnalise.id === undefined) {
+
 			ctrl.errors.resultadoAnalise = true;
 			return false;
 
-		}else{
+		} else{
+
 			ctrl.errors.resultadoAnalise = false;
+
 		}
 
-		if (!ctrl.notificacao.prazoNotificacao && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
+		if (!ctrl.notificacao.prazoNotificacao && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
+			
 			ctrl.errors.prazoNotificacao = true;
 			return false;
 
-		}else{
+		} else{
+
 			ctrl.errors.prazoNotificacao = false;
+
 		}
 
-		if(!ctrl.analiseGeo.despacho || ctrl.analiseGeo.despacho === undefined){
-			ctrl.errors.despacho = true;
+		if(!ctrl.parecer.parecer || ctrl.parecer.parecer === undefined){
+
+			ctrl.errors.parecer = true;
 			return false;
 
 		}else{
-			ctrl.errors.despacho = false;
+
+			ctrl.errors.parecer = false;
+
 		}
 
-		if(ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+		if(ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 			
 			if(ctrl.notificacao.retificacaoSolicitacao && !ctrl.notificacao.retificacaoSolicitacaoComGeo) {
+				
 				return false;
+
 			}
-			
+
 			if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
+
 				ctrl.errors.atendimento = true;
 				return false;
 
-			}else{
+			} else{
+
 				ctrl.errors.atendimento = false;
+
 			}
+
 			return true;
+
 		}
 
-		return ((ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
-			ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()) && ctrl.analiseGeo.despacho);
+		return ((ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||
+			ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()) && ctrl.parecer.parecer);
+
 	}
 
 	ctrl.downloadPDFParecer = function() {
@@ -1026,6 +1084,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			},function(error){
 				mensagem.error(error.data.texto);
 			});
+
 	};
 
 	ctrl.concluir = function(){
@@ -1041,18 +1100,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		tratarDadosNotificacao();
 
-		var parecer = {
-			analiseGeo: ctrl.analiseGeo,
-			tipoResultadoAnalise: {
-				id: ctrl.analiseGeo.tipoResultadoAnalise.id
-			},
-			situacaoFundiaria: ctrl.analiseGeo.situacaoFundiaria,
-			analiseTemporal: ctrl.analiseGeo.analiseTemporal,
-			conclusao: ctrl.analiseGeo.parecer,
-			parecer: ctrl.analiseGeo.despacho
-		};
+		ctrl.parecer.analiseGeo = ctrl.analiseGeo;
 
-		analiseGeoService.concluir(parecer)
+		analiseGeoService.concluir(ctrl.parecer)
 			.then(function(response) {
 
 				var params = {
@@ -1168,7 +1218,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		
 		var documentosParecer = [];
 
-		documentosParecer = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+		documentosParecer = _.filter(ctrl.parecer.documentos, function(documento) {
 			return documento.tipo.id === app.utils.TiposDocumentosAnalise.PARECER_ANALISE_GEO;
 		});
 
@@ -1179,7 +1229,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		
 		var documentosAnaliseTemporal = [];
 
-		documentosAnaliseTemporal = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+		documentosAnaliseTemporal = _.filter(ctrl.parecer.documentos, function(documento) {
 			return documento.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_ANALISE_TEMPORAL;
 		});
 
@@ -1190,7 +1240,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		
 		var documentosNotificacao = [];
 
-		documentosNotificacao = _.filter(ctrl.analiseGeo.documentos, function(documento) {
+		documentosNotificacao = _.filter(ctrl.parecer.documentos, function(documento) {
 			return documento.tipo.id === app.utils.TiposDocumentosAnalise.NOTIFICACAO;
 		});
 

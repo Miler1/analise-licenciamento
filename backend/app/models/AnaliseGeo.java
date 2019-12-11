@@ -23,16 +23,11 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.COMPLEXO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
-import static models.licenciamento.Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+
 import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import static security.Auth.getUsuarioSessao;
 
@@ -137,7 +132,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public List<Inconsistencia> inconsistencias;
 
     @OneToMany(mappedBy = "analiseGeo", fetch = FetchType.LAZY)
-    public List<Desvinculo> desvinculos;
+    public List<DesvinculoAnaliseGeo> desvinculos;
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
@@ -388,9 +383,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaGeo parecerAnalistaGeo, List<Documento> documentos) throws Exception {
 
-        List<String> destinatarios = new ArrayList<String>();
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
-        destinatarios.addAll(Collections.singleton(empreendimento.cadastrante.contato.email));
+        List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
         Notificacao notificacaoSave = new Notificacao(this, notificacao, documentos);
@@ -656,6 +650,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("analiseArea", "ANALISE_GEO")
                 .addParam("empreendimento", empreendimento)
                 .addParam("atividades", dadosProcesso.atividades)
+                .addParam("areasDeRestricoes", AreasDeRestricaoParaPDF(dadosProcesso.restricoes))
+                .addParam("unidadesConservacao", UnidadesConservacaoParaPDF(dadosProcesso.restricoes))
+                .addParam("complexo", dadosProcesso.complexo)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
@@ -663,8 +660,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         List<File> documentos = new ArrayList<>();
         documentos.add(pdf.getFile());
-        List<Documento> documentosAnaliseTemporal = this.documentos.stream().filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL)).collect(Collectors.toList());
-        documentos.addAll(documentosAnaliseTemporal.stream().map(Documento::getFile).collect(Collectors.toList()));
+
+        Documento documentoAnaliseTemporal = this.documentos.stream()
+                .filter(documento -> documento.tipo.id.equals(TipoDocumento.DOCUMENTO_ANALISE_TEMPORAL))
+                .findAny().orElse(null);
+
+        if (documentoAnaliseTemporal != null){
+            documentos.add(documentoAnaliseTemporal.arquivo);
+        }
 
         return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
 
@@ -804,6 +807,22 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
 
+    }
+
+    public List<CamadaGeoRestricaoVO> AreasDeRestricaoParaPDF(List<CamadaGeoRestricaoVO> restricoes) {
+        List<CamadaGeoRestricaoVO> areasDeRestricoes = restricoes.stream().filter(restricao ->
+                restricao.orgao.sigla.equals(OrgaoEnum.IPHAN.codigo) || restricao.orgao.sigla.equals(OrgaoEnum.IBAMA.codigo))
+                .collect(Collectors.toList());
+
+        return areasDeRestricoes;
+    }
+
+    public List<CamadaGeoRestricaoVO> UnidadesConservacaoParaPDF(List<CamadaGeoRestricaoVO> restricoes) {
+        List<CamadaGeoRestricaoVO> unidadesConservacao = restricoes.stream().filter(restricao ->
+                !restricao.orgao.sigla.equals(OrgaoEnum.IPHAN.codigo) && !restricao.orgao.sigla.equals(OrgaoEnum.IBAMA.codigo))
+                .collect(Collectors.toList());
+
+        return unidadesConservacao;
     }
 
 }

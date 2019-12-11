@@ -1,8 +1,7 @@
 package controllers;
 
 import builders.ProcessoBuilder.FiltroProcesso;
-import models.AnaliseJuridica;
-import models.Processo;
+import models.*;
 import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
@@ -44,6 +43,8 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECER_GEO, Acao.INICIAR_PARECER_GEO,Acao.VALIDAR_PARECERES);
 
 		Processo processo = Processo.findById(id);
+
+		UsuarioAnalise.atualizaUsuariosAnalise();
 
 		renderJSON(processo.getInfoProcesso(), ProcessoSerializer.getInfo);
 
