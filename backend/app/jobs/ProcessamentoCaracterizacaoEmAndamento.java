@@ -6,13 +6,11 @@ import models.licenciamento.LicenciamentoWebService;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
-import play.jobs.OnApplicationStart;
 import utils.ListUtil;
 
 import java.util.*;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
-@OnApplicationStart
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 	@Override
