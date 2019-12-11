@@ -679,6 +679,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Processo processo = Processo.findById(this.analise.processo.id);
 
         DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
+
+        Caracterizacao.OrigemSobreposicao geometriaFoco = ondeFocar(dadosProcesso.caracterizacao);
+
         List<CamadaGeoAtividadeVO> camadasGeoEmpreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
 
         CamadaGeoAtividadeVO camadaPropriedade = camadasGeoEmpreendimento.stream().filter(camada -> {
@@ -688,6 +691,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         Map<LayerType, CamadaGeoAtividadeVO> geometriasAtividades = new HashMap<>();
         Map<LayerType, List<CamadaGeoRestricaoVO>> geometriasRestricoes = new HashMap<>();
         Map<LayerType, List<CamadaGeoAtividadeVO>> geometriasEmpreendimento = new HashMap<>();
+        Map<LayerType, CamadaGeoComplexoVO> geometriasComplexo = new HashMap<>();
 
         for (CamadaGeoAtividadeVO camadaAtividade : dadosProcesso.atividades) {
 
@@ -697,18 +701,23 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         if (!dadosProcesso.restricoes.isEmpty()) {
 
-            geometriasRestricoes.put(new Tema("Áreas restrições", MapaImagem.getColorTemaCiclo()), dadosProcesso.restricoes);
+            geometriasRestricoes.put(new Tema("Áreas de restrições", MapaImagem.getColorTemaCiclo()), dadosProcesso.restricoes);
 
         }
 
-        if (!camadasGeoEmpreendimento.isEmpty()) {
+        if (!camadasGeoEmpreendimento.isEmpty() && geometriaFoco.equals(Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO)) {
 
             List<CamadaGeoAtividadeVO> camadasEmpreendimento = camadasGeoEmpreendimento.stream().filter(camada -> camada.geometrias.stream().allMatch(g -> g.geometria != null)).collect(Collectors.toList());
             geometriasEmpreendimento.put(new Tema("Dados do empreendimento", MapaImagem.getColorTemaCiclo()), camadasEmpreendimento);
 
         }
 
-        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasAtividades, geometriasRestricoes, geometriasEmpreendimento);
+        if(dadosProcesso.complexo != null && !dadosProcesso.complexo.geometrias.isEmpty()){
+
+            geometriasComplexo.put(new Tema("Complexo das atividades:", MapaImagem.getColorTemaCiclo()), dadosProcesso.complexo);
+        }
+
+        MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasAtividades, geometriasRestricoes, geometriasEmpreendimento, geometriasComplexo, geometriaFoco);
 
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
@@ -722,6 +731,34 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         pdf.generate();
 
         return new Documento(tipoDocumento, pdf.getFile());
+
+    }
+
+    public Caracterizacao.OrigemSobreposicao ondeFocar(Caracterizacao caracterizacao) {
+
+        if(caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.SEM_SOBREPOSICAO)) {
+
+            if(caracterizacao.atividadesCaracterizacao.get(0).atividade.dentroEmpreendimento) {
+
+                return Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO;
+
+            } else {
+
+                if(caracterizacao.geometriasComplexo != null && !caracterizacao.geometriasComplexo.isEmpty()) {
+
+                    return Caracterizacao.OrigemSobreposicao.COMPLEXO;
+
+                } else {
+
+                    return Caracterizacao.OrigemSobreposicao.ATIVIDADE;
+
+                }
+
+            }
+
+        }
+
+        return caracterizacao.origemSobreposicao;
 
     }
 

@@ -93,7 +93,6 @@ html(lang="pt-br")
 
             div.legenda-carta-imagem {
                 width: 100%;
-                display: inline-block;
                 text-align: left;
             }
 
@@ -102,15 +101,24 @@ html(lang="pt-br")
             }
 
             .icon-legenda {
-                font-size: 6px;
-                color: transparent;
-                padding-left: 5px;
-                padding-top: 2px;
+                font-size: 0px;
+                width: 10px;
+                height: 6px;
+                display: inline-block;
+            }
+
+            .tipo-legenda {
+                display: inline-block;
             }
 
             .titulo-legenda {
                 margin-top: 20px;
                 margin-bottom: 5px;
+            }
+
+            .label-atividade {
+                margin-top: 6px;
+                margin-bottom: 2px;
             }
 
             .logos {
@@ -159,9 +167,20 @@ body.corpo
                     | \#{list items:grupoDataLayers, as:'grupo'}
                     p.titulo-legenda
                         strong ${grupo.titulo}
+                    | \#{if grupo.atividades != null && !grupo.atividades.isEmpty()}
+                    | \#{list items:grupo.atividades, as:'atividade'}
+                    div.label-atividade
+                        strong ${atividade}
+                    | \#{/list}
+                    | \#{/if}
                     | \#{list items:grupo.dataLayers, as:'dataLayer'}
-                    span.icon-legenda(style= "background: ${dataLayer.colorCode}; color: ${dataLayer.colorCode};") .
-                    span(style="padding-left:5px;") ${dataLayer.name}
+                    | \#{if dataLayer.name.equals("Limites da propriedade")}
+                    div.icon-legenda(style= "border: 3px solid ${dataLayer.colorCode};") .
+                    | \#{/if}
+                    | \#{else}
+                    div.icon-legenda(style= "background-color: ${dataLayer.colorCode}; border: 3px solid ${dataLayer.colorCode}") .
+                    | \#{/else}
+                    div.tipo-legenda(style="padding-left:5px;") ${dataLayer.name}
                     br
                     | \#{/list}
                     | \#{/list}
