@@ -127,3 +127,35 @@
                             td.col-md-2
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarQuestionario(ctrl.analiseTecnica)")
                                     | &nbsp;
+        div.row
+            hr
+            div
+                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                    thead
+                        tr
+                        th.col-md-9 Documentos administrativos
+                        th.col-md-2.text-right.padding-right-11 Validar
+                        th.col-md-2.text-right Ações
+
+
+                    tbody
+                        tr
+                            td.col-md-9 Questionário 03
+                            td.col-md-2
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.questionario === true}",
+                                                                                        ng-click="ctrl.adicionarInconsistenciaTecnicaQuestionario(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO)")
+                                    | &nbsp;                        
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.questionario === true",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.questionario === false }",
+                                                                                    title='Excluir inconsistência',
+                                                                                    ng-bootbox-title='Confirmação',
+                                                                                    ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                    ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO, null)")
+                                    | &nbsp;
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.questionario === null || ctrl.itemValidoLicenca.questionario === false",
+                                                                                    ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO, null, ctrl.analiseTecnica)",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.questionario === false }")
+                                    | &nbsp;
+                            td.col-md-2
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarQuestionario(ctrl.analiseTecnica)")
+                                    | &nbsp;
