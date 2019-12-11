@@ -24,6 +24,7 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
+
 import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
@@ -806,9 +807,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.getCpfCnpj());
         final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
-        Geometry geometriaEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria);
-        Coordinate coordenadasEmpreendimento = geometriaEmpreendimento.getCentroid().getCoordinate();
-
         UsuarioAnalise analista;
         AnalistaVO analistaVO;
 
@@ -827,12 +825,35 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         }
 
-        String localizacaoEmpreendimento = "[" + coordenadasEmpreendimento.x + ", " + coordenadasEmpreendimento.y + "]";
-
         List<Documento> documentosNotificacao = new ArrayList<>();
 
         AnalistaVO finalAnalistaVO = analistaVO;
-        analiseGeo.inconsistencias.stream().forEach(inconsistencia -> {
+        analiseGeo.inconsistencias.forEach(inconsistencia -> {
+
+            List<String> localizacoes = new ArrayList<>();
+
+            if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
+
+                Coordinate coordenadasEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria).getCentroid().getCoordinate();
+                localizacoes.add("[" + coordenadasEmpreendimento.x + ", " + coordenadasEmpreendimento.y + "]");
+
+            } else if(inconsistencia.categoria.equals(Inconsistencia.Categoria.COMPLEXO)){
+
+                Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
+                localizacoes.add("[" + coordenadasComplexo.x + ", " + coordenadasComplexo.y + "]");
+
+            } else {
+
+                Coordinate coordenadasAtividade;
+
+                for (GeometriaAtividade geometriaAtividade : inconsistencia.atividadeCaracterizacao.geometriasAtividade) {
+
+                    coordenadasAtividade = geometriaAtividade.geometria.getCentroid().getCoordinate();
+                    localizacoes.add("[" + coordenadasAtividade.x + ", " + coordenadasAtividade.y + "]");
+
+                }
+
+            }
 
             PDFGenerator pdf = new PDFGenerator()
                     .setTemplate(tipoDocumento.getPdfTemplate())
@@ -840,7 +861,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                     .addParam("inconsistencia", inconsistencia)
                     .addParam("enderecoCompleto", enderecoCompleto)
                     .addParam("analista", finalAnalistaVO)
-                    .addParam("localizacaoEmpreendimento", localizacaoEmpreendimento)
+                    .addParam("localizacoes", localizacoes)
                     .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                     .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
@@ -909,14 +930,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         analiseTecnica.dataVencimentoPrazo = calendar.getTime();
 
         return analiseTecnica;
-
-    }
-
-    public void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
-
-        CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
-
-        new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO + "/caracterizacoes/update/status", caracterizacaoStatusVO);
 
     }
 

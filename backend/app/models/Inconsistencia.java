@@ -4,7 +4,6 @@ import exceptions.ValidacaoException;
 import models.licenciamento.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import serializers.InconsistenciaSerializer;
 import utils.*;
 
 import javax.persistence.*;
@@ -14,13 +13,56 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import models.licenciamento.Caracterizacao.OrigemSobreposicao;
+
 @Entity
 @Table(schema="analise", name="inconsistencia")
 public class Inconsistencia extends GenericModel{
 
     public static final String SEQ = "analise.inconsistencia_id_seq";
 
-    public enum Categoria { PROPRIEDADE, COMPLEXO, ATIVIDADE, RESTRICAO }
+    public enum Categoria {
+        PROPRIEDADE,
+        COMPLEXO,
+        ATIVIDADE,
+        RESTRICAO;
+
+        public static Categoria preencheCategoria(Caracterizacao caracterizacao) {
+
+            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+
+                return Categoria.PROPRIEDADE;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.ATIVIDADE)) {
+
+                return Categoria.ATIVIDADE;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO)) {
+
+                return Categoria.COMPLEXO;
+
+            } else {
+
+                boolean isAtividadeDentroEmpreendimento = caracterizacao.atividadesCaracterizacao.stream().allMatch(AtividadeCaracterizacao::isAtividadeDentroEmpreendimento);
+
+                if(isAtividadeDentroEmpreendimento) {
+
+                    return Categoria.PROPRIEDADE;
+
+                } else if(caracterizacao.isComplexo()) {
+
+                    return Categoria.COMPLEXO;
+
+                } else {
+
+                    return Categoria.ATIVIDADE;
+
+                }
+
+            }
+
+        }
+    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)

@@ -96,8 +96,9 @@ public class AnalistaGeo extends GenericModel {
 
 			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(analistaGeo.login)).findAny().orElseThrow(PortalSegurancaException::new);
 
-//			usuario.salvarPerfis(analistaGeo);
-//			usuario.salvarSetores(analistaGeo);
+		  	analistaGeo.perfis = usuario.salvarPerfis(analistaGeo);
+			analistaGeo.setores = usuario.salvarSetores(analistaGeo);
+			analistaGeo.save();
 
 		}
 
