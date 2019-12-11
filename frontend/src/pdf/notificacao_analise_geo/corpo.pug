@@ -70,19 +70,19 @@ html(lang='en')
 					br
 
 				div
-					|\#{if inconsistencia.categoria.equals("PROPRIEDADE")}
+					|\#{if categoriaInconsistencia.equals("PROPRIEDADE")}
 					span <strong>Localização do empreendimento:
 						|\#{list items:localizacoes, as:'localizacao'}
 						</strong> ${localizacao}
 						|\#{/list}
 					|\#{/if}
-					|\#{if inconsistencia.categoria.equals("ATIVIDADE")}
+					|\#{if categoriaInconsistencia.equals("ATIVIDADE")}
 					span <strong>Localização da atividade ${inconsistencia.atividadeCaracterizacao.atividade.nome}: 
 						|\#{list items:localizacoes, as:'localizacao'}
 						</strong> ${localizacao}
 						|\#{/list}
 					|\#{/if}
-					|\#{if inconsistencia.categoria.equals("COMPLEXO")}
+					|\#{if categoriaInconsistencia.equals("COMPLEXO")}
 					span <strong>Localização do complexo:
 						|\#{list items:localizacoes, as:'localizacao'}
 						</strong> ${localizacao}
