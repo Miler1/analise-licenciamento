@@ -825,10 +825,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         }
 
-        Geometry geometriaEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria);
-        Coordinate coordenadasEmpreendimento = geometriaEmpreendimento.getCentroid().getCoordinate();
-        Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
-
         List<Documento> documentosNotificacao = new ArrayList<>();
 
         AnalistaVO finalAnalistaVO = analistaVO;
@@ -838,10 +834,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             if(inconsistencia.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
 
+                Coordinate coordenadasEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria).getCentroid().getCoordinate();
                 localizacoes.add("[" + coordenadasEmpreendimento.x + ", " + coordenadasEmpreendimento.y + "]");
 
             } else if(inconsistencia.categoria.equals(Inconsistencia.Categoria.COMPLEXO)){
 
+                Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
                 localizacoes.add("[" + coordenadasComplexo.x + ", " + coordenadasComplexo.y + "]");
 
             } else {
