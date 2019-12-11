@@ -818,6 +818,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                     .addParam("analista", finalAnalistaVO)
                     .addParam("localizacoes", localizacoes)
                     .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                    .addParam("categoriaInconsistencia", categoriaInconsistencia)
                     .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
 
             pdf.generate();
