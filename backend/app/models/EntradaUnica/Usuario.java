@@ -1,18 +1,10 @@
 package models.EntradaUnica;
 
-import enums.PerfilEnum;
-import enums.SetorEnum;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
-import models.PerfilUsuarioAnalise;
-import models.SetorUsuarioAnalise;
-import models.UsuarioAnalise;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class Usuario implements Serializable{
 	public Integer id;
