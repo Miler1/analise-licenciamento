@@ -224,7 +224,7 @@ public class Inconsistencia extends GenericModel{
             inconsistencia.analiseGeo = this.analiseGeo;
             inconsistencia.id = this.id;
             inconsistencia.caracterizacao = Objects.nonNull(this.caracterizacao) && Objects.nonNull(this.caracterizacao.id) ? this.caracterizacao : null;
-            inconsistencia.atividadeCaracterizacao = Objects.nonNull(this.atividadeCaracterizacao) ? AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id) : null;
+            inconsistencia.atividadeCaracterizacao = Objects.nonNull(this.atividadeCaracterizacao) && Objects.nonNull(this.atividadeCaracterizacao.id) ? AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id) : null;
             inconsistencia.saveAnexos(this.anexos);
 
             return inconsistencia.save();

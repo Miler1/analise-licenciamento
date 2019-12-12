@@ -4,7 +4,7 @@
 .modal-body
     label.label-item-restricao {{$ctrl.restricao.item | uppercase}}
 
-    .documentacao-enviada
+    .documentacao-enviada(ng-if="$ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO")
         label.label-documentos Documentos enviados ao órgão
         hr
 
@@ -16,10 +16,15 @@
         label.label-manifestacao Manifestação do órgão
         hr
 
-        label.title-manifestacao(ng-if="$ctrl.justificativaOrgao !== null") Justificativa:
-
-        span.text-manifestacao(ng-if="$ctrl.justificativaOrgao === null")  Não houve manifestação do órgão no período de 30 dias
-        span.text-manifestacao &nbsp; {{$ctrl.justificativaOrgao}}
+        div 
+            label.title-manifestacao(ng-if="$ctrl.justificativaOrgao !== null && $ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO") Justificativa:
+            span.text-manifestacao &nbsp; {{$ctrl.justificativaOrgao}}
+        
+        span.text-manifestacao(ng-if="$ctrl.justificativaOrgao === null && $ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO")  Não houve manifestação do órgão no período de 30 dias
+            
+            
+        span.text-manifestacao(ng-if="$ctrl.tipoResultadoAnalise === $ctrl.INDEFERIDO") Não houve manifestação do órgão devido o INDEFERIMENTO realizado pelo Analista GEO
+        
 
         table.area-modal.table.table-condensed(ng-if="$ctrl.anexos.length > 0")
 
