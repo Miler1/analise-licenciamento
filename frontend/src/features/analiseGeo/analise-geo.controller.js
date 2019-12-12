@@ -487,7 +487,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						ctrl.dadosProjeto = response.data;
 
-						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO) {
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
 
 							ctrl.labelDadosProjeto = 'Dados da área do complexo';
 
@@ -529,7 +529,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						});
 
-						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO) {
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
 
 							ctrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
 

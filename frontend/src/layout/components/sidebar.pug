@@ -60,7 +60,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 										ng-click=controller + ".controlaExibicaoCamadas(restricao)")
 										button.btn.btn-exibe-camada.fa.fa-crosshairs.icon-button(ng-click=controller + ".controlaCentralizacaoCamadas(restricao)")
 
-				div#camadas-atividades(ng-show=controller + ".dadosProjeto.categoria !== " + controller + ".categoria.COMPLEXO && " + controller + ".dadosProjeto.atividades.length > 0")
+				div#camadas-atividades(ng-show=controller + ".dadosProjeto.categoria !== " + controller + ".categoria.COMPLEXO && " + controller + ".dadosProjeto.complexo === null && " + controller + ".dadosProjeto.atividades.length > 0")
 					uib-accordion(ng-repeat="dadoProjeto in " + controller + ".dadosProjeto.atividades")
 						.panel-default(uib-accordion-group, heading="{{ dadoProjeto.atividadeCaracterizacao.atividade.nome }}")
 
@@ -76,7 +76,7 @@ mixin sideBarLayers(idMapa,tituloCamadas, controller)
 										ng-click=controller + ".controlaExibicaoCamadas(camada)")
 										button.btn.btn-exibe-camada.fa.fa-crosshairs.icon-button(ng-click=controller + ".controlaCentralizacaoCamadas(camada)")
 
-				div#camadas-complexo(ng-show=controller + ".dadosProjeto.categoria === " + controller + ".categoria.COMPLEXO && " + controller + ".dadosProjeto.complexo.geometrias.length > 0")
+				div#camadas-complexo(ng-show=controller + ".dadosProjeto.categoria === " + controller + ".categoria.COMPLEXO || " + controller + ".dadosProjeto.complexo")
 					uib-accordion
 						.panel-default(uib-accordion-group, heading='Camadas do complexo')
 
