@@ -25,6 +25,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.camadasSobreposicao = app.utils.CamadaSobreposicao;
 	modalCtrl.tiposResultadoAnaliseUtils = app.utils.TiposResultadoAnalise;
 	modalCtrl.acaoTramitacao = app.utils.AcaoTramitacao;
+	modalCtrl.categoria = app.utils.Inconsistencia;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 	modalCtrl.numPoints = 0;
 	modalCtrl.dadosProjeto = {};
@@ -176,6 +177,16 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 						adicionarGeometriaNoMapa(restricao);
 
 					});
+
+					if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO) {
+
+						modalCtrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
+
+							adicionarGeometriaNoMapa(geometria);
+
+						});
+
+					}
 
 					tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
 

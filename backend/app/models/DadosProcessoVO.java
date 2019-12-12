@@ -37,11 +37,7 @@ public class DadosProcessoVO {
 
 			boolean isAtividadeDentroEmpreendimento = caracterizacao.atividadesCaracterizacao.stream().allMatch(AtividadeCaracterizacao::isAtividadeDentroEmpreendimento);
 
-			if(caracterizacao.isComplexo()) {
-
-				return Categoria.COMPLEXO;
-
-			} else if(isAtividadeDentroEmpreendimento) {
+			if(isAtividadeDentroEmpreendimento) {
 
 				return Categoria.PROPRIEDADE;
 
