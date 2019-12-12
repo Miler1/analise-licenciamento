@@ -5,6 +5,7 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.Auth;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
@@ -78,9 +79,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         this.analistaGeoDestino = novoDesvinculo.analistaGeoDestino;
 
         this._save();
+
     }
 
-    public void solicitaDesvinculoAnaliseGeo (UsuarioAnalise analistaGeo){
+    public void solicitaDesvinculoAnaliseGeo(UsuarioAnalise usuarioSessao){
 
         if(this.justificativa == null || this.justificativa.equals("")){
 
@@ -89,25 +91,24 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         }
         this.dataSolicitacao = new Date();
 
-        String siglaSetor = analistaGeo.usuarioEntradaUnica.setorSelecionado.sigla;
+        String siglaSetor = usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla;
 
         Gerente gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor, this.analiseGeo);
 
         gerente.save();
 
         this.gerente = UsuarioAnalise.findByGerente(gerente);
-
-        this.analistaGeo =  analistaGeo;
+        this.analistaGeo =  usuarioSessao;
 
         this.save();
 
         this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
-        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, SOLICITAR_DESVINCULO, analistaGeo, this.gerente);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeo);
+        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, SOLICITAR_DESVINCULO, usuarioSessao, this.gerente);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), usuarioSessao);
 
     }
 
-    public void respondeSolicitacaoDesvinculoAnaliseGeo(UsuarioAnalise analistaGeoDestino){
+    public void respondeSolicitacaoDesvinculoAnaliseGeo(UsuarioAnalise usuarioSessao){
 
         if(this.justificativa == null ||
                 this.justificativa.equals("") ||
@@ -131,16 +132,16 @@ public class DesvinculoAnaliseGeo extends GenericModel {
             analistaGeo.usuario = this.analistaGeoDestino;
             analistaGeo._save();
 
-            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeoDestino);
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaGeoDestino);
             this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
             this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
             this.analiseGeo.analise.diasAnalise._save();
             this.analiseGeo._save();
 
-        }else {
+        } else {
 
             this.analistaGeoDestino = this.analistaGeo;
-            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, this.analistaGeoDestino, this.analistaGeo);
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaGeoDestino);
 
             this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(DateUtil.somaDiasEmData(this.analiseGeo.dataCadastro, Configuracoes.PRAZO_ANALISE_GEO) , DiasAnalise.intervalosTramitacoesAnaliseGeo(this.analiseGeo.analise.processo.getHistoricoTramitacao()));
             this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
@@ -149,36 +150,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
         }
 
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeoDestino);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), usuarioSessao);
 
-    }
-
-    private static int prazoCongelamentoDesvinculo(DesvinculoAnaliseGeo desvinculoAnaliseGeo) {
-
-        List<HistoricoTramitacao> historicoTramitacao = desvinculoAnaliseGeo.analiseGeo.analise.processo.getHistoricoTramitacao().stream().sorted(Comparator.comparing(HistoricoTramitacao::getDataInicial).reversed()).collect(Collectors.toList());
-
-        if(!historicoTramitacao.isEmpty()) {
-
-            HistoricoTramitacao historicoInicialGerente = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(SOLICITAR_DESVINCULO))
-                    .findFirst().orElseThrow(ValidationException::new);
-
-            String prazo = DateUtil.getDiferencaEmDiasHorasMinutos(historicoInicialGerente.dataInicial, new Date());
-
-            return Integer.parseInt(prazo.split(",")[0].split(" ")[0]);
-
-        }
-
-        return 0;
-
-    }
-
-    private static Date somaDataEmDias(Date data, Integer prazo) {
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(data);
-        c.add(Calendar.DAY_OF_MONTH, prazo);
-
-        return c.getTime();
+        DesvinculoAnaliseGeo desvinculoAnaliseGeo = DesvinculoAnaliseGeo.findById(this.id);
+        desvinculoAnaliseGeo.update(this);
 
     }
 

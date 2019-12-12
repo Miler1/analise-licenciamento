@@ -5,6 +5,7 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.Auth;
 import utils.DateUtil;
 import utils.Mensagem;
 
@@ -74,9 +75,10 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 		this.analistaTecnicoDestino = novoDesvinculo.analistaTecnicoDestino;
 
 		this._save();
+
 	}
 
-	public void solicitaDesvinculoSAnaliseTecnica (UsuarioAnalise analistaTecnico){
+	public void solicitaDesvinculoSAnaliseTecnica(UsuarioAnalise usuarioSessao){
 
 		if(this.justificativa == null || this.justificativa.equals("")){
 
@@ -86,7 +88,7 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 
 		this.dataSolicitacao = new Date();
 
-		String siglaSetor = analistaTecnico.usuarioEntradaUnica.setorSelecionado.sigla;
+		String siglaSetor = usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla;
 
 		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(siglaSetor, this.analiseTecnica);
 
@@ -94,18 +96,18 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 
 		this.gerente = UsuarioAnalise.findByGerente(gerente);
 
-		this.analistaTecnico =  analistaTecnico;
+		this.analistaTecnico =  usuarioSessao;
 
 		this.save();
 
 		this.analiseTecnica = AnaliseTecnica.findById(this.analiseTecnica.id);
-		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, analistaTecnico, this.gerente);
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), analistaTecnico);
+		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, usuarioSessao, this.gerente);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), usuarioSessao);
 
 	}
 
 
-	public void respondeSolicitacaoDesvinculoAnaliseTecnica( UsuarioAnalise analistaTecnicoDestino ){
+	public void respondeSolicitacaoDesvinculoAnaliseTecnica(UsuarioAnalise usuarioSessao){
 
 		if(this.justificativa == null ||
 				this.justificativa.equals("") ||
@@ -133,44 +135,18 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 			analistaTecnico.usuario = this.analistaTecnicoDestino;
 			analistaTecnico._save();
 
-			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaTecnicoDestino, this.analistaTecnicoDestino);
+			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaTecnicoDestino);
 
-		}else {
+		} else {
 
-			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, analistaTecnicoDestino, this.analistaTecnico);
-
-		}
-
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), analistaTecnicoDestino);
-
-	}
-
-	private static int prazoCongelamentoDesvinculo(DesvinculoAnaliseTecnica desvinculoAnaliseTecnica) {
-
-		List<HistoricoTramitacao> historicoTramitacao = desvinculoAnaliseTecnica.analiseTecnica.analise.processo.getHistoricoTramitacao().stream().sorted(Comparator.comparing(HistoricoTramitacao::getDataInicial).reversed()).collect(Collectors.toList());
-
-		if(!historicoTramitacao.isEmpty()) {
-
-			HistoricoTramitacao historicoInicialGerente = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(SOLICITAR_DESVINCULO))
-					.findFirst().orElseThrow(ValidationException::new);
-
-			String prazo = DateUtil.getDiferencaEmDiasHorasMinutos(historicoInicialGerente.dataInicial, new Date());
-
-			return Integer.parseInt(prazo.split(",")[0].split(" ")[0]);
+			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaTecnico);
 
 		}
 
-		return 0;
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), usuarioSessao);
 
-	}
-
-	private static Date somaDataEmDias(Date data, Integer prazo) {
-
-		Calendar c = Calendar.getInstance();
-		c.setTime(data);
-		c.add(Calendar.DAY_OF_MONTH, prazo);
-
-		return c.getTime();
+		DesvinculoAnaliseTecnica desvinculoAnaliseTecnica = DesvinculoAnaliseTecnica.findById(this.id);
+		desvinculoAnaliseTecnica.update(this);
 
 	}
 
