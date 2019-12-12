@@ -21,17 +21,17 @@ public class DadosProcessoVO {
 
 	private static Categoria preencheCategoria(Caracterizacao caracterizacao) {
 
-		if(caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
+		if(caracterizacao.origemSobreposicao.equals(COMPLEXO) || caracterizacao.isComplexo()) {
+
+			return Categoria.COMPLEXO;
+
+		} if(caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)) {
 
 			return Categoria.PROPRIEDADE;
 
 		} else if(caracterizacao.origemSobreposicao.equals(ATIVIDADE)) {
 
 			return Categoria.ATIVIDADE;
-
-		} else if(caracterizacao.origemSobreposicao.equals(COMPLEXO)) {
-
-			return Categoria.COMPLEXO;
 
 		} else {
 
