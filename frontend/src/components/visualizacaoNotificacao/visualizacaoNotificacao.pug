@@ -58,7 +58,7 @@
 									span {{notificacao.justificativa}}
 						
 						.panel-group
-							table.area-modal.table.table-condensed(ng-if="notificacao.documentos.length > 0")
+							table.area-modal.table.table-condensed(ng-if="notificacao.documentosParecer.length > 0")
 
 								thead
 
@@ -68,7 +68,7 @@
 
 								tbody
 
-									tr(ng-repeat="anexo in notificacao.documentos")
+									tr(ng-repeat="anexo in notificacao.documentosParecer")
 
 										td.col-md-10 {{anexo.nomeDoArquivo}}
 										td.col-md-2.text-right
