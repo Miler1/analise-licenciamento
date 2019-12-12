@@ -106,6 +106,9 @@ public class Notificacao extends GenericModel {
 	@Column(name="justificativa_retificacao_solicitacao")
 	public String justificativaRetificacaoSolicitacao;
 
+	@Column(name="segundo_email_enviado")
+	public Boolean segundoEmailEnviado;
+
 	@Transient
 	public String justificativa;
 
@@ -115,7 +118,7 @@ public class Notificacao extends GenericModel {
 		this.parecerAnalistaGeo = parecerAnalistaGeo;
 		this.resolvido = false;
 		this.ativo = true;
-		this.dataNotificacao = new Date();
+		this.dataNotificacao = notificacao.dataNotificacao;
 		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
 		this.documentacao = notificacao.documentacao;
 		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
@@ -123,6 +126,7 @@ public class Notificacao extends GenericModel {
 		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
 		this.prazoNotificacao = notificacao.prazoNotificacao;
 		this.documentos = new ArrayList<>();
+		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
 		if(this.documentos != null && !this.documentos.isEmpty()) {
 			documentos.stream().forEach(documento -> {

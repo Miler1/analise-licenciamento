@@ -14,13 +14,58 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import models.licenciamento.Caracterizacao.OrigemSobreposicao;
+
 @Entity
 @Table(schema="analise", name="inconsistencia")
 public class Inconsistencia extends GenericModel{
 
     public static final String SEQ = "analise.inconsistencia_id_seq";
 
-    public enum Categoria { PROPRIEDADE, COMPLEXO, ATIVIDADE, RESTRICAO }
+    public enum Categoria {
+        PROPRIEDADE,
+        COMPLEXO,
+        ATIVIDADE,
+        RESTRICAO;
+
+        public static Categoria preencheCategoria(Caracterizacao caracterizacao) {
+
+            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+
+                return Categoria.PROPRIEDADE;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.ATIVIDADE)) {
+
+                return Categoria.ATIVIDADE;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO)) {
+
+                return Categoria.COMPLEXO;
+
+            } else {
+
+                if(caracterizacao.atividadesCaracterizacao.get(0).atividade.dentroEmpreendimento) {
+
+                    return Categoria.PROPRIEDADE;
+
+                } else {
+
+                    if(caracterizacao.geometriasComplexo != null && !caracterizacao.geometriasComplexo.isEmpty()) {
+
+                        return Categoria.COMPLEXO;
+
+                    } else {
+
+                        return Categoria.ATIVIDADE;
+
+                    }
+
+                }
+
+            }
+
+        }
+    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)

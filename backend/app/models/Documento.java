@@ -188,7 +188,7 @@ public class Documento extends GenericModel implements Identificavel {
 
 	protected String getCaminhoCompleto() {
 
-		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;
+		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta + this.caminho;
 	}
 	
 	public File getFile() {
