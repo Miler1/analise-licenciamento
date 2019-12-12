@@ -1,100 +1,137 @@
 
 doctype html
 |%{
-|    numeroProcesso = analiseGeo.analise.processo.numero;
-|    empreendimento = analiseGeo.analise.processo.empreendimento;
-|    empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-|    empreendimentoCPF = empreendimento.pessoa.getCpfCnpj();
-|    enderecoCompleto = enderecoCompleto;
-|    localizacaoEmpreendimento = localizacaoEmpreendimento;
+|	 numeroProcesso = analiseGeo.analise.processo.numero;
+|	 empreendimento = analiseGeo.analise.processo.empreendimento;
+|	 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+|	 empreendimentoCPF = empreendimento.pessoa.getCpfCnpj();
+|	 enderecoCompleto = enderecoCompleto;
 |}%
 html(lang='en')
-  head
-    title Análise - Licenciamento Ambiental - Amazonas
-      link(rel='stylesheet' href='${templatePath}/style/estilo.css')
-      meta(charset='UTF-8')
-      style.
-        .container {
-            display: flex;
-            flex-direction: column;
-        }
-        .container-flex {
-            display: flex;
-            justify-content: space-between;
-        }
+	head
+		title Análise - Licenciamento Ambiental - Amazonas
+			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+			meta(charset='UTF-8')
+			style.
+				.container {
+						display: flex;
+						flex-direction: column;
+				}
+				.container-flex {
+						display: flex;
+						justify-content: space-between;
+				}
 
-        div.container-left{
-            width: 60%;
-            display: inline-block;
-            text-align: left;
-        }
+				div.container-left{
+						width: 60%;
+						display: inline-block;
+						text-align: left;
+				}
 
-        div.container-right {
-            width: 35%;
-            display: inline-block;
-            text-align: left;
-        }
-  body
-    div
-        h3(style="text-align:center; margin-top:0px;") NOTIFICAÇÃO - ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/19
+				div.container-right {
+						width: 35%;
+						display: inline-block;
+						text-align: left;
+				}
+	body
+		div
+			h3(style="text-align:center; margin-top:0px;") NOTIFICAÇÃO - ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/19
 
-    div
-      body
-          .container
-            .container-flex
-                .container-left
-                    span <strong>Notificado:</strong> ${empreendimentoNome}
-                
-                .container-right
-                    span <strong>Protocolo nº:</strong> ${numeroProcesso}
+		div
+			body
+				.container
+					.container-flex
+						.container-left
+							span <strong>Notificado:</strong> ${empreendimentoNome}
+						
+						.container-right
+							span <strong>Protocolo nº:</strong> ${numeroProcesso}
 
-          .container
-            .container-flex
-                .container-left    
-                    span <strong>Rua:</strong> ${enderecoCompleto.logradouro}, ${enderecoCompleto.numero}
-                .container-right
-                    span <strong>Bairro:</strong> ${enderecoCompleto.bairro}
+				.container
+					.container-flex
+						.container-left
+							span <strong>Rua:</strong> ${enderecoCompleto.logradouro}, ${enderecoCompleto.numero}
+						.container-right
+							span <strong>Bairro:</strong> ${enderecoCompleto.bairro}
 
-          .container
-            .container-flex
-                .container-left  
-                    span <strong>Município:</strong> ${enderecoCompleto.municipio.nome} - ${enderecoCompleto.municipio.estado.sigla}
-                .container-right  
-                    span <strong>CEP:</strong> ${enderecoCompleto.cep}
+				.container
+					.container-flex
+						.container-left
+							span <strong>Município:</strong> ${enderecoCompleto.municipio.nome} - ${enderecoCompleto.municipio.estado.sigla}
+						.container-right
+							span <strong>CEP:</strong> ${enderecoCompleto.cep}
 
-          .container
-            .container-flex
-                .container-left    
-                    span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
-                .container-right    
-                    span <strong>Email:</strong>  ${empreendimento.cadastrante.contato.email}
-            br
+				.container
+					.container-flex
+						.container-left
+							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
+						.container-right
+							span <strong>Email:</strong> ${empreendimento.cadastrante.contato.email}
+					br
 
-          div     
-              span <strong>Localização do empreendimento:</strong>  ${localizacaoEmpreendimento}
-              br
-              br
-              span A pessoa jurídica/pessoa física acima identificada, fica <strong>NOTIFICADA</strong>, de acordo com o artigo 59, do Decreto Estadual no 10.028, de 04.02.87, a prestar a(s) informação(ões), a atender a(s) convocação(ões), solicitação(ões) e decisão(ões) do IPAAM, abaixo descriminada(s), no prazo de <strong>${analiseGeo.prazoNotificacao} dias</strong>, a contar da data do recebimento desta <strong>NOTIFICAÇÃO</strong>.
+				div
+					|\#{if categoriaInconsistencia.name().equals("PROPRIEDADE")}
+					span <strong>Localização do empreendimento:
+						|\#{list items:localizacoes, as:'localizacao'}
+						</strong> ${localizacao}
+						|\#{/list}
+					|\#{/if}
+					|\#{if categoriaInconsistencia.name().equals("ATIVIDADE")}
+					span <strong>Localização da atividade ${inconsistencia.atividadeCaracterizacao.atividade.nome}: 
+						|\#{list items:localizacoes, as:'localizacao'}
+						</strong> ${localizacao}
+						|\#{/list}
+					|\#{/if}
+					|\#{if categoriaInconsistencia.name().equals("COMPLEXO")}
+					span <strong>Localização do complexo:
+						|\#{list items:localizacoes, as:'localizacao'}
+						</strong> ${localizacao}
+						|\#{/list}
+					|\#{/if}
 
-              ol
+					br
+					br
+					span A pessoa jurídica/pessoa física acima identificada, fica <strong>NOTIFICADA</strong>, de acordo com o artigo 59, do Decreto Estadual no 10.028, de 04.02.87, a prestar a(s) informação(ões), a atender a(s) convocação(ões), solicitação(ões) e decisão(ões) do IPAAM, abaixo descriminada(s), no prazo de <strong>${analiseGeo.prazoNotificacao} dias</strong>, a contar da data do recebimento desta <strong>NOTIFICAÇÃO</strong>.
 
-                  li
-                       h3 Descrição do(s) fato(s):
-                          p
-                            span  ${inconsistencia.descricaoInconsistencia}
-                  li
-                       h3 Descrição da(s) solicitação(ões):
-                          p
-                            span  ${inconsistencia.tipoInconsistencia}
-                          
-    div(style="text-align: center")
-        span <strong>Analisado por:</strong> ${analista.nomeAnalista}
-        br
-        span ${analista.perfilAnalista} - ${analista.setorAnalista}
-    br
-    div(style="text-align: center")
-        span <strong> Juliano Marcos Valente de Souza</strong>
-        br
-        span <strong> Diretor Presidente</strong>
-    br
-  
+					ol
+
+						li
+							h3 Categoria da inconsistência:
+								p
+									|\#{if inconsistencia.categoria.name().equals("PROPRIEDADE")}
+									span Propriedade
+									|\#{/if}
+									|\#{if inconsistencia.categoria.name().equals("COMPLEXO")}
+									span Complexo
+									|\#{/if}
+									|\#{if inconsistencia.categoria.name().equals("ATIVIDADE")}
+									span Atividade
+									|\#{/if}
+									|\#{if inconsistencia.categoria.name().equals("RESTRICAO")}
+									span Restrição
+									|\#{/if}
+						|\#{if inconsistencia.categoria.name().equals("RESTRICAO")}
+						li
+							h3 Item da Restrição:
+								p
+									span ${itemRestricao}
+						|\#{/if}
+						li
+							h3 Descrição do(s) fato(s):
+								p
+									span ${inconsistencia.descricaoInconsistencia}
+						li
+							h3 Descrição da(s) solicitação(ões):
+								p
+									span ${inconsistencia.tipoInconsistencia}
+													
+		div(style="text-align: center")
+			span <strong>Analisado por:</strong> ${analista.nomeAnalista}
+			br
+			span ${analista.perfilAnalista} - ${analista.setorAnalista}
+		br
+		div(style="text-align: center")
+			span <strong> Juliano Marcos Valente de Souza</strong>
+			br
+			span <strong> Diretor Presidente</strong>
+		br

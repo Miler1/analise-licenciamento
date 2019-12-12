@@ -227,5 +227,5 @@ public class Analise extends GenericModel {
 		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_UPDATE_STATUS, caracterizacaoStatusVO);
 
 	}
-
+	
 }
