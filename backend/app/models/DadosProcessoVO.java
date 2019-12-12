@@ -41,6 +41,10 @@ public class DadosProcessoVO {
 
 				return Categoria.PROPRIEDADE;
 
+			} else if(caracterizacao.isComplexo()){
+
+				return Categoria.COMPLEXO;
+
 			} else {
 
 				return Categoria.ATIVIDADE;
