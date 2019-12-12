@@ -178,7 +178,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 					});
 
-					if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO) {
+					if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
 
 						modalCtrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
 

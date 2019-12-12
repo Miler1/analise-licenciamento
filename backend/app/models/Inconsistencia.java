@@ -30,13 +30,13 @@ public class Inconsistencia extends GenericModel{
 
         public static Categoria preencheCategoria(Caracterizacao caracterizacao) {
 
-            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO) || caracterizacao.isComplexo()) {
-
-                return Categoria.COMPLEXO;
-
-            } if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
 
                 return Categoria.PROPRIEDADE;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO)) {
+
+                return Categoria.COMPLEXO;
 
             } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.ATIVIDADE)) {
 

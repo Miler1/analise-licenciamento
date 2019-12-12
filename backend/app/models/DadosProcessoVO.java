@@ -25,15 +25,9 @@ public class DadosProcessoVO {
 		this.restricoes = restricoes;
 		this.categoria = Categoria.preencheCategoria(caracterizacao);
 
-	}
-
-	public DadosProcessoVO(Caracterizacao caracterizacao, List<CamadaGeoAtividadeVO> atividades, List<CamadaGeoRestricaoVO> restricoes, CamadaGeoComplexoVO complexo) {
-
-		this.caracterizacao = caracterizacao;
-		this.atividades = atividades;
-		this.restricoes = restricoes;
-		this.complexo = complexo;
-		this.categoria = Categoria.preencheCategoria(caracterizacao);
+		if(caracterizacao.isComplexo()) {
+			this.complexo = Processo.preencheComplexo(caracterizacao);
+		}
 
 	}
 

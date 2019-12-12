@@ -713,15 +713,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public DadosProcessoVO getDadosProcesso() {
 
-		if(this.caracterizacao.isComplexo()) {
-
-			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao), preencheComplexo(this.caracterizacao));
-
-		} else {
-
-			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
-
-		}
+		return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
 
 	}
 
