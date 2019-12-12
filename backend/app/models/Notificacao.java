@@ -116,6 +116,7 @@ public class Notificacao extends GenericModel {
 	public List<Documento> documentosParecer;
 
 	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos, ParecerAnalistaGeo parecerAnalistaGeo){
+		
 		this.analiseGeo = analiseGeo;
 		this.parecerAnalistaGeo = parecerAnalistaGeo;
 		this.resolvido = false;

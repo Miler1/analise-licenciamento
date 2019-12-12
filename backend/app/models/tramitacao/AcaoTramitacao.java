@@ -73,5 +73,5 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long VALIDAR_PARECER_GEO_GERENTE = 63l;
 	public static final Long RESOLVER_COMUNICADO = 64l;
 	public static final Long AGUARDAR_RESPOSTA_COMUNICADO = 65l;
-
+	
 }
