@@ -1,5 +1,6 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Usuario;
 import org.hibernate.annotations.Fetch;
@@ -8,7 +9,9 @@ import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
+import utils.Configuracoes;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +25,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -125,13 +130,80 @@ public class UsuarioAnalise extends GenericModel  {
 
 	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
 
-		return UsuarioAnalise.find("SELECT u FROM UsuarioAnalise u " +
+		return UsuarioAnalise.find("SELECT DISTINCT u FROM UsuarioAnalise u " +
 				"LEFT JOIN PerfilUsuarioAnalise p ON p.usuarioAnalise.id = u.id " +
 				"LEFT JOIN SetorUsuarioAnalise s ON s.usuarioAnalise.id = u.id " +
 				"WHERE p.codigoPerfil = :codigoPerfil AND s.siglaSetor = :siglaSetor")
 				.setParameter("codigoPerfil", codigoPerfil)
 				.setParameter("siglaSetor", siglaSetor)
 				.fetch();
+
+	}
+
+	public static void atualizaUsuariosAnalise() {
+
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
+
+		main.java.br.ufla.lemaf.beans.pessoa.Usuario[] usuariosPorModulo = CadastroUnificadoWS.ws.findUsuariosBySiglaModulo(Configuracoes.SIGLA_MODULO);
+		List<main.java.br.ufla.lemaf.beans.pessoa.Usuario> usuarioList = Arrays.asList(usuariosPorModulo);
+
+		List<Usuario> usuariosFiltrados = usuarioList.stream().map(Usuario::new).collect(Collectors.toList());
+
+		for (UsuarioAnalise usuarioAnalise : usuariosAnalise) {
+
+			Usuario usuario = usuariosFiltrados.stream().filter(usuarioEU -> usuarioEU.login.equals(usuarioAnalise.login)).findAny().orElseThrow(PortalSegurancaException::new);
+
+			usuarioAnalise.perfis = usuarioAnalise.salvarPerfis(usuario);
+			usuarioAnalise.setores = usuarioAnalise.salvarSetores(usuario);
+			usuarioAnalise._save();
+
+		}
+
+	}
+
+	private List<PerfilUsuarioAnalise> salvarPerfis(Usuario usuario) {
+
+		if(this.perfis == null) {
+
+			this.perfis = new ArrayList<>();
+
+		}
+
+		this.perfis.forEach(PerfilUsuarioAnalise::_delete);
+		this.perfis.clear();
+		this._save();
+
+		usuario.perfis.forEach(perfil -> {
+
+			PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise(perfil, this);
+			this.perfis.add(perfilUsuarioAnalise.save());
+
+		});
+
+		return this.perfis;
+
+	}
+
+	private List<SetorUsuarioAnalise> salvarSetores(Usuario usuario) {
+
+		if(this.setores == null) {
+
+			this.setores = new ArrayList<>();
+
+		}
+
+		this.setores.forEach(SetorUsuarioAnalise::_delete);
+		this.setores.clear();
+		this._save();
+
+		usuario.setores.forEach(setor -> {
+
+			SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise(setor, this);
+			this.setores.add(setorUsuarioAnalise.save());
+
+		});
+
+		return this.setores;
 
 	}
 

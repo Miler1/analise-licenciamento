@@ -1,11 +1,14 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -55,12 +58,14 @@ public class AnalistaTecnico extends GenericModel {
 
 	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> analistasTecnico = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
+		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		if (analistasTecnico == null || analistasTecnico.size() == 0)
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
+
+		if (usuariosAnalise == null || usuariosAnalise.size() == 0)
 			throw new WebServiceException("Não existe nenhum analista técnico ativado no sistema");
 
-		List<Long> idsAnalistasTecnico = analistasTecnico.stream()
+		List<Long> idsAnalistasTecnico = usuariosAnalise.stream()
 				.map(ang->ang.id)
 				.collect(Collectors.toList());
 

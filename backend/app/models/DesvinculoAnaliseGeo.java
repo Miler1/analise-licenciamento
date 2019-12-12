@@ -5,6 +5,8 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
+import utils.DateUtil;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -68,6 +70,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         this._save();
     }
 
+    public Date getDataSolicitacao() {
+        return dataSolicitacao;
+    }
+
     public void solicitaDesvinculoAnaliseGeo (UsuarioAnalise analistaGeo){
 
         if(this.justificativa == null || this.justificativa.equals("")){
@@ -123,12 +129,22 @@ public class DesvinculoAnaliseGeo extends GenericModel {
             analistaGeo._save();
 
             this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeoDestino);
+            this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
+            this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+            this.analiseGeo.analise.diasAnalise._save();
+            this.analiseGeo._save();
 
         }else {
 
             this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeo);
 
+            this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(DateUtil.somaDiasEmData(this.analiseGeo.dataCadastro, Configuracoes.PRAZO_ANALISE_GEO) , DiasAnalise.intervalosTramitacoesAnaliseGeo(this.analiseGeo.analise.processo.getHistoricoTramitacao()));
+            this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
+            this.analiseGeo.analise.diasAnalise._save();
+            this.analiseGeo._save();
+
         }
+
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeoDestino);
 
     }

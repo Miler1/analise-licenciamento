@@ -204,6 +204,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		AnalistaGeo analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
 
+		commitTransaction();
+
 		if(analistaGeo == null) {
 			return null;
 		}
