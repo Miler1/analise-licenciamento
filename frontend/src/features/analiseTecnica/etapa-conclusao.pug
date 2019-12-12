@@ -1,0 +1,68 @@
+#etapa-conclusao
+    div.col-md-5.pull-right.margin-right-xs.text-cloneParecer
+        label.pull-left Informe o número do protocolo para copiar as informações do parecer
+        br
+        div.pull-right.display-clone
+            input.form-control.textArea-clone(type='text',name="numeroProcesso", ng-model="ctrl.numeroProcessoClone", ng-disabled = "ctrl.analiseTecnica.inconsistencias.length > 0")
+            button.btn.btn-default.tamanho-botaoClone(type="submit", name="clonar", ng-click="ctrl.clonarParecerTecnico()", ng-disabled = "ctrl.analiseTecnica.inconsistencias.length > 0")
+                i.glyphicon.glyphicon-duplicate.glyphicon--with-right-margin
+                | Copiar parecer
+
+hr
+#campos-analise-tecnica
+    div
+        label.obrigatorio.label-parecer Do processo:
+        br
+        summernote.campos-parecer(id="doProcesso",
+                    on-paste="snPaste(evt)",
+                    name="doProcesso",
+                    lang="pt-BR",
+                    height="200",
+                    ng-model="ctrl.parecer.doProcesso",
+                    config="optionsText")
+
+    div
+        label.obrigatorio.label-parecer Da análise técnica:
+        br
+        summernote.campos-parecer(id="daAnaliseTecnica",
+                    on-paste="snPaste(evt)",
+                    name="daAnaliseTecnica",
+                    lang="pt-BR",
+                    height="200",
+                    ng-model="ctrl.parecer.daAnaliseTecnica",
+                    config="optionsText")
+
+    div
+        label.obrigatorio.label-parecer Da conclusão:
+        br
+        summernote.campos-parecer(id="daConclusao",
+                    on-paste="snPaste(evt)",
+                    name="daConclusao",
+                    lang="pt-BR",
+                    height="200",
+                    ng-model="ctrl.parecer.daConclusao",
+                    config="optionsText")
+    
+    div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.PARECER_ANALISE_TECNICA)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+        i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+        | Anexar arquivos ao parecer
+
+    table.table.table-condensed(ng-if="ctrl.getDocumentosParecer().length > 0")
+
+        thead
+
+            tr
+                th.col-md-10 Documento anexado
+                th.col-md-2.text-right Ações
+
+        tbody
+
+            tr(ng-repeat="documento in ctrl.getDocumentosParecer()")
+
+                td.col-md-10 {{documento.nomeDoArquivo}}
+                td.col-md-2.text-right
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                        i.glyphicon.glyphicon-eye-open
+
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
+                        i.glyphicon.glyphicon-trash
