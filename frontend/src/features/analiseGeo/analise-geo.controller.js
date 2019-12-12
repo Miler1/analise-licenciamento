@@ -678,7 +678,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	$scope.addInconsistenciaRestricao = function (categoriaInconsistencia, inconsistencia, isEdicao) {
 
 		var idCaracterizacao = inconsistencia.caracterizacao.id;
-		var idSobreposicao = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade.id : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id : i.sobreposicaoCaracterizacaoComplexo.id;
+		var idSobreposicao = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade.id : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id : inconsistencia.sobreposicaoCaracterizacaoComplexo.id;
 
 		params = {
 			categoria:categoriaInconsistencia,
