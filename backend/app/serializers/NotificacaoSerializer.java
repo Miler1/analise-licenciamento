@@ -14,6 +14,8 @@ public class NotificacaoSerializer {
             "justificativa",
             "dataNotificacao",
             "dataFinalNotificacao",
+            "documentosParecer.id",
+            "documentosParecer.nomeDoArquivo",
             "documentacao",
             "retificacaoEmpreendimento",
             "retificacaoSolicitacao",
