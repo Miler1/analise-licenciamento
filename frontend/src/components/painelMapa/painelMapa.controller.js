@@ -97,7 +97,7 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	$scope.$on('mapa:adicionar-botao-centralizar-mapa-base', adicionarBotaoCentralizar);
 
-  $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
+    $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
 	
 	$scope.$on('mapa:adicionar-wmslayer-mapa', adicionarWmsLayer);
 
