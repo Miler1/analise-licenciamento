@@ -28,45 +28,45 @@ var ModalOficioRestricao = {
                     var parecer = response.data;
                     ctrl.tipoResultadoAnalise = parecer.tipoResultadoAnalise.id;
 
+                    if (ctrl.tipoResultadoAnalise !== ctrl.INDEFERIDO) {
+
+                        if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
+        
+                            analiseGeoService.getComunicadoByIdAnaliseGeoEmpreendimento(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
+                                .then(function(response){
+        
+                                var comunicado = response.data;
+                                ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                                ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+        
+                            });
+        
+                        } else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade) {
+                            
+                            analiseGeoService.getComunicadoByIdAnaliseGeoAtividade(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
+                                .then(function(response){
+        
+                                var comunicado = response.data;
+                                ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                                ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+        
+                            });
+        
+                        } else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo) {
+                            
+                            analiseGeoService.getComunicadoByIdAnaliseGeoComplexo(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
+                                .then(function(response){
+        
+                                var comunicado = response.data;
+                                ctrl.justificativaOrgao = comunicado.parecerOrgao;
+                                ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+        
+                            });
+        
+                        }
+                    }
+
             });
-
-            if (ctrl.tipoResultadoAnalise !== ctrl.INDEFERIDO) {
-
-                if(ctrl.restricao.sobreposicaoCaracterizacaoEmpreendimento) {
-
-                    analiseGeoService.getComunicadoByIdAnaliseGeoEmpreendimento(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
-                        .then(function(response){
-
-                        var comunicado = response.data;
-                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
-
-                    });
-
-                } else if(ctrl.restricao.sobreposicaoCaracterizacaoAtividade) {
-                    
-                    analiseGeoService.getComunicadoByIdAnaliseGeoAtividade(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
-                        .then(function(response){
-
-                        var comunicado = response.data;
-                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
-
-                    });
-
-                } else if(ctrl.restricao.sobreposicaoCaracterizacaoComplexo) {
-                    
-                    analiseGeoService.getComunicadoByIdAnaliseGeoComplexo(ctrl.idAnaliseGeo, sobreposicaoRestricao.id)
-                        .then(function(response){
-
-                        var comunicado = response.data;
-                        ctrl.justificativaOrgao = comunicado.parecerOrgao;
-                        ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
-
-                    });
-
-                }
-            }
             
         };
 
