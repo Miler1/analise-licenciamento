@@ -22,6 +22,7 @@ public class Inconsistencia extends GenericModel{
     public static final String SEQ = "analise.inconsistencia_id_seq";
 
     public enum Categoria {
+
         PROPRIEDADE,
         COMPLEXO,
         ATIVIDADE,
@@ -29,7 +30,11 @@ public class Inconsistencia extends GenericModel{
 
         public static Categoria preencheCategoria(Caracterizacao caracterizacao) {
 
-            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO) || caracterizacao.isComplexo()) {
+
+                return Categoria.COMPLEXO;
+
+            } if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
 
                 return Categoria.PROPRIEDADE;
 
@@ -37,19 +42,11 @@ public class Inconsistencia extends GenericModel{
 
                 return Categoria.ATIVIDADE;
 
-            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO)) {
-
-                return Categoria.COMPLEXO;
-
             } else {
 
                 boolean isAtividadeDentroEmpreendimento = caracterizacao.atividadesCaracterizacao.stream().allMatch(AtividadeCaracterizacao::isAtividadeDentroEmpreendimento);
 
-                if(caracterizacao.isComplexo()) {
-
-                    return Categoria.COMPLEXO;
-
-                } else if(isAtividadeDentroEmpreendimento) {
+                if(isAtividadeDentroEmpreendimento) {
 
                     return Categoria.PROPRIEDADE;
 
