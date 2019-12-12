@@ -1,7 +1,7 @@
 package models.tramitacao;
 
-import enums.PerfilAcoesEnum;
 import models.AnaliseGeo;
+import enums.PerfilAcoesEnum;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;

@@ -104,6 +104,7 @@ POST    /parecer/gerente/concluirParecerGerente                                 
 GET     /parecer/gerente/{idHistoricoTramitacao}                                                                    PareceresGerentes.findParecerByIdHistoricoTramitacao
 POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
 GET     /parecer/analistaGeo/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                             PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
+GET     /parecer/analistaGeo/findParecerByIdAnaliseGeo/{idAnaliseGeo}                                               PareceresAnalistasGeo.findParecerByIdAnaliseGeo
 GET		/parecer/analistaGeo                                            							                PareceresAnalistasGeo.findByNumeroProcesso
 GET     /parecer/analistaGeo/findParecerByIdProcesso/{idProcesso}                                                   PareceresAnalistasGeo.findParecerByIdProcesso
 
