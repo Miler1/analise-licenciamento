@@ -784,11 +784,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 if(categoriaInconsistencia.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
-                    for (AtividadeCaracterizacao atividadeCaracterizacao : analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao) {
-                        itemRestricao = atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade.stream()
-                                .filter( sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.id.equals(inconsistencia.sobreposicaoCaracterizacaoAtividade.id))
-                                .findFirst().orElseThrow(ValidationException::new).tipoSobreposicao.nome;
-                    }
+                    List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividadeList = new ArrayList<>();
+
+                    analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.forEach(atividadeCaracterizacao ->
+                            sobreposicaoCaracterizacaoAtividadeList.addAll(atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade)
+                    );
+
+                    itemRestricao = sobreposicaoCaracterizacaoAtividadeList.stream()
+                            .filter( sobreposicaoCaracterizacaoAtividade -> sobreposicaoCaracterizacaoAtividade.id.equals(inconsistencia.sobreposicaoCaracterizacaoAtividade.id))
+                            .findFirst().orElseThrow(ValidationException::new).tipoSobreposicao.nome;
 
                 } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.COMPLEXO)) {
 
