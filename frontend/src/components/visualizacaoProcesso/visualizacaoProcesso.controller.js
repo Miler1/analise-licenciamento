@@ -50,8 +50,6 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-				modalCtrl.init('mapa-visualizacao-protocolo', true, true);
-				modalCtrl.iniciarMapa();
 
 			})
 			.catch(function(){
@@ -65,8 +63,6 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			modalCtrl.dadosProcesso = response.data;
 			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-			modalCtrl.init('mapa-visualizacao-protocolo', true, true);
-			modalCtrl.iniciarMapa();
 	
 		})
 		.catch(function(){
@@ -113,6 +109,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	// Métodos referentes ao Mapa da caracterização
 	this.iniciarMapa = function() {
+
+		modalCtrl.init('mapa-visualizacao-protocolo', true, true);
 
 		$timeout(function() {
 
@@ -194,11 +192,13 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 					});
 
+					$scope.$emit('mapa:centralizar-mapa');
+
 				});
 
 			});
 
-		});		
+		});
 
 	};
 
