@@ -15,12 +15,6 @@ public class CamadaGeoComplexoVO {
 
     }
 
-    public CamadaGeoComplexoVO(List<GeometriaAtividadeVO> geometrias) {
-
-        this.geometrias = geometrias;
-
-    }
-
     public List<GeometriaAtividadeVO> getGeometrias() {
 
         return this.geometrias;

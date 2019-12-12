@@ -296,6 +296,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		processo.idProcesso = processo.id;
 		processo.numeroProcesso = processo.numero;
+		processo.denominacaoEmpreendimento = processo.empreendimento.denominacao;
+		processo.cpfEmpreendimento = processo.empreendimento.pessoa.cpf ? processo.empreendimento.pessoa.cpf : processo.empreendimento.pessoa.cnpj;
 
 		processoService.visualizarProcesso(processo);
 
