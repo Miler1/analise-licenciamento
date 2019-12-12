@@ -3,6 +3,7 @@ package models.tramitacao;
 import models.AnaliseGeo;
 import models.EntradaUnica.Setor;
 import enums.PerfilAcoesEnum;
+import models.EntradaUnica.Setor;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;
@@ -264,7 +265,6 @@ public class HistoricoTramitacao extends GenericModel {
 			if (rel == null) {
 
 				rel = new RelHistoricoTramitacaoSetor();
-
 				rel.siglaSetor = siglaSetor;
 				rel.historicoTramitacao = historicoTramitacao;
 

@@ -3,17 +3,15 @@ package jobs;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
+import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
-
-	private List<Caracterizacao> caracterizacoes;
 
 	@Override
 	public void executar() {
@@ -23,100 +21,62 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 
 		// Licenças com status EM_ANALISE
-		caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
+		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 
-		for(Caracterizacao caracterizacao : caracterizacoes) {
+		caracterizacoes.forEach(this::processarCaracterizacao);
 
-			processarCaracterizacao(caracterizacao);
-			
-		}
-		
-		Long[] ids = ListUtil.getIdsAsArray(caracterizacoes);
-		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ids);
+		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ListUtil.getIdsAsArray(caracterizacoes));
 
 		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
 
+	}
+
+	private Long coalesce(Long ...ids){
+		return Arrays.stream(ids).filter(Objects::nonNull).findFirst().orElse(null);
 	}
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
 
 		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-		Processo processo = Processo.find("byNumero", caracterizacao.numero).first();
-		Processo processoAntigo;
-		Analise analise;
-		AnaliseGeo analiseGeo;
+		Boolean renovacao = caracterizacao.isRenovacao();
+		Boolean retificacao = caracterizacao.isRetificacao();
+		Processo processoAnterior = null;
 
-		boolean deveTramitar = false;
+		if(renovacao || retificacao){
 
-		if (processo == null) {
-			
-			processo = criarNovoProcesso(caracterizacao);
+			// Carrega processo anterior
+			Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao.idCaracterizacaoOrigem, caracterizacao.id));
+			processoAnterior = Processo.find("numero = :num ORDER BY id DESC")
+					.setParameter("num",anterior.numero).first();
 
-			analise = criarNovaAnalise(processo);
-
-			if (caracterizacao.renovacao) {
-
-				Caracterizacao caracterizacaoAnterior = Caracterizacao.findById(caracterizacao.idCaracterizacaoOrigem);
-				processoAntigo = Processo.find("numero", caracterizacaoAnterior.numero).first();
-				processo.processoAnterior = processoAntigo;
-				processo.renovacao = true;
-
+			// Arquiva o processo anterior
+			if (retificacao) {
+				Analise analiseAntiga = Analise.findByProcesso(processoAnterior);
+				analiseAntiga.processo.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 			}
 
-			criarNovoDiasAnalise(analise);
-			analiseGeo = criarNovaAnaliseGeo(analise);
-
-			if(analiseGeo == null) {
-
-				rollbackTransaction();
-
-			}
-
-			deveTramitar = analiseGeo != null;
-
-		} else if(processo.caracterizacao.id.equals(caracterizacao.id)) {
-			
-			return;
-			
-		} else {
-			
-			processo.caracterizacao = caracterizacao;
-
-			processo._save();
 		}
+
+		Processo processo = criarNovoProcesso(caracterizacao);
+		Analise analise = criarNovaAnalise(processo);
+		processo.processoAnterior = processoAnterior;
+		processo.renovacao = renovacao;
+
+		criarNovoDiasAnalise(analise);
+		AnaliseGeo analiseGeo = criarNovaAnaliseGeo(analise);
+
+		if(analiseGeo == null) {
+
+			rollbackTransaction();
+
+		}
+
+		Boolean deveTramitar = analiseGeo != null;
 		
 		if (deveTramitar) {
 
 			processo.save();
-
-			// TODO: VERIFICAR CÓDIGO COMENTADO ABAIXO
-
-//			if (caracterizacao.renovacao) {
-//
-//				if (processo.isProrrogacao()) {
-//
-//					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.PRORROGAR_LICENCA, processoAntigo)
-//							&& processoAntigo.isArquivavel()) {
-//
-//						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.PRORROGAR_LICENCA);
-//
-//					}
-//
-//					Licenca.prorrogar(caracterizacao.getLicenca().id);
-//
-//				} else {
-//
-//					if (processoAntigo.tramitacao.isAcaoDisponivel(AcaoTramitacao.ARQUIVAR_POR_RENOVACAO, processoAntigo)
-//							&& processoAntigo.isArquivavel()) {
-//
-//						processoAntigo.tramitacao.tramitar(processoAntigo, AcaoTramitacao.ARQUIVAR_POR_RENOVACAO);
-//
-//					}
-//
-//				}
-//
-//			}
 
 		}
 

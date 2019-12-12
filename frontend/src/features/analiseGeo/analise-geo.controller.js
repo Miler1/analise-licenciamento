@@ -296,6 +296,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		processo.idProcesso = processo.id;
 		processo.numeroProcesso = processo.numero;
+		processo.denominacaoEmpreendimento = processo.empreendimento.denominacao;
+		processo.cpfEmpreendimento = processo.empreendimento.pessoa.cpf ? processo.empreendimento.pessoa.cpf : processo.empreendimento.pessoa.cnpj;
 
 		processoService.visualizarProcesso(processo);
 
@@ -487,7 +489,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						ctrl.dadosProjeto = response.data;
 
-						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO) {
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
 
 							ctrl.labelDadosProjeto = 'Dados da área do complexo';
 
@@ -497,7 +499,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						} else {
 
-							ctrl.labelDadosProjeto = 'Dados da(s) áreas da(s) atividade(s)';
+							ctrl.labelDadosProjeto = 'Dados da(s) área(s) da(s) atividade(s)';
 
 						}
 
@@ -528,6 +530,16 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 							adicionarGeometriaNoMapa(restricao);
 
 						});
+
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
+
+							ctrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
+
+								adicionarGeometriaNoMapa(geometria);
+
+							});
+
+						}
 
 						tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
 
@@ -668,7 +680,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	$scope.addInconsistenciaRestricao = function (categoriaInconsistencia, inconsistencia, isEdicao) {
 
 		var idCaracterizacao = inconsistencia.caracterizacao.id;
-		var idSobreposicao = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade.id : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id : i.sobreposicaoCaracterizacaoComplexo.id;
+		var idSobreposicao = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade.id : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id : inconsistencia.sobreposicaoCaracterizacaoComplexo.id;
 
 		params = {
 			categoria:categoriaInconsistencia,
@@ -901,6 +913,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.removerDocumento = function (documento) {
 
 		var indexDocumento = ctrl.parecer.documentos.indexOf(documento);
+
+		if(ctrl.parecer.documentos[indexDocumento].key) {
+			documentoService.delete(ctrl.parecer.documentos[indexDocumento].key);
+		}
 
 		ctrl.parecer.documentos.splice(indexDocumento, 1);
 

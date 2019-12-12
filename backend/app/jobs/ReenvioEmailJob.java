@@ -17,17 +17,17 @@ public class ReenvioEmailJob extends GenericJob {
 	@Override
 	public void executar() throws Exception {
 		
-		Logger.info("[INICIO-JOB] ::ReenvioEmail:: [INICIO-JOB]");
-		
-		List<ReenvioEmail> reenviosEmail = ReenvioEmail.findAll();
-		
-		for(ReenvioEmail reenvioEmail : reenviosEmail) {
-
-			sendMail(reenvioEmail);
-
-		}
-		
-		Logger.info("[FIM-JOB] ::ReenvioEmail:: [FIM-JOB]");
+//		Logger.info("[INICIO-JOB] ::ReenvioEmail:: [INICIO-JOB]");
+//
+//		List<ReenvioEmail> reenviosEmail = ReenvioEmail.findAll();
+//
+//		for(ReenvioEmail reenvioEmail : reenviosEmail) {
+//
+//			sendMail(reenvioEmail);
+//
+//		}
+//
+//		Logger.info("[FIM-JOB] ::ReenvioEmail:: [FIM-JOB]");
 	}
 	
 	private void sendMail(ReenvioEmail reenvioEmail) {

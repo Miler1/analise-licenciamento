@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 
+import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.Caracterizacao;
 import static models.Inconsistencia.Categoria;
 
@@ -13,9 +14,9 @@ public class DadosProcessoVO {
 
 	public List<CamadaGeoRestricaoVO> restricoes;
 
-	public CamadaGeoComplexoVO complexo;
-
 	public Categoria categoria;
+
+	public CamadaGeoComplexoVO complexo;
 
 	public DadosProcessoVO(Caracterizacao caracterizacao, List<CamadaGeoAtividadeVO> atividades, List<CamadaGeoRestricaoVO> restricoes) {
 
@@ -24,14 +25,9 @@ public class DadosProcessoVO {
 		this.restricoes = restricoes;
 		this.categoria = Categoria.preencheCategoria(caracterizacao);
 
-	}
-
-	public DadosProcessoVO(Caracterizacao caracterizacao, List<CamadaGeoAtividadeVO> atividades, List<CamadaGeoRestricaoVO> restricoes, CamadaGeoComplexoVO complexo) {
-
-		this.caracterizacao = caracterizacao;
-		this.atividades = atividades;
-		this.restricoes = restricoes;
-		this.complexo = complexo;
+		if(caracterizacao.isComplexo()) {
+			this.complexo = Processo.preencheComplexo(caracterizacao);
+		}
 
 	}
 

@@ -35,8 +35,8 @@ div
 							td.text-center {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td.text-center {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
-								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(cxEntAnalistaGeo.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntAnalistaGeo.PrazoAnalise.ANALISE), cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantesData(cxEntAnalistaGeo.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntAnalistaGeo.PrazoAnalise.ANALISE))}}
 							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
 								| {{cxEntAnalistaGeo.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
 							td

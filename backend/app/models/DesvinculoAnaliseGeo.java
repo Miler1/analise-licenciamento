@@ -5,13 +5,20 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.Auth;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO;
 
 @Entity
 @Table(schema="analise", name="desvinculo_analise_geo")
@@ -60,6 +67,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
     @JoinColumn(name="id_usuario_destino")
     public UsuarioAnalise analistaGeoDestino;
 
+    public Date getDataSolicitacao() {
+        return dataSolicitacao;
+    }
+
     public void update(DesvinculoAnaliseGeo novoDesvinculo) {
 
         this.respostaGerente = novoDesvinculo.respostaGerente;
@@ -68,13 +79,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         this.analistaGeoDestino = novoDesvinculo.analistaGeoDestino;
 
         this._save();
+
     }
 
-    public Date getDataSolicitacao() {
-        return dataSolicitacao;
-    }
-
-    public void solicitaDesvinculoAnaliseGeo (UsuarioAnalise analistaGeo){
+    public void solicitaDesvinculoAnaliseGeo(UsuarioAnalise usuarioSessao){
 
         if(this.justificativa == null || this.justificativa.equals("")){
 
@@ -83,25 +91,24 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         }
         this.dataSolicitacao = new Date();
 
-        String siglaSetor = analistaGeo.usuarioEntradaUnica.setorSelecionado.sigla;
+        String siglaSetor = usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla;
 
         Gerente gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor, this.analiseGeo);
 
         gerente.save();
 
         this.gerente = UsuarioAnalise.findByGerente(gerente);
-
-        this.analistaGeo =  analistaGeo;
+        this.analistaGeo =  usuarioSessao;
 
         this.save();
 
         this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
-        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, analistaGeo, this.gerente);
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeo);
+        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, SOLICITAR_DESVINCULO, usuarioSessao, this.gerente);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), usuarioSessao);
 
     }
 
-    public void respondeSolicitacaoDesvinculoAnaliseGeo(UsuarioAnalise analistaGeoDestino){
+    public void respondeSolicitacaoDesvinculoAnaliseGeo(UsuarioAnalise usuarioSessao){
 
         if(this.justificativa == null ||
                 this.justificativa.equals("") ||
@@ -113,30 +120,28 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
         }
 
-        this.dataResposta = new Date();
-
-        DesvinculoAnaliseGeo desvinculoAlterar = DesvinculoAnaliseGeo.findById(this.id);
-        desvinculoAlterar.update(this);
-
         this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
 
         if(this.aprovada) {
 
             this.analistaGeoDestino = UsuarioAnalise.findById(this.analistaGeoDestino.id);
+
             AnalistaGeo analistaGeo = AnalistaGeo.find("id_analise_geo = :id_analise_geo")
                     .setParameter("id_analise_geo", this.analiseGeo.id).first();
+
             analistaGeo.usuario = this.analistaGeoDestino;
             analistaGeo._save();
 
-            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeoDestino);
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaGeoDestino);
             this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(new Date(), Configuracoes.PRAZO_ANALISE_GEO);
             this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
             this.analiseGeo.analise.diasAnalise._save();
             this.analiseGeo._save();
 
-        }else {
+        } else {
 
-            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, analistaGeoDestino, this.analistaGeo);
+            this.analistaGeoDestino = this.analistaGeo;
+            this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaGeoDestino);
 
             this.analiseGeo.dataVencimentoPrazo = DateUtil.somaDiasEmData(DateUtil.somaDiasEmData(this.analiseGeo.dataCadastro, Configuracoes.PRAZO_ANALISE_GEO) , DiasAnalise.intervalosTramitacoesAnaliseGeo(this.analiseGeo.analise.processo.getHistoricoTramitacao()));
             this.analiseGeo.analise.diasAnalise.preencheDiasAnaliseGeo();
@@ -145,7 +150,10 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
         }
 
-        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), analistaGeoDestino);
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), usuarioSessao);
+
+        DesvinculoAnaliseGeo desvinculoAnaliseGeo = DesvinculoAnaliseGeo.findById(this.id);
+        desvinculoAnaliseGeo.update(this);
 
     }
 

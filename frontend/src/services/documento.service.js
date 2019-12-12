@@ -11,14 +11,17 @@ var DocumentoService = function(request, $window, config, Upload) {
             .delete(config.BASE_URL() + "delete/documento/" + nameFile);
     };
 
-	this.download = function(key,nome) {
+    // Repensar no parâmetro do nome, já está sendo buscado no backend diretamente - Refatoração
+	this.download = function(key, nome) {
 
-        $window.open(config.BASE_URL() + "download/" + key + "/documento/" + nome, '_blank');
+        $window.open(config.BASE_URL() + "download/" + key, '_blank');
+        
     };
 
     this.downloadById = function(id) {
 
         $window.open(config.BASE_URL() + "documentos/" + id + "/download", '_blank');
+        
     };
     
 };

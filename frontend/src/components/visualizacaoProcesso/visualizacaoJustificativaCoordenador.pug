@@ -1,6 +1,6 @@
 div
 	label.titulo(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.length > 0 && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo.length > 0") Resultados das análises
-	div.info-sem-dados-para-exibir(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.length === 0 ) && ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo.length === 0 )") 
+	div.info-sem-dados-para-exibir(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.length === 0 || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo.length === 0") 
 		i Não há análises para este protocolo
 	.panel-group(id="accordion-analista-geo-{{parecer.id}}", ng-if = "modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo", ng-repeat="parecer in modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo")
 		div

@@ -81,6 +81,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Transient
 	public static int indexDadosGeometriasAtividade;
 
+	@Transient
+	public static int indexDadosGeometriasComplexo;
+
 	@Override
 	public Processo save() {
 
@@ -174,24 +177,17 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
-
-			if(filtroProcesso.idAnalistaGeo != null) {
-
-				processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
-
-			}
-
-			if(filtroProcesso.idAnalistaTecnico != null) {
-
-				processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
-
-			}
-
-		} else {
+		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
-			processoBuilder.filtrarPorDesvinculoSemResposta();
+			processoBuilder.filtrarAnaliseGeoAtiva(false);
+			processoBuilder.filtrarDesvinculoAnaliseGeoSemResposta();
+
+		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
+
+			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, true);
+			processoBuilder.filtrarAnaliseTecnicaAtiva(false);
+			processoBuilder.filtrarDesvinculoAnaliseTecnicaSemResposta();
 
 		}
 
@@ -244,6 +240,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		processoBuilder.filtrarDesvinculoAnaliseTecnicaComResposta(true);
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -340,7 +337,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		 processoBuilder.filtrarDesvinculoAnaliseGeo(true);
+		processoBuilder.filtrarDesvinculoAnaliseGeoComResposta(true);
 		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -432,6 +429,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo()
                 .groupByIdAnalise()
+				.groupByIdAnaliseGeo()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo()
@@ -715,15 +713,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public DadosProcessoVO getDadosProcesso() {
 
-		if(this.caracterizacao.isComplexo()) {
-
-			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao), preencheComplexo(this.caracterizacao));
-
-		} else {
-
-			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
-
-		}
+		return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
 
 	}
 
@@ -810,7 +800,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
 		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
-		this.getHistoricoTramitacao();
 		this.empreendimento.area = GeoCalc.area(this.empreendimento.coordenadas) / 1000;
 
 		return this;
@@ -819,7 +808,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public static CamadaGeoComplexoVO preencheComplexo(Caracterizacao caracterizacao) {
 
-		return new CamadaGeoComplexoVO(caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
+		Processo.indexDadosGeometriasComplexo = 0;
+
+		return new CamadaGeoComplexoVO(caracterizacao, caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
+
 	}
 	
 	public DesvinculoAnaliseGeo buscaDesvinculoPeloProcessoGeo() {

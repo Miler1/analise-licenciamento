@@ -100,7 +100,29 @@ public class AnaliseTecnicaSerializer {
 			"tipoResultadoValidacaoGerente.id",
 			"parecerValidacaoGerente",
 			"analiseTecnicaRevisada",
-			"usuarioValidacao.pessoa.nome"
+			"usuarioValidacao.pessoa.nome",
+			"vistoria.id",
+			"vistoria.conclusao",
+			"vistoria.realizada",
+			"vistoria.documentoRit.id",
+			"vistoria.documentoRit.nomeDoArquivo",
+			"vistoria.inconsistenciaVistoria.descricaoInconsistencia",
+			"vistoria.inconsistenciaVistoria.tipoInconsistencia",
+			"vistoria.inconsistenciaVistoria.anexos.id",
+			"vistoria.inconsistenciaVistoria.anexos.nomeDoArquivo",
+			"vistoria.anexos.id",
+			"vistoria.anexos.nomeDoArquivo",
+			"vistoria.data",
+			"vistoria.hora",
+			"vistoria.descricao",
+			"vistoria.cursosDagua",
+			"vistoria.tipologiaVegetal",
+			"vistoria.app",
+			"vistoria.ocorrencia",
+			"vistoria.residuosLiquidos",
+			"vistoria.outrasInformacoes",
+			"vistoria.equipe.usuario.id",
+			"vistoria.equipe.usuario.pessoa.nome"
 			
 		).transform(new GeometryTransformer(), Geometry.class);
 

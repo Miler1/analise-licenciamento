@@ -15,7 +15,6 @@ import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
 import models.tmsmap.MapaImagem;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
@@ -975,19 +974,34 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     }
 
     public List<CamadaGeoRestricaoVO> AreasDeRestricaoParaPDF(List<CamadaGeoRestricaoVO> restricoes) {
+
         List<CamadaGeoRestricaoVO> areasDeRestricoes = restricoes.stream().filter(restricao ->
                 restricao.orgao.sigla.equals(OrgaoEnum.IPHAN.codigo) || restricao.orgao.sigla.equals(OrgaoEnum.IBAMA.codigo))
                 .collect(Collectors.toList());
 
         return areasDeRestricoes;
+
     }
 
     public List<CamadaGeoRestricaoVO> UnidadesConservacaoParaPDF(List<CamadaGeoRestricaoVO> restricoes) {
+
         List<CamadaGeoRestricaoVO> unidadesConservacao = restricoes.stream().filter(restricao ->
                 !restricao.orgao.sigla.equals(OrgaoEnum.IPHAN.codigo) && !restricao.orgao.sigla.equals(OrgaoEnum.IBAMA.codigo))
                 .collect(Collectors.toList());
 
         return unidadesConservacao;
+
+    }
+
+    public String getJustificativaUltimoParecer() {
+
+        ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = this.pareceresGerenteAnaliseGeo.stream()
+                .filter(parecer -> parecer.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES))
+                .max(Comparator.comparing(ParecerGerenteAnaliseGeo::getDataParecer))
+                .orElseThrow(() -> new ValidacaoException(Mensagem.PARECER_NAO_ENCONTRADO));
+
+        return parecerGerenteAnaliseGeo.parecer;
+
     }
 
 }
