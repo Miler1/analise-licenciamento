@@ -89,7 +89,7 @@ public class AnalistaGeo extends GenericModel {
 
 		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
 		if (usuariosAnalise.isEmpty()) {
 
