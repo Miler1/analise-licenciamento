@@ -16,8 +16,9 @@
         label.label-manifestacao Manifestação do órgão
         hr
 
-        label.title-manifestacao Justificativa: 
+        label.title-manifestacao(ng-if="$ctrl.justificativaOrgao !== null") Justificativa:
 
+        span.text-manifestacao(ng-if="$ctrl.justificativaOrgao === null")  Não houve manifestação do órgão no período de 30 dias
         span.text-manifestacao &nbsp; {{$ctrl.justificativaOrgao}}
 
         table.area-modal.table.table-condensed(ng-if="$ctrl.anexos.length > 0")

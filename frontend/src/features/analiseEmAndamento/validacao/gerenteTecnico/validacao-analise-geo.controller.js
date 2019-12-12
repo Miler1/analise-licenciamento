@@ -275,7 +275,18 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
 		return '-';
 	
-	};
+    };
+    
+    $scope.getOrgaos = function(restricao){
+        
+        var orgaos = [];
+        var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+        _.forEach(sobreposicaoRestricao.tipoSobreposicao.orgaosResponsaveis, function(orgao){
+            //verifica se o orgão da restrição é IPHAN ou IBAMA
+            orgaos.push(orgao);
+        });
+        return orgaos;
+    };
 
     function getDadosVisualizar(processo) {
         var pessoa = processo.empreendimento.pessoa;

@@ -1,7 +1,10 @@
 package models;
 
 import java.util.List;
+
+import enums.TipoSobreposicaoDistanciaEnum;
 import models.licenciamento.*;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import play.db.jpa.GenericModel;
 import utils.Helper;
 import utils.ListUtil;
@@ -84,6 +87,9 @@ public class Comunicado extends GenericModel {
     @Transient
     public boolean valido;
 
+    @Transient
+    public String distancia;
+
     public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
 
         this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
@@ -95,6 +101,8 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
         this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoEmpreendimento.distancia);
+
     }
 
     public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
@@ -108,6 +116,7 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
         this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoAtividade.distancia);
 
     }
 
@@ -122,6 +131,17 @@ public class Comunicado extends GenericModel {
         this.resolvido = false;
         this.orgao = orgao;
         this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoComplexo.distancia);
+
+    }
+
+    public String getDistancia(Double distancia) {
+
+        if(TipoSobreposicaoDistanciaEnum.getList().contains(this.tipoSobreposicao.codigo)) {
+            return "dista " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
+        }
+
+        return "está próximo";
 
     }
 

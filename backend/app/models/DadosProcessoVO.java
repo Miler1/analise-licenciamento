@@ -74,13 +74,4 @@ public class DadosProcessoVO {
 
 	}
 
-	public DadosProcessoVO(Caracterizacao caracterizacao, List<CamadaGeoAtividadeVO> atividades, List<CamadaGeoRestricaoVO> restricoes, CamadaGeoComplexoVO complexo) {
-
-		this.caracterizacao = caracterizacao;
-		this.atividades = atividades;
-		this.restricoes = restricoes;
-		this.complexo = complexo;
-
-	}
-
 }

@@ -37,6 +37,10 @@ public class Notificacao extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_analise_geo", nullable=true)
 	public AnaliseGeo analiseGeo;
+
+	@OneToOne
+	@JoinColumn(name="id_parecer_analista_geo", nullable=true)
+	public ParecerAnalistaGeo parecerAnalistaGeo;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
@@ -105,9 +109,10 @@ public class Notificacao extends GenericModel {
 	@Transient
 	public String justificativa;
 
-	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos){
-
+	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos, ParecerAnalistaGeo parecerAnalistaGeo){
+		
 		this.analiseGeo = analiseGeo;
+		this.parecerAnalistaGeo = parecerAnalistaGeo;
 		this.resolvido = false;
 		this.ativo = true;
 		this.dataNotificacao = new Date();
@@ -119,17 +124,13 @@ public class Notificacao extends GenericModel {
 		this.prazoNotificacao = notificacao.prazoNotificacao;
 		this.documentos = new ArrayList<>();
 
-		ParecerAnalistaGeo parecerAnalistaGeo = ParecerAnalistaGeo.find("analiseGeo", analiseGeo).first();
-
-		if(parecerAnalistaGeo != null) {
-			this.justificativa = parecerAnalistaGeo.parecer;
+		if(this.documentos != null && !this.documentos.isEmpty()) {
+			documentos.stream().forEach(documento -> {
+				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
+					this.documentos.add(documento);
+				}
+			});
 		}
-
-		documentos.stream().forEach(documento -> {
-			if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
-				this.documentos.add(documento);
-			}
-		});
 
 	}
 
@@ -410,6 +411,12 @@ public class Notificacao extends GenericModel {
 			notificacao.historicoTramitacao = historicoTramitacao;
 			notificacao._save();
 		}
+	}
+
+	public void setJustificativa(){
+
+		this.justificativa = this.parecerAnalistaGeo.parecer;
+
 	}
 
 	public Date getDataNotificacao(){

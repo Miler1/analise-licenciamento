@@ -90,14 +90,14 @@ POST    /inconsistencia/findInconsistencia                                      
 GET     /inconsistencia/findInconsistenciaById/{id}                                 Inconsistencias.findById
 GET     /inconsistencia/excluirInconsistencia/{id}                                  Inconsistencias.excluirInconsistencia
 
-POST    /analisesGeo/comunicado/salvarParecerOrgao                                  Comunicados.salvarParecerOrgao
-GET     /analisesGeo/comunicado/findComunicado/{id}                                 Comunicados.findComunicado
-GET     /analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/{id}             Comunicados.findByIdSobreposicaoEmpreendimento
-GET     /analisesGeo/comunicado/findByIdSobreposicaoAtividade/{id}             Comunicados.findByIdSobreposicaoAtividade
-GET     /analisesGeo/comunicado/findByIdSobreposicaoComplexo/{id}             Comunicados.findByIdSobreposicaoComplexo
-GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                 Comunicados.listaComunicadosByIdAnaliseGeo
-POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                       AnalisesGeo.buscaDadosProcesso
-GET     /analisesGeo/restricao/findAllById/{idProcesso}                             AnalisesGeo.findAllRestricoesById
+POST    /analisesGeo/comunicado/salvarParecerOrgao                                                                      Comunicados.salvarParecerOrgao
+GET     /analisesGeo/comunicado/findComunicado/{id}                                                                     Comunicados.findComunicado
+GET     /analisesGeo/comunicado/findComunicadoByIdAnaliseGeoEmpreendimento/{idAnaliseGeo}/{idEmpreendimento}            Comunicados.findComunicadoByIdAnaliseGeoEmpreendimento
+GET     /analisesGeo/comunicado/findComunicadoByIdAnaliseGeoAtividade/{idAnaliseGeo}/{idAtividade}                      Comunicados.findComunicadoByIdAnaliseGeoAtividade
+GET     /analisesGeo/comunicado/findComunicadoByIdAnaliseGeoComplexo/{idAnaliseGeo}/{idComplexo}                        Comunicados.findComunicadoByIdAnaliseGeoComplexo
+GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                                                     Comunicados.listaComunicadosByIdAnaliseGeo
+POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                                                           AnalisesGeo.buscaDadosProcesso
+GET     /analisesGeo/restricao/findAllById/{idProcesso}                                                                 AnalisesGeo.findAllRestricoesById
 
 # Pareceres
 POST    /parecer/gerente/concluirParecerGerente                                                                     PareceresGerentes.concluirParecerGerente
