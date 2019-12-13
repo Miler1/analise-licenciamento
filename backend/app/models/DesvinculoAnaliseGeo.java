@@ -153,6 +153,7 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), usuarioSessao);
 
         DesvinculoAnaliseGeo desvinculoAnaliseGeo = DesvinculoAnaliseGeo.findById(this.id);
+        this.dataResposta = new Date();
         desvinculoAnaliseGeo.update(this);
 
     }
