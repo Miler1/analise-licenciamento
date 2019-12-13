@@ -224,7 +224,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 			}
 
-			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this, this.analiseGeo.documentos);
+			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseGeo.documentos);
 			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, this.analiseGeo.analise.processo.numero);
 
 			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, "Notificado");
