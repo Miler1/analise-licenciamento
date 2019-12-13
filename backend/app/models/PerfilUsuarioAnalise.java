@@ -1,5 +1,6 @@
 package models;
 
+import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -25,5 +26,16 @@ public class PerfilUsuarioAnalise extends GenericModel {
 
 	@Column(name="nome_perfil")
 	public String nomeCodigo;
+
+	public PerfilUsuarioAnalise (Perfil perfil, UsuarioAnalise usuarioAnalise){
+
+		this.usuarioAnalise = UsuarioAnalise.findById(usuarioAnalise.id);
+		this.codigoPerfil = perfil.codigo;
+		this.nomeCodigo = perfil.nome;
+	}
+
+	public PerfilUsuarioAnalise (){
+
+	}
 
 }

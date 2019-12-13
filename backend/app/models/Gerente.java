@@ -6,7 +6,6 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import utils.Mensagem;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -111,6 +110,37 @@ public class Gerente extends GenericModel {
 
 	public static Gerente distribuicaoAutomaticaGerente(String setorAtividade, AnaliseGeo analiseGeo) {
 
+		UsuarioAnalise.atualizaUsuariosAnalise();
+
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
+
+		if (usuariosAnalise == null || usuariosAnalise.size() == 0)
+			throw new WebServiceException(Mensagem.NENHUM_GERENTE_ENCONTRADO.getTexto());
+
+		List<Long> idsGerentes = usuariosAnalise.stream()
+				.map(ang->ang.id)
+				.collect(Collectors.toList());
+
+		String parameter = "ARRAY["+ getParameterLongAsStringDBArray(idsGerentes) +"]";
+
+		String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest("+parameter+") as id_usuario ORDER BY id_usuario), " +
+				"     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.gerente ge) LIMIT 1), " +
+				"     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.gerente " +
+				"        WHERE id_usuario in ("+ getParameterLongAsStringDBArray(idsGerentes) +") " +
+				"        GROUP BY id_usuario " +
+				"        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
+				"SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+
+		Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
+
+		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
+
+		return new Gerente(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
+
+	}
+
+	public static Gerente distribuicaoAutomaticaGerenteAnaliseTecnica(String setorAtividade, AnaliseTecnica analiseTecnica) {
+
 		List<UsuarioAnalise> gerentes = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
 
 		if (gerentes == null || gerentes.size() == 0)
@@ -134,7 +164,7 @@ public class Gerente extends GenericModel {
 
 		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
 
-		return new Gerente(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
+		return new Gerente(analiseTecnica, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
 
 	}
 

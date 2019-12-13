@@ -1,6 +1,7 @@
 package models;
 
 import exceptions.AppException;
+import exceptions.PortalSegurancaException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
@@ -19,14 +20,14 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
 
     private AnaliseGeo analiseGeo;
     private ParecerAnalistaGeo parecerAnalistaGeo;
-    private Documento pdfNotificacao;
+    private List<Documento> pdfsNotificacao;
 
     public EmailNotificacaoAnaliseGeo(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, List<String> emailsDestinatarios, Notificacao notificacao) throws Exception {
 
         super(emailsDestinatarios);
         this.analiseGeo = analiseGeo;
         this.parecerAnalistaGeo = parecerAnalistaGeo;
-        this.pdfNotificacao = analiseGeo.gerarPDFNotificacao(analiseGeo);
+        this.pdfsNotificacao = analiseGeo.gerarPDFNotificacao(analiseGeo);
 
     }
 
@@ -51,15 +52,11 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
             main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
 
-            Endereco enderecoCompleto = null;
+            final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
-            for(Endereco endereco : empreendimentoEU.enderecos){
-                if(endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)) {
-                    enderecoCompleto = endereco;
-                }
-            }
 
-            if(!Emails.notificarRequerenteAnaliseGeo(this.emailsDestinatarios, licencas, this.analiseGeo, this.parecerAnalistaGeo, enderecoCompleto, this.pdfNotificacao.arquivo).get()) {
+
+            if(!Emails.notificarRequerenteAnaliseGeo(this.emailsDestinatarios, licencas, this.analiseGeo, this.parecerAnalistaGeo, enderecoCompleto, this.pdfsNotificacao).get()) {
 
                 throw new AppException();
 

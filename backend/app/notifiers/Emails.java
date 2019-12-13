@@ -32,7 +32,7 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> notificarRequerenteAnaliseGeo(List<String> destinatarios, String licencas,
-																AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, File pdfNotificacao) {
+																AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, List<Documento> pdfsNotificacao) {
 
 		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -40,9 +40,14 @@ public class Emails extends Mailer {
 
 			addRecipient(email);
 		}
-		EmailAttachment attachment = new EmailAttachment();
-		attachment.setPath(new File(pdfNotificacao.getPath()).getPath());
-		addAttachment(attachment);
+
+		pdfsNotificacao.stream().forEach(pdfNotificacao -> {
+
+            EmailAttachment attachment = new EmailAttachment();
+			attachment.setPath(new File(pdfNotificacao.arquivo.getPath()).getPath());
+			addAttachment(attachment);
+
+		});
 
 		return send(licencas, analiseGeo, parecerAnalistaGeo, enderecoCompleto);
 

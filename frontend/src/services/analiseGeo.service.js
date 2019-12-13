@@ -59,24 +59,24 @@ var AnaliseGeoService = function(request, $window ,config) {
 			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/" + params);
 	};
 
-	this.getComunicadoByIdSobreposicaoEmpreendimento = function(id) {
+	this.getComunicadoByIdAnaliseGeoEmpreendimento = function(idAnaliseGeo, idEmpreendimento) {
 
 		return request
-			.get(config.BASE_URL() + "analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/" + id);
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoEmpreendimento/" + idAnaliseGeo + "/" + idEmpreendimento);
 
 	};
 
-	this.getComunicadoByIdSobreposicaoAtividade = function(id) {
+	this.getComunicadoByIdAnaliseGeoAtividade = function(idAnaliseGeo, idAtividade) {
 
 		return request
-			.get(config.BASE_URL() + "analisesGeo/comunicado/findByIdSobreposicaoAtividade/" + id);
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoAtividade/" + idAnaliseGeo + "/" + idAtividade);
 
 	};
 
-	this.getComunicadoByIdSobreposicaoComplexo = function(id) {
+	this.getComunicadoByIdAnaliseGeoComplexo = function(idAnaliseGeo, idComplexo) {
 
 		return request
-			.get(config.BASE_URL() + "analisesGeo/comunicado/findByIdSobreposicaoComplexo/" + id);
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoComplexo/" + idAnaliseGeo + "/" + idComplexo);
 
 	};
 

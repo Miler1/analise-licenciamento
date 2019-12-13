@@ -100,6 +100,16 @@ public class DateUtil {
        return st;
 				       
 
-	}	
+	}
+
+	public static Date somaDiasEmData(Date data, Integer prazo) {
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(data);
+		c.add(Calendar.DAY_OF_MONTH, prazo);
+
+		return c.getTime();
+
+	}
 
 }

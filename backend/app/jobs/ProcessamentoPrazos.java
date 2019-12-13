@@ -14,6 +14,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
+import utils.DateUtil;
 import utils.Mensagem;
 
 import java.util.*;
@@ -22,13 +23,12 @@ import java.util.*;
 public class ProcessamentoPrazos extends GenericJob {
 
 	@Override
-	public void executar() throws Exception {
+	public void executar() {
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoPrazos:: [INICIO-JOB]");
 		contarDiasAnalise();
 		verificaPrazoSuspensao();
 		Logger.info("[FIM-JOB] ::ProcessamentoPrazos:: [FIM-JOB]");
-
 
 	}
 
@@ -40,37 +40,50 @@ public class ProcessamentoPrazos extends GenericJob {
 
 			for (Analise analise : analises) {
 
-				if (!ObjetoTramitavel.validaCondicao(analise.processo.idObjetoTramitavel, 6L)) {
+				if (!ObjetoTramitavel.validaCondicao(analise.processo.idObjetoTramitavel, Condicao.ARQUIVADO)) {
 
-					DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
-					analise.diasAnalise = verificaDiasAnalise;
+					DiasAnalise diasAnalise = DiasAnalise.find("analise.id", analise.id).first();
+					analise.diasAnalise = diasAnalise;
 
-					if (verificaDiasAnalise != null) {
+					if (diasAnalise != null) {
 
-						if (analise.temNotificacaoAberta) {
+						if (analise.getAnaliseGeo() != null) {
 
-							if (analise.diasAnalise.qtdeDiasNotificacao == null) {
+							if (analise.analiseGeo.dataFim == null) {
 
-								analise.diasAnalise.qtdeDiasNotificacao = 0;
+								if (analise.diasAnalise.qtdeDiasGeo == null) {
+									analise.diasAnalise.qtdeDiasGeo = 0;
+								}
+
+								analise.diasAnalise.preencheDiasAnaliseGeo();
 
 							} else {
 
-								Notificacao notificacao = null;
+								// TODO: VERIFICAR
 
-								if (analise.analiseTecnica != null) {
+								if (analise.analiseGeo.dataFimValidacaoAprovador == null) {
 
-									notificacao = Notificacao.find("analiseTecnica.id", analise.analiseTecnica.id).first();
+									if (analise.diasAnalise.qtdeDiasAprovador == null) {
+										analise.diasAnalise.qtdeDiasAprovador = 0;
+									}
 
-								} else if (analise.analiseJuridica != null) {
+									int verificaDiasAprovadorCorretos = CalculaDiferencaDias(analise.analiseGeo.dataFim, new Date());
+									int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
 
-									notificacao = Notificacao.find("analiseJuridica.id", analise.analiseJuridica.id).first();
+									if (verificaDiasAprovadorCorretos != diasAnalise.qtdeDiasAprovador) {
+
+										analise.diasAnalise.qtdeDiasAprovador += 1;
+
+									}
+
+									if (verificaDiasCorretos != diasAnalise.qtdeDiasAnalise) {
+
+										analise.diasAnalise.qtdeDiasAnalise += 1;
+
+									}
+
 								}
 
-								if (notificacao != null) {
-
-									int verificaDiasCorretos = CalculaDiferencaDias(notificacao.dataNotificacao, new Date());
-									analise.diasAnalise.qtdeDiasNotificacao = verificaDiasCorretos;
-								}
 							}
 
 						} else if (analise.getAnaliseTecnica() != null) {
@@ -81,19 +94,15 @@ public class ProcessamentoPrazos extends GenericJob {
 									analise.diasAnalise.qtdeDiasTecnica = 0;
 								}
 								int verificaDiasTecnicosCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
-								int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
 
-								if (verificaDiasTecnicosCorretos != verificaDiasAnalise.qtdeDiasTecnica) {
+								if (verificaDiasTecnicosCorretos != diasAnalise.qtdeDiasTecnica) {
 
-									analise.diasAnalise.qtdeDiasTecnica += 1;
-								}
-
-								if (verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
-
-									analise.diasAnalise.qtdeDiasAnalise += 1;
+									analise.diasAnalise.qtdeDiasTecnica = verificaDiasTecnicosCorretos;
 								}
 
 							} else {
+
+								// TODO: VERIFICAR
 
 								if (analise.analiseTecnica.dataFimValidacaoAprovador == null) {
 
@@ -104,12 +113,12 @@ public class ProcessamentoPrazos extends GenericJob {
 									int verificaDiasAprovadorCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataFim, new Date());
 									int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
 
-									if (verificaDiasAprovadorCorretos != verificaDiasAnalise.qtdeDiasAprovador) {
+									if (verificaDiasAprovadorCorretos != diasAnalise.qtdeDiasAprovador) {
 
 										analise.diasAnalise.qtdeDiasAprovador += 1;
 									}
 
-									if (verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
+									if (verificaDiasCorretos != diasAnalise.qtdeDiasAnalise) {
 
 										analise.diasAnalise.qtdeDiasAnalise += 1;
 									}
@@ -118,35 +127,21 @@ public class ProcessamentoPrazos extends GenericJob {
 							}
 
 
-						} else if (analise.getAnaliseJuridica() != null) {
-
-							if (analise.analiseJuridica.dataFim == null) {
-
-								if (analise.diasAnalise.qtdeDiasJuridica == null) {
-									analise.diasAnalise.qtdeDiasJuridica = 0;
-								}
-
-								int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
-
-								if (verificaDiasCorretos != verificaDiasAnalise.qtdeDiasJuridica) {
-
-									analise.diasAnalise.qtdeDiasJuridica += 1;
-									analise.diasAnalise.qtdeDiasAnalise += 1;
-								}
-
-							}
 						}
-
 
 					} else {
 
-						DiasAnalise diasAnalise = new DiasAnalise(analise);
-						analise.diasAnalise = diasAnalise;
+						analise.diasAnalise = new DiasAnalise(analise);
+
 					}
 
+					analise.diasAnalise.qtdeDiasAnalise = DateUtil.getDiferencaEmDias(analise.dataCadastro, new Date());
 					analise.diasAnalise.save();
+
 				}
+
 			}
+
 		}
 
 	}
@@ -157,6 +152,7 @@ public class ProcessamentoPrazos extends GenericJob {
 		LocalDate dataFim = new LocalDate(dataFinal.getTime());
 
 		return Days.daysBetween(dataInicio, dataFim).getDays();
+
 	}
 
 	public void verificaPrazoSuspensao() {
@@ -261,6 +257,5 @@ public class ProcessamentoPrazos extends GenericJob {
 
 		return cal.getTime();
 	}
-
 
 }

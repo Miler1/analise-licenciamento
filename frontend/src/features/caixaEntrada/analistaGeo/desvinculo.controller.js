@@ -4,7 +4,7 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
     desvinculoController.respondido =null;
     desvinculoController.errorJustificativa = false;
 
-        desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
+        desvinculoService.buscarDesvinculoPeloProcessoGeo(idProcesso)
         .then(function(response){
 
             desvinculoController.justificativa = response.data.respostaGerente;
@@ -39,7 +39,7 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
         }
         
 
-        desvinculoService.solicitarDesvinculo(params)
+        desvinculoService.solicitarDesvinculoAnaliseGeo(params)
             .then(function(response){
 
                 $rootScope.$broadcast('rootPesquisarProcessos');

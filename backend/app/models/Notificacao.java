@@ -37,6 +37,10 @@ public class Notificacao extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_analise_geo", nullable=true)
 	public AnaliseGeo analiseGeo;
+
+	@OneToOne
+	@JoinColumn(name="id_parecer_analista_geo", nullable=true)
+	public ParecerAnalistaGeo parecerAnalistaGeo;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
@@ -59,9 +63,6 @@ public class Notificacao extends GenericModel {
 
 	@Column(name="codigo_ano")
 	public Integer codigoAno;
-
-	@Column(name="justificativa")
-	public String justificativa;
 	
 	@Column(name="data_notificacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -105,11 +106,19 @@ public class Notificacao extends GenericModel {
 	@Column(name="justificativa_retificacao_solicitacao")
 	public String justificativaRetificacaoSolicitacao;
 
-	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos){
+	@Column(name="segundo_email_enviado")
+	public Boolean segundoEmailEnviado;
+
+	@Transient
+	public String justificativa;
+
+	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos, ParecerAnalistaGeo parecerAnalistaGeo){
+		
 		this.analiseGeo = analiseGeo;
+		this.parecerAnalistaGeo = parecerAnalistaGeo;
 		this.resolvido = false;
 		this.ativo = true;
-		this.dataNotificacao = new Date();
+		this.dataNotificacao = notificacao.dataNotificacao;
 		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
 		this.documentacao = notificacao.documentacao;
 		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
@@ -117,18 +126,15 @@ public class Notificacao extends GenericModel {
 		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
 		this.prazoNotificacao = notificacao.prazoNotificacao;
 		this.documentos = new ArrayList<>();
+		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
-		ParecerAnalistaGeo parecerAnalistaGeo = ParecerAnalistaGeo.find("analiseGeo", analiseGeo).first();
-
-		if(parecerAnalistaGeo != null) {
-			this.justificativa = parecerAnalistaGeo.parecer;
+		if(this.documentos != null && !this.documentos.isEmpty()) {
+			documentos.stream().forEach(documento -> {
+				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
+					this.documentos.add(documento);
+				}
+			});
 		}
-
-		documentos.stream().forEach(documento -> {
-			if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
-				this.documentos.add(documento);
-			}
-		});
 
 	}
 
@@ -409,6 +415,12 @@ public class Notificacao extends GenericModel {
 			notificacao.historicoTramitacao = historicoTramitacao;
 			notificacao._save();
 		}
+	}
+
+	public void setJustificativa(){
+
+		this.justificativa = this.parecerAnalistaGeo.parecer;
+
 	}
 
 	public Date getDataNotificacao(){

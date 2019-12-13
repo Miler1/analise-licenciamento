@@ -13,7 +13,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.visualizarProcesso = visualizarProcesso;
 	consultarProcesso.visualizarNotificacao = visualizarNotificacao;
 
-	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
+	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO;
 
 	consultarProcesso.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	consultarProcesso.processos = [];
@@ -85,6 +85,25 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 					consultarProcesso.PrazoMinimoAvisoAnalise[tipoAnalise]);
 	}
 
+	consultarProcesso.getPrazoAnaliseGeo = function(processo) {
+
+		if(processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GERENTE ||
+			processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || 
+			processo.dataConclusaoAnaliseGeo) {
+
+			return 'Concluída';
+
+		} else if(processo.idCondicaoInicialHistoricoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GEO &&
+				processo.idCondicaoFinalHistoricoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_ANALISE_GEO) {
+
+			return parseInt(consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)) + processo.diasCongelamento;
+
+		}
+
+		return consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo);
+
+	};
+
 	consultarProcesso.downloadPDFparecer = function (processo) {
 
 		var params = {
@@ -117,6 +136,30 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 			},function(error){
 				mensagem.error(error.data.texto);
 			});
+	};
+
+	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
+
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
+		var status = true;
+		
+		// Verificar permissões de status para cada perfil
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+
+			CONSULTAR_PROTOCOLO_ANALISTA_GEO.forEach(function(condicao){
+
+				if(idCondicaoTramitacao === condicao) {
+
+					status = false;
+
+				}
+
+			});
+
+		}
+
+		return status;
+
 	};
 
 };

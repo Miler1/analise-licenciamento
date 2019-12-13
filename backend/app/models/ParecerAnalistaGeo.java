@@ -5,11 +5,13 @@ import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
 import models.licenciamento.SobreposicaoCaracterizacaoComplexo;
 import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import models.licenciamento.StatusCaracterizacaoEnum;
+
+import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -21,6 +23,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
+import static models.tramitacao.Condicao.AGUARDANDO_RESPOSTA_COMUNICADO;
 import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE;
 
 @Entity
@@ -116,12 +119,29 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 	}
 
-	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
+	public void aguardarResposta(UsuarioAnalise usuarioExecutor){
 
 		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
 
+		analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
+	}
+
+
+	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
+
+		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
+		Boolean possuiComunicado = false;
+		
 		validarParecer();
 		validarTipoResultadoAnalise();
+
+		this.usuario = usuarioExecutor;
+		this.dataParecer = new Date();
+
+		if(this.documentos != null && !this.documentos.isEmpty()) {
+			this.updateDocumentos(this.documentos);
+		}
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
@@ -135,19 +155,24 @@ public class ParecerAnalistaGeo extends GenericModel {
 				for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacaoEmpreendimento) {
 
 					if (sobreposicaoCaracterizacaoEmpreendimento != null){
-						analiseGeoBanco.enviarEmailComunicado(this.analiseGeo.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento);
+
+						possuiComunicado = analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento, possuiComunicado);
 					}
 
 				}
 
 			} else if (analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(ATIVIDADE)){
 
-				List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade =  analiseGeoBanco.analise.processo.caracterizacao.atividadesCaracterizacao.stream().map(atividadeCaracterizacao -> atividadeCaracterizacao.sobreposicaoCaracterizacaoAtividade).collect(Collectors.toList());
+				List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade = new ArrayList<>();
+				analiseGeoBanco.analise.processo.caracterizacao.atividadesCaracterizacao.stream()
+						.filter(atividadeCaracterizacao -> !atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade.isEmpty())
+						.forEach(atividadeCaracterizacao -> sobreposicoesCaracterizacaoAtividade.addAll(atividadeCaracterizacao.sobreposicoesCaracterizacaoAtividade));
 
 				for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
 
 					if(sobreposicaoCaracterizacaoAtividade != null){
-						analiseGeoBanco.enviarEmailComunicado(this.analiseGeo.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade);
+
+						possuiComunicado = analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade, possuiComunicado);
 					}
 
 				}
@@ -160,17 +185,25 @@ public class ParecerAnalistaGeo extends GenericModel {
 				for (SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo : sobreposicoesCaracterizacaoComplexo) {
 
 					if(sobreposicaoCaracterizacaoComplexo != null){
-						analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoComplexo);
+
+						possuiComunicado = analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoComplexo, possuiComunicado);
 					}
 
 				}
 
 			}
 
-			gerente.save();
+			if (possuiComunicado) {
 
-			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
-			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
+				this.aguardarResposta(usuarioExecutor);
+				analiseGeoBanco.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
+			} else {
+
+				gerente.save();
+
+				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
+			}
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
@@ -188,25 +221,19 @@ public class ParecerAnalistaGeo extends GenericModel {
 			if (notificacoes.size() != 1) {
 
 				throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+
 			}
 
 			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this, this.analiseGeo.documentos);
-			analiseGeoBanco.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, this.analiseGeo.analise.processo.numero);
+			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, this.analiseGeo.analise.processo.numero);
 
 			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, "Notificado");
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		}
 
-		this.usuario = usuarioExecutor;
-		this.dataParecer = new Date();
-
 		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id);
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
-
-		if(this.documentos != null && !this.documentos.isEmpty()) {
-			this.updateDocumentos(this.documentos);
-		}
 
 		this._save();
 

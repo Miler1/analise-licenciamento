@@ -1,7 +1,7 @@
 var AnaliseEmAndamentoGeoListController = function($scope, config, $location, 
 												   $rootScope, processoService,
-												   analiseGeoService, mensagem,
-												   $uibModal) {
+												   analiseGeoService, parecerGerenteService,
+												   mensagem, $uibModal) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE GEO';
 
@@ -87,7 +87,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	
 	function visualizarSolicitacaoAjustes(processo) {
 
-		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+		parecerGerenteService.findJustificativaParecerByIdAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
 
 				$uibModal.open({
@@ -97,7 +97,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 					templateUrl: 'components/modalVisualizarSolicitacaoAjustes/modalVisualizarSolicitacaoAjustes.html',
 					size: 'lg',
 					resolve: {
-						analiseGeo: function () {
+						justificativa: function () {
 							return response.data;
 						}
 						

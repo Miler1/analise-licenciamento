@@ -33,8 +33,8 @@ div
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{cxEntAnalistaTecnico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntAnalistaTecnico.PrazoAnalise.ANALISE)}}
+							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimoData(cxEntAnalistaTecnico.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntAnalistaTecnico.PrazoAnalise.ANALISE), cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ cxEntAnalistaTecnico.dateUtil.getContaDiasRestantesData(cxEntAnalistaTecnico.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntAnalistaTecnico.PrazoAnalise.ANALISE)) }}
 							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{ cxEntAnalistaTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica, cxEntAnalistaTecnico.PrazoAnalise.ANALISE_TECNICA) }}
 							td
@@ -50,7 +50,7 @@ div
 													i.glyphicon.glyphicon-ok-circle
 													span Iniciar análise
 											li
-												a(ng-click="cxEntAnalistaTecnico.solicitacaoDesvinculo(processo)")
+												a(ng-click="cxEntAnalistaTecnico.solicitarDesvinculoAnaliseTecnica(processo)")
 													i.glyphicon.glyphicon-link
 													span Solicitação de desvínculo
 											li

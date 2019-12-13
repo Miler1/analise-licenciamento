@@ -28,6 +28,18 @@ public class GeometriaAtividadeVO {
 
 	}
 
+	public GeometriaAtividadeVO(Geometry geometria, CamadaGeoEnum camadaGeoEnum) {
+
+		Processo.indexDadosGeometriasComplexo++;
+
+		this.geometria = geometria;
+		this.item = camadaGeoEnum.nome + "_" + Processo.indexDadosGeometriasComplexo;
+		this.tipo = camadaGeoEnum.tipo;
+		this.descricao = Processo.getDescricao(geometria);
+		this.area = GeoCalc.area(geometria);
+
+	}
+
 	public GeometriaAtividadeVO(String item, String tipo, String descricao, Double area, Geometry geometria) {
 
 		this.item = item;

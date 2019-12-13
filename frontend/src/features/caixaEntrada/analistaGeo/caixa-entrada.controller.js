@@ -66,7 +66,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	}
 
 
-	cxEntAnalistaGeo.solicitarDesvinculo =  function(processo){
+	cxEntAnalistaGeo.solicitarDesvinculoAnaliseGeo =  function(processo){
 
 				$uibModal.open({
 					controller: 'desvinculoController',
