@@ -7,14 +7,27 @@ var ModalVisualizarQuestionario = {
 		dismiss: '&'
 	},
 
-	controller: function(mensagem, analiseJuridicaService, $scope, documentoAnaliseService) {
+	controller: function(questionarioService) {
 
         var ctrl = this;
         
         ctrl.$onInit =  function() {
+			
+			questionarioService.getQuestionario(ctrl.resolve.idProcesso)
+				.then(function(response){
+					tratarDadosQuestionario(response.data);
+					ctrl.questionario = response.data;
+			});
 
-            ctrl.questionario = ctrl.resolve.questionario;
-        };
+		};
+		
+		function tratarDadosQuestionario(questionario) {
+			if(questionario){
+				questionario.consumoAgua = questionario.consumoAgua ? "true" : "false";
+				questionario.efluentes = questionario.efluentes ? "true" : "false";
+				questionario.residuosSolidos = questionario.residuosSolidos ? "true" : "false";
+			}
+		}
 
 		ctrl.fechar = function() {
 

@@ -30,11 +30,4 @@ public class InconsistenciaTecnicaTipoLicenca extends GenericModel{
 	@JoinColumn(name="id_inconsistencia_tecnica")
 	public InconsistenciaTecnica inconsistenciaTecnica;
 
-
-	public InconsistenciaTecnicaTipoLicenca (TipoLicenca tipoLicenca, InconsistenciaTecnica inconsistenciaTecnica){
-
-		this.tipoLicenca = tipoLicenca;
-		this.inconsistenciaTecnica = inconsistenciaTecnica;
-
-	}
 }

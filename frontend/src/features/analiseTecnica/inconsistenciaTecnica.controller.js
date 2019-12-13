@@ -8,6 +8,8 @@ var InconsistenciaTecnicaController = function (
     atividadeCaracterizacao, 
     parametroAtividade,
     questionario,
+    documentoAdministrativo,
+    documentoTecnicoAmbiental,
     $rootScope,
     inconsistenciaService,
     tipoDeInconsistenciaTecnica,
@@ -49,10 +51,15 @@ modalCtrl.init = function(){
 
         }else if(inconsistenciaTecnica.inconsistenciaTecnicaQuestionario != null){
             inconsistenciaTecnica.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica.QUESTIONARIO;
-            inconsistenciaTecnica.tipoDeInconsistenciaQuestionario.questionario = questionario;
+            inconsistenciaTecnica.inconsistenciaTecnicaQuestionario.questionario = questionario;
             
-        }else if(inconsistenciaTecnica.inconsistenciaTecnicaDocumento != null){
-            inconsistenciaTecnica.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica.DOCUMENTO;
+        }else if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo != null){
+            inconsistenciaTecnica.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO;
+            inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo = documentoAdministrativo;
+
+        }else if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAdministrativo){
+            inconsistenciaTecnica.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL;
+            inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAdministrativo.documentoTecnicoAmbiental = documentoTecnicoAmbiental;
         }
 
         inconsistenciaService.findInconsistenciaTecnica(inconsistenciaTecnica.id)
@@ -169,14 +176,21 @@ modalCtrl.concluir = function() {
                 questionario: questionario
             };
 
-        }else if (modalCtrl.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO){
+        }else if (modalCtrl.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO){
+            params.inconsistenciaTecnicaDocumentoAdministrativo = {
+                documentoAdministrativo: documentoAdministrativo
+            };
             
+        }else if (modalCtrl.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL){
+            params.inconsistenciaTecnicaDocumentoTecnicoAdministrativo = {
+                documentosTecnicos: documentoTecnicoAmbiental
+            };
         }
 
         inconsistenciaService.salvarInconsistenciaTecnica(params)
             .then(function(response){
                 mensagem.success("Inconsistência salva com sucesso!");
-                $rootScope.$broadcast('atualizarMarcacaoInconsistencia', tipoDeInconsistenciaTecnica);
+                $rootScope.$broadcast('atualizarMarcacaoInconsistencia', tipoDeInconsistenciaTecnica, parametro, documentoAdministrativo, documentoTecnicoAmbiental);
                 modalCtrl.fechar();
 
             }).catch(function(response){

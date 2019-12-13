@@ -1,8 +1,10 @@
 package models.licenciamento;
 
+import models.Comunicado;
 import models.Processo;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import serializers.ComunicadoSerializer;
 import utils.Identificavel;
 
 import javax.persistence.*;

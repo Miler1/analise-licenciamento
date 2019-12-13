@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 @Entity
-@Table(schema="analise", name="inconsistencia_tecnica_parametro")
-public class InconsistenciaTecnicaParametro extends GenericModel{
+@Table(schema="analise", name="inconsistencia_tecnica_documento_administrativo")
+public class InconsistenciaTecnicaDocumentoAdministrativo extends GenericModel{
 
-	public static final String SEQ = "analise.inconsistencia_tecnica_parametro_id_seq";
+	public static final String SEQ = "analise.inconsistencia_tecnica_documento_administrativo_id_seq";
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
@@ -27,7 +27,7 @@ public class InconsistenciaTecnicaParametro extends GenericModel{
 	public InconsistenciaTecnica inconsistenciaTecnica;
 
 	@OneToOne
-	@JoinColumn(name="id_parametro")
-	public ParametroAtividade parametroAtividade;
+	@JoinColumn(name="id_documento_administrativo")
+	public SolicitacaoDocumentoCaracterizacao documentoAdministrativo;
 
 }

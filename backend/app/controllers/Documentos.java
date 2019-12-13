@@ -16,9 +16,7 @@ import java.io.IOException;
 public class Documentos extends InternalController {
 
    public static void download(Long id) {
-	   
-	   verificarPermissao(Acao.VALIDAR_PARECER_GEO,  Acao.INICIAR_PARECER_GEO);
-	   
+
 	   returnIfNull(id, "Long");
 	   
 	   Documento documento = Documento.findById(id);
