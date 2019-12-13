@@ -121,7 +121,7 @@ public class Notificacao extends GenericModel {
 		this.parecerAnalistaGeo = parecerAnalistaGeo;
 		this.resolvido = false;
 		this.ativo = true;
-		this.dataNotificacao = notificacao.dataNotificacao;
+		this.dataNotificacao = new Date();
 		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
 		this.documentacao = notificacao.documentacao;
 		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;

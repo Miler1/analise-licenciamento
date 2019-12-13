@@ -1175,7 +1175,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		ctrl.notificacao.retificacaoSolicitacao = ctrl.notificacao.retificacaoSolicitacao === null ? false : true;
 		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
 		ctrl.notificacao.segundoEmailEnviado = false;
-		ctrl.notificacao.dataNotificacao = new Date();
 		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
 
 	}
