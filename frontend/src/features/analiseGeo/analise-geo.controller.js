@@ -31,9 +31,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoSolicitacao = null;
 	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	ctrl.notificacao.prazoNotificacao = null;
-	ctrl.errors = {
-		isPdf: false
-	}
 	ctrl.tiposUpload = app.utils.TiposUpload;
 	ctrl.labelDadosProjeto = '';
 	ctrl.openedAccordionEmpreendimento = false;
@@ -52,7 +49,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		resultadoAnalise: false,
 		prazoNotificacao: false,
 		docAnaliseTemporal:false,
-		atendimento: false
+		atendimento: false,
+		isPdf: false
 	};
 
 	var getLayer = function(descricao){
