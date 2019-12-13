@@ -24,7 +24,6 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
-
 import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.io.File;

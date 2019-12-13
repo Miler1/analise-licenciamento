@@ -74,7 +74,7 @@
 
 		.equipe
 			label.control-label Informe a equipe técnica para vistoria:
-			select.form-control(ng-model="analistaSelecionado", ng-change="ctrl.adicionarAnalistaEquipe(analistaSelecionado)", ng-options="tecnico as tecnico.pessoa.nome for tecnico in ctrl.analistasTecnico | orderBy:'pessoa.nome' track by tecnico.id")
+			select.form-control(ng-model="analistaSelecionado", ng-change="ctrl.adicionarAnalistaEquipe(analistaSelecionado)", ng-options="tecnico as tecnico.usuario.pessoa.nome for tecnico in ctrl.analistasTecnico | orderBy:'usuario.pessoa.nome' track by tecnico.usuario.id")
 				option(value="") Selecione
 
 			.analistasSelecionados(ng-if="ctrl.analiseTecnica.vistoria.equipe.length > 0")
@@ -83,7 +83,7 @@
 					legend Selecionados
 
 					div
-						label.item-adicionado(ng-if="ctrl.analistasTecnico.length > 0", ng-repeat="analista in ctrl.analiseTecnica.vistoria.equipe track by analista.id") {{ analista.pessoa.nome }}
+						label.item-adicionado(ng-if="ctrl.analistasTecnico.length > 0", ng-repeat="analista in ctrl.analiseTecnica.vistoria.equipe track by analista.usuario.id") {{ analista.usuario.pessoa.nome }}
 							button(type="button", class="close", aria-label="Close", ng-click="ctrl.removerAnalistaEquipe(analista)")
 							span.pointer(aria-hidden="true") &nbsp;&times;
 

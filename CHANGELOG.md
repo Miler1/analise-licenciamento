@@ -21,7 +21,6 @@
 * OS40 - US846 - [Analista GEO] Eu, Analista Geo, ao baixar o parecer, devo visualizar a área do complexo, no tópico 2 (Das Áreas Resultantes da caracterização)
 * OS40 - US856 - [TODOS PERFIS] Eu, usuário do sistema devo ter meus perfis e setores sempre sincronizados entre EU e Análise Licenciamento.
 * OS40 - US848 - Eu, Analista Geo, devo analisar atividades/complexos fora do empreendimento, listar analistas de um mesmo setor e visualizar prazo gasto pelos analistas
-* OS40 - US769 - [Customizações análise GEO] Notificações
 
 ## OS44
 
