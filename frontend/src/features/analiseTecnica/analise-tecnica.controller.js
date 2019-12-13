@@ -73,7 +73,11 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
         analistaService.getAnalistasTecnicoBySetor()
         .then(function(response) {
-            ctrl.analistasTecnico = response.data;
+
+            response.data.forEach(function(analista){
+                ctrl.analistasTecnico.push({ usuario: analista });
+            });
+
         });
 
     };
@@ -145,10 +149,10 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
         if(!isAdded && analistaSelecionado) {
 
-            ctrl.analiseTecnica.vistoria.equipe.push({ usuario: analistaSelecionado });
+            ctrl.analiseTecnica.vistoria.equipe.push(analistaSelecionado);
 
             _.remove(ctrl.analistasTecnico, function(analista) {
-                return analista.id === analistaSelecionado.id;
+                return analista.usuario.id === analistaSelecionado.usuario.id;
             });
 
         }
@@ -169,7 +173,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
             ctrl.analistasTecnico.push(analistaSelecionado);
 
             _.remove(ctrl.analiseTecnica.vistoria.equipe, function(analista) {
-                return analista.usuario.id === analistaSelecionado.id;
+                return analista.usuario.id === analistaSelecionado.usuario.id;
             });
 
         }
@@ -198,7 +202,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
             }
 
-            if(ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === undefined || ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === null) {
+            if(ctrl.semInconsistenciaVistoria === null && (ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === undefined || ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === null)) {
 
                 ctrl.errors.vistoria.inconsistenciaVistoria = true;
 
@@ -240,6 +244,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
     ctrl.openModalInconsistencia = function() {
 
+        ctrl.semInconsistenciaVistoria = null;
         ctrl.limparErrosVistoria();
 
         $uibModal.open({
