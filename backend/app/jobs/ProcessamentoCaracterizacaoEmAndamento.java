@@ -25,6 +25,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		// Licenças com status EM_ANALISE
 		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 
+		UsuarioAnalise.atualizaUsuariosAnalise();
 		caracterizacoesProcessadas = new ArrayList<>();
 
 		caracterizacoes.forEach(this::processarCaracterizacao);
@@ -70,9 +71,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		processo.renovacao = renovacao;
 
 		criarNovoDiasAnalise(analise);
-		AnaliseGeo analiseGeo = criarNovaAnaliseGeo(analise);
 
-		if(analiseGeo == null) {
+		if(criarNovaAnaliseGeo(analise) == null) {
 
 			rollbackTransaction();
 			return;

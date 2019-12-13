@@ -87,8 +87,6 @@ public class AnalistaGeo extends GenericModel {
 
 	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		UsuarioAnalise.atualizaUsuariosAnalise();
-
 		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
 		if (usuariosAnalise.isEmpty()) {
