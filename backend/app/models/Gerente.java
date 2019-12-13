@@ -1,15 +1,11 @@
 package models;
 
 import exceptions.PermissaoNegadaException;
-import exceptions.PortalSegurancaException;
 import models.EntradaUnica.CodigoPerfil;
-import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
-import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Mensagem;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
