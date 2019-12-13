@@ -106,8 +106,7 @@ public class Login extends GenericController {
 
 			UsuarioAnalise.atualizaUsuariosAnalise();
 
-
-		}
+		}w
 
 		if (usuarioAnalise.perfis == null || usuarioAnalise.perfis.isEmpty() || usuarioAnalise.setores == null || usuarioAnalise.setores.isEmpty()) {
 

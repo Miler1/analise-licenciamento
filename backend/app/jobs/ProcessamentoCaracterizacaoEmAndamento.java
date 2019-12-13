@@ -13,6 +13,8 @@ import java.util.*;
 @On("cron.processamentoCaracterizacoesEmAndamento")
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
+	private List<Caracterizacao> caracterizacoesProcessadas;
+
 	@Override
 	public void executar() {
 
@@ -23,9 +25,13 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		// Licenças com status EM_ANALISE
 		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 
+		caracterizacoesProcessadas = new ArrayList<>();
+
 		caracterizacoes.forEach(this::processarCaracterizacao);
 
-		licenciamentoWS.adicionarCaracterizacoesEmAnalise(ListUtil.getIdsAsArray(caracterizacoes));
+		if(!caracterizacoes.isEmpty()) {
+			licenciamentoWS.adicionarCaracterizacoesEmAnalise(ListUtil.getIdsAsArray(caracterizacoesProcessadas));
+		}
 
 		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
 
@@ -48,7 +54,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			// Carrega processo anterior
 			Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao.idCaracterizacaoOrigem, caracterizacao.id));
 			processoAnterior = Processo.find("numero = :num ORDER BY id DESC")
-					.setParameter("num",anterior.numero).first();
+					.setParameter("num", anterior.numero).first();
 
 			// Arquiva o processo anterior
 			if (retificacao) {
@@ -69,17 +75,12 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		if(analiseGeo == null) {
 
 			rollbackTransaction();
+			return;
 
 		}
 
-		Boolean deveTramitar = analiseGeo != null;
-		
-		if (deveTramitar) {
-
-			processo.save();
-
-		}
-
+		processo.save();
+		caracterizacoesProcessadas.add(caracterizacao);
 		commitTransaction();
 
 	}
@@ -175,8 +176,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
 		AnalistaGeo analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
-
-		commitTransaction();
 
 		if(analistaGeo == null) {
 			return null;

@@ -1,8 +1,6 @@
 package models;
 
 import java.util.List;
-
-import models.licenciamento.AtividadeCaracterizacao;
 import models.licenciamento.Caracterizacao;
 import static models.Inconsistencia.Categoria;
 
