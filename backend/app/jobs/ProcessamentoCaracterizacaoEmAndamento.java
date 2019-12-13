@@ -29,7 +29,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		caracterizacoes.forEach(this::processarCaracterizacao);
 
-		if(!caracterizacoes.isEmpty()) {
+		if(!caracterizacoesProcessadas.isEmpty()) {
 			licenciamentoWS.adicionarCaracterizacoesEmAnalise(ListUtil.getIdsAsArray(caracterizacoesProcessadas));
 		}
 
