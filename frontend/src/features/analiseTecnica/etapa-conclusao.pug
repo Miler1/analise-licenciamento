@@ -66,3 +66,4 @@ hr
 
                     a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                         i.glyphicon.glyphicon-trash
+    i.info-sem-dados-para-exibir(style="color:red; display:flex;", ng-if="ctrl.errors.isPdf === true") Permitido apenas upload de arquivos com extensão .pdf

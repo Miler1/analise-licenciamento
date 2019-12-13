@@ -28,6 +28,9 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     };
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
     ctrl.tiposUpload = app.utils.TiposUpload;
+    ctrl.errors = {
+        isPdf: false
+    }
 
     ctrl.init = function () {
 
@@ -117,12 +120,12 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $routeParams, $wind
     ctrl.upload = function(file, invalidFile, tipoUpload) {
 
         if(invalidFile){
-            ctrl.isPdf = true;
+            ctrl.errors.isPdf = true;
         }
 
         if(file) {
 
-            ctrl.isPdf = false;
+            ctrl.errors.isPdf = false;
             uploadService.save(file)
                 .then(function(response) { 
 

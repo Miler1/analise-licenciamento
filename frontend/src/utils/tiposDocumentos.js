@@ -8,7 +8,7 @@ var TiposDocumentosAnalise = {
     PARECER_ANALISE_GEO: 16,
     NOTIFICACAO: 22,
     DOCUMENTO_ANALISE_TEMPORAL:23,
-    PARECER_ANALISE_TECNICA: 24
+    PARECER_ANALISE_TECNICA: 28
 };
 
 exports.utils.TiposDocumentosAnalise = TiposDocumentosAnalise;
