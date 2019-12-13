@@ -25,7 +25,6 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.controleVisualizacao = null;
     validacaoAnaliseGeoGerente.exibirDadosProcesso = exibirDadosProcesso;
     validacaoAnaliseGeoGerente.concluir = concluir;
-
     validacaoAnaliseGeoGerente.baixarDocumento = baixarDocumento;
     validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias = verificarTamanhoInconsistencias;
     validacaoAnaliseGeoGerente.openModalOficio = openModalOficio;
@@ -36,6 +35,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.orgaos = app.utils.Orgao;
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
     validacaoAnaliseGeoGerente.parecerGeo = {};
+    validacaoAnaliseGeoGerente.labelDadosProjeto = '';
+    validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
@@ -304,6 +305,21 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
             .then(function (response) {
 
                 validacaoAnaliseGeoGerente.dadosProjeto = response.data;
+
+                if(validacaoAnaliseGeoGerente.dadosProjeto.categoria === validacaoAnaliseGeoGerente.enumCategoria.COMPLEXO || validacaoAnaliseGeoGerente.dadosProjeto.complexo) {
+
+                    validacaoAnaliseGeoGerente.labelDadosProjeto = 'Dados da área do complexo';
+
+                } else if(validacaoAnaliseGeoGerente.dadosProjeto.categoria === validacaoAnaliseGeoGerente.enumCategoria.PROPRIEDADE) {
+
+                    validacaoAnaliseGeoGerente.labelDadosProjeto = 'Dados da área do empreendimento';
+
+                } else {
+
+                    validacaoAnaliseGeoGerente.labelDadosProjeto = 'Dados da(s) área(s) da(s) atividade(s)';
+
+                }
+
             });
     }
 
