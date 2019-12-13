@@ -10,7 +10,8 @@ var TiposDocumentosAnalise = {
     DOCUMENTO_ANALISE_TEMPORAL:23,
     DOCUMENTO_RIT: 24,
     DOCUMENTO_VISTORIA: 25,
-    INCONSISTENCIA_VISTORIA: 27
+    INCONSISTENCIA_VISTORIA: 27,
+    PARECER_ANALISE_TECNICA: 28
 };
 
 exports.utils.TiposDocumentosAnalise = TiposDocumentosAnalise;
