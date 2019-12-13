@@ -141,6 +141,8 @@ public class Gerente extends GenericModel {
 
 	public static Gerente distribuicaoAutomaticaGerenteAnaliseTecnica(String setorAtividade, AnaliseTecnica analiseTecnica) {
 
+		UsuarioAnalise.atualizaUsuariosAnalise();
+
 		List<UsuarioAnalise> gerentes = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, setorAtividade);
 
 		if (gerentes == null || gerentes.size() == 0)
