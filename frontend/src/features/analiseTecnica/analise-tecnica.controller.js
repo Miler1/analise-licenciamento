@@ -1,6 +1,8 @@
 var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
     analiseTecnica, uploadService, mensagem, $uibModal, analiseTecnicaService,
-    documentoAnaliseService, inconsistenciaVistoriaService, documentoService, processoService, restricoes, idAnaliseTecnica, TiposAnalise, analistaService) {
+    documentoAnaliseService, processoService, tamanhoMaximoArquivoAnaliseMB, 
+    restricoes, idAnaliseTecnica, TiposAnalise, documentoService, 
+    inconsistenciaVistoriaService, analistaService) {
 
     $rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -23,6 +25,9 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
     ctrl.tiposDocumentosAnalise = app.utils.TiposDocumentosAnalise;
     ctrl.semInconsistenciaVistoria = null;
     ctrl.analistasTecnico = [];
+    ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
+    ctrl.tiposUpload = app.utils.TiposUpload;
+    ctrl.dataAtual = new Date();
     $scope.analistaSelecionado = null;
 
     ctrl.errors = { 
@@ -39,7 +44,16 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
     };
 
-    ctrl.dataAtual = new Date();
+    ctrl.parecer = {
+        doProcesso: null,
+        daAnaliseTecnica: null,
+        daConclusao: null,
+        documentos: []
+    };
+    
+    ctrl.errors = {
+        isPdf: false
+    }
 
     ctrl.init = function () {
 
@@ -384,6 +398,147 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
                     mensagem.error(error.data.texto);
                 }
             );
+    };
+
+    ctrl.clonarParecerTecnico = function() {
+
+        if(ctrl.numeroProcessoClone) {
+
+            // TODO: tem que fazer isso funcionar quando tiver parecer 
+
+            // parecerAnalistaTecnicoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
+            // 	.then(function(response){
+
+            // 			if(response.data.parecer === undefined) {
+
+            // 				ctrl.parecer.parecer = null;
+            // 				mensagem.error(response.data.texto);
+
+            // 				return;
+
+            // 			} else{
+
+            // 				ctrl.parecer = response.data;
+
+            // 			}
+
+            // 	}, function(error){
+            // 		mensagem.error(error.data.texto);
+            // 	});
+
+        }
+
+    };
+
+    $scope.optionsText = {
+        toolbar: [
+            ['edit',['undo','redo']],
+            ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
+            ['textsize', ['fontsize']],
+            ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['picture',]]
+            
+        ]
+    };
+
+    $scope.snPaste = function(e, model) {
+        var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+        e.preventDefault();
+        setTimeout( function(){
+            document.execCommand( 'insertText', false, bufferText );
+        }, 10 );
+    };
+
+    ctrl.upload = function(file, invalidFile, tipoUpload) {
+
+        if(invalidFile){
+            ctrl.errors.isPdf = true;
+        }
+
+        if(file) {
+
+            ctrl.errors.isPdf = false;
+            uploadService.save(file)
+                .then(function(response) { 
+
+                    var nomeDoArquivo = file.name;
+
+                    if(ctrl.parecer.documentos === null || ctrl.parecer.documentos === undefined) {
+                        ctrl.parecer.documentos = [];
+                    }
+
+                    var quantidadeDocumentosComMesmoNome = ctrl.parecer.documentos.filter(function(documento) { 
+                        return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+                    }).length;
+
+                    if(quantidadeDocumentosComMesmoNome > 0) {
+                        nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+                    }
+
+                    if(tipoUpload === app.utils.TiposUpload.PARECER_ANALISE_TECNICA) {
+
+                        ctrl.parecer.documentos.push({
+
+                            key: response.data,
+                            nomeDoArquivo: nomeDoArquivo,
+                            tipo: {
+
+                                id: app.utils.TiposDocumentosAnalise.PARECER_ANALISE_TECNICA
+                            }
+                        });
+
+                    } else if(tipoUpload === app.utils.TiposUpload.NOTIFICACAO){
+
+                        ctrl.parecer.documentos.push({
+
+                            key: response.data,
+                            nomeDoArquivo: nomeDoArquivo,
+                            tipo: {
+
+                                id: app.utils.TiposDocumentosAnalise.NOTIFICACAO
+                            }
+                        });
+                    }
+
+                }, function(error){
+
+                    mensagem.error(error.data.texto);
+                });
+
+        } else if(invalidFile && invalidFile.$error === 'maxSize'){
+
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + ctrl.TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+        }
+    };
+
+    ctrl.getDocumentosParecer = function() {
+        
+        var documentosParecer = [];
+
+        documentosParecer = _.filter(ctrl.parecer.documentos, function(documento) {
+            return documento.tipo.id === app.utils.TiposDocumentosAnalise.PARECER_ANALISE_TECNICA;
+        });
+
+        return documentosParecer;
+    };
+
+    ctrl.baixarDocumento= function(documento) {
+
+        if(!documento.id){
+            documentoService.download(documento.key, documento.nomeDoArquivo);
+        }else{
+            analiseGeoService.download(documento.id);
+        }
+    };
+
+    ctrl.removerDocumento = function (documento) {
+
+        var indexDocumento = ctrl.parecer.documentos.indexOf(documento);
+
+        ctrl.parecer.documentos.splice(indexDocumento, 1);
+
     };
 
     function verificarEmissoes() {
