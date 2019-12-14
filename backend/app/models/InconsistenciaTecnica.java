@@ -2,14 +2,8 @@ package models;
 
 
 import exceptions.ValidacaoException;
-import models.licenciamento.AtividadeCaracterizacao;
-import models.licenciamento.AtividadeCaracterizacaoParametros;
-import models.licenciamento.TipoLicenca;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import serializers.InconsistenciaSerializer;
 import utils.*;
 
 import javax.persistence.*;
@@ -17,7 +11,6 @@ import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="inconsistencia_tecnica")
@@ -61,12 +54,15 @@ public class InconsistenciaTecnica extends GenericModel{
 	public InconsistenciaTecnicaQuestionario inconsistenciaTecnicaQuestionario;
 
 	@OneToOne(mappedBy = "inconsistenciaTecnica")
-	public InconsistenciaTecnicaDocumento inconsistenciaTecnicaDocumento;
+	public InconsistenciaTecnicaDocumentoAdministrativo inconsistenciaTecnicaDocumentoAdministrativo;
+
+	@OneToOne(mappedBy = "inconsistenciaTecnica")
+	public InconsistenciaTecnicaDocumentoTecnicoAmbiental inconsistenciaTecnicaDocumentoTecnicoAmbiental;
 
 	@Transient
 	public String tipoDeInconsistenciaTecnica;
 
-	public enum TipoDeInconsistenciaTecnica { TIPO_LICENCA, ATIVIDADE, PARAMETRO, QUESTIONARIO ,DOCUMENTO }
+	public enum TipoDeInconsistenciaTecnica { TIPO_LICENCA, ATIVIDADE, PARAMETRO, QUESTIONARIO, DOCUMENTO_ADMINISTRATIVO, DOCUMENTO_TECNICO_AMBIENTAL }
 
 	public InconsistenciaTecnica salvaInconsistenciaTecnica() {
 
@@ -136,15 +132,25 @@ public class InconsistenciaTecnica extends GenericModel{
 
             }
 
-//            if (inconsistenciaTecnica.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO.name())) {
-//
-//				this.saveAnexos(this.anexos);
-//
-//				this.inconsistenciaTecnicaDocumento.inconsistenciaTecnica = this;
-//
-//				this.inconsistenciaTecnicaDocumento.save();
-//
-//            }
+            if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO.name())) {
+
+				this.saveAnexos(this.anexos);
+
+				this.inconsistenciaTecnicaDocumentoAdministrativo.inconsistenciaTecnica = this;
+
+				this.inconsistenciaTecnicaDocumentoAdministrativo.save();
+
+            }
+
+			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name())) {
+
+				this.saveAnexos(this.anexos);
+
+				this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.inconsistenciaTecnica = this;
+
+				this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.save();
+
+			}
 
 		}
 		return this;
@@ -168,8 +174,12 @@ public class InconsistenciaTecnica extends GenericModel{
 			InconsistenciaTecnicaQuestionario.findById(this.inconsistenciaTecnicaQuestionario.id)._delete();
 		}
 
-		if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO.name())) {
-			InconsistenciaTecnicaDocumento.findById(this.inconsistenciaTecnicaDocumento.id)._delete();
+		if (this.tipoDeInconsistenciaTecnica.equals(TipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO.name())) {
+			InconsistenciaTecnicaDocumentoAdministrativo.findById(this.inconsistenciaTecnicaDocumentoAdministrativo.id)._delete();
+		}
+
+		if (this.tipoDeInconsistenciaTecnica.equals(TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name())) {
+			inconsistenciaTecnicaDocumentoTecnicoAmbiental.findById(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.id)._delete();
 		}
 
 		InconsistenciaTecnica i = InconsistenciaTecnica.findById(this.id);

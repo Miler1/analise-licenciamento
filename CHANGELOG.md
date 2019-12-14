@@ -27,3 +27,4 @@
 * OS35 - US882 - [Analista Técnico] Eu, analista técnico, devo acessar o menu "Em análise" para acessar a listagem dos protocolos.
 * OS35 - US302 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar tipo de licença, atividade e parâmetro.
 * OS35 - US909 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar questionário.
+* OS35 - US916 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar documentos e auto de infração.

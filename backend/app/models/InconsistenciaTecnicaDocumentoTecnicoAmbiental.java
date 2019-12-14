@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 @Entity
-@Table(schema="analise", name="inconsistencia_tecnica_documento")
-public class InconsistenciaTecnicaDocumento extends GenericModel{
+@Table(schema="analise", name="inconsistencia_tecnica_documento_tecnico_ambiental")
+public class InconsistenciaTecnicaDocumentoTecnicoAmbiental extends GenericModel{
 
-	public static final String SEQ = "analise.inconsistencia_tecnica_documento_id_seq";
+	public static final String SEQ = "analise.inconsistencia_tecnica_documento_tecnico_ambiental_id_seq";
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
@@ -25,10 +25,6 @@ public class InconsistenciaTecnicaDocumento extends GenericModel{
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_inconsistencia_tecnica")
 	public InconsistenciaTecnica inconsistenciaTecnica;
-
-	@OneToMany
-	@JoinColumn(name="id_documento_administrativo")
-	public List<SolicitacaoDocumentoCaracterizacao> documentosAdministrativo;
 
 	@OneToMany
 	@JoinColumn(name="id_documento_tecnicos")

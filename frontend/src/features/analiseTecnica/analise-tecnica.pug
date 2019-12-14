@@ -27,14 +27,14 @@ div(ng-init="ctrl.init()")
 
     section.margin-bottom-xl.alone
 
-        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs(ng-click="ctrl.cancelar()")
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs.margin-top-md(ng-click="ctrl.cancelar()")
             i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
             | Cancelar
 
-        button.btn.btn-default.col-md-2.col-md-offset-0(ng-if="ctrl.tabAtiva > 0", ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1")
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-top-md(ng-if="ctrl.tabAtiva > 0", ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1")
             | << Etapa anterior
 
-        button.btn.btn-success.pull-right.col-md-2(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 2")
+        button.btn.btn-success.pull-right.col-md-2.margin-top-md(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 2")
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
 
@@ -46,7 +46,7 @@ div(ng-init="ctrl.init()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
             | Visualizar notificação
 
-        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.tabAtiva = ctrl.tabAtiva + 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
+        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs.margin-top-md(ng-click="ctrl.avancar()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
             | Próxima etapa
 
