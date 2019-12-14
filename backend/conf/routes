@@ -14,7 +14,9 @@ GET		/processos/{id}/completo					Processos.getInfoProcesso
 GET		/processos/{idProcesso}						Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
 GET     /processos/numero/{numProcesso}/completo    Processos.findByNumProcesso
-GET     /processos/questionario/{idProcesso}        Processos.findQuestionario
+
+#Questionario
+GET     /questionario/{idProcesso}                  Questionarios.findQuestionario
 
 # Ficha do Imovel
 GET		/fichaImovelResumida						Imoveis.fichaImovelResumida

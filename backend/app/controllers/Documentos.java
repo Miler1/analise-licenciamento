@@ -17,16 +17,18 @@ public class Documentos extends InternalController {
 
    public static void download(Long id) {
 
-	   returnIfNull(id, "Long");
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO);
+
+		returnIfNull(id, "Long");
+
+		Documento documento = Documento.findById(id);
 	   
-	   Documento documento = Documento.findById(id);
-	   
-	   if(documento != null) {
+		if(documento != null) {
 		   File documentoBinary = documento.getFile();
 		   renderBinary(documentoBinary, documentoBinary.getName());
-	   }
+		}
 
-	   renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
 	   
    }
 
