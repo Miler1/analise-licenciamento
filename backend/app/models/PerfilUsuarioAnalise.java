@@ -12,15 +12,11 @@ public class PerfilUsuarioAnalise extends GenericModel {
 	public static final String SEQ = "analise.perfil_usuario_analise_id_seq";
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
-	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
-	@Column(name="id")
-	public Long id;
-
 	@ManyToOne
 	@JoinColumn(name = "id_usuario_analise", referencedColumnName = "id")
 	public UsuarioAnalise usuarioAnalise;
 
+	@Id
 	@Column(name="codigo_perfil")
 	public String codigoPerfil;
 
@@ -34,8 +30,6 @@ public class PerfilUsuarioAnalise extends GenericModel {
 		this.nomeCodigo = perfil.nome;
 	}
 
-	public PerfilUsuarioAnalise (){
-
-	}
+	public PerfilUsuarioAnalise (){ }
 
 }

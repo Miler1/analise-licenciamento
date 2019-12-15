@@ -59,6 +59,7 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			analiseTecnica.geraLicencasAnaliseTecnica(analiseGeo.licencasAnalise);
 			analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, usuarioAnalistaTecnico).save();
 
+			analiseGeo.dataFim = new Date();
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 

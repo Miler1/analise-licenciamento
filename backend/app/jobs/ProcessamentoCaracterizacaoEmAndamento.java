@@ -72,7 +72,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		criarNovoDiasAnalise(analise);
 
-		if(criarNovaAnaliseGeo(analise) == null) {
+		if(!criaAnaliseGeoVinculandoAnalistaGeo(analise)) {
 
 			rollbackTransaction();
 			return;
@@ -113,62 +113,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 	}
 
-	private AnaliseGeo clonarAnaliseGeo(Analise analise, Processo processoAntigo) {
-
-		AnaliseGeo analiseGeoAntiga = processoAntigo.analise.getAnaliseGeo();
-		AnaliseGeo analiseGeo = new AnaliseGeo();
-
-		List<AnaliseDocumento> analisesDocumentos = new ArrayList<>();
-		List<Gerente> gerentes = new ArrayList<>();
-
-		analiseGeo.id = null;
-		analiseGeo.analise = analise;
-		analiseGeo.dataVencimentoPrazo = new Date();
-		analiseGeo.revisaoSolicitada = false;
-		analiseGeo.notificacaoAtendida = false;
-		analiseGeo.ativo = true;
-		analiseGeo.analiseGeoRevisada = null;
-		analiseGeo.dataInicio = new Date();
-		analiseGeo.dataFim = new Date();
-		analiseGeo.dataCadastro = new Date();
-		analiseGeo.tipoResultadoValidacao = analiseGeoAntiga.tipoResultadoValidacao;
-		analiseGeo.parecerValidacao = analiseGeoAntiga.parecerValidacao;
-		analiseGeo.usuarioValidacao = analiseGeoAntiga.usuarioValidacao;
-		analiseGeo.tipoResultadoValidacaoAprovador = analiseGeoAntiga.tipoResultadoValidacaoAprovador;
-		analiseGeo.parecerValidacaoAprovador = analiseGeoAntiga.parecerValidacaoAprovador;
-		analiseGeo.usuarioValidacaoAprovador = analiseGeoAntiga.usuarioValidacaoAprovador;
-
-		for (AnaliseDocumento analiseDocumentoAntigo : analiseGeoAntiga.analisesDocumentos) {
-
-			AnaliseDocumento analiseDocumento = new AnaliseDocumento();
-			analiseDocumento.id = null;
-			analiseDocumento.analiseGeo = analiseGeo;
-			analiseDocumento.validado = analiseDocumentoAntigo.validado;
-			analiseDocumento.parecer = analiseDocumentoAntigo.parecer;
-			analiseDocumento.analiseTecnica = null;
-			analiseDocumento.documento = analiseDocumentoAntigo.documento;
-			analiseDocumento.analiseDocumentoAnterior = analiseDocumentoAntigo.analiseDocumentoAnterior;
-			analisesDocumentos.add(analiseDocumento);
-		}
-
-		for (Gerente gerenteAntigo : analiseGeoAntiga.gerentes) {
-
-			Gerente gerente = new Gerente();
-			gerente.id = null;
-			gerente.analiseGeo = analiseGeo;
-			gerente.usuario = gerenteAntigo.usuario;
-			gerente.dataVinculacao = gerenteAntigo.dataVinculacao;
-			gerentes.add(gerente);
-		}
-
-		analiseGeo.analisesDocumentos = analisesDocumentos;
-		analiseGeo.gerentes = gerentes;
-		analiseGeo._save();
-
-		return analiseGeo;
-	}
-
-	private AnaliseGeo criarNovaAnaliseGeo(Analise analise) {
+	private boolean criaAnaliseGeoVinculandoAnalistaGeo(Analise analise) {
 
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
@@ -178,23 +123,22 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		AnalistaGeo analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
 
 		if(analistaGeo == null) {
-			return null;
+			return false;
 		}
 
 		analiseGeo.analistasGeo = new ArrayList<>();
-
 		analiseGeo.analistasGeo.add(analistaGeo);
-
 		analiseGeo.save();
 		
-		return analiseGeo;
+		return true;
+
 	}
 	
 	private DiasAnalise criarNovoDiasAnalise(Analise analise) {
 		
 		DiasAnalise diasAnalise = new DiasAnalise(analise);
 		analise.diasAnalise = diasAnalise;
-		
+
 		diasAnalise.save();
 		
 		return diasAnalise;

@@ -60,7 +60,7 @@ public class AnalistaTecnico extends GenericModel {
 
 		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
 
 		if (usuariosAnalise == null || usuariosAnalise.size() == 0)
 			throw new WebServiceException("Não existe nenhum analista técnico ativado no sistema");
