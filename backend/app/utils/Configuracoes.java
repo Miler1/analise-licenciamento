@@ -22,6 +22,7 @@ public class Configuracoes {
 	public static String LOGIN_URL = getConfig("auth.login.url", DEFAULT_LOGIN_URL);
 	public static Boolean EXTERNAL_LOGIN = !LOGIN_URL.equals(DEFAULT_LOGIN_URL);
 	public static String INDEX_URL = "app/index.html";
+	public static String JOBS_PACKAGE = "jobs.";
 
 	public static Integer CODIGO_TIPO_PESSOA_JURIDICA = 1;
 
