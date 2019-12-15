@@ -67,6 +67,10 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 	@JoinColumn(name="id_usuario_destino")
 	public UsuarioAnalise analistaTecnicoDestino;
 
+	public Date getDataSolicitacao() {
+		return dataSolicitacao;
+	}
+
 	public void update(DesvinculoAnaliseTecnica novoDesvinculo) {
 
 		this.respostaGerente = novoDesvinculo.respostaGerente;

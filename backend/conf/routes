@@ -7,6 +7,10 @@ GET		/											Application.index
 GET		/app/aplicacao/info							Application.findInfo(format:'js')
 GET		/versao										Application.versao
 
+# Jobs
+GET     /jobs/callByClassName/{className}                   Jobs.callByClassName
+GET     /jobs/callAll                                       Jobs.callAll
+
 # Processo
 POST	/processos									Processos.listWithFilter
 POST	/processos/count							Processos.countWithFilter

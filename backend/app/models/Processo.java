@@ -15,6 +15,7 @@ import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -635,38 +636,28 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	//Retorna o historico da tramitação com o tempo que o objeto tramitavel anterior permaneceu na condição
-	public List<HistoricoTramitacao> getHistoricoTramitacaoAnterior() {
+	public List<HistoricoTramitacao> getHistoricoTramitacaoAnaliseGeo() {
 
-		if (this.processoAnterior == null) {
+		return this.getHistoricoTramitacao()
+				.stream()
+				.filter(tramitacao -> this.analise != null && this.analise.analiseTecnica != null && tramitacao.dataInicial.before(this.analise.analiseTecnica.dataCadastro))
+				.collect(Collectors.toList());
 
-			return null;
-		}
+	}
 
-		Processo processoAnterior = Processo.findById(this.processoAnterior.id);
-		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(processoAnterior.idObjetoTramitavel);
+	public List<HistoricoTramitacao> getHistoricoTramitacaoAnaliseTecnica() {
 
-		Date dataAtual = new Date();
+		Date dataPrimeiroHistorico = this.getHistoricoTramitacao()
+				.stream()
+				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE))
+				.findFirst()
+				.map(HistoricoTramitacao::getDataInicial).orElseThrow(ValidationException::new);
 
-		//Lógica que verifica os dias que ficou na condição
-		for (int i = 0; i < historicosTramitacoes.size(); i++) {
+		return this.getHistoricoTramitacao()
+				.stream()
+				.filter(tramitacao -> tramitacao.dataInicial.equals(dataPrimeiroHistorico) || tramitacao.dataInicial.after(dataPrimeiroHistorico))
+				.collect(Collectors.toList());
 
-			if(i == 0)
-				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, dataAtual);
-			else
-				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, historicosTramitacoes.get(i - 1).dataInicial);
-		}
-
-		//Lógica que adiciona a data final da condição
-		for (int i = historicosTramitacoes.size() - 1; i >= 0; i--) {
-
-			if(i == 0)
-				historicosTramitacoes.get(i).dataFinal = null;
-			else
-				historicosTramitacoes.get(i).dataFinal = historicosTramitacoes.get(i - 1).dataInicial;
-		}
-
-		return historicosTramitacoes;
 	}
 
 	public List<Caracterizacao> getCaracterizacoesNaoArquivadas() {
@@ -679,31 +670,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return caracterizacoes;
 
-	}
-
-	public boolean isProrrogacao() {
-
-		if(this.caracterizacao.getLicenca() == null || this.caracterizacao.getLicenca() != null && this.caracterizacao.getLicenca().dataValidade == null)
-			return false;
-
-		long diff = Math.abs(this.caracterizacao.getLicenca().dataValidade.getTime() - new Date().getTime());
-		long dias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 5l;
-
-		return Configuracoes.DIAS_PRORROGACAO < dias;
-	}
-
-	public boolean isArquivavel() {
-
-		for (Caracterizacao caracterizacao : this.empreendimento.caracterizacoes) {
-
-			if (!caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
-					&& !caracterizacao.status.nome.equals(StatusCaracterizacao.CANCELADO)) {
-
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	public static Processo findByNumProcesso(String numProcesso) {
