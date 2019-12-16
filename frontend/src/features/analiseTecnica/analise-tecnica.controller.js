@@ -70,12 +70,14 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
             .then(function(response){
+
                 ctrl.analiseTecnica = response.data;
 
+                ctrl.parecer.analiseTecnica = ctrl.analiseTecnica;
 
-                if(ctrl.analiseTecnica.vistoria === null) {
+                if(ctrl.parecer.vistoria === null || ctrl.parecer.vistoria === undefined) {
 
-                    ctrl.analiseTecnica.vistoria = {
+                    ctrl.parecer.vistoria = {
                         realizada: null,
                         documentoRit: null,
                         inconsistenciaVistoria: {
@@ -98,7 +100,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     };
         
                 }
-        
+
                 analistaService.getAnalistasTecnicoBySetor()
                 .then(function(response) {
         
@@ -229,13 +231,13 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     
     ctrl.deletarInconsistenciaVistoria = function() {
 
-        if(ctrl.analiseTecnica.vistoria && ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id) {
+        if(ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria && ctrl.parecer.vistoria.inconsistenciaVistoria.id) {
 
-            inconsistenciaVistoriaService.deletar(ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id)
+            inconsistenciaVistoriaService.deletar(ctrl.parecer.vistoria.inconsistenciaVistoria.id)
                 .then(function(response) {
 
                     mensagem.success(response.data);
-                    ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = {
+                    ctrl.parecer.vistoria.inconsistenciaVistoria = {
                         descricaoInconsistencia: null,
                         tipoInconsistencia: null,
                         anexos: []
@@ -277,19 +279,19 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     $rootScope.$on('buscarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
-        ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
+        ctrl.parecer.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
         ctrl.semInconsistenciaVistoria = null;
     });
 
     ctrl.adicionarAnalistaEquipe = function(analistaSelecionado) {
 
-        var isAdded = _.some(ctrl.analiseTecnica.vistoria.equipe, function(analista) {
+        var isAdded = _.some(ctrl.parecer.vistoria.equipe, function(analista) {
             return analistaSelecionado && analista.usuario.id === analistaSelecionado.id;
         });
 
         if(!isAdded && analistaSelecionado) {
 
-            ctrl.analiseTecnica.vistoria.equipe.push(analistaSelecionado);
+            ctrl.parecer.vistoria.equipe.push(analistaSelecionado);
 
             _.remove(ctrl.analistasTecnico, function(analista) {
                 return analista.usuario.id === analistaSelecionado.usuario.id;
@@ -303,16 +305,16 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         if(analistaSelecionado === undefined) {
 
-            ctrl.analistasTecnico = ctrl.analiseTecnica.vistoria.equipe.map(function(analista) {
+            ctrl.analistasTecnico = ctrl.parecer.vistoria.equipe.map(function(analista) {
                 return analista.usuario;
             });
-            ctrl.analiseTecnica.vistoria.equipe = [];
+            ctrl.parecer.vistoria.equipe = [];
 
         } else {
 
             ctrl.analistasTecnico.push(analistaSelecionado);
 
-            _.remove(ctrl.analiseTecnica.vistoria.equipe, function(analista) {
+            _.remove(ctrl.parecer.vistoria.equipe, function(analista) {
                 return analista.usuario.id === analistaSelecionado.usuario.id;
             });
 
@@ -322,53 +324,53 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     var vistoriaValida = function() {
 
-        if(ctrl.analiseTecnica.vistoria.realizada === null || ctrl.analiseTecnica.vistoria.realizada === undefined) {
+        if(ctrl.parecer.vistoria.realizada === null || ctrl.parecer.vistoria.realizada === undefined) {
 
             ctrl.errors.vistoria.realizada = true;
 
         }
 
-        if(ctrl.analiseTecnica.vistoria.realizada !== null && ctrl.analiseTecnica.vistoria.realizada === 'true') {
+        if(ctrl.parecer.vistoria.realizada !== null && ctrl.parecer.vistoria.realizada === 'true') {
 
-            if(ctrl.analiseTecnica.vistoria.conclusao === null || ctrl.analiseTecnica.vistoria.conclusao === '') {
+            if(ctrl.parecer.vistoria.conclusao === null || ctrl.parecer.vistoria.conclusao === '') {
 
                 ctrl.errors.vistoria.conclusao = true;
 
             }
 
-            if(ctrl.analiseTecnica.vistoria.documentoRit === null) {
+            if(ctrl.parecer.vistoria.documentoRit === null) {
 
                 ctrl.errors.vistoria.documentoRit = true;
 
             }
 
-            if(ctrl.semInconsistenciaVistoria === null && (ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === undefined || ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === null)) {
+            if(ctrl.semInconsistenciaVistoria === null && (ctrl.parecer.vistoria.inconsistenciaVistoria.id === undefined || ctrl.parecer.vistoria.inconsistenciaVistoria.id === null)) {
 
                 ctrl.errors.vistoria.inconsistenciaVistoria = true;
 
             }
 
-            if(ctrl.analiseTecnica.vistoria.data === null) {
+            if(ctrl.parecer.vistoria.data === null) {
     
                 ctrl.errors.vistoria.data = true;
     
             }
             
-            if(ctrl.analiseTecnica.vistoria.hora === null) {
+            if(ctrl.parecer.vistoria.hora === null) {
     
                 ctrl.errors.vistoria.hora = true;
     
             }
 
-            if(ctrl.analiseTecnica.vistoria.descricao === null) {
+            if(ctrl.parecer.vistoria.descricao === null) {
     
                 ctrl.errors.vistoria.descricao = true;
     
             }
 
-        } else if(ctrl.analiseTecnica.vistoria.realizada !== null) {
+        } else if(ctrl.parecer.vistoria.realizada !== null) {
 
-            if(ctrl.analiseTecnica.vistoria.conclusao === null || ctrl.analiseTecnica.vistoria.conclusao === '') {
+            if(ctrl.parecer.vistoria.conclusao === null || ctrl.parecer.vistoria.conclusao === '') {
 
                 ctrl.errors.vistoria.conclusao = true;
     
@@ -395,7 +397,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 			size: 'lg',
 			resolve: {
 				inconsistenciaVistoria: function(){
-					return ctrl.analiseTecnica.vistoria.inconsistenciaVistoria;
+					return ctrl.parecer.vistoria.inconsistenciaVistoria;
 				}
             }
 		});
@@ -408,17 +410,17 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
 
-        }else if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
+        } else if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
 
-            if(ctrl.analiseTecnica.vistoria.realizada === 'true') {
+            if(ctrl.parecer.vistoria.realizada === 'true') {
 
-                ctrl.analiseTecnica.vistoria.realizada = true;
+                ctrl.parecer.vistoria.realizada = true;
 
             } else {
 
-                ctrl.analiseTecnica.vistoria.realizada = false;
+                ctrl.parecer.vistoria.realizada = false;
 
             }
 
@@ -450,15 +452,15 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     
     ctrl.removerDocumentoRit = function() {
 
-        documentoService.delete(ctrl.analiseTecnica.vistoria.documentoRit.key);
-        ctrl.analiseTecnica.vistoria.documentoRit = null;
+        documentoService.delete(ctrl.parecer.vistoria.documentoRit.key);
+        ctrl.parecer.vistoria.documentoRit = null;
 
     };
 
     ctrl.removerDocumentosVistoria = function(index) {
 
-        var anexo = ctrl.analiseTecnica.vistoria.anexos[index];
-        ctrl.analiseTecnica.vistoria.anexos.splice(index, 1);
+        var anexo = ctrl.parecer.vistoria.anexos[index];
+        ctrl.parecer.vistoria.anexos.splice(index, 1);
 
         documentoService.delete(anexo.key);
 
@@ -518,7 +520,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
                     } else if(tipoDocumento === ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT) {
 
-                        ctrl.analiseTecnica.vistoria.documentoRit = {
+                        ctrl.parecer.vistoria.documentoRit = {
                             key: response.data,
                             nomeDoArquivo: file.name,
                             tipoDocumento: {
@@ -530,7 +532,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
                     } else if(tipoDocumento === ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
 
-                        ctrl.analiseTecnica.vistoria.anexos.push({
+                        ctrl.parecer.vistoria.anexos.push({
                             key: response.data,
                             nomeDoArquivo: file.name,
                             tipoDocumento: {

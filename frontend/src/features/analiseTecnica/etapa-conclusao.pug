@@ -75,7 +75,7 @@ div
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
                 label.opDla.radio-inline.posicao-primeiroItem
-                    input(type='radio', name='analiseFinalRadio')
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}")
                     | Deferido
                 label.opDla.radio-inline
                     input(type='radio', name='analiseFinalRadio')

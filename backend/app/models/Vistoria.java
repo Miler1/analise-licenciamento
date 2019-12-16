@@ -19,8 +19,8 @@ public class Vistoria extends GenericModel {
 	public Long id;
 
 	@OneToOne
-	@JoinColumn(name = "id_analise_tecnica", referencedColumnName = "id")
-	public AnaliseTecnica analiseTecnica;
+	@JoinColumn(name = "id_parecer_analista_tecnico", referencedColumnName = "id")
+	public ParecerAnalistaTecnico parecerAnalistaTecnico;
 
 	@Column(name = "tx_conclusao")
 	public String conclusao;
