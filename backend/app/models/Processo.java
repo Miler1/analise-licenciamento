@@ -190,6 +190,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarAnaliseTecnicaAtiva(false);
 			processoBuilder.filtrarDesvinculoAnaliseTecnicaSemResposta();
 
+		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
+
 		}
 
 		processoBuilder.filtrarPorListaIdCondicao(filtroProcesso.listaIdCondicaoTramitacao);
