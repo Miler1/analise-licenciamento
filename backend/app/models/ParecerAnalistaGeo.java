@@ -139,9 +139,6 @@ public class ParecerAnalistaGeo extends GenericModel {
 		this.usuario = usuarioExecutor;
 		this.dataParecer = new Date();
 
-		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id);
-		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
-
 		if(this.documentos != null && !this.documentos.isEmpty()) {
 			this.updateDocumentos(this.documentos);
 		}
@@ -227,13 +224,16 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 			}
 
-			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.documentos);
-			analiseGeoBanco.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, this.analiseGeo.analise.processo.numero);
+			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseGeo.documentos);
+			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, this.analiseGeo.analise.processo.numero);
 
 			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, "Notificado");
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		}
+
+		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id);
+		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
 
 		this._save();
 

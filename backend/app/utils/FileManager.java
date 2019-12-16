@@ -7,7 +7,10 @@ import play.Logger;
 import play.libs.Files;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class FileManager {
 
@@ -68,13 +71,32 @@ public class FileManager {
     public String createFile(byte [] fileBytes, String extension) throws IOException {
 
         String fileName = generateFileName(extension);
-        String folderName = getFolderName();
-
-        File file = new File(TEMP_FILES_FOLDER_PATH + folderName, fileName);
+        File file = new File(TEMP_FILES_FOLDER_PATH, fileName);
 
         writeFile(file, fileBytes);
 
-        return generateFileKey(fileName, folderName);
+        return file.getAbsolutePath();
+
+    }
+
+    public String createKey(byte [] fileBytes, String nomeDoArquivo) throws IOException {
+
+	    String key = generateKey();
+
+	    File diretorio = new File(TEMP_FILES_FOLDER_PATH + key);
+
+	    if(!diretorio.exists()) {
+
+	    	diretorio.mkdir();
+
+	    }
+
+	    File file = new File(TEMP_FILES_FOLDER_PATH + key, nomeDoArquivo);
+
+	    writeFile(file, fileBytes);
+
+	    return key;
+
     }
 
     private void writeFile(File file, byte[] fileBytes) throws IOException {
@@ -96,25 +118,26 @@ public class FileManager {
 
     public File getFile(String fileKey) {
 
-    	return getFile(fileKey,TEMP_FILES_FOLDER_PATH);
+    	return getFile(fileKey, TEMP_FILES_FOLDER_PATH);
+
     }
 
     public File getFile(String fileKey, String diretorio) {
 
-        String fileName = getFileNameByKey(fileKey);
-        String folderName = getFolderNameByKey(fileKey, diretorio);
-
-        if (fileName == null || folderName == null) {
+        if (fileKey == null || diretorio == null) {
             return null;
         }
 
-        File file = new File (folderName, fileName);
+	    Path path = Paths.get(diretorio + fileKey + "/");
 
-        if (file.exists()) {
-            return file;
+        if(!path.toFile().exists() || !path.toFile().isDirectory()) {
+
+        	return null;
+
         }
 
-        return null;
+        return Objects.requireNonNull(path.toFile().listFiles())[0];
+
     }
 
 	public File getFile(String fileKey, String folder, String extension) {
@@ -205,13 +228,14 @@ public class FileManager {
     }
 
     public String generateFileKey(String fileName, String folderName) {
-        return folderName + FILE_KEY_SEPARATOR + fileName;
+        return folderName + fileName;
     }
 
     public String getFileNameByKey(String key) {
 
         try {
-            return key.substring(key.indexOf(FILE_KEY_SEPARATOR) + FILE_KEY_SEPARATOR.length());
+            return key.split(TEMP_FILES_FOLDER_PATH)[1];
+
         } catch (Exception e) {
             return null;
         }
@@ -240,6 +264,12 @@ public class FileManager {
     	return UUID.randomUUID().toString() + ((extension != null) ? "." + extension : "");
     }
 
+	public String generateKey() {
+
+		return UUID.randomUUID().toString();
+
+	}
+
 	public String generateFileName(String name, String extension) {
 
     	name = name.substring(0, name.lastIndexOf("."));
@@ -248,12 +278,10 @@ public class FileManager {
 
     public String getFolderName() throws IOException {
 
-    	String folderName = UUID.randomUUID().toString();
-        File folder = new File(TEMP_FILES_FOLDER_PATH + folderName);
-
+        File folder = new File(TEMP_FILES_FOLDER_PATH);
         this.createFolderIfNotExists(folder);
 
-        return folderName;
+        return folder.getName();
     }
 
     private void createFolderIfNotExists(File folder) throws IOException {

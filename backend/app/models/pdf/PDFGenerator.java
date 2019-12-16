@@ -161,10 +161,9 @@ public class PDFGenerator {
         if (this.file != null)
             return;
 
-        String folderName = FileManager.getInstance().getFolderName();
         String fileName = FileManager.getInstance().generateFileName("pdf");
 
-        this.file = new File(Configuracoes.APPLICATION_TEMP_FOLDER + folderName, fileName);
+        this.file = new File(Configuracoes.APPLICATION_TEMP_FOLDER , fileName);
     }
 
 

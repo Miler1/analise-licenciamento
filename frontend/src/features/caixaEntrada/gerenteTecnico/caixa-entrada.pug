@@ -31,14 +31,14 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
-								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO}")
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{cxEntGerente.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(cxEntGerente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntGerente.PrazoAnalise.ANALISE), cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ cxEntGerente.dateUtil.getContaDiasRestantesData(cxEntGerente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntGerente.PrazoAnalise.ANALISE)) }}
 
 							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
 								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}

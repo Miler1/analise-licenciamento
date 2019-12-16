@@ -60,6 +60,17 @@ public enum CamadaGeoEnum implements LayerType{
 		public String getColor() {
 			return color;
 		}
+	},
+	COMPLEXO("CPO","Geometria", "COMPLEXO", "#A52A2A") {
+		@Override
+		public String getName() {
+			return nome;
+		}
+
+		@Override
+		public String getColor() {
+			return color;
+		}
 	};
 
 	public String codigo;

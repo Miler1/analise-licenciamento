@@ -15,6 +15,7 @@ import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -80,6 +81,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	@Transient
 	public static int indexDadosGeometriasAtividade;
+
+	@Transient
+	public static int indexDadosGeometriasComplexo;
 
 	@Override
 	public Processo save() {
@@ -174,24 +178,17 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
-
-			if(filtroProcesso.idAnalistaGeo != null) {
-
-				processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
-
-			}
-
-			if(filtroProcesso.idAnalistaTecnico != null) {
-
-				processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
-
-			}
-
-		} else {
+		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
-			processoBuilder.filtrarPorDesvinculoSemResposta();
+			processoBuilder.filtrarAnaliseGeoAtiva(false);
+			processoBuilder.filtrarDesvinculoAnaliseGeoSemResposta();
+
+		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
+
+			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, true);
+			processoBuilder.filtrarAnaliseTecnicaAtiva(false);
+			processoBuilder.filtrarDesvinculoAnaliseTecnicaSemResposta();
 
 		}
 
@@ -244,6 +241,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		processoBuilder.filtrarDesvinculoAnaliseTecnicaComResposta(true);
 		processoBuilder.filtrarAnaliseTecnicaAtiva(filtro.isAnaliseTecnicaOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -340,7 +338,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		 processoBuilder.filtrarDesvinculoAnaliseGeo(true);
+		processoBuilder.filtrarDesvinculoAnaliseGeoComResposta(true);
 		processoBuilder.filtrarAnaliseGeoAtiva(filtro.isAnaliseGeoOpcional);
 		processoBuilder.filtrarPorSiglaSetor(filtro.siglaSetorGerencia);
 
@@ -432,6 +430,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo()
                 .groupByIdAnalise()
+				.groupByIdAnaliseGeo()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo()
@@ -637,38 +636,28 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	//Retorna o historico da tramitação com o tempo que o objeto tramitavel anterior permaneceu na condição
-	public List<HistoricoTramitacao> getHistoricoTramitacaoAnterior() {
+	public List<HistoricoTramitacao> getHistoricoTramitacaoAnaliseGeo() {
 
-		if (this.processoAnterior == null) {
+		return this.getHistoricoTramitacao()
+				.stream()
+				.filter(tramitacao -> this.analise != null && this.analise.analiseTecnica != null && tramitacao.dataInicial.before(this.analise.analiseTecnica.dataCadastro))
+				.collect(Collectors.toList());
 
-			return null;
-		}
+	}
 
-		Processo processoAnterior = Processo.findById(this.processoAnterior.id);
-		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(processoAnterior.idObjetoTramitavel);
+	public List<HistoricoTramitacao> getHistoricoTramitacaoAnaliseTecnica() {
 
-		Date dataAtual = new Date();
+		Date dataPrimeiroHistorico = this.getHistoricoTramitacao()
+				.stream()
+				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE))
+				.findFirst()
+				.map(HistoricoTramitacao::getDataInicial).orElseThrow(ValidationException::new);
 
-		//Lógica que verifica os dias que ficou na condição
-		for (int i = 0; i < historicosTramitacoes.size(); i++) {
+		return this.getHistoricoTramitacao()
+				.stream()
+				.filter(tramitacao -> tramitacao.dataInicial.equals(dataPrimeiroHistorico) || tramitacao.dataInicial.after(dataPrimeiroHistorico))
+				.collect(Collectors.toList());
 
-			if(i == 0)
-				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, dataAtual);
-			else
-				historicosTramitacoes.get(i).tempoPermanencia = DateUtil.getDiferencaEmDiasHorasMinutos(historicosTramitacoes.get(i).dataInicial, historicosTramitacoes.get(i - 1).dataInicial);
-		}
-
-		//Lógica que adiciona a data final da condição
-		for (int i = historicosTramitacoes.size() - 1; i >= 0; i--) {
-
-			if(i == 0)
-				historicosTramitacoes.get(i).dataFinal = null;
-			else
-				historicosTramitacoes.get(i).dataFinal = historicosTramitacoes.get(i - 1).dataInicial;
-		}
-
-		return historicosTramitacoes;
 	}
 
 	public List<Caracterizacao> getCaracterizacoesNaoArquivadas() {
@@ -683,31 +672,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
-	public boolean isProrrogacao() {
-
-		if(this.caracterizacao.getLicenca() == null || this.caracterizacao.getLicenca() != null && this.caracterizacao.getLicenca().dataValidade == null)
-			return false;
-
-		long diff = Math.abs(this.caracterizacao.getLicenca().dataValidade.getTime() - new Date().getTime());
-		long dias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 5l;
-
-		return Configuracoes.DIAS_PRORROGACAO < dias;
-	}
-
-	public boolean isArquivavel() {
-
-		for (Caracterizacao caracterizacao : this.empreendimento.caracterizacoes) {
-
-			if (!caracterizacao.status.nome.equals(StatusCaracterizacao.ARQUIVADO)
-					&& !caracterizacao.status.nome.equals(StatusCaracterizacao.CANCELADO)) {
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 	public static Processo findByNumProcesso(String numProcesso) {
 
 		return Processo.find("numero", numProcesso).first();
@@ -715,15 +679,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public DadosProcessoVO getDadosProcesso() {
 
-		if(this.caracterizacao.isComplexo()) {
-
-			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao), preencheComplexo(this.caracterizacao));
-
-		} else {
-
-			return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
-
-		}
+		return new DadosProcessoVO(this.caracterizacao, preencheListaAtividades(this.caracterizacao), preencheListaRestricoes(this.caracterizacao));
 
 	}
 
@@ -810,7 +766,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
 		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
-		this.getHistoricoTramitacao();
 		this.empreendimento.area = GeoCalc.area(this.empreendimento.coordenadas) / 1000;
 
 		return this;
@@ -819,7 +774,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public static CamadaGeoComplexoVO preencheComplexo(Caracterizacao caracterizacao) {
 
-		return new CamadaGeoComplexoVO(caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
+		Processo.indexDadosGeometriasComplexo = 0;
+
+		return new CamadaGeoComplexoVO(caracterizacao, caracterizacao.geometriasComplexo.stream().map(GeometriaComplexo::convertToVO).collect(Collectors.toList()));
+
 	}
 	
 	public DesvinculoAnaliseGeo buscaDesvinculoPeloProcessoGeo() {

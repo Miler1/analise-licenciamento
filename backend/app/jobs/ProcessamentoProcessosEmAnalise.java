@@ -16,9 +16,9 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 	@Override
 	public void executar() throws Exception {
 
-		Logger.info("[INICIO-JOB] ::ProcessamentoProcessosEmAnalise:: [INICIO-JOB]");
-		recuperarProcessosEmAnalise();
-		Logger.info("[FIM-JOB] ::ProcessamentoProcessosEmAnalise:: [FIM-JOB]");
+//		Logger.info("[INICIO-JOB] ::ProcessamentoProcessosEmAnalise:: [INICIO-JOB]");
+//		recuperarProcessosEmAnalise();
+//		Logger.info("[FIM-JOB] ::ProcessamentoProcessosEmAnalise:: [FIM-JOB]");
 
 	}
 	

@@ -53,7 +53,7 @@ public class VerificarComunicado extends GenericJob {
 
 				if(comunicado.ativo) {
 
-					if (VencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
+					if (vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
 
 						podeTramitar = false;
 
@@ -85,7 +85,7 @@ public class VerificarComunicado extends GenericJob {
 
 	}
 
-	public Boolean VencimentoPrazo(Date dataInicio, Date dataFim) {
+	public Boolean vencimentoPrazo(Date dataInicio, Date dataFim) {
 
 		LocalDate dataVencimento = new LocalDate(dataInicio.getTime());
 		LocalDate dataAtual = new LocalDate(dataFim.getTime());

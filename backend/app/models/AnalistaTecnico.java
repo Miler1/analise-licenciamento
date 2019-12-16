@@ -58,23 +58,14 @@ public class AnalistaTecnico extends GenericModel {
 
 	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> analistasTecnico = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
+		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		List<Usuario> usuariosEU = CadastroUnificadoWS.ws.getUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO).stream().map(Usuario::new).collect(Collectors.toList());
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
 
-		for( UsuarioAnalise analistaTecnico : analistasTecnico){
-
-			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(analistaTecnico.login)).findAny().orElseThrow(PortalSegurancaException::new);
-
-			usuario.salvarPerfis(analistaTecnico);
-			usuario.salvarSetores(analistaTecnico);
-
-		}
-
-		if (analistasTecnico == null || analistasTecnico.size() == 0)
+		if (usuariosAnalise == null || usuariosAnalise.size() == 0)
 			throw new WebServiceException("Não existe nenhum analista técnico ativado no sistema");
 
-		List<Long> idsAnalistasTecnico = analistasTecnico.stream()
+		List<Long> idsAnalistasTecnico = usuariosAnalise.stream()
 				.map(ang->ang.id)
 				.collect(Collectors.toList());
 

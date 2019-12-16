@@ -45,6 +45,10 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
+	public Date getDataParecer() {
+		return dataParecer;
+	}
+
 	public void finalizar(AnaliseGeo analiseGeo, UsuarioAnalise gerente) {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
@@ -55,6 +59,7 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			analiseTecnica.geraLicencasAnaliseTecnica(analiseGeo.licencasAnalise);
 			analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, usuarioAnalistaTecnico).save();
 
+			analiseGeo.dataFim = new Date();
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 

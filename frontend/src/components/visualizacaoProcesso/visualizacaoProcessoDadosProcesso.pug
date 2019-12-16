@@ -50,17 +50,17 @@
 							div
 								div {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}}
 
-	div.row
+	div.row(ng-if="modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil === modalVisualizacaoProcessoCtrl.perfis.GERENTE")
 		.col-xs-12.col-md-6
 			blockquote.success
 
-				h4 Histórico do processo
+				h4 Histórico do protocolo
 				label Data: &nbsp;
 				span {{ modalVisualizacaoProcessoCtrl.dateUtil.formatarData(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.dataCadastro) }}
 
 				div.panel.panel-success
 					div.panel-body
-						| Análise do processo em dias
+						| Análise do protocolo em dias
 					div.panel-footer
 						.row
 							.col-xs-4.col-md-4.text-center

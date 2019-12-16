@@ -7,6 +7,10 @@ GET		/											Application.index
 GET		/app/aplicacao/info							Application.findInfo(format:'js')
 GET		/versao										Application.versao
 
+# Jobs
+GET     /jobs/callByClassName/{className}                   Jobs.callByClassName
+GET     /jobs/callAll                                       Jobs.callAll
+
 # Processo
 POST	/processos									Processos.listWithFilter
 POST	/processos/count							Processos.countWithFilter
@@ -90,21 +94,25 @@ POST    /inconsistencia/findInconsistencia                                      
 GET     /inconsistencia/findInconsistenciaById/{id}                                 Inconsistencias.findById
 GET     /inconsistencia/excluirInconsistencia/{id}                                  Inconsistencias.excluirInconsistencia
 
-POST    /analisesGeo/inconsistencia/salvarInconsistencia                                            Inconsistencias.salvarInconsistencia
-POST    /analisesGeo/inconsistencia/findInconsistencia                                              Inconsistencias.findInconsistencia
-POST    /analisesGeo/inconsistencia/excluirInconsistencia/{id}                                      Inconsistencias.excluirInconsistencia
-POST    /analisesGeo/comunicado/salvarParecerOrgao                                                  Comunicados.salvarParecerOrgao
-GET     /analisesGeo/comunicado/findComunicado/{id}                                                 Comunicados.findComunicado
+POST    /analisesGeo/comunicado/salvarParecerOrgao                                                                      Comunicados.salvarParecerOrgao
+GET     /analisesGeo/comunicado/findComunicado/{id}                                                                     Comunicados.findComunicado
 GET     /analisesGeo/comunicado/findComunicadoByIdAnaliseGeoEmpreendimento/{idAnaliseGeo}/{idEmpreendimento}            Comunicados.findComunicadoByIdAnaliseGeoEmpreendimento
 GET     /analisesGeo/comunicado/findComunicadoByIdAnaliseGeoAtividade/{idAnaliseGeo}/{idAtividade}                      Comunicados.findComunicadoByIdAnaliseGeoAtividade
 GET     /analisesGeo/comunicado/findComunicadoByIdAnaliseGeoComplexo/{idAnaliseGeo}/{idComplexo}                        Comunicados.findComunicadoByIdAnaliseGeoComplexo
-GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                                 Comunicados.listaComunicadosByIdAnaliseGeo
-POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                                       AnalisesGeo.buscaDadosProcesso
-GET     /analisesGeo/restricao/findAllById/{idProcesso}                                             AnalisesGeo.findAllRestricoesById
+GET     /analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/{id}                                                     Comunicados.listaComunicadosByIdAnaliseGeo
+POST    /analisesGeo/processo/buscaDadosProcesso/{idProcesso}                                                           AnalisesGeo.buscaDadosProcesso
+GET     /analisesGeo/restricao/findAllById/{idProcesso}                                                                 AnalisesGeo.findAllRestricoesById
 
-# Pareceres
+# Inconsistências vistoria
+POST    /inconsistenciaVistoria/salvar                                              InconsistenciasVistoria.salvar
+GET     /inconsistenciaVistoria/deletar/{id}                                        InconsistenciasVistoria.deletar
+
+# Pareceres gerente
 POST    /parecer/gerente/concluirParecerGerente                                                                     PareceresGerentes.concluirParecerGerente
-GET     /parecer/gerente/{idHistoricoTramitacao}                                                                    PareceresGerentes.findParecerByIdHistoricoTramitacao
+GET     /parecer/gerente/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                                 PareceresGerentes.findParecerByIdHistoricoTramitacao
+GET     /parecer/gerente/justificativa/findByIdAnaliseGeo/{idAnaliseGeo}                                            PareceresGerentes.findJustificativaParecerByIdAnaliseGeo
+
+# Pareceres analista geo
 POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
 GET     /parecer/analistaGeo/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                             PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
 GET     /parecer/analistaGeo/findParecerByIdAnaliseGeo/{idAnaliseGeo}                                               PareceresAnalistasGeo.findParecerByIdAnaliseGeo
@@ -145,7 +153,7 @@ GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
 GET     /analistasGeo                               Analistas.getAnalistaGeoPerfil
 GET     /analistas/buscarAnalistasGeoByIdProcesso/{idProcesso}  Analistas.buscarAnalistasGeoByIdProcesso
 GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
-
+GET     /analistasTecnico/findAllBySetor            Analistas.findAllBySetor
 
 # Gerentes
 POST	/gerentes/vincular							Gerentes.vincularAnaliseGerente
@@ -238,7 +246,7 @@ GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 
 # Documentos shape
 POST    /upload/documento                               Documentos.upload
-GET     /download/{key}/documento/{nome}                       Documentos.downloadTmp
+GET     /download/{key}                                 Documentos.downloadTmp
 DELETE  /delete/documento/{key}                         Documentos.deleteTmp
 
 # Documentos manejo

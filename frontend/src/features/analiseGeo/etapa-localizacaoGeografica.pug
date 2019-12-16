@@ -31,7 +31,7 @@ include ../../layout/components/mapPanel
                                         i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.geometrias[0].item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
                                         | &nbsp;&nbsp;
 
-            #accordion-complexo.panel-group(ng-if="ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO")
+            #accordion-complexo.panel-group(ng-if="ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo")
                  div
                     a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-complexo', aria-expanded='false', data-target='#meusDadosComplexo', ng-init = 'ctrl.openedAccordionDadosComplexo = false', ng-click = 'ctrl.openedAccordionDadosComplexo = !ctrl.openedAccordionDadosComplexo' )
                         .panel.panel-default
@@ -44,7 +44,7 @@ include ../../layout/components/mapPanel
                         span.atividades Atividades:
                         .div-list(style="margin-left: 10px",  ng-repeat="atividade in ctrl.dadosProjeto.atividades")
                             label {{ atividade.atividadeCaracterizacao.atividade.nome }}
-
+                        br
                         table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                             thead
                                 tr
@@ -52,11 +52,11 @@ include ../../layout/components/mapPanel
                                     th.col-md-5 Declarado
 
                             tbody
-                                tr(ng-repeat="geometria in ctrl.dadosProjeto.atividades[0].geometrias")
+                                tr(ng-repeat="geometria in ctrl.dadosProjeto.complexo.geometrias")
                                     td.col-md-5 {{ geometria.item }}
                                     td.col-md-5 {{ geometria.descricao }}
 
-            #lista-camadas-atividades(ng-if="ctrl.dadosProjeto.categoria !== ctrl.categoria.COMPLEXO")
+            #lista-camadas-atividades(ng-if="ctrl.dadosProjeto.categoria !== ctrl.categoria.COMPLEXO && ctrl.dadosProjeto.complexo === null")
                 #accordion-atividades.panel-group
                     h5(style="margin-bottom:0px") {{ ctrl.labelDadosProjeto }}
                     br
