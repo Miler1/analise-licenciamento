@@ -50,8 +50,7 @@ public class Uploads extends InternalController {
 				realType.contains("bmp")) {
 
 			byte[] data = IO.readContent(file.asFile());
-			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String key = FileManager.getInstance().createFile(data, extension);
+			String key = FileManager.getInstance().createKey(data, file.getFileName());
 
 			renderText(key);
 		}

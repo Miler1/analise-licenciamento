@@ -97,7 +97,7 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	$scope.$on('mapa:adicionar-botao-centralizar-mapa-base', adicionarBotaoCentralizar);
 
-  $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
+    $scope.$on('mapa:centralizar-camada', centralizarCamadaEspecifica);
 	
 	$scope.$on('mapa:adicionar-wmslayer-mapa', adicionarWmsLayer);
 
@@ -248,9 +248,9 @@ var PainelMapaController = function ($scope, wmsTileService) {
 	function centralizaGeometriasBase(event, maxZoom) {
 
 		if (maxZoom) {
-			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase["EMP-CIDADE"].item.getBounds(), {maxZoom: maxZoom});
+			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase.PROPRIEDADE.Propriedade.getBounds(), {maxZoom: maxZoom});
 		} else {
-			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase["EMP-CIDADE"].item.getBounds());
+			painelMapa.map.fitBounds(painelMapa.listaGeometriasBase.PROPRIEDADE.Propriedade.getBounds());
 		}
 
 	}

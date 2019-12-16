@@ -50,17 +50,17 @@
 							div
 								div {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome}} - {{modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}}
 
-	div.row
+	div.row(ng-if="modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil === modalVisualizacaoProcessoCtrl.perfis.GERENTE")
 		.col-xs-12.col-md-6
 			blockquote.success
 
-				h4 Histórico do processo
+				h4 Histórico do protocolo
 				label Data: &nbsp;
 				span {{ modalVisualizacaoProcessoCtrl.dateUtil.formatarData(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.dataCadastro) }}
 
 				div.panel.panel-success
 					div.panel-body
-						| Análise do processo em dias
+						| Análise do protocolo em dias
 					div.panel-footer
 						.row
 							.col-xs-4.col-md-4.text-center
@@ -93,8 +93,8 @@
 								tr
 									th Data Entrada
 									th Data Saída
-									th Status
 									th Ação
+									th Status
 									th Tempo do Status
 									th Responsável
 									th Observação
@@ -103,8 +103,8 @@
 								tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
 									td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
 									td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
-									td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
 									td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
+									td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
 									td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 									td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 									td.col-md-1 
@@ -126,8 +126,8 @@
 							tr
 								th Data Entrada
 								th Data Saída
-								th Status
 								th Ação
+								th Status
 								th Tempo do Status
 								th Responsável
 								th Observação
@@ -136,8 +136,8 @@
 							tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacaoAnterior")
 								td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
 								td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
-								td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
 								td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
+								td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
 								td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
 								td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 								td.col-md-1 

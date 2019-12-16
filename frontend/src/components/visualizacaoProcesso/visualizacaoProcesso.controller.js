@@ -25,6 +25,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.camadasSobreposicao = app.utils.CamadaSobreposicao;
 	modalCtrl.tiposResultadoAnaliseUtils = app.utils.TiposResultadoAnalise;
 	modalCtrl.acaoTramitacao = app.utils.AcaoTramitacao;
+	modalCtrl.categoria = app.utils.Inconsistencia;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 	modalCtrl.numPoints = 0;
 	modalCtrl.dadosProjeto = {};
@@ -49,8 +50,6 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-				modalCtrl.init('mapa-visualizacao-protocolo', true, true);
-				modalCtrl.iniciarMapa();
 
 			})
 			.catch(function(){
@@ -64,8 +63,6 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			modalCtrl.dadosProcesso = response.data;
 			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-			modalCtrl.init('mapa-visualizacao-protocolo', true, true);
-			modalCtrl.iniciarMapa();
 	
 		})
 		.catch(function(){
@@ -112,6 +109,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	// Métodos referentes ao Mapa da caracterização
 	this.iniciarMapa = function() {
+
+		modalCtrl.init('mapa-visualizacao-protocolo', true, true);
 
 		$timeout(function() {
 
@@ -177,17 +176,29 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 					});
 
+					if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
+
+						modalCtrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
+
+							adicionarGeometriaNoMapa(geometria);
+
+						});
+
+					}
+
 					tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
 
 						modalCtrl.TiposSobreposicao = response.data;
 
 					});
 
+					$scope.$emit('mapa:centralizar-mapa');
+
 				});
 
 			});
 
-		});		
+		});
 
 	};
 
@@ -372,10 +383,10 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			size: 'lg',
 			resolve: {
 
-				parecer: function(){
+				parecer: function() {
 					return parecer;
 				},
-
+				
 				idProcesso: function() {
 					return idProcesso;
 				}
@@ -398,17 +409,17 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				  historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
 				  historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
-				parecerAnalistaGeoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
-				.then(function(response){
-					abrirModal(response.data, idProcesso);
-				});
+				parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+					.then(function(response){
+						abrirModal(response.data, idProcesso);
+					});
 
 		} else {
 
-			parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
-			.then(function(response){
-				abrirModal(response.data, idProcesso);
-			});
+			parecerAnalistaGeoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				.then(function(response){
+					abrirModal(response.data, idProcesso);
+				});
 
 		}
 

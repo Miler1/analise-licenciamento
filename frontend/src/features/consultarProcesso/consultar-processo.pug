@@ -8,9 +8,9 @@ div
 		pesquisar-ao-inicializar="true",
 		is-analise-juridica="false",
 		is-analise-tecnica="false",
-		is-analise-geo="usuarioLogadoCodigoPerfil === app.utils.Perfis.ANALISTA_GEO",
+		is-analise-geo="false",
 		is-gerente="false",
-		is-gerente-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE",
+		is-gerente-logado="false",
 		consultar-processos="true",
 		pesquisar-todas-gerencias="false",
 		filtrar-por-usuario="false")
@@ -37,7 +37,7 @@ div
 						tr(ng-repeat="processo in consultarProcesso.processos")
 							td
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
-								span(ng-class="{'icone-solicitacao-finalizada': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
+								span(ng-class="{'icone-solicitacao-finalizada': consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) }")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO}")
 
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero | textoTruncado : 4:3}}
@@ -45,8 +45,8 @@ div
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td.text-center {{processo.licencas}}
 
-							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
-								| {{consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(consultarProcesso.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, consultarProcesso.PrazoAnalise.ANALISE), consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ consultarProcesso.dateUtil.getContaDiasRestantesData(consultarProcesso.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, consultarProcesso.PrazoAnalise.ANALISE)) }}
 
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
 								| {{ consultarProcesso.getPrazoAnaliseGeo(processo) }}
@@ -66,11 +66,11 @@ div
 												a(ng-click="consultarProcesso.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE")
+											li(ng-if="consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao)")
 												a(ng-click="consultarProcesso.downloadPDFparecer(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar parecer GEO
-											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE")
+											li(ng-if="consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao)")
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar carta imagem
@@ -82,7 +82,7 @@ div
 				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO")
 
 					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
-					span.icone-.icone-solicitacao-finalizada.legenda Análise GEO finalizada
+					span.icone-solicitacao-finalizada.legenda Análise GEO finalizada
 					span.icone-revisao-atendida.legenda Notificado
 					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
 

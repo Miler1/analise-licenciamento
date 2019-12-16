@@ -1,6 +1,5 @@
 package controllers;
 
-
 import models.*;
 import security.Acao;
 import serializers.DesvinculoSerializar;
@@ -16,7 +15,7 @@ public class Desvinculos extends GenericController {
 
         returnIfNull(desvinculoAnaliseGeo, "DesvinculoAnaliseGeo");
 
-        desvinculoAnaliseGeo.solicitaDesvinculoAnaliseGeo( getUsuarioSessao() );
+        desvinculoAnaliseGeo.solicitaDesvinculoAnaliseGeo(getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 
@@ -35,7 +34,7 @@ public class Desvinculos extends GenericController {
 
         returnIfNull(desvinculoAnaliseGeo, "DesvinculoAnaliseGeo");
 
-        desvinculoAnaliseGeo.respondeSolicitacaoDesvinculoAnaliseGeo( getUsuarioSessao() );
+        desvinculoAnaliseGeo.respondeSolicitacaoDesvinculoAnaliseGeo(getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_RESPONDIDO_COM_SUCESSO.getTexto());
 
@@ -47,7 +46,7 @@ public class Desvinculos extends GenericController {
 
         returnIfNull(desvinculoAnaliseTecnica, "DesvinculoAnaliseTecnica");
 
-        desvinculoAnaliseTecnica.solicitaDesvinculoSAnaliseTecnica( getUsuarioSessao() );
+        desvinculoAnaliseTecnica.solicitaDesvinculoSAnaliseTecnica(getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_SOLICITADO_COM_SUCESSO.getTexto());
 
@@ -66,7 +65,7 @@ public class Desvinculos extends GenericController {
 
         returnIfNull(desvinculoAnaliseTecnica, "DesvinculoAnaliseTecnica");
 
-        desvinculoAnaliseTecnica.respondeSolicitacaoDesvinculoAnaliseTecnica( getUsuarioSessao() );
+        desvinculoAnaliseTecnica.respondeSolicitacaoDesvinculoAnaliseTecnica(getUsuarioSessao());
 
         renderText(Mensagem.DESVINCULO_RESPONDIDO_COM_SUCESSO.getTexto());
 

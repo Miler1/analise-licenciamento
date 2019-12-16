@@ -138,6 +138,30 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 			});
 	};
 
+	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
+
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
+		var status = true;
+		
+		// Verificar permissões de status para cada perfil
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+
+			CONSULTAR_PROTOCOLO_ANALISTA_GEO.forEach(function(condicao){
+
+				if(idCondicaoTramitacao === condicao) {
+
+					status = false;
+
+				}
+
+			});
+
+		}
+
+		return status;
+
+	};
+
 };
 
 exports.controllers.ConsultarProcessoController = ConsultarProcessoController;

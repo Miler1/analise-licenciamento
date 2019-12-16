@@ -87,21 +87,9 @@ public class AnalistaGeo extends GenericModel {
 
 	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-		List<Usuario> usuariosEU = CadastroUnificadoWS.ws.getUsuariosByPerfil(CodigoPerfil.ANALISTA_GEO).stream().map(Usuario::new).collect(Collectors.toList());
-
-
-		for( UsuarioAnalise analistaGeo : analistasGeo){
-
-			Usuario usuario = usuariosEU.stream().filter(usuarioEU -> usuarioEU.login.equals(analistaGeo.login)).findAny().orElseThrow(PortalSegurancaException::new);
-
-			usuario.salvarPerfis(analistaGeo);
-			usuario.salvarSetores(analistaGeo);
-
-		}
-
-		if (analistasGeo.isEmpty()) {
+		if (usuariosAnalise.isEmpty()) {
 
 			Logger.info(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
 
@@ -109,7 +97,7 @@ public class AnalistaGeo extends GenericModel {
 
 		}
 
-		List<Long> idsAnalistasGeo = analistasGeo.stream()
+		List<Long> idsAnalistasGeo = usuariosAnalise.stream()
 				.map(ang -> ang.id)
 				.collect(Collectors.toList());
 

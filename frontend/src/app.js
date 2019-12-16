@@ -490,7 +490,8 @@ utils.services(licenciamento)
 	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
 	.add('parecerOrgaoService', services.ParecerOrgaoService)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
-	.add('parecerGerenteService', services.ParecerGerenteService);
+	.add('parecerGerenteService', services.ParecerGerenteService)
+	.add('inconsistenciaVistoriaService', services.InconsistenciaVistoriaService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -518,8 +519,8 @@ licenciamento
 	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
 	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
-	.controller('visualizarAjustesController',controllers.VisualizarAjustesController);
-
+	.controller('visualizarAjustesController',controllers.VisualizarAjustesController)
+	.controller('modalInconsistenciaVistoriaController', controllers.ModalInconsistenciaVistoriaController);
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)

@@ -32,7 +32,12 @@ public class Notificacoes extends InternalController {
 
         Processo processo = Processo.findById(id);
 
-        renderJSON(processo.analise.getAnaliseGeo().notificacoes.stream().sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList()), NotificacaoSerializer.findAll);
+        List<Notificacao> notificacoes = processo.analise.getAnaliseGeo().notificacoes;
+        for (Notificacao notificacao:notificacoes) {
+            notificacao.setJustificativa();
+        }
+
+        renderJSON(notificacoes.stream().sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList()), NotificacaoSerializer.findAll);
     }
 
 }

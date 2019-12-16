@@ -26,6 +26,7 @@ public class Condicoes extends InternalController {
 							Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
 							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
 							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE
 							))
@@ -36,7 +37,8 @@ public class Condicoes extends InternalController {
 					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
-							Condicao.NOTIFICADO))
+							Condicao.NOTIFICADO,
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO))
 					.fetch();
 		}
 		

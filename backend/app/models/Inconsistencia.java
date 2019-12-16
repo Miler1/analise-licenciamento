@@ -14,13 +14,58 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import models.licenciamento.Caracterizacao.OrigemSobreposicao;
+
 @Entity
 @Table(schema="analise", name="inconsistencia")
 public class Inconsistencia extends GenericModel{
 
     public static final String SEQ = "analise.inconsistencia_id_seq";
 
-    public enum Categoria { PROPRIEDADE, COMPLEXO, ATIVIDADE, RESTRICAO }
+    public enum Categoria {
+
+        PROPRIEDADE,
+        COMPLEXO,
+        ATIVIDADE,
+        RESTRICAO;
+
+        public static Categoria preencheCategoria(Caracterizacao caracterizacao) {
+
+            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+
+                return Categoria.PROPRIEDADE;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO)) {
+
+                return Categoria.COMPLEXO;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.ATIVIDADE)) {
+
+                return Categoria.ATIVIDADE;
+
+            } else {
+
+                boolean isAtividadeDentroEmpreendimento = caracterizacao.atividadesCaracterizacao.stream().allMatch(AtividadeCaracterizacao::isAtividadeDentroEmpreendimento);
+
+                if(isAtividadeDentroEmpreendimento) {
+
+                    return Categoria.PROPRIEDADE;
+
+                } else if(caracterizacao.isComplexo()){
+
+                    return Categoria.COMPLEXO;
+
+                } else {
+
+                    return Categoria.ATIVIDADE;
+
+                }
+
+            }
+
+        }
+
+    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
@@ -224,7 +269,7 @@ public class Inconsistencia extends GenericModel{
             inconsistencia.analiseGeo = this.analiseGeo;
             inconsistencia.id = this.id;
             inconsistencia.caracterizacao = Objects.nonNull(this.caracterizacao) && Objects.nonNull(this.caracterizacao.id) ? this.caracterizacao : null;
-            inconsistencia.atividadeCaracterizacao = Objects.nonNull(this.atividadeCaracterizacao) ? AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id) : null;
+            inconsistencia.atividadeCaracterizacao = Objects.nonNull(this.atividadeCaracterizacao) && Objects.nonNull(this.atividadeCaracterizacao.id) ? AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id) : null;
             inconsistencia.saveAnexos(this.anexos);
 
             return inconsistencia.save();
