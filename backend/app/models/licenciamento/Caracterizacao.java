@@ -1,8 +1,10 @@
 package models.licenciamento;
 
+import models.Comunicado;
 import models.Processo;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import serializers.ComunicadoSerializer;
 import utils.Identificavel;
 
 import javax.persistence.*;
@@ -84,6 +86,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	
 	@OneToMany(mappedBy="caracterizacao")
 	public List<Licenca> licencas;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "caracterizacao", orphanRemoval = true)
+	public Questionario3 questionario3;
 
 	@Column
 	public Boolean complexo = false;

@@ -216,7 +216,7 @@ var InconsistenciaController = function ($scope,
 				sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
 			};
 
-			inconsistenciaService.salvarInconsistencia(inconsistencia)
+			inconsistenciaService.salvarInconsistenciaGeo(inconsistencia)
 				.then(function(response){
 
 					mensagem.success("Inconsistência salva com sucesso!");
@@ -277,7 +277,7 @@ var InconsistenciaController = function ($scope,
 			className: "btn-success",
 			callback: function() {
 
-				inconsistenciaService.excluirInconsistencia(inconsistencia.id)
+				inconsistenciaService.excluirInconsistenciaGeo(inconsistencia.id)
 					.then(function (response) {
 						mensagem.success(response.data);
 

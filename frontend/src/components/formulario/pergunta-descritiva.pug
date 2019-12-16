@@ -1,0 +1,44 @@
+include titulo-pergunta
+
+mixin perguntaDescritiva(texto, labelClass, model, tamanho, ngDisabled)
+	if tamanho === 'pequeno' && ngDisabled !== "true"
+		+tituloPergunta(texto, labelClass)
+		input.form-control.input-front-text(
+			type="text",
+			ng-model=model,
+			maxlength="50",
+			required,
+			ng-disabled=ngDisabled
+		)
+	else if tamanho === 'pequeno' && ngDisabled === "true"
+		+tituloPergunta(texto, labelClass)
+		span.word-break-all {{#{model}}}
+
+	if tamanho === 'linha' && ngDisabled !== "true"
+		table.fill-width
+			tr
+				td(style='padding-right:10px;')
+					label(class=labelClass) #{texto}
+				td(style='width:100%;')
+					input.form-control.input-front-text(
+						type="text",
+						ng-model=model,
+						maxlength="50",
+						required,
+						ng-disabled=ngDisabled
+					)
+	else if tamanho === 'linha' && ngDisabled === "true"
+		div.texto-outros-visualizar
+			label(class=labelClass) #{texto}
+			span.word-break-all {{#{model}}}
+
+
+	if tamanho === 'medio'
+		+tituloPergunta(texto, labelClass)
+		textarea.form-control(
+			type="text",
+			ng-model=model,
+			maxlength="1000",
+			required,
+			ng-disabled=ngDisabled
+		)

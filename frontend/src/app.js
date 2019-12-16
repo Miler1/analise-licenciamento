@@ -491,6 +491,7 @@ utils.services(licenciamento)
 	.add('parecerOrgaoService', services.ParecerOrgaoService)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
 	.add('parecerGerenteService', services.ParecerGerenteService)
+	.add('questionarioService', services.QuestionarioService)
 	.add('inconsistenciaVistoriaService', services.InconsistenciaVistoriaService);
 
 utils.filters(licenciamento)
@@ -520,6 +521,7 @@ licenciamento
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
 	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
 	.controller('visualizarAjustesController',controllers.VisualizarAjustesController)
+	.controller('inconsistenciaTecnicaController',controllers.InconsistenciaTecnicaController)
 	.controller('modalInconsistenciaVistoriaController', controllers.ModalInconsistenciaVistoriaController);
 
 licenciamento
@@ -539,4 +541,5 @@ licenciamento
 	.component('tabelaLicencas', directives.TabelaLicencas)
 	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca)
 	.component('modalOficioRestricao', directives.ModalOficioRestricao)
-	.component('modalNotificacaoRestricao', directives.ModalNotificacaoRestricao);
+	.component('modalNotificacaoRestricao', directives.ModalNotificacaoRestricao)
+	.component('modalVisualizarQuestionario',directives.ModalVisualizarQuestionario);
