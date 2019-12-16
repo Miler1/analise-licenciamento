@@ -28,27 +28,27 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 		if(file) {
 
-				uploadService.saveExterno(file)
-						.then(function(response) {
+			uploadService.saveExterno(file)
+				.then(function(response) {
 
-							$scope.anexos.push({
+					$scope.anexos.push({
 
-										key: response.data,
-										nomeDoArquivo: file.name,
-										tipoDocumento: {
+						key: response.data,
+						nomeDoArquivo: file.name,
+						tipoDocumento: {
 
-												id: app.utils.TiposDocumentosAnalise.PARECER_ORGAO
-										}
-								});
-															
-						}, function(error){
+							id: app.utils.TiposDocumentosAnalise.PARECER_ORGAO
+						}
+					});
+													
+			}, function(error){
 
-								mensagem.error(error.data.texto);
-						});
+				mensagem.error(error.data.texto);
+			});
 
 		} else if(invalidFile && invalidFile.$error === 'maxSize'){
 
-				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+			mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
 		}
 	};
 
@@ -61,8 +61,6 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 		
 		documentoService.download(anexo.key, anexo.nomeDoArquivo);
 	};
-
-
 
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 	
@@ -83,10 +81,10 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 		}else{
 
 			var params = { 
-							id: $routeParams.idComunicado,
-						    parecerOrgao: parecerOrgao,
-						    anexos: $scope.anexos
-						 };
+				id: $routeParams.idComunicado,
+				parecerOrgao: parecerOrgao,
+				anexos: $scope.anexos
+			};
 
 			parecerOrgaoService.enviar(params)
 				.then(function (response) {
