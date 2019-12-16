@@ -135,6 +135,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataFimValidacaoAprovador;
 
+	@OneToMany(mappedBy = "analiseTecnica")
+	public List<InconsistenciaTecnica> inconsistenciasTecnica;
+		
 	@OneToOne(mappedBy = "analiseTecnica")
 	public Vistoria vistoria;
 

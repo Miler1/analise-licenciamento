@@ -3,6 +3,7 @@ package models.licenciamento;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
+import java.io.File;
 
 @Entity
 @Table(schema = "licenciamento", name = "solicitacao_grupo_documento")

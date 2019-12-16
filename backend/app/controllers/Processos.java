@@ -1,11 +1,16 @@
 package controllers;
 
 import builders.ProcessoBuilder.FiltroProcesso;
-import models.*;
+import models.AnaliseJuridica;
+import models.Processo;
+import models.licenciamento.Caracterizacao;
+import models.licenciamento.Questionario3;
 import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
+import serializers.Questionario3Serializer;
+
 import java.util.List;
 
 public class Processos extends InternalController {

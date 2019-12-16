@@ -1,0 +1,14 @@
+include titulo-pergunta
+
+mixin perguntaNumerica(texto, labelClass, model, casasDecimais, labelInformativo, ngDisabled)
+	+tituloPergunta(texto, labelClass)
+	span.input-group.numerico-tamanho-pequeno
+		input.form-control(
+			type='text',
+			ng-model=model,
+			required,
+			ng-disabled=ngDisabled,
+			ui-number-mask=casasDecimais
+		)
+		if labelInformativo !== null
+			.input-group-addon #{labelInformativo}

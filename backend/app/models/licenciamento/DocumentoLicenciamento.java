@@ -62,7 +62,6 @@ public class DocumentoLicenciamento extends GenericModel implements Identificave
 			return "";
 		
 		return this.caminho.substring(this.caminho.lastIndexOf("/") + 1);
-	}		
-	
-	
+	}
+
 }

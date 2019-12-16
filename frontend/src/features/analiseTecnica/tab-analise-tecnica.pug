@@ -1,0 +1,255 @@
+.col-xs-12
+    .marginProcesso
+
+        div.row
+            label.col-sm-2 Analista Técnico:
+            span.col-sm-8 {{ ctrl.analistaTecnico }}
+        br    
+        hr
+
+        div.row
+
+            table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                thead
+                    tr
+                    th.col-md-11 Fase
+                    th.col-md-2 Validar
+
+
+                tbody
+                    tr
+                        td.col-md-6 {{ctrl.analiseTecnica.analise.processo.caracterizacao.tipoLicenca.nome}} 
+                        td.col-md-2
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === true}",
+                                                                                    ng-click="ctrl.adicionarInconsistenciaTecnicaTipoLicenca(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA)")
+                                | &nbsp;                        
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === true",
+                                                                                ng-class="{'nao-tem-inconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === false}"
+                                                                                title='Excluir inconsistência',
+                                                                                ng-bootbox-title='Confirmação',
+                                                                                ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA, null, null)")
+                                | &nbsp;
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === null || ctrl.itemValidoLicenca.tipoLicenca === false ",
+                                                                                ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA, null, ctrl.analiseTecnica)",
+                                                                                ng-class="{'nao-tem-inconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === false}")
+                                | &nbsp;                                
+
+        div.row
+            strong.col-sm-2.margin-hr-analise-tecnica Atividades/Parâmetros:
+            hr
+            div(ng-repeat="atividadeCaracterizacao in ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao")
+                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividade-parametro', aria-expanded='false', data-target='#dados-atividade-parametro', ng-click = 'validacaoAnaliseTecnica.openedAccordionAtividadeParametro = !validacaoAnaliseTecnica.openedAccordionAtividadeParametro' )
+                    .panel.panel-default.panel-analise
+                        .panel-heading
+                            h4.panel-title
+                                | {{atividadeCaracterizacao.atividade.nome}}
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnica.openedAccordionAtividadeParametro, 'glyphicon-chevron-right': !validacaoAnaliseTecnica.openedAccordionAtividadeParametro}")
+
+                #dados-atividade-parametro.collapse  
+                    div
+                        table.table.table-striped.table-condensed.table-responsive
+                            thead
+                                tr
+                                th.col-md-9 Atividade/Parâmetro
+                                th.col-md-2 Valor
+                                th.col-md-2 Validar
+
+
+                            tbody
+                                tr
+                                    td.col-md-6 {{atividadeCaracterizacao.atividade.nome}}
+                                    td.col-md-2 -
+                                    td.col-md-2
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.atividade === true}",
+                                                                                                ng-click="ctrl.adicionarInconsistenciaTecnicaAtividade(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, atividadeCaracterizacao)")
+                                            | &nbsp;                        
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.atividade === true",
+                                                                                            ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.atividade === false }",
+                                                                                            title='Excluir inconsistência',
+                                                                                            ng-bootbox-title='Confirmação',
+                                                                                            ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                            ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, null, null)")
+                                            | &nbsp;
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.atividade === null || ctrl.itemValidoLicenca.atividade === false",
+                                                                                            ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, null, ctrl.analiseTecnica)",
+                                                                                            ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.atividade === false }")
+                                            | &nbsp;                                            
+                                tr(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
+                                    td.col-md-6 {{ atividadeCaracterizacao.atividade.parametros[$index].codigo }} - {{ atividadeCaracterizacao.atividade.parametros[$index].nome }}
+                                    td.col-md-2 {{ atividadeCaracterizacaoParametro.valorParametro }}
+                                    td.col-md-2
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.validarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index]) === false}",
+                                                                                                ng-click="ctrl.adicionarInconsistenciaTecnicaParametro(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index])")
+                                            | &nbsp;                        
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.validarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index]) === false",
+                                                                                            ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.parametro === true }",
+                                                                                            title='Excluir inconsistência',
+                                                                                            ng-bootbox-title='Confirmação',
+                                                                                            ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                            ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.PARAMETRO,atividadeCaracterizacao.atividade.parametros[$index], null)")
+                                            | &nbsp;
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.parametro === null || ctrl.validarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index]) === true",
+                                                                                            ng-click="ctrl.validarItensvalidarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index])",
+                                                                                            ng-class="{'nao-tem-inconsistencia' :  ctrl.itemValidoLicenca.parametro === true  }")
+                                            | &nbsp;                                            
+        div.row
+            hr
+            div
+                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                    thead
+                        tr
+                        th.col-md-9 Questionários
+                        th.col-md-2.text-right.padding-right-11 Validar
+                        th.col-md-2.text-right Ações
+
+
+                    tbody
+                        tr
+                            td.col-md-9 Questionário 03
+                            td.col-md-2
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.questionario === true}",
+                                                                                        ng-click="ctrl.adicionarInconsistenciaTecnicaQuestionario(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO)")
+                                    | &nbsp;                        
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.questionario === true",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.questionario === false }",
+                                                                                    title='Excluir inconsistência',
+                                                                                    ng-bootbox-title='Confirmação',
+                                                                                    ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                    ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO, null, null)")
+                                    | &nbsp;
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.questionario === null || ctrl.itemValidoLicenca.questionario === false",
+                                                                                    ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO, null, ctrl.analiseTecnica)",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.questionario === false }")
+                                    | &nbsp;
+                            td.col-md-2
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarQuestionario(ctrl.analiseTecnica)")
+                                    | &nbsp;
+        div.row
+            hr
+            div
+                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                    thead
+                        tr
+                        th.col-md-9 Documentos administrativos
+                        th.col-md-2.text-right.padding-right-11 Validar
+                        th.col-md-2.text-right Ações
+
+
+                    tbody
+                        tr(ng-repeat="documentoAdministrativo in ctrl.analiseTecnica.analise.processo.caracterizacao.documentosEnviados")
+                            td.col-md-9 {{ documentoAdministrativo.tipo.nome}}
+                            td.col-md-2 
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.validarInconsistenciaDocumentoAdministrativo(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo) === false}",
+                                                                                        ng-click="ctrl.adicionarInconsistenciaTecnicaDocumentoAdministrativo(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo)")
+                                    | &nbsp;                        
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.validarInconsistenciaDocumentoAdministrativo(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo) === false",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoAdministrativo === true }",
+                                                                                    title='Excluir inconsistência',
+                                                                                    ng-bootbox-title='Confirmação',
+                                                                                    ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                    ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, null, documentoAdministrativo)")
+                                    | &nbsp;
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.documentoAdministrativo === null || ctrl.validarInconsistenciaDocumentoAdministrativo(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo) === true",
+                                                                                    ng-click="ctrl.validarInconsistenciaDocumentoAdministrativo(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo)",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoAdministrativo === true }")
+                                    | &nbsp;
+                            td.col-md-2
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(docu)")
+                                    | &nbsp;
+        div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosEnviados.length === 0")
+            strong.col-sm-6.margin-hr-analise-tecnica Documentos administrativos
+            hr        
+            div.info-sem-dados-para-exibir.margin-inconsistencia
+                i Nenhum documento administrativo adicionado.
+
+        div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length > 0")
+            hr
+            div
+                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                    thead
+                        tr
+                        th.col-md-9 Documentos técnicos/ambientais
+                        th.col-md-2.text-right.padding-right-11 Validar
+                        th.col-md-2.text-right Ações
+
+
+                    tbody
+                        tr(ng-repeat="documentoTecnicoAmbiental in ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo")
+                            td.col-md-9 {{ documentoTecnicoAmbiental.tipoDocumento.nome}}
+                            td.col-md-2
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental) === true}",
+                                                                                        ng-click="ctrl.adicionarInconsistenciaTecnicaDocumentoTecnicoAmbiental(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental)")
+                                    | &nbsp;                        
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental) === true",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental === false }",
+                                                                                    title='Excluir inconsistência',
+                                                                                    ng-bootbox-title='Confirmação',
+                                                                                    ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                    ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, null, documentoTecnicoAmbiental)")
+                                    | &nbsp;
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.documentoTecnicoAmbiental === null || ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental) === false",
+                                                                                    ng-click="ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental)",
+                                                                                    ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental === false }")
+                                    | &nbsp;
+                            td.col-md-2
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(documentoTecnicoAmbiental)")
+                                    | &nbsp;
+        div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length === 0")
+            strong.col-sm-6.margin-hr-analise-tecnica Documentos técnicos/ambientais
+            hr  
+            div.info-sem-dados-para-exibir.margin-inconsistencia
+                i Nenhum documento técnico/ambiental adicionado.
+        div.row        
+            div.col-md-8(ng-class="{'error-div': ctrl.errors.pergunta === true }")
+                div.col-md-14
+                    div.col-md-12
+                        i Com base no Decreto Federal 6.514/2008, Art. 21 e Art. 66, inciso Im atividade iniciou a instalação / operação sem licenciamento ambiental nos últimos 5 anos ?
+
+                div.row(style="margin-bottom:10px;")
+                    div.col-md-12.radio-decreto-federal
+                        label.radio-inline
+                            input(type='radio', ng-model='ctrl.pergunta', value='true',ng-class="{'error': ctrl.errors.pergunta === true }")
+                            | Sim
+                        label.radio-inline(ng-click="ctrl.limparAnexos()",style="margin-left:100px;")
+                            input(type='radio', ng-model='ctrl.pergunta', value='false')
+                            | Não
+
+        div.row.margin-top-md.col-md-14(ng-if="ctrl.pergunta === 'true'")
+            strong.col-sm-12.margin-bottom-sm.obrigatorio Auto de Infração: 
+
+            div.btn.btn-default(style=" margin-left: 5px;margin-bottom:5px;",type="file", name="arquivo",
+                                                    ng-disabled="ctrl.getDocumentosAutoInfracao().length === 1", 
+                                                    ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.AUTO_INFRACAO)", 
+                                                    ngf-accept="'application/pdf,image/*'", 
+                                                    ngf-pattern="'application/pdf,image/*'",
+                                                    ng-class="{'error-div': ctrl.errors.autoInfracao === true }",
+                                                    title='Permitido apenas upload de 1 arquivo.' 
+                                                    ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+                                                    
+                i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+                | Anexar arquivo
+
+            table.table.table-striped.table-condensed.table-responsive.table-empreendimento(ng-if="ctrl.anexos.length > 0")
+
+                thead
+
+                    tr
+                        th.col-md-10 Arquivo anexado
+                        th.col-md-2.text-right Ações
+
+                tbody
+
+                    tr(ng-model="ctrl.anexos",ng-repeat="anexo in ctrl.anexos")
+
+                        td.col-md-10 {{anexo.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Baixar anexo", ng-click="ctrl.baixarDocumento(anexo)")
+                                i.glyphicon.glyphicon-save
+
+                            a.d-inline.margin-right-xs(style='cursor: pointer;')
+                                i.glyphicon.glyphicon-trash(title='Remover anexo',
+                                                            ng-bootbox-title='Confirmação',
+                                                            ng-bootbox-confirm='Deseja realmente remover este anexo ?',
+                                                            ng-bootbox-confirm-action="ctrl.removerDocumento($index,anexo.id)")
+

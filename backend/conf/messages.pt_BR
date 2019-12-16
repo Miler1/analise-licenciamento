@@ -134,6 +134,7 @@ PRAZO_MAXIMO_SUSPENSAO_EXCEDIDO=O prazo máximo para suspensão da licença é d
 LICENCA_SUSPENSA_SUCESSO=Licença suspendida com sucesso.
 LICENCA_CANCELADA_OU_SUSPENSA=A Licença informada não pode ser baixada.
 LICENCA_CANCELADA_SUCESSO=Licença cancelada com sucesso.
+CARACTERIZACAO_PERGUNTAS_NAO_RESPONDIDAS = Existem perguntas obrigatórias que não foram respondidas.
 
 #
 # Dlas

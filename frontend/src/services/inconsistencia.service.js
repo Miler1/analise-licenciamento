@@ -1,13 +1,14 @@
 var InconsistenciaService = function(request,$window,config) {
 
-	this.salvarInconsistencia = function(params){
+	this.salvarInconsistenciaGeo = function(params){
 		return request
-			.post(config.BASE_URL() + 'inconsistencia/salvar', params);
+			.post(config.BASE_URL() + 'inconsistencia/analiseGeo/salvarInconsistencia', params);
 	};
 
-	this.findInconsistencia = function(params){
+	this.findInconsistenciaGeo = function(params){
 		return request
-			.post(config.BASE_URL() + 'inconsistencia/findInconsistencia', params);
+			.post(config.BASE_URL() + 'inconsistencia/analisesGeo/findInconsistencia', params);
+
 	};
 
 	this.findInconsistenciaById = function(id){
@@ -21,10 +22,26 @@ var InconsistenciaService = function(request,$window,config) {
 
 	};
 
-	this.excluirInconsistencia = function(id){
+	this.excluirInconsistenciaGeo = function(id){
 		return request
-			.get(config.BASE_URL() + 'inconsistencia/excluirInconsistencia/' +  id);
+			.post(config.BASE_URL() + 'inconsistencia/analisesGeo/excluirInconsistencia/' + id);
 	};
+
+	this.salvarInconsistenciaTecnica = function(params){
+		return request
+			.post(config.BASE_URL() + 'inconsistencia/analiseTecnica/salvarInconsistencia', params);
+	};
+
+	this.findInconsistenciaTecnica = function(id){
+		return request
+			.post(config.BASE_URL() + 'inconsistencia/analiseTecnica/findInconsistencia/' + id);
+	};
+
+	this.excluirInconsistenciaTecnica = function(inconsistenciaTecnica){
+		return request
+			.post(config.BASE_URL() + 'inconsistencia/analiseTecnica/excluirInconsistencia', inconsistenciaTecnica);
+	};
+
 };
 
 exports.services.InconsistenciaService = InconsistenciaService;
