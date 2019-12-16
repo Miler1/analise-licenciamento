@@ -67,3 +67,19 @@ hr
                     a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                         i.glyphicon.glyphicon-trash
     i.info-sem-dados-para-exibir(style="color:red; display:flex;", ng-if="ctrl.errors.isPdf === true") Permitido apenas upload de arquivos com extensão .pdf
+
+div
+#conclusao
+    hr
+    label.obrigatorio Análise final do protocolo:
+        div.pull-left.col-md-10.posicao-principal
+            form.pull-left.posicao-conteudo
+                label.opDla.radio-inline.posicao-primeiroItem
+                    input(type='radio', name='analiseFinalRadio')
+                    | Deferido
+                label.opDla.radio-inline
+                    input(type='radio', name='analiseFinalRadio')
+                    | Indeferido
+                label.opDla.radio-inline
+                    input(type='radio', name='analiseFinalRadio')
+                    | Emitir notificação
