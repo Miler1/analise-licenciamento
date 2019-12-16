@@ -42,7 +42,13 @@ var EstiloMapa = {
         fill: true,
         fillOpacity: 0.5,
         opacity: 1
-    }
+    },
+
+    'COMPLEXO': {
+        color: '#006600',
+        weight: 2,
+        fill: false
+    },
 
 };
 

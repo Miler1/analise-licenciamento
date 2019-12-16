@@ -11,6 +11,18 @@ PARAMETRO_NAO_INFORMADO = Parâmetro faltante para requisição: %s.
 ENDERECOS_EXTRAS_NAO_PERMITIDOS = É permitido cadastrar para um CPF/CNPJ apenas um endereço comum e outro de correspondência.
 
 #
+#Jobs
+#
+JOB_EXECUTADO_SUCESSO=Job '%s' executado com sucesso!
+JOB_INICIO_MANUALMENTE=[INICIO-MANUALMENTE] ::Job executado manualmente:: [INICIO-MANUALMENTE]
+JOB_FIM_MANUALMENTE=[FIM-MANUALMENTE] ::Job executado manualmente:: [FIM-MANUALMENTE]
+JOB_ERRO_NAO_ENCONTRADO=Job '%s' não encontrado!
+JOB_ERRO_PADRAO=Job '%s' não implementa a classe 'GenericJob'
+JOB_INICIO_TODOS_MANUALMENTE=[INICIO-MANUALMENTE] ::Jobs executados manualmente:: [INICIO-MANUALMENTE]
+JOB_FIM_TODOS_MANUALMENTE=[FIM-MANUALMENTE] ::Jobs executados manualmente:: [FIM-MANUALMENTE]
+JOB_FIM_TODOS_EXECUTADOS_SUCESSO=Jobs executados manualmente com sucesso!
+
+#
 # Tramitação
 #
 
@@ -133,6 +145,7 @@ ERRO_CANCELAR_DLA=Erro ao cancelar DLA, contate a SEMAS ou tente novamente mais 
 # Emails
 #
 ERRO_ENVIAR_EMAIL=O seguinte erro ocorreu ao tentar enviar o email: %s
+ERRO_ENVIAR_SEGUNDO_EMAIL_NOTIFICACAO=Ocorreu um erro ao tentar enviar o email após o vencimento do prazo da notificação: %s
 
 #
 # Analises Manejo
@@ -176,3 +189,13 @@ ERRO_COMUNICACAO_ENTRADA_UNICA = Não foi possível efetuar a comunicação com 
 # Notificacao
 #
 ERRO_SALVAMENTO_NOTIFICACAO=Não foi possível salvar a notificação, contate o administrador do sistema.
+
+#
+# Arquivar
+#
+ERRO_ARQUIVAR_PROCESSO=Não foi possível arquivar o processo %s
+
+#
+# Inconsistência vistoria
+#
+INCONSISTENCIA_VISTORIA_EXCLUIDA_SUCESSO=A inconsistẽncia foi excluída com sucesso

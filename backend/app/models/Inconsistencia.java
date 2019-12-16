@@ -1,10 +1,7 @@
 package models;
 
 import exceptions.ValidacaoException;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
-import models.licenciamento.SobreposicaoCaracterizacaoComplexo;
-import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
+import models.licenciamento.*;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import serializers.InconsistenciaSerializer;
@@ -17,13 +14,58 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import models.licenciamento.Caracterizacao.OrigemSobreposicao;
+
 @Entity
 @Table(schema="analise", name="inconsistencia")
 public class Inconsistencia extends GenericModel{
 
     public static final String SEQ = "analise.inconsistencia_id_seq";
 
-    public enum Categoria { PROPRIEDADE, ATIVIDADE, RESTRICAO }
+    public enum Categoria {
+
+        PROPRIEDADE,
+        COMPLEXO,
+        ATIVIDADE,
+        RESTRICAO;
+
+        public static Categoria preencheCategoria(Caracterizacao caracterizacao) {
+
+            if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+
+                return Categoria.PROPRIEDADE;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.COMPLEXO)) {
+
+                return Categoria.COMPLEXO;
+
+            } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.ATIVIDADE)) {
+
+                return Categoria.ATIVIDADE;
+
+            } else {
+
+                boolean isAtividadeDentroEmpreendimento = caracterizacao.atividadesCaracterizacao.stream().allMatch(AtividadeCaracterizacao::isAtividadeDentroEmpreendimento);
+
+                if(isAtividadeDentroEmpreendimento) {
+
+                    return Categoria.PROPRIEDADE;
+
+                } else if(caracterizacao.isComplexo()){
+
+                    return Categoria.COMPLEXO;
+
+                } else {
+
+                    return Categoria.ATIVIDADE;
+
+                }
+
+            }
+
+        }
+
+    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator=SEQ)
@@ -58,6 +100,10 @@ public class Inconsistencia extends GenericModel{
     public Caracterizacao caracterizacao;
 
     @OneToOne
+    @JoinColumn(name = "id_atividade_caracterizacao")
+    public AtividadeCaracterizacao atividadeCaracterizacao;
+
+    @OneToOne
     @JoinColumn(name="id_sobreposicao")
     public SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade;
 
@@ -71,13 +117,10 @@ public class Inconsistencia extends GenericModel{
 
     public Inconsistencia(AnaliseGeo analiseGeo) {
 
-        if(this.analiseGeo == null){
-
-            this.analiseGeo = analiseGeo;
-            this.descricaoInconsistencia = "";
-            this.tipoInconsistencia = "";
-            this.anexos = null;
-        }
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = "";
+        this.tipoInconsistencia = "";
+        this.anexos = null;
 
     }
 
@@ -91,6 +134,7 @@ public class Inconsistencia extends GenericModel{
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;
         this.categoria = categoria;
+
     }
 
     public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao) {
@@ -103,7 +147,18 @@ public class Inconsistencia extends GenericModel{
 
     }
 
+    public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, AtividadeCaracterizacao atividadeCaracterizacao) {
+
+        this.analiseGeo = analiseGeo;
+        this.descricaoInconsistencia = descricaoInconsistencia;
+        this.tipoInconsistencia = tipoInconsistencia;
+        this.categoria = categoria;
+        this.atividadeCaracterizacao = atividadeCaracterizacao;
+
+    }
+
     public Inconsistencia(String descricaoInconsistencia, String tipoInconsistencia, Categoria categoria, AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+
         this.analiseGeo = analiseGeo;
         this.descricaoInconsistencia = descricaoInconsistencia;
         this.tipoInconsistencia = tipoInconsistencia;
@@ -254,44 +309,46 @@ public class Inconsistencia extends GenericModel{
             throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
         }
 
-        if(!this.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE) && this.sobreposicaoCaracterizacaoAtividade == null && this.sobreposicaoCaracterizacaoEmpreendimento == null && this.sobreposicaoCaracterizacaoComplexo == null) {
+        if(this.categoria.equals(Inconsistencia.Categoria.RESTRICAO) && this.sobreposicaoCaracterizacaoAtividade == null && this.sobreposicaoCaracterizacaoEmpreendimento == null && this.sobreposicaoCaracterizacaoComplexo == null) {
 
             throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);
-        }
 
-        Inconsistencia novaInconsistencia = null;
+        }
 
         if (this.id != null) {
 
-            novaInconsistencia = Inconsistencia.findById(this.id);
-            novaInconsistencia.descricaoInconsistencia = this.descricaoInconsistencia;
-            novaInconsistencia.tipoInconsistencia = this.tipoInconsistencia;
-            novaInconsistencia.categoria = this.categoria;
-            novaInconsistencia.analiseGeo = this.analiseGeo;
-            novaInconsistencia.id = this.id;
-            novaInconsistencia.caracterizacao = Objects.nonNull(this.caracterizacao) && Objects.nonNull(this.caracterizacao.id) ? this.caracterizacao : null;
-            novaInconsistencia.saveAnexos(this.anexos);
-            novaInconsistencia.save();
+            Inconsistencia inconsistencia = Inconsistencia.findById(this.id);
+            inconsistencia.descricaoInconsistencia = this.descricaoInconsistencia;
+            inconsistencia.tipoInconsistencia = this.tipoInconsistencia;
+            inconsistencia.categoria = this.categoria;
+            inconsistencia.analiseGeo = this.analiseGeo;
+            inconsistencia.id = this.id;
+            inconsistencia.caracterizacao = Objects.nonNull(this.caracterizacao) && Objects.nonNull(this.caracterizacao.id) ? this.caracterizacao : null;
+            inconsistencia.atividadeCaracterizacao = Objects.nonNull(this.atividadeCaracterizacao) && Objects.nonNull(this.atividadeCaracterizacao.id) ? AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id) : null;
+            inconsistencia.saveAnexos(this.anexos);
+
+            return inconsistencia.save();
 
         } else {
 
-            if(this.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE)){
+            Inconsistencia novaInconsistencia;
+
+            if(this.categoria.equals(Inconsistencia.Categoria.PROPRIEDADE) || this.categoria.equals(Inconsistencia.Categoria.COMPLEXO)){
 
                 novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo);
-
                 novaInconsistencia.saveAnexos(this.anexos);
-                novaInconsistencia.save();
-            }
 
-            if(this.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)){
+                return novaInconsistencia.save();
 
-                novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.caracterizacao, this.sobreposicaoCaracterizacaoAtividade);
+            } else if(this.categoria.equals(Inconsistencia.Categoria.ATIVIDADE)) {
 
+                this.atividadeCaracterizacao = AtividadeCaracterizacao.findById(this.atividadeCaracterizacao.id);
+                novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.atividadeCaracterizacao);
                 novaInconsistencia.saveAnexos(this.anexos);
-                novaInconsistencia.save();
 
-            }
-            if(this.categoria.equals(Inconsistencia.Categoria.RESTRICAO)){
+                return novaInconsistencia.save();
+
+            } else {
 
                 if(this.sobreposicaoCaracterizacaoAtividade != null) {
 
@@ -301,18 +358,20 @@ public class Inconsistencia extends GenericModel{
 
                     novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.caracterizacao, this.sobreposicaoCaracterizacaoEmpreendimento);
 
-                } else if(this.sobreposicaoCaracterizacaoComplexo != null) {
+                } else {
 
                     novaInconsistencia = new Inconsistencia(this.descricaoInconsistencia, this.tipoInconsistencia, this.categoria, this.analiseGeo, this.caracterizacao, this.sobreposicaoCaracterizacaoComplexo);
 
                 }
 
                 novaInconsistencia.saveAnexos(this.anexos);
-                novaInconsistencia.save();
+
+                return novaInconsistencia.save();
 
             }
+
         }
-        return  novaInconsistencia;
+
     }
 
 }

@@ -3,6 +3,7 @@ package models.licenciamento;
 import com.vividsolutions.jts.geom.Geometry;
 
 import com.vividsolutions.jts.io.WKBWriter;
+import enums.CamadaGeoEnum;
 import models.GeometriaAtividadeVO;
 import org.hibernate.annotations.Type;
 
@@ -33,9 +34,9 @@ public class GeometriaComplexo extends GenericModel {
 	@JoinColumn(name = "id_caracterizacao", referencedColumnName = "id")
 	public Caracterizacao caracterizacao;
 
-	public List<GeometriaAtividadeVO> convertToVO() {
+	public GeometriaAtividadeVO convertToVO() {
 
-		return GeoCalc.getGeometries(this.geometria).stream().map(GeometriaAtividadeVO::new).collect(Collectors.toList());
+		return new GeometriaAtividadeVO(this.geometria, CamadaGeoEnum.COMPLEXO);
 
 	}
 

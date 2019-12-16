@@ -35,6 +35,9 @@ public class TipoDocumento extends Model {
 	public static Long DOCUMENTO_NOTIFICACAO_ANALISE_GEO = 22l;
 	public static Long DOCUMENTO_ANALISE_TEMPORAL = 23l;
 	public static Long DOCUMENTO_INCONSISTENCIA_TECNICA = 26l;
+	public static Long DOCUMENTO_RIT = 24L;
+	public static Long DOCUMENTO_VISTORIA = 25L;
+	public static Long INCONSISTENCIA_VISTORIA = 27L;
 
 	@Required
 	public String nome;

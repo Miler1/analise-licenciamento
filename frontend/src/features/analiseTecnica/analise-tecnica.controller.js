@@ -1,6 +1,8 @@
-var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadService,
-    analiseTecnica,  mensagem, $uibModal, analiseTecnicaService, $route,tamanhoMaximoArquivoAnaliseMB,
-    documentoAnaliseService, processoService, restricoes, TiposAnalise,inconsistenciaService, documentoLicenciamentoService) {
+var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $scope,analistaService,
+                                        analiseTecnica, mensagem, $uibModal, analiseTecnicaService,
+                                        tamanhoMaximoArquivoAnaliseMB, inconsistenciaVistoriaService,
+                                        documentoAnaliseService, restricoes, TiposAnalise,inconsistenciaService, 
+                                        documentoLicenciamentoService, processoService) {
 
     $rootScope.tituloPagina = 'PARECER TÉCNICO';
 
@@ -11,21 +13,21 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
     ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
-    ctrl.exibirDadosProcesso = exibirDadosProcesso;
-    ctrl.concluir = concluir;
-    ctrl.salvar = salvar;
-    ctrl.cancelar = cancelar;
     ctrl.restricoes = restricoes;
     ctrl.idAnaliseTecnica = $route.current.params.idAnaliseTecnica;
     ctrl.formularios = {};
     ctrl.tabAtiva = 0;
     ctrl.tiposAnalise = TiposAnalise;
-    ctrl.visualizarJustificativaNotificacao = visualizarJustificativaNotificacao;
     ctrl.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica;
     ctrl.analistaTecnico = $rootScope.usuarioSessao.usuarioEntradaUnica.nome;
     ctrl.analiseTecnica = null;
     ctrl.pergunta = null;
     ctrl.anexos = [];
+    ctrl.tiposDocumentosAnalise = app.utils.TiposDocumentosAnalise;
+    ctrl.semInconsistenciaVistoria = null;
+    ctrl.analistasTecnico = [];
+    $scope.analistaSelecionado = null;
+    ctrl.dataAtual = new Date();
    
     ctrl.itemValidoLicenca = {
         tipoLicenca: null,
@@ -36,9 +38,21 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
         documentoTecnicoAmbiental: null
     };
 
-    ctrl.error = {
+    ctrl.errors = { 
+
         autoInfracao: false,
-        pergunta: false
+        pergunta: false,
+
+        vistoria: {
+            realizada: false,
+            conclusao: false,
+            data: false,
+            hora: false,
+            descricao: false,
+            documentoRit: false,
+            inconsistenciaVistoria: false
+        }
+
     };
     
     ctrl.init = function () {
@@ -46,6 +60,43 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
         analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
             .then(function(response){
                 ctrl.analiseTecnica = response.data;
+
+
+                if(ctrl.analiseTecnica.vistoria === null) {
+
+                    ctrl.analiseTecnica.vistoria = {
+                        realizada: null,
+                        documentoRit: null,
+                        inconsistenciaVistoria: {
+                            descricaoInconsistencia: null,
+                            tipoInconsistencia: null,
+                            anexos: []
+                        },
+                        anexos: [],
+                        equipe: [],
+                        conclusao: null,
+                        data: null,
+                        hora: null,
+                        descricao: null,
+                        cursosDagua: null,
+                        tipologiaVegetal: null,
+                        app: null,
+                        ocorrencia: null,
+                        residuosLiquidos: null,
+                        outrasInformacoes: null
+                    };
+        
+                }
+        
+                analistaService.getAnalistasTecnicoBySetor()
+                .then(function(response) {
+        
+                    response.data.forEach(function(analista){
+                        ctrl.analistasTecnico.push({ usuario: analista });
+                    });
+        
+                });
+
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.TIPO_LICENCA, ctrl.analiseTecnica);
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.ATIVIDADE, ctrl.analiseTecnica);
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.QUESTIONARIO, ctrl.analiseTecnica);
@@ -78,6 +129,26 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
                 ctrl.validarInconsistenciaDocumentoAdministrativo(app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo);
                 ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental);
             }); 
+    };
+    
+    ctrl.exibirDadosProcesso = function () {
+
+        var processo = {
+
+            idProcesso: ctrl.processo.id,
+            numero: ctrl.processo.numero,
+            denominacaoEmpreendimento: ctrl.processo.empreendimento.denominacao
+        };
+
+        if (ctrl.processo.empreendimento.pessoa.cnpj) {
+
+            processo.cnpjEmpreendimento = ctrl.processo.empreendimento.pessoa.cnpj;
+
+        } else {
+
+            processo.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
+        }
+        processoService.visualizarProcesso(processo);
     };
 
     ctrl.validarAnalise = function() {
@@ -145,6 +216,298 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
         }       
     };
     
+    ctrl.deletarInconsistenciaVistoria = function() {
+
+        if(ctrl.analiseTecnica.vistoria && ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id) {
+
+            inconsistenciaVistoriaService.deletar(ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id)
+                .then(function(response) {
+
+                    mensagem.success(response.data);
+                    ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = {
+                        descricaoInconsistencia: null,
+                        tipoInconsistencia: null,
+                        anexos: []
+                    };
+
+                });
+
+        }
+
+    };
+
+    ctrl.marcarSemInconsistencia = function() {
+
+        ctrl.deletarInconsistenciaVistoria();
+        ctrl.semInconsistenciaVistoria = true;
+
+    };
+
+    ctrl.limparErrosVistoria = function() {
+
+        ctrl.errors.vistoria = {
+            realizada: false,
+            conclusao: false,
+            data: false,
+            hora: false,
+            descricao: false,
+            documentoRit: false,
+            inconsistenciaVistoria: false
+        };
+
+    };
+
+    ctrl.limparVistoria = function() {
+
+        ctrl.semInconsistenciaVistoria = null;
+        ctrl.limparErrosVistoria();
+        ctrl.deletarInconsistenciaVistoria();
+
+    };
+
+    $rootScope.$on('buscarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
+        ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
+        ctrl.semInconsistenciaVistoria = null;
+    });
+
+    ctrl.adicionarAnalistaEquipe = function(analistaSelecionado) {
+
+        var isAdded = _.some(ctrl.analiseTecnica.vistoria.equipe, function(analista) {
+            return analistaSelecionado && analista.usuario.id === analistaSelecionado.id;
+        });
+
+        if(!isAdded && analistaSelecionado) {
+
+            ctrl.analiseTecnica.vistoria.equipe.push(analistaSelecionado);
+
+            _.remove(ctrl.analistasTecnico, function(analista) {
+                return analista.usuario.id === analistaSelecionado.usuario.id;
+            });
+
+        }
+
+    };
+
+    ctrl.removerAnalistaEquipe = function(analistaSelecionado) {
+
+        if(analistaSelecionado === undefined) {
+
+            ctrl.analistasTecnico = ctrl.analiseTecnica.vistoria.equipe.map(function(analista) {
+                return analista.usuario;
+            });
+            ctrl.analiseTecnica.vistoria.equipe = [];
+
+        } else {
+
+            ctrl.analistasTecnico.push(analistaSelecionado);
+
+            _.remove(ctrl.analiseTecnica.vistoria.equipe, function(analista) {
+                return analista.usuario.id === analistaSelecionado.usuario.id;
+            });
+
+        }
+
+    };
+
+    var vistoriaValida = function() {
+
+        if(ctrl.analiseTecnica.vistoria.realizada === null || ctrl.analiseTecnica.vistoria.realizada === undefined) {
+
+            ctrl.errors.vistoria.realizada = true;
+
+        }
+
+        if(ctrl.analiseTecnica.vistoria.realizada !== null && ctrl.analiseTecnica.vistoria.realizada === 'true') {
+
+            if(ctrl.analiseTecnica.vistoria.conclusao === null || ctrl.analiseTecnica.vistoria.conclusao === '') {
+
+                ctrl.errors.vistoria.conclusao = true;
+
+            }
+
+            if(ctrl.analiseTecnica.vistoria.documentoRit === null) {
+
+                ctrl.errors.vistoria.documentoRit = true;
+
+            }
+
+            if(ctrl.semInconsistenciaVistoria === null && (ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === undefined || ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === null)) {
+
+                ctrl.errors.vistoria.inconsistenciaVistoria = true;
+
+            }
+
+            if(ctrl.analiseTecnica.vistoria.data === null) {
+    
+                ctrl.errors.vistoria.data = true;
+    
+            }
+            
+            if(ctrl.analiseTecnica.vistoria.hora === null) {
+    
+                ctrl.errors.vistoria.hora = true;
+    
+            }
+
+            if(ctrl.analiseTecnica.vistoria.descricao === null) {
+    
+                ctrl.errors.vistoria.descricao = true;
+    
+            }
+
+        } else if(ctrl.analiseTecnica.vistoria.realizada !== null) {
+
+            if(ctrl.analiseTecnica.vistoria.conclusao === null || ctrl.analiseTecnica.vistoria.conclusao === '') {
+
+                ctrl.errors.vistoria.conclusao = true;
+    
+            }
+
+        }        
+
+        return !Object.keys(ctrl.errors.vistoria).some(function(key) {
+            return ctrl.errors.vistoria[key];
+        });
+
+    };
+
+    ctrl.openModalInconsistencia = function() {
+
+        ctrl.semInconsistenciaVistoria = null;
+        ctrl.limparErrosVistoria();
+
+        $uibModal.open({
+			controller: 'modalInconsistenciaVistoriaController',
+			controllerAs: 'modalCtrl',
+			backdrop: 'static',
+			templateUrl: 'features/analiseTecnica/inconsistenciaVistoria/modal-inconsistencia-vistoria.html',
+			size: 'lg',
+			resolve: {
+				inconsistenciaVistoria: function(){
+					return ctrl.analiseTecnica.vistoria.inconsistenciaVistoria;
+				}
+            }
+		});
+
+    };
+
+    ctrl.avancar = function() {
+
+        if(ctrl.tabAtiva === 0 && ctrl.validarCampos()) {
+
+            ctrl.tabAtiva = ctrl.tabAtiva + 1;
+
+        }else if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
+
+            ctrl.tabAtiva = ctrl.tabAtiva + 1;
+
+            if(ctrl.analiseTecnica.vistoria.realizada === 'true') {
+
+                ctrl.analiseTecnica.vistoria.realizada = true;
+
+            } else {
+
+                ctrl.analiseTecnica.vistoria.realizada = false;
+
+            }
+
+        }
+
+    };
+
+    $scope.snPaste = function(e, model) {
+		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+		e.preventDefault();
+		setTimeout( function(){
+		  document.execCommand('insertText', false, bufferText );
+		}, 10 );
+    };
+
+    ctrl.baixarDocumento = function(anexo) {
+
+        if(!anexo.id){
+
+            documentoService.download(anexo.key, anexo.nomeDoArquivo);
+
+        } else {
+
+            documentoService.downloadById(anexo.id);
+
+        }
+
+    };
+    
+    ctrl.removerDocumentoRit = function() {
+
+        documentoService.delete(ctrl.analiseTecnica.vistoria.documentoRit.key);
+        ctrl.analiseTecnica.vistoria.documentoRit = null;
+
+    };
+
+    ctrl.removerDocumentosVistoria = function(index) {
+
+        var anexo = ctrl.analiseTecnica.vistoria.anexos[index];
+        ctrl.analiseTecnica.vistoria.anexos.splice(index, 1);
+
+        documentoService.delete(anexo.key);
+
+    };
+
+    ctrl.upload = function(file, invalidFile, tipoDocumento) {
+
+        if(file) {
+
+            ctrl.limparErrosVistoria();
+
+            uploadService.save(file)
+                .then(function(response) {
+
+                    if(tipoDocumento === ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT) {
+
+                        ctrl.analiseTecnica.vistoria.documentoRit = {
+                            key: response.data,
+                            nomeDoArquivo: file.name,
+                            tipoDocumento: {
+                                id: ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT
+                            }
+                        };
+
+                        ctrl.errors.vistoria.documentoRit = false;
+
+                    } else if(tipoDocumento === ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
+
+                        ctrl.analiseTecnica.vistoria.anexos.push({
+                            key: response.data,
+                            nomeDoArquivo: file.name,
+                            tipoDocumento: {
+                                id: ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA
+                            }
+                        });
+
+                    }else if (tipoDocumento === ctrl.tiposDocumentosAnalise.AUTO_INFRACAO){
+
+                        ctrl.anexos.push({
+    
+                            key: response.data,
+                            nomeDoArquivo: file.name,
+                            tipoDocumento: {
+
+                                    id: app.utils.TiposDocumentosAnalise.AUTO_INFRACAO
+                            }
+                        });
+
+                    }
+
+                }, function(error){
+                    mensagem.error(error.data.texto);
+                });
+
+        } else if(invalidFile && invalidFile.$error === 'maxSize'){
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name);
+        }
+
+    };
+
     ctrl.downloadPDFNotificacao = function() {
 
         var analise = JSON.parse(JSON.stringify(this.analiseTecnica));
@@ -167,20 +530,6 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
                 }
             );
     };
-
-    function verificarEmissoes() {
-
-        if(ctrl.analiseTecnica.tipoResultadoAnalise.id !== ctrl.DEFERIDO)
-            return true;
-
-        for (i = 0; i < ctrl.analiseTecnica.licencasAnalise.length ; i++){
-            if (ctrl.analiseTecnica.licencasAnalise[i].emitir){
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     function analiseValida() {
 
@@ -219,106 +568,6 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
 
             return parecerPreenchido && todosDocumentosAvaliados && resultadoPreenchido;
         }
-    }
-
-    function exibirDadosProcesso() {
-
-        var processo = {
-
-            idProcesso: ctrl.processo.id,
-            numero: ctrl.processo.numero,
-            denominacaoEmpreendimento: ctrl.processo.empreendimento.denominacao
-        };
-
-        if (ctrl.processo.empreendimento.pessoa.cnpj) {
-
-            processo.cnpjEmpreendimento = ctrl.processo.empreendimento.pessoa.cnpj;
-
-        } else {
-
-            processo.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
-        }
-        processoService.visualizarProcesso(processo);
-    }
-
-    function concluir() {
-
-        if(!analiseValida()) {
- 
-            mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
-            '<ul>' +
-                '<li>Para concluir é necessário descrever o parecer.</li>' + 
-                '<li>Selecione um parecer para o protocolo (Deferido, Indeferido, Notificação).</li>' + 
-                '<li>Para DEFERIDO, todos os documentos de validação técnica devem ter sido validados.</li>' + 
-                '<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' + 
-            '</ul>', { ttl: 10000 });
-            return;            
-        }
-
-        if(!verificarEmissoes()){
-            mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
-            '<ul>' +
-                '<li>Para o status Deferido, ao menos uma licença deve ser emitida.</li>' + 
-                '<li>Se desejar indeferir o protocolo, marque a opção "Indeferido".</li>' + 
-            '</ul>', { ttl: 10000 });
-            return; 
-        }
-
-        ctrl.analiseTecnica.analise.processo.empreendimento = null;
-        analiseTecnicaService.concluir(ctrl.analiseTecnica)
-            .then(function(response) {
-
-                mensagem.success(response.data.texto);
-                $location.path('/analise-tecnica');
-
-            }, function(error){
-
-                mensagem.error(error.data.texto);
-            });
-    }
-
-    function salvar() {
-
-        ctrl.analiseTecnica.analise.processo.empreendimento = null;
-        analiseTecnicaService.salvar(ctrl.analiseTecnica)
-            .then(function (response) {
-
-                mensagem.success(response.data.texto);
-                carregarAnalise();
-
-            }, function (error) {
-
-                mensagem.error(error.data.texto);
-            });
-    }
-
-    function cancelar() {
-
-        $window.history.back();
-    }
-
-    function carregarAnalise() {
-
-        analiseTecnicaService.getAnaliseTecnica(ctrl.analiseTecnica.id)
-            .then(function (response) {
-
-                ctrl.analiseTecnica = response.data;
-            });
-    }
-
-    function visualizarJustificativaNotificacao(justificativa) {
-
-        if(!justificativa) return;
-
-        var configModal = {
-            titulo: 'Justificativa de notificação',
-            conteudo: justificativa,
-            labelBotaoCancelar: 'Fechar',
-            exibirFooter: false
-        };
-
-        modalSimplesService.abrirModal(configModal);
-
     }
 
     ctrl.adicionarInconsistenciaTecnicaTipoLicenca = function (analiseTecnica, tipoDeInconsistenciaTecnica) {
@@ -563,48 +812,11 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
         ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental); 
 
     });
-
-    ctrl.upload = function(file, invalidFile) {
-
-        if(file) {
-    
-                uploadService.save(file)
-                        .then(function(response) {
-    
-                            ctrl.anexos.push({
-    
-                                        key: response.data,
-                                        nomeDoArquivo: file.name,
-                                        tipoDocumento: {
-    
-                                                id: app.utils.TiposDocumentosAnalise.AUTO_INFRACAO
-                                        }
-                                });
-                                                            
-                        }, function(error){
-    
-                                mensagem.error(error.data.texto);
-                        });
-    
-        } else if(invalidFile && invalidFile.$error === 'maxSize'){
-    
-                mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
-        }
-    };
     
      ctrl.removerDocumento = function (indiceDocumento) {
     
         ctrl.anexos.splice(indiceDocumento,1);
     };
-
-    ctrl.baixarDocumento= function(documento) {
-
-		if(!documento.id){
-			documentoService.download(documento.key, documento.nomeDoArquivo);
-		}else{
-			analiseGeoService.download(documento.id);
-		}
-	};
 
     ctrl.getDocumentosAutoInfracao = function() {
 		
@@ -617,26 +829,16 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
 		return documentoAutoInfracao;
     };
     
-    ctrl.avancar = function() {
-
-        if(ctrl.tabAtiva === 0 && ctrl.validarCampos()) {
-
-            ctrl.tabAtiva = ctrl.tabAtiva + 1;
-
-        }
-
-    };
-
     ctrl.validarCampos = function (){
 
         if(ctrl.pergunta === null){
-            ctrl.error.pergunta = true;
+            ctrl.errors.pergunta = true;
             return false;
 
         }else if(ctrl.pergunta === "true") {
             
             if (_.isEmpty(ctrl.anexos) || ctrl.anexos === null){
-                ctrl.error.autoInfracao = true;
+                ctrl.errors.autoInfracao = true;
                 return false;
 
             }else{
@@ -644,7 +846,7 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
                 _.forEach(ctrl.anexos , function(documentoAutoInfracao){
 
                     if(documentoAutoInfracao.tipoDocumento.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
-                        ctrl.error.autoInfracao = false;
+                        ctrl.errors.autoInfracao = false;
                     }
 
                 });
@@ -655,6 +857,7 @@ var AnaliseTecnicaController = function ($rootScope, $window, $location,uploadSe
             return true;
         }
     };
+
     ctrl.visualizarDocumento = function (documento){
 
         documentoLicenciamentoService.download(documento.id);

@@ -491,7 +491,8 @@ utils.services(licenciamento)
 	.add('parecerOrgaoService', services.ParecerOrgaoService)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
 	.add('parecerGerenteService', services.ParecerGerenteService)
-	.add('questionarioService', services.QuestionarioService);
+	.add('questionarioService', services.QuestionarioService)
+	.add('inconsistenciaVistoriaService', services.InconsistenciaVistoriaService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -514,13 +515,14 @@ licenciamento
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
 	.controller('desvinculoController', controllers.DesvinculoController)
+	.controller('desvinculoAnaliseTecnicaController', controllers.DesvinculoAnaliseTecnicaController)
 	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
 	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
 	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
 	.controller('visualizarAjustesController',controllers.VisualizarAjustesController)
-	.controller('inconsistenciaTecnicaController',controllers.InconsistenciaTecnicaController);
-
+	.controller('inconsistenciaTecnicaController',controllers.InconsistenciaTecnicaController)
+	.controller('modalInconsistenciaVistoriaController', controllers.ModalInconsistenciaVistoriaController);
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)

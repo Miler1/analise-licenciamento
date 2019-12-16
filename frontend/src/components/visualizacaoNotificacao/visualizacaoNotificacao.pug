@@ -21,7 +21,7 @@
 								h4.panel-title
 									| Notificação do dia {{notificacao.dataNotificacao}}
 									i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id], 'glyphicon-chevron-right': !modalVisualizacaoNotificacaoCtrl.openedAccordionNotificacoes[notificacao.id]}")
-					.collapse.dados-notificacao(ng-class="{in: modalVisualizacaoNotificacaoCtrl.notificacoes[0].id === notificacao.id}",id='meus-dados-notificacao-{{modalVisualizacaoNotificacaoCtrl.notificacoes[0].id}}')
+					.collapse.dados-notificacao(id='meus-dados-notificacao-{{notificacao.id}}')
 					
 						#accordion.panel-group
 							.atendimento-notificacao
@@ -72,8 +72,8 @@
 
 										td.col-md-10 {{anexo.nomeDoArquivo}}
 										td.col-md-2.text-right
-											a.d-inline.margin-right-xs(style='cursor: pointer;', ng-click="modalVisualizacaoNotificacaoCtrl.baixarDocumento(anexo.id)")
-												i.glyphicon.glyphicon-save
+											a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoNotificacaoCtrl.baixarDocumento(anexo.id)")
+												i.glyphicon.glyphicon-eye-open
 
 	div.modal-footer#footer-modal
 

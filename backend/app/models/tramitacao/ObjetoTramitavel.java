@@ -86,8 +86,7 @@ public class ObjetoTramitavel extends GenericModel {
 		return (this.responsavelAnterior != null && this.responsavelAnterior.usuarioEntradaUnica != null)
 				? this.responsavelAnterior.usuarioEntradaUnica.nome : null;
 	}
-		
-	
+
 	/**
 	 * @author alaor
 	 * 

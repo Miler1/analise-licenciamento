@@ -17,10 +17,12 @@ public class Configuracoes {
 
 	private static String DEFAULT_LOGIN_URL = "/login";
 
+	public static String SIGLA_MODULO = getConfig("sigla.modulo", "MAL");
 	public static String AUTH_SERVICE = getConfig("auth.service", null);
 	public static String LOGIN_URL = getConfig("auth.login.url", DEFAULT_LOGIN_URL);
 	public static Boolean EXTERNAL_LOGIN = !LOGIN_URL.equals(DEFAULT_LOGIN_URL);
 	public static String INDEX_URL = "app/index.html";
+	public static String JOBS_PACKAGE = "jobs.";
 
 	public static Integer CODIGO_TIPO_PESSOA_JURIDICA = 1;
 
@@ -54,6 +56,7 @@ public class Configuracoes {
 	public static String URL_LICENCIAMENTO_CANCELAR_DLA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.cancelar.dla", null);
 	public static String URL_LICENCIAMENTO_PRORROGAR_LICENCA = URL_LICENCIAMENTO + getConfig("licenciamento.prorrogar.licenca", null);
 	public static String URL_LICENCIAMENTO_FINALIZAR_PRORROGACAO_LICENCAS = URL_LICENCIAMENTO + getConfig("licenciamento.finalizar.prorrogacao.licencas", null);
+	public static String URL_LICENCIAMENTO_UPDATE_STATUS = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.update.status", null);
 
 	public static String PDF_TEMPLATES_FOLDER_PATH = "templates" + File.separator + "pdf";
 	public static String PDF_TEMPLATES_FOLDER_ABSOLUTE = Play.applicationPath.getAbsolutePath() + File.separator + "app" + File.separator + "views" + File.separator;

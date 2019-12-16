@@ -1,8 +1,11 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
+import jobs.ProcessamentoCaracterizacaoEmAndamento;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import models.EntradaUnica.Usuario;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.Logger;
@@ -11,6 +14,8 @@ import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import play.i18n.Messages;
 import security.Auth;
+import security.cadastrounificado.CadastroUnificadoWS;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -82,9 +87,9 @@ public class AnalistaGeo extends GenericModel {
 
 	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
 
-		List<UsuarioAnalise> analistasGeo = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-		if (analistasGeo.isEmpty()) {
+		if (usuariosAnalise.isEmpty()) {
 
 			Logger.info(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
 
@@ -92,7 +97,7 @@ public class AnalistaGeo extends GenericModel {
 
 		}
 
-		List<Long> idsAnalistasGeo = analistasGeo.stream()
+		List<Long> idsAnalistasGeo = usuariosAnalise.stream()
 				.map(ang -> ang.id)
 				.collect(Collectors.toList());
 

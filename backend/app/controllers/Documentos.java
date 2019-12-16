@@ -2,6 +2,7 @@ package controllers;
 
 import exceptions.ValidacaoException;
 import models.Documento;
+import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
 import play.data.Upload;
 import play.libs.IO;
@@ -11,11 +12,15 @@ import utils.FileManager;
 import utils.Mensagem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Documentos extends InternalController {
 
-   public static void download(Long id) {
+   public static void download(Long id) throws FileNotFoundException {
 
 		verificarPermissao(Acao.BAIXAR_DOCUMENTO);
 
@@ -25,8 +30,8 @@ public class Documentos extends InternalController {
 	   
 		if(documento != null) {
 		   File documentoBinary = documento.getFile();
-		   renderBinary(documentoBinary, documentoBinary.getName());
-		}
+		   renderBinary(new FileInputStream(documentoBinary), documentoBinary.getName(), true);
+	   }
 
 		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
 	   
@@ -64,7 +69,7 @@ public class Documentos extends InternalController {
 		}
 	}
 
-	public static void downloadTmp(String key, String nome) {
+	public static void downloadTmp(String key) throws FileNotFoundException {
 
 		returnIfNull(key, "String");
 
@@ -72,24 +77,28 @@ public class Documentos extends InternalController {
 
 		if(file != null && file.exists()) {
 
-			renderBinary(file, nome);
+			renderBinary(new FileInputStream(file), file.getName(), true);
+
 		}
 
 		throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
 	}
 
-	public static void deleteTmp(String key) {
+	public static void deleteTmp(String key) throws IOException {
 
 		File file = FileManager.getInstance().getFile(key);
 
 		if(file == null || !file.exists()) {
 
 			throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
 		}
 
-		file.delete();
+		FileUtils.deleteDirectory(file.getParentFile());
 
 		renderMensagem(Mensagem.DOCUMENTO_DELETADO_COM_SUCESSO);
+
 	}
 
 }

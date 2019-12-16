@@ -201,7 +201,7 @@
             div.info-sem-dados-para-exibir.margin-inconsistencia
                 i Nenhum documento técnico/ambiental adicionado.
         div.row        
-            div.col-md-8(ng-class="{'error-div': ctrl.error.pergunta === true }")
+            div.col-md-8(ng-class="{'error-div': ctrl.errors.pergunta === true }")
                 div.col-md-14
                     div.col-md-12
                         i Com base no Decreto Federal 6.514/2008, Art. 21 e Art. 66, inciso Im atividade iniciou a instalação / operação sem licenciamento ambiental nos últimos 5 anos ?
@@ -209,7 +209,7 @@
                 div.row(style="margin-bottom:10px;")
                     div.col-md-12.radio-decreto-federal
                         label.radio-inline
-                            input(type='radio', ng-model='ctrl.pergunta', value='true',ng-class="{'error': ctrl.error.pergunta === true }")
+                            input(type='radio', ng-model='ctrl.pergunta', value='true',ng-class="{'error': ctrl.errors.pergunta === true }")
                             | Sim
                         label.radio-inline(ng-click="ctrl.limparAnexos()",style="margin-left:100px;")
                             input(type='radio', ng-model='ctrl.pergunta', value='false')
@@ -220,10 +220,10 @@
 
             div.btn.btn-default(style=" margin-left: 5px;margin-bottom:5px;",type="file", name="arquivo",
                                                     ng-disabled="ctrl.getDocumentosAutoInfracao().length === 1", 
-                                                    ngf-select="ctrl.upload($file, $invalidFile)", 
+                                                    ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.AUTO_INFRACAO)", 
                                                     ngf-accept="'application/pdf,image/*'", 
                                                     ngf-pattern="'application/pdf,image/*'",
-                                                    ng-class="{'error-div': ctrl.error.autoInfracao === true }",
+                                                    ng-class="{'error-div': ctrl.errors.autoInfracao === true }",
                                                     title='Permitido apenas upload de 1 arquivo.' 
                                                     ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
                                                     

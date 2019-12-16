@@ -52,6 +52,14 @@ public class Inconsistencias extends InternalController{
 
     }
 
+    public static void findById(Long id) {
+
+        Inconsistencia inconsistencia = Inconsistencia.findById(id);
+
+        renderJSON(inconsistencia, InconsistenciaSerializer.findInconsistencia);
+
+    }
+
     public static void salvarInconsistenciaTecnica(InconsistenciaTecnica inconsistenciaTecnica) {
 
         verificarPermissao(Acao.SALVAR_INCONSISTENCIA_TECNICA);

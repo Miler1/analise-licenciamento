@@ -8,6 +8,12 @@ var InconsistenciaService = function(request,$window,config) {
 	this.findInconsistenciaGeo = function(params){
 		return request
 			.post(config.BASE_URL() + 'inconsistencia/analisesGeo/findInconsistencia', params);
+
+	};
+
+	this.findInconsistenciaById = function(id){
+		return request
+			.get(config.BASE_URL() + 'inconsistencia/findInconsistenciaById/' + id);
 	};
 
 	this.download = function(idDocumento) {

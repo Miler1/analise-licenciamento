@@ -1,6 +1,5 @@
 package jobs;
 
-
 import exceptions.AppException;
 import models.*;
 import models.licenciamento.Caracterizacao;
@@ -14,6 +13,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
+import utils.DateUtil;
 import utils.Mensagem;
 
 import java.util.*;
@@ -22,13 +22,12 @@ import java.util.*;
 public class ProcessamentoPrazos extends GenericJob {
 
 	@Override
-	public void executar() throws Exception {
+	public void executar() {
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoPrazos:: [INICIO-JOB]");
 		contarDiasAnalise();
 		verificaPrazoSuspensao();
 		Logger.info("[FIM-JOB] ::ProcessamentoPrazos:: [FIM-JOB]");
-
 
 	}
 
@@ -40,123 +39,48 @@ public class ProcessamentoPrazos extends GenericJob {
 
 			for (Analise analise : analises) {
 
-				if (!ObjetoTramitavel.validaCondicao(analise.processo.idObjetoTramitavel, 6L)) {
+				if (!analise.processo.idObjetoTramitavel.equals(Condicao.ARQUIVADO)) {
 
-					DiasAnalise verificaDiasAnalise = DiasAnalise.find("analise.id", analise.id).first();
-					analise.diasAnalise = verificaDiasAnalise;
+					DiasAnalise diasAnalise = DiasAnalise.find("analise.id", analise.id).first();
+					analise.diasAnalise = diasAnalise;
 
-					if (verificaDiasAnalise != null) {
+					if (diasAnalise != null) {
 
-						if (analise.temNotificacaoAberta) {
+						if (analise.getAnaliseGeo() != null) {
 
-							if (analise.diasAnalise.qtdeDiasNotificacao == null) {
-
-								analise.diasAnalise.qtdeDiasNotificacao = 0;
-
-							} else {
-
-								Notificacao notificacao = null;
-
-								if (analise.analiseTecnica != null) {
-
-									notificacao = Notificacao.find("analiseTecnica.id", analise.analiseTecnica.id).first();
-
-								} else if (analise.analiseJuridica != null) {
-
-									notificacao = Notificacao.find("analiseJuridica.id", analise.analiseJuridica.id).first();
-								}
-
-								if (notificacao != null) {
-
-									int verificaDiasCorretos = CalculaDiferencaDias(notificacao.dataNotificacao, new Date());
-									analise.diasAnalise.qtdeDiasNotificacao = verificaDiasCorretos;
-								}
+							if (analise.diasAnalise.qtdeDiasGeo == null) {
+								analise.diasAnalise.qtdeDiasGeo = 0;
 							}
 
-						} else if (analise.getAnaliseTecnica() != null) {
+							analise.diasAnalise.preencheDiasAnaliseGeo();
 
-							if (analise.analiseTecnica.dataFim == null) {
-
-								if (analise.diasAnalise.qtdeDiasTecnica == null) {
-									analise.diasAnalise.qtdeDiasTecnica = 0;
-								}
-								int verificaDiasTecnicosCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, new Date());
-								int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
-
-								if (verificaDiasTecnicosCorretos != verificaDiasAnalise.qtdeDiasTecnica) {
-
-									analise.diasAnalise.qtdeDiasTecnica += 1;
-								}
-
-								if (verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
-
-									analise.diasAnalise.qtdeDiasAnalise += 1;
-								}
-
-							} else {
-
-								if (analise.analiseTecnica.dataFimValidacaoAprovador == null) {
-
-									if (analise.diasAnalise.qtdeDiasAprovador == null) {
-										analise.diasAnalise.qtdeDiasAprovador = 0;
-									}
-
-									int verificaDiasAprovadorCorretos = CalculaDiferencaDias(analise.analiseTecnica.dataFim, new Date());
-									int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
-
-									if (verificaDiasAprovadorCorretos != verificaDiasAnalise.qtdeDiasAprovador) {
-
-										analise.diasAnalise.qtdeDiasAprovador += 1;
-									}
-
-									if (verificaDiasCorretos != verificaDiasAnalise.qtdeDiasAnalise) {
-
-										analise.diasAnalise.qtdeDiasAnalise += 1;
-									}
-
-								}
-							}
-
-
-						} else if (analise.getAnaliseJuridica() != null) {
-
-							if (analise.analiseJuridica.dataFim == null) {
-
-								if (analise.diasAnalise.qtdeDiasJuridica == null) {
-									analise.diasAnalise.qtdeDiasJuridica = 0;
-								}
-
-								int verificaDiasCorretos = CalculaDiferencaDias(analise.dataCadastro, new Date());
-
-								if (verificaDiasCorretos != verificaDiasAnalise.qtdeDiasJuridica) {
-
-									analise.diasAnalise.qtdeDiasJuridica += 1;
-									analise.diasAnalise.qtdeDiasAnalise += 1;
-								}
-
-							}
 						}
 
+						if (analise.getAnaliseTecnica() != null) {
+
+							if (analise.diasAnalise.qtdeDiasTecnica == null) {
+								analise.diasAnalise.qtdeDiasTecnica = 0;
+							}
+
+							analise.diasAnalise.preencheDiasAnaliseTecnica();
+
+						}
 
 					} else {
 
-						DiasAnalise diasAnalise = new DiasAnalise(analise);
-						analise.diasAnalise = diasAnalise;
+						analise.diasAnalise = new DiasAnalise(analise);
+
 					}
 
+					analise.diasAnalise.qtdeDiasAnalise = DateUtil.getDiferencaEmDias(analise.dataCadastro, new Date());
 					analise.diasAnalise.save();
+
 				}
+
 			}
+
 		}
 
-	}
-
-	public int CalculaDiferencaDias(Date dataInicial, Date dataFinal) {
-
-		LocalDate dataInicio = new LocalDate(dataInicial.getTime());
-		LocalDate dataFim = new LocalDate(dataFinal.getTime());
-
-		return Days.daysBetween(dataInicio, dataFim).getDays();
 	}
 
 	public void verificaPrazoSuspensao() {
@@ -171,7 +95,7 @@ public class ProcessamentoPrazos extends GenericJob {
 
 				//mostra a data final da suspensao
 
-				Date dataFinalSuspenso = addDays(suspensao.dataSuspensao, suspensao.qtdeDiasSuspensao);
+				Date dataFinalSuspenso = DateUtil.somaDiasEmData(suspensao.dataSuspensao, suspensao.qtdeDiasSuspensao);
 				Date hoje =  new Date();
 
 				if(hoje.after(dataFinalSuspenso)) {
@@ -187,10 +111,10 @@ public class ProcessamentoPrazos extends GenericJob {
 
 					if(dadosLicenca.dataValidadeProrrogada == null) {
 
-						novaLicenca.dataValidadeProrrogada = addDays(dadosLicenca.dataValidade, suspensao.qtdeDiasSuspensao);
+						novaLicenca.dataValidadeProrrogada = DateUtil.somaDiasEmData(dadosLicenca.dataValidade, suspensao.qtdeDiasSuspensao);
 					} else {
 
-						novaLicenca.dataValidadeProrrogada = addDays(dadosLicenca.dataValidadeProrrogada, suspensao.qtdeDiasSuspensao);
+						novaLicenca.dataValidadeProrrogada = DateUtil.somaDiasEmData(dadosLicenca.dataValidadeProrrogada, suspensao.qtdeDiasSuspensao);
 					}
 
 					novaLicenca._save();
@@ -252,15 +176,5 @@ public class ProcessamentoPrazos extends GenericJob {
 		Logger.info("[FIM-JOB] ::ProcessamentoPrazoSuspensao:: [FIM-JOB]");
 
 	}
-
-	private static Date addDays(Date date, int days) {
-
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(date);
-		cal.add(Calendar.DATE, days);
-
-		return cal.getTime();
-	}
-
 
 }
