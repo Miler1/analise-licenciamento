@@ -62,7 +62,8 @@ var FiltroProcessos = {
 				}
 			}
 
-			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
+				$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 
 				if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 					
@@ -241,7 +242,9 @@ var FiltroProcessos = {
 						
 						ctrl.condicoes = response.data;
 
-						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_GEO_FINALIZADA',
 								nomeCondicao: 'Analise GEO finalizada'
@@ -349,11 +352,14 @@ var FiltroProcessos = {
 
 		function getCondicoesAnaliseGeoFinalizada() {
 			return [
-				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GERENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+				app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
+				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA
 			];
 		}
 

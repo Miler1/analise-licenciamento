@@ -195,6 +195,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		processoBuilder.filtrarPorListaIdCondicao(filtroProcesso.listaIdCondicaoTramitacao);
+
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 	}
@@ -308,12 +310,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
-
-			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
-
-		}
-
 		if (filtro.idAnalistaGeo != null) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
@@ -346,12 +342,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		if (filtro.idAnalistaGeo == null) {
 			filtro.idAnalistaGeo = filtro.idUsuarioLogado;
-		}
-
-		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
-
-			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
-
 		}
 
 		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
