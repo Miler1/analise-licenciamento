@@ -706,12 +706,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	$scope.addInconsistenciaGeral = function(inconsistencia){
 
-		inconsistenciaService.findInconsistenciaGeo(params)
+		inconsistenciaService.findInconsistenciaById(inconsistencia.id)
 		.then(function(response){
 
-			openModal(ctrl.analiseGeo, categoriaInconsistencia, response.data, idCaracterizacao, idGeometriaAtividade, null, ctrl.dadosProjeto, null);
-			
-		});		
+			var inconsistencia = response.data;
+
+			openModal(ctrl.analiseGeo, inconsistencia.categoria, inconsistencia, null, null, null, ctrl.dadosProjeto, null);
+
+		});
 
 	};
 
@@ -741,11 +743,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	$scope.excluirInconsistenciaGeo = function(idInconsistencia) {
 
-		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
-			return inconsistencia.id === idInconsistencia;
-		});
+		// var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
+		// 	return inconsistencia.id === idInconsistencia;
+		// });
 
-		ctrl.listaInconsistencias.splice(index, 1);
+		// ctrl.listaInconsistencias.splice(index, 1);
 	
 		inconsistenciaService.excluirInconsistenciaGeo(idInconsistencia)
 			.then(function (response) {
