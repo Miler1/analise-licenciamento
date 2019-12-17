@@ -263,7 +263,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     $rootScope.$on('adicionarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
-        ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
+        ctrl.parecer.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
         ctrl.semInconsistenciaVistoria = null;
     });
 
@@ -328,7 +328,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
-            if(ctrl.semInconsistenciaVistoria === null && (ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === undefined || ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id === null)) {
+            if(ctrl.semInconsistenciaVistoria === null && ctrl.parecer.vistoria.inconsistenciaVistoria === null) {
 
                 ctrl.errors.vistoria.inconsistenciaVistoria = true;
 
@@ -391,7 +391,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 			size: 'lg',
 			resolve: {
 				inconsistenciaVistoria: function(){
-					return ctrl.analiseTecnica.vistoria.inconsistenciaVistoria;
+					return ctrl.parecer.vistoria.inconsistenciaVistoria;
 				}
             }
 		});
