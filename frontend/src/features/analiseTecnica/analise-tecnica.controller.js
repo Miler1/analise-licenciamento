@@ -288,7 +288,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.deletarInconsistenciaVistoria = function() {
 
         if(ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria) {
-
+            
             ctrl.parecer.vistoria.inconsistenciaVistoria = null;
 
         }
@@ -544,7 +544,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         ctrl.limparErrosVistoria();
 
         if(ctrl.parecer.vistoria.inconsistenciaVistoria === null || ctrl.parecer.vistoria.inconsistenciaVistoria === undefined) {
-
+            
             ctrl.parecer.vistoria.inconsistenciaVistoria = {
                 descricaoInconsistencia: null,
                 tipoInconsistencia: null,

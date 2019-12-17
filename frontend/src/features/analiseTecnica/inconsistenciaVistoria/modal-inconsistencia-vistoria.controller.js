@@ -23,7 +23,7 @@ var ModalInconsistenciaVistoriaController = function (
 
         modalCtrl.errors.descricaoInconsistencia = false;
         $uibModalInstance.dismiss('cancel');
-
+        
     };
 
     modalCtrl.init = function() {};
