@@ -70,9 +70,7 @@ var FiltroProcessos = {
 					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 					ctrl.filtro.idCondicaoTramitacao = null;
 				
-				} else {
-					ctrl.filtro.listaIdCondicaoTramitacao = null;
-				}
+				} 
 
 			}
 
