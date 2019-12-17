@@ -1,0 +1,24 @@
+div.modal-header(ng-init="modalCtrl.init()")
+    button.close(type='button', ng-click="modalCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Incluir restrição
+    div(growl inline="true" reference='5')
+
+div.modal-body
+
+    div.area-modal
+        label.obrigatorio Restrição
+        br
+        textarea.textarea-modal(name="texto", ng-class="{ 'error': modalCtrl.errors.texto }", ng-model="modalCtrl.restricao.texto")
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="modalCtrl.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Cancelar
+
+    button.btn.btn-success.pull-right(ng-click="modalCtrl.concluir()")
+        i.glyphicon.glyphicon-arrow-right
+        | &nbsp;Confirmar

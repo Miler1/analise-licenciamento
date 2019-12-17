@@ -46,7 +46,7 @@
 
 		.inconsistencia(ng-class="{ 'error-summernote': ctrl.errors.vistoria.inconsistenciaVistoria }")
 			label Existem inconsistências na vistoria?
-			i.item.pointer.pull-right.glyphicon.glyphicon-remove-sign(ng-click="ctrl.openModalInconsistencia()", ng-class=" { 'comInconsistenciaVistoria': ctrl.parecer.vistoria.inconsistenciaVistoria.id }")
+			i.item.pointer.pull-right.glyphicon.glyphicon-remove-sign(ng-click="ctrl.openModalInconsistencia()", ng-class=" { 'comInconsistenciaVistoria': ctrl.parecer.vistoria.inconsistenciaVistoria }")
 			i.item.pointer.pull-right.glyphicon.glyphicon-ok-sign(ng-click="ctrl.marcarSemInconsistencia()", ng-class=" { 'semInconsistenciaVistoria': ctrl.semInconsistenciaVistoria }")
 
 		.data-vistoria

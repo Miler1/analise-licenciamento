@@ -4,6 +4,7 @@ import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Vistoria extends GenericModel {
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_parecer_analista_tecnico", referencedColumnName = "id")
 	public ParecerAnalistaTecnico parecerAnalistaTecnico;
 
@@ -72,5 +73,70 @@ public class Vistoria extends GenericModel {
 			joinColumns=@JoinColumn(name="id_vistoria"),
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> anexos;
+
+	public List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
+
+		TipoDocumento tipoDocumentoVistoria = TipoDocumento.findById(TipoDocumento.DOCUMENTO_VISTORIA);
+
+		this.anexos = new ArrayList<>();
+
+		if(this.documentoRit != null) {
+
+			this.documentoRit.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RIT);
+			this.anexos.add(documentoRit.save());
+
+		}
+
+		for (Documento documento : novosDocumentos) {
+
+			if(documento.id != null) {
+
+				documento = Documento.findById(documento.id);
+
+			} else {
+
+				if (documento.tipo.id.equals(tipoDocumentoVistoria.id)) {
+
+					documento.tipo = tipoDocumentoVistoria;
+
+				}
+
+				documento = documento.save();
+
+			}
+
+			this.anexos.add(documento);
+
+		}
+
+		return this.anexos;
+
+	}
+
+	public Vistoria salvar() {
+
+		this.updateDocumentos(this.anexos);
+
+		Vistoria vistoriaSalva = this.save();
+
+		if(this.inconsistenciaVistoria != null) {
+
+			this.inconsistenciaVistoria.vistoria = vistoriaSalva;
+			this.inconsistenciaVistoria._save();
+
+		}
+
+		if(!this.equipe.isEmpty()) {
+
+			this.equipe.forEach(analista -> {
+				analista.vistoria = vistoriaSalva;
+				analista._save();
+			});
+
+		}
+
+		return this.save();
+
+	}
 
 }

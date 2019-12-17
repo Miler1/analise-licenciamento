@@ -492,7 +492,7 @@ utils.services(licenciamento)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
 	.add('parecerGerenteService', services.ParecerGerenteService)
 	.add('questionarioService', services.QuestionarioService)
-	.add('inconsistenciaVistoriaService', services.InconsistenciaVistoriaService);
+	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -522,7 +522,9 @@ licenciamento
 	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
 	.controller('visualizarAjustesController',controllers.VisualizarAjustesController)
 	.controller('inconsistenciaTecnicaController',controllers.InconsistenciaTecnicaController)
-	.controller('modalInconsistenciaVistoriaController', controllers.ModalInconsistenciaVistoriaController);
+	.controller('modalInconsistenciaVistoriaController', controllers.ModalInconsistenciaVistoriaController)
+	.controller('modalCondicionanteController', controllers.ModalCondicionanteController)
+	.controller('modalRestricaoController', controllers.ModalRestricaoController);
 
 licenciamento
 	.component('menuPrincipal', directives.MenuPrincipal)
