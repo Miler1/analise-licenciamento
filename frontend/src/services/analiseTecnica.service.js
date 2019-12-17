@@ -30,11 +30,11 @@ var AnaliseTecnicaService = function(request, config) {
 				.post(config.BASE_URL() + 'analisesTecnicas', analise);
 	};
 
-	this.concluir = function(analise) {
+	this.concluir = function(parecer) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesTecnicas/concluir', analise);
-	};	
+				.post(config.BASE_URL() + 'parecer/analistaTecnico/concluir', parecer);
+	};
 
 	this.validarParecer = function(analise) {
 

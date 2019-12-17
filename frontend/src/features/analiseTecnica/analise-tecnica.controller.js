@@ -10,6 +10,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.DEFERIDO = app.utils.TiposResultadoAnalise.DEFERIDO;
     ctrl.EMITIR_NOTIFICACAO = app.utils.TiposResultadoAnalise.EMITIR_NOTIFICACAO;
+    ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
     ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
     ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
@@ -26,17 +27,18 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.tiposDocumentosAnalise = app.utils.TiposDocumentosAnalise;
     ctrl.semInconsistenciaVistoria = null;
     ctrl.analistasTecnico = [];
-    ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
     ctrl.tiposUpload = app.utils.TiposUpload;
     ctrl.dataAtual = new Date();
     $scope.analistaSelecionado = null;
-    ctrl.dataAtual = new Date();
 
     ctrl.parecer = {
         doProcesso: null,
         daAnaliseTecnica: null,
         daConclusao: null,
-        documentos: []
+        documentos: [],
+        parecer: null,
+        analiseTecnica: null,
+        tipoResultadoAnalise:null
     };
    
     ctrl.itemValidoLicenca = {
@@ -53,6 +55,10 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         isPdf: false,
         autoInfracao: false,
         pergunta: false,
+        parecer: null,
+        doProcesso: null,
+        daAnaliseTecnica: null,
+        daConclusao: null,
 
         vistoria: {
             realizada: false,
@@ -71,8 +77,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
             .then(function(response){
                 ctrl.analiseTecnica = response.data;
-
-
+                
                 if(ctrl.analiseTecnica.vistoria === null) {
 
                     ctrl.analiseTecnica.vistoria = {
@@ -772,7 +777,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 }
             }
     
-            // return inconsistenciaTecnica.inconsistenciaTecnicaDocumento;
         });
    
         openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, null, documentoTecnicoAmbiental);
@@ -992,6 +996,55 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         documentoLicenciamentoService.download(documento.id);
             
+    };
+
+    ctrl.validarParecer = function (){
+
+        if(!ctrl.parecer.parecer || ctrl.parecer.parecer === undefined){
+            ctrl.errors.parecer = true;    
+        }
+        if (!ctrl.parecer.doProcesso || ctrl.parecer.doProcesso === undefined){
+            ctrl.errors.doProcesso = true;    
+        }
+        if (!ctrl.parecer.daAnaliseTecnica || ctrl.parecer.daAnaliseTecnica === undefined){
+            ctrl.errors.daAnaliseTecnica = true;    
+        }
+        if (!ctrl.parecer.daConclusao || ctrl.parecer.daConclusao === undefined){
+            ctrl.errors.daConclusao = true;    
+        }
+        if (!ctrl.parecer.parecer || !ctrl.parecer.doProcesso || !ctrl.parecer.daAnaliseTecnica || !ctrl.parecer.daConclusao){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    ctrl.concluir = function () {
+
+		if(ctrl.validarParecer()) {
+
+			mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 10000 });
+			return;
+        }
+        
+        ctrl.parecer.analiseTecnica = {
+            id: ctrl.analiseTecnica.id
+        }; 
+
+        analiseTecnicaService.concluir(ctrl.parecer)
+            .then(function(response) {
+
+                $location.path('/analise-tecnica');
+                mensagem.setMensagemProximaTela('success', response.data.texto);
+
+        }, function(error){
+
+            mensagem.error(error.data.texto, {referenceId: 5});
+
+        });
+
+        $rootScope.$broadcast('atualizarContagemProcessos');
+        
     };
 
 };
