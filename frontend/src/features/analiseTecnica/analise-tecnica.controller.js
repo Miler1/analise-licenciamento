@@ -498,7 +498,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
-            if(ctrl.semInconsistenciaVistoria === null && (ctrl.parecer.vistoria.inconsistenciaVistoria === null)) {
+            if(ctrl.semInconsistenciaVistoria === null && ctrl.parecer.vistoria.inconsistenciaVistoria === null) {
 
                 ctrl.errors.vistoria.inconsistenciaVistoria = true;
 
