@@ -241,4 +241,36 @@ public class InconsistenciaTecnica extends GenericModel{
 
 		ModelUtil.deleteAll(documentosDeletar);
 	}
+
+	public String getTipoDeInconsistenciaTecnica() {
+		if (this.inconsistenciaTecnicaTipoLicenca != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.TIPO_LICENCA.name();
+		}
+
+		else if (this.inconsistenciaTecnicaAtividade != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.ATIVIDADE.name();
+		}
+
+		else if(this.inconsistenciaTecnicaParametro != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.PARAMETRO.name();
+		}
+
+		else if(this.inconsistenciaTecnicaQuestionario != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.QUESTIONARIO.name();
+		}
+
+		else if(this.inconsistenciaTecnicaDocumentoAdministrativo != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO.name();
+		}
+
+		else if(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name();
+		}
+
+		else if (this.tipoDeInconsistenciaTecnica.equals(TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name())) {
+			inconsistenciaTecnicaDocumentoTecnicoAmbiental.findById(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.id)._delete();
+		}
+
+		return tipoDeInconsistenciaTecnica;
+	}
 }

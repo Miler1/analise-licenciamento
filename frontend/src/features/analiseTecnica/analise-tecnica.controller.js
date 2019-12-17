@@ -31,6 +31,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.dataAtual = new Date();
     $scope.analistaSelecionado = null;
     ctrl.dataAtual = new Date();
+    ctrl.inconsistenciasAdicionadas = [];
 
     ctrl.parecer = {
         doProcesso: null,
@@ -992,6 +993,67 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         documentoLicenciamentoService.download(documento.id);
             
+    };
+
+    ctrl.findInconsistenciasParaConclusao = function(){
+
+        inconsistenciaService.findInconsistenciaByAnaliseTecnica(ctrl.idAnaliseTecnica).then(function (response) {
+            ctrl.inconsistenciasAdicionadas = response.data;
+
+            _.forEach(ctrl.inconsistenciasAdicionadas, function(inconsistencia) {
+
+                if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.TIPO_LICENCA){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaTipoLicenca.tipoLicenca.nome;
+                    inconsistencia.categoria = "Tipo Licença";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.ATIVIDADE){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.atividade.nome;
+                    inconsistencia.categoria = "Atividade";
+                }
+                
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.PARAMETRO){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome;
+                    inconsistencia.categoria = "Parâmetro";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.QUESTIONARIO){
+                    inconsistencia.inconsistenciaEncontrada = "Questionário 03";
+                    inconsistencia.categoria = "Questionário";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.tipoDocumento.nome;
+                    inconsistencia.categoria = "Documento Administrativo";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome;
+                    inconsistencia.categoria = "Documento Técnico/Ambiental";
+                }
+            });
+
+        });
+
+    };
+
+    ctrl.abrirModalVisualizarInconsistenciaTecnica = function(idInconsistencia) {
+
+        inconsistenciaTecnica = _.find(ctrl.inconsistenciasAdicionadas, function(inconsistencia) {
+            return inconsistencia.id === idInconsistencia;
+        });
+
+        $uibModal.open({
+
+			component: 'modalVisualizarInconsistenciaTecnica',
+			size: 'lg',
+			resolve: {
+				inconsistenciaTecnica: function(){
+					return inconsistenciaTecnica;
+				}
+			}
+		});
+
     };
 
 };
