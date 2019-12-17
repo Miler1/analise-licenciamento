@@ -78,11 +78,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     ctrl.analiseTecnica.vistoria = {
                         realizada: null,
                         documentoRit: null,
-                        inconsistenciaVistoria: {
-                            descricaoInconsistencia: null,
-                            tipoInconsistencia: null,
-                            anexos: []
-                        },
+                        inconsistenciaVistoria: null,
                         anexos: [],
                         equipe: [],
                         conclusao: null,
@@ -229,19 +225,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     
     ctrl.deletarInconsistenciaVistoria = function() {
 
-        if(ctrl.analiseTecnica.vistoria && ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id) {
-
-            inconsistenciaVistoriaService.deletar(ctrl.analiseTecnica.vistoria.inconsistenciaVistoria.id)
-                .then(function(response) {
-
-                    mensagem.success(response.data);
-                    ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = {
-                        descricaoInconsistencia: null,
-                        tipoInconsistencia: null,
-                        anexos: []
-                    };
-
-                });
+        if(ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria) {
+            
+            ctrl.parecer.vistoria.inconsistenciaVistoria = null;
 
         }
 
@@ -276,7 +262,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
-    $rootScope.$on('buscarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
+    $rootScope.$on('adicionarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
         ctrl.analiseTecnica.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
         ctrl.semInconsistenciaVistoria = null;
     });
@@ -386,6 +372,16 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         ctrl.semInconsistenciaVistoria = null;
         ctrl.limparErrosVistoria();
+
+        if(ctrl.parecer.vistoria.inconsistenciaVistoria === null || ctrl.parecer.vistoria.inconsistenciaVistoria === undefined) {
+            
+            ctrl.parecer.vistoria.inconsistenciaVistoria = {
+                descricaoInconsistencia: null,
+                tipoInconsistencia: null,
+                anexos: []
+            };
+
+        }
 
         $uibModal.open({
 			controller: 'modalInconsistenciaVistoriaController',
