@@ -743,12 +743,6 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	$scope.excluirInconsistenciaGeo = function(idInconsistencia) {
 
-		// var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
-		// 	return inconsistencia.id === idInconsistencia;
-		// });
-
-		// ctrl.listaInconsistencias.splice(index, 1);
-	
 		inconsistenciaService.excluirInconsistenciaGeo(idInconsistencia)
 			.then(function (response) {
 				mensagem.success(response.data);
