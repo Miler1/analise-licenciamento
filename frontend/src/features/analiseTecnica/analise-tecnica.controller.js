@@ -1,6 +1,6 @@
-var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $scope,analistaService,
-                                        analiseTecnica, mensagem, $uibModal, analiseTecnicaService,
-                                        tamanhoMaximoArquivoAnaliseMB,
+var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $scope, $location, 
+                                        analistaService, analiseTecnica, mensagem, $uibModal, 
+                                        analiseTecnicaService, tamanhoMaximoArquivoAnaliseMB,
                                         documentoAnaliseService, restricoes, TiposAnalise,inconsistenciaService, 
                                         documentoLicenciamentoService, processoService, documentoService,
                                         parecerAnalistaTecnicoService) {
@@ -432,27 +432,30 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     var camposConclusaoValidos = function() {
 
+        var valido = true;
+
         if(ctrl.parecer.doProcesso === null || ctrl.parecer.doProcesso === '' || ctrl.parecer.doProcesso === undefined) {
 
             ctrl.errors.doProcesso = true;
+            valido = false;
 
         }
 
         if(ctrl.parecer.daAnaliseTecnica === null || ctrl.parecer.daAnaliseTecnica === '' || ctrl.parecer.daAnaliseTecnica === undefined) {
 
             ctrl.errors.daAnaliseTecnica = true;
+            valido = false;
 
         }
 
         if(ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) {
 
             ctrl.errors.daConclusao = true;
+            valido = false;
 
         }
 
-        return !Object.keys(ctrl.errors).some(function(campo) {
-            return ctrl.errors[campo];
-        });
+        return valido;
 
     }; 
 

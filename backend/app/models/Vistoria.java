@@ -117,14 +117,14 @@ public class Vistoria extends GenericModel {
 
 		this.updateDocumentos(this.anexos);
 
-		Vistoria vistoriaSalva = this.save();
-
 		if(this.inconsistenciaVistoria != null) {
 
-			this.inconsistenciaVistoria.vistoria = vistoriaSalva;
-			this.inconsistenciaVistoria._save();
+			this.inconsistenciaVistoria.vistoria = this;
+			this.inconsistenciaVistoria.salvar();
 
 		}
+
+		Vistoria vistoriaSalva = this.save();
 
 		if(!this.equipe.isEmpty()) {
 

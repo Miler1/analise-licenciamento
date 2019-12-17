@@ -96,7 +96,7 @@ hr
     .validade
         label.control-label Validade permitida:
         select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio")
-            option(value="1") 1 anos
+            option(value="1") 1 ano
             option(value="2") 2 anos
             option(value="3") 3 anos
             option(value="4") 4 anos
@@ -112,47 +112,49 @@ hr
                     ng-model="ctrl.parecer.finalidadeAtividade",
                     config="optionsText")
 
-    label Condicionantes
-    button.btn.btn-default.pull-left.btn-incluir-condicionante(ng-click="ctrl.addCondicionante()")
-        i.glyphicon.glyphicon-plus
-        |  Incluir condicionante
+    .inclusoes
+        label Condicionantes
+        button.btn.btn-default.pull-left.btn-incluir-condicionante(ng-click="ctrl.addCondicionante()")
+            i.glyphicon.glyphicon-plus
+            |  Incluir condicionante
 
-    table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.condicionantes && ctrl.parecer.condicionantes.length > 0")
-        thead
-            tr
-            th.col-md-5 Condicionante
-            th.col-md-2 Prazo
-            th.col-md-1 Ações
+        table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.condicionantes && ctrl.parecer.condicionantes.length > 0")
+            thead
+                tr
+                th.col-md-5 Condicionante
+                th.col-md-2 Prazo
+                th.col-md-1.text-right Ações
 
-        tbody(ng-repeat="condicionante in ctrl.parecer.condicionantes")
-            tr
-                td.col-md-5 {{ condicionante.texto }}
-                td.col-md-2 {{ condicionante.prazo }}
-                td.col-md-1
-                    i.glyphicon.glyphicon-trash.pointer(title='Excluir condicionante',
-                            ng-bootbox-title='Confirmação',
-                            ng-bootbox-confirm='Deseja realmente excluir esta condicionante ?',
-                            ng-bootbox-confirm-action="ctrl.excluirCondicionante(condicionante)")
+            tbody(ng-repeat="condicionante in ctrl.parecer.condicionantes")
+                tr
+                    td.col-md-5 {{ condicionante.texto }}
+                    td.col-md-2 {{ condicionante.prazo }}
+                    td.col-md-1
+                        i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir condicionante',
+                                ng-bootbox-title='Confirmação',
+                                ng-bootbox-confirm='Deseja realmente excluir esta condicionante ?',
+                                ng-bootbox-confirm-action="ctrl.excluirCondicionante(condicionante)")
 
-    label Restrições
-    button.btn.btn-default.pull-left.btn-incluir-restricao(ng-click="ctrl.addRestricao()")
-        i.glyphicon.glyphicon-plus
-        |  Incluir restrição
+    .inclusoes
+        label Restrições
+        button.btn.btn-default.pull-left.btn-incluir-restricao(ng-click="ctrl.addRestricao()")
+            i.glyphicon.glyphicon-plus
+            |  Incluir restrição
 
-    table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.restricoes && ctrl.parecer.restricoes.length > 0")
-        thead
-            tr
-            th.col-md-6 Restrição
-            th.col-md-1 Ações
+        table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.restricoes && ctrl.parecer.restricoes.length > 0")
+            thead
+                tr
+                th.col-md-6 Restrição
+                th.col-md-1.text-right Ações
 
-        tbody(ng-repeat="restricao in ctrl.parecer.restricoes")
-            tr
-                td.col-md-6 {{ restricao.texto }}
-                td.col-md-1
-                    i.glyphicon.glyphicon-trash.pointer(title='Excluir restrição',
-                            ng-bootbox-title='Confirmação',
-                            ng-bootbox-confirm='Deseja realmente excluir esta restrição ?',
-                            ng-bootbox-confirm-action="ctrl.excluirRestricao(restricao)")
+            tbody(ng-repeat="restricao in ctrl.parecer.restricoes")
+                tr
+                    td.col-md-6 {{ restricao.texto }}
+                    td.col-md-1
+                        i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir restrição',
+                                ng-bootbox-title='Confirmação',
+                                ng-bootbox-confirm='Deseja realmente excluir esta restrição ?',
+                                ng-bootbox-confirm-action="ctrl.excluirRestricao(restricao)")
 
     br
 

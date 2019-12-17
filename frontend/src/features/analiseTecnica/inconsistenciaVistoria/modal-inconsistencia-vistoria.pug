@@ -13,6 +13,11 @@ div.modal-body
         br
         textarea.textarea-modal(name="descricaoInconsistência",ng-class="{ 'error': modalCtrl.errors.descricaoInconsistencia }", ng-model="modalCtrl.inconsistenciaVistoria.descricaoInconsistencia")
 
+    div.area-modal
+        label.label-modal.obrigatorio Tipo da inconsistência:
+        br
+        textarea.textarea-modal(name="tipoInconsistência",ng-class="{ 'error': modalCtrl.errors.tipoInconsistencia }", ng-model="modalCtrl.inconsistenciaVistoria.tipoInconsistencia")
+
     div.button-upload-modal.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo na inconsistência

@@ -15,13 +15,20 @@ var ModalInconsistenciaVistoriaController = function (
 
     modalCtrl.errors = {
 
-        descricaoInconsistencia: false
+        descricaoInconsistencia: false,
+        tipoInconsistencia: false
 
     };
 
     modalCtrl.fechar = function () {
 
-        modalCtrl.errors.descricaoInconsistencia = false;
+        modalCtrl.errors = {
+
+            descricaoInconsistencia: false,
+            tipoInconsistencia: false
+    
+        };
+
         $uibModalInstance.dismiss('cancel');
         
     };
@@ -35,14 +42,14 @@ var ModalInconsistenciaVistoriaController = function (
             uploadService.save(file)
                 .then(function(response) {
 
-                    modalCtrl.inconsistenciaVistoria.anexos.push({
+                    modalCtrl.inconsistenciaVistoria.anexos.push(
+                        {
                             key: response.data,
                             nomeDoArquivo: file.name,
                             tipo: {
                                 id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA_VISTORIA
                             }
                         });
-                                       
                     }, function(error){
                         mensagem.error(error.data.texto);
                     });
@@ -79,9 +86,11 @@ var ModalInconsistenciaVistoriaController = function (
             
             modalCtrl.errors.descricaoInconsistencia = true;
 
-        }else {
+        }
 
-            modalCtrl.errors.descricaoInconsistencia = false;
+        if(!modalCtrl.inconsistenciaVistoria.tipoInconsistencia || modalCtrl.inconsistenciaVistoria.tipoInconsistencia === ''){
+            
+            modalCtrl.errors.tipoInconsistencia = true;
 
         }
 
@@ -100,7 +109,14 @@ var ModalInconsistenciaVistoriaController = function (
         }else{
 
             $rootScope.$broadcast('adicionarInconsistenciaVistoria', modalCtrl.inconsistenciaVistoria);
-            modalCtrl.errors.descricaoInconsistencia = false;
+            
+            modalCtrl.errors = {
+
+                descricaoInconsistencia: false,
+                tipoInconsistencia: false
+        
+            };
+
             modalCtrl.fechar();
 
         }
