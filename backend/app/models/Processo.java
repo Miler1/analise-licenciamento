@@ -8,6 +8,7 @@ import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
+import org.hibernate.criterion.Restrictions;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
@@ -307,6 +308,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
+
+			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
+
+		}
+
 		if (filtro.filtrarPorUsuario) {
 
 			processoBuilder.filtrarIdGerente(usuarioSessao.id);
@@ -345,6 +352,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		if (filtro.idAnalistaGeo == null) {
 			filtro.idAnalistaGeo = filtro.idUsuarioLogado;
+		}
+
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
+
+			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
+
 		}
 
 		if (filtro.filtrarPorUsuario == null || !filtro.filtrarPorUsuario || filtro.idCondicaoTramitacao == null) {
