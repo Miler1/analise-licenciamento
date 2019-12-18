@@ -704,6 +704,24 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	};
 
+	this.setLabelRestricao = function() {
+
+		if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
+
+			return 'Restrições do complexo';
+
+		} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
+
+			return 'Restrições do empreendimento';
+
+		} else {
+
+			return 'Restrições da(s) atividade(s)';
+
+		}
+
+	};
+
 	$scope.addInconsistenciaGeral = function(inconsistencia){
 
 		inconsistenciaService.findInconsistenciaById(inconsistencia.id)
