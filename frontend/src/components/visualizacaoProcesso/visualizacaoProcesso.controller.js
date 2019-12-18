@@ -107,6 +107,24 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	};
 
+	this.setLabelRestricao = function() {
+
+		if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
+
+			return 'Restrições do complexo';
+
+		} else if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.PROPRIEDADE) {
+
+			return 'Restrições do empreendimento';
+
+		} else {
+
+			return 'Restrições da(s) atividade(s)';
+
+		}
+
+	};
+
 	// Métodos referentes ao Mapa da caracterização
 	this.iniciarMapa = function() {
 

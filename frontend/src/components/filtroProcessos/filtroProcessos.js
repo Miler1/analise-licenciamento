@@ -78,13 +78,15 @@ var FiltroProcessos = {
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
 			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
 
-			processoService.getProcessos(ctrl.filtro)
+			var filtro = angular.copy(ctrl.filtro);
+			
+			processoService.getProcessos(filtro)
 				.then(function(response){
 
 					ctrl.atualizarLista(response.data);
 
 					if (_.isFunction(ctrl.onAfterUpdate))
-						ctrl.onAfterUpdate(ctrl.filtro);
+						ctrl.onAfterUpdate(filtro);
 
 				})
 				.catch(function(response){
@@ -94,9 +96,9 @@ var FiltroProcessos = {
 						mensagem.error("Ocorreu um erro ao buscar a lista de protocolos.");
 				});
 
-			processoService.getProcessosCount(ctrl.filtro)
+			processoService.getProcessosCount(filtro)
 				.then(function(response){
-					 ctrl.atualizarPaginacao(response.data, ctrl.filtro.paginaAtual);
+					 ctrl.atualizarPaginacao(response.data, filtro.paginaAtual);
 				})
 				.catch(function(response){
 					if(!!response.data.texto)
@@ -104,6 +106,11 @@ var FiltroProcessos = {
 					else
 						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
+
+			if (!_.isEmpty(ctrl.filtro.listaIdCondicaoTramitacao)) {
+
+				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_GEO_FINALIZADA';
+			}
 
 			$rootScope.$broadcast('atualizarContagemProcessos');
 		};
