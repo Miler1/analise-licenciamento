@@ -25,6 +25,7 @@ var FiltroProcessos = {
 		TiposSetores, consultorService) {
 
 		var ctrl = this;
+		var caixaEntrada = false;
 
 		ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
 		ctrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
@@ -70,7 +71,10 @@ var FiltroProcessos = {
 					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 					ctrl.filtro.idCondicaoTramitacao = null;
 				
-				} 
+				} else if(!caixaEntrada) {
+					
+					ctrl.filtro.listaIdCondicaoTramitacao = null;
+				}
 
 			}
 
@@ -124,11 +128,13 @@ var FiltroProcessos = {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
+				caixaEntrada = true;
 
 			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
+				caixaEntrada = false;
 			}
 
 			ctrl.filtro.isAnaliseJuridica = !!ctrl.isAnaliseJuridica;
