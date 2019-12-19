@@ -1,7 +1,9 @@
 package controllers;
 
+import com.itextpdf.text.DocumentException;
 import models.Notificacao;
 import models.UsuarioAnalise;
+import models.pdf.PDFGenerator;
 import org.apache.tika.Tika;
 import play.Play;
 import play.data.Upload;
@@ -14,11 +16,10 @@ import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Application extends GenericController {
 
@@ -30,6 +31,15 @@ public class Application extends GenericController {
 			redirect(Configuracoes.INDEX_URL);
 			Auth.logout(session.current());
 			redirect(Configuracoes.LOGIN_URL);
+
+	}
+
+	public static void mergear() throws IOException, DocumentException {
+
+		File diretorio = new File("/home/20015873/capgemini/Documentos/");
+		List<File> arquivos = Arrays.asList(Objects.requireNonNull(diretorio.listFiles()));
+
+		renderBinary(PDFGenerator.mergePDF(arquivos));
 
 	}
 
