@@ -1,4 +1,4 @@
-var ModalVisualizarLicenca = {
+var ModalVisualizarInconsistenciaTecnica = {
 	bindings: {
 
 		resolve: '<',
@@ -8,7 +8,13 @@ var ModalVisualizarLicenca = {
 
 	controller: function() {
 
-        var ctrl = this;
+		var ctrl = this;
+		
+		ctrl.$onInit =  function() {
+
+			ctrl.inconsistenciaTecnica = ctrl.resolve.inconsistenciaTecnica;
+
+		};
 		
 		ctrl.fechar = function() {
 
@@ -20,4 +26,4 @@ var ModalVisualizarLicenca = {
 	templateUrl: 'components/modalVisualizarInconsistenciaTecnica/modalVisualizarInconsistenciaTecnica.html'
 };
 
-exports.directives.ModalVisualizarLicenca = ModalVisualizarLicenca;
+exports.directives.ModalVisualizarInconsistenciaTecnica = ModalVisualizarInconsistenciaTecnica;

@@ -97,12 +97,12 @@ div
 
                 tbody
 
-                    tr(ng-repeat="incosistencia in ctrl.inconsistenciasAdicionadas")
+                    tr(ng-repeat="inconsistencia in ctrl.inconsistenciasAdicionadas")
 
-                        td.col-md-8 {{incosistencia.inconsistenciaEncontrada}}
-                        td.col-md-3 {{incosistencia.categoria}}
+                        td.col-md-8 {{inconsistencia.inconsistenciaEncontrada}}
+                        td.col-md-3 {{inconsistencia.categoria}}
                         td.col-md-1.text-center
-                            a.d-inline.margin-right-xs(style='cursor: pointer;', ng-click="ctrl.abrirModalVisualizarInconsistenciaTecnica(inconsistencia.id)")
+                            a.d-inline.margin-right-xs(style='cursor: pointer;', ng-click="ctrl.abrirModalVisualizarInconsistenciaTecnica(inconsistencia)")
                                 i.glyphicon.glyphicon-eye-open
         
         #lista-restricoes

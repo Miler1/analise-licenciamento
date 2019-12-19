@@ -389,17 +389,17 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         ctrl.limparErrosVistoria();
 
         $uibModal.open({
-			controller: 'modalInconsistenciaVistoriaController',
-			controllerAs: 'modalCtrl',
-			backdrop: 'static',
-			templateUrl: 'features/analiseTecnica/inconsistenciaVistoria/modal-inconsistencia-vistoria.html',
-			size: 'lg',
-			resolve: {
-				inconsistenciaVistoria: function(){
-					return ctrl.analiseTecnica.vistoria.inconsistenciaVistoria;
-				}
+            controller: 'modalInconsistenciaVistoriaController',
+            controllerAs: 'modalCtrl',
+            backdrop: 'static',
+            templateUrl: 'features/analiseTecnica/inconsistenciaVistoria/modal-inconsistencia-vistoria.html',
+            size: 'lg',
+            resolve: {
+                inconsistenciaVistoria: function(){
+                    return ctrl.analiseTecnica.vistoria.inconsistenciaVistoria;
+                }
             }
-		});
+        });
 
     };
 
@@ -428,11 +428,11 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     $scope.snPaste = function(e, model) {
-		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
-		e.preventDefault();
-		setTimeout( function(){
-		  document.execCommand('insertText', false, bufferText );
-		}, 10 );
+        var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+        e.preventDefault();
+        setTimeout( function(){
+          document.execCommand('insertText', false, bufferText );
+        }, 10 );
     };
 
     ctrl.baixarDocumento = function(anexo) {
@@ -925,14 +925,14 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.visualizarQuestionario = function() {
         $uibModal.open({
 
-			component: 'modalVisualizarQuestionario',
-			size: 'lg',
-			resolve: {
+            component: 'modalVisualizarQuestionario',
+            size: 'lg',
+            resolve: {
                 idProcesso: function(){
                     return ctrl.analiseTecnica.analise.processo.id;
                 }
-			}
-		});
+            }
+        });
     };
 
     $rootScope.$on('atualizarMarcacaoInconsistencia', function(event, tipoDeInconsistenciaTecnica, parametro, documentoAdministrativo, documentoTecnicoAmbiental) {
@@ -950,14 +950,14 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     ctrl.getDocumentosAutoInfracao = function() {
-		
-		var documentoAutoInfracao = [];
+        
+        var documentoAutoInfracao = [];
 
-		documentoAutoInfracao = _.filter(ctrl.anexos, function(documento) {
-			return documento.tipoDocumento.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO;
-		});
+        documentoAutoInfracao = _.filter(ctrl.anexos, function(documento) {
+            return documento.tipoDocumento.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO;
+        });
 
-		return documentoAutoInfracao;
+        return documentoAutoInfracao;
     };
     
     ctrl.validarCampos = function (){
@@ -1037,22 +1037,18 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
-    ctrl.abrirModalVisualizarInconsistenciaTecnica = function(idInconsistencia) {
-
-        inconsistenciaTecnica = _.find(ctrl.inconsistenciasAdicionadas, function(inconsistencia) {
-            return inconsistencia.id === idInconsistencia;
-        });
+    ctrl.abrirModalVisualizarInconsistenciaTecnica = function(inconsistenciaTecnica) {
 
         $uibModal.open({
 
-			component: 'modalVisualizarInconsistenciaTecnica',
-			size: 'lg',
-			resolve: {
-				inconsistenciaTecnica: function(){
-					return inconsistenciaTecnica;
-				}
-			}
-		});
+            component: 'modalVisualizarInconsistenciaTecnica',
+            size: 'lg',
+            resolve: {
+                inconsistenciaTecnica: function(){
+                    return inconsistenciaTecnica;
+                }
+            }
+        });
 
     };
 
