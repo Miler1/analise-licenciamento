@@ -157,6 +157,22 @@
                                 p(ng-if="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal", ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal")
                                 div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal") 
                                     i Não há análise temporal
+
+                            table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.parecerGeo.documentos.length > 0")
+
+                                thead
+
+                                    tr
+                                        th.col-md-10 Documento anexado
+                                        th.col-md-2.text-right Ações
+
+                                tbody
+
+                                    tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos", ng-if= "documento.tipo.id === validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
+                                        td.col-md-10 {{ documento.nomeDoArquivo }}
+                                        td.col-md-2.text-right
+                                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
+                                                i.glyphicon.glyphicon-eye-open
                             div
                                 label.label-parecer Conclusão:
                                 br
@@ -172,8 +188,7 @@
 
                             tbody
 
-                                tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos")
-
+                                tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos", ng-if= "documento.tipo.id !== validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
                                     td.col-md-10 {{ documento.nomeDoArquivo }}
                                     td.col-md-2.text-right
                                         a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
