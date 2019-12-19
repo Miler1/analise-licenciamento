@@ -705,18 +705,22 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	this.setLabelRestricao = function() {
+		
+		if(ctrl.dadosProjeto) {
+			
+			if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
 
-		if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
+				return 'Restrições do complexo';
 
-			return 'Restrições do complexo';
+			} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
 
-		} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
+				return 'Restrições do empreendimento';
 
-			return 'Restrições do empreendimento';
+			} else {
 
-		} else {
+				return 'Restrições da(s) atividade(s)';
 
-			return 'Restrições da(s) atividade(s)';
+			}
 
 		}
 

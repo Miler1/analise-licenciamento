@@ -37,6 +37,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.parecerGeo = {};
     validacaoAnaliseGeoGerente.labelDadosProjeto = '';
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
+    validacaoAnaliseGeoGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
