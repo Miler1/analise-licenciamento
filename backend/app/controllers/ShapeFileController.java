@@ -33,8 +33,7 @@ public class ShapeFileController extends InternalController {
 		if(realType.contains("application/zip") || realType.contains("application/x-rar-compressed")) {
 
 			byte[] data = IO.readContent(file.asFile());
-			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String key = FileManager.getInstance().createFile(data, extension);
+			String key = FileManager.getInstance().createKey(data, file.getFileName());
 
 			// Processamento do arquivo zip
 			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, idMunicipio, idEmpreendimento);
