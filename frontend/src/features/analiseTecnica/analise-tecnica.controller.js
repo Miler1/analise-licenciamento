@@ -325,8 +325,10 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     $rootScope.$on('adicionarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
+
         ctrl.parecer.vistoria.inconsistenciaVistoria = inconsistenciaVistoria;
         ctrl.semInconsistenciaVistoria = null;
+        
     });
 
     $rootScope.$on('adicionarCondicionante', function(event, condicionante) {
@@ -407,9 +409,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         if(analistaSelecionado === undefined) {
 
-            ctrl.analistasTecnico = ctrl.parecer.vistoria.equipe.map(function(analista) {
-                return analista.usuario;
-            });
+            ctrl.analistasTecnico = ctrl.parecer.vistoria.equipe;
             ctrl.parecer.vistoria.equipe = [];
 
         } else {
