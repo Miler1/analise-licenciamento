@@ -52,7 +52,11 @@ public class ProcessamentoPrazos extends GenericJob {
 								analise.diasAnalise.qtdeDiasGeo = 0;
 							}
 
+							Logger.info("[ProcessamentoPrazos]:: Processando dias de análise da Análise GEO com ID - " + analise.analiseGeo.id + " ::[ProcessamentoPrazos]");
+
 							analise.diasAnalise.preencheDiasAnaliseGeo();
+
+							Logger.info("[ProcessamentoPrazos]:: Dias de análise da Análise GEO com ID - " + analise.analiseGeo.id + " processada ::[ProcessamentoPrazos]");
 
 						}
 
@@ -62,7 +66,11 @@ public class ProcessamentoPrazos extends GenericJob {
 								analise.diasAnalise.qtdeDiasTecnica = 0;
 							}
 
+							Logger.info("[ProcessamentoPrazos]:: Processando dias de análise da Análise técnica com ID - " + analise.analiseTecnica.id + " ::[ProcessamentoPrazos]");
+
 							analise.diasAnalise.preencheDiasAnaliseTecnica();
+
+							Logger.info("[ProcessamentoPrazos]:: Dias de análise da Análise técnica com ID - " + analise.analiseTecnica.id + " processada ::[ProcessamentoPrazos]");
 
 						}
 
