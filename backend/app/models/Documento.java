@@ -124,6 +124,7 @@ public class Documento extends GenericModel implements Identificavel {
 	protected void saveArquivo(File file) {
 		
 		if (file == null || !file.exists())
+
 			throw new IllegalStateException("Arquivo não existente.");
 		
 		try {

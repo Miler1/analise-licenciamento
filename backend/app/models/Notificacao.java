@@ -112,6 +112,9 @@ public class Notificacao extends GenericModel {
 	@Transient
 	public String justificativa;
 
+	@Transient
+	public List<Documento> documentosParecer;
+
 	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos, ParecerAnalistaGeo parecerAnalistaGeo){
 		
 		this.analiseGeo = analiseGeo;
@@ -128,13 +131,13 @@ public class Notificacao extends GenericModel {
 		this.documentos = new ArrayList<>();
 		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
-		if(this.documentos != null && !this.documentos.isEmpty()) {
-			documentos.stream().forEach(documento -> {
-				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
-					this.documentos.add(documento);
-				}
-			});
-		}
+//		if(documentos != null && !documentos.isEmpty()) {
+//			documentos.stream().forEach(documento -> {
+//				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
+//					this.documentos.add(documento);
+//				}
+//			});
+//		}
 
 	}
 
@@ -421,6 +424,22 @@ public class Notificacao extends GenericModel {
 
 		this.justificativa = this.parecerAnalistaGeo.parecer;
 
+	}
+
+	public void setDocumentosParecer(List<Documento> documentosParecer){
+
+		this.documentosParecer = new ArrayList<>();
+
+		if(documentosParecer != null && !documentosParecer.isEmpty()) {
+
+			documentosParecer.stream().forEach(documento -> {
+
+				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
+
+					this.documentosParecer.add(documento);
+				}
+			});
+		}
 	}
 
 	public Date getDataNotificacao(){
