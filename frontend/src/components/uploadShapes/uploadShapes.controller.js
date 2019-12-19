@@ -36,13 +36,14 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 			$scope.$emit('mapa:adicionar-geometria-base', {
 				geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
-				tipo: 'EMP-LOCAL',
+				tipo: 'PROPRIEDADE',
 				estilo: {
 					style: {
 					}
 				},
 				popupText: 'Empreendimento',
-				area: uploadShapes.processo.empreendimento.area
+				area: uploadShapes.processo.empreendimento.area,
+				item: 'Propriedade'
 			});
 
 			$scope.$emit('mapa:adicionar-geometria-base', {
