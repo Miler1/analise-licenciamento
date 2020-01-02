@@ -1,0 +1,28 @@
+include titulo-pergunta
+
+mixin perguntaData(texto, labelClass, formulario, ngDisabled, opcoes)
+	+tituloPergunta(texto,labelClass)
+	if ngDisabled !== 'true'
+		span.input-group
+			input.form-control(
+				uib-datepicker-popup="dd/MM/yyyy",
+				type='text',
+				ng-model=formulario,
+				datepicker-options=opcoes,
+				show-button-bar="false",
+				is-open='isOpen'+formulario,
+				ng-click='isOpen'+formulario+' = !isOpen'+formulario,
+				title="Clique para selecionar uma data no calendário.",
+				mask-global='data',
+				ng-disabled=ngDisable
+			)
+			span.input-group-btn.data-tamanho-automatico(
+				ng-click='isOpen'+formulario+' = !isOpen'+formulario,
+				title="Clique para selecionar uma data no calendário.",
+				ng-disabled=ngDisabled
+			)
+				button.btn.btn-default
+					i.fa.fa-calendar
+
+	if ngDisabled === 'true'
+		span {{#{formulario}}}

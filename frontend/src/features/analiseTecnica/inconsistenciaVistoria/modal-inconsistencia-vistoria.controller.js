@@ -5,14 +5,13 @@ var ModalInconsistenciaVistoriaController = function (
     tamanhoMaximoArquivoAnaliseMB,
     uploadService,
     inconsistenciaVistoria,
-    inconsistenciaVistoriaService,
     mensagem) {
 
     var modalCtrl = this;
 
     modalCtrl.inconsistenciaVistoria = inconsistenciaVistoria;
     modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
-    modalCtrl.labelModal = inconsistenciaVistoria.id ? 'Editar' : 'Adicionar';
+    modalCtrl.labelModal = inconsistenciaVistoria.descricaoInconsistencia ? 'Editar' : 'Adicionar';
 
     modalCtrl.errors = {
 
@@ -21,7 +20,10 @@ var ModalInconsistenciaVistoriaController = function (
     };
 
     modalCtrl.fechar = function () {
+
+        modalCtrl.errors.descricaoInconsistencia = false;
         $uibModalInstance.dismiss('cancel');
+        
     };
 
     modalCtrl.init = function(){};
@@ -97,17 +99,9 @@ var ModalInconsistenciaVistoriaController = function (
 
         }else{
 
-            inconsistenciaVistoriaService.salvar(modalCtrl.inconsistenciaVistoria)
-                .then(function(response){
-
-                    mensagem.success("Inconsistência salva com sucesso!");
-                    $rootScope.$broadcast('buscarInconsistenciaVistoria', response.data);
-
-                    modalCtrl.fechar();
-
-                }).catch(function(response){
-                    mensagem.error(response.data.texto, {referenceId: 5});
-                });
+            $rootScope.$broadcast('adicionarInconsistenciaVistoria', modalCtrl.inconsistenciaVistoria);
+            modalCtrl.errors.descricaoInconsistencia = false;
+            modalCtrl.fechar();
 
         }
 

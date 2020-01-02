@@ -19,6 +19,9 @@ GET		/processos/{idProcesso}						Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		Processos.findAnaliseJuridica
 GET     /processos/numero/{numProcesso}/completo    Processos.findByNumProcesso
 
+#Questionario
+GET     /questionario/{idProcesso}                  Questionarios.findQuestionario
+
 # Ficha do Imovel
 GET		/fichaImovelResumida						Imoveis.fichaImovelResumida
 GET		/fichaImovelResumidaDemonstrativo			Imoveis.fichaImovelResumidaDemonstrativo
@@ -88,11 +91,16 @@ POST    /desvinculo/analistaTecnico/solicitarDesvinculo	                        
 GET     /desvinculo/analistaTecnico/buscarDesvinculoPeloProcesso/{idProcesso}       Desvinculos.buscarDesvinculoPeloProcessoTecnico
 POST    /desvinculo/analistaTecnico/responderSolicitacaoDesvinculo                  Desvinculos.responderSolicitacaoDesvinculoAnaliseTecnica
 
-# Inconsistências
-POST    /inconsistencia/salvar                                                      Inconsistencias.salvarInconsistencia
-POST    /inconsistencia/findInconsistencia                                          Inconsistencias.findInconsistencia
-GET     /inconsistencia/findInconsistenciaById/{id}                                 Inconsistencias.findById
-GET     /inconsistencia/excluirInconsistencia/{id}                                  Inconsistencias.excluirInconsistencia
+# Inconsistencias
+
+POST    /inconsistencia/analiseGeo/salvarInconsistencia                            Inconsistencias.salvarInconsistenciaGeo
+POST    /inconsistencia/analiseGeo/findInconsistencia                              Inconsistencias.findInconsistenciaGeo
+POST    /inconsistencia/analiseGeo/excluirInconsistencia/{id}                      Inconsistencias.excluirInconsistenciaGeo
+POST    /inconsistencia/analiseTecnica/salvarInconsistencia                        Inconsistencias.salvarInconsistenciaTecnica
+POST    /inconsistencia/analiseTecnica/findInconsistencia/{id}                     Inconsistencias.findInconsistenciaTecnica
+POST    /inconsistencia/analiseTecnica/excluirInconsistencia                       Inconsistencias.excluirInconsistenciaTecnica
+GET     /inconsistencia/findInconsistenciaById/{id}                                Inconsistencias.findById
+
 
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                                                      Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                                                     Comunicados.findComunicado
