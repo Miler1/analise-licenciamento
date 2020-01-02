@@ -45,7 +45,8 @@
                                             td.col-md-5 {{ restricao.descricao }}
                                             td.col-md-2.text-right
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
-                                                    ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)")
+                                                    ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)",
+                                                    data-toggle="tooltip", title="Visualizar resposta do comunicado ao órgão")
 
                             div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.analiseGeo.inconsistencias.length > 0")
                                 label.title-inconsistencia Inconsistências Encontradas

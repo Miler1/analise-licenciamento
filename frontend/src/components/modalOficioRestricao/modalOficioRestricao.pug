@@ -1,11 +1,11 @@
-.modal-header
+.modal-header-comunicado
     h4 Visualizar Comunicado
 
 .modal-body
     label.label-item-restricao {{$ctrl.restricao.item | uppercase}}
 
     .documentacao-enviada(ng-if="$ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO")
-        label.label-documentos Documentos enviados ao órgão
+        label.label-documentos Documento enviado ao órgão
         hr
 
         button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="$ctrl.downloadPDFOficioOrgao()")
@@ -25,23 +25,27 @@
             
         span.text-manifestacao(ng-if="$ctrl.tipoResultadoAnalise === $ctrl.INDEFERIDO") Não houve manifestação do órgão devido o INDEFERIMENTO realizado pelo Analista GEO
         
+        div.table-anexo
 
-        table.area-modal.table.table-condensed(ng-if="$ctrl.anexos.length > 0")
+            table.area-modal.table.table-condensed(ng-if="$ctrl.anexos.length > 0")
 
-            thead
+                thead
 
-                tr
-                    th.col-md-10 Arquivo anexado
-                    th.col-md-2.text-right Ações
+                    tr
+                        th.col-md-10 Arquivo anexado
+                        th.col-md-2.text-right Ação
 
-            tbody
+                tbody
 
-                tr(ng-repeat="anexo in $ctrl.anexos")
+                    tr(ng-repeat="anexo in $ctrl.anexos")
 
-                    td.col-md-10 {{ anexo.nomeDoArquivo }}
-                    td.col-md-2.text-right
-                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="$ctrl.baixarDocumento(anexo)")
-                            i.glyphicon.glyphicon-eye-open
-        button.btn.btn-default.pull-right(ng-click="$ctrl.fechar()")
-            i.glyphicon.glyphicon-remove
-            |  Fechar
+                        td.col-md-10 {{ anexo.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="$ctrl.baixarDocumento(anexo)")
+                                i.glyphicon.glyphicon-eye-open
+
+.modal-footer
+
+    button.btn.btn-default.pull-right(ng-click="$ctrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        |  Fechar
