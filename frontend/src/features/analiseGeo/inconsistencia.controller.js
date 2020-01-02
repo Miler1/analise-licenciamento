@@ -114,6 +114,8 @@ var InconsistenciaController = function ($scope,
 
 	function hasErrors() {
 
+		var hasError = false;
+
 		var restricao = _.find(dadosProjeto.restricoes, function(restricao) {
 
 			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
@@ -127,7 +129,7 @@ var InconsistenciaController = function ($scope,
 		if(!inconsistenciaController.categoriaInconsistencia || inconsistenciaController.categoriaInconsistencia === ''){
 			
 			inconsistenciaController.errors.categoria = true;
-			return true;
+			hasError = true;
 
 		} else {
 
@@ -138,7 +140,7 @@ var InconsistenciaController = function ($scope,
 		if(inconsistenciaController.categoriaInconsistencia === inconsistenciaController.tiposInconsistencia.ATIVIDADE && (!inconsistenciaController.idAtividadeCaracterizacao || inconsistenciaController.idAtividadeCaracterizacao === null)){
 			
 			inconsistenciaController.errors.atividade = true;
-			return true;
+			hasError = true;
 
 		} else {
 
@@ -149,7 +151,7 @@ var InconsistenciaController = function ($scope,
 		if(inconsistenciaController.categoriaInconsistencia === inconsistenciaController.tiposInconsistencia.RESTRICAO && (!restricao.item || restricao.item === null)){
 			
 			inconsistenciaController.errors.item = true;
-			return true;
+			hasError = true;
 
 		} else {
 
@@ -160,7 +162,7 @@ var InconsistenciaController = function ($scope,
 		if(!inconsistenciaController.descricaoInconsistencia || inconsistenciaController.descricaoInconsistencia === ''){
 			
 			inconsistenciaController.errors.descricao = true;
-			return true;
+			hasError = true;
 
 		} else {
 
@@ -171,11 +173,16 @@ var InconsistenciaController = function ($scope,
 		if(!inconsistenciaController.tipoInconsistencia || inconsistenciaController.tipoInconsistencia === ''){
 			
 			inconsistenciaController.errors.tipo = true;
+			hasError = true;
 
 		} else {
 
 			inconsistenciaController.errors.tipo = false;
 
+		}
+
+		if(hasError) {
+			return true;
 		}
 
 	}

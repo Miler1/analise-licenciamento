@@ -854,7 +854,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						if(response.data.parecer === undefined) {
 
 							ctrl.parecer.parecer = null;
-							mensagem.error(response.data.texto);
+							mensagem.warning(response.data.texto);
 
 							return;
 
