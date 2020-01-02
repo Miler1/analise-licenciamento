@@ -163,9 +163,7 @@ var AnaliseTecnicaController = function ($rootScope, $scope, $window, $location,
 
         if(analistaSelecionado === undefined) {
 
-            ctrl.analistasTecnico = ctrl.analiseTecnica.vistoria.equipe.map(function(analista) {
-                return analista.usuario;
-            });
+            ctrl.analistasTecnico = ctrl.analiseTecnica.vistoria.equipe;
             ctrl.analiseTecnica.vistoria.equipe = [];
 
         } else {
