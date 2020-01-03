@@ -35,6 +35,41 @@ DateUtil = {
 		return this.calcularDiasRestantes(stringInicialDate)*-1;
 	},
 
+	isAfter: function(dataInicial, dataFinal) {
+
+		return moment(dataInicial).isAfter(dataFinal);
+
+	},
+
+	isBefore: function(dataInicial, dataFinal) {
+
+		return moment(dataInicial).isBefore(dataFinal);
+
+	},
+
+	sortDatas: function(arrayDatas) {
+
+		arrayDatas = arrayDatas.sort(function(data1, data2){
+
+			if(this.isAfter(data1, data2)) {
+
+				return 1;
+
+			} else if(this.isBefore(data1, data2)) {
+
+				return -1;
+
+			} else {
+
+				return 0;
+				
+			}
+ 			
+		});
+
+		return arrayDatas;
+	},
+
 	getContaDiasRestantes: function(dias, prazo) {
 
 		if(dias == null){
