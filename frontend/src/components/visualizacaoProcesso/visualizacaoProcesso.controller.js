@@ -35,6 +35,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.labelAnalistaGeo = '';
 	modalCtrl.labelGerente = '';
 	modalCtrl.parecer = {};
+	modalCtrl.pareceres= {};
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -43,6 +44,47 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		}
 	);
 
+	modalCtrl.setPareceres = function() {
+
+		if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_GEO) {
+
+			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
+
+			modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.forEach(function(parecerGerente) {
+
+				if(parecerGerente.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
+					
+					modalCtrl.pareceres = modalCtrl.pareceres.concat(parecerGerente);
+				}
+
+			});
+			
+		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE) {
+
+			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
+			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
+
+		}
+
+		modalCtrl.pareceres = modalCtrl.pareceres.sort(function(processo1, processo2){
+
+			if(modalCtrl.dateUtil.isBefore(processo1.dataParecer, processo2.dataParecer)) {
+
+				return 1;
+
+			} else if(modalCtrl.dateUtil.isAfter(processo1.dataParecer, processo2.dataParecer)) {
+
+				return -1;
+				
+			} else {
+
+				return 0;
+
+			}
+ 			
+		});
+	};
+
 	if (processo.idProcesso) {
 
 		processoService.getInfoProcesso(processo.idProcesso)
@@ -50,7 +92,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-
+				modalCtrl.setPareceres();
 			})
 			.catch(function(){
 				mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
@@ -63,7 +105,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			modalCtrl.dadosProcesso = response.data;
 			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-	
+			modalCtrl.setPareceres();
 		})
 		.catch(function(){
 			mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
