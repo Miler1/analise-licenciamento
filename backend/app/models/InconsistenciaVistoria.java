@@ -19,13 +19,17 @@ public class InconsistenciaVistoria extends GenericModel{
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_vistoria")
 	public Vistoria vistoria;
 
 	@Required
 	@Column(name="descricao_inconsistencia")
 	public String descricaoInconsistencia;
+
+	@Required
+	@Column(name = "tipo_inconsistencia")
+	public String tipoInconsistencia;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(schema="analise", name="rel_documento_inconsistencia_vistoria",

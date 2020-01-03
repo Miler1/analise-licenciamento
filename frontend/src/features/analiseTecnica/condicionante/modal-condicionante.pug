@@ -1,0 +1,28 @@
+div.modal-header(ng-init="modalCtrl.init()")
+    button.close(type='button', ng-click="modalCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Incluir condicionante
+    div(growl inline="true" reference='5')
+
+div.corpo
+
+    div.area-modal
+        label.obrigatorio Condicionante
+        br
+        textarea.textarea-modal(name="texto", ng-class="{ 'error': modalCtrl.errors.texto }", ng-model="modalCtrl.condicionante.texto")
+
+    .prazo
+        span.obrigatorio Prazo da condicionante em dias:
+        input.form-control(type="number", ng-class="{ 'error': modalCtrl.errors.prazo }", ng-model="modalCtrl.condicionante.prazo")
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="modalCtrl.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Cancelar
+
+    button.btn.btn-success.pull-right(ng-click="modalCtrl.concluir()")
+        i.glyphicon.glyphicon-arrow-right
+        | &nbsp;Confirmar
