@@ -61,6 +61,9 @@ public class ParecerAnalistaTecnico extends GenericModel {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 
+	@Column(name = "id_historico_tramitacao")
+	public Long idHistoricoTramitacao;
+
 
 	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
 
