@@ -30,4 +30,8 @@ public class InconsistenciaTecnicaParametro extends GenericModel{
 	@JoinColumn(name="id_parametro")
 	public ParametroAtividade parametroAtividade;
 
+	@OneToOne
+	@JoinColumn(name="id_atividade_caracterizacao")
+	public AtividadeCaracterizacao atividadeCaracterizacao;
+
 }
