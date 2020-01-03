@@ -72,6 +72,8 @@ public class AnaliseTecnicaSerializer {
 			"inconsistenciasTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id",
 			"inconsistenciasTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.id",
 			"inconsistenciasTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnico.id",
+			"pareceresAnalistaTecnico.tipoResultadoAnalise.id",
+			"pareceresAnalistaTecnico.analiseTecnica",
 			"analise.processo.numero",
 			"analise.processo.empreendimento.id",
 			"analise.processo.empreendimento.pessoa.id",

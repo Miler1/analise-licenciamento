@@ -39,3 +39,4 @@
 * OS35 - US299 - Eu, analista técnico, devo acessar a conclusão da análise para preencher/copiar os campos da conclusão
 * OS35 - US909 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar questionário.
 * OS35 - US916 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar documentos e auto de infração.
+* OS35 - US297 - [Analista Técnico] Eu, analista técnico, devo concluir a análise para indeferir o protocolo.
