@@ -40,7 +40,6 @@ public class InconsistenciaTecnica extends GenericModel{
 			joinColumns=@JoinColumn(name="id_inconsistencia_tecnica"),
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> anexos;
-
 	@OneToOne(mappedBy = "inconsistenciaTecnica")
 	public InconsistenciaTecnicaTipoLicenca inconsistenciaTecnicaTipoLicenca;
 
@@ -181,12 +180,6 @@ public class InconsistenciaTecnica extends GenericModel{
 		if (this.tipoDeInconsistenciaTecnica.equals(TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name())) {
 			inconsistenciaTecnicaDocumentoTecnicoAmbiental.findById(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.id)._delete();
 		}
-
-		InconsistenciaTecnica i = InconsistenciaTecnica.findById(this.id);
-
-		i.deleteAnexos();
-
-		i.delete();
 
 	}
 

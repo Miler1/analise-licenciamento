@@ -26,9 +26,9 @@ public class InconsistenciaTecnicaDocumentoTecnicoAmbiental extends GenericModel
 	@JoinColumn(name="id_inconsistencia_tecnica")
 	public InconsistenciaTecnica inconsistenciaTecnica;
 
-	@OneToMany
-	@JoinColumn(name="id_documento_tecnicos")
-	public List<SolicitacaoGrupoDocumento> documentosTecnicos;
+	@OneToOne
+	@JoinColumn(name="id_documento_tecnico")
+	public SolicitacaoGrupoDocumento documentosTecnicos;
 
 
 

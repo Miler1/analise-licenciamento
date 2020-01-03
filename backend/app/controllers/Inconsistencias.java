@@ -6,6 +6,7 @@ import models.InconsistenciaTecnica;
 import models.licenciamento.AtividadeCaracterizacao;
 import security.Acao;
 import serializers.InconsistenciaSerializer;
+import serializers.InconsistenciaTecnicaSerializer;
 import utils.Mensagem;
 
 import java.util.Objects;
@@ -68,7 +69,7 @@ public class Inconsistencias extends InternalController{
 
         InconsistenciaTecnica novaInconsistenciaTecnica = inconsistenciaTecnica.salvaInconsistenciaTecnica();
 
-        renderJSON(novaInconsistenciaTecnica, InconsistenciaSerializer.findInconsistencia);
+        renderJSON(novaInconsistenciaTecnica, InconsistenciaTecnicaSerializer.findInconsistenciaTecnica);
 
     }
 
@@ -80,7 +81,7 @@ public class Inconsistencias extends InternalController{
 
         InconsistenciaTecnica novaInconsistenciaTecnica =  InconsistenciaTecnica.findById(id);
 
-        renderJSON(novaInconsistenciaTecnica, InconsistenciaSerializer.findInconsistencia);
+        renderJSON(novaInconsistenciaTecnica, InconsistenciaTecnicaSerializer.findInconsistenciaTecnica);
 
     }
 
