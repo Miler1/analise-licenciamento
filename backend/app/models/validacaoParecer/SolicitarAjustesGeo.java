@@ -39,7 +39,6 @@ public class SolicitarAjustesGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
 
             licencaAnalise._save();
 
-            licencaAnalise.saveCondicionantes();
             licencaAnalise.saveRecomendacoes();
         }
 

@@ -199,3 +199,13 @@ ERRO_ARQUIVAR_PROCESSO=Não foi possível arquivar o processo %s
 # Inconsistência vistoria
 #
 INCONSISTENCIA_VISTORIA_EXCLUIDA_SUCESSO=A inconsistẽncia foi excluída com sucesso
+
+#
+# Condicionantes
+#
+CONDICIONANTE_EXCLUIDA_SUCESSO=A condicionante foi excluída com sucesso
+
+#
+# Restrições
+#
+RESTRICAO_EXCLUIDA_SUCESSO=A restrição foi excluída com sucesso

@@ -42,7 +42,6 @@ public class SolicitarAjustesGeoAprovador extends TipoResultadoAnaliseChain<Anal
 
             licencaAnalise._save();
 
-            licencaAnalise.saveCondicionantes();
             licencaAnalise.saveRecomendacoes();
         }
 

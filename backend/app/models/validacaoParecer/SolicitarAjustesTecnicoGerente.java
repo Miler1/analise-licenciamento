@@ -40,8 +40,7 @@ public class SolicitarAjustesTecnicoGerente extends TipoResultadoAnaliseChain<An
 		for(LicencaAnalise licencaAnalise: copia.licencasAnalise) {
 			
 			licencaAnalise._save();
-			
-			licencaAnalise.saveCondicionantes();
+
 			licencaAnalise.saveRecomendacoes();
 		}			
 		

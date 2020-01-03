@@ -686,7 +686,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder filtrarPorListaIdCondicao(List<Long> listaIdCondicao) {
 
-		if (!listaIdCondicao.isEmpty()) {
+		if (listaIdCondicao != null && !listaIdCondicao.isEmpty()) {
 
 			addObjetoTramitavelAlias();
 			addRestriction(Restrictions.in(OBJETO_TRAMITAVEL_ALIAS + ".condicao.idCondicao", listaIdCondicao));

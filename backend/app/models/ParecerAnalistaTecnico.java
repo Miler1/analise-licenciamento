@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Entity
 @Table(schema = "analise", name = "parecer_analista_tecnico")
 public class ParecerAnalistaTecnico extends GenericModel {
@@ -54,6 +53,20 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	@Column(name = "parecer")
 	public String parecer;
 
+	@Column(name = "validade_permitida")
+	public Integer validadePermitida;
+
+	@OneToMany(mappedBy = "parecerAnalistaTecnico", orphanRemoval=true)
+	public List<Condicionante> condicionantes;
+
+	@OneToMany(mappedBy = "parecerAnalistaTecnico", orphanRemoval=true)
+	public List<Restricao> restricoes;
+
+	@Column(name="finalidade_atividade")
+	public String finalidadeAtividade;
+
+	@OneToOne(mappedBy = "parecerAnalistaTecnico")
+	public Vistoria vistoria;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(schema="analise", name="rel_documento_parecer_analista_tecnico",
@@ -64,8 +77,42 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
+	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica) {
 
-	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
+		if(this.vistoria != null) {
+
+			this.vistoria.parecerAnalistaTecnico = this;
+			this.vistoria = this.vistoria.salvar();
+
+		}
+
+		if(this.condicionantes != null && !this.condicionantes.isEmpty()) {
+
+			this.condicionantes.forEach(condicionante -> {
+				condicionante.parecerAnalistaTecnico = this;
+				condicionante._save();
+			});
+
+		}
+
+		if(this.restricoes != null && !this.restricoes.isEmpty()) {
+
+			this.restricoes.forEach(restricao -> {
+				restricao.parecerAnalistaTecnico = this;
+				restricao._save();
+			});
+
+		}
+
+		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(this.analistaTecnico.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
+		gerente._save();
+
+		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, this.analistaTecnico, UsuarioAnalise.findByGerente(gerente));
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), this.analistaTecnico);
+
+	}
+
+	public void finalizar(UsuarioAnalise usuarioExecutor) {
 
 		AnaliseTecnica analiseTecnicaBanco = AnaliseTecnica.findById(this.analiseTecnica.id);
 
@@ -81,27 +128,38 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
-
+			this.finalizaParecerDeferido(analiseTecnicaBanco);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
 			Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnicaBanco);
 			gerente.save();
 
+			if(this.vistoria != null) {
+
+				this.vistoria.parecerAnalistaTecnico = this;
+				this.vistoria = this.vistoria.salvar();
+
+			}
+
 			analiseTecnicaBanco.analise.processo.tramitacao.tramitar(analiseTecnicaBanco.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
+			// rayds
 
 		}
 
+		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id);
+		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
 		this._save();
 
 	}
 
 	private List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
 
+		TipoDocumento tipoAutoInfracao = TipoDocumento.findById(TipoDocumento.AUTO_INFRACAO);
 		TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
 
 		this.documentos = new ArrayList<>();
@@ -114,7 +172,11 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 			} else {
 
-				if (documento.tipo.id.equals(tipoParecer.id)) {
+				if(documento.tipo.id.equals(tipoAutoInfracao.id)) {
+
+					documento.tipo = tipoAutoInfracao;
+
+				} else if (documento.tipo.id.equals(tipoParecer.id)) {
 
 					documento.tipo = tipoParecer;
 
@@ -154,6 +216,5 @@ public class ParecerAnalistaTecnico extends GenericModel {
 		}
 
 	}
-
 
 }

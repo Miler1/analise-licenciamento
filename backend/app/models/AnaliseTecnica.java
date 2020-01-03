@@ -140,9 +140,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	@OneToMany(mappedBy = "analiseTecnica")
 	public List<ParecerAnalistaTecnico> pareceresAnalistaTecnico;
-		
-	@OneToOne(mappedBy = "analiseTecnica")
-	public Vistoria vistoria;
 
 	private void validarParecer() {
 

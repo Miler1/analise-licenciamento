@@ -16,9 +16,7 @@ import utils.Mensagem;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Application extends GenericController {
 
@@ -151,8 +149,7 @@ public class Application extends GenericController {
 				realType.contains("bmp")) {
 
 			byte[] data = IO.readContent(file.asFile());
-			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String key = FileManager.getInstance().createFile(data, extension);
+			String key = FileManager.getInstance().createKey(data, file.getFileName());
 
 			renderText(key);
 		}
