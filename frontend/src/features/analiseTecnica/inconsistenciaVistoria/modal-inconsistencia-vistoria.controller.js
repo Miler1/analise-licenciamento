@@ -102,11 +102,7 @@ var ModalInconsistenciaVistoriaController = function (
 
     modalCtrl.concluir = function() {
 
-        if(!inconsistenciaValida()){
-
-            return;
-
-        }else{
+        if(inconsistenciaValida()){
 
             $rootScope.$broadcast('adicionarInconsistenciaVistoria', modalCtrl.inconsistenciaVistoria);
             

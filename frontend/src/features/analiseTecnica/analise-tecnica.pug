@@ -19,10 +19,10 @@ div(ng-init="ctrl.init()")
                 div(ng-if='ctrl.tabAtiva === 0')
                     include tab-analise-tecnica
 
-            uib-tab(index="1", heading="Vistoria")
+            uib-tab(index="1", heading="Vistoria", ng-click="ctrl.validarAbas(1)")
                 include tab-vistoria
 
-            uib-tab(index="2", heading="Conclusão da análise")
+            uib-tab(index="2", heading="Conclusão da análise", ng-click="ctrl.validarAbas(2)")
                 include etapa-conclusao
 
     section.margin-bottom-xl.alone

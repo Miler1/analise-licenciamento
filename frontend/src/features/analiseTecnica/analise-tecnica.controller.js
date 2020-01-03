@@ -19,6 +19,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.tabAtiva = 0;
     ctrl.tiposAnalise = TiposAnalise;
     ctrl.tipoDeInconsistenciaTecnica = app.utils.InconsistenciaTecnica;
+    ctrl.dateUtil = app.utils.DateUtil;
     ctrl.analistaTecnico = $rootScope.usuarioSessao.usuarioEntradaUnica.nome;
     ctrl.analiseTecnica = null;
     ctrl.pergunta = null;
@@ -36,7 +37,24 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         doProcesso: null,
         daAnaliseTecnica: null,
         daConclusao: null,
-        documentos: []
+        documentos: [],
+        vistoria: {
+            realizada: null,
+            documentoRit: null,
+            inconsistenciaVistoria: null,
+            anexos: [],
+            equipe: [],
+            conclusao: null,
+            data: null,
+            hora: null,
+            descricao: null,
+            cursosDagua: null,
+            tipologiaVegetal: null,
+            app: null,
+            ocorrencia: null,
+            residuosLiquidos: null,
+            outrasInformacoes: null
+        }
     };
    
     ctrl.itemValidoLicenca = {
@@ -77,6 +95,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     
     ctrl.init = function () {
 
+        $rootScope.$broadcast('atualizarContagemProcessos');
+
         analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
             .then(function(response){
 
@@ -92,28 +112,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 ctrl.parecer.tipoResultadoAnalise = {
                     id: null
                 };
-
-                if(ctrl.parecer.vistoria === null || ctrl.parecer.vistoria === undefined) {
-
-                    ctrl.parecer.vistoria = {
-                        realizada: null,
-                        documentoRit: null,
-                        inconsistenciaVistoria: null,
-                        anexos: [],
-                        equipe: [],
-                        conclusao: null,
-                        data: null,
-                        hora: null,
-                        descricao: null,
-                        cursosDagua: null,
-                        tipologiaVegetal: null,
-                        app: null,
-                        ocorrencia: null,
-                        residuosLiquidos: null,
-                        outrasInformacoes: null
-                    };
-        
-                }
 
                 analistaService.getAnalistasTecnicoBySetor()
                 .then(function(response) {
@@ -156,6 +154,39 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 ctrl.validarInconsistenciaDocumentoAdministrativo(app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo);
                 ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental);
             }); 
+    };
+
+    ctrl.validarAbas = function(abaDestino) {
+
+        if(abaDestino === 1 && !ctrl.validarCampos()) {
+
+            ctrl.tabAtiva = 0;
+
+        } else if(abaDestino === 2) {
+
+            if(!ctrl.validarCampos()) {
+
+                ctrl.tabAtiva = 0;
+
+            } else if(!vistoriaValida()) {
+
+                ctrl.tabAtiva = 1;
+
+            }            
+
+        }
+
+    };
+
+    ctrl.verificarData = function() {
+
+        if(ctrl.parecer.vistoria.data instanceof Date && 
+            ctrl.dateUtil.isAfter(ctrl.parecer.vistoria.data, new Date())) {
+
+            ctrl.parecer.vistoria.data = new Date();
+
+        }
+
     };
 
     ctrl.addRestricao = function() {
@@ -222,7 +253,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             processo.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
         }
+
         processoService.visualizarProcesso(processo);
+
     };
 
     ctrl.validarInconsistenciaParametro = function(tipoDeInconsistenciaTecnica, parametro) {
@@ -316,12 +349,45 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
-    ctrl.limparVistoria = function() {
+    ctrl.limparVistoriaRealizada = function() {
 
-        ctrl.semInconsistenciaVistoria = null;
         ctrl.limparErrosVistoria();
-        ctrl.deletarInconsistenciaVistoria();
 
+        if(ctrl.parecer.vistoria.realizada === 'true') {
+
+            ctrl.parecer.vistoria = {
+                realizada: 'false',
+                documentoRit: null,
+                inconsistenciaVistoria: null,
+                anexos: [],
+                equipe: [],
+                conclusao: null,
+                data: null,
+                hora: null,
+                descricao: null,
+                cursosDagua: null,
+                tipologiaVegetal: null,
+                app: null,
+                ocorrencia: null,
+                residuosLiquidos: null,
+                outrasInformacoes: null
+            };
+            ctrl.semInconsistenciaVistoria = null;
+
+        }
+        
+    };
+
+    ctrl.limparVistoriaNaoRealizada = function() {
+
+        ctrl.limparErrosVistoria();
+
+        if(ctrl.parecer.vistoria.realizada === 'false') {
+
+            ctrl.parecer.vistoria.conclusao = null;
+
+        }
+        
     };
 
     $rootScope.$on('adicionarInconsistenciaVistoria', function(event, inconsistenciaVistoria) {
@@ -543,18 +609,13 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.openModalInconsistencia = function() {
 
-        ctrl.semInconsistenciaVistoria = null;
         ctrl.limparErrosVistoria();
 
-        if(ctrl.parecer.vistoria.inconsistenciaVistoria === null || ctrl.parecer.vistoria.inconsistenciaVistoria === undefined) {
-            
-            ctrl.parecer.vistoria.inconsistenciaVistoria = {
-                descricaoInconsistencia: null,
-                tipoInconsistencia: null,
-                anexos: []
-            };
-
-        }
+        var inconsistenciaVistoria = {
+            descricaoInconsistencia: null,
+            tipoInconsistencia: null,
+            anexos: []
+        };
 
         $uibModal.open({
 			controller: 'modalInconsistenciaVistoriaController',
@@ -564,7 +625,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 			size: 'lg',
 			resolve: {
 				inconsistenciaVistoria: function(){
-					return ctrl.parecer.vistoria.inconsistenciaVistoria;
+					return inconsistenciaVistoria;
 				}
             }
 		});
@@ -580,6 +641,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         } else if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
+            window.scrollTo(0, 0);
 
             if(ctrl.parecer.vistoria.realizada === 'true') {
 
