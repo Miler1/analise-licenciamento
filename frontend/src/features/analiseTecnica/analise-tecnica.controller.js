@@ -226,7 +226,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
-    ctrl.hasInconsistencia = function() {
+    ctrl.hasInconsistencias = function() {
 
         return ctrl.analiseTecnica && ctrl.analiseTecnica.inconsistenciasTecnica.length > 0 &&
                 ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null;
@@ -477,11 +477,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
-            var parecerValido = false;
-
-            if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.DEFERIDO && parecerDeferidoValido()) {
-                parecerValido = true;
-            }
+            var parecerValido = parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.DEFERIDO && parecerDeferidoValido();
 
             if(parecerValido) {
 

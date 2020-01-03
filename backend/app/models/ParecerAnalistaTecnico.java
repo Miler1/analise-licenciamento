@@ -1,6 +1,8 @@
 package models;
 
 import exceptions.ValidacaoException;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
 import utils.Mensagem;
@@ -156,6 +158,12 @@ public class ParecerAnalistaTecnico extends GenericModel {
 			});
 
 		}
+
+		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(this.analistaTecnico.usuarioEntradaUnica.setorSelecionado.sigla, this.analiseTecnica);
+		gerente._save();
+
+		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, this.analistaTecnico, UsuarioAnalise.findByGerente(gerente));
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), this.analistaTecnico);
 
 	}
 
