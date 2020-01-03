@@ -1,6 +1,6 @@
 var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $scope,analistaService,
                                         analiseTecnica, mensagem, $uibModal, analiseTecnicaService,
-                                        tamanhoMaximoArquivoAnaliseMB, inconsistenciaVistoriaService,
+                                        tamanhoMaximoArquivoAnaliseMB, inconsistenciaVistoriaService,$location,
                                         documentoAnaliseService, restricoes, TiposAnalise,inconsistenciaService, 
                                         documentoLicenciamentoService, processoService) {
 

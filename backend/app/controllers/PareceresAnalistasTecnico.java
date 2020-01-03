@@ -3,6 +3,7 @@ package controllers;
 import models.*;
 import security.Acao;
 import serializers.ParecerAnalistaGeoSerializer;
+import serializers.ParecerAnalistaTecnicoSerializer;
 import utils.Mensagem;
 
 import java.util.Comparator;
@@ -19,6 +20,14 @@ public class PareceresAnalistasTecnico extends InternalController {
 		parecerAnalistaTecnico.finalizar(usuarioExecutor);
 
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+
+	}
+
+	public static void findParecerByIdHistoricoTramitacao(Long idHistoricoTramitacao) {
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.find("idHistoricoTramitacao", idHistoricoTramitacao).first();
+
+		renderJSON(parecerAnalistaTecnico, ParecerAnalistaTecnicoSerializer.findByIdHistoricoTramitacao);
 
 	}
 

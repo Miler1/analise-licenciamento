@@ -490,6 +490,7 @@ utils.services(licenciamento)
 	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
 	.add('parecerOrgaoService', services.ParecerOrgaoService)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
+	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService)
 	.add('parecerGerenteService', services.ParecerGerenteService)
 	.add('questionarioService', services.QuestionarioService)
 	.add('inconsistenciaVistoriaService', services.InconsistenciaVistoriaService);
