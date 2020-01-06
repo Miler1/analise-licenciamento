@@ -162,6 +162,22 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 	};
 
+	consultarProcesso.prazoAnaliseTecnica = function(processo) {
+
+		if(processo.dataConclusaoAnaliseTecnica) {
+
+			return 'Concluída';
+
+		} else if(processo.diasAnaliseTecnica !== null && processo.diasAnaliseTecnica !== undefined) {
+
+			return consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica;
+
+		}
+
+		return '-';
+
+	};
+
 };
 
 exports.controllers.ConsultarProcessoController = ConsultarProcessoController;

@@ -51,7 +51,14 @@ var AnaliseEmAndamentoGerenteListController = function($scope, config, $location
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);
-    }
+	}
+	
+	listagem.prazoAnaliseTecnica = function(processo) {
+
+		return processo.dataConclusaoAnaliseTecnica ? 'Concluída' : (processo.diasAnaliseTecnica !== null && processo.diasAnaliseTecnica !== undefined ? processo.diasAnaliseTecnica : '-');
+
+	};
+
 };
 
 exports.controllers.AnaliseEmAndamentoGerenteListController = AnaliseEmAndamentoGerenteListController;
