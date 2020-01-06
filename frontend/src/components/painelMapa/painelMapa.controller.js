@@ -284,6 +284,14 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	$scope.$on('mapa:centralizar-mapa', centralizaGeometriasBase);
 
+	$scope.$on('mapa:centralizar-geometrias', centralizaGeometrias);
+
+	function centralizaGeometrias(evt, bounds) {
+
+		painelMapa.map.fitBounds(bounds);
+
+	}
+
 	// Função para esconder geometrias nao basicas do mapa
 	function esconderGeometriasNaoBaseMapa(){
 		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){

@@ -638,7 +638,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         ctrl.limparErrosVistoria();
 
-        var inconsistenciaVistoria = {
+        var inconsistenciaVistoria = ctrl.parecer.vistoria.inconsistenciaVistoria ? ctrl.parecer.vistoria.inconsistenciaVistoria : {
             descricaoInconsistencia: null,
             tipoInconsistencia: null,
             anexos: []
@@ -664,21 +664,12 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         if(ctrl.tabAtiva === 0 && ctrl.validarCampos()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
+            window.scrollTo(0, 0);
 
         } else if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
             window.scrollTo(0, 0);
-
-            if(ctrl.parecer.vistoria.realizada === 'true') {
-
-                ctrl.parecer.vistoria.realizada = true;
-
-            } else {
-
-                ctrl.parecer.vistoria.realizada = false;
-
-            }
 
         }
 
@@ -1232,6 +1223,16 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     ctrl.concluir = function () {
+
+        if(ctrl.parecer.vistoria.realizada === 'true') {
+
+            ctrl.parecer.vistoria.realizada = true;
+
+        } else {
+
+            ctrl.parecer.vistoria.realizada = false;
+
+        }
 
 		if(!camposConclusaoValidos()) {
 
