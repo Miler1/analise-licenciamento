@@ -1,6 +1,16 @@
 
 # --- !Ups
 
+ALTER TABLE analise.parecer_analista_tecnico ADD COLUMN validade_permitida integer;
+COMMENT ON COLUMN analise.parecer_analista_tecnico.validade_permitida IS 'Nova validade permitida da licença';
+
+ALTER TABLE analise.parecer_analista_tecnico ADD COLUMN finalidade_atividade text;
+COMMENT ON COLUMN analise.parecer_analista_tecnico.finalidade_atividade IS 'Finalidade da atividade da licença';
+
+ALTER TABLE analise.condicionante DROP COLUMN ordem;
+
+ALTER TABLE analise.condicionante DROP CONSTRAINT fk_c_licenca_analise;
+
 ALTER TABLE analise.condicionante DROP COLUMN id_licenca_analise;
 
 ALTER TABLE analise.condicionante ADD COLUMN id_parecer_analista_tecnico int;
