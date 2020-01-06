@@ -38,6 +38,7 @@ public class TipoDocumento extends Model {
 	public static Long DOCUMENTO_RIT = 24L;
 	public static Long DOCUMENTO_VISTORIA = 25L;
 	public static Long INCONSISTENCIA_VISTORIA = 27L;
+	public static Long AUTO_INFRACAO = 29L;
 
 	@Required
 	public String nome;

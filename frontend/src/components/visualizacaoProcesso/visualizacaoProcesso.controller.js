@@ -5,7 +5,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 											   empreendimentoService, notificacaoService,
 											   documentoLicenciamentoService, analiseGeoService, 
 											   parecerAnalistaGeoService, parecerGerenteService,
-											   tiposSobreposicaoService) {
+											   tiposSobreposicaoService,parecerAnalistaTecnicoService) {
 
 	var modalCtrl = this;
 
@@ -474,6 +474,13 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 						abrirModal(response.data, idProcesso);
 					});
 
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE){
+
+			parecerAnalistaTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				.then(function(response){
+					abrirModal(response.data, idProcesso);
+				});
+
 		} else {
 
 			parecerAnalistaGeoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
@@ -486,15 +493,15 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	};
 
 	this.validaJustificativas = function (tramitacao){
-		
+
 		return tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO;
-
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE;
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {

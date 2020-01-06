@@ -137,9 +137,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	@OneToMany(mappedBy = "analiseTecnica")
 	public List<InconsistenciaTecnica> inconsistenciasTecnica;
-		
-	@OneToOne(mappedBy = "analiseTecnica")
-	public Vistoria vistoria;
+
+	@OneToMany(mappedBy = "analiseTecnica")
+	public List<ParecerAnalistaTecnico> pareceresAnalistaTecnico;
 
 	private void validarParecer() {
 

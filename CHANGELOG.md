@@ -31,14 +31,14 @@
 
 ## OS35
 
-* OS35 - US294 - [Analista Técnico] Eu, analista técnico, devo acessar caixa de entrada para acessar listagem dos novos processos.
-* OS35 - US875 - [Analista Técnico] Eu, analista técnico, devo acessar a ação iniciar análise para acessar a tela em análise.
-* OS35 - US882 - [Analista Técnico] Eu, analista técnico, devo acessar o menu "Em análise" para acessar a listagem dos protocolos.
-* OS35 - US298 - [Analista Técnico]Eu, analista técnico, devo solicitar o desvínculo do processo para rejeitar a análise do processo.
-* OS35 - US299 - [Analista Técnico]Eu, analista técnico, devo acessar a conclusão da análise para preencher/copiar os campos da conclusão.
-* OS35 - US301 - [Analista Técnico]Eu, analista técnico, devo acessar vistoria para validar sua realização.
+* OS35 - US294 - Eu, analista técnico, devo acessar caixa de entrada para acessar listagem dos novos processos
+* OS35 - US875 - Eu, analista técnico, devo acessar a ação iniciar análise para acessar a tela em análise
+* OS35 - US882 - Eu, analista técnico, devo acessar o menu "Em análise" para acessar a listagem dos protocolos
+* OS35 - US298 -  Eu, analista técnico, devo solicitar o desvínculo do processo para rejeitar a análise do processo
+* OS35 - US301 - Eu, analista técnico, devo acessar vistoria para validar sua realização
 * OS35 - US302 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar tipo de licença, atividade e parâmetro.
+* OS35 - US299 - Eu, analista técnico, devo acessar a conclusão da análise para preencher/copiar os campos da conclusão
 * OS35 - US909 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar questionário.
 * OS35 - US916 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar documentos e auto de infração.
-
-
+* OS35 - US297 - [Analista Técnico] Eu, analista técnico, devo concluir a análise para indeferir o protocolo.
+* OS35 - US303 - Eu, analista técnico, devo concluir a análise para deferir o processo

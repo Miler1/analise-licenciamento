@@ -24,6 +24,7 @@ public class InconsistenciaTecnicaSerializer {
 			"inconsistenciaTecnicaAtividade.atividadeCaracterizacao.atividade.id",
 			"inconsistenciaTecnicaAtividade.atividadeCaracterizacao.atividade.nome",
 			"inconsistenciaTecnicaParametro.id",
+			"inconsistenciaTecnicaParametro.parametroAtividade.id",
 			"inconsistenciaTecnicaParametro.parametroAtividade.nome",
 			"inconsistenciaTecnicaParametro.parametroAtividade.codigo",
 			"inconsistenciaTecnicaParametro.atividadeCaracterizacao.id",

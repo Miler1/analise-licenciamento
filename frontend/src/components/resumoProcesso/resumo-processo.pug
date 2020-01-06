@@ -15,10 +15,16 @@ mixin resumo-processo(processo, abrirDadosProcesso, exibirBotaoAnaliseJuridica, 
                 if exibirBotaoAnaliseJuridica
                     button.btn.btn-default.col-md-offset-1(ng-click=exibirAnaliseJuridica)
                         i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
-                        | Análise Jurídica                    
-                button.btn.btn-default.col-md-offset-1.float-right(ng-click=abrirDadosProcesso)
-                    i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
-                    | Visualizar protocolo
+                        | Análise Jurídica
+
+                button.btn.btn-sm.btn-default.pull-right(ng-click=abrirDadosProcesso)
+                    i.fa.fa-eye
+                    | &nbsp;Visualizar Protocolo
+
+                a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
+                    i.fa.fa-bars
+                    | &nbsp;Legislação
+
         div
 
             div

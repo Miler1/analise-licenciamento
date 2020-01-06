@@ -178,7 +178,7 @@ public class InconsistenciaTecnica extends GenericModel{
 		}
 
 		if (this.tipoDeInconsistenciaTecnica.equals(TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name())) {
-			inconsistenciaTecnicaDocumentoTecnicoAmbiental.findById(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.id)._delete();
+			InconsistenciaTecnicaDocumentoTecnicoAmbiental.findById(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.id)._delete();
 		}
 
 	}

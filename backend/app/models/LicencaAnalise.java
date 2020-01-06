@@ -49,9 +49,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	public Caracterizacao caracterizacao;
 	
 	public String observacao;
-	
-	@OneToMany(mappedBy="licencaAnalise", orphanRemoval=true)
-	public List<Condicionante> condicionantes;
 
 	@OneToMany(mappedBy="licencaAnalise", orphanRemoval=true)
 	public List<Recomendacao> recomendacoes;	
@@ -111,50 +108,10 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		if (!emitirIsTrue()){
 			
-			novaLicencaAnalise.condicionantes = new ArrayList<>();
-			novaLicencaAnalise.recomendacoes = new ArrayList<>();			
+			novaLicencaAnalise.recomendacoes = new ArrayList<>();
 		}
 		
-		updateCondicionantes(novaLicencaAnalise.condicionantes);
-		updateRecomendacoes(novaLicencaAnalise.recomendacoes);		
-	}
-
-	private void updateCondicionantes(List<Condicionante> novasCondicionantes) {
-		
-		if (this.condicionantes == null) {
-			
-			this.condicionantes = new ArrayList<>();
-		}
-		
-		Iterator<Condicionante> condicionantesCadastradas = this.condicionantes.iterator();
-		
-		while(condicionantesCadastradas.hasNext()) {
-			
-			Condicionante condicionanteCadastrada = condicionantesCadastradas.next();
-			
-			if (ListUtil.getById(condicionanteCadastrada.id, novasCondicionantes) == null) {
-				
-				condicionanteCadastrada.delete();
-				condicionantesCadastradas.remove();
-			}
-		}		
-				
-		for(Condicionante novaCondicionante : novasCondicionantes) {
-						
-			Condicionante condicionante = ListUtil.getById(novaCondicionante.id, this.condicionantes);
-				
-			if(condicionante != null) {
-				
-				condicionante.update(novaCondicionante);
-			
-			} else {
-				
-				novaCondicionante.licencaAnalise = this;
-				novaCondicionante.save();
-				
-				this.condicionantes.add(novaCondicionante);
-			}
-		}
+		updateRecomendacoes(novaLicencaAnalise.recomendacoes);
 	}
 
 	private void updateRecomendacoes(List<Recomendacao> novasRecomendacoes) {
@@ -222,14 +179,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 		
 		if(copiarId)
 			copia.id = this.id;
-				
-		copia.condicionantes = new ArrayList<Condicionante>();
-		for(Condicionante condicionante : this.condicionantes) {
-			
-			Condicionante copiaCondicionante = condicionante.gerarCopia();
-			copiaCondicionante.licencaAnalise = copia;
-			copia.condicionantes.add(copiaCondicionante);						
-		}
 		
 		copia.recomendacoes = new ArrayList<Recomendacao>();
 		for(Recomendacao recomendacao : this.recomendacoes) {
@@ -244,19 +193,6 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	
 	public LicencaAnalise gerarCopia() {
 		return gerarCopia(false);
-	}
-	
-	public void saveCondicionantes() {
-			
-		if(this.condicionantes == null) {
-			return;
-		}
-		
-		for(Condicionante condicionante : this.condicionantes) {
-			
-			condicionante.licencaAnalise = this;
-			condicionante.save();			
-		}					
 	}
 		
 	public void saveRecomendacoes() {

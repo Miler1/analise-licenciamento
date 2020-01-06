@@ -34,7 +34,6 @@ public class SolicitarAjustesGeoGerente extends TipoResultadoAnaliseChain<Analis
 
             licencaAnalise._save();
 
-            licencaAnalise.saveCondicionantes();
             licencaAnalise.saveRecomendacoes();
         }
 

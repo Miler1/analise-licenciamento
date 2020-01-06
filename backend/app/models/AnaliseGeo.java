@@ -489,7 +489,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public void validaParecer(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
 
         TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new ParecerValidadoGeo();
-        ;
+
         tiposResultadosAnalise.setNext(new SolicitarAjustesGeo());
         tiposResultadosAnalise.setNext(new ParecerNaoValidadoGeo());
 

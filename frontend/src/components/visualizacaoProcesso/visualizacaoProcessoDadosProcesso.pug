@@ -70,7 +70,7 @@
 							.col-xs-4.col-md-4.text-center
 								span Análise técnica
 									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica, modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_TECNICA)}")
-										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica }}
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica ? modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica : 0 }}
 							.col-xs-4.col-md-4.text-center
 								span Análise total
 									div

@@ -12,6 +12,7 @@ public class EquipeVistoria extends GenericModel {
 	@JoinColumn(name = "id_vistoria")
 	public Vistoria vistoria;
 
+	@Id
 	@OneToOne
 	@JoinColumn(name = "id_usuario")
 	public UsuarioAnalise usuario;
