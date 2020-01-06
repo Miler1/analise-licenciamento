@@ -648,7 +648,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return this.getHistoricoTramitacao()
 				.stream()
-				.filter(tramitacao -> this.analise != null && this.analise.analiseTecnica != null && tramitacao.dataInicial.before(this.analise.analiseTecnica.dataCadastro))
+				.filter(tramitacao -> this.analise != null && this.analise.analiseGeo != null)
 				.collect(Collectors.toList());
 
 	}
