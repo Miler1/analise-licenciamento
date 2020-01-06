@@ -5,26 +5,35 @@ var ModalInconsistenciaVistoriaController = function (
     tamanhoMaximoArquivoAnaliseMB,
     uploadService,
     inconsistenciaVistoria,
-    inconsistenciaVistoriaService,
     mensagem) {
 
     var modalCtrl = this;
 
     modalCtrl.inconsistenciaVistoria = inconsistenciaVistoria;
     modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
-    modalCtrl.labelModal = inconsistenciaVistoria.id ? 'Editar' : 'Adicionar';
+    modalCtrl.labelModal = inconsistenciaVistoria.descricaoInconsistencia ? 'Editar' : 'Adicionar';
 
     modalCtrl.errors = {
 
-        descricaoInconsistencia: false
+        descricaoInconsistencia: false,
+        tipoInconsistencia: false
 
     };
 
     modalCtrl.fechar = function () {
+
+        modalCtrl.errors = {
+
+            descricaoInconsistencia: false,
+            tipoInconsistencia: false
+    
+        };
+
         $uibModalInstance.dismiss('cancel');
+        
     };
 
-    modalCtrl.init = function(){};
+    modalCtrl.init = function() {};
 
     modalCtrl.upload = function(file, invalidFile) {
 
@@ -33,14 +42,14 @@ var ModalInconsistenciaVistoriaController = function (
             uploadService.save(file)
                 .then(function(response) {
 
-                    modalCtrl.inconsistenciaVistoria.anexos.push({
+                    modalCtrl.inconsistenciaVistoria.anexos.push(
+                        {
                             key: response.data,
                             nomeDoArquivo: file.name,
                             tipo: {
                                 id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA_VISTORIA
                             }
                         });
-                                       
                     }, function(error){
                         mensagem.error(error.data.texto);
                     });
@@ -77,9 +86,11 @@ var ModalInconsistenciaVistoriaController = function (
             
             modalCtrl.errors.descricaoInconsistencia = true;
 
-        }else {
+        }
 
-            modalCtrl.errors.descricaoInconsistencia = false;
+        if(!modalCtrl.inconsistenciaVistoria.tipoInconsistencia || modalCtrl.inconsistenciaVistoria.tipoInconsistencia === ''){
+            
+            modalCtrl.errors.tipoInconsistencia = true;
 
         }
 
@@ -91,23 +102,18 @@ var ModalInconsistenciaVistoriaController = function (
 
     modalCtrl.concluir = function() {
 
-        if(!inconsistenciaValida()){
+        if(inconsistenciaValida()){
 
-            return;
+            $rootScope.$broadcast('adicionarInconsistenciaVistoria', modalCtrl.inconsistenciaVistoria);
+            
+            modalCtrl.errors = {
 
-        }else{
+                descricaoInconsistencia: false,
+                tipoInconsistencia: false
+        
+            };
 
-            inconsistenciaVistoriaService.salvar(modalCtrl.inconsistenciaVistoria)
-                .then(function(response){
-
-                    mensagem.success("Inconsistência salva com sucesso!");
-                    $rootScope.$broadcast('buscarInconsistenciaVistoria', response.data);
-
-                    modalCtrl.fechar();
-
-                }).catch(function(response){
-                    mensagem.error(response.data.texto, {referenceId: 5});
-                });
+            modalCtrl.fechar();
 
         }
 

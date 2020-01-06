@@ -46,7 +46,6 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 			
 			licencaAnalise._save();
 			
-			licencaAnalise.saveCondicionantes();
 			licencaAnalise.saveRecomendacoes();
 		}		
 		

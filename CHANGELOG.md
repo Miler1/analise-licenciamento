@@ -27,6 +27,7 @@
 * OS44 - US853 - [Gerente] Eu, Gerente Técnico, devo concluir a análise para tramitar o processo em análise geo.
 * OS44 - US847 - Eu, usuário do sistema, devo visualizar e gerar comunicados com todas suas informações e fluxo de tramitação.
 * OS44 - US852 - Eu, Gerente Técnico, devo acompanhar o tempo gasto por cada analista em sua análise e gerenciar o tempo de cada.
+* OS44 - US850 - Eu, Gerente Técnico, visualizar as notificações enviadas, possuir os filtros dos analistas, identificando-os com suas legendas
 
 ## OS35
 
@@ -39,3 +40,5 @@
 * OS35 - US299 - Eu, analista técnico, devo acessar a conclusão da análise para preencher/copiar os campos da conclusão
 * OS35 - US909 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar questionário.
 * OS35 - US916 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar documentos e auto de infração.
+* OS35 - US297 - [Analista Técnico] Eu, analista técnico, devo concluir a análise para indeferir o protocolo.
+* OS35 - US303 - Eu, analista técnico, devo concluir a análise para deferir o processo

@@ -22,7 +22,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> notificarRequerenteAnaliseJuridica(List<String> destinatarios, String licencas,
 			List<AnaliseDocumento> documentosAnalisados, AnaliseJuridica analiseJuridica, Notificacao notificacao) {
 		
-		setSubject("Movimentação do processo %s", analiseJuridica.analise.processo.numero);
+		setSubject("Movimentação do protocolo %s", analiseJuridica.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 			
@@ -34,7 +34,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> notificarRequerenteAnaliseGeo(List<String> destinatarios, String licencas,
 																AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, List<Documento> pdfsNotificacao) {
 
-		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 
@@ -56,7 +56,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas, 
 			List<AnaliseDocumento> documentosAnalisados, AnaliseTecnica analiseTecnica, Notificacao notificacao) {
 		
-		setSubject("Movimentação do processo %s", analiseTecnica.analise.processo.numero);
+		setSubject("Movimentação do protocolo %s", analiseTecnica.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 			
@@ -104,7 +104,7 @@ public class Emails extends Mailer {
 	                                                                      Date arquivamento, List<Notificacao> notificacoes,
 	                                                                      String siglaSetor) {
 
-		setSubject("Notificacao referente ao arquivamento do processo: " + processo.numero);
+		setSubject("Notificacao referente ao arquivamento do protocolo: " + processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") + ">");
 
 		for(String email:destinatarios) {
@@ -129,7 +129,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> comunicarOrgaoResponsavelAnaliseGeo(List<String> destinatarios,
 																	  AnaliseGeo analiseGeo, Comunicado comunicado, Municipio municipio, File filePdfParecer, File cartaImagem) {
 
-		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 

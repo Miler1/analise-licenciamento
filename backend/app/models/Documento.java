@@ -35,7 +35,6 @@ public class Documento extends GenericModel implements Identificavel {
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
 	public TipoDocumento tipo;
 
-
 	 @Column(name="nome_arquivo")
 	 public String nomeDoArquivo;
 	
@@ -125,6 +124,7 @@ public class Documento extends GenericModel implements Identificavel {
 	protected void saveArquivo(File file) {
 		
 		if (file == null || !file.exists())
+
 			throw new IllegalStateException("Arquivo não existente.");
 		
 		try {
