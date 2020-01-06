@@ -113,6 +113,29 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	}
 
+	modalCtrl.comparaStatus = function() {
+		var ANALISTA_GEO = [25, 26, 30, 4, 32];
+		var status = false;	
+				
+		if (modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
+			
+			status =  true;
+		}
+
+		ANALISTA_GEO.forEach(function(condicao){
+
+			if(modalCtrl.processo.idCondicaoTramitacao === condicao) {
+
+				status = true;
+
+			}
+
+		});
+
+		return status;
+
+	};
+
 	modalCtrl.setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
 
 		if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
@@ -493,7 +516,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO;
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO || 
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO;
 
 	};
 
