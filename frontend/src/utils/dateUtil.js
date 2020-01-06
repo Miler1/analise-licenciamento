@@ -41,12 +41,6 @@ DateUtil = {
 		return this.calcularDiasRestantes(stringInicialDate)*-1;
 	},
 
-	isAfter: function(dataInicial, dataFinal) {
-
-		return moment(dataInicial).isAfter(dataFinal);
-
-	},
-
 	isBefore: function(dataInicial, dataFinal) {
 
 		return moment(dataInicial).isBefore(dataFinal);
