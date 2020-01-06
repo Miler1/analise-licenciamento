@@ -23,6 +23,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.cancelaEnvio = cancelaEnvio;
 	uploadShapes.buscaProcesso = buscaProcesso;
 	uploadShapes.hideUploadShapes = hideUploadShapes;
+	uploadShapes.dadosProjeto = null;
 	
 
 	function buscaProcesso() {
@@ -57,7 +58,55 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 				}
 			});
 
-			$scope.$emit('mapa:centralizar-mapa');
+			analiseGeoService.getDadosProjeto(uploadShapes.processo.idProcesso).then(function (response) {
+
+				uploadShapes.dadosProjeto = response.data;
+
+				tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
+
+					uploadShapes.TiposSobreposicao = response.data;
+
+				});
+
+				var bounds = new L.latLngBounds();
+	
+				if(uploadShapes.dadosProjeto.categoria === uploadShapes.categoria.PROPRIEDADE) {
+	
+					uploadShapes.processo.empreendimento.coordenadas.forEach(function(camada) {
+	
+						camada.geometrias.forEach(function(geometriaEmpreendimento) {
+	
+							bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria).getBounds()));
+	
+						});
+	
+					});
+	
+				} else if(uploadShapes.dadosProjeto.categoria === uploadShapes.categoria.COMPLEXO || uploadShapes.dadosProjeto.complexo) {
+	
+					uploadShapes.dadosProjeto.complexo.geometrias.forEach(function(geometriaComplexo) {
+	
+						bounds.extend(L.geoJSON(JSON.parse(geometriaComplexo.geometria)).getBounds());
+	
+					});
+	
+				} else {
+	
+					uploadShapes.dadosProjeto.atividades.forEach(function(atividade) {
+	
+						atividade.geometrias.forEach(function(geometriaAtividade) {
+	
+							bounds.extend(L.geoJSON(JSON.parse(geometriaAtividade.geometria)).getBounds());
+	
+						});
+	
+					});
+					
+				}
+	
+				$scope.$emit('mapa:centralizar-geometrias', bounds);
+
+			});
 
 		});
 
