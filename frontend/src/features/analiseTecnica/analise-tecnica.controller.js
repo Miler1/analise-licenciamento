@@ -821,8 +821,18 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     mensagem.error(error.data.texto);
                 });
 
-        } else if(invalidFile && invalidFile.$error === 'maxSize'){
-            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name);
+        } else if(invalidFile.$error === 'pattern' || invalidFile.$error === 'maxSize'){
+
+            if(invalidFile.$error === 'maxSize') {
+
+                mensagem.error('O tamanho máximo permitido é de ' + ctrl.TAMANHO_MAXIMO_ARQUIVO_MB + ' MB.');
+
+            } else {
+
+                mensagem.error('Arquivo ' + invalidFile.name + ' possuí formato inválido.');
+
+            }
+            
         }
 
     };
