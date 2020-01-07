@@ -821,7 +821,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     mensagem.error(error.data.texto);
                 });
 
-        } else if(invalidFile && invalidFile.$error === 'pattern' || invalidFile.$error === 'maxSize'){
+        } else if(invalidFile && (invalidFile.$error === 'pattern' || invalidFile.$error === 'maxSize')){
 
             if(invalidFile.$error === 'maxSize') {
 
