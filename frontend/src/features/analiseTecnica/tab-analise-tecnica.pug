@@ -193,7 +193,7 @@
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false }")
                                     | &nbsp;
                             td.col-md-2
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(documentoTecnicoAmbiental)")
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(documentoTecnicoAmbiental.documento)")
                                     | &nbsp;
         div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length === 0")
             strong.col-sm-6.margin-hr-analise-tecnica Documentos técnicos/ambientais

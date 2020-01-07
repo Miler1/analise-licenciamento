@@ -354,7 +354,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             _.forEach(inconsistenciaTecnica, function(inconsistencia){
 
-                if(documento.id === inconsistencia.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id ){           
+                if(documento.documento.id === inconsistencia.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.documento.id ){           
                     ctrl.itemValidoLicenca.documentoTecnicoAmbiental[index] = true;
                     return false;
                 }else{
