@@ -1127,7 +1127,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             .then(function (response) {
 
                 mensagem.success(response.data);
-                $uibModalInstance.close();
+                
                 if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO){
                     if (parametro.id === inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id){
                         ctrl.validarInconsistenciaParametro(tipoDeInconsistenciaTecnica, parametro, index, indexParametro, atividade);
@@ -1149,7 +1149,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             }).catch(function (response) {
             mensagem.error(response.data.texto);
 
-        });        
+        });       
+        
     };
 
     ctrl.visualizarQuestionario = function() {
