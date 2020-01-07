@@ -11,7 +11,8 @@ div
 							h4.panel-title
 								| ANALISTA GEO: {{ parecer.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGeo, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGeo}")
-				div(id="dados-analista-geo-{{parecer.id}}")
+				
+				div.collapse(ng-class="{in: parecer.id}", id="dados-analista-geo-{{parecer.id}}")
 					.panel-body
 
 						label Data do parecer:
@@ -31,7 +32,8 @@ div
 							h4.panel-title
 								| GERENTE: {{ parecer.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGerente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGerente}")
-				div(id="dados-gerente-{{parecer.id}}")
+				
+				div.collapse(ng-class="{in: parecer.id}", id="dados-gerente-{{parecer.id}}")
 					.panel-body
 
 						label Data do parecer:

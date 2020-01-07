@@ -48,6 +48,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
+				$rootScope.tituloPagina = 'EM ANÁLISE GEO';
 				$location.path('/analise-geo/' + idAnaliseGeo.toString());
 			
 			}, function(error){

@@ -1,6 +1,6 @@
 var AnaliseEmAndamentoGerenteListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'EM ANÁLISE GERENTE';
+	$rootScope.tituloPagina = 'EM VALIDAÇÃO GERENTE';
 
 	var listagem = this;
 
