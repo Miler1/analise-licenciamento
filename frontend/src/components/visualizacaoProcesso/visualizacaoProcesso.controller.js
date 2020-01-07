@@ -301,7 +301,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 					camada.geometrias.forEach(function(geometriaEmpreendimento) {
 
-						bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria).getBounds()));
+						bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
 
 					});
 

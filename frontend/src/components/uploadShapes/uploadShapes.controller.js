@@ -76,7 +76,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	
 						camada.geometrias.forEach(function(geometriaEmpreendimento) {
 	
-							bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria).getBounds()));
+							bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
 	
 						});
 	
