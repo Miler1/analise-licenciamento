@@ -36,5 +36,7 @@ public class InconsistenciaTecnicaSerializer {
 			"inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id",
 			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.id",
 			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id",
+			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.nome",
+			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.documento.id",
 			"tipoDeInconsistenciaTecnica");
 }
