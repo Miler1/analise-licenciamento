@@ -557,7 +557,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	
 								camada.geometrias.forEach(function(geometriaEmpreendimento) {
 	
-									bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria).getBounds()));
+									bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
 	
 								});
 	
