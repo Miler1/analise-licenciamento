@@ -220,7 +220,20 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 		} else {
 
-			painelMapa.listaGeometriasBase[shape.tipo][item] = L.geoJSON(shape.geometria, shape.estilo);
+			var estilo = shape.estilo;
+
+			if(shape.geometria && shape.geometria.type.toLowerCase() === 'linestring') {
+
+				estilo = {
+					style: {
+						color: "#ffd700",
+						weight: 2
+					}
+				};
+
+			}
+
+			painelMapa.listaGeometriasBase[shape.tipo][item] = L.geoJSON(shape.geometria, estilo);
 
 			if(shape.popupText){
 
