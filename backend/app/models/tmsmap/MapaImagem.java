@@ -235,7 +235,16 @@ public class MapaImagem {
 				String colorCode = getColorTemaCiclo();
 				Color color = Color.decode(colorCode);
 				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-				dataLayers.add(new DataLayer(geometriaAtividade.item, geometriaAtividade.geometria, color, colorCode).fillColor(fillColor));
+
+				if(GeoCalc.getGeometries(geometriaAtividade.geometria).stream().anyMatch(geometria -> geometria.getGeometryType().toLowerCase().equals("linestring"))) {
+
+					dataLayers.add(new DataLayer(geometriaAtividade.item, geometriaAtividade.geometria, color, colorCode).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+
+				} else {
+
+					dataLayers.add(new DataLayer(geometriaAtividade.item, geometriaAtividade.geometria, color, colorCode).fillColor(fillColor));
+
+				}
 
 			}
 
@@ -262,7 +271,15 @@ public class MapaImagem {
                 Color color = Color.decode(colorCode);
                 Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
 
-                dataLayers.add(new DataLayer(geometriaComplexo.item, geometriaComplexo.geometria, color, colorCode).fillColor(fillColor));
+	            if(GeoCalc.getGeometries(geometriaComplexo.geometria).stream().anyMatch(geometria -> geometria.getGeometryType().toLowerCase().equals("linestring"))) {
+
+		            dataLayers.add(new DataLayer(geometriaComplexo.item, geometriaComplexo.geometria, color, colorCode).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+
+	            } else {
+
+		            dataLayers.add(new DataLayer(geometriaComplexo.item, geometriaComplexo.geometria, color, colorCode).fillColor(fillColor));
+
+	            }
 
             }
 
@@ -280,20 +297,29 @@ public class MapaImagem {
 
 		for(Entry<LayerType, List<CamadaGeoRestricaoVO>> entry : geometriasRestricoes.entrySet()) {
 
-			List<CamadaGeoRestricaoVO> restricao = entry.getValue();
+			List<CamadaGeoRestricaoVO> restricoes = entry.getValue();
 			LayerType layerType = entry.getKey();
 			LinkedList<DataLayer> dataLayers = new LinkedList<>();
 
-			for (CamadaGeoRestricaoVO r : restricao) {
+			for (CamadaGeoRestricaoVO restricao : restricoes) {
 
-				if(r.geometria == null) {
+				if(restricao.geometria == null) {
 					continue;
 				}
 
-				Color color = CorRestricaoEnum.getCorPeloNomeRestricao(r.item);
+				Color color = CorRestricaoEnum.getCorPeloNomeRestricao(restricao.item);
 
 				Color fillColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 127);
-				dataLayers.add(new DataLayer(r.item, r.geometria, color, ColorUtils.getHexByColor(color)).fillColor(fillColor));
+
+				if(restricao.geometria.getGeometryType().toLowerCase().equals("linestring")) {
+
+					dataLayers.add(new DataLayer(restricao.item, restricao.geometria, color, ColorUtils.getHexByColor(color)).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
+
+				} else {
+
+					dataLayers.add(new DataLayer(restricao.item, restricao.geometria, color, ColorUtils.getHexByColor(color)).fillColor(fillColor));
+
+				}
 
 			}
 
