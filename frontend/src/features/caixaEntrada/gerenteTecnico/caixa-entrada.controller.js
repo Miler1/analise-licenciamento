@@ -1,6 +1,6 @@
 var CxEntGerenteController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal,$rootScope, processoService, analiseGeoService, $location) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE GERENTE';
+	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO GERENTE';
 
 	var cxEntGerente = this;
 
@@ -174,6 +174,7 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
+				$rootScope.tituloPagina = 'EM VALIDAÇÃO GERENTE';
 				$location.path('/analise-gerente/' + idAnalise.toString());
 			
 			}, function(error){

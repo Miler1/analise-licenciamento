@@ -28,7 +28,8 @@ public class Condicoes extends InternalController {
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
 							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
 							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
-							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE
+							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+							Condicao.ARQUIVADO
 							))
 					.fetch();
 		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)){
@@ -38,7 +39,9 @@ public class Condicoes extends InternalController {
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
 							Condicao.NOTIFICADO,
-							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO))
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
+							Condicao.ARQUIVADO
+							))
 					.fetch();
 		}
 		
