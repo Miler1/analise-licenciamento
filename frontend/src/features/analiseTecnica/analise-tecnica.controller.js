@@ -159,20 +159,25 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         if(abaDestino === 1 && !ctrl.validarCampos()) {
 
             ctrl.tabAtiva = 0;
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
         } else if(abaDestino === 2) {
 
             if(!ctrl.validarCampos()) {
 
                 ctrl.tabAtiva = 0;
+                mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
             } else if(!vistoriaValida()) {
 
                 ctrl.tabAtiva = 1;
+                mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
-            }            
+            }   
 
         }
+
+        window.scrollTo(0, 0);
 
     };
 
@@ -659,19 +664,30 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
+    ctrl.voltar = function() {
+
+        ctrl.tabAtiva = ctrl.tabAtiva - 1;
+        window.scrollTo(0, 0);
+
+    };
+
     ctrl.avancar = function() {
 
         if(ctrl.tabAtiva === 0 && ctrl.validarCampos()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
-            window.scrollTo(0, 0);
 
         } else if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
-            window.scrollTo(0, 0);
+
+        } else {
+
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
         }
+
+        window.scrollTo(0, 0);
 
     };
 

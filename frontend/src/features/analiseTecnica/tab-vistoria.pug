@@ -18,7 +18,7 @@
 	.vistoria-realizada(ng-show="ctrl.parecer.vistoria.realizada === 'true'")
 
 		.upload
-			div.obrigatorio.btn.btn-default(ng-disabled="ctrl.parecer.vistoria.documentoRit", ng-class="{ 'error-summernote': ctrl.errors.vistoria.documentoRit }", type="file", name="arquivo-rit", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT)", ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", ngf-max-size="10MB")
+			div.obrigatorio.btn.btn-default(title="Permitido apenas upload de 1 arquivo", ng-disabled="ctrl.parecer.vistoria.documentoRit", ng-class="{ 'error-summernote': ctrl.errors.vistoria.documentoRit }", type="file", name="arquivo-rit", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposDocumentosAnalise.DOCUMENTO_RIT)", ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", ngf-max-size="10MB")
 				i.glyphicon.glyphicon-open.glyphicon--with-right-margin
 				| Anexar RIT (Registro de Inspeção Técnica)
 			i Tamanho máximo de 10 MB
@@ -84,11 +84,11 @@
 					legend Selecionados
 
 					div
-						label.item-adicionado(ng-if="ctrl.analistasTecnico.length > 0", ng-repeat="analista in ctrl.parecer.vistoria.equipe track by analista.usuario.id") {{ analista.usuario.pessoa.nome }}
+						label.item-adicionado(title="Remover técnico", ng-if="ctrl.analistasTecnico.length > 0", ng-repeat="analista in ctrl.parecer.vistoria.equipe track by analista.usuario.id") {{ analista.usuario.pessoa.nome }}
 							button(type="button", class="close", aria-label="Close", ng-click="ctrl.removerAnalistaEquipe(analista)")
 							span.pointer(aria-hidden="true") &nbsp;&times;
 
-						label.item-adicionado.todos(ng-if="ctrl.analistasTecnico.length === 0") Todos
+						label.item-adicionado.todos(title="Remover todos", ng-if="ctrl.analistasTecnico.length === 0") Todos
 							button(type="button", class="close", aria-label="Close", ng-click="ctrl.removerAnalistaEquipe()")
 							span.pointer(aria-hidden="true") &nbsp;&times;
 
