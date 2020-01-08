@@ -2,7 +2,6 @@ var ModalInconsistenciaVistoriaController = function (
     $uibModalInstance,
     $rootScope,
     documentoService,
-    tamanhoMaximoArquivoAnaliseMB,
     uploadService,
     inconsistenciaVistoria,
     mensagem) {
@@ -10,7 +9,7 @@ var ModalInconsistenciaVistoriaController = function (
     var modalCtrl = this;
 
     modalCtrl.inconsistenciaVistoria = inconsistenciaVistoria;
-    modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
+    modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = 25;
     modalCtrl.labelModal = inconsistenciaVistoria.descricaoInconsistencia ? 'Editar' : 'Adicionar';
 
     modalCtrl.errors = {
@@ -55,7 +54,7 @@ var ModalInconsistenciaVistoriaController = function (
                     });
 
         } else if(invalidFile && invalidFile.$error === 'maxSize'){
-            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
         }
 
     };

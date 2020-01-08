@@ -1,6 +1,6 @@
 var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $scope, $location, 
                                         analistaService, analiseTecnica, mensagem, $uibModal, 
-                                        analiseTecnicaService, tamanhoMaximoArquivoAnaliseMB,
+                                        analiseTecnicaService,
                                         documentoAnaliseService, restricoes, TiposAnalise,inconsistenciaService, 
                                         documentoLicenciamentoService, processoService, documentoService,
                                         parecerAnalistaTecnicoService) {
@@ -10,7 +10,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     var ctrl = this;
 
     ctrl.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
-    ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
+    ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = 25;
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
     ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
     ctrl.restricoes = restricoes;
