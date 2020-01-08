@@ -106,14 +106,14 @@ var Parecer = {
                     if(response.data === null) {
 
                         ctrl.analiseTecnica.parecer = null;
-                        mensagem.error('Não foi encontrado um parecer para esse número de protocolo.');
+                        mensagem.warning('Não foi encontrado um parecer para esse número de protocolo.');
                         return;
                     }
                     ctrl.analiseTecnica.parecer = response.data.parecer;
 
                 }, function(error){
 
-                    mensagem.error(error.data.texto);
+                    mensagem.warning(error.data.texto);
                 });
         }
 
