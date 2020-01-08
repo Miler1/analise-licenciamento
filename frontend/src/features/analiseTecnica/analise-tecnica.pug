@@ -1,10 +1,10 @@
-include ../../components/resumoProcesso/resumo-processo
+include ../../features/resumoProcesso/resumo-processo
 
 div(ng-init="ctrl.init()")
 
     section
 
-        +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()')
+        +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()', 'ctrl.titulo')
 
     section(ng-if="ctrl.analiseTecnica.analiseTecnicaRevisada && ctrl.analiseTecnica.parecerValidacao")
         label Parecer da validação:

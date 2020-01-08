@@ -5,7 +5,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                                         documentoLicenciamentoService, processoService, documentoService,
                                         parecerAnalistaTecnicoService) {
 
-    $rootScope.tituloPagina = 'PARECER TÉCNICO';
+    $rootScope.tituloPagina = 'EM ANÁLISE TÉCNICA';
 
     var ctrl = this;
 
@@ -30,6 +30,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.tiposUpload = app.utils.TiposUpload;
     ctrl.dataAtual = new Date();
     $scope.analistaSelecionado = null;
+    ctrl.titulo = 'PARECER TÉCNICO';
     ctrl.tipoLicenca =  {};
 
     ctrl.parecer = {

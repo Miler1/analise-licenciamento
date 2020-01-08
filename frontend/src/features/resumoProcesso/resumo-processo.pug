@@ -1,34 +1,37 @@
 include ../../features/legislacao/legislacao
-mixin resumo-processo(processo, abrirDadosProcesso)
+mixin resumo-processo(processo, abrirDadosProcesso, titulo)
     section.margin-bottom-md
         
         header.row
                 
-            h3.col-md-6 Resumo do protocolo
+            h4.col-md-6 {{ #{titulo} }}
 
             .col-md-6(style="margin-top: 20px; margin-bottom: 10px")
-                button.btn.btn-default.col-md-offset-2(data-toggle="modal", data-target="#modalLegislacao")
-                    i.glyphicon.glyphicon-th-list.glyphicon--with-right-margin
-                    | Legislações
-                button.btn.btn-default.col-md-offset-1(ng-click=abrirDadosProcesso)
-                    i.glyphicon.glyphicon-eye-open.glyphicon--with-right-margin
-                    | Dados do protocolo
+
+                button.btn.btn-sm.btn-default.pull-right(ng-click=abrirDadosProcesso)
+                    i.fa.fa-eye
+                    | &nbsp;Visualizar Protocolo
+
+                a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
+                    i.fa.fa-bars
+                    | &nbsp;Legislação
 
         div
 
             div
-                label.not-bold.margin-right-xs(for="texto_numero_processo") Número: 
+                strong Número: 
                 span#texto_numero_processo
-                    strong {{#{processo}.numero}}
+                    label.not-bold.margin-right-xs(for="texto_numero_processo",style="margin-left:113px;") {{#{processo}.numero}}
             div
-                label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj") CPF/CNPJ: 
+                strong CPF/CNPJ: 
                 span#texto_cpf_ou_cnpj
-                    strong {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
+                    label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj",style="margin-left:100px;") {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
             div
-                label.not-bold.margin-right-xs(for="texto_nome_empreendimento") Empreendimento: 
+                strong Empreendimento: 
                 span#texto_nome_empreendimento
-                    strong {{#{processo}.empreendimento.denominacao}}
+                    label.not-bold.margin-right-xs(for="texto_nome_empreendimento",style="margin-left:61px;") {{#{processo}.empreendimento.denominacao}}
             div
-                label.not-bold.margin-right-xs(for="texto_municipio_estado") Município: 
+                strong Município: 
                 span#texto_municipio_estado   
-                    strong {{#{processo}.empreendimento.municipio.nome}} / {{#{processo}.empreendimento.municipio.estado.codigo}}
+                    label.not-bold.margin-right-xs(for="texto_municipio_estado",style="margin-left:104px;") {{#{processo}.empreendimento.municipio.nome}} / {{#{processo}.empreendimento.municipio.estado.codigo}}
+
