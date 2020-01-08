@@ -540,7 +540,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         }
 
-        if(ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) {
+        if((ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) && (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
             ctrl.errors.daConclusao = true;
             valido = false;

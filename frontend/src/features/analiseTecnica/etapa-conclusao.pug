@@ -36,7 +36,7 @@ hr
                         config="optionsText")
 
     div(ng-class="{'error-summernote': ctrl.errors.daConclusao === true}")
-        label.obrigatorio.label-parecer Da conclusão:
+        label.label-parecer(ng-class="{'obrigatorio': !ctrl.hasInconsistencias()}") Da conclusão:
         br
         div(ng-class="{ 'error-summernote': ctrl.errors.daConclusao }")
             summernote.campos-parecer(id="daConclusao",
