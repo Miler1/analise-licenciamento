@@ -36,7 +36,7 @@ hr
                         config="optionsText")
 
     div(ng-class="{'error-summernote': ctrl.errors.daConclusao === true}")
-        label.obrigatorio.label-parecer Da conclusão:
+        label.label-parecer(ng-class="{'obrigatorio': !ctrl.hasInconsistencias()}") Da conclusão:
         br
         div(ng-class="{ 'error-summernote': ctrl.errors.daConclusao }")
             summernote.campos-parecer(id="daConclusao",
@@ -84,92 +84,174 @@ hr
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.INDEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()")
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.EMITIR_NOTIFICAO}}")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO}}", ng-disabled="!ctrl.hasInconsistencias()")
                     | Emitir notificação
 
-.deferido(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO)")
+    .deferido(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO)")
 
-    label.tipoLicenca {{ ctrl.tipoLicenca.nome }} ({{ ctrl.porteEmpreendimento.nome }})
+        label.tipoLicenca {{ ctrl.tipoLicenca.nome }} ({{ ctrl.porteEmpreendimento.nome }})
 
-    span Validade da licença solicitada pelo interessado: 
-        b {{ ctrl.tipoLicenca.validadeEmAnos }} anos
+        span Validade da licença solicitada pelo interessado: 
+            b {{ ctrl.tipoLicenca.validadeEmAnos }} anos
 
-    .validade
-        label.control-label Validade permitida:
-        select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio")
-            option(value="1") 1 ano
-            option(value="2") 2 anos
-            option(value="3") 3 anos
-            option(value="4") 4 anos
-            option(value="5") 5 anos
+        .validade
+            label.control-label Validade permitida:
+            select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio")
+                option(value="1") 1 ano
+                option(value="2") 2 anos
+                option(value="3") 3 anos
+                option(value="4") 4 anos
+                option(value="5") 5 anos
 
-    label.obrigatorio Finalidade da atividade:
-    div(ng-class="{ 'error-summernote': ctrl.errors.deferido.finalidade }")
-        summernote.campos-parecer(id="finalidade",
-                    on-paste="snPaste(evt)",
-                    name="finalidade",
-                    lang="pt-BR",
-                    height="200",
-                    ng-model="ctrl.parecer.finalidadeAtividade",
-                    config="optionsText")
+        label.obrigatorio Finalidade da atividade:
+        div(ng-class="{ 'error-summernote': ctrl.errors.deferido.finalidade }")
+            summernote.campos-parecer(id="finalidade",
+                        on-paste="snPaste(evt)",
+                        name="finalidade",
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="ctrl.parecer.finalidadeAtividade",
+                        config="optionsText")
 
-    .inclusoes
-        label Condicionantes
-        button.btn.btn-default.pull-left.btn-incluir-condicionante(ng-click="ctrl.addCondicionante()")
-            i.glyphicon.glyphicon-plus
-            |  Incluir condicionante
+        .inclusoes
+            label Condicionantes
+            button.btn.btn-default.pull-left.btn-incluir-condicionante(ng-click="ctrl.addCondicionante()")
+                i.glyphicon.glyphicon-plus
+                |  Incluir condicionante
 
-        table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.condicionantes && ctrl.parecer.condicionantes.length > 0")
+            table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.condicionantes && ctrl.parecer.condicionantes.length > 0")
+                thead
+                    tr
+                    th.col-md-5 Condicionante
+                    th.col-md-2 Prazo
+                    th.col-md-1.text-right Ações
+
+                tbody(ng-repeat="condicionante in ctrl.parecer.condicionantes")
+                    tr
+                        td.col-md-5 {{ condicionante.texto }}
+                        td.col-md-2 {{ condicionante.prazo }}
+                        td.col-md-1
+                            i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir condicionante',
+                                    ng-bootbox-title='Confirmação',
+                                    ng-bootbox-confirm='Deseja realmente excluir esta condicionante ?',
+                                    ng-bootbox-confirm-action="ctrl.excluirCondicionante(condicionante)")
+
+        .inclusoes
+            label Restrições
+            button.btn.btn-default.pull-left.btn-incluir-restricao(ng-click="ctrl.addRestricao()")
+                i.glyphicon.glyphicon-plus
+                |  Incluir restrição
+
+            table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.restricoes && ctrl.parecer.restricoes.length > 0")
+                thead
+                    tr
+                    th.col-md-6 Restrição
+                    th.col-md-1.text-right Ações
+
+                tbody(ng-repeat="restricao in ctrl.parecer.restricoes")
+                    tr
+                        td.col-md-6 {{ restricao.texto }}
+                        td.col-md-1
+                            i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir restrição',
+                                    ng-bootbox-title='Confirmação',
+                                    ng-bootbox-confirm='Deseja realmente excluir esta restrição ?',
+                                    ng-bootbox-confirm-action="ctrl.excluirRestricao(restricao)")
+
+        br
+
+        label.obrigatorio Despacho:
+        div(ng-class="{ 'error-summernote': ctrl.errors.deferido.despacho }")
+            summernote.campos-parecer(id="parecer",
+                        on-paste="snPaste(evt)",
+                        name="parecer",
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="ctrl.parecer.parecer",
+                        config="optionsText")
+
+    div(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.tiposResultadoAnalise.INDEFERIDO.toString()")
+        label.obrigatorio Justificativa:
+        br
+        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.parecer.parecer", ng-class="{'error': ctrl.errors.parecer === true}")
+
+    div(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)")
+        #inconsistencias
+            table.table.table-condensed
+
+                thead
+
+                    tr
+                        th.col-md-8 Inconsistências encontradas
+                        th.col-md-3 Categoria
+                        th.col-md-1.text-right Visualizar
+
+                tbody
+
+                    tr(ng-repeat="inconsistencia in ctrl.inconsistenciasAdicionadas")
+
+                        td.col-md-8 {{inconsistencia.inconsistenciaEncontrada}}
+                        td.col-md-3 {{inconsistencia.categoria}}
+                        td.col-md-1.text-center
+                            a.d-inline.margin-right-xs(style='cursor: pointer;', ng-click="ctrl.abrirModalVisualizarInconsistenciaTecnica(inconsistencia)")
+                                i.glyphicon.glyphicon-eye-open
+        
+        #lista-restricoes
+            #accordion.panel-group
+                .atendimento-notificacao
+                    div.label-atendimento-notificacao
+                        label.obrigatorio Atendimento:
+                    div.check-atendimento-notificacao(ng-class="{'error-summernote': ctrl.errors.atendimento === true}")
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Documentação', ng-model='ctrl.notificacao.documentacao', ng-click = "ctrl.checkedDocumentacao()")
+                            |  Documentação
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento', ng-click = "ctrl.checkedRetificacaoEmpreendimento()")
+                            |  Retificação do empreendimento
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolicitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()", ng-checked = 'ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                            |  Retificação da solicitação
+                        div.retificacao-com-geo(ng-show='ctrl.notificacao.retificacaoSolicitacao || ctrl.notificacao.retificacaoEmpreendimento')
+                            label.radio-inline
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='true', ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                | Com alteração GEO
+                            label.radio-inline
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                | Sem alteração GEO
+
+                br
+                div
+                    label.obrigatorio Prazo para atendimento da notificação:
+                    select.prazo-dias(ng-model="ctrl.notificacao.prazoNotificacao", name="prazo",ng-class="{'error': ctrl.errors.prazoNotificacao === true}")
+                        option(value="")
+                        option(value="15") 15 dias
+                        option(value="30") 30 dias
+                        option(value="45") 45 dias
+                        option(value="60") 60 dias
+                br
+                label.obrigatorio Descrição da Solicitação:
+                br
+                textarea.tamanho-obs(name="despacho", ng-model="ctrl.parecer.parecer",ng-class="{'error': ctrl.errors.parecer === true}")
+
+        div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.NOTIFICACAO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+            i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+            | Anexar arquivos à notificação
+
+        table.table.table-condensed(ng-if="ctrl.getDocumentosNotificacao().length > 0")
+
             thead
+
                 tr
-                th.col-md-5 Condicionante
-                th.col-md-2 Prazo
-                th.col-md-1.text-right Ações
+                    th.col-md-10 Documento anexado
+                    th.col-md-2.text-right Ações
 
-            tbody(ng-repeat="condicionante in ctrl.parecer.condicionantes")
-                tr
-                    td.col-md-5 {{ condicionante.texto }}
-                    td.col-md-2 {{ condicionante.prazo }}
-                    td.col-md-1
-                        i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir condicionante',
-                                ng-bootbox-title='Confirmação',
-                                ng-bootbox-confirm='Deseja realmente excluir esta condicionante ?',
-                                ng-bootbox-confirm-action="ctrl.excluirCondicionante(condicionante)")
+            tbody
 
-    .inclusoes
-        label Restrições
-        button.btn.btn-default.pull-left.btn-incluir-restricao(ng-click="ctrl.addRestricao()")
-            i.glyphicon.glyphicon-plus
-            |  Incluir restrição
+                tr(ng-repeat="documento in ctrl.getDocumentosNotificacao()")
 
-        table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;", ng-if="ctrl.parecer.restricoes && ctrl.parecer.restricoes.length > 0")
-            thead
-                tr
-                th.col-md-6 Restrição
-                th.col-md-1.text-right Ações
+                    td.col-md-10 {{documento.nomeDoArquivo}}
+                    td.col-md-2.text-right
+                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                            i.glyphicon.glyphicon-eye-open
 
-            tbody(ng-repeat="restricao in ctrl.parecer.restricoes")
-                tr
-                    td.col-md-6 {{ restricao.texto }}
-                    td.col-md-1
-                        i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir restrição',
-                                ng-bootbox-title='Confirmação',
-                                ng-bootbox-confirm='Deseja realmente excluir esta restrição ?',
-                                ng-bootbox-confirm-action="ctrl.excluirRestricao(restricao)")
-
-    br
-
-    label.obrigatorio Despacho:
-    div(ng-class="{ 'error-summernote': ctrl.errors.deferido.despacho }")
-        summernote.campos-parecer(id="parecer",
-                    on-paste="snPaste(evt)",
-                    name="parecer",
-                    lang="pt-BR",
-                    height="200",
-                    ng-model="ctrl.parecer.parecer",
-                    config="optionsText")
-
-div#conclusao(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.tiposResultadoAnalise.INDEFERIDO.toString()")
-    label.obrigatorio Justificativa:
-    br
-    textarea.tamanho-obs(name="justificativa", ng-model="ctrl.parecer.parecer", ng-class="{'error': ctrl.errors.parecer === true}")
+                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
+                            i.glyphicon.glyphicon-trash

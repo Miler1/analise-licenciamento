@@ -42,3 +42,4 @@
 * OS35 - US916 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar documentos e auto de infração.
 * OS35 - US297 - [Analista Técnico] Eu, analista técnico, devo concluir a análise para indeferir o protocolo.
 * OS35 - US303 - Eu, analista técnico, devo concluir a análise para deferir o processo
+* OS35 - US989 - Eu, analista técnico, devo concluir a análise para emitir notificação

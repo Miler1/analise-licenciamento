@@ -1,6 +1,6 @@
 package models;
 import exceptions.ValidacaoException;
-
+import models.licenciamento.StatusCaracterizacaoEnum;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
@@ -79,13 +79,6 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica) {
 
-		if(this.vistoria != null) {
-
-			this.vistoria.parecerAnalistaTecnico = this;
-			this.vistoria = this.vistoria.salvar();
-
-		}
-
 		if(this.condicionantes != null && !this.condicionantes.isEmpty()) {
 
 			this.condicionantes.forEach(condicionante -> {
@@ -112,7 +105,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 	}
 
-	public void finalizar(UsuarioAnalise usuarioExecutor) {
+	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
 
 		AnaliseTecnica analiseTecnicaBanco = AnaliseTecnica.findById(this.analiseTecnica.id);
 
@@ -126,6 +119,13 @@ public class ParecerAnalistaTecnico extends GenericModel {
 			this.updateDocumentos(this.documentos);
 		}
 
+		if(this.vistoria != null) {
+
+			this.vistoria.parecerAnalistaTecnico = this;
+			this.vistoria = this.vistoria.salvar();
+
+		}
+
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
 			this.finalizaParecerDeferido(analiseTecnicaBanco);
@@ -135,19 +135,30 @@ public class ParecerAnalistaTecnico extends GenericModel {
 			Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnicaBanco);
 			gerente.save();
 
-			if(this.vistoria != null) {
-
-				this.vistoria.parecerAnalistaTecnico = this;
-				this.vistoria = this.vistoria.salvar();
-
-			}
-
 			analiseTecnicaBanco.analise.processo.tramitacao.tramitar(analiseTecnicaBanco.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
-			// rayds
+			List<Notificacao> notificacoes = this.analiseTecnica.notificacoes;
+
+			notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList());
+
+			if (notificacoes.size() != 1) {
+
+				throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+
+			}
+
+			analiseTecnicaBanco.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseTecnica.documentos);
+
+			AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(this.analiseTecnica.id);
+
+			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analiseTecnica.analise.processo.numero);
+
+			analiseTecnicaBanco.analise.processo.tramitacao.tramitar(analiseTecnicaBanco.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO, usuarioExecutor, "Notificado");
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
+
 
 		}
 

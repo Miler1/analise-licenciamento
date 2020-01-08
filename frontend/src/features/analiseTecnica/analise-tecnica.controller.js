@@ -31,6 +31,13 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.dataAtual = new Date();
     $scope.analistaSelecionado = null;
     ctrl.tipoLicenca =  {};
+    ctrl.inconsistenciasAdicionadas = [];
+    ctrl.notificacao = {};
+	ctrl.notificacao.documentacao = null;
+	ctrl.notificacao.retificacaoEmpreendimento = null;
+	ctrl.notificacao.retificacaoSolicitacao = null;
+	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+	ctrl.notificacao.prazoNotificacao = null;
 
     ctrl.parecer = {
         doProcesso: null,
@@ -76,6 +83,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         doProcesso: false,
         daAnaliseTecnica: false,
         daConclusao: false,
+        atendimento: false,
+        prazoNotificacao: false,
 
         vistoria: {
             realizada: false,
@@ -170,7 +179,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
                 ctrl.tabAtiva = 1;
 
-            }            
+            }
+
+            ctrl.findInconsistenciasParaConclusao();
 
         }
 
@@ -229,8 +240,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.hasInconsistencias = function() {
 
-        return ctrl.analiseTecnica && ctrl.analiseTecnica.inconsistenciasTecnica.length > 0 &&
-                ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null;
+        return (ctrl.analiseTecnica && ctrl.analiseTecnica.inconsistenciasTecnica.length > 0) ||
+                (ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null);
 
     };
     
@@ -529,7 +540,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         }
 
-        if(ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) {
+        if((ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) && (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
             ctrl.errors.daConclusao = true;
             valido = false;
@@ -538,7 +549,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         return valido;
 
-    }; 
+    };
 
     var parecerDeferidoValido = function() {
 
@@ -645,17 +656,17 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         };
 
         $uibModal.open({
-			controller: 'modalInconsistenciaVistoriaController',
-			controllerAs: 'modalCtrl',
-			backdrop: 'static',
-			templateUrl: 'features/analiseTecnica/inconsistenciaVistoria/modal-inconsistencia-vistoria.html',
-			size: 'lg',
-			resolve: {
-				inconsistenciaVistoria: function(){
-					return inconsistenciaVistoria;
-				}
+            controller: 'modalInconsistenciaVistoriaController',
+            controllerAs: 'modalCtrl',
+            backdrop: 'static',
+            templateUrl: 'features/analiseTecnica/inconsistenciaVistoria/modal-inconsistencia-vistoria.html',
+            size: 'lg',
+            resolve: {
+                inconsistenciaVistoria: function(){
+                    return inconsistenciaVistoria;
+                }
             }
-		});
+        });
 
     };
 
@@ -680,16 +691,18 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
+            ctrl.findInconsistenciasParaConclusao();
+
         }
 
     };
 
     $scope.snPaste = function(e, model) {
-		var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
-		e.preventDefault();
-		setTimeout( function(){
-		  document.execCommand('insertText', false, bufferText );
-		}, 10 );
+        var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+        e.preventDefault();
+        setTimeout( function(){
+          document.execCommand('insertText', false, bufferText );
+        }, 10 );
     };
 
     ctrl.baixarDocumento = function(anexo) {
@@ -1147,14 +1160,14 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.visualizarQuestionario = function() {
         $uibModal.open({
 
-			component: 'modalVisualizarQuestionario',
-			size: 'lg',
-			resolve: {
+            component: 'modalVisualizarQuestionario',
+            size: 'lg',
+            resolve: {
                 idProcesso: function(){
                     return ctrl.analiseTecnica.analise.processo.id;
                 }
-			}
-		});
+            }
+        });
     };
 
     $rootScope.$on('atualizarMarcacaoInconsistencia', function(event, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, index, indexParametro) {
@@ -1190,14 +1203,14 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     ctrl.getDocumentosAutoInfracao = function() {
-		
-		var documentoAutoInfracao = [];
+        
+        var documentoAutoInfracao = [];
 
-		documentoAutoInfracao = _.filter(ctrl.anexos, function(documento) {
-			return documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO;
-		});
+        documentoAutoInfracao = _.filter(ctrl.anexos, function(documento) {
+            return documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO;
+        });
 
-		return documentoAutoInfracao;
+        return documentoAutoInfracao;
     };
     
     ctrl.validarCampos = function () {
@@ -1237,14 +1250,55 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.visualizarDocumento = function (documento){
 
         documentoLicenciamentoService.download(documento.id);
-            
+
+    };
+
+    var camposEmitirNotificacaoValido = function() {
+
+        var valido = true;
+
+        if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
+
+            ctrl.errors.atendimento = true;
+            valido = false;
+
+        } else {
+
+            ctrl.errors.atendimento = false;
+
+        }
+
+        if(!ctrl.notificacao.prazoNotificacao) {
+
+            ctrl.errors.prazoNotificacao = true;
+            valido = false;
+
+        } else {
+
+            ctrl.errors.prazoNotificacao = false;
+
+        }
+
+        if(!ctrl.parecer.parecer) {
+
+            ctrl.errors.parecer = true;
+            valido = false;
+
+        } else {
+
+            ctrl.errors.parecer = false;
+
+        }
+
+        return valido;
+
     };
 
     ctrl.concluir = function () {
 
-		if(!camposConclusaoValidos()) {
+        if(!camposConclusaoValidos()) {
 
-			mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 10000 });
+            mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 10000 });
             return;
             
         }
@@ -1265,6 +1319,25 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         } else if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.INDEFERIDO) {
 
             parecerValido = parecerIndeferidoValido();
+
+        } else if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO) {
+
+            if(!camposEmitirNotificacaoValido()) {
+
+                mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 10000 });
+                return;
+
+            }
+
+            tratarDadosNotificacao();
+
+            ctrl.parecer.analiseTecnica.notificacoes = ctrl.analiseTecnica.notificacoes;
+
+            if(ctrl.parecer.documentos === null) {
+                ctrl.parecer.documentos = [];
+            }
+
+            parecerValido = true;
 
         }
 
@@ -1289,6 +1362,118 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         documentoService.download(anexo.key);
             
     };
+
+    ctrl.getDocumentosNotificacao = function() {
+        
+        var documentosNotificacao = [];
+
+        documentosNotificacao = _.filter(ctrl.parecer.documentos, function(documento) {
+            return documento.tipo.id === app.utils.TiposDocumentosAnalise.NOTIFICACAO;
+        });
+
+        return documentosNotificacao;
+    };
+
+    // ctrl.concluir = function(){
+
+    //     tratarDadosNotificacao();
+
+    //     ctrl.parecer.analiseTecnica = ctrl.analiseTecnica;
+
+    //     if(ctrl.parecer.documentos === null) {
+    //         ctrl.parecer.documentos = [];
+    //     }
+
+    //     analiseTecnicaService.concluir(ctrl.parecer)
+    //         .then(function(response) {
+
+    //         }, function(error){
+
+    //             mensagem.error(error.data.texto, {referenceId: 5});
+    //         });
+
+    //     $rootScope.$broadcast('atualizarContagemProcessos');
+
+    // };
+
+    function tratarDadosNotificacao() {
+
+        ctrl.notificacao.documentacao = ctrl.notificacao.documentacao === null ? false : true;
+        ctrl.notificacao.retificacaoEmpreendimento = ctrl.notificacao.retificacaoEmpreendimento === null ? false : true;
+        ctrl.notificacao.retificacaoSolicitacao = ctrl.notificacao.retificacaoSolicitacao === null ? false : true;
+        ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
+        ctrl.notificacao.segundoEmailEnviado = false;
+        ctrl.analiseTecnica.notificacoes.push(ctrl.notificacao);
+
+    }
+
+    ctrl.findInconsistenciasParaConclusao = function(){
+
+        inconsistenciaService.findInconsistenciaByAnaliseTecnica(ctrl.idAnaliseTecnica).then(function (response) {
+            ctrl.inconsistenciasAdicionadas = response.data;
+
+            _.forEach(ctrl.inconsistenciasAdicionadas, function(inconsistencia) {
+
+                if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.TIPO_LICENCA){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaTipoLicenca.tipoLicenca.nome;
+                    inconsistencia.categoria = "Tipo Licença";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.ATIVIDADE){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.atividade.nome;
+                    inconsistencia.categoria = "Atividade";
+                }
+                
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.PARAMETRO){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome;
+                    inconsistencia.categoria = "Parâmetro";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.QUESTIONARIO){
+                    inconsistencia.inconsistenciaEncontrada = "Questionário 03";
+                    inconsistencia.categoria = "Questionário";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.tipoDocumento.nome;
+                    inconsistencia.categoria = "Documento Administrativo";
+                }
+
+                else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL){
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome;
+                    inconsistencia.categoria = "Documento Técnico/Ambiental";
+                }
+            });
+
+            if (ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null) {
+
+                ctrl.parecer.vistoria.inconsistenciaVistoria.inconsistenciaEncontrada = "Vistoria";
+                ctrl.parecer.vistoria.inconsistenciaVistoria.categoria = "Vistoria";
+
+                ctrl.inconsistenciasAdicionadas.push(ctrl.parecer.vistoria.inconsistenciaVistoria);
+
+            }
+
+        });
+
+
+    };
+
+    ctrl.abrirModalVisualizarInconsistenciaTecnica = function(inconsistenciaTecnica) {
+
+        $uibModal.open({
+
+            component: 'modalVisualizarInconsistenciaTecnica',
+            size: 'lg',
+            resolve: {
+                inconsistenciaTecnica: function(){
+                    return inconsistenciaTecnica;
+                }
+            }
+        });
+
+    };
+
 
 };
 

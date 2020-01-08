@@ -9,6 +9,7 @@ import serializers.InconsistenciaSerializer;
 import serializers.InconsistenciaTecnicaSerializer;
 import utils.Mensagem;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Inconsistencias extends InternalController{
@@ -95,6 +96,17 @@ public class Inconsistencias extends InternalController{
 
         renderText(Mensagem.INCONSISTENCIA_EXCLUIDA_SUCESSO.getTexto());
 
+    }
+
+    public static void findInconsistenciasByAnaliseTecnica(Long idAnalise){
+
+        verificarPermissao(Acao.BUSCAR_INCONSISTENCIA_TECNICA);
+
+        returnIfNull(idAnalise, "Long");
+
+        List<InconsistenciaTecnica> inconsistencias =  InconsistenciaTecnica.find("analiseTecnica.id", idAnalise).fetch();
+
+        renderJSON(inconsistencias, InconsistenciaSerializer.findInconsistenciaTecnica);
     }
 
 }
