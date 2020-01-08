@@ -30,13 +30,11 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.caracterizacao.tipoLicenca.id",
 			"analise.processo.caracterizacao.tipoLicenca.nome",
 			"analise.processo.caracterizacao.tipoLicenca.validadeEmAnos",
-
 			"analise.processo.caracterizacao.solicitacoesDocumento.id",
 			"analise.processo.caracterizacao.solicitacoesDocumento.nome",
 			"analise.processo.caracterizacao.solicitacoesDocumento.tipoDocumento.id",
 			"analise.processo.caracterizacao.solicitacoesDocumento.tipoDocumento.nome",
 			"analise.processo.caracterizacao.solicitacoesDocumento.tipoDocumento.tipoAnalise",
-
 			"analise.processo.caracterizacao.documentosEnviados.id",
 			"analise.processo.caracterizacao.documentosEnviados.nome",
 			"analise.processo.caracterizacao.documentosEnviados.tipo.id",
@@ -57,6 +55,8 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.caracterizacao.atividadesCaracterizacao.porteEmpreendimento.nome",
 			"analise.processo.caracterizacao.atividadesCaracterizacao.atividadeCaracterizacaoParametros.valorParametro",
 			"inconsistenciasTecnica.id",
+			"inconsistenciasTecnica.analiseTecnica.id",
+			"inconsistenciasTecnica.analiseTecnica.analise",
 			"inconsistenciasTecnica.tipoDeInconsistenciaTecnica",
 			"inconsistenciasTecnica.tipoInconsistencia",
 			"inconsistenciasTecnica.descricaoInconsistencia",
