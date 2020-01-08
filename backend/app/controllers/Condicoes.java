@@ -22,7 +22,7 @@ public class Condicoes extends InternalController {
 		if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
 
 			 condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
-					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO,
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
 							Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
@@ -30,6 +30,7 @@ public class Condicoes extends InternalController {
 							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
 							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 							Condicao.ARQUIVADO
+							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO
 							))
 					.fetch();
 		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)){
@@ -38,7 +39,7 @@ public class Condicoes extends InternalController {
 					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
-							Condicao.NOTIFICADO,
+							Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
 							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
 							Condicao.ARQUIVADO
 							))

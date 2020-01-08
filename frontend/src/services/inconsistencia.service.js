@@ -42,6 +42,11 @@ var InconsistenciaService = function(request,$window,config) {
 			.post(config.BASE_URL() + 'inconsistencia/analiseTecnica/excluirInconsistencia', inconsistenciaTecnica);
 	};
 
+	this.findInconsistenciaByAnaliseTecnica = function(idAnalise) {
+		return request
+			.get(config.BASE_URL() + 'inconsistencia/analiseTecnica/findInconsistenciaByAnaliseTecnica/' + idAnalise);
+	};
+
 };
 
 exports.services.InconsistenciaService = InconsistenciaService;

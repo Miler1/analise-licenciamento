@@ -304,8 +304,9 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 		} else {
 			
 			Notificacao.criarNotificacoesAnaliseJuridica(analise);
-					
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
+
+//          TODO: Descomentar quando criar um NOTIFICAR_PELO_ANALISTA_JURIDICO
+//			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
 
 			HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
 
