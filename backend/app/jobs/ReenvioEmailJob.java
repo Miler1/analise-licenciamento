@@ -45,13 +45,6 @@ public class ReenvioEmailJob extends GenericJob {
 					
 					break;
 
-				case NOTIFICACAO_ANALISE_TECNICA:
-
-					AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(reenvioEmail.idItensEmail);
-//					new EmailNotificacaoAnaliseTecnica(analiseTecnica, emailsDestinatarios).enviar();
-					
-					break;
-
 				case CANCELAMENTO_LICENCA:
 
 					LicencaCancelada licencaCancelada = LicencaCancelada.findById(reenvioEmail.idItensEmail);

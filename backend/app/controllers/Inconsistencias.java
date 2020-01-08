@@ -104,9 +104,9 @@ public class Inconsistencias extends InternalController{
 
         returnIfNull(idAnalise, "Long");
 
-        List<InconsistenciaTecnica> Inconsistencias =  InconsistenciaTecnica.find("analiseTecnica.id", idAnalise).fetch();
+        List<InconsistenciaTecnica> inconsistencias =  InconsistenciaTecnica.find("analiseTecnica.id", idAnalise).fetch();
 
-        renderJSON(Inconsistencias, InconsistenciaSerializer.findInconsistenciaTecnica);
+        renderJSON(inconsistencias, InconsistenciaSerializer.findInconsistenciaTecnica);
     }
 
 }
