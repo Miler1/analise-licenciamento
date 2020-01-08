@@ -19,7 +19,7 @@ var ModalInconsistenciaVistoriaController = function (
 
     };
 
-    modalCtrl.fechar = function () {
+    modalCtrl.limparErrosInconsistenciaVistoria = function() {
 
         modalCtrl.errors = {
 
@@ -28,6 +28,11 @@ var ModalInconsistenciaVistoriaController = function (
     
         };
 
+    };
+
+    modalCtrl.fechar = function () {
+
+        modalCtrl.limparErrosInconsistenciaVistoria();
         $uibModalInstance.dismiss('cancel');
         
     };
@@ -104,14 +109,7 @@ var ModalInconsistenciaVistoriaController = function (
         if(inconsistenciaValida()){
 
             $rootScope.$broadcast('adicionarInconsistenciaVistoria', modalCtrl.inconsistenciaVistoria);
-            
-            modalCtrl.errors = {
-
-                descricaoInconsistencia: false,
-                tipoInconsistencia: false
-        
-            };
-
+            modalCtrl.limparErrosInconsistenciaVistoria();
             modalCtrl.fechar();
 
         }
