@@ -1080,7 +1080,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		}
 
-		if (!ctrl.parecer.conclusao) {
+		if (!ctrl.parecer.conclusao &&  ctrl.parecer.tipoResultadoAnalise.id !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 
 			ctrl.errors.conclusao = true;
 			return false;
