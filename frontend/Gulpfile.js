@@ -151,7 +151,7 @@ gulp.task('clean-dist', function () {
 
 gulp.task('lint', function() {
 
-	return gulp.src(config.src.all + ".js")
+	return gulp.src([config.src.all + ".js", "!" + config.src.summernote + ".js"])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		.pipe(jshint.reporter('fail'));
@@ -168,9 +168,7 @@ gulp.task("pug", function() {
 
 gulp.task("summernote", function() {
 
-	gulp
-		.src(config.src.summernote + ".js")
-		.pipe(jshint())
+	gulp.src(config.src.summernote + ".js")
 		.pipe(gulp.dest(config.dist.summernotePath));
 
 	gulp.src(config.src.summernote + ".css")
