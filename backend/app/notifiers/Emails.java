@@ -32,7 +32,7 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> notificarRequerenteAnaliseGeo(List<String> destinatarios, String licencas,
-																AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, List<Documento> pdfsNotificacao) {
+			AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, List<Documento> pdfsNotificacao) {
 
 		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -52,17 +52,28 @@ public class Emails extends Mailer {
 		return send(licencas, analiseGeo, parecerAnalistaGeo, enderecoCompleto);
 
 	}
-	
-	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas, 
-			List<AnaliseDocumento> documentosAnalisados, AnaliseTecnica analiseTecnica, Notificacao notificacao) {
-		
+
+	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas,
+																AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecerAnalistaTecnico, Endereco enderecoCompleto, List<Documento> pdfsNotificacao) {
+
 		setSubject("Movimentação do protocolo %s", analiseTecnica.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
-			
+
 			addRecipient(email);
 		}
-		return send(licencas, documentosAnalisados, analiseTecnica, notificacao);
+
+//		TODO: descomentar quando criar o pdf da notificação
+//		pdfsNotificacao.stream().forEach(pdfNotificacao -> {
+//
+//			EmailAttachment attachment = new EmailAttachment();
+//			attachment.setPath(new File(pdfNotificacao.arquivo.getPath()).getPath());
+//			addAttachment(attachment);
+//
+//		});
+
+		return send(licencas, analiseTecnica, parecerAnalistaTecnico, enderecoCompleto);
+
 	}
 	
 	public static Future<Boolean> notificarRequerenteSuspensaoLicenca(List<String> destinatarios, Suspensao suspensao) {

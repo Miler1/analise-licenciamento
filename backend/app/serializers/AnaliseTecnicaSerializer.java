@@ -176,7 +176,30 @@ public class AnaliseTecnicaSerializer {
 			"vistoria.residuosLiquidos",
 			"vistoria.outrasInformacoes",
 			"vistoria.equipe.usuario.id",
-			"vistoria.equipe.usuario.pessoa.nome"
+			"vistoria.equipe.usuario.pessoa.nome",
+			"notificacoes.id",
+			"notificacoes.analiseJuridica.id",
+			"notificacoes.analiseTecnica.id",
+			"notificacoes.analiseGeo.id",
+			"notificacoes.tipoDocumento.tipoAnalise.id",
+			"notificacoes.documentoCorrigido.id",
+			"notificacoes.analiseDocumento.id",
+			"notificacoes.codigoSequencia",
+			"notificacoes.codigoAno",
+			"notificacoes.justificativa",
+			"notificacoes.dataNotificacao",
+			"notificacoes.historicoTramitacao.idHistorico",
+			"notificacoes.dataFinalNotificacao",
+			"notificacoes.documentacao",
+			"notificacoes.retificacaoEmpreendimento",
+			"notificacoes.retificacaoSolicitacao",
+			"notificacoes.retificacaoSolicitacaoComGeo",
+			"notificacoes.documentos.id",
+			"notificacoes.documentos.nomeDoArquivo",
+			"notificacoes.prazoNotificacao",
+			"notificacoes.justificativaDocumentacao",
+			"notificacoes.justificativaRetificacaoEmpreendimento",
+			"notificacoes.justificativaRetificacaoSolicitacao"
 			
 		).transform(new GeometryTransformer(), Geometry.class);
 

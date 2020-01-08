@@ -10,7 +10,7 @@ public class AcaoTramitacao extends GenericModel{
 	
 	public static final Long VINCULAR_CONSULTOR = 1l;
 	public static final Long INICIAR_ANALISE_JURIDICA = 2l;
-	public static final Long NOTIFICAR = 3l;
+	public static final Long NOTIFICAR_PELO_ANALISTA_GEO = 3l;
 	public static final Long DEFERIR_ANALISE_JURIDICA = 4l;
 	public static final Long INVALIDAR_PARECER_JURIDICO = 5l;
 	public static final Long VALIDAR_DEFERIMENTO_JURIDICO = 6l;
@@ -73,5 +73,6 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long VALIDAR_PARECER_GEO_GERENTE = 63l;
 	public static final Long RESOLVER_COMUNICADO = 64l;
 	public static final Long AGUARDAR_RESPOSTA_COMUNICADO = 65l;
-	
+	public static final Long NOTIFICAR_PELO_ANALISTA_TECNICO = 66l;
+
 }

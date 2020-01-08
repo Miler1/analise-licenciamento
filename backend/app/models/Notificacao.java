@@ -39,8 +39,12 @@ public class Notificacao extends GenericModel {
 	public AnaliseGeo analiseGeo;
 
 	@OneToOne
-	@JoinColumn(name="id_parecer_analista_geo", nullable=true)
+	@JoinColumn(name="id_parecer_analista_geo")
 	public ParecerAnalistaGeo parecerAnalistaGeo;
+
+	@OneToOne
+	@JoinColumn(name="id_parecer_analista_tecnico")
+	public ParecerAnalistaTecnico parecerAnalistaTecnico;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
@@ -131,13 +135,23 @@ public class Notificacao extends GenericModel {
 		this.documentos = new ArrayList<>();
 		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
-//		if(documentos != null && !documentos.isEmpty()) {
-//			documentos.stream().forEach(documento -> {
-//				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
-//					this.documentos.add(documento);
-//				}
-//			});
-//		}
+	}
+
+	public Notificacao(AnaliseTecnica analiseTecnica, Notificacao notificacao, ParecerAnalistaTecnico parecerAnalistaTecnico){
+
+		this.analiseTecnica = analiseTecnica;
+		this.parecerAnalistaTecnico = parecerAnalistaTecnico;
+		this.resolvido = false;
+		this.ativo = true;
+		this.dataNotificacao = new Date();
+		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
+		this.documentacao = notificacao.documentacao;
+		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
+		this.retificacaoSolicitacao = notificacao.retificacaoSolicitacao;
+		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
+		this.prazoNotificacao = notificacao.prazoNotificacao;
+		this.documentos = new ArrayList<>();
+		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
 	}
 
