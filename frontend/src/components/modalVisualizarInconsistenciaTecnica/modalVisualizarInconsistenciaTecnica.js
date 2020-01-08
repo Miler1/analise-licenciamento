@@ -6,7 +6,7 @@ var ModalVisualizarInconsistenciaTecnica = {
 		dismiss: '&'
 	},
 
-	controller: function() {
+	controller: function(documentoService, inconsistenciaService) {
 
 		var ctrl = this;
 		
@@ -21,6 +21,15 @@ var ModalVisualizarInconsistenciaTecnica = {
 			ctrl.dismiss({$value: 'cancel'});
 		};
 
+		ctrl.baixarDocumentoInconsistencia = function (anexo){
+
+			if(!anexo.id){
+				documentoService.download(anexo.key, anexo.nomeDoArquivo);
+			}else{
+				inconsistenciaService.download(anexo.id);
+			}
+
+		};
 
 	},
 	templateUrl: 'components/modalVisualizarInconsistenciaTecnica/modalVisualizarInconsistenciaTecnica.html'
