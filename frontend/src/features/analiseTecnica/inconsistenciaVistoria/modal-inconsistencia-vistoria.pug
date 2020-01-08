@@ -11,12 +11,12 @@ div.modal-body
     div.area-modal
         label.label-modal.obrigatorio Descrição da inconsistência:
         br
-        textarea.textarea-modal(name="descricaoInconsistência",ng-class="{ 'error': modalCtrl.errors.descricaoInconsistencia }", ng-model="modalCtrl.inconsistenciaVistoria.descricaoInconsistencia")
+        textarea.textarea-modal(name="descricaoInconsistência", ng-keydown="modalCtrl.limparErrosInconsistenciaVistoria()", ng-class="{ 'error': modalCtrl.errors.descricaoInconsistencia }", ng-model="modalCtrl.inconsistenciaVistoria.descricaoInconsistencia")
 
     div.area-modal
         label.label-modal.obrigatorio Tipo da inconsistência:
         br
-        textarea.textarea-modal(name="tipoInconsistência",ng-class="{ 'error': modalCtrl.errors.tipoInconsistencia }", ng-model="modalCtrl.inconsistenciaVistoria.tipoInconsistencia")
+        textarea.textarea-modal(name="tipoInconsistência", ng-keydown="modalCtrl.limparErrosInconsistenciaVistoria()", ng-class="{ 'error': modalCtrl.errors.tipoInconsistencia }", ng-model="modalCtrl.inconsistenciaVistoria.tipoInconsistencia")
 
     div.button-upload-modal.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
