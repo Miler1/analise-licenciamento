@@ -22,6 +22,8 @@ modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = 25;
 modalCtrl.anexos = [];
 modalCtrl.tipoDeInconsistenciaTecnica = tipoDeInconsistenciaTecnica;
 modalCtrl.questionario = questionario;
+modalCtrl.tipoInconsistencia = null;
+modalCtrl.descricaoInconsistencia = null;
 
 modalCtrl.errors = {
 
@@ -68,11 +70,14 @@ modalCtrl.init = function(){
         inconsistenciaService.findInconsistenciaTecnica(inconsistenciaTecnica.id)
         .then(function(response){
 
-            inconsistenciaTecnica = response.data;
-            modalCtrl.descricaoInconsistencia = inconsistenciaTecnica.descricaoInconsistencia;
-            modalCtrl.tipoInconsistencia = inconsistenciaTecnica.tipoInconsistencia;
-            modalCtrl.anexos = inconsistenciaTecnica.anexos;
-            modalCtrl.id = inconsistenciaTecnica.id;
+            if(response.data != null){
+
+                inconsistenciaTecnica = response.data;
+                modalCtrl.descricaoInconsistencia = inconsistenciaTecnica.descricaoInconsistencia;
+                modalCtrl.tipoInconsistencia = inconsistenciaTecnica.tipoInconsistencia;
+                modalCtrl.anexos = inconsistenciaTecnica.anexos;
+                modalCtrl.id = inconsistenciaTecnica.id;
+            }
         });
 
     }
@@ -127,18 +132,18 @@ modalCtrl.baixarDocumentoInconsistencia= function(anexo) {
 function verificaCampos() {
 
     if(!modalCtrl.descricaoInconsistencia || modalCtrl.descricaoInconsistencia === ''){
-        modalCtrl.errors.descricao = true;
+        modalCtrl.errors.analiseTecnica.descricao = true;
     }else {
-        modalCtrl.errors.descricao = false;
+        modalCtrl.errors.analiseTecnica.descricao = false;
     }
 
     if(!modalCtrl.tipoInconsistencia || modalCtrl.tipoInconsistencia === ''){
-        modalCtrl.errors.tipo = true;
+        modalCtrl.errors.analiseTecnica.tipo = true;
     }else {
-        modalCtrl.errors.tipo = false;
+        modalCtrl.errors.analiseTecnica.tipo = false;
     }
 
-    if (modalCtrl.errors.descricao === true || modalCtrl.errors.tipo === true){
+    if (modalCtrl.errors.analiseTecnica.descricao === true || modalCtrl.errors.analiseTecnica.tipo === true){
         return false;
     }
 

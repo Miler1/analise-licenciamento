@@ -16,6 +16,7 @@ public class InconsistenciaTecnicaSerializer {
 			"anexos.tipo.nome",
 			"anexos.tipo.id",
 			"analiseTecnica.id",
+			"analiseTecnica.analise",
 			"inconsistenciaTecnicaTipoLicenca.id",
 			"inconsistenciaTecnicaTipoLicenca.tipoLicenca.id",
 			"inconsistenciaTecnicaTipoLicenca.tipoLicenca.sigla",
