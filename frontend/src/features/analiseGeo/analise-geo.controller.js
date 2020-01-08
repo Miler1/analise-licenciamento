@@ -834,7 +834,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						if(response.data.parecer === undefined) {
 
 							ctrl.parecer.parecer = null;
-							mensagem.error(response.data.texto);
+							mensagem.warning(response.data.texto);
 
 							return;
 
@@ -1024,7 +1024,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		}
 
-		if (!ctrl.parecer.conclusao) {
+		if (!ctrl.parecer.conclusao &&  ctrl.parecer.tipoResultadoAnalise.id !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 
 			ctrl.errors.conclusao = true;
 			return false;

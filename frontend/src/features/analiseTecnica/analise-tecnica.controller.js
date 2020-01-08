@@ -365,7 +365,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             _.forEach(inconsistenciaTecnica, function(inconsistencia){
 
-                if(documento.id === inconsistencia.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id ){           
+                if(documento.documento.id === inconsistencia.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.documento.id ){           
                     ctrl.itemValidoLicenca.documentoTecnicoAmbiental[index] = true;
                     return false;
                 }else{
@@ -1123,7 +1123,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             .then(function (response) {
 
                 mensagem.success(response.data);
-                $uibModalInstance.close();
+                
                 if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO){
                     if (parametro.id === inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id){
                         ctrl.validarInconsistenciaParametro(tipoDeInconsistenciaTecnica, parametro, index, indexParametro, atividade);
@@ -1145,7 +1145,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             }).catch(function (response) {
             mensagem.error(response.data.texto);
 
-        });        
+        });       
+        
     };
 
     ctrl.visualizarQuestionario = function() {
