@@ -418,7 +418,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Boolean enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Boolean possuiComunicado) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis) {
 
@@ -434,15 +434,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
 
-                possuiComunicado = true;
             }
-        }
 
-        return possuiComunicado;
+        }
 
     }
 
-    public Boolean enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo, Boolean possuiComunicado) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis) {
 
@@ -457,14 +455,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
-                possuiComunicado = true;
+
             }
+
         }
 
-        return possuiComunicado;
     }
 
-    public Boolean enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Boolean possuiComunicado) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) throws Exception {
 
         for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
 
@@ -479,11 +477,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
                 EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
                 emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
-                possuiComunicado = true;
+
             }
+
         }
 
-        return possuiComunicado;
     }
 
     public void validaParecer(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
