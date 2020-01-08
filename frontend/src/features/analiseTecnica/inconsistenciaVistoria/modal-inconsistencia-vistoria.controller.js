@@ -50,11 +50,11 @@ var ModalInconsistenciaVistoriaController = function (
                             }
                         });
                     }, function(error){
-                        mensagem.error(error.data.texto);
+                        mensagem.error(error.data.texto, {referenceId: 5});
                     });
 
         } else if(invalidFile && invalidFile.$error === 'maxSize'){
-            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB + 'MB', {referenceId: 5});
         }
 
     };
