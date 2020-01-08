@@ -37,22 +37,22 @@ include ../../layout/components/mapPanel
 
 					table.table.table-striped.table-condensed
 						thead
-							th Requisitos Administrativos
-							th
+							th.col-md-11 Requisitos Administrativos
+							th.col-md-1
 						tbody
 							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
-								td {{ documento.tipo.nome}}
-								td.text-center(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
+								td.col-md-11 {{ documento.tipo.nome}}
+								td.text-center.col-md-1(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
 									i.glyphicon.glyphicon-eye-open.pointer
 
-					table.table.table-striped.table-condensed
+					table.table.table-striped.table-condensed(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo.length > 0")
 						thead
-							th Requisitos Técnicos
-							th
+							th.col-md-11 Requisitos Técnicos
+							th.col-md-1
 						tbody
 							tr(ng-repeat="solicitacaoGrupo in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo")
-								td {{ solicitacaoGrupo.tipoDocumento.nome}}
-								td.text-center(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(solicitacaoGrupo.documento.id)")
+								td.col-md-11 {{ solicitacaoGrupo.tipoDocumento.nome}}
+								td.text-center.col-md-1(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(solicitacaoGrupo.documento.id)")
 									i.glyphicon.glyphicon-eye-open.pointer
 
 	div#ficha

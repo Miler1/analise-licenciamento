@@ -25,6 +25,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.LegendasTipoSobreposicao = app.utils.LegendasTipoSobreposicao;
 	ctrl.dadosRestricoesProjeto = [];
 	ctrl.listaInconsistencias = [];
+	ctrl.titulo = 'PARECER GEO';
 	ctrl.notificacao = {};
 	ctrl.notificacao.documentacao = null;
 	ctrl.notificacao.retificacaoEmpreendimento = null;

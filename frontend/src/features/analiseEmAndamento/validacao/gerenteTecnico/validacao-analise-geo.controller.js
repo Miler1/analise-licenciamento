@@ -32,6 +32,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.analistasGeo = null;
     validacaoAnaliseGeoGerente.analistaGeoDestino = {};
     validacaoAnaliseGeoGerente.dadosRestricoesProjeto = [];
+    validacaoAnaliseGeoGerente.titulo = 'VALIDAÇÃO GEO';
     validacaoAnaliseGeoGerente.orgaos = app.utils.Orgao;
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
     validacaoAnaliseGeoGerente.parecerGeo = {};
