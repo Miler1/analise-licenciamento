@@ -124,7 +124,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 		ANALISTA_GEO.forEach(function(condicao){
 
-			if(modalCtrl.processo.idCondicaoTramitacao === condicao) {
+			if(modalCtrl.dadosProcesso.objetoTramitavel.condicao.idCondicao === condicao) {
 
 				status = true;
 
@@ -174,18 +174,21 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	this.setLabelRestricao = function() {
 
-		if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
+		if(modalCtrl.dadosProjeto !== null) {
 
-			return 'Restrições do complexo';
+			if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
 
-		} else if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.PROPRIEDADE) {
-
-			return 'Restrições do empreendimento';
-
-		} else {
-
-			return 'Restrições da(s) atividade(s)';
-
+				return 'Restrições do complexo';
+	
+			} else if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.PROPRIEDADE) {
+	
+				return 'Restrições do empreendimento';
+	
+			} else {
+	
+				return 'Restrições da(s) atividade(s)';
+	
+			}
 		}
 
 	};

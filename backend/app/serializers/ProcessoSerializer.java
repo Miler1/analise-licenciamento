@@ -179,7 +179,7 @@ public class ProcessoSerializer {
 			"empreendimento.empreendedor.pessoa.enderecos.municipio.estado.codigo",
 			"empreendimento.empreendedor.pessoa.enderecos.roteiroAcesso",
 			"empreendimento.empreendedor.pessoa.enderecos.tipo",
-			"objetoTramitavel",
+			"objetoTramitavel.condicao.idCondicao",
 			"caracterizacao.documentosEnviados.id",
 			"caracterizacao.documentosEnviados.nome",
 			"caracterizacao.documentosEnviados.tipo.id",
