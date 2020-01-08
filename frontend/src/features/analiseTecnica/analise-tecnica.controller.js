@@ -594,7 +594,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
-            if(ctrl.parecer.vistoria.documentoRit === null) {
+            if(ctrl.parecer.vistoria.documentoRit === null || ctrl.parecer.vistoria.documentoRit === undefined) {
 
                 ctrl.errors.vistoria.documentoRit = true;
 
@@ -606,19 +606,19 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
-            if(ctrl.parecer.vistoria.data === null) {
+            if(ctrl.parecer.vistoria.data === null || ctrl.parecer.vistoria.data === undefined) {
     
                 ctrl.errors.vistoria.data = true;
     
             }
             
-            if(ctrl.parecer.vistoria.hora === null) {
+            if(ctrl.parecer.vistoria.hora === null || ctrl.parecer.vistoria.hora === undefined) {
     
                 ctrl.errors.vistoria.hora = true;
     
             }
 
-            if(ctrl.parecer.vistoria.descricao === null) {
+            if(ctrl.parecer.vistoria.descricao === null || ctrl.parecer.vistoria.descricao === '') {
     
                 ctrl.errors.vistoria.descricao = true;
     
