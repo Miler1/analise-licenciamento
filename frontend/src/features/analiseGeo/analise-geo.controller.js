@@ -12,7 +12,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.restricoes = restricoes;
 	ctrl.idAnaliseGeo= idAnaliseGeo;
 	ctrl.analiseGeo = angular.copy(analiseGeo);
-	ctrl.tipoResultadoAnalise = {id:undefined};
+	ctrl.tipoResultadoAnalise = {id:null};
 	ctrl.categoria = app.utils.Inconsistencia;
 	ctrl.orgaos = app.utils.Orgao;
 	ctrl.camadas = [];
@@ -1056,6 +1056,19 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	function analiseValida() {
 
+		var hasError = false;
+
+		if(ctrl.parecer.tipoResultadoAnalise === undefined) {
+
+			ctrl.errors.resultadoAnalise = true;
+			
+
+		} else{
+
+			ctrl.errors.resultadoAnalise = false;
+
+		}
+
 		if(ctrl.parecer.analiseTemporal !== '' && ctrl.parecer.analiseTemporal !== null) {
 
 			var verificaDocAnaliseTemp = false;
@@ -1071,7 +1084,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			if (verificaDocAnaliseTemp === false){
 
 				ctrl.errors.docAnaliseTemporal = true;
-				return false;
+				hasError = true;
 
 			} else {
 
@@ -1081,10 +1094,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		}
 
-		if (!ctrl.parecer.conclusao &&  ctrl.parecer.tipoResultadoAnalise.id !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
+		if (!ctrl.parecer.conclusao && ctrl.parecer.tipoResultadoAnalise.id !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 
 			ctrl.errors.conclusao = true;
-			return false;
+			hasError = true;
 
 		} else{
 
@@ -1092,21 +1105,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		}
 
-		if(ctrl.parecer.tipoResultadoAnalise.id === undefined) {
-
-			ctrl.errors.resultadoAnalise = true;
-			return false;
-
-		} else{
-
-			ctrl.errors.resultadoAnalise = false;
-
-		}
-
 		if (!ctrl.notificacao.prazoNotificacao && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
 			
 			ctrl.errors.prazoNotificacao = true;
-			return false;
+			hasError = true;
 
 		} else{
 
@@ -1117,7 +1119,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		if(!ctrl.parecer.parecer || ctrl.parecer.parecer === undefined){
 
 			ctrl.errors.parecer = true;
-			return false;
+			hasError = true;
 
 		}else{
 
@@ -1129,14 +1131,14 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			
 			if(ctrl.notificacao.retificacaoSolicitacao && !ctrl.notificacao.retificacaoSolicitacaoComGeo) {
 				
-				return false;
+				hasError = true;
 
 			}
 
 			if(!(ctrl.notificacao.documentacao || ctrl.notificacao.retificacaoEmpreendimento || (ctrl.notificacao.retificacaoSolicitacao && ctrl.notificacao.retificacaoSolicitacaoComGeo))) {
 
 				ctrl.errors.atendimento = true;
-				return false;
+				hasError = true;
 
 			} else{
 
@@ -1144,8 +1146,18 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			}
 
+			if (hasError) {
+
+				return false;
+			}
+
 			return true;
 
+		}
+
+		if (hasError) {
+
+			return false;
 		}
 
 		return ((ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString() ||

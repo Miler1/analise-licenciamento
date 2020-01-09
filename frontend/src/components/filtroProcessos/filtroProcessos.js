@@ -65,8 +65,12 @@ var FiltroProcessos = {
 
 			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
 				$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
+				
+				if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 
-				if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
+					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
+
+				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 					
 					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 					ctrl.filtro.idCondicaoTramitacao = null;
@@ -74,7 +78,7 @@ var FiltroProcessos = {
 				} else if(!caixaEntrada) {
 					
 					ctrl.filtro.listaIdCondicaoTramitacao = null;
-				}
+				} 
 
 			}
 
