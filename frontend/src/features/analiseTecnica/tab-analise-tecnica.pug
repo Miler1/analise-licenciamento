@@ -27,7 +27,7 @@
                                                                                 ng-class="{'nao-tem-inconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === false}"
                                                                                 title='Excluir inconsistência',
                                                                                 ng-bootbox-title='Confirmação',
-                                                                                ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                ng-bootbox-confirm=' Deseja realmente validar o documento ? <br><br> Após validar, a inconsistência será excluída.',
                                                                                 ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA, null, null, null, null, null)")
                                 | &nbsp;
                             i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === null || ctrl.itemValidoLicenca.tipoLicenca === false ",
@@ -68,7 +68,7 @@
                                                                                                 ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.atividade[$index].atividadeValida === false }",
                                                                                                 title='Excluir inconsistência',
                                                                                                 ng-bootbox-title='Confirmação',
-                                                                                                ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                                ng-bootbox-confirm='Deseja realmente validar o documento ? <br><br> Após validar, a inconsistência será excluída.',
                                                                                                 ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, null, null, atividadeCaracterizacao, $index, null)")
                                                 | &nbsp;
                                             i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.atividade[$index].atividadeValida === null || ctrl.itemValidoLicenca.atividade[$index].atividadeValida === false",
@@ -86,7 +86,7 @@
                                                                                                 ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.atividade[$parent.$parent.$index].parametros[$parent.$index] === false}",
                                                                                                 title='Excluir inconsistência',
                                                                                                 ng-bootbox-title='Confirmação',
-                                                                                                ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                                ng-bootbox-confirm='Deseja realmente validar o documento ? <br><br> Após validar, a inconsistência será excluída.',
                                                                                                 ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$parent.$index], null, atividadeCaracterizacao, $parent.$parent.$index, $parent.$index)")
                                                 | &nbsp;
                                             i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === null || ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === false",
@@ -115,7 +115,7 @@
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.questionario === false }",
                                                                                     title='Excluir inconsistência',
                                                                                     ng-bootbox-title='Confirmação',
-                                                                                    ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                    ng-bootbox-confirm='Deseja realmente validar o documento ? <br><br> Após validar, a inconsistência será excluída.',
                                                                                     ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO, null, null, null, null, null)")
                                     | &nbsp;
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.questionario === null || ctrl.itemValidoLicenca.questionario === false",
@@ -147,7 +147,7 @@
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoAdministrativo[$index] === false }",
                                                                                     title='Excluir inconsistência',
                                                                                     ng-bootbox-title='Confirmação',
-                                                                                    ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                    ng-bootbox-confirm='Deseja realmente validar o documento ? <br><br> Após validar, a inconsistência será excluída.',
                                                                                     ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, null, documentoAdministrativo, null, $index, null)")
                                     | &nbsp;
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.documentoAdministrativo[$index] !== true",
@@ -185,7 +185,7 @@
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false }",
                                                                                     title='Excluir inconsistência',
                                                                                     ng-bootbox-title='Confirmação',
-                                                                                    ng-bootbox-confirm='Deseja realmente excluir a inconsistência ?',
+                                                                                    ng-bootbox-confirm='Deseja realmente validar o documento ? <br><br> Após validar, a inconsistência será excluída.',
                                                                                     ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, null, documentoTecnicoAmbiental, null, $index, null)")
                                     | &nbsp;
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.documentoTecnicoAmbiental.length === 0 || ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false",
