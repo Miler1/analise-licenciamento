@@ -152,7 +152,8 @@ function verificaCampos() {
 modalCtrl.concluir = function() {
     var params;
 
-    if(verificaCampos()){
+    if(!verificaCampos()){
+        mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', {referenceId: 5});
         return;
     }else{
                
