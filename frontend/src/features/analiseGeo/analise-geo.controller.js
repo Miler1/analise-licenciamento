@@ -1012,7 +1012,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		if(ctrl.parecer.tipoResultadoAnalise === undefined) {
 
 			ctrl.errors.resultadoAnalise = true;
-			
+			return false;
 
 		} else{
 
