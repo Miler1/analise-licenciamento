@@ -39,7 +39,8 @@ public class Condicoes extends InternalController {
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
 							Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
-							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO))
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
+							Condicao.ARQUIVADO
 					.fetch();
 		}
 		
