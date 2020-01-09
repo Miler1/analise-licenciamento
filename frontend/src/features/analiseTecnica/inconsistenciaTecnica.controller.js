@@ -145,6 +145,8 @@ function verificaCampos() {
 
     if (modalCtrl.errors.analiseTecnica.descricao === true || modalCtrl.errors.analiseTecnica.tipo === true){
         return false;
+    }else{
+        return true;
     }
 
 }
