@@ -1,7 +1,6 @@
 var InconsistenciaTecnicaController = function (
     $uibModalInstance,
     documentoService,
-    tamanhoMaximoArquivoAnaliseMB,
     uploadService,
     analiseTecnica,
     inconsistenciaTecnica,
@@ -19,7 +18,7 @@ var InconsistenciaTecnicaController = function (
 
 var modalCtrl = this;
 
-modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
+modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = 25;
 modalCtrl.anexos = [];
 modalCtrl.tipoDeInconsistenciaTecnica = tipoDeInconsistenciaTecnica;
 modalCtrl.questionario = questionario;
@@ -103,12 +102,14 @@ modalCtrl.upload = function(file, invalidFile) {
                                                         
                     }, function(error){
 
-                            mensagem.error(error.data.texto);
+                        mensagem.error(error.data.texto, {referenceId: 5});
+
                     });
 
     } else if(invalidFile && invalidFile.$error === 'maxSize'){
 
-            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+        mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB + 'MB', {referenceId: 5});
+        
     }
 };
 
@@ -144,6 +145,8 @@ function verificaCampos() {
 
     if (modalCtrl.errors.analiseTecnica.descricao === true || modalCtrl.errors.analiseTecnica.tipo === true){
         return false;
+    }else{
+        return true;
     }
 
 }
