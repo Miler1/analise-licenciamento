@@ -41,6 +41,7 @@ public class Condicoes extends InternalController {
 							Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
 							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
 							Condicao.ARQUIVADO
+					))
 					.fetch();
 		}
 		
