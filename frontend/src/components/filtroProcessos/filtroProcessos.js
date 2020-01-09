@@ -25,6 +25,7 @@ var FiltroProcessos = {
 		TiposSetores, consultorService) {
 
 		var ctrl = this;
+		var caixaEntrada = false;
 
 		ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
 		ctrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
@@ -62,16 +63,22 @@ var FiltroProcessos = {
 				}
 			}
 
-			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
+				$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
+				
+				if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 
-				if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
+					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
+
+				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 					
 					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 					ctrl.filtro.idCondicaoTramitacao = null;
 				
-				} else {
+				} else if(!caixaEntrada) {
+					
 					ctrl.filtro.listaIdCondicaoTramitacao = null;
-				}
+				} 
 
 			}
 
@@ -132,11 +139,13 @@ var FiltroProcessos = {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
+				caixaEntrada = true;
 
 			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
+				caixaEntrada = false;
 			}
 
 			ctrl.filtro.isAnaliseJuridica = !!ctrl.isAnaliseJuridica;
@@ -248,7 +257,9 @@ var FiltroProcessos = {
 						
 						ctrl.condicoes = response.data;
 
-						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_GEO_FINALIZADA',
 								nomeCondicao: 'Analise GEO finalizada'
@@ -356,11 +367,13 @@ var FiltroProcessos = {
 
 		function getCondicoesAnaliseGeoFinalizada() {
 			return [
-				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GERENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA
 			];
 		}
 
