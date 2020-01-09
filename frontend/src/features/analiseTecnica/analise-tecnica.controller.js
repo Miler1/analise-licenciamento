@@ -1,6 +1,6 @@
 var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $scope, $location, 
                                         analistaService, analiseTecnica, mensagem, $uibModal, 
-                                        analiseTecnicaService, tamanhoMaximoArquivoAnaliseMB,
+                                        analiseTecnicaService,
                                         documentoAnaliseService, restricoes, TiposAnalise,inconsistenciaService, 
                                         documentoLicenciamentoService, processoService, documentoService,
                                         parecerAnalistaTecnicoService) {
@@ -10,7 +10,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     var ctrl = this;
 
     ctrl.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
-    ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
+    ctrl.TAMANHO_MAXIMO_ARQUIVO_MB = 25;
     ctrl.processo = angular.copy(analiseTecnica.analise.processo);
     ctrl.imovel = angular.copy(analiseTecnica.analise.processo.empreendimento.imovel);
     ctrl.restricoes = restricoes;
@@ -168,22 +168,27 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         if(abaDestino === 1 && !ctrl.validarCampos()) {
 
             ctrl.tabAtiva = 0;
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
         } else if(abaDestino === 2) {
 
             if(!ctrl.validarCampos()) {
 
                 ctrl.tabAtiva = 0;
+                mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
             } else if(!vistoriaValida()) {
 
                 ctrl.tabAtiva = 1;
+                mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
             }
 
             ctrl.findInconsistenciasParaConclusao();
 
         }
+
+        window.scrollTo(0, 0);
 
     };
 
@@ -599,7 +604,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
-            if(ctrl.parecer.vistoria.documentoRit === null) {
+            if(ctrl.parecer.vistoria.documentoRit === null || ctrl.parecer.vistoria.documentoRit === undefined) {
 
                 ctrl.errors.vistoria.documentoRit = true;
 
@@ -611,19 +616,19 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             }
 
-            if(ctrl.parecer.vistoria.data === null) {
+            if(ctrl.parecer.vistoria.data === null || ctrl.parecer.vistoria.data === undefined) {
     
                 ctrl.errors.vistoria.data = true;
     
             }
             
-            if(ctrl.parecer.vistoria.hora === null) {
+            if(ctrl.parecer.vistoria.hora === null || ctrl.parecer.vistoria.hora === undefined) {
     
                 ctrl.errors.vistoria.hora = true;
     
             }
 
-            if(ctrl.parecer.vistoria.descricao === null) {
+            if(ctrl.parecer.vistoria.descricao === null || ctrl.parecer.vistoria.descricao === '') {
     
                 ctrl.errors.vistoria.descricao = true;
     
@@ -649,7 +654,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         ctrl.limparErrosVistoria();
 
-        var inconsistenciaVistoria = {
+        var inconsistenciaVistoria = ctrl.parecer.vistoria.inconsistenciaVistoria ? ctrl.parecer.vistoria.inconsistenciaVistoria : {
             descricaoInconsistencia: null,
             tipoInconsistencia: null,
             anexos: []
@@ -670,6 +675,13 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
+    ctrl.voltar = function() {
+
+        ctrl.tabAtiva = ctrl.tabAtiva - 1;
+        window.scrollTo(0, 0);
+
+    };
+
     ctrl.avancar = function() {
 
         if(ctrl.tabAtiva === 0 && ctrl.validarCampos()) {
@@ -679,21 +691,16 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         } else if(ctrl.tabAtiva + 1 === 2 && vistoriaValida()) {
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
-            window.scrollTo(0, 0);
 
-            if(ctrl.parecer.vistoria.realizada === 'true') {
+        } else {
 
-                ctrl.parecer.vistoria.realizada = true;
-
-            } else {
-
-                ctrl.parecer.vistoria.realizada = false;
-
-            }
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
             ctrl.findInconsistenciasParaConclusao();
 
         }
+
+        window.scrollTo(0, 0);
 
     };
 
@@ -827,8 +834,18 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     mensagem.error(error.data.texto);
                 });
 
-        } else if(invalidFile && invalidFile.$error === 'maxSize'){
-            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name);
+        } else if(invalidFile && (invalidFile.$error === 'pattern' || invalidFile.$error === 'maxSize')){
+
+            if(invalidFile.$error === 'maxSize') {
+
+                mensagem.error('O tamanho máximo permitido é de ' + ctrl.TAMANHO_MAXIMO_ARQUIVO_MB + ' MB.');
+
+            } else {
+
+                mensagem.error('Arquivo ' + invalidFile.name + ' possuí formato inválido.');
+
+            }
+            
         }
 
     };
@@ -1320,7 +1337,17 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.concluir = function () {
 
-        if(!camposConclusaoValidos()) {
+        if(ctrl.parecer.vistoria.realizada === 'true') {
+
+            ctrl.parecer.vistoria.realizada = true;
+
+        } else {
+
+            ctrl.parecer.vistoria.realizada = false;
+
+        }
+
+		if(!camposConclusaoValidos()) {
 
             mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 10000 });
             return;

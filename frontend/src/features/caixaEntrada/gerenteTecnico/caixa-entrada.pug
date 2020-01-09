@@ -40,11 +40,11 @@ div
 							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(cxEntGerente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntGerente.PrazoAnalise.ANALISE), cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
 								| {{ cxEntGerente.dateUtil.getContaDiasRestantesData(cxEntGerente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntGerente.PrazoAnalise.ANALISE)) }}
 
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
-								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
+							td(ng-class="{'error-message': processo.diasAnaliseGeo > cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
+								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
-								| -
+							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{ cxEntGerente.prazoAnaliseTecnica(processo) }}
 							td
 								span.pull-right
 

@@ -2,7 +2,6 @@ var ModalInconsistenciaVistoriaController = function (
     $uibModalInstance,
     $rootScope,
     documentoService,
-    tamanhoMaximoArquivoAnaliseMB,
     uploadService,
     inconsistenciaVistoria,
     mensagem) {
@@ -10,7 +9,7 @@ var ModalInconsistenciaVistoriaController = function (
     var modalCtrl = this;
 
     modalCtrl.inconsistenciaVistoria = inconsistenciaVistoria;
-    modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
+    modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = 25;
     modalCtrl.labelModal = inconsistenciaVistoria.descricaoInconsistencia ? 'Editar' : 'Adicionar';
 
     modalCtrl.errors = {
@@ -20,7 +19,7 @@ var ModalInconsistenciaVistoriaController = function (
 
     };
 
-    modalCtrl.fechar = function () {
+    modalCtrl.limparErrosInconsistenciaVistoria = function() {
 
         modalCtrl.errors = {
 
@@ -29,6 +28,11 @@ var ModalInconsistenciaVistoriaController = function (
     
         };
 
+    };
+
+    modalCtrl.fechar = function () {
+
+        modalCtrl.limparErrosInconsistenciaVistoria();
         $uibModalInstance.dismiss('cancel');
         
     };
@@ -51,11 +55,11 @@ var ModalInconsistenciaVistoriaController = function (
                             }
                         });
                     }, function(error){
-                        mensagem.error(error.data.texto);
+                        mensagem.error(error.data.texto, {referenceId: 5});
                     });
 
         } else if(invalidFile && invalidFile.$error === 'maxSize'){
-            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB + 'MB', {referenceId: 5});
         }
 
     };
@@ -105,15 +109,12 @@ var ModalInconsistenciaVistoriaController = function (
         if(inconsistenciaValida()){
 
             $rootScope.$broadcast('adicionarInconsistenciaVistoria', modalCtrl.inconsistenciaVistoria);
-            
-            modalCtrl.errors = {
-
-                descricaoInconsistencia: false,
-                tipoInconsistencia: false
-        
-            };
-
+            modalCtrl.limparErrosInconsistenciaVistoria();
             modalCtrl.fechar();
+
+        } else {
+
+            mensagem.error("Preencha os campos obrigatórios para adicionar a inconsistência.", {referenceId: 5});
 
         }
 

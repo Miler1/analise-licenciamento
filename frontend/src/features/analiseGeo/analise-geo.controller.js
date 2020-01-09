@@ -549,9 +549,45 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						});
 
-					});
+						var bounds = new L.latLngBounds();
 
-					$scope.$emit('mapa:centralizar-mapa');
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
+
+							ctrl.camadasDadosEmpreendimento.forEach(function(camada) {
+	
+								camada.geometrias.forEach(function(geometriaEmpreendimento) {
+	
+									bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
+	
+								});
+	
+							});
+	
+						} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
+	
+							ctrl.dadosProjeto.complexo.geometrias.forEach(function(geometriaComplexo) {
+	
+								bounds.extend(L.geoJSON(JSON.parse(geometriaComplexo.geometria)).getBounds());
+	
+							});
+	
+						} else {
+	
+							ctrl.dadosProjeto.atividades.forEach(function(atividade) {
+	
+								atividade.geometrias.forEach(function(geometriaAtividade) {
+	
+									bounds.extend(L.geoJSON(JSON.parse(geometriaAtividade.geometria)).getBounds());
+	
+								});
+	
+							});
+							
+						}
+	
+						$scope.$emit('mapa:centralizar-geometrias', bounds);
+
+					});
 
 			});
 

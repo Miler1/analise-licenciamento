@@ -442,7 +442,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo()
-				.groupByRenovacao();
+				.groupByRenovacao()
+				.groupByDiasAnaliseGeo()
+				.groupByDiasAnaliseTecnica();
 
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
 
@@ -516,7 +518,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataVencimentoPrazoAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
-				.groupByDiasAnaliseTecnica()
 				.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.orderByDataVencimentoPrazoAnaliseTecnica();
 
@@ -534,7 +535,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataVencimentoPrazoAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.groupByRevisaoSolicitadaAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.groupByDataFinalAnaliseGeo(filtro.isAnaliseGeoOpcional)
-				.groupByDiasAnaliseGeo()
 				.groupByDesvinculoAnaliseGeo()
 				.groupByNotificacaoAtendidaAnaliseGeo(filtro.isAnaliseGeoOpcional)
 				.orderByDataVencimentoPrazoAnaliseGeo();
@@ -648,7 +648,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		return this.getHistoricoTramitacao()
 				.stream()
-				.filter(tramitacao -> this.analise != null && this.analise.analiseTecnica != null && tramitacao.dataInicial.before(this.analise.analiseTecnica.dataCadastro))
+				.filter(tramitacao -> this.analise != null && this.analise.analiseGeo != null)
 				.collect(Collectors.toList());
 
 	}

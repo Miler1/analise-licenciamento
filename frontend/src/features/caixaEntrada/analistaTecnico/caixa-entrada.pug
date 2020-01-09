@@ -35,8 +35,8 @@ div
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimoData(cxEntAnalistaTecnico.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntAnalistaTecnico.PrazoAnalise.ANALISE), cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
 								| {{ cxEntAnalistaTecnico.dateUtil.getContaDiasRestantesData(cxEntAnalistaTecnico.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntAnalistaTecnico.PrazoAnalise.ANALISE)) }}
-							td(ng-class="{'error-message': cxEntAnalistaTecnico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ cxEntAnalistaTecnico.dateUtil.getDiasRestantes(processo.dataVencimentoPrazoAnaliseTecnica, cxEntAnalistaTecnico.PrazoAnalise.ANALISE_TECNICA) }}
+							td(ng-class="{'error-message': processo.diasAnaliseTecnica > cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA}")
+								| {{ cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
 							td
 								span.pull-right
 

@@ -49,10 +49,10 @@ div
 								| {{ consultarProcesso.dateUtil.getContaDiasRestantesData(consultarProcesso.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, consultarProcesso.PrazoAnalise.ANALISE)) }}
 
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
-								| {{ consultarProcesso.getPrazoAnaliseGeo(processo) }}
+								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
-							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO" ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}").text-center
-								| -
+							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO", ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{ consultarProcesso.prazoAnaliseTecnica(processo) }}
 
 							td
 								span.pull-right

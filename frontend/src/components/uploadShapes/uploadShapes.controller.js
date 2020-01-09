@@ -1,7 +1,7 @@
 /**
  * Controller para a tela de upload de shapes
  **/
-var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService, $route, processoService) {
+var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService, $route, processoService, tiposSobreposicaoService) {
 
 	var uploadShapes = this;
 
@@ -23,8 +23,9 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.cancelaEnvio = cancelaEnvio;
 	uploadShapes.buscaProcesso = buscaProcesso;
 	uploadShapes.hideUploadShapes = hideUploadShapes;
+	uploadShapes.dadosProjeto = null;
+	uploadShapes.categoria = app.utils.Inconsistencia;
 	
-
 	function buscaProcesso() {
 
 		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso)).then(function(response){

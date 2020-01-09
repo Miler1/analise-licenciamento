@@ -28,7 +28,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.categoria = app.utils.Inconsistencia;
 	modalCtrl.exibirDocumentacao = !modalCtrl.abreDocumentacao;
 	modalCtrl.numPoints = 0;
-	modalCtrl.dadosProjeto = {};
+	modalCtrl.dadosProjeto = null;
 	modalCtrl.TiposSobreposicao = [];
 	modalCtrl.openedAccordionGeo = false;
 	modalCtrl.openedAccordionGerente = false;
@@ -110,97 +110,147 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	// Métodos referentes ao Mapa da caracterização
 	this.iniciarMapa = function() {
 
-		modalCtrl.init('mapa-visualizacao-protocolo', true, true);
+		if(modalCtrl.map === null) {
 
-		$timeout(function() {
+			modalCtrl.init('mapa-visualizacao-protocolo', true, true);
 
-			var empreendimento = modalCtrl.dadosProcesso.empreendimento;
+			$timeout(function() {
 
-			$scope.$emit('mapa:adicionar-geometria-base', {
-				geometria: JSON.parse(empreendimento.municipio.limite),
-				tipo: 'EMP-CIDADE',
-				estilo: {
-					style: {
-						fillColor: 'transparent',
-						color: '#FFF'
-					}
-				},
-				popupText: empreendimento.municipio.nome + ' - AM'
-			});
+				var empreendimento = modalCtrl.dadosProcesso.empreendimento;
 
-			var cpfCnpjEmpreendimento = empreendimento.pessoa.cpf || empreendimento.pessoa.cnpj;
-
-			empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento).then(function(response) {
-
-				modalCtrl.camadasDadosEmpreendimento = response.data;
-
-				modalCtrl.camadasDadosEmpreendimento.forEach(function (camada) {
-					
-					camada.geometrias.forEach(function(e) {
-						
-						adicionarGeometriaNoMapa(e);
-
-					});
-
+				$scope.$emit('mapa:adicionar-geometria-base', {
+					geometria: JSON.parse(empreendimento.municipio.limite),
+					tipo: 'EMP-CIDADE',
+					estilo: {
+						style: {
+							fillColor: 'transparent',
+							color: '#FFF'
+						}
+					},
+					popupText: empreendimento.municipio.nome + ' - AM'
 				});
 
-				analiseGeoService.getDadosProjeto(modalCtrl.processo.idProcesso).then(function (response) {
+				var cpfCnpjEmpreendimento = empreendimento.pessoa.cpf || empreendimento.pessoa.cnpj;
 
-					modalCtrl.dadosProjeto = response.data;
+				empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento).then(function(response) {
 
-					modalCtrl.dadosProjeto.atividades.forEach(function(atividade) {
+					modalCtrl.camadasDadosEmpreendimento = response.data;
 
-						modalCtrl.numPoints += contaQuantidadeCamadasPoint(atividade.geometrias);
-
-					});
-
-					modalCtrl.numPoints += contaQuantidadeCamadasPoint(modalCtrl.dadosProjeto.restricoes);
-
-					modalCtrl.dadosProjeto.atividades.forEach(function (atividade) {
-
-						atividade.openedAccordion = false;
+					modalCtrl.camadasDadosEmpreendimento.forEach(function (camada) {
 						
-						atividade.geometrias.forEach(function(a) {
+						camada.geometrias.forEach(function(e) {
 							
-							a.estilo = modalCtrl.estiloMapa.ATIVIDADE;
-							adicionarGeometriaNoMapa(a);
+							adicionarGeometriaNoMapa(e);
 
 						});
 
 					});
 
-					modalCtrl.dadosProjeto.restricoes.forEach(function (restricao) {
+					analiseGeoService.getDadosProjeto(modalCtrl.processo.idProcesso).then(function (response) {
 
-						restricao.estilo = modalCtrl.estiloMapa.SOBREPOSICAO;
-						adicionarGeometriaNoMapa(restricao);
+						modalCtrl.dadosProjeto = response.data;
 
-					});
+						modalCtrl.dadosProjeto.atividades.forEach(function(atividade) {
 
-					if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
-
-						modalCtrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
-
-							adicionarGeometriaNoMapa(geometria);
+							modalCtrl.numPoints += contaQuantidadeCamadasPoint(atividade.geometrias);
 
 						});
 
-					}
+						modalCtrl.numPoints += contaQuantidadeCamadasPoint(modalCtrl.dadosProjeto.restricoes);
 
-					tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
+						modalCtrl.dadosProjeto.atividades.forEach(function (atividade) {
 
-						modalCtrl.TiposSobreposicao = response.data;
+							atividade.openedAccordion = false;
+							
+							atividade.geometrias.forEach(function(a) {
+								
+								a.estilo = modalCtrl.estiloMapa.ATIVIDADE;
+								adicionarGeometriaNoMapa(a);
+
+							});
+
+						});
+
+						modalCtrl.dadosProjeto.restricoes.forEach(function (restricao) {
+
+							restricao.estilo = modalCtrl.estiloMapa.SOBREPOSICAO;
+							adicionarGeometriaNoMapa(restricao);
+
+						});
+
+						if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
+
+							modalCtrl.dadosProjeto.complexo.geometrias.forEach(function(geometria) {
+
+								adicionarGeometriaNoMapa(geometria);
+
+							});
+
+						}
+
+						tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
+
+							modalCtrl.TiposSobreposicao = response.data;
+
+						});
+
+						centralizarMapa();
 
 					});
-
-					$scope.$emit('mapa:centralizar-mapa');
 
 				});
 
 			});
 
-		});
+		}
 
 	};
+
+	function centralizarMapa() {
+
+		if(modalCtrl.dadosProjeto) {
+
+			var bounds = new L.latLngBounds();
+
+			if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.PROPRIEDADE) {
+
+				modalCtrl.camadasDadosEmpreendimento.forEach(function(camada) {
+
+					camada.geometrias.forEach(function(geometriaEmpreendimento) {
+
+						bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
+
+					});
+
+				});
+
+			} else if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
+
+				modalCtrl.dadosProjeto.complexo.geometrias.forEach(function(geometriaComplexo) {
+
+					bounds.extend(L.geoJSON(JSON.parse(geometriaComplexo.geometria)).getBounds());
+
+				});
+
+			} else {
+
+				modalCtrl.dadosProjeto.atividades.forEach(function(atividade) {
+
+					atividade.geometrias.forEach(function(geometriaAtividade) {
+
+						bounds.extend(L.geoJSON(JSON.parse(geometriaAtividade.geometria)).getBounds());
+
+					});
+
+				});
+				
+			}
+
+			$scope.$emit('mapa:centralizar-geometrias', bounds);
+
+		}
+
+	}
 
 	function contaQuantidadeCamadasPoint (camadas) {
 
@@ -325,7 +375,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		if(modalCtrl.map) {
 
 			modalCtrl.map._onResize();
-			$scope.$emit('mapa:centralizar-mapa');
+			centralizarMapa();
 
 		}
 
@@ -355,6 +405,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			modalCtrl.resize();
 
 		}
+
 	});
 
 
