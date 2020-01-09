@@ -1,7 +1,7 @@
 /**
  * Controller para a tela de upload de shapes
  **/
-var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService, $route, processoService) {
+var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService, $route, processoService, tiposSobreposicaoService) {
 
 	var uploadShapes = this;
 
@@ -24,8 +24,8 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.buscaProcesso = buscaProcesso;
 	uploadShapes.hideUploadShapes = hideUploadShapes;
 	uploadShapes.dadosProjeto = null;
+	uploadShapes.categoria = app.utils.Inconsistencia;
 	
-
 	function buscaProcesso() {
 
 		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso)).then(function(response){
@@ -58,55 +58,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 				}
 			});
 
-			analiseGeoService.getDadosProjeto(uploadShapes.processo.idProcesso).then(function (response) {
-
-				uploadShapes.dadosProjeto = response.data;
-
-				tiposSobreposicaoService.getTiposSobreposicao().then(function (response) {
-
-					uploadShapes.TiposSobreposicao = response.data;
-
-				});
-
-				var bounds = new L.latLngBounds();
-	
-				if(uploadShapes.dadosProjeto.categoria === uploadShapes.categoria.PROPRIEDADE) {
-	
-					uploadShapes.processo.empreendimento.coordenadas.forEach(function(camada) {
-	
-						camada.geometrias.forEach(function(geometriaEmpreendimento) {
-	
-							bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
-	
-						});
-	
-					});
-	
-				} else if(uploadShapes.dadosProjeto.categoria === uploadShapes.categoria.COMPLEXO || uploadShapes.dadosProjeto.complexo) {
-	
-					uploadShapes.dadosProjeto.complexo.geometrias.forEach(function(geometriaComplexo) {
-	
-						bounds.extend(L.geoJSON(JSON.parse(geometriaComplexo.geometria)).getBounds());
-	
-					});
-	
-				} else {
-	
-					uploadShapes.dadosProjeto.atividades.forEach(function(atividade) {
-	
-						atividade.geometrias.forEach(function(geometriaAtividade) {
-	
-							bounds.extend(L.geoJSON(JSON.parse(geometriaAtividade.geometria)).getBounds());
-	
-						});
-	
-					});
-					
-				}
-	
-				$scope.$emit('mapa:centralizar-geometrias', bounds);
-
-			});
+			$scope.$emit('mapa:centralizar-mapa');
 
 		});
 
