@@ -112,6 +112,10 @@ var ModalInconsistenciaVistoriaController = function (
             modalCtrl.limparErrosInconsistenciaVistoria();
             modalCtrl.fechar();
 
+        } else {
+
+            mensagem.error("Preencha os campos obrigatórios para adicionar a inconsistência.", {referenceId: 5});
+
         }
 
     };
