@@ -29,7 +29,7 @@ public class Condicoes extends InternalController {
 							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
 							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
 							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
-							Condicao.ARQUIVADO
+							Condicao.ARQUIVADO,
 							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO
 							))
 					.fetch();
