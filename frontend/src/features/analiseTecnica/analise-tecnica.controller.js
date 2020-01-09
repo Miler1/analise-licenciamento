@@ -907,78 +907,102 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.adicionarInconsistenciaTecnicaTipoLicenca = function (analiseTecnica, tipoDeInconsistenciaTecnica) {
 
-        var inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-    
-                return inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca;
-            });
-       
-        openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, null, null, null, null);
-   
+        analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
+            .then(function(response){
+
+            var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
+        
+                    return inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca;
+                });
+
+            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, null, null, null, null);
+
+        });
     };
 
     ctrl.adicionarInconsistenciaTecnicaAtividade = function (analiseTecnica, tipoDeInconsistenciaTecnica, atividadeCaracterizacao, index) {
 
-        var inconsistenciaTecnica = _.find( ctrl.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-            return inconsistenciaTecnica.inconsistenciaTecnicaAtividade !== null &&
-                inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id === atividadeCaracterizacao.id;
+        analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
+        .then(function(response){
+
+            var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
+                return inconsistenciaTecnica.inconsistenciaTecnicaAtividade !== null &&
+                    inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id === atividadeCaracterizacao.id;
+            });
+    
+            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, atividadeCaracterizacao, null, null, null, null, index, null);
         });
-   
-        openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, atividadeCaracterizacao, null, null, null, null, index, null);
 
     };
 
     ctrl.adicionarInconsistenciaTecnicaParametro = function (analiseTecnica, tipoDeInconsistenciaTecnica, parametroAtividade, index, indexParametro, atividade) {
 
-        var inconsistenciaTecnica = _.find( ctrl.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-            return inconsistenciaTecnica.inconsistenciaTecnicaParametro !== null &&
-                inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id === parametroAtividade.id && 
-                inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao.id === atividade.id;
-        });
-   
-        openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, atividade, parametroAtividade, null, null, null, index, indexParametro);
+        analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
+        .then(function(response){
 
+            var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
+                return inconsistenciaTecnica.inconsistenciaTecnicaParametro !== null &&
+                    inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id === parametroAtividade.id && 
+                    inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao.id === atividade.id;
+            });
+       
+            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, atividade, parametroAtividade, null, null, null, index, indexParametro);
+      
+        });
     };
 
     ctrl.adicionarInconsistenciaTecnicaQuestionario = function (analiseTecnica,tipoDeInconsistenciaTecnica) {
 
-        var inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-    
-            return inconsistenciaTecnica.inconsistenciaTecnicaQuestionario;
-        });
-   
-        openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, analiseTecnica.analise.processo.caracterizacao.questionario3, null, null, null, null);
+        analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
+        .then(function(response){
 
+            var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
+    
+                return inconsistenciaTecnica.inconsistenciaTecnicaQuestionario;
+            });
+       
+            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, analiseTecnica.analise.processo.caracterizacao.questionario3, null, null, null, null);
+    
+        });
     };
 
     ctrl.adicionarInconsistenciaTecnicaDocumentoAdministrativo = function (analiseTecnica, tipoDeInconsistenciaTecnica, documentoAdministrativo, index) {
 
-        var inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+        analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
+        .then(function(response){
 
-            if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null){
-                if (documentoAdministrativo.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id){
-                    return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo;
+            var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null){
+                    if (documentoAdministrativo.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id){
+                        return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo;
+                    }
                 }
-            }
+            });
+       
+            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, documentoAdministrativo, null, index, null);   
+    
         });
-   
-        openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, documentoAdministrativo, null, index, null);
-
     };
 
     ctrl.adicionarInconsistenciaTecnicaDocumentoTecnicoAmbiental = function (analiseTecnica,tipoDeInconsistenciaTecnica, documentoTecnicoAmbiental, index) {
 
-        var inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+        analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id)
+        .then(function(response){
 
-            if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental !== null){
-                if (documentoTecnicoAmbiental.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id){
-                    return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental;
+            var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental !== null){
+                    if (documentoTecnicoAmbiental.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id){
+                        return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental;
+                    }
                 }
-            }
-    
-        });
+        
+            });
+       
+            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, null, documentoTecnicoAmbiental, index, null);
    
-        openModal(analiseTecnica, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, null, documentoTecnicoAmbiental, index, null);
-
+        });
     };
 
     function openModal(analiseTecnicaModal, tipoDeInconsistenciaTecnicaModal, inconsistenciaTecnicaModal, 
