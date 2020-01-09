@@ -1,11 +1,15 @@
 package models;
 
 import exceptions.AppException;
+import exceptions.PortalSegurancaException;
+import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
+import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.ReenvioEmail.TipoEmail;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
 import org.apache.commons.lang.StringUtils;
+import services.IntegracaoEntradaUnicaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +18,17 @@ import java.util.concurrent.ExecutionException;
 public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 	
 	private AnaliseTecnica analiseTecnica;
+	private ParecerAnalistaTecnico parecerAnalistaTecnico;
+	private List<Documento> pdfsNotificacao;
 	
-	public EmailNotificacaoAnaliseTecnica(AnaliseTecnica analiseTecnica, List<String> emailsDestinatarios) {
-		
+	public EmailNotificacaoAnaliseTecnica(AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecerAnalistaTecnico, List<String> emailsDestinatarios) throws Exception {
+
 		super(emailsDestinatarios);
-		this.analiseTecnica = analiseTecnica;		
+		this.analiseTecnica = analiseTecnica;
+		this.parecerAnalistaTecnico = parecerAnalistaTecnico;
+
+//		TODO: descomentar quando criar o pdf da notificação
+//		this.pdfsNotificacao = analiseTecnica.gerarPDFNotificacao(analiseTecnica);
 				
 	}	
 
@@ -28,26 +38,19 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 		try {
 			
 			List<String> tiposlicenca = new ArrayList<String>();
-			for(Caracterizacao caracterizacao : this.analiseTecnica.analise.processo.empreendimento.caracterizacoes) {
-				
-				tiposlicenca.add(caracterizacao.tipoLicenca.nome);
-			}
+			tiposlicenca.add(this.analiseTecnica.analise.processo.caracterizacao.tipoLicenca.nome);
+
 			String licencas = StringUtils.join(tiposlicenca, ",");
-			
-			List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
-			for(AnaliseDocumento analiseDocumento : this.analiseTecnica.analisesDocumentos) {
-				
-				if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.TECNICA) && !analiseDocumento.validado) {
-					documentosInvalidados.add(analiseDocumento);
-				}
-			}
 
-			Notificacao notificacao = Notificacao.find("id_analise_tecnica", this.analiseTecnica.id).first();
+			IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+			main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
 
-			if(!Emails.notificarRequerenteAnaliseTecnica(this.emailsDestinatarios, licencas, documentosInvalidados, this.analiseTecnica, notificacao).get()) {
-				
+			final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+
+			if(!Emails.notificarRequerenteAnaliseTecnica(this.emailsDestinatarios, licencas, this.analiseTecnica, this.parecerAnalistaTecnico, enderecoCompleto, this.pdfsNotificacao).get()) {
+
 				throw new AppException();
-				
+
 			}
 			
 		} catch (InterruptedException | ExecutionException | AppException e) {

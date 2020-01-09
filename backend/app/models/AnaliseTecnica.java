@@ -2,12 +2,15 @@ package models;
 
 import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
+import models.licenciamento.Empreendimento;
 import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.*;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -140,6 +143,16 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	@OneToMany(mappedBy = "analiseTecnica")
 	public List<ParecerAnalistaTecnico> pareceresAnalistaTecnico;
+
+	@OneToMany(mappedBy = "analiseTecnica", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	public List<Notificacao> notificacoes;
+
+	@Transient
+	public String linkNotificacao;
+
+	@Transient
+	public Integer prazoNotificacao;
 
 	private void validarParecer() {
 
@@ -394,78 +407,32 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
-	public void finalizar(AnaliseTecnica analise, UsuarioAnalise usuarioExecutor) {
+	public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaTecnico parecerAnalistaTecnico, List<Documento> documentos) throws Exception {
 
-		this.update(analise);
+		Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
+		List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
 
-		validarLicencasAnalise();
-		validarParecer();
-		validarAnaliseDocumentos();
-		validarResultado();
+		this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
 
-		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO))
-			validarEmissaoLicencas(this.licencasAnalise);
+		if(notificacao.segundoEmailEnviado){
 
-		if (this.analise.diasAnalise.qtdeDiasAprovador == null) {
+			notificacao._save();
 
-			this.analise.diasAnalise.qtdeDiasAprovador = 0;
-			this.analise.diasAnalise.save();
-		}
+			this.prazoNotificacao = notificacao.prazoNotificacao/3;
 
-		this._save();
-
-		if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.DEFERIDO) {
-
-			if (this.usuarioValidacaoGerente != null) {
-
-				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-			} else {
-
-				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-			}
-
-		} else if (this.tipoResultadoAnalise.id == TipoResultadoAnalise.INDEFERIDO) {
-
-			if (this.usuarioValidacaoGerente != null) {
-
-				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-			} else {
-
-				this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-			}
+			EmailNotificacaoAnaliseTecnica emailNotificacaoAnaliseTecnica = new EmailNotificacaoAnaliseTecnica(this, parecerAnalistaTecnico, destinatarios);
+			emailNotificacaoAnaliseTecnica.enviar();
 
 		} else {
 
-			Notificacao.criarNotificacoesAnaliseTecnica(analise);
+			Notificacao notificacaoSave = new Notificacao(this, notificacao, parecerAnalistaTecnico);
+			notificacaoSave.save();
+			this.prazoNotificacao = notificacaoSave.prazoNotificacao;
 
-			this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor);
-			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
-
-			HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id);
-
-			List<Notificacao> notificacoes = Notificacao.find("analiseTecnica.id", this.id).fetch();
-			Notificacao.setHistoricoAlteracoes(notificacoes, historicoTramitacao);
-
-			HistoricoTramitacao.setSetor(historicoTramitacao, usuarioExecutor);
-
-			enviarEmailNotificacao();
+			EmailNotificacaoAnaliseTecnica emailNotificacaoAnaliseTecnica = new EmailNotificacaoAnaliseTecnica(this, parecerAnalistaTecnico, destinatarios);
+			emailNotificacaoAnaliseTecnica.enviar();
 
 		}
-
-	}
-
-	public void enviarEmailNotificacao() {
-
-		List<String> destinatarios = new ArrayList<String>();
-		destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
-		destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
-
-		EmailNotificacaoAnaliseTecnica notificacao = new EmailNotificacaoAnaliseTecnica(this, destinatarios);
-		notificacao.enviar();
 
 	}
 

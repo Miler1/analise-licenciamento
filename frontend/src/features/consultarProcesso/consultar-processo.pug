@@ -38,7 +38,7 @@ div
 							td
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
 								span(ng-class="{'icone-solicitacao-finalizada': consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) }")
-								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO}")
+								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO}")
 
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero | textoTruncado : 4:3}}
 							td.text-center {{processo.denominacaoEmpreendimento}}
@@ -74,7 +74,7 @@ div
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar carta imagem
-											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO")
+											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO")
 												a(ng-click="consultarProcesso.visualizarNotificacao(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar notificação

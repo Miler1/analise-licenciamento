@@ -2,7 +2,6 @@ package controllers;
 
 import models.*;
 import security.Acao;
-import serializers.ParecerAnalistaGeoSerializer;
 import serializers.ParecerAnalistaTecnicoSerializer;
 import utils.Mensagem;
 

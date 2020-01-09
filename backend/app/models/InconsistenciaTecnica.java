@@ -91,63 +91,77 @@ public class InconsistenciaTecnica extends GenericModel{
 
 		} else {
 
+			InconsistenciaTecnica inconsisenciaTecnicaNova = new InconsistenciaTecnica();
+
 			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.TIPO_LICENCA.name())) {
 
-				this.saveAnexos(this.anexos);
+				inconsisenciaTecnicaNova.saveAnexos(this.anexos);
 
-				this.inconsistenciaTecnicaTipoLicenca.inconsistenciaTecnica = this;
+				inconsisenciaTecnicaNova = this;
 
-				this.inconsistenciaTecnicaTipoLicenca.save();
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaTipoLicenca.inconsistenciaTecnica = this;
+
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaTipoLicenca.save();
 
 			}
 
 			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.ATIVIDADE.name())) {
 
-				this.saveAnexos(this.anexos);
+				inconsisenciaTecnicaNova.saveAnexos(this.anexos);
 
-				this.inconsistenciaTecnicaAtividade.inconsistenciaTecnica = this;
+				inconsisenciaTecnicaNova = this;
 
-				this.inconsistenciaTecnicaAtividade.save();
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaAtividade.inconsistenciaTecnica = this;
+
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaAtividade.save();
 
 			}
 
 			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.PARAMETRO.name())) {
 
-				this.saveAnexos(this.anexos);
+				inconsisenciaTecnicaNova.saveAnexos(this.anexos);
 
-				this.inconsistenciaTecnicaParametro.inconsistenciaTecnica = this;
+				inconsisenciaTecnicaNova = this;
 
-				this.inconsistenciaTecnicaParametro.save();
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaParametro.inconsistenciaTecnica = this;
+
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaParametro.save();
 
 			}
 
             if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.QUESTIONARIO.name())) {
 
-				this.saveAnexos(this.anexos);
+				inconsisenciaTecnicaNova.saveAnexos(this.anexos);
 
-				this.inconsistenciaTecnicaQuestionario.inconsistenciaTecnica = this;
+				inconsisenciaTecnicaNova = this;
 
-				this.inconsistenciaTecnicaQuestionario.save();
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaQuestionario.inconsistenciaTecnica = this;
+
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaQuestionario.save();
 
             }
 
             if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO.name())) {
 
-				this.saveAnexos(this.anexos);
+				inconsisenciaTecnicaNova.saveAnexos(this.anexos);
 
-				this.inconsistenciaTecnicaDocumentoAdministrativo.inconsistenciaTecnica = this;
+				inconsisenciaTecnicaNova = this;
 
-				this.inconsistenciaTecnicaDocumentoAdministrativo.save();
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaDocumentoAdministrativo.inconsistenciaTecnica = this;
+
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaDocumentoAdministrativo.save();
 
             }
 
 			if (this.tipoDeInconsistenciaTecnica.equals(InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name())) {
 
-				this.saveAnexos(this.anexos);
+				inconsisenciaTecnicaNova.saveAnexos(this.anexos);
 
-				this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.inconsistenciaTecnica = this;
+				inconsisenciaTecnicaNova = this;
 
-				this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.save();
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaDocumentoTecnicoAmbiental.inconsistenciaTecnica = this;
+
+				inconsisenciaTecnicaNova.inconsistenciaTecnicaDocumentoTecnicoAmbiental.save();
 
 			}
 
@@ -198,7 +212,7 @@ public class InconsistenciaTecnica extends GenericModel{
 		TipoDocumento tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_INCONSISTENCIA_TECNICA);
 
 		if (this.anexos == null)
-		this.anexos = new ArrayList<>();
+			this.anexos = new ArrayList<>();
 
 		Iterator<Documento> docsCadastrados = anexos.iterator();
 		List<Documento> documentosDeletar = new ArrayList<>();
@@ -233,5 +247,37 @@ public class InconsistenciaTecnica extends GenericModel{
 		}
 
 		ModelUtil.deleteAll(documentosDeletar);
+	}
+
+	public String getTipoDeInconsistenciaTecnica() {
+		if (this.inconsistenciaTecnicaTipoLicenca != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.TIPO_LICENCA.name();
+		}
+
+		else if (this.inconsistenciaTecnicaAtividade != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.ATIVIDADE.name();
+		}
+
+		else if(this.inconsistenciaTecnicaParametro != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.PARAMETRO.name();
+		}
+
+		else if(this.inconsistenciaTecnicaQuestionario != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.QUESTIONARIO.name();
+		}
+
+		else if(this.inconsistenciaTecnicaDocumentoAdministrativo != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO.name();
+		}
+
+		else if(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental != null) {
+			tipoDeInconsistenciaTecnica = InconsistenciaTecnica.TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name();
+		}
+
+		else if (this.tipoDeInconsistenciaTecnica.equals(TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name())) {
+			inconsistenciaTecnicaDocumentoTecnicoAmbiental.findById(this.inconsistenciaTecnicaDocumentoTecnicoAmbiental.id)._delete();
+		}
+
+		return tipoDeInconsistenciaTecnica;
 	}
 }

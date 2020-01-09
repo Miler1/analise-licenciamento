@@ -16,6 +16,7 @@ public class InconsistenciaTecnicaSerializer {
 			"anexos.tipo.nome",
 			"anexos.tipo.id",
 			"analiseTecnica.id",
+			"analiseTecnica.analise",
 			"inconsistenciaTecnicaTipoLicenca.id",
 			"inconsistenciaTecnicaTipoLicenca.tipoLicenca.id",
 			"inconsistenciaTecnicaTipoLicenca.tipoLicenca.sigla",
@@ -36,5 +37,7 @@ public class InconsistenciaTecnicaSerializer {
 			"inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id",
 			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.id",
 			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id",
+			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.nome",
+			"inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.documento.id",
 			"tipoDeInconsistenciaTecnica");
 }

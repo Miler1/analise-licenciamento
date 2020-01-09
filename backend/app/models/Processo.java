@@ -409,14 +409,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 		}
 
-		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
 
 			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
 		}
 
-		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO)) {
+		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);

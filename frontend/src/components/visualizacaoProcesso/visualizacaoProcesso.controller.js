@@ -447,7 +447,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	};
 
-	this.visualizarJustificativas =  function(idProcesso, historico){
+	this.visualizarJustificativas = function(idProcesso, historico){
 
 		if(historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO){
 
@@ -465,7 +465,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 						abrirModal(response.data, idProcesso);
 					});
 
-		}else if(historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE){
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+				historico.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO){
 
 			parecerAnalistaTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
@@ -487,7 +488,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 		return tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.EMITIR_NOTIFICACAO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
