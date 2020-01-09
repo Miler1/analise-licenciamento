@@ -1,10 +1,7 @@
 package models;
 
 import exceptions.ValidacaoException;
-import models.licenciamento.SobreposicaoCaracterizacaoAtividade;
-import models.licenciamento.SobreposicaoCaracterizacaoComplexo;
-import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
-import models.licenciamento.StatusCaracterizacaoEnum;
+import models.licenciamento.*;
 
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import models.tramitacao.AcaoTramitacao;
@@ -12,6 +9,7 @@ import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
+import utils.Configuracoes;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -154,9 +152,17 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 				for (SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento : sobreposicoesCaracterizacaoEmpreendimento) {
 
-					if (sobreposicaoCaracterizacaoEmpreendimento != null){
+					if(sobreposicaoCaracterizacaoEmpreendimento != null) {
 
-						possuiComunicado = analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento, possuiComunicado);
+						for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis) {
+
+							if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
+
+								analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
+								possuiComunicado = true;
+							}
+
+						}
 					}
 
 				}
@@ -170,9 +176,17 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 				for (SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade : sobreposicoesCaracterizacaoAtividade) {
 
-					if(sobreposicaoCaracterizacaoAtividade != null){
+					if(sobreposicaoCaracterizacaoAtividade != null) {
 
-						possuiComunicado = analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade, possuiComunicado);
+						for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
+
+							if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
+
+								analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
+								possuiComunicado = true;
+							}
+
+						}
 					}
 
 				}
@@ -184,9 +198,17 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 				for (SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo : sobreposicoesCaracterizacaoComplexo) {
 
-					if(sobreposicaoCaracterizacaoComplexo != null){
+					if(sobreposicaoCaracterizacaoComplexo != null) {
 
-						possuiComunicado = analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoComplexo, possuiComunicado);
+						for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis) {
+
+							if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
+
+								analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
+								possuiComunicado = true;
+							}
+
+						}
 					}
 
 				}

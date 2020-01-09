@@ -418,72 +418,46 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
-    public Boolean enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Boolean possuiComunicado) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgaoResponsavel) throws Exception {
 
-        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis) {
+        List<String> destinatarios = new ArrayList<>();
+        destinatarios.add(orgaoResponsavel.email);
 
-            if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
+        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
+        comunicado.save();
+        comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
-                List<String> destinatarios = new ArrayList<>();
-                destinatarios.add(orgaoResponsavel.email);
-
-                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
-                comunicado.save();
-                comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
-
-                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
-                emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
-
-                possuiComunicado = true;
-            }
-        }
-
-        return possuiComunicado;
+        EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
+        emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
 
     }
 
-    public Boolean enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo, Boolean possuiComunicado) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo, Orgao orgaoResponsavel) throws Exception {
 
-        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis) {
+        List<String> destinatarios = new ArrayList<String>();
+        destinatarios.add(orgaoResponsavel.email);
 
-            if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
+        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
+        comunicado.save();
+        comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
-                List<String> destinatarios = new ArrayList<String>();
-                destinatarios.add(orgaoResponsavel.email);
+        EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
+        emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
 
-                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
-                comunicado.save();
-                comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
-
-                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
-                emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
-                possuiComunicado = true;
-            }
-        }
-
-        return possuiComunicado;
     }
 
-    public Boolean enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Boolean possuiComunicado) throws Exception {
+    public void enviarEmailComunicado(Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgaoResponsavel) throws Exception {
 
-        for (Orgao orgaoResponsavel : sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis) {
+        List<String> destinatarios = new ArrayList<String>();
+        destinatarios.add(orgaoResponsavel.email);
 
-            if (!orgaoResponsavel.sigla.equals(OrgaoEnum.IPHAN.codigo) && !orgaoResponsavel.sigla.equals(OrgaoEnum.IBAMA.codigo)) {
+        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
+        comunicado.save();
+        comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
-                List<String> destinatarios = new ArrayList<String>();
-                destinatarios.add(orgaoResponsavel.email);
+        EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
+        emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
 
-                Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
-                comunicado.save();
-                comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
-
-                EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
-                emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
-                possuiComunicado = true;
-            }
-        }
-
-        return possuiComunicado;
     }
 
     public void validaParecer(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
