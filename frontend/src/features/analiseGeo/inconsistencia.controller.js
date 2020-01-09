@@ -192,72 +192,66 @@ var InconsistenciaController = function ($scope,
 		inconsistenciaController.idCaracterizacao = idCaracterizacao ? idCaracterizacao : inconsistenciaController.buscarIdCaracterizacaoPorRestricao();
 		inconsistenciaController.idSobreposicao = idSobreposicao ? idSobreposicao : inconsistenciaController.idSobreposicao;
 
-		if(hasErrors()){
+		hasErrors();
 
-			return;
+		var restricao = _.find(dadosProjeto.restricoes, function(restricao) {
 
-		} else {
+			var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
+			
+			return sobreposicao.id === inconsistenciaController.idSobreposicao;
 
-			var restricao = _.find(dadosProjeto.restricoes, function(restricao) {
+		});
 
-				var sobreposicao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
-				
-				return sobreposicao.id === inconsistenciaController.idSobreposicao;
-	
+		restricao = restricao || {};
+
+		var inconsistencia = {
+			id: inconsistenciaController.inconsistenciaEdicao ? inconsistenciaController.inconsistenciaEdicao.id : null,
+			analiseGeo: {id: analiseGeo.id},
+			tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
+			descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
+			categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
+			anexos: inconsistenciaController.anexos,
+			caracterizacao: {id: inconsistenciaController.idCaracterizacao},
+			atividadeCaracterizacao: { id: inconsistenciaController.idAtividadeCaracterizacao },
+			geometriaAtividade: {id: idGeometriaAtividade},
+			sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
+			sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
+			sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
+		};
+
+		inconsistenciaService.salvarInconsistenciaGeo(inconsistencia)
+			.then(function(response){
+
+				mensagem.success("Inconsistência salva com sucesso!");
+
+				var retorno = {
+					inconsistencia: response.data,
+					isEdicao: inconsistencia.id !== undefined && inconsistencia.id !== null
+				};
+
+				var sobreposicao = retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade ? retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade : retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : retorno.inconsistencia.sobreposicaoCaracterizacaoComplexo;
+				var inconsistenciaValida = false;
+
+				if(sobreposicao) {
+
+					inconsistenciaValida = sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
+
+						return orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA;
+
+					});
+					
+				}
+
+				if(listaInconsistencias && inconsistenciaValida) {						
+					listaInconsistencias.push(retorno.inconsistencia);
+				}
+
+				$uibModalInstance.close(
+					retorno);
+
+			}).catch(function(response){
+				mensagem.error(response.data.texto, { referenceId: 5 });
 			});
-	
-			restricao = restricao || {};
-
-			var inconsistencia = {
-				id: inconsistenciaController.inconsistenciaEdicao ? inconsistenciaController.inconsistenciaEdicao.id : null,
-				analiseGeo: {id: analiseGeo.id},
-				tipoInconsistencia: inconsistenciaController.tipoInconsistencia,
-				descricaoInconsistencia: inconsistenciaController.descricaoInconsistencia,
-				categoria: categoriaInconsistencia ? categoriaInconsistencia : inconsistenciaController.categoriaInconsistencia,
-				anexos: inconsistenciaController.anexos,
-				caracterizacao: {id: inconsistenciaController.idCaracterizacao},
-				atividadeCaracterizacao: { id: inconsistenciaController.idAtividadeCaracterizacao },
-				geometriaAtividade: {id: idGeometriaAtividade},
-				sobreposicaoCaracterizacaoAtividade: restricao.sobreposicaoCaracterizacaoAtividade || null,
-				sobreposicaoCaracterizacaoEmpreendimento: restricao.sobreposicaoCaracterizacaoEmpreendimento || null,
-				sobreposicaoCaracterizacaoComplexo: restricao.sobreposicaoCaracterizacaoComplexo || null
-			};
-
-			inconsistenciaService.salvarInconsistenciaGeo(inconsistencia)
-				.then(function(response){
-
-					mensagem.success("Inconsistência salva com sucesso!");
-
-					var retorno = {
-						inconsistencia: response.data,
-						isEdicao: inconsistencia.id !== undefined && inconsistencia.id !== null
-					};
-
-					var sobreposicao = retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade ? retorno.inconsistencia.sobreposicaoCaracterizacaoAtividade : retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? retorno.inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : retorno.inconsistencia.sobreposicaoCaracterizacaoComplexo;
-					var inconsistenciaValida = false;
-
-					if(sobreposicao) {
-
-						inconsistenciaValida = sobreposicao.tipoSobreposicao.orgaosResponsaveis.every(function(orgao) {
-
-							return orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IPHAN || orgao.sigla.toUpperCase() === inconsistenciaController.orgaos.IBAMA;
-
-						});
-						
-					}
-
-					if(listaInconsistencias && inconsistenciaValida) {						
-						listaInconsistencias.push(retorno.inconsistencia);
-					}
-
-					$uibModalInstance.close(
-						retorno);
-
-				}).catch(function(response){
-					mensagem.error(response.data.texto, { referenceId: 5 });
-				});
-
-		}
 		
 	};
 
