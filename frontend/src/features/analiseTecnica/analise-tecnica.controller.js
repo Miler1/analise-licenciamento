@@ -246,7 +246,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.hasInconsistencias = function() {
 
         return (ctrl.analiseTecnica && ctrl.analiseTecnica.inconsistenciasTecnica.length > 0) ||
-                (ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null);
+                (ctrl.hasInconsistenciaVistoriaAdicionada());
 
     };
     
@@ -383,7 +383,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     
     ctrl.deletarInconsistenciaVistoria = function() {
 
-        if(ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria) {
+        if(ctrl.hasInconsistenciaVistoriaAdicionada()) {
             
             ctrl.parecer.vistoria.inconsistenciaVistoria = null;
 
@@ -395,6 +395,12 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         ctrl.deletarInconsistenciaVistoria();
         ctrl.semInconsistenciaVistoria = true;
+
+    };
+
+    ctrl.hasInconsistenciaVistoriaAdicionada = function() {
+
+        return ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null;
 
     };
 
@@ -1506,7 +1512,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             ctrl.analiseTecnica.inconsistenciasTecnica = ctrl.inconsistenciasAdicionadas;
 
-            if (ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null) {
+            if (ctrl.hasInconsistenciaVistoriaAdicionada()) {
 
                 ctrl.parecer.vistoria.inconsistenciaVistoria.inconsistenciaEncontrada = "Vistoria";
                 ctrl.parecer.vistoria.inconsistenciaVistoria.categoria = "Vistoria";
