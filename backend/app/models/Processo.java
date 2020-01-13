@@ -8,6 +8,7 @@ import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
+import org.hibernate.criterion.Restrictions;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.InterfaceTramitavel;
@@ -190,7 +191,14 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarAnaliseTecnicaAtiva(false);
 			processoBuilder.filtrarDesvinculoAnaliseTecnicaSemResposta();
 
+		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
+
 		}
+
+		processoBuilder.filtrarPorListaIdCondicao(filtroProcesso.listaIdCondicaoTramitacao);
 
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
@@ -300,15 +308,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		if (filtro.filtrarPorUsuario) {
-
-			processoBuilder.filtrarIdGerente(usuarioSessao.id);
-
-		}
-
 		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
 
 			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
+
+		}
+
+		if (filtro.filtrarPorUsuario) {
+
+			processoBuilder.filtrarIdGerente(usuarioSessao.id);
 
 		}
 

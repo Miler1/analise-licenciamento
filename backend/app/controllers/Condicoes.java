@@ -22,7 +22,8 @@ public class Condicoes extends InternalController {
 		if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
 
 			 condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
-					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO,
+							Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
 							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
