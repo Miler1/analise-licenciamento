@@ -30,7 +30,16 @@ COMMENT ON COLUMN analise.parecer_analista_tecnico.data IS 'Data do parecer tram
 COMMENT ON COLUMN analise.parecer_analista_tecnico.id_tipo_resultado_analise IS 'Tipo do resultado do parecer tramitado';
 COMMENT ON COLUMN analise.parecer_analista_tecnico.id_usuario_analista_tecnico IS 'Identificador do usuário analista técnico que realizou o parecer';
 
-
+CREATE SEQUENCE analise.parecer_analista_tecnico_id_seq
+    INCREMENT 1
+    MINVALUE 1
+    NO MAXVALUE
+    START 1
+    CACHE 1;
+ALTER TABLE analise.parecer_analista_tecnico ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.parecer_analista_tecnico_id_seq');
+ALTER TABLE analise.parecer_analista_tecnico_id_seq OWNER TO postgres;
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_analista_tecnico_id_seq TO licenciamento_am;
+SELECT setval('analise.parecer_analista_tecnico_id_seq', coalesce(max(id), 1)) FROM analise.parecer_analista_tecnico;
 
 CREATE TABLE analise.rel_documento_parecer_analista_tecnico (
     id_parecer_analista_tecnico integer NOT NULL,
