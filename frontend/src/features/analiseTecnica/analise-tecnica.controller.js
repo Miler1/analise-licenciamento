@@ -537,6 +537,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     var camposConclusaoValidos = function() {
 
         var valido = true;
+        ctrl.errors.doProcesso = false;
+        ctrl.errors.daAnaliseTecnica = false;
+        ctrl.errors.daConclusao = false;
 
         if(ctrl.parecer.doProcesso === null || ctrl.parecer.doProcesso === '' || ctrl.parecer.doProcesso === undefined) {
 
@@ -552,7 +555,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         }
 
-        if((ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) && (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO)) {
+        if((ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) && (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
             ctrl.errors.daConclusao = true;
             valido = false;

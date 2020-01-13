@@ -130,8 +130,8 @@ hr
                     tr
                         td.col-md-5 {{ condicionante.texto }}
                         td.col-md-2 {{ condicionante.prazo }}
-                        td.col-md-1
-                            i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir condicionante',
+                        td.col-md-1.text-right
+                            i.glyphicon.glyphicon-trash.pointer.posicao-excluir(title='Excluir condicionante',
                                     ng-bootbox-title='Confirmação',
                                     ng-bootbox-confirm='Deseja realmente excluir esta condicionante ?',
                                     ng-bootbox-confirm-action="ctrl.excluirCondicionante(condicionante)")
@@ -151,8 +151,8 @@ hr
                 tbody(ng-repeat="restricao in ctrl.parecer.restricoes")
                     tr
                         td.col-md-6 {{ restricao.texto }}
-                        td.col-md-1
-                            i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir restrição',
+                        td.col-md-1.text-right
+                            i.glyphicon.glyphicon-trash.pointer.posicao-excluir(title='Excluir restrição',
                                     ng-bootbox-title='Confirmação',
                                     ng-bootbox-confirm='Deseja realmente excluir esta restrição ?',
                                     ng-bootbox-confirm-action="ctrl.excluirRestricao(restricao)")
