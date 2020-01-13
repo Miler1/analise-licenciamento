@@ -203,6 +203,7 @@ modalCtrl.concluir = function() {
 
         inconsistenciaService.salvarInconsistenciaTecnica(params)
             .then(function(response){
+                
                 mensagem.success("Inconsistência salva com sucesso!");
                 $rootScope.$broadcast('atualizarMarcacaoInconsistencia', tipoDeInconsistenciaTecnica, response.data, index, indexParametro);
                 modalCtrl.fechar();
