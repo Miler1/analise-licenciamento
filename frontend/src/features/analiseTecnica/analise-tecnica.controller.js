@@ -1437,6 +1437,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 }
             });
 
+            ctrl.analiseTecnica.inconsistenciasTecnica = ctrl.inconsistenciasAdicionadas;
+
             if (ctrl.parecer.vistoria && ctrl.parecer.vistoria.inconsistenciaVistoria !== null) {
 
                 ctrl.parecer.vistoria.inconsistenciaVistoria.inconsistenciaEncontrada = "Vistoria";
