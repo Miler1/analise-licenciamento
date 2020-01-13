@@ -1,10 +1,12 @@
 package controllers;
 
 import exceptions.ValidacaoException;
+import models.AnaliseTecnica;
 import models.Inconsistencia;
 import models.InconsistenciaTecnica;
 import models.licenciamento.AtividadeCaracterizacao;
 import security.Acao;
+import serializers.AnaliseTecnicaSerializer;
 import serializers.InconsistenciaSerializer;
 import serializers.InconsistenciaTecnicaSerializer;
 import utils.Mensagem;
@@ -92,9 +94,11 @@ public class Inconsistencias extends InternalController{
 
         returnIfNull(inconsistenciaTecnica, "InconsistenciaTecnica");
 
+        InconsistenciaTecnica inconsistenciaTecnicaBanco = InconsistenciaTecnica.findById(inconsistenciaTecnica.id);
+
         inconsistenciaTecnica.excluiInconsistenciaTecnica();
 
-        renderText(Mensagem.INCONSISTENCIA_EXCLUIDA_SUCESSO.getTexto());
+        renderJSON(inconsistenciaTecnicaBanco.analiseTecnica, AnaliseTecnicaSerializer.findInfo);
 
     }
 
