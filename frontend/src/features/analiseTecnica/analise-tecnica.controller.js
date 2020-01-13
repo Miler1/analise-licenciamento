@@ -140,7 +140,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                         parametros: []
                     };
 
-                    ctrl.validarInconsistenciaAtividade(app.utils.InconsistenciaTecnica.ATIVIDADE, index, atividade);
+                    ctrl.validarInconsistenciaAtividade(app.utils.InconsistenciaTecnica.ATIVIDADE, index, atividade, ctrl.analiseTecnica);
                 });
                
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.QUESTIONARIO, ctrl.analiseTecnica);
@@ -148,17 +148,17 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 _.forEach(ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
                     _.forEach(atividade.atividade.parametros, function(parametro, indexParametro) {
 
-                        ctrl.validarInconsistenciaParametro(app.utils.InconsistenciaTecnica.PARAMETRO, parametro, index, indexParametro, atividade);
+                        ctrl.validarInconsistenciaParametro(app.utils.InconsistenciaTecnica.PARAMETRO, parametro, index, indexParametro, atividade,ctrl.analiseTecnica);
 
                     });
                 });
 
                 _.forEach(ctrl.analiseTecnica.analise.processo.caracterizacao.documentosEnviados, function(documentoAdministrativo, index){
-                    ctrl.validarInconsistenciaDocumentoAdministrativo(app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo, index);
+                    ctrl.validarInconsistenciaDocumentoAdministrativo(app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo, index, ctrl.analiseTecnica);
                 });
 
                 _.forEach(ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental, index){
-                    ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, index);
+                    ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, index, ctrl.analiseTecnica);
                 });
             }); 
     };
@@ -272,11 +272,11 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
-    ctrl.validarInconsistenciaAtividade = function(tipoDeInconsistenciaTecnica, index, atividade) {
+    ctrl.validarInconsistenciaAtividade = function(tipoDeInconsistenciaTecnica, index, atividade, analiseTecnica) {
 
         if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE){
 
-            inconsistenciaTecnica = _.find( ctrl.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+            inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
                 return inconsistenciaTecnica.inconsistenciaTecnicaAtividade !== null &&
                     inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id === atividade.id;
             });
@@ -291,11 +291,11 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         }       
     };
 
-    ctrl.validarInconsistenciaParametro = function(tipoDeInconsistenciaTecnica, parametro, indexAtividade, indexParametro, atividade) {
+    ctrl.validarInconsistenciaParametro = function(tipoDeInconsistenciaTecnica, parametro, indexAtividade, indexParametro, atividade, analiseTecnica) {
 
         if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO){
 
-            inconsistenciaTecnica = _.find( ctrl.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+            inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
                 return inconsistenciaTecnica.inconsistenciaTecnicaParametro !== null &&
                     inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id === parametro.id &&
                     inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao.id === atividade.id;
@@ -312,11 +312,11 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         }       
     };
 
-    ctrl.validarInconsistenciaDocumentoAdministrativo = function(tipoDeInconsistenciaTecnica, documento, index) {
+    ctrl.validarInconsistenciaDocumentoAdministrativo = function(tipoDeInconsistenciaTecnica, documento, index, analiseTecnica) {
 
         if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO){
 
-            inconsistenciaTecnica = _.filter( ctrl.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+            inconsistenciaTecnica = _.filter( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
                 if(inconsistenciaTecnica !== null){
                     return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo;
                 }
@@ -348,11 +348,11 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         }       
     };
 
-    ctrl.validarInconsistenciaDocumentoTecnicoAmbiental = function(tipoDeInconsistenciaTecnica, documento, index) {
+    ctrl.validarInconsistenciaDocumentoTecnicoAmbiental = function(tipoDeInconsistenciaTecnica, documento, index, analiseTecnica) {
 
         if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL){
 
-            inconsistenciaTecnica = _.filter( ctrl.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+            inconsistenciaTecnica = _.filter( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
                 if(inconsistenciaTecnica !== null){
                     return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental;
                 }
@@ -1153,7 +1153,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
                     }else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO){
 
-                        if (inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null && documento.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id){
+                        if (inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null && documento.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.documento.id){
                             ctrl.itemValidoLicenca.documentoAdministrativo[index] = false;
                             return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo;
                         }  
@@ -1171,28 +1171,28 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 inconsistenciaService.excluirInconsistenciaTecnica(inconsistenciaTecnica)
                     .then(function (response) {
 
-                        mensagem.success(response.data);
+                        mensagem.success("A inconsistência foi excluída com sucesso.");
                         
                         if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO){
                             if (parametro.id === inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id){
-                                ctrl.validarInconsistenciaParametro(tipoDeInconsistenciaTecnica, parametro, index, indexParametro, atividade);
+                                ctrl.validarInconsistenciaParametro(tipoDeInconsistenciaTecnica, parametro, index, indexParametro, atividade, response.data);
                             }
                         }else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE){
-                            if(atividadeCaracterizacao.id === inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id){
-                                ctrl.validarInconsistenciaAtividade(tipoDeInconsistenciaTecnica, index, atividade);
+                            if(atividade.id === inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id){
+                                ctrl.validarInconsistenciaAtividade(tipoDeInconsistenciaTecnica, index, atividade, response.data);
                             }
                         }else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO){
-                            if(atividadeCaracterizacao.id === inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id){
-                                ctrl.validarInconsistenciaDocumentoAdministrativo(tipoDeInconsistenciaTecnica, documentoAdministrativo, index);
+                            if(documento.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.documento.id){
+                                ctrl.validarInconsistenciaDocumentoAdministrativo(tipoDeInconsistenciaTecnica, documento, index, response.data);
                             }
                         }else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL){
-                            if(atividadeCaracterizacao.id === inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id){
-                                ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(tipoDeInconsistenciaTecnica, documentoTecnicoAmbiental, index); 
+                            if(documento.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id){
+                                ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(tipoDeInconsistenciaTecnica, documento, index, response.data); 
                             }
                         }
 
                     }).catch(function (response) {
-                    mensagem.error(response.data.texto);
+                    mensagem.error("Erro ao excluirinconsistência ");
 
                 });       
         });
@@ -1213,28 +1213,36 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     $rootScope.$on('atualizarMarcacaoInconsistencia', function(event, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, index, indexParametro) {
 
-        ctrl.analiseTecnica.inconsistenciasTecnica.push(inconsistenciaTecnica);
+        var analiseTecnica = null;
 
-        if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO) {
+        analiseTecnicaService.getAnaliseTecnica(ctrl.analiseTecnica.id)
+            .then(function(response){
+                
+                analiseTecnica = response.data;
         
-            ctrl.validarInconsistenciaParametro(tipoDeInconsistenciaTecnica, inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade, index, indexParametro, inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao);
-        
-        } else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE) {
+                analiseTecnica.inconsistenciasTecnica.push(inconsistenciaTecnica);
 
-            ctrl.validarInconsistenciaAtividade(tipoDeInconsistenciaTecnica, index, inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao);
+                if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO) {
+                
+                    ctrl.validarInconsistenciaParametro(tipoDeInconsistenciaTecnica, inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade, index, indexParametro, inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao, analiseTecnica);
+                
+                } else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE) {
 
-        } else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO) {
+                    ctrl.validarInconsistenciaAtividade(tipoDeInconsistenciaTecnica, index, inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao, analiseTecnica);
 
-            ctrl.validarInconsistenciaDocumentoAdministrativo(tipoDeInconsistenciaTecnica, inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo, index);
-        
-        } else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL) {
-           
-            ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(tipoDeInconsistenciaTecnica, inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos, index);
-        
-        } else {
-            ctrl.validarItensLicenca(tipoDeInconsistenciaTecnica, ctrl.analiseTecnica, index);
-        }
+                } else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO) {
 
+                    ctrl.validarInconsistenciaDocumentoAdministrativo(tipoDeInconsistenciaTecnica, inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo, index, analiseTecnica);
+                
+                } else if(tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL) {
+                
+                    ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(tipoDeInconsistenciaTecnica, inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos, index, analiseTecnica);
+                
+                } else {
+                    ctrl.validarItensLicenca(tipoDeInconsistenciaTecnica, ctrl.analiseTecnica, index);
+                }
+
+        }); 
     });
     
     ctrl.removerDocumentoAnaliseTecnica = function (indiceDocumento) {
