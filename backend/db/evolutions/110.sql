@@ -111,7 +111,16 @@ COMMENT ON COLUMN analise.rel_documento_inconsistencia_vistoria.id_documento IS 
 INSERT INTO analise.tipo_documento (id, nome, caminho_modelo, caminho_pasta, prefixo_nome_arquivo) 
     VALUES (27, 'Documentos inconsistência vistoria', null, 'documento_inconsistencia_vistoria', 'documento_inconsistencia_vistoria');
 
-
+CREATE SEQUENCE analise.vistoria_id_seq
+    INCREMENT 1
+    MINVALUE 1
+    NO MAXVALUE
+    START 1
+    CACHE 1;
+ALTER TABLE analise.vistoria ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.vistoria_id_seq');
+ALTER TABLE analise.vistoria_id_seq OWNER TO postgres;
+GRANT SELECT, USAGE ON SEQUENCE analise.vistoria_id_seq TO licenciamento_am;
+SELECT setval('analise.vistoria_id_seq', coalesce(max(id), 1)) FROM analise.vistoria;
 
 # --- !Downs
 
