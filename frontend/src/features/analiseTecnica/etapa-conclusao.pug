@@ -95,8 +95,8 @@ hr
             b {{ ctrl.tipoLicenca.validadeEmAnos }} anos
 
         .validade
-            label.control-label Validade permitida:
-            select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio")
+            label.control-label.obrigatorio Validade permitida:
+            select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio", ng-class="{ 'error-summernote': ctrl.errors.deferido.validade }")
                 option(value="1") 1 ano
                 option(value="2") 2 anos
                 option(value="3") 3 anos
@@ -128,7 +128,7 @@ hr
 
                 tbody(ng-repeat="condicionante in ctrl.parecer.condicionantes")
                     tr
-                        td.col-md-5 {{ condicionante.texto }}
+                        td.limite-texto {{ condicionante.texto }}
                         td.col-md-2 {{ condicionante.prazo }}
                         td.col-md-1.text-right
                             i.glyphicon.glyphicon-trash.pointer.posicao-excluir(title='Excluir condicionante',
@@ -150,7 +150,7 @@ hr
 
                 tbody(ng-repeat="restricao in ctrl.parecer.restricoes")
                     tr
-                    td.col-md-6 {{ restricao.texto }}
+                    td.limite-texto {{ restricao.texto }}
                     td.col-md-1.alinhamento-acao
                         i.glyphicon.glyphicon-trash.pointer.text-right(title='Excluir restrição',
                                 ng-bootbox-title='Confirmação',
