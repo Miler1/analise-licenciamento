@@ -1261,6 +1261,12 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
+    ctrl.cancelar = function(){
+
+        $location.path("/analise-tecnica");
+
+    };
+
     ctrl.getDocumentosAutoInfracao = function() {
         
         var documentoAutoInfracao = [];

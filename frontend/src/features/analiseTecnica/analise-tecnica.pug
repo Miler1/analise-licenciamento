@@ -27,9 +27,12 @@ div(ng-init="ctrl.init()")
 
     section.margin-bottom-xl.alone
 
-        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs.margin-top-md(ng-click="ctrl.cancelar()")
-            i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
-            | Cancelar
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs.margin-top-md(title='Cancelar análise',
+                                                                                    ng-bootbox-title='Confirmação',
+                                                                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                                                                    ng-bootbox-confirm-action="ctrl.cancelar()")
+            i.glyphicon.glyphicon-remove
+            | &nbsp;Cancelar 
 
         button.btn.btn-default.col-md-2.col-md-offset-0.margin-top-md(ng-if="ctrl.tabAtiva > 0", ng-click="ctrl.voltar()")
             | << Etapa anterior
