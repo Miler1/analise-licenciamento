@@ -561,22 +561,39 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     var parecerDeferidoValido = function() {
 
+        ctrl.errors.deferido.finalidade = false;
+        ctrl.errors.deferido.despacho = false;
+        ctrl.errors.deferido.validade = false;
+        
+        var hasError = false;
+
         if(ctrl.parecer.finalidadeAtividade === null || ctrl.parecer.finalidadeAtividade === '' || ctrl.parecer.finalidadeAtividade === undefined) {
 
             ctrl.errors.deferido.finalidade = true;
+            hasError = true;
 
         }
 
         if(ctrl.parecer.parecer === null || ctrl.parecer.parecer === '' || ctrl.parecer.parecer === undefined) {
 
             ctrl.errors.deferido.despacho = true;
+            hasError = true;
 
         }
 
-        return !Object.keys(ctrl.errors.deferido).forEach(function(campo) {
-            return ctrl.errors.deferido[campo];
-        });
+        if(ctrl.parecer.validadePermitida === null || ctrl.parecer.validadePermitida === '' || ctrl.parecer.validadePermitida === undefined) {
 
+            ctrl.errors.deferido.validade = true;
+            hasError = true;
+
+        }
+
+        if(hasError) {
+
+            return false;
+        }
+
+        return true;
     };
 
     var parecerIndeferidoValido = function() {
@@ -1367,7 +1384,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.DEFERIDO) {
 
-            ctrl.parecer.validadePermitida = ctrl.tipoLicenca.validadeEmAnos;
             parecerValido = parecerDeferidoValido();
 
         } else if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.INDEFERIDO) {
