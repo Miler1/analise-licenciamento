@@ -112,6 +112,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
                 ctrl.analiseTecnica = response.data;
                 ctrl.tipoLicenca = ctrl.analiseTecnica.analise.processo.caracterizacao.tipoLicenca;
+                ctrl.validadeAnos = ctrl.analiseTecnica.analise.processo.caracterizacao.vigenciaSolicitada;
                 ctrl.porteEmpreendimento = ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].porteEmpreendimento;
 
                 ctrl.parecer.analiseTecnica = {
