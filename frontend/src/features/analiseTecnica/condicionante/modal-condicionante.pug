@@ -15,7 +15,7 @@ div.corpo
 
     .prazo
         span.obrigatorio Prazo da condicionante em dias:
-        input.form-control(type="number", ng-class="{ 'error': modalCtrl.errors.prazo }", ng-model="modalCtrl.condicionante.prazo")
+        input.form-control(type="number", ng-class="{ 'error': modalCtrl.errors.prazo }", ng-model="modalCtrl.condicionante.prazo", min="0", oninput="validity.valid||(value='');")
 
 div.modal-footer
 
