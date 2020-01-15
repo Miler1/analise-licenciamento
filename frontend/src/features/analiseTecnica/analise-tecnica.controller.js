@@ -720,11 +720,11 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             ctrl.tabAtiva = ctrl.tabAtiva + 1;
 
+            ctrl.findInconsistenciasParaConclusao();
+
         } else {
 
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
-
-            ctrl.findInconsistenciasParaConclusao();
 
         }
 
