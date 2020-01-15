@@ -76,7 +76,7 @@
 									div
 										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasAnalise }}
 
-	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0 && modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
+	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0 && modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil && modalVisualizacaoProcessoCtrl.perfis.ANALISTA_TECNICO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
 		div(ng-if="modalVisualizacaoProcessoCtrl.processo.idCondicaoTramitacao !== modalVisualizacaoProcessoCtrl.comparaStatus.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
 			h4 Tramitação do protocolo
 
