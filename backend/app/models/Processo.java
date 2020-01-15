@@ -6,11 +6,14 @@ import com.vividsolutions.jts.geom.Geometry;
 import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.tramitacao.*;
 import org.hibernate.criterion.Restrictions;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.mvc.Scope;
+import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
@@ -775,6 +778,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
 		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
 		this.empreendimento.area = GeoCalc.area(this.empreendimento.coordenadas) / 1000;
+
+		UsuarioAnalise usuario = Auth.getUsuarioSessao();
+
+		if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
+
+			this.analise.analiseGeo.pareceresAnalistaGeo = this.analise.analiseGeo.pareceresAnalistaGeo.stream()
+					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.usuario.id.equals(usuario.id))
+					.collect(Collectors.toList());
+
+		}
 
 		return this;
 
