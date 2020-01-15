@@ -167,6 +167,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.validarAbas = function(abaDestino) {
 
+        ctrl.parecer.tipoResultadoAnalise.id = null;
+
         if(abaDestino === 1 && !ctrl.validarCampos()) {
 
             ctrl.tabAtiva = 0;
@@ -706,6 +708,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.voltar = function() {
 
         ctrl.tabAtiva = ctrl.tabAtiva - 1;
+        ctrl.parecer.tipoResultadoAnalise.id = null;
         window.scrollTo(0, 0);
 
     };

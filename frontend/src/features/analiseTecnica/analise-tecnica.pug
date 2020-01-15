@@ -15,7 +15,7 @@ div(ng-init="ctrl.init()")
     section.margin-bottom-md
 
         uib-tabset(active='ctrl.tabAtiva')
-            uib-tab(index="0", heading="Análise técnica")
+            uib-tab(index="0", heading="Análise técnica", ng-click="ctrl.validarAbas(0)")
                 div(ng-if='ctrl.tabAtiva === 0')
                     include tab-analise-tecnica
 
