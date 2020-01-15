@@ -155,7 +155,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     });
                 });
 
-                _.forEach(ctrl.analiseTecnica.analise.processo.caracterizacao.documentosEnviados, function(documentoAdministrativo, index){
+                _.forEach(ctrl.analiseTecnica.analise.processo.caracterizacao.solicitacoesDocumento, function(documentoAdministrativo, index){
                     ctrl.validarInconsistenciaDocumentoAdministrativo(app.utils.InconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo, index, ctrl.analiseTecnica);
                 });
 

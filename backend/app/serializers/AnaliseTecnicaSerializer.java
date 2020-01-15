@@ -35,6 +35,7 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.caracterizacao.solicitacoesDocumento.tipoDocumento.id",
 			"analise.processo.caracterizacao.solicitacoesDocumento.tipoDocumento.nome",
 			"analise.processo.caracterizacao.solicitacoesDocumento.tipoDocumento.tipoAnalise",
+			"analise.processo.caracterizacao.solicitacoesDocumento.documento.id",
 			"analise.processo.caracterizacao.documentosEnviados.id",
 			"analise.processo.caracterizacao.documentosEnviados.nome",
 			"analise.processo.caracterizacao.documentosEnviados.tipo.id",
