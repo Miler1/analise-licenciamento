@@ -5,12 +5,6 @@ DateUtil = {
         return moment(stringDate, 'DD/MM/yyyy').startOf('day')
             .diff(moment(Date.now()).startOf('day'), 'days');		
 	},
-
-	isAfter: function(dataInicial, dataFinal) {
-
-		return moment(dataInicial).isAfter(dataFinal);
-
-	},
 	
 	somaPrazoEmDias: function(date, prazo) {
 
