@@ -55,6 +55,7 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.caracterizacao.atividadesCaracterizacao.atividade.parametros.codigo",
 			"analise.processo.caracterizacao.atividadesCaracterizacao.porteEmpreendimento.nome",
 			"analise.processo.caracterizacao.atividadesCaracterizacao.atividadeCaracterizacaoParametros.valorParametro",
+			"analise.processo.caracterizacao.vigenciaSolicitada",
 			"inconsistenciasTecnica.id",
 			"inconsistenciasTecnica.analiseTecnica.id",
 			"inconsistenciasTecnica.analiseTecnica.analise",

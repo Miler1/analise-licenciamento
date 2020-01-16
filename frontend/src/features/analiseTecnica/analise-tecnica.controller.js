@@ -112,6 +112,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
                 ctrl.analiseTecnica = response.data;
                 ctrl.tipoLicenca = ctrl.analiseTecnica.analise.processo.caracterizacao.tipoLicenca;
+                ctrl.validadeAnos = ctrl.analiseTecnica.analise.processo.caracterizacao.vigenciaSolicitada;
                 ctrl.porteEmpreendimento = ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].porteEmpreendimento;
 
                 ctrl.parecer.analiseTecnica = {
@@ -164,6 +165,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     };
 
     ctrl.validarAbas = function(abaDestino) {
+
+        ctrl.parecer.tipoResultadoAnalise.id = null;
 
         if(abaDestino === 1 && !ctrl.validarCampos()) {
 
@@ -536,6 +539,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     var camposConclusaoValidos = function() {
 
         var valido = true;
+        ctrl.errors.doProcesso = false;
+        ctrl.errors.daAnaliseTecnica = false;
+        ctrl.errors.daConclusao = false;
 
         if(ctrl.parecer.doProcesso === null || ctrl.parecer.doProcesso === '' || ctrl.parecer.doProcesso === undefined) {
 
@@ -551,7 +557,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         }
 
-        if((ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) && (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO)) {
+        if((ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) && (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
             ctrl.errors.daConclusao = true;
             valido = false;
@@ -564,22 +570,39 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     var parecerDeferidoValido = function() {
 
+        ctrl.errors.deferido.finalidade = false;
+        ctrl.errors.deferido.despacho = false;
+        ctrl.errors.deferido.validade = false;
+        
+        var hasError = false;
+
         if(ctrl.parecer.finalidadeAtividade === null || ctrl.parecer.finalidadeAtividade === '' || ctrl.parecer.finalidadeAtividade === undefined) {
 
             ctrl.errors.deferido.finalidade = true;
+            hasError = true;
 
         }
 
         if(ctrl.parecer.parecer === null || ctrl.parecer.parecer === '' || ctrl.parecer.parecer === undefined) {
 
             ctrl.errors.deferido.despacho = true;
+            hasError = true;
 
         }
 
-        return !Object.keys(ctrl.errors.deferido).forEach(function(campo) {
-            return ctrl.errors.deferido[campo];
-        });
+        if(ctrl.parecer.validadePermitida === null || ctrl.parecer.validadePermitida === '' || ctrl.parecer.validadePermitida === undefined) {
 
+            ctrl.errors.deferido.validade = true;
+            hasError = true;
+
+        }
+
+        if(hasError) {
+
+            return false;
+        }
+
+        return true;
     };
 
     var parecerIndeferidoValido = function() {
@@ -684,6 +707,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.voltar = function() {
 
         ctrl.tabAtiva = ctrl.tabAtiva - 1;
+        ctrl.parecer.tipoResultadoAnalise.id = null;
         window.scrollTo(0, 0);
 
     };
@@ -1384,7 +1408,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.DEFERIDO) {
 
-            ctrl.parecer.validadePermitida = ctrl.tipoLicenca.validadeEmAnos;
             parecerValido = parecerDeferidoValido();
 
         } else if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.INDEFERIDO) {
