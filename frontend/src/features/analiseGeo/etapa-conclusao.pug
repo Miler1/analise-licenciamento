@@ -66,10 +66,10 @@ div
 
                             a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                                 i.glyphicon.glyphicon-trash
-        i.info-sem-dados-para-exibir(style="color:red; display:flex;", ng-if="ctrl.isPdf === true || ctrl.getDocumentosAnaliseTemporal().length > 1") Permitido apenas upload de 1 arquivo com extensão .pdf                      
+        i.info-sem-dados-para-exibir(style="color:red; display:flex;", ng-if="ctrl.errors.isPdf === true || ctrl.getDocumentosAnaliseTemporal().length > 1") Permitido apenas upload de 1 arquivo com extensão .pdf                      
 
 div(style="padding-top:15px;")
-    label.obrigatorio(style="font-size:13px") Conclusão: 
+    label(style="font-size:13px", ng-class="{'obrigatorio': ctrl.analiseGeo.inconsistencias.length === 0 }") Conclusão:
     br
     div(ng-class="{'error-summernote': ctrl.errors.conclusao === true}")
         summernote.form-control(id="conclusao",

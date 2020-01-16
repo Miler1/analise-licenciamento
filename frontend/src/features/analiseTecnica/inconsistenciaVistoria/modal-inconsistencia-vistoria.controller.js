@@ -2,29 +2,42 @@ var ModalInconsistenciaVistoriaController = function (
     $uibModalInstance,
     $rootScope,
     documentoService,
-    tamanhoMaximoArquivoAnaliseMB,
     uploadService,
     inconsistenciaVistoria,
-    inconsistenciaVistoriaService,
     mensagem) {
 
     var modalCtrl = this;
 
     modalCtrl.inconsistenciaVistoria = inconsistenciaVistoria;
-    modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
-    modalCtrl.labelModal = inconsistenciaVistoria.id ? 'Editar' : 'Adicionar';
+    modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB = 25;
+    modalCtrl.labelModal = inconsistenciaVistoria.descricaoInconsistencia ? 'Editar' : 'Adicionar';
 
     modalCtrl.errors = {
 
-        descricaoInconsistencia: false
+        descricaoInconsistencia: false,
+        tipoInconsistencia: false
+
+    };
+
+    modalCtrl.limparErrosInconsistenciaVistoria = function() {
+
+        modalCtrl.errors = {
+
+            descricaoInconsistencia: false,
+            tipoInconsistencia: false
+    
+        };
 
     };
 
     modalCtrl.fechar = function () {
+
+        modalCtrl.limparErrosInconsistenciaVistoria();
         $uibModalInstance.dismiss('cancel');
+        
     };
 
-    modalCtrl.init = function(){};
+    modalCtrl.init = function() {};
 
     modalCtrl.upload = function(file, invalidFile) {
 
@@ -33,20 +46,20 @@ var ModalInconsistenciaVistoriaController = function (
             uploadService.save(file)
                 .then(function(response) {
 
-                    modalCtrl.inconsistenciaVistoria.anexos.push({
+                    modalCtrl.inconsistenciaVistoria.anexos.push(
+                        {
                             key: response.data,
                             nomeDoArquivo: file.name,
                             tipo: {
                                 id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA_VISTORIA
                             }
                         });
-                                       
                     }, function(error){
-                        mensagem.error(error.data.texto);
+                        mensagem.error(error.data.texto, {referenceId: 5});
                     });
 
         } else if(invalidFile && invalidFile.$error === 'maxSize'){
-            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+            mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB + 'MB', {referenceId: 5});
         }
 
     };
@@ -77,9 +90,11 @@ var ModalInconsistenciaVistoriaController = function (
             
             modalCtrl.errors.descricaoInconsistencia = true;
 
-        }else {
+        }
 
-            modalCtrl.errors.descricaoInconsistencia = false;
+        if(!modalCtrl.inconsistenciaVistoria.tipoInconsistencia || modalCtrl.inconsistenciaVistoria.tipoInconsistencia === ''){
+            
+            modalCtrl.errors.tipoInconsistencia = true;
 
         }
 
@@ -91,23 +106,15 @@ var ModalInconsistenciaVistoriaController = function (
 
     modalCtrl.concluir = function() {
 
-        if(!inconsistenciaValida()){
+        if(inconsistenciaValida()){
 
-            return;
+            $rootScope.$broadcast('adicionarInconsistenciaVistoria', modalCtrl.inconsistenciaVistoria);
+            modalCtrl.limparErrosInconsistenciaVistoria();
+            modalCtrl.fechar();
 
-        }else{
+        } else {
 
-            inconsistenciaVistoriaService.salvar(modalCtrl.inconsistenciaVistoria)
-                .then(function(response){
-
-                    mensagem.success("Inconsistência salva com sucesso!");
-                    $rootScope.$broadcast('buscarInconsistenciaVistoria', response.data);
-
-                    modalCtrl.fechar();
-
-                }).catch(function(response){
-                    mensagem.error(response.data.texto, {referenceId: 5});
-                });
+            mensagem.error("Preencha os campos obrigatórios para adicionar a inconsistência.", {referenceId: 5});
 
         }
 

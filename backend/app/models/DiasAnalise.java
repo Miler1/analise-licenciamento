@@ -4,6 +4,7 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
+import security.Acao;
 import utils.DateUtil;
 import javax.persistence.*;
 import javax.validation.ValidationException;
@@ -58,13 +59,14 @@ public class DiasAnalise extends GenericModel{
 	private static Integer verificaUltimaTramitacaoAnaliseGeo(List<HistoricoTramitacao> historicoTramitacao) {
 
 		HistoricoTramitacao ultimaTramitacao = historicoTramitacao.stream()
-				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
+				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO))
 				.max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 		int dias = 0;
 
-		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
+		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
 
 			final Date ultimoDeferirOuIndeferir = ultimaTramitacao.dataInicial;
 
@@ -96,12 +98,12 @@ public class DiasAnalise extends GenericModel{
 
 	private static Integer tempoCongelamentoAnaliseGeo(List<HistoricoTramitacao> historicoTramitacao) {
 
-		Date dataParecerAnalistaGeo = null;
-		Date dataDesvinculoAnalistaGeo = null;
+		Date dataTramitacaoInicial = null;
 		int dias = 0;
 
 		boolean temTramitacao = historicoTramitacao.stream()
-				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
+				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO));
 
@@ -109,21 +111,25 @@ public class DiasAnalise extends GenericModel{
 
 			for (HistoricoTramitacao tramitacao : historicoTramitacao) {
 
-				if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
+				if(tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO)) {
 
-					dataParecerAnalistaGeo = tramitacao.dataInicial;
+					dataTramitacaoInicial = tramitacao.dataInicial;
 
-				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE) && dataParecerAnalistaGeo != null) {
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
 
-					dias += DateUtil.getDiferencaEmDias(dataParecerAnalistaGeo, tramitacao.dataInicial);
+					dataTramitacaoInicial = tramitacao.dataInicial;
+
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE) && dataTramitacaoInicial != null) {
+
+					dias += DateUtil.getDiferencaEmDias(dataTramitacaoInicial, tramitacao.dataInicial);
 
 				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
 
-					dataDesvinculoAnalistaGeo = tramitacao.dataInicial;
+					dataTramitacaoInicial = tramitacao.dataInicial;
 
-				} else if (tramitacao.idAcao.equals(AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO) && dataDesvinculoAnalistaGeo != null) {
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO) && dataTramitacaoInicial != null) {
 
-					dias += DateUtil.getDiferencaEmDias(dataDesvinculoAnalistaGeo, tramitacao.dataInicial);
+					dias += DateUtil.getDiferencaEmDias(dataTramitacaoInicial, tramitacao.dataInicial);
 
 				}
 
@@ -204,7 +210,7 @@ public class DiasAnalise extends GenericModel{
 
 	private static Integer tempoCongelamentoAnaliseTecnica(List<HistoricoTramitacao> historicoTramitacao) {
 
-		Date dataDesvinculoAnalistaTecnico = null;
+		Date dataTramitacaoInicial = null;
 		int dias = 0;
 
 		boolean temTramitacao = historicoTramitacao.stream()
@@ -216,11 +222,11 @@ public class DiasAnalise extends GenericModel{
 
 				if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
 
-					dataDesvinculoAnalistaTecnico = tramitacao.dataInicial;
+					dataTramitacaoInicial = tramitacao.dataInicial;
 
-				} else if (tramitacao.idAcao.equals(AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO) && dataDesvinculoAnalistaTecnico != null) {
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO) && dataTramitacaoInicial != null) {
 
-					dias += DateUtil.getDiferencaEmDias(dataDesvinculoAnalistaTecnico, tramitacao.dataInicial);
+					dias += DateUtil.getDiferencaEmDias(dataTramitacaoInicial, tramitacao.dataInicial);
 
 				}
 

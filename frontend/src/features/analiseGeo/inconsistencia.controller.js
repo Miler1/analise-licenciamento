@@ -278,7 +278,7 @@ var InconsistenciaController = function ($scope,
 			className: "btn-success",
 			callback: function() {
 
-				inconsistenciaService.excluirInconsistencia(inconsistencia.id)
+				inconsistenciaService.excluirInconsistenciaGeo(inconsistencia.id)
 					.then(function (response) {
 						mensagem.success(response.data);
 

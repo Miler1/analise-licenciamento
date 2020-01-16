@@ -31,7 +31,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.notificacao.retificacaoSolicitacao = null;
 	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	ctrl.notificacao.prazoNotificacao = null;
-	ctrl.isPdf = false;
+	ctrl.errors = {
+		isPdf: false
+	};
 	ctrl.tiposUpload = app.utils.TiposUpload;
 	ctrl.labelDadosProjeto = '';
 	ctrl.openedAccordionEmpreendimento = false;
@@ -547,9 +549,45 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 						});
 
-					});
+						var bounds = new L.latLngBounds();
 
-					$scope.$emit('mapa:centralizar-mapa');
+						if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
+
+							ctrl.camadasDadosEmpreendimento.forEach(function(camada) {
+	
+								camada.geometrias.forEach(function(geometriaEmpreendimento) {
+	
+									bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
+	
+								});
+	
+							});
+	
+						} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
+	
+							ctrl.dadosProjeto.complexo.geometrias.forEach(function(geometriaComplexo) {
+	
+								bounds.extend(L.geoJSON(JSON.parse(geometriaComplexo.geometria)).getBounds());
+	
+							});
+	
+						} else {
+	
+							ctrl.dadosProjeto.atividades.forEach(function(atividade) {
+	
+								atividade.geometrias.forEach(function(geometriaAtividade) {
+	
+									bounds.extend(L.geoJSON(JSON.parse(geometriaAtividade.geometria)).getBounds());
+	
+								});
+	
+							});
+							
+						}
+	
+						$scope.$emit('mapa:centralizar-geometrias', bounds);
+
+					});
 
 			});
 
@@ -692,7 +730,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			sobreposicaoCaracterizacaoComplexo: inconsistencia.sobreposicaoCaracterizacaoComplexo
 		};
 
-		inconsistenciaService.findInconsistencia(params)
+		inconsistenciaService.findInconsistenciaGeo(params)
 		.then(function(response){
 
 			var inconsistencia = response.data;
@@ -739,21 +777,33 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	};
 
+	$scope.addInconsistenciaPropriedade = function(categoriaInconsistencia){
+
+		params = {
+			categoria: categoriaInconsistencia,
+			analiseGeo: {id: analiseGeo.id}
+		};
+
+		inconsistenciaService.findInconsistenciaById(inconsistencia.id)
+		.then(function(response){
+
+			var inconsistencia = response.data;
+
+			openModal(ctrl.analiseGeo, inconsistencia.categoria, inconsistencia, null, null, null, ctrl.dadosProjeto, null);
+
+		});
+
+	};
+
 	$scope.addInconsistencia = function() {
 
 		openModal(ctrl.analiseGeo, null, null, null, null, null, ctrl.dadosProjeto, ctrl.listaInconsistencias);
 
 	};
 
-	$scope.excluirInconsistencia = function(idInconsistencia) {
+	$scope.excluirInconsistenciaGeo = function(idInconsistencia) {
 
-		var index = ctrl.listaInconsistencias.findIndex(function(inconsistencia) { 
-			return inconsistencia.id === idInconsistencia;
-		});
-
-		ctrl.listaInconsistencias.splice(index, 1);
-	
-		inconsistenciaService.excluirInconsistencia(idInconsistencia)
+		inconsistenciaService.excluirInconsistenciaGeo(idInconsistencia)
 			.then(function (response) {
 				mensagem.success(response.data);
 
@@ -863,11 +913,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.upload = function(file, invalidFile, tipoUpload) {
 
 		if(invalidFile){
-			ctrl.isPdf = true;
+			ctrl.errors.isPdf = true;
 		}
 
 		if(file) {
-			  ctrl.isPdf = false;
+			  ctrl.errors.isPdf = false;
 				uploadService.save(file)
 						.then(function(response) { 
 

@@ -17,24 +17,27 @@ div(ng-init="ctrl.init()")
         uib-tabset(active='ctrl.tabAtiva')
             uib-tab(index="0", heading="Análise técnica")
                 div(ng-if='ctrl.tabAtiva === 0')
-                    //- include analiseGeo/analise-tecnica
+                    include tab-analise-tecnica
 
-            uib-tab(index="1", heading="Vistoria")
+            uib-tab(index="1", heading="Vistoria", ng-click="ctrl.validarAbas(1)")
                 include tab-vistoria
 
-            uib-tab(index="2", heading="Conclusão da análise")
-                //- parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
+            uib-tab(index="2", heading="Conclusão da análise", ng-click="ctrl.validarAbas(2)")
+                include etapa-conclusao
 
     section.margin-bottom-xl.alone
 
-        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs(ng-click="ctrl.cancelar()")
-            i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
-            | Cancelar
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs.margin-top-md(title='Cancelar análise',
+                                                                                    ng-bootbox-title='Confirmação',
+                                                                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                                                                    ng-bootbox-confirm-action="ctrl.cancelar()")
+            i.glyphicon.glyphicon-remove
+            | &nbsp;Cancelar 
 
-        button.btn.btn-default.col-md-2.col-md-offset-0(ng-if="ctrl.tabAtiva > 0", ng-click="ctrl.tabAtiva = ctrl.tabAtiva - 1")
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-top-md(ng-if="ctrl.tabAtiva > 0", ng-click="ctrl.voltar()")
             | << Etapa anterior
 
-        button.btn.btn-success.pull-right.col-md-2(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 2")
+        button.btn.btn-success.pull-right.col-md-2.margin-top-md(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 2")
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
 
@@ -42,11 +45,11 @@ div(ng-init="ctrl.init()")
         //-     i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
         //-     | Salvar
 
-        button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO && ctrl.validarAnalise()" ng-click="ctrl.downloadPDFNotificacao()")
+        button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO" ng-click="ctrl.downloadPDFNotificacao()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
             | Visualizar notificação
 
-        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.avancar()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
+        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs.margin-top-md(ng-click="ctrl.avancar()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
             | Próxima etapa
 

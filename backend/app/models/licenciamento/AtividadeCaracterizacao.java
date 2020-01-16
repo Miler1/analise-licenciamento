@@ -1,5 +1,6 @@
 package models.licenciamento;
 
+import models.InconsistenciaTecnicaQuestionario;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;

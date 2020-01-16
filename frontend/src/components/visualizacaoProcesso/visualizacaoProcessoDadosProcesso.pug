@@ -70,13 +70,13 @@
 							.col-xs-4.col-md-4.text-center
 								span Análise técnica
 									div(ng-class="{'error-message': modalVisualizacaoProcessoCtrl.dateUtil.verificaPrazoMinimo(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica, modalVisualizacaoProcessoCtrl.PrazoAnalise.ANALISE_TECNICA)}")
-										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica }}
+										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica ? modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasTecnica : 0 }}
 							.col-xs-4.col-md-4.text-center
 								span Análise total
 									div
 										b {{ modalVisualizacaoProcessoCtrl.dadosProcesso.analise.diasAnalise.qtdeDiasAnalise }}
 
-	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0")
+	div(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao.length > 0 && modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil && modalVisualizacaoProcessoCtrl.perfis.ANALISTA_TECNICO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil")
 		div(ng-if="modalVisualizacaoProcessoCtrl.comparaStatus() ")
 			h4 Tramitação do protocolo
 

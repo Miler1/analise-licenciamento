@@ -140,6 +140,12 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 			}, true);
 	}
 
+	cxEntGerente.prazoAnaliseTecnica = function(processo) {
+
+		return processo.dataConclusaoAnaliseTecnica ? 'Concluída' : (processo.diasAnaliseTecnica !== null && processo.diasAnaliseTecnica !== undefined ? processo.diasAnaliseTecnica : '-');
+
+	};
+
 	cxEntGerente.atenderSolicitacaoDesvinculo =  function(processo){
 
 		var modalInstance = $uibModal.open({

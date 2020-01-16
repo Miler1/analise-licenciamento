@@ -15,7 +15,7 @@ public class Condicao extends GenericModel {
 	public static final Long AGUARDANDO_VINCULACAO_JURIDICA = 1l;
 	public static final Long AGUARDANDO_ANALISE_JURIDICA = 2l;
 	public static final Long EM_ANALISE_JURIDICA = 3l;
-	public static final Long NOTIFICADO = 4l;
+	public static final Long NOTIFICADO_PELO_ANALISTA_GEO = 4l;
 	public static final Long AGUARDANDO_VALIDACAO_JURIDICA = 5l;
 	public static final Long ARQUIVADO = 6l;
 	public static final Long AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE = 7l;
@@ -40,6 +40,7 @@ public class Condicao extends GenericModel {
 	public static final Long AGUARDANDO_RESPOSTA_COMUNICADO = 32l;
 	public static final Long SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA = 33l;
 	public static final Long ANALISE_FINALIZADA = 34l;
+	public static final Long NOTIFICADO_PELO_ANALISTA_TECNICO= 35l;
 
 	@Id
 	@Column(name = "ID_CONDICAO")

@@ -1,0 +1,13 @@
+include pergunta-radio
+
+mixin perguntaSimNao(texto, labelClass, model, ngDisabled)
+	+tituloPergunta(texto, labelClass)
+
+	.row
+		label.label-radio
+			input.margin-radio(type='radio', name='tipoCaracterizacaoRadio', ng-value='true', ng-model=model)
+			| Sim
+	.row
+		label.label-radio
+			input.margin-radio(type='radio', name='tipoCaracterizacaoRadio', ng-value='false', ng-model=model)
+			| Não

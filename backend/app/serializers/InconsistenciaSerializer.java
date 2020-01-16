@@ -38,5 +38,38 @@ public class InconsistenciaSerializer {
             "geometriaAtividade.id",
             "caracterizacao",
             "geometriaAtividade",
-            "analiseGeo.id");
+            "analiseGeo.id",
+            "tipoDeInconsistenciaTecnica");
+
+    public static JSONSerializer findInconsistenciaTecnica = SerializerUtil.create(
+
+            "id",
+            "tipoInconsistencia",
+            "descricaoInconsistencia",
+            "anexos.id",
+            "anexos.nomeDoArquivo",
+            "anexos.caminho",
+            "anexos.tipo",
+            "anexos.tipo.nome",
+            "anexos.tipo.id",
+            "analiseTecnica.id",
+            "inconsistenciaTecnicaTipoLicenca.id",
+            "inconsistenciaTecnicaTipoLicenca.tipoLicenca.id",
+            "inconsistenciaTecnicaTipoLicenca.tipoLicenca.nome",
+            "inconsistenciaTecnicaAtividade.id",
+            "inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id",
+            "inconsistenciaTecnicaAtividade.atividadeCaracterizacao.atividade.id",
+            "inconsistenciaTecnicaAtividade.atividadeCaracterizacao.atividade.nome",
+            "inconsistenciaTecnicaParametro.id",
+            "inconsistenciaTecnicaParametro.parametroAtividade.nome",
+            "inconsistenciaTecnicaParametro.parametroAtividade.codigo",
+            "inconsistenciaTecnicaQuestionario.id",
+            "inconsistenciaTecnicaQuestionario.questionario.id",
+            "inconsistenciaTecnicaDocumentoAdministrativo.id",
+            "inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id",
+            "inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.tipoDocumento.nome",
+            "inconsistenciaTecnicaDocumentoTecnicoAmbiental.id",
+            "inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id",
+            "tipoDeInconsistenciaTecnica");
+
 }

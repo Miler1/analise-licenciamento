@@ -121,7 +121,6 @@ public class VerificarNotificacoes extends GenericJob {
 							
 							licencaAnalise._save();
 							
-							licencaAnalise.saveCondicionantes();
 							licencaAnalise.saveRecomendacoes();
 						}
 						

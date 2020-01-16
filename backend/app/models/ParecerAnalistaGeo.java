@@ -129,7 +129,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
 
 		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
-		Boolean possuiComunicado = false;
+		boolean possuiComunicado = false;
 		
 		validarParecer();
 		validarTipoResultadoAnalise();
@@ -219,12 +219,14 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 				this.aguardarResposta(usuarioExecutor);
 				analiseGeoBanco.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);
+
 			} else {
 
 				gerente.save();
 
 				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
+
 			}
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
@@ -249,7 +251,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 			analiseGeoBanco.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseGeo.documentos);
 			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, this.analiseGeo.analise.processo.numero);
 
-			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.NOTIFICAR, usuarioExecutor, "Notificado");
+			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO, usuarioExecutor, "Notificado");
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		}

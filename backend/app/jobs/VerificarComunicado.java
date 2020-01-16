@@ -45,7 +45,7 @@ public class VerificarComunicado extends GenericJob {
 
 		for (AnaliseGeo analiseGeo:analisesGeoComunicado) {
 
-			Boolean podeTramitar = true;
+			boolean podeTramitar = true;
 
 			List<Comunicado> comunicadosAnalise = Comunicado.findByAnaliseGeo(analiseGeo.id);
 

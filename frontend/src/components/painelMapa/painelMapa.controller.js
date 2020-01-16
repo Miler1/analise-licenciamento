@@ -220,7 +220,20 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 		} else {
 
-			painelMapa.listaGeometriasBase[shape.tipo][item] = L.geoJSON(shape.geometria, shape.estilo);
+			var estilo = shape.estilo;
+
+			if(shape.geometria && shape.geometria.type.toLowerCase() === 'linestring') {
+
+				estilo = {
+					style: {
+						color: "#ffd700",
+						weight: 2
+					}
+				};
+
+			}
+
+			painelMapa.listaGeometriasBase[shape.tipo][item] = L.geoJSON(shape.geometria, estilo);
 
 			if(shape.popupText){
 
@@ -283,6 +296,14 @@ var PainelMapaController = function ($scope, wmsTileService) {
 	$scope.$on('mapa:inserirGeometria', atualizarMapa);
 
 	$scope.$on('mapa:centralizar-mapa', centralizaGeometriasBase);
+
+	$scope.$on('mapa:centralizar-geometrias', centralizaGeometrias);
+
+	function centralizaGeometrias(evt, bounds) {
+
+		painelMapa.map.fitBounds(bounds);
+
+	}
 
 	// Função para esconder geometrias nao basicas do mapa
 	function esconderGeometriasNaoBaseMapa(){
