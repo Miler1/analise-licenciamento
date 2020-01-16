@@ -13,10 +13,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
-import utils.ListUtil;
-import utils.Mensagem;
-import utils.ModelUtil;
+import utils.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -672,15 +669,21 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
-	public Documento gerarPDFParecer() throws Exception {
+	public Documento gerarPDFParecer(ParecerAnalistaTecnico parecerAnalistaTecnico) throws Exception {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
+
+		List<Condicionante> condicionantes = Condicionante.findByIdParecer(parecerAnalistaTecnico.id);
+		List<Restricao> restricoes = Restricao.findByIdParecer(parecerAnalistaTecnico.id);
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseEspecifica", this)
-				.addParam("analiseArea", "ANALISE_TECNICA")
-				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+				.addParam("parecer", parecerAnalistaTecnico)
+				.addParam("condicionantes", condicionantes)
+				.addParam("restricoes", restricoes)
+				.addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
 		pdf.generate();
 

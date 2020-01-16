@@ -5,6 +5,7 @@ import play.db.jpa.GenericModel;
 import utils.Mensagem;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema="analise", name="restricao")
@@ -44,6 +45,14 @@ public class Restricao extends GenericModel {
 		this._delete();
 
 		return Mensagem.RESTRICAO_EXCLUIDA_SUCESSO.getTexto();
+
+	}
+
+	public static List<Restricao> findByIdParecer(Long parecerAnalistaTecnicoId){
+
+		List<Restricao> restricoes = Condicionante.find("id_parecer_analista_tecnico", parecerAnalistaTecnicoId).fetch();
+
+		return restricoes;
 
 	}
 

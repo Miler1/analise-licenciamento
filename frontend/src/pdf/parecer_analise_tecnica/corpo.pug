@@ -1,0 +1,172 @@
+doctype html
+html(lang="pt-br")
+    head
+        meta(charset='utf-8')
+        title Análise - Licenciamento Ambiental - Amazonas
+        link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+        style.
+            * {
+                margin: 0;
+                padding:0;
+            }
+
+            .titulo{
+                text-align: center;
+            }
+
+            .conteudo {
+                margin: 20px 20px 20px 60px;
+            }
+
+            .titulo-item {
+                text-decoration:underline;
+                margin: 10px 20px 10px 60px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .conteudo-item {
+                font-size: 14px;
+                font-weight: normal;
+            }
+
+            td {
+                border: 1px solid black;
+            }
+
+            p {
+                padding-top: 15px;
+            }
+
+            .lista-conteudo {
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .margem-titulo {
+                margin-top: 40px;
+            }
+
+            .lista-referencias {
+                font-size: 10px;
+                padding-top: 100px;
+                padding-left: 15px;
+            }
+
+            .lista-itens {
+                padding-left: 100px;
+                padding-right: 100px;
+                padding-top: 10px
+            }
+
+            .lista-itens-restricao {
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+
+            .col-item-titulo {
+                width: 230px;
+            }
+
+            .col-item-conteudo {
+                width: 200px;
+                text-align: right;
+            }
+
+            .text-align-right {
+                text-align: right;
+            }
+
+            .margin-left-none {
+                margin-left: 0;
+            }
+
+            .margin-right-none {
+                margin-right: 0;
+            }
+
+body.corpo
+    div.titulo
+        h2 PARECER TÉCNICO Nº ${analiseEspecifica.analise.processo.numero}
+    div.conteudo
+        h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
+        h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+
+        ol.lista-conteudo
+
+            li
+                .titulo-item DO PROCESSO
+                .conteudo-item
+                    |\#{verbatim}${parecer.doProcesso}\#{/verbatim}
+
+            li
+                .titulo-item DA ANÁLISE TÉCNICA
+                .conteudo-item
+                    |\#{verbatim}${parecer.daAnaliseTecnica}\#{/verbatim}
+
+            li
+                .titulo-item DA CONCLUSÃO
+                .conteudo-item
+                    |\#{verbatim}${parecer.daConclusao}\#{/verbatim}
+    
+        h3.margem-titulo RESTRIÇÕES E/OU CONDIÇÕES DE VALIDADE DESTA LICENÇA - LO Nº 397/01-13
+
+            ol.lista-conteudo
+
+                li.titulo-item
+                    .conteudo-item
+                        span O pedido de licenciamento e a respectiva concessão da mesma, só terá validade quando publicada Diário Oficial do Estado,
+                        | periódico regional local ou local de grande circulação, em meio eletrônico de comunicação mantido pelo IPAAM, ou nos murais
+                        | das Prefeituras e Câmaras Municipais, conforme art.24 da Lei nº.3.785 de 24 de julho de 2012;
+                
+                li.titulo-item
+                    .conteudo-item
+                        span A solicitação de renovação da Licença Ambiental deverá ser requerida num prazo mínimo de <strong>120 dias</strong>, antes
+                        | do vencimento, conforme art.23, da Lei nº.3.785 de 24 de julho de 2012;
+            
+                li.titulo-item
+                    .conteudo-item
+                        span A presente Licença está sendo concedida com base nas informações constantes no <strong>processo nº.0506/99</strong>.
+
+                li.titulo-item
+                    .conteudo-item
+                        span Toda e qualquer modificação introduzida no projeto após a emissão da Licença implicará na sua automática invalidação, devendo
+                        | ser solicitada nova Licença, com ônus para o interessado.
+
+                li.titulo-item
+                    .conteudo-item
+                        span Essa Licença é válida apenas para a localização, atividade e finalidade constante na mesma, devendo o interessado requerer ao
+                        | IPAAM nova Licença quando houver mudança de qualquer um destes itens.
+
+                li.titulo-item
+                    .conteudo-item
+                        span Esta Licença não dispensa e nem substitui nenhum documento exigido pela Legislação Federal, Estadual e Municipal.
+
+                li.titulo-item
+                    .conteudo-item
+                        span A coleta e o transporte dos resíduos de qualquer natureza gerados no empreendimento devem ser efetuados por empresa licenciada
+                        | para esta atividade.
+
+                li.titulo-item
+                    .conteudo-item
+                        span Na eventualidade de ocorrência de vazamento de combustíveis ou sinistros nas instalações físicas do empreendimento, adotar
+                        | procedimentos constantes no Plano de Emergência Individual - PEI, e encaminhar imediatamente relatório circunstanciado do evento a
+                        | este IPAAM.
+                
+                li.titulo-item
+                    .conteudo-item
+                        span
+                            |\#{list items:condicionantes, as:'condicionante'}
+                            |${condicionante.texto} Prazo para atendimento: ${condicionante.prazo} dias.
+                            |<br><br>
+                            |\#{/list}
+                
+                li.titulo-item
+                    .conteudo-item
+                        span
+                            |\#{list items:restricoes, as:'restricao'}
+                            |${restricao.texto}
+                            |<br><br>
+                            |\#{/list}
+
+        p.text-align-right Manaus, ${dataDoParecer}

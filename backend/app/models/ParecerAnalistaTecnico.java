@@ -77,6 +77,12 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
+	public Date getDataParecer() {
+
+		return this.data;
+
+	}
+
 	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica) {
 
 		if(this.condicionantes != null && !this.condicionantes.isEmpty()) {
