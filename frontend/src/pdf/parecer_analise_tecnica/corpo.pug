@@ -87,12 +87,19 @@ html(lang="pt-br")
 
 body.corpo
     div.titulo
-        h2 PARECER TÉCNICO Nº ${analiseEspecifica.analise.processo.numero}
+        h2 PARECER TÉCNICO Nº ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/${new Date().format('yy')}
     div.conteudo
         h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
         h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
 
         ol.lista-conteudo
+        
+            |\#{if vistoria.realizada == false}
+            li  
+                .titulo-item DA JUSTIFICATIVA DA NÃO VISTORIA
+                .conteudo-item  
+                    |\#{verbatim}${vistoria.conclusao}\#{/verbatim}
+            |\#{/if}
 
             li
                 .titulo-item DO PROCESSO

@@ -50,7 +50,7 @@ public class Restricao extends GenericModel {
 
 	public static List<Restricao> findByIdParecer(Long parecerAnalistaTecnicoId){
 
-		List<Restricao> restricoes = Condicionante.find("id_parecer_analista_tecnico", parecerAnalistaTecnicoId).fetch();
+		List<Restricao> restricoes = Restricao.find("id_parecer_analista_tecnico", parecerAnalistaTecnicoId).fetch();
 
 		return restricoes;
 
