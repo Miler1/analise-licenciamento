@@ -157,7 +157,7 @@ public class UsuarioAnalise extends GenericModel  {
 
 		List<Usuario> usuariosFiltrados = usuarioList.stream().map(Usuario::new).collect(Collectors.toList());
 
-		for (UsuarioAnalise usuarioAnalise : usuariosAnalise) {
+		usuariosAnalise.forEach(usuarioAnalise -> {
 
 			Usuario usuario = usuariosFiltrados.stream().filter(usuarioEU -> usuarioEU.login.equals(usuarioAnalise.login)).findAny().orElseThrow(PortalSegurancaException::new);
 
@@ -165,7 +165,7 @@ public class UsuarioAnalise extends GenericModel  {
 			usuarioAnalise.setores = usuarioAnalise.salvarSetores(usuario);
 			usuarioAnalise._save();
 
-		}
+		});
 
 	}
 
