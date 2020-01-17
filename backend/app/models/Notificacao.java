@@ -440,6 +440,12 @@ public class Notificacao extends GenericModel {
 
 	}
 
+	public void setJustificativaTecnica(){
+
+		this.justificativa = this.parecerAnalistaTecnico.parecer;
+
+	}
+
 	public void setDocumentosParecer(List<Documento> documentosParecer){
 
 		this.documentosParecer = new ArrayList<>();
@@ -449,6 +455,22 @@ public class Notificacao extends GenericModel {
 			documentosParecer.stream().forEach(documento -> {
 
 				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
+
+					this.documentosParecer.add(documento);
+				}
+			});
+		}
+	}
+
+	public void setDocumentosParecerTecnico(List<Documento> documentosParecer){
+
+		this.documentosParecer = new ArrayList<>();
+
+		if(documentosParecer != null && !documentosParecer.isEmpty()) {
+
+			documentosParecer.stream().forEach(documento -> {
+
+				if(documento.getIsType(TipoDocumento.PARECER_ANALISE_TECNICA)) {
 
 					this.documentosParecer.add(documento);
 				}

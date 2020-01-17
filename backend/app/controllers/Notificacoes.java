@@ -43,4 +43,21 @@ public class Notificacoes extends InternalController {
         renderJSON(notificacoes.stream().sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList()), NotificacaoSerializer.findAll);
     }
 
+    public static void findByIdProcessoTecnico(Long id) {
+
+        verificarPermissao(Acao.VISUALIZAR_NOTIFICACAO);
+
+        Processo processo = Processo.findById(id);
+
+        List<Notificacao> notificacoes = processo.analise.getAnaliseTecnica().notificacoes;
+
+        for (Notificacao notificacao:notificacoes) {
+
+            notificacao.setJustificativaTecnica();
+            notificacao.setDocumentosParecerTecnico(notificacao.parecerAnalistaTecnico.documentos);
+        }
+
+        renderJSON(notificacoes.stream().sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList()), NotificacaoSerializer.findAll);
+    }
+
 }
