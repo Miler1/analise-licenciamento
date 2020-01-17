@@ -27,10 +27,13 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 		this.analiseTecnica = analiseTecnica;
 		this.parecerAnalistaTecnico = parecerAnalistaTecnico;
 
-//		TODO: descomentar quando criar o pdf da notificação
-//		this.pdfsNotificacao = analiseTecnica.gerarPDFNotificacao(analiseTecnica);
+		this.pdfsNotificacao = analiseTecnica.gerarPDFNotificacao(analiseTecnica);
 				
-	}	
+	}
+
+	public List<Documento> getPdfsNotificacao() {
+		return pdfsNotificacao;
+	}
 
 	@Override
 	public void enviar() {
