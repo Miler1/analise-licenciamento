@@ -129,6 +129,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 			this.vistoria.parecerAnalistaTecnico = this;
 			this.vistoria = this.vistoria.salvar();
+			analiseTecnicaBanco.vistoria = this.vistoria;
 
 		}
 
@@ -162,15 +163,14 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analiseTecnica.analise.processo.numero);
 
-			analiseTecnicaBanco.analise.processo.tramitacao.tramitar(analiseTecnicaBanco.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO, usuarioExecutor, "Notificado");
-			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
-
+//			analiseTecnicaBanco.analise.processo.tramitacao.tramitar(analiseTecnicaBanco.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO, usuarioExecutor, "Notificado");
+//			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		}
 
-		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id);
-		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
-		this._save();
+//		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id);
+//		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
+//		this._save();
 
 	}
 

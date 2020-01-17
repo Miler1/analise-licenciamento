@@ -1,0 +1,156 @@
+
+doctype html
+|%{
+|	 numeroProcesso = analiseTecnica.analise.processo.numero;
+|	 empreendimento = analiseTecnica.analise.processo.empreendimento;
+|	 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+|	 empreendimentoCPF = empreendimento.pessoa.getCpfCnpj();
+|	 enderecoCompleto = enderecoCompleto;
+|}%
+html(lang='en')
+	head
+		title Análise - Licenciamento Ambiental - Amazonas
+			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+			meta(charset='UTF-8')
+			style.
+				.container {
+						display: flex;
+						flex-direction: column;
+				}
+				.container-flex {
+						display: flex;
+						justify-content: space-between;
+				}
+
+				div.container-left{
+						width: 60%;
+						display: inline-block;
+						text-align: left;
+				}
+
+				div.container-right {
+						width: 35%;
+						display: inline-block;
+						text-align: left;
+				}
+	body
+		div
+			h3(style="text-align:center; margin-top:0px;") NOTIFICAÇÃO - ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/${new Date().format('yy')}
+
+		div
+			body
+				.container
+					.container-flex
+						.container-left
+							span <strong>Notificado:</strong> ${empreendimentoNome}
+						
+						.container-right
+							span <strong>Protocolo nº:</strong> ${numeroProcesso}
+
+				.container
+					.container-flex
+						.container-left
+							span <strong>Rua:</strong> ${enderecoCompleto.logradouro}, ${enderecoCompleto.numero}
+						.container-right
+							span <strong>Bairro:</strong> ${enderecoCompleto.bairro}
+
+				.container
+					.container-flex
+						.container-left
+							span <strong>Município:</strong> ${enderecoCompleto.municipio.nome} - ${enderecoCompleto.municipio.estado.sigla}
+						.container-right
+							span <strong>CEP:</strong> ${enderecoCompleto.cep}
+
+				.container
+					.container-flex
+						.container-left
+							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
+						.container-right
+							span <strong>Email:</strong> ${empreendimento.cadastrante.contato.email}
+					br
+
+				div
+					|\#{if !vistoria}
+					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("TIPO_LICENCA")}
+					span <strong>Fase solicitada:</strong> ${inconsistencia.inconsistenciaTecnicaTipoLicenca.tipoLicenca.nome}
+					|\#{/if}
+
+					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("ATIVIDADE")}
+					span <strong>Atividade:</strong> ${inconsistencia.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.atividade.nome}
+					|\#{/if}
+
+					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("PARAMETRO")}
+					span <strong>Atividade:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.atividadeCaracterizacao.atividade.nome} 
+					br
+					span <strong>Parâmetro:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome} 
+					|\#{/if}
+
+					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("QUESTIONARIO")}
+					span <strong>Questionário:</strong> Questionário 03
+					|\#{/if}
+
+					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("DOCUMENTO_ADMINISTRATIVO")}
+					span <strong>Documento administrativo:</strong> ${inconsistencia.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.tipoDocumento.nome}
+					|\#{/if}
+
+					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("DOCUMENTO_TECNICO_AMBIENTAL")}
+					span <strong>Documento técnico ambiental:</strong> ${inconsistencia.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.tipoDocumento.nome}
+					|\#{/if}
+					|\#{/if}
+
+					br
+					br
+					span A pessoa jurídica/pessoa física acima identificada, fica <strong>NOTIFICADA</strong>, de acordo com o artigo 59, do Decreto Estadual no 10.028, de 04.02.87, a prestar a(s) informação(ões), a atender a(s) convocação(ões), solicitação(ões) e decisão(ões) do IPAAM, abaixo descriminada(s), no prazo de <strong>${analiseTecnica.prazoNotificacao} dias</strong>, a contar da data do recebimento desta <strong>NOTIFICAÇÃO</strong>.
+
+					ol
+
+						li
+							h3 Categoria da inconsistência:
+								p
+									|\#{if !vistoria}
+									|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("TIPO_LICENCA")}
+									span Tipo da Licença
+									|\#{/if}
+
+									|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("ATIVIDADE")}
+									span Atividade
+									|\#{/if}
+
+									|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("PARAMETRO")}
+									span Parâmetro
+									|\#{/if}
+
+									|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("QUESTIONARIO")}
+									span Questionário
+									|\#{/if}
+
+									|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("DOCUMENTO_ADMINISTRATIVO")}
+									span Documento Administrativo
+									|\#{/if}
+
+									|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("DOCUMENTO_TECNICO_AMBIENTAL")}
+									span Documento Técnico Ambiental
+									|\#{/if}
+									|\#{/if}
+									|\#{else}
+									span Vistoria
+									|\#{/else}
+						li
+							h3 Descrição da inconsistência:
+								p
+									span ${inconsistencia.descricaoInconsistencia}
+						li
+							h3 Tipo da inconsistência:
+								p
+									span ${inconsistencia.tipoInconsistencia}
+													
+		div(style="text-align: center")
+			span <strong>Analisado por:</strong> ${analista.nomeAnalista}
+			br
+			span ${analista.perfilAnalista} - ${analista.setorAnalista}
+		br
+		div(style="text-align: center")
+			span <strong> Juliano Marcos Valente de Souza</strong>
+			br
+			span <strong> Diretor Presidente</strong>
+		br
