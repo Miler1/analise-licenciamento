@@ -182,7 +182,9 @@ public class Documento extends GenericModel implements Identificavel {
 
 		this.caminho = File.separator + this.nomeDoArquivo;
 		if(this.nomeDoArquivo.substring(this.nomeDoArquivo.length()-4, this.nomeDoArquivo.length()).equals(".pdf")) {
+
 			this.caminho = this.caminho.substring(0,this.caminho.length()-4);
+
 		}
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;

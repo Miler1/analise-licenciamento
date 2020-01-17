@@ -32,7 +32,9 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 	}
 
 	public List<Documento> getPdfsNotificacao() {
+
 		return pdfsNotificacao;
+
 	}
 
 	@Override
