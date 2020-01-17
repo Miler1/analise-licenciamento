@@ -127,15 +127,17 @@ public class AnalisesTecnicas extends InternalController {
 
 		analiseTecnicaSalva.parecerAnalista = novoParecer;
 
-		Documento pdfParecer = analiseTecnicaSalva.gerarPDFParecer(ultimoParecer);
+		ultimoParecer.documentoParecer = analiseTecnicaSalva.gerarPDFParecer(ultimoParecer);
 
-		String nome = pdfParecer.tipo.nome +  "_" + analiseTecnicaSalva.id + ".pdf";
+		String nome = ultimoParecer.documentoParecer.tipo.nome +  "_" + analiseTecnicaSalva.id + ".pdf";
 		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Content-Type", "application/pdf");
 
-		renderBinary(pdfParecer.arquivo, nome);
+		ultimoParecer._save();
+
+		renderBinary(ultimoParecer.documentoParecer.getFile(), nome);
 
 	}
 

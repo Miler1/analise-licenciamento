@@ -704,7 +704,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 		pdf.generate();
 
-		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+		Documento documento = new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "documento_parecer"), new Date());
 
 		return documento;
 
