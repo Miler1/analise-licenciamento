@@ -12,7 +12,8 @@ var AnaliseEmAndamentoGerenteListController = function($scope, config, $location
 
 	listagem.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 	listagem.processos = [];
-	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
+	listagem.condicoesEmAnalise = app.utils.CondicaoTramitacao;
+	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
@@ -45,9 +46,11 @@ var AnaliseEmAndamentoGerenteListController = function($scope, config, $location
 
 	function continuarAnalise(idAnalise) {
 
-		$location.path('/analise-gerente/' + idAnalise.toString());
-	}	
+		$rootScope.$broadcast('atualizarContagemProcessos');
 
+		$location.path('/analise-tecnica-gerente/' + idAnalise.toString());
+	}
+	
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);

@@ -61,6 +61,8 @@ POST	/analisesTecnicas/validarParecerGerente				AnalisesTecnicas.validarParecerG
 POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecerAprovador
 POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.downloadPDFParecer
 POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.downloadPDFNotificacao
+POST    /analisesTecnicas/iniciarAnaliseTecnicaGerente      AnalisesTecnicas.iniciarAnaliseTecnicaGerente
+GET     /analisesTecnicas/buscaAnaliseTecnicaByAnalise/{idAnalise}   AnalisesTecnicas.buscaAnaliseTecnicaByAnalise
 
 # Analise GEO
 

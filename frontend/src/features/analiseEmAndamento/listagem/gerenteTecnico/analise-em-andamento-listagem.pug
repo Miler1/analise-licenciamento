@@ -50,10 +50,14 @@ div
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li
+											li(ng-if="processo.idCondicaoTramitacao === listagem.condicoesEmAnalise.EM_ANALISE_GERENTE")
 												a(ng-click="listagem.continuarAnalise(processo.idAnalise)")
 													i.glyphicon.glyphicon-play-circle
-													span Continuar validação
+													span Continuar validação geo
+											li(ng-if="processo.idCondicaoTramitacao === listagem.condicoesEmAnalise.EM_ANALISE_TECNICA_GERENTE")
+												a(ng-click="listagem.continuarAnalise(processo.idAnalise)")
+													i.glyphicon.glyphicon-play-circle
+													span Continuar validação técnica
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open

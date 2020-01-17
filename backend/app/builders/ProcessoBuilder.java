@@ -137,6 +137,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder addAnaliseTecnicaAlias() {
+
+		addAnaliseAlias();
+
+		addAlias(ANALISE_ALIAS+".analisesTecnicas", ANALISE_TECNICA_ALIAS);
+
+		return this;
+	}
+
 	public ProcessoBuilder addCaracterizacaoAlias() {
 
 		addAlias("caracterizacao", CARACTERIZACAO_ALIAS);
@@ -527,6 +536,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAnaliseGeoAlias();
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".id").as("idAnaliseGeo"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnaliseTecnica(){
+
+		addAnaliseTecnicaAlias();
+		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".id").as("idAnaliseTecnica"));
 
 		return this;
 	}

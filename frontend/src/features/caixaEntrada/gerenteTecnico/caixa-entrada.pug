@@ -55,12 +55,11 @@ div
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 
-												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
+												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo, null)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo) || processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo
 											li
-												//- habilitar só quando o protocolo passar pela análise técnica
-												a.disable-acoes 
+												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, null, processo.idAnaliseTecnica)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)|| processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li
