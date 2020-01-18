@@ -75,15 +75,15 @@ div
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar carta imagem
-											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao)")
+											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 												a(ng-click="consultarProcesso.downloadPDFparecerTecnico(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar parecer TÉCNICO
-											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao)")
+											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 												a(ng-click="consultarProcesso.downloadPDFminuta(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar Minuta
-											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao)")
+											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 												a(ng-click="consultarProcesso.downloadPDFvistoria(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar Vistoria
