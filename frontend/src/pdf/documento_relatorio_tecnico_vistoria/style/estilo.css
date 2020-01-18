@@ -1,0 +1,24 @@
+/* Cabeçalho */
+.centraliza-texto {
+    text-align: center;
+}
+
+/* corpo */
+
+/* rodapé */
+.footer {
+    margin-top: 30px;
+}
+
+.in-left {
+  text-align: left;
+  float: left;
+  margin-top: 30px;
+
+}
+
+.in-right {
+  text-align: right;
+  float: right;
+  margin-top: 30px;
+}

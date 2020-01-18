@@ -74,6 +74,10 @@ public class Vistoria extends GenericModel {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> anexos;
 
+	@OneToOne
+	@JoinColumn(name = "id_documento_relatorio_tecnico_vistoria", referencedColumnName = "id")
+	public Documento documentoRelatorioTecnicoVistoria;
+
 	public List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
 
 		TipoDocumento tipoDocumentoVistoria = TipoDocumento.findById(TipoDocumento.DOCUMENTO_VISTORIA);
