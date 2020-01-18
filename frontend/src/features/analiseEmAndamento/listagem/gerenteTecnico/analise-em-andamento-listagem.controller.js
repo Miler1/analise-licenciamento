@@ -8,8 +8,8 @@ var AnaliseEmAndamentoGerenteListController = function($scope, config, $location
 	listagem.atualizarPaginacao = atualizarPaginacao;
 	listagem.selecionarTodosProcessos = selecionarTodosProcessos;
 	listagem.onPaginaAlterada = onPaginaAlterada;
-	listagem.continuarAnalise = continuarAnalise;
-
+	listagem.continuarAnaliseGeo = continuarAnaliseGeo;
+	listagem.continuarAnaliseTecnica = continuarAnaliseTecnica;
 	listagem.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 	listagem.processos = [];
 	listagem.condicoesEmAnalise = app.utils.CondicaoTramitacao;
@@ -44,11 +44,18 @@ var AnaliseEmAndamentoGerenteListController = function($scope, config, $location
 		});
 	}
 
-	function continuarAnalise(idAnalise) {
+	function continuarAnaliseTecnica(idAnalise) {
 
 		$rootScope.$broadcast('atualizarContagemProcessos');
 
 		$location.path('/analise-tecnica-gerente/' + idAnalise.toString());
+	}
+
+	function continuarAnaliseGeo(idAnalise) {
+
+		$rootScope.$broadcast('atualizarContagemProcessos');
+
+		$location.path('/analise-gerente/' + idAnalise.toString());
 	}
 	
 	function exibirDadosProcesso(processo) {
