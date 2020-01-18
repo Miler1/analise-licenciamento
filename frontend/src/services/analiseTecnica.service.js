@@ -10,12 +10,25 @@ var AnaliseTecnicaService = function(request, config) {
 
 		return request
                 	.post(config.BASE_URL() + 'analisesTecnicas/iniciar', analise);
-	};	
+	};
+	
+	this.iniciarAnaliseTecnicaGerente = function(analise) {
+
+		return request
+                	.post(config.BASE_URL() + 'analisesTecnicas/iniciarAnaliseTecnicaGerente', analise);
+	};
 
 	this.getAnaliseTecnica = function(idAnaliseTecnica) {
 
 		return request
                 	.get(config.BASE_URL() + 'analisesTecnicas/' + idAnaliseTecnica);
+	};
+
+	this.getAnliseTecnicaByAnalise = function(idAnalise) {
+
+		return request
+			.get(config.BASE_URL() + 'analisesTecnicas/buscaAnaliseTecnicaByAnalise/' + idAnalise);
+
 	};
 
 	this.getParecerByNumeroProcesso = function(numeroProcesso) {
