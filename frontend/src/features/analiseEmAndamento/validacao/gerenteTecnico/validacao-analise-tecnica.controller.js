@@ -6,14 +6,11 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                                     mensagem, 
                                                     $location,
                                                     documentoAnaliseService, 
-                                                    $anchorScroll,
-                                                    processoService, 
-                                                    $uibModal, 
-                                                    empreendimentoService, 
+                                                    $anchorScroll, 
+                                                    $uibModal,      
                                                     documentoService,
                                                     validacaoAnaliseGerenteService, 
                                                     analistaService) {
-
 
     var validacaoAnaliseTecnicaGerente = this;
 
@@ -151,7 +148,7 @@ validacaoAnaliseTecnicaGerente.disable = {
 		$anchorScroll();
 	}
 
-    validacaoAnaliseTecnicaGerente.cancelar =function() {
+    validacaoAnaliseTecnicaGerente.cancelar = function() {
 
         $location.path("/analise-gerente");
     };
@@ -184,7 +181,7 @@ validacaoAnaliseTecnicaGerente.disable = {
 			$('.nav-tabs > .active').next('li').find('a').trigger('click');
 			validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_VALIDACAO_ANALISE_TECNICA";
 			scrollTop();
-    }, 0);
+        }, 0);
     };
 
     validacaoAnaliseTecnicaGerente.validacaoAbaAvancar = function() {
