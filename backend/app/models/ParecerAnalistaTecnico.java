@@ -123,6 +123,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 			this.vistoria.parecerAnalistaTecnico = this;
 			this.vistoria = this.vistoria.salvar();
+			analiseTecnicaBanco.vistoria = this.vistoria;
 
 		}
 
@@ -158,7 +159,6 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 			analiseTecnicaBanco.analise.processo.tramitacao.tramitar(analiseTecnicaBanco.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO, usuarioExecutor, "Notificado");
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
-
 
 		}
 
