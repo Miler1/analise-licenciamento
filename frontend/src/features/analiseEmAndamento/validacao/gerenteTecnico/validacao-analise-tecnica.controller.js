@@ -17,6 +17,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
     var validacaoAnaliseTecnicaGerente = this;
 
+    validacaoAnaliseTecnicaGerente.analistasTecnicos = null;
+    validacaoAnaliseTecnicaGerente.analistaTecnicoDestino = {};
     validacaoAnaliseTecnicaGerente.analiseTecnicaValidacao = {};
     validacaoAnaliseTecnicaGerente.dadosProjeto = {};
     validacaoAnaliseTecnicaGerente.init = init;
@@ -143,7 +145,7 @@ validacaoAnaliseTecnicaGerente.disable = {
     validacaoAnaliseTecnicaGerente.buscarAnalistasTecnicoByIdProcesso = function() {
 		analistaService.buscarAnalistasTecnicoByIdProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id)
 			.then(function(response) {
-				validacaoAnaliseTecnicaGerente.analistaTecnicos = response.data;
+				validacaoAnaliseTecnicaGerente.analistasTecnicos = response.data;
 			});
     };
     
@@ -334,6 +336,36 @@ validacaoAnaliseTecnicaGerente.disable = {
             openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, null, documentoTecnicoAmbiental, index, null);
         });
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 };
 
