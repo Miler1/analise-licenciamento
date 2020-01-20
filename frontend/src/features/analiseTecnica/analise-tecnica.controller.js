@@ -1438,12 +1438,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         if(parecerValido) {
 
-            if(ctrl.parecer.vistoria.realizada){
-
-                ctrl.parecer.vistoria.hora = ctrl.parecer.vistoria.hora;
-
-            }
-
             parecerAnalistaTecnicoService.concluir(ctrl.parecer)
             .then(function(response) {
 
