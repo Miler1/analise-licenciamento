@@ -154,6 +154,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Transient
 	public Integer prazoNotificacao;
 
+	@Transient
+	public Long idAnalistaDestino;
+
 	private void validarParecer() {
 
 		if (StringUtils.isBlank(this.parecerAnalista))
@@ -722,6 +725,11 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 		});
 
+	}
+
+	public AnalistaTecnico getAnalistaTecnico() {
+
+		return this.analistaTecnico;
 	}
 
 }

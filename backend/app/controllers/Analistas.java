@@ -1,6 +1,7 @@
 package controllers;
 
 import models.AnalistaGeo;
+import models.AnalistaTecnico;
 import models.EntradaUnica.CodigoPerfil;
 import models.Processo;
 import models.UsuarioAnalise;
@@ -129,6 +130,18 @@ public class Analistas extends InternalController {
 		List<UsuarioAnalise> analistasGeo = AnalistaGeo.buscarAnalistasGeoParaDesvinculo(siglaSetor, processo.analise.getAnaliseGeo().getAnalistaGeo().usuario.id);
 
 		renderJSON(analistasGeo, UsuarioSerializer.getConsultoresAnalistasGeo);
+
+	}
+
+	public static void buscarAnalistasTecnicoByIdProcesso(Long idProcesso) {
+
+		Processo processo = Processo.findById(idProcesso);
+
+		String siglaSetor = processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+
+		List<UsuarioAnalise> analistasTecnico = AnalistaTecnico.buscarAnalistasTecnicoParaDesvinculo(siglaSetor, processo.analise.getAnaliseTecnica().getAnalistaTecnico().usuario.id);
+
+		renderJSON(analistasTecnico, UsuarioSerializer.getAnalistasTecnico);
 
 	}
 
