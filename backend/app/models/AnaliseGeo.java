@@ -226,6 +226,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         throw new ValidacaoException(Mensagem.ERRO_NENHUMA_LICENCA_EMITIDA);
     }
 
+    public static AnaliseGeo findByProcessoAtivo(Processo processo) {
+
+        return AnaliseGeo.find("analise.processo.id = :idProcesso")
+                .setParameter("idProcesso", processo.id)
+                .first();
+
+    }
+
     private void iniciarLicencas() {
 
         List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();

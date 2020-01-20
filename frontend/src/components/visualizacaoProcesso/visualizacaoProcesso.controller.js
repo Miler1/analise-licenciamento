@@ -62,7 +62,17 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
+
+			if (modalCtrl.dadosProcesso.analise.analiseTecnica !== undefined && modalCtrl.dadosProcesso.analise.analiseTecnica !== null) { 
+				
+				modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico);
+			}
+			
 			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
+
+		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_TECNICO) {
+
+			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
 
 		}
 
@@ -113,29 +123,6 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	}
 
-	modalCtrl.comparaStatus = function() {
-		var ANALISTA_GEO = [25, 26, 30, 4, 32];
-		var status = false;	
-				
-		if (modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
-			
-			status =  true;
-		}
-
-		ANALISTA_GEO.forEach(function(condicao){
-
-			if(modalCtrl.dadosProcesso.objetoTramitavel.condicao.idCondicao === condicao) {
-
-				status = true;
-
-			}
-
-		});
-
-		return status;
-
-	};
-
 	modalCtrl.setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
 
 		if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
@@ -147,6 +134,24 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			return 'Justificativa';
 
 		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
+
+			return 'Descrição da solicitação';
+
+		}
+
+	};
+
+	modalCtrl.setLabelAnalistaTecnico = function(tipoResultadoAnalistaTecnico) {
+
+		if(tipoResultadoAnalistaTecnico.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
+
+			return 'Despacho';
+
+		} else if(tipoResultadoAnalistaTecnico.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
+
+			return 'Justificativa';
+
+		} else if(tipoResultadoAnalistaTecnico.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
 
 			return 'Descrição da solicitação';
 

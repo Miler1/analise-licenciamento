@@ -34,8 +34,9 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	@JoinColumn(name = "id_tipo_resultado_analise")
 	public TipoResultadoAnalise tipoResultadoAnalise;
 
-	@Column(name = "data")
-	public Date data;
+	@Column(name = "data_parecer")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataParecer;
 
 	@OneToOne
 	@JoinColumn(name = "id_usuario_analista_tecnico", referencedColumnName = "id")
@@ -113,7 +114,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 		validarTipoResultadoAnalise();
 
 		this.analistaTecnico = usuarioExecutor;
-		this.data = new Date();
+		this.dataParecer = new Date();
 
 		if(this.documentos != null && !this.documentos.isEmpty()) {
 			this.updateDocumentos(this.documentos);

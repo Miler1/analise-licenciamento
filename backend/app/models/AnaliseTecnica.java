@@ -169,6 +169,14 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
+	public static AnaliseTecnica findByProcessoAtivo(Processo processo) {
+
+		return AnaliseTecnica.find("analise.processo.id = :idProcesso")
+				.setParameter("idProcesso", processo.id)
+				.first();
+
+	}
+
 	public AnaliseTecnica save() {
 
 		if (this.dataCadastro == null) {

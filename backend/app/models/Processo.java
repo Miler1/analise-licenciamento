@@ -9,6 +9,7 @@ import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.tramitacao.*;
+import net.sf.oval.internal.util.ThreadLocalIdentitySet;
 import org.hibernate.criterion.Restrictions;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -787,6 +788,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.usuario.id.equals(usuario.id))
 					.collect(Collectors.toList());
 
+		} else if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
+
+			this.analise.analiseTecnica.pareceresAnalistaTecnico = this.analise.analiseTecnica.pareceresAnalistaTecnico.stream()
+					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
+					.collect(Collectors.toList());
+
+		} else if (usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+
+			this.analise.analiseTecnica = AnaliseTecnica.findByProcessoAtivo (this);
+			this.analise.analiseGeo = AnaliseGeo.findByProcessoAtivo(this);
 		}
 
 		return this;
