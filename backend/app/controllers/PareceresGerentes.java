@@ -1,9 +1,6 @@
 package controllers;
 
-import models.Analise;
-import models.AnaliseGeo;
-import models.ParecerGerenteAnaliseGeo;
-import models.UsuarioAnalise;
+import models.*;
 import serializers.ParecerGerenteSerializer;
 import utils.Mensagem;
 
@@ -18,6 +15,20 @@ public class PareceresGerentes extends InternalController {
 		UsuarioAnalise gerente = getUsuarioSessao();
 
 		parecerGerenteAnaliseGeo.finalizar(analiseGeo, gerente);
+
+		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+
+	}
+
+	public static void concluirParecerTecnicoGerente(ParecerGerenteAnaliseTecnica parecerGerenteAnaliseTecnica) {
+
+		returnIfNull(parecerGerenteAnaliseTecnica, "ParecerGerenteAnaliseGeo");
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(parecerGerenteAnaliseTecnica.analiseTecnica.id);
+
+		UsuarioAnalise gerente = getUsuarioSessao();
+
+		parecerGerenteAnaliseTecnica.finalizar(analiseTecnica, gerente);
 
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
 

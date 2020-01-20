@@ -25,6 +25,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.parecerTecnico = {};
     validacaoAnaliseTecnicaGerente.labelDadosProjeto = '';
     validacaoAnaliseTecnicaGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
+    validacaoAnaliseTecnicaGerente.concluir = concluir;
 
     validacaoAnaliseTecnicaGerente.errors = {
 		despacho: false,
@@ -334,9 +335,62 @@ validacaoAnaliseTecnicaGerente.disable = {
         });
     };
 
+    function analiseValida(analiseTecnica) {
 
+        if(analiseTecnica.tipoResultadoValidacaoGerente === null || analiseTecnica.tipoResultadoValidacaoGerente === undefined) {
+            validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = true;
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+        }else{
+            validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
+        }
+        
+        if(analiseTecnica.parecerValidacaoGerente === "" || analiseTecnica.parecerValidacaoGerente === null || analiseTecnica.parecerValidacaoGerente === undefined) {
+            validacaoAnaliseTecnicaGerente.errors.despacho = true;
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+        }else{
+            validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
+        }
 
+        if(analiseTecnica.tipoResultadoValidacaoGerente.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === null || validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === undefined)) {
+            validacaoAnaliseTecnicaGerente.errors.analistas = true;
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+        }else{
+            validacaoAnaliseTecnicaGerente.errors.analistas = false;
+        }
 
+        if(validacaoAnaliseTecnicaGerente.errors.resultadoAnalise === true || validacaoAnaliseTecnicaGerente.errors.despacho === true || validacaoAnaliseTecnicaGerente.errors.analistas === true){
+            return false;
+        }
+        
+        return true;
+
+    }
+
+    function concluir() {
+
+        if(!analiseValida(validacaoAnaliseTecnicaGerente.analiseTecnica)){
+            return;
+        }
+
+        var params = {
+            analiseTecnica: {
+                id: validacaoAnaliseTecnicaGerente.analiseTecnica.id,
+                idAnalistaDestino: validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id
+            },
+            parecer: validacaoAnaliseTecnicaGerente.analiseTecnica.parecerValidacaoGerente,
+            tipoResultadoAnalise: {id: validacaoAnaliseTecnicaGerente.analiseTecnica.tipoResultadoValidacaoGerente.id}
+        };
+
+        validacaoAnaliseGerenteService.concluirParecerTecnico(params)
+			.then(function(response){
+                $location.path("analise-gerente");
+                $timeout(function() {
+                    mensagem.success("Analise Gerente finalizada!", {referenceId: 5});
+                }, 0);
+            },function(error){
+				mensagem.error(error.data.texto);
+			});
+    }
 
 
 
