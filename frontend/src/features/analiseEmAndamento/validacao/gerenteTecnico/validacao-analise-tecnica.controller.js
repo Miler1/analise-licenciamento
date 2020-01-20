@@ -338,24 +338,36 @@ validacaoAnaliseTecnicaGerente.disable = {
     function analiseValida(analiseTecnica) {
 
         if(analiseTecnica.tipoResultadoValidacaoGerente === null || analiseTecnica.tipoResultadoValidacaoGerente === undefined) {
+
             validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
+
         }
         
         if(analiseTecnica.parecerValidacaoGerente === "" || analiseTecnica.parecerValidacaoGerente === null || analiseTecnica.parecerValidacaoGerente === undefined) {
+            
             validacaoAnaliseTecnicaGerente.errors.despacho = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
+            
         }
 
         if(analiseTecnica.tipoResultadoValidacaoGerente.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === null || validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === undefined)) {
+            
             validacaoAnaliseTecnicaGerente.errors.analistas = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseTecnicaGerente.errors.analistas = false;
+
         }
 
         if(validacaoAnaliseTecnicaGerente.errors.resultadoAnalise === true || validacaoAnaliseTecnicaGerente.errors.despacho === true || validacaoAnaliseTecnicaGerente.errors.analistas === true){
@@ -391,33 +403,6 @@ validacaoAnaliseTecnicaGerente.disable = {
 				mensagem.error(error.data.texto);
 			});
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
 };
 
 exports.controllers.ValidacaoAnaliseTecnicaGerenteController = ValidacaoAnaliseTecnicaGerenteController;

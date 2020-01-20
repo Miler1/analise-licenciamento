@@ -109,7 +109,9 @@ public class Diretor extends GenericModel {
 		String retorno = "";
 
 		for (Long id : lista) {
+
 			retorno = retorno + "" + id + ", ";
+
 		}
 		retorno = retorno.substring(0, retorno.length() -2) ;
 
