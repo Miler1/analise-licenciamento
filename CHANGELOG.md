@@ -45,3 +45,4 @@
 * OS35 - US989 - Eu, analista técnico, devo concluir a análise para emitir notificação
 * OS35 - US944 - Eu, analista, devo enviar notificação ao interessado para concluir a análise
 * OS35 - US304 - Eu, analista técnico, devo acessar o menu "Consulta protocolo" para consultar os processos
+* OS35 - US958 - Eu, analista técnico, devo finalizar análise para gerar documento pdf do Relatório Técnico de Vistoria

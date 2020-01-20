@@ -20,7 +20,7 @@ div
 	hr
 	.row
 		.col-md-12
-			div(ng-if="consultarProcesso.processos && consultarProcesso.processos.length > 0").table-responsive
+			div(ng-if="consultarProcesso.processos && consultarProcesso.processos.length > 0")
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
@@ -83,10 +83,10 @@ div
 												a(ng-click="consultarProcesso.downloadPDFminuta(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar Minuta
-											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
+											li(ng-if="consultarProcesso.verificaStatusAnalise(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_TECNICO")
 												a(ng-click="consultarProcesso.downloadPDFvistoria(processo)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar Vistoria
+													span Visualizar RTV
 											li(ng-if="processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO")
 												a(ng-click="consultarProcesso.visualizarNotificacao(processo)")
 													i.glyphicon.glyphicon-eye-open

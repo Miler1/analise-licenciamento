@@ -185,7 +185,8 @@ GET     /condicoes/manejo                           Condicoes.listManejo
 GET		/tiposSobreposicao                          Sobreposicoes.list
 
 # Documentos
-GET		/documentos/{id}/download					Documentos.download
+GET		/documentos/{id}/download					                    Documentos.download
+GET		/documentos/{idAnalisetecnica}/downloadRTVByIdAnaliseTecnica	Documentos.downloadRTVByIdAnaliseTecnica
 
 # Licenças
 POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter

@@ -168,6 +168,8 @@ public class AnalisesTecnicas extends InternalController {
 
 		vistoria.documentoRelatorioTecnicoVistoria = analiseTecnica.gerarPDFRelatorioTecnicoVistoria();
 
+		vistoria._save();
+
 		String nome = vistoria.documentoRelatorioTecnicoVistoria.tipo.nome +  "_" + vistoria.id + ".pdf";
 		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
