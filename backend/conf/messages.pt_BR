@@ -50,6 +50,7 @@ DESVINCULO_SOLICITADO_COM_SUCESSO=Seu desvínculo foi solicitado com sucesso!
 DESVINCULO_RESPONDIDO_COM_SUCESSO=O desvínculo foi respondido com sucesso!
 NENHUM_ANALISTA_ENCONTRADO=Não existe nenhum analista geo para vincular automaticamente o protocolo com número %s no setor %s.
 NENHUM_GERENTE_ENCONTRADO=Não existe nenhum gerente para ser vinculado.
+NENHUM_DIRETOR_ENCONTRADO=Não existe nenhum diretor para ser vinculado.
 #
 # Inconsistencia
 #

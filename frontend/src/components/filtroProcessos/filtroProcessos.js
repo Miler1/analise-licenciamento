@@ -26,6 +26,7 @@ var FiltroProcessos = {
 
 		var ctrl = this;
 		var caixaEntrada = false;
+		var emAnalise = false;
 
 		ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
 		ctrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
@@ -70,12 +71,16 @@ var FiltroProcessos = {
 
 					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
 
+				} else if (emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ){
+
+					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
+
 				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 					
 					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 					ctrl.filtro.idCondicaoTramitacao = null;
 				
-				} else if(!caixaEntrada) {
+				} else if(!caixaEntrada && !emAnalise) {
 					
 					ctrl.filtro.listaIdCondicaoTramitacao = null;
 				} 
@@ -139,13 +144,21 @@ var FiltroProcessos = {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
-				caixaEntrada = true;
+
+				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)){
+					caixaEntrada = true;
+				}else{
+					emAnalise = true;
+				}
+				
+			
 
 			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
 				caixaEntrada = false;
+				emAnalise = false;
 			}
 
 			ctrl.filtro.isAnaliseJuridica = !!ctrl.isAnaliseJuridica;
@@ -223,7 +236,6 @@ var FiltroProcessos = {
 							.catch(function(){
 								mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
 							});
-
 					}
 				}
 

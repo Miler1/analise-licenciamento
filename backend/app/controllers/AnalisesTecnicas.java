@@ -1,11 +1,7 @@
 package controllers;
 
-import models.Analise;
-import models.AnaliseTecnica;
-import models.Documento;
-import models.Notificacao;
+import models.*;
 import models.geocalculo.Geoserver;
-import models.UsuarioAnalise;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
@@ -28,6 +24,18 @@ public class AnalisesTecnicas extends InternalController {
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
 		renderMensagem(Mensagem.ANALISE_TECNICA_INICIADA_SUCESSO);	
+
+	}
+
+	public static void iniciarAnaliseTecnicaGerente(AnaliseTecnica analise) {
+
+		AnaliseTecnica analiseAlterar = AnaliseTecnica.findById(analise.id);
+
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
+		analiseAlterar.iniciarAnaliseTecnicaGerente(usuarioExecutor);
+
+		renderMensagem(Mensagem.GERENTE_INICIOU_ANALISE_SUCESSO);
 
 	}
 
@@ -157,6 +165,15 @@ public class AnalisesTecnicas extends InternalController {
 		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfNotificacao.arquivo, nome);
+
+	}
+
+	public static void buscaAnaliseTecnicaByAnalise(Long idAnalise) {
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.find("id_analise = :id_analise")
+				.setParameter("id_analise", idAnalise).first();
+
+		renderJSON(analiseTecnica, AnaliseTecnicaSerializer.findInfo);
 
 	}
 

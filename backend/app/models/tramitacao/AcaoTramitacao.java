@@ -74,5 +74,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long RESOLVER_COMUNICADO = 64l;
 	public static final Long AGUARDAR_RESPOSTA_COMUNICADO = 65l;
 	public static final Long NOTIFICAR_PELO_ANALISTA_TECNICO = 66l;
+	public static final Long INICIAR_ANALISE_TECNICA_GERENTE = 67l;
+	public static final Long VALIDAR_PARECER_TECNICO_GERENTE = 68l;
 
 }

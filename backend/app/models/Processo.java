@@ -442,6 +442,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataVencimentoPrazoAnaliseGeo()
                 .groupByIdAnalise()
 				.groupByIdAnaliseGeo()
+				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo()
@@ -487,7 +488,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.groupByIdAnaliseGeo()
+		processoBuilder.groupByIdAnaliseGeo(true)
+				.groupByIdAnaliseTecnica(true)
 				.groupByPrazoAnaliseGerente()
 				.orderByPrazoAnaliseGerente();
 
@@ -582,7 +584,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
+		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);
 
 	}
 
