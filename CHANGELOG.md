@@ -44,4 +44,4 @@
 * OS35 - US303 - Eu, analista técnico, devo concluir a análise para deferir o processo
 * OS35 - US989 - Eu, analista técnico, devo concluir a análise para emitir notificação
 * OS35 - US304 - Eu, analista técnico, devo acessar o menu "Consulta protocolo" para consultar os processos
-
+* OS35 - US957 - Eu, analista técnico, devo deferir a análise para gerar o documento da minuta
