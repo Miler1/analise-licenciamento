@@ -63,6 +63,34 @@ public class InconsistenciaTecnica extends GenericModel{
 
 	public enum TipoDeInconsistenciaTecnica { TIPO_LICENCA, ATIVIDADE, PARAMETRO, QUESTIONARIO, DOCUMENTO_ADMINISTRATIVO, DOCUMENTO_TECNICO_AMBIENTAL }
 
+	public void setTipoDeInconsistenciaTecnica() {
+		if (this.inconsistenciaTecnicaTipoLicenca != null) {
+
+			this.tipoDeInconsistenciaTecnica = TipoDeInconsistenciaTecnica.TIPO_LICENCA.name();
+
+		} else if (this.inconsistenciaTecnicaAtividade != null) {
+
+			this.tipoDeInconsistenciaTecnica = TipoDeInconsistenciaTecnica.ATIVIDADE.name();
+
+		} else if (this.inconsistenciaTecnicaParametro != null) {
+
+			this.tipoDeInconsistenciaTecnica = TipoDeInconsistenciaTecnica.PARAMETRO.name();
+
+		} else if (this.inconsistenciaTecnicaQuestionario != null) {
+
+			this.tipoDeInconsistenciaTecnica = TipoDeInconsistenciaTecnica.QUESTIONARIO.name();
+
+		} else if (this.inconsistenciaTecnicaDocumentoAdministrativo != null) {
+
+			this.tipoDeInconsistenciaTecnica = TipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO.name();
+
+		} else if (this.inconsistenciaTecnicaDocumentoTecnicoAmbiental != null) {
+
+			this.tipoDeInconsistenciaTecnica = TipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL.name();
+
+		}
+	}
+
 	public InconsistenciaTecnica salvaInconsistenciaTecnica() {
 
 		if (this.descricaoInconsistencia == null || this.descricaoInconsistencia.equals("")) {

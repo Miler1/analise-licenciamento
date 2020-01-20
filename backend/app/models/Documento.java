@@ -65,6 +65,15 @@ public class Documento extends GenericModel implements Identificavel {
 		this.tipo = tipo;
 		this.arquivo = arquivo;
 	}
+
+	public Documento(TipoDocumento tipo, File arquivo, String nomeDoArquivo, Date dataCadastro) {
+		this.tipo = tipo;
+		this.arquivo = arquivo;
+		this.nomeDoArquivo = nomeDoArquivo;
+		this.dataCadastro = dataCadastro;
+
+		this.save();
+	}
 	
 	public String getNome() {
 		
@@ -172,7 +181,11 @@ public class Documento extends GenericModel implements Identificavel {
 	protected void configurarCaminho() {
 
 		this.caminho = File.separator + this.nomeDoArquivo;
-		this.caminho = this.caminho.substring(0,this.caminho.length()-4);
+		if(this.nomeDoArquivo.substring(this.nomeDoArquivo.length()-4, this.nomeDoArquivo.length()).equals(".pdf")) {
+
+			this.caminho = this.caminho.substring(0,this.caminho.length()-4);
+
+		}
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
 	}
