@@ -44,6 +44,16 @@ public class Condicoes extends InternalController {
 							Condicao.ARQUIVADO
 					))
 					.fetch();
+		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)){
+
+			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_TECNICA,
+							Condicao.EM_ANALISE_TECNICA,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA,
+							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
+							Condicao.ARQUIVADO
+					))
+					.fetch();
 		}
 		
 		renderJSON(condicoesVisiveis, CondicaoSerializer.list);

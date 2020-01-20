@@ -13,6 +13,13 @@ var NotificacaoService = function(request, config, $window) {
 
 	};
 
+	this.findByIdProcessoTecnico = function(idProcesso) {
+
+		return request
+			.get(config.BASE_URL() + 'notificacoes/findByIdProcessoTecnico/' + idProcesso);
+
+	};
+
 };
 
 exports.services.NotificacaoService = NotificacaoService;
