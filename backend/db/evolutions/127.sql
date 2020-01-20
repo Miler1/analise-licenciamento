@@ -33,7 +33,6 @@ COMMENT ON COLUMN analise.parecer_gerente_analise_tecnica.id_analise_tecnica IS 
 COMMENT ON COLUMN analise.parecer_gerente_analise_tecnica.id_historico_tramitacao IS 'Identificador do histórico da tramitação';
 
 
-
 CREATE TABLE analise.diretor
 (
   id serial NOT NULL, 
