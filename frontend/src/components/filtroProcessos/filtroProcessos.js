@@ -199,9 +199,12 @@ var FiltroProcessos = {
 					mensagem.warning('Não foi possível obter a lista de atividades.');
 				});
 
-			if(ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_GEO){
+			if(ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_GEO && ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_TECNICO){
+				
 				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
+					
 					if(ctrl.isAnaliseTecnicaOpcional){
+						
 						analistaService.getAnalistasTecnicos()
 							.then(function(response){
 
