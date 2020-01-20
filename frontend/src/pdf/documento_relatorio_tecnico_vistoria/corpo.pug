@@ -1,6 +1,6 @@
 doctype html
 |%{
-|	
+|	numeroProcesso = analiseTecnica.analise.processo.numero;
 |}%
 html(lang='en')
 	head
@@ -9,6 +9,9 @@ html(lang='en')
 			meta(charset='UTF-8')
 
 	body
+		div
+			h3(style="text-align:center; margin-top:0px;") RELATÓRIO TÉCNICO DE VISTORIA N° ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/${new Date().format('yy')}
+
 
 		div
 			
@@ -17,17 +20,22 @@ html(lang='en')
 				li
 					h3 DA DATA DA VISTORIA:
 						p
-							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')} Hora da vistoria: ${vistoria.data.format('HH:mm')}
+							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')} Hora da vistoria: ${vistoria.hora.format('HH:mm')}.
 				
 				| \#{if !vistoria.equipe.isEmpty()}
 				li
 					h3 DA EQUIPE TÉCNICA
 						P
-							span A equipe técnica que compôs a realização da vistoria foi 
-							| \#{list items:vistoria.equipe, as:'equipe'}
+							span A equipe técnica que compôs a realização da vistoria foi
+							| \#{if vistoria.equipe.length() > 1}
+							| \#{list items: 0..vistoria.equipe.length()-2, as:'equipe'}
 							span
-							| ${equipe.usuario.pessoa.nome}
+							| ${equipe.usuario.pessoa.nome},
 							| \#{/list}
+							span
+							| \#{/if}
+							| ${vistoria.equipe[vistoria.equipe.length()-1].usuario.pessoa.nome}.
+
 				| \#{/if}
 
 				| \#{if vistoria.descricao != null}

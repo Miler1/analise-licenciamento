@@ -51,16 +51,17 @@ POST    /analisesJuridicas/downloadPDFNotificacao                   AnalisesJuri
 
 # Analise tecnica
 
-GET		/analisesTecnicas/parecer							AnalisesTecnicas.findByNumeroProcesso
-POST	/analisesTecnicas/iniciar 							AnalisesTecnicas.iniciar
-POST	/analisesTecnicas									AnalisesTecnicas.alterar
-GET		/analisesTecnicas/{idAnaliseTecnica}				AnalisesTecnicas.findById
-GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	AnalisesTecnicas.getRestricoesGeo
-POST	/analisesTecnicas/validarParecer					AnalisesTecnicas.validarParecer
-POST	/analisesTecnicas/validarParecerGerente				AnalisesTecnicas.validarParecerGerente
-POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecerAprovador
-POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.downloadPDFParecer
-POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.downloadPDFNotificacao
+GET		/analisesTecnicas/parecer							    AnalisesTecnicas.findByNumeroProcesso
+POST	/analisesTecnicas/iniciar 							    AnalisesTecnicas.iniciar
+POST	/analisesTecnicas									    AnalisesTecnicas.alterar
+GET		/analisesTecnicas/{idAnaliseTecnica}				    AnalisesTecnicas.findById
+GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	    AnalisesTecnicas.getRestricoesGeo
+POST	/analisesTecnicas/validarParecer					    AnalisesTecnicas.validarParecer
+POST	/analisesTecnicas/validarParecerGerente				    AnalisesTecnicas.validarParecerGerente
+POST	/analisesTecnicas/validarParecerAprovador			    AnalisesTecnicas.validarParecerAprovador
+POST    /analisesTecnicas/downloadPDFParecer                    AnalisesTecnicas.downloadPDFParecer
+POST    /analisesTecnicas/downloadPDFNotificacao                AnalisesTecnicas.downloadPDFNotificacao
+POST    /analisesTecnicas/downloadPDFRelatorioTecnicoVistoria   AnalisesTecnicas.downloadPDFRelatorioTecnicoVistoria
 
 # Analise GEO
 
