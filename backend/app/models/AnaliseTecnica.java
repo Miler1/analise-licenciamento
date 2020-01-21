@@ -101,6 +101,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
 	public List<ParecerTecnicoRestricao> pareceresTecnicosRestricoes;
 
+	@OneToMany(mappedBy = "analiseTecnica")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerGerenteAnaliseTecnica> pareceresGerenteAnaliseTecnica;
+
 	@Column(name = "justificativa_coordenador")
 	public String justificativaCoordenador;
 
@@ -819,6 +823,17 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	public AnalistaTecnico getAnalistaTecnico() {
 
 		return this.analistaTecnico;
+	}
+
+	public String getJustificativaUltimoParecer() {
+
+		ParecerGerenteAnaliseTecnica parecerGerenteAnaliseTecnica = this.pareceresGerenteAnaliseTecnica.stream()
+				.filter(parecer -> parecer.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES))
+				.max(Comparator.comparing(ParecerGerenteAnaliseTecnica::getDataParecer))
+				.orElseThrow(() -> new ValidacaoException(Mensagem.PARECER_NAO_ENCONTRADO));
+
+		return parecerGerenteAnaliseTecnica.parecer;
+
 	}
 
 }

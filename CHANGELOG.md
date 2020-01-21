@@ -51,4 +51,5 @@
 
 * OS50 - US213 - [Gerente Técnico] Eu, gerente técnico, devo acessar o processo para validar análise técnica.
 * OS50 - US1398 - [Gerente Técnico] Eu, gerente técnico, devo acessar a análise técnica para validação.
-* OS50 - US1415 - [Gerente Técnico] Eu, gerente técnico, devo concluir a análise para validar a aba conclusão da análise
+* OS50 - US1415 - [Gerente Técnico] Eu, gerente técnico, devo concluir a análise para validar a aba conclusão da análise.
+* OS50 - US1119 - [Gerente Técnico] Eu, analista, devo acessar em análise para visualizar solicitação de ajustes/justificativa.
