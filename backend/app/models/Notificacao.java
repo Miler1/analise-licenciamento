@@ -101,6 +101,12 @@ public class Notificacao extends GenericModel {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 
+	@ManyToMany
+	@JoinTable(schema="analise", name="rel_documento_notificacao_tecnica",
+			joinColumns=@JoinColumn(name="id_notificacao"),
+			inverseJoinColumns=@JoinColumn(name="id_documento"))
+	public List<Documento> documentosNotificacaoTecnica;
+
 	@Column(name="prazo_notificacao")
 	public Integer prazoNotificacao;
 
@@ -136,6 +142,7 @@ public class Notificacao extends GenericModel {
 		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
 		this.prazoNotificacao = notificacao.prazoNotificacao;
 		this.documentos = new ArrayList<>();
+		this.documentosNotificacaoTecnica = new ArrayList<>();
 		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
 	}
@@ -154,6 +161,7 @@ public class Notificacao extends GenericModel {
 		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
 		this.prazoNotificacao = notificacao.prazoNotificacao;
 		this.documentos = new ArrayList<>();
+		this.documentosNotificacaoTecnica = new ArrayList<>();
 		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
 	}
