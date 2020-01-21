@@ -148,26 +148,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addAnaliseTecnicaAlias() {
-
-		addAnaliseAlias();
-
-		addAlias(ANALISE_ALIAS+".analisesTecnica", ANALISE_TECNICA_ALIAS);
-
-		return this;
-	}
-
 	public ProcessoBuilder addCaracterizacaoAlias() {
 
 		addAlias("caracterizacao", CARACTERIZACAO_ALIAS);
-
-		return this;
-	}
-
-	public ProcessoBuilder groupByIdAnaliseTecnica(){
-
-		addAnaliseTecnicaAlias(true);
-		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".id").as("idAnaliseTecnica"));
 
 		return this;
 	}
