@@ -39,7 +39,7 @@ div
 								| {{ listagem.dateUtil.getContaDiasRestantesData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE)) }}
 							td(ng-class="{'error-message': processo.diasAnaliseTecnica > listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA}")
 								| {{ listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
-							td
+							td(ng-init="listagem.verificaSolicitacaoAjustes(processo)")
 								span.pull-right
 
 									.dropdown.action-table
@@ -51,6 +51,10 @@ div
 												a(ng-click="listagem.continuarAnalise(processo.idAnaliseTecnica)")
 													i.glyphicon.glyphicon-play-circle
 													span Continuar análise
+											li(ng-if="processo.verificaAnalise === true")
+												a(ng-click="listagem.visualizarSolicitacaoAjustes(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar Solicitação de Ajustes
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open

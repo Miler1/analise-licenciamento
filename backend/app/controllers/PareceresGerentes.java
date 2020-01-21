@@ -42,11 +42,27 @@ public class PareceresGerentes extends InternalController {
 
 	}
 
+	public static void findParecerTecnicoByIdHistoricoTramitacao(Long idHistoricoTramitacao) {
+
+		ParecerGerenteAnaliseTecnica parecerGerenteAnaliseTecnica = ParecerGerenteAnaliseTecnica.find("idHistoricoTramitacao", idHistoricoTramitacao).first();
+
+		renderJSON(parecerGerenteAnaliseTecnica, ParecerGerenteSerializer.findByIdHistoricoTramitacao);
+
+	}
+
 	public static void findJustificativaParecerByIdAnaliseGeo(Long idAnaliseGeo) {
 
 		AnaliseGeo analiseGeo = AnaliseGeo.findById(idAnaliseGeo);
 
 		renderText(analiseGeo.getJustificativaUltimoParecer());
+
+	}
+
+	public static void findJustificativaParecerByIdAnaliseTecnica(Long idAnaliseTecnica) {
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
+
+		renderText(analiseTecnica.getJustificativaUltimoParecer());
 
 	}
 
