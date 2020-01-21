@@ -707,19 +707,29 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
-	public Documento gerarPDFParecer() throws Exception {
+	public Documento gerarPDFParecer(ParecerAnalistaTecnico parecerAnalistaTecnico) throws Exception {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
+
+		List<Condicionante> condicionantes = Condicionante.findByIdParecer(parecerAnalistaTecnico.id);
+		List<Restricao> restricoes = Restricao.findByIdParecer(parecerAnalistaTecnico.id);
+		Vistoria vistoria = Vistoria.findByIdParecer(parecerAnalistaTecnico.id);
+		String numeroProcesso = this.analise.processo.numero;
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseEspecifica", this)
-				.addParam("analiseArea", "ANALISE_TECNICA")
-				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+				.addParam("numeroProcesso", numeroProcesso)
+				.addParam("vistoria", vistoria)
+				.addParam("parecer", parecerAnalistaTecnico)
+				.addParam("condicionantes", condicionantes)
+				.addParam("restricoes", restricoes)
+				.addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
 		pdf.generate();
 
-		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+		Documento documento = new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "documento_parecer"), new Date());
 
 		return documento;
 

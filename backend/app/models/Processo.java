@@ -524,6 +524,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByIdAnaliseTecnica(true)
 				.orderByDataVencimentoPrazoAnaliseTecnica();
 
 	}
