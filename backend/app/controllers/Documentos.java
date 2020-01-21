@@ -1,7 +1,9 @@
 package controllers;
 
 import exceptions.ValidacaoException;
+import models.AnaliseTecnica;
 import models.Documento;
+import models.ParecerAnalistaTecnico;
 import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
 import play.data.Upload;
@@ -36,6 +38,27 @@ public class Documentos extends InternalController {
 		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
 	   
    }
+
+	public static void downloadParecerTecnico(Long idAnalisetecnica) throws FileNotFoundException {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO);
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnalisetecnica);
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		returnIfNull(parecerAnalistaTecnico.documentoParecer.id, "Long");
+
+		Documento documento = Documento.findById(parecerAnalistaTecnico.documentoParecer.id);
+
+		if(documento != null) {
+			File documentoBinary = documento.getFile();
+			renderBinary(new FileInputStream(documentoBinary), documentoBinary.getName(), true);
+		}
+
+		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
+	}
 
 	public static void upload(Upload file) throws IOException {
 
