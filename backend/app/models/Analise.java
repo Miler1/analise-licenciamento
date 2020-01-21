@@ -99,7 +99,7 @@ public class Analise extends GenericModel {
 					this.analiseTecnica = analiseTecnica;
 		
 		if(this.analiseTecnica == null)
-			this.analiseTecnica = analiseTecnica.findByProcesso(processo);
+			this.analiseTecnica = analiseTecnica.findByProcessoAtivo(processo);
 
 		return this.analiseTecnica;		
 	}
@@ -116,7 +116,7 @@ public class Analise extends GenericModel {
 					this.analiseGeo = analiseGeo;
 
 		if(this.analiseGeo == null)
-			this.analiseGeo = analiseGeo.findByProcesso(processo);
+			this.analiseGeo = analiseGeo.findByProcessoAtivo(processo);
 
 		return this.analiseGeo;
 	}

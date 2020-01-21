@@ -157,7 +157,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Transient
     public Long idAnalistaDestino;
 
-    public static AnaliseGeo findByProcesso(Processo processo) {
+    public static AnaliseGeo findByProcessoAtivo(Processo processo) {
         return AnaliseGeo.find("analise.processo.id = :idProcesso AND ativo = true")
                 .setParameter("idProcesso", processo.id)
                 .first();
@@ -226,7 +226,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         throw new ValidacaoException(Mensagem.ERRO_NENHUMA_LICENCA_EMITIDA);
     }
 
-    public static AnaliseGeo findByProcessoAtivo(Processo processo) {
+    public static AnaliseGeo findByProcesso(Processo processo) {
 
         return AnaliseGeo.find("analise.processo.id = :idProcesso")
                 .setParameter("idProcesso", processo.id)

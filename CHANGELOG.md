@@ -43,3 +43,5 @@
 * OS35 - US297 - [Analista Técnico] Eu, analista técnico, devo concluir a análise para indeferir o protocolo.
 * OS35 - US303 - Eu, analista técnico, devo concluir a análise para deferir o processo
 * OS35 - US989 - Eu, analista técnico, devo concluir a análise para emitir notificação
+* OS35 - US295 - Eu, analista técnico, devo visualizar o protocolo para analisar suas informações
+

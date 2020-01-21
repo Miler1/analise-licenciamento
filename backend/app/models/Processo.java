@@ -136,7 +136,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularAnalista(UsuarioAnalise analista, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
 
-		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
+		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcessoAtivo(this), usuarioExecutor, justificativaCoordenador);
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
@@ -144,7 +144,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularGerente(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
 		
-		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
+		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcessoAtivo(this));
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
@@ -796,8 +796,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		} else if (usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
 
-			this.analise.analiseTecnica = AnaliseTecnica.findByProcessoAtivo (this);
-			this.analise.analiseGeo = AnaliseGeo.findByProcessoAtivo(this);
+			this.analise.analiseTecnica = AnaliseTecnica.findByProcesso(this);
+			this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
 		}
 
 		return this;
