@@ -580,32 +580,6 @@ public class Notificacao extends GenericModel {
 		return new Documento(tipoDocumento, pdf.getFile());
 	}
 
-	public static Documento gerarPDFMinuta(AnaliseTecnica analiseTecnica) throws Exception {
-
-		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-
-		Endereco enderecoPrincipal = new Endereco();
-
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
-		for (Endereco endereco : empreendimentoEU.enderecos) {
-			if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
-				enderecoPrincipal = endereco;
-			}
-		}
-
-		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
-
-		PDFGenerator pdf = new PDFGenerator()
-				.setTemplate(tipoDocumento.getPdfTemplate())
-				.addParam("analiseTecnica", analiseTecnica)
-				.addParam("endereco", enderecoPrincipal)
-				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
-
-		pdf.generate();
-
-		return new Documento(tipoDocumento, pdf.getFile());
-	}
-
 	public static Documento gerarPDF(List<Notificacao> notificacoes, AnaliseTecnica analiseTecnica) throws Exception {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);

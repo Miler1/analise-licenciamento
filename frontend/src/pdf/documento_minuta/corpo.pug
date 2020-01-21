@@ -1,0 +1,53 @@
+doctype html
+|%{
+|	numeroProcesso = analiseTecnica.analise.processo.numero;
+|}%
+html(lang='en')
+	head
+		title Análise - Licenciamento Ambiental - Amazonas
+			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+			meta(charset='UTF-8')
+
+	body
+		div
+			h3(style="text-align:center; margin-top:0px;") MINUTA
+
+		table
+
+			tr.estrutura
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+				td(style='width: 10%')
+
+			tr
+				td.text-center(colspan='10')
+					span MODALIDADE/ Nº DA LICENÇA PROPOSTA - ${analiseTecnica.analise.processo.caracterizacao.tipoLicenca.sigla} Nº
+			
+			tr
+				td(colspan='5')
+					span Processo Nº: ${empreendimento.denominacao}.
+				td(colspan='5')
+					span Protocolo Nº: ${analiseTecnica.analise.processo.numero}.
+
+			tr
+				td(colspan='10')
+					span Empresa/Interessado: ${empreendimento.denominacao}.
+			
+			tr
+				td(colspan='10')
+					span Endereço para correspondência: ${endereco.logradouro}, Nº ${endereco.numero}.
+
+			tr
+				td(colspan='4')
+					span Bairro: ${endereco.bairro}.
+				td(colspan='3')
+					span Município: ${endereco.municipio.nome}.
+				td(colspan='3')
+					span CEP: ${endereco.cep}.

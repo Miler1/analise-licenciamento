@@ -2,12 +2,8 @@ package controllers;
 
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
-import models.Analise;
-import models.AnaliseTecnica;
-import models.Documento;
-import models.Notificacao;
+import models.*;
 import models.geocalculo.Geoserver;
-import models.UsuarioAnalise;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
@@ -171,17 +167,19 @@ public class AnalisesTecnicas extends InternalController {
 
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
-//		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
+        ParecerAnalistaTecnico parecer = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
 
-		Documento pdfNotificacao = Notificacao.gerarPDFMinuta(analiseTecnica);
+		parecer.documentoMinuta = ParecerAnalistaTecnico.gerarPDFMinuta(analiseTecnica);
 
-		String nome = pdfNotificacao.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
+		parecer._save();
+
+		String nome = parecer.documentoMinuta.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
 		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Content-Type", "application/pdf");
 
-		renderBinary(pdfNotificacao.arquivo, nome);
+		renderBinary(parecer.documentoMinuta.getFile(), nome);
 
 	}
 

@@ -1,0 +1,171 @@
+/* Cabeçalho */
+.centraliza-texto {
+    text-align: center;
+}
+
+/* corpo */
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.cabecalho {
+  margin: 10px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+li {
+	padding: 7px 0;
+}
+
+.estrutura {
+	border: none;
+	border-color: transparent;
+	visibility: hidden;
+	z-index: -1;
+}
+
+.estrutura td {
+	border: none;
+	border-color: transparent;
+	visibility: hidden;
+}
+
+table {
+	width: 95%;
+	border: 2px solid transparent;
+	margin: 0px auto;
+}
+
+.table-coordenadas {
+	font-weight:normal;
+	border: none;			
+}
+
+tr > td {
+	border: 1px solid black;
+	padding: 3px;
+}
+
+.transparent-cell {
+	border-color: transparent;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-justify {
+	text-align: justify;
+	line-height: 1.5em;
+}
+
+.pull-right {
+	float: right !important;
+}
+
+.indentado {
+	text-indent: 3em;
+}
+
+.margin-condicionantes {
+	margin-left: 6em;
+}
+
+.texto-cabecalho {
+	color: white;
+	height: 25px;
+	font-size: 15px;
+}
+
+.logo {
+	width: 65px;
+}
+
+.qrcode {
+	padding-top: 90px;
+	width: 100px;
+}
+
+.assinatura {
+	font-weight: bold;
+	padding-top: 90px;
+}
+
+.assinatura hr {
+	width: 80%;
+	margin: 10px auto;
+	border-color: black;
+}
+
+.assinatura h5 {
+	margin: 0px;
+}
+
+.descricao {
+	font-weight:normal; 
+}
+.upper-roman {
+	list-style: upper-roman;
+}
+
+.lower-alpha {
+	list-style: lower-alpha;
+}
+
+h4 {
+	margin: 5px;
+}
+
+.texto-interno {
+	padding-left: 20px;
+}
+
+h5.menor {
+	font-size: 10px;
+}
+
+@media print {
+
+	table {
+		page-break-inside: auto;
+	}
+
+    .quebra-pagina {
+    	page-break-after: always;
+    }
+
+	.texto-interno {
+		page-break-inside: auto;
+		page-break-after: auto;
+	}
+
+}
+
+.prorrogada {
+	color: white;
+}
+
+/* rodapé */
+.footer {
+    margin-top: 30px;
+}
+
+.in-left {
+  text-align: left;
+  float: left;
+  margin-top: 30px;
+
+}
+
+.in-right {
+  text-align: right;
+  float: right;
+  margin-top: 30px;
+}
