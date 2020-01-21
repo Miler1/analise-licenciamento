@@ -14,13 +14,10 @@ body {
   text-align: center;
 }
 
-.rodape {
-  margin: 10px;
-  padding-bottom: 50px;
-}
 .col-md-8 {
   width: 66%;
 }
+
 .col-md-4 {
   width: 33%;
 }
@@ -37,4 +34,95 @@ body {
 
 .dado-assinatura {
   margin-top: 5px;
+}
+
+.in-left {
+  text-align: left;
+  float: left;
+  margin-top: 15px;
+}
+
+.in-right {
+  text-align: right;
+  float: right;
+  margin-top: 15px;          
+}
+
+.rodape{
+  margin-bottom:0px;
+}
+
+.titulo{
+  text-align: center;
+}
+
+.conteudo {
+  margin: 20px 20px 20px 60px;
+}
+
+.titulo-item {
+  text-decoration:underline;
+  margin: 10px 20px 10px 60px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.conteudo-item {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+td {
+  border: 1px solid black;
+}
+
+p {
+  padding-top: 15px;
+}
+
+.lista-conteudo {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.margem-titulo {
+  margin-top: 40px;
+}
+
+.lista-referencias {
+  font-size: 10px;
+  padding-top: 100px;
+  padding-left: 15px;
+}
+
+.lista-itens {
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 10px
+}
+
+.lista-itens-restricao {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.col-item-titulo {
+  width: 230px;
+}
+
+.col-item-conteudo {
+  width: 200px;
+  text-align: right;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.margin-left-none {
+  margin-left: 0;
+}
+
+.margin-right-none {
+  margin-right: 0;
 }
