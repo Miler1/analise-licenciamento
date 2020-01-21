@@ -1441,6 +1441,23 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             parecerAnalistaTecnicoService.concluir(ctrl.parecer)
             .then(function(response) {
 
+                var params = {
+                    id: ctrl.analiseTecnica.id
+                };
+
+                documentoAnaliseService.generatePDFMinuta(params)
+                    .then(function(data) {
+
+                        var a = document.createElement('a');
+                        a.href = URL.createObjectURL(data.data.response.blob);
+                        a.download = data.data.response.fileName ? data.data.response.fileName : 'minuta.pdf';
+                        a.click();
+
+                    },function(error){
+                        mensagem.error(error.data.texto);
+                });
+
+
                 $location.path('/analise-tecnica');
                 mensagem.setMensagemProximaTela('success', response.data.texto);
 
@@ -1468,28 +1485,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         return documentosNotificacao;
     };
-
-    // ctrl.concluir = function(){
-
-    //     tratarDadosNotificacao();
-
-    //     ctrl.parecer.analiseTecnica = ctrl.analiseTecnica;
-
-    //     if(ctrl.parecer.documentos === null) {
-    //         ctrl.parecer.documentos = [];
-    //     }
-
-    //     analiseTecnicaService.concluir(ctrl.parecer)
-    //         .then(function(response) {
-
-    //         }, function(error){
-
-    //             mensagem.error(error.data.texto, {referenceId: 5});
-    //         });
-
-    //     $rootScope.$broadcast('atualizarContagemProcessos');
-
-    // };
 
     function tratarDadosNotificacao() {
 

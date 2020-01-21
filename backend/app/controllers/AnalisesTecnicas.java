@@ -1,5 +1,7 @@
 package controllers;
 
+import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
+import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.Analise;
 import models.AnaliseTecnica;
 import models.Documento;
@@ -9,6 +11,7 @@ import models.UsuarioAnalise;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import java.io.File;
@@ -146,9 +149,31 @@ public class AnalisesTecnicas extends InternalController {
 
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
-		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
+		List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
 
-		Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseTecnica);
+		Documento pdfNotificacao = Notificacao.gerarPDF(notificacoes, analiseTecnica);
+
+		String nome = pdfNotificacao.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(pdfNotificacao.arquivo, nome);
+
+	}
+
+	public static void downloadPDFMinuta(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+//		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
+
+		Documento pdfNotificacao = Notificacao.gerarPDFMinuta(analiseTecnica);
 
 		String nome = pdfNotificacao.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
 		nome = nome.replace(' ', '_');
