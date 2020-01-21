@@ -83,14 +83,19 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 			.then(function(response){
 
 				if(_.isEmpty(response.data.pareceresGerenteAnaliseTecnica)){
+
 					processo.verificaAnalise = false;
 					
 				}else{
+
 					_.find(response.data.pareceresGerenteAnaliseTecnica, function(parecerGerente) {
+
 						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+
 							processo.verificaAnalise = false;
 							
 						}else{
+							
 							processo.verificaAnalise=true;
 							
 						}
