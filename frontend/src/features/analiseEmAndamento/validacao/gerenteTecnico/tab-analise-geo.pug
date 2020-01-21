@@ -30,8 +30,9 @@
                                         td.col-md-5 {{camada.geometrias[0].descricao}}
 
                         #lista-camadas-restricoes
+                            
+                            label Áreas de restrição
                             div(ng-if="getRestricoes().length > 0")
-                                label Áreas de restrição
                                 table.table.table-striped.table-condensed.table-responsive.table-empreendimento
                                     thead
                                         tr
@@ -47,9 +48,12 @@
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                                     ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)",
                                                     data-toggle="tooltip", title="Visualizar resposta do comunicado ao órgão")
-
+                            
+                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="getRestricoes().length === 0")
+                                i Nenhuma restrição encontrada.
+                            
+                            label.title-inconsistencia Inconsistências Adicionadas
                             div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.analiseGeo.inconsistencias.length > 0")
-                                label.title-inconsistencia Inconsistências Encontradas
                                 
                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
                                     thead
