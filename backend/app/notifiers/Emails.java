@@ -63,14 +63,13 @@ public class Emails extends Mailer {
 			addRecipient(email);
 		}
 
-//		TODO: descomentar quando criar o pdf da notificação
-//		pdfsNotificacao.stream().forEach(pdfNotificacao -> {
-//
-//			EmailAttachment attachment = new EmailAttachment();
-//			attachment.setPath(new File(pdfNotificacao.arquivo.getPath()).getPath());
-//			addAttachment(attachment);
-//
-//		});
+		pdfsNotificacao.stream().forEach(pdfNotificacao -> {
+
+			EmailAttachment attachment = new EmailAttachment();
+			attachment.setPath(new File(pdfNotificacao.getFile().getPath()).getPath());
+			addAttachment(attachment);
+
+		});
 
 		return send(licencas, analiseTecnica, parecerAnalistaTecnico, enderecoCompleto);
 

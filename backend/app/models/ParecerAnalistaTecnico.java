@@ -9,7 +9,9 @@ import play.db.jpa.GenericModel;
 import utils.Mensagem;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,8 +76,18 @@ public class ParecerAnalistaTecnico extends GenericModel {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 
+	@OneToOne
+	@JoinColumn(name = "id_documento", referencedColumnName = "id")
+	public Documento documentoParecer;
+
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
+
+	public Date getDataParecer() {
+
+		return this.data;
+
+	}
 
 	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica) {
 
@@ -123,6 +135,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 			this.vistoria.parecerAnalistaTecnico = this;
 			this.vistoria = this.vistoria.salvar();
+			analiseTecnicaBanco.vistoria = this.vistoria;
 
 		}
 
@@ -158,7 +171,6 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 			analiseTecnicaBanco.analise.processo.tramitacao.tramitar(analiseTecnicaBanco.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO, usuarioExecutor, "Notificado");
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
-
 
 		}
 
@@ -225,6 +237,12 @@ public class ParecerAnalistaTecnico extends GenericModel {
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO) && this.parecer.equals("")) {
 			throw new ValidacaoException(Mensagem.ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA);
 		}
+
+	}
+
+	public static ParecerAnalistaTecnico getUltimoParecer(List<ParecerAnalistaTecnico> pareceresAnalistatecnico) {
+
+		return pareceresAnalistatecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
 
 	}
 

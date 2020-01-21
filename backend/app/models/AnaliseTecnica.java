@@ -1,9 +1,10 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.Empreendimento;
-import models.licenciamento.TipoAnalise;
+import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
+import main.java.br.ufla.lemaf.enums.TipoEndereco;
+import models.licenciamento.*;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -13,19 +14,21 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
-import utils.ListUtil;
-import utils.Mensagem;
-import utils.ModelUtil;
+import play.libs.Crypto;
+import services.IntegracaoEntradaUnicaService;
+import utils.*;
 
 import javax.persistence.*;
 import java.util.*;
+
+import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema = "analise", name = "analise_tecnica")
 public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	public static final String SEQ = "analise.analise_tecnica_id_seq";
+	private static final String NOME_PERFIL = "Analista Tecnico";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
@@ -153,6 +156,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	@Transient
 	public Integer prazoNotificacao;
+
+	@Transient
+	public Vistoria vistoria;
 
 	private void validarParecer() {
 
@@ -421,16 +427,20 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			this.prazoNotificacao = notificacao.prazoNotificacao/3;
 
 			EmailNotificacaoAnaliseTecnica emailNotificacaoAnaliseTecnica = new EmailNotificacaoAnaliseTecnica(this, parecerAnalistaTecnico, destinatarios);
+
 			emailNotificacaoAnaliseTecnica.enviar();
 
 		} else {
 
 			Notificacao notificacaoSave = new Notificacao(this, notificacao, parecerAnalistaTecnico);
-			notificacaoSave.save();
+
 			this.prazoNotificacao = notificacaoSave.prazoNotificacao;
 
 			EmailNotificacaoAnaliseTecnica emailNotificacaoAnaliseTecnica = new EmailNotificacaoAnaliseTecnica(this, parecerAnalistaTecnico, destinatarios);
 			emailNotificacaoAnaliseTecnica.enviar();
+
+			notificacaoSave.documentosNotificacaoTecnica.addAll(emailNotificacaoAnaliseTecnica.getPdfsNotificacao());
+			notificacaoSave.save();
 
 		}
 
@@ -672,19 +682,29 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
-	public Documento gerarPDFParecer() throws Exception {
+	public Documento gerarPDFParecer(ParecerAnalistaTecnico parecerAnalistaTecnico) throws Exception {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
+
+		List<Condicionante> condicionantes = Condicionante.findByIdParecer(parecerAnalistaTecnico.id);
+		List<Restricao> restricoes = Restricao.findByIdParecer(parecerAnalistaTecnico.id);
+		Vistoria vistoria = Vistoria.findByIdParecer(parecerAnalistaTecnico.id);
+		String numeroProcesso = this.analise.processo.numero;
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseEspecifica", this)
-				.addParam("analiseArea", "ANALISE_TECNICA")
-				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+				.addParam("numeroProcesso", numeroProcesso)
+				.addParam("vistoria", vistoria)
+				.addParam("parecer", parecerAnalistaTecnico)
+				.addParam("condicionantes", condicionantes)
+				.addParam("restricoes", restricoes)
+				.addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
 		pdf.generate();
 
-		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+		Documento documento = new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "documento_parecer"), new Date());
 
 		return documento;
 
@@ -699,6 +719,75 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 			l._save();
 
 		});
+
+	}
+
+	public List<Documento> gerarPDFNotificacao(AnaliseTecnica analiseTecnica) {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);
+
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
+		final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+
+		UsuarioAnalise analista;
+		AnalistaVO analistaVO;
+
+		if(analiseTecnica.id != null) {
+
+			AnalistaTecnico analistaTecnico = AnalistaTecnico.findByAnaliseTecnica(analiseTecnica.id);
+
+			analista = UsuarioAnalise.findById(analistaTecnico.usuario.id);
+
+			analistaVO = new AnalistaVO(analista.pessoa.nome, NOME_PERFIL, analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor);
+
+		} else {
+
+			analista = getUsuarioSessao();
+			analistaVO = new AnalistaVO(analista.pessoa.nome, analista.usuarioEntradaUnica.perfilSelecionado.nome, analista.usuarioEntradaUnica.setorSelecionado.sigla);
+
+		}
+
+		List<Documento> documentosNotificacao = new ArrayList<>();
+
+		AnalistaVO finalAnalistaVO = analistaVO;
+
+		analiseTecnica.inconsistenciasTecnica.forEach(inconsistencia -> {
+
+			inconsistencia.setTipoDeInconsistenciaTecnica();
+
+			PDFGenerator pdf = new PDFGenerator()
+					.setTemplate(tipoDocumento.getPdfTemplate())
+					.addParam("analiseTecnica", analiseTecnica)
+					.addParam("inconsistencia", inconsistencia)
+					.addParam("enderecoCompleto", enderecoCompleto)
+					.addParam("analista", finalAnalistaVO)
+					.addParam("vistoria", false)
+					.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+
+			pdf.generate();
+
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "notificacao_tecnica"), new Date()));
+
+		});
+
+		if(analiseTecnica.vistoria.realizada) {
+
+			PDFGenerator pdf = new PDFGenerator()
+					.setTemplate(tipoDocumento.getPdfTemplate())
+					.addParam("analiseTecnica", analiseTecnica)
+					.addParam("inconsistencia", analiseTecnica.vistoria.inconsistenciaVistoria)
+					.addParam("enderecoCompleto", enderecoCompleto)
+					.addParam("analista", finalAnalistaVO)
+					.addParam("vistoria", true)
+					.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 4.0D);
+
+			pdf.generate();
+
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "notificacao_tecnica"), new Date()));
+		}
+
+		return documentosNotificacao;
 
 	}
 
