@@ -162,4 +162,10 @@ public class AnalistaTecnico extends GenericModel {
 
 		return null;
 	}
+
+	public static AnalistaTecnico findByAnaliseTecnica(Long idAnaliseTecnica) {
+
+		return AnalistaTecnico.find("id_analise_tecnica = :analiseTecnica")
+				.setParameter("analiseTecnica", idAnaliseTecnica).first();
+	}
 }
