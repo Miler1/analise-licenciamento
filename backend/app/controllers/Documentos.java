@@ -1,7 +1,9 @@
 package controllers;
 
 import exceptions.ValidacaoException;
+import models.AnaliseTecnica;
 import models.Documento;
+import models.ParecerAnalistaTecnico;
 import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
 import play.data.Upload;
@@ -98,6 +100,18 @@ public class Documentos extends InternalController {
 		FileUtils.deleteDirectory(file.getParentFile());
 
 		renderMensagem(Mensagem.DOCUMENTO_DELETADO_COM_SUCESSO);
+
+	}
+
+	public static void downloadRTVByIdAnaliseTecnica(Long idAnalisetecnica) throws FileNotFoundException {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnalisetecnica);
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		download(parecerAnalistaTecnico.vistoria.documentoRelatorioTecnicoVistoria.id);
 
 	}
 

@@ -1,11 +1,7 @@
 package controllers;
 
-import models.Analise;
-import models.AnaliseTecnica;
-import models.Documento;
-import models.Notificacao;
+import models.*;
 import models.geocalculo.Geoserver;
-import models.UsuarioAnalise;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
@@ -157,6 +153,30 @@ public class AnalisesTecnicas extends InternalController {
 		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfNotificacao.arquivo, nome);
+
+	}
+
+	public static void downloadPDFRelatorioTecnicoVistoria(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		Vistoria vistoria = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico).vistoria;
+
+		vistoria.documentoRelatorioTecnicoVistoria = analiseTecnica.gerarPDFRelatorioTecnicoVistoria();
+
+		vistoria._save();
+
+		String nome = vistoria.documentoRelatorioTecnicoVistoria.tipo.nome +  "_" + vistoria.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(vistoria.documentoRelatorioTecnicoVistoria.getFile(), nome);
 
 	}
 
