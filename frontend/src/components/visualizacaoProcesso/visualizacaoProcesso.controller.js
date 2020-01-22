@@ -66,25 +66,64 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
 			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
 			modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica);
+
+		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_TECNICO) {
+
+			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
+			modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica.forEach(function(parecerGerente) {
+
+				if(parecerGerente.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
+					
+					modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(parecerGerente);
+				}
+
+			});
+
 		}
 
-		modalCtrl.pareceres = modalCtrl.pareceres.sort(function(processo1, processo2){
+		if (!_.isEmpty(modalCtrl.pareceres)) {
 
-			if(modalCtrl.dateUtil.isBefore(processo1.dataParecer, processo2.dataParecer)) {
+			modalCtrl.pareceres = modalCtrl.pareceres.sort(function(processo1, processo2){
 
-				return 1;
+				if(modalCtrl.dateUtil.isBefore(processo1.dataParecer, processo2.dataParecer)) {
+	
+					return 1;
+	
+				} else if(modalCtrl.dateUtil.isAfter(processo1.dataParecer, processo2.dataParecer)) {
+	
+					return -1;
+					
+				} else {
+	
+					return 0;
+	
+				}
+				 
+			});
+		}
 
-			} else if(modalCtrl.dateUtil.isAfter(processo1.dataParecer, processo2.dataParecer)) {
+		if (!_.isEmpty(modalCtrl.pareceresTecnicos)) {
 
-				return -1;
-				
-			} else {
+			modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.sort(function(processo1, processo2){
 
-				return 0;
+				if(modalCtrl.dateUtil.isBefore(processo1.dataParecer, processo2.dataParecer)) {
+	
+					return 1;
+	
+				} else if(modalCtrl.dateUtil.isAfter(processo1.dataParecer, processo2.dataParecer)) {
+	
+					return -1;
+					
+				} else {
+	
+					return 0;
+	
+				}
+				 
+			});
+		}
 
-			}
- 			
-		});
+		
 	};
 
 	if (processo.idProcesso) {
@@ -115,44 +154,75 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	}
 
-	modalCtrl.comparaStatus = function() {
-		var ANALISTA_GEO = [25, 26, 30, 4, 32];
-		var status = false;	
-				
-		if (modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
-			
-			status =  true;
-		}
+	modalCtrl.setLabelAnalistas = function(tipoResultadoAnalistaGeo) {
 
-		ANALISTA_GEO.forEach(function(condicao){
-
-			if(modalCtrl.dadosProcesso.objetoTramitavel.condicao.idCondicao === condicao) {
-
-				status = true;
-
-			}
-
-		});
-
-		return status;
-
-	};
-
-	modalCtrl.setLabelAnalistas = function(tipoResultadoAnalise) {
-
-		if(tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
+		if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
 
 			return 'Despacho';
 
-		} else if(tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
+		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
 
 			return 'Justificativa';
 
-		} else if(tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
+		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
 
 			return 'Descrição da solicitação';
 
 		}
+
+	};
+
+	modalCtrl.condicoesAnalistas = function(parecer) {
+		
+		if (parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES && 
+			parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO &&
+			parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
+
+			return true;
+			
+		}
+
+		return false;
+
+	};
+
+	modalCtrl.condicoesGerentes = function(parecer) {
+		
+		if (parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES ||
+			parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO ||
+			parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
+
+			return true;
+			
+		}
+
+		return false;
+
+	};
+
+	modalCtrl.verificaLoginAnaliseGeo = function() {
+		
+		if (modalCtrl.perfis.ANALISTA_GEO === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
+
+			return true;
+			
+		}
+
+		return false;
+
+	};
+
+	modalCtrl.verificaLoginAnaliseTecnica = function() {
+		
+		if (modalCtrl.perfis.ANALISTA_TECNICO === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
+
+			return true;
+			
+		}
+
+		return false;
 
 	};
 
