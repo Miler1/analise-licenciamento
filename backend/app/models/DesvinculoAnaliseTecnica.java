@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO;
+import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA;
 
 @Entity
 @Table(schema="analise", name="desvinculo_analise_tecnica")
@@ -105,7 +105,7 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 		this.save();
 
 		this.analiseTecnica = AnaliseTecnica.findById(this.analiseTecnica.id);
-		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO, usuarioSessao, this.gerente);
+		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA, usuarioSessao, this.gerente);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), usuarioSessao);
 
 	}
@@ -139,11 +139,11 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 			analistaTecnico.usuario = this.analistaTecnicoDestino;
 			analistaTecnico._save();
 
-			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaTecnicoDestino);
+			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO_TECNICO, usuarioSessao, this.analistaTecnicoDestino);
 
 		} else {
 
-			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO, usuarioSessao, this.analistaTecnico);
+			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO_TECNICO, usuarioSessao, this.analistaTecnico);
 
 		}
 
