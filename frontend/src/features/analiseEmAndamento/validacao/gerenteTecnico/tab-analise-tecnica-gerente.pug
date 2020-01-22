@@ -178,10 +178,12 @@
                     .glyphicon.glyphicon-file.icon-download
                     | Minuta da Licença
                 br
-                button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFAutoInfracao(validacaoAnaliseTecnicaGerente.analiseTecnica)")
-                    .glyphicon.glyphicon-file.icon-download
-                    | Auto de Infração
-                br
+                div
+                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.visualizarAutoInfracao(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos)",
+                                                        ng-if="validacaoAnaliseTecnicaGerente.possuiAutoInfracao === true")
+                        .glyphicon.glyphicon-file.icon-download
+                        | Auto de Infração
+                    br
                 button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFRit(validacaoAnaliseTecnicaGerente.analiseTecnica)")
                     .glyphicon.glyphicon-file.icon-download
                     | Relatório Técnico de Vistoria
@@ -203,35 +205,3 @@
                     label.label-parecer Da conclusão:
                     br
                     p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao")
-
-                table.table.table-condensed.table-docs(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.documentos.length > 0")
-
-                    thead
-
-                        tr
-                            th.col-md-10 Documento anexado
-                            th.col-md-2.text-right Ações
-
-                    tbody
-
-                        tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.parecerTecnico.documentos", ng-if= "documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
-                            td.col-md-10 {{ documento.nomeDoArquivo }}
-                            td.col-md-2.text-right
-                                a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
-                                    i.glyphicon.glyphicon-eye-open
-
-            table.table.table-condensed.table-docs(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.documentos.length > 0")
-
-                thead
-
-                    tr
-                        th.col-md-10 Documento anexado
-                        th.col-md-2.text-right Ações
-
-                tbody
-
-                    tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.parecerTecnico.documentos", ng-if= "documento.tipo.id !== validacaoAnaliseTecnicaGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
-                        td.col-md-10 {{ documento.nomeDoArquivo }}
-                        td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
-                                i.glyphicon.glyphicon-eye-open

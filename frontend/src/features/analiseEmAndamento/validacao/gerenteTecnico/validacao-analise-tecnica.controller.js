@@ -27,6 +27,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
     validacaoAnaliseTecnicaGerente.concluir = concluir;
 
+    validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
+
     validacaoAnaliseTecnicaGerente.errors = {
 		despacho: false,
         resultadoAnalise: false,
@@ -51,6 +53,12 @@ validacaoAnaliseTecnicaGerente.disable = {
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
                 validacaoAnaliseTecnicaGerente.parecerTecnico = getUltimoParecerTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico);
+
+                _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
+                    if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
+                        validacaoAnaliseTecnicaGerente.possuiAutoInfracao = true;
+                    }
+                });
 
                 _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
                     
@@ -138,6 +146,15 @@ validacaoAnaliseTecnicaGerente.disable = {
 
         return pareceresOrdenados[pareceresOrdenados.length - 1];
 
+    };
+
+    validacaoAnaliseTecnicaGerente.visualizarAutoInfracao = function(documentosAnaliseTecnica) {
+
+        _.filter(documentosAnaliseTecnica, function(documento){
+            if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
+                documentoAnaliseService.download(documento.id);
+            }
+        });
     };
 
     validacaoAnaliseTecnicaGerente.buscarAnalistasTecnicoByIdProcesso = function() {
@@ -235,6 +252,9 @@ validacaoAnaliseTecnicaGerente.disable = {
                 },
                 indexParametro: function(){
                     return indexParametroModal;
+                },
+                isGerente: function(){
+                    return true;
                 }
             }
         });
