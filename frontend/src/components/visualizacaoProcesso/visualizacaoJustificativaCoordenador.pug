@@ -1,9 +1,9 @@
-div
-	label.titulo(ng-if="(modalVisualizacaoProcessoCtrl.pareceres !== null && modalVisualizacaoProcessoCtrl.pareceres.length > 0)") Resultados das análises
-	div.info-sem-dados-para-exibir(ng-if="(modalVisualizacaoProcessoCtrl.pareceres === null || modalVisualizacaoProcessoCtrl.pareceres.length === 0)") 
+div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseGeo()")
+	label.titulo(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo.length > 0 )") Resultados das análises
+	div.info-sem-dados-para-exibir(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.length === 0 ) && ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo.length === 0 )") 
 		i Não há análises para este protocolo
 	.panel-group(id="accordion-{{parecer.id}}", ng-if = "modalVisualizacaoProcessoCtrl.pareceres", ng-repeat="parecer in modalVisualizacaoProcessoCtrl.pareceres")
-		div(ng-if="parecer.tipoResultadoAnalise.id !== modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES && parecer.tipoResultadoAnalise.id !== modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO && parecer.tipoResultadoAnalise.id !== modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO && modalVisualizacaoProcessoCtrl.perfis.ANALISTA_TECNICO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil && parecer.usuario.pessoa.nome !== undefined")
+		div(ng-if="modalVisualizacaoProcessoCtrl.condicoesAnalistas(parecer)")
 			.panel.panel-default.panel-analise
 				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-analista-geo-{{parecer.id}}', aria-expanded='false', data-target='#dados-analista-geo-{{parecer.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionGeo = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionGeo = !modalVisualizacaoProcessoCtrl.openedAccordionGeo')
 					.panel.panel-default
@@ -21,10 +21,10 @@ div
 						label Situação:
 						p {{ parecer.tipoResultadoAnalise.nome }}
 
-						label {{ modalVisualizacaoProcessoCtrl.setLabelAnalistaGeo(parecer.tipoResultadoAnalise) }}:
+						label {{ modalVisualizacaoProcessoCtrl.setLabelAnalistas(parecer.tipoResultadoAnalise) }}:
 						p.i(ng-bind-html="parecer.parecer")
 
-		div(ng-if="parecer.tipoResultadoAnalise.id === modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES || parecer.tipoResultadoAnalise.id === modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO || parecer.tipoResultadoAnalise.id === modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO")
+		div(ng-if="modalVisualizacaoProcessoCtrl.condicoesGerentes(parecer)")
 			.panel.panel-default.panel-analise
 				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente-{{parecer.id}}', aria-expanded='false', data-target='#dados-gerente-{{parecer.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionGerente = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionGerente = !modalVisualizacaoProcessoCtrl.openedAccordionGerente')
 					.panel.panel-default
@@ -45,16 +45,21 @@ div
 						label {{ modalVisualizacaoProcessoCtrl.setLabelGerente(parecer.tipoResultadoAnalise) }}:
 						p.i(ng-bind-html="parecer.parecer")
 
-		div(ng-if="parecer.tipoResultadoAnalise.id !== modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES && parecer.tipoResultadoAnalise.id !== modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO && parecer.tipoResultadoAnalise.id !== modalVisualizacaoProcessoCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO && modalVisualizacaoProcessoCtrl.perfis.ANALISTA_GEO !== modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil && parecer.analistaTecnico.pessoa.nome !== undefined")
+div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseTecnica()")
+	label.titulo(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnico !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnico.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico.length > 0 )")
+	div.info-sem-dados-para-exibir(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnico === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnico.length === 0 ) && ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico.length === 0 )") 
+		i Não há análises para este protocolo
+	.panel-group(id="accordion-{{parecer.id}}", ng-if = "modalVisualizacaoProcessoCtrl.pareceresTecnicos", ng-repeat="parecer in modalVisualizacaoProcessoCtrl.pareceresTecnicos")
+		div(ng-if="modalVisualizacaoProcessoCtrl.condicoesAnalistas(parecer)")
 			.panel.panel-default.panel-analise
-				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-analista-geo-{{parecer.id}}', aria-expanded='false', data-target='#dados-analista-geo-{{parecer.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionGeo = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionGeo = !modalVisualizacaoProcessoCtrl.openedAccordionGeo')
+				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-analista-tecnico-{{parecer.id}}', aria-expanded='false', data-target='#dados-analista-tecnico-{{parecer.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionTecnico = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionTecnico = !modalVisualizacaoProcessoCtrl.openedAccordionTecnico')
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
 								| ANALISTA TECNICO: {{ parecer.analistaTecnico.pessoa.nome }}
-								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGeo, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGeo}")
+								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionTecnico, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionTecnico}")
 				
-				div.collapse(ng-class="{in: parecer.id}", id="dados-analista-geo-{{parecer.id}}")
+				div.collapse(ng-class="{in: parecer.id}", id="dados-analista-tecnico-{{parecer.id}}")
 					.panel-body
 
 						label Data do parecer:
@@ -63,6 +68,27 @@ div
 						label Situação:
 						p {{ parecer.tipoResultadoAnalise.nome }}
 
-						label {{ modalVisualizacaoProcessoCtrl.setLabelAnalistaTecnico(parecer.tipoResultadoAnalise) }}:
+						label {{ modalVisualizacaoProcessoCtrl.setLabelAnalistas(parecer.tipoResultadoAnalise) }}:
+						p.i(ng-bind-html="parecer.parecer")
+
+		div(ng-if="modalVisualizacaoProcessoCtrl.condicoesGerentes(parecer)")
+			.panel.panel-default.panel-analise
+				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente-{{parecer.id}}', aria-expanded='false', data-target='#dados-gerente-{{parecer.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionGerente = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionGerente = !modalVisualizacaoProcessoCtrl.openedAccordionGerente')
+					.panel.panel-default
+						.panel-heading
+							h4.panel-title
+								| GERENTE: {{ parecer.usuario.pessoa.nome }}
+								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGerente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGerente}")
+				
+				div.collapse(ng-class="{in: parecer.id}", id="dados-gerente-{{parecer.id}}")
+					.panel-body
+
+						label Data do parecer:
+						p {{ parecer.dataParecer }}
+
+						label Situação:
+						p {{ parecer.tipoResultadoAnalise.nome }}
+
+						label {{ modalVisualizacaoProcessoCtrl.setLabelGerente(parecer.tipoResultadoAnalise) }}:
 						p.i(ng-bind-html="parecer.parecer")
 		

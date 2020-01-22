@@ -9,7 +9,6 @@ import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.tramitacao.*;
-import net.sf.oval.internal.util.ThreadLocalIdentitySet;
 import org.hibernate.criterion.Restrictions;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -186,7 +185,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
-			processoBuilder.filtrarAnaliseGeoAtiva(false);
+			//processoBuilder.filtrarAnaliseGeoAtiva(false);
 			processoBuilder.filtrarDesvinculoAnaliseGeoSemResposta();
 
 		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
@@ -782,6 +781,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		UsuarioAnalise usuario = Auth.getUsuarioSessao();
 
+		this.analise.analiseTecnica = AnaliseTecnica.findByProcesso(this);
+		this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
+
 		if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			this.analise.analiseGeo.pareceresAnalistaGeo = this.analise.analiseGeo.pareceresAnalistaGeo.stream()
@@ -794,10 +796,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
 					.collect(Collectors.toList());
 
-		} else if (usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
-
-			this.analise.analiseTecnica = AnaliseTecnica.findByProcesso(this);
-			this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
 		}
 
 		return this;
