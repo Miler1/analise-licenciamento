@@ -45,7 +45,6 @@ table {
 
 .table-coordenadas {
 	font-weight:normal;
-	border: none;			
 }
 
 tr > td {
@@ -150,6 +149,11 @@ h5.menor {
 
 .prorrogada {
 	color: white;
+}
+
+.table-coordenadas {
+	font-weight:normal;
+	border: none;			
 }
 
 /* rodapé */

@@ -249,7 +249,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 	}
 
-	public static Documento gerarPDFMinuta(AnaliseTecnica analiseTecnica) throws Exception {
+	public static Documento gerarPDFMinuta(AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecer) throws Exception {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
@@ -269,6 +269,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 				.addParam("analiseTecnica", analiseTecnica)
 				.addParam("endereco", enderecoPrincipal)
 				.addParam("empreendimento", empreendimentoEU)
+				.addParam("parecer", parecer)
 				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 5.0D);
 
 		pdf.generate();

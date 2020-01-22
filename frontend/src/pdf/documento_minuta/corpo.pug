@@ -1,6 +1,13 @@
 doctype html
 |%{
-|	numeroProcesso = analiseTecnica.analise.processo.numero;
+|	caracterizacao = analiseTecnica.analise.processo.caracterizacao;	
+|	numeroProcesso = caracterizacao.numero;
+|	numeroProtocolo = analiseTecnica.analise.processo.numero;
+|	siglaLicenca = caracterizacao.tipoLicenca.sigla;
+|	cpfCnpj = empreendimento.pessoa.cpf != null ? empreendimento.pessoa.cpf : empreendimento.pessoa.cnpj;
+|	inscricaoEstadual = empreendimento.pessoa.inscricaoEstadual != null ? empreendimento.pessoa.inscricaoEstadual : "8.178.209-9";
+|	atividadesCaracterizacao = caracterizacao.atividadesCaracterizacao;
+|	maiorPPDEPorte = caracterizacao.getAtividadeCaracterizacaoMaiorPotencialPoluidorEPorte();
 |}%
 html(lang='en')
 	head
@@ -28,26 +35,173 @@ html(lang='en')
 
 			tr
 				td.text-center(colspan='10')
-					span MODALIDADE/ Nº DA LICENÇA PROPOSTA - ${analiseTecnica.analise.processo.caracterizacao.tipoLicenca.sigla} Nº
-			
+					span MODALIDADE/ Nº DA LICENÇA PROPOSTA - ${siglaLicenca} Nº ${numeroProtocolo}
+
 			tr
 				td(colspan='5')
-					span Processo Nº: ${empreendimento.denominacao}.
+					span Processo Nº: ${numeroProcesso}
 				td(colspan='5')
-					span Protocolo Nº: ${analiseTecnica.analise.processo.numero}.
+					span Protocolo Nº: ${numeroProtocolo}
 
 			tr
 				td(colspan='10')
-					span Empresa/Interessado: ${empreendimento.denominacao}.
-			
+					span Empresa/Interessado: ${empreendimento.denominacao}
+
+			tr
+				td(colspan='5')
+					span CNPJ/CPF: ${utils.Helper.formatarCpfCnpj(cpfCnpj)}
+				td(colspan='5')
+					span Inscrição Estadual: ${inscricaoEstadual}
+
 			tr
 				td(colspan='10')
-					span Endereço para correspondência: ${endereco.logradouro}, Nº ${endereco.numero}.
+					span Endereço para correspondência: ${endereco.logradouro}, Nº ${endereco.numero}, ${endereco.bairro}
 
 			tr
 				td(colspan='4')
-					span Bairro: ${endereco.bairro}.
+					span Telefone: ${utils.PessoaEuUtils.getTelefone(empreendimento.pessoa)}
 				td(colspan='3')
-					span Município: ${endereco.municipio.nome}.
+					span Município: ${endereco.municipio.nome}
 				td(colspan='3')
-					span CEP: ${endereco.cep}.
+					span CEP: ${utils.Helper.formatarCep(endereco.cep)}
+
+			|\#{if !caracterizacao.isComplexo()}
+			|\#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }
+			tr
+				td(colspan='10')
+					span Atividade: ${atividadeCaracterizacao.getNomeAtividade()}
+
+			tr
+				td(colspan='10')
+					span Localização da atividade:
+						table
+							|\#{list items:0..atividadeCaracterizacao.geometriasAtividade.size() -1, as:'index'}
+							|%{
+							|	geometriaAtividade = atividadeCaracterizacao.geometriasAtividade[index];
+							|}%
+							tr
+								td.table-coordenadas(colspan='10') Geometria ${index + 1}:
+
+							tr
+								th(colspan='1') Ponto
+								th(colspan='2') Latitude
+								th(colspan='2') Longitude
+								th(colspan='1') Ponto
+								th(colspan='2') Latitude
+								th(colspan='2') Longitude
+							
+							|\#{list items:0..geometriaAtividade.geometria.getCoordinates().length -2, as: 'coordenadas'}
+							|\#{if coordenadas % 2 == 0}
+							tr
+								td.table-coordenadas(colspan='1') P-${coordenadas +1}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas].y)}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas].x)}
+								|\#{if coordenadas+1 != geometriaAtividade.geometria.getCoordinates().length -1}
+								td.table-coordenadas(colspan='1') P-${coordenadas +2}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].y) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].y) : '-'}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].x) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].x) : '-' }
+								|\#{/if}
+							|\#{/if}
+							|\#{/list}
+							|\#{/list}
+			|\#{/list}
+			|\#{/if}
+			|\#{else}
+			tr
+				td(colspan='10')
+					span Atividades do complexo:
+						table
+							|\#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }
+							tr
+								td.table-coordenadas(colspan='10') - ${atividadeCaracterizacao.getNomeAtividade()}
+							|\#{/list}
+			tr
+				td(colspan='10')
+					span Localização do complexo:
+						table
+							|\#{list items:caracterizacao.geometriasComplexo, as:'geometriaComplexo'}
+							tr
+								th(colspan='1') Ponto
+								th(colspan='2') Latitude
+								th(colspan='2') Longitude
+								th(colspan='1') Ponto
+								th(colspan='2') Latitude
+								th(colspan='2') Longitude
+							
+							|\#{list items:0..geometriaComplexo.geometria.getCoordinates().length -2, as:'coordenadas'}
+							|\#{if coordenadas % 2 == 0}
+							tr
+								td.table-coordenadas(colspan='1') P-${coordenadas +1}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas].y)}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas].x)}
+								|\#{if coordenadas+1 != geometriaComplexo.geometria.getCoordinates().length -1}
+								td.table-coordenadas(colspan='1') P-${coordenadas +2}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].y) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].y) : '-'}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].x) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].x) : '-' }
+								|\#{/if}
+							|\#{/if}
+							|\#{/list}
+							|\#{/list}
+			|\#{/else}
+
+			tr
+				td(colspan='10')
+					span Finalidade: 
+						|\#{verbatim}${parecer.finalidadeAtividade}\#{/verbatim}.
+
+			tr
+				td(colspan='4')
+					span Potencial Poluidor/Degradador: ${maiorPPDEPorte.atividade.potencialPoluidor.nome}
+				td(colspan='3')
+					span Porte: ${maiorPPDEPorte.porteEmpreendimento.nome}
+				td(colspan='3')
+					span Validade: ${parecer.validadePermitida}
+
+		div
+			h3(style="text-align:center; margin-top:0px;") RESTRIÇÕES E/OU CONDIÇÕES DE VALIDADE DESTA LICENÇA LAU - ${siglaLicenca} Nº ${numeroProtocolo}
+
+		div
+			ol
+				li
+					span O pedido de licenciamento e a respectiva concessão da mesma, só terá validade quando
+						| publicada Diário Oficial do Estado, periódico regional local ou local de grande circulação, em
+						| meio eletrônico de comunicação mantido pelo IPAAM, ou nos murais das Prefeituras e
+						| Câmaras Municipais, conforme art. 24, da Lei nº.3.785 de 24 de julho de 2012;
+				li
+					span A solicitação da renovação da Licença Ambiental deverá ser requerida num prazo mínimo de 
+						| <strong>120 dias</strong>, antes do vencimento, conforme art.23, da Lei nº 3.785 de 24 de julho de 2012;
+				li
+					span A presente licença está sendo concedida com base nas informações constantes no <strong>processo nº. ${numeroProcesso}</strong>.
+				li
+					span Toda e qualquer modificação introduzida no projeto após a emissão da Licença implicará na
+						| sua automática invalidação, devendo ser solicitada nova Licença, com ônus para o
+						| interessado.
+				li
+					span Esta licença é válida apenas para a localização, atividade e finalidade constante na mesma,
+						| devendo o interessado requerer ao IPAAM nova Licença quando houver mudança de
+						| qualquer um destes itens.
+				li
+					span Esta licença não dispensa e nem substitui nenhum documento exigido pela Legislação
+						| Federal, Estadual e Municipal.
+				li
+					span A coleta e o transporte dos resíduos de qualquer natureza gerados no empreendimento devem
+						| ser efetuados por empresa licenciada para esta atividade.
+				li
+					span Na eventualidade de ocorrência de vazamento de combustíveis ou sinistros nas instalações
+						| físicas do empreendimento, adotar procedimentos constantes no Plano de Emergência
+						| Individual - PEI, e encaminhar imediatamente relatório circunstanciado do evento a este
+						| IPAAM.
+				|\#{if !parecer.condicionantes.isEmpty()}
+				li
+					|\#{list items:parecer.condicionantes, as:'condicionante'}
+					span - ${condicionante.texto}. no prazo de ${condicionante.prazo} dias.
+					br
+					|\#{/list}
+				|\#{/if}
+				|\#{if !parecer.restricoes.isEmpty()}
+				li
+					|\#{list items:parecer.restricoes, as:'restricao'}
+					span - ${restricao.texto}.
+					br
+					|\#{/list}
+				|\#{/if}
