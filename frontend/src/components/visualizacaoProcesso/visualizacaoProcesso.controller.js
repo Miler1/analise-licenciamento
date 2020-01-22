@@ -35,7 +35,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.labelAnalistaGeo = '';
 	modalCtrl.labelGerente = '';
 	modalCtrl.parecer = {};
-	modalCtrl.pareceres= {};
+	modalCtrl.pareceres = {};
+	modalCtrl.pareceresTecnicos = {};
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -63,7 +64,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
-
+			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
+			modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica);
 		}
 
 		modalCtrl.pareceres = modalCtrl.pareceres.sort(function(processo1, processo2){
@@ -136,17 +138,17 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	};
 
-	modalCtrl.setLabelAnalistaGeo = function(tipoResultadoAnalistaGeo) {
+	modalCtrl.setLabelAnalistas = function(tipoResultadoAnalise) {
 
-		if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
+		if(tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.DEFERIDO) {
 
 			return 'Despacho';
 
-		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
+		} else if(tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.INDEFERIDO) {
 
 			return 'Justificativa';
 
-		} else if(tipoResultadoAnalistaGeo.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
+		} else if(tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.EMITIR_NOTIFICACAO) {
 
 			return 'Descrição da solicitação';
 
@@ -535,14 +537,21 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	this.visualizarJustificativas = function(idProcesso, historico){
 
-		if(historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO){
+		if(historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO){
 
 			desvinculoService.buscarDesvinculoPeloProcessoGeo(idProcesso)
             	.then(function(response){
 					abrirModal(response.data, idProcesso);
 				});
 
-		} else if(historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
+		} else if(historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA){
+
+			desvinculoService.buscarDesvinculoPeloProcessoTecnico(idProcesso)
+            	.then(function(response){
+					abrirModal(response.data, idProcesso);
+				});
+
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
 				  historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
 				  historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
@@ -582,7 +591,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||

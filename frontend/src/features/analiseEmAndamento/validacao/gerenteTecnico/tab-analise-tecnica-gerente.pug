@@ -22,7 +22,7 @@
                                             thead
                                                 tr
                                                 th.col-md-11 Fase
-                                                th.col-md-2 Ações
+                                                th.col-md-2.text-right Ações
 
                                             tbody
                                                 tr
@@ -57,7 +57,7 @@
                                                                 tr
                                                                 th.col-md-9 Atividade/Parâmetro
                                                                 th.col-md-2 Valor
-                                                                th.col-md-2 Ações
+                                                                th.col-md-2.text-right Ações
                                                             tbody
                                                                 tr
                                                                     td.col-md-9 {{atividadeCaracterizacao.atividade.nome}}
@@ -184,7 +184,9 @@
                 br
                 button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFRit(validacaoAnaliseTecnicaGerente.analiseTecnica)")
                     .glyphicon.glyphicon-file.icon-download
-                    | Relatório Técnico de Vistoria    
+                    | Relatório Técnico de Vistoria
+                br
+                br        
 
             #camposAnaliseGeo
                 div
@@ -233,5 +235,3 @@
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
                                 i.glyphicon.glyphicon-eye-open
-                
-

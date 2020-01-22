@@ -59,7 +59,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			// Arquiva o processo anterior
 			if (retificacao) {
-				Analise analiseAntiga = Analise.findByProcesso(processoAnterior);
+				Analise analiseAntiga = Analise.findByProcessoAtivo(processoAnterior);
 				analiseAntiga.processo.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 			}
 
