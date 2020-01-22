@@ -11,6 +11,7 @@ var InconsistenciaTecnicaController = function (
     documentoTecnicoAmbiental,
     index,
     indexParametro,
+    isGerente,
     $rootScope,
     inconsistenciaService,
     tipoDeInconsistenciaTecnica,
@@ -24,6 +25,7 @@ modalCtrl.tipoDeInconsistenciaTecnica = tipoDeInconsistenciaTecnica;
 modalCtrl.questionario = questionario;
 modalCtrl.tipoInconsistencia = null;
 modalCtrl.descricaoInconsistencia = null;
+modalCtrl.isGerente = isGerente;
 
 modalCtrl.errors = {
 
