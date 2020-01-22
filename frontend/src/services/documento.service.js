@@ -23,6 +23,12 @@ var DocumentoService = function(request, $window, config, Upload) {
         $window.open(config.BASE_URL() + "documentos/" + id + "/download", '_blank');
         
     };
+
+    this.downloadParecerByIdAnaliseTecnica = function(id) {
+
+        $window.open(config.BASE_URL() + "documentos/" + id + "/downloadParecerTecnico", '_blank');
+        
+    };
     
 };
 
