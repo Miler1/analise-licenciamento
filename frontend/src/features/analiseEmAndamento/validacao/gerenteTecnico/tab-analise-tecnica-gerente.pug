@@ -188,7 +188,7 @@
                 br
                 br        
 
-            #camposAnaliseTecnica
+            #camposAnaliseGeo
                 div
                     label.label-parecer Do processo:
                     br
@@ -235,14 +235,3 @@
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
                                 i.glyphicon.glyphicon-eye-open
-
-            #camposAnaliseTecnica
-                div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
-                    label.label-parecer Despacho:
-                    br
-                    p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer")
-                div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.INDEFERIDO")
-                    label.label-parecer Justificativa:
-                    br
-                    p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer")                
-
