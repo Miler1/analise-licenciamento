@@ -135,7 +135,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularAnalista(UsuarioAnalise analista, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
 
-		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
+		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcessoAtivo(this), usuarioExecutor, justificativaCoordenador);
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
@@ -143,7 +143,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularGerente(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
 		
-		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
+		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcessoAtivo(this));
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
@@ -185,7 +185,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
-			processoBuilder.filtrarAnaliseGeoAtiva(false);
+			//processoBuilder.filtrarAnaliseGeoAtiva(false);
 			processoBuilder.filtrarDesvinculoAnaliseGeoSemResposta();
 
 		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
@@ -781,10 +781,19 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		UsuarioAnalise usuario = Auth.getUsuarioSessao();
 
+		this.analise.analiseTecnica = AnaliseTecnica.findByProcesso(this);
+		this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
+
 		if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			this.analise.analiseGeo.pareceresAnalistaGeo = this.analise.analiseGeo.pareceresAnalistaGeo.stream()
 					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.usuario.id.equals(usuario.id))
+					.collect(Collectors.toList());
+
+		} else if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
+
+			this.analise.analiseTecnica.pareceresAnalistaTecnico = this.analise.analiseTecnica.pareceresAnalistaTecnico.stream()
+					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
 					.collect(Collectors.toList());
 
 		}
