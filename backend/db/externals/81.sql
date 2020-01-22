@@ -1,36 +1,31 @@
 # --- !Ups
 
-INSERT INTO portal_seguranca.permissao (codigo, data_cadastro, nome, id_modulo)	VALUES 
-	('VISUALIZAR_PROTOCOLO', now(), 'Visualizar protocolo', (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL'));
-	
+UPDATE tramitacao.acao SET tx_descricao = 'Solicitar desvínculo análise Geo' WHERE tx_descricao = 'Solicitar desvínculo';
 
-INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
-	((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista TÉCNICO' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES
+	(69, 'Aprovar solicitação de desvínculo do Analista técnico', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES
+	(70, 'Negar solicitação de desvínculo do Analista técnico', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES
+	(71, 'Solicitar desvínculo análise técnica', 1, 1);
 
-INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
-	((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista GEO' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
+DELETE FROM tramitacao.transicao WHERE id_acao = 59 AND id_condicao_inicial = 8 AND id_condicao_final = 33;
 
-INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
-	((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Gerente' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
-
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES
+	(69, 33, 8);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES
+	(70, 33, 8);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES
+	(71, 8, 33);
 
 
 # --- !Downs
 
-DELETE FROM portal_seguranca.permissao_perfil WHERE 
-id_perfil = (SELECT id FROM portal_seguranca.perfil WHERE nome = 'Gerente' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')) AND 
-id_permissao = (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL'));
+DELETE FROM tramitacao.transicao WHERE id_acao IN (69, 70, 71);
 
-DELETE FROM portal_seguranca.permissao_perfil WHERE 
-id_perfil = (SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista GEO' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')) AND 
-id_permissao = (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL'));
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES
+	(59, 8, 33);
 
-DELETE FROM portal_seguranca.permissao_perfil WHERE 
-id_perfil = (SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista TÉCNICO' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')) AND 
-id_permissao = (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL'));
+DELETE FROM tramitacao.acao WHERE id_acao IN (69, 70, 71);
 
-
-DELETE FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO';
+UPDATE tramitacao.acao SET tx_descricao = 'Solicitar desvínculo' WHERE tx_descricao = 'Solicitar desvínculo análise Geo';
