@@ -165,7 +165,7 @@ var CxEntGerenteController = function($scope, config, analistaService,analiseTec
 	};
 
 	cxEntGerente.verificarSolicitacaoDesvinculo = function(processo) {
-		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo;
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA;
 	};
 
 	cxEntGerente.iniciarAnaliseGerente = function(idAnalise, idAnaliseGeo, idAnaliseTecnica) {

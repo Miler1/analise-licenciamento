@@ -139,7 +139,7 @@ public class Analistas extends InternalController {
 
 		String siglaSetor = processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
-		List<UsuarioAnalise> analistasTecnico = AnalistaTecnico.buscarAnalistasTecnicoParaDesvinculo(siglaSetor, processo.analise.getAnaliseTecnica().getAnalistaTecnico().usuario.id);
+		List<UsuarioAnalise> analistasTecnico = AnalistaTecnico.buscarAnalistasTecnicoParaDesvinculo(siglaSetor, processo.analise.getAnaliseTecnica().analistaTecnico.usuario.id);
 
 		renderJSON(analistasTecnico, UsuarioSerializer.getAnalistasTecnico);
 

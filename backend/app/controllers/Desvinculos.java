@@ -2,6 +2,7 @@ package controllers;
 
 import models.*;
 import security.Acao;
+import serializers.DesvinculoAnaliseTecnicaSerializer;
 import serializers.DesvinculoSerializar;
 import utils.Mensagem;
 import static controllers.InternalController.getUsuarioSessao;
@@ -56,7 +57,7 @@ public class Desvinculos extends GenericController {
 
         Processo processo = Processo.findById(idProcesso);
 
-        renderJSON(processo.buscaDesvinculoPeloProcessoTecnico(), DesvinculoSerializar.list);
+        renderJSON(processo.buscaDesvinculoPeloProcessoTecnico(), DesvinculoAnaliseTecnicaSerializer.list);
     }
 
     public static void responderSolicitacaoDesvinculoAnaliseTecnica(DesvinculoAnaliseTecnica desvinculoAnaliseTecnica) {
