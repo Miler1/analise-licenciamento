@@ -139,4 +139,13 @@ public class Vistoria extends GenericModel {
 
 	}
 
+	public static Vistoria findByIdParecer(Long parecerAnalistaTecnicoId){
+
+		Vistoria vistoria= Vistoria.find("id_parecer_analista_tecnico", parecerAnalistaTecnicoId).first();
+
+		return vistoria;
+
+	}
+
+
 }

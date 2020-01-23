@@ -1445,18 +1445,29 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     id: ctrl.analiseTecnica.id
                 };
 
-                documentoAnaliseService.generatePDFMinuta(params)
-                    .then(function(data) {
+                documentoAnaliseService.generatePDFParecerTecnico(params)
+                    .then(function(data, status, headers){
 
                         var a = document.createElement('a');
                         a.href = URL.createObjectURL(data.data.response.blob);
-                        a.download = data.data.response.fileName ? data.data.response.fileName : 'minuta.pdf';
+                        a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
                         a.click();
+                        
+                        documentoAnaliseService.generatePDFMinuta(params)
+                            .then(function(data) {
 
-                    },function(error){
+                                var a = document.createElement('a');
+                                a.href = URL.createObjectURL(data.data.response.blob);
+                                a.download = data.data.response.fileName ? data.data.response.fileName : 'minuta.pdf';
+                                a.click();
+
+                            }, function(error){
+                                mensagem.error(error.data.texto);
+                        });
+
+                    }, function(error){
                         mensagem.error(error.data.texto);
-                });
-
+                    });
 
                 $location.path('/analise-tecnica');
                 mensagem.setMensagemProximaTela('success', response.data.texto);

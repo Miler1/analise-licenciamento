@@ -81,6 +81,10 @@ public class ParecerAnalistaTecnico extends GenericModel {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 
+	@OneToOne
+	@JoinColumn(name = "id_documento", referencedColumnName = "id")
+	public Documento documentoParecer;
+
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
