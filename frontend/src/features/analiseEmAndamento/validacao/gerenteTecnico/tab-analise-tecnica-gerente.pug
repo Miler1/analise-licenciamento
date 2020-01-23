@@ -170,25 +170,27 @@
                 span {{validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.nome | uppercase}}
             
             .botoes-download
-                button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFparecer(validacaoAnaliseTecnicaGerente.analiseTecnica)")
-                    .glyphicon.glyphicon-file.icon-download
-                    | Parecer Técnico
-                br
-                button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFMinuta(validacaoAnaliseTecnicaGerente.analiseTecnica)")
-                    .glyphicon.glyphicon-file.icon-download
-                    | Minuta da Licença
-                br
                 div
-                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.visualizarAutoInfracao(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos)",
-                                                        ng-if="validacaoAnaliseTecnicaGerente.possuiAutoInfracao === true")
+                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFparecer(validacaoAnaliseTecnicaGerente.analiseTecnica)")
+                        .glyphicon.glyphicon-file.icon-download
+                        | Parecer Técnico
+                    br
+                div
+                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFMinuta(validacaoAnaliseTecnicaGerente.analiseTecnica)")
+                        .glyphicon.glyphicon-file.icon-download
+                        | Minuta da Licença
+                    br
+                div(ng-if="validacaoAnaliseTecnicaGerente.possuiAutoInfracao === true")
+                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.visualizarAutoInfracao(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos)")
                         .glyphicon.glyphicon-file.icon-download
                         | Auto de Infração
                     br
-                button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFRit(validacaoAnaliseTecnicaGerente.analiseTecnica)")
-                    .glyphicon.glyphicon-file.icon-download
-                    | Relatório Técnico de Vistoria
-                br
-                br        
+                div(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.vistoria.realizada === true")   
+                    button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFRit(validacaoAnaliseTecnicaGerente.analiseTecnica)")
+                        .glyphicon.glyphicon-file.icon-download
+                        | Relatório Técnico de Vistoria
+                    br
+                    br        
 
             #camposAnaliseGeo
                 div

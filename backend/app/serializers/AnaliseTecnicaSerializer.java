@@ -99,6 +99,7 @@ public class AnaliseTecnicaSerializer {
 			"pareceresAnalistaTecnico.daConclusao",
 			"pareceresAnalistaTecnico.daAnaliseTecnica",
 			"pareceresAnalistaTecnico.parecer",
+			"pareceresAnalistaTecnico.vistoria.realizada",
 			"pareceresAnalistaTecnico.documentos.id",
 			"pareceresAnalistaTecnico.documentos.tipo.id",
 			"pareceresAnalistaTecnico.documentos.nomeDoArquivo",
