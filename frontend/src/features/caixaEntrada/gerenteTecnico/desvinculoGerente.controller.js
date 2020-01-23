@@ -1,4 +1,4 @@
-var DesvinculoGerenteController = function ($uibModalInstance, processo, $location ,$window,$rootScope, mensagem, desvinculoService,analistaService) {
+var DesvinculoGerenteController = function ($uibModalInstance, processo, $location ,$scope,$rootScope, mensagem, desvinculoService,analistaService) {
 
 	var desvinculoGerenteController = this;
 
@@ -52,11 +52,10 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 			desvinculoService.responderSolicitacaoDesvinculoAnaliseGeo(params)
 			.then(function(response){
 
-				mensagem.success(response.data);
-				$rootScope.$broadcast('atualizarContagemProcessos');
 				$rootScope.$broadcast('rootPesquisarProcessos');
-				$location.path('/caixa-entrada');
-				$uibModalInstance.dismiss();
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				mensagem.success(response.data);
+				$uibModalInstance.close();
 
 			}).catch(function(response){
 				mensagem.error(response.data.texto, {referenceId: 5});
@@ -72,16 +71,17 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 			desvinculoService.responderSolicitacaoDesvinculoAnaliseTecnica(params)
 			.then(function(response){
 
-				mensagem.success(response.data);
-				$rootScope.$broadcast('atualizarContagemProcessos');
 				$rootScope.$broadcast('rootPesquisarProcessos');
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				mensagem.success(response.data);
 				$location.path('/caixa-entrada');
-				$uibModalInstance.dismiss();
+				$uibModalInstance.close();
 
 			}).catch(function(response){
 				mensagem.error(response.data.texto, {referenceId: 5});
 			});
 		}
+
 	};
 
 	desvinculoGerenteController.buscarDesvinculoPeloProcessoGeo = function() {
