@@ -1106,6 +1106,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 },
                 indexParametro: function(){
                     return indexParametroModal;
+                },
+                isGerente: function(){
+                    return false;
                 }
             }
         });
@@ -1441,6 +1444,26 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             parecerAnalistaTecnicoService.concluir(ctrl.parecer)
             .then(function(response) {
 
+                var params = {
+					id: ctrl.idAnaliseTecnica
+				};
+
+                documentoAnaliseService.generatePDFParecerTecnico(params)
+                    .then(
+                        function(data, status, headers){
+
+                            var a = document.createElement('a');
+                            a.href = URL.createObjectURL(data.data.response.blob);
+                            a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
+                            a.click();
+                        },
+
+                        function(error){
+
+                            mensagem.error(error.data.texto);
+                        }
+                    );
+
                 $location.path('/analise-tecnica');
                 mensagem.setMensagemProximaTela('success', response.data.texto);
 
@@ -1468,28 +1491,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         return documentosNotificacao;
     };
-
-    // ctrl.concluir = function(){
-
-    //     tratarDadosNotificacao();
-
-    //     ctrl.parecer.analiseTecnica = ctrl.analiseTecnica;
-
-    //     if(ctrl.parecer.documentos === null) {
-    //         ctrl.parecer.documentos = [];
-    //     }
-
-    //     analiseTecnicaService.concluir(ctrl.parecer)
-    //         .then(function(response) {
-
-    //         }, function(error){
-
-    //             mensagem.error(error.data.texto, {referenceId: 5});
-    //         });
-
-    //     $rootScope.$broadcast('atualizarContagemProcessos');
-
-    // };
 
     function tratarDadosNotificacao() {
 

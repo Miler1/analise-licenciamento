@@ -9,7 +9,9 @@ import play.db.jpa.GenericModel;
 import utils.Mensagem;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,8 +36,9 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	@JoinColumn(name = "id_tipo_resultado_analise")
 	public TipoResultadoAnalise tipoResultadoAnalise;
 
-	@Column(name = "data")
-	public Date data;
+	@Column(name = "data_parecer")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataParecer;
 
 	@OneToOne
 	@JoinColumn(name = "id_usuario_analista_tecnico", referencedColumnName = "id")
@@ -74,8 +77,18 @@ public class ParecerAnalistaTecnico extends GenericModel {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 
+	@OneToOne
+	@JoinColumn(name = "id_documento", referencedColumnName = "id")
+	public Documento documentoParecer;
+
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
+
+	public Date getDataParecer() {
+
+		return this.dataParecer;
+
+	}
 
 	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica) {
 
@@ -113,7 +126,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 		validarTipoResultadoAnalise();
 
 		this.analistaTecnico = usuarioExecutor;
-		this.data = new Date();
+		this.dataParecer = new Date();
 
 		if(this.documentos != null && !this.documentos.isEmpty()) {
 			this.updateDocumentos(this.documentos);
@@ -225,6 +238,12 @@ public class ParecerAnalistaTecnico extends GenericModel {
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO) && this.parecer.equals("")) {
 			throw new ValidacaoException(Mensagem.ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA);
 		}
+
+	}
+
+	public static ParecerAnalistaTecnico getUltimoParecer(List<ParecerAnalistaTecnico> pareceresAnalistatecnico) {
+
+		return pareceresAnalistatecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
 
 	}
 

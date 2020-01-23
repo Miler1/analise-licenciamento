@@ -101,6 +101,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
 	public List<ParecerTecnicoRestricao> pareceresTecnicosRestricoes;
 
+	@OneToMany(mappedBy = "analiseTecnica")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerGerenteAnaliseTecnica> pareceresGerenteAnaliseTecnica;
+
 	@Column(name = "justificativa_coordenador")
 	public String justificativaCoordenador;
 
@@ -160,6 +164,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Transient
 	public Vistoria vistoria;
 
+	@Transient
+	public Long idAnalistaDestino;
+
 	private void validarParecer() {
 
 		if (StringUtils.isBlank(this.parecerAnalista))
@@ -167,12 +174,42 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
-	public static AnaliseTecnica findByProcesso(Processo processo) {
+	public static AnaliseTecnica findByProcessoAtivo(Processo processo) {
 
 		return AnaliseTecnica.find("analise.processo.id = :idProcesso AND ativo = true")
 				.setParameter("idProcesso", processo.id)
 				.first();
 
+	}
+
+	public static AnaliseTecnica findByProcesso(Processo processo) {
+
+		return AnaliseTecnica.find("analise.processo.id = :idProcesso")
+				.setParameter("idProcesso", processo.id)
+				.first();
+
+	}
+
+	public void iniciarAnaliseTecnicaGerente(UsuarioAnalise usuarioExecutor) {
+
+		verificarDataInicio();
+
+		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA_GERENTE, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+	}
+
+	public void verificarDataInicio() {
+		if (this.dataInicio == null) {
+
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+
+			this.dataInicio = c.getTime();
+
+			this._save();
+
+			iniciarLicencas();
+		}
 	}
 
 	public AnaliseTecnica save() {
@@ -682,19 +719,29 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
-	public Documento gerarPDFParecer() throws Exception {
+	public Documento gerarPDFParecer(ParecerAnalistaTecnico parecerAnalistaTecnico) throws Exception {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
+
+		List<Condicionante> condicionantes = Condicionante.findByIdParecer(parecerAnalistaTecnico.id);
+		List<Restricao> restricoes = Restricao.findByIdParecer(parecerAnalistaTecnico.id);
+		Vistoria vistoria = Vistoria.findByIdParecer(parecerAnalistaTecnico.id);
+		String numeroProcesso = this.analise.processo.numero;
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseEspecifica", this)
-				.addParam("analiseArea", "ANALISE_TECNICA")
-				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 1.5D, 1.5D);
+				.addParam("numeroProcesso", numeroProcesso)
+				.addParam("vistoria", vistoria)
+				.addParam("parecer", parecerAnalistaTecnico)
+				.addParam("condicionantes", condicionantes)
+				.addParam("restricoes", restricoes)
+				.addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
 		pdf.generate();
 
-		Documento documento = new Documento(tipoDocumento, pdf.getFile());
+		Documento documento = new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "documento_parecer"), new Date());
 
 		return documento;
 
@@ -778,6 +825,22 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 
 		return documentosNotificacao;
+	
+	}	
+
+	public AnalistaTecnico getAnalistaTecnico() {
+
+		return this.analistaTecnico;
+	}
+
+	public String getJustificativaUltimoParecer() {
+
+		ParecerGerenteAnaliseTecnica parecerGerenteAnaliseTecnica = this.pareceresGerenteAnaliseTecnica.stream()
+				.filter(parecer -> parecer.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES))
+				.max(Comparator.comparing(ParecerGerenteAnaliseTecnica::getDataParecer))
+				.orElseThrow(() -> new ValidacaoException(Mensagem.PARECER_NAO_ENCONTRADO));
+
+		return parecerGerenteAnaliseTecnica.parecer;
 
 	}
 

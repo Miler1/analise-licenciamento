@@ -8,6 +8,7 @@ import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import security.Auth;
 import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Mensagem;
 
@@ -161,6 +162,14 @@ public class AnalistaTecnico extends GenericModel {
 //		return perfil.setor;
 
 		return null;
+	}
+
+	public static List<UsuarioAnalise> buscarAnalistasTecnicoParaDesvinculo(String setorAtividade, Long idUltimoAnalistaTecnico) {
+
+		List<UsuarioAnalise> usuarios = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
+
+		return usuarios.stream().filter(usuario -> !usuario.id.equals(idUltimoAnalistaTecnico)).collect(Collectors.toList());
+
 	}
 
 	public static AnalistaTecnico findByAnaliseTecnica(Long idAnaliseTecnica) {

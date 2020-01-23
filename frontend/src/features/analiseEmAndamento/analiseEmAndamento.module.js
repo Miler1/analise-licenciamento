@@ -32,6 +32,11 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 			controller: controllers.ValidacaoAnaliseController,
 			controllerAs: 'validacaoAnalise'
 		})
+		.when('/analise-tecnica-gerente/:idAnalise', {
+			templateUrl: 'features/analiseEmAndamento/validacao/validar-analise-tecnica.html',
+			controller: controllers.ValidacaoAnaliseController,
+			controllerAs: 'validacaoAnalise'
+		})
 		.otherwise({
 			redirectTo: '/'
 		});    
@@ -43,4 +48,5 @@ analiseEmAndamento
 	.controller('analiseEmAndamentoTecnicaListController', controllers.AnaliseEmAndamentoTecnicaListController)
 	.controller('analiseEmAndamentoGeoListController', controllers.AnaliseEmAndamentoGeoListController)
 	.controller('analiseEmAndamentoGerenteListController', controllers.AnaliseEmAndamentoGerenteListController)
-	.controller('validacaoAnaliseGeoGerenteController', controllers.ValidacaoAnaliseGeoGerenteController);
+	.controller('validacaoAnaliseGeoGerenteController', controllers.ValidacaoAnaliseGeoGerenteController)
+	.controller('validacaoAnaliseTecnicaGerenteController', controllers.ValidacaoAnaliseTecnicaGerenteController);

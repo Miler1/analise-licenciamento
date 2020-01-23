@@ -12,18 +12,18 @@ div.modal-body
     div.area-modal
         label.label-modal.obrigatorio Descrição da inconsistência:
         br
-        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.descricao === true}", ng-model="modalCtrl.descricaoInconsistencia")
+        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.descricao === true}", ng-disabled="modalCtrl.isGerente === true", ng-model="modalCtrl.descricaoInconsistencia")
 
     div.area-modal
         label.label-modal.obrigatorio Tipo da inconsistência:
         br
-        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.tipo === true}", ng-model="modalCtrl.tipoInconsistencia")
+        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.tipo === true}", ng-disabled="modalCtrl.isGerente === true", ng-model="modalCtrl.tipoInconsistencia")
 
-    div.button-upload-modal.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+    div.button-upload-modal.btn.btn-default(ng-if="modalCtrl.isGerente === false",style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo na inconsistência
 
-    table.area-modal.table.table-condensed(ng-if="modalCtrl.anexos.length > 0")
+    table.area-modal.table.table-condensed(ng-if="modalCtrl.anexos.length > 0 && modalCtrl.isGerente === false")
 
         thead
 
@@ -52,6 +52,6 @@ div.modal-footer
         i.glyphicon.glyphicon-arrow-left
         | &nbsp;Cancelar
     
-    button.btn.btn-success.pull-right(ng-click="modalCtrl.concluir()")
+    button.btn.btn-success.pull-right(ng-if="modalCtrl.isGerente === false", ng-click="modalCtrl.concluir()")
         i.glyphicon.glyphicon-arrow-right
         | &nbsp;Confirmar

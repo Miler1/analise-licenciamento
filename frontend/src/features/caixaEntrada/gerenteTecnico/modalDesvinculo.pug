@@ -29,7 +29,8 @@ div.modal-body
 
         .info-dados-solicitante
             label.label-dados-solicitante Solicitação de desvínculo pelo analista: 
-            span.span-dados-solicitante {{desvinculoGerenteCtrl.desvinculo.analistaGeo.pessoa.nome}}
+            span.span-dados-solicitante(ng-if="desvinculoGerenteCtrl.tipoDesvinculo === true") {{desvinculoGerenteCtrl.desvinculo.analistaGeo.pessoa.nome}}
+            span.span-dados-solicitante(ng-if="desvinculoGerenteCtrl.tipoDesvinculo === false") {{desvinculoGerenteCtrl.desvinculo.analistaTecnico.pessoa.nome}}
 
     div#justificativa-desvinculo
         label.label-justificativa Justificativa do desvínculo:
@@ -37,7 +38,7 @@ div.modal-body
         textarea.text-justificativa(name="justificativa-desvinculo", ng-model="desvinculoGerenteCtrl.desvinculo.justificativa", disabled)
 
     .confirmacao-desvinculo
-        label.label-desvinculo-aceito.obrigatorio Aceita o desvínculo? 
+        label.label-desvinculo-aceito.obrigatorio Aceita o desvínculo?
 
         label(for="radio_desvinculo_aceito")
             input#radio_desvinculo_aceito(type="radio", name="desvinculoAceito", ng-value="true", ng-model="desvinculoGerenteCtrl.desvinculoAceito", ng-required="desvinculoGerenteCtrl.desvinculoAceito === undefined" )
@@ -48,8 +49,9 @@ div.modal-body
 
     .selecao-analista(ng-if="desvinculoGerenteCtrl.desvinculoAceito === undefined || desvinculoGerenteCtrl.desvinculoAceito")
         label.label-selecao-analista.obrigatorio Selecionar analista:
-        select.form-control(ng-model="desvinculoGerenteCtrl.analistaGeoDestino.id", name="selectAnalista",
-                                    ng-options="analistaGeo.id as analistaGeo.pessoa.nome for analistaGeo in desvinculoGerenteCtrl.analistasGeo | orderBy:'pessoa.nome' track by analistaGeo.id")
+        select.form-control(
+                            ng-model="desvinculoGerenteCtrl.analistaDestino.id", name="selectAnalista",
+                                    ng-options="analista.id as analista.pessoa.nome for analista in desvinculoGerenteCtrl.analistas | orderBy:'pessoa.nome' track by analista.id")
                     option(value="") Selecione o analista
 
     div#resposta-gerente

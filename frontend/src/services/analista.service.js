@@ -19,13 +19,18 @@ var AnalistaService = function(request, config) {
 			.get(config.BASE_URL() + "analistas/buscarAnalistasGeoByIdProcesso/" + idProcesso);
 	};
 
+	this.buscarAnalistasTecnicoByIdProcesso = function(idProcesso) {
+		return request
+			.get(config.BASE_URL() + "analistas/buscarAnalistasTecnicoByIdProcesso/" + idProcesso);
+	};
+
 	this.getAnalistasGeo = function() {
 
 		return request
 			.get(config.BASE_URL() + "analistasGeo");
 	};
 
-    	this.getAnalistasTecnicosByProcesso = function(idProcesso) {
+    this.getAnalistasTecnicosByProcesso = function(idProcesso) {
 
 		return request
 			.get(config.BASE_URL() + "analistas/" + idProcesso);
