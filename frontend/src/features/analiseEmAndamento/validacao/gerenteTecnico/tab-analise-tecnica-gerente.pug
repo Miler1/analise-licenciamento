@@ -192,7 +192,7 @@
                     br
                     br        
 
-            #camposAnaliseGeo
+            #camposAnaliseTecnica
                 div
                     label.label-parecer Do processo:
                     br
@@ -207,3 +207,13 @@
                     label.label-parecer Da conclusão:
                     br
                     p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao")
+                    
+            #camposAnaliseTecnica
+                div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
+                    label.label-parecer Despacho:
+                    br
+                    p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer")
+                div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.INDEFERIDO")
+                    label.label-parecer Justificativa:
+                    br
+                    p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer") 
