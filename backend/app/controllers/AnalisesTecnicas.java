@@ -1,18 +1,16 @@
 package controllers;
 
-import models.Analise;
-import models.AnaliseTecnica;
-import models.Documento;
-import models.Notificacao;
+import models.*;
 import models.geocalculo.Geoserver;
-import models.UsuarioAnalise;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
 import utils.Mensagem;
 
+import javax.validation.ValidationException;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Comparator;
 import java.util.List;
 
 public class AnalisesTecnicas extends InternalController {
@@ -120,23 +118,26 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void downloadPDFParecer(AnaliseTecnica analiseTecnica) throws Exception {
 
-		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO);
 
 		String novoParecer = analiseTecnica.parecerAnalista;
 
 		AnaliseTecnica analiseTecnicaSalva = AnaliseTecnica.findById(analiseTecnica.id);
+		ParecerAnalistaTecnico ultimoParecer = analiseTecnicaSalva.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
 
 		analiseTecnicaSalva.parecerAnalista = novoParecer;
 
-		Documento pdfParecer = analiseTecnicaSalva.gerarPDFParecer();
+		ultimoParecer.documentoParecer = analiseTecnicaSalva.gerarPDFParecer(ultimoParecer);
 
-		String nome = pdfParecer.tipo.nome +  "_" + analiseTecnicaSalva.id + ".pdf";
+		String nome = ultimoParecer.documentoParecer.tipo.nome +  "_" + analiseTecnicaSalva.id + ".pdf";
 		nome = nome.replace(' ', '_');
 		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Content-Type", "application/pdf");
 
-		renderBinary(pdfParecer.arquivo, nome);
+		ultimoParecer._save();
+
+		renderBinary(ultimoParecer.documentoParecer.getFile(), nome);
 
 	}
 
