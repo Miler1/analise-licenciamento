@@ -168,7 +168,7 @@ public class AnalistaTecnico extends GenericModel {
 
 		List<UsuarioAnalise> usuarios = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
 
-		return usuarios.stream().filter(usuario -> !usuario.id.equals(Auth.getUsuarioSessao().id) && !usuario.id.equals(idUltimoAnalistaTecnico)).collect(Collectors.toList());
+		return usuarios.stream().filter(usuario -> !usuario.id.equals(idUltimoAnalistaTecnico)).collect(Collectors.toList());
 
 	}
 
