@@ -1445,29 +1445,45 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     id: ctrl.analiseTecnica.id
                 };
 
-                documentoAnaliseService.generatePDFParecerTecnico(params)
-                    .then(function(data, status, headers){
+                if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO) {
 
-                        var a = document.createElement('a');
-                        a.href = URL.createObjectURL(data.data.response.blob);
-                        a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
-                        a.click();
-                        
-                        documentoAnaliseService.generatePDFMinuta(params)
-                            .then(function(data) {
+                    documentoAnaliseService.generatePDFParecerTecnico(params)
+                        .then(function(data){
+                            
+                            var a = document.createElement('a');
+                            a.href = URL.createObjectURL(data.data.response.blob);
+                            a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
+                            a.click();
 
-                                var a = document.createElement('a');
-                                a.href = URL.createObjectURL(data.data.response.blob);
-                                a.download = data.data.response.fileName ? data.data.response.fileName : 'minuta.pdf';
-                                a.click();
+                            if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.DEFERIDO) {
 
-                            }, function(error){
-                                mensagem.error(error.data.texto);
+                                documentoAnaliseService.generatePDFMinuta(params)
+                                    .then(function(data) {
+
+                                        var a = document.createElement('a');
+                                        a.href = URL.createObjectURL(data.data.response.blob);
+                                        a.download = data.data.response.fileName ? data.data.response.fileName : 'minuta.pdf';
+                                        a.click();
+
+                                        if(ctrl.parecer.vistoria.realizada) {
+                                            //RTV
+                                        }
+
+                                    }, function(error){
+                                        mensagem.error(error.data.texto);
+                                    });
+
+                            } else if(ctrl.parecer.vistoria.realizada) {
+                                // RTV
+                            }
+
+                        }, function(error){
+                            mensagem.error(error.data.texto);
                         });
 
-                    }, function(error){
-                        mensagem.error(error.data.texto);
-                    });
+                } else if(ctrl.parecer.vistoria.realizada) {
+                    //RTV 
+                }
 
                 $location.path('/analise-tecnica');
                 mensagem.setMensagemProximaTela('success', response.data.texto);

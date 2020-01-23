@@ -128,7 +128,8 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	};
 
 	consultarProcesso.downloadPDFminuta = function (processo) {
-		//Colocar o download da minuta aqui
+
+		documentoService.downloadMinutaByIdAnaliseTecnica(processo.idAnaliseTecnica);
 	};
 
 	consultarProcesso.downloadPDFvistoria = function (processo) {

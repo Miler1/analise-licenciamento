@@ -60,6 +60,18 @@ public class Documentos extends InternalController {
 
 	}
 
+	public static void downloadMinutaByIdAnaliseTecnica(Long idAnalisetecnica) throws FileNotFoundException {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnalisetecnica);
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		download(parecerAnalistaTecnico.documentoMinuta.id);
+
+	}
+
 	public static void upload(Upload file) throws IOException {
 
 		verificarPermissao(Acao.ANALISAR_PROCESSO_MANEJO);
