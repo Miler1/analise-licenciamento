@@ -67,7 +67,7 @@ public class PareceresAnalistasGeo extends InternalController {
 		List<ParecerAnalistaGeo> pareceres = ParecerAnalistaGeo.find("id_analise_geo = :analiseGeo")
 				.setParameter("analiseGeo", idAnaliseGeo).fetch();
 
-		ParecerAnalistaGeo parecerFinal = pareceres.stream().max( Comparator.comparing(parecerAnalistaGeo -> parecerAnalistaGeo.analiseGeo.id )).get();
+		ParecerAnalistaGeo parecerFinal = pareceres.stream().max( Comparator.comparing(parecerAnalistaGeo -> parecerAnalistaGeo.id )).get();
 
 		renderJSON(parecerFinal, ParecerAnalistaGeoSerializer.findByIdAnaliseGeo);
 

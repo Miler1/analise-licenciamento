@@ -8,10 +8,9 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
+import utils.Helper;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -37,11 +36,11 @@ public class VerificarComunicado extends GenericJob {
 
 	}
 	
-	public void verificarStatusComunicado() {
+	public void verificarStatusComunicado() throws Exception {
 
 		List<Comunicado> comunicadosNaoResolvidos = Comunicado.findAll();
 
-		List <AnaliseGeo> analisesGeoComunicado = comunicadosNaoResolvidos.stream().filter(comunicado -> comunicado.ativo).map(comunicado -> comunicado.analiseGeo).filter(distinctByKey(analiseGeo -> analiseGeo.id)).collect(Collectors.toList());
+		List <AnaliseGeo> analisesGeoComunicado = comunicadosNaoResolvidos.stream().filter(comunicado -> comunicado.ativo).filter(comunicado -> comunicado.aguardandoResposta).map(comunicado -> comunicado.analiseGeo).filter(distinctByKey(analiseGeo -> analiseGeo.id)).collect(Collectors.toList());
 
 		for (AnaliseGeo analiseGeo:analisesGeoComunicado) {
 
@@ -57,11 +56,28 @@ public class VerificarComunicado extends GenericJob {
 
 						podeTramitar = false;
 
+					} else if (!vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
+
+						comunicado.ativo = false;
+						comunicado.segundoEmailEnviado = true;
+						comunicado.aguardandoResposta = false;
+						comunicado.validateAndSave();
+
+						List<String> destinatarios = new ArrayList<String>();
+						destinatarios.add(comunicado.orgao.email);
+
+						List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", analiseGeo.id).fetch();
+
+						ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
+
+
+						analiseGeo.reenviarEmailComunicado(ultimoParecer, comunicado, destinatarios);
+
 					} else {
 
 						comunicado.ativo = false;
+						comunicado.aguardandoResposta = false;
 						comunicado.validateAndSave();
-
 					}
 
 				}
@@ -90,12 +106,12 @@ public class VerificarComunicado extends GenericJob {
 		LocalDate dataVencimento = new LocalDate(dataInicio.getTime());
 		LocalDate dataAtual = new LocalDate(dataFim.getTime());
 
-		// Prazo de 30 dias para resposta do orgão venceu
+		// Prazo de 15 dias para resposta do orgão venceu
 		if(dataVencimento.isBefore(dataAtual)) {
 			return false;
 		}
 
-		// Prazo de 30 dias para resposta do orgão ainda não venceu
+		// Prazo de 15 dias para resposta do orgão ainda não venceu
 		return true;
 
 	}
