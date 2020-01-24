@@ -12,6 +12,7 @@ var ModalOficioRestricao = {
         var ctrl = this;
         ctrl.justificativaOrgao = null;
         ctrl.tipoResultadoAnalise = null;
+        ctrl.segundoEmailEnviado = null;
         ctrl.INDEFERIDO = app.utils.TiposResultadoAnalise.INDEFERIDO;
         ctrl.anexos = [];
 
@@ -38,6 +39,7 @@ var ModalOficioRestricao = {
                                 var comunicado = response.data;
                                 ctrl.justificativaOrgao = comunicado.parecerOrgao;
                                 ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+                                ctrl.segundoEmailEnviado = comunicado.segundoEmailEnviado;
         
                             });
         
@@ -49,6 +51,7 @@ var ModalOficioRestricao = {
                                 var comunicado = response.data;
                                 ctrl.justificativaOrgao = comunicado.parecerOrgao;
                                 ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+                                ctrl.segundoEmailEnviado = comunicado.segundoEmailEnviado;
         
                             });
         
@@ -60,6 +63,7 @@ var ModalOficioRestricao = {
                                 var comunicado = response.data;
                                 ctrl.justificativaOrgao = comunicado.parecerOrgao;
                                 ctrl.anexos = ctrl.anexos.concat(comunicado.anexos);
+                                ctrl.segundoEmailEnviado = comunicado.segundoEmailEnviado;
         
                             });
         
