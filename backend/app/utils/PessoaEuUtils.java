@@ -5,9 +5,7 @@ import main.java.br.ufla.lemaf.beans.pessoa.Pessoa;
 import main.java.br.ufla.lemaf.beans.pessoa.TipoContato;
 
 public class PessoaEuUtils {
-
-
-
+    
     public static String getTelefone(Pessoa pessoa){
         String telefone;
         Contato contato = null;

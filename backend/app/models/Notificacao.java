@@ -1,7 +1,5 @@
 package models;
 
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.StatusCaracterizacao;
@@ -10,7 +8,6 @@ import models.pdf.PDFGenerator;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
-import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.Helper;
 import utils.QRCode;
