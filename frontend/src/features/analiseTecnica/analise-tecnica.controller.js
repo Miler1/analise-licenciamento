@@ -1593,6 +1593,31 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
+    ctrl.checkedDocumentacao = function() {
+		if (!ctrl.notificacao.documentacao) {
+			ctrl.notificacao.documentacao = null;
+		} 
+	};
+
+	ctrl.checkedRetificacaoSolicitacao = function() {
+		if (!ctrl.notificacao.retificacaoSolicitacao) {
+			ctrl.notificacao.retificacaoSolicitacao = null;
+		} 
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+	};
+
+	ctrl.checkedRetificacaoEmpreendimento = function() {
+
+		if (!ctrl.notificacao.retificacaoEmpreendimento) {
+			ctrl.notificacao.retificacaoEmpreendimento = null;
+			ctrl.notificacao.retificacaoSolicitacao = null;
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+		} else {
+			ctrl.notificacao.retificacaoSolicitacao = true;
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = 'true';
+		}
+
+	};
 
 };
 
