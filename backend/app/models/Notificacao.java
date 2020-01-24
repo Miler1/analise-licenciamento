@@ -577,7 +577,6 @@ public class Notificacao extends GenericModel {
 		return new Documento(tipoDocumento, pdf.getFile());
 	}
 
-
 	public static Documento gerarPDF(List<Notificacao> notificacoes, AnaliseTecnica analiseTecnica) throws Exception {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_TECNICA);

@@ -1,11 +1,16 @@
 package models;
 import exceptions.ValidacaoException;
+import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
+import main.java.br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.StatusCaracterizacaoEnum;
+import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -83,6 +88,10 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
+
+    @OneToOne
+    @JoinColumn(name = "id_documento_minuta", referencedColumnName = "id")
+    public Documento documentoMinuta;
 
 	public Date getDataParecer() {
 
@@ -245,6 +254,34 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 		return pareceresAnalistatecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
 
+	}
+
+	public static Documento gerarPDFMinuta(AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecer) throws Exception {
+
+		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
+		Endereco enderecoPrincipal = new Endereco();
+
+		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
+		for (Endereco endereco : empreendimentoEU.enderecos) {
+			if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
+				enderecoPrincipal = endereco;
+			}
+		}
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_MINUTA);
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+				.addParam("analiseTecnica", analiseTecnica)
+				.addParam("endereco", enderecoPrincipal)
+				.addParam("empreendimento", empreendimentoEU)
+				.addParam("parecer", parecer)
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 5.0D);
+
+		pdf.generate();
+
+		return new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "minuta"), new Date());
 	}
 
 }

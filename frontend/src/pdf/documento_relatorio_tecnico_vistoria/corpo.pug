@@ -1,0 +1,93 @@
+doctype html
+|%{
+|	numeroProcesso = analiseTecnica.analise.processo.numero;
+|}%
+html(lang='en')
+	head
+		title Análise - Licenciamento Ambiental - Amazonas
+			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+			meta(charset='UTF-8')
+
+	body
+		div
+			h3(style="text-align:center; margin-top:0px;") RELATÓRIO TÉCNICO DE VISTORIA N° ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/${new Date().format('yy')}
+
+
+		div
+			
+			ol
+
+				li
+					h3 DA DATA DA VISTORIA:
+						p
+							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')} Hora da vistoria: ${vistoria.hora.format('HH:mm')}.
+				
+				| \#{if !vistoria.equipe.isEmpty()}
+				li
+					h3 DA EQUIPE TÉCNICA
+						P
+							span A equipe técnica que compôs a realização da vistoria foi
+							| \#{if vistoria.equipe.length() > 1}
+							| \#{list items: 0..vistoria.equipe.length()-2, as:'equipe'}
+							span
+							| ${equipe.usuario.pessoa.nome},
+							| \#{/list}
+							span
+							| \#{/if}
+							| ${vistoria.equipe[vistoria.equipe.length()-1].usuario.pessoa.nome}.
+
+				| \#{/if}
+
+				| \#{if vistoria.descricao != null}
+				li
+					h3 DA DESCRIÇÃO DA ATIVIDADE
+						P
+							| \#{verbatim}${vistoria.descricao}\#{/verbatim}
+				| \#{/if}
+				
+				| \#{if vistoria.cursosDagua != null}
+				li
+					h3 DOS CURSOS D´ÁGUA
+						P
+							| \#{verbatim}${vistoria.cursosDagua}\#{/verbatim}
+				| \#{/if}
+				
+				| \#{if vistoria.tipologiaVegetal != null}
+				li
+					h3 DA TIPOLIGA VEGETAL
+						P
+							| \#{verbatim}${vistoria.tipologiaVegetal}\#{/verbatim}
+				| \#{/if}
+				
+				| \#{if vistoria.app != null}
+				li
+					h3 DAS ÁREAS DE PRESERVAÇÃO PERMANENTE - APP
+						P
+							| \#{verbatim}${vistoria.app}\#{/verbatim}
+				| \#{/if}
+				| \#{if vistoria.ocorrencia != null}
+				li
+					h3 DA OCORRÊNCIA DE PROCESSOS EROSIVOS
+						P
+							| \#{verbatim}${vistoria.ocorrencia}\#{/verbatim}
+				| \#{/if}
+				| \#{if vistoria.residuosLiquidos != null}
+				li
+					h3 DA GESTÃO DE RESÍDUOS SÓLIDOS E LÍQUIDOS GERADOS NA ATIVIDADE PRODUTIVA
+						P
+							| \#{verbatim}${vistoria.residuosLiquidos}\#{/verbatim}
+				| \#{/if}
+				| \#{if vistoria.outrasInformacoes != null}
+				li
+					h3 OUTRAS INFORMAÇÕES
+						P
+							| \#{verbatim}${vistoria.outrasInformacoes}\#{/verbatim}
+				| \#{/if}
+				| \#{if vistoria.conclusao != null}
+				li
+					h3 DA CONCLUSÃO
+						P
+							| \#{verbatim}${vistoria.conclusao}\#{/verbatim}
+				| \#{/if}
+
+			span.in-right Manaus, ${utils.Helper.getDataPorExtenso(new Date())}

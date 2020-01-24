@@ -124,6 +124,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
 	public List<GeometriaComplexo> geometriasComplexo;
 
+	@Column(name="valor_taxa_licenciamento")
+	public Double valorTaxaLicenciamento;
+
 	@Transient
 	public Dae dae;
 	

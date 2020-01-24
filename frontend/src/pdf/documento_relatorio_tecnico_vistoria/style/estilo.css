@@ -1,0 +1,43 @@
+/* Cabeçalho */
+.centraliza-texto {
+    text-align: center;
+}
+
+/* corpo */
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.cabecalho {
+  margin: 10px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+li {
+	padding: 7px 0;
+}
+
+/* rodapé */
+.footer {
+    margin-top: 30px;
+}
+
+.in-left {
+  text-align: left;
+  float: left;
+  margin-top: 30px;
+
+}
+
+.in-right {
+  text-align: right;
+  float: right;
+  margin-top: 30px;
+}

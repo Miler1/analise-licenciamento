@@ -5,6 +5,7 @@ import models.geocalculo.Geoserver;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import javax.validation.ValidationException;
@@ -159,9 +160,9 @@ public class AnalisesTecnicas extends InternalController {
 
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
-		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
+		List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
 
-		Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseTecnica);
+		Documento pdfNotificacao = Notificacao.gerarPDF(notificacoes, analiseTecnica);
 
 		String nome = pdfNotificacao.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
 		nome = nome.replace(' ', '_');
@@ -179,6 +180,48 @@ public class AnalisesTecnicas extends InternalController {
 				.setParameter("id_analise", idAnalise).first();
 
 		renderJSON(analiseTecnica, AnaliseTecnicaSerializer.findInfo);
+	}
+
+	public static void downloadPDFMinuta(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		ParecerAnalistaTecnico parecer = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		parecer.documentoMinuta = ParecerAnalistaTecnico.gerarPDFMinuta(analiseTecnica, parecer);
+
+		parecer._save();
+
+		String nome = parecer.documentoMinuta.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
+
+		renderBinary(parecer.documentoMinuta.getFile(), nome);
+	}
+
+	public static void downloadPDFRelatorioTecnicoVistoria(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		Vistoria vistoria = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico).vistoria;
+
+		vistoria.documentoRelatorioTecnicoVistoria = analiseTecnica.gerarPDFRelatorioTecnicoVistoria();
+
+		vistoria._save();
+
+		String nome = vistoria.documentoRelatorioTecnicoVistoria.tipo.nome +  "_" + vistoria.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(vistoria.documentoRelatorioTecnicoVistoria.getFile(), nome);
 
 	}
 

@@ -544,8 +544,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder groupByIdAnaliseTecnica(){
 
-//		addAnaliseTecnicaAlias();
-		addAnalistaTecnicoAlias(true);
+		addAnaliseTecnicaAlias(true);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".id").as("idAnaliseTecnica"));
 
 		return this;
