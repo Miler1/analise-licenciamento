@@ -86,7 +86,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 	public Date getDataParecer() {
 
-		return this.data;
+		return this.dataParecer;
 
 	}
 
