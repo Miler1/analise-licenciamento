@@ -20,6 +20,8 @@ public class ComunicadoSerializer {
             "orgao.sigla",
             "ativo",
             "resolvido",
+            "segundoEmailEnviado",
+            "aguardandoResposta",
             "parecerOrgao",
             "dataVencimento",
             "valido",
