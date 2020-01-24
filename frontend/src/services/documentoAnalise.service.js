@@ -41,6 +41,11 @@ var DocumentoAnaliseService = function(request, config, $window) {
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFNotificacao', analiseTecnica);
 	};
 
+	this.generatePDFMinuta = function(analiseTecnica) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFMinuta', analiseTecnica);
+	};
+
 };
 
 exports.services.DocumentoAnaliseService = DocumentoAnaliseService;

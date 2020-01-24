@@ -61,6 +61,7 @@ POST	/analisesTecnicas/validarParecerGerente				AnalisesTecnicas.validarParecerG
 POST	/analisesTecnicas/validarParecerAprovador			AnalisesTecnicas.validarParecerAprovador
 POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.downloadPDFParecer
 POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.downloadPDFNotificacao
+POST    /analisesTecnicas/downloadPDFMinuta                 AnalisesTecnicas.downloadPDFMinuta
 
 # Analise GEO
 
@@ -184,8 +185,9 @@ GET     /condicoes/manejo                           Condicoes.listManejo
 GET		/tiposSobreposicao                          Sobreposicoes.list
 
 # Documentos
-GET		/documentos/{id}/download					            Documentos.download
-GET		/documentos/{idAnalisetecnica}/downloadParecerTecnico	Documentos.downloadParecerTecnico
+GET		/documentos/{id}/download					                    Documentos.download
+GET		/documentos/{idAnalisetecnica}/downloadParecerTecnico	        Documentos.downloadParecerTecnico
+GET		/documentos/{idAnalisetecnica}/downloadMinutaByIdAnaliseTecnica	Documentos.downloadMinutaByIdAnaliseTecnica
 
 # Licenças
 POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter

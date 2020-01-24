@@ -1442,24 +1442,48 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             .then(function(response) {
 
                 var params = {
-					id: ctrl.idAnaliseTecnica
-				};
+                    id: ctrl.analiseTecnica.id
+                };
 
-                documentoAnaliseService.generatePDFParecerTecnico(params)
-                    .then(
-                        function(data, status, headers){
+                if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO) {
 
+                    documentoAnaliseService.generatePDFParecerTecnico(params)
+                        .then(function(data){
+                            
                             var a = document.createElement('a');
                             a.href = URL.createObjectURL(data.data.response.blob);
                             a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
                             a.click();
-                        },
 
-                        function(error){
+                            if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.DEFERIDO) {
 
+                                documentoAnaliseService.generatePDFMinuta(params)
+                                    .then(function(data) {
+
+                                        var a = document.createElement('a');
+                                        a.href = URL.createObjectURL(data.data.response.blob);
+                                        a.download = data.data.response.fileName ? data.data.response.fileName : 'minuta.pdf';
+                                        a.click();
+
+                                        if(ctrl.parecer.vistoria.realizada) {
+                                            //RTV
+                                        }
+
+                                    }, function(error){
+                                        mensagem.error(error.data.texto);
+                                    });
+
+                            } else if(ctrl.parecer.vistoria.realizada) {
+                                // RTV
+                            }
+
+                        }, function(error){
                             mensagem.error(error.data.texto);
-                        }
-                    );
+                        });
+
+                } else if(ctrl.parecer.vistoria.realizada) {
+                    //RTV 
+                }
 
                 $location.path('/analise-tecnica');
                 mensagem.setMensagemProximaTela('success', response.data.texto);
@@ -1488,28 +1512,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         return documentosNotificacao;
     };
-
-    // ctrl.concluir = function(){
-
-    //     tratarDadosNotificacao();
-
-    //     ctrl.parecer.analiseTecnica = ctrl.analiseTecnica;
-
-    //     if(ctrl.parecer.documentos === null) {
-    //         ctrl.parecer.documentos = [];
-    //     }
-
-    //     analiseTecnicaService.concluir(ctrl.parecer)
-    //         .then(function(response) {
-
-    //         }, function(error){
-
-    //             mensagem.error(error.data.texto, {referenceId: 5});
-    //         });
-
-    //     $rootScope.$broadcast('atualizarContagemProcessos');
-
-    // };
 
     function tratarDadosNotificacao() {
 
