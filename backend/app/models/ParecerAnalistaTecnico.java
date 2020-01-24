@@ -94,7 +94,9 @@ public class ParecerAnalistaTecnico extends GenericModel {
     public Documento documentoMinuta;
 
 	public Date getDataParecer() {
+
 		return dataParecer;
+
 	}
 
 	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica) {

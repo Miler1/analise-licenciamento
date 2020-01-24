@@ -1,4 +1,4 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, documentoService, TiposSetores, documentoAnaliseService, mensagem) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService, TiposSetores, documentoAnaliseService, mensagem, documentoService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROTOCOLO';
 
@@ -133,7 +133,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	};
 
 	consultarProcesso.downloadPDFvistoria = function (processo) {
-		//Colocar o download da vistoria aqui
+		documentoService.downloadRTVByIdAnaliseTecnica(processo.idAnaliseTecnica);
 	};
 
 	consultarProcesso.downloadPDFCartaImagem = function (processo) {

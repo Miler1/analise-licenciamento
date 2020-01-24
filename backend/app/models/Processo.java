@@ -440,7 +440,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo()
-                .groupByIdAnalise()
+				.groupByIdAnalise()
 				.groupByIdAnaliseGeo()
 				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()

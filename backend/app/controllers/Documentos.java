@@ -136,4 +136,16 @@ public class Documentos extends InternalController {
 
 	}
 
+	public static void downloadRTVByIdAnaliseTecnica(Long idAnalisetecnica) throws FileNotFoundException {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnalisetecnica);
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		download(parecerAnalistaTecnico.vistoria.documentoRelatorioTecnicoVistoria.id);
+
+	}
+
 }
