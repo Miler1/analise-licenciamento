@@ -360,6 +360,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         var modalInstance = $uibModal.open({
 
             component: 'modalOficioRestricao',
+            backdrop: 'static',
             size: 'lg',
             resolve: {
 
@@ -424,6 +425,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         $uibModal.open({
 
             component: 'modalNotificacaoRestricao',
+            backdrop: 'static',
             size: 'lg',
             resolve: {
 
