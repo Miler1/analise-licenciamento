@@ -40,7 +40,7 @@ public class VerificarComunicado extends GenericJob {
 
 		List<Comunicado> comunicadosNaoResolvidos = Comunicado.findAll();
 
-		List <AnaliseGeo> analisesGeoComunicado = comunicadosNaoResolvidos.stream().filter(comunicado -> comunicado.ativo).filter(comunicado -> comunicado.aguardandoResposta).map(comunicado -> comunicado.analiseGeo).filter(distinctByKey(analiseGeo -> analiseGeo.id)).collect(Collectors.toList());
+		List <AnaliseGeo> analisesGeoComunicado = comunicadosNaoResolvidos.stream().filter(comunicado -> comunicado.ativo && comunicado.aguardandoResposta).map(comunicado -> comunicado.analiseGeo).filter(distinctByKey(analiseGeo -> analiseGeo.id)).collect(Collectors.toList());
 
 		for (AnaliseGeo analiseGeo:analisesGeoComunicado) {
 
