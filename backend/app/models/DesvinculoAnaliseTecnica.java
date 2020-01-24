@@ -6,6 +6,7 @@ import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.Auth;
+import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
 
@@ -123,6 +124,8 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 
 		}
 
+		this.analiseTecnica = AnaliseTecnica.findById(this.analiseTecnica.id);
+
 		this.dataResposta = new Date();
 
 		DesvinculoAnaliseTecnica desvinculoAlterar = DesvinculoAnaliseTecnica.findById(this.id);
@@ -134,16 +137,28 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 		if(this.aprovada) {
 
 			this.analistaTecnicoDestino = UsuarioAnalise.findById(this.analistaTecnicoDestino.id);
+
 			AnalistaTecnico analistaTecnico = AnalistaTecnico.find("id_analise_tecnica = :id_analise_tecnica")
 					.setParameter("id_analise_tecnica", this.analiseTecnica.id).first();
+
 			analistaTecnico.usuario = this.analistaTecnicoDestino;
 			analistaTecnico._save();
 
 			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO_TECNICO, usuarioSessao, this.analistaTecnicoDestino);
+			this.analiseTecnica.dataVencimentoPrazo = DateUtil.somaDiasEmData(new Date(), Configuracoes.PRAZO_ANALISE_TECNICA);
+			this.analiseTecnica.analise.diasAnalise.preencheDiasAnaliseTecnica();
+			this.analiseTecnica.analise.diasAnalise._save();
+			this.analiseTecnica._save();
 
 		} else {
 
+			this.analistaTecnicoDestino = this.analistaTecnico;
 			this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_DESVINCULO_TECNICO, usuarioSessao, this.analistaTecnico);
+
+			this.analiseTecnica.dataVencimentoPrazo = DateUtil.somaDiasEmData(DateUtil.somaDiasEmData(this.analiseTecnica.dataCadastro, Configuracoes.PRAZO_ANALISE_TECNICA) , DiasAnalise.intervalosTramitacoesAnaliseTecnica(this.analiseTecnica.analise.processo.getHistoricoTramitacao()));
+			this.analiseTecnica.analise.diasAnalise.preencheDiasAnaliseTecnica();
+			this.analiseTecnica.analise.diasAnalise._save();
+			this.analiseTecnica._save();
 
 		}
 

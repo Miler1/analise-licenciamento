@@ -22,8 +22,8 @@ div.modal-body
     div.button-upload-modal.btn.btn-default(ng-if="modalCtrl.isGerente === false",style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo na inconsistência
-
-    table.area-modal.table.table-condensed(ng-if="modalCtrl.anexos.length > 0 && modalCtrl.isGerente === false")
+    br
+    table.area-modal.table.table-condensed(ng-if="modalCtrl.anexos.length > 0")
 
         thead
 
@@ -40,7 +40,7 @@ div.modal-body
                     a.d-inline.margin-right-xs(style='cursor: pointer;', title="Visualizar anexo", ng-click="modalCtrl.baixarDocumentoInconsistencia(anexo)")
                         i.glyphicon.glyphicon-eye-open
 
-                    a.d-inline.margin-right-xs(style='cursor: pointer;')
+                    a.d-inline.margin-right-xs(ng-if="modalCtrl.isGerente === false",style='cursor: pointer;')
                         i.glyphicon.glyphicon-trash(title='Remover anexo',
                                                     ng-bootbox-title='Confirmação',
                                                     ng-bootbox-confirm='Deseja realmente remover este anexo ?',
@@ -48,9 +48,13 @@ div.modal-body
 
 div.modal-footer
 
-    button.btn.btn-default.pull-left(ng-click="modalCtrl.fechar()")
+    button.btn.btn-default.pull-left(ng-if="modalCtrl.isGerente === false",ng-click="modalCtrl.fechar()")
         i.glyphicon.glyphicon-arrow-left
         | &nbsp;Cancelar
+
+    button.btn.btn-default.pull-right(ng-if="modalCtrl.isGerente === true",ng-click="modalCtrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        | &nbsp;Fechar
     
     button.btn.btn-success.pull-right(ng-if="modalCtrl.isGerente === false", ng-click="modalCtrl.concluir()")
         i.glyphicon.glyphicon-arrow-right
