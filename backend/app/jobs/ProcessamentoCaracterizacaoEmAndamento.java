@@ -81,6 +81,13 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		}
 
 		processo.save();
+
+		if(caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
+
+			processo.tramitacao.tramitar(processo, AcaoTramitacao.INICIAR_PROTOCOLO_NOTIFICADO_GEO);
+
+		}
+
 		caracterizacoesProcessadas.add(caracterizacao);
 		commitTransaction();
 

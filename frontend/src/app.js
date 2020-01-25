@@ -184,7 +184,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_GEO;
+					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_ANALISTA_GEO;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){

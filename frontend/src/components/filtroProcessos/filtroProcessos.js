@@ -75,6 +75,10 @@ var FiltroProcessos = {
 					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 					ctrl.filtro.idCondicaoTramitacao = null;
 				
+				} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+
+					ctrl.filtro.idCondicaoTramitacao = null;
+
 				} else if(!caixaEntrada) {
 					
 					ctrl.filtro.listaIdCondicaoTramitacao = null;
@@ -138,12 +142,14 @@ var FiltroProcessos = {
 			if (_.isArray(ctrl.condicaoTramitacao)) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
 				caixaEntrada = true;
 
 			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
 				caixaEntrada = false;
 			}

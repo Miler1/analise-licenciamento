@@ -13,7 +13,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
 	cxEntAnalistaGeo.primeiroAcesso = primeiroAcesso;
 	cxEntAnalistaGeo.processos = [];
-	cxEntAnalistaGeo.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_GEO;
+	cxEntAnalistaGeo.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	cxEntAnalistaGeo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntAnalistaGeo.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntAnalistaGeo.PrazoAnalise = app.utils.PrazoAnalise;
@@ -87,6 +87,11 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 					
 				});
 	};
+
+	cxEntAnalistaGeo.visualizarRespostaNotificação =  function(processo){
+
+		// Colocar os trem da modal
+};
 
 	function primeiroAcesso(processo) {
 		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
