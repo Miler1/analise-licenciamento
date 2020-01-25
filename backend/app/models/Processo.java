@@ -126,7 +126,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularConsultor(UsuarioAnalise consultor, UsuarioAnalise usuarioExecutor) {
 
-		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
+		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcessoAtivo(this), usuarioExecutor);
 
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
@@ -585,7 +585,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
+		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);
 
 	}
 
@@ -826,8 +826,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public DesvinculoAnaliseTecnica buscaDesvinculoPeloProcessoTecnico() {
 
 		DesvinculoAnaliseTecnica desvinculoAnaliseTecnica = DesvinculoAnaliseTecnica.find("id_analise_tecnica = :id and id_usuario = :idUsuario")
-				.setParameter("id", this.analise.analisesGeo.get(0).id)
-				.setParameter("idUsuario", this.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
+				.setParameter("id", this.analise.analisesTecnicas.get(0).id)
+				.setParameter("idUsuario", this.analise.analisesTecnicas.get(0).analistaTecnico.usuario.id)
 				.first();
 
 		return desvinculoAnaliseTecnica;

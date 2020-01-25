@@ -101,6 +101,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
 	public List<ParecerTecnicoRestricao> pareceresTecnicosRestricoes;
 
+	@OneToMany(mappedBy = "analiseTecnica")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerGerenteAnaliseTecnica> pareceresGerenteAnaliseTecnica;
+
 	@Column(name = "justificativa_coordenador")
 	public String justificativaCoordenador;
 
@@ -160,6 +164,9 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@Transient
 	public Vistoria vistoria;
 
+	@Transient
+	public Long idAnalistaDestino;
+
 	private void validarParecer() {
 
 		if (StringUtils.isBlank(this.parecerAnalista))
@@ -181,6 +188,28 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 				.setParameter("idProcesso", processo.id)
 				.first();
 
+	}
+
+	public void iniciarAnaliseTecnicaGerente(UsuarioAnalise usuarioExecutor) {
+
+		verificarDataInicio();
+
+		this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA_GERENTE, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
+	}
+
+	public void verificarDataInicio() {
+		if (this.dataInicio == null) {
+
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+
+			this.dataInicio = c.getTime();
+
+			this._save();
+
+			iniciarLicencas();
+		}
 	}
 
 	public AnaliseTecnica save() {
@@ -796,6 +825,22 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		}
 
 		return documentosNotificacao;
+
+	}
+	
+	public AnalistaTecnico getAnalistaTecnico() {
+
+		return this.analistaTecnico;
+	}
+
+	public String getJustificativaUltimoParecer() {
+
+		ParecerGerenteAnaliseTecnica parecerGerenteAnaliseTecnica = this.pareceresGerenteAnaliseTecnica.stream()
+				.filter(parecer -> parecer.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES))
+				.max(Comparator.comparing(ParecerGerenteAnaliseTecnica::getDataParecer))
+				.orElseThrow(() -> new ValidacaoException(Mensagem.PARECER_NAO_ENCONTRADO));
+
+		return parecerGerenteAnaliseTecnica.parecer;
 
 	}
 

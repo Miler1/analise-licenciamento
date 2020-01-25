@@ -29,6 +29,18 @@ public class AnalisesTecnicas extends InternalController {
 
 	}
 
+	public static void iniciarAnaliseTecnicaGerente(AnaliseTecnica analise) {
+
+		AnaliseTecnica analiseAlterar = AnaliseTecnica.findById(analise.id);
+
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
+		analiseAlterar.iniciarAnaliseTecnicaGerente(usuarioExecutor);
+
+		renderMensagem(Mensagem.GERENTE_INICIOU_ANALISE_SUCESSO);
+
+	}
+
 	public static void findByNumeroProcesso() {
 		
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
@@ -158,6 +170,15 @@ public class AnalisesTecnicas extends InternalController {
 		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfNotificacao.arquivo, nome);
+
+	}
+
+	public static void buscaAnaliseTecnicaByAnalise(Long idAnalise) {
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.find("id_analise = :id_analise")
+				.setParameter("id_analise", idAnalise).first();
+
+		renderJSON(analiseTecnica, AnaliseTecnicaSerializer.findInfo);
 
 	}
 

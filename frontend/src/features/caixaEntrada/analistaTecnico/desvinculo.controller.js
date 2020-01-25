@@ -47,6 +47,7 @@ var DesvinculoAnaliseTecnicaController = function ($uibModalInstance,idAnaliseTe
                 mensagem.success(response.data);
                 $location.path('/caixa-entrada');
                 $uibModalInstance.close();
+                
         }).catch(function(response){
             mensagem.error(response.data.texto, {referenceId: 5});
         });
