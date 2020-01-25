@@ -3,6 +3,7 @@ package jobs;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
+import models.licenciamento.StatusCaracterizacao;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.jobs.On;
@@ -72,7 +73,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		criarNovoDiasAnalise(analise);
 
-		if(!criaAnaliseGeoVinculandoAnalistaGeo(analise)) {
+		if(!criaAnaliseGeoVinculandoAnalistaGeo(analise, caracterizacao.status)) {
 
 			rollbackTransaction();
 			return;
@@ -113,14 +114,30 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 	}
 
-	private boolean criaAnaliseGeoVinculandoAnalistaGeo(Analise analise) {
+	private boolean criaAnaliseGeoVinculandoAnalistaGeo(Analise analise, StatusCaracterizacao status) {
 
 		AnaliseGeo analiseGeo = new AnaliseGeo();
 		analiseGeo.analise = analise;
 
 		String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 
-		AnalistaGeo analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+		AnalistaGeo analistaGeo;
+
+		if(status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
+
+			AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
+			analiseGeoAnterior.ativo = false;
+			analiseGeoAnterior._save();
+
+			analistaGeo = analiseGeoAnterior.getAnalistaGeo();
+			analistaGeo = new AnalistaGeo(analiseGeo, analistaGeo.usuario);
+
+
+		} else {
+
+			analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+
+		}
 
 		if(analistaGeo == null) {
 			return false;
