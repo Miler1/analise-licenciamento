@@ -61,7 +61,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     function init() {
         validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 
-        analiseGeoService.getAnliseGeoByAnalise($route.current.params.idAnalise)
+        analiseGeoService.getAnaliseGeoByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;

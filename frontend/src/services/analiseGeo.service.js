@@ -106,7 +106,7 @@ var AnaliseGeoService = function(request, $window ,config) {
 	};
 
 
-	this.getAnliseGeoByAnalise = function(idAnalise) {
+	this.getAnaliseGeoByAnalise = function(idAnalise) {
 
 		return request
 			.get(config.BASE_URL() + 'analisesGeo/buscaAnaliseGeoByAnalise/' + idAnalise);

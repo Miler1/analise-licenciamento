@@ -1,10 +1,15 @@
-var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location, $rootScope, processoService) {
+var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location, $uibModal,
+														parecerGerenteService, $rootScope,
+														analiseTecnicaService, processoService) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE TÉCNICA';
 
 	var listagem = this;
 
 	listagem.atualizarListaProcessos = atualizarListaProcessos;
+	listagem.visualizarSolicitacaoAjustes = visualizarSolicitacaoAjustes;
+	listagem.verificaSolicitacaoAjustes = verificaSolicitacaoAjustes;
+	listagem.tipoResultadoAnalise = app.utils.TiposResultadoAnalise;
 	listagem.atualizarPaginacao = atualizarPaginacao;
 	listagem.selecionarTodosProcessos = selecionarTodosProcessos;
 	listagem.onPaginaAlterada = onPaginaAlterada;
@@ -49,6 +54,54 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);
+	}
+
+	function visualizarSolicitacaoAjustes(processo) {
+
+		parecerGerenteService.findJustificativaParecerByIdAnaliseTecnica(processo.idAnaliseTecnica)
+			.then(function(response){
+
+				$uibModal.open({
+					controller: 'visualizarAjustesController',
+					controllerAs: 'visualizarAjustesController',
+					backdrop: 'static',
+					templateUrl: 'components/modalVisualizarSolicitacaoAjustes/modalVisualizarSolicitacaoAjustes.html',
+					size: 'lg',
+					resolve: {
+						justificativa: function () {
+							return response.data;
+						}
+						
+					}
+				});
+		});
+	}
+
+	function verificaSolicitacaoAjustes(processo) {
+
+		analiseTecnicaService.getAnaliseTecnica(processo.idAnaliseTecnica)
+			.then(function(response){
+
+				if(_.isEmpty(response.data.pareceresGerenteAnaliseTecnica)){
+
+					processo.verificaAnalise = false;
+					
+				}else{
+
+					_.find(response.data.pareceresGerenteAnaliseTecnica, function(parecerGerente) {
+
+						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+
+							processo.verificaAnalise = false;
+							
+						}else{
+							
+							processo.verificaAnalise=true;
+							
+						}
+					});
+				}
+			});
 	}
 
 };

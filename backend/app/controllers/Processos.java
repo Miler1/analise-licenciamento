@@ -45,7 +45,7 @@ public class Processos extends InternalController {
 
 	public static void getInfoProcesso(Long id) {
 
-		verificarPermissao(Acao.VALIDAR_PARECER_GEO, Acao.INICIAR_PARECER_GEO,Acao.VALIDAR_PARECERES);
+		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
 
 		Processo processo = Processo.findById(id);
 
@@ -59,7 +59,7 @@ public class Processos extends InternalController {
 		
 		Processo processo = Processo.findById(idProcesso);
 		
-		AnaliseJuridica analise = AnaliseJuridica.findByProcesso(processo);
+		AnaliseJuridica analise = AnaliseJuridica.findByProcessoAtivo(processo);
 		
 		renderJSON(analise, AnaliseJuridicaSerializer.findInfo);
 

@@ -126,7 +126,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularConsultor(UsuarioAnalise consultor, UsuarioAnalise usuarioExecutor) {
 
-		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
+		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcessoAtivo(this), usuarioExecutor);
 
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
@@ -135,7 +135,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularAnalista(UsuarioAnalise analista, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
 
-		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcesso(this), usuarioExecutor, justificativaCoordenador);
+		AnalistaTecnico.vincularAnalise(analista, AnaliseTecnica.findByProcessoAtivo(this), usuarioExecutor, justificativaCoordenador);
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_ANALISTA, usuarioExecutor, analista);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
@@ -143,7 +143,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularGerente(UsuarioAnalise gerente, UsuarioAnalise usuarioExecutor) {
 		
-		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcesso(this));
+		Gerente.vincularAnalise(gerente, usuarioExecutor, AnaliseTecnica.findByProcessoAtivo(this));
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_GERENTE, usuarioExecutor, gerente);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
 
@@ -185,7 +185,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, true);
-			processoBuilder.filtrarAnaliseGeoAtiva(false);
+			//processoBuilder.filtrarAnaliseGeoAtiva(false);
 			processoBuilder.filtrarDesvinculoAnaliseGeoSemResposta();
 
 		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
@@ -442,6 +442,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataVencimentoPrazoAnaliseGeo()
                 .groupByIdAnalise()
 				.groupByIdAnaliseGeo()
+				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo()
@@ -487,7 +488,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.groupByIdAnaliseGeo()
+		processoBuilder.groupByIdAnaliseGeo(true)
+				.groupByIdAnaliseTecnica(true)
 				.groupByPrazoAnaliseGerente()
 				.orderByPrazoAnaliseGerente();
 
@@ -522,6 +524,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByRevisaoSolicitadaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.groupByDataFinalAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
 				.groupByNotificacaoAtendidaAnaliseTecnica(filtro.isAnaliseTecnicaOpcional)
+				.groupByIdAnaliseTecnica(true)
 				.orderByDataVencimentoPrazoAnaliseTecnica();
 
 	}
@@ -582,7 +585,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
+		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);
 
 	}
 
@@ -781,10 +784,19 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		UsuarioAnalise usuario = Auth.getUsuarioSessao();
 
+		this.analise.analiseTecnica = AnaliseTecnica.findByProcesso(this);
+		this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
+
 		if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			this.analise.analiseGeo.pareceresAnalistaGeo = this.analise.analiseGeo.pareceresAnalistaGeo.stream()
 					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.usuario.id.equals(usuario.id))
+					.collect(Collectors.toList());
+
+		} else if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
+
+			this.analise.analiseTecnica.pareceresAnalistaTecnico = this.analise.analiseTecnica.pareceresAnalistaTecnico.stream()
+					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
 					.collect(Collectors.toList());
 
 		}
@@ -814,8 +826,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public DesvinculoAnaliseTecnica buscaDesvinculoPeloProcessoTecnico() {
 
 		DesvinculoAnaliseTecnica desvinculoAnaliseTecnica = DesvinculoAnaliseTecnica.find("id_analise_tecnica = :id and id_usuario = :idUsuario")
-				.setParameter("id", this.analise.analisesGeo.get(0).id)
-				.setParameter("idUsuario", this.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
+				.setParameter("id", this.analise.analisesTecnicas.get(0).id)
+				.setParameter("idUsuario", this.analise.analisesTecnicas.get(0).analistaTecnico.usuario.id)
 				.first();
 
 		return desvinculoAnaliseTecnica;

@@ -62,7 +62,7 @@ public class DiasAnalise extends GenericModel{
 				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO))
+						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO))
 				.max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 		int dias = 0;
 
@@ -79,7 +79,7 @@ public class DiasAnalise extends GenericModel{
 
 			}
 
-		} else if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
+		} else if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO)) {
 
 			Processo processo = Processo.find("objetoTramitavel.id", ultimaTramitacao.idObjetoTramitavel).first();
 			DesvinculoAnaliseGeo ultimoDesvinculo = processo.analise.analiseGeo.desvinculos.stream().max(Comparator.comparing(DesvinculoAnaliseGeo::getDataSolicitacao)).orElseThrow(ValidationException::new);
@@ -105,7 +105,7 @@ public class DiasAnalise extends GenericModel{
 				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO));
+						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO));
 
 		if(temTramitacao) {
 
@@ -123,7 +123,7 @@ public class DiasAnalise extends GenericModel{
 
 					dias += DateUtil.getDiferencaEmDias(dataTramitacaoInicial, tramitacao.dataInicial);
 
-				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO)) {
 
 					dataTramitacaoInicial = tramitacao.dataInicial;
 
@@ -184,11 +184,11 @@ public class DiasAnalise extends GenericModel{
 	private static Integer verificaUltimaTramitacaoAnaliseTecnica(List<HistoricoTramitacao> historicoTramitacao) {
 
 		HistoricoTramitacao ultimaTramitacao = historicoTramitacao.stream()
-				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO))
+				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA))
 				.max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 		int dias = 0;
 
-		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
+		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA)) {
 
 			Processo processo = Processo.find("objetoTramitavel.id", ultimaTramitacao.idObjetoTramitavel).first();
 			DesvinculoAnaliseTecnica ultimoDesvinculo = processo.analise.analiseTecnica.desvinculos
@@ -214,13 +214,13 @@ public class DiasAnalise extends GenericModel{
 		int dias = 0;
 
 		boolean temTramitacao = historicoTramitacao.stream()
-				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO));
+				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA));
 
 		if(temTramitacao) {
 
 			for (HistoricoTramitacao tramitacao : historicoTramitacao) {
 
-				if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO)) {
+				if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA)) {
 
 					dataTramitacaoInicial = tramitacao.dataInicial;
 
