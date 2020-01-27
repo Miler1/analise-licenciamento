@@ -130,17 +130,17 @@ var FiltroProcessos = {
 						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
 
-				if (analiseGeoFinalizada) {
+			if (analiseGeoFinalizada) {
 
-					ctrl.filtro.idCondicaoTramitacao = 'ANALISE_GEO_FINALIZADA';
-					analiseGeoFinalizada = false;
-	
-				} else if(analiseTecnicaFinalizada) {
-	
-					ctrl.filtro.idCondicaoTramitacao = 'ANALISE_TECNICA_FINALIZADA';
-					analiseTecnicaFinalizada = false;
+				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_GEO_FINALIZADA';
+				analiseGeoFinalizada = false;
 
-				}
+			} else if(analiseTecnicaFinalizada) {
+
+				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_TECNICA_FINALIZADA';
+				analiseTecnicaFinalizada = false;
+
+			}
 
 			$rootScope.$broadcast('atualizarContagemProcessos');
 		};
