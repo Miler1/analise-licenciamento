@@ -8,6 +8,7 @@ public enum TipoSobreposicaoDistanciaEnum {
 
 	TERRA_INDIGENA_ZA,
 	UC_FEDERAL_ZA,
+	UC_ESTADUAL_ZA_PI_FORA,
 	UC_ESTADUAL_ZA;
 
 	public static List<String> getList() {
