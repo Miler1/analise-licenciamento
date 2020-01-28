@@ -53,7 +53,7 @@
                                 i Nenhuma restrição encontrada.
                             
                             label.title-inconsistencia Inconsistências Adicionadas
-                            div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.analiseGeo.inconsistencias.length > 0")
+                            div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.inconsistencias.length > 0")
                                 
                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
                                     thead
@@ -63,7 +63,7 @@
                                         th.col-md-4 Descrição
                                         th.col-md-1.text-right
 
-                                    tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
+                                    tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.inconsistencias")
                                         tr
                                             td.col-md-4 {{ getItemRestricao(inconsistencia) }}
                                             td.col-md-3 {{ inconsistencia.categoria }}

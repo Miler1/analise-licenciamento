@@ -234,6 +234,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
+    public static List<AnaliseGeo> findAnalisesByNumeroProcesso(String numeroProcesso) {
+
+        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso")
+                .setParameter("numeroProcesso", numeroProcesso)
+                .fetch();
+
+    }
+    
     private void iniciarLicencas() {
 
         List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();

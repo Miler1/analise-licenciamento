@@ -81,6 +81,7 @@ POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.download
 POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.downloadPDFOficioOrgao
 GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
 POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
+GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}			AnalisesGeo.findAnalisesGeoByNumeroProcesso
 
 # Desvínculo
 
