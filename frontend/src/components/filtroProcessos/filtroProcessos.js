@@ -27,6 +27,8 @@ var FiltroProcessos = {
 		var ctrl = this;
 		var caixaEntrada = false;
 		var emAnalise = false;
+		var analiseGeoFinalizada = false;
+		var analiseTecnicaFinalizada = false;
 
 		ctrl.disabledFilterFields = app.DISABLED_FILTER_FIELDS;
 		ctrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
@@ -80,6 +82,13 @@ var FiltroProcessos = {
 				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 					
 					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
+					analiseGeoFinalizada = true;
+					ctrl.filtro.idCondicaoTramitacao = null;
+
+				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
+
+					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
+					analiseTecnicaFinalizada = true;
 					ctrl.filtro.idCondicaoTramitacao = null;
 				
 				} else if(!caixaEntrada && !emAnalise) {
@@ -121,9 +130,16 @@ var FiltroProcessos = {
 						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
 
-			if (!_.isEmpty(ctrl.filtro.listaIdCondicaoTramitacao)) {
+			if (analiseGeoFinalizada) {
 
 				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_GEO_FINALIZADA';
+				analiseGeoFinalizada = false;
+
+			} else if(analiseTecnicaFinalizada) {
+
+				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_TECNICA_FINALIZADA';
+				analiseTecnicaFinalizada = false;
+
 			}
 
 			$rootScope.$broadcast('atualizarContagemProcessos');
@@ -281,6 +297,11 @@ var FiltroProcessos = {
 								idCondicao: 'ANALISE_GEO_FINALIZADA',
 								nomeCondicao: 'Analise GEO finalizada'
 							});
+
+							ctrl.condicoes.push({
+								idCondicao: 'ANALISE_TECNICA_FINALIZADA',
+								nomeCondicao: 'Analise tecnica finalizada'
+							});
 						}
 					})
 					.catch(function(){
@@ -390,7 +411,15 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
+			];
+		}
+
+		function getCondicoesAnaliseTecnicaFinalizada() {
+			return [
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
 			];
 		}
 

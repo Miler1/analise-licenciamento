@@ -24,7 +24,7 @@ var AnaliseTecnicaService = function(request, config) {
                 	.get(config.BASE_URL() + 'analisesTecnicas/' + idAnaliseTecnica);
 	};
 
-	this.getAnliseTecnicaByAnalise = function(idAnalise) {
+	this.getAnaliseTecnicaByAnalise = function(idAnalise) {
 
 		return request
 			.get(config.BASE_URL() + 'analisesTecnicas/buscaAnaliseTecnicaByAnalise/' + idAnalise);

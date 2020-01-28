@@ -830,7 +830,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		return documentosNotificacao;
 	
 	}	
-
+	
 	public AnalistaTecnico getAnalistaTecnico() {
 
 		return this.analistaTecnico;

@@ -48,7 +48,7 @@ validacaoAnaliseTecnicaGerente.disable = {
     function init() {
         validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_ANALISE_TECNICA";
 
-        analiseTecnicaService.getAnliseTecnicaByAnalise($route.current.params.idAnalise)
+        analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
