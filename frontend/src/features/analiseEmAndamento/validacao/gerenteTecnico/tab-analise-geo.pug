@@ -51,6 +51,32 @@
                             
                             div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="getRestricoes().length === 0")
                                 i Nenhuma restrição encontrada.
+
+                            div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
+
+                            label Inconsistências encontradas
+
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                thead
+                                    tr
+                                    th.col-md-4 Item
+                                    th.col-md-5 Descrição
+
+                                tbody(ng-repeat="restricao in validacaoAnaliseGeoGerente.dadosProjeto.restricoes")
+                                    tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
+                                        td.col-md-5 {{ restricao.item }} 
+                                        td.col-md-5 {{ restricao.descricao }}              
+
+                                    tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
+                                        td.col-md-5 {{ restricao.item }} 
+                                        td.col-md-5 {{ restricao.descricao }} 
+                                    
+                                    tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis")
+                                        td.col-md-5 {{ restricao.item }} 
+                                        td.col-md-5 {{ restricao.descricao }} 
+                            
+                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length === 0")
+                                i Nenhuma inconsistência encontrada.
                             
                             label.title-inconsistencia Inconsistências Adicionadas
                             div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.inconsistencias.length > 0")
