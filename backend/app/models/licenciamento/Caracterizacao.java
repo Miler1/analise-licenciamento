@@ -108,6 +108,10 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@Column(name = "id_origem")
 	public Long idCaracterizacaoOrigem;
 
+	@ManyToOne
+	@JoinColumn(name = "id_processo")
+	public models.ProcessoLicenciamento processoLicenciamento;
+
 	public enum OrigemSobreposicao {
 
 		EMPREENDIMENTO,
