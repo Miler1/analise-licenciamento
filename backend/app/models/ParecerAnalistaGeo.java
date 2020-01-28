@@ -128,8 +128,8 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
 
-		if (sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_FORA ||
-				sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+		if (sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
+				sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_DENTRO || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
 
 			return true;
 		}
@@ -139,7 +139,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) {
 
-		if (sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_FORA ||
+		if (sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
 				sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
 
 			return true;
@@ -150,7 +150,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
 
-		if (sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_FORA ||
+		if (sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
 				sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
 
 			return true;
