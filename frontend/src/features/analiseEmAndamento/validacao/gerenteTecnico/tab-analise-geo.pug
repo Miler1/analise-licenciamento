@@ -54,7 +54,7 @@
 
                             div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
 
-                            label Inconsistências encontradas
+                            label Sobreposições
 
                             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                 thead
@@ -76,7 +76,7 @@
                                         td.col-md-5 {{ restricao.descricao }} 
                             
                             div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length === 0")
-                                i Nenhuma inconsistência encontrada.
+                                i Nenhuma sobreposição encontrada.
                             
                             label.title-inconsistencia Inconsistências Adicionadas
                             div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.inconsistencias.length > 0")
