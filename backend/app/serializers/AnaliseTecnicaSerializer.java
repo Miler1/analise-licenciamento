@@ -26,6 +26,8 @@ public class AnaliseTecnicaSerializer {
 			"analise.processo.empreendimento.imovel.municipio.nome",
 			"analise.processo.empreendimento.imovel.municipio.estado.codigo",
 			"analise.processo.caracterizacao.id",
+			"analise.processo.caracterizacao.processoLicenciamento.id",
+			"analise.processo.caracterizacao.processoLicenciamento.numero",
 			"analise.processo.caracterizacao.questionario3.id",
 			"analise.processo.caracterizacao.tipoLicenca.id",
 			"analise.processo.caracterizacao.tipoLicenca.nome",

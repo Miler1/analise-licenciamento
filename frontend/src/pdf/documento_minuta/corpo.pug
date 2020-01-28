@@ -1,7 +1,7 @@
 doctype html
 |%{
 |	caracterizacao = analiseTecnica.analise.processo.caracterizacao;	
-|	numeroProcesso = caracterizacao.numero;
+|	numeroProcesso = caracterizacao.processoLicenciamento.numero;
 |	numeroProtocolo = analiseTecnica.analise.processo.numero;
 |	siglaLicenca = caracterizacao.tipoLicenca.sigla;
 |	cpfCnpj = empreendimento.pessoa.cpf != null ? empreendimento.pessoa.cpf : empreendimento.pessoa.cnpj;
