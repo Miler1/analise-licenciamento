@@ -36,7 +36,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	@JoinColumn(name = "id_tipo_resultado_analise")
 	public TipoResultadoAnalise tipoResultadoAnalise;
 
-	@Column(name = "data")
+	@Column(name = "data_parecer")
 	public Date data;
 
 	@OneToOne
