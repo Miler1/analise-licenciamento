@@ -853,9 +853,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 		Vistoria vistoria = ParecerAnalistaTecnico.getUltimoParecer(this.pareceresAnalistaTecnico).vistoria;
 
+		Integer tamanhoEquipeVistoria = vistoria.equipe.size();
+
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseTecnica", this)
+				.addParam("tamanhoEquipeVistoria", tamanhoEquipeVistoria)
                 .addParam("vistoria", vistoria)
 				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 5.0D);
 

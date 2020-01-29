@@ -22,19 +22,19 @@ html(lang='en')
 						p
 							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')} Hora da vistoria: ${vistoria.hora.format('HH:mm')}.
 				
-				| \#{if !vistoria.equipe.isEmpty()}
+				| \#{if tamanhoEquipeVistoria == 0}
 				li
 					h3 DA EQUIPE TÉCNICA
 						P
 							span A equipe técnica que compôs a realização da vistoria foi
-							| \#{if vistoria.equipe.length() > 1}
-							| \#{list items: 0..vistoria.equipe.length()-2, as:'equipe'}
+							| \#{if tamanhoEquipeVistoria > 1}
+							| \#{list items: 0..tamanhoEquipeVistoria-2, as:'equipe'}
 							span
 							| ${equipe.usuario.pessoa.nome},
 							| \#{/list}
 							span
 							| \#{/if}
-							| ${vistoria.equipe[vistoria.equipe.length()-1].usuario.pessoa.nome}.
+							| ${vistoria.equipe[tamanhoEquipeVistoria-1].usuario.pessoa.nome}.
 
 				| \#{/if}
 
