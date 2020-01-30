@@ -6,11 +6,25 @@ var ParecerGerenteService = function(request, config) {
 			.get(config.BASE_URL() + 'parecer/gerente/findParecerByIdHistoricoTramitacao/' + id);
 
 	};
+
+	this.findParecerTecnicoByIdHistoricoTramitacao = function(id) {
+
+		return request
+			.get(config.BASE_URL() + 'parecer/gerente/findParecerTecnicoByIdHistoricoTramitacao/' + id);
+
+	};
 	
 	this.findJustificativaParecerByIdAnaliseGeo = function(idAnaliseGeo) {
 
 		return request
 			.get(config.BASE_URL() + 'parecer/gerente/justificativa/findByIdAnaliseGeo/' + idAnaliseGeo);
+
+	};
+	
+	this.findJustificativaParecerByIdAnaliseTecnica = function(idAnaliseTecnica) {
+
+		return request
+			.get(config.BASE_URL() + 'parecer/gerente/justificativa/findByIdAnaliseTecnica/' + idAnaliseTecnica);
 
     };
 

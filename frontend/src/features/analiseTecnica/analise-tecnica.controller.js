@@ -1106,6 +1106,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 },
                 indexParametro: function(){
                     return indexParametroModal;
+                },
+                isGerente: function(){
+                    return false;
                 }
             }
         });
@@ -1489,28 +1492,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         return documentosNotificacao;
     };
 
-    // ctrl.concluir = function(){
-
-    //     tratarDadosNotificacao();
-
-    //     ctrl.parecer.analiseTecnica = ctrl.analiseTecnica;
-
-    //     if(ctrl.parecer.documentos === null) {
-    //         ctrl.parecer.documentos = [];
-    //     }
-
-    //     analiseTecnicaService.concluir(ctrl.parecer)
-    //         .then(function(response) {
-
-    //         }, function(error){
-
-    //             mensagem.error(error.data.texto, {referenceId: 5});
-    //         });
-
-    //     $rootScope.$broadcast('atualizarContagemProcessos');
-
-    // };
-
     function tratarDadosNotificacao() {
 
         ctrl.notificacao.documentacao = ctrl.notificacao.documentacao === null ? false : true;
@@ -1591,6 +1572,31 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     };
 
+    ctrl.checkedDocumentacao = function() {
+		if (!ctrl.notificacao.documentacao) {
+			ctrl.notificacao.documentacao = null;
+		} 
+	};
+
+	ctrl.checkedRetificacaoSolicitacao = function() {
+		if (!ctrl.notificacao.retificacaoSolicitacao) {
+			ctrl.notificacao.retificacaoSolicitacao = null;
+		} 
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+	};
+
+	ctrl.checkedRetificacaoEmpreendimento = function() {
+
+		if (!ctrl.notificacao.retificacaoEmpreendimento) {
+			ctrl.notificacao.retificacaoEmpreendimento = null;
+			ctrl.notificacao.retificacaoSolicitacao = null;
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+		} else {
+			ctrl.notificacao.retificacaoSolicitacao = true;
+			ctrl.notificacao.retificacaoSolicitacaoComGeo = 'true';
+		}
+
+	};
 
 };
 
