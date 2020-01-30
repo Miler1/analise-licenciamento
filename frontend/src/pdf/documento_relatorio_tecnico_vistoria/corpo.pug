@@ -22,11 +22,11 @@ html(lang='en')
 						p
 							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')} Hora da vistoria: ${vistoria.hora.format('HH:mm')}.
 				
-				| \#{if tamanhoEquipeVistoria == 0}
+				| \#{if tamanhoEquipeVistoria != 0}
 				li
 					h3 DA EQUIPE TÉCNICA
 						P
-							span A equipe técnica que compôs a realização da vistoria foi
+							span A equipe técnica que compôs a realização da vistoria foram:
 							| \#{if tamanhoEquipeVistoria > 1}
 							| \#{list items: 0..tamanhoEquipeVistoria-2, as:'equipe'}
 							span
@@ -54,7 +54,7 @@ html(lang='en')
 				
 				| \#{if vistoria.tipologiaVegetal != null}
 				li
-					h3 DA TIPOLIGA VEGETAL
+					h3 DA TIPOLOGIA VEGETAL
 						P
 							| \#{verbatim}${vistoria.tipologiaVegetal}\#{/verbatim}
 				| \#{/if}
