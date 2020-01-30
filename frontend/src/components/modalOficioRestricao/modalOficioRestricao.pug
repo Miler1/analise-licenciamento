@@ -20,8 +20,9 @@
             label.title-manifestacao(ng-if="$ctrl.justificativaOrgao !== null && $ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO") Justificativa:
             span.text-manifestacao &nbsp; {{$ctrl.justificativaOrgao}}
         
-        span.text-manifestacao(ng-if="$ctrl.justificativaOrgao === null && $ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO")  Não houve manifestação do órgão no período de 30 dias
-            
+        span.text-manifestacao(ng-if="$ctrl.justificativaOrgao === null && $ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO && $ctrl.segundoEmailEnviado")  Não houve manifestação do órgão no período de 15 dias
+
+        span.text-manifestacao(ng-if="$ctrl.justificativaOrgao === null && $ctrl.tipoResultadoAnalise !== $ctrl.INDEFERIDO && !$ctrl.segundoEmailEnviado")  E-mail enviado ao órgão responsável
             
         span.text-manifestacao(ng-if="$ctrl.tipoResultadoAnalise === $ctrl.INDEFERIDO") Não houve manifestação do órgão devido o INDEFERIMENTO realizado pelo Analista GEO
         

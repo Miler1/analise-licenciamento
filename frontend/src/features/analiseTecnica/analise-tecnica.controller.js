@@ -1109,6 +1109,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 },
                 indexParametro: function(){
                     return indexParametroModal;
+                },
+                isGerente: function(){
+                    return false;
                 }
             }
         });
@@ -1491,28 +1494,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         return documentosNotificacao;
     };
-
-    // ctrl.concluir = function(){
-
-    //     tratarDadosNotificacao();
-
-    //     ctrl.parecer.analiseTecnica = ctrl.analiseTecnica;
-
-    //     if(ctrl.parecer.documentos === null) {
-    //         ctrl.parecer.documentos = [];
-    //     }
-
-    //     analiseTecnicaService.concluir(ctrl.parecer)
-    //         .then(function(response) {
-
-    //         }, function(error){
-
-    //             mensagem.error(error.data.texto, {referenceId: 5});
-    //         });
-
-    //     $rootScope.$broadcast('atualizarContagemProcessos');
-
-    // };
 
     function tratarDadosNotificacao() {
 
