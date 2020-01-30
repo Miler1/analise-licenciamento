@@ -154,7 +154,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
 
-		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [8, 9, 27, 31];
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [8, 9, 27, 31, 32];
 		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
 		var status = false;
 
