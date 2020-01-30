@@ -22,6 +22,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 import javax.persistence.*;
@@ -716,7 +717,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                     }
                 });
 
-        return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
+        Documento documento = new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "documento_parecer"), new Date());
+
+        return documento;
 
     }
 

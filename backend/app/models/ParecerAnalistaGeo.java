@@ -74,6 +74,10 @@ public class ParecerAnalistaGeo extends GenericModel {
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
 
+	@OneToOne
+	@JoinColumn(name = "id_documento", referencedColumnName = "id")
+	public Documento documentoParecer;
+
 	public Date getDataParecer() {
 
 		return this.dataParecer;
