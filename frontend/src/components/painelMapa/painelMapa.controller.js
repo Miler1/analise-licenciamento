@@ -186,12 +186,32 @@ var PainelMapaController = function ($scope, wmsTileService) {
 				'<b>Coordenadas:</b> [' + shape.geometria.coordinates[0] + ', ' + shape.geometria.coordinates[1] + ']</p>';
 
 		} else {
-
-			return '<p style="text-align:center;"><b>' + shape.popupText + '</b><br> ' +
-				'<hr>' +
-				'<b>Área:</b> ' + shape.area.toFixed(2) + ' ha</p>';
-
+			return preparaModalComDadosDaSobreposicao(shape);
 		}
+
+	}
+
+	function preparaModalComDadosDaSobreposicao(shape) {
+
+		var coteudoModal = '<p style="text-align:center;"><b>' + shape.popupText + '</b><br> <hr>';
+
+		if(shape.cpfCnpjAreaSobreposicao) {
+			
+			coteudoModal = coteudoModal + 
+				'<b>Nome responsável:</b> ' + shape.nomeAreaSobreposicao + '</p>' +
+				'<b>CPF/CNPJ:</b> ' + shape.cpfCnpjAreaSobreposicao + '</p>';
+
+		} else if(shape.nomeAreaSobreposicao) {
+			coteudoModal = coteudoModal + '<b>Nome:</b> ' + shape.nomeAreaSobreposicao + '</p>';
+		}
+
+		coteudoModal = coteudoModal + '<b>Área:</b> ' + shape.area.toFixed(2) + ' ha</p>';
+
+		if(shape.dataAreaSobreposicao) {
+			coteudoModal = coteudoModal + '<b>Data:</b> ' + shape.dataAreaSobreposicao + '</p>';
+		}
+
+		return coteudoModal;
 
 	}
 
