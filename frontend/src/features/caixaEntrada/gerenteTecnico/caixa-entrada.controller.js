@@ -164,8 +164,27 @@ var CxEntGerenteController = function($scope, config, analistaService,analiseTec
 		});
 	};
 
+	cxEntGerente.verificarStatusGeo = function(processo) {
+		
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || 
+			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA ||
+			processo.idCondicaoTramitacao !== cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE; 
+		
+	};
+
+	cxEntGerente.verificarStatusTecnico = function(processo) {
+		
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || 
+			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA || 
+			processo.idCondicaoTramitacao !== cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE; 
+	
+	};
+
 	cxEntGerente.verificarSolicitacaoDesvinculo = function(processo) {
-		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA;
+		
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || 
+			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA;
+	
 	};
 
 	cxEntGerente.iniciarAnaliseGerente = function(idAnalise, idAnaliseGeo, idAnaliseTecnica) {
