@@ -65,38 +65,33 @@ var FiltroProcessos = {
 					return;
 				}
 			}
+			
+			if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 
-			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
-				$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
+				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
+				ctrl.filtro.idCondicaoTramitacao = null;
+
+			} else if (emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ){
+
+				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
+				ctrl.filtro.idCondicaoTramitacao = null;
+
+			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 				
-				if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
+				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
+				analiseGeoFinalizada = true;
+				ctrl.filtro.idCondicaoTramitacao = null;
 
-					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
-					ctrl.filtro.idCondicaoTramitacao = null;
+			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
 
-				} else if (emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ){
-
-					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
-					ctrl.filtro.idCondicaoTramitacao = null;
-
-				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
-					
-					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
-					analiseGeoFinalizada = true;
-					ctrl.filtro.idCondicaoTramitacao = null;
-
-				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
-
-					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
-					analiseTecnicaFinalizada = true;
-					ctrl.filtro.idCondicaoTramitacao = null;
+				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
+				analiseTecnicaFinalizada = true;
+				ctrl.filtro.idCondicaoTramitacao = null;
+			
+			} else if(!caixaEntrada && !emAnalise) {
 				
-				} else if(!caixaEntrada && !emAnalise) {
-					
-					ctrl.filtro.listaIdCondicaoTramitacao = null;
-				} 
-
-			}
+				ctrl.filtro.listaIdCondicaoTramitacao = null;
+			} 
 
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
 			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
@@ -290,7 +285,7 @@ var FiltroProcessos = {
 						
 						ctrl.condicoes = response.data;
 
-						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
+						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
 
 							ctrl.condicoes.push({
@@ -298,11 +293,18 @@ var FiltroProcessos = {
 								nomeCondicao: 'Analise GEO finalizada'
 							});
 
+						}
+
+						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_TECNICA_FINALIZADA',
 								nomeCondicao: 'Analise tecnica finalizada'
 							});
+
 						}
+
 					})
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de situações.');
