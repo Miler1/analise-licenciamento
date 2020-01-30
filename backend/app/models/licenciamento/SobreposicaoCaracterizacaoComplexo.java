@@ -50,11 +50,11 @@ public class SobreposicaoCaracterizacaoComplexo extends GenericModel {
 	@Column(name = "cpf_cnpj_area_sobreposicao")
 	public String cpfCnpjAreaSobreposicao;
 
-//	public SobreposicaoCaracterizacaoComplexo(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
-//		this.tipoSobreposicao = tipoSobreposicao;
-//		this.caracterizacao = caracterizacao;
-//		this.geometria = geometria;
-//	}
+	public SobreposicaoCaracterizacaoComplexo(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
+		this.tipoSobreposicao = tipoSobreposicao;
+		this.caracterizacao = caracterizacao;
+		this.geometria = geometria;
+	}
 
 	public CamadaGeoRestricaoVO convertToVO() {
 

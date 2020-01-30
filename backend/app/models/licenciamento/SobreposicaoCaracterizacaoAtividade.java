@@ -42,11 +42,11 @@ public class SobreposicaoCaracterizacaoAtividade extends GenericModel{
     @Column(name = "cpf_cnpj_area_sobreposicao")
     public String cpfCnpjAreaSobreposicao;
 
-//    public SobreposicaoCaracterizacaoAtividade(TipoSobreposicao tipoSobreposicao, AtividadeCaracterizacao atividadeCaracterizacao, Geometry geometria) {
-//        this.tipoSobreposicao = tipoSobreposicao;
-//        this.atividadeCaracterizacao = atividadeCaracterizacao;
-//        this.geometria = geometria;
-//    }
+    public SobreposicaoCaracterizacaoAtividade(TipoSobreposicao tipoSobreposicao, AtividadeCaracterizacao atividadeCaracterizacao, Geometry geometria) {
+        this.tipoSobreposicao = tipoSobreposicao;
+        this.atividadeCaracterizacao = atividadeCaracterizacao;
+        this.geometria = geometria;
+    }
 
     public CamadaGeoRestricaoVO convertToVO() {
 

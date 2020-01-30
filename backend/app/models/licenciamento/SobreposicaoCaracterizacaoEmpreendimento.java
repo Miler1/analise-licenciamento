@@ -42,11 +42,11 @@ private static final String SEQ = "licenciamento.sobreposicao_caracterizacao_id_
     @Column(name = "cpf_cnpj_area_sobreposicao")
     public String cpfCnpjAreaSobreposicao;
 
-//    public SobreposicaoCaracterizacaoEmpreendimento(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
-//        this.tipoSobreposicao = tipoSobreposicao;
-//        this.caracterizacao = caracterizacao;
-//        this.geometria = geometria;
-//    }
+    public SobreposicaoCaracterizacaoEmpreendimento(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
+        this.tipoSobreposicao = tipoSobreposicao;
+        this.caracterizacao = caracterizacao;
+        this.geometria = geometria;
+    }
 
     public CamadaGeoRestricaoVO convertToVO() {
 
