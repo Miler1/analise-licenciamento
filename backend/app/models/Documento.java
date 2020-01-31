@@ -67,6 +67,7 @@ public class Documento extends GenericModel implements Identificavel {
 	}
 
 	public Documento(TipoDocumento tipo, File arquivo, String nomeDoArquivo, Date dataCadastro) {
+
 		this.tipo = tipo;
 		this.arquivo = arquivo;
 		this.nomeDoArquivo = nomeDoArquivo;
