@@ -39,6 +39,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.labelDadosProjeto = '';
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
     validacaoAnaliseGeoGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
+    validacaoAnaliseGeoGerente.possuiAnaliseTemporal = false;
+    validacaoAnaliseGeoGerente.possuiDocumentos = false;
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
@@ -94,6 +96,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                 });            
             
                 getDadosVisualizar(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
+                verificaDocumentos();
 
             });
         
@@ -384,7 +387,42 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 		
 		scrollTop();
-	};
+    };
+
+    function verificaDocumentos() {
+
+        var qtdDocumentosAnaliseTemporal = 0;
+
+        if (validacaoAnaliseGeoGerente.parecerGeo.documentos.length > 0) {
+
+            _.forEach(validacaoAnaliseGeoGerente.parecerGeo.documentos, function(documento) {
+
+                if (documento.tipo.id === validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL) {
+
+                    qtdDocumentosAnaliseTemporal++;
+
+                }
+            });
+
+            if (validacaoAnaliseGeoGerente.parecerGeo.documentos.length === qtdDocumentosAnaliseTemporal) {
+
+                validacaoAnaliseGeoGerente.possuiDocumentos = false;
+    
+            } else {
+
+                validacaoAnaliseGeoGerente.possuiDocumentos = true;
+
+            }
+            
+            if (qtdDocumentosAnaliseTemporal > 0) {
+
+                validacaoAnaliseGeoGerente.possuiAnaliseTemporal = true;
+
+            } 
+            
+        }
+
+    }
 
     validacaoAnaliseGeoGerente.voltarEtapaAnterior = function(){
 		$timeout(function() {
