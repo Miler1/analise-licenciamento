@@ -1,0 +1,14 @@
+div.panel.panel-success
+    table.table.table-striped.table-condensed
+        thead
+            th.col-md-4 Nome
+            th.col-md-3 Tipo
+            th.col-md-3 Responsável
+            th.col-md-2 Ação
+        tbody
+            tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.documentos")
+                td.col-md-4 {{ documento.nomeDoArquivo}}
+                td.col-md-3 {{ documento.tipo.nome}}
+                td.col-md-3 {{ modalVisualizacaoProcessoCtrl.nomeAnalistaTecnico }}
+                td.col-md-2(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.downloadDocumentos(documento.id)")
+                    i.glyphicon.glyphicon-eye-open.pointer
