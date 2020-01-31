@@ -1,7 +1,7 @@
 var VisualizacaoProcessoController = function ($location, $injector, desvinculoService,
 											   $uibModal, $scope, $rootScope, $timeout, 
 											   $uibModalInstance, processo, mensagem, 
-											   $anchorScroll,processoService, 
+											   $anchorScroll,processoService, documentoService,
 											   empreendimentoService, notificacaoService,
 											   documentoLicenciamentoService, analiseGeoService, 
 											   parecerAnalistaGeoService, parecerGerenteService,
@@ -34,9 +34,11 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.openedAccordionGerente = false;
 	modalCtrl.labelAnalistaGeo = '';
 	modalCtrl.labelGerente = '';
+	modalCtrl.nomeAnalistaTecnico = '';
 	modalCtrl.parecer = {};
 	modalCtrl.pareceres = {};
 	modalCtrl.pareceresTecnicos = {};
+	modalCtrl.documentos = [];
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -126,6 +128,17 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		
 	};
 
+	modalCtrl.setDocumentos = function() {
+
+		_.forEach(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico, function(parecerAnalistaTecnico){
+
+			modalCtrl.documentos.push(parecerAnalistaTecnico.documentoParecer);
+			modalCtrl.nomeAnalistaTecnico = parecerAnalistaTecnico.analistaTecnico.pessoa.nome;
+
+		});
+		
+	};
+
 	if (processo.idProcesso) {
 
 		processoService.getInfoProcesso(processo.idProcesso)
@@ -134,6 +147,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 				modalCtrl.setPareceres();
+				modalCtrl.setDocumentos();
 			})
 			.catch(function(){
 				mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
@@ -581,6 +595,12 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	this.downloadNotificacao = function(idTramitacao) {
 
 		notificacaoService.downloadNotificacao(idTramitacao);
+	};
+
+	this.downloadDocumentos = function (id) {
+
+		documentoService.downloadById(id);
+
 	};
 
 	var abrirModal = function(parecer, idProcesso) {

@@ -717,9 +717,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                     }
                 });
 
-        Documento documento = new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "documento_parecer"), new Date());
+        return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
 
-        return documento;
+//        Documento documento = new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "documento_parecer"), new Date());
+//
+//        return documento;
 
     }
 
