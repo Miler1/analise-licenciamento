@@ -26,9 +26,9 @@ html(lang='en')
 				li
 					h3 DA EQUIPE TÉCNICA
 						P
-							span A equipe técnica que compôs a realização da vistoria foram:
+							span A equipe técnica que compôs a realização da vistoria foram: 
 							| \#{if tamanhoEquipeVistoria > 1}
-							| \#{list items: 0..tamanhoEquipeVistoria-2, as:'equipe'}
+							| \#{list items: vistoria.equipe, as:'equipe'}
 							span
 							| ${equipe.usuario.pessoa.nome},
 							| \#{/list}
@@ -38,56 +38,74 @@ html(lang='en')
 
 				| \#{/if}
 
-				| \#{if vistoria.descricao != null}
 				li
 					h3 DA DESCRIÇÃO DA ATIVIDADE
 						P
 							| \#{verbatim}${vistoria.descricao}\#{/verbatim}
-				| \#{/if}
 				
-				| \#{if vistoria.cursosDagua != null}
 				li
 					h3 DOS CURSOS D´ÁGUA
-						P
+						| \#{if vistoria.cursosDagua != '' && vistoria.cursosDagua != null}
+						P 
 							| \#{verbatim}${vistoria.cursosDagua}\#{/verbatim}
-				| \#{/if}
+						| \#{/if}
+						| \#{else}
+						P Não há cursos d'água.
+						|\#{/else}
 				
-				| \#{if vistoria.tipologiaVegetal != null}
 				li
 					h3 DA TIPOLOGIA VEGETAL
-						P
+						| \#{if vistoria.tipologiaVegetal != '' && vistoria.tipologiaVegetal != null}
+						P 
 							| \#{verbatim}${vistoria.tipologiaVegetal}\#{/verbatim}
-				| \#{/if}
+						| \#{/if}
+						| \#{else}
+						P Não há tipologia vegetal.
+						|\#{/else}
 				
-				| \#{if vistoria.app != null}
 				li
 					h3 DAS ÁREAS DE PRESERVAÇÃO PERMANENTE - APP
-						P
+						| \#{if vistoria.app != '' && vistoria.app != null}
+						P 
 							| \#{verbatim}${vistoria.app}\#{/verbatim}
-				| \#{/if}
-				| \#{if vistoria.ocorrencia != null}
+						| \#{/if}
+						| \#{else}
+						P Não há áreas de preservação permanente.
+						|\#{/else}
+
 				li
 					h3 DA OCORRÊNCIA DE PROCESSOS EROSIVOS
-						P
+						| \#{if vistoria.ocorrencia != '' && vistoria.ocorrencia != null}
+						P 
 							| \#{verbatim}${vistoria.ocorrencia}\#{/verbatim}
-				| \#{/if}
-				| \#{if vistoria.residuosLiquidos != null}
+						| \#{/if}
+						| \#{else}
+						P Não há ocorrência de processos erosivos.
+						|\#{/else}
+
 				li
 					h3 DA GESTÃO DE RESÍDUOS SÓLIDOS E LÍQUIDOS GERADOS NA ATIVIDADE PRODUTIVA
-						P
+						| \#{if vistoria.residuosLiquidos != '' && vistoria.residuosLiquidos != null}
+						P 
 							| \#{verbatim}${vistoria.residuosLiquidos}\#{/verbatim}
-				| \#{/if}
-				| \#{if vistoria.outrasInformacoes != null}
+						| \#{/if}
+						| \#{else}
+						P Não há gestão de resíduos sólidos e líquidos gerados na atividade produtiva.
+						|\#{/else}
+
 				li
 					h3 OUTRAS INFORMAÇÕES
-						P
+						| \#{if vistoria.outrasInformacoes != '' && vistoria.outrasInformacoes != null}
+						P 
 							| \#{verbatim}${vistoria.outrasInformacoes}\#{/verbatim}
-				| \#{/if}
-				| \#{if vistoria.conclusao != null}
+						| \#{/if}
+						| \#{else}
+						P Não há outras informações.
+						|\#{/else}
+
 				li
 					h3 DA CONCLUSÃO
 						P
 							| \#{verbatim}${vistoria.conclusao}\#{/verbatim}
-				| \#{/if}
 
 			span.in-right Manaus, ${utils.Helper.getDataPorExtenso(new Date())}

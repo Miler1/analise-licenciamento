@@ -701,10 +701,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		List<Restricao> restricoes = Restricao.findByIdParecer(parecerAnalistaTecnico.id);
 		Vistoria vistoria = Vistoria.findByIdParecer(parecerAnalistaTecnico.id);
 		String numeroProcesso = this.analise.processo.numero;
+		String numeroProcessoLicenciamento = this.analise.processo.caracterizacao.processoLicenciamento.numero;
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseEspecifica", this)
+				.addParam("numeroProcessoLicenciamento", numeroProcessoLicenciamento)
 				.addParam("numeroProcesso", numeroProcesso)
 				.addParam("vistoria", vistoria)
 				.addParam("parecer", parecerAnalistaTecnico)
