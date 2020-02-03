@@ -185,6 +185,7 @@ public class Documento extends GenericModel implements Identificavel {
 		this.caminho = File.separator + Crypto.encryptAES(new Date().getTime() + this.nomeDoArquivo);
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
+
 	}
 
 	protected void criarPasta() {
