@@ -746,7 +746,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 		pdf.generate();
 
-		Documento documento = new Documento(tipoDocumento, pdf.getFile(), "documento_parecer.pdf", new Date());
+		Documento documento = new Documento(tipoDocumento, pdf.getFile(), "documento_parecer.pdf", parecerAnalistaTecnico.analistaTecnico.pessoa.nome, new Date());
 
 		return documento;
 
@@ -809,7 +809,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 			pdf.generate();
 
-			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica", new Date()));
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica.pdf", finalAnalistaVO.nomeAnalista, new Date()));
 
 		});
 
@@ -826,7 +826,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 			pdf.generate();
 
-			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica", new Date()));
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica.pdf", finalAnalistaVO.nomeAnalista, new Date()));
 		}
 
 		return documentosNotificacao;
@@ -849,7 +849,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
-	public Documento gerarPDFRelatorioTecnicoVistoria() throws IOException, DocumentException {
+	public Documento gerarPDFRelatorioTecnicoVistoria(ParecerAnalistaTecnico parecerAnalistaTecnico) throws IOException, DocumentException {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
 
@@ -871,7 +871,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		documentos.add(vistoria.documentoRit.getFile());
 		documentos.add(pdf.getFile());
 
-		return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "documento_relatorio_tecnico_vistoria", new Date());
+		return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "documento_relatorio_tecnico_vistoria.pdf", parecerAnalistaTecnico.analistaTecnico.pessoa.nome, new Date());
 
 	}
 

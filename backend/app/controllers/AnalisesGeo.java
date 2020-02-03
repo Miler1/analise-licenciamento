@@ -151,39 +151,43 @@ public class AnalisesGeo extends InternalController {
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {
 
+        verificarPermissao(Acao.BAIXAR_DOCUMENTO);
+
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
         ParecerAnalistaGeo ultimoParecer = analiseGeoSalva.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
-        Documento pdfParecer = analiseGeoSalva.gerarPDFParecer(ultimoParecer);
-        //ultimoParecer.documentoParecer = analiseGeoSalva.gerarPDFParecer(ultimoParecer);
 
-        String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
-        //String nome = ultimoParecer.documentoParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
+        ultimoParecer.documentoParecer = analiseGeoSalva.gerarPDFParecer(ultimoParecer);
+
+        String nome = ultimoParecer.documentoParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
         response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
-        renderBinary(pdfParecer.arquivo, nome);
+        ultimoParecer._save();
 
-//        ultimoParecer._save();
-//
-//        renderBinary(ultimoParecer.documentoParecer.arquivo, nome);
+        renderBinary(ultimoParecer.documentoParecer.getFile(), nome);
 
     }
 
     public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) {
 
+        verificarPermissao(Acao.BAIXAR_DOCUMENTO);
+
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
+        ParecerAnalistaGeo ultimoParecer = analiseGeoSalva.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
 
-        Documento pdfParecer = analiseGeoSalva.gerarPDFCartaImagem();
+        ultimoParecer.cartaImagem = analiseGeoSalva.gerarPDFCartaImagem(ultimoParecer);
 
-        String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
+        String nome = ultimoParecer.cartaImagem.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
         response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
-        renderBinary(pdfParecer.arquivo, nome);
+        ultimoParecer._save();
+
+        renderBinary(ultimoParecer.cartaImagem.getFile(), nome);
 
     }
 
