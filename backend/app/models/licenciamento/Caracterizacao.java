@@ -94,7 +94,7 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public Boolean complexo = false;
 
 	@Column(name = "ativo")
-	public Boolean ativo = true;
+	public Boolean ativo;
 
 	@Column(name = "vigencia_solicitada")
 	public Integer vigenciaSolicitada;

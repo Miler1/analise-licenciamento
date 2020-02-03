@@ -71,6 +71,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@JoinColumn(name = "id_processo_anterior")
 	public Processo processoAnterior;
 
+	@Column
+	public Boolean retificacao;
+
+	@Column
+	public Boolean ativo;
+
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
 
@@ -439,13 +445,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
-				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
                 .groupByIdAnalise()
-				.groupByIdAnaliseGeo()
+				.groupByIdAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
-				.groupByDataFinalAnaliseGeo()
+				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByRenovacao()
 				.groupByDiasAnaliseGeo()
 				.groupByDiasAnaliseTecnica();
@@ -475,7 +481,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		processoBuilder
-				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByDataVencimentoPrazoAnaliseGeo(true)
 				.groupByDataFinalAnaliseGeo()
 				.groupByPrazoAnaliseGerente();
 
@@ -585,7 +591,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.addAnaliseGeoAlias(filtro.isAnaliseGeoOpcional);
+		processoBuilder.addAnaliseTecnicaAlias(filtro.isAnaliseTecnicaOpcional);
 
 	}
 

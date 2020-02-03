@@ -25,7 +25,7 @@ import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema = "analise", name = "analise_tecnica")
-public class AnaliseTecnica extends GenericModel implements Analisavel {
+public class AnaliseTecnica extends Analisavel {
 
 	public static final String SEQ = "analise.analise_tecnica_id_seq";
 	private static final String NOME_PERFIL = "Analista Tecnico";
@@ -551,6 +551,11 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
+	@Override
+	public TipoAnalise getTipoAnalise() {
+		return TipoAnalise.TECNICA;
+	}
+
 	public void validarTipoResultadoValidacao() {
 
 		if (tipoResultadoValidacao == null) {
@@ -797,6 +802,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 		return documentosNotificacao;
 
+	}
+
+	public static AnaliseTecnica findUltimaByAnalise(Analise analise){
+		return AnaliseTecnica.find("analise.processo.numero = :numero ORDER BY id DESC")
+				.setParameter("numero", analise.processo.numero)
+				.first();
 	}
 
 }

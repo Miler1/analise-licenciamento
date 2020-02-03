@@ -53,7 +53,14 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
-			UsuarioAnalise usuarioAnalistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeo));
+			AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findUltimaByAnalise(analiseGeo.analise);
+			UsuarioAnalise usuarioAnalistaTecnico;
+
+			if(analiseTecnicaAnterior != null){
+				usuarioAnalistaTecnico = analiseTecnicaAnterior.analistaTecnico.usuario;
+			} else {
+				usuarioAnalistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeo));
+			}
 
 			AnaliseTecnica analiseTecnica = analiseGeo.geraAnaliseTecnica().save();
 			analiseTecnica.geraLicencasAnaliseTecnica(analiseGeo.licencasAnalise);
