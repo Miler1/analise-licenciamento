@@ -281,7 +281,7 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 		pdf.generate();
 
-		return new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "minuta"), new Date());
+		return new Documento(tipoDocumento, pdf.getFile(),"minuta", new Date());
 	}
 
 }

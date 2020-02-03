@@ -809,7 +809,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 			pdf.generate();
 
-			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "notificacao_tecnica"), new Date()));
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica", new Date()));
 
 		});
 
@@ -826,7 +826,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 			pdf.generate();
 
-			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "notificacao_tecnica"), new Date()));
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica", new Date()));
 		}
 
 		return documentosNotificacao;
@@ -871,7 +871,7 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 		documentos.add(vistoria.documentoRit.getFile());
 		documentos.add(pdf.getFile());
 
-		return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), Crypto.encryptAES(new Date().getTime() + "documento_relatorio_tecnico_vistoria"), new Date());
+		return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "documento_relatorio_tecnico_vistoria", new Date());
 
 	}
 
