@@ -59,7 +59,7 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			if(analiseTecnicaAnterior != null){
 				usuarioAnalistaTecnico = analiseTecnicaAnterior.analistaTecnico.usuario;
 			} else {
-				usuarioAnalistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeo));
+				usuarioAnalistaTecnico = UsuarioAnalise.findByAnalistaTecnico(AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(gerente.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeo.analise));
 			}
 
 			AnaliseTecnica analiseTecnica = analiseGeo.geraAnaliseTecnica().save();

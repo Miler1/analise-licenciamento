@@ -234,7 +234,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		if(analistaTecnico == null){
 			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
-//			analistaTecnico = AnalistaTecnico.distribuicaoProcesso(siglaSetor, analiseTecnica);
+            analista = AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(siglaSetor, analise);
 		} else {
 			analista.usuario = analistaTecnico.usuario;
 			analista.analiseTecnica = analiseTecnica;

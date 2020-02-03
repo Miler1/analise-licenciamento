@@ -56,7 +56,7 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}
 
-	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, AnaliseGeo analiseGeo) {
+	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, Analise analise) {
 
 		UsuarioAnalise.atualizaUsuariosAnalise();
 
@@ -83,7 +83,7 @@ public class AnalistaTecnico extends GenericModel {
 
 		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
 
-		return new AnalistaTecnico(analiseGeo.analise, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
+		return new AnalistaTecnico(analise, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
 
 	}
 
