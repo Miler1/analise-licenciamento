@@ -28,9 +28,9 @@ html(lang='en')
 						P
 							span A equipe técnica que compôs a realização da vistoria foram: 
 							| \#{if tamanhoEquipeVistoria > 1}
-							| \#{list items: vistoria.equipe, as:'equipe'}
+							| \#{list items: 0..tamanhoEquipeVistoria-2, as:'index'}
 							span
-							| ${equipe.usuario.pessoa.nome},
+							| ${vistoria.equipe[index].usuario.pessoa.nome},
 							| \#{/list}
 							span
 							| \#{/if}
