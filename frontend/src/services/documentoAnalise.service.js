@@ -41,6 +41,16 @@ var DocumentoAnaliseService = function(request, config, $window) {
 		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFNotificacao', analiseTecnica);
 	};
 
+	this.generatePDFMinuta = function(analiseTecnica) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFMinuta', analiseTecnica);
+	};
+
+	this.generatePDFRelatorioTecnicoVistoria = function(analiseTecnica) {
+
+		return request.postArrayBuffer(config.BASE_URL() + 'analisesTecnicas/downloadPDFRelatorioTecnicoVistoria', analiseTecnica);
+	};
+
 };
 
 exports.services.DocumentoAnaliseService = DocumentoAnaliseService;
