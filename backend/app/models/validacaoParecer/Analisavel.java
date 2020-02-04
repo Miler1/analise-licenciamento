@@ -1,8 +1,12 @@
 package models.validacaoParecer;
 
 import models.TipoResultadoAnalise;
+import models.licenciamento.TipoAnalise;
+import play.db.jpa.GenericModel;
 
-public interface Analisavel {
+public abstract class Analisavel extends GenericModel {
 
-	TipoResultadoAnalise getTipoResultadoValidacao();
+	public abstract TipoResultadoAnalise getTipoResultadoValidacao();
+
+	public abstract TipoAnalise getTipoAnalise();
 }

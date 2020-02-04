@@ -6,13 +6,10 @@ import com.vividsolutions.jts.geom.Geometry;
 import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
-import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.tramitacao.*;
-import org.hibernate.criterion.Restrictions;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.mvc.Scope;
 import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
@@ -20,8 +17,10 @@ import utils.*;
 
 import javax.persistence.*;
 import javax.validation.ValidationException;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -70,6 +69,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@ManyToOne
 	@JoinColumn(name = "id_processo_anterior")
 	public Processo processoAnterior;
+
+	@Column
+	public Boolean retificacao;
+
+	@Column
+	public Boolean ativo;
 
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
@@ -439,13 +444,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
-				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
                 .groupByIdAnalise()
-				.groupByIdAnaliseGeo()
+				.groupByIdAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
-				.groupByDataFinalAnaliseGeo()
+				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByRenovacao()
 				.groupByDiasAnaliseGeo()
 				.groupByDiasAnaliseTecnica();
@@ -475,7 +480,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		processoBuilder
-				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByDataVencimentoPrazoAnaliseGeo(true)
 				.groupByDataFinalAnaliseGeo()
 				.groupByPrazoAnaliseGerente();
 

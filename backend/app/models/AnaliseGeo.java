@@ -2,7 +2,6 @@ package models;
 
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.PortalSegurancaException;
@@ -34,7 +33,7 @@ import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema = "analise", name = "analise_geo")
-public class AnaliseGeo extends GenericModel implements Analisavel {
+public class AnaliseGeo extends Analisavel {
 
     public static final String SEQ = "analise.analise_geo_id_seq";
     private static final String NOME_PERFIL = "Analista Geo";
@@ -516,6 +515,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return this.tipoResultadoValidacao;
     }
 
+    @Override
+    public TipoAnalise getTipoAnalise() {
+        return TipoAnalise.GEO;
+    }
+
     public void validarTipoResultadoValidacao() {
 
         if (tipoResultadoValidacao == null) {
@@ -992,6 +996,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         return parecerGerenteAnaliseGeo.parecer;
 
+    }
+
+    public static AnaliseGeo findUltimaByAnalise(Analise analise){
+        return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY id DESC")
+                .setParameter("numero", analise.processo.numero)
+                .first();
     }
 
 }

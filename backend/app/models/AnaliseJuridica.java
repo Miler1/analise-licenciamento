@@ -22,7 +22,7 @@ import java.util.*;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
-public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneable {
+public class AnaliseJuridica extends Analisavel implements Cloneable {
 
 	public static final String SEQ = "analise.analise_juridica_id_seq";
 	
@@ -585,6 +585,11 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 	public TipoResultadoAnalise getTipoResultadoValidacao() {
 		
 		return this.tipoResultadoValidacao;
+	}
+
+	@Override
+	public TipoAnalise getTipoAnalise() {
+		return TipoAnalise.JURIDICA;
 	}
 
 	public void setValidacaoCoordenador(AnaliseJuridica analiseJuridica) {
