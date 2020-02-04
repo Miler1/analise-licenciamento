@@ -138,7 +138,6 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			modalCtrl.documentos.push(ultimoParecer.documentoParecer);
 			modalCtrl.documentos.push(ultimoParecer.cartaImagem);
 
-
 		}
 
 		if (modalCtrl.dadosProcesso.analise.analiseTecnica !== null) {
