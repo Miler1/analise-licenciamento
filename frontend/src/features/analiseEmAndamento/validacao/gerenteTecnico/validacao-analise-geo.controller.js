@@ -20,6 +20,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.analiseGeoValidacao = {};
     validacaoAnaliseGeoGerente.camadasDadosEmpreendimento = {};
     validacaoAnaliseGeoGerente.dadosProjeto = {};
+    validacaoAnaliseGeoGerente.acaoTramitacao = app.utils.AcaoTramitacao;
 
     validacaoAnaliseGeoGerente.init = init;
     validacaoAnaliseGeoGerente.controleVisualizacao = null;
@@ -39,6 +40,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.labelDadosProjeto = '';
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
     validacaoAnaliseGeoGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
+    validacaoAnaliseGeoGerente.listaAnalisesGeo = [];
+    validacaoAnaliseGeoGerente.processo = null;
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
@@ -58,6 +61,17 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
     };
 
+    var findAnalisesGeoByNumeroProcesso = function(processo) { 
+
+        analiseGeoService.findAnalisesGeoByNumeroProcesso(btoa(processo.numero))
+            .then(function(response){
+
+                validacaoAnaliseGeoGerente.listaAnalisesGeo = response.data;   
+                
+            });
+    
+    };
+
     function init() {
         validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 
@@ -66,7 +80,12 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
                 validacaoAnaliseGeoGerente.parecerGeo = getUltimoParecerGeo(validacaoAnaliseGeoGerente.analiseGeo.pareceresAnalistaGeo);
-
+                findAnalisesGeoByNumeroProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
+                
+                processoService.getInfoProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id).then(function(response){
+                    validacaoAnaliseGeoGerente.processo = response.data;
+                });
+                
                 analiseGeoService.getDadosRestricoesProjeto(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
                 .then(function(response) {
         
@@ -439,6 +458,38 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         });
 
     }
+
+    var abrirModal = function(parecer, analiseGeo, processo) {
+
+		$uibModal.open({
+			controller: 'historicoAnaliseGeoCtrl',
+			controllerAs: 'historicoAnaliseGeoCtrl',
+			templateUrl: 'features/analiseEmAndamento/validacao/gerenteTecnico/historicoAnalises/modalHistoricoAnaliseGeo.html',
+			size: 'lg',
+			resolve: {
+
+				parecer: function() {
+					return parecer;
+				},
+				
+				analiseGeo: function() {
+					return analiseGeo;
+                },
+                
+                processo: function(){
+                    return processo;
+                }
+
+			}
+		});
+
+	};
+
+	validacaoAnaliseGeoGerente.visualizarJustificativas = function(parecer, analiseGeo, processo){
+
+		abrirModal(parecer, analiseGeo, processo);
+
+	};
 
 };
 

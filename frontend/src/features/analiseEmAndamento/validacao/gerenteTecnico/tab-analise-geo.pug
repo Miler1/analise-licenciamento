@@ -204,3 +204,34 @@
                                 label.label-parecer Justificativa:
                                 br
                                 p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.parecer")
+
+#accordion-historico-analises.panel-group
+    div.col-md-12(style="padding:0px;")
+        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-historico-analises', aria-expanded='false', data-target='#historico-analises', ng-init = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = false', ng-click = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises' )
+            .panel.panel-default.panel-analise
+                .panel-heading
+                    h4.panel-title
+                        | Histórico da(s) análise(s) anterior(es)
+                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises}")
+
+                    #historico-analises.collapse
+
+                        table.table.table-striped.table-condensed
+
+                            thead
+                                tr
+                                    th Início da análise
+                                    th Término da análise
+                                    th Analista responsável
+                                    th Situação
+                                    th Documentação
+
+                            tbody(ng-repeat="analiseGeo in validacaoAnaliseGeoGerente.listaAnalisesGeo")
+                                tr(ng-repeat="parecer in analiseGeo.pareceresAnalistaGeo")
+                                    td.col-md-1 {{analiseGeo.dataInicio}}
+                                    td.col-md-1 {{parecer.dataParecer}}
+                                    td.col-md-2 {{parecer.usuario.pessoa.nome}}
+                                    td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
+                                    td.col-md-1 
+                                        button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseGeoGerente.visualizarJustificativas(parecer, analiseGeo, analiseGeo.analise.processo )")
+                                            i.glyphicon.glyphicon-list-alt
