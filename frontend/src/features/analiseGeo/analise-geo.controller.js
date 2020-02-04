@@ -492,7 +492,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					});
 
 					analiseGeoService.getDadosProjeto($scope.analiseGeo.analise.processo.id).then(function (response) {
-						console.log('---------------------------- >> 1', response.data);
+
 						ctrl.dadosProjeto = response.data;
 
 						if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
@@ -531,7 +531,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						});
 
 						ctrl.dadosProjeto.restricoes.forEach(function (restricao) {
-							console.log('---------------------------- >> SOBREPOSICAO << ----', restricao);
+
 							restricao.estilo = ctrl.estiloMapa.SOBREPOSICAO;
 							adicionarGeometriaNoMapa(restricao);
 
