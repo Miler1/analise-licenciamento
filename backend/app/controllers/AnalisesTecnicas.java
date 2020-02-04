@@ -2,8 +2,10 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
+import serializers.AnaliseGeoSerializer;
 import serializers.AnaliseTecnicaSerializer;
 import utils.Mensagem;
 
@@ -182,4 +184,11 @@ public class AnalisesTecnicas extends InternalController {
 
 	}
 
+	public static void findAnalisesTecnicaByNumeroProcesso(String numero) {
+
+		String numeroDecodificado = new String(Base64.decodeBase64(numero.getBytes()));
+
+		renderJSON(AnaliseTecnica.findAnalisesByNumeroProcesso(numeroDecodificado), AnaliseTecnicaSerializer.findInfo);
+
+	}
 }

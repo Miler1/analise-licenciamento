@@ -844,4 +844,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
+	public static List<AnaliseTecnica> findAnalisesByNumeroProcesso(String numeroProcesso) {
+
+		return AnaliseTecnica.find("analise.processo.numero = :numeroProcesso")
+				.setParameter("numeroProcesso", numeroProcesso)
+				.fetch();
+
+	}
+
 }

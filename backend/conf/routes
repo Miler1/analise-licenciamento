@@ -63,6 +63,7 @@ POST    /analisesTecnicas/downloadPDFParecer                AnalisesTecnicas.dow
 POST    /analisesTecnicas/downloadPDFNotificacao            AnalisesTecnicas.downloadPDFNotificacao
 POST    /analisesTecnicas/iniciarAnaliseTecnicaGerente      AnalisesTecnicas.iniciarAnaliseTecnicaGerente
 GET     /analisesTecnicas/buscaAnaliseTecnicaByAnalise/{idAnalise}   AnalisesTecnicas.buscaAnaliseTecnicaByAnalise
+GET		/analisesTecnicas/findAnalisesTecnicaByNumeroProcesso/{numero}			AnalisesTecnicas.findAnalisesTecnicaByNumeroProcesso
 
 # Analise GEO
 
@@ -81,6 +82,7 @@ POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.download
 POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.downloadPDFOficioOrgao
 GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
 POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
+GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}			AnalisesGeo.findAnalisesGeoByNumeroProcesso
 
 # Desvínculo
 
