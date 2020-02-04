@@ -59,3 +59,4 @@
 * OS50 - US1109 - [Gerente Técnico] Eu, gerente técnico, devo acessar a caixa de entrada para visualizar processos que solicitam desvínculo.
 * OS50 - US1219 - Eu, analista geo, devo atender as novas regras para enviar comunicado ao órgão.
 * OS50 - US1110 - Eu, gerente geo/técnico, devo manter histórico de análises para conferir análises anteriores.
+* OS50 - US1208 - [Gerente Técnico] - Implementar filtro de situação (Notificado e todos filtro presentes no perfilTécnico).
