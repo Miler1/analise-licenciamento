@@ -133,12 +133,8 @@ public class AnalisesTecnicas extends InternalController {
 
 		verificarPermissao(Acao.BAIXAR_DOCUMENTO);
 
-		String novoParecer = analiseTecnica.parecerAnalista;
-
 		AnaliseTecnica analiseTecnicaSalva = AnaliseTecnica.findById(analiseTecnica.id);
 		ParecerAnalistaTecnico ultimoParecer = analiseTecnicaSalva.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
-
-		analiseTecnicaSalva.parecerAnalista = novoParecer;
 
 		ultimoParecer.documentoParecer = analiseTecnicaSalva.gerarPDFParecer(ultimoParecer);
 
@@ -209,9 +205,11 @@ public class AnalisesTecnicas extends InternalController {
 
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
-		Vistoria vistoria = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico).vistoria;
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
 
-		vistoria.documentoRelatorioTecnicoVistoria = analiseTecnica.gerarPDFRelatorioTecnicoVistoria();
+		Vistoria vistoria = parecerAnalistaTecnico.vistoria;
+
+		vistoria.documentoRelatorioTecnicoVistoria = analiseTecnica.gerarPDFRelatorioTecnicoVistoria(parecerAnalistaTecnico);
 
 		vistoria._save();
 
