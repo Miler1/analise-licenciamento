@@ -61,7 +61,7 @@ public class Documentos extends InternalController {
 
 	public static void downloadMinutaByIdAnaliseTecnica(Long idAnalisetecnica) throws FileNotFoundException {
 
-//		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
 
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnalisetecnica);
 
@@ -137,7 +137,7 @@ public class Documentos extends InternalController {
 
 	public static void downloadRTVByIdAnaliseTecnica(Long idAnalisetecnica) throws FileNotFoundException {
 
-//		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
 
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnalisetecnica);
 

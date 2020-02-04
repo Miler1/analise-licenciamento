@@ -158,8 +158,6 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void downloadPDFNotificacao(AnaliseTecnica analiseTecnica) throws Exception {
 
-//		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
-
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
 		List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
@@ -187,7 +185,7 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public static void downloadPDFMinuta(AnaliseTecnica analiseTecnica) throws Exception {
 
-//		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
 
 		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
 
@@ -206,7 +204,7 @@ public class AnalisesTecnicas extends InternalController {
 	
 	public static void downloadPDFRelatorioTecnicoVistoria(AnaliseTecnica analiseTecnica) throws Exception {
 
-//		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
 
 		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
 
