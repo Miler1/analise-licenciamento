@@ -1,5 +1,6 @@
 package jobs;
 
+import enums.OrigemNotificacaoEnum;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.LicenciamentoWebService;
@@ -75,6 +76,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 				AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
 				criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
+				processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_GEO.id);
 
 			} else if(analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)){
 
@@ -90,7 +92,11 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 					AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
 					criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico);
 				}
+
+				processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_TECNICA.id);
 			}
+
+			processo._save();
 
 		} else {
 			criaAnaliseGeo(analise);
@@ -160,43 +166,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 		return analise;
 		
-	}
-
-	private boolean criaAnaliseGeoVinculandoAnalistaGeo(Analise analise, StatusCaracterizacao status) {
-
-		AnaliseGeo analiseGeo = new AnaliseGeo();
-		analiseGeo.analise = analise;
-
-		String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
-
-		AnalistaGeo analistaGeo;
-
-		if(status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
-
-			AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
-			analiseGeoAnterior.ativo = false;
-			analiseGeoAnterior._save();
-
-			analistaGeo = analiseGeoAnterior.getAnalistaGeo();
-			analistaGeo = new AnalistaGeo(analiseGeo, analistaGeo.usuario);
-
-
-		} else {
-
-			analistaGeo = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
-
-		}
-
-		if(analistaGeo == null) {
-			return false;
-		}
-
-		analiseGeo.analistasGeo = new ArrayList<>();
-		analiseGeo.analistasGeo.add(analistaGeo);
-		analiseGeo.save();
-		
-		return true;
-
 	}
 
 	private void criaAnaliseGeo(Analise analise) {

@@ -76,6 +76,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@Column
 	public Boolean ativo;
 
+	@ManyToOne
+	@JoinColumn(name = "id_origem_notificacao")
+	public OrigemNotificacao origemNotificacao;
+
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
 
@@ -452,6 +456,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByRenovacao()
+				.groupByRetificacao()
+				.groupByIdOrigemNotificacao()
 				.groupByDiasAnaliseGeo()
 				.groupByDiasAnaliseTecnica();
 

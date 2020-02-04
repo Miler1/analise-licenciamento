@@ -5,12 +5,14 @@ import models.AnaliseJuridica;
 import models.Processo;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Questionario3;
+import org.omg.CORBA.Object;
 import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
 import serializers.Questionario3Serializer;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Processos extends InternalController {
@@ -20,6 +22,12 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		List processosList = Processo.listWithFilter(filtro, Auth.getUsuarioSessao());
+
+		List<HashMap<String, Object>> process = processosList;
+
+		process.forEach(p -> {
+			p.get("renovacao");
+		});
 		
 		renderJSON(processosList);
 	}

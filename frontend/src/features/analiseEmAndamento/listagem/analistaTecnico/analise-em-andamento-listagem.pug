@@ -30,6 +30,7 @@ div
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
 							td
+								span(ng-class="{'icone-notificado': listagem.notificacaoAtendida(processo)}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -56,7 +57,9 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
 
-				span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
+				.legenda
+					span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
+					span.icone-notificado.legenda Notificação Atendida
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

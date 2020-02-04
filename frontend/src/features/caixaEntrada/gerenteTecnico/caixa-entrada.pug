@@ -60,7 +60,7 @@ div
 													span Validar análise geo
 											li
 												//- habilitar só quando o protocolo passar pela análise técnica
-												a.disable-acoes 
+												a.disable-acoes
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li
@@ -74,7 +74,7 @@ div
 												a(ng-click="cxEntGerente.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-				div
+				.legenda
 					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
 
 				+paginacao('cxEntGerente.paginacao', 'cxEntGerente.onPaginaAlterada')
