@@ -2,10 +2,13 @@ package models;
 
 import java.util.List;
 
+import com.vividsolutions.jts.geom.Geometry;
 import enums.TipoSobreposicaoDistanciaEnum;
+import models.licenciamento.Caracterizacao.OrigemSobreposicao;
 import models.licenciamento.*;
 import org.omg.CORBA.PRIVATE_MEMBER;
 import play.db.jpa.GenericModel;
+import utils.GeoCalc;
 import utils.Helper;
 import utils.ListUtil;
 import utils.ModelUtil;
@@ -51,6 +54,12 @@ public class Comunicado extends GenericModel {
     @Column(name="ativo")
     public Boolean ativo;
 
+    @Column(name="aguardando_resposta")
+    public Boolean aguardandoResposta;
+
+    @Column(name="segundo_email_enviado")
+    public Boolean segundoEmailEnviado;
+
     @OneToOne
     @JoinColumn(name="id_caracterizacao", referencedColumnName="id")
     public Caracterizacao caracterizacao;
@@ -94,58 +103,125 @@ public class Comunicado extends GenericModel {
     public ParecerAnalistaGeo parecerAnalistaGeo;
 
 
-    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, Boolean aguardandoResposta, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
 
         this.tipoSobreposicao = sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao;
         this.dataCadastro = new Date();
-        this.dataVencimento = Helper.somarDias(new Date(), 30);
+        this.dataVencimento = Helper.somarDias(new Date(), 15);
         this.caracterizacao = caracterizacao;
-        this.ativo = true;
+        this.aguardandoResposta = aguardandoResposta;
         this.analiseGeo = analiseGeo;
-        this.resolvido = false;
         this.orgao = orgao;
+        this.segundoEmailEnviado = false;
         this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
-        this.distancia = getDistancia(sobreposicaoCaracterizacaoEmpreendimento.distancia);
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoEmpreendimento.distancia, sobreposicaoCaracterizacaoEmpreendimento.geometria, sobreposicaoCaracterizacaoEmpreendimento.caracterizacao);
+
+        if (aguardandoResposta) {
+
+            this.ativo = true;
+            this.resolvido = false;
+
+        } else {
+
+            this.ativo = false;
+            this.resolvido = true;
+
+        }
 
     }
 
-    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, Boolean aguardandoResposta, SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade, Orgao orgao){
 
         this.tipoSobreposicao = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
         this.caracterizacao = caracterizacao;
-        this.ativo = true;
+        this.aguardandoResposta = aguardandoResposta;
         this.analiseGeo = analiseGeo;
-        this.resolvido = false;
         this.orgao = orgao;
+        this.segundoEmailEnviado = false;
         this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
-        this.distancia = getDistancia(sobreposicaoCaracterizacaoAtividade.distancia);
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoAtividade.distancia, sobreposicaoCaracterizacaoAtividade.geometria, sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.caracterizacao);
+
+        if (aguardandoResposta) {
+
+            this.ativo = true;
+            this.resolvido = false;
+
+        } else {
+
+            this.ativo = false;
+            this.resolvido = true;
+
+        }
 
     }
 
-    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo, Orgao orgao){
+    public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, Boolean aguardandoResposta, SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo, Orgao orgao){
 
         this.tipoSobreposicao = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao;
         this.dataCadastro = new Date();
         this.dataVencimento = Helper.somarDias(new Date(), 30);
         this.caracterizacao = caracterizacao;
-        this.ativo = true;
+        this.aguardandoResposta = aguardandoResposta;
         this.analiseGeo = analiseGeo;
-        this.resolvido = false;
         this.orgao = orgao;
+        this.segundoEmailEnviado = false;
         this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
-        this.distancia = getDistancia(sobreposicaoCaracterizacaoComplexo.distancia);
+        this.distancia = getDistancia(sobreposicaoCaracterizacaoComplexo.distancia, sobreposicaoCaracterizacaoComplexo.geometria, sobreposicaoCaracterizacaoComplexo.caracterizacao);
+
+        if (aguardandoResposta) {
+
+            this.ativo = true;
+            this.resolvido = false;
+
+        } else {
+
+            this.ativo = false;
+            this.resolvido = true;
+
+        }
 
     }
 
-    public String getDistancia(Double distancia) {
+    public String getDistancia(Double distancia, Geometry geometria, Caracterizacao caracterizacao) {
 
-        if(TipoSobreposicaoDistanciaEnum.getList().contains(this.tipoSobreposicao.codigo)) {
-            return "dista " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
+        if(TipoSobreposicaoDistanciaEnum.getList().contains(this.tipoSobreposicao.codigo) && caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+
+            return "o empreendimento dista " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
+
+        } else if(TipoSobreposicaoDistanciaEnum.getList().contains(this.tipoSobreposicao.codigo) && !caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+
+            return "a(s) atividade(s) dista(m) " + Helper.formatBrDecimal(distancia / 1000, 2) + " km";
+
+        } else if(caracterizacao.origemSobreposicao.equals(OrigemSobreposicao.EMPREENDIMENTO)) {
+
+            return "o empreendimento sobrepõe " + getDescricao(geometria);
+
+        } else {
+
+            return "a(s) atividade(s) sobrepõe(m) " + getDescricao(geometria);
         }
 
-        return "está próximo";
+    }
+
+    public static String getDescricao(Geometry geometry) {
+
+        switch (geometry.getGeometryType().toUpperCase()) {
+
+            case "POINT" :
+
+                return Helper.formatarCoordenada(geometry.getCoordinate());
+
+            case "LINESTRING":
+
+                return Helper.formatBrDecimal(GeoCalc.length(geometry)/1000, 2) + " km";
+
+            default:
+
+                return Helper.formatBrDecimal(GeoCalc.areaHectare(geometry),2) + " ha";
+
+        }
 
     }
 

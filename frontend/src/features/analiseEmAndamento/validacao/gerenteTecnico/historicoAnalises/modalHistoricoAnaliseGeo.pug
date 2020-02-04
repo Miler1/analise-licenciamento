@@ -28,8 +28,8 @@ div.modal-body
             span.span-dados-processo {{historicoAnaliseGeoCtrl.parecer.tipoResultadoAnalise.nome}}
 
         .info-dados-solicitante
-            label.label-dados-solicitante Documentos gerados na análise: 
-            table.table.table-condensed.table-docs(ng-if="historicoAnaliseGeoCtrl.parecerGeo.documentos.length > 0")
+            label.label-dados-solicitante Documentos gerados na análise:
+            table.table.table-condensed.table-docs(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length > 0")
 
                 thead
 
@@ -39,7 +39,7 @@ div.modal-body
 
                 tbody
 
-                    tr(ng-repeat="documento in historicoAnaliseGeoCtrl.parecerGeo.documentos", ng-if= "documento.tipo.id === historicoAnaliseGeoCtrl.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
+                    tr(ng-repeat="documento in historicoAnaliseGeoCtrl.parecer.documentos", ng-if= "documento.tipo.id === historicoAnaliseGeoCtrl.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
                         td.col-md-10 {{ documento.nomeDoArquivo }}
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.baixarDocumento(documento)")
@@ -48,7 +48,7 @@ div.modal-body
     div#justificativa-desvinculo
         label.label-justificativa Justificativa do analista:
         br
-        textarea.text-justificativa(ng-model="historicoAnaliseGeoCtrl.parecer.parecer", disabled)
+        p.justificativa-historico-analise(ng-bind-html="historicoAnaliseGeoCtrl.parecer.parecer", disabled)
 
     
 div.modal-footer

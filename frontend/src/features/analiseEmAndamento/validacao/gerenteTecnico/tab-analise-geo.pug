@@ -214,24 +214,24 @@
                         | Histórico da(s) análise(s) anterior(es)
                         i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises}")
 
-                    #historico-analises.collapse
+                #historico-analises.collapse
 
-                        table.table.table-striped.table-condensed
+                    table.table.table-striped.table-condensed
 
-                            thead
-                                tr
-                                    th Início da análise
-                                    th Término da análise
-                                    th Analista responsável
-                                    th Situação
-                                    th Documentação
+                        thead
+                            tr
+                                th Início da análise
+                                th Término da análise
+                                th Analista responsável
+                                th Situação
+                                th Documentação
 
-                            tbody(ng-repeat="analiseGeo in validacaoAnaliseGeoGerente.listaAnalisesGeo")
-                                tr(ng-repeat="parecer in analiseGeo.pareceresAnalistaGeo")
-                                    td.col-md-1 {{analiseGeo.dataInicio}}
-                                    td.col-md-1 {{parecer.dataParecer}}
-                                    td.col-md-2 {{parecer.usuario.pessoa.nome}}
-                                    td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
-                                    td.col-md-1 
-                                        button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseGeoGerente.visualizarJustificativas(parecer, analiseGeo, analiseGeo.analise.processo )")
-                                            i.glyphicon.glyphicon-list-alt
+                        tbody(ng-repeat="analiseGeo in validacaoAnaliseGeoGerente.listaAnalisesGeo")
+                            tr(ng-repeat="parecer in analiseGeo.pareceresAnalistaGeo")
+                                td.col-md-1 {{analiseGeo.dataInicio}}
+                                td.col-md-1 {{parecer.dataParecer}}
+                                td.col-md-2 {{parecer.usuario.pessoa.nome}}
+                                td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
+                                td.col-md-1 
+                                    button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseGeoGerente.visualizarJustificativas(parecer, analiseGeo, analiseGeo.analise.processo )")
+                                        i.glyphicon.glyphicon-list-alt

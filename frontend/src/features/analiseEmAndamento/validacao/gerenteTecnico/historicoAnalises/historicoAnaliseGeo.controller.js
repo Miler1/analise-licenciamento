@@ -11,6 +11,7 @@ var HistoricoAnaliseGeoCtrl = function( processo,
     historicoAnaliseGeoCtrl.parecer = parecer;
     historicoAnaliseGeoCtrl.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
+    console.log(historicoAnaliseGeoCtrl.parecer);
     historicoAnaliseGeoCtrl.fechar =function() {
 
         $uibModalInstance.dismiss('cancel');

@@ -1,5 +1,6 @@
 package models;
 
+import com.itextpdf.text.DocumentException;
 import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
@@ -19,6 +20,8 @@ import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
 import javax.persistence.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static security.Auth.getUsuarioSessao;
@@ -732,10 +735,12 @@ public class AnaliseTecnica extends Analisavel {
 		List<Restricao> restricoes = Restricao.findByIdParecer(parecerAnalistaTecnico.id);
 		Vistoria vistoria = Vistoria.findByIdParecer(parecerAnalistaTecnico.id);
 		String numeroProcesso = this.analise.processo.numero;
+		String numeroProcessoLicenciamento = this.analise.processo.caracterizacao.processoLicenciamento.numero;
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseEspecifica", this)
+				.addParam("numeroProcessoLicenciamento", numeroProcessoLicenciamento)
 				.addParam("numeroProcesso", numeroProcesso)
 				.addParam("vistoria", vistoria)
 				.addParam("parecer", parecerAnalistaTecnico)
@@ -809,11 +814,11 @@ public class AnaliseTecnica extends Analisavel {
 
 			pdf.generate();
 
-			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "notificacao_tecnica"), new Date()));
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica", new Date()));
 
 		});
 
-		if(analiseTecnica.vistoria.realizada) {
+		if(analiseTecnica.vistoria.realizada && analiseTecnica.vistoria.inconsistenciaVistoria != null) {
 
 			PDFGenerator pdf = new PDFGenerator()
 					.setTemplate(tipoDocumento.getPdfTemplate())
@@ -826,7 +831,7 @@ public class AnaliseTecnica extends Analisavel {
 
 			pdf.generate();
 
-			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), Crypto.encryptAES(new Date().getTime() + "notificacao_tecnica"), new Date()));
+			documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_tecnica", new Date()));
 		}
 
 		return documentosNotificacao;
@@ -861,6 +866,32 @@ public class AnaliseTecnica extends Analisavel {
 		return AnaliseTecnica.find("analise.processo.numero = :numero ORDER BY id DESC")
 				.setParameter("numero", analise.processo.numero)
 				.first();
+	}
+	
+	public Documento gerarPDFRelatorioTecnicoVistoria() throws IOException, DocumentException {
+
+		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+
+		Vistoria vistoria = ParecerAnalistaTecnico.getUltimoParecer(this.pareceresAnalistaTecnico).vistoria;
+
+		Integer tamanhoEquipeVistoria = vistoria.equipe.size();
+
+		PDFGenerator pdf = new PDFGenerator()
+				.setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("analiseTecnica", this)
+				.addParam("tamanhoEquipeVistoria", tamanhoEquipeVistoria)
+                .addParam("vistoria", vistoria)
+				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 5.0D);
+
+		pdf.generate();
+
+		List<File> documentos = new ArrayList<>();
+
+		documentos.add(vistoria.documentoRit.getFile());
+		documentos.add(pdf.getFile());
+
+		return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "documento_relatorio_tecnico_vistoria", new Date());
+
 	}
 
 }

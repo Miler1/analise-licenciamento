@@ -1,5 +1,4 @@
 package models;
-
 import models.licenciamento.Caracterizacao;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
