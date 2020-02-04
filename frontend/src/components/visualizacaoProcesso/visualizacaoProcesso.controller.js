@@ -1,7 +1,7 @@
 var VisualizacaoProcessoController = function ($location, $injector, desvinculoService,
 											   $uibModal, $scope, $rootScope, $timeout, 
 											   $uibModalInstance, processo, mensagem, 
-											   $anchorScroll,processoService, 
+											   $anchorScroll,processoService, documentoService,
 											   empreendimentoService, notificacaoService,
 											   documentoLicenciamentoService, analiseGeoService, 
 											   parecerAnalistaGeoService, parecerGerenteService,
@@ -37,6 +37,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.parecer = {};
 	modalCtrl.pareceres = {};
 	modalCtrl.pareceresTecnicos = {};
+	modalCtrl.documentos = [];
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -66,7 +67,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
 			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
 			modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica);
-
+			
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_TECNICO) {
 
 			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
@@ -126,6 +127,31 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		
 	};
 
+	modalCtrl.setDocumentos = function() {
+
+		var ultimoParecer;
+
+		if (modalCtrl.dadosProcesso.analise.analiseGeo !== null) {
+
+			ultimoParecer = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo[0];
+
+			modalCtrl.documentos.push(ultimoParecer.documentoParecer);
+			modalCtrl.documentos.push(ultimoParecer.cartaImagem);
+
+		}
+
+		if (modalCtrl.dadosProcesso.analise.analiseTecnica !== null) {
+
+			ultimoParecer = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico[0];
+
+			modalCtrl.documentos.push(ultimoParecer.documentoParecer);
+			modalCtrl.documentos.push(ultimoParecer.documentoMinuta);
+			modalCtrl.documentos.push(ultimoParecer.vistoria.documentoRelatorioTecnicoVistoria);
+
+		}
+		
+	};
+
 	if (processo.idProcesso) {
 
 		processoService.getInfoProcesso(processo.idProcesso)
@@ -134,6 +160,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 				modalCtrl.setPareceres();
+				modalCtrl.setDocumentos();
 			})
 			.catch(function(){
 				mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
@@ -581,6 +608,12 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	this.downloadNotificacao = function(idTramitacao) {
 
 		notificacaoService.downloadNotificacao(idTramitacao);
+	};
+
+	this.downloadDocumentos = function (id) {
+
+		documentoService.downloadById(id);
+
 	};
 
 	var abrirModal = function(parecer, idProcesso) {
