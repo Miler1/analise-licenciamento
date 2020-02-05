@@ -13,7 +13,10 @@ var TiposDocumentosAnalise = {
     INCONSISTENCIA_TECNICA:26,
     INCONSISTENCIA_VISTORIA: 27,
     PARECER_ANALISE_TECNICA: 28,
-    AUTO_INFRACAO: 29
+    AUTO_INFRACAO: 29,
+    DOCUMENTO_RELATORIO_TECNICO_VISTORIA: 30,
+    DOCUMENTO_MINUTA: 31,
+
 };
 
 exports.utils.TiposDocumentosAnalise = TiposDocumentosAnalise;

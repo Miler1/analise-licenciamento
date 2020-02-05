@@ -51,39 +51,40 @@ POST    /analisesJuridicas/downloadPDFNotificacao                   AnalisesJuri
 
 # Analise tecnica
 
-GET		/analisesTecnicas/parecer							        AnalisesTecnicas.findByNumeroProcesso
-POST	/analisesTecnicas/iniciar 							        AnalisesTecnicas.iniciar
-POST	/analisesTecnicas									        AnalisesTecnicas.alterar
-GET		/analisesTecnicas/{idAnaliseTecnica}				        AnalisesTecnicas.findById
-GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	        AnalisesTecnicas.getRestricoesGeo
-POST	/analisesTecnicas/validarParecer					        AnalisesTecnicas.validarParecer
-POST	/analisesTecnicas/validarParecerGerente				        AnalisesTecnicas.validarParecerGerente
-POST	/analisesTecnicas/validarParecerAprovador			        AnalisesTecnicas.validarParecerAprovador
-POST    /analisesTecnicas/downloadPDFParecer                        AnalisesTecnicas.downloadPDFParecer
-POST    /analisesTecnicas/downloadPDFNotificacao                    AnalisesTecnicas.downloadPDFNotificacao
-POST    /analisesTecnicas/iniciarAnaliseTecnicaGerente              AnalisesTecnicas.iniciarAnaliseTecnicaGerente
-GET     /analisesTecnicas/buscaAnaliseTecnicaByAnalise/{idAnalise}  AnalisesTecnicas.buscaAnaliseTecnicaByAnalise
-POST    /analisesTecnicas/downloadPDFRelatorioTecnicoVistoria       AnalisesTecnicas.downloadPDFRelatorioTecnicoVistoria
-POST    /analisesTecnicas/downloadPDFMinuta                         AnalisesTecnicas.downloadPDFMinuta
+GET		/analisesTecnicas/parecer							    AnalisesTecnicas.findByNumeroProcesso
+POST	/analisesTecnicas/iniciar 							    AnalisesTecnicas.iniciar
+POST	/analisesTecnicas									    AnalisesTecnicas.alterar
+GET		/analisesTecnicas/{idAnaliseTecnica}				    AnalisesTecnicas.findById
+GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	    AnalisesTecnicas.getRestricoesGeo
+POST	/analisesTecnicas/validarParecer					    AnalisesTecnicas.validarParecer
+POST	/analisesTecnicas/validarParecerGerente				    AnalisesTecnicas.validarParecerGerente
+POST	/analisesTecnicas/validarParecerAprovador			    AnalisesTecnicas.validarParecerAprovador
+POST    /analisesTecnicas/downloadPDFParecer                    AnalisesTecnicas.downloadPDFParecer
+POST    /analisesTecnicas/downloadPDFNotificacao                AnalisesTecnicas.downloadPDFNotificacao
+POST    /analisesTecnicas/downloadPDFRelatorioTecnicoVistoria   AnalisesTecnicas.downloadPDFRelatorioTecnicoVistoria
+POST    /analisesTecnicas/downloadPDFMinuta                     AnalisesTecnicas.downloadPDFMinuta
+POST    /analisesTecnicas/iniciarAnaliseTecnicaGerente          AnalisesTecnicas.iniciarAnaliseTecnicaGerente
+GET     /analisesTecnicas/buscaAnaliseTecnicaByAnalise/{idAnalise}   AnalisesTecnicas.buscaAnaliseTecnicaByAnalise
+GET		/analisesTecnicas/findAnalisesTecnicaByNumeroProcesso/{numero}			AnalisesTecnicas.findAnalisesTecnicaByNumeroProcesso
 
 # Analise GEO
 
-GET		/analisesGeo/parecer							        AnalisesGeo.findByNumeroProcesso
-POST	/analisesGeo/iniciar 							        AnalisesGeo.iniciar
-POST	/analisesGeo									        AnalisesGeo.alterar
-GET		/analisesGeo/{idAnaliseGeo}				                AnalisesGeo.findById
-GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	            AnalisesGeo.getRestricoesGeo
-POST	/analisesGeo/validarParecer					            AnalisesGeo.validarParecer
-POST	/analisesGeo/validarParecerGerente				        AnalisesGeo.validarParecerGerente
-POST	/analisesGeo/validarParecerAprovador			        AnalisesGeo.validarParecerAprovador
-GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}   AnalisesGeo.verificaAnexosEmpreendimento
-POST    /analisesGeo/downloadPDFParecer                         AnalisesGeo.downloadPDFParecer
-POST    /analisesGeo/downloadPDFNotificacao                     AnalisesGeo.downloadPDFNotificacao
-POST    /analisesGeo/downloadPDFCartaImagem                     AnalisesGeo.downloadPDFCartaImagem
-POST    /analisesGeo/downloadPDFOficioOrgao/{id}                AnalisesGeo.downloadPDFOficioOrgao
-GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}       AnalisesGeo.buscaAnaliseGeoByAnalise
-POST    /analisesGeo/iniciarAnaliseGerente                      AnalisesGeo.iniciarAnaliseGerente
-GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}   AnalisesGeo.findAnalisesGeoByNumeroProcesso
+GET		/analisesGeo/parecer							    AnalisesGeo.findByNumeroProcesso
+POST	/analisesGeo/iniciar 							    AnalisesGeo.iniciar
+POST	/analisesGeo									    AnalisesGeo.alterar
+GET		/analisesGeo/{idAnaliseGeo}				            AnalisesGeo.findById
+GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	        AnalisesGeo.getRestricoesGeo
+POST	/analisesGeo/validarParecer					        AnalisesGeo.validarParecer
+POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
+POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador
+GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}          AnalisesGeo.verificaAnexosEmpreendimento
+POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
+POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
+POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.downloadPDFCartaImagem
+POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.downloadPDFOficioOrgao
+GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
+POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
+GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}			AnalisesGeo.findAnalisesGeoByNumeroProcesso
 
 # Desvínculo
 
@@ -198,6 +199,7 @@ GET		/documentos/{id}/download					                    Documentos.download
 GET		/documentos/{idAnalisetecnica}/downloadParecerTecnico	        Documentos.downloadParecerTecnico
 GET		/documentos/{idAnalisetecnica}/downloadMinutaByIdAnaliseTecnica	Documentos.downloadMinutaByIdAnaliseTecnica
 GET		/documentos/{idAnalisetecnica}/downloadRTVByIdAnaliseTecnica	Documentos.downloadRTVByIdAnaliseTecnica
+POST    /documentos/{idAnalisetecnica}/downloadNotificacaoByIdAnaliseTecnica           Documentos.downloadPDFNotificacao
 
 # Licenças
 POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter

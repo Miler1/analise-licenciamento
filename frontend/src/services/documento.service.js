@@ -41,6 +41,12 @@ var DocumentoService = function(request, $window, config, Upload) {
         $window.open(config.BASE_URL() + "documentos/" + idAnalisetecnica + "/downloadRTVByIdAnaliseTecnica", '_blank');
 
     };
+
+    this.downloadNoticacaoByIdAnaliseTecnica = function(idAnalisetecnica) {
+
+        $window.open(config.BASE_URL() + "documentos/" + idAnalisetecnica + "/downloadNotificacaoByIdAnaliseTecnica", '_blank');
+
+    };
     
 };
 
