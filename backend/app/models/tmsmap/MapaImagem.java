@@ -102,11 +102,13 @@ public class MapaImagem {
 	public class GrupoDataLayerImagem {
 
 		public String imagem;
-		public  List<GrupoDataLayer> grupoDataLayers;
+		public List<GrupoDataLayer> grupoDataLayers;
+		public Coordinate[] coordinates;
 
-		public GrupoDataLayerImagem(String imagem, List<GrupoDataLayer> grupoDataLayers) {
+		public GrupoDataLayerImagem(String imagem, List<GrupoDataLayer> grupoDataLayers, Coordinate[] coordinates) {
 			this.imagem = imagem;
 			this.grupoDataLayers = grupoDataLayers;
+			this.coordinates = coordinates;
 		}
 
 	}
@@ -187,7 +189,7 @@ public class MapaImagem {
 		Style polygonStyle = new PolygonStyle().fillOpacity(0f).color(Color.RED).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
 
-		Collection<Coordinate> mainCoordinates = createMainCoordinates(map, geometryAreaImovel, crs);
+		Collection<Coordinate> mainCoordinates = createMainCoordinates(map, geometryAreaImovel.getCoordinates(), crs);
 
 		BufferedImage mapa = new BufferedImage(MAP_WIDTH, MAP_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		map.render(MAP_WIDTH, MAP_HEIGHT, Format.PNG, mapa);
@@ -407,7 +409,7 @@ public class MapaImagem {
 
 		dataLayers.addFirst(new DataLayer("Área total do município", geometryAreaImovel, Color.YELLOW).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
 
-		createMainCoordinates(map, geometryAreaImovel, crs);
+		createMainCoordinates(map, geometryAreaImovel.getCoordinates(), crs);
 
 		//Setando os pontos do poligono
 		for(DataLayer dataLayer : dataLayers) {
@@ -550,7 +552,9 @@ public class MapaImagem {
 
 		}
 
-		createMainCoordinates(map, geometryAreaFoco, crs);
+		Coordinate[] coordinates = geometryAreaFoco.getCoordinates();
+
+		createMainCoordinates(map, coordinates, crs);
 
 		//Setando os pontos do poligono
 		for(DataLayer dataLayer : dataLayers) {
@@ -596,7 +600,7 @@ public class MapaImagem {
 
 		}
 
-		return new GrupoDataLayerImagem("data:image/png;base64," + Base64.encodeBase64String(out.toByteArray()), grupoDataLayersOrder);
+		return new GrupoDataLayerImagem("data:image/png;base64," + Base64.encodeBase64String(out.toByteArray()), grupoDataLayersOrder, coordinates);
 
 	}
 
@@ -987,7 +991,7 @@ public class MapaImagem {
 
 	}
 
-	private Collection<Coordinate> createMainCoordinates(TMSMap map, Geometry geometryAreaImovel, CoordinateReferenceSystem crs) {
+	private Collection<Coordinate> createMainCoordinatesSENW(TMSMap map, Geometry geometryAreaImovel, CoordinateReferenceSystem crs) {
 
 		List<Coordinate> mainCoordinatesResult = new ArrayList<>();
 
@@ -1028,6 +1032,46 @@ public class MapaImagem {
 			while(iterator.hasNext()) {
 
 				Coordinate coordinate = iterator.next();
+
+				Point2D resultPoint = new Point2D.Double();
+				mapViewport.getWorldToScreen().transform(new Point2D.Double(coordinate.x, coordinate.y), resultPoint);
+
+				graphics.setFont(fontBold);
+				graphics.setColor(Color.BLACK);
+				graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 2, resultPoint.getY() - 2, 6, 6));
+				graphics.drawString("P" + coordinateNumber, (float)resultPoint.getX() + 3, (float)resultPoint.getY() + 3);
+
+				graphics.setFont(fontPlain);
+				graphics.setColor(Color.WHITE);
+				graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 1, resultPoint.getY() - 1, 4, 4));
+				graphics.drawString("P" + coordinateNumber, (float)resultPoint.getX() + 4, (float)resultPoint.getY() + 3);
+
+				Coordinate worldUtmCoordinate = GeoCalc.transform(coordinate, DefaultGeographicCRS.WGS84, crs);
+				mainCoordinatesResult.add(worldUtmCoordinate);
+
+				coordinateNumber++;
+
+			}
+
+		});
+
+		return mainCoordinatesResult;
+
+	}
+
+	private Collection<Coordinate> createMainCoordinates(TMSMap map, Coordinate[] coordinates, CoordinateReferenceSystem crs) {
+
+		List<Coordinate> mainCoordinatesResult = new ArrayList<>();
+
+		map.addLayer((CustomLayer)(graphics, mapContent, mapViewport) -> {
+
+			Font fontPlain = new Font("Dialog", Font.PLAIN, 12);
+			Font fontBold = new Font("Dialog", Font.BOLD, 12);
+			graphics.setStroke(new BasicStroke());
+
+			int coordinateNumber = 1;
+
+			for(Coordinate coordinate : coordinates) {
 
 				Point2D resultPoint = new Point2D.Double();
 				mapViewport.getWorldToScreen().transform(new Point2D.Double(coordinate.x, coordinate.y), resultPoint);
