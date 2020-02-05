@@ -158,6 +158,8 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void downloadPDFNotificacao(AnaliseTecnica analiseTecnica) throws Exception {
 
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
 		List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);

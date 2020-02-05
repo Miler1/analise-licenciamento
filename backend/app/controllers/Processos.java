@@ -45,7 +45,7 @@ public class Processos extends InternalController {
 
 	public static void getInfoProcesso(Long id) {
 
-//		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
 
 		Processo processo = Processo.findById(id);
 

@@ -863,6 +863,7 @@ public class AnaliseTecnica extends Analisavel {
 	}
 
 	public static AnaliseTecnica findUltimaByAnalise(Analise analise){
+
 		return AnaliseTecnica.find("analise.processo.numero = :numero ORDER BY id DESC")
 				.setParameter("numero", analise.processo.numero)
 				.first();

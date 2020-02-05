@@ -1027,6 +1027,7 @@ public class AnaliseGeo extends Analisavel {
     }
 
     public static AnaliseGeo findUltimaByAnalise(Analise analise){
+
         return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY id DESC")
                 .setParameter("numero", analise.processo.numero)
                 .first();

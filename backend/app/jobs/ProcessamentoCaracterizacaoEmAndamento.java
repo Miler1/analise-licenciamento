@@ -93,15 +93,19 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 			}
 
 		} else {
+
 			criaAnaliseGeo(analise);
+
 		}
 
 		processo.save();
 
 		// Arquiva o processo anterior
 		if (retificacao) {
+
 			Analise analiseAntiga = Analise.findByProcessoAtivo(processoAnterior);
 			analiseAntiga.processo.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
+
 		}
 
 		if(caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)){
@@ -200,7 +204,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	}
 
 	private void criaAnaliseGeo(Analise analise) {
+
 		criaAnaliseGeo(analise,null);
+
 	}
 
 	private void criaAnaliseGeo(Analise analise, AnalistaGeo analistaGeo) {
@@ -210,12 +216,16 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		AnalistaGeo analista = new AnalistaGeo();
 
 		if(analistaGeo == null){
+
 			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 			analista = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+
 		} else {
+
 			analista.usuario = analistaGeo.usuario;
 			analista.analiseGeo = analiseGeo;
 			analista.dataVinculacao = new Date();
+
 		}
 
 		analiseGeo.analistasGeo = Collections.singletonList(analista);
@@ -223,7 +233,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	}
 
 	private void criaAnaliseTecnica(Analise analise) {
+
 		criaAnaliseTecnica(analise,null);
+
 	}
 
 	private void criaAnaliseTecnica(Analise analise, AnalistaTecnico analistaTecnico) {
@@ -233,12 +245,16 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		AnalistaTecnico analista = new AnalistaTecnico();
 
 		if(analistaTecnico == null){
+
 			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
             analista = AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(siglaSetor, analise);
+
 		} else {
+
 			analista.usuario = analistaTecnico.usuario;
 			analista.analiseTecnica = analiseTecnica;
 			analista.dataVinculacao = new Date();
+
 		}
 
 		analiseTecnica.analistaTecnico = analista;
@@ -256,11 +272,13 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	}
 
 	private void inativaAnaliseAnterior(Analise analiseAnterior){
+
 		analiseAnterior.ativo = false;
 		Processo processoAnterior = analiseAnterior.processo;
 		processoAnterior.ativo = false;
 		analiseAnterior._save();
 		processoAnterior._save();
+
 	}
 
 }

@@ -232,8 +232,11 @@ public class Analise extends GenericModel {
 	public Analisavel buscarAnalisavelAtual(){
 
 		AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
+
 		if(analiseGeo != null){
+
 			return analiseGeo;
+
 		}
 
 		return AnaliseTecnica.findByProcessoAtivo(this.processo);
