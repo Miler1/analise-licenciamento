@@ -1,4 +1,4 @@
-div.panel.panel-success
+div.panel.panel-success(ng-if="modalVisualizacaoProcessoCtrl.documentos.length !== 0")
     table.table.table-striped.table-condensed
         thead
             th.col-md-5 Nome
@@ -12,3 +12,6 @@ div.panel.panel-success
                 td.col-md-3 {{ documento.responsavel }}
                 td.col-md-1.text-right(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.downloadDocumentos(documento.id)")
                     i.glyphicon.glyphicon-eye-open.pointer
+
+div.info-sem-dados-para-exibir(ng-if="modalVisualizacaoProcessoCtrl.documentos.length === 0")
+    i Não há documentos para este protocolo

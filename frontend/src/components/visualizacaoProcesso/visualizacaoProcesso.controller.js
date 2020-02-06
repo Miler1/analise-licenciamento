@@ -135,24 +135,40 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	modalCtrl.setDocumentos = function() {
 
-		var ultimoParecer;
+		var ultimoParecer = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo[0];
 
-		if (modalCtrl.dadosProcesso.analise.analiseGeo !== null) {
+		if (ultimoParecer !== null && ultimoParecer !== undefined) {
 
-			ultimoParecer = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo[0];
+			if (ultimoParecer.documentoParecer !== null) {
 
-			modalCtrl.documentos.push(ultimoParecer.documentoParecer);
-			modalCtrl.documentos.push(ultimoParecer.cartaImagem);
+				modalCtrl.documentos.push(ultimoParecer.documentoParecer);
+			}
+
+			if (ultimoParecer.cartaImagem !== null) {
+
+				modalCtrl.documentos.push(ultimoParecer.cartaImagem);
+
+			}
 
 		}
 
-		if (modalCtrl.dadosProcesso.analise.analiseTecnica !== null) {
+		ultimoParecer = modalCtrl.dadosProcesso.analise.analiseTecnica;
 
-			ultimoParecer = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico[0];
+		if (ultimoParecer !== null && ultimoParecer !== undefined) {
 
-			modalCtrl.documentos.push(ultimoParecer.documentoParecer);
-			modalCtrl.documentos.push(ultimoParecer.documentoMinuta);
-			modalCtrl.documentos.push(ultimoParecer.vistoria.documentoRelatorioTecnicoVistoria);
+			modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
+
+			if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta !== null) {
+
+				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta);
+
+			}
+
+			if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria!== null) {
+
+				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria);
+
+			}
 
 		}
 		

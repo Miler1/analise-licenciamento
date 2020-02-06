@@ -430,6 +430,9 @@ public class AnaliseGeo extends Analisavel {
             EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
             emailNotificacaoAnaliseGeo.enviar();
 
+            notificacaoSave.documentosNotificacaoTecnica.addAll(emailNotificacaoAnaliseGeo.getPdfsNotificacao());
+            notificacaoSave.save();
+
         }
 
     }
@@ -932,7 +935,7 @@ public class AnaliseGeo extends Analisavel {
 
             pdf.generate();
 
-            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile()));
+            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_geo.pdf", analistaVO.nomeAnalista, new Date()));
         });
 
         return documentosNotificacao;
