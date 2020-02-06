@@ -869,7 +869,7 @@ public class AnaliseTecnica extends Analisavel {
 				.first();
 	}
 	
-	public Documento gerarPDFRelatorioTecnicoVistoria() throws IOException, DocumentException {
+	public Documento gerarPDFRelatorioTecnicoVistoria(ParecerAnalistaTecnico parecerAnalistaTecnico) throws IOException, DocumentException {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
 
