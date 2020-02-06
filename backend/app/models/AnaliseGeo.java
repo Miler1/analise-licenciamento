@@ -423,6 +423,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
             emailNotificacaoAnaliseGeo.enviar();
 
+            notificacaoSave.documentosNotificacaoTecnica.addAll(emailNotificacaoAnaliseGeo.getPdfsNotificacao());
+            notificacaoSave.save();
+
         }
 
     }
@@ -920,7 +923,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             pdf.generate();
 
-            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile()));
+            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_geo.pdf", analistaVO.nomeAnalista, new Date()));
         });
 
         return documentosNotificacao;
