@@ -66,12 +66,12 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 
 			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
-
-			if (modalCtrl.dadosProcesso.analise.analiseTecnica != null) {
-
+			
+			if (modalCtrl.dadosProcesso.analise.analiseTecnica !== null) {
+				
 				modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
 				modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica);
-				
+			
 			}
 			
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_TECNICO) {
