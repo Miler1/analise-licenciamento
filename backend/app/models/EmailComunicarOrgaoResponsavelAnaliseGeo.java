@@ -30,7 +30,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
         super(emailsDestinatarios);
         this.pdfParecer = analiseGeo.gerarPDFParecer(parecerAnalistaGeo);
-        this.cartaImagem = analiseGeo.gerarPDFCartaImagem();
+        this.cartaImagem = analiseGeo.gerarPDFCartaImagem(parecerAnalistaGeo);
         this.analiseGeo = analiseGeo;
         this.comunicado = comunicado;
 
@@ -58,7 +58,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
                 }
             }
 
-            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio, this.pdfParecer.arquivo, this.cartaImagem.arquivo).get()) {
+            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio, this.pdfParecer.getFile(), this.cartaImagem.getFile()).get()) {
 
                 throw new AppException();
 
