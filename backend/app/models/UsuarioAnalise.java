@@ -154,6 +154,16 @@ public class UsuarioAnalise extends GenericModel  {
 
 	}
 
+	public static List<UsuarioAnalise> findUsuariosByPerfil(String codigoPerfil) {
+
+		return UsuarioAnalise.find("SELECT DISTINCT u FROM UsuarioAnalise u " +
+				"LEFT JOIN PerfilUsuarioAnalise p ON p.usuarioAnalise.id = u.id " +
+				"WHERE p.codigoPerfil = :codigoPerfil")
+				.setParameter("codigoPerfil", codigoPerfil)
+				.fetch();
+
+	}
+
 	public static void atualizaUsuariosAnalise() {
 
 		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
