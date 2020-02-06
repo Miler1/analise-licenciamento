@@ -556,7 +556,7 @@ public class MapaImagem {
 
 		createMainCoordinates(map, coordinates, crs);
 
-		AdicionarProjecaoMapa(map);
+		adicionarProjecaoMapa(map);
 
 		//Setando os pontos do poligono
 		for(DataLayer dataLayer : dataLayers) {
@@ -1101,7 +1101,7 @@ public class MapaImagem {
 
 	}
 
-	private void AdicionarProjecaoMapa(TMSMap map) {
+	private void adicionarProjecaoMapa(TMSMap map) {
 
 		map.addLayer((CustomLayer)(graphics, mapContent, mapViewport) -> {
 
