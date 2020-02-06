@@ -62,3 +62,4 @@
 * OS50 - US217 - Eu, gerente geo, devo validar a análise geo para visualizar as restrições detectadas.
 * OS50 - US1167 - Eu, gerente técnico, devo acessar visualizar protocolo para visualizar a aba de análise documental.
 * OS50 - US1110 - Eu, gerente geo/técnico, devo manter histórico de análises para conferir análises anteriores.
+* OS50 - US1300 - [HOMOLOGAÇÃO] Considerações análise geo.
