@@ -556,6 +556,8 @@ public class MapaImagem {
 
 		createMainCoordinates(map, coordinates, crs);
 
+		AdicionarProjecaoMapa(map);
+
 		//Setando os pontos do poligono
 		for(DataLayer dataLayer : dataLayers) {
 
@@ -1096,6 +1098,27 @@ public class MapaImagem {
 		});
 
 		return mainCoordinatesResult;
+
+	}
+
+	private void AdicionarProjecaoMapa(TMSMap map) {
+
+		map.addLayer((CustomLayer)(graphics, mapContent, mapViewport) -> {
+
+			Font fontBackground = new Font("Dialog", Font.PLAIN, 520);
+			Font fontBold = new Font("Dialog", Font.BOLD, 10);
+
+			graphics.setFont(fontBackground);
+			graphics.setColor(Color.WHITE);
+			graphics.drawString("_", MAP_COMPONENTS_MARGIN_SIZE, MAP_HEIGHT -160);
+			graphics.drawString("_", MAP_COMPONENTS_MARGIN_SIZE + 37, MAP_HEIGHT -160);
+
+			graphics.setFont(fontBold);
+			graphics.setColor(Color.BLACK);
+			graphics.drawString("SISTEMA DE COORDENADA GEOGRÁFICA (LAT / LONG)", MAP_COMPONENTS_MARGIN_SIZE, MAP_HEIGHT -58);
+			graphics.drawString("DATUM HORIZONTAL: SIRGAS 2000", MAP_COMPONENTS_MARGIN_SIZE + 50, MAP_HEIGHT -42);
+
+		});
 
 	}
 
