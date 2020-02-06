@@ -26,7 +26,7 @@ import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PEL
 
 @Entity
 @Table(schema = "analise", name = "parecer_analista_geo")
-public class ParecerAnalistaGeo extends GenericModel {
+public class ParecerAnalistaGeo extends ParecerAnalista {
 
 	public static final String SEQ = "analise.parecer_analista_geo_id_seq";
 
@@ -40,13 +40,6 @@ public class ParecerAnalistaGeo extends GenericModel {
 	@JoinColumn(name = "id_analise_geo")
 	public AnaliseGeo analiseGeo;
 
-	@ManyToOne
-	@JoinColumn(name = "id_tipo_resultado_analise")
-	public TipoResultadoAnalise tipoResultadoAnalise;
-
-	@Column(name = "parecer")
-	public String parecer;
-
 	@Column(name = "situacao_fundiaria")
 	public String situacaoFundiaria;
 
@@ -55,10 +48,6 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 	@Column(name = "conclusao")
 	public String conclusao;
-
-	@Column(name = "data_parecer")
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataParecer;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_usuario_analista_geo", referencedColumnName = "id")
@@ -69,15 +58,6 @@ public class ParecerAnalistaGeo extends GenericModel {
 			joinColumns=@JoinColumn(name="id_parecer_analista_geo"),
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
-
-	@Column(name = "id_historico_tramitacao")
-	public Long idHistoricoTramitacao;
-
-	public Date getDataParecer() {
-
-		return this.dataParecer;
-
-	}
 
 	private void validarParecer() {
 
@@ -319,4 +299,13 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 	}
 
+	@Override
+	public List<Documento> getDocumentos() {
+		return this.documentos;
+	}
+
+	@Override
+	public List<Documento> getDocumentosParecer() {
+		return this.documentos.stream().filter(Documento::isNotificacaoAnaliseGeo).collect(Collectors.toList());
+	}
 }

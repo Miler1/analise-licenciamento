@@ -7,7 +7,7 @@ import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.validacaoParecer.Analisavel;
+import models.Analisavel;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
@@ -45,6 +45,10 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	private Long coalesce(Long ...ids){
 		return Arrays.stream(ids).filter(Objects::nonNull).findFirst().orElse(null);
 	}
+
+	private Long coalesce(Caracterizacao caracterizacao){
+		return coalesce(caracterizacao.idCaracterizacaoOrigem, caracterizacao.id);
+	}
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
 
@@ -53,24 +57,29 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Boolean renovacao = caracterizacao.isRenovacao();
 		Boolean retificacao = caracterizacao.isRetificacao();
 		Processo processoAnterior = null;
+		Analise analiseAntiga = null;
 
 		if(renovacao || retificacao){
 
 			// Carrega processo anterior
-			Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao.idCaracterizacaoOrigem, caracterizacao.id));
-			processoAnterior = Processo.find("numero = :num ORDER BY id DESC")
-					.setParameter("num", anterior.numero).first();
+			Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao));
+			processoAnterior = Processo.findLastByNumber(anterior.numero);
+			analiseAntiga = processoAnterior.analise;
 		}
 
 		Processo processo = criarNovoProcesso(caracterizacao, processoAnterior, renovacao, retificacao);
 		Analise analise = criarNovaAnalise(processo);
 
-		criarNovoDiasAnalise(analise);
-
 		if(caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)){
 
-			Analise analiseAntiga = Analise.findByProcesso(processo.processoAnterior);
-			Analisavel analisavel = analiseAntiga.buscarAnalisavelAtual();
+			Analisavel analisavel = analiseAntiga.getAnalisavel();
+
+			analisavel.getNotificacoes().forEach(notificacao -> {
+				if(notificacao.dataConclusao != null) {
+					notificacao.dataConclusao = new Date();
+					notificacao._save();
+				}
+			});
 
 			if(analisavel.getTipoAnalise().equals(TipoAnalise.GEO)){
 
@@ -106,14 +115,12 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		// Arquiva o processo anterior
 		if (retificacao) {
-			Analise analiseAntiga = Analise.findByProcesso(processoAnterior);
-			analiseAntiga.processo.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
+			processoAnterior.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 		}
 
 		if(caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)){
 
-			Analise analiseAntiga = Analise.findByProcesso(processo.processoAnterior);
-			Analisavel analisavel = analiseAntiga.buscarAnalisavelAtual();
+			Analisavel analisavel = analiseAntiga.getAnalisavel();
 
 			if(analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)){
 
@@ -127,7 +134,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 				}
 			}
 
-			inativaAnaliseAnterior(analiseAntiga);
+			analiseAntiga.inativar();
 		}
 
 		caracterizacoesProcessadas.add(caracterizacao);
@@ -163,6 +170,8 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analise.temNotificacaoAberta = false;
 
 		analise.save();
+
+		criarNovoDiasAnalise(analise);
 		
 		return analise;
 		
@@ -222,14 +231,6 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		diasAnalise.save();
 		
 		return diasAnalise;
-	}
-
-	private void inativaAnaliseAnterior(Analise analiseAnterior){
-		analiseAnterior.ativo = false;
-		Processo processoAnterior = analiseAnterior.processo;
-		processoAnterior.ativo = false;
-		analiseAnterior._save();
-		processoAnterior._save();
 	}
 
 }

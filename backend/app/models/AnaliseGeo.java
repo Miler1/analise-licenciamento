@@ -20,15 +20,16 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
-import play.db.jpa.GenericModel;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
+
 import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import static security.Auth.getUsuarioSessao;
 
 @Entity
@@ -44,35 +45,9 @@ public class AnaliseGeo extends Analisavel {
     @Column(name = "id")
     public Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_analise")
-    public Analise analise;
-
-    @Required
-    @Column(name = "data_vencimento_prazo")
-    public Date dataVencimentoPrazo;
-
-    @Required
-    @Column(name = "revisao_solicitada")
-    public Boolean revisaoSolicitada;
-
-    @Required
-    @Column(name = "notificacao_atendida")
-    public Boolean notificacaoAtendida;
-
-    public Boolean ativo;
-
     @OneToOne
     @JoinColumn(name = "id_analise_geo_revisada", referencedColumnName = "id")
     public AnaliseGeo analiseGeoRevisada;
-
-    @Column(name = "data_inicio")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataInicio;
-
-    @Column(name = "data_fim")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataFim;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
@@ -89,13 +64,6 @@ public class AnaliseGeo extends Analisavel {
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL)
     public List<AnalistaGeo> analistasGeo;
-
-    @Column(name = "parecer_validacao")
-    public String parecerValidacao;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-    public UsuarioAnalise usuarioValidacao;
 
     @OneToMany(mappedBy = "analiseGeo", orphanRemoval = true)
     public List<LicencaAnalise> licencasAnalise;
@@ -155,6 +123,10 @@ public class AnaliseGeo extends Analisavel {
 
     @Transient
     public Long idAnalistaDestino;
+
+    public Long getId() {
+        return id;
+    }
 
     public static AnaliseGeo findByProcessoAtivo(Processo processo) {
         return AnaliseGeo.find("analise.processo.id = :idProcesso AND ativo = true")
@@ -510,6 +482,11 @@ public class AnaliseGeo extends Analisavel {
     @Override
     public TipoAnalise getTipoAnalise() {
         return TipoAnalise.GEO;
+    }
+
+    @Override
+    public List<Notificacao> getNotificacoes() {
+        return this.notificacoes;
     }
 
     public void validarTipoResultadoValidacao() {

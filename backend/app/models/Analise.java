@@ -1,6 +1,6 @@
 package models;
 
-import models.validacaoParecer.Analisavel;
+import org.eclipse.jdt.internal.compiler.ast.AND_AND_Expression;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -8,6 +8,7 @@ import utils.WebService;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -229,15 +230,46 @@ public class Analise extends GenericModel {
 
 	}
 
-	public Analisavel buscarAnalisavelAtual(){
+	public Analise findUltimaInativaByProcesso(Processo processo){
+		return find("processo.numero = :numero AND ativo = false ORDER BY id DESC")
+				.setParameter("numero", processo.numero)
+				.first();
+	}
+
+	public Analisavel getAnalisavel(){
 
 		AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
 		if(analiseGeo != null){
 			return analiseGeo;
 		}
 
-		return AnaliseTecnica.findByProcessoAtivo(this.processo);
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findByProcessoAtivo(this.processo);
+		if(analiseTecnica != null){
+			return analiseTecnica;
+		}
 
+		Analise analise = findUltimaInativaByProcesso(this.processo);
+
+		if(analise != null && analise.analiseTecnica != null) {
+			return analise.analiseTecnica;
+		}
+
+		if(analise != null && analise.analisesGeo != null){
+			return analise.analisesGeo.stream().max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+		}
+
+		return null;
+	}
+
+	public List<Notificacao> getNotificacoes(){
+		return getAnalisavel().getNotificacoes();
+	}
+
+	public void inativar(){
+		this.ativo = false;
+		this.processo.inativar();
+		this.getAnalisavel().inativar();
+		this._save();
 	}
 	
 }

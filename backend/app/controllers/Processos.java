@@ -23,12 +23,6 @@ public class Processos extends InternalController {
 		
 		List processosList = Processo.listWithFilter(filtro, Auth.getUsuarioSessao());
 
-		List<HashMap<String, Object>> process = processosList;
-
-		process.forEach(p -> {
-			p.get("renovacao");
-		});
-		
 		renderJSON(processosList);
 	}
 	
