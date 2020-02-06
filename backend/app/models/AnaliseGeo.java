@@ -687,6 +687,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         DadosProcessoVO dadosProcesso = this.analise.processo.getDadosProcesso();
 
+        UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -698,6 +700,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("unidadesConservacao", UnidadesConservacaoParaPDF(dadosProcesso.restricoes))
                 .addParam("complexo", dadosProcesso.complexo)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                .addParam("nomeAnalista", usuarioExecutor.pessoa.nome)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
         pdf.generate();
@@ -773,6 +776,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("dataCartaImagem", Helper.formatarData(new Date(), "dd/MM/YYYY"))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
+                .addParam("coordinates", grupoImagemCaracterizacao.coordinates)
                 .setPageSize(30.0D, 21.0D, 0.2D, 0D, 0D, 0.2D);
 
         pdf.generate();

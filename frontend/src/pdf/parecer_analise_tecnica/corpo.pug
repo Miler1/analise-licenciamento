@@ -19,6 +19,7 @@ body.corpo
 	div.titulo
 		h2 PARECER TÉCNICO Nº ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/${new Date().format('yy')}
 	div.conteudo
+		h3 PROCESSO: ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
 		h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
 		h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
 
@@ -104,5 +105,11 @@ body.corpo
 						span ${restricao.texto}
 				|\#{/list}
 				|\#{/if}
+
+		br
+		br
+		p.text-align-center ${nomeAnalista}
+		p.text-align-center
+			strong Analista Técnico
 
 		p.text-align-right Manaus, ${dataDoParecer}
