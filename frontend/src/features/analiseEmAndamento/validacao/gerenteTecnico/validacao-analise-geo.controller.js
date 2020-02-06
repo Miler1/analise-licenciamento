@@ -172,28 +172,42 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     function analiseValida(analiseGeo) {
 
         if(analiseGeo.tipoResultadoValidacaoGerente === null || analiseGeo.tipoResultadoValidacaoGerente === undefined) {
+            
             validacaoAnaliseGeoGerente.errors.resultadoAnalise = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseGeoGerente.errors.resultadoAnalise = false;
+
         }
         
         if(analiseGeo.parecerValidacaoGerente === "" || analiseGeo.parecerValidacaoGerente === null || analiseGeo.parecerValidacaoGerente === undefined) {
+            
             validacaoAnaliseGeoGerente.errors.despacho = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
-            validacaoAnaliseGeoGerente.errors.resultadoAnalise = false;
+
+            validacaoAnaliseGeoGerente.errors.despacho = false;
+
         }
 
         if(analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseGeoGerente.analistaGeoDestino.id === null || validacaoAnaliseGeoGerente.analistaGeoDestino.id === undefined)) {
+            
             validacaoAnaliseGeoGerente.errors.analistas = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseGeoGerente.errors.analistas = false;
+
         }
 
         if(validacaoAnaliseGeoGerente.errors.resultadoAnalise === true || validacaoAnaliseGeoGerente.errors.despacho === true || validacaoAnaliseGeoGerente.errors.analistas === true){
+            
             return false;
+            
         }
         
         return true;
