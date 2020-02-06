@@ -34,11 +34,11 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.tipoLicenca =  {};
     ctrl.inconsistenciasAdicionadas = [];
     ctrl.notificacao = {};
-	ctrl.notificacao.documentacao = null;
-	ctrl.notificacao.retificacaoEmpreendimento = null;
-	ctrl.notificacao.retificacaoSolicitacao = null;
-	ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
-	ctrl.notificacao.prazoNotificacao = null;
+    ctrl.notificacao.documentacao = null;
+    ctrl.notificacao.retificacaoEmpreendimento = null;
+    ctrl.notificacao.retificacaoSolicitacao = null;
+    ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
+    ctrl.notificacao.prazoNotificacao = null;
 
     ctrl.parecer = {
         doProcesso: null,
@@ -1398,7 +1398,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         }
 
-		if(!camposConclusaoValidos()) {
+        if(!camposConclusaoValidos()) {
 
             mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 10000 });
             return;
@@ -1448,24 +1448,81 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             .then(function(response) {
 
                 var params = {
-					id: ctrl.idAnaliseTecnica
-				};
+                    id: ctrl.analiseTecnica.id
+                };
 
-                documentoAnaliseService.generatePDFParecerTecnico(params)
-                    .then(
-                        function(data, status, headers){
+                if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO) {
 
+                    documentoAnaliseService.generatePDFParecerTecnico(params)
+                        .then(function(data){
+                            
                             var a = document.createElement('a');
                             a.href = URL.createObjectURL(data.data.response.blob);
                             a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_tecnica.pdf';
                             a.click();
-                        },
 
-                        function(error){
+                            if(parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.DEFERIDO) {
 
+                                documentoAnaliseService.generatePDFMinuta(params)
+                                    .then(function(data) {
+
+                                        var a = document.createElement('a');
+                                        a.href = URL.createObjectURL(data.data.response.blob);
+                                        a.download = data.data.response.fileName ? data.data.response.fileName : 'minuta.pdf';
+                                        a.click();
+
+                                        if(ctrl.parecer.vistoria.realizada) {
+                                            
+                                            documentoAnaliseService.generatePDFRelatorioTecnicoVistoria(params)
+                                                .then(function(data) {
+
+                                                        var a = document.createElement('a');
+                                                        a.href = URL.createObjectURL(data.data.response.blob);
+                                                        a.download = data.data.response.fileName ? data.data.response.fileName : 'relatorio_tecnico_vistoria.pdf';
+                                                        a.click();
+
+                                                },function(error){
+                                                    mensagem.error(error.data.texto);
+                                            });
+                                        }
+
+                                    }, function(error){
+                                        mensagem.error(error.data.texto);
+                                    });
+
+                            } else if(ctrl.parecer.vistoria.realizada) {
+                                
+                                documentoAnaliseService.generatePDFRelatorioTecnicoVistoria(params)
+                                    .then(function(data) {
+
+                                            var a = document.createElement('a');
+                                            a.href = URL.createObjectURL(data.data.response.blob);
+                                            a.download = data.data.response.fileName ? data.data.response.fileName : 'relatorio_tecnico_vistoria.pdf';
+                                            a.click();
+
+                                    },function(error){
+                                        mensagem.error(error.data.texto);
+                                });
+                            }
+
+                        }, function(error){
                             mensagem.error(error.data.texto);
-                        }
-                    );
+                        });
+
+                } else if(ctrl.parecer.vistoria.realizada) {
+
+                    documentoAnaliseService.generatePDFRelatorioTecnicoVistoria(params)
+                        .then(function(data) {
+
+                                var a = document.createElement('a');
+                                a.href = URL.createObjectURL(data.data.response.blob);
+                                a.download = data.data.response.fileName ? data.data.response.fileName : 'relatorio_tecnico_vistoria.pdf';
+                                a.click();
+
+                        },function(error){
+                            mensagem.error(error.data.texto);
+                    }); 
+                }
 
                 $location.path('/analise-tecnica');
                 mensagem.setMensagemProximaTela('success', response.data.texto);
