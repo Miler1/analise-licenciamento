@@ -186,6 +186,7 @@ body.corpo
                     | \#{/list}
 
                     br
+                .coordendas.quebra
                     p
                         strong Coordenadas da(s) geometria(s):
                     |\#{list items:0..coordinates.length -2, as: 'coordenadas'}
@@ -197,13 +198,13 @@ body.corpo
                 .logos
                     img.logo.logo-ipaam(src='/public/app/images/logo-ipaam-preto.png' height="33")
                     img.logo.logo-amazonas(src='/public/app/images/logo_governo_am.png' height="63")
-                
+
                 table
                     tr
-                        th PROCESSO Nº:
+                        th PROCESSO:
                         td ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
                     tr
-                        th PROTOCOLO Nº:
+                        th PROTOCOLO:
                         td ${analiseEspecifica.analise.processo.numero}
                     tr
                         th INTERESSADO:
