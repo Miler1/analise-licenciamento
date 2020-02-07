@@ -34,6 +34,7 @@ GET     /imovel/{id}/completo                       Imoveis.getImovelById
 # Analise
 
 GET		/analises/{id}									Analises.findById
+POST    /analises/iniciar/{idAnalise}                   Analises.iniciar
 
 
 # Analise juridica

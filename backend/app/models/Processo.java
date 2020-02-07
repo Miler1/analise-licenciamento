@@ -168,6 +168,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
 
+		commonFilterProcessoDiretor(processoBuilder, filtro, usuarioSessao);
+
 		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
 
 		return processoBuilder;
@@ -339,6 +341,35 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
+	private static void commonFilterProcessoDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+													UsuarioAnalise usuarioSessao) {
+
+		if (!filtro.isDiretor) {
+
+			return;
+
+		}
+
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
+			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
+
+		}
+
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty() || filtro.idCondicaoTramitacao != null) {
+
+			processoBuilder.filtrarPorIdCondicao(filtro.idCondicaoTramitacao);
+
+		}
+
+		if (filtro.filtrarPorUsuario) {
+
+			processoBuilder.filtrarIdDiretor(usuarioSessao.id);
+
+		}
+
+	}
+
 	private static void commonFilterProcessoAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 													   UsuarioAnalise usuarioSessao) {
 
@@ -458,6 +489,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		listWithFilterAprovador(processoBuilder, usuarioSessao);
 
+		listWithFilterDiretor(processoBuilder, filtro);
+
 		listWithFilterGerente(processoBuilder, filtro);
 
 		listWithFilterConsultaProcessos(processoBuilder, filtro);
@@ -484,6 +517,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void listWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
 		if (!filtro.isGerente) {
+
+			return;
+		}
+
+		processoBuilder.groupByIdAnaliseGeo(true)
+				.groupByIdAnaliseTecnica(true)
+				.groupByPrazoAnaliseGerente()
+				.orderByPrazoAnaliseGerente();
+
+	}
+
+	private static void listWithFilterDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isDiretor) {
 
 			return;
 		}
@@ -573,6 +620,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		countWithFilterGerente(processoBuilder, filtro);
 
+		countWithFilterDiretor(processoBuilder, filtro);
+
 		Object qtdeTotalItens = processoBuilder.unique();
 
 		return ((Map<String, Long>) qtdeTotalItens).get("total");
@@ -602,6 +651,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void countWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
 		if (!filtro.isGerente) {
+
+			return;
+
+		}
+
+	}
+
+	private static void countWithFilterDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isDiretor) {
 
 			return;
 
