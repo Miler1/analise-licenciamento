@@ -46,9 +46,3 @@ body {
 .padding-none {
   padding: 0;
 }
-
-.quebra {
-  page-break-before: always;
-  page-break-after: always;
-  page-break-inside: avoid;
-}
