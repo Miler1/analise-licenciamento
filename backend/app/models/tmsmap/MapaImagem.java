@@ -1073,7 +1073,11 @@ public class MapaImagem {
 
 			int coordinateNumber = 1;
 
-			for(Coordinate coordinate : coordinates) {
+			Coordinate coordinate;
+
+			for(int i=0; i < (coordinates.length -1); i++) {
+				
+				coordinate = coordinates[i];
 
 				Point2D resultPoint = new Point2D.Double();
 				mapViewport.getWorldToScreen().transform(new Point2D.Double(coordinate.x, coordinate.y), resultPoint);
