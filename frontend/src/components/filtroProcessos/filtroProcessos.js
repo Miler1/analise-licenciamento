@@ -66,42 +66,37 @@ var FiltroProcessos = {
 					return;
 				}
 			}
-
-			if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
-				$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 				
-				if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
+			if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 
-					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
-					ctrl.filtro.idCondicaoTramitacao = null;
+				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
+				ctrl.filtro.idCondicaoTramitacao = null;
 
-				} else if (emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ){
+			} else if (emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ){
 
-					ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
-					ctrl.filtro.idCondicaoTramitacao = null;
+				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
+				ctrl.filtro.idCondicaoTramitacao = null;
 
-				} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
-					
-					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
-					ctrl.filtro.idCondicaoTramitacao = null;
+			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 				
-				} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
+				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
+				ctrl.filtro.idCondicaoTramitacao = null;
+			
+			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO) {
 
-					ctrl.filtro.idCondicaoTramitacao = null;
+				ctrl.filtro.idCondicaoTramitacao = null;
 
-				} else if (ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
+			} else if (ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
 
-					ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
-	
-					analiseTecnicaFinalizada = true;
-					ctrl.filtro.idCondicaoTramitacao = null;
+				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
+
+				analiseTecnicaFinalizada = true;
+				ctrl.filtro.idCondicaoTramitacao = null;
+			
+			} else if(!caixaEntrada && !emAnalise) {
 				
-				} else if(!caixaEntrada) {
-					
-					ctrl.filtro.listaIdCondicaoTramitacao = null;
-				} 
-
-			}
+				ctrl.filtro.listaIdCondicaoTramitacao = null;
+			} 
 
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
 			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
