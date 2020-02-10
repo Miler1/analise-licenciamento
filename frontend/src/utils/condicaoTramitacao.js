@@ -1,6 +1,6 @@
 var CAIXA_ENTRADA_GERENTE = [ 27, 10, 30, 33 ];
 
-var CAIXA_ENTRADA_ANALISTA_GEO = [25, 37];
+var CAIXA_ENTRADA_ANALISTA_GEO = [25];
 
 var CondicaoTramitacao = {
 
