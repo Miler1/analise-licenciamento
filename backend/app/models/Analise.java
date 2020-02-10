@@ -84,7 +84,7 @@ public class Analise extends GenericModel {
 					this.analiseJuridica = analiseJuridica;
 		
 		if(this.analiseJuridica == null)
-			this.analiseJuridica = AnaliseJuridica.findByProcesso(processo);
+			this.analiseJuridica = AnaliseJuridica.findByProcessoAtivo(processo);
 
 		return this.analiseJuridica;
 		
@@ -123,7 +123,7 @@ public class Analise extends GenericModel {
 		return this.analiseGeo;
 	}
 	
-	public static Analise findByProcesso(Processo processo) {
+	public static Analise findByProcessoAtivo(Processo processo) {
 		return Analise.find("processo.id = :idProcesso AND ativo = true")
 				.setParameter("idProcesso", processo.id)
 				.first();

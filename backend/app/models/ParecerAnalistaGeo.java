@@ -1,6 +1,7 @@
 package models;
 
 import exceptions.ValidacaoException;
+import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
 import models.licenciamento.*;
 
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
@@ -59,6 +60,14 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 			inverseJoinColumns=@JoinColumn(name="id_documento"))
 	public List<Documento> documentos;
 
+	@OneToOne
+	@JoinColumn(name = "id_documento", referencedColumnName = "id")
+	public Documento documentoParecer;
+
+	@OneToOne
+	@JoinColumn(name = "id_carta_imagem", referencedColumnName = "id")
+	public Documento cartaImagem;
+
 	private void validarParecer() {
 
 		if (StringUtils.isBlank(this.parecer))
@@ -105,11 +114,44 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 	}
 
+	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
+
+		if (sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
+				sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_DENTRO || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) {
+
+		if (sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
+				sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+
+		if (sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
+				sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+			return true;
+		}
+
+		return false;
+	}
 
 	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
 
 		AnaliseGeo analiseGeoBanco = AnaliseGeo.findById(this.analiseGeo.id);
 		boolean possuiComunicado = false;
+		boolean pararProcesso = false;
 		
 		validarParecer();
 		validarTipoResultadoAnalise();
@@ -140,6 +182,7 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 								analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
 								possuiComunicado = true;
+								pararProcesso =  verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoEmpreendimento);
 							}
 
 						}
@@ -164,6 +207,7 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 								analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
 								possuiComunicado = true;
+								pararProcesso =  verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoAtividade);
 							}
 
 						}
@@ -186,6 +230,7 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 								analiseGeoBanco.enviarEmailComunicado(analiseGeoBanco.analise.processo.caracterizacao, this, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
 								possuiComunicado = true;
+								pararProcesso =  verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoComplexo);
 							}
 
 						}
@@ -195,7 +240,7 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 			}
 
-			if (possuiComunicado) {
+			if (possuiComunicado && pararProcesso) {
 
 				this.aguardarResposta(usuarioExecutor);
 				analiseGeoBanco.analise.processo.objetoTramitavel.condicao = Condicao.findById(AGUARDANDO_RESPOSTA_COMUNICADO);

@@ -2,6 +2,7 @@ package models;
 
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.PortalSegurancaException;
@@ -20,6 +21,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
+import play.db.jpa.GenericModel;
+import play.libs.Crypto;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
@@ -393,6 +396,9 @@ public class AnaliseGeo extends Analisavel {
             EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
             emailNotificacaoAnaliseGeo.enviar();
 
+            notificacaoSave.documentosNotificacaoTecnica.addAll(emailNotificacaoAnaliseGeo.getPdfsNotificacao());
+            notificacaoSave.save();
+
         }
 
     }
@@ -402,7 +408,14 @@ public class AnaliseGeo extends Analisavel {
         List<String> destinatarios = new ArrayList<>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
+        Boolean aguardandoResposta = false;
+
+        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoEmpreendimento)) {
+
+            aguardandoResposta = true;
+        }
+
+        Comunicado comunicado = new Comunicado(this, caracterizacao, aguardandoResposta, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
         comunicado.save();
         comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
@@ -416,7 +429,14 @@ public class AnaliseGeo extends Analisavel {
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
+        Boolean aguardandoResposta = false;
+
+        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoComplexo)) {
+
+            aguardandoResposta = true;
+        }
+
+        Comunicado comunicado = new Comunicado(this, caracterizacao, aguardandoResposta, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
         comunicado.save();
         comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
@@ -430,9 +450,23 @@ public class AnaliseGeo extends Analisavel {
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
+        Boolean aguardandoResposta = false;
+
+        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoAtividade)) {
+
+            aguardandoResposta = true;
+        }
+
+        Comunicado comunicado = new Comunicado(this, caracterizacao, aguardandoResposta, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
         comunicado.save();
         comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
+
+        EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
+        emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
+
+    }
+
+    public void reenviarEmailComunicado(ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> destinatarios) throws Exception {
 
         EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
         emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
@@ -669,11 +703,13 @@ public class AnaliseGeo extends Analisavel {
                     }
                 });
 
-        return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
+        Documento documento = new Documento(tipoDocumento, pdf.getFile(), "parecer_analista_geo.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
+
+        return documento;
 
     }
 
-    public Documento gerarPDFCartaImagem() {
+    public Documento gerarPDFCartaImagem(ParecerAnalistaGeo parecerAnalistaGeo) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
         Processo processo = Processo.findById(this.analise.processo.id);
@@ -730,7 +766,7 @@ public class AnaliseGeo extends Analisavel {
 
         pdf.generate();
 
-        return new Documento(tipoDocumento, pdf.getFile());
+        return new Documento(tipoDocumento, pdf.getFile(), "carta_imagem.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
 
     }
 
@@ -870,7 +906,7 @@ public class AnaliseGeo extends Analisavel {
 
             pdf.generate();
 
-            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile()));
+            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_geo.pdf", analistaVO.nomeAnalista, new Date()));
         });
 
         return documentosNotificacao;
@@ -888,15 +924,15 @@ public class AnaliseGeo extends Analisavel {
         
         if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO)) {
 
-            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia, comunicado.sobreposicaoCaracterizacaoEmpreendimento.geometria, comunicado.sobreposicaoCaracterizacaoEmpreendimento.caracterizacao);
 
         } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.ATIVIDADE)){
 
-            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoAtividade.distancia);
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoAtividade.distancia, comunicado.sobreposicaoCaracterizacaoAtividade.geometria, comunicado.sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.caracterizacao);
 
         } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.COMPLEXO)){
 
-            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoComplexo.distancia);
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoComplexo.distancia, comunicado.sobreposicaoCaracterizacaoComplexo.geometria, comunicado.sobreposicaoCaracterizacaoComplexo.caracterizacao);
 
         }
 

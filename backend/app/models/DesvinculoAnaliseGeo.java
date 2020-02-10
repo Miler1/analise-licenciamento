@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO;
+import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO;
 
 @Entity
 @Table(schema="analise", name="desvinculo_analise_geo")
@@ -103,7 +103,7 @@ public class DesvinculoAnaliseGeo extends GenericModel {
         this.save();
 
         this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
-        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, SOLICITAR_DESVINCULO, usuarioSessao, this.gerente);
+        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, SOLICITAR_DESVINCULO_ANALISE_GEO, usuarioSessao, this.gerente);
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), usuarioSessao);
 
     }

@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
 import utils.Configuracoes;
 import utils.FileManager;
 import utils.Identificavel;
@@ -29,6 +30,9 @@ public class Documento extends GenericModel implements Identificavel {
 	
 	@Required
 	public String caminho;
+
+	@Required
+	public String responsavel;
 	
 	@Required
 	@ManyToOne
@@ -66,10 +70,12 @@ public class Documento extends GenericModel implements Identificavel {
 		this.arquivo = arquivo;
 	}
 
-	public Documento(TipoDocumento tipo, File arquivo, String nomeDoArquivo, Date dataCadastro) {
+	public Documento(TipoDocumento tipo, File arquivo, String nomeDoArquivo, String responsavel, Date dataCadastro) {
+
 		this.tipo = tipo;
 		this.arquivo = arquivo;
 		this.nomeDoArquivo = nomeDoArquivo;
+		this.responsavel = responsavel;
 		this.dataCadastro = dataCadastro;
 
 		this.save();
@@ -180,14 +186,10 @@ public class Documento extends GenericModel implements Identificavel {
 
 	protected void configurarCaminho() {
 
-		this.caminho = File.separator + this.nomeDoArquivo;
-		if(this.nomeDoArquivo.substring(this.nomeDoArquivo.length()-4, this.nomeDoArquivo.length()).equals(".pdf")) {
-
-			this.caminho = this.caminho.substring(0,this.caminho.length()-4);
-
-		}
+		this.caminho = File.separator + Crypto.encryptAES(new Date().getTime() + this.nomeDoArquivo);
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
+
 	}
 
 	protected void criarPasta() {

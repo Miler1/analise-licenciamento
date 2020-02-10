@@ -5,6 +5,7 @@ import models.geocalculo.Geoserver;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseTecnicaSerializer;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import javax.validation.ValidationException;
@@ -26,6 +27,18 @@ public class AnalisesTecnicas extends InternalController {
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
 		renderMensagem(Mensagem.ANALISE_TECNICA_INICIADA_SUCESSO);	
+
+	}
+
+	public static void iniciarAnaliseTecnicaGerente(AnaliseTecnica analise) {
+
+		AnaliseTecnica analiseAlterar = AnaliseTecnica.findById(analise.id);
+
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
+		analiseAlterar.iniciarAnaliseTecnicaGerente(usuarioExecutor);
+
+		renderMensagem(Mensagem.GERENTE_INICIOU_ANALISE_SUCESSO);
 
 	}
 
@@ -120,12 +133,8 @@ public class AnalisesTecnicas extends InternalController {
 
 		verificarPermissao(Acao.BAIXAR_DOCUMENTO);
 
-		String novoParecer = analiseTecnica.parecerAnalista;
-
 		AnaliseTecnica analiseTecnicaSalva = AnaliseTecnica.findById(analiseTecnica.id);
 		ParecerAnalistaTecnico ultimoParecer = analiseTecnicaSalva.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
-
-		analiseTecnicaSalva.parecerAnalista = novoParecer;
 
 		ultimoParecer.documentoParecer = analiseTecnicaSalva.gerarPDFParecer(ultimoParecer);
 
@@ -147,9 +156,9 @@ public class AnalisesTecnicas extends InternalController {
 
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
-		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
+		List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
 
-		Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseTecnica);
+		Documento pdfNotificacao = Notificacao.gerarPDF(notificacoes, analiseTecnica);
 
 		String nome = pdfNotificacao.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
 		nome = nome.replace(' ', '_');
@@ -158,6 +167,60 @@ public class AnalisesTecnicas extends InternalController {
 		response.setHeader("Content-Type", "application/pdf");
 
 		renderBinary(pdfNotificacao.arquivo, nome);
+
+	}
+
+	public static void buscaAnaliseTecnicaByAnalise(Long idAnalise) {
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.find("id_analise = :id_analise")
+				.setParameter("id_analise", idAnalise).first();
+
+		renderJSON(analiseTecnica, AnaliseTecnicaSerializer.findInfo);
+	
+	}
+	
+	public static void downloadPDFMinuta(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		ParecerAnalistaTecnico parecer = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		parecer.documentoMinuta = ParecerAnalistaTecnico.gerarPDFMinuta(analiseTecnica, parecer);
+
+		parecer._save();
+
+		String nome = parecer.documentoMinuta.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
+
+		renderBinary(parecer.documentoMinuta.getFile(), nome);
+	}
+	
+	public static void downloadPDFRelatorioTecnicoVistoria(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		Vistoria vistoria = parecerAnalistaTecnico.vistoria;
+
+		vistoria.documentoRelatorioTecnicoVistoria = analiseTecnica.gerarPDFRelatorioTecnicoVistoria(parecerAnalistaTecnico);
+
+		vistoria._save();
+
+		String nome = vistoria.documentoRelatorioTecnicoVistoria.tipo.nome +  "_" + vistoria.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(vistoria.documentoRelatorioTecnicoVistoria.getFile(), nome);
 
 	}
 

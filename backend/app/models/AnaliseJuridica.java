@@ -299,7 +299,7 @@ public class AnaliseJuridica extends Analisavel implements Cloneable {
 				.first();
 	}	
 		
-	public static AnaliseJuridica findByProcesso(Processo processo) {
+	public static AnaliseJuridica findByProcessoAtivo(Processo processo) {
 		return AnaliseJuridica.find("analise.processo.id = :idProcesso AND ativo = true")
 				.setParameter("idProcesso", processo.id)
 				.first();

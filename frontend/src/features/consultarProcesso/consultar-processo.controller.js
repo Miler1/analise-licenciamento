@@ -1,4 +1,4 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, documentoService, TiposSetores, documentoAnaliseService, mensagem) {
+var ConsultarProcessoController = function($scope, config, $rootScope, processoService, TiposSetores, documentoAnaliseService, mensagem, documentoService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROTOCOLO';
 
@@ -128,11 +128,12 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	};
 
 	consultarProcesso.downloadPDFminuta = function (processo) {
-		//Colocar o download da minuta aqui
+
+		documentoService.downloadMinutaByIdAnaliseTecnica(processo.idAnaliseTecnica);
 	};
 
 	consultarProcesso.downloadPDFvistoria = function (processo) {
-		//Colocar o download da vistoria aqui
+		documentoService.downloadRTVByIdAnaliseTecnica(processo.idAnaliseTecnica);
 	};
 
 	consultarProcesso.downloadPDFCartaImagem = function (processo) {
@@ -152,14 +153,27 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 			});
 	};
 
-	consultarProcesso.verificaStatusAnalise = function(idCondicaoTramitacao) {
+	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
 
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [8, 9, 27, 31, 32];
 		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
-		var CONSULTAR_PROTOCOLO_ANALISTA_TECNICO = [7, 8, 9, 33, 35];
-		var status = true;
-		
-		// Verificar permissões de status para cada perfil
-		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+		var status = false;
+
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+
+			CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE.forEach(function(condicao){
+
+				if(idCondicaoTramitacao === condicao) {
+
+					status = true;
+
+				}
+
+			});
+
+		} else if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO) {
+
+			status = true;
 
 			CONSULTAR_PROTOCOLO_ANALISTA_GEO.forEach(function(condicao){
 
@@ -170,17 +184,41 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 				}
 
 			});
+		}
 
-		} else if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) {
+		return status;
+
+	};
+
+	consultarProcesso.verificaStatusAnaliseTecnica = function(idCondicaoTramitacao) {
+
+		var CONSULTAR_PROTOCOLO_ANALISTA_TECNICO = [7, 10, 36];
+		var status = false;
+
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+
 			CONSULTAR_PROTOCOLO_ANALISTA_TECNICO.forEach(function(condicao){
 
 				if(idCondicaoTramitacao === condicao) {
 
-					status = false;
+					status = true;
 
 				}
 
 			});
+
+		} else if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) {
+
+			CONSULTAR_PROTOCOLO_ANALISTA_TECNICO.forEach(function(condicao){
+
+				if(idCondicaoTramitacao === condicao) {
+
+					status = true;
+
+				}
+
+			});
+
 		}
 
 		return status;

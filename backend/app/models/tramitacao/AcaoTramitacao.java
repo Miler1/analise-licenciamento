@@ -66,7 +66,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_PRESIDENTE = 56l;
 	public static final Long RESOLVER_NOTIFICACAO_GEO = 57l;
 	public static final Long INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO = 58l;
-	public static final Long SOLICITAR_DESVINCULO = 59l;
+	public static final Long SOLICITAR_DESVINCULO_ANALISE_GEO = 59l;
 	public static final Long APROVAR_SOLICITACAO_DESVINCULO = 60l;
 	public static final Long NEGAR_SOLICITACAO_DESVINCULO = 61l;
 	public static final Long INICIAR_ANALISE_GERENTE = 62l;
@@ -74,6 +74,11 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long RESOLVER_COMUNICADO = 64l;
 	public static final Long AGUARDAR_RESPOSTA_COMUNICADO = 65l;
 	public static final Long NOTIFICAR_PELO_ANALISTA_TECNICO = 66l;
+	public static final Long INICIAR_ANALISE_TECNICA_GERENTE = 67l;
+	public static final Long VALIDAR_PARECER_TECNICO_GERENTE = 68l;
+	public static final Long APROVAR_SOLICITACAO_DESVINCULO_TECNICO = 69l;
+	public static final Long NEGAR_SOLICITACAO_DESVINCULO_TECNICO = 70l;
+	public static final Long SOLICITAR_DESVINCULO_ANALISE_TECNICA = 71l;
 	public static final Long INICIAR_PROTOCOLO_NOTIFICADO_GEO = 72l;
 	public static final Long INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO = 73L;
 

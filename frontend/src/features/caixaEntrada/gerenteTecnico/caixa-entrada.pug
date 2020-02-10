@@ -32,6 +32,8 @@ div
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
+								span(ng-class="{'icone-analise-geo': processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE }")
+								span(ng-class="{'icone-analise-tecnica': processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE }")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -55,12 +57,13 @@ div
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 
-												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
+												a(ng-click="cxEntGerente.verificarStatusGeo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo, null)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusGeo(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo
 											li
-												//- habilitar só quando o protocolo passar pela análise técnica
-												a.disable-acoes
+												a(ng-click="cxEntGerente.verificarStatusTecnico(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, null, processo.idAnaliseTecnica)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusTecnico(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li
@@ -76,6 +79,8 @@ div
 													span Visualizar protocolo
 				.legenda
 					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
+					span.icone-analise-geo.legenda Análise Geo
+					span.icone-analise-tecnica.legenda Análise Técnica
 
 				+paginacao('cxEntGerente.paginacao', 'cxEntGerente.onPaginaAlterada')
 

@@ -12,7 +12,7 @@ hr
 
 #campos-analise-tecnica
     div(ng-class="{'error-summernote': ctrl.errors.doProcesso === true}")
-        label.obrigatorio.label-parecer Do processo:
+        label.label-parecer(ng-class="{'obrigatorio': !ctrl.hasInconsistencias()}") Do processo:
         br
         div(ng-class="{ 'error-summernote': ctrl.errors.doProcesso }")
             summernote.campos-parecer(id="doProcesso",
@@ -24,7 +24,7 @@ hr
                         config="optionsText")
 
     div(ng-class="{'error-summernote': ctrl.errors.daAnaliseTecnica === true}")
-        label.obrigatorio.label-parecer Da análise técnica:
+        label.label-parecer(ng-class="{'obrigatorio': !ctrl.hasInconsistencias()}") Da análise técnica:
         br
         div(ng-class="{ 'error-summernote': ctrl.errors.daAnaliseTecnica }")
             summernote.campos-parecer(id="daAnaliseTecnica",

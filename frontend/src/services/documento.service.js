@@ -12,7 +12,7 @@ var DocumentoService = function(request, $window, config, Upload) {
     };
 
     // Repensar no parâmetro do nome, já está sendo buscado no backend diretamente - Refatoração
-	this.download = function(key, nome) {
+    this.download = function(key, nome) {
 
         $window.open(config.BASE_URL() + "download/" + key, '_blank');
         
@@ -27,7 +27,19 @@ var DocumentoService = function(request, $window, config, Upload) {
     this.downloadParecerByIdAnaliseTecnica = function(id) {
 
         $window.open(config.BASE_URL() + "documentos/" + id + "/downloadParecerTecnico", '_blank');
-        
+
+    };
+
+    this.downloadMinutaByIdAnaliseTecnica = function(id) {
+
+        $window.open(config.BASE_URL() + "documentos/" + id + "/downloadMinutaByIdAnaliseTecnica", '_blank');
+
+    };
+
+    this.downloadRTVByIdAnaliseTecnica = function(idAnalisetecnica) {
+
+        $window.open(config.BASE_URL() + "documentos/" + idAnalisetecnica + "/downloadRTVByIdAnaliseTecnica", '_blank');
+
     };
     
 };

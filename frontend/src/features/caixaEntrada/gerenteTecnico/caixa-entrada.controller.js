@@ -1,4 +1,4 @@
-var CxEntGerenteController = function($scope, config, analistaService,gerenteService, mensagem, $uibModal,$rootScope, processoService, analiseGeoService, $location) {
+var CxEntGerenteController = function($scope, config, analistaService,analiseTecnicaService, mensagem, $uibModal,$rootScope, processoService, analiseGeoService, $location) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO GERENTE';
 
@@ -164,13 +164,34 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 		});
 	};
 
-	cxEntGerente.verificarSolicitacaoDesvinculo = function(processo) {
-		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo;
+	cxEntGerente.verificarStatusGeo = function(processo) {
+		
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || 
+			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA ||
+			processo.idCondicaoTramitacao !== cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE; 
+		
 	};
 
-	cxEntGerente.iniciarAnaliseGerente = function(idAnalise, idAnaliseGeo) {
+	cxEntGerente.verificarStatusTecnico = function(processo) {
+		
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || 
+			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA || 
+			processo.idCondicaoTramitacao !== cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE; 
+	
+	};
 
-		analiseGeoService.iniciarAnaliseGerente({ id : idAnaliseGeo })
+	cxEntGerente.verificarSolicitacaoDesvinculo = function(processo) {
+		
+		return processo.idCondicaoTramitacao === cxEntGerente.legendaDesvinculo || 
+			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA;
+	
+	};
+
+	cxEntGerente.iniciarAnaliseGerente = function(idAnalise, idAnaliseGeo, idAnaliseTecnica) {
+
+		if(idAnaliseTecnica === null){
+
+			analiseGeoService.iniciarAnaliseGerente({ id : idAnaliseGeo })
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
@@ -180,6 +201,21 @@ var CxEntGerenteController = function($scope, config, analistaService,gerenteSer
 			}, function(error){
 				mensagem.error(error.data.texto);
 			});
+
+		}else if (idAnaliseGeo === null){
+
+			analiseTecnicaService.iniciarAnaliseTecnicaGerente({ id : idAnaliseTecnica })
+			.then(function(response){
+
+				$rootScope.tituloPagina = 'EM VALIDAÇÃO GERENTE';
+				$location.path('/analise-tecnica-gerente/' + idAnalise.toString());
+				$rootScope.$broadcast('atualizarContagemProcessos');
+			
+			}, function(error){
+				mensagem.error(error.data.texto);
+			});
+		}
+		
 		
 	};
 };

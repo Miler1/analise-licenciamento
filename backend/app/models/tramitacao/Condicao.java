@@ -41,7 +41,7 @@ public class Condicao extends GenericModel {
 	public static final Long SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA = 33l;
 	public static final Long ANALISE_FINALIZADA = 34l;
 	public static final Long NOTIFICADO_PELO_ANALISTA_TECNICO= 35l;
-	public static final Long NOTIFICACAO_GEO_ATENDIDA = 37l;
+	public static final Long EM_ANALISE_TECNICA_GERENTE = 36l;
 
 	@Id
 	@Column(name = "ID_CONDICAO")

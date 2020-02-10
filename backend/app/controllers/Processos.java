@@ -61,7 +61,7 @@ public class Processos extends InternalController {
 		
 		Processo processo = Processo.findById(idProcesso);
 		
-		AnaliseJuridica analise = AnaliseJuridica.findByProcesso(processo);
+		AnaliseJuridica analise = AnaliseJuridica.findByProcessoAtivo(processo);
 		
 		renderJSON(analise, AnaliseJuridicaSerializer.findInfo);
 

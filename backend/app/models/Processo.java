@@ -6,10 +6,13 @@ import com.vividsolutions.jts.geom.Geometry;
 import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.tramitacao.*;
+import org.hibernate.criterion.Restrictions;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.mvc.Scope;
 import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
@@ -18,6 +21,7 @@ import utils.*;
 import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -132,7 +136,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public void vincularConsultor(UsuarioAnalise consultor, UsuarioAnalise usuarioExecutor) {
 
-		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcesso(this), usuarioExecutor);
+		ConsultorJuridico.vincularAnalise(consultor, AnaliseJuridica.findByProcessoAtivo(this), usuarioExecutor);
 
 		tramitacao.tramitar(this, AcaoTramitacao.VINCULAR_CONSULTOR, usuarioExecutor, consultor);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.objetoTramitavel.id), usuarioExecutor);
@@ -446,7 +450,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
-                .groupByIdAnalise()
+				.groupByIdAnalise()
 				.groupByIdAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()

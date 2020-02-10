@@ -108,6 +108,10 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	@Column(name = "id_origem")
 	public Long idCaracterizacaoOrigem;
 
+	@ManyToOne
+	@JoinColumn(name = "id_processo")
+	public models.ProcessoLicenciamento processoLicenciamento;
+
 	public enum OrigemSobreposicao {
 
 		EMPREENDIMENTO,
@@ -123,6 +127,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
 	public List<GeometriaComplexo> geometriasComplexo;
+
+	@Column(name="valor_taxa_licenciamento")
+	public Double valorTaxaLicenciamento;
 
 	@Transient
 	public Dae dae;
