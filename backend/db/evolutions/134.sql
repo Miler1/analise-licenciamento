@@ -6,12 +6,6 @@ COMMENT ON COLUMN analise.processo.retificacao IS 'Flag que indica se um process
 ALTER TABLE analise.processo ADD COLUMN ativo BOOLEAN DEFAULT TRUE NOT NULL;
 COMMENT ON COLUMN analise.processo.ativo IS 'Flag que indica se um processo está ativo ou inativo';
 
-ALTER TABLE analise.processo
-    ADD COLUMN id_origem_notificacao INTEGER,
-    ADD CONSTRAINT fk_p_origem_notificacao FOREIGN KEY (id_origem_notificacao)
-        REFERENCES analise.origem_notificacao (id);
-COMMENT ON COLUMN analise.processo.id_origem_notificacao IS 'Referência para a entidade que guarda a origem de notificação do processo';
-
 ALTER TABLE analise.notificacao ADD COLUMN data_conclusao TIMESTAMP WITH TIME ZONE;
 COMMENT ON COLUMN analise.notificacao.data_conclusao IS 'Data em que a notificação foi concluída';
 
@@ -33,6 +27,13 @@ COMMENT ON COLUMN analise.origem_notificacao.descricao IS 'Descrição da origem
 INSERT INTO analise.origem_notificacao (id, codigo, descricao) VALUES
 (1, 'ANALISE_GEO', 'Notificação gerada pelo analista GEO'),
 (2, 'ANALISE_TECNICA', 'Notificação gerada pelo analista técnico');
+
+
+ALTER TABLE analise.processo
+    ADD COLUMN id_origem_notificacao INTEGER,
+    ADD CONSTRAINT fk_p_origem_notificacao FOREIGN KEY (id_origem_notificacao)
+        REFERENCES analise.origem_notificacao (id);
+COMMENT ON COLUMN analise.processo.id_origem_notificacao IS 'Referência para a entidade que guarda a origem de notificação do processo';
 
 
 UPDATE analise.processo SET id_origem_notificacao = result.id_origem_notificacao
