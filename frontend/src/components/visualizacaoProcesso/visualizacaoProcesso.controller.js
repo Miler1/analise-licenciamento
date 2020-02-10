@@ -685,7 +685,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 						abrirModal(response.data, idProcesso);
 					});
 
-		}else if(historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+				historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
 				historico.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO){
 
 			parecerAnalistaTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
@@ -723,7 +724,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE;
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE;
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {
