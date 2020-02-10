@@ -103,6 +103,11 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 		return processo && processo.retificacao && processo.idOrigemNotificacao === cxEntAnalistaTecnico.origemNotificacao.ANALISE_TECNICA;
 	};
 
+	cxEntAnalistaTecnico.visualizarNotificacao = function (processo) {
+
+		return processoService.visualizarNotificacao(processo);
+	};
+
 };
 
 exports.controllers.CxEntAnalistaTecnicoController = CxEntAnalistaTecnicoController;

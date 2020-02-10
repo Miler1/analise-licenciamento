@@ -60,6 +60,10 @@ div
 												a(ng-click="cxEntAnalistaTecnico.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
+											li(ng-if='cxEntAnalistaTecnico.notificacaoAtendida(processo)')
+												a(ng-click="cxEntAnalistaTecnico.visualizarNotificacao(processo)")
+													i.glyphicon.glyphicon-bell
+													span Notificação
 
 				.legenda
 					span.icone-notificado.legenda Notificação Atendida
