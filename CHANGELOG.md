@@ -60,3 +60,5 @@
 * OS50 - US1219 - Eu, analista geo, devo atender as novas regras para enviar comunicado ao órgão.
 * OS50 - US1208 - [Gerente Técnico] - Implementar filtro de situação (Notificado e todos filtro presentes no perfilTécnico).
 * OS50 - US1167 - Eu, gerente técnico, devo acessar visualizar protocolo para visualizar a aba de análise documental
+* OS50 - US1248 - Eu, gerente técnico, devo acessar o grid de protocolos e/ou Histórico do protocolo (no visualizar protocolo) para visualizar os prazos da análise técnica pós congelamento
+
