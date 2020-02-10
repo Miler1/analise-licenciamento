@@ -25,6 +25,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
 	listagem.visualizarNotificacao = visualizarNotificacao;
+	listagem.notificacaoAtendida = notificacaoAtendida;
 
 	mensagem.verificaMensagemGlobal();
 
@@ -110,6 +111,10 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	function visualizarNotificacao(processo) {
 
 		return processoService.visualizarNotificacao(processo);
+	}
+
+	function notificacaoAtendida(processo) {
+		return processo && processo.retificacao;
 	}
 };
 

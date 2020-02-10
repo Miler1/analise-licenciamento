@@ -65,7 +65,7 @@ div
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-											li(ng-if='!listagem.notificacaoAtendida(processo)')
+											li(ng-if='listagem.notificacaoAtendida(processo)')
 												a(ng-click="listagem.visualizarNotificacao(processo)")
 													i.glyphicon.glyphicon-bell
 													span Notificação

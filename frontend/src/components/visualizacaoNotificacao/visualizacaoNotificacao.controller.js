@@ -4,7 +4,6 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 
 	modalCtrl.notificacoes = [];
 	modalCtrl.baixarDocumento = baixarDocumento;
-	modalCtrl.foiRetificadoGeo = foiRetificadoGeo;
 
 	modalCtrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 
@@ -50,10 +49,6 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 	function baixarDocumento(idAnexo) {
 
 		documentoService.downloadById(idAnexo);
-	}
-
-	function foiRetificadoGeo (notificacao) {
-		return !notificacao.justificativaRetificacaoSolicitacao && notificacao.retificacaoSolicitacaoComGeo;
 	}
 
 };

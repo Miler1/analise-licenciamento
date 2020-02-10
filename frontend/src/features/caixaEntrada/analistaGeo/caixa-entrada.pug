@@ -60,8 +60,8 @@ div
 												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculoAnaliseGeo(processo)")
 													i.glyphicon.glyphicon-link
 													span Solicitação de desvínculo
-											li(ng-if="processo.idCondicaoTramitacao === cxEntAnalistaGeo.condicaoTramitacao.NOTIFICACAO_GEO_ATENDIDA")
-												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculoAnaliseGeo(processo)")
+											li(ng-if='cxEntAnalistaGeo.notificacaoAtendida(processo)')
+												a(ng-click="cxEntAnalistaGeo.visualizarNotificacao(processo)")
 													i.glyphicon.glyphicon-bell
 													span Notificação
 				.legenda
