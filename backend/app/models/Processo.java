@@ -484,7 +484,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		processoBuilder
 				.groupByDataVencimentoPrazoAnaliseGeo(true)
-				.groupByDataFinalAnaliseGeo()
+				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByPrazoAnaliseGerente();
 
 	}
@@ -859,7 +859,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	    List<Notificacao> notificacoes = this.getNotificacoes();
 
 	    if(!notificacoes.isEmpty()) {
-           this.inicializaNotificacoes(this);
+           return this.inicializaNotificacoes(this);
         }
 	    return this.inicializaNotificacoes(this.processoAnterior);
 	}

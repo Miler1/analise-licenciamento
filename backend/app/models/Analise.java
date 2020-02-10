@@ -238,20 +238,20 @@ public class Analise extends GenericModel {
 
 	public Analisavel getAnalisavel(){
 
-		AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
-		if(analiseGeo != null){
-			return analiseGeo;
-		}
+		if(this.ativo) {
 
-		AnaliseTecnica analiseTecnica = AnaliseTecnica.findByProcessoAtivo(this.processo);
-		if(analiseTecnica != null){
-			return analiseTecnica;
+			AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
+			if (analiseGeo != null) {
+				return analiseGeo;
+			}
+
+			return AnaliseTecnica.findByProcessoAtivo(this.processo);
 		}
 
 		Analise analise = findUltimaInativaByProcesso(this.processo);
 
-		if(analise != null && analise.analiseTecnica != null) {
-			return analise.analiseTecnica;
+		if(analise != null && analise.analisesTecnicas != null && !analise.analisesTecnicas.isEmpty()) {
+			return analise.analisesTecnicas.stream().max(Comparator.comparing(AnaliseTecnica::getId)).orElse(null);
 		}
 
 		if(analise != null && analise.analisesGeo != null){
@@ -266,9 +266,9 @@ public class Analise extends GenericModel {
 	}
 
 	public void inativar(){
-		this.ativo = false;
-		this.processo.inativar();
 		this.getAnalisavel().inativar();
+		this.processo.inativar();
+		this.ativo = false;
 		this._save();
 	}
 	

@@ -4,6 +4,7 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 
 	modalCtrl.notificacoes = [];
 	modalCtrl.baixarDocumento = baixarDocumento;
+	modalCtrl.foiRetificadoGeo = foiRetificadoGeo;
 
 	modalCtrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 
@@ -20,7 +21,7 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 				.catch(function(){
 					mensagem.error("Ocorreu um erro ao buscar dados das notificações.");
 				});
-			
+
 		} else if (modalCtrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.ANALISTA_TECNICO) {
 
 			notificacaoService.findByIdProcessoTecnico(processo.idProcesso)
@@ -42,13 +43,17 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 
 	function prepararDadosParaExibicao() {
 		_.forEach(modalCtrl.notificacoes, function(notificacao) {
-			notificacao.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo ? 'true' : 'false';
+			notificacao.retificacaoSolicitacaoComGeo = !!notificacao.retificacaoSolicitacaoComGeo;
 		});
 	}
 
 	function baixarDocumento(idAnexo) {
 
 		documentoService.downloadById(idAnexo);
+	}
+
+	function foiRetificadoGeo (notificacao) {
+		return !notificacao.justificativaRetificacaoSolicitacao && notificacao.retificacaoSolicitacaoComGeo;
 	}
 
 };

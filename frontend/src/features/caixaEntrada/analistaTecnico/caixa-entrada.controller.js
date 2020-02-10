@@ -21,7 +21,6 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 	cxEntAnalistaTecnico.dateUtil = app.utils.DateUtil;
 	cxEntAnalistaTecnico.origemNotificacao = app.utils.OrigemNotificacao;
 	cxEntAnalistaTecnico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO);
-	cxEntAnalistaTecnico.notificacaoAtendida = notificacaoAtendida;
 
 	function atualizarListaProcessos(processos) {
 
@@ -100,9 +99,9 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 		});
 	};
 
-	function notificacaoAtendida(processo) {
+	cxEntAnalistaTecnico.notificacaoAtendida = function(processo) {
 		return processo && processo.retificacao && processo.idOrigemNotificacao === cxEntAnalistaTecnico.origemNotificacao.ANALISE_TECNICA;
-	}
+	};
 
 };
 

@@ -126,6 +126,10 @@ public class AnaliseTecnica extends Analisavel {
 	@Transient
 	public Vistoria vistoria;
 
+	public Long getId() {
+		return id;
+	}
+
 	private void validarParecer() {
 
 		if (StringUtils.isBlank(this.parecerAnalista))

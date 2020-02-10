@@ -19,6 +19,7 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO);
 	listagem.notificacaoAtendida = notificacaoAtendida;
+	listagem.visualizarNotificacao = visualizarNotificacao;
 
 	function atualizarListaProcessos(processos) {
 
@@ -55,6 +56,11 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 
 	function notificacaoAtendida(processo) {
 		return processo && processo.retificacao && processo.idOrigemNotificacao === listagem.origemNotificacao.ANALISE_TECNICA;
+	}
+
+	function visualizarNotificacao(processo) {
+
+		return processoService.visualizarNotificacao(processo);
 	}
 
 };

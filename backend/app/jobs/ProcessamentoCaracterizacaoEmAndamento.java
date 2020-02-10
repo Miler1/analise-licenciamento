@@ -74,11 +74,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 			Analisavel analisavel = analiseAntiga.getAnalisavel();
 
-			analisavel.getNotificacoes().forEach(notificacao -> {
-				if(notificacao.dataConclusao != null) {
-					notificacao.dataConclusao = new Date();
-					notificacao._save();
-				}
+			analisavel.getNotificacoes().stream().filter(n -> n.dataConclusao == null).forEach(notificacao -> {
+				notificacao.dataConclusao = new Date();
+				notificacao._save();
 			});
 
 			if(analisavel.getTipoAnalise().equals(TipoAnalise.GEO)){
