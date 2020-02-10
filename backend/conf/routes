@@ -36,7 +36,6 @@ GET     /imovel/{id}/completo                       Imoveis.getImovelById
 GET		/analises/{id}									Analises.findById
 POST    /analises/iniciar/{idAnalise}                   Analises.iniciar
 
-
 # Analise juridica
 
 GET		/analisesJuridicas/parecer									AnalisesJuridicas.findByNumeroProcesso

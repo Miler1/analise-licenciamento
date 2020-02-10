@@ -1,18 +1,9 @@
 var ValidacaoAnaliseDiretorController = function($rootScope,
-                                                    analiseTecnicaService, 
-                                                    $timeout,
-                                                    $route, 
-                                                    $scope,
-                                                    mensagem, 
-                                                    $location,
-                                                    documentoAnaliseService, 
-                                                    $anchorScroll, 
-                                                    $uibModal,      
-                                                    analiseGeoService, 
-                                                    analistaService) {
+                                                 $route,      
+                                                 analiseGeoService, 
+                                                 analistaService) {
 
     var validacaoAnaliseDiretor = this;
-
 
     validacaoAnaliseDiretor.dadosProjeto = {};
     validacaoAnaliseDiretor.init = init;
@@ -28,12 +19,13 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseDiretor.analiseGeo = response.data;
-                console.log(validacaoAnaliseDiretor.analiseGeo);
                 validacaoAnaliseDiretor.parecerGeo = getUltimoParecerGeo(validacaoAnaliseDiretor.analiseGeo.pareceresAnalistaGeo);
 
                 if(validacaoAnaliseDiretor.analiseGeo.analistasTecnicos) {
+
                     validacaoAnaliseDiretor.analiseGeoValidacao.idAnalistaTecnico =
                         validacaoAnaliseDiretor.analiseGeo.analistasTecnicos[0].usuario.id;
+                        
                 }
 
                 if (validacaoAnaliseDiretor.analiseGeo.tipoResultadoValidacaoGerente) {
@@ -47,7 +39,9 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
                 analistaService.getAnalistasTecnicosByProcesso(validacaoAnaliseDiretor.analiseGeo.analise.processo.id)
                     .then(function(response){
+
                         validacaoAnaliseDiretor.analistas = response.data;
+
                 });            
             
                 getDadosVisualizar(validacaoAnaliseDiretor.analiseGeo.analise.processo);
