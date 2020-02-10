@@ -73,7 +73,7 @@ public class ParecerAnalistaGeo extends GenericModel {
 
 	@Column(name = "id_historico_tramitacao")
 	public Long idHistoricoTramitacao;
-
+	
 	public Date getDataParecer() {
 
 		return this.dataParecer;
