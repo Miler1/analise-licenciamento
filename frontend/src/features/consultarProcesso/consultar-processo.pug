@@ -53,7 +53,7 @@ div
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
 								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
-							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO", ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO", ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{ consultarProcesso.prazoAnaliseTecnica(processo) }}
 
 							td
