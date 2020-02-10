@@ -30,6 +30,9 @@ public class Documento extends GenericModel implements Identificavel {
 	
 	@Required
 	public String caminho;
+
+	@Required
+	public String responsavel;
 	
 	@Required
 	@ManyToOne
@@ -67,11 +70,12 @@ public class Documento extends GenericModel implements Identificavel {
 		this.arquivo = arquivo;
 	}
 
-	public Documento(TipoDocumento tipo, File arquivo, String nomeDoArquivo, Date dataCadastro) {
+	public Documento(TipoDocumento tipo, File arquivo, String nomeDoArquivo, String responsavel, Date dataCadastro) {
 
 		this.tipo = tipo;
 		this.arquivo = arquivo;
 		this.nomeDoArquivo = nomeDoArquivo;
+		this.responsavel = responsavel;
 		this.dataCadastro = dataCadastro;
 
 		this.save();
