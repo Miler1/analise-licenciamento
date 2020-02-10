@@ -58,6 +58,27 @@
                                         .glyphicon.glyphicon-file.icon-download
                                         | Relatório Técnico de Vistoria
                                     br
+                                 
+                                table.table.table-condensed(ng-if="validacaoAnaliseDiretor.analiseTecnica.documentos.length > 0 ")
+
+                                    thead
+
+                                        tr
+                                            th Arquivo anexado
+                                            th.text-right Ações
+
+                                    tbody
+
+                                        tr(ng-repeat="documento in validacaoAnaliseDiretor.analiseTecnica.documentos")
+
+                                            td {{documento.nome}}
+                                            td.text-right 
+                                                a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
+                                                    i.glyphicon.glyphicon-save
+
+                                .row(ng-show="!validacaoAnaliseDiretor.analiseTecnica.documentos || validacaoAnaliseDiretor.analiseTecnica.documentos.length == 0")
+                                    .col-md-12
+                                        p.empty-result Não existem arquivos anexados. 
 
             #accordion-gerente-tecnico.panel-group
                 div

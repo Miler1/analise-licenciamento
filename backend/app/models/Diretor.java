@@ -68,7 +68,6 @@ public class Diretor extends GenericModel {
 
 	}
 
-
 	public static Diretor distribuicaoAutomaticaDiretor(Analise analise) {
 
 		UsuarioAnalise.atualizaUsuariosAnalise();

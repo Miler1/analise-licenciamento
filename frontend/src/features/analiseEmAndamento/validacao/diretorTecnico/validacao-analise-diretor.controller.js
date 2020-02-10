@@ -91,7 +91,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                 validacaoAnaliseDiretor.analiseGeo = response.data;
                 validacaoAnaliseDiretor.parecerGeo = getUltimoParecerAnalista(validacaoAnaliseDiretor.analiseGeo.pareceresAnalistaGeo);
                 validacaoAnaliseDiretor.parecerGerenteGeo = getUltimoParecerGerente(validacaoAnaliseDiretor.analiseGeo.pareceresGerenteAnaliseGeo);
-
+                
                 setLabelsAnaliseGeo();
 
             });     
@@ -126,7 +126,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
         });
     };
 
-    validacaoAnaliseDiretor.baixarDocumento = function (analiseTecnica, tipoDocumento, documento ) {
+    validacaoAnaliseDiretor.baixarDocumento = function (analiseTecnica, tipoDocumento ) {
 
         if ( tipoDocumento === validacaoAnaliseDiretor.tipoDocumento.PARECER_ANALISE_TECNICA ) {
 
@@ -140,16 +140,21 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
             documentoService.downloadMinutaByIdAnaliseTecnica(analiseTecnica.id);
 
-        }else if ( tipoDocumento === validacaoAnaliseDiretor.tipoDocumento.CARTA_IMAGEM ) {
-
-            documentoService.downloadById(analiseTecnica.id);
-
-        }else if ( tipoDocumento === validacaoAnaliseDiretor.tipoDocumento.PARECER_ANALISE_GEO ) {
-
-            documentoService.downloadById(analiseTecnica.id);
-
         }
                     
+    };
+
+    validacaoAnaliseDiretor.baixarDocumentoGeo = function (parecerGeo, tipoDocumento ) {
+
+        if ( tipoDocumento === validacaoAnaliseDiretor.tipoDocumento.PARECER_ANALISE_GEO ) {
+
+            analiseGeoService.download(parecerGeo.documentoParecer.id);
+
+        }else if ( tipoDocumento === validacaoAnaliseDiretor.tipoDocumento.CARTA_IMAGEM ) {
+
+            analiseGeoService.download(parecerGeo.cartaImagem.id);
+
+        }                    
     };
 
 };
