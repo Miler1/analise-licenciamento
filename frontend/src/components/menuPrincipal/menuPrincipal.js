@@ -71,6 +71,7 @@ var MenuPrincipal = {
 				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
 				filtro.isAnaliseGeo = isAnaliseGeo(codigoPerfilSelecionado);
 				filtro.isGerente = isGerente(codigoPerfilSelecionado);
+				filtro.isDiretor = isDiretor(codigoPerfilSelecionado);
 			}
 
 			processoService.getProcessosCount(filtro)
@@ -105,6 +106,12 @@ var MenuPrincipal = {
 		function isGerente(codigoPerfilSelecionado) {
 
 			return codigoPerfilSelecionado === app.utils.Perfis.GERENTE;
+
+		}
+
+		function isDiretor(codigoPerfilSelecionado) {
+
+			return codigoPerfilSelecionado === app.utils.Perfis.DIRETOR;
 
 		}
 
