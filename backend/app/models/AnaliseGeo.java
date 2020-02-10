@@ -883,12 +883,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             if(categoriaInconsistencia.equals(Inconsistencia.Categoria.PROPRIEDADE)){
 
                 Coordinate coordenadasEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria).getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasEmpreendimento.y + ", " + coordenadasEmpreendimento.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasEmpreendimento.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasEmpreendimento.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.COMPLEXO)){
 
                 Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasComplexo.y + ", " + coordenadasComplexo.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasComplexo.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasComplexo.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
@@ -901,7 +901,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 for (GeometriaAtividade geometriaAtividade : inconsistencia.atividadeCaracterizacao.geometriasAtividade) {
 
                     coordenadasAtividade = geometriaAtividade.geometria.getCentroid().getCoordinate();
-                    localizacoes.add("[" + coordenadasAtividade.y + ", " + coordenadasAtividade.x + "]");
+                    localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasAtividade.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasAtividade.x) + "]");
 
                 }
 
