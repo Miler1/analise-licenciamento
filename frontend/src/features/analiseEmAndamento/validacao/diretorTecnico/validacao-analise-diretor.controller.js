@@ -107,7 +107,9 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
                 _.filter(validacaoAnaliseDiretor.parecerTecnico.documentos , function(documento){
                     if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
+
                         validacaoAnaliseDiretor.possuiAutoInfracao = true;
+
                     }
                 });
 
@@ -121,7 +123,9 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
         _.filter(documentosAnaliseTecnica, function(documento){
             if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
+
                 documentoAnaliseService.download(documento.id);
+                
             }
         });
     };
