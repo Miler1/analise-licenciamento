@@ -30,18 +30,22 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
 
     validacaoAnaliseTecnicaGerente.errors = {
+
 		despacho: false,
         resultadoAnalise: false,
-        analistas: false		
-};
+        analistas: false	
+        	
+    };
 
-validacaoAnaliseTecnicaGerente.disable = {
-    tipoLicenca: true,
-    atividade: [],
-    questionario: true,
-    documentoAdministrativo: [],
-    documentoTecnicoAmbiental: []
-};
+    validacaoAnaliseTecnicaGerente.disable = {
+
+        tipoLicenca: true,
+        atividade: [],
+        questionario: true,
+        documentoAdministrativo: [],
+        documentoTecnicoAmbiental: []
+
+    };
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 

@@ -14,11 +14,11 @@ section.margin-bottom-md
 				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="validacaoAnaliseDiretor.validacaoAbaVoltar()")
 					a(data-toggle="tab", data-target="#tabAnaliseGeo") Parecer Geo
 					
-				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseDiretor.validacaoAbaAvancar()")
+				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseDiretor.validacaoAbaAvancarTecnico()")
 					a(data-toggle="tab", data-target="#tabAnaliseTecnica") Parecer Técnico
 
-				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseDiretor.validacaoAbaAvancar()")
-					a(data-toggle="tab", data-target="#tabValidacaoDaAnalise") Conclusão
+				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseDiretor.validacaoAbaAvancarDiretor()")
+					a(data-toggle="tab", data-target="#tabConclusao") Conclusão
 
 			.tab-content
 				#tabAnaliseGeo.tab-pane.fade.in.active
@@ -27,7 +27,7 @@ section.margin-bottom-md
 				#tabAnaliseTecnica.tab-pane
 					include tab-analise-tecnica
 
-				#tabAnaliseTecnica.tab-pane
+				#tabConclusao.tab-pane
 					include tab-conclusao
 
 section(style="padding-top:20px;")
@@ -39,14 +39,17 @@ section(style="padding-top:20px;")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
 	
-	button.btn.btn-success.posicao-avancar-concluir-gerente
+	button.btn.btn-success.posicao-avancar-concluir-gerente(ng-click="validacaoAnaliseDiretor.concluir()",
+			ng-if="validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_DIRETOR'")
 		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
 		| Concluir
 
-	button.btn.btn-default.posicao-voltar-gerente
+	button.btn.btn-default.posicao-voltar-gerente(ng-click="validacaoAnaliseDiretor.voltarEtapaAnterior()",
+			ng-if="validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_DIRETOR' || validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_TECNICO'")
 		i.glyphicon.glyphicon-arrow-left
 		| Voltar
 		
-	button.btn.btn-success.posicao-avancar-gerente
+	button.btn.btn-success.posicao-avancar-gerente(ng-click="validacaoAnaliseDiretor.avancarProximaEtapa()",
+			ng-if="validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_TECNICO' || validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_GEO'")
 		i.glyphicon.glyphicon-arrow-right
-		| &nbsp;Avançar                    
+		| &nbsp;Avançar                
