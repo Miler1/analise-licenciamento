@@ -27,10 +27,6 @@ var HistoricoAnaliseTecnicaCtrl = function( processo,
 
             documentoService.downloadMinutaByIdAnaliseTecnica(analiseTecnica.id);
 
-        }else if ( tipoDocumento === historicoAnaliseTecnicaCtrl.tipoDocumento.NOTIFICACAO ) {
-
-            documentoService.downloadMinutaByIdAnaliseTecnica(analiseTecnica.id);
-
         }
                     
     };
