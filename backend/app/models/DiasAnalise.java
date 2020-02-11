@@ -275,7 +275,7 @@ public class DiasAnalise extends GenericModel{
 
 		if (temParecerDesvinculoAprovado || temParecerNaoAprovado) {
 
-			HistoricoTramitacao primeiraTramitacao = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO) || tramitacao.idAcao.equals(AcaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) ).max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
+			HistoricoTramitacao primeiraTramitacao = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO) || tramitacao.idAcao.equals(AcaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO) ).max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 
 			Processo processo = Processo.find("objetoTramitavel.id", primeiraTramitacao.idObjetoTramitavel).first();
 
