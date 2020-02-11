@@ -31,6 +31,12 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
 
     }
 
+    public List<Documento> getPdfsNotificacao() {
+
+        return pdfsNotificacao;
+
+    }
+
     @Override
     public void enviar() {
 

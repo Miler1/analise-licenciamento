@@ -44,7 +44,7 @@ public class Emails extends Mailer {
 		pdfsNotificacao.stream().forEach(pdfNotificacao -> {
 
             EmailAttachment attachment = new EmailAttachment();
-			attachment.setPath(new File(pdfNotificacao.arquivo.getPath()).getPath());
+			attachment.setPath(new File(pdfNotificacao.getFile().getPath()).getPath());
 			addAttachment(attachment);
 
 		});

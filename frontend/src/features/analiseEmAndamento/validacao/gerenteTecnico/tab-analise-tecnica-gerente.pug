@@ -208,6 +208,21 @@
                     br
                     p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao")
                     
+                table.table.table-condensed.table-docs(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.documentos.length > 0")
+
+                            thead
+
+                                tr
+                                    th.col-md-10 Documento anexado
+                                    th.col-md-2.text-right Ações
+
+                            tbody
+
+                                tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.parecerTecnico.documentos")
+                                    td.col-md-10 {{ documento.nomeDoArquivo }}
+                                    td.col-md-2.text-right
+                                        a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
+                                            i.glyphicon.glyphicon-eye-open
             #camposAnaliseTecnica
                 div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
                     label.label-parecer Despacho:
