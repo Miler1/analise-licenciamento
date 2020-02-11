@@ -1,6 +1,8 @@
 package models;
 
 import models.validacaoParecer.Analisavel;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -240,6 +242,24 @@ public class Analise extends GenericModel {
 		}
 
 		return AnaliseTecnica.findByProcessoAtivo(this.processo);
+
+	}
+	
+	public void iniciar(UsuarioAnalise usuarioExecutor) {
+
+		if (this.dataCadastro == null) {
+
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+
+			this.dataCadastro = c.getTime();
+
+			this._save();
+
+		}
+
+		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_DIRETOR, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.objetoTramitavel.id), usuarioExecutor);
 
 	}
 	

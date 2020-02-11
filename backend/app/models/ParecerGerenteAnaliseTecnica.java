@@ -53,7 +53,7 @@ public class ParecerGerenteAnaliseTecnica extends GenericModel {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
-			Diretor diretor = Diretor.findById(Diretor.distribuicaoAutomaticaDiretor(gerente.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica.analise));
+			Diretor diretor = Diretor.distribuicaoAutomaticaDiretor(analiseTecnica.analise);
 			diretor.save();
 
 			analiseTecnica.geraLicencasAnaliseTecnica(analiseTecnica.licencasAnalise);
@@ -61,6 +61,7 @@ public class ParecerGerenteAnaliseTecnica extends GenericModel {
 
 			analiseTecnica.dataFim = new Date();
 			analiseTecnica.ativo = false;
+
 			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE, getUsuarioSessao(), UsuarioAnalise.findByDiretor(diretor));
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 

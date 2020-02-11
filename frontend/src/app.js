@@ -168,6 +168,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					app.utils.Perfis.GERENTE,
 					app.utils.Perfis.ANALISTA_GEO,
 					app.utils.Perfis.ANALISTA_CAR,
+					app.utils.Perfis.DIRETOR,
 						app.utils.Perfis.ANALISTA_TECNICO
 					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
@@ -184,7 +185,9 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
-					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_ANALISTA_GEO;
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_GEO;
+				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -205,9 +208,14 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO){
 
 					 return '/analise-tecnica';
-				} else {
+
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE){
 
 					return '/analise-gerente';
+
+				}else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
+
+					return '/analise-diretor';
 
 				}
 			},
@@ -216,13 +224,15 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return $location.path().indexOf('/analise-geo') > -1 ||
 					$location.path().indexOf('/analise-tecnica') > -1 ||
-					$location.path().indexOf('/analise-gerente') > -1;
+					$location.path().indexOf('/analise-gerente') > -1 ||
+					$location.path().indexOf('/analise-diretor') > -1;
 			},
 			visivel: function() {
 
 				return [app.utils.Perfis.ANALISTA_GEO,
 				app.utils.Perfis.ANALISTA_TECNICO,
-				app.utils.Perfis.GERENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				app.utils.Perfis.GERENTE,
+				app.utils.Perfis.DIRETOR].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 

@@ -2,6 +2,7 @@ package models;
 
 import exceptions.PermissaoNegadaException;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Usuario;
 import play.Logger;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -67,16 +68,15 @@ public class Diretor extends GenericModel {
 
 	}
 
-
-	public static Diretor distribuicaoAutomaticaDiretor(String setorAtividade, Analise analise) {
+	public static Diretor distribuicaoAutomaticaDiretor(Analise analise) {
 
 		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.DIRETOR, setorAtividade);
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.DIRETOR);
 
 		if (usuariosAnalise.isEmpty()) {
 
-			Logger.info(Mensagem.NENHUM_DIRETOR_ENCONTRADO.getTexto(analise.processo.numero, setorAtividade));
+			Logger.info(Mensagem.NENHUM_DIRETOR_ENCONTRADO.getTexto(analise.processo.numero));
 
 			return null;
 
