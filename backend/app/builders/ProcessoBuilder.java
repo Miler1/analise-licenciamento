@@ -1068,6 +1068,20 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByRetificacao() {
+
+		addProjection(Projections.groupProperty("retificacao").as("retificacao"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdOrigemNotificacao() {
+
+		addProjection(Projections.groupProperty("origemNotificacao.id").as("idOrigemNotificacao"));
+
+		return this;
+	}
+
 	public static class FiltroProcesso {
 
 		public String numeroProcesso;

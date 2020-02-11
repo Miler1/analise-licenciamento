@@ -1,6 +1,5 @@
 package models;
 
-import models.validacaoParecer.Analisavel;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
@@ -10,6 +9,7 @@ import utils.WebService;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -231,20 +231,37 @@ public class Analise extends GenericModel {
 
 	}
 
-	public Analisavel buscarAnalisavelAtual(){
+	public Analise findUltimaInativaByProcesso(Processo processo){
+		return find("processo.numero = :numero AND ativo = false ORDER BY id DESC")
+				.setParameter("numero", processo.numero)
+				.first();
+	}
 
-		AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
+	public Analisavel getAnalisavel(){
 
-		if(analiseGeo != null){
+		if(this.ativo) {
 
-			return analiseGeo;
+			AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
+			if (analiseGeo != null) {
+				return analiseGeo;
+			}
 
+			return AnaliseTecnica.findByProcessoAtivo(this.processo);
 		}
 
-		return AnaliseTecnica.findByProcessoAtivo(this.processo);
+		Analise analise = findUltimaInativaByProcesso(this.processo);
 
+		if(analise != null && analise.analisesTecnicas != null && !analise.analisesTecnicas.isEmpty()) {
+			return analise.analisesTecnicas.stream().max(Comparator.comparing(AnaliseTecnica::getId)).orElse(null);
+		}
+
+		if(analise != null && analise.analisesGeo != null){
+			return analise.analisesGeo.stream().max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+		}
+
+		return null;
 	}
-	
+
 	public void iniciar(UsuarioAnalise usuarioExecutor) {
 
 		if (this.dataCadastro == null) {
@@ -261,6 +278,17 @@ public class Analise extends GenericModel {
 		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_DIRETOR, usuarioExecutor);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.objetoTramitavel.id), usuarioExecutor);
 
+	}
+
+	public List<Notificacao> getNotificacoes(){
+		return getAnalisavel().getNotificacoes();
+	}
+
+	public void inativar(){
+		this.getAnalisavel().inativar();
+		this.processo.inativar();
+		this.ativo = false;
+		this._save();
 	}
 	
 }

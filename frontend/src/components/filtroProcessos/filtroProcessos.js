@@ -22,7 +22,8 @@ var FiltroProcessos = {
 	},
 
 	controller: function(mensagem, processoService, municipioService, tipologiaService, 
-		atividadeService, $scope, condicaoService, $rootScope, analistaService, setorService) {
+		atividadeService, $scope, condicaoService, $rootScope, analistaService, setorService,
+		TiposSetores, consultorService) {
 
 		var ctrl = this;
 		var caixaEntrada = false;
@@ -66,7 +67,7 @@ var FiltroProcessos = {
 					return;
 				}
 			}
-				
+			
 			if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 
 				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
@@ -80,6 +81,7 @@ var FiltroProcessos = {
 			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
+				analiseGeoFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 			
 			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
@@ -99,13 +101,13 @@ var FiltroProcessos = {
 				analiseTecnicaFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 			
-			}else if(!caixaEntrada && !emAnalise) {
+			} else if(!caixaEntrada && !emAnalise) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
 			} 
 
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
-			ctrl.filtro.itensPorPagina = 10;
+			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
 
 			var filtro = angular.copy(ctrl.filtro);
 			
@@ -136,13 +138,13 @@ var FiltroProcessos = {
 						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
 
-			if(analiseGeoFinalizada) {
+			if (analiseGeoFinalizada) {
 
 				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_GEO_FINALIZADA';
 
 				analiseGeoFinalizada = false;
 
-			} else if (analiseTecnicaFinalizada) {
+			} else if(analiseTecnicaFinalizada) {
 
 				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_TECNICA_FINALIZADA';
 
@@ -278,17 +280,17 @@ var FiltroProcessos = {
 								mensagem.warning('Não foi possível obter a lista de analistas GEO.');
 							});
 					}
-					// else{
-					// 	analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
-					// 		.then(function(response){
+					else{
+						analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
+							.then(function(response){
 
-					// 			ctrl.analistasGeo = response.data;
-					// 		})
-					// 		.catch(function(){
-					// 			mensagem.warning('Não foi possível obter a lista de analistas GEO.');
-					// 		});
+								ctrl.analistasGeo = response.data;
+							})
+							.catch(function(){
+								mensagem.warning('Não foi possível obter a lista de analistas GEO.');
+							});
 
-					// }
+					}
 				}
 
 			}
@@ -300,7 +302,7 @@ var FiltroProcessos = {
 						
 						ctrl.condicoes = response.data;
 
-						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
+						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
 
 							ctrl.condicoes.push({
@@ -312,7 +314,7 @@ var FiltroProcessos = {
 
 						}
 
-						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
+						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
 
 							ctrl.condicoes.push({
@@ -398,6 +400,18 @@ var FiltroProcessos = {
 
 							mensagem.warning('Não foi possível obter a lista de setores.');
 						}
+					});
+			}
+
+			if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.CONSULTOR_JURIDICO)){
+
+				consultorService.getConsultoresJuridicos()
+					.then(function(response){
+
+						ctrl.consultoresJuridicos = response.data;
+					})
+					.catch(function(){
+						mensagem.warning('Não foi possível obter a lista de consultores jurídicos.');
 					});
 			}
 

@@ -269,8 +269,15 @@ public class Documento extends GenericModel implements Identificavel {
 		return this.arquivo.getName();
 	}
 
-	public Boolean getIsType(Long idTipo) {
+	public Boolean isType(Long idTipo) {
+		return idTipo.equals(this.tipo.id);
+	}
 
-		return idTipo == this.tipo.id;
+	public Boolean isNotificacaoAnaliseGeo() {
+		return this.isType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
+	}
+
+	public Boolean isParecerAnaliseTecnica() {
+		return this.isType(TipoDocumento.PARECER_ANALISE_TECNICA);
 	}
 }
