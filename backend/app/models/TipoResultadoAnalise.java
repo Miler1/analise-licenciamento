@@ -14,6 +14,9 @@ public class TipoResultadoAnalise extends GenericModel {
 	public static final Long PARECER_VALIDADO = 4L;
 	public static final Long SOLICITAR_AJUSTES = 5L;
 	public static final Long PARECER_NAO_VALIDADO = 6L;
+	public static final Long SOLICITACAO_DESVINCULO = 7L;
+	public static final Long ANALISE_APROVADA = 8L;
+	public static final Long ANALISE_NAO_APROVADA = 9L;
 	
 	public static final String SEQ = "analise.tipo_resultado_analise_id_seq";
 	
