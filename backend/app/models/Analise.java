@@ -1,6 +1,5 @@
 package models;
 
-import org.eclipse.jdt.internal.compiler.ast.AND_AND_Expression;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;

@@ -36,13 +36,4 @@ public class Notificacoes extends InternalController {
         renderJSON(processo.inicializaNotificacoes(), NotificacaoSerializer.findAll);
     }
 
-    public static void findByIdProcessoTecnico(Long id) {
-
-        verificarPermissao(Acao.VISUALIZAR_NOTIFICACAO);
-
-        Processo processo = Processo.findById(id);
-
-        renderJSON(processo.inicializaNotificacoes(), NotificacaoSerializer.findAll);
-    }
-
 }
