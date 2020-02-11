@@ -18,6 +18,7 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
+							th
 							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
@@ -28,6 +29,8 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntAnalistaTecnico.processos")
+							td
+								span(ng-class="{'icone-notificado': cxEntAnalistaTecnico.notificacaoAtendida(processo)}")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
@@ -57,6 +60,13 @@ div
 												a(ng-click="cxEntAnalistaTecnico.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
+											li(ng-if='cxEntAnalistaTecnico.notificacaoAtendida(processo)')
+												a(ng-click="cxEntAnalistaTecnico.visualizarNotificacao(processo)")
+													i.glyphicon.glyphicon-bell
+													span Notificação
+
+				.legenda
+					span.icone-notificado.legenda Notificação Atendida
 
 				+paginacao('cxEntAnalistaTecnico.paginacao', 'cxEntAnalistaTecnico.onPaginaAlterada')
 

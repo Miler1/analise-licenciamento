@@ -5,7 +5,9 @@ import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.enums.TipoEndereco;
-import models.licenciamento.*;
+import models.licenciamento.Caracterizacao;
+import models.licenciamento.Empreendimento;
+import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -14,8 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
-import play.db.jpa.GenericModel;
-import play.libs.Crypto;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
@@ -28,7 +28,7 @@ import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema = "analise", name = "analise_tecnica")
-public class AnaliseTecnica extends GenericModel implements Analisavel {
+public class AnaliseTecnica extends Analisavel {
 
 	public static final String SEQ = "analise.analise_tecnica_id_seq";
 	private static final String NOME_PERFIL = "Analista Tecnico";
@@ -38,38 +38,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "id_analise")
-	public Analise analise;
-
 	@Column(name = "parecer")
 	public String parecerAnalista;
-
-	@Required
-	@Column(name = "data_vencimento_prazo")
-	public Date dataVencimentoPrazo;
-
-	@Required
-	@Column(name = "revisao_solicitada")
-	public Boolean revisaoSolicitada;
-
-	@Required
-	@Column(name = "notificacao_atendida")
-	public Boolean notificacaoAtendida;
-
-	public Boolean ativo;
 
 	@OneToOne
 	@JoinColumn(name = "id_analise_tecnica_revisada", referencedColumnName = "id")
 	public AnaliseTecnica analiseTecnicaRevisada;
-
-	@Column(name = "data_inicio")
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataInicio;
-
-	@Column(name = "data_fim")
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataFim;
 
 	@ManyToOne
 	@JoinColumn(name = "id_tipo_resultado_analise")
@@ -90,13 +64,6 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	@OneToOne(mappedBy = "analiseTecnica", cascade = CascadeType.ALL)
 	public AnalistaTecnico analistaTecnico;
-
-	@Column(name = "parecer_validacao")
-	public String parecerValidacao;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-	public UsuarioAnalise usuarioValidacao;
 
 	@OneToMany(mappedBy = "analiseTecnica", orphanRemoval = true)
 	public List<LicencaAnalise> licencasAnalise;
@@ -169,6 +136,10 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	@Transient
 	public Long idAnalistaDestino;
+
+	public Long getId() {
+		return id;
+	}
 
 	private void validarParecer() {
 
@@ -583,6 +554,16 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 	}
 
+	@Override
+	public TipoAnalise getTipoAnalise() {
+		return TipoAnalise.TECNICA;
+	}
+
+	@Override
+	public List<Notificacao> getNotificacoes() {
+		return this.notificacoes;
+	}
+
 	public void validarTipoResultadoValidacao() {
 
 		if (tipoResultadoValidacao == null) {
@@ -873,6 +854,12 @@ public class AnaliseTecnica extends GenericModel implements Analisavel {
 
 		return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "documento_relatorio_tecnico_vistoria.pdf", parecerAnalistaTecnico.analistaTecnico.pessoa.nome, new Date());
 
+	}
+
+	public static AnaliseTecnica findUltimaByAnalise(Analise analise){
+		return AnaliseTecnica.find("analise.processo.numero = :numero ORDER BY id DESC")
+				.setParameter("numero", analise.processo.numero)
+				.first();
 	}
 
 }

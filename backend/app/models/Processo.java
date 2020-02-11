@@ -71,6 +71,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	@JoinColumn(name = "id_processo_anterior")
 	public Processo processoAnterior;
 
+	@Column
+	public Boolean retificacao;
+
+	@Column
+	public Boolean ativo;
+
+	@ManyToOne
+	@JoinColumn(name = "id_origem_notificacao")
+	public OrigemNotificacao origemNotificacao;
+
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
 
@@ -439,14 +449,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
-				.groupByDataVencimentoPrazoAnaliseGeo()
+				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByIdAnalise()
-				.groupByIdAnaliseGeo()
+				.groupByIdAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
-				.groupByDataFinalAnaliseGeo()
+				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByRenovacao()
+				.groupByRetificacao()
+				.groupByIdOrigemNotificacao()
 				.groupByDiasAnaliseGeo()
 				.groupByDiasAnaliseTecnica();
 
@@ -475,8 +487,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		processoBuilder
-				.groupByDataVencimentoPrazoAnaliseGeo()
-				.groupByDataFinalAnaliseGeo()
+				.groupByDataVencimentoPrazoAnaliseGeo(true)
+				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByPrazoAnaliseGerente();
 
 	}
@@ -826,11 +838,42 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public DesvinculoAnaliseTecnica buscaDesvinculoPeloProcessoTecnico() {
 
 		DesvinculoAnaliseTecnica desvinculoAnaliseTecnica = DesvinculoAnaliseTecnica.find("id_analise_tecnica = :id and id_usuario = :idUsuario")
-				.setParameter("id", this.analise.analisesTecnicas.get(0).id)
-				.setParameter("idUsuario", this.analise.analisesTecnicas.get(0).analistaTecnico.usuario.id)
+				.setParameter("id", this.analise.analisesGeo.get(0).id)
+				.setParameter("idUsuario", this.analise.analisesGeo.get(0).analistasGeo.get(0).usuario.id)
 				.first();
 
 		return desvinculoAnaliseTecnica;
 	}
+
+	public List<Notificacao> getNotificacoes(){
+	    return this.analise.getNotificacoes();
+    }
+
+    public void inativar(){
+		this.ativo = false;
+		this._save();
+	}
+
+	public static Processo findLastByNumber(String numero){
+		return find("numero = :num ORDER BY id DESC").setParameter("num", numero).first();
+	}
+
+	public List<Notificacao> inicializaNotificacoes(){
+
+	    List<Notificacao> notificacoes = this.getNotificacoes();
+
+	    if(!notificacoes.isEmpty()) {
+           return this.inicializaNotificacoes(this);
+        }
+	    return this.inicializaNotificacoes(this.processoAnterior);
+	}
+
+	private List<Notificacao> inicializaNotificacoes(Processo processo){
+        return processo.getNotificacoes().stream().peek(n -> {
+            n.setJustificativa();
+            n.setDocumentosParecer();
+            n.setDiasConclusao();
+        }).sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList());
+    }
 
 }

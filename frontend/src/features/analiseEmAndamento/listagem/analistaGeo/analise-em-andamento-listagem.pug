@@ -34,6 +34,7 @@ div
 								//- span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
 								//- span(ng-class="{'icone-renovacao': processo.renovacao}")
 								span(ng-class="{'icone-solicitacao-ajustes': processo.verificaAnalise === true }")
+								span(ng-class="{'icone-notificado': processo.retificacao}")
 
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero | textoTruncado : 4:3}}
 							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
@@ -64,11 +65,16 @@ div
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-				div
+											li(ng-if='listagem.notificacaoAtendida(processo)')
+												a(ng-click="listagem.visualizarNotificacao(processo)")
+													i.glyphicon.glyphicon-bell
+													span Notificação
+				.legenda
 					//- span.icone-revisao-solicitada.legenda Revisão Solicitada
 					//- span.icone-revisao-atendida.legenda Notificação Atendida
 					//- span.icone-renovacao.legenda Renovação
 					span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
+					span.icone-notificado.legenda Notificação Atendida
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

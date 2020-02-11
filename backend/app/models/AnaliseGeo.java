@@ -25,17 +25,19 @@ import play.db.jpa.GenericModel;
 import play.libs.Crypto;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
+
 import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema = "analise", name = "analise_geo")
-public class AnaliseGeo extends GenericModel implements Analisavel {
+public class AnaliseGeo extends Analisavel {
 
     public static final String SEQ = "analise.analise_geo_id_seq";
     private static final String NOME_PERFIL = "Analista Geo";
@@ -46,35 +48,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "id")
     public Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_analise")
-    public Analise analise;
-
-    @Required
-    @Column(name = "data_vencimento_prazo")
-    public Date dataVencimentoPrazo;
-
-    @Required
-    @Column(name = "revisao_solicitada")
-    public Boolean revisaoSolicitada;
-
-    @Required
-    @Column(name = "notificacao_atendida")
-    public Boolean notificacaoAtendida;
-
-    public Boolean ativo;
-
     @OneToOne
     @JoinColumn(name = "id_analise_geo_revisada", referencedColumnName = "id")
     public AnaliseGeo analiseGeoRevisada;
-
-    @Column(name = "data_inicio")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataInicio;
-
-    @Column(name = "data_fim")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataFim;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
@@ -91,13 +67,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL)
     public List<AnalistaGeo> analistasGeo;
-
-    @Column(name = "parecer_validacao")
-    public String parecerValidacao;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-    public UsuarioAnalise usuarioValidacao;
 
     @OneToMany(mappedBy = "analiseGeo", orphanRemoval = true)
     public List<LicencaAnalise> licencasAnalise;
@@ -157,6 +126,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     @Transient
     public Long idAnalistaDestino;
+
+    public Long getId() {
+        return id;
+    }
 
     public static AnaliseGeo findByProcessoAtivo(Processo processo) {
         return AnaliseGeo.find("analise.processo.id = :idProcesso AND ativo = true")
@@ -538,6 +511,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public TipoResultadoAnalise getTipoResultadoValidacao() {
 
         return this.tipoResultadoValidacao;
+    }
+
+    @Override
+    public TipoAnalise getTipoAnalise() {
+        return TipoAnalise.GEO;
+    }
+
+    @Override
+    public List<Notificacao> getNotificacoes() {
+        return this.notificacoes;
     }
 
     public void validarTipoResultadoValidacao() {
@@ -1018,6 +1001,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         return parecerGerenteAnaliseGeo.parecer;
 
+    }
+
+    public static AnaliseGeo findUltimaByAnalise(Analise analise){
+        return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY id DESC")
+                .setParameter("numero", analise.processo.numero)
+                .first();
     }
 
 }

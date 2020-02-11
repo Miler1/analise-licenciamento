@@ -249,6 +249,7 @@ var FiltroProcessos = {
 							.catch(function(){
 								mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
 							});
+
 					}
 				}
 
