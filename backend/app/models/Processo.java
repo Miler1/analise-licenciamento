@@ -200,6 +200,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
+			processoBuilder.filtrarPorIdDiretor(filtroProcesso.idDiretor, true);
 
 		}
 
@@ -335,6 +336,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
 
+		}
+
+		if(filtro.analiseAtiva){
+			processoBuilder.filtrarPorAnaliseAiva(filtro.analiseAtiva);
 		}
 
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);

@@ -97,9 +97,16 @@ var FiltroProcessos = {
 				analiseTecnicaFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 			
-			}else if(!caixaEntrada && !emAnalise) {
+			} else if(!caixaEntrada && !emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === (app.utils.Perfis.GERENTE || app.utils.Perfis.DIRETOR || app.utils.Perfis.PRESIDENTE)) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
+				ctrl.filtro.filtrarPorUsuario = false;
+				ctrl.filtro.analiseAtiva = true;
+
+			} else if(!caixaEntrada && !emAnalise ) {
+				
+				ctrl.filtro.listaIdCondicaoTramitacao = null;
+
 			} 
 
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
