@@ -70,4 +70,5 @@
 
 * OS48 - US1515 - [Diretor] Eu, diretor técnico, devo logar no análise para acessar com novo setor.
 * OS48 - US1158 - Eu, diretor técnico, devo acessar a caixa de entrada para visualizar listagem de protocolos.
+* OS48 - US1165 - Eu, diretor técnico, devo acessar a conclusão para validar a análise final do protocolo.
 

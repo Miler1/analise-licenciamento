@@ -6,7 +6,9 @@ var TiposResultadoAnalise = {
     PARECER_VALIDADO: 4,
     SOLICITAR_AJUSTES: 5,
     PARECER_NAO_VALIDADO: 6,
-    SOLICITACAO_DESVINCULO: 7
+    SOLICITACAO_DESVINCULO: 7,
+    ANALISE_APROVADA: 8,
+	ANALISE_NAO_APROVADA: 9
 };
 
 exports.utils.TiposResultadoAnalise = TiposResultadoAnalise;

@@ -129,6 +129,10 @@ POST    /parecer/gerente/concluirParecerTecnicoGerente                          
 GET     /parecer/gerente/justificativa/findByIdAnaliseTecnica/{idAnaliseTecnica}                                    PareceresGerentes.findJustificativaParecerByIdAnaliseTecnica
 GET     /parecer/gerente/findParecerTecnicoByIdHistoricoTramitacao/{idHistoricoTramitacao}                          PareceresGerentes.findParecerTecnicoByIdHistoricoTramitacao
 
+# Pareceres diretores
+
+GET     /parecer/diretor/findParecerByAnalise/{id}                                     PareceresDiretores.findParecerByAnalise
+POST    /parecer/diretor/concluirParecerDiretorTecnico                                 PareceresDiretores.concluirParecerDiretorTecnico
 
 # Pareceres analista geo
 POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir

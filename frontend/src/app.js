@@ -502,7 +502,8 @@ utils.services(licenciamento)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
 	.add('parecerGerenteService', services.ParecerGerenteService)
 	.add('questionarioService', services.QuestionarioService)
-	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService);
+	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService)
+	.add('parecerDiretorTecnicoService', services.ParecerDiretorTecnicoService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
