@@ -31,6 +31,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String ANALISE_GEO_ALIAS = "ang";
 	private static final String ANALISTA_TECNICO_ALIAS = "att";
 	private static final String ANALISTA_GEO_ALIAS = "agt";
+	private static final String DIRETOR_ALIAS = "dt";
 	private static final String ATIVIDADE_CNAE_ALIAS = "atvc";
 	private static final String TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS = "tca";
 	private static final String GERENTE_ALIAS = "gte";
@@ -796,7 +797,26 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(Boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarPorAnaliseAiva(Boolean analiseAtiva){
+
+		addAnaliseAlias();
+		addRestriction(Restrictions.eq(ANALISE_ALIAS+".ativo", analiseAtiva));
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarPorIdDiretor(Long idDiretor, boolean isLeftOuterJoin) {
+
+		if (idDiretor != null) {
+
+			addRestriction(Restrictions.eq(DIRETOR_ALIAS+".usuario.id", idDiretor));
+
+		}
+
+		return this;
+	}
+
+	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 
@@ -1100,6 +1120,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Boolean isAnaliseTecnica = false;
 		public Boolean isAnaliseTecnicaOpcional = false;
 		public Long idAnalistaTecnico;
+		public Long idDiretor;
 		public boolean isAnaliseGeo;
 		public boolean isAnaliseGeoOpcional;
 		public boolean isGerente;
@@ -1109,7 +1130,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		public Long idUsuarioLogado;
-		public Boolean isConsultarProcessos = false;
+		public boolean isConsultarProcessos;
+		public Boolean analiseAtiva = false;
 
 		public FiltroProcesso() {
 
