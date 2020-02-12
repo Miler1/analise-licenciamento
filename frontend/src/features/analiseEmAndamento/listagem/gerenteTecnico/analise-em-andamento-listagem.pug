@@ -41,7 +41,7 @@ div
 							td(ng-class="{'error-message': processo.diasAnaliseGeo > listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
 								| {{ listagem.dataConclusaoAnaliseGeo ? 'Concluída' : listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ listagem.prazoAnaliseTecnica(processo) }}
+								| {{ listagem.dataConclusaoAnaliseTecnica ? 'Concluída' : listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
 							td
 								span.pull-right
 
