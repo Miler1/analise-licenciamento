@@ -546,27 +546,32 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         ctrl.errors.daAnaliseTecnica = false;
         ctrl.errors.daConclusao = false;
 
-        if(ctrl.parecer.doProcesso === null || ctrl.parecer.doProcesso === '' || ctrl.parecer.doProcesso === undefined) {
+        if (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO) {
 
-            ctrl.errors.doProcesso = true;
-            valido = false;
+            if(ctrl.parecer.doProcesso === null || ctrl.parecer.doProcesso === '' || ctrl.parecer.doProcesso === undefined) {
 
+                ctrl.errors.doProcesso = true;
+                valido = false;
+    
+            }
+    
+            if(ctrl.parecer.daAnaliseTecnica === null || ctrl.parecer.daAnaliseTecnica === '' || ctrl.parecer.daAnaliseTecnica === undefined) {
+    
+                ctrl.errors.daAnaliseTecnica = true;
+                valido = false;
+    
+            }
+    
+            if(ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) {
+    
+                ctrl.errors.daConclusao = true;
+                valido = false;
+    
+            }
+    
         }
 
-        if(ctrl.parecer.daAnaliseTecnica === null || ctrl.parecer.daAnaliseTecnica === '' || ctrl.parecer.daAnaliseTecnica === undefined) {
-
-            ctrl.errors.daAnaliseTecnica = true;
-            valido = false;
-
-        }
-
-        if((ctrl.parecer.daConclusao === null || ctrl.parecer.daConclusao === '' || ctrl.parecer.daConclusao === undefined) && (parseInt(ctrl.parecer.tipoResultadoAnalise.id) !== ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)) {
-
-            ctrl.errors.daConclusao = true;
-            valido = false;
-
-        }
-
+        
         return valido;
 
     };
