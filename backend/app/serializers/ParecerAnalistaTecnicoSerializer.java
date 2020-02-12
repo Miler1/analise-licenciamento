@@ -10,4 +10,13 @@ public class ParecerAnalistaTecnicoSerializer {
 			"parecer"
 	);
 
+	public static JSONSerializer findByIdNumeroProcesso = SerializerUtil.create(
+			"situacaoFundiaria",
+			"analiseTemporal",
+			"conclusao",
+			"doProcesso",
+			"daAnaliseTecnica",
+			"daConclusao"
+	);
+
 }
