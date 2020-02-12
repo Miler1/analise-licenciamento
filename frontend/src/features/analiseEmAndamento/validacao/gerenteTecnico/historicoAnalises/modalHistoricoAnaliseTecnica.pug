@@ -49,8 +49,8 @@ div.modal-body
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_MINUTA)")
                                 i.glyphicon.glyphicon-eye-open
-                    tr(ng-if="historicoAnaliseTecnicaCtrl.analiseTecnica.vistoria.documentoRit != null ")    
-                        td.col-md-10 {{ historicoAnaliseTecnicaCtrl.analiseTecnica.vistoria.documentoRit.nomeDoArquivo }}
+                    tr(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null ") 
+                        td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria.nomeDoArquivo }}
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA)")
                                 i.glyphicon.glyphicon-eye-open
