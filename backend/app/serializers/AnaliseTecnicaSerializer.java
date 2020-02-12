@@ -94,6 +94,8 @@ public class AnaliseTecnicaSerializer {
 			"inconsistenciasTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.tipoDocumento.id",
 			"inconsistenciasTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.tipoDocumento.nome",
 			"inconsistenciasTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.documento.id",
+			"pareceresAnalistaTecnico.vistoria.documentoRelatorioTecnicoVistoria.id",
+			"pareceresAnalistaTecnico.vistoria.documentoRelatorioTecnicoVistoria.nomeDoArquivo",
 			"pareceresAnalistaTecnico.tipoResultadoAnalise.id",
 			"pareceresAnalistaTecnico.tipoResultadoAnalise.nome",
 			"pareceresAnalistaTecnico.analistaTecnico.pessoa.nome",

@@ -20,7 +20,7 @@ var HistoricoAnaliseTecnicaCtrl = function( processo,
             documentoService.downloadParecerByIdAnaliseTecnica(analiseTecnica.id);
 
         }else if ( tipoDocumento === historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA ) {
-
+            
             documentoService.downloadRTVByIdAnaliseTecnica(analiseTecnica.id);
 
         }else if ( tipoDocumento === historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_MINUTA ) {

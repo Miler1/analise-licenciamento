@@ -40,32 +40,32 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 	@Override
 	public void enviar() {
 		
-		try {
-			
-			List<String> tiposlicenca = new ArrayList<String>();
-			tiposlicenca.add(this.analiseTecnica.analise.processo.caracterizacao.tipoLicenca.nome);
-
-			String licencas = StringUtils.join(tiposlicenca, ",");
-
-			IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-			main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
-
-			final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
-
-			if(!Emails.notificarRequerenteAnaliseTecnica(this.emailsDestinatarios, licencas, this.analiseTecnica, this.parecerAnalistaTecnico, enderecoCompleto, this.pdfsNotificacao).get()) {
-
-				throw new AppException();
-
-			}
-			
-		} catch (InterruptedException | ExecutionException | AppException e) {
-			
-			ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseTecnica.id, TipoEmail.NOTIFICACAO_ANALISE_TECNICA, e.getMessage(), this.emailsDestinatarios);
-			reenvioEmail.save();
-			
-			e.printStackTrace();
-			
-		} 
+//		try {
+//
+//			List<String> tiposlicenca = new ArrayList<String>();
+//			tiposlicenca.add(this.analiseTecnica.analise.processo.caracterizacao.tipoLicenca.nome);
+//
+//			String licencas = StringUtils.join(tiposlicenca, ",");
+//
+//			IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+//			main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
+//
+//			final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+//
+//			if(!Emails.notificarRequerenteAnaliseTecnica(this.emailsDestinatarios, licencas, this.analiseTecnica, this.parecerAnalistaTecnico, enderecoCompleto, this.pdfsNotificacao).get()) {
+//
+//				throw new AppException();
+//
+//			}
+//
+//		} catch (InterruptedException | ExecutionException | AppException e) {
+//
+//			ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseTecnica.id, TipoEmail.NOTIFICACAO_ANALISE_TECNICA, e.getMessage(), this.emailsDestinatarios);
+//			reenvioEmail.save();
+//
+//			e.printStackTrace();
+//
+//		}
 	}
 
 }
