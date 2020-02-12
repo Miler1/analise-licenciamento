@@ -34,7 +34,7 @@ public class PareceresAnalistasGeo extends InternalController {
 
 		String numeroProcesso = getParamAsString("numeroProcesso");
 
-		AnaliseGeo analiseGeo = AnaliseGeo.find("analise.processo.numero = :numeroProcesso AND ativo = true")
+		AnaliseGeo analiseGeo = AnaliseGeo.find("analise.processo.numero = :numeroProcesso ORDER BY id DESC")
 				.setParameter("numeroProcesso", numeroProcesso)
 				.first();
 
