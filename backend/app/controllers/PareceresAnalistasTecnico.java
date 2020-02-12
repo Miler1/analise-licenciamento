@@ -1,13 +1,11 @@
 package controllers;
 
-import models.*;
+import models.AnaliseTecnica;
+import models.ParecerAnalistaTecnico;
+import models.UsuarioAnalise;
 import security.Acao;
-import serializers.ParecerAnalistaGeoSerializer;
 import serializers.ParecerAnalistaTecnicoSerializer;
 import utils.Mensagem;
-
-import java.util.Comparator;
-import java.util.List;
 
 public class PareceresAnalistasTecnico extends InternalController {
 

@@ -140,7 +140,6 @@ POST	/parecer/analistaTecnico/concluir						                                    
 GET     /parecer/analistaTecnico/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                         PareceresAnalistasTecnico.findParecerByIdHistoricoTramitacao
 GET		/parecer/analistaTecnico                                         							                PareceresAnalistasTecnico.findByNumeroProcesso
 
-
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
 
