@@ -674,6 +674,8 @@ public class AnaliseGeo extends Analisavel {
         List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         DadosProcessoVO dadosProcesso = this.analise.processo.getDadosProcesso();
 
+        UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -685,6 +687,7 @@ public class AnaliseGeo extends Analisavel {
                 .addParam("unidadesConservacao", UnidadesConservacaoParaPDF(dadosProcesso.restricoes))
                 .addParam("complexo", dadosProcesso.complexo)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                .addParam("nomeAnalista", usuarioExecutor.pessoa.nome)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
         pdf.generate();
@@ -762,6 +765,7 @@ public class AnaliseGeo extends Analisavel {
                 .addParam("dataCartaImagem", Helper.formatarData(new Date(), "dd/MM/YYYY"))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
+                .addParam("coordinates", grupoImagemCaracterizacao.coordinates)
                 .setPageSize(30.0D, 21.0D, 0.2D, 0D, 0D, 0.2D);
 
         pdf.generate();
@@ -868,12 +872,12 @@ public class AnaliseGeo extends Analisavel {
             if(categoriaInconsistencia.equals(Inconsistencia.Categoria.PROPRIEDADE)){
 
                 Coordinate coordenadasEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria).getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasEmpreendimento.y + ", " + coordenadasEmpreendimento.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasEmpreendimento.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasEmpreendimento.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.COMPLEXO)){
 
                 Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasComplexo.y + ", " + coordenadasComplexo.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasComplexo.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasComplexo.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
@@ -886,7 +890,7 @@ public class AnaliseGeo extends Analisavel {
                 for (GeometriaAtividade geometriaAtividade : inconsistencia.atividadeCaracterizacao.geometriasAtividade) {
 
                     coordenadasAtividade = geometriaAtividade.geometria.getCentroid().getCoordinate();
-                    localizacoes.add("[" + coordenadasAtividade.y + ", " + coordenadasAtividade.x + "]");
+                    localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasAtividade.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasAtividade.x) + "]");
 
                 }
 

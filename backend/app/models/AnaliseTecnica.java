@@ -713,6 +713,8 @@ public class AnaliseTecnica extends Analisavel {
 		String numeroProcesso = this.analise.processo.numero;
 		String numeroProcessoLicenciamento = this.analise.processo.caracterizacao.processoLicenciamento.numero;
 
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseEspecifica", this)
@@ -723,6 +725,7 @@ public class AnaliseTecnica extends Analisavel {
 				.addParam("condicionantes", condicionantes)
 				.addParam("restricoes", restricoes)
 				.addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+				.addParam("nomeAnalista", usuarioExecutor.pessoa.nome)
 				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
 		pdf.generate();
