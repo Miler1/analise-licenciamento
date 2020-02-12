@@ -46,7 +46,7 @@ div
 								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
 							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ cxEntGerente.prazoAnaliseTecnica(processo) }}
+								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
 							td
 								span.pull-right
 
