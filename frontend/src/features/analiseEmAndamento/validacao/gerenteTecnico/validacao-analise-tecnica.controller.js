@@ -10,7 +10,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                                     $uibModal,
                                                     documentoService,
                                                     validacaoAnaliseGerenteService,
-                                                    analistaService) {
+                                                    analistaService,
+                                                    processoService) {
 
     var validacaoAnaliseTecnicaGerente = this;
 
@@ -173,6 +174,14 @@ validacaoAnaliseTecnicaGerente.disable = {
                 documentoAnaliseService.download(documento.id);
             }
         });
+    };
+
+    validacaoAnaliseTecnicaGerente.exibirDadosProcesso = function () {
+
+        var processo = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo;
+        processo.idProcesso = processo.id;
+
+        processoService.visualizarProcesso(processo);
     };
 
     validacaoAnaliseTecnicaGerente.buscarAnalistasTecnicoByIdProcesso = function() {
