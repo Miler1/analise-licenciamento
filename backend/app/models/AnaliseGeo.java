@@ -714,7 +714,7 @@ public class AnaliseGeo extends Analisavel {
                     }
                 });
 
-        Documento documento = new Documento(tipoDocumento, pdf.getFile(), "parecer_analista_geo.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
+        Documento documento = new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "parecer_analista_geo.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
 
         return documento;
 
