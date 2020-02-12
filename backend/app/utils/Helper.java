@@ -70,7 +70,7 @@ public class Helper {
 
 	public static String formatarCoordenada(Coordinate coordinate) {
 
-		return "Coordenadas [" + coordinate.y + ", " + coordinate.x + "]";
+		return "Coordenadas [" + CoordenadaUtil.formataLatitudeString(coordinate.y) + ", " + CoordenadaUtil.formataLongitudeString(coordinate.x) + "]";
 
 	}
 

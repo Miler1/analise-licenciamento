@@ -83,8 +83,9 @@ html(lang="pt-br")
 
 body.corpo
     div.titulo
-        h2 PARECER GEO Nº ${analiseEspecifica.analise.processo.numero} - GGEO
+        h2 PARECER GEO Nº ${analiseEspecifica.analise.processo.numero}
     div.conteudo
+        h3 PROCESSO: ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
         h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
         h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
 
@@ -229,5 +230,11 @@ body.corpo
                 .titulo-item CONCLUSÃO
                 .conteudo-item
                     |\#{verbatim}${parecer.conclusao}\#{/verbatim}
+
+        br
+        br
+        p.text-align-center ${nomeAnalista}
+        p.text-align-center.padding-none
+            strong Analista Geo
 
         p.text-align-right Manaus, ${dataDoParecer}

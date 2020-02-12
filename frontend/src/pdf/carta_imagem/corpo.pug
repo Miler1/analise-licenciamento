@@ -160,7 +160,7 @@ body.corpo
             img(src='${imagemCaracterizacao}', alt='Red dot')
         .conteudo-item
             div.titulo
-                h2 CARTA IMAGEM Nº ${analiseEspecifica.analise.processo.numero}
+                h2 CARTA IMAGEM
             div.conteudo
                 
                 .legenda-carta-imagem
@@ -185,12 +185,27 @@ body.corpo
                     | \#{/list}
                     | \#{/list}
 
+                    br
+                .coordendas.quebra
+                    p
+                        strong Coordenadas da(s) geometria(s):
+                    |\#{list items:0..coordinates.length -2, as: 'coordenadas'}
+                    p P${coordenadas +1} - ${utils.CoordenadaUtil.formataLatitudeString(coordinates[coordenadas].y)} ${utils.CoordenadaUtil.formataLongitudeString(coordinates[coordenadas].x)}
+                    div
+                    | \#{/list}
+
             .footer
                 .logos
-                    img.logo.logo-ipaam(src='/public/app/images/logo-ipaam-preto.png' height="33")
-                    img.logo.logo-amazonas(src='/public/app/images/logo_governo_am.png' height="63")
-                
+                    img.logo.logo-ipaam(src='/public/app/images/logo-ipaam-preto.png' height="30")
+                    img.logo.logo-amazonas(src='/public/app/images/logo_governo_am.png' height="60")
+
                 table
+                    tr
+                        th PROCESSO:
+                        td ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
+                    tr
+                        th PROTOCOLO:
+                        td ${analiseEspecifica.analise.processo.numero}
                     tr
                         th INTERESSADO:
                         td ${analiseEspecifica.analise.processo.empreendimento.denominacao}
