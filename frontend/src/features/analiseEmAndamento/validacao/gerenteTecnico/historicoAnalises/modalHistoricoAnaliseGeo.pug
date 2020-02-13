@@ -43,7 +43,8 @@ div.modal-body
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.baixarDocumento(documento)")
                                 i.glyphicon.glyphicon-eye-open
-            
+            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length == 0")
+                i Não foi gerado nenhum documento.	     
     div#justificativa-desvinculo
         label.label-justificativa Justificativa do analista:
         br
