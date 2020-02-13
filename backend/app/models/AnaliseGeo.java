@@ -500,6 +500,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
+    public void enviarNotificacaoInteressado(ParecerAnalistaGeo parecerAnalistaGeo, List<String> destinatarios) throws Exception {
+
+        EmailNotificacaoComunicado emailNotificacaoComunicado = new EmailNotificacaoComunicado(this, parecerAnalistaGeo, destinatarios);
+        emailNotificacaoComunicado.enviar();
+
+    }
+
     public void validaParecer(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
 
         TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new ParecerValidadoGeo();

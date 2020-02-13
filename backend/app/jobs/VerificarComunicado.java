@@ -2,6 +2,7 @@ package jobs;
 
 import models.*;
 
+import models.licenciamento.*;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.joda.time.Days;
@@ -34,6 +35,37 @@ public class VerificarComunicado extends GenericJob {
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 
+	}
+
+	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
+
+		if (sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+			return true;
+
+		}
+
+		return false;
+	}
+
+	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) {
+
+		if (sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+
+		if (sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+			return true;
+		}
+
+		return false;
 	}
 	
 	public void verificarStatusComunicado() throws Exception {
@@ -70,8 +102,37 @@ public class VerificarComunicado extends GenericJob {
 
 						ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
 
-
 						analiseGeo.reenviarEmailComunicado(ultimoParecer, comunicado, destinatarios);
+
+						Empreendimento empreendimento = Empreendimento.findById(analiseGeo.analise.processo.empreendimento.id);
+						List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+						if (comunicado.sobreposicaoCaracterizacaoEmpreendimento != null) {
+
+							if (verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoEmpreendimento)) {
+
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados);
+								
+
+							}
+
+						} else if (comunicado.sobreposicaoCaracterizacaoAtividade != null) {
+
+							if (verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoAtividade)) {
+
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados);
+
+							}
+
+						} else if (comunicado.sobreposicaoCaracterizacaoComplexo != null) {
+
+							if (verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoComplexo)) {
+
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados);
+
+							}
+
+						}
 
 					} else {
 
