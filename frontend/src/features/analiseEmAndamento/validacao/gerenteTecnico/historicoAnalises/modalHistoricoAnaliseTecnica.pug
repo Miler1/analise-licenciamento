@@ -7,7 +7,6 @@ div.modal-header
     h4.modal-title Histórico de documentos da análise
     div(growl inline="true" reference='5')
   
-
 div.modal-body
 
     .dados-processo
@@ -26,10 +25,11 @@ div.modal-body
         .info-dados-processo
             label.label-dados-processo Situação: 
             span.span-dados-processo {{historicoAnaliseTecnicaCtrl.parecer.tipoResultadoAnalise.nome}}
-
+            br
+            
         .info-dados-solicitante
             label Documentos gerados na análise: 
-            table.table.table-condensed.table-docs(margin-top="0px;")
+            table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ",margin-top="15px;")
 
                 thead
 
@@ -59,12 +59,16 @@ div.modal-body
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.NOTIFICACAO)")
                                 i.glyphicon.glyphicon-eye-open
+
+            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria == null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer == null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta == null ")
+                i Não foi gerado nenhum documento.	
+                                
+        hr
             
     div#justificativa-desvinculo
         label.label-justificativa Justificativa do analista:
         br
         p.justificativa-historico-analise(ng-bind-html="historicoAnaliseTecnicaCtrl.parecer.parecer", disabled)
-
     
 div.modal-footer
 
