@@ -38,3 +38,9 @@ body {
 .dado-assinatura {
   margin-top: 5px;
 }
+
+.quebra {
+  page-break-before: always;
+  page-break-after: always;
+  page-break-inside: avoid;
+}

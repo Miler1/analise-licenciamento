@@ -284,13 +284,37 @@ form{
 	text-decoration: none;
 }
 
-.icone-solicitacao-finalizada {
+.icone-solicitacao-finalizada-geo {
 	color: #757575;
 	font-style: italic;
 
 	&:before {
 		content: "";
-		background-color: green;
+		background-color: rgb(4, 87, 4);
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
+	}
+
+	&.legenda {
+		margin-left: 5px;
+
+		&:before {
+			margin-right: 5px;
+		}
+	}
+}
+
+.icone-solicitacao-finalizada-tecnica {
+	color: #757575;
+	font-style: italic;
+
+	&:before {
+		content: "";
+		background-color: rgb(8, 189, 8);
 		border-radius: 50%;
 		width: 12px;
 		height: 12px;
@@ -467,6 +491,10 @@ form{
 .btn-visualizar-justificativa{
 	padding: 0px;
 	margin-left: 40%;
+}
+
+.justificativa-historico-analise{
+	margin-left: 15px;
 }
 
 #justificativa-desvinculo,

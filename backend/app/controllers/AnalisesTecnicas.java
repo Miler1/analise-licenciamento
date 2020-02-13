@@ -2,9 +2,12 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
+import serializers.AnaliseGeoSerializer;
 import serializers.AnaliseTecnicaSerializer;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import javax.validation.ValidationException;
@@ -132,12 +135,8 @@ public class AnalisesTecnicas extends InternalController {
 
 		verificarPermissao(Acao.BAIXAR_DOCUMENTO);
 
-		String novoParecer = analiseTecnica.parecerAnalista;
-
 		AnaliseTecnica analiseTecnicaSalva = AnaliseTecnica.findById(analiseTecnica.id);
 		ParecerAnalistaTecnico ultimoParecer = analiseTecnicaSalva.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
-
-		analiseTecnicaSalva.parecerAnalista = novoParecer;
 
 		ultimoParecer.documentoParecer = analiseTecnicaSalva.gerarPDFParecer(ultimoParecer);
 
@@ -155,13 +154,13 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void downloadPDFNotificacao(AnaliseTecnica analiseTecnica) throws Exception {
 
-		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
 
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
-		List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
+		List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseTecnica);
 
-		Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseTecnica);
+		Documento pdfNotificacao = Notificacao.gerarPDF(notificacoes, analiseTecnica);
 
 		String nome = pdfNotificacao.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
 		nome = nome.replace(' ', '_');
@@ -179,7 +178,59 @@ public class AnalisesTecnicas extends InternalController {
 				.setParameter("id_analise", idAnalise).first();
 
 		renderJSON(analiseTecnica, AnaliseTecnicaSerializer.findInfo);
+	
+	}
+	
+	public static void downloadPDFMinuta(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		ParecerAnalistaTecnico parecer = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		parecer.documentoMinuta = ParecerAnalistaTecnico.gerarPDFMinuta(analiseTecnica, parecer);
+
+		parecer._save();
+
+		String nome = parecer.documentoMinuta.tipo.nome +  "_" + analiseTecnica.id + ".pdf";
+
+		renderBinary(parecer.documentoMinuta.getFile(), nome);
+	}
+	
+	public static void downloadPDFRelatorioTecnicoVistoria(AnaliseTecnica analiseTecnica) throws Exception {
+
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
+
+		analiseTecnica = AnaliseTecnica.findById(analiseTecnica.id);
+
+		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico);
+
+		Vistoria vistoria = parecerAnalistaTecnico.vistoria;
+
+		vistoria.documentoRelatorioTecnicoVistoria = analiseTecnica.gerarPDFRelatorioTecnicoVistoria(parecerAnalistaTecnico);
+
+		vistoria._save();
+
+		String nome = vistoria.documentoRelatorioTecnicoVistoria.tipo.nome +  "_" + vistoria.id + ".pdf";
+		nome = nome.replace(' ', '_');
+		response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Type", "application/pdf");
+
+		renderBinary(vistoria.documentoRelatorioTecnicoVistoria.getFile(), nome);
 
 	}
 
+	public static void findAnalisesTecnicaByNumeroProcesso(String numero) {
+
+		String numeroDecodificado = new String(Base64.decodeBase64(numero.getBytes()));
+
+		renderJSON(AnaliseTecnica.findAnalisesByNumeroProcesso(numeroDecodificado), AnaliseTecnicaSerializer.findInfo);
+
+	}
 }

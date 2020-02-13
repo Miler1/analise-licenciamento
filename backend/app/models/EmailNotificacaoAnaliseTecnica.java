@@ -41,7 +41,7 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 	public void enviar() {
 		
 		try {
-			
+
 			List<String> tiposlicenca = new ArrayList<String>();
 			tiposlicenca.add(this.analiseTecnica.analise.processo.caracterizacao.tipoLicenca.nome);
 
@@ -57,15 +57,15 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 				throw new AppException();
 
 			}
-			
+
 		} catch (InterruptedException | ExecutionException | AppException e) {
-			
+
 			ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseTecnica.id, TipoEmail.NOTIFICACAO_ANALISE_TECNICA, e.getMessage(), this.emailsDestinatarios);
 			reenvioEmail.save();
-			
+
 			e.printStackTrace();
-			
-		} 
+
+		}
 	}
 
 }

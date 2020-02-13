@@ -2,7 +2,6 @@ package models;
 
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.PortalSegurancaException;
@@ -22,6 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 import javax.persistence.*;
@@ -34,7 +34,7 @@ import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema = "analise", name = "analise_geo")
-public class AnaliseGeo extends GenericModel implements Analisavel {
+public class AnaliseGeo extends Analisavel {
 
     public static final String SEQ = "analise.analise_geo_id_seq";
     private static final String NOME_PERFIL = "Analista Geo";
@@ -430,6 +430,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
             emailNotificacaoAnaliseGeo.enviar();
 
+            notificacaoSave.documentosNotificacaoTecnica.addAll(emailNotificacaoAnaliseGeo.getPdfsNotificacao());
+            notificacaoSave.save();
+
         }
 
     }
@@ -439,7 +442,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         List<String> destinatarios = new ArrayList<>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
+        Boolean aguardandoResposta = false;
+
+        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoEmpreendimento)) {
+
+            aguardandoResposta = true;
+        }
+
+        Comunicado comunicado = new Comunicado(this, caracterizacao, aguardandoResposta, sobreposicaoCaracterizacaoEmpreendimento, orgaoResponsavel);
         comunicado.save();
         comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
@@ -453,7 +463,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
+        Boolean aguardandoResposta = false;
+
+        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoComplexo)) {
+
+            aguardandoResposta = true;
+        }
+
+        Comunicado comunicado = new Comunicado(this, caracterizacao, aguardandoResposta, sobreposicaoCaracterizacaoComplexo, orgaoResponsavel);
         comunicado.save();
         comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
@@ -467,9 +484,23 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Comunicado comunicado = new Comunicado(this, caracterizacao, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
+        Boolean aguardandoResposta = false;
+
+        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoAtividade)) {
+
+            aguardandoResposta = true;
+        }
+
+        Comunicado comunicado = new Comunicado(this, caracterizacao, aguardandoResposta, sobreposicaoCaracterizacaoAtividade, orgaoResponsavel);
         comunicado.save();
         comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
+
+        EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
+        emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
+
+    }
+
+    public void reenviarEmailComunicado(ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> destinatarios) throws Exception {
 
         EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
         emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
@@ -514,6 +545,11 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     public TipoResultadoAnalise getTipoResultadoValidacao() {
 
         return this.tipoResultadoValidacao;
+    }
+
+    @Override
+    public TipoAnalise getTipoAnalise() {
+        return TipoAnalise.GEO;
     }
 
     public void validarTipoResultadoValidacao() {
@@ -667,6 +703,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         DadosProcessoVO dadosProcesso = this.analise.processo.getDadosProcesso();
 
+        UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -678,6 +716,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("unidadesConservacao", UnidadesConservacaoParaPDF(dadosProcesso.restricoes))
                 .addParam("complexo", dadosProcesso.complexo)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                .addParam("nomeAnalista", usuarioExecutor.pessoa.nome)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
         pdf.generate();
@@ -696,11 +735,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                     }
                 });
 
-        return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos));
+        Documento documento = new Documento(tipoDocumento, pdf.getFile(), "parecer_analista_geo.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
+
+        return documento;
 
     }
 
-    public Documento gerarPDFCartaImagem() {
+    public Documento gerarPDFCartaImagem(ParecerAnalistaGeo parecerAnalistaGeo) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
         Processo processo = Processo.findById(this.analise.processo.id);
@@ -753,11 +794,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("dataCartaImagem", Helper.formatarData(new Date(), "dd/MM/YYYY"))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
+                .addParam("coordinates", grupoImagemCaracterizacao.coordinates)
                 .setPageSize(30.0D, 21.0D, 0.2D, 0D, 0D, 0.2D);
 
         pdf.generate();
 
-        return new Documento(tipoDocumento, pdf.getFile());
+        return new Documento(tipoDocumento, pdf.getFile(), "carta_imagem.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
 
     }
 
@@ -859,12 +901,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             if(categoriaInconsistencia.equals(Inconsistencia.Categoria.PROPRIEDADE)){
 
                 Coordinate coordenadasEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria).getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasEmpreendimento.y + ", " + coordenadasEmpreendimento.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasEmpreendimento.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasEmpreendimento.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.COMPLEXO)){
 
                 Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasComplexo.y + ", " + coordenadasComplexo.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasComplexo.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasComplexo.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
@@ -877,7 +919,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 for (GeometriaAtividade geometriaAtividade : inconsistencia.atividadeCaracterizacao.geometriasAtividade) {
 
                     coordenadasAtividade = geometriaAtividade.geometria.getCentroid().getCoordinate();
-                    localizacoes.add("[" + coordenadasAtividade.y + ", " + coordenadasAtividade.x + "]");
+                    localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasAtividade.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasAtividade.x) + "]");
 
                 }
 
@@ -897,7 +939,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
             pdf.generate();
 
-            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile()));
+            documentosNotificacao.add(new Documento(tipoDocumento, pdf.getFile(), "notificacao_geo.pdf", analistaVO.nomeAnalista, new Date()));
         });
 
         return documentosNotificacao;
@@ -915,15 +957,15 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         
         if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO)) {
 
-            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia);
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia, comunicado.sobreposicaoCaracterizacaoEmpreendimento.geometria, comunicado.sobreposicaoCaracterizacaoEmpreendimento.caracterizacao);
 
         } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.ATIVIDADE)){
 
-            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoAtividade.distancia);
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoAtividade.distancia, comunicado.sobreposicaoCaracterizacaoAtividade.geometria, comunicado.sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.caracterizacao);
 
         } else if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.COMPLEXO)){
 
-            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoComplexo.distancia);
+            distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoComplexo.distancia, comunicado.sobreposicaoCaracterizacaoComplexo.geometria, comunicado.sobreposicaoCaracterizacaoComplexo.caracterizacao);
 
         }
 
@@ -992,6 +1034,13 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         return parecerGerenteAnaliseGeo.parecer;
 
+    }
+
+    public static AnaliseGeo findUltimaByAnalise(Analise analise){
+
+        return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY id DESC")
+                .setParameter("numero", analise.processo.numero)
+                .first();
     }
 
 }

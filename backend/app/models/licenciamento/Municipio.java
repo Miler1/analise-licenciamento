@@ -1,22 +1,10 @@
 package models.licenciamento;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.SQLQuery;
-
 import com.vividsolutions.jts.geom.Geometry;
-
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPA;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "licenciamento", name = "municipio")

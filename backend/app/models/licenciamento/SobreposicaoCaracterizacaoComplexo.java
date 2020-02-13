@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import models.CamadaGeoRestricaoVO;
 import play.db.jpa.GenericModel;
 
+import java.util.Date;
+
 @Entity
 @Table(schema = "licenciamento", name = "sobreposicao_complexo")
 public class SobreposicaoCaracterizacaoComplexo extends GenericModel {
@@ -38,6 +40,15 @@ public class SobreposicaoCaracterizacaoComplexo extends GenericModel {
 
 	@Column(name = "distancia")
 	public Double distancia;
+
+	@Column(name = "nome_area_sobreposicao")
+	public String nomeAreaSobreposicao;
+
+	@Column(name = "data_area_sobreposicao")
+	public String dataAreaSobreposicao;
+
+	@Column(name = "cpf_cnpj_area_sobreposicao")
+	public String cpfCnpjAreaSobreposicao;
 
 	public SobreposicaoCaracterizacaoComplexo(TipoSobreposicao tipoSobreposicao, Caracterizacao caracterizacao, Geometry geometria) {
 		this.tipoSobreposicao = tipoSobreposicao;

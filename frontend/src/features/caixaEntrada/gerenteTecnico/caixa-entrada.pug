@@ -46,7 +46,7 @@ div
 								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
 							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ cxEntGerente.prazoAnaliseTecnica(processo) }}
+								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
 							td
 								span.pull-right
 
@@ -57,11 +57,13 @@ div
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 
-												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo, null)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo) || processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE}")
+												a(ng-click="cxEntGerente.verificarStatusGeo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo, null)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusGeo(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo
 											li
-												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, null, processo.idAnaliseTecnica)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)|| processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
+												a(ng-click="cxEntGerente.verificarStatusTecnico(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, null, processo.idAnaliseTecnica)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusTecnico(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li

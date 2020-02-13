@@ -20,6 +20,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.analiseGeoValidacao = {};
     validacaoAnaliseGeoGerente.camadasDadosEmpreendimento = {};
     validacaoAnaliseGeoGerente.dadosProjeto = {};
+    validacaoAnaliseGeoGerente.acaoTramitacao = app.utils.AcaoTramitacao;
 
     validacaoAnaliseGeoGerente.init = init;
     validacaoAnaliseGeoGerente.controleVisualizacao = null;
@@ -39,7 +40,10 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.labelDadosProjeto = '';
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
     validacaoAnaliseGeoGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
+    validacaoAnaliseGeoGerente.possuiAnaliseTemporal = false;
+    validacaoAnaliseGeoGerente.possuiDocumentos = false;
     validacaoAnaliseGeoGerente.listaAnalisesGeo = [];
+    validacaoAnaliseGeoGerente.processo = null;
     validacaoAnaliseGeoGerente.inconsistencias = [];
 
     validacaoAnaliseGeoGerente.errors = {
@@ -95,7 +99,11 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
                 validacaoAnaliseGeoGerente.parecerGeo = getUltimoParecerGeo(validacaoAnaliseGeoGerente.analiseGeo.pareceresAnalistaGeo);
                 findAnalisesGeoByNumeroProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
-
+                
+                processoService.getInfoProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id).then(function(response){
+                    validacaoAnaliseGeoGerente.processo = response.data;
+                });
+                
                 analiseGeoService.getDadosRestricoesProjeto(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
                 .then(function(response) {
         
@@ -123,6 +131,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                 });            
             
                 getDadosVisualizar(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
+                verificaDocumentos();
 
             });
         
@@ -198,28 +207,42 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     function analiseValida(analiseGeo) {
 
         if(analiseGeo.tipoResultadoValidacaoGerente === null || analiseGeo.tipoResultadoValidacaoGerente === undefined) {
+            
             validacaoAnaliseGeoGerente.errors.resultadoAnalise = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseGeoGerente.errors.resultadoAnalise = false;
+
         }
         
         if(analiseGeo.parecerValidacaoGerente === "" || analiseGeo.parecerValidacaoGerente === null || analiseGeo.parecerValidacaoGerente === undefined) {
+            
             validacaoAnaliseGeoGerente.errors.despacho = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
-            validacaoAnaliseGeoGerente.errors.resultadoAnalise = false;
+
+            validacaoAnaliseGeoGerente.errors.despacho = false;
+
         }
 
         if(analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseGeoGerente.analistaGeoDestino.id === null || validacaoAnaliseGeoGerente.analistaGeoDestino.id === undefined)) {
+            
             validacaoAnaliseGeoGerente.errors.analistas = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseGeoGerente.errors.analistas = false;
+
         }
 
         if(validacaoAnaliseGeoGerente.errors.resultadoAnalise === true || validacaoAnaliseGeoGerente.errors.despacho === true || validacaoAnaliseGeoGerente.errors.analistas === true){
+            
             return false;
+            
         }
         
         return true;
@@ -397,6 +420,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         var modalInstance = $uibModal.open({
 
             component: 'modalOficioRestricao',
+            backdrop: 'static',
             size: 'lg',
             resolve: {
 
@@ -420,7 +444,42 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 		
 		scrollTop();
-	};
+    };
+
+    function verificaDocumentos() {
+
+        var qtdDocumentosAnaliseTemporal = 0;
+
+        if (validacaoAnaliseGeoGerente.parecerGeo.documentos.length > 0) {
+
+            _.forEach(validacaoAnaliseGeoGerente.parecerGeo.documentos, function(documento) {
+
+                if (documento.tipo.id === validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL) {
+
+                    qtdDocumentosAnaliseTemporal++;
+
+                }
+            });
+
+            if (validacaoAnaliseGeoGerente.parecerGeo.documentos.length === qtdDocumentosAnaliseTemporal) {
+
+                validacaoAnaliseGeoGerente.possuiDocumentos = false;
+    
+            } else {
+
+                validacaoAnaliseGeoGerente.possuiDocumentos = true;
+
+            }
+            
+            if (qtdDocumentosAnaliseTemporal > 0) {
+
+                validacaoAnaliseGeoGerente.possuiAnaliseTemporal = true;
+
+            } 
+            
+        }
+
+    }
 
     validacaoAnaliseGeoGerente.voltarEtapaAnterior = function(){
 		$timeout(function() {
@@ -475,6 +534,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         $uibModal.open({
 
             component: 'modalNotificacaoRestricao',
+            backdrop: 'static',
             size: 'lg',
             resolve: {
 
@@ -490,6 +550,38 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         });
 
     }
+
+    var abrirModal = function(parecer, analiseGeo, processo) {
+
+		$uibModal.open({
+			controller: 'historicoAnaliseGeoCtrl',
+			controllerAs: 'historicoAnaliseGeoCtrl',
+			templateUrl: 'features/analiseEmAndamento/validacao/gerenteTecnico/historicoAnalises/modalHistoricoAnaliseGeo.html',
+			size: 'lg',
+			resolve: {
+
+				parecer: function() {
+					return parecer;
+				},
+				
+				analiseGeo: function() {
+					return analiseGeo;
+                },
+                
+                processo: function(){
+                    return processo;
+                }
+
+			}
+		});
+
+	};
+
+	validacaoAnaliseGeoGerente.visualizarJustificativas = function(parecer, analiseGeo, processo){
+
+		abrirModal(parecer, analiseGeo, processo);
+
+	};
 
 };
 

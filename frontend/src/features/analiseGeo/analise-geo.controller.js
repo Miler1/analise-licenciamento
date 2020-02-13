@@ -1,5 +1,5 @@
 var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $uibModal, analiseGeo, $anchorScroll,$location, analiseGeoService, restricoes,documentoService ,idAnaliseGeo,inconsistenciaService,processoService, empreendimentoService, uploadService,mensagem, documentoAnaliseService, tiposSobreposicaoService, parecerAnalistaGeoService) {
-	
+
 	var idMapa = 'mapa-restricoes',
 	mapa,
 	layersRestricoes = $scope.layersRestricoes = {},
@@ -305,7 +305,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		processoService.visualizarProcesso(processo);
 
 	};
-	
+
 	var esconderCamada = function(camada) {
 
 		var tipoGeometria = JSON.parse(camada.geometria).type.toLowerCase();
@@ -341,9 +341,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	this.controlaExibicaoCamadas = function(camada) {
 
 		if (camada.visivel) {
-			
+
 			esconderCamada(camada);
-			
+
 		} else {
 
 			mostrarCamada(camada);
@@ -385,6 +385,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			},
 			popupText: camada.item,
 			area: camada.area,
+			cpfCnpjAreaSobreposicao: camada.cpfCnpjAreaSobreposicao,
+			dataAreaSobreposicao: camada.dataAreaSobreposicao,
+			nomeAreaSobreposicao: camada.nomeAreaSobreposicao,
 			disableCentralizarGeometrias:disable,
 			numPoints: ctrl.numPoints
 		});
@@ -479,9 +482,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					ctrl.camadasDadosEmpreendimento = response.data;
 
 					ctrl.camadasDadosEmpreendimento.forEach(function (camada) {
-						
+
 						camada.geometrias.forEach(function(e) {
-							
+
 							adicionarGeometriaNoMapa(e);
 
 						});
@@ -517,9 +520,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						ctrl.dadosProjeto.atividades.forEach(function (atividade) {
 
 							atividade.openedAccordion = false;
-							
+
 							atividade.geometrias.forEach(function(a) {
-								
+
 								a.estilo = ctrl.estiloMapa.ATIVIDADE;
 								adicionarGeometriaNoMapa(a);
 
@@ -555,37 +558,37 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						if(ctrl.dadosProjeto.categoria === ctrl.categoria.PROPRIEDADE) {
 
 							ctrl.camadasDadosEmpreendimento.forEach(function(camada) {
-	
+
 								camada.geometrias.forEach(function(geometriaEmpreendimento) {
-	
+
 									bounds.extend(L.geoJSON(JSON.parse(geometriaEmpreendimento.geometria)).getBounds());
-	
+
 								});
-	
+
 							});
-	
+
 						} else if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
-	
+
 							ctrl.dadosProjeto.complexo.geometrias.forEach(function(geometriaComplexo) {
-	
+
 								bounds.extend(L.geoJSON(JSON.parse(geometriaComplexo.geometria)).getBounds());
-	
+
 							});
-	
+
 						} else {
-	
+
 							ctrl.dadosProjeto.atividades.forEach(function(atividade) {
-	
+
 								atividade.geometrias.forEach(function(geometriaAtividade) {
-	
+
 									bounds.extend(L.geoJSON(JSON.parse(geometriaAtividade.geometria)).getBounds());
-	
+
 								});
-	
+
 							});
-							
+
 						}
-	
+
 						$scope.$emit('mapa:centralizar-geometrias', bounds);
 
 					});
@@ -618,8 +621,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 		var verificaCategoria = categoriaInconsistencia;
 		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
-			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() && 
-						 inconsistencia.caracterizacao.id === idCaracterizacao && 
+			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() &&
+						 inconsistencia.caracterizacao.id === idCaracterizacao &&
 						 inconsistencia.geometriaAtividade.id === idGeometriaAtividade;
 		});
 
@@ -636,8 +639,8 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var verificaCategoria = categoriaInconsistencia;
 
 		var inconsitenciaEncontrada = _.find(ctrl.analiseGeo.inconsistencias, function (inconsistencia) {
-			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() && 
-						 inconsistencia.caracterizacao.id === idCaracterizacao && 
+			return inconsistencia.categoria.toUpperCase() === verificaCategoria.toUpperCase() &&
+						 inconsistencia.caracterizacao.id === idCaracterizacao &&
 						 (inconsistencia.sobreposicaoCaracterizacaoAtividade && inconsistencia.sobreposicaoCaracterizacaoAtividade.id === idSobreposicao) ||
 						 (inconsistencia.sobreposicaoCaracterizacaoEmpreendimento && inconsistencia.sobreposicaoCaracterizacaoEmpreendimento.id === idSobreposicao) ||
 						 (inconsistencia.sobreposicaoCaracterizacaoComplexo && inconsistencia.sobreposicaoCaracterizacaoComplexo.id === idSobreposicao);
@@ -655,7 +658,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.validacaoAbaVoltar = function() {
-		
+
 		ctrl.controleVisualizacao = "ETAPA_LOCALIZACAO_GEOGRAFICA";
 		scrollTop();
 	};
@@ -744,9 +747,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	this.setLabelRestricao = function() {
-		
+
 		if(ctrl.dadosProjeto) {
-			
+
 			if(ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo) {
 
 				return 'Restrições do complexo';
@@ -848,13 +851,13 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	 	} else if(inconsistencia.categoria.toUpperCase() === ctrl.categoria.COMPLEXO) {
 
 			return 'Complexo';
-	
+
 		} else {
-	
+
 			return 'Propriedade';
-	
+
 		}
-	
+
 	};
 
 	$scope.getDescricaoRestricao = function(inconsistencia) {
@@ -880,7 +883,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 
 		return '-';
-	
+
 	};
 
 	ctrl.clonarParecerGeo = function() {
@@ -920,7 +923,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		if(file) {
 			  ctrl.errors.isPdf = false;
 				uploadService.save(file)
-						.then(function(response) { 
+						.then(function(response) {
 
 							var nomeDoArquivo = file.name;
 
@@ -928,7 +931,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 								ctrl.parecer.documentos = [];
 							}
 
-							var quantidadeDocumentosComMesmoNome = ctrl.parecer.documentos.filter(function(documento) { 
+							var quantidadeDocumentosComMesmoNome = ctrl.parecer.documentos.filter(function(documento) {
 								return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
 							}).length;
 
@@ -1108,7 +1111,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 
 		if (!ctrl.notificacao.prazoNotificacao && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString() || ctrl.notificacao.prazoNotificacao === null && ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()){
-			
+
 			ctrl.errors.prazoNotificacao = true;
 			hasError = true;
 
@@ -1130,9 +1133,9 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		}
 
 		if(ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
-			
+
 			if(ctrl.notificacao.retificacaoSolicitacao && !ctrl.notificacao.retificacaoSolicitacaoComGeo) {
-				
+
 				hasError = true;
 
 			}
@@ -1241,7 +1244,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					});
 					$location.path('/analise-geo');
 					mensagem.setMensagemProximaTela('success', response.data.texto);
-					
+
 			}, function(error){
 
 				mensagem.error(error.data.texto, {referenceId: 5});
@@ -1256,7 +1259,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		ctrl.notificacao.documentacao = ctrl.notificacao.documentacao === null ? false : true;
 		ctrl.notificacao.retificacaoEmpreendimento = ctrl.notificacao.retificacaoEmpreendimento === null ? false : true;
 		ctrl.notificacao.retificacaoSolicitacao = ctrl.notificacao.retificacaoSolicitacao === null ? false : true;
-		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null); 
+		ctrl.notificacao.retificacaoSolicitacaoComGeo = (ctrl.notificacao.retificacaoSolicitacaoComGeo === 'true' ? true : ctrl.notificacao.retificacaoSolicitacaoComGeo === 'false' ? false : null);
 		ctrl.notificacao.segundoEmailEnviado = false;
 		ctrl.analiseGeo.notificacoes.push(ctrl.notificacao);
 
@@ -1271,7 +1274,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			['height', ['height']],
 			['table', ['table']],
 			['insert', ['picture',]]
-			
+
 		]
 	};
 
@@ -1287,10 +1290,10 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		var restricoes = [];
 		var orgaoEnable = false;
 		var restricaoEnable = true;
-		
+
 		_.forEach(ctrl.dadosProjeto, function(dadoProjeto){
 			_.forEach(dadoProjeto.restricoes, function(restricao){
-				
+
 				var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
 
 				_.forEach(sobreposicaoRestricao.tipoSobreposicao.orgaosResponsaveis, function(orgao){
@@ -1321,7 +1324,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.getDocumentosParecer = function() {
-		
+
 		var documentosParecer = [];
 
 		documentosParecer = _.filter(ctrl.parecer.documentos, function(documento) {
@@ -1332,7 +1335,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.getDocumentosAnaliseTemporal = function() {
-		
+
 		var documentosAnaliseTemporal = [];
 
 		documentosAnaliseTemporal = _.filter(ctrl.parecer.documentos, function(documento) {
@@ -1343,7 +1346,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 
 	ctrl.getDocumentosNotificacao = function() {
-		
+
 		var documentosNotificacao = [];
 
 		documentosNotificacao = _.filter(ctrl.parecer.documentos, function(documento) {
@@ -1356,13 +1359,13 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	ctrl.checkedDocumentacao = function() {
 		if (!ctrl.notificacao.documentacao) {
 			ctrl.notificacao.documentacao = null;
-		} 
+		}
 	};
 
 	ctrl.checkedRetificacaoSolicitacao = function() {
 		if (!ctrl.notificacao.retificacaoSolicitacao) {
 			ctrl.notificacao.retificacaoSolicitacao = null;
-		} 
+		}
 		ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
 	};
 

@@ -119,6 +119,8 @@ public class AnalistaGeo extends GenericModel {
 
 	}
 
+
+
 	public static AnalistaGeo findByAnaliseGeo(Long idAnaliseGeo) {
 
 		return AnalistaGeo.find("id_analise_geo = :analiseGeo")

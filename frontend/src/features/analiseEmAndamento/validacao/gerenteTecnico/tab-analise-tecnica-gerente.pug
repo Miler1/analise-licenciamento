@@ -208,6 +208,21 @@
                     br
                     p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao")
                     
+                table.table.table-condensed.table-docs(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.documentos.length > 0")
+
+                            thead
+
+                                tr
+                                    th.col-md-10 Documento anexado
+                                    th.col-md-2.text-right Ações
+
+                            tbody
+
+                                tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.parecerTecnico.documentos")
+                                    td.col-md-10 {{ documento.nomeDoArquivo }}
+                                    td.col-md-2.text-right
+                                        a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
+                                            i.glyphicon.glyphicon-eye-open
             #camposAnaliseTecnica
                 div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
                     label.label-parecer Despacho:
@@ -217,3 +232,35 @@
                     label.label-parecer Justificativa:
                     br
                     p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer") 
+
+#accordion-historico-analises.panel-group
+    div.col-md-12(style="padding:0px;")
+        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-historico-analises', aria-expanded='false', data-target='#historico-analises', ng-init = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = false', ng-click = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises' )
+            .panel.panel-default.panel-analise
+                .panel-heading
+                    h4.panel-title
+                        | Histórico da(s) análise(s) anterior(es)
+                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises}")
+
+                    #historico-analises.collapse
+
+                        table.table.table-striped.table-condensed
+
+                            thead
+                                tr
+                                    th Início da análise
+                                    th Término da análise
+                                    th Analista responsável
+                                    th Situação
+                                    th Documentação
+
+                            tbody(ng-repeat="analiseTecnica in validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas")
+                                tr(ng-repeat="parecer in analiseTecnica.pareceresAnalistaTecnico")
+                                    td.col-md-1 {{analiseTecnica.dataInicio}}
+                                    td.col-md-1 {{parecer.dataParecer}}
+                                    td.col-md-2 {{parecer.analistaTecnico.pessoa.nome}}
+                                    td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
+                                    td.col-md-1 
+                                        button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseTecnicaGerente.visualizarJustificativas(parecer, analiseTecnica, analiseTecnica.analise.processo )")
+                                            i.glyphicon.glyphicon-list-alt
+

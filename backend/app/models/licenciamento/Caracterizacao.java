@@ -94,7 +94,7 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public Boolean complexo = false;
 
 	@Column(name = "ativo")
-	public Boolean ativo = true;
+	public Boolean ativo;
 
 	@Column(name = "vigencia_solicitada")
 	public Integer vigenciaSolicitada;
@@ -107,6 +107,10 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	@Column(name = "id_origem")
 	public Long idCaracterizacaoOrigem;
+
+	@ManyToOne
+	@JoinColumn(name = "id_processo")
+	public models.ProcessoLicenciamento processoLicenciamento;
 
 	public enum OrigemSobreposicao {
 
@@ -123,6 +127,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	@OneToMany(mappedBy = "caracterizacao", cascade = CascadeType.ALL)
 	public List<GeometriaComplexo> geometriasComplexo;
+
+	@Column(name="valor_taxa_licenciamento")
+	public Double valorTaxaLicenciamento;
 
 	@Transient
 	public Dae dae;
