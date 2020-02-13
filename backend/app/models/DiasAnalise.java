@@ -303,9 +303,11 @@ public class DiasAnalise extends GenericModel{
 
 		List<HistoricoTramitacao> historicoTramitacao = this.analise.processo.getHistoricoTramitacaoAnaliseTecnica();
 
-		if (historicoTramitacao != null) {
+		Integer tempoCongelamento = intervalosTramitacoesAnaliseTecnica(historicoTramitacao);
 
-			this.qtdeDiasTecnica = DateUtil.getDiferencaEmDias(this.analise.analiseTecnica.dataCadastro, new Date()) - intervalosTramitacoesAnaliseTecnica(historicoTramitacao);
+		if (tempoCongelamento != null) {
+
+			this.qtdeDiasTecnica = DateUtil.getDiferencaEmDias(this.analise.analiseTecnica.dataCadastro, new Date()) - tempoCongelamento;
 
 		}
 
