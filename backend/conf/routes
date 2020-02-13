@@ -65,6 +65,7 @@ POST    /analisesTecnicas/downloadPDFRelatorioTecnicoVistoria   AnalisesTecnicas
 POST    /analisesTecnicas/downloadPDFMinuta                     AnalisesTecnicas.downloadPDFMinuta
 POST    /analisesTecnicas/iniciarAnaliseTecnicaGerente          AnalisesTecnicas.iniciarAnaliseTecnicaGerente
 GET     /analisesTecnicas/buscaAnaliseTecnicaByAnalise/{idAnalise}   AnalisesTecnicas.buscaAnaliseTecnicaByAnalise
+GET		/analisesTecnicas/findAnalisesTecnicaByNumeroProcesso/{numero}			AnalisesTecnicas.findAnalisesTecnicaByNumeroProcesso
 
 # Analise GEO
 
@@ -83,6 +84,7 @@ POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.download
 POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.downloadPDFOficioOrgao
 GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
 POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
+GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}			AnalisesGeo.findAnalisesGeoByNumeroProcesso
 
 # Desvínculo
 
@@ -197,6 +199,7 @@ GET		/documentos/{id}/download					                    Documentos.download
 GET		/documentos/{idAnalisetecnica}/downloadParecerTecnico	        Documentos.downloadParecerTecnico
 GET		/documentos/{idAnalisetecnica}/downloadMinutaByIdAnaliseTecnica	Documentos.downloadMinutaByIdAnaliseTecnica
 GET		/documentos/{idAnalisetecnica}/downloadRTVByIdAnaliseTecnica	Documentos.downloadRTVByIdAnaliseTecnica
+POST    /documentos/{idAnalisetecnica}/downloadNotificacaoByIdAnaliseTecnica           Documentos.downloadPDFNotificacao
 
 # Licenças
 POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter

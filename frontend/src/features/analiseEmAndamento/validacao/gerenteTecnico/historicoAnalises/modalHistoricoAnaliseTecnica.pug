@@ -1,0 +1,74 @@
+div.modal-header
+
+    button.close(type='button', ng-click="historicoAnaliseTecnicaCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Histórico de documentos da análise
+    div(growl inline="true" reference='5')
+  
+div.modal-body
+
+    .dados-processo
+        .info-dados-processo
+            label.label-dados-processo Processo: 
+            span.span-dados-processo {{historicoAnaliseTecnicaCtrl.processo.caracterizacao.processoLicenciamento.numero}}
+
+        .info-dados-processo
+            label.label-dados-processo Protocolo: 
+            span.span-dados-processo {{historicoAnaliseTecnicaCtrl.processo.numero}}
+
+        .info-dados-processo
+            label.label-dados-processo Analista: 
+            span.span-dados-processo {{historicoAnaliseTecnicaCtrl.parecer.analistaTecnico.pessoa.nome}}
+
+        .info-dados-processo
+            label.label-dados-processo Situação: 
+            span.span-dados-processo {{historicoAnaliseTecnicaCtrl.parecer.tipoResultadoAnalise.nome}}
+            br
+            
+        .info-dados-solicitante(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ")
+            label Documentos gerados na análise: 
+            table.table.table-condensed(margin-top="15px;")
+
+                thead
+
+                    tr
+                        th.col-md-10 Nome documento
+                        th.col-md-2.text-right Ação
+
+                tbody
+
+                    tr(ng-if="historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null ")  
+                        td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecer.documentoParecer.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.PARECER_ANALISE_TECNICA)")
+                                i.glyphicon.glyphicon-eye-open
+                    tr(ng-if="historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ")   
+                        td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecer.documentoMinuta.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_MINUTA)")
+                                i.glyphicon.glyphicon-eye-open
+                    tr(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null ") 
+                        td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA)")
+                                i.glyphicon.glyphicon-eye-open
+                    tr(ng-repeat=" documentoNotificacao in historicoAnaliseTecnicaCtrl.analiseTecnica.notificacoes[0].documentosNotificacaoTecnica ")    
+                        td.col-md-10 {{ documentoNotificacao.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.NOTIFICACAO)")
+                                i.glyphicon.glyphicon-eye-open
+        hr
+            
+    div#justificativa-desvinculo
+        label.label-justificativa Justificativa do analista:
+        br
+        p.justificativa-historico-analise(ng-bind-html="historicoAnaliseTecnicaCtrl.parecer.parecer", disabled)
+    
+div.modal-footer
+
+    button.btn.btn-default.pull-right(ng-click="historicoAnaliseTecnicaCtrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        |  Fechar
+    

@@ -1,5 +1,6 @@
 package models;
 
+import models.validacaoParecer.Analisavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -225,6 +226,20 @@ public class Analise extends GenericModel {
 		CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
 
 		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_UPDATE_STATUS, caracterizacaoStatusVO);
+
+	}
+
+	public Analisavel buscarAnalisavelAtual(){
+
+		AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
+
+		if(analiseGeo != null){
+
+			return analiseGeo;
+
+		}
+
+		return AnaliseTecnica.findByProcessoAtivo(this.processo);
 
 	}
 	
