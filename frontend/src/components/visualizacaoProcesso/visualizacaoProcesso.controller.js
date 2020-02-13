@@ -156,21 +156,17 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 		if (ultimoParecer !== null && ultimoParecer !== undefined) {
 
-			if (ultimoParecer.pareceresAnalistaTecnico[0] !== null && ultimoParecer.pareceresAnalistaTecnico[0] !== undefined) {
-				
-				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
+			modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
 
-				if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta !== null) {
+			if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta !== null) {
 
-					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta);
+				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta);
 
-				}
+			}
 
-				if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria !== null) {
+			if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria!== null) {
 
-					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria);
-
-				}
+				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria);
 
 			}
 
@@ -226,13 +222,13 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	};
 
 	modalCtrl.condicoesAnalistas = function(parecer) {
-		
-		if (parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES && 
+
+		if (parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES &&
 			parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO &&
 			parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
 
 			return true;
-			
+
 		}
 
 		return false;
@@ -240,13 +236,13 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	};
 
 	modalCtrl.condicoesGerentes = function(parecer) {
-		
+
 		if (parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES ||
 			parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO ||
 			parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
 
 			return true;
-			
+
 		}
 
 		return false;
@@ -254,12 +250,12 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	};
 
 	modalCtrl.verificaLoginAnaliseGeo = function() {
-		
+
 		if (modalCtrl.perfis.ANALISTA_GEO === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
 
 			return true;
-			
+
 		}
 
 		return false;
@@ -267,12 +263,12 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	};
 
 	modalCtrl.verificaLoginAnaliseTecnica = function() {
-		
+
 		if (modalCtrl.perfis.ANALISTA_TECNICO === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
 
 			return true;
-			
+
 		}
 
 		return false;
@@ -304,15 +300,15 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.COMPLEXO || modalCtrl.dadosProjeto.complexo) {
 
 				return 'Restrições do complexo';
-	
+
 			} else if(modalCtrl.dadosProjeto.categoria === modalCtrl.categoria.PROPRIEDADE) {
-	
+
 				return 'Restrições do empreendimento';
-	
+
 			} else {
-	
+
 				return 'Restrições da(s) atividade(s)';
-	
+
 			}
 		}
 
@@ -348,9 +344,9 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 					modalCtrl.camadasDadosEmpreendimento = response.data;
 
 					modalCtrl.camadasDadosEmpreendimento.forEach(function (camada) {
-						
+
 						camada.geometrias.forEach(function(e) {
-							
+
 							adicionarGeometriaNoMapa(e);
 
 						});
@@ -502,7 +498,10 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			popupText: camada.item,
 			area: camada.area,
 			disableCentralizarGeometrias:disable,
-			numPoints: modalCtrl.numPoints
+			numPoints: modalCtrl.numPoints,
+			cpfCnpjAreaSobreposicao: camada.cpfCnpjAreaSobreposicao,
+			dataAreaSobreposicao: camada.dataAreaSobreposicao,
+			nomeAreaSobreposicao: camada.nomeAreaSobreposicao
 		});
 
 	}
@@ -689,8 +688,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 						abrirModal(response.data, idProcesso);
 					});
 
-		}else if(historico.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
-				historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
 				historico.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO){
 
 			parecerAnalistaTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
@@ -698,10 +696,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 					abrirModal(response.data, idProcesso);
 				});
 
-		} else if(historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE ||
-				historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
-				historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE){
-			
+		} else if(historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE){
+
 			parecerGerenteService.findParecerTecnicoByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
 					abrirModal(response.data, idProcesso);
@@ -730,10 +726,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE;
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE;
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {
