@@ -277,6 +277,12 @@ public class DiasAnalise extends GenericModel{
 
 			HistoricoTramitacao primeiraTramitacao = historicoTramitacao.stream().filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.APROVAR_SOLICITACAO_DESVINCULO) || tramitacao.idAcao.equals(AcaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO) ).max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 
+			if (primeiraTramitacao == null) {
+
+				return null;
+
+			}
+
 			Processo processo = Processo.find("objetoTramitavel.id", primeiraTramitacao.idObjetoTramitavel).first();
 
 			int intervaloAtePrimeiraTramitacao = DateUtil.getDiferencaEmDias(processo.analise.analiseTecnica.dataCadastro, primeiraTramitacao.dataInicial);
@@ -297,7 +303,11 @@ public class DiasAnalise extends GenericModel{
 
 		List<HistoricoTramitacao> historicoTramitacao = this.analise.processo.getHistoricoTramitacaoAnaliseTecnica();
 
-		this.qtdeDiasTecnica = DateUtil.getDiferencaEmDias(this.analise.analiseTecnica.dataCadastro, new Date()) - intervalosTramitacoesAnaliseTecnica(historicoTramitacao);
+		if (historicoTramitacao != null) {
+
+			this.qtdeDiasTecnica = DateUtil.getDiferencaEmDias(this.analise.analiseTecnica.dataCadastro, new Date()) - intervalosTramitacoesAnaliseTecnica(historicoTramitacao);
+
+		}
 
 	}
 
