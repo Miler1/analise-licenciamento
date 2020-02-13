@@ -1013,4 +1013,10 @@ public class AnaliseGeo extends Analisavel {
                 .first();
     }
 
+    public static List<AnaliseGeo> findAllByAnalise(Analise analise){
+        return AnaliseGeo.find("analise.id = :idAnalise ORDER BY id")
+                .setParameter("idAnalise", analise.id)
+                .fetch();
+    }
+
 }

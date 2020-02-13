@@ -42,7 +42,7 @@ public class Analise extends GenericModel {
 	@OneToMany(mappedBy="analise")
 	public List<AnaliseTecnica> analisesTecnicas;
 
-	@OneToMany(mappedBy="analise", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="analise", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	public List<AnaliseGeo> analisesGeo;
 	
 	public Boolean ativo;
