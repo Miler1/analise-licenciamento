@@ -42,6 +42,12 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
     };
 
+    validacaoAnaliseDiretor.downloadDocumentoAnalise = function (idDocumento) {
+
+        documentoAnaliseService.download(idDocumento);
+        
+	};
+
     var getUltimoParecerGerente = function(pareceresGerente) {
 
         var pareceresOrdenados = pareceresGerente.sort(function(dataParecer1, dataParecer2){

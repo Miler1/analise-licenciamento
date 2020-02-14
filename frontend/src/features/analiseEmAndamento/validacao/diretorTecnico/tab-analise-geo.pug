@@ -44,28 +44,29 @@
                                 br
                                 button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumentoGeo( validacaoAnaliseDiretor.parecerGeo, validacaoAnaliseDiretor.tipoDocumento.CARTA_IMAGEM )")
                                     .glyphicon.glyphicon-file.icon-download
-                                    | Carta Imagem
+                                    | Carta Imagem 
 
-                                table.table.table-condensed(ng-if="validacaoAnaliseDiretor.analiseGeo.documentos.length > 0 ")
 
-                                    thead
+                        table.table.table-condensed.table-docs(style="padding:0px;",ng-if="validacaoAnaliseDiretor.parecerGeo.documentos.length > 0 ")
 
-                                        tr
-                                            th Arquivo anexado
-                                            th.text-right Ações
+                            thead
 
-                                    tbody
+                                tr
+                                    th.col-md-10 Arquivo anexado
+                                    th.col-md-2.text-right Ações
 
-                                        tr(ng-repeat="documento in validacaoAnaliseDiretor.analiseGeo.documentos")
+                            tbody
 
-                                            td {{documento.nome}}
-                                            td.text-right 
-                                                a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
-                                                    i.glyphicon.glyphicon-save
+                                tr(ng-repeat="documento in validacaoAnaliseDiretor.parecerGeo.documentos")
 
-                                .row(ng-show="!validacaoAnaliseDiretor.analiseGeo.documentos || validacaoAnaliseDiretor.analiseGeo.documentos.length == 0")
-                                    .col-md-12
-                                        p.empty-result Não existem arquivos anexados. 
+                                    td.col-md-10 {{documento.nomeDoArquivo}}
+                                    td.col-md-2.text-right 
+                                        a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="validacaoAnaliseDiretor.downloadDocumentoAnalise(documento.id)")
+                                            i.glyphicon.glyphicon-eye-open
+
+                            .row(ng-show="!validacaoAnaliseDiretor.parecerGeo.documentos || validacaoAnaliseDiretor.parecerGeo.documentos.length == 0")
+                                .col-md-12
+                                    p.empty-result Não existem arquivos anexados. 
 
             #accordion-gerente.panel-group
                 div
