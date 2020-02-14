@@ -185,8 +185,6 @@ public class Analistas extends InternalController {
 
 	public static void getAnalistaGeoPerfilSetores(boolean isGerente) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO);
-
 		List<UsuarioAnalise> pessoas = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla);
 
 		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
