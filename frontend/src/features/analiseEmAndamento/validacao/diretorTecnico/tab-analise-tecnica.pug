@@ -59,7 +59,7 @@
                                         | Relatório Técnico de Vistoria
                                     br
                                  
-                                table.table.table-condensed(ng-if="validacaoAnaliseDiretor.analiseTecnica.documentos.length > 0 ")
+                                table.table.table-condensed(ng-if="validacaoAnaliseDiretor.parecerTecnico.documentos.length > 0 ")
 
                                     thead
 
@@ -69,14 +69,14 @@
 
                                     tbody
 
-                                        tr(ng-repeat="documento in validacaoAnaliseDiretor.analiseTecnica.documentos")
+                                        tr(ng-repeat="documento in validacaoAnaliseDiretor.parecerTecnico.documentos")
 
                                             td {{documento.nome}}
                                             td.text-right 
                                                 a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
                                                     i.glyphicon.glyphicon-save
 
-                                .row(ng-show="!validacaoAnaliseDiretor.analiseTecnica.documentos || validacaoAnaliseDiretor.analiseTecnica.documentos.length == 0")
+                                .row(ng-show="!validacaoAnaliseDiretor.parecerTecnico.documentos || validacaoAnaliseDiretor.parecerTecnico.documentos.length == 0")
                                     .col-md-12
                                         p.empty-result Não existem arquivos anexados. 
 

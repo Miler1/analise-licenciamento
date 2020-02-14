@@ -279,17 +279,17 @@ var FiltroProcessos = {
 								mensagem.warning('Não foi possível obter a lista de analistas GEO.');
 							});
 					}
-					// else{
-					// 	analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
-					// 		.then(function(response){
+					else{
+						analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
+							.then(function(response){
 
-					// 			ctrl.analistasGeo = response.data;
-					// 		})
-					// 		.catch(function(){
-					// 			mensagem.warning('Não foi possível obter a lista de analistas GEO.');
-					// 		});
+								ctrl.analistasGeo = response.data;
+							})
+							.catch(function(){
+								mensagem.warning('Não foi possível obter a lista de analistas GEO.');
+							});
 
-					// }
+					}
 				}
 
 			}
