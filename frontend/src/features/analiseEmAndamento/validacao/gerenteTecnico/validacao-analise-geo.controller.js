@@ -40,11 +40,13 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.labelDadosProjeto = '';
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
     validacaoAnaliseGeoGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
-    validacaoAnaliseGeoGerente.listaAnalisesGeo = [];
-    validacaoAnaliseGeoGerente.inconsistencias = [];
     validacaoAnaliseGeoGerente.possuiAnaliseTemporal = false;
     validacaoAnaliseGeoGerente.possuiDocumentos = false;
+    validacaoAnaliseGeoGerente.listaAnalisesGeo = [];
     validacaoAnaliseGeoGerente.processo = null;
+    validacaoAnaliseGeoGerente.inconsistencias = [];
+    validacaoAnaliseGeoGerente.getItemRestricao = getItemRestricao;
+    validacaoAnaliseGeoGerente.getDescricaoRestricao= getDescricaoRestricao;
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
@@ -79,12 +81,12 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     var setInconsistencias = function() {
 
         _.forEach(validacaoAnaliseGeoGerente.listaAnalisesGeo, function(analise){
-            
-            _.forEach(analise.inconsistencias, function(inconsistencia){
-            
-                validacaoAnaliseGeoGerente.inconsistencias.push(inconsistencia);
-    
-            });
+
+            if (analise.inconsistencias.length !== 0 ) {
+
+                validacaoAnaliseGeoGerente.inconsistencias = analise.inconsistencias;
+
+            }
 
         });
     
@@ -288,13 +290,13 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		}
     }
 
-    $scope.getItemRestricao = function(inconsistencia) {
+    function getItemRestricao(inconsistencia) {
 
 		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
 
 		if(inconsistencia.categoria.toUpperCase() !== 'PROPRIEDADE') {
 
-			restricao = validacaoAnaliseGeoGerente.dadosRestricoesProjeto.find(function(restricao) {
+			restricao = this.dadosRestricoesProjeto.find(function(restricao) {
 
 				var sobreposicaoRestricao = restricao.sobreposicaoCaracterizacaoAtividade ? restricao.sobreposicaoCaracterizacaoAtividade : restricao.sobreposicaoCaracterizacaoEmpreendimento ? restricao.sobreposicaoCaracterizacaoEmpreendimento : restricao.sobreposicaoCaracterizacaoComplexo;
 
@@ -308,9 +310,9 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
 		return 'Propriedade';
 	
-	};
+	}
 
-	$scope.getDescricaoRestricao = function(inconsistencia) {
+	function getDescricaoRestricao(inconsistencia) {
 
 		var sobreposicaoInconsistencia = inconsistencia.sobreposicaoCaracterizacaoAtividade ? inconsistencia.sobreposicaoCaracterizacaoAtividade : inconsistencia.sobreposicaoCaracterizacaoEmpreendimento ? inconsistencia.sobreposicaoCaracterizacaoEmpreendimento : inconsistencia.sobreposicaoCaracterizacaoComplexo;
 
@@ -330,7 +332,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
 		return '-';
 	
-    };
+    }
     
     $scope.getOrgaos = function(restricao){
         

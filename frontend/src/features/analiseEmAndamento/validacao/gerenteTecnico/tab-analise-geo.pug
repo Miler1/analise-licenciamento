@@ -90,9 +90,9 @@
 
                                     tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.inconsistencias")
                                         tr
-                                            td.col-md-4 {{ getItemRestricao(inconsistencia) }}
+                                            td.col-md-4 {{ validacaoAnaliseGeoGerente.getItemRestricao(inconsistencia) }}
                                             td.col-md-3 {{ inconsistencia.categoria }}
-                                            td.col-md-4 {{ getDescricaoRestricao(inconsistencia) }}
+                                            td.col-md-4 {{ validacaoAnaliseGeoGerente.getDescricaoRestricao(inconsistencia) }}
                                             td.col-md-2.text-right
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                                     ng-click="(orgao.sigla !== 'IPHAN' || orgao.sigla !== 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(inconsistencia) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")
