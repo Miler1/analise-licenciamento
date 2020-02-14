@@ -5,7 +5,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  $anchorScroll,
                                                  $location,
                                                  $timeout,
-                                                 analistaService,
+                                                 mensagem,
                                                  analiseTecnicaService,
                                                  documentoAnaliseService,
                                                  documentoService) {
@@ -239,7 +239,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
         parecerDiretorTecnicoService.concluirParecerDiretorTecnico(params)
 			.then(function(response){
-                $location.path("analise-diretor");
+                $location.path('/analise-diretor');
                 $timeout(function() {
                     mensagem.success("Validacao diretor finalizada!", {referenceId: 5});
                 }, 0);
