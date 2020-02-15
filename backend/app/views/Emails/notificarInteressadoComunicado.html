@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 %{
-numeroProcesso = analiseGeo.analise.processo.numero;
+numeroProtocolo = analiseGeo.analise.processo.numero;
+numeroProcesso = caracterizacao.processoLicenciamento.numero;
 tipoLicenca = analiseGeo.analise.processo.getCaracterizacao().tipoLicenca.nome;
+restricao = comunicado.tipoSobreposicao.nome;
+orgaoResponsavel = comunicado.orgao;
+nomeAnalista = parecerAnalistaGeo.usuario.pessoa.nome;
 empreendimento = analiseGeo.analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+nomeEmpreendimento = empreendimento.denominacao;
+atividadesCaracterizacao = caracterizacao.atividadesCaracterizacao;
 endereco = enderecoCompleto;
 }%
 
@@ -24,17 +30,18 @@ endereco = enderecoCompleto;
 
 <p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
 
-
-<p><strong>Protocolo N°: <strong>${numeroProcesso}</strong></strong> </p>
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
+<p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong><strong> Protocolo N°: ${numeroProtocolo}</strong></p>
 
-<p><strong>À </strong><br> <strong> ${empreendimentoNome} </strong><br> End: ${endereco.logradouro} ${endereco.numero} - ${endereco.bairro}, ${endereco.municipio.nome} - ${endereco.municipio.estado.sigla} <br>CEP: ${endereco.cep}<br><br></p>
+<p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>Atividade(s): ${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list} </p>
 
-<p> Em atenção a solicitação protocolada, sob o nº do protocolo <strong>${numeroProcesso}</strong>, o qual solicita  <strong>${tipoLicenca}</strong>, notifico V.Sa que a referida licença foi <strong>NOTIFICADA</strong> </p>
+<p> Em atenção à solicitação supracitada, informamos a V.Sa. que foi identificado que a área da propriedade/atividade <strong>${nomeEmpreendimento}</strong>  se sobrepõe total ou parcialmente a área <strong>${restricao}</strong>, de responsabilidade da Instituição <strong>${orgaoResponsavel.sigla}</strong> com emissão de comunicação à referida instituição via sistema.
 
-<p><strong>Descrição:</strong> ${parecerAnalistaGeo.parecer}</p>
+<p> O prosseguimento da análise do processo, bem como demais procedimentos e prazos para manifestação e/ou autorização da instituição serão realizados conforme disposto na Portaria Interministerial nº 060, de 24 de março de 2015 e na Lei Estadual nº 4.185. de 26 de junho de 2015.</p>
 
-<p><br>    <a href=${analiseGeo.linkNotificacao} target=_blank>CLIQUE AQUI PARA ATENDER SUA NOTIFICAÇÃO </a><br></p>
+<p> No caso de dúvidas ou para maiores esclarecimentos acesse o sistema do licenciamento ou procure o IPAAM/${orgaoResponsavel.sigla} mencionada nesta comunicação</p>
+
+<p> <strong> Responsável pela Análise GEO: ${nomeAnalista}</strong> </p>
 
 <p>             Atenciosamente,  </p>
 

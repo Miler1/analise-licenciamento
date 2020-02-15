@@ -36,37 +36,6 @@ public class VerificarComunicado extends GenericJob {
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 
 	}
-
-	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
-
-		if (sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
-
-			return true;
-
-		}
-
-		return false;
-	}
-
-	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) {
-
-		if (sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
-
-		if (sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
-
-			return true;
-		}
-
-		return false;
-	}
 	
 	public void verificarStatusComunicado() throws Exception {
 
@@ -77,6 +46,7 @@ public class VerificarComunicado extends GenericJob {
 		for (AnaliseGeo analiseGeo:analisesGeoComunicado) {
 
 			boolean podeTramitar = true;
+			boolean notificarInteressado = false;
 
 			List<Comunicado> comunicadosAnalise = Comunicado.findByAnaliseGeo(analiseGeo.id);
 
@@ -84,11 +54,40 @@ public class VerificarComunicado extends GenericJob {
 
 				if(comunicado.ativo) {
 
+					if (comunicado.sobreposicaoCaracterizacaoEmpreendimento != null) {
+
+						if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoEmpreendimento)) {
+
+							notificarInteressado = true;
+
+						}
+
+					} else if (comunicado.sobreposicaoCaracterizacaoAtividade != null) {
+
+						if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoAtividade)) {
+
+							notificarInteressado = true;
+
+						}
+
+					} else if (comunicado.sobreposicaoCaracterizacaoComplexo != null) {
+
+						if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoComplexo)) {
+
+							notificarInteressado = true;
+						}
+
+					}
+
+					List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", analiseGeo.id).fetch();
+
+					ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
+
 					if (vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
 
 						podeTramitar = false;
 
-					} else if (!vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
+					} else if (!vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido && !notificarInteressado) {
 
 						comunicado.ativo = false;
 						comunicado.segundoEmailEnviado = true;
@@ -98,43 +97,38 @@ public class VerificarComunicado extends GenericJob {
 						List<String> destinatarios = new ArrayList<String>();
 						destinatarios.add(comunicado.orgao.email);
 
-						List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", analiseGeo.id).fetch();
-
-						ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
-
 						analiseGeo.reenviarEmailComunicado(ultimoParecer, comunicado, destinatarios);
 
-						Empreendimento empreendimento = Empreendimento.findById(analiseGeo.analise.processo.empreendimento.id);
-						List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+					} else if(!vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido && notificarInteressado) {
 
-						if (comunicado.sobreposicaoCaracterizacaoEmpreendimento != null) {
+						podeTramitar = false;
 
-							if (verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoEmpreendimento)) {
+						if (!comunicado.interessadoNotificado) {
 
-								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados);
-								
+							Empreendimento empreendimento = Empreendimento.findById(analiseGeo.analise.processo.empreendimento.id);
+							List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
 
-							}
+							if (comunicado.sobreposicaoCaracterizacaoEmpreendimento != null) {
 
-						} else if (comunicado.sobreposicaoCaracterizacaoAtividade != null) {
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados, comunicado.caracterizacao, comunicado);
 
-							if (verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoAtividade)) {
+							} else if (comunicado.sobreposicaoCaracterizacaoAtividade != null) {
 
-								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados);
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados, comunicado.caracterizacao, comunicado);
 
-							}
+							} else if (comunicado.sobreposicaoCaracterizacaoComplexo != null) {
 
-						} else if (comunicado.sobreposicaoCaracterizacaoComplexo != null) {
-
-							if (verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoComplexo)) {
-
-								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados);
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados, comunicado.caracterizacao, comunicado);
 
 							}
 
 						}
 
-					} else {
+						comunicado.dataVencimento = analiseGeo.analise.dataVencimentoPrazo;
+						comunicado.interessadoNotificado = true;
+						comunicado.validateAndSave();
+					}
+					else {
 
 						comunicado.ativo = false;
 						comunicado.aguardandoResposta = false;
@@ -167,12 +161,12 @@ public class VerificarComunicado extends GenericJob {
 		LocalDate dataVencimento = new LocalDate(dataInicio.getTime());
 		LocalDate dataAtual = new LocalDate(dataFim.getTime());
 
-		// Prazo de 15 dias para resposta do orgão venceu
 		if(dataVencimento.isBefore(dataAtual)) {
+
 			return false;
+
 		}
 
-		// Prazo de 15 dias para resposta do orgão ainda não venceu
 		return true;
 
 	}

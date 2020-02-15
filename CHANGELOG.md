@@ -61,3 +61,8 @@
 * OS50 - US1208 - [Gerente Técnico] - Implementar filtro de situação (Notificado e todos filtro presentes no perfilTécnico).
 * OS50 - US1167 - Eu, gerente técnico, devo acessar visualizar protocolo para visualizar a aba de análise documental
 * OS50 - US1300 - [HOMOLOGAÇÃO] Considerações análise geo.
+
+## OS008
+
+* OS008 - US1493 - Eu, analista geo, devo comunicar o órgão e interessado para restrições conforme nova regra
+

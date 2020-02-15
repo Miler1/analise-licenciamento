@@ -60,6 +60,9 @@ public class Comunicado extends GenericModel {
     @Column(name="segundo_email_enviado")
     public Boolean segundoEmailEnviado;
 
+    @Column(name="interessado_notificado")
+    public Boolean interessadoNotificado;
+
     @OneToOne
     @JoinColumn(name="id_caracterizacao", referencedColumnName="id")
     public Caracterizacao caracterizacao;
@@ -102,6 +105,37 @@ public class Comunicado extends GenericModel {
     @Transient
     public ParecerAnalistaGeo parecerAnalistaGeo;
 
+    public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento) {
+
+        if (sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+            return true;
+
+        }
+
+        return false;
+    }
+
+    public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoComplexo sobreposicaoCaracterizacaoComplexo) {
+
+        if (sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
+
+        if (sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
+
+            return true;
+        }
+
+        return false;
+    }
+
 
     public Comunicado(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, Boolean aguardandoResposta, SobreposicaoCaracterizacaoEmpreendimento sobreposicaoCaracterizacaoEmpreendimento, Orgao orgao){
 
@@ -115,6 +149,7 @@ public class Comunicado extends GenericModel {
         this.segundoEmailEnviado = false;
         this.sobreposicaoCaracterizacaoEmpreendimento = sobreposicaoCaracterizacaoEmpreendimento;
         this.distancia = getDistancia(sobreposicaoCaracterizacaoEmpreendimento.distancia, sobreposicaoCaracterizacaoEmpreendimento.geometria, sobreposicaoCaracterizacaoEmpreendimento.caracterizacao);
+        this.interessadoNotificado = false;
 
         if (aguardandoResposta) {
 
@@ -134,7 +169,7 @@ public class Comunicado extends GenericModel {
 
         this.tipoSobreposicao = sobreposicaoCaracterizacaoAtividade.tipoSobreposicao;
         this.dataCadastro = new Date();
-        this.dataVencimento = Helper.somarDias(new Date(), 30);
+        this.dataVencimento = Helper.somarDias(new Date(), 15);
         this.caracterizacao = caracterizacao;
         this.aguardandoResposta = aguardandoResposta;
         this.analiseGeo = analiseGeo;
@@ -142,6 +177,7 @@ public class Comunicado extends GenericModel {
         this.segundoEmailEnviado = false;
         this.sobreposicaoCaracterizacaoAtividade = sobreposicaoCaracterizacaoAtividade;
         this.distancia = getDistancia(sobreposicaoCaracterizacaoAtividade.distancia, sobreposicaoCaracterizacaoAtividade.geometria, sobreposicaoCaracterizacaoAtividade.atividadeCaracterizacao.caracterizacao);
+        this.interessadoNotificado = false;
 
         if (aguardandoResposta) {
 
@@ -161,7 +197,7 @@ public class Comunicado extends GenericModel {
 
         this.tipoSobreposicao = sobreposicaoCaracterizacaoComplexo.tipoSobreposicao;
         this.dataCadastro = new Date();
-        this.dataVencimento = Helper.somarDias(new Date(), 30);
+        this.dataVencimento = Helper.somarDias(new Date(), 15);
         this.caracterizacao = caracterizacao;
         this.aguardandoResposta = aguardandoResposta;
         this.analiseGeo = analiseGeo;
@@ -169,6 +205,7 @@ public class Comunicado extends GenericModel {
         this.segundoEmailEnviado = false;
         this.sobreposicaoCaracterizacaoComplexo = sobreposicaoCaracterizacaoComplexo;
         this.distancia = getDistancia(sobreposicaoCaracterizacaoComplexo.distancia, sobreposicaoCaracterizacaoComplexo.geometria, sobreposicaoCaracterizacaoComplexo.caracterizacao);
+        this.interessadoNotificado = false;
 
         if (aguardandoResposta) {
 

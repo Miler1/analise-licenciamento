@@ -21,12 +21,16 @@ public class EmailNotificacaoComunicado extends EmailNotificacao {
     private AnaliseGeo analiseGeo;
     private ParecerAnalistaGeo parecerAnalistaGeo;
     private List<Documento> pdfsNotificacao;
+    private Caracterizacao caracterizacao;
+    private Comunicado comunicado;
 
-    public EmailNotificacaoComunicado(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, List<String> emailsDestinatarios) throws Exception {
+    public EmailNotificacaoComunicado(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, List<String> emailsDestinatarios, Caracterizacao caracterizacao, Comunicado comunicado) throws Exception {
 
         super(emailsDestinatarios);
         this.analiseGeo = analiseGeo;
         this.parecerAnalistaGeo = parecerAnalistaGeo;
+        this.caracterizacao = caracterizacao;
+        this.comunicado = comunicado;
 
     }
 
@@ -46,7 +50,7 @@ public class EmailNotificacaoComunicado extends EmailNotificacao {
 
             final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
-            if(!Emails.notificarInteressadoComunicado(this.emailsDestinatarios, licencas, this.analiseGeo, this.parecerAnalistaGeo, enderecoCompleto).get()) {
+            if(!Emails.notificarInteressadoComunicado(this.emailsDestinatarios, licencas, this.analiseGeo, this.parecerAnalistaGeo, enderecoCompleto, this.caracterizacao, comunicado).get()) {
 
                 throw new AppException();
 
