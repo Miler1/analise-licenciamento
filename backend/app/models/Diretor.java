@@ -37,12 +37,8 @@ public class Diretor extends GenericModel {
 	public Long id;
 
 	@ManyToOne
-	@JoinColumn(name="id_analise_tecnica")
-	public AnaliseTecnica analiseTecnica;
-
-	@ManyToOne
-	@JoinColumn(name="id_analise_geo")
-	public AnaliseGeo analiseGeo;
+	@JoinColumn(name="id_analise")
+	public Analise analise;
 
 	@Required
 	@ManyToOne
@@ -61,8 +57,7 @@ public class Diretor extends GenericModel {
 	public Diretor(Analise analise, UsuarioAnalise usuario) {
 
 		super();
-		this.analiseTecnica = analise.analiseTecnica;
-		this.analiseGeo = analise.analiseGeo;
+		this.analise = analise;
 		this.usuario = usuario;
 		this.dataVinculacao = new Date();
 

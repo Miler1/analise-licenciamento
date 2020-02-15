@@ -3,7 +3,12 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  analiseGeoService, 
                                                  analiseTecnicaService,
                                                  documentoAnaliseService,
-                                                 documentoService) {
+                                                 documentoService,
+                                                 parecerDiretorTecnicoService,
+                                                 $anchorScroll,
+                                                 $location,
+                                                 $timeout,
+                                                 analistaService) {
 
     var validacaoAnaliseDiretor = this;
 
@@ -15,6 +20,18 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.labelParecerAnalistaGeo = null;
     validacaoAnaliseDiretor.labelParecerAnalistaTecnico = null;
     validacaoAnaliseDiretor.possuiAutoInfracao = false;
+    validacaoAnaliseDiretor.controleVisualizacao = null;
+    validacaoAnaliseDiretor.concluir = concluir;
+    validacaoAnaliseDiretor.parecerTecnico = {};
+    validacaoAnaliseDiretor.idTipoResultadoAnalise = null; 
+    validacaoAnaliseDiretor.parecerDiretorTecnico = '';
+
+    validacaoAnaliseDiretor.errors = {
+
+		despacho: false,
+        resultadoAnalise: false,
+        	
+    };
 
     var getUltimoParecerAnalista = function(pareceresAnalista) {
 
@@ -91,6 +108,8 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
     function init() {
 
+        validacaoAnaliseDiretor.controleVisualizacao = "ETAPA_VALIDACAO_GEO";
+
         analiseGeoService.getAnaliseGeoByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
@@ -122,6 +141,113 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             });
         
         $rootScope.$broadcast('atualizarContagemProcessos');
+    }
+
+    function scrollTop() {
+		$anchorScroll();
+	}
+
+    function analiseValida() {
+
+        if(validacaoAnaliseDiretor.idTipoResultadoAnalise === null || validacaoAnaliseDiretor.idTipoResultadoAnalise === undefined) {
+
+            validacaoAnaliseDiretor.errors.resultadoAnalise = true;
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
+        }else{
+
+            validacaoAnaliseDiretor.errors.resultadoAnalise = false;
+
+        }
+        
+        if(validacaoAnaliseDiretor.parecerDiretorTecnico === "" || validacaoAnaliseDiretor.parecerDiretorTecnico === null || validacaoAnaliseDiretor.parecerDiretorTecnico === undefined) {
+
+            validacaoAnaliseDiretor.errors.despacho = true;
+            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
+        }else{
+
+            validacaoAnaliseDiretor.errors.despacho = false;
+
+        }
+
+        if(validacaoAnaliseDiretor.errors.resultadoAnalise === true || validacaoAnaliseDiretor.errors.despacho === true){
+
+            return false;
+
+        }
+        
+        return true;
+
+    }
+
+    validacaoAnaliseDiretor.validacaoAbaVoltar = function() {
+		
+        validacaoAnaliseDiretor.controleVisualizacao = "ETAPA_VALIDACAO_GEO";
+		
+		scrollTop();
+	};
+
+    validacaoAnaliseDiretor.voltarEtapaAnterior = function(){
+		$timeout(function() {
+			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
+            scrollTop();
+			
+		}, 0);
+	};
+    
+    validacaoAnaliseDiretor.avancarProximaEtapa = function() {
+		$timeout(function() {
+            $('.nav-tabs > .active').next('li').find('a').trigger('click');
+
+			scrollTop();
+        }, 0);
+    };
+
+    validacaoAnaliseDiretor.validacaoAbaAvancarDiretor = function() {
+
+        validacaoAnaliseDiretor.controleVisualizacao = "ETAPA_VALIDACAO_DIRETOR";
+        
+        scrollTop();
+    
+    };
+
+    validacaoAnaliseDiretor.validacaoAbaAvancarTecnico = function() {
+
+        validacaoAnaliseDiretor.controleVisualizacao = "ETAPA_VALIDACAO_TECNICO";
+        
+        scrollTop();
+    
+    };
+
+    validacaoAnaliseDiretor.cancelar = function() {
+
+        $location.path("/analise-diretor");
+    };
+
+    function concluir() {
+
+        if(!analiseValida()){
+            return;
+        }
+
+        var params = {
+            analise: {
+                id: $route.current.params.idAnalise,
+            },
+            parecer: validacaoAnaliseDiretor.parecerDiretorTecnico,
+            tipoResultadoAnalise: {id: validacaoAnaliseDiretor.idTipoResultadoAnalise}
+        };
+
+        parecerDiretorTecnicoService.concluirParecerDiretorTecnico(params)
+			.then(function(response){
+                $location.path("analise-diretor");
+                $timeout(function() {
+                    mensagem.success("Validacao diretor finalizada!", {referenceId: 5});
+                }, 0);
+            },function(error){
+				mensagem.error(error.data.texto);
+			});
     }
 
 
