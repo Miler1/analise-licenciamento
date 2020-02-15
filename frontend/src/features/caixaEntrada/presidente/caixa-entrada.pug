@@ -1,0 +1,69 @@
+include ../../../layout/components/paginacao
+
+div
+	filtro-processos(paginacao="cxEntPresidente.paginacao",
+		disabled-fields="cxEntPresidente.disabledFields",
+		atualizar-lista="cxEntPresidente.atualizarListaProcessos",
+		atualizar-paginacao="cxEntPresidente.atualizarPaginacao",
+		condicao-tramitacao="cxEntPresidente.condicaoTramitacao",
+		pesquisar-ao-inicializar="true",
+		is-diretor="true")
+
+	h4 Lista de protocolos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="cxEntPresidente.processos && cxEntPresidente.processos.length > 0")
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th
+							th.col-md-1 Protocolo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-3 Empreendimento
+							th.col-md-2 Município
+							th.col-md-1 Licença
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise GEO
+							th.col-md-1 Prazo análise técnica
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in cxEntPresidente.processos")
+							td
+							td(ng-attr-title="{{processo.numero}}") {{ processo.numero }}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': cxEntPresidente.dateUtil.verificaPrazoMinimoData(cxEntPresidente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntPresidente.PrazoAnalise.ANALISE), cxEntPresidente.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ cxEntPresidente.dateUtil.getContaDiasRestantesData(cxEntPresidente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntPresidente.PrazoAnalise.ANALISE)) }}
+
+							td(ng-class="{'error-message': processo.diasAnaliseGeo > cxEntPresidente.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
+								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntPresidente.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
+
+							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntPresidente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{ cxEntPresidente.prazoAnaliseTecnica(processo) }}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+
+												a(ng-click="cxEntPresidente.iniciarAnalisePresidente(processo.idAnalise)")
+													i.glyphicon.glyphicon-ok-circle
+													span Validar análise
+											li
+												a(ng-click="cxEntPresidente.visualizarProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar protocolo
+
+				+paginacao('cxEntPresidente.paginacao', 'cxEntPresidente.onPaginaAlterada')
+
+		.row(ng-show="!cxEntPresidente.processos || cxEntPresidente.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.

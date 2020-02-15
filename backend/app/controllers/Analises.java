@@ -26,4 +26,17 @@ public class Analises extends InternalController {
 
 	}
 
+	public static void iniciarAnalisePresidente(Long idAnalise) {
+
+		verificarPermissao(Acao.INICIAR_PARECER_PRESIDENTE);
+
+		Analise analiseAAlterar = Analise.findById(idAnalise);
+
+		analiseAAlterar.iniciarAnalisePresidente(getUsuarioSessao());
+
+		renderMensagem(Mensagem.ANALISE_PRESIDENTE_INICIADA_SUCESSO);
+
+	}
+
+
 }

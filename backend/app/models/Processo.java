@@ -164,11 +164,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoAnaliseGeo(processoBuilder, filtro, usuarioSessao);
 
-		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
+//		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
 
 		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
 
 		commonFilterProcessoDiretor(processoBuilder, filtro, usuarioSessao);
+
+		commonFilterProcessoPresidente(processoBuilder, filtro, usuarioSessao);
 
 		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
 
@@ -233,7 +235,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		if (filtro.filtrarPorUsuario != null && filtro.filtrarPorUsuario && filtro.idCondicaoTramitacao != null &&
-				filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_APROVADOR)){
+				filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ASSINATURA_PRESIDENE)){
 
 			br.ufla.lemaf.beans.pessoa.Setor setor = integracaoEntradaUnica.getSetorBySigla(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
@@ -357,7 +359,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
 
-			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
+			throw new ValidacaoException(Mensagem.NENHUM_DIRETOR_ENCONTRADO);
 
 		}
 
@@ -370,6 +372,35 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.filtrarPorUsuario) {
 
 			processoBuilder.filtrarIdDiretor(usuarioSessao.id);
+
+		}
+
+	}
+
+	private static void commonFilterProcessoPresidente(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+													UsuarioAnalise usuarioSessao) {
+
+		if (!filtro.isDiretor) {
+
+			return;
+
+		}
+
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
+			throw new ValidacaoException(Mensagem.NENHUM_PRESIDENTE_ENCONTRADO);
+
+		}
+
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty() || filtro.idCondicaoTramitacao != null) {
+
+			processoBuilder.filtrarPorIdCondicao(filtro.idCondicaoTramitacao);
+
+		}
+
+		if (filtro.filtrarPorUsuario) {
+
+			processoBuilder.filtrarIdPresidente(usuarioSessao.id);
 
 		}
 
@@ -492,9 +523,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		listWithFilterAnaliseGeo(processoBuilder, filtro);
 
-		listWithFilterAprovador(processoBuilder, usuarioSessao);
+//		listWithFilterAprovador(processoBuilder, usuarioSessao);
 
 		listWithFilterDiretor(processoBuilder, filtro);
+
+		listWithFilterPresidente(processoBuilder, filtro);
 
 		listWithFilterGerente(processoBuilder, filtro);
 
@@ -536,6 +569,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void listWithFilterDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
 		if (!filtro.isDiretor) {
+
+			return;
+		}
+
+		processoBuilder.groupByIdAnaliseGeo(true)
+				.groupByIdAnaliseTecnica(true)
+				.groupByPrazoAnaliseGerente()
+				.orderByPrazoAnaliseGerente();
+
+	}
+
+	private static void listWithFilterPresidente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isPresidente) {
 
 			return;
 		}
@@ -627,6 +674,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		countWithFilterDiretor(processoBuilder, filtro);
 
+		countWithFilterPresidente(processoBuilder, filtro);
+
 		Object qtdeTotalItens = processoBuilder.unique();
 
 		return ((Map<String, Long>) qtdeTotalItens).get("total");
@@ -666,6 +715,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void countWithFilterDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
 		if (!filtro.isDiretor) {
+
+			return;
+
+		}
+
+	}
+
+	private static void countWithFilterPresidente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isPresidente) {
 
 			return;
 

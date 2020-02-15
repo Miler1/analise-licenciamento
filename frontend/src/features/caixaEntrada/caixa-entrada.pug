@@ -25,3 +25,7 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaE
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.DIRETOR",
     ng-controller='cxEntDiretorController as cxEntDiretor')
     include diretorTecnico/caixa-entrada
+
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.PRESIDENTE",
+    ng-controller='cxEntPresidenteController as cxEntPresidente')
+    include presidente/caixa-entrada
