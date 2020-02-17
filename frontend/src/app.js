@@ -196,10 +196,6 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
-
-
-
-
 		{
 
 			titulo: 'Aguardando Autenticação',
@@ -229,11 +225,6 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
-
-
-
-
-
 		{
 
 			titulo: 'Em análise',
