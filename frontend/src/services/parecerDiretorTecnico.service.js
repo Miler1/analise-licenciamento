@@ -12,8 +12,13 @@ var ParecerDiretorTecnicoService = function(request, config) {
 		return request
 			.post(config.BASE_URL() + 'parecer/diretor/concluirParecerDiretorTecnico', params);
 	};
-    
 
+	this.findParecerByIdHistoricoTramitacao = function(id) {
+
+		return request
+			.get(config.BASE_URL() + 'parecer/diretor/findParecerByIdHistoricoTramitacao/' + id);
+
+	};   
 
 };
 
