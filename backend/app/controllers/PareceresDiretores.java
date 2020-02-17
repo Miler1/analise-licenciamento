@@ -29,4 +29,12 @@ public class PareceresDiretores extends InternalController {
 
     }
 
+    public static void findParecerByIdHistoricoTramitacao(Long idHistoricoTramitacao) {
+
+        ParecerDiretorTecnico parecerDiretorTecnico = ParecerDiretorTecnico.find("idHistoricoTramitacao", idHistoricoTramitacao).first();
+
+        renderJSON(parecerDiretorTecnico, ParecerDiretorSerializer.findByAnalise);
+
+    }
+
 }

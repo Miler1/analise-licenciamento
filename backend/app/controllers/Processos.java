@@ -35,8 +35,6 @@ public class Processos extends InternalController {
 
 	public static void findByNumProcesso(String numProcesso) {
 
-		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO, Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
-
 		renderJSON(Processo.findByNumProcesso(numProcesso.replace('-','/')), ProcessoSerializer.getInfo);
 	}
 

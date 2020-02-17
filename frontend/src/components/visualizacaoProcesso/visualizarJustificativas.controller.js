@@ -11,11 +11,13 @@ var VisualizarJustificativasController = function ($uibModalInstance, parecer, i
         visualizarJustificativasCtlr.labelParecer = 'Justificativa';
 
     } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.DEFERIDO ||
+        visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.ANALISE_APROVADA ||
         visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_VALIDADO){
         
         visualizarJustificativasCtlr.labelParecer = 'Despacho';
 
     } else if (visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.INDEFERIDO ||
+        visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.ANALISE_NAO_APROVADA ||
         visualizarJustificativasCtlr.parecer.tipoResultadoAnalise.id === visualizarJustificativasCtlr.resultadoAnalise.PARECER_NAO_VALIDADO){
 
         visualizarJustificativasCtlr.labelParecer = 'Justificativa';
