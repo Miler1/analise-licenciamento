@@ -1,7 +1,7 @@
 var ValidacaoAnalisePresidenteController = function($uibModal,
                                                  $route,
                                                  desvinculoService,      
-                                                 analiseGeoService,
+                                                 analiseTecnicaService,
                                                  parecerDiretorTecnicoService,
                                                  parecerGerenteService,
                                                  parecerAnalistaTecnicoService,
@@ -16,28 +16,45 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
     validacaoAnalisePresidente.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
     validacaoAnalisePresidente.tipoDocumento =  app.utils.TiposDocumentosAnalise;
     validacaoAnalisePresidente.dadosProcesso = null;
-    validacaoAnalisePresidente.analiseGeo = null;
     validacaoAnalisePresidente.dateUtil = app.utils.DateUtil;
     validacaoAnalisePresidente.analiseTecnica = null;
     validacaoAnalisePresidente.acaoTramitacao = app.utils.AcaoTramitacao;
 
     function init() {
 
-        analiseGeoService.getAnaliseGeoByAnalise($route.current.params.idAnalise)
+		analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
-                validacaoAnalisePresidente.analiseGeo = response.data;
+                validacaoAnalisePresidente.analiseTecnica = response.data;
+				validacaoAnalisePresidente.parecerTecnico = getUltimoParecerAnalista(validacaoAnalisePresidente.analiseTecnica.pareceresAnalistaTecnico);
+				
+				processoService.getInfoProcessoByNumero(validacaoAnalisePresidente.analiseTecnica.analise.processo.numero)
+				.then(function(response){
 
-                processoService.getInfoProcessoByNumero(validacaoAnalisePresidente.analiseGeo.analise.processo.numero)
-                    .then(function(response){
+					validacaoAnalisePresidente.dadosProcesso = response.data;
 
-                        validacaoAnalisePresidente.dadosProcesso = response.data;
+				});
 
-                });
+            });	
+			 
+        parecerDiretorTecnicoService.findParecerByAnalise($route.current.params.idAnalise)
+            .then(function(response){
 
-            });     
+                validacaoAnalisePresidente.parecerDiretor = response.data;
+                
+            });
 
-    }
+	}
+	
+	var getUltimoParecerAnalista = function(pareceresAnalista) {
+
+        var pareceresOrdenados = pareceresAnalista.sort(function(dataParecer1, dataParecer2){
+            return dataParecer1 - dataParecer2;
+        });
+
+        return pareceresOrdenados[pareceresOrdenados.length - 1];
+
+    };
 
     validacaoAnalisePresidente.cancelar = function() {
 
@@ -139,10 +156,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
         } else if(historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR ||
                 historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR ){
 
-			parecerDiretorTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
-            	.then(function(response){
-					abrirModal(response.data, idProcesso);
-				});
+				abrirModal(validacaoAnalisePresidente.parecerDiretor, idProcesso);	
 
 		}else {
 

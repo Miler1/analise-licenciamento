@@ -105,3 +105,37 @@ div.row
 											button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-if="validacaoAnalisePresidente.validaJustificativas(tramitacao)", 
 																											ng-click="validacaoAnalisePresidente.visualizarJustificativas(validacaoAnalisePresidente.dadosProcesso.idProcesso, tramitacao)")
 												i.glyphicon.glyphicon-list-alt
+div.row
+		.col-xs-12
+				h4 Validação da análise
+
+				div(uib-accordion class="accordion")
+					div(uib-accordion-group class="panel-default" is-open="validacaoAnalisePresidente.abreConsideracaoDiretor")
+						uib-accordion-heading(ng-click="validacaoAnalisePresidente.abreConsideracaoDiretor=!validacaoAnalisePresidente.abreConsideracaoDiretor")
+							div Consideração do diretor técnico
+								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnalisePresidente.abreConsideracaoDiretor, 'glyphicon-chevron-right': !validacaoAnalisePresidente.abreConsideracaoDiretor}")
+
+						div
+							label.label-parecer Parecer do Diretor Técnico:
+							br
+							p(ng-bind-html="validacaoAnalisePresidente.parecerDiretor.parecer")
+						div
+							label.label-parecer Documentos de minuta:						 
+							table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecerTecnico.documentoMinuta != null ")
+
+								thead
+
+									tr
+										th.col-md-10 Minutas
+										th.col-md-2.text-right Ação
+
+								tbody
+									tr  
+										td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecerTecnico.documentoMinuta.nomeDoArquivo }}
+										td.col-md-2.text-right
+											a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_MINUTA)")
+												i.glyphicon.glyphicon-eye-open
+									
+
+							div.info-sem-dados-para-exibir(ng-if=" historicoAnaliseTecnicaCtrl.parecerTecnico.documentoMinuta == null ")
+								i Não foi gerado nenhum documento.
