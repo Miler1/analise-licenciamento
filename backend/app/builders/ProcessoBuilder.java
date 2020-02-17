@@ -756,6 +756,19 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
+	public ProcessoBuilder filtrarIdPresidente(Long idUsuarioPresidente) {
+
+		if (idUsuarioPresidente != null) {
+
+			addObjetoTramitavelAlias();
+			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioPresidente));
+
+		}
+
+		return this;
+
+	}
+
 	public ProcessoBuilder filtrarPorPeriodoProcesso(Date periodoInicial, Date periodoFinal) {
 
 		if (periodoInicial != null) {
@@ -1125,6 +1138,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public boolean isAnaliseGeoOpcional;
 		public boolean isGerente;
 		public boolean isDiretor;
+		public boolean isPresidente;
 		public Long idAnalistaGeo;
 		public String siglaSetorGerencia;
 		public String siglaSetorCoordenadoria;

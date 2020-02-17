@@ -83,5 +83,6 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO = 73L;
 	public static final Long VALIDAR_ANALISE_PELO_DIRETOR = 74L;
 	public static final Long INVALIDAR_ANALISE_PELO_DIRETOR = 75L;
+	public static final Long INICIAR_ANALISE_PRESIDENTE = 76l;
 
 }

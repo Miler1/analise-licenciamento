@@ -4,7 +4,7 @@
             form.pull-left.posicao-conteudo(ng-class="{'error': validacaoAnaliseDiretor.errors.resultadoAnalise === true}")
                 label.opDla.radio-inline.posicao-primeiroItem-diretor
                     input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseDiretor.idTipoResultadoAnalise', value="{{validacaoAnaliseDiretor.tiposResultadoAnalise.ANALISE_APROVADA}}")
-                    | Análise APROVADA 
+                    | Análise APROVADA
                 label.opDla.radio-inline(style="margin-left:250px;")
                     input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseDiretor.idTipoResultadoAnalise', value="{{validacaoAnaliseDiretor.tiposResultadoAnalise.ANALISE_NAO_APROVADA}}")
                     | Análise NÃO APROVADA

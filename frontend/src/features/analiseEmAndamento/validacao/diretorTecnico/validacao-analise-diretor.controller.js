@@ -1,6 +1,9 @@
 var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  $route,      
-                                                 analiseGeoService,
+                                                 analiseGeoService, 
+                                                 analiseTecnicaService,
+                                                 documentoAnaliseService,
+                                                 documentoService,
                                                  parecerDiretorTecnicoService,
                                                  $anchorScroll,
                                                  $location,
@@ -23,6 +26,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.possuiAutoInfracao = false;
     validacaoAnaliseDiretor.controleVisualizacao = null;
     validacaoAnaliseDiretor.concluir = concluir;
+    validacaoAnaliseDiretor.parecerTecnico = {};
     validacaoAnaliseDiretor.idTipoResultadoAnalise = null; 
     validacaoAnaliseDiretor.parecerDiretorTecnico = '';
     validacaoAnaliseDiretor.exibirDadosProcesso = exibirDadosProcesso;
