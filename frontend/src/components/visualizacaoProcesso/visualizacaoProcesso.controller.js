@@ -61,7 +61,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			});
 			
-		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE) {
+		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE || modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.DIRETOR) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 
@@ -196,6 +196,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			modalCtrl.dadosProcesso = response.data;
 			modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 			modalCtrl.setPareceres();
+			modalCtrl.setDocumentos();
 		})
 		.catch(function(){
 			mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
