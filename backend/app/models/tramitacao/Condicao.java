@@ -22,7 +22,7 @@ public class Condicao extends GenericModel {
 	public static final Long AGUARDANDO_ANALISE_TECNICA = 8l;
 	public static final Long EM_ANALISE_TECNICA = 9l;
 	public static final Long AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE = 10l;
-	public static final Long AGUARDANDO_ASSINATURA_APROVADOR = 11l;
+	public static final Long AGUARDANDO_ASSINATURA_PRESIDENE = 11l;
 	public static final Long AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR = 12l;
 	public static final Long AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR = 13l;
 	public static final Long LICENCA_EMITIDA = 14l;
@@ -43,6 +43,7 @@ public class Condicao extends GenericModel {
 	public static final Long NOTIFICADO_PELO_ANALISTA_TECNICO= 35l;
 	public static final Long EM_ANALISE_TECNICA_GERENTE = 36l;
 	public static final Long EM_ANALISE_DIRETOR = 37l;
+	public static final Long EM_ANALISE_PRESIDENTE = 38l;
 
 	@Id
 	@Column(name = "ID_CONDICAO")
