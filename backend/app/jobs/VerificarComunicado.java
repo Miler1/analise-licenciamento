@@ -54,28 +54,11 @@ public class VerificarComunicado extends GenericJob {
 
 				if(comunicado.ativo) {
 
-					if (comunicado.sobreposicaoCaracterizacaoEmpreendimento != null) {
+					if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoEmpreendimento) ||
+							comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoAtividade) ||
+							comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoComplexo)) {
 
-						if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoEmpreendimento)) {
-
-							notificarInteressado = true;
-
-						}
-
-					} else if (comunicado.sobreposicaoCaracterizacaoAtividade != null) {
-
-						if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoAtividade)) {
-
-							notificarInteressado = true;
-
-						}
-
-					} else if (comunicado.sobreposicaoCaracterizacaoComplexo != null) {
-
-						if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoComplexo)) {
-
-							notificarInteressado = true;
-						}
+						notificarInteressado = true;
 
 					}
 
