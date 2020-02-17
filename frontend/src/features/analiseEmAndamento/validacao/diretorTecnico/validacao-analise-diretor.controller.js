@@ -2,6 +2,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  $route,      
                                                  analiseGeoService, 
                                                  analiseTecnicaService,
+                                                 processoService,
                                                  documentoAnaliseService,
                                                  documentoService) {
 
@@ -15,6 +16,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.labelParecerAnalistaGeo = null;
     validacaoAnaliseDiretor.labelParecerAnalistaTecnico = null;
     validacaoAnaliseDiretor.possuiAutoInfracao = false;
+    validacaoAnaliseDiretor.exibirDadosProcesso = exibirDadosProcesso;
 
     var getUltimoParecerAnalista = function(pareceresAnalista) {
 
@@ -88,6 +90,27 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
         }
 
     };
+
+    function exibirDadosProcesso() {
+
+        var processo = {
+
+            idProcesso: validacaoAnaliseDiretor.analiseGeo.analise.processo.id,
+            numero: validacaoAnaliseDiretor.analiseGeo.analise.processo.numero,
+            denominacaoEmpreendimento: validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.denominacao
+        };
+
+        if(validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj) {
+
+            processo.cnpjEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
+
+        } else {
+
+            processo.cpfEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cpf;
+        }		
+
+        processoService.visualizarProcesso(processo);
+    }
 
     function init() {
 
