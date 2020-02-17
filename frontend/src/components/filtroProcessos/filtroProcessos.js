@@ -97,7 +97,7 @@ var FiltroProcessos = {
 				analiseTecnicaFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 			
-			} else if(!caixaEntrada && !emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === (app.utils.Perfis.GERENTE || app.utils.Perfis.DIRETOR || app.utils.Perfis.PRESIDENTE)) {
+			} else if(!caixaEntrada && !emAnalise && [app.utils.Perfis.GERENTE,app.utils.Perfis.DIRETOR, app.utils.Perfis.PRESIDENTE].includes($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo)) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
 				ctrl.filtro.filtrarPorUsuario = false;
@@ -302,7 +302,8 @@ var FiltroProcessos = {
 						ctrl.condicoes = response.data;
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
 
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_GEO_FINALIZADA',
@@ -312,7 +313,8 @@ var FiltroProcessos = {
 						}
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
 
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_TECNICA_FINALIZADA',
@@ -418,14 +420,18 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
+				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR
 			];
 		}
 
 		function getCondicoesAnaliseTecnicaFinalizada() {
 			return [
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
+				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR
 			];
 		}
 
