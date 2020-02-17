@@ -71,7 +71,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
-                validacaoAnaliseTecnicaGerente.parecerTecnico = getUltimoParecerTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico);
+                validacaoAnaliseTecnicaGerente.parecerTecnico = validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico[0];
                 findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo);
                 
                 processoService.getInfoProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id).then(function(response){
