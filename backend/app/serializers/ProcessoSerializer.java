@@ -212,6 +212,8 @@ public class ProcessoSerializer {
 			"empreendimento.empreendedor.pessoa.enderecos.roteiroAcesso",
 			"empreendimento.empreendedor.pessoa.enderecos.tipo",
 			"objetoTramitavel.condicao.idCondicao",
+			"objetoTramitavel.condicao.nomeCondicao",
+			"caracterizacao.numero",
 			"caracterizacao.documentosEnviados.id",
 			"caracterizacao.documentosEnviados.nome",
 			"caracterizacao.documentosEnviados.tipo.id",

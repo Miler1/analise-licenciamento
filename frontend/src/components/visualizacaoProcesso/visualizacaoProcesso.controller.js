@@ -156,17 +156,21 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 		if (ultimoParecer !== null && ultimoParecer !== undefined) {
 
-			modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
+			if (ultimoParecer.pareceresAnalistaTecnico[0] !== null && ultimoParecer.pareceresAnalistaTecnico[0] !== undefined) {
+				
+				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
 
-			if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta !== null) {
+				if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta !== null) {
 
-				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta);
+					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta);
 
-			}
+				}
 
-			if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria!== null) {
+				if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria !== null) {
 
-				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria);
+					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria);
+
+				}
 
 			}
 
