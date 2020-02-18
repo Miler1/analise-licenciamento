@@ -78,3 +78,4 @@
 ## OS008
 
 * OS008 - US1493 - Eu, analista geo, devo comunicar o órgão e interessado para restrições conforme nova regra
+* OS008 - US1471 - Correção de "LABELS"

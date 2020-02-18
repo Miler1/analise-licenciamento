@@ -268,7 +268,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 			.then(function(response){
                 $location.path('/analise-diretor');
                 $timeout(function() {
-                    mensagem.success("Validacao diretor finalizada!", {referenceId: 5});
+                    mensagem.success("Validacao diretor técnico finalizada!", {referenceId: 5});
                 }, 0);
             },function(error){
 				mensagem.error(error.data.texto);
