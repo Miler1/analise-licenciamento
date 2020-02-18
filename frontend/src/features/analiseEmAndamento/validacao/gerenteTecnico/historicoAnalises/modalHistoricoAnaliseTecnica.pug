@@ -29,7 +29,7 @@ div.modal-body
             
         .info-dados-solicitante
             label Documentos gerados na análise: 
-            table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ",margin-top="15px;")
+            table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null || historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null || historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ",margin-top="15px;")
 
                 thead
 
