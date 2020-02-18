@@ -161,7 +161,7 @@ public class AnalisesGeo extends InternalController {
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {
 
-        verificarPermissao(Acao.BAIXAR_DOCUMENTO);
+        //verificarPermissao(Acao.BAIXAR_DOCUMENTO);
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
         ParecerAnalistaGeo ultimoParecer = analiseGeoSalva.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);

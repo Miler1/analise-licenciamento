@@ -1,5 +1,8 @@
 package models;
 
+import models.licenciamento.Caracterizacao;
+import models.licenciamento.Orgao;
+import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
@@ -49,7 +52,7 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 		return dataParecer;
 	}
 
-	public void finalizar(AnaliseGeo analiseGeo, UsuarioAnalise gerente) {
+	public void finalizar(AnaliseGeo analiseGeo, UsuarioAnalise gerente) throws Exception {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.PARECER_VALIDADO)) {
 
@@ -70,10 +73,14 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			analiseTecnica.geraLicencasAnaliseTecnica(analiseGeo.licencasAnalise);
 			analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, usuarioAnalistaTecnico).save();
 
+			ParecerAnalistaGeo parecerAnalistaGeo = ParecerAnalistaGeo.getUltimoParecer(analiseGeo.pareceresAnalistaGeo);
+
 			analiseGeo.dataFim = new Date();
 			analiseGeo.ativo = false;
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+			enviarEmailJuridico(analiseGeo, analiseGeo.analise.processo.caracterizacao, parecerAnalistaGeo);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
 
@@ -113,6 +120,20 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
 
 		this.save();
+
+	}
+
+	public void enviarEmailJuridico(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo) throws Exception {
+
+		List<String> destinatarios = new ArrayList<>();
+		destinatarios.add("felipe.ferreira.lemaf@gmail.com");
+
+		ParecerJuridico parecerJuridico = new ParecerJuridico(analiseGeo, parecerAnalistaGeo);
+		parecerJuridico.save();
+		parecerJuridico.linkParecerJuridico = Configuracoes.APP_URL + "app/index.html#!/parecer-juridico/" + parecerJuridico.id;
+
+		EmailParecerJuridico emailParecerJuridico = new EmailParecerJuridico(analiseGeo, parecerAnalistaGeo, destinatarios, parecerJuridico);
+		emailParecerJuridico.enviar();
 
 	}
 

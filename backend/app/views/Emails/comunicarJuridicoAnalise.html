@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+%{
+numeroProcesso = analiseGeo.analise.processo.numero;
+parecerJuridico = parecerJuridico;
+empreendimento = analiseGeo.analise.processo.empreendimento;
+empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+endereco = enderecoCompleto;
+}%
+
+<html>
+
+
+
+
+<head>
+</head>
+
+<body>
+
+<h1 style="text-align: center">
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'100', width:'70' /}
+</h1>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+
+
+<p><strong>Sr.(a) Diretor(a) Jurídico(a),</strong> </p>
+
+<p>Referente à solicitação de licenciamento ambiental realizada no Sistema de Licenciamento sob o Protocolo nº <strong>${numeroProcesso}</strong> e Processo nº <strong>${numeroProcesso}</strong> de interesse da Pessoa Física/Jurídica [nome da pessoa], CPF/CNPJ nº [numero CPF]. solicita-se análise jurídica da documentação fundiária apresentada.<br><br></p>
+
+<p>Para análise da documentação fundiária acesse o link</p>
+
+<p><br>    <a href=${parecerJuridico.linkParecerJuridico} target=_blank>CLIQUE AQUI PARA RESPONDER O PARECER JURÍDICO</a><br></p>
+
+<p>             Atenciosamente,  </p>
+
+<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+
+
+</body>
+
+
+
+
+
+</html>
