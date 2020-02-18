@@ -9,10 +9,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  $location,
                                                  $timeout,
                                                  mensagem,
-                                                 analiseTecnicaService,
-                                                 processoService,
-                                                 documentoAnaliseService,
-                                                 documentoService) {
+                                                 processoService) {
 
     var validacaoAnaliseDiretor = this;
 
