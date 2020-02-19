@@ -208,7 +208,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		processoBuilder.filtrarPorListaIdCondicao(filtroProcesso.listaIdCondicaoTramitacao);
 
-		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.DIRETOR) &&
+				!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.PRESIDENTE)) {
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+		}
 
 	}
 

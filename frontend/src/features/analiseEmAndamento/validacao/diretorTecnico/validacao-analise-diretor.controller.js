@@ -7,8 +7,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  parecerDiretorTecnicoService,
                                                  $anchorScroll,
                                                  $location,
-                                                 $timeout,
-                                                 analistaService) {
+                                                 $timeout) {
 
     var validacaoAnaliseDiretor = this;
 

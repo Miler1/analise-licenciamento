@@ -21,14 +21,12 @@ section(style="padding-top:20px;")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
 	
-	button.btn.btn-success.posicao-avancar-concluir-gerente(ng-click="validacaoAnalisePresidente.concluir()")
-		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
-		| Concluir
+	button.btn.btn-success.btn-assinar-licenca(ng-if="validacaoAnalisePresidente.idTipoResultadoAnalise === validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_APROVADA.toString()",ng-click="validacaoAnalisePresidente.concluir()")
+		i.glyphicon.glyphicon-ok-sign.glyphicon--with-right-margin
+		| APROVAR LICENÇA
 
-	button.btn.btn-default.posicao-voltar-gerente(ng-click="validacaoAnalisePresidente.voltarEtapaAnterior()")
-		i.glyphicon.glyphicon-arrow-left
-		| Voltar
-		
-	button.btn.btn-success.posicao-avancar-gerente(ng-click="validacaoAnalisePresidente.avancarProximaEtapa()")
-		i.glyphicon.glyphicon-arrow-right
-		| &nbsp;Avançar                
+	button.btn.btn-success.btn-assinar-licenca(ng-if="validacaoAnalisePresidente.idTipoResultadoAnalise === validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_NAO_APROVADA.toString()",ng-click="validacaoAnalisePresidente.concluir()")
+		i.glyphicon.glyphicon-ok-sign.glyphicon--with-right-margin
+		| INDEFERIR SOLICITAÇÃO
+
+              

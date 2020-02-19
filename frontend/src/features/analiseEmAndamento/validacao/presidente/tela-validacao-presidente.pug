@@ -1,17 +1,17 @@
 div.row
 
 	.col-xs-12.col-md-8
-			div.row(style="margin-bottom:5px;")
+			div.row.label-cabecalho-protocolos
 				label.col-sm-4 Licença Solicitada:
 				div.col-sm-8
 					span {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.tipoLicenca.nome }}
 			
-			div.row(style="margin-bottom:5px;")
+			div.row.label-cabecalho-protocolos
 				label.col-sm-4 Tipologia:
 				span.col-sm-8
 					div {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome }} 
 
-			div.row(style="margin-bottom:5px;")
+			div.row.label-cabecalho-protocolos
 				label.col-sm-4 Atividade(s) Licenciada(s):
 				.col-sm-8
 					div
@@ -116,12 +116,13 @@ div.row
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnalisePresidente.abreConsideracaoDiretor, 'glyphicon-chevron-right': !validacaoAnalisePresidente.abreConsideracaoDiretor}")
 
 						div
-							label.label-parecer Parecer do Diretor Técnico:
+							label.label-documento-minuta Parecer do Diretor Técnico:
 							br
 							p(ng-bind-html="validacaoAnalisePresidente.parecerDiretor.parecer")
 						div
-							label.label-parecer Documentos de minuta:						 
-							table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecerTecnico.documentoMinuta != null ")
+							label.label-documento-minuta(style="margin-bottom:5px;") Documentos de minuta:
+							
+							table.table.table-condensed.margin-grid-licenca(ng-if="validacaoAnalisePresidente.parecerTecnico.documentoMinuta != null ")
 
 								thead
 
@@ -131,11 +132,81 @@ div.row
 
 								tbody
 									tr  
-										td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecerTecnico.documentoMinuta.nomeDoArquivo }}
+										td.col-md-10 {{ validacaoAnalisePresidente.parecerTecnico.documentoMinuta.nomeDoArquivo }}
 										td.col-md-2.text-right
-											a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_MINUTA)")
+											a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnalisePresidente.baixarDocumento(validacaoAnalisePresidente.analiseTecnica, validacaoAnalisePresidente.tipoDocumento.DOCUMENTO_MINUTA)")
 												i.glyphicon.glyphicon-eye-open
 									
 
-							div.info-sem-dados-para-exibir(ng-if=" historicoAnaliseTecnicaCtrl.parecerTecnico.documentoMinuta == null ")
+							div.info-sem-dados-para-exibir(ng-if=" validacaoAnalisePresidente.parecerTecnico.documentoMinuta == null ")
 								i Não foi gerado nenhum documento.
+
+						label.label-documento-minuta Validação da Licença
+						table.table.table-striped.table-condensed.margin-grid-licenca(style="margin-bottom:10px;")
+							thead
+								tr
+									th
+									th.col-md-5.text-left Licença
+									th.col-md-4.text-left Porte e Potencial Poluidor
+									th.col-md-2.text-left Validade
+									th.col-md-1.text-right Ação
+							tbody
+								tr
+									td
+										i.glyphicon.glyphicon-ok-sign.nao-tem-inconsistencia(ng-if="validacaoAnalisePresidente.parecerDiretor.tipoResultadoAnalise.id === validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_APROVADA")
+										i.glyphicon.glyphicon-remove-sign.temInconsistencia(ng-if="validacaoAnalisePresidente.parecerDiretor.tipoResultadoAnalise.id === validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_NAO_APROVADA")
+									td {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.tipoLicenca.nome }}
+									td {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome }} - {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome }}
+									td {{ validacaoAnalisePresidente.parecerTecnico.validadePermitida }} anos
+									td.text-right
+										a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar licença", ng-click="validacaoAnalisePresidente.openModalLicenca(validacaoAnalisePresidente.parecerTecnico, validacaoAnalisePresidente.dadosProcesso, validacaoAnalisePresidente.analiseTecnica)")
+											i.glyphicon.glyphicon-eye-open
+						div.col-md-12
+							.col-md-2
+							div.col-md-5
+								i.glyphicon.glyphicon-ok-sign.nao-tem-inconsistencia
+								span.label-legenda-presidente &nbsp;Licença APROVADA
+							div.col-md-4
+								i.glyphicon.glyphicon-remove-sign.temInconsistencia 
+								span.label-legenda-presidente &nbsp;Licença NÃO APROVADA
+						br
+						br
+						hr
+						#conclusao
+							label.obrigatorio Análise final dos pareceres:
+								div.pull-left.col-md-10.posicao-principal
+									form.pull-left.posicao-conteudo-presidente
+										label.opDla.radio-inline.posicao-primeiroItem-diretor
+											input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnalisePresidente.idTipoResultadoAnalise', value="{{validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_APROVADA}}")
+											| APROVAR LICENCIAMENTO
+										label.opDla.radio-inline(style="margin-left:150px;")
+											input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnalisePresidente.idTipoResultadoAnalise', value="{{validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_NAO_APROVADA}}")
+											| NÃO APROVAR LICENCIAMENTO
+
+						div(ng-if="validacaoAnalisePresidente.idTipoResultadoAnalise === validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_APROVADA.toString()")
+							label.obrigatorio.label-documento-minuta Despacho:
+							br
+							div(ng-class="{'error-summernote': validacaoAnalisePresidente.errors.despacho === true}")
+								summernote.form-control(id="conclusao",
+											on-paste="snPaste(evt)",
+											name="conclusao"
+											lang="pt-BR",
+											height="200",
+											ng-model="validacaoAnalisePresidente.parecerPresidente",
+											config="optionsText",
+											class="editable",
+											contenteditable="true")
+
+						div(ng-if="validacaoAnalisePresidente.idTipoResultadoAnalise === validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_NAO_APROVADA.toString()")
+							label.obrigatorio.label-documento-minuta Justificativa:
+							br
+							div(ng-class="{'error-summernote': validacaoAnalisePresidente.errors.despacho === true}")
+								summernote.form-control(id="conclusao",
+											on-paste="snPaste(evt)",
+											name="conclusao"
+											lang="pt-BR",
+											height="200",
+											ng-model="validacaoAnalisePresidente.parecerPresidente",
+											config="optionsText",
+											class="editable",
+											contenteditable="true")        

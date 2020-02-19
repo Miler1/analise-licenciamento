@@ -357,12 +357,64 @@ form{
 }
 
 .icone-analise-geo {
+	color: #757575;
+	font-style: italic;
+
+&:before {
+	content: "";
+	background-color: rgb(40, 37, 223);
+	border-radius: 50%;
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+vertical-align: middle;
+margin-left: 0px;
+}
+
+&.legenda {
+	margin-left: 5px;
+
+	&:before {
+		margin-right: 5px;
+	}
+}
+}
+
+.margin-grid-licenca{
+	border: solid silver 1px;
+}
+
+.icone-licenca-aprovada {
+	color: #757575;
+	font-style: italic;
+
+&:before {
+	content: "";
+	background-color: rgb(24, 224, 34);
+	border-radius: 50%;
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+vertical-align: middle;
+margin-left: 0px;
+}
+
+&.legenda {
+	margin-left: 5px;
+
+	&:before {
+		margin-right: 5px;
+	}
+}
+}
+
+.icone-licenca-nao-aprovada {
 		color: #757575;
 		font-style: italic;
 
 	&:before {
 		content: "";
-		background-color: rgb(40, 37, 223);
+		background-color: rgb(248, 0, 12);
 		border-radius: 50%;
 		width: 12px;
 		height: 12px;
@@ -378,6 +430,15 @@ form{
 			margin-right: 5px;
 		}
 	}
+}
+
+.label-legenda-presidente{
+	color: #757575;
+	font-style: italic;
+}
+
+.label-cabecalho-protocolos{
+	margin-bottom: 5px;
 }
 
 .icone-analise-tecnica {
@@ -435,6 +496,11 @@ form{
 .padding-inconsistencias{
 	padding-left: 30px;
 	padding-right: 30px;
+}
+
+.label-documento-minuta{
+	font-size: 13px;
+	margin-bottom: 10px;
 }
 
 .error{
@@ -581,50 +647,6 @@ form{
 
 .capitalize:first-letter {
 	text-transform: uppercase;
-}
-
-.icone-licenca-aprovada {
-	color: #757575;
-	font-style: italic;
-
-	&:before {
-		font-family: 'Glyphicons Halflings';
-		color: lighten(@brand-primary,20%);
-		content: "\e013";
-		width: 12px;
-		height: 12px;
-		display: inline-block;
-	}
-
-	&.legenda {
-		margin-left: 5px;
-
-		&:before {
-			margin-right: 5px;
-		}
-	}
-}
-
-.icone-licenca-reprovada {
-	color: #757575;
-	font-style: italic;
-
-	&:before {
-		font-family: 'Glyphicons Halflings';
-		color: @vermelho-erro;
-		content: "\e014";
-		width: 12px;
-		height: 12px;
-		display: inline-block;
-	}
-
-	&.legenda {
-		margin-left: 5px;
-
-		&:before {
-			margin-right: 5px;
-		}
-	}
 }
 
 .input-dias {

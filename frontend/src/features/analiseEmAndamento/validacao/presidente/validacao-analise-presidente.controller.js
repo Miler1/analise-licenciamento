@@ -1,12 +1,15 @@
 var ValidacaoAnalisePresidenteController = function($uibModal,
-                                                 $route,
+												 $route,
+												 mensagem,
                                                  desvinculoService,      
                                                  analiseTecnicaService,
-                                                 parecerDiretorTecnicoService,
+												 parecerDiretorTecnicoService,
+												 parecerPresidenteService,
                                                  parecerGerenteService,
                                                  parecerAnalistaTecnicoService,
                                                  parecerAnalistaGeoService,
-                                                 processoService,
+												 processoService,
+												 documentoService,
                                                  $location) {
 
     var validacaoAnalisePresidente = this;
@@ -18,7 +21,12 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
     validacaoAnalisePresidente.dadosProcesso = null;
     validacaoAnalisePresidente.dateUtil = app.utils.DateUtil;
     validacaoAnalisePresidente.analiseTecnica = null;
-    validacaoAnalisePresidente.acaoTramitacao = app.utils.AcaoTramitacao;
+	validacaoAnalisePresidente.acaoTramitacao = app.utils.AcaoTramitacao;
+	validacaoAnalisePresidente.idTipoResultadoAnalise = null;
+
+	validacaoAnalisePresidente.errors = {
+		despacho: false
+	};
 
     function init() {
 
@@ -45,6 +53,16 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
             });
 
 	}
+
+	validacaoAnalisePresidente.baixarDocumento = function (analiseTecnica, tipoDocumento ) {
+
+		if ( tipoDocumento === validacaoAnalisePresidente.tipoDocumento.DOCUMENTO_MINUTA ) {
+
+            documentoService.downloadMinutaByIdAnaliseTecnica(analiseTecnica.id);
+
+        }
+                    
+    };
 	
 	var getUltimoParecerAnalista = function(pareceresAnalista) {
 
@@ -189,6 +207,69 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
            tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE||
 		   tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE;
 	};
+
+	validacaoAnalisePresidente.openModalLicenca = function (parecerTecnico, dadosProcesso, analiseTecnica) {
+
+		$uibModal.open({
+
+            component: 'modalVisualizarSolicitacaoLicenca',
+            backdrop: 'static',
+            size: 'lg',
+            resolve: {
+
+                parecerTecnico: function() {
+
+                    return parecerTecnico;
+
+				},
+				
+				analiseTecnica: function() {
+
+                    return analiseTecnica;
+
+                },
+
+                dadosProcesso: function() {
+
+                    return dadosProcesso;
+                }
+
+            }    
+        });
+
+	};
+
+	validacaoAnalisePresidente.concluir = function () {
+
+		var parecerValido = !validacaoAnalisePresidente.parecerPresidente ? validacaoAnalisePresidente.errors.despacho = true : validacaoAnalisePresidente.errors.despacho = false;
+
+		if(parecerValido){
+			mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 5000 });
+			return;
+		}
+		
+		var params = {
+
+			analise: {
+                id: $route.current.params.idAnalise,
+            },
+			tipoResultadoAnalise: {id: validacaoAnalisePresidente.idTipoResultadoAnalise},
+			parecer: validacaoAnalisePresidente.parecerPresidente
+
+		};
+
+		parecerPresidenteService.concluirParecerPresidente(params)
+			.then(function(response){
+				
+				mensagem.success(response.data);
+
+		}, function(){
+
+			mensagem.error("Não foi possível concluir a análise");
+
+		});
+
+    };
 
 };
 
