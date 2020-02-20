@@ -64,8 +64,12 @@
 ## OS48
 
 * OS48 - US1515 - [Diretor] Eu, diretor técnico, devo logar no análise para acessar com novo setor.
-* OS48 - US1528 - [Presidente] Eu, diretor presidente, devo acessar a caixa de entrada para listagem de todos os processos para validar análise.
 * OS48 - US1158 - Eu, diretor técnico, devo acessar a caixa de entrada para visualizar listagem de protocolos.
 * OS48 - US1165 - Eu, diretor técnico, devo acessar a conclusão para validar a análise final do protocolo.
-* OS48 - US1170 - Eu, diretor presidente, devo acessar aguardando autenticação para visualizar o resumo do protocolo.
+
+## OS49
+
+* OS49 - US1528 - [Presidente] Eu, diretor presidente, devo acessar a caixa de entrada para listagem de todos os processos para validar análise.
+* OS49 - US1170 - Eu, diretor presidente, devo acessar aguardando autenticação para visualizar o resumo do protocolo.
+* OS49 - US1542 - [Presidente] Eu, diretor presidente, devo acessar aguardando autenticação para validação da análise.
 

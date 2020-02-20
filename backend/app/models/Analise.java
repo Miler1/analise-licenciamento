@@ -2,6 +2,8 @@ package models;
 
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -62,6 +64,10 @@ public class Analise extends GenericModel {
 	
 	@Column(name="notificacao_aberta")
 	public Boolean temNotificacaoAberta;
+
+	@OneToMany(mappedBy = "analise")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerDiretorTecnico> parecerDiretorTecnico;
 	
 	public Analise save() {
 		

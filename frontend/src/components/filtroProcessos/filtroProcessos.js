@@ -96,7 +96,7 @@ var FiltroProcessos = {
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
 			
-			}  else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
+			} else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;
@@ -107,7 +107,7 @@ var FiltroProcessos = {
 				analiseTecnicaFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 			
-			} else if(!caixaEntrada && !emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === (app.utils.Perfis.GERENTE || app.utils.Perfis.DIRETOR || app.utils.Perfis.PRESIDENTE)) {
+			} else if(!caixaEntrada && !emAnalise && [app.utils.Perfis.GERENTE,app.utils.Perfis.DIRETOR, app.utils.Perfis.PRESIDENTE].includes($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo)) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
 				ctrl.filtro.filtrarPorUsuario = false;

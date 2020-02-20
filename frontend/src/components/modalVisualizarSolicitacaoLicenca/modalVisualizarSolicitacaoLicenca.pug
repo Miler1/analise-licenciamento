@@ -1,0 +1,86 @@
+include ../../features/resumoProcesso/resumo-processo
+
+
+div
+    .col-xs-12(style="height:40px; margin-top:10px;")
+        .col-md-8
+            h4 {{$ctrl.titulo}}
+        .col-md-4(style="padding-top:8px; padding-right:0px;")
+            button.text-center.close(type='button', ng-click= '$ctrl.fechar()')
+                span(aria-hidden='true') ×
+                span.sr-only Fechar
+    hr(style="margin-bottom:0px;")
+.modal-header
+    div
+        .col-xs-12.col-md-8
+            div.row.label-cabecalho-protocolos
+                label.col-sm-3 Número:
+                div.col-sm-8
+                    span {{ $ctrl.dadosProcesso.numero }}
+            
+            div.row.label-cabecalho-protocolos
+                label.col-sm-3 CPF/CNPJ:
+                span.col-sm-8
+                    div {{ $ctrl.dadosProcesso.cpfEmpreendimento ? $ctrl.dadosProcesso.cpfEmpreendimento : ($ctrl.dadosProcesso.empreendimento.pessoa.cpf ? $ctrl.dadosProcesso.empreendimento.pessoa.cpf : $ctrl.dadosProcesso.cnpjEmpreendimento) | brCpfCnpj }}
+
+            div.row.label-cabecalho-protocolos
+                label.col-sm-3 Empreendimento:
+                span.col-sm-8
+                    div {{ $ctrl.dadosProcesso.empreendimento.denominacao }} 
+                    
+            div.row.label-cabecalho-protocolos
+                label.col-sm-3 Município:
+                span.col-sm-8
+                    div {{ $ctrl.dadosProcesso.empreendimento.municipio.nome }}
+    div
+        .col-xs-12.col-md-8
+            div
+                h5 Dados da Licença:
+
+            div.row.label-cabecalho-protocolos
+                label.col-sm-3 Tipo:
+                span.col-sm-9
+                    div {{ $ctrl.dadosProcesso.caracterizacao.tipoLicenca.nome }} ({{ $ctrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome }} - {{$ctrl.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}})
+
+            div.row.label-cabecalho-protocolos
+                label.col-sm-3 Data de emissão:
+                span.col-sm-8
+                    div {{ $ctrl.dadosProcesso.analise.dataCadastro }}
+
+            div.row.label-cabecalho-protocolos
+                label.col-sm-3 Validade:
+                span.col-sm-8
+                    div {{ $ctrl.parecerTecnico.validadePermitida }} anos
+    div
+        hr(style="margin-bottom:10px;")
+        .col-xs-12
+            div.row.label-cabecalho-protocolos
+                label.col-sm-4 Finalidade da atividade:
+            div.row.label-cabecalho-protocolos
+                span.col-sm-12(ng-bind-html="$ctrl.parecerTecnico.finalidadeAtividade")
+            div
+                table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;")
+                    thead
+                        tr
+                        th.col-md-11 Condicionantes
+                        th.col-md-1.text-center Prazo
+
+                    tbody(ng-repeat="condicionante in $ctrl.parecerTecnico.condicionantes")
+                        tr
+                            td.col-md-11.limite-texto {{ condicionante.texto }}
+                            td.col-md-1.text-center {{ condicionante.prazo }}
+                br            
+                table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;")
+                    thead
+                        tr
+                        th.col-md-12 Restrições
+
+                    tbody(ng-repeat="restricao in $ctrl.parecerTecnico.restricoes")
+                        tr
+                            td.limite-texto {{ restricao.texto }} 
+                br
+.modal-header
+    br
+    button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Voltar
