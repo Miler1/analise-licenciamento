@@ -136,6 +136,7 @@ public class AnaliseGeoSerializer {
             "pareceresAnalistaGeo.cartaImagem.nomeDoArquivo",
             "pareceresGerenteAnaliseGeo.tipoResultadoAnalise.id",
             "pareceresGerenteAnaliseGeo.tipoResultadoAnalise.nome",
+            "pareceresGerenteAnaliseGeo.dataParecer",
             "pareceresGerenteAnaliseGeo.parecer",
             "pareceresGerenteAnaliseGeo.usuario.id",
             "pareceresGerenteAnaliseGeo.usuario.pessoa.cpf",
