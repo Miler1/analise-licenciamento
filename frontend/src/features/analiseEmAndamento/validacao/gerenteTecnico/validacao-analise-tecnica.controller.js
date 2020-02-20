@@ -2,6 +2,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                                     analiseTecnicaService,
                                                     $timeout,
                                                     $route,
+                                                    processoService,
                                                     mensagem,
                                                     $location,
                                                     documentoAnaliseService,
@@ -50,6 +51,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
         documentoTecnicoAmbiental: []
 
     };
+
+    validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
     var findAnalisesTecnicaByNumeroProcesso = function(processo) { 
 
@@ -230,7 +233,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
         if(!documento.id){
 			documentoService.download(documento.key, documento.nomeDoArquivo);
 		}else{
-			analiseTecnicaService.download(documento.id);
+            documentoService.downloadById(documento.id);
 		}
     }
 

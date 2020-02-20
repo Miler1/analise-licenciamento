@@ -939,6 +939,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		this.analise.analiseTecnica = AnaliseTecnica.findByProcesso(this);
 		this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
 
+		if(this.analise.analisesGeo == null || this.analise.analisesGeo.isEmpty()){
+			this.analise.analisesGeo = AnaliseGeo.findAllByAnalise(this.processoAnterior.analise);
+			this.analise.analiseGeo = this.analise.analisesGeo.stream()
+					.max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+		}
+
 		if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			this.analise.analiseGeo.pareceresAnalistaGeo = this.analise.analiseGeo.pareceresAnalistaGeo.stream()

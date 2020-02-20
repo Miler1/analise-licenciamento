@@ -60,7 +60,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				}
 
 			});
-			
+
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE || modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.DIRETOR) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
@@ -156,17 +156,21 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 		if (ultimoParecer !== null && ultimoParecer !== undefined) {
 
-			if (ultimoParecer.pareceresAnalistaTecnico[0] !== null && ultimoParecer.pareceresAnalistaTecnico[0] !== undefined) {
+			if(!_.isEmpty(ultimoParecer.pareceresAnalistaTecnico)) {
 
-				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
+				if (modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer)) {
 
-				if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta !== null) {
+					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
+
+				}
+
+				if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta) {
 
 					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta);
 
 				}
 
-				if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria !== null) {
+				if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria && ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria) {
 
 					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria);
 

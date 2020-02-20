@@ -83,6 +83,12 @@ var FiltroProcessos = {
 				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 				analiseGeoFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
+
+			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
+
+				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
+				analiseTecnicaFinalizada = true;
+				ctrl.filtro.idCondicaoTramitacao = null;
 			
 			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
 				
@@ -284,6 +290,7 @@ var FiltroProcessos = {
 							.catch(function(){
 								mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
 							});
+
 					}
 				}
 
@@ -345,6 +352,7 @@ var FiltroProcessos = {
 							});
 
 						}
+
 					})
 					.catch(function(){
 						mensagem.warning('Não foi possível obter a lista de situações.');

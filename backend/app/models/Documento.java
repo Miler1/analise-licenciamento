@@ -278,6 +278,6 @@ public class Documento extends GenericModel implements Identificavel {
 	}
 
 	public Boolean isParecerAnaliseTecnica() {
-		return this.isType(TipoDocumento.PARECER_ANALISE_TECNICA);
+		return this.isType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
 	}
 }
