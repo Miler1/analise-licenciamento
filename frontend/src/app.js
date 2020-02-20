@@ -524,6 +524,8 @@ licenciamento
 	.controller('inconsistenciaTecnicaController',controllers.InconsistenciaTecnicaController)
 	.controller('modalInconsistenciaVistoriaController', controllers.ModalInconsistenciaVistoriaController)
 	.controller('modalCondicionanteController', controllers.ModalCondicionanteController)
+	.controller('historicoAnaliseGeoCtrl', controllers.HistoricoAnaliseGeoCtrl)
+	.controller('historicoAnaliseTecnicaCtrl', controllers.HistoricoAnaliseTecnicaCtrl)
 	.controller('modalRestricaoController', controllers.ModalRestricaoController);
 
 licenciamento

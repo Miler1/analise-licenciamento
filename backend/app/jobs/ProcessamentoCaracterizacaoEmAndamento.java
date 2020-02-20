@@ -7,7 +7,6 @@ import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
 import models.tramitacao.AcaoTramitacao;
-import models.Analisavel;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;
@@ -95,6 +94,9 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 					criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
 
 				} else {
+
+					analise.analisesGeo = AnaliseGeo.findAllByAnalise(analiseAntiga);
+					analise._save();
 
 					AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
 					criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico);
