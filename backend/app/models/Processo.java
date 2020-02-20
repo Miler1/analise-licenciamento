@@ -214,11 +214,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
 			processoBuilder.filtrarPorIdDiretor(filtroProcesso.idDiretor, true);
 
+		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.DIRETOR)) {
+
+			processoBuilder.filtrarPorIdDiretor(filtroProcesso.idDiretor, true);
+
 		}
 
 		processoBuilder.filtrarPorListaIdCondicao(filtroProcesso.listaIdCondicaoTramitacao);
 
-		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+		if (!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.DIRETOR) &&
+				!usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.PRESIDENTE)) {
+
+			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+		}
 
 	}
 
@@ -382,6 +391,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.filtrarPorUsuario) {
 
 			processoBuilder.filtrarIdDiretor(usuarioSessao.id);
+
+		}
+
+		if (filtro.analiseAtiva){
+
+			processoBuilder.filtrarPorAnaliseAiva(filtro.analiseAtiva);
 
 		}
 

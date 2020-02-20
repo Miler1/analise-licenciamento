@@ -2,6 +2,7 @@ package jobs;
 
 import models.*;
 
+import models.licenciamento.*;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.joda.time.Days;
@@ -45,6 +46,7 @@ public class VerificarComunicado extends GenericJob {
 		for (AnaliseGeo analiseGeo:analisesGeoComunicado) {
 
 			boolean podeTramitar = true;
+			boolean notificarInteressado = false;
 
 			List<Comunicado> comunicadosAnalise = Comunicado.findByAnaliseGeo(analiseGeo.id);
 
@@ -52,11 +54,23 @@ public class VerificarComunicado extends GenericJob {
 
 				if(comunicado.ativo) {
 
+					if (comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoEmpreendimento) ||
+							comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoAtividade) ||
+							comunicado.verificaTipoSobreposicaoComunicado(comunicado.sobreposicaoCaracterizacaoComplexo)) {
+
+						notificarInteressado = true;
+
+					}
+
+					List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", analiseGeo.id).fetch();
+
+					ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
+
 					if (vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
 
 						podeTramitar = false;
 
-					} else if (!vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido) {
+					} else if (!vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido && !notificarInteressado) {
 
 						comunicado.ativo = false;
 						comunicado.segundoEmailEnviado = true;
@@ -66,14 +80,38 @@ public class VerificarComunicado extends GenericJob {
 						List<String> destinatarios = new ArrayList<String>();
 						destinatarios.add(comunicado.orgao.email);
 
-						List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", analiseGeo.id).fetch();
-
-						ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
-
-
 						analiseGeo.reenviarEmailComunicado(ultimoParecer, comunicado, destinatarios);
 
-					} else {
+					} else if(!vencimentoPrazo(comunicado.dataVencimento, new Date()) && !comunicado.resolvido && notificarInteressado) {
+
+						podeTramitar = false;
+
+						if (!comunicado.interessadoNotificado) {
+
+							Empreendimento empreendimento = Empreendimento.findById(analiseGeo.analise.processo.empreendimento.id);
+							List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+							if (comunicado.sobreposicaoCaracterizacaoEmpreendimento != null) {
+
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados, comunicado.caracterizacao, comunicado);
+
+							} else if (comunicado.sobreposicaoCaracterizacaoAtividade != null) {
+
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados, comunicado.caracterizacao, comunicado);
+
+							} else if (comunicado.sobreposicaoCaracterizacaoComplexo != null) {
+
+								analiseGeo.enviarNotificacaoInteressado(ultimoParecer, interessados, comunicado.caracterizacao, comunicado);
+
+							}
+
+						}
+
+						comunicado.dataVencimento = analiseGeo.analise.dataVencimentoPrazo;
+						comunicado.interessadoNotificado = true;
+						comunicado.validateAndSave();
+					}
+					else {
 
 						comunicado.ativo = false;
 						comunicado.aguardandoResposta = false;
@@ -106,12 +144,12 @@ public class VerificarComunicado extends GenericJob {
 		LocalDate dataVencimento = new LocalDate(dataInicio.getTime());
 		LocalDate dataAtual = new LocalDate(dataFim.getTime());
 
-		// Prazo de 15 dias para resposta do orgão venceu
 		if(dataVencimento.isBefore(dataAtual)) {
+
 			return false;
+
 		}
 
-		// Prazo de 15 dias para resposta do orgão ainda não venceu
 		return true;
 
 	}
