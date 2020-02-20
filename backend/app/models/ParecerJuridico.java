@@ -6,17 +6,18 @@ import com.vividsolutions.jts.geom.Geometry;
 import enums.TipoSobreposicaoDistanciaEnum;
 import models.licenciamento.Caracterizacao.OrigemSobreposicao;
 import models.licenciamento.*;
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
 import org.omg.CORBA.PRIVATE_MEMBER;
 import play.db.jpa.GenericModel;
-import utils.GeoCalc;
-import utils.Helper;
-import utils.ListUtil;
-import utils.ModelUtil;
+import utils.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+
+import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema="analise", name="parecer_juridico")
@@ -32,6 +33,10 @@ public class ParecerJuridico extends GenericModel {
     @ManyToOne
     @JoinColumn(name="id_analise_geo", nullable=true)
     public AnaliseGeo analiseGeo;
+
+    @ManyToOne
+    @JoinColumn(name="id_analise_tecnica", nullable=true)
+    public AnaliseTecnica analiseTecnica;
 
     @OneToOne
     @JoinColumn(name = "id_parecer_analista_geo", referencedColumnName = "id")
@@ -52,6 +57,9 @@ public class ParecerJuridico extends GenericModel {
     @Column(name="parecer")
     public String parecer;
 
+    @Column(name = "id_historico_tramitacao")
+    public Long idHistoricoTramitacao;
+
     @Column(name="resolvido")
     public Boolean resolvido;
 
@@ -67,13 +75,14 @@ public class ParecerJuridico extends GenericModel {
     @Transient
     public String linkParecerJuridico;
 
-    public ParecerJuridico(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo){
+    public ParecerJuridico(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, AnaliseTecnica analiseTecnica){
 
         this.dataCadastro = new Date();
         this.analiseGeo = analiseGeo;
         this.ativo = true;
         this.resolvido = false;
         this.parecerAnalistaGeo = parecerAnalistaGeo;
+        this.analiseTecnica = analiseTecnica;
 
     }
 
@@ -126,5 +135,29 @@ public class ParecerJuridico extends GenericModel {
         ModelUtil.deleteAll(documentosDeletar);
     }
 
+    public static void finalizar(ParecerJuridico parecerJuridico) throws Exception {
+
+        if(parecerJuridico.id != null){
+
+            ParecerJuridico parecerJuridicoBanco = ParecerJuridico.findById(parecerJuridico.id);
+            parecerJuridicoBanco.tipoResultadoAnalise = parecerJuridico.tipoResultadoAnalise;
+            parecerJuridicoBanco.parecer = parecerJuridico.parecer;
+
+            parecerJuridicoBanco.resolvido =true;
+            parecerJuridicoBanco.ativo = false;
+
+            parecerJuridicoBanco.saveAnexos(parecerJuridico.anexos);
+            parecerJuridicoBanco.dataResposta = new Date();
+
+            parecerJuridicoBanco.analiseGeo.analise.processo.tramitacao.tramitar(parecerJuridicoBanco.analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_ANALISE_JURIDICA, getUsuarioSessao());
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(parecerJuridicoBanco.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+
+            HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(parecerJuridicoBanco.analiseGeo.analise.processo.objetoTramitavel.id);
+            parecerJuridicoBanco.idHistoricoTramitacao = historicoTramitacao.idHistorico;
+
+            parecerJuridicoBanco.save();
+
+        }
+    }
 }
 

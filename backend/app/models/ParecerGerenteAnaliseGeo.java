@@ -80,7 +80,7 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 			analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE, getUsuarioSessao(), usuarioAnalistaTecnico);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
 
-			enviarEmailJuridico(analiseGeo, analiseGeo.analise.processo.caracterizacao, parecerAnalistaGeo);
+			enviarEmailJuridico(analiseGeo, analiseGeo.analise.processo.caracterizacao, parecerAnalistaGeo, analiseTecnica);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES)) {
 
@@ -123,12 +123,12 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 
 	}
 
-	public void enviarEmailJuridico(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo) throws Exception {
+	public void enviarEmailJuridico(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, AnaliseTecnica analiseTecnica) throws Exception {
 
 		List<String> destinatarios = new ArrayList<>();
 		destinatarios.add("felipe.ferreira.lemaf@gmail.com");
 
-		ParecerJuridico parecerJuridico = new ParecerJuridico(analiseGeo, parecerAnalistaGeo);
+		ParecerJuridico parecerJuridico = new ParecerJuridico(analiseGeo, parecerAnalistaGeo, analiseTecnica);
 		parecerJuridico.save();
 		parecerJuridico.linkParecerJuridico = Configuracoes.APP_URL + "app/index.html#!/parecer-juridico/" + parecerJuridico.id;
 

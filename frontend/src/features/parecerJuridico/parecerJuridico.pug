@@ -1,116 +1,116 @@
-div(ng-if='isRoute("/parecer-juridico")', ng-controller='parecerJuridicoController')  
-    .row
-        div(growl inline="true" reference='5')
-        .col-md-6
-            h4 PROTOCOLO
+#conclusao
+    div(ng-if='isRoute("/parecer-juridico")', ng-controller='parecerJuridicoController')  
+        .row
+            div(growl inline="true" reference='5')
+            .col-md-6
+                h4 PROTOCOLO
 
-            div.row
-                label.col-sm-4 Número:
-                span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.numero ? parecerJuridico.analiseGeo.analise.processo.numero : parecerJuridico.analiseGeo.analise.processo.numeroProcesso}}
+                div.row
+                    label.col-sm-4 Número:
+                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.numero ? parecerJuridico.analiseGeo.analise.processo.numero : parecerJuridico.analiseGeo.analise.processo.numeroProcesso}}
 
-            div.row
-                label.col-sm-4 CPF/CNPJ:
-                span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf : parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
+                div.row
+                    label.col-sm-4 CPF/CNPJ:
+                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf : parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
 
-            div.row
-                label.col-sm-4 Interessado:
-                span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.denominacao}}
+                div.row
+                    label.col-sm-4 Interessado:
+                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.denominacao}}
 
-            div.row
-                label.col-sm-4 Município:
-                span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{parecerJuridico.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
-    
-    div(ng-if="parecerJuridico.resolvido == true ? disabled=false: disabled = true")
-        br
-        br
-        div
-            table.table.table-condensed
+                div.row
+                    label.col-sm-4 Município:
+                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{parecerJuridico.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
+        
+        div(ng-if="parecerJuridico.resolvido == true ? disabled=false: disabled = true")
+            br
+            br
+            div
+                table.table.table-condensed
 
-                    thead
+                        thead
 
-                        tr
-                            th.col-md-10 Documentos da Análise e Fundiários
-                            th.col-md-2.text-right Visualizar
+                            tr
+                                th.col-md-10 Documentos da Análise e Fundiários
+                                th.col-md-2.text-right Ação
 
-                    tbody
+                        tbody
 
-                        tr(ng-repeat="documento in documentos")
+                            tr(ng-repeat="documento in documentos")
 
-                            td.col-md-10 {{documento.nomeDoArquivo}}
-                            td.col-md-2.text-center
-                                a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="downloadDocumentos(documento.id)")
-                                    i.glyphicon.glyphicon-eye-open
-    
-
-        div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
-            i.glyphicon.glyphicon-open.glyphicon--with-right-margin
-            | Anexar arquivo no parecer
-
-        table.table.table-condensed(ng-if="anexos.length > 0")
-            thead
-
-                tr
-                    th.col-md-10 Arquivos da Análise Fundiária
-                    th.col-md-2.text-right Ações
-
-            tbody
-
-                tr(ng-model="anexo",ng-repeat="anexo in anexos")
-
-                    td.col-md-10 {{anexo.nomeDoArquivo}}
-                    td.col-md-2.text-right
-                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="baixarDocumento(anexo)")
-                            i.glyphicon.glyphicon-eye-open
-
-                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="removerDocumento($index,anexo.id)")
-                            i.glyphicon.glyphicon-trash
-
-        div
-            hr
-            label.obrigatorio Documento Fundiário:
-            div.pull-left.col-md-10.posicao-principal
-                form.pull-left.posicao-conteudo(ng-class="{'error': errors.resultadoAnalise === true}")
-                    label.opDla.radio-inline.posicao-primeiroItem-gerente
-                        input(type='radio', name='validacaoJuridica', ng-model='idTipoResultadoAnalise', value="{{tiposResultadoAnalise.APTO}}")
-                        | APTO
-                    label.opDla.radio-inline(style="margin-left:90px;")
-                        input(type='radio', name='validacaoJuridica', ng-model='idTipoResultadoAnalise', value="{{tiposResultadoAnalise.NAO_APTO}}")
-                        | NÃO APTO
-            hr
-            div(ng-show="idTipoResultadoAnalise === tiposResultadoAnalise.APTO.toString()")
-                label.obrigatorio(style="font-size:13px") Despacho:
-                br
-                div(ng-class="{'error-summernote': errors.despacho === true}")
-                    summernote.form-control(id="conclusao",
-                                on-paste="snPaste(evt)",
-                                name="conclusao",
-                                lang="pt-BR",
-                                height="200",
-                                ng-model="parecerJuridico.parecer",
-                                config="optionsText",
-                                class="editable",
-                                contenteditable="true")
-            div(ng-show="idTipoResultadoAnalise === tiposResultadoAnalise.NAO_APTO.toString()")
-                label.obrigatorio(style="font-size:13px") Observações:
-                br
-                div(ng-class="{'error-summernote': errors.despacho === true}")
-                    summernote.form-control(id="conclusao",
-                                on-paste="snPaste(evt)",
-                                name="conclusao"
-                                lang="pt-BR",
-                                height="200",
-                                ng-model="parecerJuridico.parecer",
-                                config="optionsText",
-                                class="editable",
-                                contenteditable="true")
-
+                                td.col-md-10 {{documento.nomeDoArquivo}}
+                                td.col-md-2.text-right
+                                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="downloadDocumentos(documento.id)")
+                                        i.glyphicon.glyphicon-eye-open
         
 
-    div
-        button.btn.btn-default.pull(ng-click="cancelar()",style="margin-left: 610px; margin-top: 15px;",ng-if="parecerJuridico.resolvido == true ? disabled=false: disabled = true")
-            i.glyphicon.glyphicon-arrow-left
-            | &nbsp;Cancelar
-        button.btn.btn-success.pull-right(type="button",ng-click="enviar()",style="margin-right: 38px; margin-top: 15px;",ng-if="parecerJuridico.resolvido == true ? disabled=false: disabled = true")
-            i.glyphicon.glyphicon-ok
-            | &nbsp;Enviar
-        h2.text-center(ng-if="parecerJuridico.resolvido == true ? disabled=true: disabled = false") Resposta já cadastrada!   
+            div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+                i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+                | Anexar arquivo no parecer
+
+            table.table.table-condensed(ng-if="anexos.length > 0")
+                thead
+
+                    tr
+                        th.col-md-10 Arquivos da Análise Fundiária
+                        th.col-md-2.text-right Ações
+
+                tbody
+
+                    tr(ng-model="anexo",ng-repeat="anexo in anexos")
+
+                        td.col-md-10 {{anexo.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="baixarDocumento(anexo)")
+                                i.glyphicon.glyphicon-eye-open
+
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="removerDocumento($index,anexo.id)")
+                                i.glyphicon.glyphicon-trash
+
+            div
+                hr
+                label.obrigatorio Documento Fundiário:
+                div.pull-left.col-md-10.posicao-principal
+                    form.pull-left.posicao-conteudo(ng-class="{'error': errors.resultadoAnalise === true}")
+                        label.opDla.radio-inline.posicao-primeiroItem-juridico
+                            input(type='radio', name='validacaoJuridica', ng-model='parecerJuridico.tipoResultadoAnalise.id', value="{{tiposResultadoAnalise.APTO}}")
+                            | APTO
+                        label.opDla.radio-inline(style="margin-left:280px;")
+                            input(type='radio', name='validacaoJuridica', ng-model='parecerJuridico.tipoResultadoAnalise.id', value="{{tiposResultadoAnalise.NAO_APTO}}")
+                            | NÃO APTO
+                hr
+                div(ng-show="parecerJuridico.tipoResultadoAnalise.id === tiposResultadoAnalise.APTO.toString()")
+                    label.obrigatorio(style="font-size:13px") Considerações:
+                    br
+                    div(ng-class="{'error-summernote': errors.consideracoes === true}")
+                        summernote.form-control(id="conclusao",
+                                    on-paste="snPaste(evt)",
+                                    name="conclusao",
+                                    lang="pt-BR",
+                                    height="200",
+                                    ng-model="parecerJuridico.parecer",
+                                    config="optionsText",
+                                    class="editable",
+                                    contenteditable="true")
+                div(ng-show="parecerJuridico.tipoResultadoAnalise.id === tiposResultadoAnalise.NAO_APTO.toString()")
+                    label.obrigatorio(style="font-size:13px") Considerações:
+                    br
+                    div(ng-class="{'error-summernote': errors.consideracoes === true}")
+                        summernote.form-control(id="conclusao",
+                                    on-paste="snPaste(evt)",
+                                    name="conclusao"
+                                    lang="pt-BR",
+                                    height="200",
+                                    ng-model="parecerJuridico.parecer",
+                                    config="optionsText",
+                                    class="editable",
+                                    contenteditable="true")
+            
+
+        div
+            button.btn.btn-default.pull(ng-click="cancelar()",style="margin-left: 610px; margin-top: 15px;",ng-if="parecerJuridico.resolvido == true ? disabled=false: disabled = true")
+                i.glyphicon.glyphicon-arrow-left
+                | &nbsp;Cancelar
+            button.btn.btn-success.pull-right(type="button",ng-click="enviar()",style="margin-right: 38px; margin-top: 15px;",ng-if="parecerJuridico.resolvido == true ? disabled=false: disabled = true")
+                i.glyphicon.glyphicon-ok
+                | &nbsp;Enviar
+            h2.text-center(ng-if="parecerJuridico.resolvido == true ? disabled=true: disabled = false") Resposta já cadastrada!   

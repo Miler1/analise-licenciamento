@@ -3,7 +3,8 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 	$scope.parecerJuridico = null;
 	$scope.anexos = [];
 	$scope.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
-	$scope.idTipoResultadoAnalise = null;
+	$scope.descricaoParecer = '';
+	$scope.idTipoResultadoAnalise = '';
 	$scope.documentos = [];
 	$scope.errors = {
 
@@ -48,7 +49,7 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 
 		});
 		
-	}, 150);
+	}, 300);
 
 	$scope.upload = function(file, invalidFile) {
 
@@ -100,36 +101,51 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 		$window.location.href="http://www.ipaam.am.gov.br/";
 	};
 
+	function verificaCampos() {
+
+		if(!modalCtrl.descricaoInconsistencia || modalCtrl.descricaoInconsistencia === ''){
+			modalCtrl.errors.analiseTecnica.descricao = true;
+		}else {
+			modalCtrl.errors.analiseTecnica.descricao = false;
+		}
+	
+		if(!modalCtrl.tipoInconsistencia || modalCtrl.tipoInconsistencia === ''){
+			modalCtrl.errors.analiseTecnica.tipo = true;
+		}else {
+			modalCtrl.errors.analiseTecnica.tipo = false;
+		}
+	
+		if (modalCtrl.errors.analiseTecnica.descricao === true || modalCtrl.errors.analiseTecnica.tipo === true){
+			return false;
+		}else{
+			return true;
+		}
+	
+	}
+
 	$scope.enviar = function () {
 
-		var parecer = document.getElementById('descricaoParecer').value;
+		if (!$scope.parecerJuridico.parecer || $scope.parecerJuridico.parecer ===''){
 
-		if (!parecer || parecer ===''){
-
-			$scope.parecerJuridico.parecer = true;
 			mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
 			return false;
 
 		}else{
 
 			var params = { 
-				id: $routeParams.id,
-				parecer: parecer,
+				id: $routeParams.idParecerJuridico,
+				tipoResultadoAnalise: {id: $scope.parecerJuridico.tipoResultadoAnalise.id},
+				parecer: $scope.parecerJuridico.parecer,
 				anexos: $scope.anexos
 			};
 
 			parecerJuridicoService.enviar(params)
 				.then(function (response) {
 
-					if(response.data ==true){
-
-						$window.location.href="http://www.ipaam.am.gov.br/";
-
-					}else{
-
-						mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
-
-					}
+					$window.location.href="http://www.ipaam.am.gov.br/";
+					
+			}, function(error){
+				mensagem.error(error.data.texto);
 			});
 		}
 	};

@@ -5,6 +5,7 @@ import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import serializers.ComunicadoSerializer;
 import serializers.ParecerJuridicoSerializer;
+import utils.Mensagem;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -13,19 +14,14 @@ import java.util.List;
 public class PareceresJuridicos extends GenericController{
 
 
-    public static void salvarParecerJuridico(ParecerJuridico parecerJuridico) {
+    public static void salvarParecerJuridico(ParecerJuridico parecerJuridico) throws Exception {
 
-        if(parecerJuridico.id != null){
-            ParecerJuridico parecerJuridicoBanco = ParecerJuridico.findById(parecerJuridico.id);
-            parecerJuridicoBanco.parecer = parecerJuridico.parecer;
-            parecerJuridicoBanco.resolvido =true;
-            parecerJuridicoBanco.saveAnexos(parecerJuridico.anexos);
-            parecerJuridicoBanco.dataResposta = new Date();
-            parecerJuridicoBanco.save();
-            renderJSON(true);
-        }
+        returnIfNull(parecerJuridico, "ParecerJuridico");
 
-        renderJSON(false);
+        parecerJuridico.finalizar(parecerJuridico);
+
+        renderMensagem(Mensagem.ANALISE_JURIDICA_VALIDADA);
+
     }
 
 
@@ -34,6 +30,17 @@ public class PareceresJuridicos extends GenericController{
         ParecerJuridico parecerJuridicoBanco =  ParecerJuridico.findById(id);
 
         renderJSON(parecerJuridicoBanco, ParecerJuridicoSerializer.findParecerJuridico);
+
+    }
+
+    public static void getParecerJuridicoByAnaliseTecnica(Long idAnaliseTecnica) {
+
+        List<ParecerJuridico> pareceresJuridicos = ParecerJuridico.find("id_analise_tecnica = :analiseTecnica ")
+                .setParameter("analiseTecnica", idAnaliseTecnica).fetch();
+
+        ParecerJuridico parecerFinal = pareceresJuridicos.stream().max( Comparator.comparing( parecer -> parecer.id )).get();
+
+        renderJSON(parecerFinal, ParecerJuridicoSerializer.findParecerJuridico);
 
     }
 

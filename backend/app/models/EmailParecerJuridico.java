@@ -23,6 +23,7 @@ public class EmailParecerJuridico extends EmailJuridico {
 
     private AnaliseGeo analiseGeo;
     private ParecerJuridico parecerJuridico;
+    private ParecerAnalistaGeo parecerAnalistaGeo;
     private Documento pdfParecer;
     private Documento cartaImagem;
 
@@ -34,6 +35,7 @@ public class EmailParecerJuridico extends EmailJuridico {
 //        this.cartaImagem = analiseGeo.gerarPDFCartaImagem(parecerAnalistaGeo);
         this.analiseGeo = analiseGeo;
         this.parecerJuridico = parecerJuridico;
+        this.parecerAnalistaGeo = parecerAnalistaGeo;
 
     }
 
@@ -59,7 +61,7 @@ public class EmailParecerJuridico extends EmailJuridico {
                 }
             }
 
-            if(!Emails.comunicarJuridicoAnalise(this.emailsDestinatarios, this.analiseGeo, municipio, this.parecerJuridico).get()) {
+            if(!Emails.comunicarJuridicoAnalise(this.emailsDestinatarios, this.analiseGeo, municipio, this.parecerJuridico, this.parecerAnalistaGeo).get()) {
 
                 throw new AppException();
 

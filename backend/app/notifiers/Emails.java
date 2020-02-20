@@ -153,7 +153,7 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> comunicarJuridicoAnalise(List<String> destinatarios,
-											AnaliseGeo analiseGeo, Municipio municipio, ParecerJuridico parecerJuridico) {
+											AnaliseGeo analiseGeo, Municipio municipio, ParecerJuridico parecerJuridico, ParecerAnalistaGeo parecerAnalistaGeo) {
 
 		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -162,7 +162,7 @@ public class Emails extends Mailer {
 			addRecipient(email);
 		}
 
-		return send(analiseGeo, municipio, parecerJuridico);
+		return send(analiseGeo, municipio, parecerJuridico, parecerAnalistaGeo);
 	}
 
 }

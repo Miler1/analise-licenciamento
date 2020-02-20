@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 %{
-numeroProcesso = analiseGeo.analise.processo.numero;
+numeroProtocolo = analiseGeo.analise.processo.numero;
+numeroProcesso = analiseGeo.analise.processo.caracterizacao.processoLicenciamento.numero;
 parecerJuridico = parecerJuridico;
 empreendimento = analiseGeo.analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+empreendimentoCpfCnpj = empreendimento.getCpfCnpj();
 endereco = enderecoCompleto;
 }%
 
@@ -27,7 +29,7 @@ endereco = enderecoCompleto;
 
 <p><strong>Sr.(a) Diretor(a) Jurídico(a),</strong> </p>
 
-<p>Referente à solicitação de licenciamento ambiental realizada no Sistema de Licenciamento sob o Protocolo nº <strong>${numeroProcesso}</strong> e Processo nº <strong>${numeroProcesso}</strong> de interesse da Pessoa Física/Jurídica [nome da pessoa], CPF/CNPJ nº [numero CPF]. solicita-se análise jurídica da documentação fundiária apresentada.<br><br></p>
+<p>Referente à solicitação de licenciamento ambiental realizada no Sistema de Licenciamento sob o Protocolo nº <strong>${numeroProtocolo}</strong> e Processo nº <strong>${numeroProcesso}</strong> de interesse da Pessoa Física/Jurídica <strong>${empreendimentoNome}</strong>, CPF/CNPJ nº <strong>${empreendimentoCpfCnpj}</strong>. solicita-se análise jurídica da documentação fundiária apresentada.<br><br></p>
 
 <p>Para análise da documentação fundiária acesse o link</p>
 

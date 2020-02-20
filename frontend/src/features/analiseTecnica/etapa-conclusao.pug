@@ -176,7 +176,7 @@ hr
 
     div(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)")
         #inconsistencias
-            table.table.table-condensed
+            table.table.table-condensed(ng-if="ctrl.inconsistenciasAdicionadas.length > 0")
 
                 thead
 

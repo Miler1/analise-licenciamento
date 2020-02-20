@@ -525,6 +525,7 @@ licenciamento
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
 	.controller('desvinculoController', controllers.DesvinculoController)
+	.controller('modalParecerJuridicoController', controllers.ModalParecerJuridicoController)
 	.controller('desvinculoAnaliseTecnicaController', controllers.DesvinculoAnaliseTecnicaController)
 	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
 	.controller('parecerJuridicoController', controllers.ParecerJuridicoController)

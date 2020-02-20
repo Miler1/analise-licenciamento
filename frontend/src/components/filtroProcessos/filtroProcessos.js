@@ -396,7 +396,8 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
+				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO
 			];
 		}
 
