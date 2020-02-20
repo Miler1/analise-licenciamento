@@ -41,6 +41,9 @@ div
 								span(ng-class="{'icone-solicitacao-finalizada-tecnica': consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao)}")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO}")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_TECNICO}")
+								span(ng-class="{'icone-licenca-emitida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.LICENCA_EMITIDA}")
+								span(ng-class="{'icone-aguardando-pagamento-taxa': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_APROVADA}")
+								span(ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
 							
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center {{processo.denominacaoEmpreendimento}}
@@ -112,6 +115,13 @@ div
 					span.icone-.icone-solicitacao-finalizada-tecnica.legenda.col-md-3 Análise técnica finalizada
 					span.icone-revisao-atendida.legenda.col-md-3 Notificado
 					//- span.icone-solicitacao-ajustes.legenda.col-md-3 Solicitação de ajustes
+
+				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
+
+					span.icone-licenca-emitida.legenda.col-md-2 Licença emitida
+					span.icone-solicitacao-licenca-indeferida.legenda.col-md-4 Solicitação de licença indeferida
+					span.icone-aguardando-pagamento-taxa.legenda.col-md-5 Aguardando pagamento da taxa de licenciamento
+
 				
 				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 

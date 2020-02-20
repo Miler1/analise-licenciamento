@@ -47,11 +47,16 @@ div
                 span.col-sm-8
                     div {{ $ctrl.dadosProcesso.analise.dataCadastro }}
 
-            div.row.label-cabecalho-protocolos
+            div.row.label-cabecalho-protocolos(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO")
                 label.col-sm-3 Validade:
                 span.col-sm-8
                     div {{ $ctrl.parecerTecnico.validadePermitida }} anos
-    div
+    hr(style="margin-bottom:0px;")
+    div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.INDEFERIDO")
+        .col-md-12(ng-if="padding-top: 10px;")
+            p.empty-result O processo foi INDEFERIDO, portanto não possui condicionantes e/ou recomendações.
+
+    div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO")
         hr(style="margin-bottom:10px;")
         .col-xs-12
             div.row.label-cabecalho-protocolos
@@ -59,7 +64,7 @@ div
             div.row.label-cabecalho-protocolos
                 span.col-sm-12(ng-bind-html="$ctrl.parecerTecnico.finalidadeAtividade")
             div
-                table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;")
+                table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(ng-if="$ctrl.parecerTecnico.condicionantes.length > 0",style="border: 1px solid #d0cbcb;")
                     thead
                         tr
                         th.col-md-11 Condicionantes
@@ -69,15 +74,24 @@ div
                         tr
                             td.col-md-11.limite-texto {{ condicionante.texto }}
                             td.col-md-1.text-center {{ condicionante.prazo }}
+
+                div(ng-if="$ctrl.parecerTecnico.condicionantes.length === 0")
+                    .col-md-12(style="padding-top: 10px;")
+                        p.empty-result Não foi adicionada nenhuma condicionante.
+
                 br            
-                table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(style="border: 1px solid #d0cbcb;")
+                table.table.table-striped.table-condensed.no-margin.table-responsive.tabela(ng-if="$ctrl.parecerTecnico.restricoes.length > 0",style="border: 1px solid #d0cbcb;")
                     thead
                         tr
-                        th.col-md-12 Restrições
+                        th.col-md-12 Recomendações
 
                     tbody(ng-repeat="restricao in $ctrl.parecerTecnico.restricoes")
                         tr
-                            td.limite-texto {{ restricao.texto }} 
+                            td.limite-texto {{ restricao.texto }}
+
+                div(ng-if="$ctrl.parecerTecnico.restricoes.length === 0")
+                    .col-md-12(style="padding-top: 10px;")
+                        p.empty-result Não foi adicionada nenhuma recomendação.
                 br
 .modal-header
     br

@@ -17,7 +17,7 @@ var ModalVisualizarSolicitacaoLicenca = {
             ctrl.parecerTecnico = ctrl.resolve.parecerTecnico;
             ctrl.dadosProcesso = ctrl.resolve.dadosProcesso;
             ctrl.analiseTecnica = ctrl.resolve.analiseTecnica;
-
+            ctrl.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
         };
 
         ctrl.fechar = function() {
