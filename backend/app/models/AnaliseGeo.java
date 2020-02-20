@@ -241,7 +241,7 @@ public class AnaliseGeo extends Analisavel {
                 .fetch();
 
     }
-
+    
     private void iniciarLicencas() {
 
         List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();

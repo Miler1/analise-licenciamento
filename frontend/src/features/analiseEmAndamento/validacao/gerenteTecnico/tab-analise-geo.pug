@@ -30,8 +30,9 @@
                                         td.col-md-5 {{camada.geometrias[0].descricao}}
 
                         #lista-camadas-restricoes
+                            
+                            label Áreas de restrição
                             div(ng-if="getRestricoes().length > 0")
-                                label Áreas de restrição
                                 table.table.table-striped.table-condensed.table-responsive.table-empreendimento
                                     thead
                                         tr
@@ -47,9 +48,37 @@
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                                     ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)",
                                                     data-toggle="tooltip", title="Visualizar resposta do comunicado ao órgão")
+                            
+                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="getRestricoes().length === 0")
+                                i Nenhuma restrição encontrada.
 
-                            div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.analiseGeo.inconsistencias.length > 0")
-                                label.title-inconsistencia Inconsistências Encontradas
+                            label Sobreposições
+                            div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
+
+                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                    thead
+                                        tr
+                                        th.col-md-4 Item
+                                        th.col-md-5 Descrição
+
+                                    tbody(ng-repeat="restricao in validacaoAnaliseGeoGerente.dadosProjeto.restricoes")
+                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
+                                            td.col-md-5 {{ restricao.item }} 
+                                            td.col-md-5 {{ restricao.descricao }}              
+
+                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
+                                            td.col-md-5 {{ restricao.item }} 
+                                            td.col-md-5 {{ restricao.descricao }} 
+                                        
+                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis")
+                                            td.col-md-5 {{ restricao.item }} 
+                                            td.col-md-5 {{ restricao.descricao }} 
+                                
+                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length === 0")
+                                i Nenhuma sobreposição encontrada.
+                            
+                            label.title-inconsistencia Inconsistências Adicionadas
+                            div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.inconsistencias.length > 0")
                                 
                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
                                     thead
@@ -59,11 +88,11 @@
                                         th.col-md-4 Descrição
                                         th.col-md-1.text-right
 
-                                    tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.analiseGeo.inconsistencias", ng-if="inconsistencia.categoria!='ATIVIDADE'")
+                                    tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.inconsistencias")
                                         tr
-                                            td.col-md-4 {{ getItemRestricao(inconsistencia) }}
+                                            td.col-md-4 {{ validacaoAnaliseGeoGerente.getItemRestricao(inconsistencia) }}
                                             td.col-md-3 {{ inconsistencia.categoria }}
-                                            td.col-md-4 {{ getDescricaoRestricao(inconsistencia) }}
+                                            td.col-md-4 {{ validacaoAnaliseGeoGerente.getDescricaoRestricao(inconsistencia) }}
                                             td.col-md-2.text-right
                                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                                     ng-click="(orgao.sigla !== 'IPHAN' || orgao.sigla !== 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(inconsistencia) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")
