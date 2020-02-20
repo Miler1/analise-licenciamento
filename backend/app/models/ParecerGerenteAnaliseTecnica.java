@@ -7,6 +7,7 @@ import utils.Configuracoes;
 import utils.DateUtil;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.*;
 
 import static security.Auth.getUsuarioSessao;

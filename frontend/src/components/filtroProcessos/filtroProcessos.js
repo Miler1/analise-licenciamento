@@ -99,7 +99,7 @@ var FiltroProcessos = {
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
 			
-			}  else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
+			} else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;

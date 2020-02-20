@@ -12,7 +12,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                                                     empreendimentoService, 
                                                     documentoService,
                                                     validacaoAnaliseGerenteService, 
-                                                    analistaService) {
+                                                    analistaService,
+                                                    parecerAnalistaGeoService) {
 
 
     var validacaoAnaliseGeoGerente = this;
@@ -56,14 +57,14 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
-    var getUltimoParecerGeo = function(pareceresAnalistaGeo) {
+    var getUltimoParecerAnalistaGeo = function(analiseGeo) {
 
-        var pareceresOrdenados = pareceresAnalistaGeo.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaGeoService.getUltimoParecerAnaliseGeo(analiseGeo.id)
+            .then(function(response){
+
+                validacaoAnaliseGeoGerente.parecerGeo = response.data;
+
         });
-
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
-
     };
 
     var findAnalisesGeoByNumeroProcesso = function(processo) {
@@ -93,6 +94,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     };
 
     function init() {
+
         validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 
         analiseGeoService.getAnaliseGeoByAnalise($route.current.params.idAnalise)
@@ -106,6 +108,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                     validacaoAnaliseGeoGerente.processo = response.data;
                 });
                 
+                getUltimoParecerAnalistaGeo(validacaoAnaliseGeoGerente.analiseGeo);
+
                 analiseGeoService.getDadosRestricoesProjeto(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
                 .then(function(response) {
         
