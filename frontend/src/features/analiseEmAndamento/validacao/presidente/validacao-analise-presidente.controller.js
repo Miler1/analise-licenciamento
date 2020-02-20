@@ -1,12 +1,15 @@
 var ValidacaoAnalisePresidenteController = function($uibModal,
-                                                 $route,
+												 $route,
+												 mensagem,
                                                  desvinculoService,      
-                                                 analiseGeoService,
-                                                 parecerDiretorTecnicoService,
+                                                 analiseTecnicaService,
+												 parecerDiretorTecnicoService,
+												 parecerPresidenteService,
                                                  parecerGerenteService,
                                                  parecerAnalistaTecnicoService,
                                                  parecerAnalistaGeoService,
-                                                 processoService,
+												 processoService,
+												 documentoService,
                                                  $location) {
 
     var validacaoAnalisePresidente = this;
@@ -16,28 +19,60 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
     validacaoAnalisePresidente.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
     validacaoAnalisePresidente.tipoDocumento =  app.utils.TiposDocumentosAnalise;
     validacaoAnalisePresidente.dadosProcesso = null;
-    validacaoAnalisePresidente.analiseGeo = null;
     validacaoAnalisePresidente.dateUtil = app.utils.DateUtil;
     validacaoAnalisePresidente.analiseTecnica = null;
-    validacaoAnalisePresidente.acaoTramitacao = app.utils.AcaoTramitacao;
+	validacaoAnalisePresidente.acaoTramitacao = app.utils.AcaoTramitacao;
+	validacaoAnalisePresidente.idTipoResultadoAnalise = null;
+
+	validacaoAnalisePresidente.errors = {
+		despacho: false
+	};
 
     function init() {
 
-        analiseGeoService.getAnaliseGeoByAnalise($route.current.params.idAnalise)
+		analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
-                validacaoAnalisePresidente.analiseGeo = response.data;
+                validacaoAnalisePresidente.analiseTecnica = response.data;
+				validacaoAnalisePresidente.parecerTecnico = getUltimoParecerAnalista(validacaoAnalisePresidente.analiseTecnica.pareceresAnalistaTecnico);
+				
+				processoService.getInfoProcessoByNumero(validacaoAnalisePresidente.analiseTecnica.analise.processo.numero)
+				.then(function(response){
 
-                processoService.getInfoProcessoByNumero(validacaoAnalisePresidente.analiseGeo.analise.processo.numero)
-                    .then(function(response){
+					validacaoAnalisePresidente.dadosProcesso = response.data;
 
-                        validacaoAnalisePresidente.dadosProcesso = response.data;
+				});
 
-                });
+            });	
+			 
+        parecerDiretorTecnicoService.findParecerByAnalise($route.current.params.idAnalise)
+            .then(function(response){
 
-            });     
+                validacaoAnalisePresidente.parecerDiretor = response.data;
+                
+            });
 
-    }
+	}
+
+	validacaoAnalisePresidente.baixarDocumento = function (analiseTecnica, tipoDocumento ) {
+
+		if ( tipoDocumento === validacaoAnalisePresidente.tipoDocumento.DOCUMENTO_MINUTA ) {
+
+            documentoService.downloadMinutaByIdAnaliseTecnica(analiseTecnica.id);
+
+        }
+                    
+    };
+	
+	var getUltimoParecerAnalista = function(pareceresAnalista) {
+
+        var pareceresOrdenados = pareceresAnalista.sort(function(dataParecer1, dataParecer2){
+            return dataParecer1 - dataParecer2;
+        });
+
+        return pareceresOrdenados[pareceresOrdenados.length - 1];
+
+    };
 
     validacaoAnalisePresidente.cancelar = function() {
 
@@ -139,10 +174,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
         } else if(historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR ||
                 historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR ){
 
-			parecerDiretorTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
-            	.then(function(response){
-					abrirModal(response.data, idProcesso);
-				});
+				abrirModal(validacaoAnalisePresidente.parecerDiretor, idProcesso);	
 
 		}else {
 
@@ -175,6 +207,69 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
            tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE||
 		   tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE;
 	};
+
+	validacaoAnalisePresidente.openModalLicenca = function (parecerTecnico, dadosProcesso, analiseTecnica) {
+
+		$uibModal.open({
+
+            component: 'modalVisualizarSolicitacaoLicenca',
+            backdrop: 'static',
+            size: 'lg',
+            resolve: {
+
+                parecerTecnico: function() {
+
+                    return parecerTecnico;
+
+				},
+				
+				analiseTecnica: function() {
+
+                    return analiseTecnica;
+
+                },
+
+                dadosProcesso: function() {
+
+                    return dadosProcesso;
+                }
+
+            }    
+        });
+
+	};
+
+	validacaoAnalisePresidente.concluir = function () {
+
+		var parecerValido = !validacaoAnalisePresidente.parecerPresidente ? validacaoAnalisePresidente.errors.despacho = true : validacaoAnalisePresidente.errors.despacho = false;
+
+		if(parecerValido){
+			mensagem.error('Não foi possível concluir a análise. Verifique os campos obrigatórios!', { ttl: 5000 });
+			return;
+		}
+		
+		var params = {
+
+			analise: {
+                id: $route.current.params.idAnalise,
+            },
+			tipoResultadoAnalise: {id: validacaoAnalisePresidente.idTipoResultadoAnalise},
+			parecer: validacaoAnalisePresidente.parecerPresidente
+
+		};
+
+		parecerPresidenteService.concluirParecerPresidente(params)
+			.then(function(response){
+				
+				mensagem.success(response.data);
+
+		}, function(){
+
+			mensagem.error("Não foi possível concluir a análise");
+
+		});
+
+    };
 
 };
 

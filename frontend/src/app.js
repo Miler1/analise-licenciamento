@@ -566,7 +566,8 @@ utils.services(licenciamento)
 	.add('parecerGerenteService', services.ParecerGerenteService)
 	.add('questionarioService', services.QuestionarioService)
 	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService)
-	.add('parecerDiretorTecnicoService', services.ParecerDiretorTecnicoService);
+	.add('parecerDiretorTecnicoService', services.ParecerDiretorTecnicoService)
+	.add('parecerPresidenteService', services.ParecerPresidenteService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -619,6 +620,7 @@ licenciamento
 	.component('tabelaLicencas', directives.TabelaLicencas)
 	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca)
 	.component('modalOficioRestricao', directives.ModalOficioRestricao)
+	.component('modalVisualizarSolicitacaoLicenca', directives.ModalVisualizarSolicitacaoLicenca)
 	.component('modalNotificacaoRestricao', directives.ModalNotificacaoRestricao)
 	.component('modalVisualizarQuestionario',directives.ModalVisualizarQuestionario)
 	.component('modalVisualizarInconsistenciaTecnica',directives.ModalVisualizarInconsistenciaTecnica);
