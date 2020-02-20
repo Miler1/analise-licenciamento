@@ -121,6 +121,7 @@ public class AnaliseTecnicaSerializer {
 			"pareceresGerenteAnaliseTecnica.tipoResultadoAnalise.id",
 			"pareceresGerenteAnaliseTecnica.tipoResultadoAnalise.nome",
 			"pareceresGerenteAnaliseTecnica.analiseTecnia.id",
+			"pareceresGerenteAnaliseTecnica.dataParecer",
 			"pareceresGerenteAnaliseTecnica.parecer",
 			"pareceresGerenteAnaliseTecnica.usuario.id",
 			"pareceresGerenteAnaliseTecnica.usuario.pessoa.cpf",
