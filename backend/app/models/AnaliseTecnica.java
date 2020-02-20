@@ -833,6 +833,21 @@ public class AnaliseTecnica extends Analisavel {
 
 	}
 
+	public static List<AnaliseTecnica> findAnalisesByNumeroProcesso(String numeroProcesso) {
+
+		return AnaliseTecnica.find("analise.processo.numero = :numeroProcesso")
+				.setParameter("numeroProcesso", numeroProcesso)
+				.fetch();
+
+	}
+
+	public static AnaliseTecnica findUltimaByAnalise(Analise analise){
+
+		return AnaliseTecnica.find("analise.processo.numero = :numero ORDER BY id DESC")
+				.setParameter("numero", analise.processo.numero)
+				.first();
+	}
+
 	public Documento gerarPDFRelatorioTecnicoVistoria(ParecerAnalistaTecnico parecerAnalistaTecnico) throws IOException, DocumentException {
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA);
@@ -857,12 +872,6 @@ public class AnaliseTecnica extends Analisavel {
 
 		return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "documento_relatorio_tecnico_vistoria.pdf", parecerAnalistaTecnico.analistaTecnico.pessoa.nome, new Date());
 
-	}
-
-	public static AnaliseTecnica findUltimaByAnalise(Analise analise){
-		return AnaliseTecnica.find("analise.processo.numero = :numero ORDER BY id DESC")
-				.setParameter("numero", analise.processo.numero)
-				.first();
 	}
 
 }

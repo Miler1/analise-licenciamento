@@ -18,6 +18,13 @@ var AnaliseTecnicaService = function(request, config) {
                 	.post(config.BASE_URL() + 'analisesTecnicas/iniciarAnaliseTecnicaGerente', analise);
 	};
 
+	this.findAnalisesTecnicaByNumeroProcesso = function(numero) {
+
+		return request
+			.get(config.BASE_URL() + 'analisesTecnicas/findAnalisesTecnicaByNumeroProcesso/' + numero);
+
+	};
+
 	this.getAnaliseTecnica = function(idAnaliseTecnica) {
 
 		return request

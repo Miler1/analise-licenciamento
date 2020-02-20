@@ -3,6 +3,7 @@ package controllers;
 import models.*;
 import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
 import serializers.AnaliseGeoSerializer;
@@ -13,6 +14,7 @@ import utils.Mensagem;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -64,6 +66,14 @@ public class AnalisesGeo extends InternalController {
 
             renderJSON(analise, AnaliseGeoSerializer.parecer);
         }
+
+    }
+
+    public static void findAnalisesGeoByNumeroProcesso(String numero) {
+
+        String numeroDecodificado = new String(Base64.decodeBase64(numero.getBytes()));
+
+        renderJSON(AnaliseGeo.findAnalisesByNumeroProcesso(numeroDecodificado), AnaliseGeoSerializer.findInfo);
 
     }
 

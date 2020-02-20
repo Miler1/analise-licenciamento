@@ -1,5 +1,6 @@
 package models;
 
+import models.validacaoParecer.Analisavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -7,7 +8,6 @@ import utils.WebService;
 
 import javax.persistence.*;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class Analise extends GenericModel {
 	@OneToMany(mappedBy="analise")
 	public List<AnaliseTecnica> analisesTecnicas;
 
-	@OneToMany(mappedBy="analise", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy="analise", fetch = FetchType.EAGER)
 	public List<AnaliseGeo> analisesGeo;
 	
 	public Boolean ativo;

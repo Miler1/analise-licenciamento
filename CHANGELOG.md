@@ -57,7 +57,10 @@
 * OS50 - US1415 - [Gerente Técnico] Eu, gerente técnico, devo concluir a análise para validar a aba conclusão da análise.
 * OS50 - US1119 - [Gerente Técnico] Eu, analista, devo acessar em análise para visualizar solicitação de ajustes/justificativa.
 * OS50 - US1109 - [Gerente Técnico] Eu, gerente técnico, devo acessar a caixa de entrada para visualizar processos que solicitam desvínculo.
+* OS50 - US217 - Eu, gerente geo, devo validar a análise geo para visualizar as restrições detectadas.
 * OS50 - US1219 - Eu, analista geo, devo atender as novas regras para enviar comunicado ao órgão.
+* OS50 - US1110 - Eu, gerente geo/técnico, devo manter histórico de análises para conferir análises anteriores.
 * OS50 - US1208 - [Gerente Técnico] - Implementar filtro de situação (Notificado e todos filtro presentes no perfilTécnico).
 * OS50 - US1167 - Eu, gerente técnico, devo acessar visualizar protocolo para visualizar a aba de análise documental
 * OS50 - US1300 - [HOMOLOGAÇÃO] Considerações análise geo.
+* OS50 - US1248 - Eu, gerente técnico, devo acessar o grid de protocolos e/ou Histórico do protocolo (no visualizar protocolo) para visualizar os prazos da análise técnica pós congelamento

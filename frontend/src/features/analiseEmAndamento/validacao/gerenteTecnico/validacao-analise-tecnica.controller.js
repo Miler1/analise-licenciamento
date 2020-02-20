@@ -2,7 +2,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                                     analiseTecnicaService,
                                                     $timeout,
                                                     $route,
-                                                    $scope,
+                                                    processoService,
                                                     mensagem,
                                                     $location,
                                                     documentoAnaliseService,
@@ -26,6 +26,9 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.labelDadosProjeto = '';
     validacaoAnaliseTecnicaGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
     validacaoAnaliseTecnicaGerente.concluir = concluir;
+    validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
+    validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = [];
+    validacaoAnaliseTecnicaGerente.processo = null;
 
     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
 
@@ -45,6 +48,17 @@ validacaoAnaliseTecnicaGerente.disable = {
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
+    var findAnalisesTecnicaByNumeroProcesso = function(processo) { 
+
+        analiseTecnicaService.findAnalisesTecnicaByNumeroProcesso(btoa(processo.numero))
+            .then(function(response){
+
+                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;   
+                
+            });
+    
+    };
+
     function init() {
         validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_ANALISE_TECNICA";
 
@@ -53,6 +67,11 @@ validacaoAnaliseTecnicaGerente.disable = {
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
                 validacaoAnaliseTecnicaGerente.parecerTecnico = getUltimoParecerTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico);
+                findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo);
+                
+                processoService.getInfoProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id).then(function(response){
+                    validacaoAnaliseTecnicaGerente.processo = response.data;
+                });
 
                 _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
                     if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
@@ -423,6 +442,38 @@ validacaoAnaliseTecnicaGerente.disable = {
 				mensagem.error(error.data.texto);
 			});
     }
+
+    var abrirModal = function(parecer, analiseTecnica, processo) {
+
+		$uibModal.open({
+			controller: 'historicoAnaliseTecnicaCtrl',
+			controllerAs: 'historicoAnaliseTecnicaCtrl',
+			templateUrl: 'features/analiseEmAndamento/validacao/gerenteTecnico/historicoAnalises/modalHistoricoAnaliseTecnica.html',
+			size: 'lg',
+			resolve: {
+
+				parecer: function() {
+					return parecer;
+				},
+				
+				analiseTecnica: function() {
+					return analiseTecnica;
+                },
+                
+                processo: function(){
+                    return processo;
+                }
+
+			}
+		});
+
+	};
+
+	validacaoAnaliseTecnicaGerente.visualizarJustificativas = function(parecer, analiseTecnica, processo){
+
+		abrirModal(parecer, analiseTecnica, processo);
+
+	};
 };
 
 exports.controllers.ValidacaoAnaliseTecnicaGerenteController = ValidacaoAnaliseTecnicaGerenteController;

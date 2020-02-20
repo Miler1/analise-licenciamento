@@ -7,6 +7,7 @@ import models.licenciamento.LicenciamentoWebService;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoAnalise;
 import models.tramitacao.AcaoTramitacao;
+import models.validacaoParecer.Analisavel;
 import play.Logger;
 import play.jobs.On;
 import utils.ListUtil;

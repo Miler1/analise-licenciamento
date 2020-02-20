@@ -156,6 +156,7 @@ var FiltroProcessos = {
 			if (_.isArray(ctrl.condicaoTramitacao)) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
 
 				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)){
@@ -169,6 +170,7 @@ var FiltroProcessos = {
 			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
 				caixaEntrada = false;
 				emAnalise = false;
@@ -249,7 +251,6 @@ var FiltroProcessos = {
 							.catch(function(){
 								mensagem.warning('Não foi possível obter a lista de analistas técnicos.');
 							});
-
 					}
 				}
 
@@ -286,7 +287,7 @@ var FiltroProcessos = {
 						
 						ctrl.condicoes = response.data;
 
-						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
+						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
 
 							ctrl.condicoes.push({
