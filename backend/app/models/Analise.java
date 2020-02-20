@@ -1,6 +1,5 @@
 package models;
 
-import models.validacaoParecer.Analisavel;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -8,6 +7,7 @@ import utils.WebService;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
