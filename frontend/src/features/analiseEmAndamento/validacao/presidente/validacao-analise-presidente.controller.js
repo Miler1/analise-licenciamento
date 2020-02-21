@@ -34,7 +34,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
             .then(function(response){
 
                 validacaoAnalisePresidente.analiseTecnica = response.data;
-				validacaoAnalisePresidente.parecerTecnico = getUltimoParecerAnalista(validacaoAnalisePresidente.analiseTecnica.pareceresAnalistaTecnico);
+				getUltimoParecerAnalistaTecnico(validacaoAnalisePresidente.analiseTecnica.pareceresAnalistaTecnico);
 				
 				processoService.getInfoProcessoByNumero(validacaoAnalisePresidente.analiseTecnica.analise.processo.numero)
 				.then(function(response){
@@ -64,15 +64,17 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
                     
     };
 	
-	var getUltimoParecerAnalista = function(pareceresAnalista) {
+    var getUltimoParecerAnalistaTecnico = function(analiseTecnica) {
 
-        var pareceresOrdenados = pareceresAnalista.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(analiseTecnica.id)
+            .then(function(response){
+
+				validacaoAnalisePresidente.parecerTecnico = response.data;
+				
         });
 
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
-
     };
+
 
     validacaoAnalisePresidente.cancelar = function() {
 
@@ -262,6 +264,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 			.then(function(response){
 				
 				mensagem.success(response.data);
+				$location.path('/analise-presidente');
 
 		}, function(){
 
