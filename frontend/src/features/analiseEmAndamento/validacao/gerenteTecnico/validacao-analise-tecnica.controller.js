@@ -11,7 +11,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                                     documentoService,
                                                     validacaoAnaliseGerenteService,
                                                     analistaService,
-						    parecerAnalistaTecnicoService) {
+						                            parecerAnalistaTecnicoService) {
 
     var validacaoAnaliseTecnicaGerente = this;
 
@@ -37,8 +37,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
 		despacho: false,
         resultadoAnalise: false,
-        analistas: false	
-        	
+        analistas: false
+
     };
 
     validacaoAnaliseTecnicaGerente.disable = {
@@ -53,15 +53,15 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
-    var findAnalisesTecnicaByNumeroProcesso = function(processo) { 
+    var findAnalisesTecnicaByNumeroProcesso = function(processo) {
 
         analiseTecnicaService.findAnalisesTecnicaByNumeroProcesso(btoa(processo.numero))
             .then(function(response){
 
-                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;   
-                
+                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;
+
             });
-    
+
     };
 
     function init() {
@@ -74,7 +74,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
                 getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica);
                 findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo);
-                
+
                 processoService.getInfoProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id).then(function(response){
                     validacaoAnaliseTecnicaGerente.processo = response.data;
                 });
@@ -464,11 +464,11 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 				parecer: function() {
 					return parecer;
 				},
-				
+
 				analiseTecnica: function() {
 					return analiseTecnica;
                 },
-                
+
                 processo: function(){
                     return processo;
                 }
