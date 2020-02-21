@@ -239,30 +239,18 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					 return '/analise-tecnica';
 
-				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
-
-					return '/analise-diretor';
-
-				}else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE){
-
-					return '/analise-presidente';
-
-				}
+				} 
 			},
 			countItens: true,
 			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-geo') > -1 ||
-					$location.path().indexOf('/analise-tecnica') > -1 ||
-					$location.path().indexOf('/analise-diretor') > -1 ||
-					$location.path().indexOf('/analise-presidente') > -1;
+					$location.path().indexOf('/analise-tecnica') > -1;
 			},
 			visivel: function() {
 
 				return [app.utils.Perfis.ANALISTA_GEO,
-				app.utils.Perfis.ANALISTA_TECNICO,
-				app.utils.Perfis.DIRETOR,
-				app.utils.Perfis.PRESIDENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
@@ -287,22 +275,36 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					return '/analise-gerente';
 
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
+
+					return '/analise-diretor';
+
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE){
+
+					return '/analise-presidente';
+
 				}
 			},
 			countItens: true,
 			estaSelecionado: function() {
 
-				return $location.path().indexOf('/analise-gerente') > -1;
+				return $location.path().indexOf('/analise-gerente') > -1 ||
+					$location.path().indexOf('/analise-diretor') > -1 ||
+					$location.path().indexOf('/analise-presidente') > -1;
 
 			},
 			visivel: function() {
 
-				return [app.utils.Perfis.GERENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				return [app.utils.Perfis.GERENTE,
+					app.utils.Perfis.DIRETOR,
+					app.utils.Perfis.PRESIDENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
 				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;
 			},
