@@ -1,6 +1,6 @@
 var CxEntDiretorController = function($scope, config, mensagem,$rootScope, processoService, analiseService, $location) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO DIRETOR';
+	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO DIRETOR TÉCNICO';
 
 	var cxEntDiretor = this;
 

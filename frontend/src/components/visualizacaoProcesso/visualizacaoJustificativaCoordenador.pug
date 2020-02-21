@@ -30,7 +30,7 @@ div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseGeo()")
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| GERENTE: {{ parecer.usuario.pessoa.nome }}
+								| GERENTE TÉCNICO: {{ parecer.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGerente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGerente}")
 				
 				div.collapse(ng-class="{in: parecer.id}", id="dados-gerente-{{parecer.id}}")
@@ -77,7 +77,7 @@ div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseTecnica()")
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| GERENTE: {{ parecer.usuario.pessoa.nome }}
+								| GERENTE TÉCNICO: {{ parecer.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGerente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGerente}")
 				
 				div.collapse(ng-class="{in: parecer.id}", id="dados-gerente-{{parecer.id}}")
