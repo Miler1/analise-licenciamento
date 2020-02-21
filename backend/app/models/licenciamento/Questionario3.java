@@ -45,9 +45,6 @@ public class Questionario3 extends GenericModel {
 	@Column(name="ca_asub_uso_industrial")
 	public Boolean consumoAguaAguaSubterraneaUsoIndustrial;
 
-	@Column(name="ca_asub_vazao")
-	public Double consumoAguaAguaSubterraneaVazao;
-
 	@Column(name="ca_asup")
 	public Boolean consumoAguaAguaSuperficial;
 
@@ -60,9 +57,6 @@ public class Questionario3 extends GenericModel {
 	@Column(name="ca_asup_uso_industrial")
 	public Boolean consumoAguaAguaSuperficialUsoIndustrial;
 
-	@Column(name="ca_asup_vazao")
-	public Double consumoAguaAguaSuperficialVazao;
-
 	@Column(name="ca_rp")
 	public Boolean consumoAguaRedePublica;
 
@@ -74,9 +68,6 @@ public class Questionario3 extends GenericModel {
 
 	@Column(name="ca_rp_uso_industrial")
 	public Boolean consumoAguaRedePublicaUsoIndustrial;
-
-	@Column(name="ca_rp_vazao")
-	public Double consumoAguaRedePublicaVazao;
 
 	@Required
 	@Column(name="ef")
@@ -165,10 +156,6 @@ public class Questionario3 extends GenericModel {
 
 	@Column(name="ef_ind_vazao_media")
 	public Double efluentesIndustrialVazaoMedia;
-
-	@Required
-	@Column(name="ne")
-	public Double numeroEmpregados;
 
 	@Required
 	@Column(name="rs")
@@ -380,10 +367,9 @@ public class Questionario3 extends GenericModel {
 
 		if(!
 				(
-						verificarRespostaNumeroEmpregados()
-								&& verificarRespostaConsumoAgua()
-								&& verificarRespostaEfluentes()
-								&& verificarRespostaResiduosSolidos()
+						verificarRespostaConsumoAgua() &&
+								verificarRespostaEfluentes() &&
+								verificarRespostaResiduosSolidos()
 				)
 		) {
 			throw new ValidacaoException(Mensagem.CARACTERIZACAO_PERGUNTAS_NAO_RESPONDIDAS);
@@ -393,11 +379,11 @@ public class Questionario3 extends GenericModel {
 	}
 
 	private Boolean isTrue(Boolean value) {
-		return (value != null && value == true);
+		return (value != null && value);
 	}
 
 	private Boolean isFalseOrNull(Boolean value) {
-		return (value == null || value == false);
+		return (value == null || !value);
 	}
 
 	private Boolean isNumber(Double value) {
@@ -410,15 +396,6 @@ public class Questionario3 extends GenericModel {
 
 	private Boolean textoNaoVazio(String value) {
 		return value != null && value.length() > 0;
-	}
-
-	private Boolean verificarRespostaNumeroEmpregados() {
-
-		if(isNumber(this.numeroEmpregados)){
-			return true;
-		}
-
-		return false;
 	}
 
 	private Boolean verificarRespostaConsumoAgua() {
@@ -453,18 +430,11 @@ public class Questionario3 extends GenericModel {
 	private Boolean verificarRespostaConsumoAguaRedePublica() {
 
 		if(isTrue(this.consumoAguaRedePublica)) {
-			if(isNumber(this.consumoAguaRedePublicaConsumoMedio) &&
+			return isNumber(this.consumoAguaRedePublicaConsumoMedio) &&
 					(
 							isTrue(this.consumoAguaRedePublicaUsoDomestico) ||
 									isTrue(this.consumoAguaRedePublicaUsoIndustrial)
-					) &&
-					isNumber(this.consumoAguaRedePublicaVazao)
-			) {
-				return true;
-			}
-			else {
-				return false;
-			}
+					);
 		}
 
 		return true;
@@ -473,18 +443,11 @@ public class Questionario3 extends GenericModel {
 	private Boolean verificarRespostaConsumoAguaAguaSubterranea() {
 
 		if(isTrue(this.consumoAguaAguaSubterranea)) {
-			if(isNumber(this.consumoAguaAguaSubterraneaConsumoMedio) &&
+			return isNumber(this.consumoAguaAguaSubterraneaConsumoMedio) &&
 					(
 							isTrue(this.consumoAguaAguaSubterraneaUsoDomestico) ||
 									isTrue(this.consumoAguaAguaSubterraneaUsoIndustrial)
-					) &&
-					isNumber(this.consumoAguaAguaSubterraneaVazao)
-			) {
-				return true;
-			}
-			else {
-				return false;
-			}
+					);
 		}
 
 		return true;
@@ -493,18 +456,11 @@ public class Questionario3 extends GenericModel {
 	private Boolean verificarRespostaConsumoAguaAguaSuperficial() {
 
 		if(isTrue(this.consumoAguaAguaSuperficial)) {
-			if(isNumber(this.consumoAguaAguaSuperficialConsumoMedio) &&
+			return isNumber(this.consumoAguaAguaSuperficialConsumoMedio) &&
 					(
 							isTrue(this.consumoAguaAguaSuperficialUsoDomestico) ||
 									isTrue(this.consumoAguaAguaSuperficialUsoIndustrial)
-					) &&
-					isNumber(this.consumoAguaAguaSuperficialVazao)
-			) {
-				return true;
-			}
-			else {
-				return false;
-			}
+					);
 		}
 
 		return true;
@@ -733,9 +689,7 @@ public class Questionario3 extends GenericModel {
 					}
 				}
 				if(isTrue(this.residuosSolidosEscritorioTipoColetaTerceiros)) {
-					if(!textoNaoVazio(this.residuosSolidosEscritorioTipoColetaTerceirosEspecificar)) {
-						return false;
-					}
+					return textoNaoVazio(this.residuosSolidosEscritorioTipoColetaTerceirosEspecificar);
 				}
 				return true;
 			}
@@ -778,9 +732,7 @@ public class Questionario3 extends GenericModel {
 					}
 				}
 				if(isTrue(this.residuosSolidosIndustrialTipoColetaTerceiros)) {
-					if(!textoNaoVazio(this.residuosSolidosIndustrialTipoColetaTerceirosEspecificar)) {
-						return false;
-					}
+					return textoNaoVazio(this.residuosSolidosIndustrialTipoColetaTerceirosEspecificar);
 				}
 				return true;
 			}
@@ -822,9 +774,7 @@ public class Questionario3 extends GenericModel {
 					}
 				}
 				if(isTrue(this.residuosSolidosIndustrialPerigososTipoColetaTerceiros)) {
-					if(!textoNaoVazio(this.residuosSolidosIndustrialPerigososTipoColetaTerceirosEspecificar)) {
-						return false;
-					}
+					return textoNaoVazio(this.residuosSolidosIndustrialPerigososTipoColetaTerceirosEspecificar);
 				}
 				return true;
 			}
@@ -865,9 +815,7 @@ public class Questionario3 extends GenericModel {
 					}
 				}
 				if(isTrue(this.residuosSolidosOutrosTipoColetaTerceiros)) {
-					if(!textoNaoVazio(this.residuosSolidosOutrosTipoColetaTerceirosEspecificar)) {
-						return false;
-					}
+					return textoNaoVazio(this.residuosSolidosOutrosTipoColetaTerceirosEspecificar);
 				}
 				return true;
 			}

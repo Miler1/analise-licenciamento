@@ -158,7 +158,7 @@ public class AnalisesGeo extends InternalController {
 
         ultimoParecer.documentoParecer = analiseGeoSalva.gerarPDFParecer(ultimoParecer);
 
-        String nome = ultimoParecer.documentoParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
+        String nome = ultimoParecer.documentoParecer.tipo.nome + "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
         response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
