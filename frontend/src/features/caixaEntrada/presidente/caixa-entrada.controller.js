@@ -36,7 +36,7 @@ var CxEntPresidenteController = function($scope,
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO PRESIDENTE';
+				$rootScope.tituloPagina = 'EM VALIDAÇÃO DIRETOR PRESIDENTE';
 				$location.path('/analise-presidente/' + idAnalise.toString());
 							
 			}, function(error){

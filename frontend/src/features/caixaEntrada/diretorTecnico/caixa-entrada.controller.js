@@ -34,7 +34,7 @@ var CxEntDiretorController = function($scope, config, mensagem,$rootScope, proce
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO DIRETOR';
+				$rootScope.tituloPagina = 'EM VALIDAÇÃO DIRETOR TÉCNICO';
 				$location.path('/analise-diretor/' + idAnalise.toString());
 							
 			}, function(error){
