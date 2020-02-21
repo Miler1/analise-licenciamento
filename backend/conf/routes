@@ -34,7 +34,7 @@ GET     /imovel/{id}/completo                       Imoveis.getImovelById
 # Analise
 
 GET		/analises/{id}									Analises.findById
-
+POST    /analises/iniciar/{idAnalise}                   Analises.iniciar
 
 # Analise juridica
 
@@ -128,7 +128,13 @@ GET     /parecer/gerente/justificativa/findByIdAnaliseGeo/{idAnaliseGeo}        
 POST    /parecer/gerente/concluirParecerTecnicoGerente                                                              PareceresGerentes.concluirParecerTecnicoGerente
 GET     /parecer/gerente/justificativa/findByIdAnaliseTecnica/{idAnaliseTecnica}                                    PareceresGerentes.findJustificativaParecerByIdAnaliseTecnica
 GET     /parecer/gerente/findParecerTecnicoByIdHistoricoTramitacao/{idHistoricoTramitacao}                          PareceresGerentes.findParecerTecnicoByIdHistoricoTramitacao
+GET     /parecer/gerente/getUltimoParecerGerenteAnaliseTecnica/{id}                                                 PareceresGerentes.getUltimoParecerGerenteAnaliseTecnica
+GET     /parecer/gerente/getUltimoParecerGerenteAnaliseGeo/{id}                                                     PareceresGerentes.getUltimoParecerGerenteAnaliseGeo
 
+# Pareceres diretores
+
+GET     /parecer/diretor/findParecerByAnalise/{id}                                     PareceresDiretores.findParecerByAnalise
+POST    /parecer/diretor/concluirParecerDiretorTecnico                                 PareceresDiretores.concluirParecerDiretorTecnico
 
 # Pareceres analista geo
 POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
@@ -136,10 +142,12 @@ GET     /parecer/analistaGeo/findParecerByIdHistoricoTramitacao/{idHistoricoTram
 GET     /parecer/analistaGeo/findParecerByIdAnaliseGeo/{idAnaliseGeo}                                               PareceresAnalistasGeo.findParecerByIdAnaliseGeo
 GET		/parecer/analistaGeo                                            							                PareceresAnalistasGeo.findByNumeroProcesso
 GET     /parecer/analistaGeo/findParecerByIdProcesso/{idProcesso}                                                   PareceresAnalistasGeo.findParecerByIdProcesso
+GET     /parecer/analistaGeo/getUltimoParecerAnaliseGeo/{id}                                                        PareceresAnalistasGeo.getUltimoParecerAnaliseGeo
 
 # Pareceres analista tecnico
 POST	/parecer/analistaTecnico/concluir						                                                    PareceresAnalistasTecnico.concluir
 GET     /parecer/analistaTecnico/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                         PareceresAnalistasTecnico.findParecerByIdHistoricoTramitacao
+GET     /parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/{id}                                                PareceresAnalistasTecnico.getUltimoParecerAnaliseTecnica
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
