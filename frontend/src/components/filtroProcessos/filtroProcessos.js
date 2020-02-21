@@ -176,9 +176,13 @@ var FiltroProcessos = {
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
 
 				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)){
+
 					caixaEntrada = true;
+
 				}else{
+
 					emAnalise = true;
+
 				}			
 
 			} else if (ctrl.condicaoTramitacao) {
