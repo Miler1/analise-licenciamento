@@ -120,7 +120,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
         }
 
-        if(validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
+        if(validacaoAnaliseDiretor.parecerGerenteTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
 
             validacaoAnaliseDiretor.labelParecerGerente = 'Despacho';
 
@@ -143,8 +143,6 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                 getUltimoParecerAnalistaGeo(validacaoAnaliseDiretor.analiseGeo);
                 getUltimoParecerGerenteGeo(validacaoAnaliseDiretor.analiseGeo);
 
-                console.log( validacaoAnaliseDiretor.parecerGeo);
-                // setLabelsAnaliseGeo();
 
             });     
 
@@ -154,10 +152,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                 validacaoAnaliseDiretor.analiseTecnica = response.data;
                 getUltimoParecerAnalistaTecnico(validacaoAnaliseDiretor.analiseTecnica);
                 getUltimoParecerGerenteTecnico(validacaoAnaliseDiretor.analiseTecnica);
-
-                console.log( validacaoAnaliseDiretor.parecerTecnico);
-                // setLabelsAnaliseTecnica();
-
+                
                 _.filter(validacaoAnaliseDiretor.parecerTecnico.documentos , function(documento){
                     if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
 
