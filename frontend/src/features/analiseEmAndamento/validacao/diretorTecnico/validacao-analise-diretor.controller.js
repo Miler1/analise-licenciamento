@@ -69,6 +69,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseDiretor.parecerGerenteTecnico = response.data;
+                setLabelsGerenteTecnico();
 
         });
 
@@ -80,6 +81,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseDiretor.parecerGerenteGeo = response.data;
+                setLabelsGerenteGeo();
 
         });
 
@@ -97,6 +99,10 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
         }
 
+    };
+
+    var setLabelsGerenteGeo = function(){
+
         if(validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
 
             validacaoAnaliseDiretor.labelParecerGerente = 'Despacho';
@@ -106,6 +112,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             validacaoAnaliseDiretor.labelParecerGerente = 'Justificativa';
 
         }
+
     };
 
     var setLabelsAnaliseTecnica = function(){
@@ -120,6 +127,10 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
         }
 
+    };
+
+    var setLabelsGerenteTecnico = function(){
+
         if(validacaoAnaliseDiretor.parecerGerenteTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
 
             validacaoAnaliseDiretor.labelParecerGerente = 'Despacho';
@@ -129,7 +140,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             validacaoAnaliseDiretor.labelParecerGerente = 'Justificativa';
 
         }
-
+        
     };
 
     function init() {
