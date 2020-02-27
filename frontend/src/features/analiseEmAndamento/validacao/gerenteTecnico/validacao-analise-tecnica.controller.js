@@ -444,8 +444,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
         }else{
 
-            validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
-
+            validacaoAnaliseTecnicaGerente.errors.despacho = false;
+            
         }
 
         if(analiseTecnica.tipoResultadoValidacaoGerente.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === null || validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === undefined)) {
