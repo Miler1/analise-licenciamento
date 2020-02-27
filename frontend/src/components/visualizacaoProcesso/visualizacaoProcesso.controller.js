@@ -1,7 +1,7 @@
 var VisualizacaoProcessoController = function ($location, $injector, desvinculoService,
 											   $uibModal, $scope, $rootScope, $timeout, 
 											   $uibModalInstance, processo, mensagem, 
-											   $anchorScroll,processoService, 
+											   $anchorScroll,processoService, documentoService,
 											   empreendimentoService, notificacaoService,
 											   documentoLicenciamentoService, analiseGeoService, 
 											   parecerAnalistaGeoService, parecerGerenteService,
@@ -37,6 +37,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.parecer = {};
 	modalCtrl.pareceres = {};
 	modalCtrl.pareceresTecnicos = {};
+	modalCtrl.documentos = [];
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -63,10 +64,16 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
-			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
-			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
-			modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica);
 
+			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
+			
+			if (modalCtrl.dadosProcesso.analise.analiseTecnica !== null) {
+				
+				modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
+				modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica);
+			
+			}
+			
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_TECNICO) {
 
 			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
@@ -126,6 +133,47 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		
 	};
 
+	modalCtrl.setDocumentos = function() {
+
+		var ultimoParecer = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo[0];
+
+		if (ultimoParecer !== null && ultimoParecer !== undefined) {
+
+			if (ultimoParecer.documentoParecer !== null) {
+
+				modalCtrl.documentos.push(ultimoParecer.documentoParecer);
+			}
+
+			if (ultimoParecer.cartaImagem !== null) {
+
+				modalCtrl.documentos.push(ultimoParecer.cartaImagem);
+
+			}
+
+		}
+
+		ultimoParecer = modalCtrl.dadosProcesso.analise.analiseTecnica;
+
+		if (ultimoParecer !== null && ultimoParecer !== undefined) {
+
+			modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
+
+			if (ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta !== null) {
+
+				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoMinuta);
+
+			}
+
+			if (ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria!== null) {
+
+				modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].vistoria.documentoRelatorioTecnicoVistoria);
+
+			}
+
+		}
+		
+	};
+
 	if (processo.idProcesso) {
 
 		processoService.getInfoProcesso(processo.idProcesso)
@@ -134,6 +182,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 				modalCtrl.setPareceres();
+				modalCtrl.setDocumentos();
 			})
 			.catch(function(){
 				mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
@@ -583,6 +632,12 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		notificacaoService.downloadNotificacao(idTramitacao);
 	};
 
+	this.downloadDocumentos = function (id) {
+
+		documentoService.downloadById(id);
+
+	};
+
 	var abrirModal = function(parecer, idProcesso) {
 
 		$uibModal.open({
@@ -630,7 +685,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 						abrirModal(response.data, idProcesso);
 					});
 
-		}else if(historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+				historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
 				historico.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO){
 
 			parecerAnalistaTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
@@ -668,7 +724,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO || 
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE;
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE;
 	};
 
 	function getDataFimAnalise(dataFimAnalise) {

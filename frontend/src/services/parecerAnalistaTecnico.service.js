@@ -21,6 +21,14 @@ var ParecerAnalistaTecnicoService = function(request, config) {
 
 	};
 
+	this.getUltimoParecerAnaliseTecnica = function(id) {
+
+		return request
+			.get(config.BASE_URL() + 'parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/' + id);
+
+	};
+
+
 };
 
 exports.services.ParecerAnalistaTecnicoService = ParecerAnalistaTecnicoService;

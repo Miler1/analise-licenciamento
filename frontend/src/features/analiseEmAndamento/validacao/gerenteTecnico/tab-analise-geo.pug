@@ -159,7 +159,7 @@
                                 div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal") 
                                     i Não há análise temporal
 
-                            table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.parecerGeo.documentos.length > 0")
+                            table.table.table-condensed(ng-if="validacaoAnaliseGeoGerente.possuiAnaliseTemporal")
 
                                 thead
 
@@ -179,7 +179,7 @@
                                 br
                                 p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.conclusao")
 
-                        table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.parecerGeo.documentos.length > 0")
+                        table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.possuiDocumentos")
 
                             thead
 

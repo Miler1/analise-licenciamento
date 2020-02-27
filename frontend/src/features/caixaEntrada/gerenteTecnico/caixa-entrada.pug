@@ -21,9 +21,9 @@ div
 							th
 							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
-							th.col-md-2 Empreendimento
+							th.col-md-3 Empreendimento
 							th.col-md-2 Município
-							th.col-md-2 Licença
+							th.col-md-1 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise GEO
 							th.col-md-1 Prazo análise técnica
@@ -34,7 +34,7 @@ div
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
 								span(ng-class="{'icone-analise-geo': processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE }")
 								span(ng-class="{'icone-analise-tecnica': processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE }")
-							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -57,11 +57,13 @@ div
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 
-												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo, null)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo) || processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE}")
+												a(ng-click="cxEntGerente.verificarStatusGeo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo, null)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusGeo(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo
 											li
-												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, null, processo.idAnaliseTecnica)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)|| processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE}")
+												a(ng-click="cxEntGerente.verificarStatusTecnico(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, null, processo.idAnaliseTecnica)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusTecnico(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li

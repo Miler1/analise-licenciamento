@@ -13,6 +13,20 @@ var ParecerGerenteService = function(request, config) {
 			.get(config.BASE_URL() + 'parecer/gerente/findParecerTecnicoByIdHistoricoTramitacao/' + id);
 
 	};
+
+	this.getUltimoParecerGerenteAnaliseTecnica = function(id) {
+
+		return request
+			.get(config.BASE_URL() + 'parecer/gerente/getUltimoParecerGerenteAnaliseTecnica/' + id);
+
+	};
+	
+	this.getUltimoParecerGerenteAnaliseGeo = function(id) {
+
+		return request
+			.get(config.BASE_URL() + 'parecer/gerente/getUltimoParecerGerenteAnaliseGeo/' + id);
+
+	};
 	
 	this.findJustificativaParecerByIdAnaliseGeo = function(idAnaliseGeo) {
 

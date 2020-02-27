@@ -12,7 +12,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                                                     empreendimentoService, 
                                                     documentoService,
                                                     validacaoAnaliseGerenteService, 
-                                                    analistaService) {
+                                                    analistaService,
+                                                    parecerAnalistaGeoService) {
 
 
     var validacaoAnaliseGeoGerente = this;
@@ -39,6 +40,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     validacaoAnaliseGeoGerente.labelDadosProjeto = '';
     validacaoAnaliseGeoGerente.enumCategoria = app.utils.Inconsistencia;
     validacaoAnaliseGeoGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
+    validacaoAnaliseGeoGerente.possuiAnaliseTemporal = false;
+    validacaoAnaliseGeoGerente.possuiDocumentos = false;
 
     validacaoAnaliseGeoGerente.errors = {
 		despacho: false,
@@ -48,24 +51,25 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
-    var getUltimoParecerGeo = function(pareceresAnalistaGeo) {
+    var getUltimoParecerAnalistaGeo = function(analiseGeo) {
 
-        var pareceresOrdenados = pareceresAnalistaGeo.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaGeoService.getUltimoParecerAnaliseGeo(analiseGeo.id)
+            .then(function(response){
+
+                validacaoAnaliseGeoGerente.parecerGeo = response.data;
+
         });
-
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
-
     };
 
     function init() {
+
         validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 
         analiseGeoService.getAnaliseGeoByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
-                validacaoAnaliseGeoGerente.parecerGeo = getUltimoParecerGeo(validacaoAnaliseGeoGerente.analiseGeo.pareceresAnalistaGeo);
+                getUltimoParecerAnalistaGeo(validacaoAnaliseGeoGerente.analiseGeo);
 
                 analiseGeoService.getDadosRestricoesProjeto(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id)
                 .then(function(response) {
@@ -94,6 +98,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                 });            
             
                 getDadosVisualizar(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
+                verificaDocumentos();
 
             });
         
@@ -169,28 +174,42 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     function analiseValida(analiseGeo) {
 
         if(analiseGeo.tipoResultadoValidacaoGerente === null || analiseGeo.tipoResultadoValidacaoGerente === undefined) {
+            
             validacaoAnaliseGeoGerente.errors.resultadoAnalise = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseGeoGerente.errors.resultadoAnalise = false;
+
         }
         
         if(analiseGeo.parecerValidacaoGerente === "" || analiseGeo.parecerValidacaoGerente === null || analiseGeo.parecerValidacaoGerente === undefined) {
+            
             validacaoAnaliseGeoGerente.errors.despacho = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
-            validacaoAnaliseGeoGerente.errors.resultadoAnalise = false;
+
+            validacaoAnaliseGeoGerente.errors.despacho = false;
+
         }
 
         if(analiseGeo.tipoResultadoValidacaoGerente.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseGeoGerente.analistaGeoDestino.id === null || validacaoAnaliseGeoGerente.analistaGeoDestino.id === undefined)) {
+            
             validacaoAnaliseGeoGerente.errors.analistas = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+
         }else{
+
             validacaoAnaliseGeoGerente.errors.analistas = false;
+
         }
 
         if(validacaoAnaliseGeoGerente.errors.resultadoAnalise === true || validacaoAnaliseGeoGerente.errors.despacho === true || validacaoAnaliseGeoGerente.errors.analistas === true){
+            
             return false;
+            
         }
         
         return true;
@@ -360,6 +379,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         var modalInstance = $uibModal.open({
 
             component: 'modalOficioRestricao',
+            backdrop: 'static',
             size: 'lg',
             resolve: {
 
@@ -383,7 +403,42 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 		
 		scrollTop();
-	};
+    };
+
+    function verificaDocumentos() {
+
+        var qtdDocumentosAnaliseTemporal = 0;
+
+        if (validacaoAnaliseGeoGerente.parecerGeo.documentos.length > 0) {
+
+            _.forEach(validacaoAnaliseGeoGerente.parecerGeo.documentos, function(documento) {
+
+                if (documento.tipo.id === validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL) {
+
+                    qtdDocumentosAnaliseTemporal++;
+
+                }
+            });
+
+            if (validacaoAnaliseGeoGerente.parecerGeo.documentos.length === qtdDocumentosAnaliseTemporal) {
+
+                validacaoAnaliseGeoGerente.possuiDocumentos = false;
+    
+            } else {
+
+                validacaoAnaliseGeoGerente.possuiDocumentos = true;
+
+            }
+            
+            if (qtdDocumentosAnaliseTemporal > 0) {
+
+                validacaoAnaliseGeoGerente.possuiAnaliseTemporal = true;
+
+            } 
+            
+        }
+
+    }
 
     validacaoAnaliseGeoGerente.voltarEtapaAnterior = function(){
 		$timeout(function() {
@@ -424,6 +479,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         $uibModal.open({
 
             component: 'modalNotificacaoRestricao',
+            backdrop: 'static',
             size: 'lg',
             resolve: {
 

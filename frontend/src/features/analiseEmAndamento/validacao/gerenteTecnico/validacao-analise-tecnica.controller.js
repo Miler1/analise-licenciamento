@@ -2,7 +2,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                                     analiseTecnicaService,
                                                     $timeout,
                                                     $route,
-                                                    $scope,
+                                                    parecerAnalistaTecnicoService,
                                                     mensagem,
                                                     $location,
                                                     documentoAnaliseService,
@@ -31,29 +31,34 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
 
     validacaoAnaliseTecnicaGerente.errors = {
+
 		despacho: false,
         resultadoAnalise: false,
         analistas: false
-};
 
-validacaoAnaliseTecnicaGerente.disable = {
-    tipoLicenca: true,
-    atividade: [],
-    questionario: true,
-    documentoAdministrativo: [],
-    documentoTecnicoAmbiental: []
-};
+    };
+
+    validacaoAnaliseTecnicaGerente.disable = {
+
+        tipoLicenca: true,
+        atividade: [],
+        questionario: true,
+        documentoAdministrativo: [],
+        documentoTecnicoAmbiental: []
+
+    };
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
     function init() {
+
         validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_ANALISE_TECNICA";
 
         analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
-                validacaoAnaliseTecnicaGerente.parecerTecnico = getUltimoParecerTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico);
+                getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica);
 
                 _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
                     if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
@@ -139,10 +144,13 @@ validacaoAnaliseTecnicaGerente.disable = {
         $rootScope.$broadcast('atualizarContagemProcessos');
     }
 
-    var getUltimoParecerTecnico = function(pareceresAnalistaTecnico) {
+    var getUltimoParecerAnalistaTecnico = function(analiseTecnica) {
 
-        var pareceresOrdenados = pareceresAnalistaTecnico.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(analiseTecnica.id)
+            .then(function(response){
+
+                validacaoAnaliseTecnicaGerente.parecerTecnico = response.data;
+
         });
 
         return pareceresOrdenados[pareceresOrdenados.length - 1];

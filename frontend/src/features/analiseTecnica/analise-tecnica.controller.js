@@ -212,6 +212,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         $uibModal.open({
             animation: true,
             templateUrl: './features/analiseTecnica/restricao/modal-restricao.html',
+            backdrop: 'static',
             controller: 'modalRestricaoController',
             controllerAs: 'modalCtrl',
             size: 'lg'
@@ -232,6 +233,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         $uibModal.open({
             animation: true,
             templateUrl: './features/analiseTecnica/condicionante/modal-condicionante.html',
+            backdrop: 'static',
             controller: 'modalCondicionanteController',
             controllerAs: 'modalCtrl',
             size: 'lg'
@@ -1069,6 +1071,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         $uibModal.open({
             animation: true,
             templateUrl: './features/analiseTecnica/modalInconsistenciaTecnica.html',
+            backdrop: 'static',
             controller: 'inconsistenciaTecnicaController',
             controllerAs: 'modalCtrl',
             size: 'lg',
