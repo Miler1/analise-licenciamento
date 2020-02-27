@@ -381,7 +381,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
         }else{
 
-            validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
+            validacaoAnaliseTecnicaGerente.errors.despacho = false;
             
         }
 
