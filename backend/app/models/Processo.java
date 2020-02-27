@@ -182,6 +182,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
 
+		if(filtro.analiseAtiva){
+			processoBuilder.filtrarPorAnaliseAiva(filtro.analiseAtiva);
+		}
+
 		return processoBuilder;
 
 	}
@@ -346,10 +350,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
 
-		}
-
-		if(filtro.analiseAtiva){
-			processoBuilder.filtrarPorAnaliseAiva(filtro.analiseAtiva);
 		}
 
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);

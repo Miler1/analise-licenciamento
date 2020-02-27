@@ -241,7 +241,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
-					return app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
+					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
