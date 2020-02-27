@@ -57,19 +57,19 @@ public class ParecerDiretorTecnico extends GenericModel {
         if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_APROVADA)) {
 
             analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR, getUsuarioSessao(), UsuarioAnalise.findByPresidente(presidente));
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), getUsuarioSessao());
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
         } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_NAO_APROVADA)) {
 
             analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR, getUsuarioSessao(), UsuarioAnalise.findByPresidente(presidente));
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), getUsuarioSessao());
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
         }
 
         this.usuario = diretor;
         this.dataParecer = new Date();
 
-        HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id);
+        HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel);
         this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
 
         this.save();
