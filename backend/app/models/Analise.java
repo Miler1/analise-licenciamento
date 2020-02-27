@@ -311,7 +311,7 @@ public class Analise extends GenericModel {
 		}
 
 		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_PRESIDENTE, usuarioExecutor);
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.objetoTramitavel.id), usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.idObjetoTramitavel), usuarioExecutor);
 
 	}
 
