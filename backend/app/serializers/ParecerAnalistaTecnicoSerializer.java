@@ -11,6 +11,7 @@ public class ParecerAnalistaTecnicoSerializer {
 	);
 
 	public static JSONSerializer findByIdNumeroProcesso = SerializerUtil.create(
+			"parecer",
 			"situacaoFundiaria",
 			"analiseTemporal",
 			"conclusao",

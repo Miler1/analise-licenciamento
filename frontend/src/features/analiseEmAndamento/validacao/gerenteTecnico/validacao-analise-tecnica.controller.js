@@ -178,8 +178,22 @@ validacaoAnaliseTecnicaGerente.disable = {
 
     validacaoAnaliseTecnicaGerente.exibirDadosProcesso = function () {
 
-        var processo = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo;
-        processo.idProcesso = processo.id;
+        var processo = {
+
+            idProcesso: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id,
+            numero: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.numero,
+            denominacaoEmpreendimento: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.denominacao
+        };
+
+        if(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+
+            processo.cnpjEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+
+        } else {
+
+            processo.cpfEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+        }		
+
 
         processoService.visualizarProcesso(processo);
     };
