@@ -1121,34 +1121,37 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         var verificaAnaliseTecnica = null;
 
-        analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id).then(function(response){
-            verificaAnaliseTecnica = response.data;
-        
-            if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA){
+        if (analiseTecnica != null) {
 
-                inconsistenciaTecnica = _.some( verificaAnaliseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-                   return inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca;
-                });
+            analiseTecnicaService.getAnaliseTecnica(analiseTecnica.id).then(function(response){
+                verificaAnaliseTecnica = response.data;
+            
+                if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA){
 
-                if (!inconsistenciaTecnica){
-                    ctrl.itemValidoLicenca.tipoLicenca = false;
-                }else{
-                    ctrl.itemValidoLicenca.tipoLicenca = true;
+                    inconsistenciaTecnica = _.some( verificaAnaliseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+                    return inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca;
+                    });
+
+                    if (!inconsistenciaTecnica){
+                        ctrl.itemValidoLicenca.tipoLicenca = false;
+                    }else{
+                        ctrl.itemValidoLicenca.tipoLicenca = true;
+                    }
+
+                }else if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO){
+
+                    inconsistenciaTecnica = _.some( verificaAnaliseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+                        return inconsistenciaTecnica.inconsistenciaTecnicaQuestionario;
+                    });
+
+                    if(!inconsistenciaTecnica){            
+                        ctrl.itemValidoLicenca.questionario = false;
+                    }else{
+                        ctrl.itemValidoLicenca.questionario = true;
+                    }       
                 }
-
-            }else if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO){
-
-                inconsistenciaTecnica = _.some( verificaAnaliseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-                    return inconsistenciaTecnica.inconsistenciaTecnicaQuestionario;
-                });
-
-                if(!inconsistenciaTecnica){            
-                    ctrl.itemValidoLicenca.questionario = false;
-                }else{
-                    ctrl.itemValidoLicenca.questionario = true;
-                }       
-            }
-        });
+            });
+        }
     };
     
     ctrl.excluirInconsistencia = function (analiseTecnica, tipoDeInconsistenciaTecnica, parametro, documento, atividade, index, indexParametro){
