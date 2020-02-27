@@ -157,7 +157,8 @@ div.row
 										i.glyphicon.glyphicon-remove-sign.temInconsistencia(ng-if="validacaoAnalisePresidente.parecerDiretor.tipoResultadoAnalise.id === validacaoAnalisePresidente.tiposResultadoAnalise.ANALISE_NAO_APROVADA")
 									td {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.tipoLicenca.nome }}
 									td {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome }} - {{ validacaoAnalisePresidente.dadosProcesso.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome }}
-									td {{ validacaoAnalisePresidente.parecerTecnico.validadePermitida }} anos
+									td(style="padding-left: 32px;",ng-if="validacaoAnalisePresidente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnalisePresidente.tiposResultadoAnalise.INDEFERIDO") -
+									td(ng-if="validacaoAnalisePresidente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnalisePresidente.tiposResultadoAnalise.DEFERIDO") {{ validacaoAnalisePresidente.parecerTecnico.validadePermitida }} anos
 									td.text-right
 										a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar licença", ng-click="validacaoAnalisePresidente.openModalLicenca(validacaoAnalisePresidente.parecerTecnico, validacaoAnalisePresidente.dadosProcesso, validacaoAnalisePresidente.analiseTecnica)")
 											i.glyphicon.glyphicon-eye-open
