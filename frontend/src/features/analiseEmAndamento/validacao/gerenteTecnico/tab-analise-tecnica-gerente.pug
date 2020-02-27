@@ -166,7 +166,7 @@
 
         #resultatdo-analise.collapse
             .label-situacao
-                span.title-info Situação:
+                span.title-info Situação: 
                 span {{validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.nome | uppercase}}
 
             .botoes-download
@@ -175,7 +175,7 @@
                         .glyphicon.glyphicon-file.icon-download
                         | Parecer Técnico
                     br
-                div
+                div(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
                     button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFMinuta(validacaoAnaliseTecnicaGerente.analiseTecnica)")
                         .glyphicon.glyphicon-file.icon-download
                         | Minuta da Licença
