@@ -915,6 +915,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         if(ctrl.numeroProcessoClone) {
 
+            var parecerClonado = null;
+
             parecerAnalistaTecnicoService.getParecerByNumeroProcesso(ctrl.numeroProcessoClone)
             	.then(function(response){
 
@@ -925,7 +927,27 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
             			} else{
 
-            				ctrl.parecer = response.data;
+                            var parecerClonado = response.data;
+
+                            ctrl.parecer.parecer = parecerClonado.parecer;
+
+                            if (parecerClonado.doProcesso !== null || parecerClonado.doProcesso !== undefined) {
+
+                                ctrl.parecer.doProcesso = parecerClonado.doProcesso;
+
+                            }
+
+                            if (parecerClonado.daAnaliseTecnica !== null || parecerClonado.daAnaliseTecnica !== undefined) {
+
+                                ctrl.parecer.daAnaliseTecnica = parecerClonado.daAnaliseTecnica;
+
+                            }
+
+                            if (parecerClonado.daConclusao !== null || parecerClonado.daConclusao !== undefined) {
+
+                                ctrl.parecer.daConclusao = parecerClonado.daConclusao;
+
+                            }
 
             			}
 
