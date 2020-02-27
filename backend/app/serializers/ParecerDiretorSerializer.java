@@ -7,6 +7,8 @@ public class ParecerDiretorSerializer {
 
     public static JSONSerializer findByAnalise = SerializerUtil.create(
             "tipoResultadoAnalise.id",
-            "parecer"
+            "tipoResultadoAnalise.nome",
+            "parecer",
+            "dataParecer"
     );
 }
