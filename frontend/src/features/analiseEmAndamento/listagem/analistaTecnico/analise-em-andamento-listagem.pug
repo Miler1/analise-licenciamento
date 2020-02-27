@@ -31,7 +31,8 @@ div
 						tr(ng-repeat="processo in listagem.processos")
 							td
 								span(ng-class="{'icone-solicitacao-ajustes': processo.verificaAnalise === true}")
-								
+								span(ng-class="{'icone-notificado': listagem.notificacaoAtendida(processo)}")
+	
 							td(ng-attr-title="{{processo.numero}}") {{ processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}

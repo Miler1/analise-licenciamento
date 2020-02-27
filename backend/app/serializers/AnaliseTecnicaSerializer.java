@@ -123,6 +123,7 @@ public class AnaliseTecnicaSerializer {
 			"pareceresAnalistaTecnico.condicionantes.texto",
 			"pareceresAnalistaTecnico.condicionantes.prazo",
 			"pareceresAnalistaTecnico.restricoes.texto",
+			"pareceresAnalistaTecnico.dataParecer",
 			"pareceresGerenteAnaliseTecnica.tipoResultadoAnalise.id",
 			"pareceresGerenteAnaliseTecnica.tipoResultadoAnalise.nome",
 			"pareceresGerenteAnaliseTecnica.analiseTecnia.id",

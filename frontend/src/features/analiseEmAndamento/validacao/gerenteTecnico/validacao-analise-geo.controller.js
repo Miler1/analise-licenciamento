@@ -72,9 +72,9 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
         analiseGeoService.findAnalisesGeoByNumeroProcesso(btoa(processo.numero))
             .then(function(response){
 
-                validacaoAnaliseGeoGerente.listaAnalisesGeo = response.data; 
-                setInconsistencias();  
-                
+                validacaoAnaliseGeoGerente.listaAnalisesGeo = response.data;
+                setInconsistencias();
+
             });
     
     };

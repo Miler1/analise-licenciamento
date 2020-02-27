@@ -560,6 +560,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseGeo(boolean isLeftOuterJoin) {
+
+		addAnaliseGeoAlias(isLeftOuterJoin);
+		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseGeo"));
+
+		return this;
+	}
+
 	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
@@ -829,7 +837,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 
@@ -1134,9 +1142,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Boolean isAnaliseTecnicaOpcional = false;
 		public Long idAnalistaTecnico;
 		public Long idDiretor;
-		public boolean isAnaliseGeo;
-		public boolean isAnaliseGeoOpcional;
-		public boolean isGerente;
+		public Boolean isAnaliseGeo = false;
+		public Boolean isAnaliseGeoOpcional = false;
+		public Boolean isGerente = false;
 		public boolean isDiretor;
 		public boolean isPresidente;
 		public Long idAnalistaGeo;
@@ -1144,7 +1152,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		public Long idUsuarioLogado;
-		public boolean isConsultarProcessos;
+		public Boolean isConsultarProcessos = false;
 		public Boolean analiseAtiva = false;
 
 		public FiltroProcesso() {

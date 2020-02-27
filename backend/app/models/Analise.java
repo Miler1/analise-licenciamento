@@ -300,7 +300,7 @@ public class Analise extends GenericModel {
 		this.ativo = false;
 		this._save();
 	}
-	
+
 	public void iniciarAnalisePresidente(UsuarioAnalise usuarioExecutor) {
 
 		if (this.dataCadastro == null) {
@@ -318,5 +318,5 @@ public class Analise extends GenericModel {
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.idObjetoTramitavel), usuarioExecutor);
 
 	}
-
+	
 }

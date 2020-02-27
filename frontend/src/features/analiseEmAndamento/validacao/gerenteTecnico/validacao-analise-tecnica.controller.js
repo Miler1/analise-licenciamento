@@ -53,15 +53,15 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
-    var findAnalisesTecnicaByNumeroProcesso = function(processo) { 
+    var findAnalisesTecnicaByNumeroProcesso = function(processo) {
 
         analiseTecnicaService.findAnalisesTecnicaByNumeroProcesso(btoa(processo.numero))
             .then(function(response){
 
-                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;   
-                
+                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;
+
             });
-    
+
     };
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
@@ -74,9 +74,9 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
-                validacaoAnaliseTecnicaGerente.parecerTecnico = validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico[0];
+                getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica);
                 findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo);
-                
+
                 processoService.getInfoProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id).then(function(response){
                     validacaoAnaliseTecnicaGerente.processo = response.data;
                 });
@@ -175,6 +175,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
         });
 
+        return pareceresOrdenados[pareceresOrdenados.length - 1];
+
     };
 
     validacaoAnaliseTecnicaGerente.downloadPDFParecer = function(analiseTecnica) {
@@ -246,7 +248,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
         if(!documento.id){
 			documentoService.download(documento.key, documento.nomeDoArquivo);
 		}else{
-            documentoService.downloadById(documento.id);
+            		documentoService.downloadById(documento.id);
 		}
     }
 
@@ -445,7 +447,6 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
         }else{
 
             validacaoAnaliseTecnicaGerente.errors.despacho = false;
-            
         }
 
         if(analiseTecnica.tipoResultadoValidacaoGerente.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === null || validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === undefined)) {
@@ -505,11 +506,11 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 				parecer: function() {
 					return parecer;
 				},
-				
+
 				analiseTecnica: function() {
 					return analiseTecnica;
                 },
-                
+
                 processo: function(){
                     return processo;
                 }

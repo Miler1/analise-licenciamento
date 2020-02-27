@@ -41,14 +41,14 @@
 * OS35 - US909 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar questionário.
 * OS35 - US916 - [Analista Técnico] Eu, analista técnico, devo iniciar análise para validar documentos e auto de infração.
 * OS35 - US297 - [Analista Técnico] Eu, analista técnico, devo concluir a análise para indeferir o protocolo.
-* OS35 - US303 - Eu, analista técnico, devo concluir a análise para deferir o processo
-* OS35 - US989 - Eu, analista técnico, devo concluir a análise para emitir notificação
-* OS35 - US944 - Eu, analista, devo enviar notificação ao interessado para concluir a análise
-* OS35 - US957 - Eu, analista técnico, devo deferir a análise para gerar o documento da minuta
-* OS35 - US945 - Eu, analista técnico, devo finalizar análise para gerar documento pdf do parecer
-* OS35 - US304 - Eu, analista técnico, devo acessar o menu "Consulta protocolo" para consultar os processos
-* OS35 - US295 - Eu, analista técnico, devo visualizar o protocolo para analisar suas informações
-* OS35 - US958 - Eu, analista técnico, devo finalizar análise para gerar documento pdf do Relatório Técnico de Vistoria
+* OS35 - US303 - Eu, analista técnico, devo concluir a análise para deferir o processo.
+* OS35 - US989 - Eu, analista técnico, devo concluir a análise para emitir notificação.
+* OS35 - US944 - Eu, analista, devo enviar notificação ao interessado para concluir a análise.
+* OS35 - US957 - Eu, analista técnico, devo deferir a análise para gerar o documento da minuta.
+* OS35 - US945 - Eu, analista técnico, devo finalizar análise para gerar documento pdf do parecer.
+* OS35 - US304 - Eu, analista técnico, devo acessar o menu "Consulta protocolo" para consultar os processos.
+* OS35 - US295 - Eu, analista técnico, devo visualizar o protocolo para analisar suas informações.
+* OS35 - US958 - Eu, analista técnico, devo finalizar análise para gerar documento pdf do Relatório Técnico de Vistoria.
 
 ## OS50
 
