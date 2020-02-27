@@ -55,14 +55,14 @@ public class ParecerPresidente extends GenericModel {
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_APROVADA)) {
 
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_LICENCA, getUsuarioSessao());
-			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), getUsuarioSessao());
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
 			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.AGUARDANDO_EMISSAO_TAXA_LICENCIAMENTO.codigo, analise.processo.numero);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_NAO_APROVADA)) {
 
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_LICENCA, getUsuarioSessao());
-			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id), getUsuarioSessao());
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
 			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_REJEITADA.codigo, analise.processo.numero);
 
@@ -71,7 +71,7 @@ public class ParecerPresidente extends GenericModel {
 		this.usuario = presidente;
 		this.dataParecer = new Date();
 
-		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analise.processo.objetoTramitavel.id);
+		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel);
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
 
 		this.save();
