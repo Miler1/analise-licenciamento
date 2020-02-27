@@ -140,6 +140,7 @@ GET     /parecer/diretor/findParecerByIdHistoricoTramitacao/{idHistoricoTramitac
 
 # Pareceres analista geo
 POST    /parecer/presidente/concluirParecerPresidente                                  PareceresPresidente.concluirParecerPresidente
+GET     /parecer/presidente/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}    PareceresPresidente.findParecerByIdHistoricoTramitacao
 
 # Pareceres analista geo
 POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
