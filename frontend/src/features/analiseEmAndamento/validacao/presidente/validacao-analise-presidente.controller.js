@@ -34,7 +34,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
             .then(function(response){
 
                 validacaoAnalisePresidente.analiseTecnica = response.data;
-				getUltimoParecerAnalistaTecnico(validacaoAnalisePresidente.analiseTecnica.pareceresAnalistaTecnico);
+				getUltimoParecerAnalistaTecnico(validacaoAnalisePresidente.analiseTecnica);
 				
 				processoService.getInfoProcessoByNumero(validacaoAnalisePresidente.analiseTecnica.analise.processo.numero)
 				.then(function(response){
