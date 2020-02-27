@@ -256,7 +256,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			countItens: true,
 			estaSelecionado: function() {
 
-				return $location.path().indexOf('/analise-gerente') > -1;
+				return $location.path().indexOf('/analise-gerente') > -1 ||
+						$location.path().indexOf('/analise-tecnica-gerente') > -1;
 
 			},
 			visivel: function() {
