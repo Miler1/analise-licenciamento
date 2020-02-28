@@ -131,6 +131,17 @@ var FiltroProcessos = {
 						mensagem.error("Ocorreu um erro ao buscar a lista de protocolos.");
 				});
 
+			processoService.getProcessosCount(filtro)
+				.then(function(response){
+					 ctrl.atualizarPaginacao(response.data, filtro.paginaAtual);
+				})
+				.catch(function(response){
+					if(!!response.data.texto)
+						mensagem.warning(response.data.texto);
+					else
+						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
+				});
+
 			if (analiseGeoFinalizada) {
 
 				ctrl.filtro.idCondicaoTramitacao = 'ANALISE_GEO_FINALIZADA';
@@ -163,7 +174,6 @@ var FiltroProcessos = {
 			if (_.isArray(ctrl.condicaoTramitacao)) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
-				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
 
 				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)){
@@ -175,7 +185,6 @@ var FiltroProcessos = {
 			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
-				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
 				caixaEntrada = false;
 				emAnalise = false;
@@ -293,7 +302,7 @@ var FiltroProcessos = {
 
 						ctrl.condicoes = response.data;
 
-						if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
+						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
 
 							ctrl.condicoes.push({
