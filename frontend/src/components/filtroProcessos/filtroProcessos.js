@@ -79,24 +79,18 @@ var FiltroProcessos = {
 				ctrl.filtro.idCondicaoTramitacao = null;
 
 			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 				analiseGeoFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 
-			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
-
-				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
-				analiseTecnicaFinalizada = true;
-				ctrl.filtro.idCondicaoTramitacao = null;
-			
 			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA;
-			
+
 			}  else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
 			
@@ -124,17 +118,17 @@ var FiltroProcessos = {
 				ctrl.filtro.analiseAtiva = true;
 
 			} else if(!caixaEntrada && !emAnalise ) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
 				ctrl.filtro.analiseAtiva = true;
 
-			} 
+			}
 
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
 			ctrl.filtro.itensPorPagina = ctrl.paginacao.itensPorPagina;
 
 			var filtro = angular.copy(ctrl.filtro);
-			
+
 			processoService.getProcessos(filtro)
 				.then(function(response){
 
@@ -149,6 +143,17 @@ var FiltroProcessos = {
 						mensagem.warning(response.data.texto);
 					else
 						mensagem.error("Ocorreu um erro ao buscar a lista de protocolos.");
+				});
+
+			processoService.getProcessosCount(filtro)
+				.then(function(response){
+					 ctrl.atualizarPaginacao(response.data, filtro.paginaAtual);
+				})
+				.catch(function(response){
+					if(!!response.data.texto)
+						mensagem.warning(response.data.texto);
+					else
+						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
 
 			if (analiseGeoFinalizada) {
