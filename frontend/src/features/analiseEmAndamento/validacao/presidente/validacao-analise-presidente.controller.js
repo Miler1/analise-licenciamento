@@ -263,8 +263,10 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 		parecerPresidenteService.concluirParecerPresidente(params)
 			.then(function(response){
 				
-				mensagem.success(response.data);
 				$location.path('/analise-presidente');
+				$timeout(function() {
+                    mensagem.success(response.data.texto, {referenceId: 5});
+                }, 0);
 
 		}).catch(function(){
 
