@@ -266,7 +266,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 				mensagem.success(response.data);
 				$location.path('/analise-presidente');
 
-		}, function(){
+		}).catch(function(){
 
 			mensagem.error("Não foi possível concluir a análise");
 
