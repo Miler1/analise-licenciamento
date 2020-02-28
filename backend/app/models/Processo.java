@@ -415,7 +415,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-
 		if (filtro.filtrarPorUsuario) {
 
 			processoBuilder.filtrarIdPresidente(usuarioSessao.id);
