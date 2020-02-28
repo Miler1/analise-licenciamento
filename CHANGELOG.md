@@ -72,6 +72,8 @@
 * OS49 - US1528 - [Presidente] Eu, diretor presidente, devo acessar a caixa de entrada para listagem de todos os processos para validar análise.
 * OS49 - US1170 - Eu, diretor presidente, devo acessar aguardando autenticação para visualizar o resumo do protocolo.
 * OS49 - US1542 - [Presidente] Eu, diretor presidente, devo acessar aguardando autenticação para validação da análise.
+* OS49 - US1177 - [Presidente] Eu, diretor presidente, devo consultar protocolo para listagem dos protocolos em validação.
+
 ## OS008
 
 * OS008 - US1471 - Correção de "LABELS"

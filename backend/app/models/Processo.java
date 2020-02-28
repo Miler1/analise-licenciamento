@@ -385,7 +385,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void commonFilterProcessoPresidente(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 													UsuarioAnalise usuarioSessao) {
 
-		if (!filtro.isDiretor) {
+		if (!filtro.isPresidente) {
 
 			return;
 
@@ -402,6 +402,19 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdCondicao(filtro.idCondicaoTramitacao);
 
 		}
+
+		if (filtro.idAnalistaGeo != null){
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+
+		}
+
+		if (filtro.idAnalistaTecnico != null){
+
+			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
+
+		}
+
 
 		if (filtro.filtrarPorUsuario) {
 

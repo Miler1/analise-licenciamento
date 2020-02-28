@@ -61,7 +61,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			});
 			
-		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE) {
+		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE || modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.PRESIDENTE ) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 

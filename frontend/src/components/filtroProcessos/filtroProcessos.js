@@ -313,7 +313,8 @@ var FiltroProcessos = {
 						ctrl.condicoes = response.data;
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
 
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_GEO_FINALIZADA',
@@ -323,7 +324,8 @@ var FiltroProcessos = {
 						}
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
 
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_TECNICA_FINALIZADA',
@@ -429,14 +431,18 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE
 			];
 		}
 
 		function getCondicoesAnaliseTecnicaFinalizada() {
 			return [
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE
 			];
 		}
 
