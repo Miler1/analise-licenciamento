@@ -80,7 +80,6 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 processoService.getInfoProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id).then(function(response){
                     validacaoAnaliseTecnicaGerente.processo = response.data;
                 });
-                getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica);
 
                 _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
                     if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
@@ -174,8 +173,6 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 validacaoAnaliseTecnicaGerente.parecerTecnico = response.data;
 
         });
-
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
 
     };
 
