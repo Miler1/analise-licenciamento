@@ -147,37 +147,39 @@ public class Analistas extends InternalController {
 
 	public static void getAnalistaTecnicoPerfilSetores(boolean isGerente) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO, Acao.VALIDAR_PARECERES);
+//		verificarPermissao(Acao.VINCULAR_PROCESSO, Acao.VALIDAR_PARECERES);
+//
+//		UsuarioAnalise usuarioSessao = getUsuarioSessao();
+//
+//		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+//
+//		List<String> siglasSetoresFilhos;
+//		List<UsuarioAnalise> pessoas;
+//
+//		switch (usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) {
+//
+//			case CodigoPerfil.APROVADOR:
+//
+//				siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,2);
+//				pessoas = integracaoEntradaUnica.findUsuariosByPerfilAndSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
+//
+//				break;
+//
+//			case CodigoPerfil.COORDENADOR_TECNICO:
+//
+//				siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1);
+//				pessoas = UsuarioAnalise.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
+//				break;
+//			/**
+//			 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
+//			 */
+//			default:
+//				pessoas = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+//				break;
+//
+//		}
 
-		UsuarioAnalise usuarioSessao = getUsuarioSessao();
-
-		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-
-		List<String> siglasSetoresFilhos;
-		List<UsuarioAnalise> pessoas;
-
-		switch (usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) {
-
-			case CodigoPerfil.APROVADOR:
-
-				siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,2);
-				pessoas = integracaoEntradaUnica.findUsuariosByPerfilAndSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
-
-				break;
-
-			case CodigoPerfil.COORDENADOR_TECNICO:
-
-				siglasSetoresFilhos = integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1);
-				pessoas = UsuarioAnalise.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
-				break;
-			/**
-			 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
-			 */
-			default:
-				pessoas = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-				break;
-
-		}
+		List<UsuarioAnalise> pessoas = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO);
 
 		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
 
@@ -185,9 +187,7 @@ public class Analistas extends InternalController {
 
 	public static void getAnalistaGeoPerfilSetores(boolean isGerente) {
 
-		verificarPermissao(Acao.VINCULAR_PROCESSO);
-
-		List<UsuarioAnalise> pessoas = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, getUsuarioSessao().usuarioEntradaUnica.setorSelecionado.sigla);
+		List<UsuarioAnalise> pessoas = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.ANALISTA_GEO);
 
 		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
 

@@ -12,7 +12,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                                                     empreendimentoService, 
                                                     documentoService,
                                                     validacaoAnaliseGerenteService, 
-                                                    analistaService) {
+                                                    analistaService,
+                                                    parecerAnalistaGeoService) {
 
 
     var validacaoAnaliseGeoGerente = this;
@@ -52,18 +53,18 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 		despacho: false,
         resultadoAnalise: false,
         analistas: false		
-    };
+};
 
     validacaoAnaliseGeoGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
-    var getUltimoParecerGeo = function(pareceresAnalistaGeo) {
+    var getUltimoParecerAnalistaGeo = function(analiseGeo) {
 
-        var pareceresOrdenados = pareceresAnalistaGeo.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaGeoService.getUltimoParecerAnaliseGeo(analiseGeo.id)
+            .then(function(response){
+
+                validacaoAnaliseGeoGerente.parecerGeo = response.data;
+
         });
-
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
-
     };
 
     var findAnalisesGeoByNumeroProcesso = function(processo) {
@@ -92,12 +93,15 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     };
 
     function init() {
+
         validacaoAnaliseGeoGerente.controleVisualizacao = "ETAPA_ANALISE_GEO";
 
         analiseGeoService.getAnaliseGeoByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
+                getUltimoParecerAnalistaGeo(validacaoAnaliseGeoGerente.analiseGeo);
+
                 validacaoAnaliseGeoGerente.parecerGeo = getUltimoParecerGeo(validacaoAnaliseGeoGerente.analiseGeo.pareceresAnalistaGeo);
                 findAnalisesGeoByNumeroProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
                 

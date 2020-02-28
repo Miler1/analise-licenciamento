@@ -10,7 +10,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                                     $uibModal,
                                                     documentoService,
                                                     validacaoAnaliseGerenteService,
-                                                    analistaService) {
+                                                    analistaService,
+						                            parecerAnalistaTecnicoService) {
 
     var validacaoAnaliseTecnicaGerente = this;
 
@@ -33,42 +34,47 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
 
     validacaoAnaliseTecnicaGerente.errors = {
+
 		despacho: false,
         resultadoAnalise: false,
         analistas: false
-};
 
-validacaoAnaliseTecnicaGerente.disable = {
-    tipoLicenca: true,
-    atividade: [],
-    questionario: true,
-    documentoAdministrativo: [],
-    documentoTecnicoAmbiental: []
-};
+    };
+
+    validacaoAnaliseTecnicaGerente.disable = {
+
+        tipoLicenca: true,
+        atividade: [],
+        questionario: true,
+        documentoAdministrativo: [],
+        documentoTecnicoAmbiental: []
+
+    };
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
-    var findAnalisesTecnicaByNumeroProcesso = function(processo) { 
+    var findAnalisesTecnicaByNumeroProcesso = function(processo) {
 
         analiseTecnicaService.findAnalisesTecnicaByNumeroProcesso(btoa(processo.numero))
             .then(function(response){
 
-                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;   
-                
+                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;
+
             });
-    
+
     };
 
     function init() {
+
         validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_ANALISE_TECNICA";
 
         analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
-                validacaoAnaliseTecnicaGerente.parecerTecnico = getUltimoParecerTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico);
+                getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica);
                 findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo);
-                
+
                 processoService.getInfoProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id).then(function(response){
                     validacaoAnaliseTecnicaGerente.processo = response.data;
                 });
@@ -157,10 +163,13 @@ validacaoAnaliseTecnicaGerente.disable = {
         $rootScope.$broadcast('atualizarContagemProcessos');
     }
 
-    var getUltimoParecerTecnico = function(pareceresAnalistaTecnico) {
+    var getUltimoParecerAnalistaTecnico = function(analiseTecnica) {
 
-        var pareceresOrdenados = pareceresAnalistaTecnico.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(analiseTecnica.id)
+            .then(function(response){
+
+                validacaoAnaliseTecnicaGerente.parecerTecnico = response.data;
+
         });
 
         return pareceresOrdenados[pareceresOrdenados.length - 1];
@@ -196,7 +205,7 @@ validacaoAnaliseTecnicaGerente.disable = {
         if(!documento.id){
 			documentoService.download(documento.key, documento.nomeDoArquivo);
 		}else{
-            documentoService.downloadById(documento.id);
+            		documentoService.downloadById(documento.id);
 		}
     }
 
@@ -455,11 +464,11 @@ validacaoAnaliseTecnicaGerente.disable = {
 				parecer: function() {
 					return parecer;
 				},
-				
+
 				analiseTecnica: function() {
 					return analiseTecnica;
                 },
-                
+
                 processo: function(){
                     return processo;
                 }

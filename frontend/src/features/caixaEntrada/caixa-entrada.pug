@@ -21,3 +21,7 @@ ng-controller='cxEntAnalistaGeoController as cxEntAnalistaGeo')
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.GERENTE",
     ng-controller='cxEntGerenteTecnicoController as cxEntGerente')
     include gerenteTecnico/caixa-entrada
+
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.DIRETOR",
+    ng-controller='cxEntDiretorController as cxEntDiretor')
+    include diretorTecnico/caixa-entrada

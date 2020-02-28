@@ -24,8 +24,8 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="licenca in consultarLicencas.licencas")
-							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca | textoTruncado : 4:3}}
-							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numeroProcesso | textoTruncado : 4:3}}
+							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca }}
+							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numeroProcesso }}
 							td {{licenca.cpfEmpreendimento ? licenca.cpfEmpreendimento : licenca.cnpjEmpreendimento | brCpfCnpj}}
 							td {{licenca.denominacaoEmpreendimento}}
 							td {{licenca.municipioEmpreendimento}}/{{licenca.siglaEstadoEmpreendimento}}
