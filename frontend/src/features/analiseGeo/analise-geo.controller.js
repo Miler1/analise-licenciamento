@@ -1382,6 +1382,11 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	};
 
+	ctrl.baixarShapefile = function() {
+
+		analiseGeoService.baixarShapefile(ctrl.analiseGeo.id);
+	};
+
 };
 
 exports.controllers.AnaliseGeoController = AnaliseGeoController;

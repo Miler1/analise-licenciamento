@@ -8,6 +8,7 @@ import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
+import org.geotools.feature.SchemaException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import security.Auth;
@@ -17,6 +18,8 @@ import utils.*;
 
 import javax.persistence.*;
 import javax.validation.ValidationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -836,6 +839,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.first();
 
 		return desvinculoAnaliseTecnica;
+	}
+
+	public File gerarShape() throws IOException, SchemaException {
+		return this.caracterizacao.gerarShape();
 	}
 
 }
