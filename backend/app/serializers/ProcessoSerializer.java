@@ -88,6 +88,7 @@ public class ProcessoSerializer {
 			"analise.analisesTecnicas.justificativaCoordenador",
 			"analise.analisesTecnicas.dataFim",
 			"analise.analisesTecnicas.dataVencimentoPrazo",
+			"processoAnterior.id",
 			"processoAnterior.historicoTramitacao.idHistorico",
 			"processoAnterior.historicoTramitacao.dataInicial",
 			"processoAnterior.historicoTramitacao.dataFinal",
