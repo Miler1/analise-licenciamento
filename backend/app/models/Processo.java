@@ -464,6 +464,31 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
+	public static List getProcessosAnteriores(Processo processoAnterior) {
+
+		List processosAnteriores = new ArrayList<>();
+		Processo processoAnteriorAuxiliar;
+
+		while (processoAnterior != null) {
+
+			processosAnteriores.add(processoAnterior);
+
+			if (processoAnterior.processoAnterior != null) {
+
+				processoAnteriorAuxiliar = Processo.findById(processoAnterior.processoAnterior.id);
+				processoAnterior = processoAnteriorAuxiliar;
+
+			} else {
+
+				processoAnterior = null;
+			}
+
+		}
+
+		return processosAnteriores;
+
+	}
+
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
 
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)

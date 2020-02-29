@@ -23,6 +23,17 @@ public class Processos extends InternalController {
 		
 		renderJSON(processosList);
 	}
+
+	public static void getProcessosAnteriores(Long idProcessoAnterior){
+
+		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+
+		Processo processoAntigo = Processo.findById(idProcessoAnterior);
+
+		List processosList = Processo.getProcessosAnteriores(processoAntigo);
+
+		renderJSON(processosList, ProcessoSerializer.getInfo);
+	}
 	
 	public static void  countWithFilter(FiltroProcesso filtro){
 		

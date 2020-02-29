@@ -88,7 +88,7 @@ public class ProcessoSerializer {
 			"analise.analisesTecnicas.justificativaCoordenador",
 			"analise.analisesTecnicas.dataFim",
 			"analise.analisesTecnicas.dataVencimentoPrazo",
-
+			"processoAnterior.id",
 			"processoAnterior.historicoTramitacao.idHistorico",
 			"processoAnterior.historicoTramitacao.dataInicial",
 			"processoAnterior.historicoTramitacao.dataFinal",
@@ -123,7 +123,6 @@ public class ProcessoSerializer {
 			"processoAnterior.historicoTramitacaoAnterior.documentosCorrigidos.tipo.nome",
 			"processoAnterior.historicoTramitacaoAnterior.setor.nome",
 			"processoAnterior.historicoTramitacaoAnterior.relHistoricoTramitacaoSetor.siglaSetor",
-
 			"historicoTramitacao.idHistorico",
 			"historicoTramitacao.dataInicial",
 			"historicoTramitacao.dataFinal",
