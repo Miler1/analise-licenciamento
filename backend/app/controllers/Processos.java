@@ -3,14 +3,13 @@ package controllers;
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.AnaliseJuridica;
 import models.Processo;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.Questionario3;
+import org.geotools.feature.SchemaException;
 import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
-import serializers.Questionario3Serializer;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Processos extends InternalController {
@@ -64,5 +63,14 @@ public class Processos extends InternalController {
 		renderJSON(analise, AnaliseJuridicaSerializer.findInfo);
 
 	}
+
+    public static void baixarShapefile(Long idProcesso) throws IOException, SchemaException {
+
+        verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+
+        Processo processo = Processo.findById(idProcesso);
+        renderBinary(processo.gerarShape());
+
+    }
 
 }

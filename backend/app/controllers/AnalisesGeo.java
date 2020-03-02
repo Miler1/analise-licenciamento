@@ -270,13 +270,4 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void baixarShapefile(Long idAnaliseGeo) throws IOException, SchemaException {
-
-        AnaliseGeo analiseGeo = AnaliseGeo.findById(idAnaliseGeo);
-        File file = analiseGeo.analise.processo.gerarShape();
-
-        renderBinary(file);
-
-    }
-
 }

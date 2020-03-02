@@ -3,12 +3,7 @@ include ../../layout/components/mapPanel
     .row
         .col-md-12
 
-            div
-                button.btn.btn-sm.btn-default.pull-right(ng-click='ctrl.baixarShapefile()')
-                    i.fa.fa-download
-                    | &nbsp;Baixar shape do empreendimento
-
-                h5 Localização do empreendimento
+            h5 Localização do empreendimento
 
             +mapPanel-sidebar("mapa-localizacao-empreendimento",'400', true, 'ctrl')
             br

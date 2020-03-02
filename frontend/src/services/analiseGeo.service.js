@@ -132,11 +132,6 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	};
 
-	this.baixarShapefile = function(idAnaliseGeo){
-
-		$window.open(config.BASE_URL() + 'analisesGeo/baixarShapefile/' + idAnaliseGeo, '_blank');
-	};
-
 };
 
 exports.services.AnaliseGeoService = AnaliseGeoService;
