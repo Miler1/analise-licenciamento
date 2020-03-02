@@ -87,11 +87,6 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, cpfCnpjEmpreendimento)
 			.then(function(response){
 
-				// Aqui vai trocar a tramitacao de caixa de entrada pra análise
-				// var idAnaliseGeo = uploadShapes.processo.analise.analiseGeo.id;
-				// analiseGeoService.iniciar({ id : idAnaliseGeo })
-				// 	.then(function(response){
-
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$location.path('/analise-geo/' + uploadShapes.processo.analise.analiseGeo.id.toString());
 

@@ -47,10 +47,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 		analiseGeoService.iniciar({ id : processo.idAnaliseGeo })
 			.then(function(response){
 
-				// $rootScope.$broadcast('atualizarContagemProcessos');
-				// $rootScope.tituloPagina = 'EM ANÁLISE GEO';
-				// $location.path('/analise-geo/' + idAnaliseGeo.toString());
-
 				cxEntAnalistaGeo.iniciarUploadShapes(processo);
 
 			}, function(error){
