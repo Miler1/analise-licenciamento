@@ -16,7 +16,7 @@ div
 					thead
 						tr
 							th.col-md-2 Nº título
-							th.col-md-2 Protocolo
+							th.col-md-2 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-3 Empreendimento
 							th.col-md-1 Município
@@ -25,7 +25,7 @@ div
 					tbody
 						tr(ng-repeat="licenca in consultarLicencas.licencas")
 							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca }}
-							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numeroProcesso }}
+							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numero }}
 							td {{licenca.cpfEmpreendimento ? licenca.cpfEmpreendimento : licenca.cnpjEmpreendimento | brCpfCnpj}}
 							td {{licenca.denominacaoEmpreendimento}}
 							td {{licenca.municipioEmpreendimento}}/{{licenca.siglaEstadoEmpreendimento}}

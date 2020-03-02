@@ -57,7 +57,7 @@ public class ParecerPresidente extends GenericModel {
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_LICENCA, getUsuarioSessao());
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
-			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.AGUARDANDO_EMISSAO_TAXA_LICENCIAMENTO.codigo, analise.processo.numero);
+			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_APROVADA.codigo, analise.processo.numero);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_NAO_APROVADA)) {
 
