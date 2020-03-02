@@ -186,8 +186,10 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				modalCtrl.setPareceres();
 				modalCtrl.setDocumentos();
 
-				processoService.getProcessosAnteriores(modalCtrl.dadosProcesso.processoAnterior.id)
-					.then(function(response){
+				if (modalCtrl.dadosProcesso.processoAnterior != null) {
+
+					processoService.getProcessosAnteriores(modalCtrl.dadosProcesso.processoAnterior.id)
+						.then(function(response){
 					
 						modalCtrl.processosAnteriores = response.data;
 
@@ -204,7 +206,9 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 							});
 
 						});
-				});
+					});
+
+				}
 			})
 			.catch(function(){
 				mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
