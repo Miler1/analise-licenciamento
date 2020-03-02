@@ -157,7 +157,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		addCaracterizacaoAlias();
 		
-		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".numeroProcesso").as("numeroProcesso"));
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".numero").as("numero"));
 		
 		return this;
 	}
@@ -283,7 +283,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	private Criterion getNumeroProcessoRestricao(String numeroProcesso) {
 		
-		return Restrictions.ilike(CARACTERIZACAO_ALIAS+".numeroProcesso", numeroProcesso, MatchMode.ANYWHERE);
+		return Restrictions.ilike(CARACTERIZACAO_ALIAS+".numero", numeroProcesso, MatchMode.ANYWHERE);
 	}	
 	
 	public LicencaEmitidaBuilder filtrarPorCpfCnpjEmpreendimento(String cpfCnpj) {
@@ -432,7 +432,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	public LicencaEmitidaBuilder orderByNumeroProcesso() {
 		
-		addOrder(Order.asc("numeroProcesso"));
+		addOrder(Order.asc("numero"));
 		
 		return this;
 	}

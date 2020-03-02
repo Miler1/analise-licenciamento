@@ -1,6 +1,8 @@
 package controllers;
 
-import models.*;
+import models.AnaliseTecnica;
+import models.ParecerAnalistaTecnico;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.ParecerAnalistaGeoSerializer;
 import serializers.ParecerAnalistaTecnicoSerializer;
