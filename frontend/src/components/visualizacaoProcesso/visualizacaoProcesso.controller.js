@@ -167,7 +167,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			if(!_.isEmpty(ultimoParecer.pareceresAnalistaTecnico)) {
 
-				if (modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer)) {
+				if (ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer) {
 
 					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
 
