@@ -23,6 +23,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
     validacaoAnalisePresidente.analiseTecnica = null;
 	validacaoAnalisePresidente.acaoTramitacao = app.utils.AcaoTramitacao;
 	validacaoAnalisePresidente.idTipoResultadoAnalise = null;
+	validacaoAnalisePresidente.exibirDadosProcesso = exibirDadosProcesso;
 
 	validacaoAnalisePresidente.errors = {
 		despacho: false
@@ -53,6 +54,29 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
             });
 
 	}
+
+	function exibirDadosProcesso() {
+
+        var processo = {
+
+            idProcesso: validacaoAnalisePresidente.analiseTecnica.analise.processo.id,
+            numero: validacaoAnalisePresidente.analiseTecnica.analise.processo.numero,
+            denominacaoEmpreendimento: validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.denominacao
+        };
+
+        if(validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+
+            processo.cnpjEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+
+        } else {
+
+            processo.cpfEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+        }		
+
+        processoService.visualizarProcesso(processo);
+    }
+
+
 
 	validacaoAnalisePresidente.baixarDocumento = function (analiseTecnica, tipoDocumento ) {
 
