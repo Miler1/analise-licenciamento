@@ -19,18 +19,19 @@ div
 					thead
 						tr
 							th
-							th.col-md-1.text-center Protocolo 
+							th.col-md-1.text-center Protocolo
 							th.col-md-2.text-center CPF/CNPJ
-							th.col-md-2.text-center Interessado
+							th.col-md-3.text-center Empreendimento
 							th.col-md-2.text-center Município
-							th.col-md-2.text-center Licença
+							th.col-md-1.text-center Licença
 							th.col-md-2.text-center Prazo análise
 							th.col-md-2.text-center Prazo análise GEO
 							th.col-md-2.text-center Ações
 					tbody
 						tr(ng-repeat="processo in cxEntAnalistaGeo.processos")
 							td
-							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero | textoTruncado : 4:3}}
+								span(ng-class="{'icone-notificado': cxEntAnalistaGeo.notificacaoAtendida(processo)}")
+							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td.text-center {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -59,11 +60,13 @@ div
 												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculoAnaliseGeo(processo)")
 													i.glyphicon.glyphicon-link
 													span Solicitação de desvínculo
-											li(ng-if="processo.idCondicaoTramitacao === cxEntAnalistaGeo.condicaoTramitacao.NOTIFICACAO_GEO_ATENDIDA")
-												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculoAnaliseGeo(processo)")
+											li(ng-if='cxEntAnalistaGeo.notificacaoAtendida(processo)')
+												a(ng-click="cxEntAnalistaGeo.visualizarNotificacao(processo)")
 													i.glyphicon.glyphicon-bell
 													span Notificação
-				div
+				.legenda
+					span.icone-notificado.legenda Notificação Atendida
+
 				+paginacao('cxEntAnalistaGeo.paginacao', 'cxEntAnalistaGeo.onPaginaAlterada')
 
 		.row(ng-show="!cxEntAnalistaGeo.processos || cxEntAnalistaGeo.processos.length == 0")

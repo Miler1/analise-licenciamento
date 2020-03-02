@@ -30,6 +30,12 @@ var DocumentoService = function(request, $window, config, Upload) {
 
     };
 
+    this.downloadParecerByIdAnaliseGeo = function(id) {
+
+        $window.open(config.BASE_URL() + "documentos/" + id + "/downloadParecerGeo", '_blank');
+
+    };
+
     this.downloadMinutaByIdAnaliseTecnica = function(id) {
 
         $window.open(config.BASE_URL() + "documentos/" + id + "/downloadMinutaByIdAnaliseTecnica", '_blank');

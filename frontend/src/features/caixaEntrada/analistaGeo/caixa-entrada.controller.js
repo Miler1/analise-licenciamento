@@ -18,7 +18,10 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntAnalistaGeo.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntAnalistaGeo.dateUtil = app.utils.DateUtil;
+	cxEntAnalistaGeo.origemNotificacao = app.utils.OrigemNotificacao;
 	cxEntAnalistaGeo.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
+	cxEntAnalistaGeo.notificacaoAtendida = notificacaoAtendida;
+	cxEntAnalistaGeo.visualizarNotificacao = visualizarNotificacao;
 
 	function atualizarListaProcessos(processos) {
 
@@ -42,7 +45,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 			processo.selecionado = cxEntAnalistaGeo.todosProcessosSelecionados;
 		});
 	}
-	
+
 	function iniciarAnalise(idAnaliseGeo) {
 		analiseGeoService.iniciar({ id : idAnaliseGeo })
 			.then(function(response){
@@ -50,12 +53,12 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$rootScope.tituloPagina = 'EM ANÁLISE GEO';
 				$location.path('/analise-geo/' + idAnaliseGeo.toString());
-			
+
 			}, function(error){
 				mensagem.error(error.data.texto);
 			});
 	}
-	
+
 	function iniciarUploadShapes(processo){
 		$rootScope.processo = processo;
 
@@ -84,14 +87,14 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 							return processo.idProcesso;
 						}
 					}
-					
+
 				});
 	};
 
-	cxEntAnalistaGeo.visualizarRespostaNotificação =  function(processo){
 
-		// Colocar os trem da modal
-};
+	function visualizarNotificacao(processo) {
+		return processoService.visualizarNotificacao(processo);
+	}
 
 	function primeiroAcesso(processo) {
 		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
@@ -109,6 +112,10 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 			}, function(error){
 				mensagem.error(error.data.texto);
 			});
+	}
+
+	function notificacaoAtendida(processo) {
+		return processo && processo.retificacao;
 	}
 };
 

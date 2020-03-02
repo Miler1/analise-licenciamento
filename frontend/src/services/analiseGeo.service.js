@@ -114,7 +114,6 @@ var AnaliseGeoService = function(request, $window ,config) {
 	};
 
 	this.findAnalisesGeoByNumeroProcesso = function(numero) {
-
 		return request
 			.get(config.BASE_URL() + 'analisesGeo/findAnalisesGeoByNumeroProcesso/' + numero);
 

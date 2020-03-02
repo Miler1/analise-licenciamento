@@ -1,4 +1,4 @@
-var AnaliseEmAndamentoGeoListController = function($scope, config, $location, 
+var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 												   $rootScope, processoService,
 												   analiseGeoService, parecerGerenteService,
 												   mensagem, $uibModal) {
@@ -24,6 +24,8 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
+	listagem.visualizarNotificacao = visualizarNotificacao;
+	listagem.notificacaoAtendida = notificacaoAtendida;
 
 	mensagem.verificaMensagemGlobal();
 
@@ -39,15 +41,15 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 
 				if(_.isEmpty(response.data.pareceresGerenteAnaliseGeo)){
 					processo.verificaAnalise = false;
-					
+
 				}else{
 					_.find(response.data.pareceresGerenteAnaliseGeo, function(parecerGerente) {
 						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
 							processo.verificaAnalise = false;
-							
+
 						}else{
 							processo.verificaAnalise=true;
-							
+
 						}
 					});
 				}
@@ -77,14 +79,14 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 		$rootScope.$broadcast('atualizarContagemProcessos');
 
 		$location.path('/analise-geo/' + idAnaliseGeo.toString());
-		
-	}	
+
+	}
 
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);
 	}
-	
+
 	function visualizarSolicitacaoAjustes(processo) {
 
 		parecerGerenteService.findJustificativaParecerByIdAnaliseGeo(processo.idAnaliseGeo)
@@ -100,10 +102,19 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 						justificativa: function () {
 							return response.data;
 						}
-						
+
 					}
 				});
 		});
+	}
+
+	function visualizarNotificacao(processo) {
+
+		return processoService.visualizarNotificacao(processo);
+	}
+
+	function notificacaoAtendida(processo) {
+		return processo && processo.retificacao;
 	}
 };
 

@@ -4,6 +4,10 @@ import models.*;
 import serializers.ParecerGerenteSerializer;
 import utils.Mensagem;
 
+import javax.validation.ValidationException;
+import java.util.Comparator;
+import java.util.List;
+
 public class PareceresGerentes extends InternalController {
 
 	public static void concluirParecerGerente(ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo) {
@@ -63,6 +67,22 @@ public class PareceresGerentes extends InternalController {
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
 
 		renderText(analiseTecnica.getJustificativaUltimoParecer());
+
+	}
+
+	public static void getUltimoParecerGerenteAnaliseTecnica(Long id) {
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(id);
+
+		renderJSON(analiseTecnica.pareceresGerenteAnaliseTecnica.stream().max(Comparator.comparing(ParecerGerenteAnaliseTecnica::getDataParecer)).orElseThrow(ValidationException::new), ParecerGerenteSerializer.findByIdHistoricoTramitacao);
+
+	}
+
+	public static void getUltimoParecerGerenteAnaliseGeo(Long id) {
+
+		AnaliseGeo analiseGeo = AnaliseGeo.findById(id);
+
+		renderJSON(analiseGeo.pareceresGerenteAnaliseGeo.stream().max(Comparator.comparing(ParecerGerenteAnaliseGeo::getDataParecer)).orElseThrow(ValidationException::new), ParecerGerenteSerializer.findByIdHistoricoTramitacao);
 
 	}
 
