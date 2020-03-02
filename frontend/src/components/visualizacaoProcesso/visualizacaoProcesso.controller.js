@@ -40,6 +40,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.pareceresPresidente ={};
 	modalCtrl.pareceresTecnicos = {};
 	modalCtrl.documentos = [];
+	modalCtrl.processosAnteriores = [];
+	modalCtrl.tramitacoes = [];
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -198,6 +200,26 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 				modalCtrl.setPareceres();
 				modalCtrl.setDocumentos();
+
+				processoService.getProcessosAnteriores(modalCtrl.dadosProcesso.processoAnterior.id)
+					.then(function(response){
+					
+						modalCtrl.processosAnteriores = response.data;
+
+						_.forEach(modalCtrl.processosAnteriores, function(processo){
+
+							_.forEach(processo.historicoTramitacao, function(tramitacao){
+
+								if (tramitacao.idCondicaoFinal !== modalCtrl.comparaStatus.ARQUIVADO) {
+
+									modalCtrl.tramitacoes = modalCtrl.tramitacoes.concat(tramitacao);
+									
+								}
+
+							});
+
+						});
+				});
 			})
 			.catch(function(){
 				mensagem.error("Ocorreu um erro ao buscar dados do protocolo.");
