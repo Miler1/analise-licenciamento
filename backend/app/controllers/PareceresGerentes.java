@@ -6,7 +6,7 @@ import utils.Mensagem;
 
 public class PareceresGerentes extends InternalController {
 
-	public static void concluirParecerGerente(ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo) {
+	public static void concluirParecerGerente(ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo) throws Exception {
 
 		returnIfNull(parecerGerenteAnaliseGeo, "ParecerGerenteAnaliseGeo");
 

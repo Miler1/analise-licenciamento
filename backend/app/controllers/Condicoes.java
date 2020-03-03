@@ -32,6 +32,7 @@ public class Condicoes extends InternalController {
 							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
 							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 							Condicao.ARQUIVADO,
+							Condicao.AGUARDANDO_RESPOSTA_JURIDICA,
 							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA
 					))
@@ -54,6 +55,7 @@ public class Condicoes extends InternalController {
 							Condicao.EM_ANALISE_TECNICA,
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA,
 							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
+							Condicao.AGUARDANDO_RESPOSTA_JURIDICA,
 							Condicao.ARQUIVADO
 					))
 					.fetch();

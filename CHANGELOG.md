@@ -63,3 +63,7 @@
 * OS50 - US1167 - Eu, gerente técnico, devo acessar visualizar protocolo para visualizar a aba de análise documental
 * OS50 - US1300 - [HOMOLOGAÇÃO] Considerações análise geo.
 * OS50 - US1248 - Eu, gerente técnico, devo acessar o grid de protocolos e/ou Histórico do protocolo (no visualizar protocolo) para visualizar os prazos da análise técnica pós congelamento
+
+## OS008
+
+* OS008 - US300 - Eu, analista técnico, devo validar análise jurídica para tramitação do processo
