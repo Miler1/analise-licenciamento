@@ -15,11 +15,11 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th.col-md-2 Nº título
-							th.col-md-2 Processo
+							th.col-md-1 Nº licença
+							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-3 Empreendimento
-							th.col-md-1 Município
+							th.col-md-2 Município
 							th.col-md-1 Títulos
 							th.col-md-1.text-right Ações
 					tbody
@@ -39,22 +39,18 @@ div
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO")
-												a(ng-click="consultarLicencas.visualizarProcesso(licenca)")
-													i.glyphicon.glyphicon-eye-open
-													span Visualizar protocolo
-											li(ng-if="consultarLicencas.isSuspensaoVisivel(licenca)")
-												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
-													i.glyphicon.glyphicon-lock
-													span Suspender título
 											li
-												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)", ng-if="consultarLicencas.isCancelamentoVisivel(licenca)")
-													i.glyphicon.glyphicon-remove
-													span Cancelar título
+												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
+													i.glyphicon.glyphicon-minus-sign
+													span Suspender licença
+											li
+												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)")
+													i.glyphicon.glyphicon-ban-circle
+													span Cancelar licença
 											li
 												a(ng-click="consultarLicencas.downloadLicenca(licenca)")
-													i.glyphicon.glyphicon-download-alt
-													span Baixar título
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar licença
 
 				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
 

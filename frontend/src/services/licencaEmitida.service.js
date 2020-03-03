@@ -1,4 +1,4 @@
-var LicencaEmitidaService = function(request, config) {
+var LicencaEmitidaService = function(request,$window, config) {
 
 	this.getLicencasEmitidasPesquisaRapida = function(filtro) {
 
@@ -31,7 +31,8 @@ var LicencaEmitidaService = function(request, config) {
 
 	this.downloadLicenca = function(idLicenca) {
 
-		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/download";
+		$window.open(config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/download", '_blank');
+		
 	};
 
 	this.suspenderLicenca = function(suspensao){
