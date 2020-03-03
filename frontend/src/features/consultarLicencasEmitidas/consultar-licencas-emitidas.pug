@@ -15,7 +15,7 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th.col-md-1 Nº título
+							th.col-md-1 Nº licença
 							th.col-md-1 Processo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-3 Empreendimento
@@ -42,20 +42,15 @@ div
 											li
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
 													i.glyphicon.glyphicon-minus-sign
-													span Suspender título
+													span Suspender licença
 											li
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)")
 													i.glyphicon.glyphicon-ban-circle
-													span Cancelar título
+													span Cancelar licença
 											li
 												a(ng-click="consultarLicencas.downloadLicenca(licenca)")
-													i.glyphicon.glyphicon-download-alt
-													span Baixar título
-													
-											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO")
-												a(ng-click="consultarLicencas.visualizarProcesso(licenca)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar protocolo
+													span Visualizar licença
 
 				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
 
