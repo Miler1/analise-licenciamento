@@ -199,6 +199,31 @@ form{
 	margin-left: 0px;
 }
 
+.icone-legenda {
+
+	color: #757575;
+	font-style: italic;
+
+	&:before {
+		content: "";
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
+	}
+
+	&.legenda {
+		margin-left: 5px;
+		margin-right: 35px;
+
+		&:before {
+			margin-right: 5px;
+		}
+	}
+}
+
 .icone-revisao-solicitada {
 		color: #757575;
 		font-style: italic;
@@ -252,7 +277,7 @@ form{
 
 	&:before {
 		content: "";
-		background-color: orange;
+		background-color: #FF9D24;
 		border-radius: 50%;
 		width: 12px;
 		height: 12px;
@@ -267,6 +292,15 @@ form{
 		&:before {
 			margin-right: 5px;
 		}
+	}
+}
+
+.icone-aguardando-resposta-juridico {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: #F3E702;
 	}
 }
 
@@ -470,6 +504,10 @@ form{
 	padding-right: 11px !important;
 }
 
+.padding-right-20 {
+	padding-right: 20px !important;
+}
+
 .error-summernote{
 	border-color: #d62c1a !important;
 	border: 1px solid;
@@ -480,6 +518,11 @@ form{
 	text-align:center; 
 	font-size:13px; 
 	margin-left:2%;
+}
+
+.visualizar-parecer{
+	text-align:center; 
+	font-size:13px; 
 }
 
 .visualizar-solicitacao-ajustes{
@@ -504,10 +547,20 @@ form{
 		font-size: 13px;
 		margin-left:15px;
 	}
-	.text-justificativa{
+	.text-justificativa,
+	.text-parecer-juridico{
 		margin:15px;
 		width: 840px;
 		height: 170px;
+	}
+}
+
+#parecer-juridico{
+
+	.label-parecer-juridico {
+
+		font-size: 13px;
+
 	}
 }
 

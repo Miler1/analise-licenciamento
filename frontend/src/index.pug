@@ -36,7 +36,7 @@ html(lang='pt-br')
 
 			div#wrap
 
-			div(ng-if='!isRoute("/parecer-orgao")')
+			div(ng-if='!isRoute("/parecer-orgao") && !isRoute("/parecer-juridico")')
 
 				include layout/header
 				include layout/menu
@@ -62,6 +62,13 @@ html(lang='pt-br')
 				div.col-xs-12.main-container__parecer-orgao
 					section.container.main-container-parecer-orgao
 						include features/parecerOrgao/parecerOrgao
+			
+			div(ng-if='isRoute("/parecer-juridico")')
+
+				include layout/header
+				div.col-xs-12.main-container__parecer-juridico
+					section.container.main-container-parecer-juridico
+						include features/parecerJuridico/parecerJuridico
 
 		script(src="./aplicacao/info")
 		script(src="./libs/jquery/jquery.min.js")

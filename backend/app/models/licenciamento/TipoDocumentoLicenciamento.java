@@ -18,6 +18,8 @@ public class TipoDocumentoLicenciamento extends Model {
 	public static Long LICENCA_AMBIENTAL_RURAL = 69l;
 	public static Long RENOVACAO_LICENCA_DE_INSTALACAO = 70l;
 	public static Long RENOVACAO_LICENCA_DE_OPERACAO = 71l;
+
+	public static Long DOCUMENTO_FUNDIARIO = 200l;
 	
 	public String nome;
 	
