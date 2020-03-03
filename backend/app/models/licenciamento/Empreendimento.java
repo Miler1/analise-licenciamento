@@ -151,7 +151,7 @@ public class Empreendimento extends GenericModel {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(cpfCnpj);
+		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(cpfCnpj);
 
 		Empreendimento empreendimentoLicenciamento = Empreendimento.buscaEmpreendimentoByCpfCnpj(cpfCnpj);
 

@@ -1,7 +1,7 @@
 package models;
 
 import exceptions.ValidacaoException;
-import main.java.br.ufla.lemaf.beans.pessoa.Tipo;
+import br.ufla.lemaf.beans.pessoa.Tipo;
 import models.licenciamento.*;
 
 import models.manejoDigital.analise.analiseShape.Sobreposicao;

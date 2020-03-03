@@ -7,9 +7,9 @@ import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
-import main.java.br.ufla.lemaf.enums.TipoEndereco;
+import br.ufla.lemaf.beans.pessoa.Endereco;
+import br.ufla.lemaf.beans.pessoa.Municipio;
+import br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.*;
 import models.pdf.PDFGenerator;
 import models.tmsmap.LayerType;
@@ -815,7 +815,7 @@ public class AnaliseGeo extends Analisavel {
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-        main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+        br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.getCpfCnpj());
         final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
         UsuarioAnalise analista;
@@ -948,7 +948,7 @@ public class AnaliseGeo extends Analisavel {
 
         }
 
-        main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(comunicado.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+        br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(comunicado.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
         for (Endereco endereco : empreendimentoEU.enderecos) {
             if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
                 municipio = endereco.municipio;

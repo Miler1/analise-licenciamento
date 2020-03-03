@@ -151,6 +151,7 @@ GET     /parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/{id}            
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
+GET      /empreendimento/sobreposicoes/{cpfCnpj}            Empreendimentos.sobreposicoes
 
 # Documentos licenciamento
 
