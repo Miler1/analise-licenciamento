@@ -20,10 +20,7 @@ import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -78,6 +75,10 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	@Column
 	public Boolean ativo;
+
+	@ManyToOne
+	@JoinColumn(name = "id_origem_notificacao")
+	public OrigemNotificacao origemNotificacao;
 
 	@Transient
 	public transient Tramitacao tramitacao = new Tramitacao();
@@ -176,7 +177,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
 
+		commonFilterProcessoDiretor(processoBuilder, filtro, usuarioSessao);
+
 		commonFilterConsultarProcesso(processoBuilder, filtro, usuarioSessao);
+
+		if(filtro.analiseAtiva){
+			processoBuilder.filtrarPorAnaliseAiva(filtro.analiseAtiva);
+		}
 
 		return processoBuilder;
 
@@ -206,6 +213,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			processoBuilder.filtrarPorIdAnalistaGeo(filtroProcesso.idAnalistaGeo, true);
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtroProcesso.idAnalistaTecnico, true);
+			processoBuilder.filtrarPorIdDiretor(filtroProcesso.idDiretor, true);
 
 		}
 
@@ -347,6 +355,35 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
+	private static void commonFilterProcessoDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+													UsuarioAnalise usuarioSessao) {
+
+		if (!filtro.isDiretor) {
+
+			return;
+
+		}
+
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
+			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
+
+		}
+
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty() || filtro.idCondicaoTramitacao != null) {
+
+			processoBuilder.filtrarPorIdCondicao(filtro.idCondicaoTramitacao);
+
+		}
+
+		if (filtro.filtrarPorUsuario) {
+
+			processoBuilder.filtrarIdDiretor(usuarioSessao.id);
+
+		}
+
+	}
+
 	private static void commonFilterProcessoAnaliseGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
 													   UsuarioAnalise usuarioSessao) {
 
@@ -436,6 +473,31 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
+	public static List getProcessosAnteriores(Processo processoAnterior) {
+
+		List processosAnteriores = new ArrayList<>();
+		Processo processoAnteriorAuxiliar;
+
+		while (processoAnterior != null) {
+
+			processosAnteriores.add(processoAnterior);
+
+			if (processoAnterior.processoAnterior != null) {
+
+				processoAnteriorAuxiliar = Processo.findById(processoAnterior.processoAnterior.id);
+				processoAnterior = processoAnteriorAuxiliar;
+
+			} else {
+
+				processoAnterior = null;
+			}
+
+		}
+
+		return processosAnteriores;
+
+	}
+
 	public static List listWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
 
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
@@ -448,13 +510,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
-                .groupByIdAnalise()
+				.groupByIdAnalise()
 				.groupByIdAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByIdAnaliseTecnica()
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByRenovacao()
+				.groupByRetificacao()
+				.groupByIdOrigemNotificacao()
 				.groupByDiasAnaliseGeo()
 				.groupByDiasAnaliseTecnica();
 
@@ -465,6 +529,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		listWithFilterAnaliseGeo(processoBuilder, filtro);
 
 		listWithFilterAprovador(processoBuilder, usuarioSessao);
+
+		listWithFilterDiretor(processoBuilder, filtro);
 
 		listWithFilterGerente(processoBuilder, filtro);
 
@@ -484,7 +550,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		processoBuilder
 				.groupByDataVencimentoPrazoAnaliseGeo(true)
-				.groupByDataFinalAnaliseGeo()
+				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByPrazoAnaliseGerente();
 
 	}
@@ -492,6 +558,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void listWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
 		if (!filtro.isGerente) {
+
+			return;
+		}
+
+		processoBuilder.groupByIdAnaliseGeo(true)
+				.groupByIdAnaliseTecnica(true)
+				.groupByPrazoAnaliseGerente()
+				.orderByPrazoAnaliseGerente();
+
+	}
+
+	private static void listWithFilterDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isDiretor) {
 
 			return;
 		}
@@ -581,6 +661,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		countWithFilterGerente(processoBuilder, filtro);
 
+		countWithFilterDiretor(processoBuilder, filtro);
+
 		Object qtdeTotalItens = processoBuilder.unique();
 
 		return ((Map<String, Long>) qtdeTotalItens).get("total");
@@ -610,6 +692,16 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	private static void countWithFilterGerente(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
 
 		if (!filtro.isGerente) {
+
+			return;
+
+		}
+
+	}
+
+	private static void countWithFilterDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isDiretor) {
 
 			return;
 
@@ -795,6 +887,12 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		this.analise.analiseTecnica = AnaliseTecnica.findByProcesso(this);
 		this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
 
+		if(this.analise.analisesGeo == null || this.analise.analisesGeo.isEmpty()){
+			this.analise.analisesGeo = AnaliseGeo.findAllByAnalise(this.processoAnterior.analise);
+			this.analise.analiseGeo = this.analise.analisesGeo.stream()
+					.max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+		}
+
 		if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)) {
 
 			this.analise.analiseGeo.pareceresAnalistaGeo = this.analise.analiseGeo.pareceresAnalistaGeo.stream()
@@ -839,6 +937,37 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.first();
 
 		return desvinculoAnaliseTecnica;
+	}
+
+	public List<Notificacao> getNotificacoes() {
+		return this.analise.getNotificacoes();
+	}
+
+	public void inativar() {
+		this.ativo = false;
+		this._save();
+	}
+
+	public static Processo findLastByNumber(String numero) {
+		return find("numero = :num ORDER BY id DESC").setParameter("num", numero).first();
+	}
+
+	public List<Notificacao> inicializaNotificacoes() {
+
+		List<Notificacao> notificacoes = this.getNotificacoes();
+
+		if (!notificacoes.isEmpty()) {
+			return this.inicializaNotificacoes(this);
+		}
+		return this.inicializaNotificacoes(this.processoAnterior);
+	}
+
+	private List<Notificacao> inicializaNotificacoes(Processo processo) {
+		return processo.getNotificacoes().stream().peek(n -> {
+			n.setJustificativa();
+			n.setDocumentosParecer();
+			n.setDiasConclusao();
+		}).sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList());
 	}
 
 	public File gerarShape() throws IOException, SchemaException {

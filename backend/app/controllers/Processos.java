@@ -19,8 +19,19 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		List processosList = Processo.listWithFilter(filtro, Auth.getUsuarioSessao());
-		
+
 		renderJSON(processosList);
+	}
+
+	public static void getProcessosAnteriores(Long idProcessoAnterior){
+
+		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+
+		Processo processoAntigo = Processo.findById(idProcessoAnterior);
+
+		List processosList = Processo.getProcessosAnteriores(processoAntigo);
+
+		renderJSON(processosList, ProcessoSerializer.getInfo);
 	}
 	
 	public static void  countWithFilter(FiltroProcesso filtro){

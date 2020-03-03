@@ -23,10 +23,10 @@ div(uib-accordion class="accordion")
 
         .row.form-group
             .col-md-12
-                label.control-label Tipologia do empreendimento:
+                label.control-label Tipologia da atividade:
                 select.form-control(ng-model="$ctrl.filtro.idTipologiaEmpreendimento", name="selectTipologia",
                                     ng-options="tipologia.id as tipologia.nome for tipologia in $ctrl.tipologias | orderBy:'nome' track by tipologia.id")
-                    option(value="") Selecione a tipologia do empreendimento
+                    option(value="") Selecione a tipologia da atividade
 
         .row.form-group
             .col-md-12
