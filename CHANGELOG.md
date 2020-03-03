@@ -73,3 +73,7 @@
 * OS48 - US1165 - Eu, diretor técnico, devo acessar a conclusão para validar a análise final do protocolo.
 * OS48 - US1528 - Eu, diretor técnico, devo acessar visualizar protocolo para visualizar os dados do protocolo.
 
+## OS008
+
+* OS008 - US1471 - Correção de "LABELS"
+

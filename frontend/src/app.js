@@ -209,11 +209,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					 return '/analise-tecnica';
 
-				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE){
-
-					return '/analise-gerente';
-
-				}else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
 
 					return '/analise-diretor';
 
@@ -224,14 +220,12 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return $location.path().indexOf('/analise-geo') > -1 ||
 					$location.path().indexOf('/analise-tecnica') > -1 ||
-					$location.path().indexOf('/analise-gerente') > -1 ||
 					$location.path().indexOf('/analise-diretor') > -1;
 			},
 			visivel: function() {
 
 				return [app.utils.Perfis.ANALISTA_GEO,
 				app.utils.Perfis.ANALISTA_TECNICO,
-				app.utils.Perfis.GERENTE,
 				app.utils.Perfis.DIRETOR].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
@@ -240,8 +234,40 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					return app.utils.CondicaoTramitacao.EM_ANALISE_GEO;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA;
-				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
-					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
+			},
+			deveFiltrarPorUsuario: true,
+			codigoPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+			}
+		},
+		{
+
+			titulo: 'Validação da análise',
+			icone: 'glyphicon glyphicon-edit',
+			url: function() {
+
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE){
+
+					return '/analise-gerente';
+
+				}
+			},
+			countItens: true,
+			estaSelecionado: function() {
+
+				return $location.path().indexOf('/analise-gerente') > -1 ||
+						$location.path().indexOf('/analise-tecnica-gerente') > -1;
+
+			},
+			visivel: function() {
+
+				return [app.utils.Perfis.GERENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+			},
+			condicaoTramitacao: function () {
+
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -302,7 +328,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
             deveFiltrarPorUsuario: true
 		},
 		{
-			titulo: 'Consultar protocolo',
+			titulo: 'Consultar processo/protocolo',
 			icone: 'glyphicon glyphicon-search',
 			url: function() {
 
