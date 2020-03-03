@@ -46,13 +46,12 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 		});
 	}
 
-	function iniciarAnalise(idAnaliseGeo) {
-		analiseGeoService.iniciar({ id : idAnaliseGeo })
+	function iniciarAnalise(processo) {
+
+		analiseGeoService.iniciar({ id : processo.idAnaliseGeo })
 			.then(function(response){
 
-				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM ANÁLISE GEO';
-				$location.path('/analise-geo/' + idAnaliseGeo.toString());
+				cxEntAnalistaGeo.iniciarUploadShapes(processo);
 
 			}, function(error){
 				mensagem.error(error.data.texto);
@@ -94,24 +93,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 	function visualizarNotificacao(processo) {
 		return processoService.visualizarNotificacao(processo);
-	}
-
-	function primeiroAcesso(processo) {
-		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
-
-		analiseGeoService.getPossuiAnexo(cpfCnpjEmpreendimento)
-			.then(function(response){
-				// Caso possua null - nenhuma ação foi realizada no empreendimento
-				if(response.data === null){
-					cxEntAnalistaGeo.iniciarUploadShapes(processo);
-				}
-				// Caso possua true ou false - já existiu uma análise prévia do empreendimento
-				else {
-					cxEntAnalistaGeo.iniciarAnalise(processo.idAnaliseGeo);
-				}
-			}, function(error){
-				mensagem.error(error.data.texto);
-			});
 	}
 
 	function notificacaoAtendida(processo) {

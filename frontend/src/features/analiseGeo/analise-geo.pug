@@ -4,7 +4,7 @@ div(ng-init='ctrl.init()')
 
 	section
 		+resumo-processo('ctrl.analiseGeo.analise.processo','ctrl.visualizarProcesso(ctrl.analiseGeo.analise.processo)', 'ctrl.titulo')
-	
+
 	.row
 		div(style="padding:15px;")
 			div.modal-body
@@ -12,7 +12,7 @@ div(ng-init='ctrl.init()')
 			ul.nav.nav-tabs(role="tablist")
 				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="ctrl.validacaoAbaVoltar()")
 					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Análise Geo
-					
+
 				li#conclusao.aba-clicavel(role="tab", ng-click="ctrl.validacaoAbaAvancar()")
 					a(data-toggle="tab", data-target="#tabConclusao") Conclusão da análise
 
@@ -22,7 +22,7 @@ div(ng-init='ctrl.init()')
 
 				#tabConclusao.tab-pane
 					include etapa-conclusao
-						
+
 div
 	button.btn.btn-default.pull-left(style="margin-bottom:15px;", title='Cancelar análise',
                                     ng-bootbox-title='Confirmação',

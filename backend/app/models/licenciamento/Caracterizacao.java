@@ -1,16 +1,32 @@
 package models.licenciamento;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import main.java.br.ufla.lemaf.beans.EmpreendimentoFiltroResult;
+import main.java.br.ufla.lemaf.beans.FiltroEmpreendimento;
 import models.Comunicado;
 import models.Processo;
+import org.geotools.feature.SchemaException;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import play.libs.Files;
+import security.cadastrounificado.CadastroUnificadoWS;
 import serializers.ComunicadoSerializer;
+import services.IntegracaoEntradaUnicaService;
+import utils.Configuracoes;
+import utils.GeoJsonUtils;
 import utils.Identificavel;
+import utils.WriteShapefile;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 @Table(schema = "licenciamento", name = "caracterizacao")
@@ -267,4 +283,62 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		return this.retificacao && (this.idCaracterizacaoOrigem == null || !this.caracterizacaoAnteriorAtiva());
 	}
 
+	public File gerarShape() throws IOException {
+
+		if(this.atividadesCaracterizacao.get(0).isAtividadeDentroEmpreendimento()) {
+
+			return this.gerarShapeEmpreendimento();
+
+		} else if(this.isComplexo()){
+
+			return this.gerarShapeComplexo();
+
+		}
+
+		return this.gerarShapeAtividades();
+
+	}
+
+	public File gerarShapeComplexo() throws IOException {
+
+		return gerarShape(this.geometriasComplexo.stream().map(gc -> gc.geometria).collect(toList()));
+
+	}
+
+	public File gerarShapeAtividades() throws IOException {
+
+		return gerarShape(this.atividadesCaracterizacao.stream().flatMap(ac -> ac.getGeoms()).collect(toList()));
+
+	}
+
+	public File gerarShapeEmpreendimento() throws IOException {
+
+		IntegracaoEntradaUnicaService entradaUnicaService = new IntegracaoEntradaUnicaService();
+		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentosByCpfCnpj = entradaUnicaService.findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
+		Geometry geom = GeoJsonUtils.toGeometry(empreendimentosByCpfCnpj.localizacao.geometria);
+		return gerarShape(Collections.singletonList(geom));
+
+	}
+
+	private File gerarShape(List<Geometry> geoms) throws IOException {
+
+		String basePath = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH;
+		String shapefilePAth = Configuracoes.ARQUIVOS_DOCUMENTOS_SHAPEFILE_PATH + File.separator + this.id;
+
+		File shapeFile = new File(shapefilePAth + "/");
+		File file = new File(shapefilePAth + "/geom.shp");
+		File fileZip = new File(basePath + "/geom.zip");
+
+		if(!shapeFile.exists()){
+			shapeFile.mkdirs();
+		}
+
+		WriteShapefile.write(file, geoms, MultiPolygon.class);
+		Files.zip(shapeFile, fileZip);
+
+		Files.deleteDirectory(new File(Configuracoes.ARQUIVOS_DOCUMENTOS_SHAPEFILE_PATH));
+
+		return fileZip;
+
+	}
 }

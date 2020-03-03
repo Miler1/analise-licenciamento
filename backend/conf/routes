@@ -19,6 +19,7 @@ GET		/processos/{idProcessoAnterior}/processosAnteriores	Processos.getProcessosA
 GET		/processos/{idProcesso}						        Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		        Processos.findAnaliseJuridica
 GET     /processos/numero/{numProcesso}/completo            Processos.findByNumProcesso
+GET		/processos/baixarShapefile//{idProcesso}	Processos.baixarShapefile
 
 #Questionario
 GET     /questionario/{idProcesso}                  Questionarios.findQuestionario
@@ -71,22 +72,22 @@ GET		/analisesTecnicas/findAnalisesTecnicaByNumeroProcesso/{numero}			AnalisesTe
 
 # Analise GEO
 
-GET		/analisesGeo/parecer							    AnalisesGeo.findByNumeroProcesso
-POST	/analisesGeo/iniciar 							    AnalisesGeo.iniciar
-POST	/analisesGeo									    AnalisesGeo.alterar
-GET		/analisesGeo/{idAnaliseGeo}				            AnalisesGeo.findById
-GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	        AnalisesGeo.getRestricoesGeo
-POST	/analisesGeo/validarParecer					        AnalisesGeo.validarParecer
-POST	/analisesGeo/validarParecerGerente				    AnalisesGeo.validarParecerGerente
-POST	/analisesGeo/validarParecerAprovador			    AnalisesGeo.validarParecerAprovador
-GET     /analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}          AnalisesGeo.verificaAnexosEmpreendimento
-POST    /analisesGeo/downloadPDFParecer                     AnalisesGeo.downloadPDFParecer
-POST    /analisesGeo/downloadPDFNotificacao                 AnalisesGeo.downloadPDFNotificacao
-POST    /analisesGeo/downloadPDFCartaImagem                 AnalisesGeo.downloadPDFCartaImagem
-POST    /analisesGeo/downloadPDFOficioOrgao/{id}            AnalisesGeo.downloadPDFOficioOrgao
-GET     /analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}   AnalisesGeo.buscaAnaliseGeoByAnalise
-POST    /analisesGeo/iniciarAnaliseGerente                  AnalisesGeo.iniciarAnaliseGerente
-GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}			AnalisesGeo.findAnalisesGeoByNumeroProcesso
+GET		/analisesGeo/parecer							        AnalisesGeo.findByNumeroProcesso
+POST		/analisesGeo/iniciar 							        AnalisesGeo.iniciar
+POST		/analisesGeo									        AnalisesGeo.alterar
+GET		/analisesGeo/{idAnaliseGeo}				                AnalisesGeo.findById
+GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	            AnalisesGeo.getRestricoesGeo
+POST		/analisesGeo/validarParecer					            AnalisesGeo.validarParecer
+POST		/analisesGeo/validarParecerGerente				        AnalisesGeo.validarParecerGerente
+POST		/analisesGeo/validarParecerAprovador			        AnalisesGeo.validarParecerAprovador
+GET		/analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}   AnalisesGeo.verificaAnexosEmpreendimento
+POST		/analisesGeo/downloadPDFParecer                         AnalisesGeo.downloadPDFParecer
+POST		/analisesGeo/downloadPDFNotificacao                     AnalisesGeo.downloadPDFNotificacao
+POST		/analisesGeo/downloadPDFCartaImagem                     AnalisesGeo.downloadPDFCartaImagem
+POST		/analisesGeo/downloadPDFOficioOrgao/{id}                AnalisesGeo.downloadPDFOficioOrgao
+GET		/analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}       AnalisesGeo.buscaAnaliseGeoByAnalise
+POST		/analisesGeo/iniciarAnaliseGerente                      AnalisesGeo.iniciarAnaliseGerente
+GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}   AnalisesGeo.findAnalisesGeoByNumeroProcesso
 
 # Desvínculo
 
@@ -255,6 +256,7 @@ POST	/external/upload/save						Application.upload
 
 GET     /notificacoes/{idTramitacao}                         Notificacoes.downloadPDF
 GET     /notificacoes/findByIdProcesso/{id}                  Notificacoes.findByIdProcesso
+GET     /notificacoes/findByIdProcessoTecnico/{id}           Notificacoes.findByIdProcessoTecnico
 
 # Processos Manejo
 POST    /processosManejo                            ProcessosManejo.listWithFilter

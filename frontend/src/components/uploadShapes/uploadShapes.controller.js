@@ -25,7 +25,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.hideUploadShapes = hideUploadShapes;
 	uploadShapes.dadosProjeto = null;
 	uploadShapes.categoria = app.utils.Inconsistencia;
-	
+
 	function buscaProcesso() {
 
 		processoService.getInfoProcesso(parseInt(uploadShapes.idProcesso)).then(function(response){
@@ -36,7 +36,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 			uploadShapes.idEmpreendimento = uploadShapes.processo.empreendimento.id;
 
 			$scope.$emit('mapa:adicionar-geometria-base', {
-				geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas), 
+				geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas),
 				tipo: 'PROPRIEDADE',
 				estilo: {
 					style: {
@@ -48,7 +48,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 			});
 
 			$scope.$emit('mapa:adicionar-geometria-base', {
-				geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite), 
+				geometria: JSON.parse(uploadShapes.processo.empreendimento.municipio.limite),
 				tipo: 'EMP-CIDADE',
 				estilo: {
 					style: {
@@ -87,18 +87,11 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, cpfCnpjEmpreendimento)
 			.then(function(response){
 
-				// Aqui vai trocar a tramitacao de caixa de entrada pra análise
-				var idAnaliseGeo = uploadShapes.processo.analise.analiseGeo.id;
-				analiseGeoService.iniciar({ id : idAnaliseGeo })
-					.then(function(response){
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				$location.path('/analise-geo/' + uploadShapes.processo.analise.analiseGeo.id.toString());
 
-						$rootScope.$broadcast('atualizarContagemProcessos');
-						$location.path('/analise-geo/' + idAnaliseGeo.toString());
-				
-				}, function(error){
-					mensagem.error(error.data.texto);
-				});
-
+			}, function(error){
+				mensagem.error(error.data.texto);
 			});
 	}
 
@@ -111,7 +104,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		$rootScope.$broadcast('atualizarContagemProcessos');
 		uploadShapes.buscaProcesso();
 	}
-	
+
 	uploadShapes.onInit();
 
 	// Invoke  para receber as funções da controller da controller do componente do Mapa
@@ -142,6 +135,12 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		$scope.$emit('mapa:removerGeometriaMapa', shape);
 		uploadShapes.shapesUploaded--; //Reduz no contador
 	});
+
+	uploadShapes.baixarShapefile = function(idProcesso) {
+
+		processoService.baixarShapefile(idProcesso);
+
+	};
 
 };
 exports.controllers.UploadShapesController = UploadShapesController;
