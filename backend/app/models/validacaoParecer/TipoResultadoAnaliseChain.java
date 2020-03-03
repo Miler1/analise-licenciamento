@@ -1,5 +1,6 @@
 package models.validacaoParecer;
 
+import models.Analisavel;
 import models.UsuarioAnalise;
 
 public abstract class TipoResultadoAnaliseChain<T extends Analisavel> {

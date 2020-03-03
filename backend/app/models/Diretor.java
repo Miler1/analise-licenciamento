@@ -2,6 +2,7 @@ package models;
 
 import exceptions.PermissaoNegadaException;
 import models.EntradaUnica.CodigoPerfil;
+import models.EntradaUnica.Usuario;
 import play.Logger;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -36,12 +37,8 @@ public class Diretor extends GenericModel {
 	public Long id;
 
 	@ManyToOne
-	@JoinColumn(name="id_analise_tecnica")
-	public AnaliseTecnica analiseTecnica;
-
-	@ManyToOne
-	@JoinColumn(name="id_analise_geo")
-	public AnaliseGeo analiseGeo;
+	@JoinColumn(name="id_analise")
+	public Analise analise;
 
 	@Required
 	@ManyToOne
@@ -60,23 +57,21 @@ public class Diretor extends GenericModel {
 	public Diretor(Analise analise, UsuarioAnalise usuario) {
 
 		super();
-		this.analiseTecnica = analise.analiseTecnica;
-		this.analiseGeo = analise.analiseGeo;
+		this.analise = analise;
 		this.usuario = usuario;
 		this.dataVinculacao = new Date();
 
 	}
 
-
-	public static Diretor distribuicaoAutomaticaDiretor(String setorAtividade, Analise analise) {
+	public static Diretor distribuicaoAutomaticaDiretor(Analise analise) {
 
 		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.DIRETOR, setorAtividade);
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.DIRETOR);
 
 		if (usuariosAnalise.isEmpty()) {
 
-			Logger.info(Mensagem.NENHUM_DIRETOR_ENCONTRADO.getTexto(analise.processo.numero, setorAtividade));
+			Logger.info(Mensagem.NENHUM_DIRETOR_ENCONTRADO.getTexto(analise.processo.numero));
 
 			return null;
 
