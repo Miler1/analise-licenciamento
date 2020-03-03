@@ -1,5 +1,6 @@
 package models;
 
+import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacaoEnum;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -50,7 +51,7 @@ public class ParecerPresidente extends GenericModel {
 		return dataParecer;
 	}
 
-	public void finalizar(Analise analise, UsuarioAnalise presidente) {
+	public void finalizar(Analise analise, UsuarioAnalise presidente) throws Exception {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_APROVADA)) {
 
@@ -68,6 +69,8 @@ public class ParecerPresidente extends GenericModel {
 
 		}
 
+		enviarEmailStatusAnalise();
+
 		this.usuario = presidente;
 		this.dataParecer = new Date();
 
@@ -75,6 +78,16 @@ public class ParecerPresidente extends GenericModel {
 		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
 
 		this.save();
+
+	}
+
+	public void enviarEmailStatusAnalise() throws Exception {
+
+		Empreendimento empreendimento = Empreendimento.findById(analise.processo.empreendimento.id);
+		List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+		EmailNotificacaoStatusAnalise emailNotificacaoStatusAnalise = new EmailNotificacaoStatusAnalise(this.analise,this, interessados);
+		emailNotificacaoStatusAnalise.enviar();
 
 	}
 
