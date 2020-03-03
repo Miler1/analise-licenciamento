@@ -392,7 +392,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			deveFiltrarPorUsuario: true
 		},
 		{
-			titulo: 'Consultar títulos emitidos',
+			titulo: 'Consultar licenças emitidas',
 			icone: 'glyphicon glyphicon-search',
 			url: function() {
 
