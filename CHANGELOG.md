@@ -91,3 +91,4 @@
 
 * OS008 - US1493 - Eu, analista geo, devo comunicar o órgão e interessado para restrições conforme nova regra.
 * OS008 - US1471 - Correção de "LABELS".
+* OS008 - US300 - Eu, analista técnico, devo validar análise jurídica para tramitação do processo

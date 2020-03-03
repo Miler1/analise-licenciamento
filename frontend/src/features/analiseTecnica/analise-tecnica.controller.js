@@ -1,8 +1,8 @@
 var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $scope, $location,
                                         analistaService, analiseTecnica, mensagem, $uibModal,
                                         analiseTecnicaService,
-                                        documentoAnaliseService, restricoes, TiposAnalise,inconsistenciaService,
-                                        documentoLicenciamentoService, processoService, documentoService,
+                                        documentoAnaliseService, restricoes, TiposAnalise,inconsistenciaService, 
+                                        documentoLicenciamentoService, processoService, documentoService, parecerJuridicoService,
                                         parecerAnalistaTecnicoService) {
 
     $rootScope.tituloPagina = 'EM ANÁLISE TÉCNICA';
@@ -39,6 +39,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.notificacao.retificacaoSolicitacao = null;
     ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
     ctrl.notificacao.prazoNotificacao = null;
+    ctrl.parecerJuridico = null;
+    ctrl.documentos = [];
 
     ctrl.parecer = {
         doProcesso: null,
@@ -117,11 +119,15 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 ctrl.porteEmpreendimento = ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].porteEmpreendimento;
 
                 ctrl.parecer.analiseTecnica = {
+
                     id: ctrl.analiseTecnica.id
+
                 };
 
                 ctrl.parecer.tipoResultadoAnalise = {
+
                     id: null
+
                 };
 
                 analistaService.getAnalistasTecnicoBySetor()
@@ -131,6 +137,13 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                         ctrl.analistasTecnico.push({ usuario: analista });
                     });
 
+                });
+
+                parecerJuridicoService.getParecerJuridicoByAnaliseTecnica(ctrl.parecer.analiseTecnica.id).then(function(response) {
+                    
+                    ctrl.parecerJuridico = response.data;
+                    ctrl.setDocumentos();
+            
                 });
 
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.TIPO_LICENCA, ctrl.analiseTecnica);
@@ -163,6 +176,25 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, index, ctrl.analiseTecnica);
                 });
             });
+    };
+
+    ctrl.setDocumentos = function() {
+		
+		if (ctrl.parecerJuridico !== null && ctrl.parecerJuridico !== undefined) {
+
+			if (ctrl.parecerJuridico.parecerAnalistaGeo.documentoParecer !== null) {
+
+				ctrl.documentos.push(ctrl.parecerJuridico.parecerAnalistaGeo.documentoParecer);
+			}
+
+			if (ctrl.parecerJuridico.parecerAnalistaGeo.cartaImagem !== null) {
+
+				ctrl.documentos.push(ctrl.parecerJuridico.parecerAnalistaGeo.cartaImagem);
+
+			}
+
+		}
+		
     };
 
     ctrl.validarAbas = function(abaDestino) {
@@ -252,8 +284,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.hasInconsistencias = function() {
 
         return (ctrl.analiseTecnica && ctrl.analiseTecnica.inconsistenciasTecnica.length > 0) ||
-                (ctrl.hasInconsistenciaVistoriaAdicionada());
-
+            (ctrl.hasInconsistenciaVistoriaAdicionada());
+        
     };
 
     ctrl.exibirDadosProcesso = function () {
@@ -615,6 +647,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     var parecerIndeferidoValido = function() {
 
+        ctrl.errors.parecer = false;
+
         if(ctrl.parecer.parecer === null || ctrl.parecer.parecer === '' || ctrl.parecer.parecer === undefined) {
 
             ctrl.errors.parecer = true;
@@ -743,6 +777,27 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         });
 
     };
+
+    ctrl.openModalParecerJuridico =  function(parecerJuridico, documentos){
+
+        $uibModal.open({
+            controller: 'modalParecerJuridicoController',
+            controllerAs: 'modalCtrl',
+            backdrop: 'static',
+            templateUrl: 'features/analiseTecnica/parecerJuridico/modal-parecer-juridico.html',
+            size: 'lg',
+            resolve: {
+
+                parecerJuridico: function(){
+                    return parecerJuridico;
+                },
+                documentos: function(){
+                    return documentos;
+                }
+            }
+            
+        });
+};
 
     ctrl.voltar = function() {
 

@@ -109,6 +109,9 @@ POST    /inconsistencia/analiseTecnica/excluirInconsistencia                    
 GET     /inconsistencia/findInconsistenciaById/{id}                                     Inconsistencias.findById
 GET     /inconsistencia/analiseTecnica/findInconsistenciaByAnaliseTecnica/{idAnalise}   Inconsistencias.findInconsistenciasByAnaliseTecnica
 
+POST    /analisesGeo/parecerJuridico/salvarParecerJuridico                                           PareceresJuridicos.salvarParecerJuridico
+GET     /analisesGeo/parecerJuridico/findParecerJuridico/{id}                                        PareceresJuridicos.findParecerJuridico
+GET     /analisesGeo/parecerJuridico/getParecerJuridicoByAnaliseTecnica/{idAnaliseTecnica}           PareceresJuridicos.getParecerJuridicoByAnaliseTecnica
 
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                                                      Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                                                     Comunicados.findComunicado

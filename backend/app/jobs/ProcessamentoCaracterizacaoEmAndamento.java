@@ -220,6 +220,10 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		analiseTecnica.analise = analise;
 		AnalistaTecnico analista = new AnalistaTecnico();
 
+		ParecerJuridico parecerJuridico = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(analise.processo.processoAnterior.analise.analiseTecnica.id);
+
+		parecerJuridico.analiseTecnica = analiseTecnica;
+
 		if(analistaTecnico == null){
 
 			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
@@ -235,6 +239,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		analiseTecnica.analistaTecnico = analista;
 		analiseTecnica.save();
+		parecerJuridico.save();
 	}
 	
 	private DiasAnalise criarNovoDiasAnalise(Analise analise) {

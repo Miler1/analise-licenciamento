@@ -1,0 +1,81 @@
+div.modal-header
+
+    button.close(type='button', ng-click="modalCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Parecer Análise Jurídica
+    div(growl inline="true" reference='5')
+
+div.modal-body
+    .row
+        div(growl inline="true" reference='5')
+        .col-md-6
+        
+            div.row
+                label.col-sm-4 Número:
+                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.numero ? modalCtrl.parecerJuridico.analiseGeo.analise.processo.numero : modalCtrl.parecerJuridico.analiseGeo.analise.processo.numeroProcesso}}
+
+            div.row
+                label.col-sm-4 CPF/CNPJ:
+                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf : modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
+
+            div.row
+                label.col-sm-4 Interessado:
+                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.denominacao}}
+
+            div.row
+                label.col-sm-4 Município:
+                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
+  
+    br
+    br
+    div
+        table.table.table-condensed
+
+                thead
+
+                    tr
+                        th.col-md-10 Documentos da Análise e Fundiários
+                        th.col-md-2.text-right Ação
+
+                tbody
+
+                    tr(ng-repeat="documento in modalCtrl.documentos")
+
+                        td.col-md-10 {{documento.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="modalCtrl.downloadDocumentos(documento.id)")
+                                i.glyphicon.glyphicon-eye-open
+                    tr 
+                        td.col-md-10 Documento fundiário
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="modalCtrl.downloadDocumentoFundiario(modalCtrl.parecerJuridico.documentoFundiario.id)")
+                                i.glyphicon.glyphicon-eye-open
+
+    table.table.table-condensed(ng-if="modalCtrl.parecerJuridico.anexos.length > 0")
+        thead
+
+            tr
+                th.col-md-10 Arquivos da Análise Fundiária
+                th.col-md-2.text-right Ações
+
+        tbody
+
+            tr(ng-model="anexo",ng-repeat="anexo in modalCtrl.parecerJuridico.anexos")
+
+                td.col-md-10 {{anexo.nomeDoArquivo}}
+                td.col-md-2.text-right
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="modalCtrl.baixarDocumento(anexo)")
+                        i.glyphicon.glyphicon-eye-open
+
+    div#parecer-juridico
+        div(ng-if="modalCtrl.parecerJuridico.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnalise.APTO")
+            label.pull-center.visualizar-parecer Documento Fundiário: APTO
+
+        div(ng-if="modalCtrl.parecerJuridico.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnalise.NAO_APTO")
+            label.pull-center.visualizar-parecer Documento Fundiário: NÃO APTO
+        br
+        label.label-parecer-juridico Parecer jurídico:
+        br
+        span.label-parecer-juridico(ng-bind-html="modalCtrl.parecerJuridico.parecer")

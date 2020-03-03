@@ -87,4 +87,6 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long APROVAR_SOLICITACAO_LICENCA = 78l;
 	public static final Long NEGAR_SOLICITACAO_LICENCA = 79l;
 
+	public static final Long RESOLVER_ANALISE_JURIDICA = 77L;
+
 }

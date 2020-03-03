@@ -162,6 +162,27 @@
             hr        
             div.info-sem-dados-para-exibir.margin-inconsistencia
                 i Nenhum documento administrativo adicionado.
+        
+        div.row
+            hr
+            div
+                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                    thead
+                        tr
+                        th.col-md-9 Análise
+                        th.col-md-2.text-right.padding-right-11 Validado
+                        th.col-md-2.text-right Ações
+
+
+                    tbody
+                        tr
+                            td.col-md-9 Análise Jurídica
+                            td.col-md-2.text-right.padding-right-20 {{ctrl.parecerJuridico.tipoResultadoAnalise.nome}}
+                                | &nbsp;
+                                
+                            td.col-md-2.padding-right-20
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.openModalParecerJuridico(ctrl.parecerJuridico, ctrl.documentos)")
+                                | &nbsp;
 
         div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length > 0")
             hr
@@ -200,6 +221,7 @@
             hr  
             div.info-sem-dados-para-exibir.margin-inconsistencia
                 i Nenhum documento técnico/ambiental adicionado.
+        
         div.row        
             div.col-md-8(ng-class="{'error-div': ctrl.errors.pergunta === true }")
                 div.col-md-14

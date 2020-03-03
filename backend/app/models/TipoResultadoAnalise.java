@@ -17,6 +17,8 @@ public class TipoResultadoAnalise extends GenericModel {
 	public static final Long SOLICITACAO_DESVINCULO = 7L;
 	public static final Long ANALISE_APROVADA = 8L;
 	public static final Long ANALISE_NAO_APROVADA = 9L;
+	public static final Long APTO = 10L;
+	public static final Long NAO_APTO = 11L;
 	
 	public static final String SEQ = "analise.tipo_resultado_analise_id_seq";
 	

@@ -336,6 +336,15 @@ form{
 	}
 }
 
+.icone-aguardando-resposta-juridico {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: #F3E702;
+	}
+}
+
 .disable-acoes {
 	color: currentColor;
 	cursor: not-allowed;
@@ -550,6 +559,10 @@ margin-left: 0px;
 	padding-right: 11px !important;
 }
 
+.padding-right-20 {
+	padding-right: 20px !important;
+}
+
 .error-summernote{
 	border-color: #d62c1a !important;
 	border: 1px solid;
@@ -560,6 +573,11 @@ margin-left: 0px;
 	text-align:center;
 	font-size:13px;
 	margin-left:2%;
+}
+
+.visualizar-parecer{
+	text-align:center; 
+	font-size:13px; 
 }
 
 .visualizar-solicitacao-ajustes{
@@ -584,10 +602,20 @@ margin-left: 0px;
 		font-size: 13px;
 		margin-left:15px;
 	}
-	.text-justificativa{
+	.text-justificativa,
+	.text-parecer-juridico{
 		margin:15px;
 		width: 840px;
 		height: 170px;
+	}
+}
+
+#parecer-juridico{
+
+	.label-parecer-juridico {
+
+		font-size: 13px;
+
 	}
 }
 
