@@ -1,4 +1,4 @@
-var ModalParecerJuridicoController = function ($uibModalInstance, parecerJuridico, documentos, documentoService, $location,$rootScope, mensagem, parecerJuridicoService) {
+var ModalParecerJuridicoController = function ($uibModalInstance, parecerJuridico, documentos, documentoService, documentoLicenciamentoService, $location,$rootScope, mensagem, parecerJuridicoService) {
 
     var modalCtrl = this;
 
@@ -23,6 +23,12 @@ var ModalParecerJuridicoController = function ($uibModalInstance, parecerJuridic
 
 		documentoService.downloadById(id);
 
+    };
+    
+    modalCtrl.downloadDocumentoFundiario = function (id) {
+
+        documentoLicenciamentoService.download(id);
+        
 	};
 
 	modalCtrl.fechar = function () {

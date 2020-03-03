@@ -31,8 +31,8 @@ public class EmailParecerJuridico extends EmailJuridico {
     public EmailParecerJuridico(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, List<String> emailsDestinatarios, ParecerJuridico parecerJuridico) throws Exception {
 
         super(emailsDestinatarios);
-//        this.pdfParecer = analiseGeo.gerarPDFParecer(parecerAnalistaGeo);
-//        this.cartaImagem = analiseGeo.gerarPDFCartaImagem(parecerAnalistaGeo);
+        this.pdfParecer = parecerAnalistaGeo.documentoParecer;
+        this.cartaImagem = parecerAnalistaGeo.cartaImagem;
         this.analiseGeo = analiseGeo;
         this.parecerJuridico = parecerJuridico;
         this.parecerAnalistaGeo = parecerAnalistaGeo;
@@ -61,7 +61,7 @@ public class EmailParecerJuridico extends EmailJuridico {
                 }
             }
 
-            if(!Emails.comunicarJuridicoAnalise(this.emailsDestinatarios, this.analiseGeo, municipio, this.parecerJuridico, this.parecerAnalistaGeo).get()) {
+            if(!Emails.comunicarJuridicoAnalise(this.emailsDestinatarios, this.analiseGeo, municipio, this.parecerJuridico, this.parecerAnalistaGeo, this.pdfParecer.getFile(), this.cartaImagem.getFile()).get()) {
 
                 throw new AppException();
 

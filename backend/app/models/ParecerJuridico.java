@@ -1,6 +1,6 @@
 package models;
 
-import java.util.List;
+import java.util.*;
 
 import com.vividsolutions.jts.geom.Geometry;
 import enums.TipoSobreposicaoDistanciaEnum;
@@ -10,12 +10,10 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import org.omg.CORBA.PRIVATE_MEMBER;
 import play.db.jpa.GenericModel;
+import serializers.ParecerJuridicoSerializer;
 import utils.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 
 import static security.Auth.getUsuarioSessao;
 
@@ -41,6 +39,10 @@ public class ParecerJuridico extends GenericModel {
     @OneToOne
     @JoinColumn(name = "id_parecer_analista_geo", referencedColumnName = "id")
     public ParecerAnalistaGeo parecerAnalistaGeo;
+
+    @OneToOne
+    @JoinColumn(name = "id_documento_fundiario", referencedColumnName = "id")
+    public DocumentoLicenciamento documentoFundiario;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao_juridica")
@@ -75,7 +77,7 @@ public class ParecerJuridico extends GenericModel {
     @Transient
     public String linkParecerJuridico;
 
-    public ParecerJuridico(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, AnaliseTecnica analiseTecnica){
+    public ParecerJuridico(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, AnaliseTecnica analiseTecnica, DocumentoLicenciamento documentoFundiario){
 
         this.dataCadastro = new Date();
         this.analiseGeo = analiseGeo;
@@ -83,6 +85,7 @@ public class ParecerJuridico extends GenericModel {
         this.resolvido = false;
         this.parecerAnalistaGeo = parecerAnalistaGeo;
         this.analiseTecnica = analiseTecnica;
+        this.documentoFundiario = documentoFundiario;
 
     }
 
@@ -158,6 +161,17 @@ public class ParecerJuridico extends GenericModel {
             parecerJuridicoBanco.save();
 
         }
+    }
+
+    public static ParecerJuridico getParecerJuridicoByAnaliseTecnica(Long idAnaliseTecnica) {
+
+        List<ParecerJuridico> pareceresJuridicos = ParecerJuridico.find("id_analise_tecnica = :analiseTecnica ")
+                .setParameter("analiseTecnica", idAnaliseTecnica).fetch();
+
+        ParecerJuridico parecerFinal = pareceresJuridicos.stream().max( Comparator.comparing(parecer -> parecer.id )).get();
+
+        return parecerFinal;
+
     }
 }
 

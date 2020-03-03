@@ -1,4 +1,4 @@
-var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoService, $window,$routeParams, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
+var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoService, $window,$routeParams, documentoService, documentoLicenciamentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
 	
 	$scope.parecerJuridico = null;
 	$scope.anexos = [];
@@ -93,6 +93,11 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 
 		documentoService.downloadById(id);
 
+	};
+
+	$scope.downloadDocumentoFundiario = function (id) {
+
+		documentoLicenciamentoService.download(id);
 	};
 
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;

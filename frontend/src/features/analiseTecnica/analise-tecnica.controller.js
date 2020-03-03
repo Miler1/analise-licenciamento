@@ -283,8 +283,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.hasInconsistencias = function() {
 
-            return (ctrl.analiseTecnica && ctrl.analiseTecnica.inconsistenciasTecnica.length > 0) ||
-                (ctrl.hasInconsistenciaVistoriaAdicionada());
+        return (ctrl.analiseTecnica && ctrl.analiseTecnica.inconsistenciasTecnica.length > 0) ||
+            (ctrl.hasInconsistenciaVistoriaAdicionada());
         
     };
     

@@ -35,10 +35,7 @@ public class PareceresJuridicos extends GenericController{
 
     public static void getParecerJuridicoByAnaliseTecnica(Long idAnaliseTecnica) {
 
-        List<ParecerJuridico> pareceresJuridicos = ParecerJuridico.find("id_analise_tecnica = :analiseTecnica ")
-                .setParameter("analiseTecnica", idAnaliseTecnica).fetch();
-
-        ParecerJuridico parecerFinal = pareceresJuridicos.stream().max( Comparator.comparing( parecer -> parecer.id )).get();
+        ParecerJuridico parecerFinal = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(idAnaliseTecnica);
 
         renderJSON(parecerFinal, ParecerJuridicoSerializer.findParecerJuridico);
 

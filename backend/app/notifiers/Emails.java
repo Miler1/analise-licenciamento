@@ -153,7 +153,7 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> comunicarJuridicoAnalise(List<String> destinatarios,
-											AnaliseGeo analiseGeo, Municipio municipio, ParecerJuridico parecerJuridico, ParecerAnalistaGeo parecerAnalistaGeo) {
+											AnaliseGeo analiseGeo, Municipio municipio, ParecerJuridico parecerJuridico, ParecerAnalistaGeo parecerAnalistaGeo,File filePdfParecer, File cartaImagem) {
 
 		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
@@ -161,6 +161,15 @@ public class Emails extends Mailer {
 
 			addRecipient(email);
 		}
+
+		EmailAttachment attachment = new EmailAttachment();
+		attachment.setPath(new File(filePdfParecer.getPath()).getPath());
+		addAttachment(attachment);
+
+		EmailAttachment attachmentCartaImagem = new EmailAttachment();
+		attachmentCartaImagem.setPath(new File(cartaImagem.getPath()).getPath());
+		addAttachment(attachmentCartaImagem);
+
 
 		return send(analiseGeo, municipio, parecerJuridico, parecerAnalistaGeo);
 	}

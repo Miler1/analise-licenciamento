@@ -41,6 +41,12 @@
                                 td.col-md-2.text-right
                                     a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="downloadDocumentos(documento.id)")
                                         i.glyphicon.glyphicon-eye-open
+                            
+                            tr 
+                                td.col-md-10 Documento fundiário
+                                td.col-md-2.text-right
+                                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="downloadDocumentoFundiario(parecerJuridico.documentoFundiario.id)")
+                                        i.glyphicon.glyphicon-eye-open
         
 
             div.btn.btn-default(style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{TAMANHO_MAXIMO_ARQUIVO_MB}}MB")

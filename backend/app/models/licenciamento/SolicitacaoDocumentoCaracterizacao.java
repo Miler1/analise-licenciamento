@@ -34,5 +34,14 @@ public class SolicitacaoDocumentoCaracterizacao extends GenericModel {
 		return SolicitacaoDocumentoCaracterizacao.find("byTipoDocumentoAndCaracterizacao", tipo, caracterizacao).first();
 		
 	}
+
+	public static SolicitacaoDocumentoCaracterizacao findByIdTipoDocumentoAndCaracterizacao(Long idTipoDocumento, Caracterizacao caracterizacao) {
+
+		return SolicitacaoDocumentoCaracterizacao.find("id_tipo_documento = :idTipoDocumento AND id_caracterizacao = :idCaracterizacao")
+								.setParameter("idTipoDocumento", idTipoDocumento)
+								.setParameter("idCaracterizacao", caracterizacao.id)
+								.first();
+
+	}
 	
 }

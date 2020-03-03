@@ -24,6 +24,8 @@ public class ParecerJuridicoSerializer {
             "parecerAnalistaGeo.cartaImagem.nomeDoArquivo",
             "parecerAnalistaGeo.cartaImagem.tipo.nome",
             "parecerAnalistaGeo.cartaImagem.responsavel",
+            "documentoFundiario.id",
+            "documentoFundiario.tipo.nome",
             "ativo",
             "tipoResultadoAnalise.id",
             "tipoResultadoAnalise.nome",

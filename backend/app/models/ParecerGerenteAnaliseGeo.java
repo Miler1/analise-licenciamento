@@ -1,8 +1,6 @@
 package models;
 
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.Orgao;
-import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
+import models.licenciamento.*;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
@@ -126,9 +124,13 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 	public void enviarEmailJuridico(AnaliseGeo analiseGeo, Caracterizacao caracterizacao, ParecerAnalistaGeo parecerAnalistaGeo, AnaliseTecnica analiseTecnica) throws Exception {
 
 		List<String> destinatarios = new ArrayList<>();
-		destinatarios.add("felipe.ferreira.lemaf@gmail.com");
+		destinatarios.add(Configuracoes.DESTINATARIO_JURIDICO);
+		destinatarios.add(Configuracoes.DESTINATARIO_JURIDICO2);
 
-		ParecerJuridico parecerJuridico = new ParecerJuridico(analiseGeo, parecerAnalistaGeo, analiseTecnica);
+		SolicitacaoDocumentoCaracterizacao solicitacaoDocumentoCaracterizacao = SolicitacaoDocumentoCaracterizacao.findByIdTipoDocumentoAndCaracterizacao(TipoDocumentoLicenciamento.DOCUMENTO_FUNDIARIO, caracterizacao);
+		DocumentoLicenciamento documentoFundiario = DocumentoLicenciamento.findById(solicitacaoDocumentoCaracterizacao.documento.id);
+
+		ParecerJuridico parecerJuridico = new ParecerJuridico(analiseGeo, parecerAnalistaGeo, analiseTecnica, documentoFundiario);
 		parecerJuridico.save();
 		parecerJuridico.linkParecerJuridico = Configuracoes.APP_URL + "app/index.html#!/parecer-juridico/" + parecerJuridico.id;
 

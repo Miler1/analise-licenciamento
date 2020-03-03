@@ -47,6 +47,11 @@ div.modal-body
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="modalCtrl.downloadDocumentos(documento.id)")
                                 i.glyphicon.glyphicon-eye-open
+                    tr 
+                        td.col-md-10 Documento fundiário
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="modalCtrl.downloadDocumentoFundiario(modalCtrl.parecerJuridico.documentoFundiario.id)")
+                                i.glyphicon.glyphicon-eye-open
 
     table.table.table-condensed(ng-if="modalCtrl.parecerJuridico.anexos.length > 0")
         thead
