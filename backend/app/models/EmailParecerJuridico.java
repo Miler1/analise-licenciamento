@@ -44,22 +44,10 @@ public class EmailParecerJuridico extends EmailJuridico {
 
         try {
 
-            List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
-            for(AnaliseDocumento analiseDocumento : this.analiseGeo.analisesDocumentos) {
-
-                if(analiseDocumento.documento.tipo.tipoAnalise.equals(TipoAnalise.GEO) && !analiseDocumento.validado) {
-                    documentosInvalidados.add(analiseDocumento);
-                }
-            }
-
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
             main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
-            Municipio municipio = null;
-            for(Endereco endereco : empreendimentoEU.enderecos){
-                if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){
-                    municipio = endereco.municipio;
-                }
-            }
+
+            Municipio municipio = empreendimentoEU.enderecos.stream().filter(e -> e.tipo.id == TipoEndereco.ID_PRINCIPAL).findFirst().orElse(null).municipio;
 
             if(!Emails.comunicarJuridicoAnalise(this.emailsDestinatarios, this.analiseGeo, municipio, this.parecerJuridico, this.parecerAnalistaGeo, this.pdfParecer.getFile(), this.cartaImagem.getFile()).get()) {
 
