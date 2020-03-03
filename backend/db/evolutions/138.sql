@@ -64,8 +64,8 @@ CREATE TABLE analise.rel_documento_juridico (
 ALTER TABLE analise.rel_documento_juridico OWNER TO postgres;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_juridico TO licenciamento_am;
 COMMENT ON TABLE analise.rel_documento_juridico IS 'Entidade que relaciona a Entidade Documento e a Entidade Parecer Juridico';
-COMMENT ON COLUMN analise.parecer_juridico.id_documento IS 'Identificador da tabela documento, responśavel pelo relacionamento entre as duas tabelas';
-COMMENT ON COLUMN analise.parecer_juridico.id_parecer_juridico IS 'Identificador da tabela parecer_juridico, responśavel pelo relacionamento entre as duas tabelas';
+COMMENT ON COLUMN analise.rel_documento_juridico.id_documento IS 'Identificador da tabela documento, responśavel pelo relacionamento entre as duas tabelas';
+COMMENT ON COLUMN analise.rel_documento_juridico.id_parecer_juridico IS 'Identificador da tabela parecer_juridico, responśavel pelo relacionamento entre as duas tabelas';
 
 
 # --- !Downs
