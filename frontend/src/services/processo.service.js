@@ -1,4 +1,4 @@
-var ProcessoService = function(request, config, $uibModal) {
+var ProcessoService = function(request, config, $uibModal, $window) {
 
 	this.getProcessos = function(filtro) {
 
@@ -73,6 +73,12 @@ var ProcessoService = function(request, config, $uibModal) {
 				}
 			}
 		});
+
+	};
+
+	this.baixarShapefile = function(idProcesso){
+
+		$window.open(config.BASE_URL() + 'processos/baixarShapefile/' + idProcesso, '_blank');
 
 	};
 };

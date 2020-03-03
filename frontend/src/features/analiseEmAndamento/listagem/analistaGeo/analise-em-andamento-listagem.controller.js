@@ -1,4 +1,4 @@
-var AnaliseEmAndamentoGeoListController = function($scope, config, $location, 
+var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 												   $rootScope, processoService,
 												   analiseGeoService, parecerGerenteService,
 												   mensagem, $uibModal) {
@@ -39,15 +39,15 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 
 				if(_.isEmpty(response.data.pareceresGerenteAnaliseGeo)){
 					processo.verificaAnalise = false;
-					
+
 				}else{
 					_.find(response.data.pareceresGerenteAnaliseGeo, function(parecerGerente) {
 						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
 							processo.verificaAnalise = false;
-							
+
 						}else{
 							processo.verificaAnalise=true;
-							
+
 						}
 					});
 				}
@@ -72,19 +72,45 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 		});
 	}
 
-	function continuarAnalise(idAnaliseGeo) {
+	function iniciarUploadShapes(processo){
 
-		$rootScope.$broadcast('atualizarContagemProcessos');
+		$location.path('/shape-upload/' + processo.idProcesso.toString());
+	}
 
-		$location.path('/analise-geo/' + idAnaliseGeo.toString());
-		
-	}	
+	function continuarAnalise(processo) {
+
+		iniciarUploadShapes(processo);
+
+	}
+
+	function primeiroAcesso(processo) {
+		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
+
+		analiseGeoService.getPossuiAnexo(cpfCnpjEmpreendimento)
+		.then(function(response){
+
+			if(response.data === null){
+
+				iniciarUploadShapes(processo);
+
+			}else {
+
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				$location.path('/analise-geo/' + processo.idAnaliseGeo.toString());
+
+			}
+		}, function(error){
+
+			mensagem.error(error.data.texto);
+
+		});
+	}
 
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);
 	}
-	
+
 	function visualizarSolicitacaoAjustes(processo) {
 
 		parecerGerenteService.findJustificativaParecerByIdAnaliseGeo(processo.idAnaliseGeo)
@@ -100,7 +126,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 						justificativa: function () {
 							return response.data;
 						}
-						
+
 					}
 				});
 		});

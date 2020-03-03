@@ -34,6 +34,7 @@ public class Configuracoes {
 	public static String ARQUIVOS_ANALISE_PATH = getConfig("arquivos.path.analise", null);
 	public static String ARQUIVOS_LICENCIAMENTO_PATH = getConfig("arquivos.path.licenciamento", null);
 	public static String ARQUIVOS_DOCUMENTOS_ANALISE_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.documentos.path", null);
+	public static String ARQUIVOS_DOCUMENTOS_SHAPEFILE_PATH = ARQUIVOS_DOCUMENTOS_ANALISE_PATH + getConfig("arquivos.shapefile.path", null);
 	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_LICENCIAMENTO_PATH + getConfig("arquivos.documentos.path", null);
 	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
 	public static String ESTADO = "AM";
