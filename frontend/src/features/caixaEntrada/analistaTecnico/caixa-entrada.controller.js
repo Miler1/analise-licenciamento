@@ -1,5 +1,5 @@
 var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
-											  $location, analiseTecnicaService, 
+											  $location, analiseTecnicaService,
 											  mensagem, $rootScope, processoService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
@@ -19,6 +19,7 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 	cxEntAnalistaTecnico.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntAnalistaTecnico.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntAnalistaTecnico.dateUtil = app.utils.DateUtil;
+	cxEntAnalistaTecnico.origemNotificacao = app.utils.OrigemNotificacao;
 	cxEntAnalistaTecnico.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO);
 
 	function atualizarListaProcessos(processos) {
@@ -51,7 +52,7 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$location.path('/analise-tecnica/' + idAnaliseTecnica.toString());
-			
+
 			}, function(error){
 
 				mensagem.error(error.data.texto);
@@ -94,9 +95,18 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 					return processo.idProcesso;
 				}
 			}
-			
+
 		});
-};
+	};
+
+	cxEntAnalistaTecnico.notificacaoAtendida = function(processo) {
+		return processo && processo.retificacao && processo.idOrigemNotificacao === cxEntAnalistaTecnico.origemNotificacao.ANALISE_TECNICA;
+	};
+
+	cxEntAnalistaTecnico.visualizarNotificacao = function (processo) {
+
+		return processoService.visualizarNotificacao(processo);
+	};
 
 };
 
