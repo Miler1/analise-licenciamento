@@ -11,7 +11,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
 	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
-	cxEntAnalistaGeo.primeiroAcesso = primeiroAcesso;
 	cxEntAnalistaGeo.processos = [];
 	cxEntAnalistaGeo.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	cxEntAnalistaGeo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
