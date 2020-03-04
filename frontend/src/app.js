@@ -248,24 +248,18 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					 return '/analise-tecnica';
 
-				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
-
-					return '/analise-diretor';
-
-				}
+				} 
 			},
 			countItens: true,
 			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-geo') > -1 ||
-					$location.path().indexOf('/analise-tecnica') > -1 ||
-					$location.path().indexOf('/analise-diretor') > -1;
+					$location.path().indexOf('/analise-tecnica') > -1;
 			},
 			visivel: function() {
 
 				return [app.utils.Perfis.ANALISTA_GEO,
-				app.utils.Perfis.ANALISTA_TECNICO,
-				app.utils.Perfis.DIRETOR].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
