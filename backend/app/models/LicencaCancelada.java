@@ -69,7 +69,7 @@ public class LicencaCancelada extends GenericModel{
 				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROTOCOLO);
 			}
 			
-			enviarNotificacaoCanceladoPorEmail();
+//			enviarNotificacaoCanceladoPorEmail();
 			
 		} catch (Exception e) {
 			

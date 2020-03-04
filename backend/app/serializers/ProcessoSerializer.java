@@ -85,6 +85,7 @@ public class ProcessoSerializer {
 			"analise.analisesGeo.dataInicio",
 			"analise.analisesGeo.dataFim",
 			"analise.analisesTecnicas.dataCadastro",
+			"analise.analisesTecnicas.id",
 			"analise.analisesTecnicas.justificativaCoordenador",
 			"analise.analisesTecnicas.dataFim",
 			"analise.analisesTecnicas.dataVencimentoPrazo",
