@@ -76,8 +76,8 @@
 * OS49 - US1170 - Eu, diretor presidente, devo acessar aguardando autenticação para visualizar o resumo do protocolo.
 * OS49 - US1542 - [Presidente] Eu, diretor presidente, devo acessar aguardando autenticação para validação da análise.
 * OS49 - US1178 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para visualizar protocolo e visualizar licença.
+* OS49 - US1179 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para suspender ou cancelar a licença.
 
 ## OS008
 
 * OS008 - US1471 - Correção de "LABELS"
-

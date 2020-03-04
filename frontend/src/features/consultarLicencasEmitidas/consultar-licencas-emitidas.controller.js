@@ -1,4 +1,4 @@
-var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService,
+var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, parecerAnalistaTecnicoService,
 	licencaEmitidaService, licencaService, $uibModal, mensagem, dispensaLicencaService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR LICENÇAS EMITIDAS';
@@ -125,7 +125,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 		if((licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO ||
 			licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO) &&
-			(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR &&
+			(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
 				LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken)) {
 			return true;
 
@@ -137,7 +137,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	function isCancelamentoVisivel(licenca) {
 
-		if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR &&
+		if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
 			LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken && licenca.ativo) {
 			return true;
 		}

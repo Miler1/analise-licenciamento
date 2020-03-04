@@ -10,6 +10,9 @@ public static JSONSerializer listSuspensao = SerializerUtil.create(
 			"id",
 			"dataValidade",
 			"observacao",
+			"caracterizacao.numero",
+			"caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome",
+			"caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome",
 			"caracterizacao.empreendimento.denominacao",
 			"caracterizacao.empreendimento.pessoa.cpf",
 			"caracterizacao.empreendimento.pessoa.cnpj",
@@ -25,7 +28,7 @@ public static JSONSerializer listSuspensao = SerializerUtil.create(
 			"licencaAnalise.validade",
 			"licencaAnalise.observacao",
 			"dataCadastro",
-			"licencaAnalise.caracterizacao.numeroProcesso",
+			"licencaAnalise.caracterizacao.numero",
 			"licencaAnalise.recomendacoes.ordem");
 
 }
