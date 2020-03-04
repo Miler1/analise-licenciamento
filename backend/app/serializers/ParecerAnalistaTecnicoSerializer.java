@@ -34,7 +34,6 @@ public class ParecerAnalistaTecnicoSerializer {
 			"doProcesso",
 			"daAnaliseTecnica",
 			"daConclusao",
-			"daConclusao",
 			"validadePermitida",
 			"finalidadeAtividade",
 			"condicionantes.texto",

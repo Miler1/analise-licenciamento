@@ -86,9 +86,11 @@
 * OS49 - US1171 - [Presidente] Eu, diretor presidente, devo acessar visualizar protocolo para visualizar os dados do protocolo.
 * OS49 - US1177 - [Presidente] Eu, diretor presidente, devo consultar protocolo para listagem dos protocolos em validação.
 * OS49 - US1178 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para visualizar protocolo e visualizar licença.
+* OS49 - US1179 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para suspender ou cancelar a licença.
 
 ## OS008
 
 * OS008 - US1493 - Eu, analista geo, devo comunicar o órgão e interessado para restrições conforme nova regra.
 * OS008 - US1471 - Correção de "LABELS".
 * OS008 - US300 - Eu, analista técnico, devo validar análise jurídica para tramitação do processo
+* OS008 - US1471 - Correção de "LABELS"
