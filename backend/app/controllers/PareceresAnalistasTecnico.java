@@ -5,6 +5,7 @@ import security.Acao;
 import serializers.ParecerAnalistaTecnicoSerializer;
 import utils.Mensagem;
 
+import javax.validation.ValidationException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,6 +28,14 @@ public class PareceresAnalistasTecnico extends InternalController {
 		ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.find("idHistoricoTramitacao", idHistoricoTramitacao).first();
 
 		renderJSON(parecerAnalistaTecnico, ParecerAnalistaTecnicoSerializer.findByIdHistoricoTramitacao);
+
+	}
+
+	public static void getUltimoParecerAnaliseTecnica(Long id) {
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(id);
+
+		renderJSON(analiseTecnica.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new), ParecerAnalistaTecnicoSerializer.findByIdHistoricoTramitacao);
 
 	}
 
