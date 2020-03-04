@@ -69,8 +69,6 @@ public class ParecerPresidente extends GenericModel {
 
 		}
 
-		enviarEmailStatusAnalise();
-
 		this.usuario = presidente;
 		this.dataParecer = new Date();
 
@@ -79,14 +77,16 @@ public class ParecerPresidente extends GenericModel {
 
 		this.save();
 
+		enviarEmailStatusAnalise(analise);
+
 	}
 
-	public void enviarEmailStatusAnalise() throws Exception {
+	public void enviarEmailStatusAnalise(Analise analise) throws Exception {
 
 		Empreendimento empreendimento = Empreendimento.findById(analise.processo.empreendimento.id);
 		List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
 
-		EmailNotificacaoStatusAnalise emailNotificacaoStatusAnalise = new EmailNotificacaoStatusAnalise(this.analise,this, interessados);
+		EmailNotificacaoStatusAnalise emailNotificacaoStatusAnalise = new EmailNotificacaoStatusAnalise(analise,this, interessados);
 		emailNotificacaoStatusAnalise.enviar();
 
 	}

@@ -62,7 +62,7 @@ public class Emails extends Mailer {
 			addRecipient(email);
 		}
 
-		return send(analise.processo.caracterizacao, parecerPresidente);
+		return send(analise, parecerPresidente);
 
 	}
 

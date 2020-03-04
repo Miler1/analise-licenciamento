@@ -7,9 +7,12 @@ empreendimento = analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 nomeEmpreendimento = empreendimento.denominacao;
 atividadesCaracterizacao = analise.processo.caracterizacao.atividadesCaracterizacao;
-endereco = enderecoCompleto;
-parecerPresidente = parecerPresidente.parecer;
-tipoResultadoAnaliseFinal = parecerPresidente.tipoResultadoAnalise.id;
+parecer = parecerPresidente.parecer;
+tipoResultadoAnaliseFinal = analise.processo.caracterizacao.status.id;
+analiseSuspensa = 7L;
+analiseCancelada = 8L;
+analiseAprovada = 15L;
+analiseNaoAprovada = 20L;
 }%
 
 <html>
@@ -30,17 +33,38 @@ tipoResultadoAnaliseFinal = parecerPresidente.tipoResultadoAnalise.id;
 <p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
 
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
+
 <p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong><strong> Protocolo N°: ${numeroProtocolo}</strong></p>
 
-<p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>Atividade(s): ${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list} </p>
+<p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>Atividade(s): ${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong> #{/list} </p>
 
-#{if tipoResultadoAnaliseFinal === }
+#{if tipoResultadoAnaliseFinal == analiseAprovada}
 
-<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong> </strong>.</p>
+<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>aprovada</strong>. Aguardando pagamento da taxa da licença.</p>
+
+<p> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
 
 #{/if}
 
-<p> <strong> Justificativa: </strong> ${parecerPresidente} </p>
+#{if tipoResultadoAnaliseFinal == analiseNaoAprovada}
+
+<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença <strong>não foi aprovada</strong>.</p>
+
+<p> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
+
+#{/if}
+
+#{if tipoResultadoAnaliseFinal == analiseCancelada}
+
+<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>cancelada</strong>.</p>
+
+#{/if}
+
+#{if tipoResultadoAnaliseFinal == analiseCancelada}
+
+<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>suspensa</strong>.</p>
+
+#{/if}
 
 <p> Procure o IPAAM para maiores esclarecimentos</p>
 
