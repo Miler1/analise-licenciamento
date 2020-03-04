@@ -6,14 +6,33 @@ var ModalVisualizarLicenca = {
 		dismiss: '&'
 	},
 
-	controller: function($scope, licencaEmitidaService, mensagem) {
+	controller: function($scope, licencaEmitidaService, mensagem, processoService, parecerAnalistaTecnicoService) {
 
 		var ctrl = this;
 		ctrl.dateUtil = app.utils.DateUtil;
-		
+		ctrl.parecerTecnico = null;
+		ctrl.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
+
 		ctrl.fechar = function() {
 
 			ctrl.dismiss({$value: 'cancel'});
+		};
+
+		ctrl.init = function() {
+
+			processoService.getInfoProcessoByNumero(ctrl.resolve.dadosLicenca.caracterizacao.numero)
+				.then(function(response){
+
+					ctrl.processo = response.data;
+
+					parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(ctrl.processo.analise.analisesTecnicas[0].id)
+						.then(function(response){
+							
+							ctrl.parecerTecnico = response.data;
+							
+					});
+			});
+			
 		};
 
 		ctrl.suspenderLicenca = function(){
