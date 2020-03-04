@@ -259,7 +259,9 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.verificaLoginAnaliseGeo = function() {
 		
 		if (modalCtrl.perfis.ANALISTA_GEO === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
+			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.DIRETOR === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.PRESIDENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
 
 			return true;
 			
@@ -272,7 +274,9 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.verificaLoginAnaliseTecnica = function() {
 		
 		if (modalCtrl.perfis.ANALISTA_TECNICO === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
+			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.DIRETOR === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.PRESIDENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
 
 			return true;
 			
