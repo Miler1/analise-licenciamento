@@ -9,10 +9,10 @@ nomeEmpreendimento = empreendimento.denominacao;
 atividadesCaracterizacao = analise.processo.caracterizacao.atividadesCaracterizacao;
 parecer = parecerPresidente.parecer;
 tipoResultadoAnaliseFinal = analise.processo.caracterizacao.status.id;
-analiseSuspensa = 7L;
-analiseCancelada = 8L;
-analiseAprovada = 15L;
-analiseNaoAprovada = 20L;
+analiseSuspensa = 7l;
+analiseCancelada = 8l;
+analiseAprovada = 15l;
+analiseNaoAprovada = 20l;
 }%
 
 <html>
@@ -60,7 +60,7 @@ analiseNaoAprovada = 20L;
 
 #{/if}
 
-#{if tipoResultadoAnaliseFinal == analiseCancelada}
+#{if tipoResultadoAnaliseFinal == analiseSuspensa}
 
 <p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>suspensa</strong>.</p>
 

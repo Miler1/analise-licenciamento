@@ -1,6 +1,8 @@
 package models;
 
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
+import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.StatusCaracterizacaoEnum;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
@@ -9,6 +11,7 @@ import utils.Configuracoes;
 import utils.DateUtil;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.util.*;
 
 import static security.Auth.getUsuarioSessao;
@@ -51,6 +54,12 @@ public class ParecerPresidente extends GenericModel {
 		return dataParecer;
 	}
 
+	public static ParecerPresidente getUltimoParecerPresidente(List<ParecerPresidente> pareceresPresidente) {
+
+		return pareceresPresidente.stream().max(Comparator.comparing(ParecerPresidente::getDataParecer)).orElseThrow(ValidationException::new);
+
+	}
+
 	public void finalizar(Analise analise, UsuarioAnalise presidente) throws Exception {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_APROVADA)) {
@@ -60,12 +69,16 @@ public class ParecerPresidente extends GenericModel {
 
 			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_APROVADA.codigo, analise.processo.numero);
 
+			analise.processo.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.ANALISE_APROVADA.id);
+
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_NAO_APROVADA)) {
 
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_LICENCA, getUsuarioSessao());
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
 			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_REJEITADA.codigo, analise.processo.numero);
+
+			analise.processo.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.ANALISE_REJEITADA.id);
 
 		}
 
