@@ -88,7 +88,7 @@ public class Suspensao extends GenericModel {
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
-			enviarNotificacaoSuspensaoPorEmail();
+//			enviarNotificacaoSuspensaoPorEmail();
 
 		} catch (Exception e) {
 
