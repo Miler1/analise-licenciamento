@@ -103,7 +103,7 @@ div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresDiretor
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| Diretor Técnico: {{ parecerDiretor.usuario.pessoa.nome }}
+								| DIRETOR TÉCNICO: {{ parecerDiretor.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionDiretor, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionDiretor}")
 				
 				div.collapse(ng-class="{in: parecer.id}", id="dados-diretor-tecnico-{{parecer.id}}")
@@ -116,7 +116,7 @@ div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresDiretor
 						p {{ parecerDiretor.tipoResultadoAnalise.nome }}
 
 						label Despacho:
-						p.i(ng-bind-html="parecer.parecer")
+						p.i(ng-bind-html="parecerDiretor.parecer")
 
 div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 )")
 	label.titulo(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 )")
@@ -129,7 +129,7 @@ div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPreside
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| Presidente: {{ parecerPresidente.usuario.pessoa.nome }}
+								| PRESIDENTE: {{ parecerPresidente.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionPresidente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionPresidente}")
 				
 				div.collapse(ng-class="{in: parecer.id}", id="dados-presidente-{{parecer.id}}")
@@ -142,4 +142,4 @@ div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPreside
 						p {{ parecerPresidente.tipoResultadoAnalise.nome }}
 
 						label Despacho:
-						p.i(ng-bind-html="parecer.parecer")
+						p.i(ng-bind-html="parecerPresidente.parecer")
