@@ -80,6 +80,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long NEGAR_SOLICITACAO_DESVINCULO_TECNICO = 70l;
 	public static final Long SOLICITAR_DESVINCULO_ANALISE_TECNICA = 71l;
 	public static final Long INICIAR_ANALISE_DIRETOR = 72l;
+	public static final Long INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO = 73L;
 	public static final Long VALIDAR_ANALISE_PELO_DIRETOR = 74L;
 	public static final Long INVALIDAR_ANALISE_PELO_DIRETOR = 75L;
 

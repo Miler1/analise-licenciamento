@@ -53,6 +53,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		resultadoAnalise: false,
 		prazoNotificacao: false,
 		docAnaliseTemporal:false,
+		analiseTemporal: false,
 		atendimento: false
 	};
 
@@ -1099,6 +1100,22 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		}
 
+		if (ctrl.parecer.analiseTemporal === '' || ctrl.parecer.analiseTemporal === null) {
+
+			if (ctrl.getDocumentosAnaliseTemporal().length === 1) {
+
+				ctrl.errors.analiseTemporal = true;
+				hasError = true;
+
+			} else {
+
+				ctrl.errors.analiseTemporal = true;
+
+			}
+			
+		}
+
+
 		if (!ctrl.parecer.conclusao && ctrl.parecer.tipoResultadoAnalise.id !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 
 			ctrl.errors.conclusao = true;
@@ -1217,31 +1234,36 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 					id: $scope.analiseGeo.id
 				};
 
-				documentoAnaliseService.generatePDFParecerGeo(params)
+				documentoAnaliseService.generatePDFCartaImagemGeo(params)
 					.then(function(data, status, headers){
+
+						var a = document.createElement('a');
+						a.href = URL.createObjectURL(data.data.response.blob);
+						a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pd.pdf';
+						a.click();
+
+						
 						if(ctrl.analiseGeo.inconsistencias && ctrl.analiseGeo.inconsistencias.length === 0){
-							var a = document.createElement('a');
-							a.href = URL.createObjectURL(data.data.response.blob);
-							a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-							a.click();
+
+							documentoAnaliseService.generatePDFParecerGeo(params)
+								.then(function(data, status, headers){
+									
+									var a = document.createElement('a');
+									a.href = URL.createObjectURL(data.data.response.blob);
+									a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
+									a.click();
+
+							},function(error){
+									mensagem.error(error.data.texto);
+							});
 						}
 
-						documentoAnaliseService.generatePDFCartaImagemGeo(params)
-							.then(function(data, status, headers){
-
-								var a = document.createElement('a');
-								a.href = URL.createObjectURL(data.data.response.blob);
-								a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pd.pdf';
-								a.click();
-
-								$location.path('/analise-geo');
-							},function(error){
-								mensagem.error(error.data.texto);
-							});
-
+						$location.path('/analise-geo');
+						
 					},function(error){
-							mensagem.error(error.data.texto);
+						mensagem.error(error.data.texto);
 					});
+				
 					$location.path('/analise-geo');
 					mensagem.setMensagemProximaTela('success', response.data.texto);
 

@@ -38,7 +38,7 @@ var MenuPrincipal = {
 		function atualizarContagemProcessos() {
 
 			for (var i = 0; i < ctrl.itens.length; i++) {
-				if(ctrl.itens[i].condicaoTramitacao)
+				if(ctrl.itens[i].condicaoTramitacao && ctrl.itens[i].countItens && ctrl.itens[i].visivel())
 					countProcessos(ctrl.itens[i]);
 			}
 		}
@@ -54,7 +54,7 @@ var MenuPrincipal = {
 			} else if(_.isFunction(item.condicaoTramitacao))
 
 				filtro.idCondicaoTramitacao = item.condicaoTramitacao();
-				
+
 			else
 				filtro.idCondicaoTramitacao = item.condicaoTramitacao;
 

@@ -43,7 +43,7 @@
                                         .glyphicon.glyphicon-file.icon-download
                                         | Parecer Técnico
                                     br
-                                div(ng-if="validacaoAnaliseDiretor.parecerTecnico.tipoResultadoAnalise.nome.toUpperCase() === DEFERIDO")
+                                div(ng-if="validacaoAnaliseDiretor.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.DEFERIDO")
                                     button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumento(validacaoAnaliseDiretor.analiseTecnica, validacaoAnaliseDiretor.tipoDocumento.DOCUMENTO_MINUTA)")
                                         .glyphicon.glyphicon-file.icon-download
                                         | Minuta da Licença
@@ -71,10 +71,10 @@
 
                                         tr(ng-repeat="documento in validacaoAnaliseDiretor.parecerTecnico.documentos")
 
-                                            td {{documento.nome}}
+                                            td {{documento.nomeDoArquivo}}
                                             td.text-right 
-                                                a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="ctrl.downloadDocumentoAnalise(documento.id)")
-                                                    i.glyphicon.glyphicon-save
+                                                a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="validacaoAnaliseDiretor.downloadDocumentoAnalise(documento.id)")
+                                                    i.glyphicon.glyphicon-eye-open
 
                                 .row(ng-show="!validacaoAnaliseDiretor.parecerTecnico.documentos || validacaoAnaliseDiretor.parecerTecnico.documentos.length == 0")
                                     .col-md-12
@@ -86,13 +86,13 @@
                         .panel.panel-default.panel-analise
                             .panel-heading
                                 h4.panel-title 
-                                    | Resultado da análise do gerente
+                                    | Resultado da análise do gerente técnico
                                     i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionGerenteTecnico, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionGerenteTecnico}")
                    
                     #dados-gerente-tecnico.collapse
                         .parecer-diretor
                             .label-analista
-                                span.title-info Gerente: 
+                                span.title-info Gerente Técnico: 
                                 span {{validacaoAnaliseDiretor.parecerGerenteTecnico.usuario.pessoa.nome}}
 
                             .label-situacao

@@ -9,6 +9,7 @@ import utils.WebService;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -228,6 +229,48 @@ public class Analise extends GenericModel {
 
 		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_UPDATE_STATUS, caracterizacaoStatusVO);
 
+	}
+
+	public Analise findUltimaInativaByProcesso(Processo processo){
+		return find("processo.numero = :numero AND ativo = false ORDER BY id DESC")
+				.setParameter("numero", processo.numero)
+				.first();
+	}
+
+	public Analisavel getAnalisavel(){
+
+		if(this.ativo) {
+
+			AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
+			if (analiseGeo != null) {
+				return analiseGeo;
+			}
+
+			return AnaliseTecnica.findByProcessoAtivo(this.processo);
+		}
+
+		Analise analise = findUltimaInativaByProcesso(this.processo);
+
+		if(analise != null && analise.analisesTecnicas != null && !analise.analisesTecnicas.isEmpty()) {
+			return analise.analisesTecnicas.stream().max(Comparator.comparing(AnaliseTecnica::getId)).orElse(null);
+		}
+
+		if(analise != null && analise.analisesGeo != null){
+			return analise.analisesGeo.stream().max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+		}
+
+		return null;
+	}
+
+	public List<Notificacao> getNotificacoes(){
+		return getAnalisavel().getNotificacoes();
+	}
+
+	public void inativar(){
+		this.getAnalisavel().inativar();
+		this.processo.inativar();
+		this.ativo = false;
+		this._save();
 	}
 
 	public void iniciar(UsuarioAnalise usuarioExecutor) {

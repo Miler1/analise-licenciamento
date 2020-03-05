@@ -11,11 +11,18 @@ var AnaliseTecnicaService = function(request, config) {
 		return request
                 	.post(config.BASE_URL() + 'analisesTecnicas/iniciar', analise);
 	};
-	
+
 	this.iniciarAnaliseTecnicaGerente = function(analise) {
 
 		return request
                 	.post(config.BASE_URL() + 'analisesTecnicas/iniciarAnaliseTecnicaGerente', analise);
+	};
+
+	this.findAnalisesTecnicaByNumeroProcesso = function(numero) {
+
+		return request
+			.get(config.BASE_URL() + 'analisesTecnicas/findAnalisesTecnicaByNumeroProcesso/' + numero);
+
 	};
 
 	this.getAnaliseTecnica = function(idAnaliseTecnica) {
@@ -35,7 +42,7 @@ var AnaliseTecnicaService = function(request, config) {
 
 		return request
                 .get(config.BASE_URL() + 'analisesTecnicas/parecer?numeroProcesso=' + numeroProcesso);
-	};	
+	};
 
 	this.salvar = function(analise) {
 
