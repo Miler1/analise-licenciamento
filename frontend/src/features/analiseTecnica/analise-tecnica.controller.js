@@ -115,7 +115,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 ctrl.tipoLicenca = ctrl.analiseTecnica.analise.processo.caracterizacao.tipoLicenca;
                 ctrl.validadeAnos = ctrl.analiseTecnica.analise.processo.caracterizacao.vigenciaSolicitada;
                 ctrl.porteEmpreendimento = ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].porteEmpreendimento;
-
+                
+                ctrl.getDocumentosSolicitacao();
+                
                 ctrl.parecer.analiseTecnica = {
                     id: ctrl.analiseTecnica.id
                 };
@@ -163,6 +165,22 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                     ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, index, ctrl.analiseTecnica);
                 });
             }); 
+    };
+
+    ctrl.getDocumentosSolicitacao = function(){
+
+        var documentosSolicitacaoGrupo = [];
+
+        _.forEach(ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental){
+            
+            if (documentoTecnicoAmbiental.documento != null) {
+
+				documentosSolicitacaoGrupo = documentosSolicitacaoGrupo.concat(documentoTecnicoAmbiental);
+            }
+            
+        });
+
+        ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo = documentosSolicitacaoGrupo;
     };
 
     ctrl.validarAbas = function(abaDestino) {
@@ -321,12 +339,16 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.validarInconsistenciaDocumentoAdministrativo = function(tipoDeInconsistenciaTecnica, documento, index, analiseTecnica) {
 
         if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO){
+            
+            if (analiseTecnica !== undefined && analiseTecnica !== null) {
+                
+                inconsistenciaTecnica = _.filter( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
+                    if(inconsistenciaTecnica !== null){
+                        return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo;
+                    }
+                });
 
-            inconsistenciaTecnica = _.filter( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-                if(inconsistenciaTecnica !== null){
-                    return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo;
-                }
-            });
+            }
         }
         
         if( inconsistenciaTecnica !== undefined && inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null){
