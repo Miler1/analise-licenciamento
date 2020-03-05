@@ -28,7 +28,7 @@ public class StatusCaracterizacao extends GenericModel {
 	public static final Long INDEFERIDO = 16l;
 	public static final Long SOLICITACAO_DE_DESVINCULO = 17l;
 	public static final Long NOTIFICACAO_ATENDIDA = 24l;
-
+	
 	@Id
 	public Long id;
 

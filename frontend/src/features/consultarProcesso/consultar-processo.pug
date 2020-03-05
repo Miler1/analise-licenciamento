@@ -47,6 +47,7 @@ div
 								span(ng-class="{'icone-aguardando-pagamento-taxa': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_APROVADA}")
 								span(ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
 								span(ng-class="{'icone-aguardando-resposta-juridico': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO}")
+							
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -119,27 +120,19 @@ div
 					span.icone-aguardando-resposta-juridico.legenda Aguardando análise jurídica
 					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
 
+				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
+
+					span.icone-licenca-emitida.legenda Licença emitida
+					span.icone-solicitacao-licenca-indeferida.legenda Solicitação de licença indeferida
+					span.icone-aguardando-pagamento-taxa.legenda Análise Aprovada
+
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 
 					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
 					span.icone-.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
 					span.icone-revisao-atendida.legenda Notificado
 					span.icone-aguardando-resposta-juridico.legenda Aguardando análise jurídica
-					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes	
-					
-				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
-
-					span.icone-licenca-emitida.legenda.col-md-2 Licença emitida
-					span.icone-solicitacao-licenca-indeferida.legenda.col-md-4 Solicitação de licença indeferida
-					span.icone-aguardando-pagamento-taxa.legenda.col-md-5 Análise Aprovada
-
-				
-				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
-
-					span.icone-solicitacao-desvinculo-pendente.legenda.col-md-4 Solicitação de Desvínculo Pendente
-					span.icone-.icone-solicitacao-finalizada-tecnica.legenda.col-md-3 Análise técnica finalizada
-					span.icone-revisao-atendida.legenda.col-md-3 Notificado
-					//- span.icone-solicitacao-ajustes.legenda.col-md-3 Solicitação de ajustes			
+					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes			
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
