@@ -1,10 +1,13 @@
 package models.licenciamento;
 
+import com.vividsolutions.jts.geom.Geometry;
 import models.InconsistenciaTecnicaQuestionario;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Table(schema = "licenciamento", name = "atividade_caracterizacao")
@@ -67,6 +70,10 @@ public class AtividadeCaracterizacao extends GenericModel {
 
 	public Boolean isAtividadeDentroEmpreendimento() {
 		return this.atividade.dentroEmpreendimento;
+	}
+
+	public Stream<Geometry> getGeoms(){
+		return this.geometriasAtividade.stream().map(ga -> ga.geometria);
 	}
 	
 }

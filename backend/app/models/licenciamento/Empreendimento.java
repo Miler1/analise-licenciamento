@@ -2,7 +2,10 @@ package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
 import enums.CamadaGeoEnum;
-import models.*;
+import models.CamadaGeoAtividadeVO;
+import models.EmpreendimentoCamandaGeo;
+import models.GeometriaAtividadeVO;
+import models.TipoAreaGeometria;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.ParamDef;
@@ -15,7 +18,10 @@ import utils.GeoJsonUtils;
 import utils.Helper;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema = "licenciamento", name = "empreendimento")

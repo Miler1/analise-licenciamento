@@ -74,12 +74,38 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 		});
 	}
 
-	function continuarAnalise(idAnaliseGeo) {
+	function iniciarUploadShapes(processo){
 
-		$rootScope.$broadcast('atualizarContagemProcessos');
+		$location.path('/shape-upload/' + processo.idProcesso.toString());
+	}
 
-		$location.path('/analise-geo/' + idAnaliseGeo.toString());
+	function continuarAnalise(processo) {
 
+		iniciarUploadShapes(processo);
+
+	}
+
+	function primeiroAcesso(processo) {
+		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
+
+		analiseGeoService.getPossuiAnexo(cpfCnpjEmpreendimento)
+		.then(function(response){
+
+			if(response.data === null){
+
+				iniciarUploadShapes(processo);
+
+			}else {
+
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				$location.path('/analise-geo/' + processo.idAnaliseGeo.toString());
+
+			}
+		}, function(error){
+
+			mensagem.error(error.data.texto);
+
+		});
 	}
 
 	function exibirDadosProcesso(processo) {

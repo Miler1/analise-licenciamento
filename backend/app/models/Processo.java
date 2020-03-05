@@ -6,13 +6,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import enums.TipoSobreposicaoDistanciaEnum;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
-import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.tramitacao.*;
-import org.hibernate.criterion.Restrictions;
+import org.geotools.feature.SchemaException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.mvc.Scope;
 import security.Auth;
 import security.InterfaceTramitavel;
 import services.IntegracaoEntradaUnicaService;
@@ -20,8 +18,9 @@ import utils.*;
 
 import javax.persistence.*;
 import javax.validation.ValidationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -1040,35 +1039,39 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		return desvinculoAnaliseTecnica;
 	}
 
-	public List<Notificacao> getNotificacoes(){
-	    return this.analise.getNotificacoes();
-    }
+	public List<Notificacao> getNotificacoes() {
+		return this.analise.getNotificacoes();
+	}
 
-    public void inativar(){
+	public void inativar() {
 		this.ativo = false;
 		this._save();
 	}
 
-	public static Processo findLastByNumber(String numero){
+	public static Processo findLastByNumber(String numero) {
 		return find("numero = :num ORDER BY id DESC").setParameter("num", numero).first();
 	}
 
-	public List<Notificacao> inicializaNotificacoes(){
+	public List<Notificacao> inicializaNotificacoes() {
 
-	    List<Notificacao> notificacoes = this.getNotificacoes();
+		List<Notificacao> notificacoes = this.getNotificacoes();
 
-	    if(!notificacoes.isEmpty()) {
-           return this.inicializaNotificacoes(this);
-        }
-	    return this.inicializaNotificacoes(this.processoAnterior);
+		if (!notificacoes.isEmpty()) {
+			return this.inicializaNotificacoes(this);
+		}
+		return this.inicializaNotificacoes(this.processoAnterior);
 	}
 
-	private List<Notificacao> inicializaNotificacoes(Processo processo){
-        return processo.getNotificacoes().stream().peek(n -> {
-            n.setJustificativa();
-            n.setDocumentosParecer();
-            n.setDiasConclusao();
-        }).sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList());
-    }
+	private List<Notificacao> inicializaNotificacoes(Processo processo) {
+		return processo.getNotificacoes().stream().peek(n -> {
+			n.setJustificativa();
+			n.setDocumentosParecer();
+			n.setDiasConclusao();
+		}).sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList());
+	}
+
+	public File gerarShape() throws IOException, SchemaException {
+		return this.caracterizacao.gerarShape();
+	}
 
 }
