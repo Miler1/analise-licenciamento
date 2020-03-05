@@ -63,7 +63,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			});
 			
-		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE || modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.DIRETOR) {
+		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE || modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.DIRETOR || modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.PRESIDENTE) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 
@@ -160,7 +160,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			if(!_.isEmpty(ultimoParecer.pareceresAnalistaTecnico)) {
 
-				if (modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer)) {
+				if (ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer) {
 
 					modalCtrl.documentos.push(ultimoParecer.pareceresAnalistaTecnico[0].documentoParecer);
 
