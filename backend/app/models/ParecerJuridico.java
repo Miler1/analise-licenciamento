@@ -14,6 +14,7 @@ import serializers.ParecerJuridicoSerializer;
 import utils.*;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 
 import static security.Auth.getUsuarioSessao;
 
@@ -152,8 +153,12 @@ public class ParecerJuridico extends GenericModel {
             parecerJuridicoBanco.saveAnexos(parecerJuridico.anexos);
             parecerJuridicoBanco.dataResposta = new Date();
 
-            parecerJuridicoBanco.analiseGeo.analise.processo.tramitacao.tramitar(parecerJuridicoBanco.analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_ANALISE_JURIDICA, getUsuarioSessao());
-            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(parecerJuridicoBanco.analiseGeo.analise.processo.objetoTramitavel.id), getUsuarioSessao());
+            ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = parecerJuridicoBanco.analiseGeo.pareceresGerenteAnaliseGeo.stream().max(Comparator.comparing(ParecerGerenteAnaliseGeo::getDataParecer)).orElseThrow(ValidationException::new);
+
+            UsuarioAnalise gerente = UsuarioAnalise.findById(parecerGerenteAnaliseGeo.usuario.id);
+
+            parecerJuridicoBanco.analiseGeo.analise.processo.tramitacao.tramitar(parecerJuridicoBanco.analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_ANALISE_JURIDICA, gerente);
+            HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(parecerJuridicoBanco.analiseGeo.analise.processo.objetoTramitavel.id), parecerJuridicoBanco.analiseGeo);
 
             HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(parecerJuridicoBanco.analiseGeo.analise.processo.objetoTramitavel.id);
             parecerJuridicoBanco.idHistoricoTramitacao = historicoTramitacao.idHistorico;
