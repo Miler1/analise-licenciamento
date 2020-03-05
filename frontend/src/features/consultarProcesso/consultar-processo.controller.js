@@ -1,4 +1,12 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, TiposSetores, documentoAnaliseService, mensagem, documentoService) {
+var ConsultarProcessoController = function($scope, 
+										config, 
+										$rootScope, 
+										processoService, 
+										TiposSetores, 
+										documentoAnaliseService, 
+										mensagem, 
+										documentoService,
+										parecerAnalistaTecnicoService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROTOCOLO';
 
@@ -26,6 +34,9 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO,
 		app.DISABLED_FILTER_FIELDS.GERENCIA];
+	
+	consultarProcesso.temMinuta = null;
+	consultarProcesso.temRTV = null;
 
 	function atualizarListaProcessos(processos) {
 
@@ -238,6 +249,21 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 		}
 
 		return '-';
+
+	};
+
+	consultarProcesso.validacaoDocumentos = function(processo) {
+		
+		parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(processo.idAnaliseTecnica)
+			.then(function(response){
+
+				var parecerTecnico = response.data;
+
+				consultarProcesso.temMinuta = parecerTecnico.documentoMinuta ? true : false;
+
+				consultarProcesso.temRTV = parecerTecnico.vistoria.realizada;
+
+			});
 
 	};
 
