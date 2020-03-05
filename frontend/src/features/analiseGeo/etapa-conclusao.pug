@@ -28,13 +28,14 @@ div
     div
         label.label-parecer Da análise temporal:
         br
-        summernote.campos-parecer(id="analiseTemporal",
-                    on-paste="snPaste(evt)",
-                    name="analiseTemporal",
-                    lang="pt-BR",
-                    height="200",
-                    ng-model="ctrl.parecer.analiseTemporal",
-                    config="optionsText")
+        div(ng-class="{'error-summernote': ctrl.errors.analiseTemporal === true}")
+            summernote.campos-parecer(id="analiseTemporal",
+                        on-paste="snPaste(evt)",
+                        name="analiseTemporal",
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="ctrl.parecer.analiseTemporal",
+                        config="optionsText")
         div.obrigatorio.btn.btn-default(ng-class="{'error-summernote': ctrl.errors.docAnaliseTemporal}",
                                         ng-disabled="ctrl.getDocumentosAnaliseTemporal().length === 1",
                                         ng-show="ctrl.parecer.analiseTemporal !== '' && ctrl.parecer.analiseTemporal !== null",

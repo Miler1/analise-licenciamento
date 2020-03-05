@@ -53,6 +53,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		resultadoAnalise: false,
 		prazoNotificacao: false,
 		docAnaliseTemporal:false,
+		analiseTemporal: false,
 		atendimento: false
 	};
 
@@ -1098,6 +1099,22 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 			}
 
 		}
+
+		if (ctrl.parecer.analiseTemporal === '' || ctrl.parecer.analiseTemporal === null) {
+
+			if (ctrl.getDocumentosAnaliseTemporal().length === 1) {
+
+				ctrl.errors.analiseTemporal = true;
+				hasError = true;
+
+			} else {
+
+				ctrl.errors.analiseTemporal = true;
+
+			}
+			
+		}
+
 
 		if (!ctrl.parecer.conclusao && ctrl.parecer.tipoResultadoAnalise.id !== ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()) {
 
