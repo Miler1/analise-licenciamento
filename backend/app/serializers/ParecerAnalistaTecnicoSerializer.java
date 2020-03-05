@@ -34,8 +34,11 @@ public class ParecerAnalistaTecnicoSerializer {
 			"doProcesso",
 			"daAnaliseTecnica",
 			"daConclusao",
-			"daConclusao",
-			"validadePermitida"
+			"validadePermitida",
+			"finalidadeAtividade",
+			"condicionantes.texto",
+			"condicionantes.prazo",
+			"restricoes.texto"
 	);
 
 	public static JSONSerializer findByIdNumeroProcesso = SerializerUtil.create(

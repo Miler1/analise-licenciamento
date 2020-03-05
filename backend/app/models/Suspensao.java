@@ -5,6 +5,7 @@ import exceptions.ValidacaoException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
+import models.licenciamento.StatusCaracterizacaoEnum;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
@@ -88,7 +89,10 @@ public class Suspensao extends GenericModel {
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 			}
 
-			enviarNotificacaoSuspensaoPorEmail();
+			this.licenca.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.SUSPENSO.id);
+
+			ParecerPresidente parecerPresidente = ParecerPresidente.getUltimoParecerPresidente(this.licenca.caracterizacao.processo.analise.pareceresPresidente);
+			parecerPresidente.enviarEmailStatusAnalise(this.licenca.caracterizacao.processo.analise);
 
 		} catch (Exception e) {
 

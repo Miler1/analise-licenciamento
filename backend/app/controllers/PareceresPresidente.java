@@ -10,7 +10,7 @@ import utils.Mensagem;
 
 public class PareceresPresidente extends InternalController {
 
-	public static void concluirParecerPresidente(ParecerPresidente parecerPresidente) {
+	public static void concluirParecerPresidente(ParecerPresidente parecerPresidente) throws Exception {
 
 		returnIfNull(parecerPresidente, "ParecerPresidente");
 

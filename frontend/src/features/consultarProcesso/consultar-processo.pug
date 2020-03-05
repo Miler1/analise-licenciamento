@@ -131,7 +131,15 @@ div
 
 					span.icone-licenca-emitida.legenda.col-md-2 Licença emitida
 					span.icone-solicitacao-licenca-indeferida.legenda.col-md-4 Solicitação de licença indeferida
-					span.icone-aguardando-pagamento-taxa.legenda.col-md-5 Aguardando pagamento da taxa de licenciamento		
+					span.icone-aguardando-pagamento-taxa.legenda.col-md-5 Análise Aprovada
+
+				
+				div(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
+
+					span.icone-solicitacao-desvinculo-pendente.legenda.col-md-4 Solicitação de Desvínculo Pendente
+					span.icone-.icone-solicitacao-finalizada-tecnica.legenda.col-md-3 Análise técnica finalizada
+					span.icone-revisao-atendida.legenda.col-md-3 Notificado
+					//- span.icone-solicitacao-ajustes.legenda.col-md-3 Solicitação de ajustes			
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
