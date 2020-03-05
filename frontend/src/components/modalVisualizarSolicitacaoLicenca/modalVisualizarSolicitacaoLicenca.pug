@@ -21,8 +21,8 @@ div
             div.row.label-cabecalho-protocolos
                 label.col-sm-3 CPF/CNPJ:
                 span.col-sm-8
-                    div {{ $ctrl.dadosProcesso.cpfEmpreendimento ? $ctrl.dadosProcesso.cpfEmpreendimento : ($ctrl.dadosProcesso.empreendimento.pessoa.cpf ? $ctrl.dadosProcesso.empreendimento.pessoa.cpf : $ctrl.dadosProcesso.cnpjEmpreendimento) | brCpfCnpj }}
-
+                    div {{ $ctrl.dadosProcesso.cpfEmpreendimento ? $ctrl.dadosProcesso.cpfEmpreendimento : $ctrl.dadosProcesso.cnpjEmpreendimento) | brCpfCnpj }}
+                    //- div {{ $ctrl.dadosProcesso.cpfEmpreendimento ? $ctrl.dadosProcesso.cpfEmpreendimento : ($ctrl.dadosProcesso.empreendimento.pessoa.cpf ? $ctrl.dadosProcesso.empreendimento.pessoa.cpf : $ctrl.dadosProcesso.cnpjEmpreendimento) | brCpfCnpj }}
             div.row.label-cabecalho-protocolos
                 label.col-sm-3 Empreendimento:
                 span.col-sm-8
