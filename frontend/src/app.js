@@ -146,11 +146,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 		$rootScope.perfis = app.utils.Perfis;
 		var appController = this;
 
-		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-orgao')) {
-			window.location = $rootScope.config.baseURL;
-		}
-
-		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-juridico')) {
+		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-orgao') && !$rootScope.location.$$url.includes('/parecer-juridico')) {
 			window.location = $rootScope.config.baseURL;
 		}
 
