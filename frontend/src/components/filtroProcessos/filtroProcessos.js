@@ -429,14 +429,24 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
+				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA
+
+
 			];
 		}
 
 		function getCondicoesAnaliseTecnicaFinalizada() {
 			return [
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
+				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA
 			];
 		}
 
