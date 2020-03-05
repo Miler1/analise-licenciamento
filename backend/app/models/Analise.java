@@ -68,6 +68,10 @@ public class Analise extends GenericModel {
 	@OneToMany(mappedBy = "analise")
 	@Fetch(FetchMode.SUBSELECT)
 	public List<ParecerDiretorTecnico> parecerDiretorTecnico;
+
+	@OneToMany(mappedBy = "analise")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerPresidente> pareceresPresidente;
 	
 	public Analise save() {
 		
