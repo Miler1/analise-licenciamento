@@ -2,6 +2,7 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
+import models.licenciamento.SolicitacaoGrupoDocumento;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
@@ -13,6 +14,7 @@ import utils.Mensagem;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
