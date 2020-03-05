@@ -25,17 +25,19 @@ import play.db.jpa.GenericModel;
 import play.libs.Crypto;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
+
 import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema = "analise", name = "analise_geo")
-public class AnaliseGeo extends GenericModel implements Analisavel {
+public class AnaliseGeo extends Analisavel {
 
     public static final String SEQ = "analise.analise_geo_id_seq";
     private static final String NOME_PERFIL = "Analista Geo";
@@ -46,35 +48,9 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
     @Column(name = "id")
     public Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_analise")
-    public Analise analise;
-
-    @Required
-    @Column(name = "data_vencimento_prazo")
-    public Date dataVencimentoPrazo;
-
-    @Required
-    @Column(name = "revisao_solicitada")
-    public Boolean revisaoSolicitada;
-
-    @Required
-    @Column(name = "notificacao_atendida")
-    public Boolean notificacaoAtendida;
-
-    public Boolean ativo;
-
     @OneToOne
     @JoinColumn(name = "id_analise_geo_revisada", referencedColumnName = "id")
     public AnaliseGeo analiseGeoRevisada;
-
-    @Column(name = "data_inicio")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataInicio;
-
-    @Column(name = "data_fim")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataFim;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_resultado_validacao")
@@ -91,13 +67,6 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL)
     public List<AnalistaGeo> analistasGeo;
-
-    @Column(name = "parecer_validacao")
-    public String parecerValidacao;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-    public UsuarioAnalise usuarioValidacao;
 
     @OneToMany(mappedBy = "analiseGeo", orphanRemoval = true)
     public List<LicencaAnalise> licencasAnalise;
@@ -157,6 +126,10 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     @Transient
     public Long idAnalistaDestino;
+
+    public Long getId() {
+        return id;
+    }
 
     public static AnaliseGeo findByProcessoAtivo(Processo processo) {
         return AnaliseGeo.find("analise.processo.id = :idProcesso AND ativo = true")
@@ -235,6 +208,14 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
     }
 
+    public static List<AnaliseGeo> findAnalisesByNumeroProcesso(String numeroProcesso) {
+
+        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso")
+                .setParameter("numeroProcesso", numeroProcesso)
+                .fetch();
+
+    }
+    
     private void iniciarLicencas() {
 
         List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();
@@ -540,6 +521,16 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         return this.tipoResultadoValidacao;
     }
 
+    @Override
+    public TipoAnalise getTipoAnalise() {
+        return TipoAnalise.GEO;
+    }
+
+    @Override
+    public List<Notificacao> getNotificacoes() {
+        return this.notificacoes;
+    }
+
     public void validarTipoResultadoValidacao() {
 
         if (tipoResultadoValidacao == null) {
@@ -691,6 +682,8 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
         List<CamadaGeoAtividadeVO> empreendimento = Empreendimento.buscaDadosGeoEmpreendimento(this.analise.processo.empreendimento.getCpfCnpj());
         DadosProcessoVO dadosProcesso = this.analise.processo.getDadosProcesso();
 
+        UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -702,6 +695,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("unidadesConservacao", UnidadesConservacaoParaPDF(dadosProcesso.restricoes))
                 .addParam("complexo", dadosProcesso.complexo)
                 .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
+                .addParam("nomeAnalista", usuarioExecutor.pessoa.nome)
                 .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
 
         pdf.generate();
@@ -779,6 +773,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 .addParam("dataCartaImagem", Helper.formatarData(new Date(), "dd/MM/YYYY"))
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
+                .addParam("coordinates", grupoImagemCaracterizacao.coordinates)
                 .setPageSize(30.0D, 21.0D, 0.2D, 0D, 0D, 0.2D);
 
         pdf.generate();
@@ -885,12 +880,12 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
             if(categoriaInconsistencia.equals(Inconsistencia.Categoria.PROPRIEDADE)){
 
                 Coordinate coordenadasEmpreendimento = GeometryDeserializer.parseGeometry(empreendimentoEU.localizacao.geometria).getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasEmpreendimento.y + ", " + coordenadasEmpreendimento.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasEmpreendimento.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasEmpreendimento.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.COMPLEXO)){
 
                 Coordinate coordenadasComplexo = analiseGeo.analise.processo.caracterizacao.geometriasComplexo.get(0).geometria.getCentroid().getCoordinate();
-                localizacoes.add("[" + coordenadasComplexo.y + ", " + coordenadasComplexo.x + "]");
+                localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasComplexo.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasComplexo.x) + "]");
 
             } else if(categoriaInconsistencia.equals(Inconsistencia.Categoria.ATIVIDADE)){
 
@@ -903,7 +898,7 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
                 for (GeometriaAtividade geometriaAtividade : inconsistencia.atividadeCaracterizacao.geometriasAtividade) {
 
                     coordenadasAtividade = geometriaAtividade.geometria.getCentroid().getCoordinate();
-                    localizacoes.add("[" + coordenadasAtividade.y + ", " + coordenadasAtividade.x + "]");
+                    localizacoes.add("[" + CoordenadaUtil.formataLatitudeString(coordenadasAtividade.y) + ", " + CoordenadaUtil.formataLongitudeString(coordenadasAtividade.x) + "]");
 
                 }
 
@@ -1018,6 +1013,19 @@ public class AnaliseGeo extends GenericModel implements Analisavel {
 
         return parecerGerenteAnaliseGeo.parecer;
 
+    }
+
+    public static AnaliseGeo findUltimaByAnalise(Analise analise){
+
+        return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY id DESC")
+                .setParameter("numero", analise.processo.numero)
+                .first();
+    }
+
+    public static List<AnaliseGeo> findAllByAnalise(Analise analise){
+        return AnaliseGeo.find("analise.id = :idAnalise ORDER BY id")
+                .setParameter("idAnalise", analise.id)
+                .fetch();
     }
 
 }

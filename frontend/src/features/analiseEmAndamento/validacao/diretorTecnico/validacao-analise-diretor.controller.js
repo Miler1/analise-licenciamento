@@ -2,12 +2,16 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  $route,      
                                                  analiseGeoService, 
                                                  analiseTecnicaService,
+                                                 processoService,
                                                  documentoAnaliseService,
                                                  documentoService,
                                                  parecerDiretorTecnicoService,
                                                  $anchorScroll,
                                                  $location,
-                                                 $timeout) {
+                                                 $timeout,
+                                                 parecerGerenteService,
+                                                 parecerAnalistaTecnicoService,
+                                                 parecerAnalistaGeoService) {
 
     var validacaoAnaliseDiretor = this;
 
@@ -24,6 +28,8 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.parecerTecnico = {};
     validacaoAnaliseDiretor.idTipoResultadoAnalise = null; 
     validacaoAnaliseDiretor.parecerDiretorTecnico = '';
+    validacaoAnaliseDiretor.dateUtil = app.utils.DateUtil;
+    validacaoAnaliseDiretor.exibirDadosProcesso = exibirDadosProcesso;
 
     validacaoAnaliseDiretor.errors = {
 
@@ -32,13 +38,24 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
         	
     };
 
-    var getUltimoParecerAnalista = function(pareceresAnalista) {
+    var getUltimoParecerAnalistaGeo = function(analiseGeo) {
 
-        var pareceresOrdenados = pareceresAnalista.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaGeoService.getUltimoParecerAnaliseGeo(analiseGeo.id)
+            .then(function(response){
+
+                validacaoAnaliseDiretor.parecerGeo = response.data;
+                setLabelsAnaliseGeo();
         });
+    };
 
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
+    var getUltimoParecerAnalistaTecnico = function(analiseTecnica) {
+
+        parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(analiseTecnica.id)
+            .then(function(response){
+
+                validacaoAnaliseDiretor.parecerTecnico = response.data;
+                setLabelsAnaliseTecnica();
+        });
 
     };
 
@@ -48,13 +65,27 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
         
 	};
 
-    var getUltimoParecerGerente = function(pareceresGerente) {
+    var getUltimoParecerGerenteTecnico = function(analiseTecnica) {
 
-        var pareceresOrdenados = pareceresGerente.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerGerenteService.getUltimoParecerGerenteAnaliseTecnica(analiseTecnica.id)
+            .then(function(response){
+
+                validacaoAnaliseDiretor.parecerGerenteTecnico = response.data;
+                setLabelsGerenteTecnico();
+
         });
 
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
+    };
+
+    var getUltimoParecerGerenteGeo = function(analiseGeo) {
+
+        parecerGerenteService.getUltimoParecerGerenteAnaliseGeo(analiseGeo.id)
+            .then(function(response){
+
+                validacaoAnaliseDiretor.parecerGerenteGeo = response.data;
+                setLabelsGerenteGeo();
+
+        });
 
     };
 
@@ -70,6 +101,10 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
         }
 
+    };
+
+    var setLabelsGerenteGeo = function(){
+
         if(validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
 
             validacaoAnaliseDiretor.labelParecerGerente = 'Despacho';
@@ -79,11 +114,12 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             validacaoAnaliseDiretor.labelParecerGerente = 'Justificativa';
 
         }
+
     };
 
     var setLabelsAnaliseTecnica = function(){
 
-        if(validacaoAnaliseDiretor.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.DEFERIDO){
+        if(validacaoAnaliseDiretor.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.DEFERIDO){
 
             validacaoAnaliseDiretor.labelParecerAnalistaTecnico = 'Despacho';
 
@@ -93,7 +129,11 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
         }
 
-        if(validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
+    };
+
+    var setLabelsGerenteTecnico = function(){
+
+        if(validacaoAnaliseDiretor.parecerGerenteTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
 
             validacaoAnaliseDiretor.labelParecerGerente = 'Despacho';
 
@@ -102,8 +142,29 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             validacaoAnaliseDiretor.labelParecerGerente = 'Justificativa';
 
         }
-
+        
     };
+
+    function exibirDadosProcesso() {
+
+        var processo = {
+
+            idProcesso: validacaoAnaliseDiretor.analiseGeo.analise.processo.id,
+            numero: validacaoAnaliseDiretor.analiseGeo.analise.processo.numero,
+            denominacaoEmpreendimento: validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.denominacao
+        };
+
+        if(validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj) {
+
+            processo.cnpjEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
+
+        } else {
+
+            processo.cpfEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cpf;
+        }		
+
+        processoService.visualizarProcesso(processo);
+    }
 
     function init() {
 
@@ -113,10 +174,9 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseDiretor.analiseGeo = response.data;
-                validacaoAnaliseDiretor.parecerGeo = getUltimoParecerAnalista(validacaoAnaliseDiretor.analiseGeo.pareceresAnalistaGeo);
-                validacaoAnaliseDiretor.parecerGerenteGeo = getUltimoParecerGerente(validacaoAnaliseDiretor.analiseGeo.pareceresGerenteAnaliseGeo);
-                
-                setLabelsAnaliseGeo();
+                getUltimoParecerAnalistaGeo(validacaoAnaliseDiretor.analiseGeo);
+                getUltimoParecerGerenteGeo(validacaoAnaliseDiretor.analiseGeo);
+
 
             });     
 
@@ -124,11 +184,9 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseDiretor.analiseTecnica = response.data;
-                validacaoAnaliseDiretor.parecerTecnico = getUltimoParecerAnalista(validacaoAnaliseDiretor.analiseTecnica.pareceresAnalistaTecnico);
-                validacaoAnaliseDiretor.parecerGerenteTecnico = getUltimoParecerGerente(validacaoAnaliseDiretor.analiseTecnica.pareceresGerenteAnaliseTecnica);
-
-                setLabelsAnaliseTecnica();
-
+                getUltimoParecerAnalistaTecnico(validacaoAnaliseDiretor.analiseTecnica);
+                getUltimoParecerGerenteTecnico(validacaoAnaliseDiretor.analiseTecnica);
+                
                 _.filter(validacaoAnaliseDiretor.parecerTecnico.documentos , function(documento){
                     if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
 

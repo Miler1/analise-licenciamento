@@ -7,11 +7,8 @@ import models.licenciamento.TipoAnalise;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
-import models.validacaoParecer.Analisavel;
 import models.validacaoParecer.SolicitarAjustesJuridicoAprovador;
 import org.apache.commons.lang.StringUtils;
-import play.data.validation.Required;
-import play.db.jpa.GenericModel;
 import utils.Configuracoes;
 import utils.ListUtil;
 import utils.Mensagem;
@@ -22,7 +19,7 @@ import java.util.*;
 
 @Entity
 @Table(schema="analise", name="analise_juridica")
-public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneable {
+public class AnaliseJuridica extends Analisavel implements Cloneable {
 
 	public static final String SEQ = "analise.analise_juridica_id_seq";
 	
@@ -31,37 +28,11 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
 	public Long id;
 	
-	@ManyToOne
-	@JoinColumn(name="id_analise")
-	public Analise analise;
-	
 	public String parecer;
-	
-	@Required
-	@Column(name="data_vencimento_prazo")
-	public Date dataVencimentoPrazo;
-	
-	@Required
-	@Column(name="revisao_solicitada")
-	public Boolean revisaoSolicitada;
-
-	@Required
-	@Column(name="notificacao_atendida")
-	public Boolean notificacaoAtendida;
-
-	public Boolean ativo;
 	
 	@OneToOne
 	@JoinColumn(name="id_analise_juridica_revisada", referencedColumnName="id")
 	public AnaliseJuridica analiseJuridicaRevisada;
-	
-	@Column(name="data_inicio")
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataInicio;
-	
-	@Column(name="data_fim")
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataFim;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_resultado_analise")
@@ -82,13 +53,6 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 	
 	@OneToMany(mappedBy="analiseJuridica", cascade=CascadeType.ALL)
 	public List<ConsultorJuridico> consultoresJuridicos;
-	
-	@Column(name="parecer_validacao")
-	public String parecerValidacao;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "id_usuario_validacao", referencedColumnName = "id")
-	public UsuarioAnalise usuarioValidacao;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_resultado_validacao_aprovador")
@@ -585,6 +549,16 @@ public class AnaliseJuridica extends GenericModel implements Analisavel, Cloneab
 	public TipoResultadoAnalise getTipoResultadoValidacao() {
 		
 		return this.tipoResultadoValidacao;
+	}
+
+	@Override
+	public TipoAnalise getTipoAnalise() {
+		return TipoAnalise.JURIDICA;
+	}
+
+	@Override
+	public List<Notificacao> getNotificacoes() {
+		return null;
 	}
 
 	public void setValidacaoCoordenador(AnaliseJuridica analiseJuridica) {

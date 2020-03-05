@@ -36,6 +36,13 @@ var ProcessoService = function(request, config, $uibModal) {
 			.get(config.BASE_URL() + 'processos/' + idProcesso + '/completo');
 	};
 
+	this.getProcessosAnteriores = function(idProcessoAnterior) {
+
+		return request
+			.get(config.BASE_URL() + 'processos/' + idProcessoAnterior + '/processosAnteriores');
+
+	};
+
 	this.getInfoProcessoByNumero = function(numeroProcesso) {
 
 		return request

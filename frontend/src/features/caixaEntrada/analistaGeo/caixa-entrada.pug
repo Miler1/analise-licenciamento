@@ -6,7 +6,7 @@ div
 		disabled-fields="cxEntAnalistaGeo.disabledFields",
 		atualizar-lista="cxEntAnalistaGeo.atualizarListaProcessos",
 		atualizar-paginacao="cxEntAnalistaGeo.atualizarPaginacao",
-		condicao-tramitacao="cxEntAnalistaGeo.condicaoTramitacao",
+		condicao-tramitacao="cxEntAnalistaGeo.condicaoTramitacao.CAIXA_ENTRADA_ANALISTA_GEO",
 		pesquisar-ao-inicializar="true",
 		is-analise-geo="true")
 
@@ -14,12 +14,12 @@ div
 	hr
 	.row
 		.col-md-12
-			div(ng-if="cxEntAnalistaGeo.processos && cxEntAnalistaGeo.processos.length > 0").table-responsive
+			div(ng-if="cxEntAnalistaGeo.processos && cxEntAnalistaGeo.processos.length > 0")
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
 							th
-							th.col-md-1.text-center Protocolo 
+							th.col-md-1.text-center Protocolo
 							th.col-md-2.text-center CPF/CNPJ
 							th.col-md-3.text-center Empreendimento
 							th.col-md-2.text-center Município
@@ -30,6 +30,7 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntAnalistaGeo.processos")
 							td
+								span(ng-class="{'icone-notificado': cxEntAnalistaGeo.notificacaoAtendida(processo)}")
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td.text-center {{processo.denominacaoEmpreendimento}}
@@ -59,7 +60,13 @@ div
 												a(ng-click="cxEntAnalistaGeo.solicitarDesvinculoAnaliseGeo(processo)")
 													i.glyphicon.glyphicon-link
 													span Solicitação de desvínculo
-				div
+											li(ng-if='cxEntAnalistaGeo.notificacaoAtendida(processo)')
+												a(ng-click="cxEntAnalistaGeo.visualizarNotificacao(processo)")
+													i.glyphicon.glyphicon-bell
+													span Notificação
+				.legenda
+					span.icone-notificado.legenda Notificação Atendida
+
 				+paginacao('cxEntAnalistaGeo.paginacao', 'cxEntAnalistaGeo.onPaginaAlterada')
 
 		.row(ng-show="!cxEntAnalistaGeo.processos || cxEntAnalistaGeo.processos.length == 0")

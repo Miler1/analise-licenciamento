@@ -95,9 +95,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addDesvinculoAnaliseGeoAlias() {
+	public ProcessoBuilder addDesvinculoAnaliseGeoAlias(Boolean isLeftOuterJoin) {
 
-		addAnaliseGeoAlias();
+		addAnaliseGeoAlias(isLeftOuterJoin);
 		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
@@ -209,7 +209,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addHistoricoObjetoTramitavelAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addHistoricoObjetoTramitavelAlias(Boolean isLeftOuterJoin) {
 
 		addAtividadeCaracterizacaoAlias();
 
@@ -236,7 +236,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addAnaliseGeoAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnaliseGeoAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseAlias();
 
@@ -252,7 +252,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addAnaliseTecnicaAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnaliseTecnicaAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseAlias();
 
@@ -268,7 +268,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addAnalistaGeoDesvinculoDestinoAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnalistaGeoDesvinculoDestinoAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 
@@ -286,7 +286,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder addAnalistaGeoDesvinculoDestinoAlias() {
 
-		addDesvinculoAnaliseGeoAlias();
+		addDesvinculoAnaliseGeoAlias(false);
 		addAlias(DESVINCULO_ANALISE_GEO_ALIAS + ".analistaGeoDestino", DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
@@ -295,7 +295,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder addAnalistaGeoDesvinculoSolicitanteAlias() {
 
-		addDesvinculoAnaliseGeoAlias();
+		addDesvinculoAnaliseGeoAlias(false);
 		addAlias(DESVINCULO_ANALISE_GEO_ALIAS + ".analistaGeo", DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
@@ -304,7 +304,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder addAnalistaTecnicaDesvinculoDestinoAlias() {
 
-		addDesvinculoAnaliseGeoAlias();
+		addDesvinculoAnaliseGeoAlias(true);
 		addAlias(DESVINCULO_ANALISE_TECNICA_ALIAS + ".analistaTecnicoDestino", DESVINCULO_ANALISTA_TECNICO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
@@ -320,7 +320,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
-	public ProcessoBuilder addAnalistaTecnicoAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnalistaTecnicoAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 
@@ -431,9 +431,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseGeo(){
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseGeo(Boolean isLeftOuterJoin){
 
-		addAnaliseGeoAlias();
+		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseGeo"));
 
 		return this;
@@ -480,7 +480,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
-	public ProcessoBuilder groupByDataFinalAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByDataFinalAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".dataFim").as("dataConclusaoAnaliseTecnica"));
@@ -496,7 +496,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByDataFinalAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByDataFinalAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".dataFim").as("dataConclusaoAnaliseGeo"));
@@ -528,7 +528,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".notificacaoAtendida").as("notificacaoAtendida"));
@@ -544,7 +544,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".notificacaoAtendida").as("notificacaoAtendida"));
@@ -570,7 +570,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	}
 
 
-	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseTecnica"));
@@ -586,7 +586,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".revisaoSolicitada").as("revisaoSolicitadaAnaliseTecnica"));
@@ -594,7 +594,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".revisaoSolicitada").as("revisaoSolicitadaAnaliseGeo"));
@@ -602,7 +602,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByIdAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByIdAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".id").as("idAnaliseTecnica"));
@@ -610,7 +610,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByIdAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByIdAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".id").as("idAnaliseGeo"));
@@ -813,7 +813,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorIdAnalistaTecnico(Long idAnalistaTecnico, boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarPorIdAnalistaTecnico(Long idAnalistaTecnico, Boolean isLeftOuterJoin) {
 
 		if (idAnalistaTecnico != null) {
 
@@ -824,7 +824,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorIdAnalistaGeo(Long idAnalistaGeo, boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarPorIdAnalistaGeo(Long idAnalistaGeo, Boolean isLeftOuterJoin) {
 
 		if (idAnalistaGeo != null) {
 
@@ -855,7 +855,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 
@@ -874,10 +874,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarDesvinculoAnaliseGeoComResposta(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarDesvinculoAnaliseGeoComResposta(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
-		addDesvinculoAnaliseGeoAlias();
+		addDesvinculoAnaliseGeoAlias(true);
 		addAnalistaGeoDesvinculoDestinoAlias();
 
 		addRestriction(Restrictions.or(
@@ -892,7 +892,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder filtrarDesvinculoAnaliseGeoSemResposta() {
 
 		addAnaliseGeoAlias(true);
-		addDesvinculoAnaliseGeoAlias();
+		addDesvinculoAnaliseGeoAlias(false);
 		addAnalistaGeoDesvinculoSolicitanteAlias();
 		addDesvinculoAnaliseTecnicaAlias();
 
@@ -911,7 +911,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
-	public ProcessoBuilder filtrarDesvinculoAnaliseTecnicaComResposta(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarDesvinculoAnaliseTecnicaComResposta(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addDesvinculoAnaliseTecnicaAlias();
@@ -944,7 +944,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
-	public ProcessoBuilder filtrarAnaliseGeoAtiva(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarAnaliseGeoAtiva(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 
@@ -1127,6 +1127,20 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByRetificacao() {
+
+		addProjection(Projections.groupProperty("retificacao").as("retificacao"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdOrigemNotificacao() {
+
+		addProjection(Projections.groupProperty("origemNotificacao.id").as("idOrigemNotificacao"));
+
+		return this;
+	}
+
 	public static class FiltroProcesso {
 
 		public String numeroProcesso;
@@ -1136,19 +1150,19 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idAtividadeEmpreendimento;
 		public Long idCondicaoTramitacao;
 		public List<Long> listaIdCondicaoTramitacao;
-		public Boolean filtrarPorUsuario;
+		public Boolean filtrarPorUsuario = false;
 		public Date periodoInicial;
 		public Date periodoFinal;
 		public Long paginaAtual;
 		public Long itensPorPagina;
-		public boolean isAnaliseJuridica;
-		public boolean isAnaliseTecnica;
-		public boolean isAnaliseTecnicaOpcional;
+		public Boolean isAnaliseJuridica = false;
+		public Boolean isAnaliseTecnica = false;
+		public Boolean isAnaliseTecnicaOpcional = false;
 		public Long idAnalistaTecnico;
 		public Long idDiretor;
-		public boolean isAnaliseGeo;
-		public boolean isAnaliseGeoOpcional;
-		public boolean isGerente;
+		public Boolean isAnaliseGeo = false;
+		public Boolean isAnaliseGeoOpcional = false;
+		public Boolean isGerente = false;
 		public boolean isDiretor;
 		public boolean isPresidente;
 		public Long idAnalistaGeo;
@@ -1156,7 +1170,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		public Long idUsuarioLogado;
-		public boolean isConsultarProcessos;
+		public Boolean isConsultarProcessos = false;
 		public Boolean analiseAtiva = false;
 
 		public FiltroProcesso() {

@@ -8,32 +8,17 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 	modalCtrl.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 
 	if (processo.idProcesso) {
-		if (modalCtrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.ANALISTA_GEO) {
 
-			notificacaoService.findByIdProcesso(processo.idProcesso)
-				.then(function(response){
+			notificacaoService.findByIdProcesso(processo.idProcesso).then(function(response){
 
-					modalCtrl.notificacoes = response.data;
-					prepararDadosParaExibicao();
+				modalCtrl.notificacoes = response.data;
+				prepararDadosParaExibicao();
 
-				})
-				.catch(function(){
-					mensagem.error("Ocorreu um erro ao buscar dados das notificações.");
-				});
-			
-		} else if (modalCtrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.ANALISTA_TECNICO) {
+			}).catch(function(){
 
-			notificacaoService.findByIdProcessoTecnico(processo.idProcesso)
-				.then(function(response){
+				mensagem.error("Ocorreu um erro ao buscar dados das notificações.");
 
-					modalCtrl.notificacoes = response.data;
-					prepararDadosParaExibicao();
-
-				})
-				.catch(function(){
-					mensagem.error("Ocorreu um erro ao buscar dados das notificações.");
-				});
-		}
+			});
 	}
 
 	modalCtrl.fechar = function () {
@@ -42,7 +27,7 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 
 	function prepararDadosParaExibicao() {
 		_.forEach(modalCtrl.notificacoes, function(notificacao) {
-			notificacao.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo ? 'true' : 'false';
+			notificacao.retificacaoSolicitacaoComGeo = !!notificacao.retificacaoSolicitacaoComGeo;
 		});
 	}
 

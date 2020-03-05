@@ -185,7 +185,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_GEO;
+					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_ANALISTA_GEO;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA;
 
@@ -290,7 +290,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return $location.path().indexOf('/analise-gerente') > -1 ||
 					$location.path().indexOf('/analise-diretor') > -1 ||
-					$location.path().indexOf('/analise-presidente') > -1;
+					$location.path().indexOf('/analise-presidente') > -1 ||
+					$location.path().indexOf('/analise-tecnica-gerente') > -1;
 
 			},
 			visivel: function() {
@@ -602,6 +603,8 @@ licenciamento
 	.controller('inconsistenciaTecnicaController',controllers.InconsistenciaTecnicaController)
 	.controller('modalInconsistenciaVistoriaController', controllers.ModalInconsistenciaVistoriaController)
 	.controller('modalCondicionanteController', controllers.ModalCondicionanteController)
+	.controller('historicoAnaliseGeoCtrl', controllers.HistoricoAnaliseGeoCtrl)
+	.controller('historicoAnaliseTecnicaCtrl', controllers.HistoricoAnaliseTecnicaCtrl)
 	.controller('modalRestricaoController', controllers.ModalRestricaoController);
 
 licenciamento

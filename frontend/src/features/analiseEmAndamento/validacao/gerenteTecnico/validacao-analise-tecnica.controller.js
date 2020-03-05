@@ -1,16 +1,17 @@
 var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
-                                                    analiseTecnicaService, 
+                                                    analiseTecnicaService,
                                                     $timeout,
-                                                    $route, 
-                                                    $scope,
-                                                    mensagem, 
+                                                    $route,
+                                                    processoService,
+                                                    mensagem,
                                                     $location,
-                                                    documentoAnaliseService, 
-                                                    $anchorScroll, 
-                                                    $uibModal,      
+                                                    documentoAnaliseService,
+                                                    $anchorScroll,
+                                                    $uibModal,
                                                     documentoService,
-                                                    validacaoAnaliseGerenteService, 
-                                                    analistaService) {
+                                                    validacaoAnaliseGerenteService,
+                                                    analistaService,
+						                            parecerAnalistaTecnicoService) {
 
     var validacaoAnaliseTecnicaGerente = this;
 
@@ -21,11 +22,14 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.init = init;
     validacaoAnaliseTecnicaGerente.controleVisualizacao = null;
     validacaoAnaliseTecnicaGerente.baixarDocumento = baixarDocumento;
-    validacaoAnaliseTecnicaGerente.titulo = 'VALIDAÇÃO TÉCNICA';   
+    validacaoAnaliseTecnicaGerente.titulo = 'VALIDAÇÃO TÉCNICA';
     validacaoAnaliseTecnicaGerente.parecerTecnico = {};
     validacaoAnaliseTecnicaGerente.labelDadosProjeto = '';
     validacaoAnaliseTecnicaGerente.enumDocumentos = app.utils.TiposDocumentosAnalise;
     validacaoAnaliseTecnicaGerente.concluir = concluir;
+    validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
+    validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = [];
+    validacaoAnaliseTecnicaGerente.processo = null;
 
     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
 
@@ -33,8 +37,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
 		despacho: false,
         resultadoAnalise: false,
-        analistas: false	
-        	
+        analistas: false
+
     };
 
     validacaoAnaliseTecnicaGerente.disable = {
@@ -49,14 +53,31 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
 
+    var findAnalisesTecnicaByNumeroProcesso = function(processo) {
+
+        analiseTecnicaService.findAnalisesTecnicaByNumeroProcesso(btoa(processo.numero))
+            .then(function(response){
+
+                validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;
+
+            });
+
+    };
+
     function init() {
+
         validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_ANALISE_TECNICA";
 
         analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
                 validacaoAnaliseTecnicaGerente.analiseTecnica = response.data;
-                validacaoAnaliseTecnicaGerente.parecerTecnico = getUltimoParecerTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica.pareceresAnalistaTecnico);
+                getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica);
+                findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo);
+
+                processoService.getInfoProcesso(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id).then(function(response){
+                    validacaoAnaliseTecnicaGerente.processo = response.data;
+                });
 
                 _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
                     if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
@@ -65,7 +86,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 });
 
                 _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
-                    
+
                     validacaoAnaliseTecnicaGerente.disable.atividade[index] = {
                         atividadeValida: true,
                         parametros: []
@@ -73,7 +94,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
                     _.forEach(atividade.atividade.parametros, function(parametro, indexParametro) {
                         validacaoAnaliseTecnicaGerente.disable.atividade[index].parametros[indexParametro] = true;
-                    });  
+                    });
                 });
 
                 _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.solicitacoesDocumento, function(documentoAdministrativo, index){
@@ -85,7 +106,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 });
 
                 _.forEach( validacaoAnaliseTecnicaGerente.analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
-    
+
                     if(inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca !== null){
                         validacaoAnaliseTecnicaGerente.disable.tipoLicenca = false;
                     }
@@ -95,7 +116,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                         _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
 
                             if(atividade.id === inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id){
-                                
+
                                 validacaoAnaliseTecnicaGerente.disable.atividade[index].atividadeValida = false;
                             }
                         });
@@ -111,15 +132,15 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                                     inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao.id === atividade.id){
 
                                         validacaoAnaliseTecnicaGerente.disable.atividade[indexAtividade].parametros[indexParametro] = false;
-                                    }        
+                                    }
                             });
                         });
                     }
-                    
+
                     if(inconsistenciaTecnica.inconsistenciaTecnicaQuestionario !== null){
                         validacaoAnaliseTecnicaGerente.disable.questionario = false;
                     }
-                    
+
                     if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null){
 
                         _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.solicitacoesDocumento, function(documentoAdministrativo, index){
@@ -127,25 +148,28 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
                                 validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[index] = false;
                             }
-                        });                                               
+                        });
                     }
-                    
+
                     if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental !== null){
 
                         _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental, index){
                             validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[index] = false;
                         });
                     }
-                });           
+                });
             });
-        
+
         $rootScope.$broadcast('atualizarContagemProcessos');
     }
 
-    var getUltimoParecerTecnico = function(pareceresAnalistaTecnico) {
+    var getUltimoParecerAnalistaTecnico = function(analiseTecnica) {
 
-        var pareceresOrdenados = pareceresAnalistaTecnico.sort(function(dataParecer1, dataParecer2){
-            return dataParecer1 - dataParecer2;
+        parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(analiseTecnica.id)
+            .then(function(response){
+
+                validacaoAnaliseTecnicaGerente.parecerTecnico = response.data;
+
         });
 
         return pareceresOrdenados[pareceresOrdenados.length - 1];
@@ -167,7 +191,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 				validacaoAnaliseTecnicaGerente.analistasTecnicos = response.data;
 			});
     };
-    
+
     function scrollTop() {
 		$anchorScroll();
 	}
@@ -181,14 +205,14 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
         if(!documento.id){
 			documentoService.download(documento.key, documento.nomeDoArquivo);
 		}else{
-			analiseTecnicaService.download(documento.id);
+            		documentoService.downloadById(documento.id);
 		}
     }
 
 	validacaoAnaliseTecnicaGerente.validacaoAbaVoltar = function() {
-		
+
 		validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_ANALISE_TECNICA";
-		
+
 		scrollTop();
 	};
 
@@ -199,7 +223,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 			validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_ANALISE_TECNICA";
 		}, 0);
 	};
-    
+
     validacaoAnaliseTecnicaGerente.avancarProximaEtapa = function() {
 		$timeout(function() {
 			$('.nav-tabs > .active').next('li').find('a').trigger('click');
@@ -209,17 +233,17 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     };
 
     validacaoAnaliseTecnicaGerente.validacaoAbaAvancar = function() {
-		
+
         validacaoAnaliseTecnicaGerente.controleVisualizacao = "ETAPA_VALIDACAO_ANALISE_TECNICA";
-        
+
         scrollTop();
-    
+
 };
 
-    function openModal(analiseTecnicaModal, tipoDeInconsistenciaTecnicaModal, inconsistenciaTecnicaModal, 
-                       atividadeCaracterizacaoModal, parametroAtividadeModal, questionarioModal, 
+    function openModal(analiseTecnicaModal, tipoDeInconsistenciaTecnicaModal, inconsistenciaTecnicaModal,
+                       atividadeCaracterizacaoModal, parametroAtividadeModal, questionarioModal,
                        documentoAdministrativoModal, documentoTecnicoAmbientalModal, indexModal, indexParametroModal) {
-            
+
         $uibModal.open({
             animation: true,
             templateUrl: './features/analiseTecnica/modalInconsistenciaTecnica.html',
@@ -271,7 +295,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
             .then(function(response){
 
             var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
-        
+
                     return inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca;
                 });
 
@@ -288,7 +312,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 return inconsistenciaTecnica.inconsistenciaTecnicaAtividade !== null &&
                     inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id === atividadeCaracterizacao.id;
             });
-    
+
             openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, atividadeCaracterizacao, null, null, null, null, index, null);
         });
 
@@ -301,10 +325,10 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
             var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
                 return inconsistenciaTecnica.inconsistenciaTecnicaParametro !== null &&
-                    inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id === parametroAtividade.id && 
+                    inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id === parametroAtividade.id &&
                     inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao.id === atividade.id;
             });
-       
+
             openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, atividade, parametroAtividade, null, null, null, index, indexParametro);
         });
     };
@@ -315,10 +339,10 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
         .then(function(response){
 
             var inconsistenciaTecnica = _.find( response.data.inconsistenciasTecnica, function(inconsistenciaTecnica){
-    
+
                 return inconsistenciaTecnica.inconsistenciaTecnicaQuestionario;
             });
-       
+
             openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, analiseTecnica.analise.processo.caracterizacao.questionario3, null, null, null, null);
         });
     };
@@ -336,8 +360,8 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                     }
                 }
             });
-       
-            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, documentoAdministrativo, null, index, null);    
+
+            openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, documentoAdministrativo, null, index, null);
         });
     };
 
@@ -352,9 +376,9 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                     if (documentoTecnicoAmbiental.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id){
                         return inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental;
                     }
-                }   
+                }
             });
-       
+
             openModal(response.data, tipoDeInconsistenciaTecnica, inconsistenciaTecnica, null, null, null, null, documentoTecnicoAmbiental, index, null);
         });
     };
@@ -371,20 +395,20 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
             validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
 
         }
-        
+
         if(analiseTecnica.parecerValidacaoGerente === "" || analiseTecnica.parecerValidacaoGerente === null || analiseTecnica.parecerValidacaoGerente === undefined) {
-            
+
             validacaoAnaliseTecnicaGerente.errors.despacho = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
         }else{
 
-            validacaoAnaliseTecnicaGerente.errors.resultadoAnalise = false;
+            validacaoAnaliseTecnicaGerente.errors.despacho = false;
             
         }
 
         if(analiseTecnica.tipoResultadoValidacaoGerente.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === null || validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === undefined)) {
-            
+
             validacaoAnaliseTecnicaGerente.errors.analistas = true;
             mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
 
@@ -397,7 +421,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
         if(validacaoAnaliseTecnicaGerente.errors.resultadoAnalise === true || validacaoAnaliseTecnicaGerente.errors.despacho === true || validacaoAnaliseTecnicaGerente.errors.analistas === true){
             return false;
         }
-        
+
         return true;
 
     }
@@ -427,6 +451,38 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 				mensagem.error(error.data.texto);
 			});
     }
+
+    var abrirModal = function(parecer, analiseTecnica, processo) {
+
+		$uibModal.open({
+			controller: 'historicoAnaliseTecnicaCtrl',
+			controllerAs: 'historicoAnaliseTecnicaCtrl',
+			templateUrl: 'features/analiseEmAndamento/validacao/gerenteTecnico/historicoAnalises/modalHistoricoAnaliseTecnica.html',
+			size: 'lg',
+			resolve: {
+
+				parecer: function() {
+					return parecer;
+				},
+
+				analiseTecnica: function() {
+					return analiseTecnica;
+                },
+
+                processo: function(){
+                    return processo;
+                }
+
+			}
+		});
+
+	};
+
+	validacaoAnaliseTecnicaGerente.visualizarJustificativas = function(parecer, analiseTecnica, processo){
+
+		abrirModal(parecer, analiseTecnica, processo);
+
+	};
 };
 
 exports.controllers.ValidacaoAnaliseTecnicaGerenteController = ValidacaoAnaliseTecnicaGerenteController;
