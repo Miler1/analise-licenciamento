@@ -219,6 +219,15 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		return this;
 	}
 
+	public LicencaEmitidaBuilder groupByStatusCaracterizacao(){
+
+		addCaracterizacaoAlias();
+
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".status.id").as("statusCaracterizacao"));
+
+		return this;
+	}
+
 	public LicencaEmitidaBuilder groupByAtivo() {
 
 		addProjection(Projections.groupProperty("ativo").as("ativo"));

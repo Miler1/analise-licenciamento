@@ -65,13 +65,13 @@ include ../../layout/components/inputErrors
 		label.margin-right-xs Finalidade da atividade:
 		form
 			.form-group
-				textarea.form-control.textarea--no-resize(rows="4", ng-model="$ctrl.parecerTecnico.finalidadeAtividade", name="finalidadeAtividade", disabled)
+				textarea.form-control.textarea--no-resize(rows="4", ng-bind-html="$ctrl.parecerTecnico.finalidadeAtividade", name="finalidadeAtividade", disabled)
 		hr
 
 		label.margin-right-xs Condicionantes:
-		div.tabela
+		div.tabela(ng-if="$ctrl.parecerTecnico.condicionantes")
 
-			table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.parecerTecnico.condicionantes")
+			table.table.table-striped.table-condensed.no-margin
 				thead
 					tr
 						th.col-md-10 Condicionante
@@ -85,13 +85,13 @@ include ../../layout/components/inputErrors
 							span {{condicionante.prazo}}
 
 
-			.text-center.vazio
-				span(ng-if="$ctrl.parecerTecnico.condicionantes.length == 0 || !$ctrl.parecerTecnico.condicionantes") Nenhuma condicionante adicionada
+		.text-center.vazio(ng-if="$ctrl.parecerTecnico.condicionantes.length == 0 || !$ctrl.parecerTecnico.condicionantes")
+			span Nenhuma condicionante adicionada
 
 		label.margin-right-xs Recomendações:
-		div.tabela
+		div.tabela(ng-if="$ctrl.parecerTecnico.restricoes")
 
-			table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.parecerTecnico.restricoes")
+			table.table.table-striped.table-condensed.no-margin
 				thead
 					tr
 						th.col-md-12 Recomendação
@@ -101,8 +101,8 @@ include ../../layout/components/inputErrors
 						td
 							span {{restricao.texto}}
 
-			.text-center.vazio
-				span(ng-if="$ctrl.parecerTecnico.restricoes.length == 0 || !$ctrl.parecerTecnico.restricoes") Nenhuma recomendação adicionada
+		.text-center.vazio(ng-if="$ctrl.parecerTecnico.restricoes.length == 0 || !$ctrl.parecerTecnico.restricoes")
+			span Nenhuma recomendação adicionada
 	hr
 	div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.INDEFERIDO")
 		.text-center.vazio
@@ -111,7 +111,7 @@ include ../../layout/components/inputErrors
 		br
 
 	div(ng-if="$ctrl.resolve.isSuspensao")
-		label.margin-right-xs Justificativa da suspensão da(s) licença(s):
+		label.margin-right-xs.obrigatorio Justificativa da suspensão da licença:
 
 		.row
 			form(name="$ctrl.formSuspensaoLicenca")
@@ -120,7 +120,7 @@ include ../../layout/components/inputErrors
 
 				div.col-md-2.form-group
 
-					label.posicionamento-suspensao-licenca Prazo de suspensão da(s) licença(s)
+					label.posicionamento-suspensao-licenca.obrigatorio Prazo de suspensão da licença
 
 					div.col-sm-6.posicionamento-suspensao-licenca
 						input.input-dias.form-control(id="qtdeDiasSuspensao",type="number", name="qtdeDiasSuspensao",
@@ -131,7 +131,7 @@ include ../../layout/components/inputErrors
 
 	div(ng-if="$ctrl.resolve.isCancelamento")
 		form(name="$ctrl.formCancelamentoLicenca")
-			label.margin-right-xs Justificativa do cancelamento da licença: 
+			label.margin-right-xs.obrigatorio Justificativa do cancelamento da licença: 
 			textarea.textarea--no-resize.form-control(rows="4", ng-model="$ctrl.justificativaCancelamento", name="justificativaCancelamento", required)
 
 .modal-footer#footer-modal
@@ -142,12 +142,12 @@ include ../../layout/components/inputErrors
 
 	div(ng-if="$ctrl.resolve.isSuspensao")
 		form(name="formSuspensaoLicenca")
-			button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca()", type="submit")
+			button.btn.btn-success.btn-cancelar-suspender-licenca(ng-click="$ctrl.suspenderLicenca()", type="submit")
 				i.glyphicon.glyphicon-ok
 				| &nbsp;Confirmar suspensão da Licença
 
 	div(ng-if="$ctrl.resolve.isCancelamento")
 		form(name="formCancelamentoLicenca")
-			button.btn.btn-default.pull-right(ng-click="$ctrl.cancelarLicenca()", type="submit")
+			button.btn.btn-success.btn-cancelar-suspender-licenca(ng-click="$ctrl.cancelarLicenca()", type="submit")
 				i.glyphicon.glyphicon-ok
 				| &nbsp;Confirmar cancelamento da licença
