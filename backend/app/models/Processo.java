@@ -209,7 +209,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
 
 			processoBuilder.filtrarPorIdAnalistaTecnico(usuarioSessao.id, true);
-			processoBuilder.filtrarAnaliseTecnicaAtiva(false);
+//			processoBuilder.filtrarAnaliseTecnicaAtiva(false);
 			processoBuilder.filtrarDesvinculoAnaliseTecnicaSemResposta();
 
 		} else if(usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {

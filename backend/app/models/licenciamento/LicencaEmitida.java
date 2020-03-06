@@ -62,6 +62,7 @@ public class LicencaEmitida extends GenericModel {
 			.groupByMunicipioEmpreendimento()
 			.groupByLicenca()
 			.groupByOrigemLicenca()
+			.groupByStatusCaracterizacao()
 			.groupByTipoCaracterizacao();
 //			.groupByAtivo()
 				

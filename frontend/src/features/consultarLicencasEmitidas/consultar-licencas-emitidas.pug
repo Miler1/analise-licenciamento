@@ -6,7 +6,7 @@ div
 		atualizar-paginacao="consultarLicencas.atualizarPaginacao",
 		pesquisar-ao-inicializar="true")
 
-	h4 Lista de títulos emitidos
+	h4 Lista de licenças emitidas
 
 	hr
 	.row
@@ -16,11 +16,11 @@ div
 					thead
 						tr
 							th.col-md-1 Nº licença
-							th.col-md-1 Processo
+							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-3 Empreendimento
 							th.col-md-2 Município
-							th.col-md-1 Títulos
+							th.col-md-1 Licença
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="licenca in consultarLicencas.licencas")
@@ -39,11 +39,11 @@ div
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li
+											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao")
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
 													i.glyphicon.glyphicon-minus-sign
 													span Suspender licença
-											li
+											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao")
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)")
 													i.glyphicon.glyphicon-ban-circle
 													span Cancelar licença
