@@ -101,8 +101,6 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
                 getUltimoParecerAnalistaGeo(validacaoAnaliseGeoGerente.analiseGeo);
-
-                validacaoAnaliseGeoGerente.parecerGeo = getUltimoParecerGeo(validacaoAnaliseGeoGerente.analiseGeo.pareceresAnalistaGeo);
                 findAnalisesGeoByNumeroProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
                 
                 processoService.getInfoProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id).then(function(response){

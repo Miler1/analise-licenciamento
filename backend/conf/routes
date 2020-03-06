@@ -251,6 +251,7 @@ POST	/external/upload/save						Application.upload
 
 GET     /notificacoes/{idTramitacao}                         Notificacoes.downloadPDF
 GET     /notificacoes/findByIdProcesso/{id}                  Notificacoes.findByIdProcesso
+GET     /notificacoes/findByIdParecer/{id}                   Notificacoes.findByIdParecer
 
 # Processos Manejo
 POST    /processosManejo                            ProcessosManejo.listWithFilter
