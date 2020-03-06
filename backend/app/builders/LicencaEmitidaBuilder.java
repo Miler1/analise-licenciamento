@@ -419,7 +419,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	public LicencaEmitidaBuilder filtrarPorCamposPesquisaRapida(String pesquisa) {
 
-		criteria.add(Restrictions.and(getStatusAtivoLicencaRestricao(true)));
+//		criteria.add(Restrictions.and(getStatusAtivoLicencaRestricao(true)));
 
 		if (StringUtils.isNotEmpty(pesquisa)) {
 
@@ -429,8 +429,8 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 			criteria.add(Restrictions.or(
 				getNumeroLicencaRestricao(pesquisa),
 				getNumeroProcessoRestricao(pesquisa),
-				getCpfEmpreendimentoRestricao(pesquisa), 
-				getCnpjEmpreendimentoRestricao(pesquisa),
+//				getCpfEmpreendimentoRestricao(pesquisa),
+//				getCnpjEmpreendimentoRestricao(pesquisa),
 				getDenominacaoEmpreendimentoRestricao(pesquisa),
 				getMunicipioRestricao(pesquisa)
 			));
