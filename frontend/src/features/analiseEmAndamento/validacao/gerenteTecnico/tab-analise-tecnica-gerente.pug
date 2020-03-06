@@ -207,7 +207,7 @@
                     label.label-parecer Da conclusão:
                     br
                     p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao")
-
+                
                 table.table.table-condensed.table-docs(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.documentos.length > 0")
 
                             thead
@@ -263,4 +263,3 @@
                                     td.col-md-1 
                                         button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseTecnicaGerente.visualizarJustificativas(parecer, analiseTecnica, analiseTecnica.analise.processo )")
                                             i.glyphicon.glyphicon-list-alt
-

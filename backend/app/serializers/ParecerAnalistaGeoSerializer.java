@@ -6,6 +6,7 @@ import utils.SerializerUtil;
 public class ParecerAnalistaGeoSerializer {
 
 	public static JSONSerializer findByIdHistoricoTramitacao = SerializerUtil.create(
+			"id",
 			"tipoResultadoAnalise.id",
 			"tipoResultadoAnalise.nome",
 			"parecer",
