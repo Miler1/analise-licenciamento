@@ -191,6 +191,22 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	};
 
+	modalCtrl.getDocumentosSolicitacao = function(){
+
+        var documentosSolicitacaoGrupo = [];
+
+        _.forEach(modalCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental){
+            
+            if (documentoTecnicoAmbiental.documento != null) {
+
+				documentosSolicitacaoGrupo = documentosSolicitacaoGrupo.concat(documentoTecnicoAmbiental);
+            }
+            
+        });
+
+        modalCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo = documentosSolicitacaoGrupo;
+    };
+
 	if (processo.idProcesso) {
 
 		processoService.getInfoProcesso(processo.idProcesso)
@@ -200,6 +216,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
 				modalCtrl.setPareceres();
 				modalCtrl.setDocumentos();
+				modalCtrl.getDocumentosSolicitacao();
 
 				if (modalCtrl.dadosProcesso.processoAnterior != null) {
 
