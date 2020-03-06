@@ -1,5 +1,6 @@
 var StatusCaracterizacao = {
 
+    VIGENTE: 1,
     SUSPENSO: 7,
     CANCELADO: 8,
     ANALISE_APROVADA: 15,
