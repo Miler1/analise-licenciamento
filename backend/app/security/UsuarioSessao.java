@@ -1,8 +1,8 @@
 package security;
 
 
-import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
-import main.java.br.ufla.lemaf.beans.pessoa.Usuario;
+import br.ufla.lemaf.beans.pessoa.Permissao;
+import br.ufla.lemaf.beans.pessoa.Usuario;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class UsuarioSessao extends Usuario {
 
 	public boolean possuiPerfil(String codigoPerfil) {
 
-		for (main.java.br.ufla.lemaf.beans.pessoa.Perfil perfilUsuario : perfis) {
+		for (br.ufla.lemaf.beans.pessoa.Perfil perfilUsuario : perfis) {
 
 			if (perfilUsuario.codigo.equals(codigoPerfil)) {
 
@@ -43,9 +43,9 @@ public class UsuarioSessao extends Usuario {
 		return false;
 	}
 
-	public main.java.br.ufla.lemaf.beans.pessoa.Perfil getPerfilUsuario(String codigoPerfil) {
+	public br.ufla.lemaf.beans.pessoa.Perfil getPerfilUsuario(String codigoPerfil) {
 
-		for (main.java.br.ufla.lemaf.beans.pessoa.Perfil perfilUsuario : perfis) {
+		for (br.ufla.lemaf.beans.pessoa.Perfil perfilUsuario : perfis) {
 
 			if (perfilUsuario.codigo.equals(codigoPerfil)) {
 

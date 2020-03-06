@@ -56,6 +56,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 		analiseTemporal: false,
 		atendimento: false
 	};
+	ctrl.sobreposicoesEmpreendimento = [];
 
 	var getLayer = function(descricao){
 
@@ -425,6 +426,31 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 	}
 
+	function getRandomColor() {
+		var letters = '0123456789ABCDEF';
+		var color = '#';
+		for (var i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
+	}
+
+	function cpfCnpjMask(campoTexto) {
+		if (campoTexto.length <= 11) {
+			return mascaraCpf(campoTexto);
+		} else {
+			return mascaraCnpj(campoTexto);
+		}
+	}
+
+	function mascaraCpf(valor) {
+		return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4");
+	}
+
+	function mascaraCnpj(valor) {
+		return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g,"\$1.\$2.\$3\/\$4\-\$5");
+	}
+
 	this.init = function() {
 
 		$scope.analiseGeo = analiseGeo;
@@ -487,6 +513,30 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 						camada.geometrias.forEach(function(e) {
 
 							adicionarGeometriaNoMapa(e);
+
+						});
+
+					});
+
+					analiseGeoService.getDadosRestricoesEmpreendimento(cpfCnpjEmpreendimento).then(function (response) {
+
+						ctrl.sobreposicoesEmpreendimento = response.data.sobreposicoes;
+
+						ctrl.sobreposicoesEmpreendimento.forEach(function (camada) {
+
+							var c = camada;
+
+							c.item = cpfCnpjMask(camada.cpfCnpj);
+							c.tipo = 'SOBREPOSICAO_EMPREENDIMENTO_';
+							c.estilo = ctrl.estiloMapa.SOBREPOSICAO_EMPREENDIMENTO;
+							c.estilo.color = getRandomColor();
+							c.color = c.estilo.color;
+							c.cpfCnpjAreaSobreposicao =  c.item;
+							c.nomeAreaSobreposicao = c.denominacao;
+							c.area = 0.0;
+							c.numPoints = ctrl.numPoints;
+
+							adicionarGeometriaNoMapa(c);
 
 						});
 

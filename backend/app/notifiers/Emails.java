@@ -1,13 +1,17 @@
 package notifiers;
 
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
+import br.ufla.lemaf.beans.Empreendimento;
+import br.ufla.lemaf.beans.pessoa.Endereco;
+import br.ufla.lemaf.beans.pessoa.Municipio;
 import models.*;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import org.apache.commons.mail.EmailAttachment;
 import play.Play;
 import play.mvc.Mailer;
+import javax.mail.BodyPart;
+import javax.mail.internet.MimeBodyPart;
+import play.Logger;
 
 import java.io.File;
 import java.util.Date;

@@ -1,7 +1,7 @@
 package models;
 import exceptions.ValidacaoException;
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.enums.TipoEndereco;
+import br.ufla.lemaf.beans.pessoa.Endereco;
+import br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.StatusCaracterizacaoEnum;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
@@ -355,7 +355,7 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 
 		Endereco enderecoPrincipal = new Endereco();
 
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
+		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
 		for (Endereco endereco : empreendimentoEU.enderecos) {
 			if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
 				enderecoPrincipal = endereco;

@@ -131,6 +131,13 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	};
 
+	this.getDadosRestricoesEmpreendimento = function(cpfCnpj) {
+
+		return request.get(config.BASE_URL() + 'empreendimento/sobreposicoes/' + cpfCnpj);
+
+	};
+
+
 };
 
 exports.services.AnaliseGeoService = AnaliseGeoService;

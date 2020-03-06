@@ -2,9 +2,9 @@ package models;
 
 import exceptions.AppException;
 import exceptions.PortalSegurancaException;
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
-import main.java.br.ufla.lemaf.enums.TipoEndereco;
+import br.ufla.lemaf.beans.pessoa.Endereco;
+import br.ufla.lemaf.beans.pessoa.Municipio;
+import br.ufla.lemaf.enums.TipoEndereco;
 import models.ReenvioEmail.TipoEmail;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
@@ -56,7 +56,7 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
 //            }
 
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-            main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+            br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
 
             final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
