@@ -18,9 +18,21 @@ var DocumentoService = function(request, $window, config, Upload) {
         
     };
 
+    this.downloadAnexoExterno = function(key, nome) {
+
+        $window.open(config.BASE_URL() + "external/download/" + key, '_blank');
+        
+    };
+
     this.downloadById = function(id) {
 
         $window.open(config.BASE_URL() + "documentos/" + id + "/download", '_blank');
+        
+    };
+
+    this.downloadDocumentoAnalise = function(id) {
+
+        $window.open(config.BASE_URL() + "external/documentos/" + id + "/download", '_blank');
         
     };
 

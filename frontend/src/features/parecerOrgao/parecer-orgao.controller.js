@@ -59,7 +59,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 	$scope.baixarDocumento= function(anexo) {
 		
-		documentoService.download(anexo.key, anexo.nomeDoArquivo);
+		documentoService.downloadAnexoExterno(anexo.key, anexo.nomeDoArquivo);
 	};
 
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;

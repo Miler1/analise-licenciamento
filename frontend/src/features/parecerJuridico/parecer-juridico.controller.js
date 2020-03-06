@@ -86,18 +86,18 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 
 	$scope.baixarDocumento = function(anexo) {
 		
-		documentoService.download(anexo.key, anexo.nomeDoArquivo);
+		documentoService.downloadAnexoExterno(anexo.key, anexo.nomeDoArquivo);
 	};
 
 	$scope.downloadDocumentos = function (id) {
 
-		documentoService.downloadById(id);
+		documentoService.downloadDocumentoAnalise(id);
 
 	};
 
 	$scope.downloadDocumentoFundiario = function (id) {
 
-		documentoLicenciamentoService.download(id);
+		documentoLicenciamentoService.downloadLicenciamento(id);
 	};
 
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
