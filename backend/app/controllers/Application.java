@@ -1,21 +1,24 @@
 package controllers;
 
+import exceptions.ValidacaoException;
+import models.Documento;
 import models.Notificacao;
 import models.UsuarioAnalise;
+import models.licenciamento.DocumentoLicenciamento;
 import org.apache.tika.Tika;
 import play.Play;
 import play.data.Upload;
 import play.libs.Crypto;
 import play.libs.IO;
 import play.mvc.Http;
+import security.Acao;
 import security.Auth;
 import serializers.ApplicationSerializer;
 import utils.Configuracoes;
 import utils.FileManager;
 import utils.Mensagem;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.*;
 
 public class Application extends GenericController {
@@ -115,6 +118,52 @@ public class Application extends GenericController {
 		}
 
 		return args;
+	}
+
+	public static void downloadLicenciamento(Long idDocumento) throws FileNotFoundException {
+
+		returnIfNull(idDocumento, "Long");
+
+		DocumentoLicenciamento documento = DocumentoLicenciamento.findById(idDocumento);
+
+		if(documento != null) {
+			File file = documento.getFile();
+			renderBinary(new FileInputStream(file), file.getName(), true);
+		}
+
+		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
+	}
+
+	public static void downloadDocumentoAnalise(Long id) throws FileNotFoundException {
+
+		returnIfNull(id, "Long");
+
+		Documento documento = Documento.findById(id);
+
+		if(documento != null) {
+			File documentoBinary = documento.getFile();
+			renderBinary(new FileInputStream(documentoBinary), documentoBinary.getName(), true);
+		}
+
+		renderMensagem(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
+	}
+
+	public static void downloadTmpExterno(String key) throws FileNotFoundException {
+
+		returnIfNull(key, "String");
+
+		File file = FileManager.getInstance().getFile(key);
+
+		if(file != null && file.exists()) {
+
+			renderBinary(new FileInputStream(file), file.getName(), true);
+
+		}
+
+		throw new ValidacaoException(Mensagem.DOCUMENTO_NAO_ENCONTRADO);
+
 	}
 
 	public static void upload(Upload file) throws IOException {
