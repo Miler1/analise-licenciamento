@@ -111,6 +111,7 @@ public class AnaliseGeoSerializer {
             "gerentesGeo.usuario.pessoa.cpf",
             "gerentesGeo.usuario.pessoa.id",
             "gerentesGeo.usuario.pessoa.nome",
+            "pareceresAnalistaGeo.id",
             "pareceresAnalistaGeo.situacaoFundiaria",
             "pareceresAnalistaGeo.analiseTemporal",
             "pareceresAnalistaGeo.conclusao",

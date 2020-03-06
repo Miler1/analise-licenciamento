@@ -28,7 +28,7 @@ div.modal-body
 
         .info-dados-solicitante
             label.label-dados-solicitante Documentos gerados na análise:
-            table.table.table-condensed.table-docs(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length > 0")
+            table.table.table-condensed.table-docs(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length > 0 || historicoAnaliseGeoCtrl.documentos.length > 0")
 
                 thead
 
@@ -43,7 +43,14 @@ div.modal-body
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.baixarDocumento(documento)")
                                 i.glyphicon.glyphicon-eye-open
-            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length == 0")
+                    
+                    tr(ng-repeat="documento in historicoAnaliseGeoCtrl.documentos")
+                        td.col-md-10 {{ documento.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.downloadDocumentos(documento.id)")
+                                i.glyphicon.glyphicon-eye-open
+            
+            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length == 0 && historicoAnaliseGeoCtrl.documentos.length == 0")
                 i Não foi gerado nenhum documento.	     
     div#justificativa-desvinculo
         label.label-justificativa Justificativa do analista:
