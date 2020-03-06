@@ -50,6 +50,14 @@ var EstiloMapa = {
         fill: false
     },
 
+    'SOBREPOSICAO_EMPREENDIMENTO': {
+        color: '#F55A2F',
+        opacity: 1,
+        weight: 2,
+        fill: true,
+        fillOpacity: 0.5
+    }
+
 };
 
 exports.utils.EstiloMapa = EstiloMapa;

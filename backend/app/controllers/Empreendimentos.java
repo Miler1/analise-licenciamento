@@ -1,5 +1,6 @@
 package controllers;
 
+import br.ufla.lemaf.beans.historico.EmpreendimentoSobreposicao;
 import br.ufla.lemaf.beans.historico.EmpreendimentoSobreposicaoVO;
 import models.licenciamento.Empreendimento;
 import security.Acao;
@@ -22,7 +23,7 @@ public class Empreendimentos extends InternalController {
 	public static void sobreposicoes(String cpfCnpj){
 
 		IntegracaoEntradaUnicaService integracao = new IntegracaoEntradaUnicaService();
-		EmpreendimentoSobreposicaoVO intersects = integracao.intersects(cpfCnpj);
+		EmpreendimentoSobreposicao intersects = integracao.intersects(cpfCnpj);
 		renderJSON(intersects);
 
 	}

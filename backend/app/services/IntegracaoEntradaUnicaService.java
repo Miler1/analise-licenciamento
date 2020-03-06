@@ -1,5 +1,6 @@
 package services;
 
+import br.ufla.lemaf.beans.historico.EmpreendimentoSobreposicao;
 import br.ufla.lemaf.beans.historico.EmpreendimentoSobreposicaoVO;
 import br.ufla.lemaf.beans.pessoa.Setor;
 import exceptions.AppException;
@@ -214,7 +215,7 @@ public class IntegracaoEntradaUnicaService {
 		}
 	}
 
-	public EmpreendimentoSobreposicaoVO intersects(String cpfCnpj) {
+	public EmpreendimentoSobreposicao intersects(String cpfCnpj) {
 
 		return CadastroUnificadoWS.ws.intersects(cpfCnpj);
 
