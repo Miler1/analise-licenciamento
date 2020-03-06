@@ -6,6 +6,8 @@ import models.Processo;
 import security.Acao;
 import serializers.NotificacaoSerializer;
 
+import java.util.List;
+
 public class Notificacoes extends InternalController {
 
     public static void downloadPDF(Integer idTramitacao) throws Exception {
