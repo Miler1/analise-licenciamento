@@ -27,9 +27,9 @@ div.modal-body
             span.span-dados-processo {{historicoAnaliseTecnicaCtrl.parecer.tipoResultadoAnalise.nome}}
             br
             
-        .info-dados-solicitante(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ")
+        .info-dados-solicitante
             label Documentos gerados na análise: 
-            table.table.table-condensed(margin-top="15px;")
+            table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null || historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null || historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ",margin-top="15px;")
 
                 thead
 
@@ -59,6 +59,10 @@ div.modal-body
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.NOTIFICACAO)")
                                 i.glyphicon.glyphicon-eye-open
+
+            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria == null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer == null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta == null ")
+                i Não foi gerado nenhum documento.	
+                                
         hr
             
     div#justificativa-desvinculo

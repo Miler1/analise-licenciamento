@@ -227,7 +227,9 @@ public class HistoricoTramitacao extends GenericModel {
 				rel = new RelHistoricoTramitacaoSetor();
 
 				rel.siglaSetor = usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla;
-				rel.historicoTramitacao = historicoTramitacao;
+				HistoricoTramitacao historicoTramitacaoExitente = HistoricoTramitacao.findById(historicoTramitacao.idHistorico);
+				rel.historicoTramitacao = historicoTramitacaoExitente;
+				historicoTramitacaoExitente.relHistoricoTramitacaoSetor = rel;
 
 				rel.save();
 			}

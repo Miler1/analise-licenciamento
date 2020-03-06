@@ -25,7 +25,7 @@ import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO
 
 @Entity
 @Table(schema = "analise", name = "parecer_analista_tecnico")
-public class ParecerAnalistaTecnico extends GenericModel {
+public class ParecerAnalistaTecnico extends ParecerAnalista {
 
 	public static final String SEQ = "analise.parecer_analista_tecnico_id_seq";
 
@@ -40,14 +40,6 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	public AnaliseTecnica analiseTecnica;
 
 	@OneToOne
-	@JoinColumn(name = "id_tipo_resultado_analise")
-	public TipoResultadoAnalise tipoResultadoAnalise;
-
-	@Column(name = "data_parecer")
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date dataParecer;
-
-	@OneToOne
 	@JoinColumn(name = "id_usuario_analista_tecnico", referencedColumnName = "id")
 	public UsuarioAnalise analistaTecnico;
 
@@ -59,9 +51,6 @@ public class ParecerAnalistaTecnico extends GenericModel {
 
 	@Column(name = "da_conclusao")
 	public String daConclusao;
-
-	@Column(name = "parecer")
-	public String parecer;
 
 	@Column(name = "validade_permitida")
 	public Integer validadePermitida;
@@ -88,18 +77,9 @@ public class ParecerAnalistaTecnico extends GenericModel {
 	@JoinColumn(name = "id_documento", referencedColumnName = "id")
 	public Documento documentoParecer;
 
-	@Column(name = "id_historico_tramitacao")
-	public Long idHistoricoTramitacao;
-
-    @OneToOne
-    @JoinColumn(name = "id_documento_minuta", referencedColumnName = "id")
-    public Documento documentoMinuta;
-
-	public Date getDataParecer() {
-
-		return dataParecer;
-
-	}
+	@OneToOne
+	@JoinColumn(name = "id_documento_minuta", referencedColumnName = "id")
+	public Documento documentoMinuta;
 
 	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
 
@@ -408,7 +388,17 @@ public class ParecerAnalistaTecnico extends GenericModel {
 		}
 
 		return new ParecerAnalistaTecnico();
+	
+	}
 
+	@Override
+	public List<Documento> getDocumentos() {
+		return this.documentos;
+	}
+
+	@Override
+	public List<Documento> getDocumentosParecer() {
+		return this.documentos.stream().filter(Documento::isParecerAnaliseTecnica).collect(Collectors.toList());
 	}
 
 }

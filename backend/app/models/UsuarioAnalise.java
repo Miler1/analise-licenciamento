@@ -124,6 +124,12 @@ public class UsuarioAnalise extends GenericModel  {
 				.setParameter("id_diretor", diretor.usuario.id).first();
 	}
 
+	public static UsuarioAnalise findByPresidente(Presidente presidente) {
+
+		return UsuarioAnalise.find("id = :id_presidente")
+				.setParameter("id_presidente", presidente.usuario.id).first();
+	}
+
 	public static UsuarioAnalise findByGerente(Gerente gerente) {
 
 		return UsuarioAnalise.find("id = :id_gerente")
@@ -150,6 +156,16 @@ public class UsuarioAnalise extends GenericModel  {
 				"WHERE p.codigoPerfil = :codigoPerfil AND s.siglaSetor = :siglaSetor")
 				.setParameter("codigoPerfil", codigoPerfil)
 				.setParameter("siglaSetor", siglaSetor)
+				.fetch();
+
+	}
+
+	public static List<UsuarioAnalise> findUsuariosByPerfil(String codigoPerfil) {
+
+		return UsuarioAnalise.find("SELECT DISTINCT u FROM UsuarioAnalise u " +
+				"LEFT JOIN PerfilUsuarioAnalise p ON p.usuarioAnalise.id = u.id " +
+				"WHERE p.codigoPerfil = :codigoPerfil")
+				.setParameter("codigoPerfil", codigoPerfil)
 				.fetch();
 
 	}

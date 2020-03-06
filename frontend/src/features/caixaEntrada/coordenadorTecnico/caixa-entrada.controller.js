@@ -108,7 +108,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um protocolo para vinculá-lo ao gerente.');
+			mensagem.warning('É necessário selecionar ao menos um protocolo para vinculá-lo ao gerente técnico.');
 			return;
 		}
 

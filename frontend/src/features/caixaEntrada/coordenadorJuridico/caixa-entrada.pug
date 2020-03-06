@@ -25,9 +25,9 @@ div
 									ng-click='cxEntCoordenadorJuridico.selecionarTodosProcessos()')
 							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
-							th.col-md-2 Empreendimento
+							th.col-md-3 Empreendimento
 							th.col-md-2 Município
-							th.col-md-2 Licença
+							th.col-md-1 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise jurídica
 							th.col-md-1.text-right Ações
@@ -35,7 +35,7 @@ div
 						tr(ng-repeat="processo in cxEntCoordenadorJuridico.processos")
 							td 
 								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntCoordenadorJuridico.verificarTodosProcessosMarcados()")
-							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
