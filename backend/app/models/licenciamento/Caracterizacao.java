@@ -2,8 +2,8 @@ package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import main.java.br.ufla.lemaf.beans.EmpreendimentoFiltroResult;
-import main.java.br.ufla.lemaf.beans.FiltroEmpreendimento;
+import br.ufla.lemaf.beans.EmpreendimentoFiltroResult;
+import br.ufla.lemaf.beans.FiltroEmpreendimento;
 import models.Comunicado;
 import models.Processo;
 import org.geotools.feature.SchemaException;
@@ -314,7 +314,7 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 	public File gerarShapeEmpreendimento() throws IOException {
 
 		IntegracaoEntradaUnicaService entradaUnicaService = new IntegracaoEntradaUnicaService();
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentosByCpfCnpj = entradaUnicaService.findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
+		br.ufla.lemaf.beans.Empreendimento empreendimentosByCpfCnpj = entradaUnicaService.findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
 		Geometry geom = GeoJsonUtils.toGeometry(empreendimentosByCpfCnpj.localizacao.geometria);
 		return gerarShape(Collections.singletonList(geom));
 
