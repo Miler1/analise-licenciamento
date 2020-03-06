@@ -9,17 +9,8 @@ include pergunta-data
 mixin questionario3(model, ngDisabled, submitted)
 	.sub-pergunta
 
-		+perguntaNumerica(
-			"Número de empregados",
-			'obrigatorio negrito',
-			model+'.numeroEmpregados',
-			0,
-			null,
-			ngDisabled
-		)
-
 		+perguntaRadio("Consumo de água",
-			'obrigatorio negrito',
+			'negrito',
 			model+'.consumoAgua',
 			{
 				"true": 'Haverá consumo',
@@ -47,7 +38,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaNumerica(
 							"Consumo médio",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.consumoAguaRedePublicaConsumoMedio',
 							2,
 							'm³/dia',
@@ -56,7 +47,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Uso",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'consumoAguaRedePublicaUsoDomestico': 'Doméstico',
 								'consumoAguaRedePublicaUsoIndustrial': 'Industrial'
@@ -64,15 +55,6 @@ mixin questionario3(model, ngDisabled, submitted)
 							'normal',
 							model+"",
 							submitted+' !== false && '+model+'.consumoAguaRedePublicaUsoDomestico !== true && '+model+'.consumoAguaRedePublicaUsoIndustrial !== true',
-							ngDisabled
-						)
-					.sub-pergunta.col-md-4.col-sm-12
-						+perguntaNumerica(
-							"Vazão",
-							'obrigatorio negrito',
-							model+'.consumoAguaRedePublicaVazao',
-							2,
-							'm³/dia',
 							ngDisabled
 						)
 			.panel.panel-default
@@ -92,7 +74,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaNumerica(
 							"Consumo médio",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.consumoAguaAguaSubterraneaConsumoMedio',
 							2,
 							'm³/dia',
@@ -101,7 +83,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Uso",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'consumoAguaAguaSubterraneaUsoDomestico': 'Doméstico',
 								'consumoAguaAguaSubterraneaUsoIndustrial': 'Industrial'
@@ -109,15 +91,6 @@ mixin questionario3(model, ngDisabled, submitted)
 							'normal',
 							model+"",
 							submitted+' !== false && '+model+'.consumoAguaAguaSubterraneaUsoDomestico !== true && '+model+'.consumoAguaAguaSubterraneaUsoIndustrial !== true',
-							ngDisabled
-						)
-					.sub-pergunta.col-md-4.col-sm-12
-						+perguntaNumerica(
-							"Vazão",
-							'obrigatorio negrito',
-							model+'.consumoAguaAguaSubterraneaVazao',
-							2,
-							'm³/dia',
 							ngDisabled
 						)
 			.panel.panel-default
@@ -137,7 +110,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaNumerica(
 							"Consumo médio",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.consumoAguaAguaSuperficialConsumoMedio',
 							2,
 							'm³/dia',
@@ -146,7 +119,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Uso",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'consumoAguaAguaSuperficialUsoDomestico': 'Doméstico',
 								'consumoAguaAguaSuperficialUsoIndustrial': 'Industrial'
@@ -156,19 +129,10 @@ mixin questionario3(model, ngDisabled, submitted)
 							submitted+' !== false && '+model+'.consumoAguaAguaSuperficialUsoDomestico !== true && '+model+'.consumoAguaAguaSuperficialUsoIndustrial !== true',
 							ngDisabled
 						)
-					.sub-pergunta.col-md-4.col-sm-12
-						+perguntaNumerica(
-							"Vazão",
-							'obrigatorio negrito',
-							model+'.consumoAguaAguaSuperficialVazao',
-							2,
-							'm³/dia',
-							ngDisabled
-						)
 
 		+perguntaRadio(
 			"Efluentes",
-			'obrigatorio negrito',
+			' negrito',
 			model+'.efluentes',
 			{
 				"true": 'Há previsão',
@@ -196,7 +160,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaNumerica(
 							"Vazão média",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.efluentesDomesticoVazaoMedia',
 							2,
 							'm³/dia',
@@ -205,7 +169,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaRadio(
 							"Regime de carga",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.efluentesDomesticoRegimeCarga',
 							{
 								"CONTINUO": 'Contínuo',
@@ -218,7 +182,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaCheckbox(
 							"Tipo de tratamento",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'efluentesDomesticoTipoTratamentoEte': 'ETE',
 								'efluentesDomesticoTipoTratamentoFossaSeptica': 'Fossa séptica',
@@ -234,7 +198,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesDomesticoTipoTratamentoOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.efluentesDomesticoTipoTratamentoOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -242,7 +206,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaCheckbox(
 							"Destino final",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'efluentesDomesticoDestinoFinalFossaSeptica': 'Fossa séptica',
 								'efluentesDomesticoDestinoFinalFossaFiltro': 'Fossa filtro',
@@ -257,7 +221,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesDomesticoDestinoFinalOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.efluentesDomesticoDestinoFinalOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -279,7 +243,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaNumerica(
 							"Vazão média",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.efluentesIndustrialVazaoMedia',
 							2,
 							'm³/dia',
@@ -288,7 +252,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaRadio(
 							"Regime de carga",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.efluentesIndustrialRegimeCarga',
 							{
 								"CONTINUO": 'Contínuo',
@@ -301,7 +265,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaCheckbox(
 							"Tipo de tratamento",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'efluentesIndustrialTipoTratamentoEte': 'ETE',
 								'efluentesIndustrialTipoTratamentoFossaSeptica': 'Fossa séptica',
@@ -317,7 +281,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesIndustrialTipoTratamentoOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.efluentesIndustrialTipoTratamentoOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -325,7 +289,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaCheckbox(
 							"Destino final",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'efluentesIndustrialDestinoFinalFossaSeptica': 'Fossa séptica',
 								'efluentesIndustrialDestinoFinalFossaFiltro': 'Fossa filtro',
@@ -340,7 +304,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesIndustrialDestinoFinalOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.efluentesIndustrialDestinoFinalOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -348,7 +312,7 @@ mixin questionario3(model, ngDisabled, submitted)
 
 		+perguntaRadio(
 			"Resíduos sólidos",
-			'obrigatorio negrito',
+			' negrito',
 			model+'.residuosSolidos',
 			{
 				"true": 'Há previsão',
@@ -376,7 +340,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaNumerica(
 							"Quantidade média",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.residuosSolidosDomesticoQuantidadeMedia',
 							2,
 							'kg/mês',
@@ -385,7 +349,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tratamento/Disposição",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosDomesticoTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
 								'residuosSolidosDomesticoTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
@@ -402,7 +366,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosDomesticoTratamentoDisposicaoOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosDomesticoTratamentoDisposicaoOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -410,7 +374,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tipo de coleta",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosDomesticoTipoColetaPublica': 'Pública',
 								'residuosSolidosDomesticoTipoColetaPropria': 'Própria',
@@ -424,7 +388,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosDomesticoTipoColetaTerceiros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosDomesticoTipoColetaTerceirosEspecificar',
 								'linha',
 								ngDisabled
@@ -446,7 +410,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaNumerica(
 							"Quantidade média",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.residuosSolidosEscritorioQuantidadeMedia',
 							2,
 							'kg/mês',
@@ -455,7 +419,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tratamento/Disposição",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosEscritorioTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
 								'residuosSolidosEscritorioTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
@@ -471,7 +435,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosEscritorioTratamentoDisposicaoOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosEscritorioTratamentoDisposicaoOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -479,7 +443,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tipo de coleta",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosEscritorioTipoColetaPublica': 'Pública',
 								'residuosSolidosEscritorioTipoColetaPropria': 'Própria',
@@ -493,7 +457,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosEscritorioTipoColetaTerceiros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosEscritorioTipoColetaTerceirosEspecificar',
 								'linha',
 								ngDisabled
@@ -515,7 +479,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaNumerica(
 							"Quantidade média",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.residuosSolidosIndustrialQuantidadeMedia',
 							2,
 							'kg/mês',
@@ -524,7 +488,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tratamento/Disposição",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosIndustrialTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
 								'residuosSolidosIndustrialTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
@@ -542,7 +506,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialTratamentoDisposicaoOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosIndustrialTratamentoDisposicaoOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -550,7 +514,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tipo de coleta",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosIndustrialTipoColetaPublica': 'Pública',
 								'residuosSolidosIndustrialTipoColetaPropria': 'Própria',
@@ -564,7 +528,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialTipoColetaTerceiros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosIndustrialTipoColetaTerceirosEspecificar',
 								'linha',
 								ngDisabled
@@ -586,7 +550,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaNumerica(
 							"Quantidade média",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.residuosSolidosIndustrialPerigososQuantidadeMedia',
 							2,
 							'kg/mês',
@@ -595,7 +559,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tratamento/Disposição",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
 								'residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
@@ -612,7 +576,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialPerigososTratamentoDisposicaoOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -620,7 +584,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-4.col-sm-12
 						+perguntaCheckbox(
 							"Tipo de coleta",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosIndustrialPerigososTipoColetaPublica': 'Pública',
 								'residuosSolidosIndustrialPerigososTipoColetaPropria': 'Própria',
@@ -634,7 +598,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialPerigososTipoColetaTerceiros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosIndustrialPerigososTipoColetaTerceirosEspecificar',
 								'linha',
 								ngDisabled
@@ -656,7 +620,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaDescritiva(
 							"Origem",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.residuosSolidosOutrosOrigem',
 							'pequeno',
 							ngDisabled
@@ -664,7 +628,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaNumerica(
 							"Quantidade média",
-							'obrigatorio negrito',
+							' negrito',
 							model+'.residuosSolidosOutrosQuantidadeMedia',
 							2,
 							'kg/mês',
@@ -673,7 +637,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaCheckbox(
 							"Tratamento/Disposição",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosOutrosTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
 								'residuosSolidosOutrosTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
@@ -688,7 +652,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosOutrosTratamentoDisposicaoOutros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosOutrosTratamentoDisposicaoOutrosEspecificar',
 								'linha',
 								ngDisabled
@@ -696,7 +660,7 @@ mixin questionario3(model, ngDisabled, submitted)
 					.sub-pergunta.col-md-3.col-sm-12
 						+perguntaCheckbox(
 							"Tipo de coleta",
-							'obrigatorio negrito',
+							' negrito',
 							{
 								'residuosSolidosOutrosTipoColetaPublica': 'Pública',
 								'residuosSolidosOutrosTipoColetaPropria': 'Própria',
@@ -710,7 +674,7 @@ mixin questionario3(model, ngDisabled, submitted)
 						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosOutrosTipoColetaTerceiros", class="animate-if")
 							+perguntaDescritiva(
 								"Especificar",
-								'obrigatorio negrito',
+								' negrito',
 								model+'.residuosSolidosOutrosTipoColetaTerceirosEspecificar',
 								'linha',
 								ngDisabled

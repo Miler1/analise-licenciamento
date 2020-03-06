@@ -18,6 +18,13 @@ var ParecerAnalistaTecnicoService = function(request, config) {
 
 		return request
 			.get(config.BASE_URL() + 'parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/' + id);
+			
+	};
+
+	this.getParecerByNumeroProcesso = function(numeroProcesso) {
+
+		return request
+		.get(config.BASE_URL() + 'parecer/analistaTecnico?numeroProcesso=' + numeroProcesso);
 
 	};
 

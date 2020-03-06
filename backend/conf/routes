@@ -154,6 +154,7 @@ GET     /parecer/analistaGeo/getUltimoParecerAnaliseGeo/{id}                    
 POST	/parecer/analistaTecnico/concluir						                                                    PareceresAnalistasTecnico.concluir
 GET     /parecer/analistaTecnico/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                         PareceresAnalistasTecnico.findParecerByIdHistoricoTramitacao
 GET     /parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/{id}                                                PareceresAnalistasTecnico.getUltimoParecerAnaliseTecnica
+GET		/parecer/analistaTecnico                                         							                PareceresAnalistasTecnico.findByNumeroProcesso
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento

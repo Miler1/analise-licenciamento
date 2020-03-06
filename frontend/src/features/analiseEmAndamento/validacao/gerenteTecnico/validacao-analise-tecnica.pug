@@ -13,7 +13,7 @@ section.margin-bottom-md
 			ul.nav.nav-tabs(role="tablist")
 				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="validacaoAnaliseTecnicaGerente.validacaoAbaVoltar()")
 					a(data-toggle="tab", data-target="#tabAnaliseTecnica") Análise Técnica
-					
+
 				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseTecnicaGerente.validacaoAbaAvancar()")
 					a(data-toggle="tab", data-target="#tabValidacaoDaAnalise") Validação da Análise
 
@@ -27,12 +27,12 @@ section.margin-bottom-md
 section(style="padding-top:20px;")
 
 	button.btn.btn-default.pull-left.posicao-cancelar-gerente(title='Cancelar análise',
-                                    ng-bootbox-title='Confirmação',
-                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
-                                    ng-bootbox-confirm-action="validacaoAnaliseTecnicaGerente.cancelar()")
+			ng-bootbox-title='Confirmação',
+			ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+			ng-bootbox-confirm-action="validacaoAnaliseTecnicaGerente.cancelar()")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
-	
+
 	button.btn.btn-success.posicao-avancar-concluir-gerente(ng-click="validacaoAnaliseTecnicaGerente.concluir()",
 			ng-if="validacaoAnaliseTecnicaGerente.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_TECNICA'")
 		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
@@ -45,4 +45,4 @@ section(style="padding-top:20px;")
 	button.btn.btn-success.posicao-avancar-gerente(ng-click="validacaoAnaliseTecnicaGerente.avancarProximaEtapa()",
 			ng-if="validacaoAnaliseTecnicaGerente.controleVisualizacao === 'ETAPA_ANALISE_TECNICA'")
 		i.glyphicon.glyphicon-arrow-right
-		| &nbsp;Avançar                    
+		| &nbsp;Avançar
