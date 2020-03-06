@@ -248,7 +248,7 @@
                                                     ng-class="{'error-div': ctrl.errors.autoInfracao === true }",
                                                     title='Permitido apenas upload de 1 arquivo.' 
                                                     ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
-                                                    
+
                 i.glyphicon.glyphicon-open.glyphicon--with-right-margin
                 | Anexar arquivo
 
@@ -266,7 +266,7 @@
 
                         td.col-md-10 {{anexo.nomeDoArquivo}}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.visualizarDocumentoAnalise(anexo)")
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(anexo)")
                                 i.glyphicon.glyphicon-eye-open
 
                             a.d-inline.margin-right-xs(style='cursor: pointer;')

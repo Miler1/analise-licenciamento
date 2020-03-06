@@ -2,6 +2,7 @@ package models;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,12 +30,12 @@ public class Vistoria extends GenericModel {
 	@Column(name = "realizada")
 	public Boolean realizada;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@Required
 	@JoinColumn(name = "id_documento_rit")
 	public Documento documentoRit;
 
-	@OneToOne(mappedBy = "vistoria")
+	@OneToOne(mappedBy = "vistoria", cascade = CascadeType.ALL)
 	public InconsistenciaVistoria inconsistenciaVistoria;
 
 	@Column(name = "data")
@@ -78,7 +79,22 @@ public class Vistoria extends GenericModel {
 	@JoinColumn(name = "id_documento_relatorio_tecnico_vistoria", referencedColumnName = "id")
 	public Documento documentoRelatorioTecnicoVistoria;
 
-	public List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
+	public List<Documento> updateDocumentos(List<Documento> novosDocumentos, Vistoria vAntiga) {
+
+		if(vAntiga != null) {
+
+			vAntiga.anexos.forEach(anexoA -> {
+				if(this.anexos.stream().anyMatch(anexo -> anexoA.id.equals(anexo.id))){
+					anexoA._delete();
+				}
+			});
+
+			if(this.documentoRit != null && this.documentoRit.id == null) {
+				vAntiga.documentoRit._delete();
+			}
+
+		}
+
 
 		TipoDocumento tipoDocumentoVistoria = TipoDocumento.findById(TipoDocumento.DOCUMENTO_VISTORIA);
 
@@ -86,31 +102,35 @@ public class Vistoria extends GenericModel {
 
 		if(this.documentoRit != null) {
 
-			this.documentoRit.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RIT);
-			this.anexos.add(documentoRit.save());
+			if(this.documentoRit.id == null) {
 
+				this.documentoRit.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RIT);
+				this.documentoRit.save();
+			}
 		}
 
 		for (Documento documento : novosDocumentos) {
 
-			if(documento.id != null) {
+			if (!documento.tipo.id.equals(TipoDocumento.DOCUMENTO_RIT)) {
 
-				documento = Documento.findById(documento.id);
+				if (documento.id != null) {
 
-			} else {
+					documento = Documento.findById(documento.id);
 
-				if (documento.tipo.id.equals(tipoDocumentoVistoria.id)) {
+				} else {
 
-					documento.tipo = tipoDocumentoVistoria;
+					if (documento.tipo.id.equals(tipoDocumentoVistoria.id)) {
+
+						documento.tipo = tipoDocumentoVistoria;
+
+					}
+
+					documento = documento.save();
 
 				}
 
-				documento = documento.save();
-
+				this.anexos.add(documento);
 			}
-
-			this.anexos.add(documento);
-
 		}
 
 		return this.anexos;
@@ -119,28 +139,56 @@ public class Vistoria extends GenericModel {
 
 	public Vistoria salvar() {
 
-		this.updateDocumentos(this.anexos);
-
 		if(this.inconsistenciaVistoria != null) {
 
 			this.inconsistenciaVistoria.vistoria = this;
-			this.inconsistenciaVistoria.salvar();
 
 		}
-
-		Vistoria vistoriaSalva = this.save();
 
 		if(!this.equipe.isEmpty()) {
 
-			this.equipe.forEach(analista -> {
-				analista.vistoria = vistoriaSalva;
-				analista._save();
-			});
+			this.equipe.forEach(analista -> analista.vistoria = this);
 
 		}
 
-		return this.save();
+		if(this.id == null){
 
+			this.updateDocumentos(this.anexos, null);
+
+			return this.save();
+
+		} else {
+
+			Vistoria vAntiga = findById(this.id);
+
+			vAntiga.anexos = this.updateDocumentos(this.anexos, vAntiga);
+
+			vAntiga.equipe.forEach(e -> {
+				e._delete();
+			});
+
+			vAntiga.equipe = this.equipe;
+			vAntiga.equipe.forEach(e -> {
+				e.usuario = UsuarioAnalise.findById(e.usuario.id);
+				e.vistoria = vAntiga;
+				e._save();
+			});
+
+			vAntiga.realizada = this.realizada;
+			vAntiga.data = this.data;
+			vAntiga.conclusao = this.conclusao;
+			vAntiga.hora = this.hora;
+			vAntiga.descricao = this.descricao;
+			vAntiga.cursosDagua = this.cursosDagua;
+			vAntiga.tipologiaVegetal = this.tipologiaVegetal;
+			vAntiga.app = this.app;
+			vAntiga.ocorrencia = this.ocorrencia;
+			vAntiga.residuosLiquidos = this.residuosLiquidos;
+			vAntiga.outrasInformacoes = this.outrasInformacoes;
+
+			vAntiga._save();
+			return vAntiga;
+		}
 	}
 
 	public static Vistoria findByIdParecer(Long parecerAnalistaTecnicoId){

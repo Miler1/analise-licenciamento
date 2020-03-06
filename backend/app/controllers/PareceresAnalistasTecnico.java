@@ -20,7 +20,15 @@ public class PareceresAnalistasTecnico extends InternalController {
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
-		parecerAnalistaTecnico.finalizar(usuarioExecutor);
+		if(parecerAnalistaTecnico.id != null) {
+
+			parecerAnalistaTecnico.finalizarSolicitacaoAjuste(usuarioExecutor);
+
+		} else {
+
+			parecerAnalistaTecnico.finalizar(usuarioExecutor);
+
+		}
 
 		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
 
@@ -57,6 +65,13 @@ public class PareceresAnalistasTecnico extends InternalController {
 		}
 	}
 	
+	public static void findParecerByIdProcesso(Long idProcesso) {
+
+		Processo processo = Processo.findById(idProcesso);
+
+		renderJSON(ParecerAnalistaTecnico.findParecerByProcesso(processo), ParecerAnalistaTecnicoSerializer.findByIdProcesso);
+	}
+
 	public static void getUltimoParecerAnaliseTecnica(Long id) {
 
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(id);
