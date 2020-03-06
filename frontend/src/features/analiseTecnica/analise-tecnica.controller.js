@@ -133,6 +133,18 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         
                 });
 
+                parecerAnalistaTecnicoService.findParecerByIdProcesso(analiseTecnica.analise.processo.id)
+                .then(function(response) {
+
+                    if(response.data.id != null) {
+
+                        ctrl.parecer = response.data;
+                        ctrl.tratarDadosParecer();
+
+                    }
+
+                });
+
                 ctrl.validarItensLicenca(app.utils.InconsistenciaTecnica.TIPO_LICENCA, ctrl.analiseTecnica);
 
                 _.forEach(ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
@@ -165,9 +177,46 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             }); 
     };
 
+    ctrl.tratarDadosParecer = function() {
+
+        ctrl.pergunta = false;
+
+        ctrl.parecer.vistoria.realizada = ctrl.parecer.vistoria.realizada ? "true" : "false";
+
+        _.forEach(ctrl.parecer.vistoria.equipe, function(usuarioAnalista) {
+
+            _.remove(ctrl.analistasTecnico, function(analista) {
+                return analista.usuario.id === usuarioAnalista.usuario.id;
+            });
+
+        });
+
+        _.forEachRight(ctrl.parecer.documentos, function(documento) {
+            if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO) {
+
+                ctrl.pergunta = true;
+
+                ctrl.anexos.push(documento);
+
+                ctrl.parecer.documentos.pop();
+
+            }
+        });
+
+        ctrl.pergunta = ctrl.pergunta ? "true" : "false";
+        ctrl.parecer.validadePermitida = ctrl.parecer.validadePermitida.toString();
+        ctrl.parecer.tipoResultadoAnalise.id = ctrl.parecer.tipoResultadoAnalise.id.toString();
+
+        ctrl.parecer.vistoria.data = new Date(ctrl.parecer.vistoria.data);
+        ctrl.parecer.vistoria.hora = new Date(ctrl.parecer.vistoria.hora);
+
+        ctrl.marcarSemInconsistencia();
+
+    };
+
     ctrl.validarAbas = function(abaDestino) {
 
-        ctrl.parecer.tipoResultadoAnalise.id = null;
+        // ctrl.parecer.tipoResultadoAnalise.id = null;
 
         if(abaDestino === 1 && !ctrl.validarCampos()) {
 
@@ -710,7 +759,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.voltar = function() {
 
         ctrl.tabAtiva = ctrl.tabAtiva - 1;
-        ctrl.parecer.tipoResultadoAnalise.id = null;
+        // ctrl.parecer.tipoResultadoAnalise.id = null;
         window.scrollTo(0, 0);
 
     };
@@ -1611,6 +1660,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 ctrl.inconsistenciasAdicionadas.push(ctrl.parecer.vistoria.inconsistenciaVistoria);
 
             }
+
+            if(ctrl.inconsistenciasAdicionadas.length > 0 || (parseInt(ctrl.parecer.tipoResultadoAnalise.id) === ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)) ctrl.parecer.tipoResultadoAnalise.id = null;
 
         });
 

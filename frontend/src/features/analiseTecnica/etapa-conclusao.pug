@@ -78,13 +78,13 @@ hr
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
                 label.opDla.radio-inline.posicao-primeiroItem
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.DEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.DEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()", ng-checked="{{ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO)}}")
                     | Deferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.INDEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.INDEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()", ng-checked="{{ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.INDEFERIDO)}}")
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO}}", ng-disabled="!ctrl.hasInconsistencias()")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO}}", ng-disabled="!ctrl.hasInconsistencias()", ng-checked="{{ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)}}")
                     | Emitir notificação
 
     .deferido(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO)")

@@ -14,6 +14,13 @@ var ParecerAnalistaTecnicoService = function(request, config) {
 
 	};
 
+	this.findParecerByIdProcesso = function(id) {
+
+		return request
+				.get(config.BASE_URL() + 'parecer/analistaTecnico/findParecerByIdProcesso/' + id);
+
+	};
+
 };
 
 exports.services.ParecerAnalistaTecnicoService = ParecerAnalistaTecnicoService;
