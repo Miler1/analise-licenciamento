@@ -1,8 +1,8 @@
 package utils;
 
-import main.java.br.ufla.lemaf.beans.pessoa.Contato;
-import main.java.br.ufla.lemaf.beans.pessoa.Pessoa;
-import main.java.br.ufla.lemaf.beans.pessoa.TipoContato;
+import br.ufla.lemaf.beans.pessoa.Contato;
+import br.ufla.lemaf.beans.pessoa.Pessoa;
+import br.ufla.lemaf.beans.pessoa.TipoContato;
 
 public class PessoaEuUtils {
     

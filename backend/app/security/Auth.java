@@ -39,7 +39,7 @@ public class Auth implements AuthService {
 	@Override
 	public Usuario usuarioLogadoBySessionKey(String sessionKey) {
 
-		main.java.br.ufla.lemaf.beans.pessoa.Usuario usuarioEntradaUnica;
+		br.ufla.lemaf.beans.pessoa.Usuario usuarioEntradaUnica;
 
 		try {
 

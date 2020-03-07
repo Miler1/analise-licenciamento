@@ -1,7 +1,7 @@
 package models;
 
 import exceptions.PortalSegurancaException;
-import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
+import br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Usuario;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -174,8 +174,8 @@ public class UsuarioAnalise extends GenericModel  {
 
 		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
 
-		main.java.br.ufla.lemaf.beans.pessoa.Usuario[] usuariosPorModulo = CadastroUnificadoWS.ws.findUsuariosBySiglaModulo(Configuracoes.SIGLA_MODULO);
-		List<main.java.br.ufla.lemaf.beans.pessoa.Usuario> usuarioList = Arrays.asList(usuariosPorModulo);
+		br.ufla.lemaf.beans.pessoa.Usuario[] usuariosPorModulo = CadastroUnificadoWS.ws.findUsuariosBySiglaModulo(Configuracoes.SIGLA_MODULO);
+		List<br.ufla.lemaf.beans.pessoa.Usuario> usuarioList = Arrays.asList(usuariosPorModulo);
 
 		List<Usuario> usuariosFiltrados = usuarioList.stream().map(Usuario::new).collect(Collectors.toList());
 

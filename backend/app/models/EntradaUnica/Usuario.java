@@ -1,7 +1,7 @@
 package models.EntradaUnica;
 
-import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
-import main.java.br.ufla.lemaf.beans.pessoa.Permissao;
+import br.ufla.lemaf.beans.pessoa.Perfil;
+import br.ufla.lemaf.beans.pessoa.Permissao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Usuario implements Serializable{
 
 	public Usuario() {
 	}
-	public Usuario(main.java.br.ufla.lemaf.beans.pessoa.Usuario usuario) {
+	public Usuario(br.ufla.lemaf.beans.pessoa.Usuario usuario) {
 
 		this.id = usuario.id;
 		this.login = usuario.login;
@@ -46,7 +46,7 @@ public class Usuario implements Serializable{
 
 	public boolean possuiPerfil(String codigoPerfil) {
 
-		for (main.java.br.ufla.lemaf.beans.pessoa.Perfil perfilUsuario : perfis) {
+		for (br.ufla.lemaf.beans.pessoa.Perfil perfilUsuario : perfis) {
 
 			if (perfilUsuario.codigo.equals(codigoPerfil)) {
 

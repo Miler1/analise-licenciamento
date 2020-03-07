@@ -10,11 +10,11 @@ public class Perfil {
 	public String codigo;
 	public List<Permissao> permissoes;
 
-	public Perfil(main.java.br.ufla.lemaf.beans.pessoa.Perfil perfil) {
+	public Perfil(br.ufla.lemaf.beans.pessoa.Perfil perfil) {
 		this.nome = perfil.nome;
 		this.codigo = perfil.codigo;
 		this.permissoes = new ArrayList<>();
-		for(main.java.br.ufla.lemaf.beans.pessoa.Permissao permissaoEU : perfil.permissoes) {
+		for(br.ufla.lemaf.beans.pessoa.Permissao permissaoEU : perfil.permissoes) {
 			Permissao permissao = new Permissao();
 			permissao.codigo = permissaoEU.codigo;
 			this.permissoes.add(permissao);
