@@ -46,7 +46,7 @@ div
                 span.col-sm-8
                     div {{ $ctrl.dadosProcesso.analise.dataCadastro }}
 
-            div.row.label-cabecalho-protocolos(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO")
+            div.row.label-cabecalho-protocolos(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO && $ctrl.possuiValidade === true")
                 label.col-sm-3 Validade:
                 span.col-sm-8
                     div {{ $ctrl.parecerTecnico.validadePermitida }} anos
