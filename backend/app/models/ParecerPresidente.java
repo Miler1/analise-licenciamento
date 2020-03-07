@@ -54,17 +54,17 @@ public class ParecerPresidente extends GenericModel {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_APROVADA)) {
 
+			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_APROVADA.codigo, analise.processo.numero);
+
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.APROVAR_SOLICITACAO_LICENCA, getUsuarioSessao());
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
-			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_APROVADA.codigo, analise.processo.numero);
-
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_NAO_APROVADA)) {
+
+			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_REJEITADA.codigo, analise.processo.numero);
 
 			analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.NEGAR_SOLICITACAO_LICENCA, getUsuarioSessao());
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
-
-			Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ANALISE_REJEITADA.codigo, analise.processo.numero);
 
 		}
 
