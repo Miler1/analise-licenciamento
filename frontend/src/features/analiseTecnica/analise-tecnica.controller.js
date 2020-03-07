@@ -39,6 +39,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.notificacao.retificacaoSolicitacao = null;
     ctrl.notificacao.retificacaoSolicitacaoComGeo = null;
     ctrl.notificacao.prazoNotificacao = null;
+    ctrl.possuiValidade = null;
 
     ctrl.parecer = {
         doProcesso: null,
@@ -115,6 +116,16 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 ctrl.tipoLicenca = ctrl.analiseTecnica.analise.processo.caracterizacao.tipoLicenca;
                 ctrl.validadeAnos = ctrl.analiseTecnica.analise.processo.caracterizacao.vigenciaSolicitada;
                 ctrl.porteEmpreendimento = ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].porteEmpreendimento;
+
+                if ( ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.id === app.utils.Tipolodia.ID_AQUICULTURA ){
+
+                    ctrl.possuiValidade = false;
+
+                }else{
+
+                    ctrl.possuiValidade = false;
+
+                }
 
                 ctrl.parecer.analiseTecnica = {
                     id: ctrl.analiseTecnica.id

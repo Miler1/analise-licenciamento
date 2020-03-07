@@ -11,6 +11,7 @@ public class Tipologia  extends GenericModel {
 
 	public static Long ID_AGROSSILVIPASTORIL = 1l;
 	public static Long ID_INDUSTRIA_MADEIREIRA = 11l;
+	public static Long ID_AQUICULTURA = 144l;
 
 	@Id
 	public Long id;

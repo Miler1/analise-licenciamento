@@ -87,7 +87,7 @@ hr
                     input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO}}", ng-disabled="!ctrl.hasInconsistencias()")
                     | Emitir notificação
 
-    .deferido(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO)")
+    .deferido(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO) && ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome === ")
 
         label.tipoLicenca {{ ctrl.tipoLicenca.nome }} ({{ ctrl.porteEmpreendimento.nome }})
 
