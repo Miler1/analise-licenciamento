@@ -91,17 +91,18 @@ hr
 
         label.tipoLicenca {{ ctrl.tipoLicenca.nome }} ({{ ctrl.porteEmpreendimento.nome }})
 
-        span Validade da licença solicitada pelo interessado: 
-            b {{ ctrl.validadeAnos }} anos
+        div(ng-if="ctrl.possuiValidade === true")
+            span Validade da licença solicitada pelo interessado: 
+                b {{ ctrl.validadeAnos }} anos
 
-        .validade
-            label.control-label.obrigatorio Validade permitida:
-            select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio", ng-class="{ 'error-summernote': ctrl.errors.deferido.validade }")
-                option(value="1") 1 ano
-                option(value="2") 2 anos
-                option(value="3") 3 anos
-                option(value="4") 4 anos
-                option(value="5") 5 anos
+            .validade
+                label.control-label.obrigatorio Validade permitida:
+                select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio", ng-class="{ 'error-summernote': ctrl.errors.deferido.validade }")
+                    option(value="1") 1 ano
+                    option(value="2") 2 anos
+                    option(value="3") 3 anos
+                    option(value="4") 4 anos
+                    option(value="5") 5 anos
 
         label.obrigatorio Finalidade da atividade:
         div(ng-class="{ 'error-summernote': ctrl.errors.deferido.finalidade }")

@@ -35,5 +35,8 @@ public class TipoDocumentoLicenciamento extends Model {
 	@Column(name="tipo_analise")
 	@Enumerated(EnumType.ORDINAL)
 	public TipoAnalise tipoAnalise;
+
+	@Column(name="codigo")
+	public String codigo;
 	
 }

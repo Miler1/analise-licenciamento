@@ -41,6 +41,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
     ctrl.notificacao.prazoNotificacao = null;
     ctrl.parecerJuridico = null;
     ctrl.documentos = [];
+    ctrl.possuiValidade = null;
+    ctrl.tipologias = app.utils.Tipologia;
 
     ctrl.parecer = {
         doProcesso: null,
@@ -120,6 +122,9 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 
                 ctrl.getDocumentosSolicitacao();
                 
+
+                ctrl.possuiValidade = ( ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.codigo === ctrl.tipologias.ID_AQUICULTURA ) ? false : true;
+
                 ctrl.parecer.analiseTecnica = {
 
                     id: ctrl.analiseTecnica.id
@@ -701,7 +706,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
         }
 
-        if(ctrl.parecer.validadePermitida === null || ctrl.parecer.validadePermitida === '' || ctrl.parecer.validadePermitida === undefined) {
+        if(ctrl.parecer.validadePermitida === null && ctrl.possuiValidade === true || ctrl.parecer.validadePermitida === '' && ctrl.possuiValidade === true || ctrl.parecer.validadePermitida === undefined && ctrl.possuiValidade === true) {
 
             ctrl.errors.deferido.validade = true;
             hasError = true;

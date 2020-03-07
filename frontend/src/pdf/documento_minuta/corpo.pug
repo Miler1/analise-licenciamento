@@ -154,8 +154,10 @@ html(lang='en')
 					span Potencial Poluidor/Degradador: ${maiorPPDEPorte.atividade.potencialPoluidor.nome}
 				td(colspan='3')
 					span Porte: ${maiorPPDEPorte.porteEmpreendimento.nome}
+				|\#{if caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.codigo == 'AQUICULTURA'}
 				td(colspan='3')
-					span Validade: ${parecer.validadePermitida} anos
+				span Validade: ${parecer.validadePermitida} anos
+				|\#{/if}
 
 		div
 			h3(style="text-align:center; margin-top:30px;") RESTRIÇÕES E/OU CONDIÇÕES DE VALIDADE DESTA LICENÇA - ${siglaLicenca} Nº ${numeroProtocolo}

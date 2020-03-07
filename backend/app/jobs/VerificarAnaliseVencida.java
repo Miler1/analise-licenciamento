@@ -63,11 +63,11 @@ public class VerificarAnaliseVencida extends GenericJob {
 
         if(Helper.getDiferencaDias(new Date(), processo.dataCadastro) > Configuracoes.PRAZO_ANALISE) {
 
+            Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ARQUIVADO.codigo, processo.numero);
+
             processo.tramitacao.tramitar(processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor);
-
-            Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.ARQUIVADO.codigo, processo.numero);
 
         }
 

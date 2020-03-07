@@ -279,6 +279,7 @@ public class ProcessoSerializer {
 			"caracterizacao.atividadesCaracterizacao.atividade.potencialPoluidor.codigo",
 			"caracterizacao.atividadesCaracterizacao.atividade.nome",
 			"caracterizacao.atividadesCaracterizacao.atividade.tipologia.nome",
+			"caracterizacao.atividadesCaracterizacao.atividade.tipologia.codigo",
 			"caracterizacao.atividadesCaracterizacao.atividadesCnae",
 			"caracterizacao.atividadesCaracterizacao.atividadesCnae.nome",
 			"caracterizacao.atividadesCaracterizacao.atividadesCnae.codigo",
