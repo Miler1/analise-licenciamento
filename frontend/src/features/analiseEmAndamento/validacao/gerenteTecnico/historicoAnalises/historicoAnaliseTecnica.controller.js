@@ -1,6 +1,7 @@
 var HistoricoAnaliseTecnicaCtrl = function( processo,
                                             parecer, 
                                             $uibModalInstance, 
+                                            notificacaoService,
                                             analiseTecnica, 
                                             documentoService ) {
 
@@ -30,6 +31,19 @@ var HistoricoAnaliseTecnicaCtrl = function( processo,
         }
                     
     };
+
+    notificacaoService.findByIdParecerTecnico(historicoAnaliseTecnicaCtrl.parecer.id).then(function(response){
+
+        historicoAnaliseTecnicaCtrl.notificacoes = response.data;
+
+
+    });
+
+    historicoAnaliseTecnicaCtrl.downloadDocumentos = function (id) {
+
+		documentoService.downloadById(id);
+
+	};
 
     historicoAnaliseTecnicaCtrl.fechar =function() {
 
