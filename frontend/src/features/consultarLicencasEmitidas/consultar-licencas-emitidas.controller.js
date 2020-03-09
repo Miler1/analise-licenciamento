@@ -14,6 +14,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
 	consultarLicencas.isCancelamentoVisivel = isCancelamentoVisivel;
 	consultarLicencas.ajustarTamanhoContainer = ajustarTamanhoContainer;
+	consultarLicencas.statusCaracterizacao = app.utils.StatusCaracterizacao;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -22,6 +23,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	function atualizarListaLicencas(licencas) {
 
 		consultarLicencas.licencas = licencas;
+		
 	}
 
 	function atualizarPaginacao(totalItens, paginaAtual) {
