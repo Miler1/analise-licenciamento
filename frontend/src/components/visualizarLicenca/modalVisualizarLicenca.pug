@@ -65,11 +65,11 @@ include ../../layout/components/inputErrors
 		label.margin-right-xs Finalidade da atividade:
 		form
 			.form-group
-				textarea.form-control.textarea--no-resize(rows="4", ng-bind-html="$ctrl.parecerTecnico.finalidadeAtividade", name="finalidadeAtividade", disabled)
+				p(rows="4", ng-bind-html="$ctrl.parecerTecnico.finalidadeAtividade", name="finalidadeAtividade", disabled)
 		hr
 
 		label.margin-right-xs Condicionantes:
-		div.tabela(ng-if="$ctrl.parecerTecnico.condicionantes")
+		div.tabela(ng-if="$ctrl.parecerTecnico.condicionantes.length > 0 ")
 
 			table.table.table-striped.table-condensed.no-margin
 				thead
@@ -89,7 +89,7 @@ include ../../layout/components/inputErrors
 			span Nenhuma condicionante adicionada
 
 		label.margin-right-xs Recomendações:
-		div.tabela(ng-if="$ctrl.parecerTecnico.restricoes")
+		div.tabela(ng-if="$ctrl.parecerTecnico.restricoes.length > 0 ")
 
 			table.table.table-striped.table-condensed.no-margin
 				thead
