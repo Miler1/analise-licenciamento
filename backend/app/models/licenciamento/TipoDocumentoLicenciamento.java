@@ -19,7 +19,7 @@ public class TipoDocumentoLicenciamento extends Model {
 	public static Long RENOVACAO_LICENCA_DE_INSTALACAO = 70l;
 	public static Long RENOVACAO_LICENCA_DE_OPERACAO = 71l;
 
-	public static Long DOCUMENTO_FUNDIARIO = 554l;
+	public static String DOCUMENTO_FUNDIARIO = "DOCUMENTO_FUNDIARIO";
 	
 	public String nome;
 	
@@ -31,9 +31,21 @@ public class TipoDocumentoLicenciamento extends Model {
 	
 	@Column(name="prefixo_nome_arquivo")
 	public String prefixoNomeArquivo;
+
+	@Column(name="codigo")
+	public String codigo;
 	
 	@Column(name="tipo_analise")
 	@Enumerated(EnumType.ORDINAL)
 	public TipoAnalise tipoAnalise;
+
+
+	public static TipoDocumentoLicenciamento findByCodigo(String codigoDocumento) {
+
+		return TipoDocumentoLicenciamento.find("codigo = :codigoDocumento")
+				.setParameter("codigoDocumento", codigoDocumento)
+				.first();
+
+	}
 	
 }

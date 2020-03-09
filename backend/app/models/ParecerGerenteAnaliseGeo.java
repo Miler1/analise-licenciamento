@@ -127,7 +127,9 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 		destinatarios.add(Configuracoes.DESTINATARIO_JURIDICO);
 		destinatarios.add(Configuracoes.DESTINATARIO_JURIDICO2);
 
-		SolicitacaoDocumentoCaracterizacao solicitacaoDocumentoCaracterizacao = SolicitacaoDocumentoCaracterizacao.findByIdTipoDocumentoAndCaracterizacao(TipoDocumentoLicenciamento.DOCUMENTO_FUNDIARIO, caracterizacao);
+		TipoDocumentoLicenciamento tipoDocumentoLicenciamento = TipoDocumentoLicenciamento.findByCodigo(TipoDocumentoLicenciamento.DOCUMENTO_FUNDIARIO);
+
+		SolicitacaoDocumentoCaracterizacao solicitacaoDocumentoCaracterizacao = SolicitacaoDocumentoCaracterizacao.findByIdTipoDocumentoAndCaracterizacao(tipoDocumentoLicenciamento.id, caracterizacao);
 		DocumentoLicenciamento documentoFundiario = DocumentoLicenciamento.findById(solicitacaoDocumentoCaracterizacao.documento.id);
 
 		ParecerJuridico parecerJuridico = new ParecerJuridico(analiseGeo, parecerAnalistaGeo, analiseTecnica, documentoFundiario);
