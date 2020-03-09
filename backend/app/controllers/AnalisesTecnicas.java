@@ -2,8 +2,11 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
+import models.licenciamento.SolicitacaoGrupoDocumento;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
+import serializers.AnaliseGeoSerializer;
 import serializers.AnaliseTecnicaSerializer;
 import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
@@ -11,6 +14,7 @@ import utils.Mensagem;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -152,7 +156,7 @@ public class AnalisesTecnicas extends InternalController {
 
 	public static void downloadPDFNotificacao(AnaliseTecnica analiseTecnica) throws Exception {
 
-		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
+		verificarPermissao(Acao.BAIXAR_DOCUMENTO_MINUTA);
 
 		analiseTecnica.analise = Analise.findById(analiseTecnica.analise.id);
 
@@ -224,4 +228,11 @@ public class AnalisesTecnicas extends InternalController {
 
 	}
 
+	public static void findAnalisesTecnicaByNumeroProcesso(String numero) {
+
+		String numeroDecodificado = new String(Base64.decodeBase64(numero.getBytes()));
+
+		renderJSON(AnaliseTecnica.findAnalisesByNumeroProcesso(numeroDecodificado), AnaliseTecnicaSerializer.findInfo);
+
+	}
 }

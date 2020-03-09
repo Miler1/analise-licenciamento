@@ -6,7 +6,8 @@ import models.Processo;
 import security.Acao;
 import serializers.NotificacaoSerializer;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Notificacoes extends InternalController {
@@ -32,32 +33,16 @@ public class Notificacoes extends InternalController {
 
         Processo processo = Processo.findById(id);
 
-        List<Notificacao> notificacoes = processo.analise.getAnaliseGeo().notificacoes;
-
-        for (Notificacao notificacao:notificacoes) {
-
-            notificacao.setJustificativa();
-            notificacao.setDocumentosParecer(notificacao.parecerAnalistaGeo.documentos);
-        }
-
-        renderJSON(notificacoes.stream().sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList()), NotificacaoSerializer.findAll);
+        renderJSON(processo.inicializaNotificacoes(), NotificacaoSerializer.findAll);
     }
 
-    public static void findByIdProcessoTecnico(Long id) {
+    public static void findByIdParecer(Long id) {
 
         verificarPermissao(Acao.VISUALIZAR_NOTIFICACAO);
 
-        Processo processo = Processo.findById(id);
+        List<Notificacao> notificacoes = Notificacao.findByIdParecer(id);
 
-        List<Notificacao> notificacoes = processo.analise.getAnaliseTecnica().notificacoes;
-
-        for (Notificacao notificacao:notificacoes) {
-
-            notificacao.setJustificativaTecnica();
-            notificacao.setDocumentosParecerTecnico(notificacao.parecerAnalistaTecnico.documentos);
-        }
-
-        renderJSON(notificacoes.stream().sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList()), NotificacaoSerializer.findAll);
+        renderJSON(notificacoes, NotificacaoSerializer.findAll);
     }
 
 }

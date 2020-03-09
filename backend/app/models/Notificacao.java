@@ -9,11 +9,13 @@ import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
 import utils.Configuracoes;
+import utils.DateUtil;
 import utils.Helper;
 import utils.QRCode;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="notificacao")
@@ -119,11 +121,17 @@ public class Notificacao extends GenericModel {
 	@Column(name="segundo_email_enviado")
 	public Boolean segundoEmailEnviado;
 
+	@Column(name = "data_conclusao")
+	public Date dataConclusao;
+
 	@Transient
 	public String justificativa;
 
 	@Transient
 	public List<Documento> documentosParecer;
+
+	@Transient
+	public Integer diasConclusao;
 
 	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos, ParecerAnalistaGeo parecerAnalistaGeo){
 		
@@ -442,48 +450,12 @@ public class Notificacao extends GenericModel {
 		}
 	}
 
-	public void setJustificativa(){
-
-		this.justificativa = this.parecerAnalistaGeo.parecer;
-
+	public void setJustificativa() {
+		this.justificativa = this.getParecerAnalista().parecer;
 	}
 
-	public void setJustificativaTecnica(){
-
-		this.justificativa = this.parecerAnalistaTecnico.parecer;
-
-	}
-
-	public void setDocumentosParecer(List<Documento> documentosParecer){
-
-		this.documentosParecer = new ArrayList<>();
-
-		if(documentosParecer != null && !documentosParecer.isEmpty()) {
-
-			documentosParecer.stream().forEach(documento -> {
-
-				if(documento.getIsType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO)) {
-
-					this.documentosParecer.add(documento);
-				}
-			});
-		}
-	}
-
-	public void setDocumentosParecerTecnico(List<Documento> documentosParecer){
-
-		this.documentosParecer = new ArrayList<>();
-
-		if(documentosParecer != null && !documentosParecer.isEmpty()) {
-
-			documentosParecer.stream().forEach(documento -> {
-
-				if(documento.getIsType(TipoDocumento.PARECER_ANALISE_TECNICA)) {
-
-					this.documentosParecer.add(documento);
-				}
-			});
-		}
+	public void setDocumentosParecer() {
+		this.documentosParecer = this.getParecerAnalista().getDocumentosParecer();
 	}
 
 	public Date getDataNotificacao(){
@@ -672,6 +644,22 @@ public class Notificacao extends GenericModel {
 		}
 
 		return notificacao.codigoSequencia + 1;
+	}
+
+	public ParecerAnalista getParecerAnalista() {
+		 return this.parecerAnalistaGeo != null ? this.parecerAnalistaGeo : this.parecerAnalistaTecnico;
+	}
+
+	public void setDiasConclusao(){
+		if(this.dataNotificacao != null && this.dataConclusao != null) {
+			this.diasConclusao = DateUtil.getDiferencaEmDias(this.dataNotificacao, this.dataConclusao);
+		}
+	}
+
+	public static List<Notificacao> findByIdParecer(Long id) {
+
+		return Notificacao.find("id_parecer_analista_geo", id).fetch();
+
 	}
 
 }

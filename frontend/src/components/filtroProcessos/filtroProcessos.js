@@ -21,7 +21,7 @@ var FiltroProcessos = {
 		consultarProcessos: '<'
 	},
 
-	controller: function(mensagem, processoService, municipioService, tipologiaService, 
+	controller: function(mensagem, processoService, municipioService, tipologiaService,
 		atividadeService, $scope, condicaoService, $rootScope, analistaService, setorService) {
 
 		var ctrl = this;
@@ -65,7 +65,7 @@ var FiltroProcessos = {
 					return;
 				}
 			}
-				
+
 			if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
 
 				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
@@ -77,17 +77,17 @@ var FiltroProcessos = {
 				ctrl.filtro.idCondicaoTramitacao = null;
 
 			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
 				ctrl.filtro.idCondicaoTramitacao = null;
-			
+
 			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA;
-			
+
 			}  else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
 			
@@ -114,16 +114,17 @@ var FiltroProcessos = {
 				ctrl.filtro.analiseAtiva = true;
 
 			} else if(!caixaEntrada && !emAnalise ) {
-				
-				ctrl.filtro.listaIdCondicaoTramitacao = null;
 
-			} 
+				ctrl.filtro.listaIdCondicaoTramitacao = null;
+				ctrl.filtro.analiseAtiva = true;
+
+			}
 
 			ctrl.filtro.paginaAtual = pagina || ctrl.paginacao.paginaAtual;
 			ctrl.filtro.itensPorPagina = 10;
 
 			var filtro = angular.copy(ctrl.filtro);
-			
+
 			processoService.getProcessos(filtro)
 				.then(function(response){
 
@@ -175,7 +176,7 @@ var FiltroProcessos = {
 
 			ctrl.filtro = {};
 			ctrl.filtro.filtrarPorUsuario = true;
-		
+
 			if (ctrl.filtrarPorUsuario) {
 				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 			}
@@ -186,10 +187,14 @@ var FiltroProcessos = {
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
 
 				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)){
+
 					caixaEntrada = true;
+
 				}else{
+
 					emAnalise = true;
-				}			
+					
+				}
 
 			} else if (ctrl.condicaoTramitacao) {
 
@@ -225,8 +230,8 @@ var FiltroProcessos = {
 
 			municipioService.getMunicipiosByUf('AM').then(
 				function(response){
-					
-					ctrl.municipios = response.data; 
+
+					ctrl.municipios = response.data;
 				})
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de municípios.');
@@ -236,8 +241,8 @@ var FiltroProcessos = {
 
 			tipologiaService.getTipologias(params).then(
 				function(response){
-					
-					ctrl.tipologias = response.data; 
+
+					ctrl.tipologias = response.data;
 				})
 				.catch(function(){
 					mensagem.warning('Não foi possível obter a lista de tipologia.');
@@ -245,7 +250,7 @@ var FiltroProcessos = {
 
 			atividadeService.getAtividades(params).then(
 				function(response){
-					
+
 					ctrl.atividades = response.data;
 				})
 				.catch(function(){
@@ -253,11 +258,11 @@ var FiltroProcessos = {
 				});
 
 			if(ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_GEO && ctrl.usuarioLogadoCodigoPerfil !== ctrl.perfis.ANALISTA_TECNICO){
-				
+
 				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_TECNICO)){
-					
+
 					if(ctrl.isAnaliseTecnicaOpcional){
-						
+
 						analistaService.getAnalistasTecnicos()
 							.then(function(response){
 
@@ -309,11 +314,12 @@ var FiltroProcessos = {
 
 				condicaoService.getCondicoes().then(
 					function(response){
-						
+
 						ctrl.condicoes = response.data;
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO || 
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
 
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_GEO_FINALIZADA',
@@ -323,7 +329,8 @@ var FiltroProcessos = {
 						}
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ) {
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
 
 							ctrl.condicoes.push({
 								idCondicao: 'ANALISE_TECNICA_FINALIZADA',
@@ -342,7 +349,7 @@ var FiltroProcessos = {
 
 				if(!ctrl.pesquisarTodasGerencias) {
 					/**
-					 * Nível 1 corresponde aos filhos e nível 2 aos netos na hieraquia. 
+					 * Nível 1 corresponde aos filhos e nível 2 aos netos na hieraquia.
 					 * Neste caso, colocamos esta verificação, pois se for o aprovador
 					 * as gerências pertencentes a ele estão dois níveis abaixo. Já se
 					 * for o coordenador estará um nível abaixo.
@@ -365,7 +372,7 @@ var FiltroProcessos = {
 								mensagem.warning('Não foi possível obter a lista de setores.');
 							}
 						});
-				
+
 				} else {
 
 					setorService.getSetoresPorTipo(ctrl.tipoSetor)

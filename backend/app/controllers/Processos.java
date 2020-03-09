@@ -3,13 +3,10 @@ package controllers;
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.AnaliseJuridica;
 import models.Processo;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.Questionario3;
 import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
-import serializers.Questionario3Serializer;
 
 import java.util.List;
 
@@ -20,8 +17,19 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		List processosList = Processo.listWithFilter(filtro, Auth.getUsuarioSessao());
-		
+
 		renderJSON(processosList);
+	}
+
+	public static void getProcessosAnteriores(Long idProcessoAnterior){
+
+		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+
+		Processo processoAntigo = Processo.findById(idProcessoAnterior);
+
+		List processosList = Processo.getProcessosAnteriores(processoAntigo);
+
+		renderJSON(processosList, ProcessoSerializer.getInfo);
 	}
 	
 	public static void  countWithFilter(FiltroProcesso filtro){
@@ -43,7 +51,7 @@ public class Processos extends InternalController {
 
 	public static void getInfoProcesso(Long id) {
 
-		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+		//verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
 
 		Processo processo = Processo.findById(id);
 

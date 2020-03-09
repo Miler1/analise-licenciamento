@@ -6,7 +6,7 @@ div(uib-accordion class="accordion")
                 i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': $ctrl.openedAccordionPesquisaRapida, 'glyphicon-chevron-right': !$ctrl.openedAccordionPesquisaRapida}")
 
         .input-group
-            input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', enter="$ctrl.pesquisar(1)" placeholder='Pesquisar por número do título, protocolo, CPF/CNPJ, empreendimento e município', maxlength="15")
+            input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.pesquisa', enter="$ctrl.pesquisar(1)" placeholder='Pesquisar por número do título, protocolo, empreendimento e município', maxlength="15")
             span.input-group-btn
                 button.btn.btn-success(ng-click="$ctrl.pesquisar(1)", tabindex="0")
                     span.glyphicon.glyphicon-search

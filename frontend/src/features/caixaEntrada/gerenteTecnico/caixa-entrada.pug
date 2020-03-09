@@ -46,7 +46,7 @@ div
 								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
 							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ cxEntGerente.prazoAnaliseTecnica(processo) }}
+								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
 							td
 								span.pull-right
 
@@ -67,6 +67,7 @@ div
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li
+
 												a(ng-click="cxEntGerente.verificarSolicitacaoDesvinculo(processo) ? cxEntGerente.atenderSolicitacaoDesvinculo(processo) : ''",
 														ng-class="{'disable-acoes': !cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
 													i.glyphicon.glyphicon-sort
@@ -76,7 +77,7 @@ div
 												a(ng-click="cxEntGerente.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-				div
+				.legenda
 					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
 					span.icone-analise-geo.legenda Análise Geo
 					span.icone-analise-tecnica.legenda Análise Técnica

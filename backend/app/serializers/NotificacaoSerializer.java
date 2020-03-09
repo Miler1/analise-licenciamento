@@ -21,8 +21,15 @@ public class NotificacaoSerializer {
             "retificacaoSolicitacao",
             "retificacaoSolicitacaoComGeo",
             "prazoNotificacao",
+            "documentosNotificacaoTecnica.id",
+            "documentosNotificacaoTecnica.caminho",
+            "documentosNotificacaoTecnica.nomeDoArquivo",
             "documentos.id",
-            "documentos.nomeDoArquivo")
+            "documentos.nomeDoArquivo",
+            "justificativaDocumentacao",
+            "justificativaRetificacaoEmpreendimento",
+            "justificativaRetificacaoSolicitacao",
+            "diasConclusao")
             .transform(GeometrySerializer.getTransformer(), Geometry.class)
             .exclude("*");
 

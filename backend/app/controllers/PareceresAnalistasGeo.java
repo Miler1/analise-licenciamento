@@ -3,8 +3,11 @@ package controllers;
 import models.*;
 import security.Acao;
 import serializers.ParecerAnalistaGeoSerializer;
+import serializers.ParecerAnalistaTecnicoSerializer;
+import serializers.ParecerGerenteSerializer;
 import utils.Mensagem;
 
+import javax.validation.ValidationException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class PareceresAnalistasGeo extends InternalController {
 
 		String numeroProcesso = getParamAsString("numeroProcesso");
 
-		AnaliseGeo analiseGeo = AnaliseGeo.find("analise.processo.numero = :numeroProcesso AND ativo = true")
+		AnaliseGeo analiseGeo = AnaliseGeo.find("analise.processo.numero = :numeroProcesso ORDER BY id DESC")
 				.setParameter("numeroProcesso", numeroProcesso)
 				.first();
 
@@ -70,6 +73,14 @@ public class PareceresAnalistasGeo extends InternalController {
 		ParecerAnalistaGeo parecerFinal = pareceres.stream().max( Comparator.comparing(parecerAnalistaGeo -> parecerAnalistaGeo.id )).get();
 
 		renderJSON(parecerFinal, ParecerAnalistaGeoSerializer.findByIdAnaliseGeo);
+
+	}
+
+	public static void getUltimoParecerAnaliseGeo(Long id) {
+
+		AnaliseGeo analiseGeo = AnaliseGeo.findById(id);
+
+		renderJSON(analiseGeo.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new), ParecerAnalistaGeoSerializer.findByIdHistoricoTramitacao);
 
 	}
 
