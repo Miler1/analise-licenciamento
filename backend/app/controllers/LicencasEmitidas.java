@@ -71,9 +71,6 @@ public class LicencasEmitidas extends InternalController {
 		
 		Licenca licenca = Licenca.findById(id);
 
-		if(licenca.isSuspensa())
-			throw new AppException(Mensagem.LICENCA_CANCELADA_OU_SUSPENSA);
-		
 		DocumentoLicenciamento documento = DocumentoLicenciamento.findById(licenca.documento.id);
 
 		if(documento != null) {

@@ -2,12 +2,12 @@
 
 require:
     - play:
-        exclude:
-            - org.hibernate -> hibernate-core
-            - org.postgresql -> *
-            - org.javassist -> *
+          exclude:
+              - org.hibernate -> hibernate-core
+              - org.postgresql -> *
+              - org.javassist -> *
     - org.postgresql -> postgresql 42.1.4:
-                force: true
+          force: true
     - org.geotools -> gt-geojson 14.3
     - org.geotools -> gt-wfs 14.3
     - org.geotools -> gt-epsg-hsql 14.3
@@ -30,37 +30,37 @@ require:
     - br.ufla.lemaf -> cadastro-unificado-oauth-client 2.1.4
     - com.github.junrar -> junrar 0.7
     - br.ufla -> tmsmap 0.1.6:
-            exclude:
-                - org.geotools -> gt-api
-                - org.geotools -> gt-main
-                - org.geotools -> gt-referencing
+          exclude:
+              - org.geotools -> gt-api
+              - org.geotools -> gt-main
+              - org.geotools -> gt-referencing
 
 repositories:
 
     - Nexus Lemaf:
-            type: iBiblio
-            root: "http://repo.ti.lemaf.ufla.br/repository/public"
-            contains:
-                - br.ufla.lemaf -> *
-                - org.eclipse.emf -> *
-                - org.eclipse.xsd -> *
-                - org.apache.xml -> *
-                - org.apache.tika -> *
-                - org.junit -> *
-                - org.hibernatespatial -> *
-                - org.hibernate -> *
-                - org.postgis -> *
-                - javax.media -> *
-                - jgridshift -> *
-                - net.sf.flexjson -> *
-                - log4j -> *
-                - play -> *
-                - org.mockito -> *
-                - br.ufla -> *
-                - java3d -> *
-                - it.geosolutions.imageio-ext -> *
-                - com.google.zxing -> *
-                - br.ufla.lemaf -> *
+          type: iBiblio
+          root: "http://repo.ti.lemaf.ufla.br/repository/public"
+          contains:
+              - br.ufla.lemaf -> *
+              - org.eclipse.emf -> *
+              - org.eclipse.xsd -> *
+              - org.apache.xml -> *
+              - org.apache.tika -> *
+              - org.junit -> *
+              - org.hibernatespatial -> *
+              - org.hibernate -> *
+              - org.postgis -> *
+              - javax.media -> *
+              - jgridshift -> *
+              - net.sf.flexjson -> *
+              - log4j -> *
+              - play -> *
+              - org.mockito -> *
+              - br.ufla -> *
+              - java3d -> *
+              - it.geosolutions.imageio-ext -> *
+              - com.google.zxing -> *
+              - br.ufla.lemaf -> *
 
     - BOUNDLESSGEO:
           type: iBiblio
