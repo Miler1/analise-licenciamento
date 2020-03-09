@@ -577,6 +577,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
 				.groupByRenovacao()
 				.groupByRetificacao()
+				.groupByCaracterizacao()
 				.groupByIdOrigemNotificacao()
 				.groupByDiasAnaliseGeo()
 				.groupByDiasAnaliseTecnica();

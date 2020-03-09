@@ -383,6 +383,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByCaracterizacao(){
+
+		addCaracterizacaoAlias();
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".status.id").as("statusCaracterizacao"));
+
+		return this;
+	}
+
 	public ProcessoBuilder groupByCpfCnpjEmpreendimento(){
 
 		addPessoaEmpreendimentoAlias();
