@@ -43,11 +43,11 @@ div
 								span(ng-class="{'icone-solicitacao-finalizada-tecnica': consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao)}")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO}")
 								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_TECNICO}")
-								span(ng-class="{'icone-licenca-emitida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.LICENCA_EMITIDA}")
-								span(ng-class="{'icone-aguardando-pagamento-taxa': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_APROVADA}")
-								span(ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-licenca-emitida': processo.statusCaracterizacao === consultarProcesso.statusCaracterizacao.VIGENTE}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-aguardando-pagamento-taxa': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_APROVADA && processo.statusCaracterizacao !== consultarProcesso.statusCaracterizacao.VIGENTE}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
 								span(ng-class="{'icone-aguardando-resposta-juridico': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO}")
-							
+
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -118,6 +118,9 @@ div
 					span.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
 					span.icone-revisao-atendida.legenda Notificado
 					span.icone-aguardando-resposta-juridico.legenda Aguardando análise jurídica
+					span.icone-licenca-emitida.legenda Licença emitida
+					span.icone-solicitacao-licenca-indeferida.legenda Solicitação de licença indeferida
+					span.icone-aguardando-pagamento-taxa.legenda Análise Aprovada
 					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
