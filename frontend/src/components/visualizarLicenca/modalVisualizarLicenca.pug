@@ -24,9 +24,13 @@ include ../../layout/components/inputErrors
 	div.info-licenca-processo(ng-if="$ctrl.resolve.isSuspensao || $ctrl.resolve.isCancelamento")
 		blockquote
 			h5(style="padding-top:0px; margin-bottom:10px;") Informações da Licença:
-			div
+			div(ng-if="$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento !== null")
 				strong.col-md-2 Tipo de licença:
 				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}})
+			
+			div(ng-if="$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento === null") 
+				strong.col-md-2 Tipo de licença:
+				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}})
 			div
 				strong.col-md-2 Data emissão:
 				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.dataCadastro}}

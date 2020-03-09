@@ -25,12 +25,17 @@ var ModalVisualizarLicenca = {
 
 					ctrl.processo = response.data;
 
-					parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(ctrl.processo.analise.analisesTecnicas[0].id)
+					if (ctrl.processo !== null) {
+
+						parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(ctrl.processo.analise.analisesTecnicas[0].id)
 						.then(function(response){
 							
 							ctrl.parecerTecnico = response.data;
 							
-					});
+						});
+
+					}
+					
 			});
 			
 		};
