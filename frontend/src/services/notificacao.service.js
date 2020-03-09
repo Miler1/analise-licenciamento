@@ -20,6 +20,13 @@ var NotificacaoService = function(request, config, $window) {
 
 	};
 
+	this.findByIdParecerTecnico = function(id) {
+
+		return request
+			.get(config.BASE_URL() + 'notificacoes/findByIdParecerTecnico/' + id);
+
+	};
+
 };
 
 exports.services.NotificacaoService = NotificacaoService;

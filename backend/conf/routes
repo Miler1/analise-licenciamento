@@ -262,6 +262,7 @@ GET     /notificacoes/{idTramitacao}                         Notificacoes.downlo
 GET     /notificacoes/findByIdProcesso/{id}                  Notificacoes.findByIdProcesso
 GET     /notificacoes/findByIdProcessoTecnico/{id}           Notificacoes.findByIdProcessoTecnico
 GET     /notificacoes/findByIdParecer/{id}                   Notificacoes.findByIdParecer
+GET     /notificacoes/findByIdParecerTecnico/{id}            Notificacoes.findByIdParecerTecnico
 
 # Processos Manejo
 POST    /processosManejo                            ProcessosManejo.listWithFilter
