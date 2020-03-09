@@ -122,7 +122,6 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 
                 ctrl.getDocumentosSolicitacao();
                 
-
                 ctrl.possuiValidade = ( ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.codigo === ctrl.tipologias.ID_AQUICULTURA ) ? false : true;
 
                 ctrl.parecer.analiseTecnica = {

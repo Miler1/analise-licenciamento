@@ -26,7 +26,7 @@ var LicencaEmitidaService = function(request,$window, config) {
 
 	this.downloadDla = function(idLicenca) {
 
-		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/downloadDla";
+		$window.open(config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/downloadDla", "_blank");
 	};
 
 	this.downloadLicenca = function(idLicenca) {
