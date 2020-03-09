@@ -78,30 +78,31 @@ hr
         div.pull-left.col-md-10.posicao-principal
             form.pull-left.posicao-conteudo
                 label.opDla.radio-inline.posicao-primeiroItem
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.DEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.DEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()", ng-checked="{{ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO)}}")
                     | Deferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.INDEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.INDEFERIDO}}", ng-disabled="ctrl.hasInconsistencias()", ng-checked="{{ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.INDEFERIDO)}}")
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO}}", ng-disabled="!ctrl.hasInconsistencias()")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO}}", ng-disabled="!ctrl.hasInconsistencias()", ng-checked="{{ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO)}}")
                     | Emitir notificação
 
     .deferido(ng-if="ctrl.checkTipoResultadoAnalise(ctrl.tiposResultadoAnalise.DEFERIDO)")
 
         label.tipoLicenca {{ ctrl.tipoLicenca.nome }} ({{ ctrl.porteEmpreendimento.nome }})
 
-        span Validade da licença solicitada pelo interessado: 
-            b {{ ctrl.validadeAnos }} anos
+        div(ng-if="ctrl.possuiValidade === true")
+            span Validade da licença solicitada pelo interessado: 
+                b {{ ctrl.validadeAnos }} anos
 
-        .validade
-            label.control-label.obrigatorio Validade permitida:
-            select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio", ng-class="{ 'error-summernote': ctrl.errors.deferido.validade }")
-                option(value="1") 1 ano
-                option(value="2") 2 anos
-                option(value="3") 3 anos
-                option(value="4") 4 anos
-                option(value="5") 5 anos
+            .validade
+                label.control-label.obrigatorio Validade permitida:
+                select.form-control.select(ng-model="ctrl.parecer.validadePermitida", name="selectMunicipio", ng-class="{ 'error-summernote': ctrl.errors.deferido.validade }")
+                    option(value="1") 1 ano
+                    option(value="2") 2 anos
+                    option(value="3") 3 anos
+                    option(value="4") 4 anos
+                    option(value="5") 5 anos
 
         label.obrigatorio Finalidade da atividade:
         div(ng-class="{ 'error-summernote': ctrl.errors.deferido.finalidade }")

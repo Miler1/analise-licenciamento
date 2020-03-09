@@ -24,6 +24,8 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 	validacaoAnalisePresidente.acaoTramitacao = app.utils.AcaoTramitacao;
 	validacaoAnalisePresidente.idTipoResultadoAnalise = null;
 	validacaoAnalisePresidente.exibirDadosProcesso = exibirDadosProcesso;
+	validacaoAnalisePresidente.possuiValidade = null;
+	validacaoAnalisePresidente.tipologias = app.utils.Tipologia;
 
 	validacaoAnalisePresidente.errors = {
 		despacho: false
@@ -34,7 +36,8 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 		analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
 
-                validacaoAnalisePresidente.analiseTecnica = response.data;
+				validacaoAnalisePresidente.analiseTecnica = response.data;
+				validacaoAnalisePresidente.possuiValidade = (validacaoAnalisePresidente.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.codigo === validacaoAnalisePresidente.tipologias.ID_AQUICULTURA) ? false : true;
 				getUltimoParecerAnalistaTecnico(validacaoAnalisePresidente.analiseTecnica);
 				
 				processoService.getInfoProcessoByNumero(validacaoAnalisePresidente.analiseTecnica.analise.processo.numero)
