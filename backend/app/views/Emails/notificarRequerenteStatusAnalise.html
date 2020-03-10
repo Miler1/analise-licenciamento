@@ -37,7 +37,7 @@ analiseNaoAprovada = 20l;
 
 <p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong><br><strong> Protocolo N°: ${numeroProtocolo}</strong></p>
 
-<p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>Atividade(s): ${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong> #{/list} </p>
+<p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br><strong>Atividade(s): </strong>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}; </strong> #{/list} </p>
 
 <p><strong> Tipologia: ${tipologia}</strong></p>
 
