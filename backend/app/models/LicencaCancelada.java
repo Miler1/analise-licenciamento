@@ -65,7 +65,7 @@ public class LicencaCancelada extends GenericModel{
 			
 			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.CANCELADO);
 
-			Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
+			Processo processo = this.licenca.caracterizacao.processo;
 			processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROTOCOLO);
 
 			this.licenca.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.CANCELADO.id);
