@@ -50,23 +50,49 @@ var ModalVisualizarLicenca = {
 				return;
 			}
 
-			var suspensao = {
-				licenca: {
-					id: ctrl.resolve.dadosLicenca.id
-				},
-				qtdeDiasSuspensao: ctrl.qtdeDiasSuspensao,
-				justificativa: ctrl.justificativa
-			};
+			var suspensao = null;
 
-			licencaEmitidaService.suspenderLicenca(suspensao)
-				.then(function(response) {
+			if (ctrl.resolve.dadosLicenca.tipoLicenca !== app.ORIGEM_LICENCA.DISPENSA){
 
-					mensagem.success(response.data.texto, {referenceId: 0});
-					ctrl.close({$value: 'closed'});
-				}, function(error) {
+				suspensao = {
+					licenca: {
+						id: ctrl.resolve.dadosLicenca.id
+					},
+					qtdeDiasSuspensao: ctrl.qtdeDiasSuspensao,
+					justificativa: ctrl.justificativa
+				};
 
-					mensagem.error(error.data.texto, {referenceId: 4});
-				});
+				licencaEmitidaService.suspenderLicenca(suspensao)
+					.then(function(response) {
+
+						mensagem.success(response.data.texto, {referenceId: 0});
+						ctrl.close({$value: 'closed'});
+					}, function(error) {
+
+						mensagem.error(error.data.texto, {referenceId: 4});
+					});
+			
+			} else {
+
+				suspensao = {
+					dispensaLicenciamento: {
+						id: ctrl.resolve.dadosLicenca.id
+					},
+					qtdeDiasSuspensao: ctrl.qtdeDiasSuspensao,
+					justificativa: ctrl.justificativa
+				};
+
+				licencaEmitidaService.suspenderDispensa(suspensao)
+					.then(function(response) {
+
+						mensagem.success(response.data.texto, {referenceId: 0});
+						ctrl.close({$value: 'closed'});
+					}, function(error) {
+
+						mensagem.error(error.data.texto, {referenceId: 4});
+					});
+
+			}
 		};
 
 		ctrl.cancelarLicenca = function(){
