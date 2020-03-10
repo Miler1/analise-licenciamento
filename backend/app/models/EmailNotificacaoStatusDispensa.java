@@ -1,10 +1,10 @@
 package models;
 
 import exceptions.AppException;
-import main.java.br.ufla.lemaf.beans.Empreendimento;
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
-import main.java.br.ufla.lemaf.enums.TipoEndereco;
+import br.ufla.lemaf.beans.Empreendimento;
+import br.ufla.lemaf.beans.pessoa.Endereco;
+import br.ufla.lemaf.beans.pessoa.Municipio;
+import br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
@@ -36,7 +36,7 @@ public class EmailNotificacaoStatusDispensa extends EmailNotificacao {
         try {
 
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-            main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(caracterizacao.empreendimento.getCpfCnpj());
+            br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(caracterizacao.empreendimento.getCpfCnpj());
             Municipio municipio = null;
             for(Endereco endereco : empreendimentoEU.enderecos){
                 if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){
