@@ -7,6 +7,7 @@ empreendimento = analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 nomeEmpreendimento = empreendimento.denominacao;
 atividadesCaracterizacao = analise.processo.caracterizacao.atividadesCaracterizacao;
+tipologia = analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome;
 parecer = parecerPresidente.parecer;
 tipoResultadoAnaliseFinal = analise.processo.caracterizacao.status.id;
 analiseSuspensa = 7l;
@@ -34,35 +35,37 @@ analiseNaoAprovada = 20l;
 
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
 
-<p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong><strong> Protocolo N°: ${numeroProtocolo}</strong></p>
+<p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong><br><strong> Protocolo N°: ${numeroProtocolo}</strong></p>
 
 <p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>Atividade(s): ${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong> #{/list} </p>
 
+<p><strong> Tipologia: ${tipologia}</strong></p>
+
 #{if tipoResultadoAnaliseFinal == analiseAprovada}
 
-<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>aprovada</strong>. Aguardando pagamento da taxa da licença.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>APROVADA</strong>. E encontra-se aguardando pagamento da taxa de licença.</p>
 
-<p> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
+<p style="display: inline-flex"> <strong> Despacho: </strong>#{verbatim}${parecer}#{/verbatim}</p>
 
 #{/if}
 
 #{if tipoResultadoAnaliseFinal == analiseNaoAprovada}
 
-<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença <strong>não foi aprovada</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença <strong>NÃO FOI APROVADA</strong>.</p>
 
-<p> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
+<p style="display: inline-flex"> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
 
 #{/if}
 
 #{if tipoResultadoAnaliseFinal == analiseCancelada}
 
-<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>cancelada</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>CANCELADA</strong>.</p>
 
 #{/if}
 
 #{if tipoResultadoAnaliseFinal == analiseSuspensa}
 
-<p> Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numeroProtocolo}, o qual solicita ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>suspensa</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>SUSPENSA</strong>.</p>
 
 #{/if}
 
