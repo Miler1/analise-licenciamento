@@ -861,7 +861,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public List<HistoricoTramitacao> getHistoricoTramitacaoAnaliseTecnica() {
 
-		Date dataPrimeiroHistorico = this.getHistoricoTramitacao()
+		AnaliseGeo a = AnaliseGeo.findUltimaByAnalise(this.analise);
+
+		Date dataPrimeiroHistorico = a.analise.processo.getHistoricoTramitacao()
 				.stream()
 				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.VALIDAR_PARECER_GEO_GERENTE))
 				.findFirst()
