@@ -172,8 +172,6 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
         });
 
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
-
     };
 
     validacaoAnaliseTecnicaGerente.downloadPDFParecer = function(analiseTecnica) {
