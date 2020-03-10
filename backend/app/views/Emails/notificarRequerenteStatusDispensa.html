@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 %{
-numeroProtocolo = analise.processo.numero;
-numeroProcesso = analise.processo.caracterizacao.processoLicenciamento.numero;
-tipoLicenca = analise.processo.caracterizacao.tipoLicenca.nome;
-empreendimento = analise.processo.empreendimento;
+numeroProtocolo = caracterizacao.numero;
+numeroProcesso = caracterizacao.processoLicenciamento.numero;
+tipoLicenca = caracterizacao.tipoLicenca.nome;
+empreendimento = caracterizacao.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 nomeEmpreendimento = empreendimento.denominacao;
-atividadesCaracterizacao = analise.processo.caracterizacao.atividadesCaracterizacao;
-tipologia = analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome;
-parecer = parecerPresidente.parecer;
-tipoResultadoAnaliseFinal = analise.processo.caracterizacao.status.id;
+atividadesCaracterizacao = caracterizacao.atividadesCaracterizacao;
+tipologia = caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome;
+tipoResultadoAnaliseFinal = caracterizacao.status.id;
 analiseSuspensa = 7l;
 analiseCancelada = 8l;
-analiseAprovada = 15l;
-analiseNaoAprovada = 20l;
 }%
 
 <html>
@@ -40,22 +37,6 @@ analiseNaoAprovada = 20l;
 <p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br><strong>Atividade(s): </strong>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}; </strong> #{/list} </p>
 
 <p><strong> Tipologia: ${tipologia}</strong></p>
-
-#{if tipoResultadoAnaliseFinal == analiseAprovada}
-
-<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>APROVADA</strong>. E encontra-se aguardando pagamento da taxa de licença.</p>
-
-<p style="display: inline-flex"> <strong> Despacho: </strong>#{verbatim}${parecer}#{/verbatim}</p>
-
-#{/if}
-
-#{if tipoResultadoAnaliseFinal == analiseNaoAprovada}
-
-<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença <strong>NÃO FOI APROVADA</strong>.</p>
-
-<p style="display: inline-flex"> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
-
-#{/if}
 
 #{if tipoResultadoAnaliseFinal == analiseCancelada}
 

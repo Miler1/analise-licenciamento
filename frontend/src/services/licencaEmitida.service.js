@@ -41,6 +41,12 @@ var LicencaEmitidaService = function(request,$window, config) {
 			.post(config.BASE_URL() + "suspensoes/licenca", suspensao);
 	};
 
+	this.suspenderDispensa = function(suspensao){
+
+		return request
+			.post(config.BASE_URL() + "suspensoes/dispensa", suspensao);
+	};
+
 	this.cancelarLicenca = function(cancelamento){
 
 		return request
@@ -51,6 +57,12 @@ var LicencaEmitidaService = function(request,$window, config) {
 
 		return request
 			.post(config.BASE_URL() + "cancelamentos/dla", cancelamento);
+	};
+
+	this.cancelarDispensa = function(cancelamento) {
+
+		return request
+			.post(config.BASE_URL() + "cancelamentos/cancelarDispensa", cancelamento);
 	};
 };
 

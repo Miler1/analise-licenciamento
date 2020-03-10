@@ -83,11 +83,9 @@ public class Suspensao extends GenericModel {
 
 			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.SUSPENSO);
 
-			if(deveSuspenderProcesso(this.licenca)) {
-				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
-				processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROTOCOLO, usuarioExecutor);
-				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
-			}
+			Processo processo = this.licenca.caracterizacao.processo;
+			processo.tramitacao.tramitar(processo, AcaoTramitacao.SUSPENDER_PROTOCOLO, usuarioExecutor);
+			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(processo.objetoTramitavel.id), usuarioExecutor);
 
 			this.licenca.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.SUSPENSO.id);
 

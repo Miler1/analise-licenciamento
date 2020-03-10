@@ -37,6 +37,7 @@ var ConsultarProcessoController = function($scope,
 	
 	consultarProcesso.temMinuta = null;
 	consultarProcesso.temRTV = null;
+	consultarProcesso.statusCaracterizacao = app.utils.StatusCaracterizacao;
 
 	function atualizarListaProcessos(processos) {
 

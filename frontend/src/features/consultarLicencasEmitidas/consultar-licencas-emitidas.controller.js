@@ -5,6 +5,9 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	var consultarLicencas = this;
 
+	consultarLicencas.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+	consultarLicencas.perfis = app.utils.Perfis;
+
 	consultarLicencas.atualizarListaLicencas = atualizarListaLicencas;
 	consultarLicencas.atualizarPaginacao = atualizarPaginacao;
 	consultarLicencas.onPaginaAlterada = onPaginaAlterada;

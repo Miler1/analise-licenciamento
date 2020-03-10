@@ -241,10 +241,12 @@ GET		/dla/{idDLA}								DLAs.findById
 
 # Suspensoes
 POST	/suspensoes/licenca							Suspensoes.suspenderLicenca
+POST	/suspensoes/dispensa						Suspensoes.suspenderDispensa
 
 #Cancelamentos
 POST	/cancelamentos/licenca						LicencaCanceladas.cancelarLicenca
 POST	/cancelamentos/dla						    DlaCanceladas.cancelarDla
+POST    /cancelamentos/cancelarDispensa             LicencaCanceladas.cancelarDispensa
 
 # Tipos Licenças
 GET		/tiposLicencas								TiposLicencas.list
