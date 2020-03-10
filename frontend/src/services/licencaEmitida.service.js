@@ -52,6 +52,12 @@ var LicencaEmitidaService = function(request,$window, config) {
 		return request
 			.post(config.BASE_URL() + "cancelamentos/dla", cancelamento);
 	};
+
+	this.cancelarDispensa = function(cancelamento) {
+
+		return request
+			.post(config.BASE_URL() + "cancelamentos/cancelarDispensa", cancelamento);
+	};
 };
 
 exports.services.LicencaEmitidaService = LicencaEmitidaService;

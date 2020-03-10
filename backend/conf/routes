@@ -236,6 +236,7 @@ POST	/suspensoes/licenca							Suspensoes.suspenderLicenca
 #Cancelamentos
 POST	/cancelamentos/licenca						LicencaCanceladas.cancelarLicenca
 POST	/cancelamentos/dla						    DlaCanceladas.cancelarDla
+POST    /cancelamentos/cancelarDispensa             LicencaCanceladas.cancelarDispensa
 
 # Tipos Licenças
 GET		/tiposLicencas								TiposLicencas.list

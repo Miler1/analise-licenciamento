@@ -110,16 +110,16 @@ var ModalVisualizarLicenca = {
 					justificativa: ctrl.justificativaCancelamento
 				};
 
-			licencaEmitidaService.cancelarDLA(cancelamento)
-				.then(function(response) {
+				licencaEmitidaService.cancelarDispensa(cancelamento)
+					.then(function(response) {
 
-					mensagem.success(response.data.texto, {referenceId: 0});
-					ctrl.dismiss({$value: 'close'});
-				}, function(error) {
+						mensagem.success(response.data.texto, {referenceId: 0});
+						ctrl.dismiss({$value: 'close'});
+					}, function(error) {
 
-					mensagem.error(error.data.texto, {referenceId: 4});
-				}
-			);
+						mensagem.error(error.data.texto, {referenceId: 4});
+					}
+				);
 
 			}
 		};

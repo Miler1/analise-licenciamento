@@ -4,6 +4,7 @@ import main.java.br.ufla.lemaf.beans.Empreendimento;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
 import models.*;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import org.apache.commons.mail.EmailAttachment;
 import play.Play;
@@ -63,6 +64,19 @@ public class Emails extends Mailer {
 		}
 
 		return send(analise, parecerPresidente);
+
+	}
+
+	public static Future<Boolean> notificarRequerenteStatusDispensa(List<String> destinatarios, Caracterizacao caracterizacao) {
+
+		setSubject("Movimentação do protocolo %s", caracterizacao.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+
+		return send(caracterizacao);
 
 	}
 
