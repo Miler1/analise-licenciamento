@@ -130,10 +130,18 @@ public class HistoricoTramitacao extends GenericModel {
 		return historicosTramitacao.get(1);
 	}
 
-	public static List<HistoricoTramitacao> getByObjetoTramitavel (Long idObjetoTramitavel){
+	public static List<HistoricoTramitacao> getByObjetoTramitavel (List<Long> idsObjetosTramitaveis){
 
-		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by dataInicial desc, idHistorico desc")
-									  .setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch();
+		List<HistoricoTramitacao> historicoTramitacoes = new ArrayList<>();
+
+		idsObjetosTramitaveis.stream().forEach(idObjetoTramitavel ->
+
+				historicoTramitacoes.addAll(HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by dataInicial desc, idHistorico desc")
+					.setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch())
+
+		);
+
+		return historicoTramitacoes;
 	}
 
 	private static String consultarHistoricoUltimaCondicaoAcao(List listCondicao, List listAcao, boolean inout){

@@ -809,7 +809,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	//Retorna o historico da tramitação com o tempo que o objeto tramitavel permaneceu na condição
 	public List<HistoricoTramitacao> getHistoricoTramitacao() {
 
-		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
+		List<Long> idsObjetosTramitaveis = new ArrayList<>();
+
+		Processo processoAnterior = this.processoAnterior;
+
+		idsObjetosTramitaveis.add(this.idObjetoTramitavel);
+
+		while (processoAnterior != null) {
+
+			idsObjetosTramitaveis.add(processoAnterior.idObjetoTramitavel);
+			processoAnterior = processoAnterior.processoAnterior;
+
+		}
+
+		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(idsObjetosTramitaveis);
 //		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getHistoricoTramitacaoByPerfil(this.idObjetoTramitavel, Auth.getUsuarioSessao().usuarioEntradaUnica.perfilSelecionado.codigo);
 
 
@@ -838,6 +851,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	public List<HistoricoTramitacao> getHistoricoTramitacaoAnaliseGeo() {
+
+		List<HistoricoTramitacao> historicoTramitacoes = new ArrayList<>();
 
 		return this.getHistoricoTramitacao()
 				.stream()

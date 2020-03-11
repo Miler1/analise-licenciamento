@@ -63,11 +63,12 @@ public class DiasAnalise extends GenericModel{
 				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO))
+						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO))
 				.max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 		int dias = 0;
 
-		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
+		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO) ||  ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
 
 			final Date ultimoDeferirOuIndeferir = ultimaTramitacao.dataInicial;
 
@@ -106,13 +107,14 @@ public class DiasAnalise extends GenericModel{
 				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO));
+						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO));
 
 		if(temTramitacao) {
 
 			for (HistoricoTramitacao tramitacao : historicoTramitacao) {
 
-				if(tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO)) {
+				if(tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) || tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO)) {
 
 					dataTramitacaoInicial = tramitacao.dataInicial;
 
@@ -187,11 +189,12 @@ public class DiasAnalise extends GenericModel{
 		HistoricoTramitacao ultimaTramitacao = historicoTramitacao.stream()
 				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE))
+						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO))
 				.max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 		int dias = 0;
 
-		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE)) {
+		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE)) {
 
 			final Date ultimoDeferirOuIndeferir = ultimaTramitacao.dataInicial;
 
@@ -232,13 +235,14 @@ public class DiasAnalise extends GenericModel{
 		boolean temTramitacao = historicoTramitacao.stream()
 				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA) ||
 							tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
-							tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE));
+							tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
+							tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO));
 
 		if(temTramitacao) {
 
 			for (HistoricoTramitacao tramitacao : historicoTramitacao) {
 
-				if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE)) {
+				if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) || tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE)) {
 
 					dataTramitacaoInicial = tramitacao.dataInicial;
 

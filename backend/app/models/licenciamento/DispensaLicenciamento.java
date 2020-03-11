@@ -1,5 +1,7 @@
 package models.licenciamento;
 
+import models.DispensaLicenciamentoCancelada;
+import models.LicencaCancelada;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
@@ -33,4 +35,7 @@ public class DispensaLicenciamento extends GenericModel {
 	public String numero;
 	
 	public Boolean ativo;
+
+	@OneToOne(mappedBy = "dispensaLicenciamento")
+	public DispensaLicenciamentoCancelada dispensaCancelada;
 }
