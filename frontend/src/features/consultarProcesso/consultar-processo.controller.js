@@ -255,16 +255,20 @@ var ConsultarProcessoController = function($scope,
 
 	consultarProcesso.validacaoDocumentos = function(processo) {
 		
-		parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(processo.idAnaliseTecnica)
-			.then(function(response){
+		if(!consultarProcesso.condicaoTramitacao.VISUALIZA_DOC_TECNICO.includes(processo.idCondicaoTramitacao)){
 
-				var parecerTecnico = response.data;
+			parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(processo.idAnaliseTecnica)
+				.then(function(response){
 
-				consultarProcesso.temMinuta = parecerTecnico.documentoMinuta ? true : false;
+					var parecerTecnico = response.data;
 
-				consultarProcesso.temRTV = parecerTecnico.vistoria.realizada;
+					consultarProcesso.temMinuta = parecerTecnico.documentoMinuta ? true : false;
 
-			});
+					consultarProcesso.temRTV = parecerTecnico.vistoria.realizada;
+
+				});
+
+		}
 
 	};
 
