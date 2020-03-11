@@ -36,7 +36,7 @@ div
 								span(ng-class="{'icone-analise-tecnica': processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE }")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td {{processo.denominacaoEmpreendimento}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(cxEntGerente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntGerente.PrazoAnalise.ANALISE), cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE)}").text-center

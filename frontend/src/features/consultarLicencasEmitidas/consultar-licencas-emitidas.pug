@@ -27,7 +27,7 @@ div
 							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca }}
 							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numeroProcesso }}
 							td {{licenca.cpfEmpreendimento ? licenca.cpfEmpreendimento : licenca.cnpjEmpreendimento | brCpfCnpj}}
-							td {{licenca.denominacaoEmpreendimento}}
+							td.break-word {{licenca.denominacaoEmpreendimento}}
 							td {{licenca.municipioEmpreendimento}}/{{licenca.siglaEstadoEmpreendimento}}
 							td {{licenca.tipoLicenca}}
 							td

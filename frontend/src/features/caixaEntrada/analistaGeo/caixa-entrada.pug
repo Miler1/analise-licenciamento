@@ -33,7 +33,7 @@ div
 								span(ng-class="{'icone-notificado': cxEntAnalistaGeo.notificacaoAtendida(processo)}")
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td.text-center {{processo.denominacaoEmpreendimento}}
+							td.text-center.break-word {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td.text-center {{processo.licencas}}
 							td(ng-class="{'error-message': cxEntAnalistaGeo.dateUtil.verificaPrazoMinimoData(cxEntAnalistaGeo.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntAnalistaGeo.PrazoAnalise.ANALISE), cxEntAnalistaGeo.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
