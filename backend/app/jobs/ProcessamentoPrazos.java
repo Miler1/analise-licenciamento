@@ -26,7 +26,7 @@ public class ProcessamentoPrazos extends GenericJob {
 
 		Logger.info("[INICIO-JOB] ::ProcessamentoPrazos:: [INICIO-JOB]");
 		contarDiasAnalise();
-		verificaPrazoSuspensao();
+		//verificaPrazoSuspensao();
 		Logger.info("[FIM-JOB] ::ProcessamentoPrazos:: [FIM-JOB]");
 
 	}
