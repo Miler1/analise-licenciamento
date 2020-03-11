@@ -23,9 +23,7 @@ var ModalVisualizarSolicitacaoLicenca = {
             ctrl.possuiValidade = (ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.codigo === ctrl.tipologias.ID_AQUICULTURA) ? false : true;
             ctrl.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
             ctrl.cpfCnpj = (ctrl.processo.empreendimento.pessoa.cpf === null || ctrl.processo.empreendimento.pessoa.cpf === undefined) ? ctrl.processo.empreendimento.pessoa.cnpj : ctrl.processo.empreendimento.pessoa.cpf;
-            console.log ("CPF",ctrl.processo.empreendimento.pessoa.cpf);
-            console.log ("CNPJ",ctrl.processo.empreendimento.pessoa.cnpj);
-            console.log(ctrl.cpfCnpj);
+
         };
 
         ctrl.fechar = function() {
