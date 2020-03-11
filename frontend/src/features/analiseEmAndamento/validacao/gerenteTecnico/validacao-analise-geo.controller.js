@@ -63,6 +63,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseGeoGerente.parecerGeo = response.data;
+                verificaDocumentos();
 
         });
     };
@@ -134,8 +135,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                 });            
             
                 getDadosVisualizar(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
-                verificaDocumentos();
-
+                
             });
         
         $rootScope.$broadcast('atualizarContagemProcessos');

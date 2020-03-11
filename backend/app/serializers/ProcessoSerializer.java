@@ -159,6 +159,7 @@ public class ProcessoSerializer {
 			"historicoTramitacaoAnterior.setor.nome",
 			"historicoTramitacaoAnterior.relHistoricoTramitacaoSetor.siglaSetor",
 			"empreendimento.id",
+			"empreendimento.cpfCnpj",
 			"empreendimento.denominacao",
 			"empreendimento.jurisdicao",
 			"empreendimento.municipio.nome",

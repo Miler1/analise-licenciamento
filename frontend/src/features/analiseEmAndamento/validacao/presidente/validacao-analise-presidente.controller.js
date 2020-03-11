@@ -259,9 +259,13 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
                 },
 
                 dadosProcesso: function() {
-
+					
                     return dadosProcesso;
-                }
+				},
+				
+				processo: function(){
+					return validacaoAnalisePresidente.analiseTecnica.analise.processo;
+				}
 
             }    
         });

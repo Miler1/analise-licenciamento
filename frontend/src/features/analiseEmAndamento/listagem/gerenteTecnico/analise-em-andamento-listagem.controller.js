@@ -20,6 +20,7 @@ var AnaliseEmAndamentoGerenteListController = function($scope, config, $location
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA);
+	listagem.legendas = app.utils.CondicaoTramitacao;
 
 	function atualizarListaProcessos(processos) {
 
