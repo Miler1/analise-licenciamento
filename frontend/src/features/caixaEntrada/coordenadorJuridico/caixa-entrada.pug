@@ -37,7 +37,7 @@ div
 								input(type='checkbox', ng-model='processo.selecionado', ng-click="cxEntCoordenadorJuridico.verificarTodosProcessosMarcados()")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td {{processo.denominacaoEmpreendimento}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': cxEntCoordenadorJuridico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntCoordenadorJuridico.PrazoMinimoAvisoAnalise.ANALISE)}") 

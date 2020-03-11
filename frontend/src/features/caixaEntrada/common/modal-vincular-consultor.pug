@@ -25,7 +25,7 @@ form(name="formVincularConsultor", novalidate)
 						tr(ng-repeat="processo in modalCtrl.processos | orderBy: 'numero'")
 							td {{processo.numero}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td {{processo.denominacaoEmpreendimento}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 
 		.row.form-group
