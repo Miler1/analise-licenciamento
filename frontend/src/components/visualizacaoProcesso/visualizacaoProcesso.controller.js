@@ -191,6 +191,32 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	};
 
+	modalCtrl.setPareceresAntigos = function(processo) {
+
+		if (processo.analise.analiseTecnica !== null) {
+			
+			modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico.concat(processo.analise.analiseTecnica.pareceresAnalistaTecnico);
+			processo.analise.analiseTecnica.pareceresGerenteAnaliseTecnica.forEach(function(parecerGerente) {
+
+				modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica.concat(parecerGerente);
+
+			}); 
+
+		}
+
+		if (processo.analise.analiseGeo !== null && processo.analise.analiseTecnica === null) {
+
+			modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo.concat(processo.analise.analiseGeo.pareceresAnalistaGeo);
+			processo.analise.analiseGeo.pareceresGerenteAnaliseGeo.forEach(function(parecerGerente) {
+
+				modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.concat(parecerGerente);
+
+			}); 
+		
+		}
+		
+	};
+
 	modalCtrl.getDocumentosSolicitacao = function(){
 
         var documentosSolicitacaoGrupo = [];
@@ -214,9 +240,6 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
-				modalCtrl.setPareceres();
-				modalCtrl.setDocumentos();
-				modalCtrl.getDocumentosSolicitacao();
 
 				if (modalCtrl.dadosProcesso.processoAnterior != null) {
 
@@ -226,6 +249,8 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 						modalCtrl.processosAnteriores = response.data;
 
 						_.forEach(modalCtrl.processosAnteriores, function(processo){
+
+							modalCtrl.setPareceresAntigos(processo);
 
 							_.forEach(processo.historicoTramitacao, function(tramitacao){
 
@@ -238,7 +263,17 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 							});
 
 						});
+
+						modalCtrl.setPareceres();
+						modalCtrl.setDocumentos();
+						modalCtrl.getDocumentosSolicitacao();
 					});
+
+				} else {
+
+					modalCtrl.setPareceres();
+					modalCtrl.setDocumentos();
+					modalCtrl.getDocumentosSolicitacao();
 
 				}
 			})
