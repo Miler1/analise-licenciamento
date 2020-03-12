@@ -308,7 +308,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			condicaoTramitacao: function () {
 
 				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
-					return app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
+					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
