@@ -167,7 +167,7 @@ var ConsultarProcessoController = function($scope,
 
 	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
 
-		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [8, 9, 27, 31, 32];
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [27, 31];
 		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
 		var status = false;
 
@@ -204,12 +204,13 @@ var ConsultarProcessoController = function($scope,
 
 	consultarProcesso.verificaStatusAnaliseTecnica = function(idCondicaoTramitacao) {
 
-		var CONSULTAR_PROTOCOLO_ANALISTA_TECNICO = [7, 10, 36];
 		var status = false;
 
 		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
 
-			CONSULTAR_PROTOCOLO_ANALISTA_TECNICO.forEach(function(condicao){
+			var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE = [10, 36];
+
+			CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE.forEach(function(condicao){
 
 				if(idCondicaoTramitacao === condicao) {
 
@@ -221,15 +222,22 @@ var ConsultarProcessoController = function($scope,
 
 		} else if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) {
 
-			CONSULTAR_PROTOCOLO_ANALISTA_TECNICO.forEach(function(condicao){
+			// var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_FINALIZADA = [10, 36];
+			if(!consultarProcesso.condicaoTramitacao.VISUALIZA_DOC_TECNICO.includes(idCondicaoTramitacao)){
 
-				if(idCondicaoTramitacao === condicao) {
+				status = true;
 
-					status = true;
+			}
 
-				}
+			// CONSULTAR_PROTOCOLO_ANALISE_TECNICA_FINALIZADA.forEach(function(condicao){
 
-			});
+			// 	if(idCondicaoTramitacao === condicao) {
+
+			// 		status = true;
+
+			// 	}
+
+			// });
 
 		}
 
