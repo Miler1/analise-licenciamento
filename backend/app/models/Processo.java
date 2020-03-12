@@ -541,6 +541,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 			processosAnteriores.add(processoAnterior);
 
+			processoAnterior.getInfoProcesso();
+
 			if (processoAnterior.processoAnterior != null) {
 
 				processoAnteriorAuxiliar = Processo.findById(processoAnterior.processoAnterior.id);
@@ -1003,9 +1005,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		} else if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
 
-			this.analise.analiseTecnica.pareceresAnalistaTecnico = this.analise.analiseTecnica.pareceresAnalistaTecnico.stream()
-					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
-					.collect(Collectors.toList());
+			if (this.analise.analiseTecnica != null ) {
+
+				this.analise.analiseTecnica.pareceresAnalistaTecnico = this.analise.analiseTecnica.pareceresAnalistaTecnico.stream()
+						.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
+						.collect(Collectors.toList());
+
+			}
 
 		}
 
