@@ -849,6 +849,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.APROVAR_SOLICITACAO_LICENCA || 
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.NEGAR_SOLICITACAO_LICENCA;
 	};
 
