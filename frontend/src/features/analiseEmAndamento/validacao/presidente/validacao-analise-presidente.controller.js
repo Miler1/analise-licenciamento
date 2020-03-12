@@ -192,7 +192,8 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 				});
 
         } else if(historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
-                historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE ||
+				// historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE ||
+				historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO||
                 historico.idAcao === validacaoAnalisePresidente.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE){
 			
 			parecerGerenteService.findParecerTecnicoByIdHistoricoTramitacao(historico.idHistorico)
@@ -229,7 +230,8 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 		   tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
 		   tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO || 
 		   tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO||
-           tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE||
+		   tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO||
            tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR||
            tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR|| 
            tramitacao.idAcao === validacaoAnalisePresidente.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE|| 
