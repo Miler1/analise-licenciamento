@@ -200,7 +200,7 @@ form{
 }
 
 .legenda {
-	margin-top: 10px
+	margin-top: 10px;
 }
 
 .icone-legenda {
@@ -216,15 +216,6 @@ form{
 		display: inline-block;
 		vertical-align: middle;
 		margin-right:10px;
-	}
-
-	&.legenda {
-		margin-left: 5px;
-		margin-right: 35px;
-
-		&:before {
-			margin-right: 5px;
-		}
 	}
 }
 
@@ -281,13 +272,7 @@ form{
 		margin-right:10px;
 	}
 
-	&.legenda {
-		margin-left: 5px;
 
-		&:before {
-			margin-right: 5px;
-		}
-	}
 }
 
 .icone-licenca-suspensa {
@@ -336,13 +321,23 @@ form{
 		margin-right:10px;
 	}
 
-	&.legenda {
-		margin-left: 5px;
+}
 
-		&:before {
-			margin-right: 5px;
-		}
+.icone-aguardando-comunicado {
+	color: #757575;
+	font-style: italic;
+
+	&:before {
+		content: "";
+		background-color: rgb(183, 0, 255);
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
 	}
+
 }
 
 .icone-licenca-emitida {
@@ -360,13 +355,6 @@ form{
 		margin-right:10px;
 	}
 
-	&.legenda {
-		margin-left: 5px;
-
-		&:before {
-			margin-right: 5px;
-		}
-	}
 }
 
 
