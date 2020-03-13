@@ -1675,7 +1675,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 }
 
                 else if(inconsistencia.tipoDeInconsistenciaTecnica === app.utils.InconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL){
-                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome;
+                    inconsistencia.inconsistenciaEncontrada = inconsistencia.inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.tipoDocumento.nome;
                     inconsistencia.categoria = "Documento Técnico/Ambiental";
                 }
             });

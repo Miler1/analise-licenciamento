@@ -413,7 +413,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addProcessoAnaliseGeoAnteriorAlias();
 
-		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS +  ".id").as("idAnalistaGeoAnterior"));
+		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS +  ".usuario.id").as("idAnalistaGeoAnterior"));
 
 		return this;
 	}
@@ -422,7 +422,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addProcessoAnaliseTecnicaAnteriorAlias();
 
-		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS +  ".id").as("idAnalistaTecnicoAnterior"));
+		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS +  ".usuario.id").as("idAnalistaTecnicoAnterior"));
 
 		return this;
 	}
@@ -431,7 +431,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAnalistaGeoAlias();
 
-		addProjection(Projections.groupProperty(ANALISTA_GEO_ALIAS +  ".id").as("idAnalistaGeo"));
+		addProjection(Projections.groupProperty(ANALISTA_GEO_ALIAS +  ".usuario.id").as("idAnalistaGeo"));
 
 		return this;
 	}
@@ -440,7 +440,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAnalistaTecnicoAlias(true);
 
-		addProjection(Projections.groupProperty(ANALISTA_TECNICO_ALIAS +  ".id").as("idAnalistaTecnico"));
+		addProjection(Projections.groupProperty(ANALISTA_TECNICO_ALIAS +  ".usuario.id").as("idAnalistaTecnico"));
 
 		return this;
 	}
