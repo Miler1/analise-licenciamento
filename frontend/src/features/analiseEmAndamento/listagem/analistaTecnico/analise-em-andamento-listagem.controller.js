@@ -108,7 +108,7 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 	}
 
 	function notificacaoAtendida(processo) {
-		return processo && processo.retificacao && processo.idOrigemNotificacao === listagem.origemNotificacao.ANALISE_TECNICA;
+		return processo && processo.retificacao && processo.idOrigemNotificacao === listagem.origemNotificacao.ANALISE_TECNICA && processo.idAnalistaTecnicoAnterior === processo.idAnalistaTecnico;
 	}
 
 	function visualizarNotificacao(processo) {
