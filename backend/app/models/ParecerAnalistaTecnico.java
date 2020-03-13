@@ -183,7 +183,15 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 
 		}
 
-		analiseTecnica.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseTecnica.documentos);
+		if(this.id != null) {
+
+			analiseTecnica.enviarEmailNotificacao(notificacoes.get(0), this, this.analiseTecnica.documentos);
+
+		} else {
+
+			analiseTecnica.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseTecnica.documentos);
+
+		}
 
 		Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analiseTecnica.analise.processo.numero);
 

@@ -2,6 +2,7 @@ package controllers;
 
 import models.AnaliseTecnica;
 import models.ParecerAnalistaTecnico;
+import models.Processo;
 import models.UsuarioAnalise;
 import security.Acao;
 import serializers.ParecerAnalistaGeoSerializer;
