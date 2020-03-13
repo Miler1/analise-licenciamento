@@ -30,6 +30,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
     validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = [];
     validacaoAnaliseTecnicaGerente.processo = null;
+    validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga = null;
 
     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
 
@@ -61,10 +62,98 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = response.data;
 
             });
-
     };
 
-    validacaoAnaliseTecnicaGerente.TiposResultadoAnalise = app.utils.TiposResultadoAnalise;
+    function getAnaliseTecnica(idAnaliseTecnica){
+
+        analiseTecnicaService.getAnaliseTecnica(idAnaliseTecnica)
+        .then(function(response){
+
+            validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga = response.data;
+            findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo);
+
+            _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
+                if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
+                    validacaoAnaliseTecnicaGerente.possuiAutoInfracao = true;
+                }
+            });
+
+            _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
+
+                validacaoAnaliseTecnicaGerente.disable.atividade[index] = {
+                    atividadeValida: true,
+                    parametros: []
+                };
+
+                _.forEach(atividade.atividade.parametros, function(parametro, indexParametro) {
+                    validacaoAnaliseTecnicaGerente.disable.atividade[index].parametros[indexParametro] = true;
+                });
+            });
+
+            _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.solicitacoesDocumento, function(documentoAdministrativo, index){
+                    validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[index] = true;
+            });
+
+            _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental, index){
+                validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[index] = true;
+            });
+
+            _.forEach( validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.inconsistenciasTecnica, function(inconsistenciaTecnica){
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca !== null){
+                    validacaoAnaliseTecnicaGerente.disable.tipoLicenca = false;
+                }
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaAtividade !== null){
+
+                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
+
+                        if(atividade.id === inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id){
+
+                            validacaoAnaliseTecnicaGerente.disable.atividade[index].atividadeValida = false;
+                        }
+                    });
+                }
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaParametro !== null){
+
+                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, indexAtividade){
+
+                        _.forEach(atividade.atividade.parametros, function(parametro, indexParametro) {
+
+                            if(inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id === parametro.id &&
+                                inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao.id === atividade.id){
+
+                                    validacaoAnaliseTecnicaGerente.disable.atividade[indexAtividade].parametros[indexParametro] = false;
+                                }
+                        });
+                    });
+                }
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaQuestionario !== null){
+                    validacaoAnaliseTecnicaGerente.disable.questionario = false;
+                }
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null){
+
+                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.solicitacoesDocumento, function(documentoAdministrativo, index){
+                        if(documentoAdministrativo.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id){
+
+                            validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[index] = false;
+                        }
+                    });
+                }
+
+                if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental !== null){
+
+                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental, index){
+                        validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[index] = false;
+                    });
+                }
+            });
+            
+        });
+    }
 
     function init() {
 
@@ -78,93 +167,15 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
                     validacaoAnaliseTecnicaGerente.processo = response.data;
 
-                    analiseTecnicaService.getAnaliseTecnica(validacaoAnaliseTecnicaGerente.processo.processoAnterior.analise.analisesTecnicas[0].id)
-                        .then(function(response){
+                    if(validacaoAnaliseTecnicaGerente.processo.processoAnterior === null || validacaoAnaliseTecnicaGerente.processo.processoAnterior === undefined ){
 
-                            validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga = response.data;
-                            findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo);
+                        getAnaliseTecnica(validacaoAnaliseTecnicaGerente.analiseTecnica.id);
+                        
+                    }else{
 
-                            _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
-                                if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
-                                    validacaoAnaliseTecnicaGerente.possuiAutoInfracao = true;
-                                }
-                            });
-            
-                            _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
-            
-                                validacaoAnaliseTecnicaGerente.disable.atividade[index] = {
-                                    atividadeValida: true,
-                                    parametros: []
-                                };
-            
-                                _.forEach(atividade.atividade.parametros, function(parametro, indexParametro) {
-                                    validacaoAnaliseTecnicaGerente.disable.atividade[index].parametros[indexParametro] = true;
-                                });
-                            });
-            
-                            _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.solicitacoesDocumento, function(documentoAdministrativo, index){
-                                    validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[index] = true;
-                            });
-            
-                            _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental, index){
-                                validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[index] = true;
-                            });
-            
-                            _.forEach( validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.inconsistenciasTecnica, function(inconsistenciaTecnica){
-            
-                                if(inconsistenciaTecnica.inconsistenciaTecnicaTipoLicenca !== null){
-                                    validacaoAnaliseTecnicaGerente.disable.tipoLicenca = false;
-                                }
-            
-                                if(inconsistenciaTecnica.inconsistenciaTecnicaAtividade !== null){
-            
-                                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, index){
-            
-                                        if(atividade.id === inconsistenciaTecnica.inconsistenciaTecnicaAtividade.atividadeCaracterizacao.id){
-            
-                                            validacaoAnaliseTecnicaGerente.disable.atividade[index].atividadeValida = false;
-                                        }
-                                    });
-                                }
-            
-                                if(inconsistenciaTecnica.inconsistenciaTecnicaParametro !== null){
-            
-                                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao, function(atividade, indexAtividade){
-            
-                                        _.forEach(atividade.atividade.parametros, function(parametro, indexParametro) {
-            
-                                            if(inconsistenciaTecnica.inconsistenciaTecnicaParametro.parametroAtividade.id === parametro.id &&
-                                                inconsistenciaTecnica.inconsistenciaTecnicaParametro.atividadeCaracterizacao.id === atividade.id){
-            
-                                                    validacaoAnaliseTecnicaGerente.disable.atividade[indexAtividade].parametros[indexParametro] = false;
-                                                }
-                                        });
-                                    });
-                                }
-            
-                                if(inconsistenciaTecnica.inconsistenciaTecnicaQuestionario !== null){
-                                    validacaoAnaliseTecnicaGerente.disable.questionario = false;
-                                }
-            
-                                if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo !== null){
-            
-                                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.solicitacoesDocumento, function(documentoAdministrativo, index){
-                                        if(documentoAdministrativo.id === inconsistenciaTecnica.inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.id){
-            
-                                            validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[index] = false;
-                                        }
-                                    });
-                                }
-            
-                                if(inconsistenciaTecnica.inconsistenciaTecnicaDocumentoTecnicoAmbiental !== null){
-            
-                                    _.forEach(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo, function(documentoTecnicoAmbiental, index){
-                                        validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[index] = false;
-                                    });
-                                }
-                            });
-                            
-                        });
+                        getAnaliseTecnica(validacaoAnaliseTecnicaGerente.processo.processoAnterior.analise.analisesTecnicas[0].id);
+
+                    }
                    
                     getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaGerente.analiseTecnica);
 
