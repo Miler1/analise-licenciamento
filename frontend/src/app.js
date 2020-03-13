@@ -169,7 +169,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					app.utils.Perfis.ANALISTA_GEO,
 					app.utils.Perfis.ANALISTA_CAR,
 					app.utils.Perfis.DIRETOR,
-						app.utils.Perfis.ANALISTA_TECNICO
+					app.utils.Perfis.ANALISTA_TECNICO
 					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function() {
@@ -188,6 +188,36 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_ANALISTA_GEO;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA;
+
+			},
+			deveFiltrarPorUsuario: true,
+			codigoPerfilSelecionado: function(){
+
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+			}
+		},
+		{
+
+			titulo: 'Aguardando Autenticação',
+			icone: 'glyphicon glyphicon-pencil',
+			url: function() {
+				return '/';
+			},
+			countItens: true,
+			estaSelecionado: function () {
+
+				return $location.path() === '/caixa-entrada';
+			},
+			visivel: function(){
+
+				return [
+					app.utils.Perfis.PRESIDENTE,
+					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+			},
+			condicaoTramitacao: function() {
+
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -209,24 +239,18 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					 return '/analise-tecnica';
 
-				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
-
-					return '/analise-diretor';
-
-				}
+				} 
 			},
 			countItens: true,
 			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-geo') > -1 ||
-					$location.path().indexOf('/analise-tecnica') > -1 ||
-					$location.path().indexOf('/analise-diretor') > -1;
+					$location.path().indexOf('/analise-tecnica') > -1;
 			},
 			visivel: function() {
 
 				return [app.utils.Perfis.ANALISTA_GEO,
-				app.utils.Perfis.ANALISTA_TECNICO,
-				app.utils.Perfis.DIRETOR].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				app.utils.Perfis.ANALISTA_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
@@ -251,23 +275,39 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					return '/analise-gerente';
 
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
+
+					return '/analise-diretor';
+
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE){
+
+					return '/analise-presidente';
+
 				}
 			},
 			countItens: true,
 			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-gerente') > -1 ||
-						$location.path().indexOf('/analise-tecnica-gerente') > -1;
+					$location.path().indexOf('/analise-diretor') > -1 ||
+					$location.path().indexOf('/analise-presidente') > -1 ||
+					$location.path().indexOf('/analise-tecnica-gerente') > -1;
 
 			},
 			visivel: function() {
 
-				return [app.utils.Perfis.GERENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+				return [app.utils.Perfis.GERENTE,
+					app.utils.Perfis.DIRETOR,
+					app.utils.Perfis.PRESIDENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
 				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
-					return app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE;
+					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -318,12 +358,12 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			},
 			visivel: function(){
 
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
 			},
 
 			condicaoTramitacao: function(){
 
-				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_APROVADOR;
+				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
 			},
             deveFiltrarPorUsuario: true
 		},
@@ -366,7 +406,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return [
 					app.utils.Perfis.GERENTE,
-					app.utils.Perfis.APROVADOR
+					app.utils.Perfis.PRESIDENTE,
+					app.utils.Perfis.DIRETOR
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
 		},
@@ -529,7 +570,8 @@ utils.services(licenciamento)
 	.add('parecerGerenteService', services.ParecerGerenteService)
 	.add('questionarioService', services.QuestionarioService)
 	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService)
-	.add('parecerDiretorTecnicoService', services.ParecerDiretorTecnicoService);
+	.add('parecerDiretorTecnicoService', services.ParecerDiretorTecnicoService)
+	.add('parecerPresidenteService', services.ParecerPresidenteService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -582,6 +624,7 @@ licenciamento
 	.component('tabelaLicencas', directives.TabelaLicencas)
 	.component('modalVisualizarLicenca', directives.ModalVisualizarLicenca)
 	.component('modalOficioRestricao', directives.ModalOficioRestricao)
+	.component('modalVisualizarSolicitacaoLicenca', directives.ModalVisualizarSolicitacaoLicenca)
 	.component('modalNotificacaoRestricao', directives.ModalNotificacaoRestricao)
 	.component('modalVisualizarQuestionario',directives.ModalVisualizarQuestionario)
 	.component('modalVisualizarInconsistenciaTecnica',directives.ModalVisualizarInconsistenciaTecnica);

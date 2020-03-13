@@ -36,6 +36,7 @@ GET     /imovel/{id}/completo                       Imoveis.getImovelById
 
 GET		/analises/{id}									Analises.findById
 POST    /analises/iniciar/{idAnalise}                   Analises.iniciar
+POST    /analises/iniciarAnalisePresidente/{idAnalise}                   Analises.iniciarAnalisePresidente
 
 # Analise juridica
 
@@ -136,6 +137,10 @@ GET     /parecer/gerente/getUltimoParecerGerenteAnaliseGeo/{id}                 
 
 GET     /parecer/diretor/findParecerByAnalise/{id}                                     PareceresDiretores.findParecerByAnalise
 POST    /parecer/diretor/concluirParecerDiretorTecnico                                 PareceresDiretores.concluirParecerDiretorTecnico
+GET     /parecer/diretor/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}    PareceresDiretores.findParecerByIdHistoricoTramitacao
+
+# Pareceres analista geo
+POST    /parecer/presidente/concluirParecerPresidente                                  PareceresPresidente.concluirParecerPresidente
 
 # Pareceres analista geo
 POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
@@ -150,6 +155,7 @@ POST	/parecer/analistaTecnico/concluir						                                    
 GET     /parecer/analistaTecnico/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                         PareceresAnalistasTecnico.findParecerByIdHistoricoTramitacao
 GET     /parecer/analistaTecnico/findParecerByIdProcesso/{idProcesso}                                               PareceresAnalistasTecnico.findParecerByIdProcesso
 GET     /parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/{id}                                                PareceresAnalistasTecnico.getUltimoParecerAnaliseTecnica
+GET		/parecer/analistaTecnico                                         							                PareceresAnalistasTecnico.findByNumeroProcesso
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
@@ -246,6 +252,7 @@ POST	/external/upload/save						Application.upload
 
 GET     /notificacoes/{idTramitacao}                         Notificacoes.downloadPDF
 GET     /notificacoes/findByIdProcesso/{id}                  Notificacoes.findByIdProcesso
+GET     /notificacoes/findByIdParecer/{id}                   Notificacoes.findByIdParecer
 
 # Processos Manejo
 POST    /processosManejo                            ProcessosManejo.listWithFilter

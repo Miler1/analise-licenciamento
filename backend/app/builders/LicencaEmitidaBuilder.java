@@ -157,7 +157,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		addCaracterizacaoAlias();
 		
-		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".numeroProcesso").as("numeroProcesso"));
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".numero").as("numero"));
 		
 		return this;
 	}
@@ -216,6 +216,15 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".tipo.id").as("tipoCaracterizacao"));
 		
+		return this;
+	}
+
+	public LicencaEmitidaBuilder groupByStatusCaracterizacao(){
+
+		addCaracterizacaoAlias();
+
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".status.id").as("statusCaracterizacao"));
+
 		return this;
 	}
 
@@ -283,7 +292,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	private Criterion getNumeroProcessoRestricao(String numeroProcesso) {
 		
-		return Restrictions.ilike(CARACTERIZACAO_ALIAS+".numeroProcesso", numeroProcesso, MatchMode.ANYWHERE);
+		return Restrictions.ilike(CARACTERIZACAO_ALIAS+".numero", numeroProcesso, MatchMode.ANYWHERE);
 	}	
 	
 	public LicencaEmitidaBuilder filtrarPorCpfCnpjEmpreendimento(String cpfCnpj) {
@@ -410,7 +419,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	public LicencaEmitidaBuilder filtrarPorCamposPesquisaRapida(String pesquisa) {
 
-		criteria.add(Restrictions.and(getStatusAtivoLicencaRestricao(true)));
+//		criteria.add(Restrictions.and(getStatusAtivoLicencaRestricao(true)));
 
 		if (StringUtils.isNotEmpty(pesquisa)) {
 
@@ -420,8 +429,8 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 			criteria.add(Restrictions.or(
 				getNumeroLicencaRestricao(pesquisa),
 				getNumeroProcessoRestricao(pesquisa),
-				getCpfEmpreendimentoRestricao(pesquisa), 
-				getCnpjEmpreendimentoRestricao(pesquisa),
+//				getCpfEmpreendimentoRestricao(pesquisa),
+//				getCnpjEmpreendimentoRestricao(pesquisa),
 				getDenominacaoEmpreendimentoRestricao(pesquisa),
 				getMunicipioRestricao(pesquisa)
 			));
@@ -432,7 +441,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	public LicencaEmitidaBuilder orderByNumeroProcesso() {
 		
-		addOrder(Order.asc("numeroProcesso"));
+		addOrder(Order.asc("numero"));
 		
 		return this;
 	}

@@ -1,6 +1,8 @@
 package controllers;
 
-import models.*;
+import models.AnaliseTecnica;
+import models.ParecerAnalistaTecnico;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.ParecerAnalistaGeoSerializer;
 import serializers.ParecerAnalistaTecnicoSerializer;
@@ -52,6 +54,30 @@ public class PareceresAnalistasTecnico extends InternalController {
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(id);
 
 		renderJSON(analiseTecnica.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new), ParecerAnalistaTecnicoSerializer.findByIdHistoricoTramitacao);
+	
+	}
+
+	public static void findByNumeroProcesso() {
+
+		String numeroProcesso = getParamAsString("numeroProcesso");
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.find("analise.processo.numero = :numeroProcesso ORDER BY id DESC")
+				.setParameter("numeroProcesso", numeroProcesso)
+				.first();
+
+		if(analiseTecnica == null || analiseTecnica.pareceresAnalistaTecnico == null ||  analiseTecnica.pareceresAnalistaTecnico.isEmpty()) {
+
+			renderMensagem(Mensagem.PARECER_NAO_ENCONTRADO);
+
+		} else if(!analiseTecnica.inconsistenciasTecnica.isEmpty()) {
+
+			renderMensagem(Mensagem.CLONAR_PARECER_COM_INCONSISTENCIA);
+
+		} else {
+
+			renderJSON(ParecerAnalistaTecnico.getUltimoParecer(analiseTecnica.pareceresAnalistaTecnico), ParecerAnalistaTecnicoSerializer.findByIdNumeroProcesso);
+
+		}
 
 	}
 

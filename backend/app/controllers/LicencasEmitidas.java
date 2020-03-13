@@ -2,6 +2,7 @@ package controllers;
 
 import builders.LicencaEmitidaBuilder.FiltroLicenca;
 import exceptions.AppException;
+import models.Documento;
 import models.licenciamento.DispensaLicenciamento;
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.Licenca;
@@ -10,6 +11,8 @@ import security.Acao;
 import utils.Mensagem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class LicencasEmitidas extends InternalController {
@@ -62,33 +65,34 @@ public class LicencasEmitidas extends InternalController {
 		renderJSON(LicencaEmitida.countWithFilters(filtro));
 	}
 	
-	public static void downloadLicencas(Long id) {
+	public static void downloadLicencas(Long id) throws FileNotFoundException {
 		
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
 		
 		Licenca licenca = Licenca.findById(id);
 
-		if(licenca.isSuspensa())
-			throw new AppException(Mensagem.LICENCA_CANCELADA_OU_SUSPENSA);
-		
 		DocumentoLicenciamento documento = DocumentoLicenciamento.findById(licenca.documento.id);
-		
-		File file = documento.getFile();
-		
-		renderBinary(file, file.getName());
+
+		if(documento != null) {
+			File documentoBinary = documento.getFile();
+			renderBinary(new FileInputStream(documentoBinary), documentoBinary.getName(), true);
+		}
+
 	}
 	
-	public static void downloadDla(Long id) {
-		
+	public static void downloadDla(Long id) throws FileNotFoundException {
+
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
 		
 		DispensaLicenciamento dla = DispensaLicenciamento.findById(id);		
 		
 		DocumentoLicenciamento documento = DocumentoLicenciamento.findById(dla.documento.id);
+
+		if(documento != null) {
+			File documentoBinary = documento.getFile();
+			renderBinary(new FileInputStream(documentoBinary), documentoBinary.getName(), true);
+		}
 		
-		File file = documento.getFile();
-		
-		renderBinary(file, file.getName());
 	}
 	
 }

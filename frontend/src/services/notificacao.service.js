@@ -13,6 +13,13 @@ var NotificacaoService = function(request, config, $window) {
 
 	};
 
+	this.findByIdParecer = function(id) {
+
+		return request
+			.get(config.BASE_URL() + 'notificacoes/findByIdParecer/' + id);
+
+	};
+
 };
 
 exports.services.NotificacaoService = NotificacaoService;

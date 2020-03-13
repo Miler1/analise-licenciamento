@@ -1,4 +1,12 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, TiposSetores, documentoAnaliseService, mensagem, documentoService) {
+var ConsultarProcessoController = function($scope, 
+										config, 
+										$rootScope, 
+										processoService, 
+										TiposSetores, 
+										documentoAnaliseService, 
+										mensagem, 
+										documentoService,
+										parecerAnalistaTecnicoService) {
 
 	$rootScope.tituloPagina = 'CONSULTAR PROTOCOLO';
 
@@ -26,6 +34,10 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO,
 		app.DISABLED_FILTER_FIELDS.GERENCIA];
+	
+	consultarProcesso.temMinuta = null;
+	consultarProcesso.temRTV = null;
+	consultarProcesso.statusCaracterizacao = app.utils.StatusCaracterizacao;
 
 	function atualizarListaProcessos(processos) {
 
@@ -155,7 +167,7 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
 
-		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [8, 9, 27, 31, 32];
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [27, 31];
 		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
 		var status = false;
 
@@ -192,12 +204,13 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 	consultarProcesso.verificaStatusAnaliseTecnica = function(idCondicaoTramitacao) {
 
-		var CONSULTAR_PROTOCOLO_ANALISTA_TECNICO = [7, 10, 36];
 		var status = false;
 
 		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
 
-			CONSULTAR_PROTOCOLO_ANALISTA_TECNICO.forEach(function(condicao){
+			var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE = [10, 36];
+
+			CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE.forEach(function(condicao){
 
 				if(idCondicaoTramitacao === condicao) {
 
@@ -209,15 +222,22 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 
 		} else if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) {
 
-			CONSULTAR_PROTOCOLO_ANALISTA_TECNICO.forEach(function(condicao){
+			// var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_FINALIZADA = [10, 36];
+			if(!consultarProcesso.condicaoTramitacao.VISUALIZA_DOC_TECNICO.includes(idCondicaoTramitacao)){
 
-				if(idCondicaoTramitacao === condicao) {
+				status = true;
 
-					status = true;
+			}
 
-				}
+			// CONSULTAR_PROTOCOLO_ANALISE_TECNICA_FINALIZADA.forEach(function(condicao){
 
-			});
+			// 	if(idCondicaoTramitacao === condicao) {
+
+			// 		status = true;
+
+			// 	}
+
+			// });
 
 		}
 
@@ -238,6 +258,25 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 		}
 
 		return '-';
+
+	};
+
+	consultarProcesso.validacaoDocumentos = function(processo) {
+		
+		if(!consultarProcesso.condicaoTramitacao.VISUALIZA_DOC_TECNICO.includes(processo.idCondicaoTramitacao)){
+
+			parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(processo.idAnaliseTecnica)
+				.then(function(response){
+
+					var parecerTecnico = response.data;
+
+					consultarProcesso.temMinuta = parecerTecnico.documentoMinuta ? true : false;
+
+					consultarProcesso.temRTV = parecerTecnico.vistoria.realizada;
+
+				});
+
+		}
 
 	};
 

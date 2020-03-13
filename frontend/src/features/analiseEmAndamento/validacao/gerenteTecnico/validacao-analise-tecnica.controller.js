@@ -172,7 +172,23 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
         });
 
-        return pareceresOrdenados[pareceresOrdenados.length - 1];
+    };
+
+    validacaoAnaliseTecnicaGerente.downloadPDFParecer = function(analiseTecnica) {
+
+        documentoService.downloadParecerByIdAnaliseTecnica(analiseTecnica.id);
+
+    };
+
+    validacaoAnaliseTecnicaGerente.downloadPDFMinuta = function(analiseTecnica) {
+
+        documentoService.downloadMinutaByIdAnaliseTecnica(analiseTecnica.id);
+
+    };
+
+    validacaoAnaliseTecnicaGerente.downloadRTVByIdAnaliseTecnica = function(analiseTecnica) {
+
+        documentoService.downloadRTVByIdAnaliseTecnica(analiseTecnica.id);
 
     };
 
@@ -183,6 +199,28 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
                 documentoAnaliseService.download(documento.id);
             }
         });
+    };
+
+    validacaoAnaliseTecnicaGerente.exibirDadosProcesso = function () {
+
+        var processo = {
+
+            idProcesso: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.id,
+            numero: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.numero,
+            denominacaoEmpreendimento: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.denominacao
+        };
+
+        if(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+
+            processo.cnpjEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+
+        } else {
+
+            processo.cpfEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+        }		
+
+
+        processoService.visualizarProcesso(processo);
     };
 
     validacaoAnaliseTecnicaGerente.buscarAnalistasTecnicoByIdProcesso = function() {

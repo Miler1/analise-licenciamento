@@ -4,6 +4,7 @@ import exceptions.AppException;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.licenciamento.StatusCaracterizacao;
+import models.licenciamento.StatusCaracterizacaoEnum;
 import models.tramitacao.AcaoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
@@ -63,13 +64,16 @@ public class LicencaCancelada extends GenericModel{
 			this.save();
 			
 			Caracterizacao.setStatusCaracterizacao(ListUtil.createList(this.licenca.caracterizacao.id), StatusCaracterizacao.CANCELADO);
+
+			Processo processo = this.licenca.caracterizacao.processo;
+			processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROTOCOLO);
+
+			this.licenca.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.CANCELADO.id);
+
+			ParecerPresidente parecerPresidente = ParecerPresidente.getUltimoParecerPresidente(this.licenca.caracterizacao.processo.analise.pareceresPresidente);
+			parecerPresidente.enviarEmailStatusAnalise(this.licenca.caracterizacao.processo.analise);
 			
-			if(deveCancelarProcesso(this.licenca)) {
-				Processo processo = this.licenca.licencaAnalise.analiseTecnica.analise.processo;
-				processo.tramitacao.tramitar(processo, AcaoTramitacao.CANCELAR_PROTOCOLO);
-			}
-			
-			enviarNotificacaoCanceladoPorEmail();
+//			enviarNotificacaoCanceladoPorEmail();
 			
 		} catch (Exception e) {
 			

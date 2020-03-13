@@ -36,4 +36,13 @@ public class Notificacoes extends InternalController {
         renderJSON(processo.inicializaNotificacoes(), NotificacaoSerializer.findAll);
     }
 
+    public static void findByIdParecer(Long id) {
+
+        verificarPermissao(Acao.VISUALIZAR_NOTIFICACAO);
+
+        List<Notificacao> notificacoes = Notificacao.findByIdParecer(id);
+
+        renderJSON(notificacoes, NotificacaoSerializer.findAll);
+    }
+
 }

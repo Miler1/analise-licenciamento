@@ -2,6 +2,8 @@ package models;
 
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
@@ -63,6 +65,14 @@ public class Analise extends GenericModel {
 	
 	@Column(name="notificacao_aberta")
 	public Boolean temNotificacaoAberta;
+
+	@OneToMany(mappedBy = "analise")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerDiretorTecnico> parecerDiretorTecnico;
+
+	@OneToMany(mappedBy = "analise")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerPresidente> pareceresPresidente;
 	
 	public Analise save() {
 		
@@ -290,5 +300,23 @@ public class Analise extends GenericModel {
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.objetoTramitavel.id), usuarioExecutor);
 
 	}
-	
+
+	public void iniciarAnalisePresidente(UsuarioAnalise usuarioExecutor) {
+
+		if (this.dataCadastro == null) {
+
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+
+			this.dataCadastro = c.getTime();
+
+			this._save();
+
+		}
+
+		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_PRESIDENTE, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.idObjetoTramitavel), usuarioExecutor);
+
+	}
+
 }

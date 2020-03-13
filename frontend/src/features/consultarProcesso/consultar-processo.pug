@@ -39,9 +39,13 @@ div
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
 								span(ng-class="{'icone-solicitacao-finalizada-geo': consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao)}")
 								span(ng-class="{'icone-solicitacao-finalizada-tecnica': consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao)}")
-								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO}")
-								span(ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_TECNICO}")
-
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.DIRETOR && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE",ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.DIRETOR && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE",ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_TECNICO}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-licenca-emitida': processo.statusCaracterizacao === consultarProcesso.statusCaracterizacao.VIGENTE}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-aguardando-pagamento-taxa': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_APROVADA && processo.statusCaracterizacao !== consultarProcesso.statusCaracterizacao.VIGENTE}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
+								span(ng-class="{'icone-aguardando-comunicado': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO}")
+														
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center.break-word {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -60,7 +64,7 @@ div
 								span.pull-right
 
 									.dropdown.action-table
-										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true', ng-click="consultarProcesso.validacaoDocumentos(processo)")
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
@@ -76,15 +80,15 @@ div
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar carta imagem
-											li(ng-if="consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.GERENTE")
+											li(ng-if="consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 												a(ng-click="consultarProcesso.downloadPDFparecerTecnico(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar parecer TÉCNICO
-											li(ng-if="consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.GERENTE")
+											li(ng-if="consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO && consultarProcesso.temMinuta === true")
 												a(ng-click="consultarProcesso.downloadPDFminuta(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar Minuta
-											li(ng-if="consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.GERENTE")
+											li(ng-if="consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao) && consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO && consultarProcesso.temRTV === true")
 												a(ng-click="consultarProcesso.downloadPDFvistoria(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar RTV
@@ -100,25 +104,33 @@ div
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO")
 
-					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
-					span.icone-solicitacao-finalizada-geo.legenda Análise GEO finalizada
-					span.icone-revisao-atendida.legenda Notificado
-					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
+					span.col-md-4.icone-solicitacao-finalizada-geo.legenda Análise GEO finalizada
+					span.col-md-4.icone-revisao-atendida.legenda Notificado
+					span.col-md-4.icone-aguardando-comunicado.legenda Aguardando resposta comunicado
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE")
 
-					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
-					span.icone-solicitacao-finalizada-geo.legenda Análise GEO finalizada
-					span.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
-					span.icone-revisao-atendida.legenda Notificado
-					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
+					span.col-md-4.icone-solicitacao-finalizada-geo.legenda Análise GEO finalizada
+					span.col-md-4.icone-revisao-atendida.legenda Notificado
+					span.col-md-4.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
+					span.col-md-4.icone-licenca-emitida.legenda Licença emitida
+					span.col-md-4.icone-aguardando-pagamento-taxa.legenda Análise Aprovada
+					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda Solicitação de licença indeferida
+					span.col-md-4.icone-aguardando-comunicado.legenda Aguardando resposta comunicado
+
+				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
+
+					span.col-md-4.icone-licenca-emitida.legenda Licença emitida
+					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda Solicitação de licença indeferida
+					span.col-md-4.icone-aguardando-pagamento-taxa.legenda Análise Aprovada
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 
-					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
-					span.icone-.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
-					span.icone-revisao-atendida.legenda Notificado
-					//- span.icone-solicitacao-ajustes.legenda Solicitação de ajustes			
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
+					span.col-md-4.icone-.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
+					span.col-md-4.icone-revisao-atendida.legenda Notificado			
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 

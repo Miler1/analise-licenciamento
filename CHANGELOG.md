@@ -70,11 +70,22 @@
 
 * OS48 - US1515 - [Diretor] Eu, diretor técnico, devo logar no análise para acessar com novo setor.
 * OS48 - US1158 - Eu, diretor técnico, devo acessar a caixa de entrada para visualizar listagem de protocolos.
+* OS48 - US1163 - Eu, diretor técnico, devo acessar parecer geo para validar a análise.
+* OS48 - US1164 - Eu, diretor técnico, devo acessar parecer técnico para validar a análise.
 * OS48 - US1165 - Eu, diretor técnico, devo acessar a conclusão para validar a análise final do protocolo.
+* OS48 - US1168 - Eu, gerente/diretor/presidente, devo consultar licenças emitidas para baixar títulos emitidos.
 * OS48 - US1166 - Eu, diretor técnico, devo consultar protocolo para listagem de todos os protocolos
 * OS48 - US1528 - Eu, diretor técnico, devo acessar visualizar protocolo para visualizar os dados do protocolo.
+
+## OS49
+
+* OS49 - US1528 - [Presidente] Eu, diretor presidente, devo acessar a caixa de entrada para listagem de todos os processos para validar análise.
+* OS49 - US1170 - Eu, diretor presidente, devo acessar aguardando autenticação para visualizar o resumo do protocolo.
+* OS49 - US1542 - [Presidente] Eu, diretor presidente, devo acessar aguardando autenticação para validação da análise.
+* OS49 - US1178 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para visualizar protocolo e visualizar licença.
+* OS49 - US1179 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para suspender ou cancelar a licença.
+* OS49 - US1271 - Eu, diretor presidente, devo enviar e-mail ao interessado para informar status da licença.
 
 ## OS008
 
 * OS008 - US1471 - Correção de "LABELS"
-

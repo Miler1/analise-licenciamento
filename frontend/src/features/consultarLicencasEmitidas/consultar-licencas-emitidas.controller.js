@@ -1,9 +1,12 @@
-var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService,
+var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, parecerAnalistaTecnicoService,
 	licencaEmitidaService, licencaService, $uibModal, mensagem, dispensaLicencaService) {
 
-	$rootScope.tituloPagina = 'CONSULTAR TÍTULOS EMITIDOS';
+	$rootScope.tituloPagina = 'CONSULTAR LICENÇAS EMITIDAS';
 
 	var consultarLicencas = this;
+
+	consultarLicencas.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+	consultarLicencas.perfis = app.utils.Perfis;
 
 	consultarLicencas.atualizarListaLicencas = atualizarListaLicencas;
 	consultarLicencas.atualizarPaginacao = atualizarPaginacao;
@@ -14,6 +17,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
 	consultarLicencas.isCancelamentoVisivel = isCancelamentoVisivel;
 	consultarLicencas.ajustarTamanhoContainer = ajustarTamanhoContainer;
+	consultarLicencas.statusCaracterizacao = app.utils.StatusCaracterizacao;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -22,6 +26,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	function atualizarListaLicencas(licencas) {
 
 		consultarLicencas.licencas = licencas;
+		
 	}
 
 	function atualizarPaginacao(totalItens, paginaAtual) {
@@ -125,7 +130,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 		if((licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO ||
 			licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO) &&
-			(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR &&
+			(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
 				LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken)) {
 			return true;
 
@@ -137,7 +142,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	function isCancelamentoVisivel(licenca) {
 
-		if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.APROVADOR &&
+		if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
 			LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken && licenca.ativo) {
 			return true;
 		}

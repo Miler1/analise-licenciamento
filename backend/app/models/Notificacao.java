@@ -656,4 +656,10 @@ public class Notificacao extends GenericModel {
 		}
 	}
 
+	public static List<Notificacao> findByIdParecer(Long id) {
+
+		return Notificacao.find("id_parecer_analista_geo", id).fetch();
+
+	}
+
 }

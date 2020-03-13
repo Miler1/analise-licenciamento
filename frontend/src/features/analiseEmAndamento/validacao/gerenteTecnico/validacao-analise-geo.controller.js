@@ -63,6 +63,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
             .then(function(response){
 
                 validacaoAnaliseGeoGerente.parecerGeo = response.data;
+                verificaDocumentos();
 
         });
     };
@@ -101,8 +102,6 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 
                 validacaoAnaliseGeoGerente.analiseGeo = response.data;
                 getUltimoParecerAnalistaGeo(validacaoAnaliseGeoGerente.analiseGeo);
-
-                validacaoAnaliseGeoGerente.parecerGeo = getUltimoParecerGeo(validacaoAnaliseGeoGerente.analiseGeo.pareceresAnalistaGeo);
                 findAnalisesGeoByNumeroProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
                 
                 processoService.getInfoProcesso(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.id).then(function(response){
@@ -136,8 +135,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
                 });            
             
                 getDadosVisualizar(validacaoAnaliseGeoGerente.analiseGeo.analise.processo);
-                verificaDocumentos();
-
+                
             });
         
         $rootScope.$broadcast('atualizarContagemProcessos');
