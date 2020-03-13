@@ -189,7 +189,7 @@
                                                                                     ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, null, documentoTecnicoAmbiental, null, $index, null)")
                                     | &nbsp;
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.documentoTecnicoAmbiental.length === 0 || ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false",
-                                                                                    ng-click="ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, $index)",
+                                                                                    ng-click="ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, $index, ctrl.analiseTecnica)",
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false }")
                                     | &nbsp;
                             td.col-md-2
