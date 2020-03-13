@@ -136,6 +136,7 @@ public class ProcessoSerializer {
 			"analise.pareceresPresidente.tipoResultadoAnalise.nome",
 			"analise.pareceresPresidente.parecer",
 			"analise.pareceresPresidente.dataParecer",
+			"processoAnterior.analise.analisesTecnicas.id",
 			"historicoTramitacao.idHistorico",
 			"historicoTramitacao.dataInicial",
 			"historicoTramitacao.dataFinal",
