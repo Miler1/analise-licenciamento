@@ -124,6 +124,7 @@ public class ProcessoSerializer {
 			"processoAnterior.historicoTramitacaoAnterior.documentosCorrigidos.tipo.nome",
 			"processoAnterior.historicoTramitacaoAnterior.setor.nome",
 			"processoAnterior.historicoTramitacaoAnterior.relHistoricoTramitacaoSetor.siglaSetor",
+			"processoAnterior.analise.analisesTecnicas.id",
 			"historicoTramitacao.idHistorico",
 			"historicoTramitacao.dataInicial",
 			"historicoTramitacao.dataFinal",
