@@ -70,6 +70,7 @@ public class InconsistenciaSerializer {
             "inconsistenciaTecnicaDocumentoAdministrativo.documentoAdministrativo.tipoDocumento.nome",
             "inconsistenciaTecnicaDocumentoTecnicoAmbiental.id",
             "inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.id",
+            "inconsistenciaTecnicaDocumentoTecnicoAmbiental.documentosTecnicos.tipoDocumento.nome",
             "tipoDeInconsistenciaTecnica");
 
 }
