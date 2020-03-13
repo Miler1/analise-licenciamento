@@ -18,6 +18,12 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String MUNICIPIO_EMPREENDIMENTO_ALIAS = "mun";
 	private static final String ESTADO_EMPREENDIMENTO_ALIAS = "est";
 	private static final String ANALISE_ALIAS = "ana";
+	private static final String PROCESSO_ANTERIOR_ALIAS = "poa";
+	private static final String PROCESSO_ANTERIOR_ANALISE_ALIAS = "paa";
+	private static final String PROCESSO_ANTERIOR_ANALISE_GEO_ALIAS = "pga";
+	private static final String PROCESSO_ANTERIOR_ANALISE_TECNICA_ALIAS = "pta";
+	private static final String PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS = "pag";
+	private static final String PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS = "pat";
 	private static final String ANALISE_JURIDICA_ALIAS = "anj";
 	private static final String CARACTERIZACAO_ALIAS = "carac";
 	private static final String ATIVIDADE_CARACTERIZACAO_ALIAS = "atc";
@@ -85,6 +91,24 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAlias(MUNICIPIO_EMPREENDIMENTO_ALIAS+".estado", ESTADO_EMPREENDIMENTO_ALIAS);
 
+		return this;
+	}
+
+	public ProcessoBuilder addProcessoAnaliseGeoAnteriorAlias() {
+
+		addAlias("processoAnterior", PROCESSO_ANTERIOR_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ALIAS + ".analise", PROCESSO_ANTERIOR_ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_ALIAS + ".analisesGeo", PROCESSO_ANTERIOR_ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_GEO_ALIAS + ".analistasGeo", PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		return this;
+	}
+
+	public ProcessoBuilder addProcessoAnaliseTecnicaAnteriorAlias() {
+
+		addAlias("processoAnterior", PROCESSO_ANTERIOR_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ALIAS + ".analise", PROCESSO_ANTERIOR_ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_ALIAS + ".analisesTecnicas", PROCESSO_ANTERIOR_ANALISE_TECNICA_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_TECNICA_ALIAS + ".analistaTecnico", PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS, JoinType.LEFT_OUTER_JOIN);
 		return this;
 	}
 
@@ -235,6 +259,15 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder addAnalistaGeoAlias() {
+
+		addAlias("analise", ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(ANALISE_GEO_ALIAS+".analistasGeo", ANALISTA_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
 	public ProcessoBuilder addAnaliseTecnicaAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseAlias();
@@ -355,6 +388,42 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	public ProcessoBuilder groupByIdProcesso(){
 
 		addProjection(Projections.groupProperty("id").as("idProcesso"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnalistaGeoAnterior(){
+
+		addProcessoAnaliseGeoAnteriorAlias();
+
+		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS +  ".id").as("idAnalistaGeoAnterior"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnalistaTecnicoAnterior(){
+
+		addProcessoAnaliseTecnicaAnteriorAlias();
+
+		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS +  ".id").as("idAnalistaTecnicoAnterior"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnalistaGeo(){
+
+		addAnalistaGeoAlias();
+
+		addProjection(Projections.groupProperty(ANALISTA_GEO_ALIAS +  ".id").as("idAnalistaGeo"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnalistaTecnico(){
+
+		addAnalistaTecnicoAlias(true);
+
+		addProjection(Projections.groupProperty(ANALISTA_TECNICO_ALIAS +  ".id").as("idAnalistaTecnico"));
 
 		return this;
 	}

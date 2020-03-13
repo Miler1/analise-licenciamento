@@ -402,7 +402,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
     ctrl.validarInconsistenciaParametro = function(tipoDeInconsistenciaTecnica, parametro, indexAtividade, indexParametro, atividade, analiseTecnica) {
 
-        if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO){
+        if (tipoDeInconsistenciaTecnica === ctrl.tipoDeInconsistenciaTecnica.PARAMETRO && analiseTecnica !== undefined){
 
             inconsistenciaTecnica = _.find( analiseTecnica.inconsistenciasTecnica, function(inconsistenciaTecnica){
                 return inconsistenciaTecnica.inconsistenciaTecnicaParametro !== null &&

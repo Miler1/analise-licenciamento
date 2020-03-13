@@ -100,7 +100,7 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 	};
 
 	cxEntAnalistaTecnico.notificacaoAtendida = function(processo) {
-		return processo && processo.retificacao && processo.idOrigemNotificacao === cxEntAnalistaTecnico.origemNotificacao.ANALISE_TECNICA;
+		return processo && processo.retificacao && processo.idOrigemNotificacao === cxEntAnalistaTecnico.origemNotificacao.ANALISE_TECNICA && processo.idAnalistaTecnicoAnterior === processo.idAnalistaTecnico;
 	};
 
 	cxEntAnalistaTecnico.visualizarNotificacao = function (processo) {

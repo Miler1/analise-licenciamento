@@ -120,7 +120,7 @@
 								.form-group
 									span {{notificacao.justificativaRetificacaoEmpreendimento}}
 
-							.panel-group(ng-show='notificacao.justificativaRetificacaoSolicitacao && notificacao.retificacaoSolicitacaoComGeo')
+							.panel-group(ng-show='notificacao.justificativaRetificacaoSolicitacao && notificacao.retificacaoSolicitacao')
 								.descricao
 									.label-descricao
 										label Justificativa da retificação da solicitação:
@@ -134,7 +134,7 @@
 										i.glyphicon.glyphicon-ok.text-ok.icone-ok
 										| Interessado realizou retificação do empreendimento
 
-							.panel-group(ng-show='!notificacao.justificativaRetificacaoSolicitacao && notificacao.retificacaoSolicitacaoComGeo')
+							.panel-group(ng-show='!notificacao.justificativaRetificacaoSolicitacao && notificacao.retificacaoSolicitacao')
 								.descricao
 									.label-descricao.text-ok
 										i.glyphicon.glyphicon-ok.text-ok.icone-ok

@@ -445,15 +445,18 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
             validacaoAnaliseTecnicaGerente.errors.despacho = false;
         }
+        if (analiseTecnica.tipoResultadoValidacaoGerente !== null) {
 
-        if(analiseTecnica.tipoResultadoValidacaoGerente.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === null || validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === undefined)) {
+            if(analiseTecnica.tipoResultadoValidacaoGerente.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString() && (validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === null || validacaoAnaliseTecnicaGerente.analistaTecnicoDestino.id === undefined)) {
 
-            validacaoAnaliseTecnicaGerente.errors.analistas = true;
-            mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
-
-        }else{
-
-            validacaoAnaliseTecnicaGerente.errors.analistas = false;
+                validacaoAnaliseTecnicaGerente.errors.analistas = true;
+                mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
+    
+            }else{
+    
+                validacaoAnaliseTecnicaGerente.errors.analistas = false;
+    
+            }
 
         }
 
