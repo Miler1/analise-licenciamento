@@ -6,6 +6,12 @@ var DocumentoLicenciamentoService = function(request, config, $window) {
 
 	};
 
+	this.downloadLicenciamento = function(idDocumento) {
+
+        $window.open(config.BASE_URL() + 'external/DocumentosLicenciamento/' + idDocumento + '/download', '_blank');
+
+	};
+
 };
 
 exports.services.DocumentoLicenciamentoService = DocumentoLicenciamentoService;

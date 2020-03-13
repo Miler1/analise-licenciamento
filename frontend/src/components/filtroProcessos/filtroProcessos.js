@@ -438,10 +438,10 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
 				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
+				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO,
 				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA
-
 
 			];
 		}

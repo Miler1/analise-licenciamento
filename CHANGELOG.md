@@ -89,3 +89,4 @@
 ## OS008
 
 * OS008 - US1471 - Correção de "LABELS"
+* OS008 - US300 - Eu, analista técnico, devo validar análise jurídica para tramitação do processo

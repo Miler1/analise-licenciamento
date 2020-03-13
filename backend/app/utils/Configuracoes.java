@@ -49,6 +49,8 @@ public class Configuracoes {
 	public static Integer PRAZO_ANALISE_GEO = getIntConfig("analise.geo.prazo");
 	public static Integer PRAZO_ANALISE_TECNICA = getIntConfig("analise.tecnica.prazo");
 
+	public static String DESTINATARIO_JURIDICO = getConfig("email.destinatario.juridico", null);
+	public static String DESTINATARIO_JURIDICO2 = getConfig("email.destinatario.juridico2", null);
 	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacoes.andamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.adicionar.analise", null);

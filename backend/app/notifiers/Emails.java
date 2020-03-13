@@ -1,6 +1,5 @@
 package notifiers;
 
-import main.java.br.ufla.lemaf.beans.Empreendimento;
 import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
 import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
 import models.*;
@@ -9,9 +8,6 @@ import models.licenciamento.Licenca;
 import org.apache.commons.mail.EmailAttachment;
 import play.Play;
 import play.mvc.Mailer;
-import javax.mail.BodyPart;
-import javax.mail.internet.MimeBodyPart;
-import play.Logger;
 
 import java.io.File;
 import java.util.Date;
@@ -181,6 +177,28 @@ public class Emails extends Mailer {
 		addAttachment(attachmentCartaImagem);
 
 		return send(analiseGeo, comunicado, municipio);
+	}
+
+	public static Future<Boolean> comunicarJuridicoAnalise(List<String> destinatarios,
+											AnaliseGeo analiseGeo, Municipio municipio, ParecerJuridico parecerJuridico, ParecerAnalistaGeo parecerAnalistaGeo,File filePdfParecer, File cartaImagem) {
+
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+
+		EmailAttachment attachment = new EmailAttachment();
+		attachment.setPath(new File(filePdfParecer.getPath()).getPath());
+		addAttachment(attachment);
+
+		EmailAttachment attachmentCartaImagem = new EmailAttachment();
+		attachmentCartaImagem.setPath(new File(cartaImagem.getPath()).getPath());
+		addAttachment(attachmentCartaImagem);
+
+
+		return send(analiseGeo, municipio, parecerJuridico, parecerAnalistaGeo);
 	}
 
 }

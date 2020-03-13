@@ -264,8 +264,6 @@ form{
 	}
 }
 
-
-
 .icone-aguardando-pagamento-taxa {
 	color: #757575;
 	font-style: italic;
@@ -291,6 +289,16 @@ form{
 }
 
 .icone-licenca-suspensa {
+	
+	&:extend(.icone-legenda all);
+
+	&:before {
+
+		background-color: #F3E702;
+	}
+}
+
+.icone-aguardando-resposta-juridico {
 
 	&:extend(.icone-legenda all);
 
@@ -368,13 +376,6 @@ form{
 		}
 	}
 }
-
-
-
-
-
-
-
 
 
 .disable-acoes {
@@ -561,6 +562,10 @@ form{
 	padding-right: 11px !important;
 }
 
+.padding-right-20 {
+	padding-right: 20px !important;
+}
+
 .error-summernote{
 	border-color: #d62c1a !important;
 	border: 1px solid;
@@ -571,6 +576,11 @@ form{
 	text-align:center;
 	font-size:13px;
 	margin-left:2%;
+}
+
+.visualizar-parecer{
+	text-align:center; 
+	font-size:13px; 
 }
 
 .visualizar-solicitacao-ajustes{
@@ -595,10 +605,20 @@ form{
 		font-size: 13px;
 		margin-left:15px;
 	}
-	.text-justificativa{
+	.text-justificativa,
+	.text-parecer-juridico{
 		margin:15px;
 		width: 840px;
 		height: 170px;
+	}
+}
+
+#parecer-juridico{
+
+	.label-parecer-juridico {
+
+		font-size: 13px;
+
 	}
 }
 
