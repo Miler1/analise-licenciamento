@@ -77,6 +77,7 @@
 * OS48 - US1165 - Eu, diretor técnico, devo acessar a conclusão para validar a análise final do protocolo.
 * OS48 - US1166 - Eu, diretor técnico, devo consultar protocolo para listagem de todos os protocolos.
 * OS48 - US1168 - Eu, gerente/diretor/presidente, devo consultar licenças emitidas para baixar títulos emitidos.
+* OS48 - US1162 - Eu, diretor técnico, devo acessar visualizar protocolo para visualizar os dados do protocolo.
 
 ## OS49
 

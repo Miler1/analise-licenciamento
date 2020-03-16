@@ -22,7 +22,7 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
     private ParecerAnalistaGeo parecerAnalistaGeo;
     private List<Documento> pdfsNotificacao;
 
-    public EmailNotificacaoAnaliseGeo(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, List<String> emailsDestinatarios, Notificacao notificacao) throws Exception {
+    public EmailNotificacaoAnaliseGeo(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, List<String> emailsDestinatarios) throws Exception {
 
         super(emailsDestinatarios);
         this.analiseGeo = analiseGeo;
@@ -70,7 +70,7 @@ public class EmailNotificacaoAnaliseGeo extends EmailNotificacao {
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
-            ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseGeo.id, TipoEmail.NOTIFICACAO_ANALISE_GEO, e.getMessage(), this.emailsDestinatarios);
+            ReenvioEmail reenvioEmail = new ReenvioEmail(this.parecerAnalistaGeo.id, TipoEmail.NOTIFICACAO_ANALISE_GEO, e.getMessage(), this.emailsDestinatarios);
             reenvioEmail.save();
 
             e.printStackTrace();

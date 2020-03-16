@@ -52,7 +52,7 @@ public class EmailNotificacaoStatusDispensa extends EmailNotificacao {
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
-            ReenvioEmail reenvioEmail = new ReenvioEmail(this.caracterizacao.id, ReenvioEmail.TipoEmail.NOTIFICACAO_PRESIDENTE, e.getMessage(), this.emailsDestinatarios);
+            ReenvioEmail reenvioEmail = new ReenvioEmail(this.caracterizacao.id, ReenvioEmail.TipoEmail.NOTIFICACAO_PRESIDENTE_DISPENSA, e.getMessage(), this.emailsDestinatarios);
             reenvioEmail.save();
 
             e.printStackTrace();
