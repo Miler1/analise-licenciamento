@@ -70,7 +70,6 @@ public class VerificarComunicado extends GenericJob {
 
 						ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
 
-
 						analiseGeo.reenviarEmailComunicado(ultimoParecer, comunicado, destinatarios);
 
 					} else {

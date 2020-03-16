@@ -392,7 +392,7 @@ public class AnaliseGeo extends Analisavel {
 
             this.prazoNotificacao = notificacao.prazoNotificacao/3;
 
-            EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacao);
+            EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios);
             emailNotificacaoAnaliseGeo.enviar();
 
         } else {
@@ -401,7 +401,7 @@ public class AnaliseGeo extends Analisavel {
             notificacaoSave.save();
             this.prazoNotificacao = notificacaoSave.prazoNotificacao;
 
-            EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios, notificacaoSave);
+            EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(this, parecerAnalistaGeo, destinatarios);
             emailNotificacaoAnaliseGeo.enviar();
 
             notificacaoSave.documentosNotificacaoTecnica.addAll(emailNotificacaoAnaliseGeo.getPdfsNotificacao());
@@ -475,6 +475,8 @@ public class AnaliseGeo extends Analisavel {
     }
 
     public void reenviarEmailComunicado(ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> destinatarios) throws Exception {
+
+        comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
         EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
         emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
