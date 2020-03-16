@@ -52,58 +52,62 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	
 	private void processarCaracterizacao(Caracterizacao caracterizacao) {
 
-		Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
+		try {
+			Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-		Boolean renovacao = caracterizacao.isRenovacao();
-		Boolean retificacao = caracterizacao.isRetificacao();
-		Processo processoAnterior = null;
-		Analise analiseAntiga = null;
+			Boolean renovacao = caracterizacao.isRenovacao();
+			Boolean retificacao = caracterizacao.isRetificacao();
+			Processo processoAnterior = null;
+			Analise analiseAntiga = null;
 
-		if(renovacao || retificacao){
+			if (renovacao || retificacao) {
 
-			// Carrega processo anterior
-			Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao));
-			processoAnterior = Processo.findLastByNumber(anterior.numero);
-			analiseAntiga = processoAnterior.analise;
-		}
-
-		Processo processo = criarNovoProcesso(caracterizacao, processoAnterior, renovacao, retificacao);
-		Analise analise = criarNovaAnalise(processo);
-
-		if(caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)){
-
-			Analisavel analisavel = analiseAntiga.getAnalisavel();
-
-			analisavel.getNotificacoes().stream().filter(n -> n.dataConclusao == null).forEach(notificacao -> {
-				notificacao.dataConclusao = new Date();
-				notificacao._save();
-			});
-
-			if(analisavel.getTipoAnalise().equals(TipoAnalise.GEO)){
-
-				AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
-				criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
-				processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_GEO.id);
-
-			} else if(analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)){
-
-				Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
-
-				if(retificacao && retificacaoComGeo != null && retificacaoComGeo){
-
-					AnaliseGeo analiseGeoAnterior = AnaliseGeo.findUltimaByAnalise(analise);
-					criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
-
-				} else {
-
-					AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
-					criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico);
-				}
-
-				processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_TECNICA.id);
+				// Carrega processo anterior
+				Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao));
+				processoAnterior = Processo.findLastByNumber(anterior.numero);
+				analiseAntiga = processoAnterior.analise;
 			}
 
-			processo._save();
+			Processo processo = criarNovoProcesso(caracterizacao, processoAnterior, renovacao, retificacao);
+			Analise analise = criarNovaAnalise(processo);
+
+			if (caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
+
+				Analisavel analisavel = analiseAntiga.getAnalisavel();
+
+				analisavel.getNotificacoes().stream().filter(n -> n.dataConclusao == null).forEach(notificacao -> {
+					notificacao.dataConclusao = new Date();
+					notificacao._save();
+				});
+
+				if (analisavel.getTipoAnalise().equals(TipoAnalise.GEO)) {
+
+					AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
+					criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
+					processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_GEO.id);
+
+				} else if (analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)) {
+
+					Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
+
+					if (retificacao && retificacaoComGeo != null && retificacaoComGeo) {
+
+						AnaliseGeo analiseGeoAnterior = AnaliseGeo.findUltimaByAnalise(analise);
+						criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
+
+					} else {
+
+						analise.analisesGeo = AnaliseGeo.findAllByAnalise(analiseAntiga);
+						analise._save();
+
+						AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
+						criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico);
+					}
+
+					processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_TECNICA.id);
+				}
+
+				processo._save();
 
 		} else {
 
@@ -111,7 +115,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		}
 
-		processo.save();
+			processo.save();
 
 		// Arquiva o processo anterior
 		if (retificacao) {
@@ -120,28 +124,35 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
 		}
 
-		if(caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)){
+			if (caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
 
-			Analisavel analisavel = analiseAntiga.getAnalisavel();
+				Analisavel analisavel = analiseAntiga.getAnalisavel();
 
-			if(analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)){
+				if (analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)) {
 
-				Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
+					Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
 
-				if(retificacao && (retificacaoComGeo == null || !retificacaoComGeo)){
+					if (retificacao && (retificacaoComGeo == null || !retificacaoComGeo)) {
 
-					AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
-					processo.tramitacao.tramitar(processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO, null, analiseTecnicaAnterior.analistaTecnico.usuario);
+						AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
+						processo.tramitacao.tramitar(processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO, null, analiseTecnicaAnterior.analistaTecnico.usuario);
 
+					}
 				}
+
+				analiseAntiga.inativar();
 			}
 
-			analiseAntiga.inativar();
+			caracterizacoesProcessadas.add(caracterizacao);
+
+			commitTransaction();
+
+		} catch (Exception e){
+
+			rollbackTransaction();
+			Logger.error(e.getMessage(), e.getStackTrace());
+
 		}
-
-		caracterizacoesProcessadas.add(caracterizacao);
-
-		commitTransaction();
 
 	}
 	
