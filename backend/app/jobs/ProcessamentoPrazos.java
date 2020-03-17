@@ -24,10 +24,10 @@ public class ProcessamentoPrazos extends GenericJob {
 	@Override
 	public void executar() {
 
-		Logger.info("[INICIO-JOB] ::ProcessamentoPrazos:: [INICIO-JOB]");
-		contarDiasAnalise();
-		//verificaPrazoSuspensao();
-		Logger.info("[FIM-JOB] ::ProcessamentoPrazos:: [FIM-JOB]");
+//		Logger.info("[INICIO-JOB] ::ProcessamentoPrazos:: [INICIO-JOB]");
+//		contarDiasAnalise();
+//		//verificaPrazoSuspensao();
+//		Logger.info("[FIM-JOB] ::ProcessamentoPrazos:: [FIM-JOB]");
 
 	}
 
@@ -52,11 +52,11 @@ public class ProcessamentoPrazos extends GenericJob {
 								analise.diasAnalise.qtdeDiasGeo = 0;
 							}
 
-							Logger.info("[ProcessamentoPrazos]:: Processando dias de análise da Análise GEO com ID - " + analise.analiseGeo.id + " ::[ProcessamentoPrazos]");
+//							Logger.info("[ProcessamentoPrazos]:: Processando dias de análise da Análise GEO com ID - " + analise.analiseGeo.id + " ::[ProcessamentoPrazos]");
 
 							analise.diasAnalise.preencheDiasAnaliseGeo();
 
-							Logger.info("[ProcessamentoPrazos]:: Dias de análise da Análise GEO com ID - " + analise.analiseGeo.id + " processada ::[ProcessamentoPrazos]");
+//							Logger.info("[ProcessamentoPrazos]:: Dias de análise da Análise GEO com ID - " + analise.analiseGeo.id + " processada ::[ProcessamentoPrazos]");
 
 						}
 
@@ -66,11 +66,11 @@ public class ProcessamentoPrazos extends GenericJob {
 								analise.diasAnalise.qtdeDiasTecnica = 0;
 							}
 
-							Logger.info("[ProcessamentoPrazos]:: Processando dias de análise da Análise técnica com ID - " + analise.analiseTecnica.id + " ::[ProcessamentoPrazos]");
+//							Logger.info("[ProcessamentoPrazos]:: Processando dias de análise da Análise técnica com ID - " + analise.analiseTecnica.id + " ::[ProcessamentoPrazos]");
 
 							analise.diasAnalise.preencheDiasAnaliseTecnica();
 
-							Logger.info("[ProcessamentoPrazos]:: Dias de análise da Análise técnica com ID - " + analise.analiseTecnica.id + " processada ::[ProcessamentoPrazos]");
+//							Logger.info("[ProcessamentoPrazos]:: Dias de análise da Análise técnica com ID - " + analise.analiseTecnica.id + " processada ::[ProcessamentoPrazos]");
 
 						}
 
@@ -93,7 +93,7 @@ public class ProcessamentoPrazos extends GenericJob {
 
 	public void verificaPrazoSuspensao() {
 
-		Logger.info("[INICIO-JOB] ::ProcessamentoPrazoSuspensao:: [INICIO-JOB]");
+//		Logger.info("[INICIO-JOB] ::ProcessamentoPrazoSuspensao:: [INICIO-JOB]");
 
 		List<Suspensao> suspensoes = Suspensao.findAtivas();
 
@@ -181,7 +181,7 @@ public class ProcessamentoPrazos extends GenericJob {
 
 			}
 		}
-		Logger.info("[FIM-JOB] ::ProcessamentoPrazoSuspensao:: [FIM-JOB]");
+//		Logger.info("[FIM-JOB] ::ProcessamentoPrazoSuspensao:: [FIM-JOB]");
 
 	}
 

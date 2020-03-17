@@ -24,9 +24,9 @@ public class VerificarComunicado extends GenericJob {
 	@Override
 	public void executar() throws Exception {
 		
-		Logger.info("[INICIO-JOB] ::VerificarComunicado:: [INICIO-JOB]");
+//		Logger.info("[INICIO-JOB] ::VerificarComunicado:: [INICIO-JOB]");
 		verificarStatusComunicado();
-		Logger.info("[FIM-JOB] ::VerificarComunicado:: [FIM-JOB]");
+//		Logger.info("[FIM-JOB] ::VerificarComunicado:: [FIM-JOB]");
 		
 	}
 

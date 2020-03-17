@@ -22,9 +22,9 @@ public class VerificarAnaliseVencida extends GenericJob {
     @Override
     public void executar() {
 
-        Logger.info("[INICIO-JOB] ::VerificarAnaliseVencida:: [INICIO-JOB]");
+//        Logger.info("[INICIO-JOB] ::VerificarAnaliseVencida:: [INICIO-JOB]");
         verificarAnalisesVencidas();
-        Logger.info("[FIM-JOB] ::VerificarAnaliseVencida:: [FIM-JOB]");
+//        Logger.info("[FIM-JOB] ::VerificarAnaliseVencida:: [FIM-JOB]");
 
     }
 
@@ -49,8 +49,8 @@ public class VerificarAnaliseVencida extends GenericJob {
 
             } catch (Exception e) {
 
-                Logger.error(Mensagem.ERRO_ARQUIVAR_PROCESSO.getTexto(processo.numero));
-                Logger.error(e.getMessage());
+//                Logger.error(Mensagem.ERRO_ARQUIVAR_PROCESSO.getTexto(processo.numero));
+//                Logger.error(e.getMessage());
                 rollbackTransaction();
 
             }

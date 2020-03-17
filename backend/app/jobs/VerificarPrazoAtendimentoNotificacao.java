@@ -18,7 +18,7 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
     @Override
     public void executar() throws Exception {
 
-        Logger.info("[INICIO-JOB] ::VerificarPrazoAtendimentoNotificacao:: [INICIO-JOB]");
+//        Logger.info("[INICIO-JOB] ::VerificarPrazoAtendimentoNotificacao:: [INICIO-JOB]");
 
         List<Notificacao> notificacoes = Notificacao
                 .find("resolvido = :resolvido AND segundo_email_enviado = :segundo_email_enviado")
@@ -34,15 +34,15 @@ public class VerificarPrazoAtendimentoNotificacao extends GenericJob {
 
             }catch (Exception e) {
 
-                Logger.error(Mensagem.ERRO_ENVIAR_SEGUNDO_EMAIL_NOTIFICACAO.getTexto(notificacao.analiseGeo.analise.processo.numero));
-                Logger.error(e.getMessage());
+//                Logger.error(Mensagem.ERRO_ENVIAR_SEGUNDO_EMAIL_NOTIFICACAO.getTexto(notificacao.analiseGeo.analise.processo.numero));
+//                Logger.error(e.getMessage());
                 rollbackTransaction();
 
             }
 
         });
 
-        Logger.info("[FIM-JOB] ::VerificarPrazoAtendimentoNotificacao:: [FIM-JOB]");
+//        Logger.info("[FIM-JOB] ::VerificarPrazoAtendimentoNotificacao:: [FIM-JOB]");
     }
 
     public void verificarPrazoAtendimento(Notificacao notificacao) throws Exception {
