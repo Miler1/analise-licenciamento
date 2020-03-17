@@ -214,11 +214,13 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         _.forEachRight(ctrl.parecer.documentos, function(documento) {
             if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO) {
 
+                const index = ctrl.parecer.documentos.indexOf(documento);
+
                 ctrl.pergunta = true;
 
                 ctrl.anexos.push(documento);
 
-                ctrl.parecer.documentos.pop();
+                ctrl.parecer.documentos.splice(index, 1);
 
             }
         });
@@ -227,7 +229,8 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         ctrl.parecer.validadePermitida = ctrl.parecer.validadePermitida.toString();
         ctrl.parecer.tipoResultadoAnalise.id = ctrl.parecer.tipoResultadoAnalise.id.toString();
 
-        ctrl.parecer.vistoria.data = new Date(ctrl.parecer.vistoria.data);
+        var data = ctrl.parecer.vistoria.data.split(" ")[0].split('/');
+        ctrl.parecer.vistoria.data = new Date(data[1]+'/'+data[0]+'/'+data[2]);
         ctrl.parecer.vistoria.hora = new Date(ctrl.parecer.vistoria.hora);
 
         ctrl.marcarSemInconsistencia();

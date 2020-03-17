@@ -219,7 +219,7 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 		parecerAntigo.finalidadeAtividade = this.finalidadeAtividade;
 
 		if(this.documentos != null && !this.documentos.isEmpty()) {
-			parecerAntigo.documentos = this.updateDocumentos(this.documentos);
+			parecerAntigo.documentos = parecerAntigo.updateDocumentos(this.documentos);
 		}
 
 		if(this.vistoria != null) {
@@ -292,6 +292,14 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 	}
 
 	private List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
+
+		if(this.id != null) {
+			this.documentos.forEach(anexoA -> {
+				if (novosDocumentos.stream().anyMatch(anexo -> anexoA.id.equals(anexo.id))) {
+					anexoA._delete();
+				}
+			});
+		}
 
 		TipoDocumento tipoAutoInfracao = TipoDocumento.findById(TipoDocumento.AUTO_INFRACAO);
 		TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
