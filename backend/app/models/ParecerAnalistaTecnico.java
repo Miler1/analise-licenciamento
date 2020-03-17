@@ -1,4 +1,5 @@
 package models;
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import br.ufla.lemaf.beans.pessoa.Endereco;
 import br.ufla.lemaf.enums.TipoEndereco;
@@ -378,12 +379,16 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 			}
 		}
 
+		 final Endereco enderecoCorrespondencia = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+
+
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_MINUTA);
 
 		PDFGenerator pdf = new PDFGenerator()
 				.setTemplate(tipoDocumento.getPdfTemplate())
 				.addParam("analiseTecnica", analiseTecnica)
-				.addParam("endereco", enderecoPrincipal)
+				.addParam("enderecoEmpreendimento", enderecoPrincipal)
+				.addParam("enderecoCorrespondencia",enderecoCorrespondencia)
 				.addParam("empreendimento", empreendimentoEU)
 				.addParam("parecer", parecer)
 				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 5.0D);
