@@ -1037,4 +1037,13 @@ public class AnaliseGeo extends Analisavel {
                 .fetch();
     }
 
+
+    public static List<AnaliseGeo> findAllByProcesso(String numero){
+
+        return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY analise.id DESC")
+                .setParameter("numero", numero)
+                .fetch();
+
+    }
+
 }

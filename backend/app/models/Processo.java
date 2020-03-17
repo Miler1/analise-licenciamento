@@ -1012,7 +1012,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
 
 		if(this.analise.analisesGeo == null || this.analise.analisesGeo.isEmpty()){
-			this.analise.analisesGeo = AnaliseGeo.findAllByAnalise(this.processoAnterior.analise);
+
+			this.analise.analisesGeo = AnaliseGeo.findAllByProcesso(this.numero);
 			this.analise.analiseGeo = this.analise.analisesGeo.stream()
 					.max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
 		}
