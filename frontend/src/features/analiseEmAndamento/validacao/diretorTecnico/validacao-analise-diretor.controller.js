@@ -1,4 +1,5 @@
-var ValidacaoAnaliseDiretorController = function($route,      
+var ValidacaoAnaliseDiretorController = function($rootScope,
+                                                 $route,      
                                                  analiseGeoService, 
                                                  analiseTecnicaService,
                                                  documentoAnaliseService,
@@ -195,7 +196,7 @@ var ValidacaoAnaliseDiretorController = function($route,
                 });
 
         });
-
+        
         $rootScope.$broadcast('atualizarContagemProcessos');
 
     }
