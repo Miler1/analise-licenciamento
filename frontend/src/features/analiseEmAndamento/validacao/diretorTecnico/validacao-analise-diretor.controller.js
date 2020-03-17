@@ -196,6 +196,8 @@ var ValidacaoAnaliseDiretorController = function($route,
 
         });
 
+        $rootScope.$broadcast('atualizarContagemProcessos');
+
     }
 
     function scrollTop() {
