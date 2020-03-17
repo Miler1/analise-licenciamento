@@ -92,6 +92,7 @@ public class Vistoria extends GenericModel {
 			if(this.documentoRit.id == null) {
 
 				this.documentoRit.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RIT);
+				this.documentoRit._save();
 			}
 		}
 
