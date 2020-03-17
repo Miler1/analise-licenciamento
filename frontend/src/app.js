@@ -198,7 +198,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 		},
 		{
 
-			titulo: 'Aguardando Autenticação',
+			titulo: 'Aguardando validação',
 			icone: 'glyphicon glyphicon-pencil',
 			url: function() {
 				return '/';
