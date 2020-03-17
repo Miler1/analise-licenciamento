@@ -2,12 +2,12 @@ package models;
 
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Entity
 @Table(schema = "analise", name = "vistoria")
@@ -30,7 +30,7 @@ public class Vistoria extends GenericModel {
 	@Column(name = "realizada")
 	public Boolean realizada;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@Required
 	@JoinColumn(name = "id_documento_rit")
 	public Documento documentoRit;
@@ -79,19 +79,41 @@ public class Vistoria extends GenericModel {
 	@JoinColumn(name = "id_documento_relatorio_tecnico_vistoria", referencedColumnName = "id")
 	public Documento documentoRelatorioTecnicoVistoria;
 
+	public Documento updateDocumentoRIT(Documento novoDocumentoRIT, Vistoria vAntiga) {
+
+		if(vAntiga != null) {
+			if(this.documentoRit != null && this.documentoRit.id == null) {
+				vAntiga.documentoRit._delete();
+			}
+		}
+
+		if(this.documentoRit != null) {
+
+			if(this.documentoRit.id == null) {
+
+				this.documentoRit.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RIT);
+			}
+		}
+
+		return this.documentoRit;
+	}
+
 	public List<Documento> updateDocumentos(List<Documento> novosDocumentos, Vistoria vAntiga) {
 
 		if(vAntiga != null) {
 
+			AtomicReference<Boolean> removido = new AtomicReference<>(true);
+
 			vAntiga.anexos.forEach(anexoA -> {
 				if(this.anexos.stream().anyMatch(anexo -> anexoA.id.equals(anexo.id))){
+					removido.set(false);
+				}
+				if(removido.get()) {
 					anexoA._delete();
+				} else {
+					removido.set(true);
 				}
 			});
-
-			if(this.documentoRit != null && this.documentoRit.id == null) {
-				vAntiga.documentoRit._delete();
-			}
 
 		}
 
@@ -99,15 +121,6 @@ public class Vistoria extends GenericModel {
 		TipoDocumento tipoDocumentoVistoria = TipoDocumento.findById(TipoDocumento.DOCUMENTO_VISTORIA);
 
 		this.anexos = new ArrayList<>();
-
-		if(this.documentoRit != null) {
-
-			if(this.documentoRit.id == null) {
-
-				this.documentoRit.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RIT);
-				this.documentoRit.save();
-			}
-		}
 
 		for (Documento documento : novosDocumentos) {
 
@@ -153,6 +166,8 @@ public class Vistoria extends GenericModel {
 
 		if(this.id == null){
 
+			this.documentoRit = this.updateDocumentoRIT(this.documentoRit, null);
+
 			this.updateDocumentos(this.anexos, null);
 
 			return this.save();
@@ -160,6 +175,8 @@ public class Vistoria extends GenericModel {
 		} else {
 
 			Vistoria vAntiga = findById(this.id);
+
+			vAntiga.documentoRit = this.updateDocumentoRIT(this.documentoRit, vAntiga);
 
 			vAntiga.anexos = this.updateDocumentos(this.anexos, vAntiga);
 
