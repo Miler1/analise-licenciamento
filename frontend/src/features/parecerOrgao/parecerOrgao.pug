@@ -34,7 +34,7 @@ div(ng-if='isRoute("/parecer-orgao")', ng-controller='parecerOrgaoController')
                     td.col-md-4 {{comunicado.tipoSobreposicao.nome}}
     div(ng-if="comunicado.valido == false ? disabled=false: disabled = true")        
         div(ng-if="comunicado.resolvido == true ? disabled=false: disabled = true")
-            label.obrigatorio(style="font-size:13px;") Descrição do Parecer:
+            label.obrigatorio(style="font-size:13px;") Descrição da manifestação:
             br
             textarea.resposta-orgao(id="descricaoParecer", ng-class="{'error': comunicado.parecerOrgao === true}")
 
