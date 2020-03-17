@@ -45,7 +45,7 @@
 								i.pointer.glyphicon.glyphicon-trash
 
 		.inconsistencia(ng-class="{ 'error-summernote': ctrl.errors.vistoria.inconsistenciaVistoria }")
-			label.obrigatorio Existem inconsistências na vistoria?
+			label.obrigatorio Não foram identificadas inconsistências na vistoria?
 			i.item.pointer.pull-right.glyphicon.glyphicon-remove-sign(ng-click="ctrl.openModalInconsistencia()", ng-class=" { 'vistoria-com-inconsistencia': ctrl.parecer.vistoria.inconsistenciaVistoria }")
 			i.item.pointer.pull-right.glyphicon.glyphicon-ok-sign(ng-if="!ctrl.hasInconsistenciaVistoriaAdicionada()", ng-click="ctrl.marcarSemInconsistencia()", ng-class=" { 'vistoria-sem-inconsistencia': ctrl.semInconsistenciaVistoria }")
 			i.item.pointer.pull-right.glyphicon.glyphicon-ok-sign(ng-if="ctrl.hasInconsistenciaVistoriaAdicionada()", ng-class=" { 'vistoria-sem-inconsistencia': ctrl.semInconsistenciaVistoria }"
