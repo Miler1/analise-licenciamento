@@ -11,7 +11,6 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
 	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
-	cxEntAnalistaGeo.primeiroAcesso = primeiroAcesso;
 	cxEntAnalistaGeo.processos = [];
 	cxEntAnalistaGeo.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	cxEntAnalistaGeo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -46,13 +45,12 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 		});
 	}
 
-	function iniciarAnalise(idAnaliseGeo) {
-		analiseGeoService.iniciar({ id : idAnaliseGeo })
+	function iniciarAnalise(processo) {
+
+		analiseGeoService.iniciar({ id : processo.idAnaliseGeo })
 			.then(function(response){
 
-				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM ANÁLISE GEO';
-				$location.path('/analise-geo/' + idAnaliseGeo.toString());
+				cxEntAnalistaGeo.iniciarUploadShapes(processo);
 
 			}, function(error){
 				mensagem.error(error.data.texto);
