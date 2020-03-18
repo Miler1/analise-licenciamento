@@ -81,18 +81,12 @@ public class Vistoria extends GenericModel {
 
 	public Documento updateDocumentoRIT(Documento novoDocumentoRIT, Vistoria vAntiga) {
 
-		if(vAntiga != null) {
-			if(this.documentoRit != null && this.documentoRit.id == null) {
-				vAntiga.documentoRit._delete();
-			}
-		}
-
 		if(this.documentoRit != null) {
 
 			if(this.documentoRit.id == null) {
 
 				this.documentoRit.tipo = TipoDocumento.findById(TipoDocumento.DOCUMENTO_RIT);
-				this.documentoRit._save();
+				this.documentoRit.save();
 			}
 		}
 
