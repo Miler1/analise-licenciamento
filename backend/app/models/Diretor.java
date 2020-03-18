@@ -69,13 +69,8 @@ public class Diretor extends GenericModel {
 
 		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.DIRETOR);
 
-		if (usuariosAnalise.isEmpty()) {
-
-			Logger.info(Mensagem.NENHUM_DIRETOR_ENCONTRADO.getTexto(analise.processo.numero));
-
-			return null;
-
-		}
+		if (usuariosAnalise.isEmpty())
+			throw new WebServiceException(Mensagem.NENHUM_DIRETOR_ENCONTRADO.getTexto());
 
 		List<Long> idsDiretores= usuariosAnalise.stream()
 				.map(ang -> ang.id)
