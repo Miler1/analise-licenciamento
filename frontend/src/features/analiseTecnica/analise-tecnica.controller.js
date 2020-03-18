@@ -214,7 +214,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         _.forEachRight(ctrl.parecer.documentos, function(documento) {
             if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO) {
 
-                const index = ctrl.parecer.documentos.indexOf(documento);
+                var index = ctrl.parecer.documentos.indexOf(documento);
 
                 ctrl.pergunta = true;
 
