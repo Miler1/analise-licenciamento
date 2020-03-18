@@ -70,13 +70,9 @@ public class Presidente extends GenericModel {
 
         List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.PRESIDENTE);
 
-        if (usuariosAnalise.isEmpty()) {
+        if (usuariosAnalise.isEmpty())
+            throw new WebServiceException(Mensagem.NENHUM_PRESIDENTE_ENCONTRADO.getTexto(analise.processo.numero));
 
-            Logger.info(Mensagem.NENHUM_PRESIDENTE_ENCONTRADO.getTexto(analise.processo.numero));
-
-            return null;
-
-        }
 
         List<Long> idsPresidente= usuariosAnalise.stream()
                 .map(ang -> ang.id)
