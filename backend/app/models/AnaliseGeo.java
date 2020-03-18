@@ -478,7 +478,7 @@ public class AnaliseGeo extends Analisavel {
 
         comunicado.linkComunicado = Configuracoes.APP_URL + "app/index.html#!/parecer-orgao/" + comunicado.id;
 
-        EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo(this, parecerAnalistaGeo, comunicado, destinatarios);
+        EmailComunicarOrgaoResponsavelAnaliseGeo emailComunicarOrgaoResponsavelAnaliseGeo = new EmailComunicarOrgaoResponsavelAnaliseGeo( parecerAnalistaGeo, comunicado, destinatarios);
         emailComunicarOrgaoResponsavelAnaliseGeo.enviar();
 
     }

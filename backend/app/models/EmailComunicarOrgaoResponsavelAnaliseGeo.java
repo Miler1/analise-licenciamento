@@ -29,9 +29,19 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
     public EmailComunicarOrgaoResponsavelAnaliseGeo(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
 
         super(emailsDestinatarios);
+        this.pdfParecer = analiseGeo.gerarPDFParecer(parecerAnalistaGeo);
+        this.cartaImagem = analiseGeo.gerarPDFCartaImagem(parecerAnalistaGeo);
+        this.analiseGeo = analiseGeo;
+        this.comunicado = comunicado;
+
+    }
+
+    public EmailComunicarOrgaoResponsavelAnaliseGeo(ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
+
+        super(emailsDestinatarios);
         this.pdfParecer = parecerAnalistaGeo.documentoParecer;
         this.cartaImagem = parecerAnalistaGeo.cartaImagem;
-        this.analiseGeo = analiseGeo;
+        this.analiseGeo = parecerAnalistaGeo.analiseGeo;
         this.comunicado = comunicado;
 
     }
