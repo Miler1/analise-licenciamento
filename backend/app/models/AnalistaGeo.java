@@ -85,17 +85,12 @@ public class AnalistaGeo extends GenericModel {
 		return null;
 	}
 
-	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
+	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) throws ValidacaoException {
 
 		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-		if (usuariosAnalise.isEmpty()) {
-
-			Logger.info(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
-
-			return null;
-
-		}
+		if (usuariosAnalise.isEmpty())
+			throw new RuntimeException(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
 
 		List<Long> idsAnalistasGeo = usuariosAnalise.stream()
 				.map(ang -> ang.id)
