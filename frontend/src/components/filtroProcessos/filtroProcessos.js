@@ -181,7 +181,7 @@ var FiltroProcessos = {
 		function setFiltrosPadrao(){
 
 			ctrl.filtro = {};
-			ctrl.filtro.filtrarPorUsuario = true;
+			// ctrl.filtro.filtrarPorUsuario = true;
 
 			if (ctrl.filtrarPorUsuario) {
 				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
@@ -442,7 +442,7 @@ var FiltroProcessos = {
 					});
 			}
 
-			if (ctrl.filtrarPorUsuario) {
+			if (ctrl.filtro.filtrarPorUsuario) {
 				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 			}
 

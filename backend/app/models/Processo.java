@@ -483,7 +483,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
-			return;
+//			return;
 		}
 
 		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
@@ -491,55 +491,69 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
 		}
 
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_GEO) ||
-				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_GEO)) {
+		if(filtro.idCondicaoTramitacao != null) {
 
-			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, filtro.isAnaliseGeoOpcional);
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_GEO) ||
+					filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_GEO)) {
 
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+				processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, filtro.isAnaliseGeoOpcional);
+
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			
+			} else {
+
+				processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
+
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			}
+
+			if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla, 1));
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla, 1));
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla, 1));
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			}
+
 		} else {
 
+			if(filtro.idAnalistaGeo == null) {
+
+				filtro.idAnalistaGeo = usuarioSessao.id;
+
+			}
+
 			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+
 		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
-
-		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
-
 
 	}
 
