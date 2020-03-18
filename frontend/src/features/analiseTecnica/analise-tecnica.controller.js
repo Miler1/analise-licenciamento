@@ -941,7 +941,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                             nomeDoArquivo: nomeDoArquivo,
                             tipo: {
 
-                                id: app.utils.TiposDocumentosAnalise.NOTIFICACAO
+                                id: app.utils.TiposDocumentosAnalise.DOCUMENTO_NOTIFICACAO_TECNICA
                             }
                         });
 
