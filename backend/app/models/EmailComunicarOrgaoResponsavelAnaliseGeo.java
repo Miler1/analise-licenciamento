@@ -68,11 +68,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
                 }
             }
 
-            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio, this.pdfParecer.getFile(), this.cartaImagem.getFile()).get()) {
-
-                throw new AppException();
-
-            }
+            Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio, this.pdfParecer.getFile(), this.cartaImagem.getFile()).get();
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
