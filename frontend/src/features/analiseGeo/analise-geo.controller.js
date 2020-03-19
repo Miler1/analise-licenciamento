@@ -58,6 +58,13 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 	};
 	ctrl.sobreposicoesEmpreendimento = [];
 
+	ctrl.indexAtividade = null;
+	ctrl.indexAtividadeParametro = null;
+
+	ctrl.parametroAreaUtil = {
+		atividade: []
+};
+
 	var getLayer = function(descricao){
 
 		var layerControle;

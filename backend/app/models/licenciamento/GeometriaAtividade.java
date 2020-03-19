@@ -32,7 +32,7 @@ public class GeometriaAtividade extends GenericModel {
 
 	public GeometriaAtividadeVO convertToVO() {
 
-		return new GeometriaAtividadeVO(this.geometria);
+		return new GeometriaAtividadeVO(this.geometria, atividadeCaracterizacao);
 
 	}
 
