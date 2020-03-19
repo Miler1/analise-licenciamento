@@ -158,7 +158,7 @@ include ../../layout/components/mapPanel
                     tbody(ng-repeat="inconsistencia in ctrl.analiseGeo.inconsistencias")
                         tr
                             td.col-md-4 {{ getItemRestricao(inconsistencia) }}
-                            td.col-md-3 {{ inconsistencia.categoria }}
+                            td.col-md-3 {{ getItemRestricao(inconsistencia).toUpperCase() }}
                             td.col-md-4 {{ getDescricaoRestricao(inconsistencia) }}
                             td.col-md-2.text-right
                                 i.glyphicon.glyphicon-pencil.icone-inconsistencia-clicavel(ng-if="inconsistencia.categoria !== 'RESTRICAO'",

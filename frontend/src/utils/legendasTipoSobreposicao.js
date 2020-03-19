@@ -17,7 +17,8 @@ var LegendasTipoSobreposicao = {
 	AREAS_EMBARGADAS_IBAMA: 'areas_embargadas_ibama',
 	AUTO_DE_INFRACAO_IBAMA: 'auto_de_infracao_ibama',
 	SAUIM_DE_COLEIRA: 'sauim_de_coleira',
-	SITIOS_ARQUEOLOGICOS: 'sitios_arqueologicos'
+	SITIOS_ARQUEOLOGICOS: 'sitios_arqueologicos',
+	BENS_ACAUTELADOS_IPHAN_PT: 'bens_acautelados_iphan_pt'
 
 };
 
