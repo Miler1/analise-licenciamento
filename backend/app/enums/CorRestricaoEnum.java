@@ -24,7 +24,8 @@ public enum CorRestricaoEnum {
     AUTO_DE_INFRACAO_IBAMA("Auto de infração IBAMA", Color.decode("#502274")),
     SAUIM_DE_COLEIRA("Sauim de coleira", Color.decode("#502274")),
     SITIOS_ARQUEOLOGICOS("Sítios arqueológicos", Color.decode("#502274")),
-    BENS_ACAUTELADOS_IPHAN_PT("Bens Acautelados IPHAN Ponto", Color.decode("#502274")),
+    BENS_ACAUTELADOS_IPHAN_PT("Bens_Acautelados IPHAN Ponto", Color.decode("#502274")),
+    BENS_ACAUTELADOS_IPHAN_POL("Bens_Acautelados IPHAN Poligono", Color.decode("#ff4c4c")),
     UC_ESTADUAL_ZA_PI_FORA("Unidade de conservação estadual ZA fora PI", Color.decode("#39FF14"));
 
     public String nomeRestricao;
