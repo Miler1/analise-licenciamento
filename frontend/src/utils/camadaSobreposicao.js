@@ -17,7 +17,8 @@ var CamadaSobreposicao = {
     'AREAS_EMBARGADAS_IBAMA':'base_referencia_am:areas_embargadas_ibama' ,
     'AUTO_DE_INFRACAO_IBAMA': 'base_referencia_am:auto_infracao_ibama',
     'SAUIM_DE_COLEIRA':'base_referencia_am:sauim_de_coleira',
-    'SITIOS_ARQUEOLOGICOS':'base_referencia_am:sitios_arqueologicos'
+    'SITIOS_ARQUEOLOGICOS':'base_referencia_am:sitios_arqueologicos',
+    'BENS_ACAUTELADOS_IPHAN_PT': 'base_referencia_am:bens_acautelados_iphan_pt'
 };
 
 exports.utils.CamadaSobreposicao = CamadaSobreposicao;

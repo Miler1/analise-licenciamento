@@ -905,7 +905,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 		} else {
 
-			return 'Propriedade';
+			return 'Empreendimento/Atividade';
 
 		}
 
