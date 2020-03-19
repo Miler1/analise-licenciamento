@@ -1737,7 +1737,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
         var documentosNotificacao = [];
 
         documentosNotificacao = _.filter(ctrl.parecer.documentos, function(documento) {
-            return documento.tipo.id === app.utils.TiposDocumentosAnalise.NOTIFICACAO;
+            return documento.tipo.id === app.utils.TiposDocumentosAnalise.NOTIFICACAO || documento.tipo.id === app.utils.TiposDocumentosAnalise.DOCUMENTO_NOTIFICACAO_TECNICA;
         });
 
         return documentosNotificacao;
