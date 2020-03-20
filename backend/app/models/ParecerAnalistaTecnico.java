@@ -250,7 +250,7 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 			}
 		}
 
-		 final Endereco enderecoCorrespondencia = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+		 final Endereco enderecoCorrespondencia = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_CORRESPONDENCIA)).findAny().orElseThrow(PortalSegurancaException::new);
 
 
 		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_MINUTA);
