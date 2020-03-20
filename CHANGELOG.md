@@ -86,6 +86,7 @@
 * OS49 - US1178 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para visualizar protocolo e visualizar licença.
 * OS49 - US1179 - [Presidente] Eu, diretor presidente, devo consultar licenças emitidas para suspender ou cancelar a licença.
 * OS49 - US1271 - Eu, diretor presidente, devo enviar e-mail ao interessado para informar status da licença.
+* OS49 - US1171 - [Presidente] Eu, diretor presidente, devo acessar visualizar protocolo para visualizar os dados do protocolo.
 
 ## OS008
 

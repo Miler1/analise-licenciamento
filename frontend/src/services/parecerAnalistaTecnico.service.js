@@ -13,7 +13,12 @@ var ParecerAnalistaTecnicoService = function(request, config) {
 			.post(config.BASE_URL() + 'parecer/analistaTecnico/concluir', parecer);
 
 	};
-
+	
+	this.getUltimoParecerAnaliseTecnica = function(id) {
+		return request
+			.get(config.BASE_URL() + 'parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/' + id);
+	};
+	
 	this.findParecerByIdProcesso = function(id) {
 
 		return request
