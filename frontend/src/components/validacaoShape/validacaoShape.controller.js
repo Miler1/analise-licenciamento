@@ -18,7 +18,7 @@ var ValidacaoShapeController = function (validacaoShapeService, mensagem, $scope
 	validacaoShape.resultadoProcessamento = null;
 
 	/** Declaração das funções **/
-	function init(tipo,cor,popupText, inMunicipio, inEmpreendimento){
+	function init(tipo, cor, popupText, inMunicipio, inEmpreendimento){
 		validacaoShape.tipo = tipo;
 		validacaoShape.cor = cor;
 		validacaoShape.popupText = popupText;
