@@ -55,54 +55,76 @@ mixin uploadShapes(idMapa)
 						i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
 						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
 							| Especificações do arquivo a ser enviado
-					+uploadField("validacaoShapeController",
-								"HID",
-								'#2196F3',
-								"Hidrografia",
-								true,
-								true,
-								true)
-								//- TODO oisouothiago - ajustar como o parametro é enviado para o mixin
+					div(ng-if="!uploadShapes.verificarUploadFeito('HID')")
+						+uploadField("validacaoShapeController",
+									"HID",
+									'#2196F3',
+									"Hidrografia",
+									true,
+									true,
+									true)
+									//- TODO oisouothiago - ajustar como o parametro é enviado para o mixin
+
+					div(ng-if="uploadShapes.verificarUploadFeito('HID')")
+						div.row.us-custom-row
+							div.pull-left
+								button.btn.btn-default(ng-click="uploadShapes.alterarGeometria('HID')")
+									span.glyphicon.glyphicon-remove-sign
+									| &nbsp;Alterar Geometria
 
 					h3.us-upload-title APP (Área de preservação permanente)
 					div.us-upload-description
 						i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
 						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
 							| Especificações do arquivo a ser enviado
-					+uploadField("validacaoShapeController",
-								"APP",
-								'#8BC34A',
-								"Área de preservação permanente",
-								true,
-								true,
-								true)
+					div(ng-if="!uploadShapes.verificarUploadFeito('APP')")
+						+uploadField("validacaoShapeController",
+									"APP",
+									'#8BC34A',
+									"Área de preservação permanente",
+									true,
+									true,
+									true)
+					div(ng-if="uploadShapes.verificarUploadFeito('APP')")
+						div.row.us-custom-row
+							div.pull-left
+								button.btn.btn-default(ng-click="uploadShapes.alterarGeometria('APP')")
+									span.glyphicon.glyphicon-remove-sign
+									| &nbsp;Alterar Geometria
 
 					h3.us-upload-title Área antropizada
 					div.us-upload-description
 						i.fa.fa-info-circle.modal-open-icon(ng-click="uploadShapes.abrirModal()")
 						a.modal-open-text.upload-especifications-text(ng-click="uploadShapes.abrirModal()")
 							| Especificações do arquivo a ser enviado
-					+uploadField("validacaoShapeController",
-								"AA",
-								'#CDDC39',
-								"Área antropizada",
-								true,
-								true,
-								true)
+					div(ng-if="!uploadShapes.verificarUploadFeito('AA')")
+						+uploadField("validacaoShapeController",
+									"AA",
+									'#CDDC39',
+									"Área antropizada",
+									true,
+									true,
+									true)
+					div(ng-if="uploadShapes.verificarUploadFeito('AA')")
+						div.row.us-custom-row
+							div.pull-left
+								button.btn.btn-default(ng-click="uploadShapes.alterarGeometria('AA')")
+									span.glyphicon.glyphicon-remove-sign
+									| &nbsp;Alterar Geometria
 
 				div(ng-show="uploadShapes.doesntHasShapes")
 					h3.us-upload-noupload O empreendimento
-						strong não
+						strong  não
 						|  possui arquivos para anexar
 
 			div.row.us-custom-row
 				div.pull-left
 					button.btn.btn-default(ng-click="uploadShapes.cancelaEnvio()")
 						span.glyphicon.glyphicon-remove-sign
-						| &nbsp;Cancelar
+						|  Cancelar
 				div.pull-right
 					button.btn.btn-default.btn-success(
 													ng-click="uploadShapes.enviaShapes()",
 													ng-disabled="uploadShapes.shapesUploaded < 1 && !uploadShapes.doesntHasShapes")
 						span.glyphicon.glyphicon-ok-sign
-						| &nbsp;Continuar
+						|  Continuar

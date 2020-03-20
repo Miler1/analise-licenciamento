@@ -83,5 +83,5 @@ public class AtividadeCaracterizacao extends GenericModel {
 	public Stream<Geometry> getGeoms(){
 		return this.geometriasAtividade.stream().map(ga -> ga.geometria);
 	}
-	
+
 }

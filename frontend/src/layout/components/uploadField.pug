@@ -7,7 +7,6 @@ mixin uploadField(controller, tipoUpload, cor, popupText, hasDescription, inMuni
 		
 		+modalEspecificacoesArquivo('modalEspecificacoesArquivo')
 		.row
-			//- .col-sm-offset-1
 			.col-sm-12
 				.dropzone(ng-hide="validacaoShape.arquivoSelecionado.arquivo",
 									ngf-drop,
@@ -20,7 +19,7 @@ mixin uploadField(controller, tipoUpload, cor, popupText, hasDescription, inMuni
 					i.fa.fa-upload
 					p Selecionar arquivo ...
 						span.subtitle Ou arraste um arquivo até esta área
-					//- | Ou arraste um arquivo até esta área
+
 				div(ng-show="validacaoShape.arquivoSelecionado.arquivo")
 					.progress
 						.progress-bar(role="progressbar", aria-valuenow="60",aria-valuemin="0",

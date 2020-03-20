@@ -1060,6 +1060,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	}
 
+	public List<EmpreendimentoCamandaGeo> getEmpreendimentoCamandasGeo() {
+
+		return EmpreendimentoCamandaGeo.find("id_empreendimento = :id_empreendimento")
+				.setParameter("id_empreendimento", this.empreendimento.id).fetch();
+
+	}
+
 	public static CamadaGeoComplexoVO preencheComplexo(Caracterizacao caracterizacao) {
 
 		Processo.indexDadosGeometriasComplexo = 0;
