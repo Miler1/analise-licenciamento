@@ -112,6 +112,9 @@ var FiltroLicencasEmitidas = {
 			} else {
 				this.pesquisaRapida(pagina);
 			}
+
+			$rootScope.$broadcast('atualizarContagemProcessos');
+		
 		};
 
 		function setFiltrosPadrao(){

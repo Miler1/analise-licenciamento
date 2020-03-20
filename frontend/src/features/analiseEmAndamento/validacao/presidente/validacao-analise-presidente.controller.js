@@ -10,6 +10,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
                                                  parecerAnalistaGeoService,
 												 processoService,
 												 documentoService,
+												 $rootScope,
                                                  $location) {
 
     var validacaoAnalisePresidente = this;
@@ -54,7 +55,9 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 
                 validacaoAnalisePresidente.parecerDiretor = response.data;
                 
-            });
+			});
+			
+		$rootScope.$broadcast('atualizarContagemProcessos');
 
 	}
 

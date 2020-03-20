@@ -175,7 +175,7 @@ var FiltroProcessos = {
 		function setFiltrosPadrao(){
 
 			ctrl.filtro = {};
-			ctrl.filtro.filtrarPorUsuario = true;
+			// ctrl.filtro.filtrarPorUsuario = true;
 
 			if (ctrl.filtrarPorUsuario) {
 				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
@@ -184,6 +184,7 @@ var FiltroProcessos = {
 			if (_.isArray(ctrl.condicaoTramitacao)) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
 
 				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)){
@@ -199,6 +200,7 @@ var FiltroProcessos = {
 			} else if (ctrl.condicaoTramitacao) {
 
 				ctrl.filtro.filtrarPorUsuario = true;
+				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.idCondicaoTramitacao = ctrl.condicaoTramitacao;
 				caixaEntrada = false;
 				emAnalise = false;
@@ -417,7 +419,7 @@ var FiltroProcessos = {
 					});
 			}
 
-			if (ctrl.filtrarPorUsuario) {
+			if (ctrl.filtro.filtrarPorUsuario) {
 				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 			}
 
@@ -438,10 +440,10 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
 				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
+				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO,
 				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA
-
 
 			];
 		}

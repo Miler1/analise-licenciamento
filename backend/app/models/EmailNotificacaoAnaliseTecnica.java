@@ -60,7 +60,7 @@ public class EmailNotificacaoAnaliseTecnica extends EmailNotificacao {
 
 		} catch (InterruptedException | ExecutionException | AppException e) {
 
-			ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseTecnica.id, TipoEmail.NOTIFICACAO_ANALISE_TECNICA, e.getMessage(), this.emailsDestinatarios);
+			ReenvioEmail reenvioEmail = new ReenvioEmail(this.parecerAnalistaTecnico.id, TipoEmail.NOTIFICACAO_ANALISE_TECNICA, e.getMessage(), this.emailsDestinatarios);
 			reenvioEmail.save();
 
 			e.printStackTrace();

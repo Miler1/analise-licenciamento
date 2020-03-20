@@ -303,6 +303,7 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 		}
 
 		TipoDocumento tipoAutoInfracao = TipoDocumento.findById(TipoDocumento.AUTO_INFRACAO);
+		TipoDocumento documentoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_TECNICA);
 		TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
 
 		this.documentos = new ArrayList<>();
@@ -322,6 +323,10 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 				} else if (documento.tipo.id.equals(tipoParecer.id)) {
 
 					documento.tipo = tipoParecer;
+
+				} else if (documento.tipo.id.equals(documentoNotificacao.id)) {
+
+					documento.tipo = documentoNotificacao;
 
 				}
 

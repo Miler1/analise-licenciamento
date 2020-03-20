@@ -29,7 +29,7 @@ div.modal-body
             
         .info-dados-solicitante
             label Documentos gerados na análise: 
-            table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null || historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null || historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ",margin-top="15px;")
+            table.table.table-condensed(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null || historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null || historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null || historicoAnaliseTecnicaCtrl.notificacoes[0].documentosNotificacaoTecnica.length > 0",margin-top="15px;")
 
                 thead
 
@@ -54,13 +54,13 @@ div.modal-body
                         td.col-md-2.text-right
                             a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA)")
                                 i.glyphicon.glyphicon-eye-open
-                    tr(ng-repeat=" documentoNotificacao in historicoAnaliseTecnicaCtrl.analiseTecnica.notificacoes[0].documentosNotificacaoTecnica ")    
+                    tr(ng-repeat=" documentoNotificacao in historicoAnaliseTecnicaCtrl.notificacoes[0].documentosNotificacaoTecnica ")    
                         td.col-md-10 {{ documentoNotificacao.nomeDoArquivo }}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.NOTIFICACAO)")
+                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.downloadDocumentos(documentoNotificacao.id)")
                                 i.glyphicon.glyphicon-eye-open
 
-            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria == null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer == null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta == null ")
+            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria == null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer == null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta == null && historicoAnaliseTecnicaCtrl.notificacoes[0].documentosNotificacaoTecnica.length == 0")
                 i Não foi gerado nenhum documento.	
                                 
         hr

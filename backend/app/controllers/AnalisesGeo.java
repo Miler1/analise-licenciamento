@@ -251,8 +251,12 @@ public class AnalisesGeo extends InternalController {
 
     public static void buscaAnaliseGeoByAnalise(Long idAnalise) {
 
-        AnaliseGeo analiseGeo = AnaliseGeo.find("id_analise = :id_analise")
-                .setParameter("id_analise", idAnalise).first();
+        Analise analise = Analise.findById(idAnalise);
+
+        List<AnaliseGeo> analisesGeo = AnaliseGeo.findAllByProcesso(analise.processo.numero);
+
+        AnaliseGeo analiseGeo = analisesGeo.stream()
+                .max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
 
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
 

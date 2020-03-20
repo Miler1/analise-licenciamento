@@ -41,6 +41,8 @@ public class TipoDocumento extends Model {
 	public static Long AUTO_INFRACAO = 29L;
 	public static Long DOCUMENTO_RELATORIO_TECNICO_VISTORIA = 30L;
 	public static Long DOCUMENTO_MINUTA = 31L;
+	public static Long DOCUMENTO_JURIDICO = 32L;
+	public static Long DOCUMENTO_NOTIFICACAO_TECNICA = 33L;
 
 	@Required
 	public String nome;

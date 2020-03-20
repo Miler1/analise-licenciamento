@@ -115,7 +115,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	}
 
 	function notificacaoAtendida(processo) {
-		return processo && processo.retificacao;
+		return processo && processo.retificacao && processo.idAnalistaGeoAnterior === processo.idAnalistaGeo;
 	}
 };
 

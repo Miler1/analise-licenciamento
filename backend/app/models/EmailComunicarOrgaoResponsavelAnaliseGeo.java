@@ -36,6 +36,16 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
     }
 
+    public EmailComunicarOrgaoResponsavelAnaliseGeo(ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
+
+        super(emailsDestinatarios);
+        this.pdfParecer = parecerAnalistaGeo.documentoParecer;
+        this.cartaImagem = parecerAnalistaGeo.cartaImagem;
+        this.analiseGeo = parecerAnalistaGeo.analiseGeo;
+        this.comunicado = comunicado;
+
+    }
+
     @Override
     public void enviar() {
 
@@ -66,7 +76,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
-            ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseGeo.id, ReenvioEmail.TipoEmail.NOTIFICACAO_ANALISE_GEO, e.getMessage(), this.emailsDestinatarios);
+            ReenvioEmail reenvioEmail = new ReenvioEmail(this.comunicado.id, ReenvioEmail.TipoEmail.COMUNICAR_ORGAO, e.getMessage(), this.emailsDestinatarios);
             reenvioEmail.save();
 
             e.printStackTrace();

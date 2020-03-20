@@ -77,6 +77,11 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 			controller: controllers.ParecerOrgaoController,
 			controllerAs: 'parecerOrgao'
 		})
+		.when("/parecer-juridico/:idParecerJuridico", {
+			templateUrl: "features/parecerJuridico/parecerJuridico.html",
+			controller: controllers.ParecerJuridicoController,
+			controllerAs: 'parecerJuridico'
+		})
 		.otherwise({
 			redirectTo: "/"
 		});
@@ -141,7 +146,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 		$rootScope.perfis = app.utils.Perfis;
 		var appController = this;
 
-		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-orgao')) {
+		if (!$rootScope.usuarioSessao && !$rootScope.location.$$url.includes('/parecer-orgao') && !$rootScope.location.$$url.includes('/parecer-juridico')) {
 			window.location = $rootScope.config.baseURL;
 		}
 
@@ -566,6 +571,7 @@ utils.services(licenciamento)
 	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
 	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
 	.add('parecerOrgaoService', services.ParecerOrgaoService)
+	.add('parecerJuridicoService', services.ParecerJuridicoService)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
 	.add('parecerGerenteService', services.ParecerGerenteService)
 	.add('questionarioService', services.QuestionarioService)
@@ -594,8 +600,10 @@ licenciamento
 	.controller('uploadShapesController', controllers.UploadShapesController)
 	.controller('inconsistenciaController',controllers.InconsistenciaController)
 	.controller('desvinculoController', controllers.DesvinculoController)
+	.controller('modalParecerJuridicoController', controllers.ModalParecerJuridicoController)
 	.controller('desvinculoAnaliseTecnicaController', controllers.DesvinculoAnaliseTecnicaController)
 	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
+	.controller('parecerJuridicoController', controllers.ParecerJuridicoController)
 	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
 	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)

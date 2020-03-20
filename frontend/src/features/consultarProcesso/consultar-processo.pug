@@ -44,8 +44,9 @@ div
 								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-licenca-emitida': processo.statusCaracterizacao === consultarProcesso.statusCaracterizacao.VIGENTE}")
 								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-aguardando-pagamento-taxa': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_APROVADA && processo.statusCaracterizacao !== consultarProcesso.statusCaracterizacao.VIGENTE}")
 								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
+								span(ng-class="{'icone-aguardando-resposta-juridico': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO}")
 								span(ng-class="{'icone-aguardando-comunicado': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO}")
-														
+						
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center.break-word {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -119,6 +120,7 @@ div
 					span.col-md-4.icone-aguardando-pagamento-taxa.legenda Análise Aprovada
 					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda Solicitação de licença indeferida
 					span.col-md-4.icone-aguardando-comunicado.legenda Aguardando resposta comunicado
+					span.col-md-4.icone-aguardando-resposta-juridico.legenda Aguardando análise jurídica
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
 
@@ -130,7 +132,8 @@ div
 
 					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
 					span.col-md-4.icone-.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
-					span.col-md-4.icone-revisao-atendida.legenda Notificado			
+					span.col-md-4.icone-revisao-atendida.legenda Notificado	
+					span.col-md-4.icone-aguardando-resposta-juridico.legenda Aguardando análise jurídica		
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 

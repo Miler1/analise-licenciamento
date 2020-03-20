@@ -40,7 +40,7 @@ var InconsistenciaController = function ($scope,
 
 	} else if(dadosProjeto.categoria === inconsistenciaController.tiposInconsistencia.PROPRIEDADE) {
 
-		inconsistenciaController.categoriaProjeto = 'Propriedade';
+		inconsistenciaController.categoriaProjeto = 'Empreendimento/Atividade';
 
 	} else {
 

@@ -54,7 +54,7 @@ public class EmailNotificacaoStatusAnalise extends EmailNotificacao {
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
-            ReenvioEmail reenvioEmail = new ReenvioEmail(this.analise.analiseGeo.id, ReenvioEmail.TipoEmail.NOTIFICACAO_PRESIDENTE, e.getMessage(), this.emailsDestinatarios);
+            ReenvioEmail reenvioEmail = new ReenvioEmail(parecerPresidente.id, ReenvioEmail.TipoEmail.NOTIFICACAO_PRESIDENTE, e.getMessage(), this.emailsDestinatarios);
             reenvioEmail.save();
 
             e.printStackTrace();

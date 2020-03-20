@@ -1,5 +1,6 @@
 package controllers;
 
+import models.DispensaLicenciamentoCancelada;
 import models.LicencaCancelada;
 import models.UsuarioAnalise;
 import security.Acao;
@@ -19,6 +20,19 @@ public class LicencaCanceladas extends InternalController {
 		
 		renderMensagem(Mensagem.LICENCA_CANCELADA_SUCESSO);
 		
+	}
+
+	public static void cancelarDispensa(DispensaLicenciamentoCancelada dispensaLicenciamentoCancelada) {
+
+		verificarPermissao(Acao.CANCELAR_LICENCA_EMITIDA);
+
+		returnIfNull(dispensaLicenciamentoCancelada, "LicencaCancelada");
+
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
+		dispensaLicenciamentoCancelada.cancelarDispensa(usuarioExecutor);
+
+		renderMensagem(Mensagem.LICENCA_CANCELADA_SUCESSO);
 	}
 
 }

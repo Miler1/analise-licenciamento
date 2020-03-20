@@ -472,7 +472,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
 			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
-			return;
+//			return;
 		}
 
 		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
@@ -480,55 +480,69 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
 		}
 
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_GEO) ||
-				filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_GEO)) {
+		if(filtro.idCondicaoTramitacao != null) {
 
-			processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, filtro.isAnaliseGeoOpcional);
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_ANALISE_GEO) ||
+					filtro.idCondicaoTramitacao.equals(Condicao.EM_ANALISE_GEO)) {
 
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+				processoBuilder.filtrarPorIdAnalistaGeo(usuarioSessao.id, filtro.isAnaliseGeoOpcional);
+
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			
+			} else {
+
+				processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
+
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			}
+
+			if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla, 1));
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla, 1));
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
+
+				processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla, 1));
+			}
+
+			if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
+
+				processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
+				processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+			}
+
 		} else {
 
+			if(filtro.idAnalistaGeo == null) {
+
+				filtro.idAnalistaGeo = usuarioSessao.id;
+
+			}
+
 			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
+
 		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdGerente(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
-
-		if (filtro.siglaSetorGerencia == null && filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VINCULACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeo(usuarioSessao.id);
-
-			processoBuilder.filtrarPorSiglaSetores(integracaoEntradaUnica.getSiglasSetoresByNivel(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla,1));
-		}
-
-		if (filtro.idCondicaoTramitacao.equals(Condicao.NOTIFICADO_PELO_ANALISTA_GEO)) {
-
-			processoBuilder.filtrarPorIdUsuarioValidacaoGeoGerente(usuarioSessao.id);
-			processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
-		}
-
 
 	}
 
@@ -540,6 +554,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		while (processoAnterior != null) {
 
 			processosAnteriores.add(processoAnterior);
+
+			processoAnterior.getInfoProcesso();
 
 			if (processoAnterior.processoAnterior != null) {
 
@@ -580,7 +596,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByCaracterizacao()
 				.groupByIdOrigemNotificacao()
 				.groupByDiasAnaliseGeo()
-				.groupByDiasAnaliseTecnica();
+				.groupByDiasAnaliseTecnica()
+				.groupByIdAnalistaGeoAnterior()
+				.groupByIdAnalistaGeo()
+				.groupByIdAnalistaTecnicoAnterior()
+				.groupByIdAnalistaTecnico();
 
 		listWithFilterAnaliseJuridica(processoBuilder, filtro);
 
@@ -810,7 +830,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	//Retorna o historico da tramitação com o tempo que o objeto tramitavel permaneceu na condição
 	public List<HistoricoTramitacao> getHistoricoTramitacao() {
 
-		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(this.idObjetoTramitavel);
+		List<Long> idsObjetosTramitaveis = new ArrayList<>();
+
+		Processo processoAnterior = this.processoAnterior;
+
+		idsObjetosTramitaveis.add(this.idObjetoTramitavel);
+
+		while (processoAnterior != null) {
+
+			idsObjetosTramitaveis.add(processoAnterior.idObjetoTramitavel);
+			processoAnterior = processoAnterior.processoAnterior;
+
+		}
+
+		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getByObjetoTramitavel(idsObjetosTramitaveis);
 //		List<HistoricoTramitacao> historicosTramitacoes = HistoricoTramitacao.getHistoricoTramitacaoByPerfil(this.idObjetoTramitavel, Auth.getUsuarioSessao().usuarioEntradaUnica.perfilSelecionado.codigo);
 
 
@@ -839,6 +872,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	public List<HistoricoTramitacao> getHistoricoTramitacaoAnaliseGeo() {
+
+		List<HistoricoTramitacao> historicoTramitacoes = new ArrayList<>();
 
 		return this.getHistoricoTramitacao()
 				.stream()
@@ -978,7 +1013,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		this.analise.analiseGeo = AnaliseGeo.findByProcesso(this);
 
 		if(this.analise.analisesGeo == null || this.analise.analisesGeo.isEmpty()){
-			this.analise.analisesGeo = AnaliseGeo.findAllByAnalise(this.processoAnterior.analise);
+
+			this.analise.analisesGeo = AnaliseGeo.findAllByProcesso(this.numero);
 			this.analise.analiseGeo = this.analise.analisesGeo.stream()
 					.max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
 		}
@@ -991,9 +1027,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		} else if(usuario.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)) {
 
-			this.analise.analiseTecnica.pareceresAnalistaTecnico = this.analise.analiseTecnica.pareceresAnalistaTecnico.stream()
-					.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
-					.collect(Collectors.toList());
+			if (this.analise.analiseTecnica != null ) {
+
+				this.analise.analiseTecnica.pareceresAnalistaTecnico = this.analise.analiseTecnica.pareceresAnalistaTecnico.stream()
+						.filter(parecerAnalistaGeo -> parecerAnalistaGeo.analistaTecnico.id.equals(usuario.id))
+						.collect(Collectors.toList());
+
+			}
 
 		}
 

@@ -262,6 +262,13 @@ public class Documento extends GenericModel implements Identificavel {
 				.fetch();
 	}
 
+	public List<ParecerJuridico> getPareceresJuridicosRelacionados() {
+
+		return ParecerJuridico.find("select j from ParecerJuridico j inner join j.documentos documento where documento.id = :idDocumento")
+				.setParameter("idDocumento", this.id)
+				.fetch();
+	}
+
 	public String getNomeArquivo() {
 
 		this.arquivo = getFile();
@@ -278,6 +285,6 @@ public class Documento extends GenericModel implements Identificavel {
 	}
 
 	public Boolean isParecerAnaliseTecnica() {
-		return this.isType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
+		return this.isType(TipoDocumento.DOCUMENTO_NOTIFICACAO_TECNICA);
 	}
 }

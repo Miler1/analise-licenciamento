@@ -15,9 +15,11 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	consultarLicencas.downloadLicenca = downloadLicenca;
 	consultarLicencas.recuperarInfoLicenca = recuperarInfoLicenca;
 	consultarLicencas.isSuspensaoVisivel = isSuspensaoVisivel;
+	consultarLicencas.isDispensaVisivel = isDispensaVisivel;
 	consultarLicencas.isCancelamentoVisivel = isCancelamentoVisivel;
 	consultarLicencas.ajustarTamanhoContainer = ajustarTamanhoContainer;
 	consultarLicencas.statusCaracterizacao = app.utils.StatusCaracterizacao;
+	consultarLicencas.isDispensa = app.ORIGEM_LICENCA.DISPENSA;
 
 	consultarLicencas.licencas = [];
 	consultarLicencas.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
@@ -51,7 +53,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	function recuperarInfoLicenca(licenca, isSuspensao) {
 
 		if (licenca.origemLicenca === app.ORIGEM_LICENCA.DISPENSA)
-			preparaDLAParaSuspensaoOuCancelamento(licenca);
+			preparaDLAParaSuspensaoOuCancelamento(licenca, isSuspensao);
 		else
 			preparaLicencaParaSuspensaoOuCancelamento(licenca, isSuspensao);
 
@@ -95,18 +97,26 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	}
 
-	function preparaDLAParaSuspensaoOuCancelamento(dla) {
+	function preparaDLAParaSuspensaoOuCancelamento(dla, isSuspensao) {
 
 		var dlaRecuperada = null;
 
-		dispensaLicencaService.findInfoDLA(dla.idLicenca)
+		dispensaLicencaService.findInfoDLA(dla.idDla)
 			.then(function(response) {
 
 				dlaRecuperada = response.data;
 				dlaRecuperada.numeroProcesso = response.data.caracterizacao.numeroProcesso;
 				dlaRecuperada.tipoLicenca = dla.origemLicenca;
 
-				return openModalInfoCancelamento(dlaRecuperada);
+				if(isSuspensao){
+
+					return openModalInfoSuspensao(dlaRecuperada);
+
+				} else {
+
+					return openModalInfoCancelamento(dlaRecuperada);
+
+				}
 
 			}, function(error) {
 
@@ -126,10 +136,21 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 		}
 	}
 
+	function isDispensaVisivel(licenca) {
+
+		if(licenca.origemLicenca !== consultarLicencas.isDispensa) {
+
+			return true;
+
+		}
+
+		return false;
+	}
+
 	function isSuspensaoVisivel(licenca) {
 
 		if((licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO ||
-			licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO) &&
+			licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO || licenca.origemLicenca !== app.ORIGEM_LICENCA.DISPENSA) &&
 			(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
 				LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken)) {
 			return true;
@@ -142,7 +163,8 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 	function isCancelamentoVisivel(licenca) {
 
-		if (LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
+		if ((licenca.origemLicenca !== app.ORIGEM_LICENCA.DISPENSA) &&
+			LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
 			LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken && licenca.ativo) {
 			return true;
 		}

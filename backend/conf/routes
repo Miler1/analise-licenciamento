@@ -109,6 +109,9 @@ POST    /inconsistencia/analiseTecnica/excluirInconsistencia                    
 GET     /inconsistencia/findInconsistenciaById/{id}                                     Inconsistencias.findById
 GET     /inconsistencia/analiseTecnica/findInconsistenciaByAnaliseTecnica/{idAnalise}   Inconsistencias.findInconsistenciasByAnaliseTecnica
 
+POST    /analisesGeo/parecerJuridico/salvarParecerJuridico                                           PareceresJuridicos.salvarParecerJuridico
+GET     /analisesGeo/parecerJuridico/findParecerJuridico/{id}                                        PareceresJuridicos.findParecerJuridico
+GET     /analisesGeo/parecerJuridico/getParecerJuridicoByAnaliseTecnica/{idAnaliseTecnica}           PareceresJuridicos.getParecerJuridicoByAnaliseTecnica
 
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                                                      Comunicados.salvarParecerOrgao
 GET     /analisesGeo/comunicado/findComunicado/{id}                                                                     Comunicados.findComunicado
@@ -162,7 +165,8 @@ POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.busc
 
 # Documentos licenciamento
 
-GET		/documentosLicenciamento/{idDocumento}/download			DocumentosLicenciamento.download
+GET		/documentosLicenciamento/{idDocumento}/download			            DocumentosLicenciamento.download
+GET     /external/DocumentosLicenciamento/{idDocumento}/download            Application.downloadLicenciamento
 
 # Municipios
 GET		/estados/{uf}/municipios					Municipios.listByEstado
@@ -212,6 +216,7 @@ GET		/tiposSobreposicao                          Sobreposicoes.list
 
 # Documentos
 GET		/documentos/{id}/download					                    Documentos.download
+GET     /external/documentos/{id}/download                              Application.downloadDocumentoAnalise
 GET		/documentos/{idAnalisetecnica}/downloadParecerTecnico	        Documentos.downloadParecerTecnico
 GET		/documentos/{idAnalisetecnica}/downloadMinutaByIdAnaliseTecnica	Documentos.downloadMinutaByIdAnaliseTecnica
 GET		/documentos/{idAnalisetecnica}/downloadRTVByIdAnaliseTecnica	Documentos.downloadRTVByIdAnaliseTecnica
@@ -233,10 +238,12 @@ GET		/dla/{idDLA}								DLAs.findById
 
 # Suspensoes
 POST	/suspensoes/licenca							Suspensoes.suspenderLicenca
+POST	/suspensoes/dispensa						Suspensoes.suspenderDispensa
 
 #Cancelamentos
 POST	/cancelamentos/licenca						LicencaCanceladas.cancelarLicenca
 POST	/cancelamentos/dla						    DlaCanceladas.cancelarDla
+POST    /cancelamentos/cancelarDispensa             LicencaCanceladas.cancelarDispensa
 
 # Tipos Licenças
 GET		/tiposLicencas								TiposLicencas.list
@@ -253,6 +260,7 @@ POST	/external/upload/save						Application.upload
 GET     /notificacoes/{idTramitacao}                         Notificacoes.downloadPDF
 GET     /notificacoes/findByIdProcesso/{id}                  Notificacoes.findByIdProcesso
 GET     /notificacoes/findByIdParecer/{id}                   Notificacoes.findByIdParecer
+GET     /notificacoes/findByIdParecerTecnico/{id}            Notificacoes.findByIdParecerTecnico
 
 # Processos Manejo
 POST    /processosManejo                            ProcessosManejo.listWithFilter
@@ -291,6 +299,7 @@ GET     /tiposLicencaManejo                         TiposLicencaManejo.list
 # Documentos shape
 POST    /upload/documento                               Documentos.upload
 GET     /download/{key}                                 Documentos.downloadTmp
+GET     /external/download/{key}                        Application.downloadTmpExterno
 DELETE  /delete/documento/{key}                         Documentos.deleteTmp
 
 # Documentos manejo
