@@ -12,6 +12,7 @@ public class CamadaGeoAtividadeSerializer {
 			"categoria",
 			"atividades.geometrias.item",
 			"atividades.geometrias.tipo",
+			"atividades.geometrias.parametro",
 			"atividades.geometrias.descricao",
 			"atividades.geometrias.area",
 			"atividades.geometrias.geometria",

@@ -49,12 +49,14 @@ include ../../layout/components/mapPanel
                             thead
                                 tr
                                     th.col-md-4 Item
-                                    th.col-md-5 Declarado
+                                    th.col-md-3 Vetorizado
+                                    th.col-md-3 Declarado
 
                             tbody
                                 tr(ng-repeat="geometria in ctrl.dadosProjeto.complexo.geometrias")
                                     td.col-md-5 {{ geometria.item }}
-                                    td.col-md-5 {{ geometria.descricao }}
+                                    td.col-md-3 {{ geometria.descricao }}
+                                    td.col-md-3 {{ atividadeCaracterizacaoParametro }}
 
             #lista-camadas-atividades(ng-if="ctrl.dadosProjeto.categoria !== ctrl.categoria.COMPLEXO && ctrl.dadosProjeto.complexo === null")
                 #accordion-atividades.panel-group
@@ -73,13 +75,15 @@ include ../../layout/components/mapPanel
                             table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                 thead
                                     tr
-                                        th.col-md-4 Item
-                                        th.col-md-5 Declarado
+                                    th.col-md-4 Item
+                                    th.col-md-3 Vetorizado
+                                    th.col-md-3 Declarado
 
-                                tbody(ng-repeat="geometria in atividade.geometrias")
-                                    tr
+                                tbody
+                                    tr(ng-repeat="geometria in atividade.geometrias")
                                         td.col-md-5 {{ geometria.item }}
-                                        td.col-md-5 {{ geometria.descricao }}
+                                        td.col-md-3 {{ geometria.descricao }}
+                                        td.col-md-3 {{ geometria.parametro }}
 
             hr
 

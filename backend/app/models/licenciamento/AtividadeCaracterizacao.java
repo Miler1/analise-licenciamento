@@ -75,5 +75,13 @@ public class AtividadeCaracterizacao extends GenericModel {
 	public Stream<Geometry> getGeoms(){
 		return this.geometriasAtividade.stream().map(ga -> ga.geometria);
 	}
-	
+
+	public String getAreaDeclaradaInteressado() {
+
+		AtividadeCaracterizacaoParametros atividadeCaracterizacaoParametro =  this.atividadeCaracterizacaoParametros.stream().filter(valor -> valor.parametroAtividade.codigo.equals("AU")).findAny().orElse(null);
+
+		return (atividadeCaracterizacaoParametro != null) ? atividadeCaracterizacaoParametro.valorParametro.toString() : "-";
+
+	}
+
 }
