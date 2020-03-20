@@ -8,6 +8,7 @@ import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.licenciamento.*;
 import models.tramitacao.*;
+import org.hibernate.criterion.Restrictions;
 import org.geotools.feature.SchemaException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
@@ -21,6 +22,7 @@ import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -1051,6 +1053,13 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		}
 
 		return this;
+
+	}
+
+	public List<EmpreendimentoCamandaGeo> getEmpreendimentoCamandasGeo() {
+
+		return EmpreendimentoCamandaGeo.find("id_empreendimento = :id_empreendimento")
+				.setParameter("id_empreendimento", this.empreendimento.id).fetch();
 
 	}
 
