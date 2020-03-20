@@ -65,6 +65,7 @@
 * OS50 - US1377 - Eu, analista geo/técnico, devo tratar o retorno da notificação para realizar nova análise
 * OS50 - US1300 - [HOMOLOGAÇÃO] Considerações análise geo.
 * OS50 - US1248 - Eu, gerente técnico, devo acessar o grid de protocolos e/ou Histórico do protocolo (no visualizar protocolo) para visualizar os prazos da análise técnica pós congelamento
+* OS50 - US1215 - Eu, analista geo, devo baixar os shapes de empreendimento/atividade para análise externa
 
 ## OS48
 

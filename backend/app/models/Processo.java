@@ -10,6 +10,7 @@ import models.EntradaUnica.Usuario;
 import models.licenciamento.*;
 import models.tramitacao.*;
 import org.hibernate.criterion.Restrictions;
+import org.geotools.feature.SchemaException;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.mvc.Scope;
@@ -22,6 +23,12 @@ import javax.persistence.*;
 import javax.validation.ValidationException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
@@ -1099,5 +1106,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
             n.setDiasConclusao();
         }).sorted(Comparator.comparing(Notificacao::getDataNotificacao).reversed()).collect(Collectors.toList());
     }
+
+	public File gerarShape() throws IOException, SchemaException {
+		return this.caracterizacao.gerarShape();
+	}
 
 }

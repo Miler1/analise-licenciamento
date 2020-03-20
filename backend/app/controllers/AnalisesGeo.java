@@ -5,6 +5,7 @@ import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.geotools.feature.SchemaException;
 import security.Acao;
 import serializers.AnaliseGeoSerializer;
 import serializers.CamadaGeoAtividadeSerializer;
@@ -13,6 +14,7 @@ import utils.Mensagem;
 
 import javax.validation.ValidationException;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Comparator;
