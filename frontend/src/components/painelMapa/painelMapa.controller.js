@@ -324,15 +324,21 @@ var PainelMapaController = function ($scope, wmsTileService) {
 	}
 
 	// Função para esconder geometrias nao basicas do mapa
-	function esconderGeometriasNaoBaseMapa(){
+	function esconderGeometriasNaoBaseMapa(geometriasRecuperadas){
 		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
-			painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[index]);
+			painelMapa.map.removeLayer(painelMapa.listaGeometriasMapa[index].item);
 		});
+
 		centralizaGeometriasBase();
 	}
 
 	// Função para exibir as geometrias nao basicas do mapa
 	function exibeGeometriasNaoBaseMapa(){
+
+		Object.keys(painelMapa.listaGeometriasMapa).forEach(function(index){
+			painelMapa.map.addLayer(painelMapa.listaGeometriasMapa[index].item);
+		});
+
 		centralizarGeometrias(true);
 	}
 
@@ -430,7 +436,16 @@ var PainelMapaController = function ($scope, wmsTileService) {
 				});
 			});
 
-			painelMapa.map.fitBounds(latLngBounds);
+			if(latLngBounds.isValid()) {
+
+				painelMapa.map.fitBounds(latLngBounds);
+			
+			} else {
+
+				centralizaGeometriasBase();
+
+			}
+
 
 		} else {
 

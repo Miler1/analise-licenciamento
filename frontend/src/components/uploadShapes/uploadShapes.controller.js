@@ -7,7 +7,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 	/** Variáveis para controle de lógica **/
 	uploadShapes.shapesUploaded = 0;
-	uploadShapes.doesntHasShapes = false;
+	uploadShapes.doesntHasShapes = true;
 	uploadShapes.idMunicipio = '';
 	uploadShapes.idEmpreendimento = '';
 
@@ -25,6 +25,8 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.hideUploadShapes = hideUploadShapes;
 	uploadShapes.dadosProjeto = null;
 	uploadShapes.categoria = app.utils.Inconsistencia;
+	uploadShapes.verificarUploadFeito = verificarUploadFeito;
+	uploadShapes.alterarGeometria = alterarGeometria;
 
 	function buscaProcesso() {
 
@@ -58,6 +60,45 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 				}
 			});
 
+			if(uploadShapes.processo.empreendimento.possuiShape) {
+
+				uploadShapes.doesntHasShapes = !uploadShapes.processo.empreendimento.possuiShape;
+			}
+
+			hideUploadShapes();
+
+			_.forEach(uploadShapes.processo.empreendimentoCamandasGeo, function (empreendimentoCamandaGeo) {
+				switch (empreendimentoCamandaGeo.tipoAreaGeometria.codigo) {
+					case 'HID' :
+						empreendimentoCamandaGeo.cor = '#2196F3';
+						break;
+						
+					case 'APP' :
+						empreendimentoCamandaGeo.cor = '#8BC34A';
+						break;
+
+					case 'AA' :
+						empreendimentoCamandaGeo.cor = '#CDDC39';
+						break;
+				}
+
+				$scope.$emit('shapefile:uploaded', {
+					geometria: JSON.parse(empreendimentoCamandaGeo.geometria), 
+					tipo: empreendimentoCamandaGeo.tipoAreaGeometria.codigo, 
+					estilo: {
+						style: {
+							fillColor: empreendimentoCamandaGeo.cor,
+							color: empreendimentoCamandaGeo.cor,
+							fillOpacity: 0.2
+						}
+					},
+					popupText: empreendimentoCamandaGeo.tipoAreaGeometria.nome,
+					specificShape: true
+					
+				});
+				
+			});
+
 			$scope.$emit('mapa:centralizar-mapa');
 
 		});
@@ -75,6 +116,21 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		Object.keys(uploadShapes.listaGeometriasMapa).forEach(function(tipo){
 
 			var geometria = {type:'', geometry:''};
+
+			var empreendimentoCamandaGeo = _.find(uploadShapes.processo.empreendimentoCamandasGeo, function(e) {
+				return e.tipoAreaGeometria.codigo === tipo;
+			});
+
+			if(empreendimentoCamandaGeo) {
+
+				geometria.id = empreendimentoCamandaGeo.id;
+
+			} else {
+
+				geometria.id = null;
+
+			}
+			
 			geometria.type = tipo;
 			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[tipo].item.getLayers()[0].feature.geometry);
 
@@ -105,6 +161,29 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 		uploadShapes.buscaProcesso();
 	}
 
+	function verificarUploadFeito(tipo) {
+		if(uploadShapes.processo === undefined || uploadShapes.processo.empreendimentoCamandasGeo === undefined) {
+			return false;
+		}
+		return _.filter(uploadShapes.processo.empreendimentoCamandasGeo, function(e) {return e.tipoAreaGeometria.codigo === tipo;}).length > 0;
+	}
+
+	function alterarGeometria(tipo) {
+
+		var index;
+
+		_.forEachRight(uploadShapes.processo.empreendimentoCamandasGeo, function (e) {
+
+			if(e.tipoAreaGeometria.codigo === tipo) {
+
+				$scope.$emit('shapefile:eraseUpload', {geometria: null, tipo: e.tipoAreaGeometria.codigo});
+
+				index = uploadShapes.processo.empreendimentoCamandasGeo.indexOf(e);
+				uploadShapes.processo.empreendimentoCamandasGeo.splice(index, 1);
+			}
+		});
+	}
+
 	uploadShapes.onInit();
 
 	// Invoke  para receber as funções da controller da controller do componente do Mapa
@@ -118,7 +197,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 	function hideUploadShapes() {
 		if(uploadShapes.doesntHasShapes){
-			uploadShapes.esconderGeometriasNaoBaseMapa();
+			uploadShapes.esconderGeometriasNaoBaseMapa(uploadShapes.processo.empreendimentoCamandasGeo);
 		}else {
 			uploadShapes.exibeGeometriasNaoBaseMapa();
 		}
