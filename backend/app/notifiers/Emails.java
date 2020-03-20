@@ -50,6 +50,20 @@ public class Emails extends Mailer {
 
 	}
 
+	public static Future<Boolean> notificarInteressadoComunicado(List<String> destinatarios, String licencas,
+																 AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, Caracterizacao caracterizacao, Comunicado comunicado) {
+
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+
+		return send(licencas, analiseGeo, parecerAnalistaGeo, enderecoCompleto, caracterizacao, comunicado);
+
+	}
+
 	public static Future<Boolean> notificarRequerenteStatusAnalise(List<String> destinatarios, Analise analise, ParecerPresidente parecerPresidente) {
 
 		setSubject("Movimentação do protocolo %s", analise.processo.numero);
@@ -60,7 +74,6 @@ public class Emails extends Mailer {
 		}
 
 		return send(analise, parecerPresidente);
-
 	}
 
 	public static Future<Boolean> notificarRequerenteStatusDispensa(List<String> destinatarios, Caracterizacao caracterizacao) {
