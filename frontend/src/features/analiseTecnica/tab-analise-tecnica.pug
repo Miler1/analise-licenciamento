@@ -20,7 +20,7 @@
                     tr
                         td.col-md-6 {{ctrl.analiseTecnica.analise.processo.caracterizacao.tipoLicenca.nome}} 
                         td.col-md-2
-                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === true}",
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === true}", title="Adicionar inconsistência",
                                                                                     ng-click="ctrl.adicionarInconsistenciaTecnicaTipoLicenca(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA)")
                                 | &nbsp;                        
                             i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === true",
@@ -30,7 +30,7 @@
                                                                                 ng-bootbox-confirm=' Deseja realmente validar o documento? <br><br> Após validar, a inconsistência será excluída.',
                                                                                 ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA, null, null, null, null, null)")
                                 | &nbsp;
-                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === null || ctrl.itemValidoLicenca.tipoLicenca === false ",
+                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.tipoLicenca === null || ctrl.itemValidoLicenca.tipoLicenca === false ", title="Validar análise",
                                                                                 ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.TIPO_LICENCA, null, ctrl.analiseTecnica)",
                                                                                 ng-class="{'nao-tem-inconsistencia' :  ctrl.itemValidoLicenca.tipoLicenca === false}")
                                 | &nbsp;                                
@@ -71,7 +71,7 @@
                                                                                                 ng-bootbox-confirm='Deseja realmente validar o documento? <br><br> Após validar, a inconsistência será excluída.',
                                                                                                 ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, null, null, atividadeCaracterizacao, $index, null)")
                                                 | &nbsp;
-                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.atividade[$index].atividadeValida === null || ctrl.itemValidoLicenca.atividade[$index].atividadeValida === false",
+                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.atividade[$index].atividadeValida === null || ctrl.itemValidoLicenca.atividade[$index].atividadeValida === false", title="Validar análise",
                                                                                                 ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, null, ctrl.analiseTecnica)",
                                                                                                 ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.atividade[$index].atividadeValida === false }")
                                                 | &nbsp;                                            
@@ -79,7 +79,7 @@
                                         td.col-md-6 {{ atividadeCaracterizacao.atividade.parametros[$index].codigo }} - {{ atividadeCaracterizacao.atividade.parametros[$index].nome }}
                                         td.col-md-2 {{ atividadeCaracterizacaoParametro.valorParametro }}
                                         td.col-md-2
-                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === true}",
+                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === true}", title="Adicionar inconsistência",
                                                                                                     ng-click="ctrl.adicionarInconsistenciaTecnicaParametro(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index], $parent.$index, $index, atividadeCaracterizacao)")
                                                 | &nbsp;                        
                                             i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === true",
@@ -89,7 +89,7 @@
                                                                                                 ng-bootbox-confirm='Deseja realmente validar o documento? <br><br> Após validar, a inconsistência será excluída.',
                                                                                                 ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$parent.$index], null, atividadeCaracterizacao, $parent.$parent.$index, $parent.$index)")
                                                 | &nbsp;
-                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === null || ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === false",
+                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === null || ctrl.itemValidoLicenca.atividade[$parent.$index].parametros[$index] === false", title="Validar análise",
                                                                                                 ng-click="ctrl.validarInconsistenciaParametro(ctrl.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$parent.$index], $parent.$parent.$index, $parent.$index, atividadeCaracterizacao)",
                                                                                                 ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.atividade[$parent.$parent.$index].parametros[$parent.$index] === false}")
                                                 | &nbsp;                                            
@@ -108,7 +108,7 @@
                         tr
                             td.col-md-9 Informações da atividade
                             td.col-md-2
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.questionario === true}",
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.questionario === true}", title="Adicionar inconsistência",
                                                                                         ng-click="ctrl.adicionarInconsistenciaTecnicaQuestionario(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO)")
                                     | &nbsp;                        
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.questionario === true",
@@ -118,12 +118,12 @@
                                                                                     ng-bootbox-confirm='Deseja realmente validar o documento? <br><br> Após validar, a inconsistência será excluída.',
                                                                                     ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO, null, null, null, null, null)")
                                     | &nbsp;
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.questionario === null || ctrl.itemValidoLicenca.questionario === false",
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.questionario === null || ctrl.itemValidoLicenca.questionario === false", title="Validar análise",
                                                                                     ng-click="ctrl.validarItensLicenca(ctrl.tipoDeInconsistenciaTecnica.QUESTIONARIO, null, ctrl.analiseTecnica)",
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.questionario === false }")
                                     | &nbsp;
                             td.col-md-2
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarQuestionario(ctrl.analiseTecnica)")
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarQuestionario(ctrl.analiseTecnica)",title="Visualizar dados técnicos")
                                     | &nbsp;
         div.row
             hr
@@ -140,7 +140,7 @@
                         tr(ng-repeat="documentoAdministrativo in ctrl.analiseTecnica.analise.processo.caracterizacao.documentosEnviados")
                             td.col-md-9 {{ documentoAdministrativo.tipo.nome}}
                             td.col-md-2 
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.documentoAdministrativo[$index] === true}",
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.documentoAdministrativo[$index] === true}", title="Adicionar inconsistência",
                                                                                         ng-click="ctrl.adicionarInconsistenciaTecnicaDocumentoAdministrativo(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, ctrl.analiseTecnica.analise.processo.caracterizacao.solicitacoesDocumento[$index], $index)")
                                     | &nbsp;                        
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.documentoAdministrativo[$index] === true",
@@ -150,12 +150,12 @@
                                                                                     ng-bootbox-confirm='Deseja realmente validar o documento? <br><br> Após validar, a inconsistência será excluída.',
                                                                                     ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, null, documentoAdministrativo, null, $index, null)")
                                     | &nbsp;
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.documentoAdministrativo[$index] !== true",
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if=" ctrl.itemValidoLicenca.documentoAdministrativo[$index] !== true", title="Validar análise",
                                                                                     ng-click="ctrl.validarInconsistenciaDocumentoAdministrativo(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, documentoAdministrativo, $index)",
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoAdministrativo[$index] === false }")
                                     | &nbsp;
                             td.col-md-2
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(documentoAdministrativo)")
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(documentoAdministrativo)",title="Visualizar documento")
                                     | &nbsp;
         div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosEnviados.length === 0")
             strong.col-sm-6.margin-hr-analise-tecnica Documentos administrativos
@@ -199,7 +199,7 @@
                         tr(ng-repeat="documentoTecnicoAmbiental in ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo")
                             td.col-md-9 {{ documentoTecnicoAmbiental.tipoDocumento.nome}}
                             td.col-md-2
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === true}",
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === true}", title="Adicionar inconsistência",
                                                                                         ng-click="ctrl.adicionarInconsistenciaTecnicaDocumentoTecnicoAmbiental(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, $index)")
                                     | &nbsp;                        
                                 i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === true",
@@ -209,12 +209,12 @@
                                                                                     ng-bootbox-confirm='Deseja realmente validar o documento? <br><br> Após validar, a inconsistência será excluída.',
                                                                                     ng-bootbox-confirm-action="ctrl.excluirInconsistencia(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, null, documentoTecnicoAmbiental, null, $index, null)")
                                     | &nbsp;
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.documentoTecnicoAmbiental.length === 0 || ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false",
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.documentoTecnicoAmbiental.length === 0 || ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false", title="Validar análise",
                                                                                     ng-click="ctrl.validarInconsistenciaDocumentoTecnicoAmbiental(ctrl.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, $index, ctrl.analiseTecnica)",
                                                                                     ng-class="{'nao-tem-inconsistencia' : ctrl.itemValidoLicenca.documentoTecnicoAmbiental[$index] === false }")
                                     | &nbsp;
                             td.col-md-2
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(documentoTecnicoAmbiental.documento)")
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.visualizarDocumento(documentoTecnicoAmbiental.documento)",title="Visualizar documento")
                                     | &nbsp;
         div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length === 0")
             strong.col-sm-6.margin-hr-analise-tecnica Documentos técnicos/ambientais

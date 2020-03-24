@@ -108,6 +108,11 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 
 	$scope.enviar = function () {
 
+		if(!$scope.parecerJuridico.tipoResultadoAnalise){
+			$scope.errors.resultadoAnalise = true;
+			return false;
+		}
+
 		if (!$scope.parecerJuridico.parecer || $scope.parecerJuridico.parecer === ''){
 
 			mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});

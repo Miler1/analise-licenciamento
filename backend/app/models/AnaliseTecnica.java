@@ -730,7 +730,7 @@ public class AnaliseTecnica extends Analisavel {
 
 		pdf.generate();
 
-		Documento documento = new Documento(tipoDocumento, pdf.getFile(), "documento_parecer.pdf", parecerAnalistaTecnico.analistaTecnico.pessoa.nome, new Date());
+		Documento documento = new Documento(tipoDocumento, pdf.getFile(), "documento_parecer_tecnico.pdf", parecerAnalistaTecnico.analistaTecnico.pessoa.nome, new Date());
 
 		return documento;
 

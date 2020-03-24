@@ -26,14 +26,14 @@ div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseGeo()")
 
 		div(ng-if="modalVisualizacaoProcessoCtrl.condicoesGerentes(parecer)")
 			.panel.panel-default.panel-analise
-				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente-{{parecer.id}}', aria-expanded='false', data-target='#dados-gerente-{{parecer.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionGerente = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionGerente = !modalVisualizacaoProcessoCtrl.openedAccordionGerente')
+				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente-tecnico{{parecer.id}}', aria-expanded='false', data-target='#dados-gerente-tecnico-{{parecer.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionGerenteTecnico = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionGerenteTecnico = !modalVisualizacaoProcessoCtrl.openedAccordionGerenteTecnico')
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
 								| GERENTE TÉCNICO: {{ parecer.usuario.pessoa.nome }}
-								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGerente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGerente}")
+								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionGerenteTecnico, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionGerenteTecnico}")
 				
-				div.collapse(ng-class="{in: parecer.id}", id="dados-gerente-{{parecer.id}}")
+				div.collapse(ng-class="{in: parecer.id}", id="dados-gerente-tecnico-{{parecer.id}}")
 					.panel-body
 
 						label Data do parecer:

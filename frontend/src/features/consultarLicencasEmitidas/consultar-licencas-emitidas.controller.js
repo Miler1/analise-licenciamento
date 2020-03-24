@@ -178,6 +178,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 			component: 'modalVisualizarLicenca',
 			size: 'lg',
+			backdrop: 'static',
 			resolve: {
 
 				dadosLicenca: function () {
@@ -197,6 +198,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 			component: 'modalVisualizarLicenca',
 			size: 'lg',
+			backdrop: 'static',
 			resolve: {
 
 				dadosLicenca: function () {

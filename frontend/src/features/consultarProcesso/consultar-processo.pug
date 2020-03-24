@@ -107,35 +107,35 @@ div
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO")
 
-					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
-					span.col-md-4.icone-solicitacao-finalizada-geo.legenda Análise GEO finalizada
-					span.col-md-4.icone-revisao-atendida.legenda Notificado
-					span.col-md-4.icone-aguardando-comunicado.legenda Aguardando resposta comunicado
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação de Desvínculo Pendente
+					span.col-md-4.icone-solicitacao-finalizada-geo.legenda-margin Análise GEO finalizada
+					span.col-md-4.icone-revisao-atendida.legenda-margin Notificado
+					span.col-md-4.icone-aguardando-comunicado.legenda-margin(style="margin-bottom:23px") Aguardando resposta comunicado
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE")
 
-					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
-					span.col-md-4.icone-solicitacao-finalizada-geo.legenda Análise GEO finalizada
-					span.col-md-4.icone-revisao-atendida.legenda Notificado
-					span.col-md-4.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
-					span.col-md-4.icone-licenca-emitida.legenda Licença emitida
-					span.col-md-4.icone-aguardando-pagamento-taxa.legenda Análise Aprovada
-					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda Solicitação de licença indeferida
-					span.col-md-4.icone-aguardando-comunicado.legenda Aguardando resposta comunicado
-					span.col-md-4.icone-aguardando-resposta-juridico.legenda Aguardando análise jurídica
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação de Desvínculo Pendente
+					span.col-md-4.icone-solicitacao-finalizada-geo.legenda-margin Análise GEO finalizada
+					span.col-md-4.icone-revisao-atendida.legenda-margin Notificado
+					span.col-md-4.icone-solicitacao-finalizada-tecnica.legenda-margin Análise técnica finalizada
+					span.col-md-4.icone-licenca-emitida.legenda-margin Licença emitida
+					span.col-md-4.icone-aguardando-pagamento-taxa.legenda-margin Análise Aprovada
+					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda-margin Solicitação de licença indeferida
+					span.col-md-4.icone-aguardando-comunicado.legenda-margin Aguardando resposta comunicado
+					span.col-md-4.icone-aguardando-resposta-juridico.legenda-margin(style="margin-bottom:23px") Aguardando análise jurídica
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
 
-					span.col-md-4.icone-licenca-emitida.legenda Licença emitida
-					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda Solicitação de licença indeferida
-					span.col-md-4.icone-aguardando-pagamento-taxa.legenda Análise Aprovada
+					span.col-md-4.icone-licenca-emitida.legenda-margin Licença emitida
+					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda-margin Solicitação de licença indeferida
+					span.col-md-4.icone-aguardando-pagamento-taxa.legenda-margin(style="margin-bottom:23px") Análise Aprovada
 
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO")
 
-					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda Solicitação de Desvínculo Pendente
-					span.col-md-4.icone-.icone-solicitacao-finalizada-tecnica.legenda Análise técnica finalizada
-					span.col-md-4.icone-revisao-atendida.legenda Notificado
-					span.col-md-4.icone-aguardando-resposta-juridico.legenda Aguardando análise jurídica
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação de Desvínculo Pendente
+					span.col-md-4.icone-.icone-solicitacao-finalizada-tecnica.legenda-margin Análise técnica finalizada
+					span.col-md-4.icone-revisao-atendida.legenda-margin Notificado
+					span.col-md-4.icone-aguardando-resposta-juridico.legenda-margin(style="margin-bottom:23px") Aguardando análise jurídica
 
 				+paginacao('consultarProcesso.paginacao', 'consultarProcesso.onPaginaAlterada')
 
