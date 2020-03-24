@@ -101,23 +101,23 @@
 
 							tbody
 								tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.dadosProcesso.historicoTramitacao")
-									td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
-									td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
+									td.col-md-2 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
+									td.col-md-2 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
 									td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
 									td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
-									td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
-									td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
+									td.col-md-2 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+									td.col-md-2 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 									td.col-md-1 
 										button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-if="modalVisualizacaoProcessoCtrl.validaJustificativas(tramitacao)", 
 																		  								ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo.idProcesso, tramitacao)")
 											i.glyphicon.glyphicon-list-alt
 								tr(ng-repeat="tramitacao in modalVisualizacaoProcessoCtrl.tramitacoes")
-									td.col-md-1 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
-									td.col-md-1 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
+									td.col-md-2 {{tramitacao.dataInicial ? tramitacao.dataInicial : '-'}}
+									td.col-md-2 {{tramitacao.dataFinal ? tramitacao.dataFinal : '-'}}
 									td.col-md-2 {{tramitacao.nomeAcao ? tramitacao.nomeAcao : '-'}}
 									td.col-md-2 {{tramitacao.nomeCondicaoFinal ? tramitacao.nomeCondicaoFinal : '-'}}
-									td.col-md-1 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
-									td.col-md-3 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
+									td.col-md-2 {{tramitacao.tempoPermanencia ? tramitacao.tempoPermanencia : '-'}}
+									td.col-md-2 {{tramitacao.nomeUsuarioExecutor ? tramitacao.nomeUsuarioExecutor : '-'}}
 									td.col-md-1 
 										button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-if="modalVisualizacaoProcessoCtrl.validaJustificativas(tramitacao)", 
 																										ng-click="modalVisualizacaoProcessoCtrl.visualizarJustificativas(modalVisualizacaoProcessoCtrl.processo.idProcesso, tramitacao)")
