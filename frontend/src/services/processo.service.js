@@ -1,4 +1,4 @@
-var ProcessoService = function(request, config, $uibModal) {
+var ProcessoService = function(request, config, $uibModal, $window) {
 
 	this.getProcessos = function(filtro) {
 
@@ -36,6 +36,13 @@ var ProcessoService = function(request, config, $uibModal) {
 			.get(config.BASE_URL() + 'processos/' + idProcesso + '/completo');
 	};
 
+	this.getProcessosAnteriores = function(idProcessoAnterior) {
+
+		return request
+			.get(config.BASE_URL() + 'processos/' + idProcessoAnterior + '/processosAnteriores');
+
+	};
+
 	this.getInfoProcessoByNumero = function(numeroProcesso) {
 
 		return request
@@ -56,6 +63,29 @@ var ProcessoService = function(request, config, $uibModal) {
 				}
 			}
 		});
+
+	};
+
+	this.visualizarNotificacao = function(processo) {
+
+		var modalInstance = $uibModal.open({
+			controller: 'visualizacaoNotificacaoController',
+			controllerAs: 'modalVisualizacaoNotificacaoCtrl',
+			templateUrl: 'components/visualizacaoNotificacao/visualizacaoNotificacao.html',
+			windowClass: 'modalVisualizarNotificacao',
+			size: 'lg',
+			resolve: {
+				processo: function() {
+					return processo;
+				}
+			}
+		});
+
+	};
+
+	this.baixarShapefile = function(idProcesso){
+
+		$window.open(config.BASE_URL() + 'processos/baixarShapefile/' + idProcesso, '_blank');
 
 	};
 };

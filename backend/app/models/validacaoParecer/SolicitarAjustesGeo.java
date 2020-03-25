@@ -30,11 +30,6 @@ public class SolicitarAjustesGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
 
         AnaliseGeo copia = analiseGeo.gerarCopia(false);
 
-        /**
-         * Quando o ajuste for do coordenador para o gerente deve-se manter a validação do gerente
-         */
-        copia.setValidacaoGerente(analiseGeo);
-
         copia._save();
 
         /**
@@ -44,7 +39,6 @@ public class SolicitarAjustesGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
 
             licencaAnalise._save();
 
-            licencaAnalise.saveCondicionantes();
             licencaAnalise.saveRecomendacoes();
         }
 

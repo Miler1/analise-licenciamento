@@ -1,6 +1,14 @@
-var ConsultarProcessoController = function($scope, config, $rootScope, processoService, $uibModal, TiposSetores, documentoAnaliseService, mensagem) {
+var ConsultarProcessoController = function($scope, 
+										config, 
+										$rootScope, 
+										processoService, 
+										TiposSetores, 
+										documentoAnaliseService, 
+										mensagem, 
+										documentoService,
+										parecerAnalistaTecnicoService) {
 
-	$rootScope.tituloPagina = 'CONSULTAR PROCESSO';
+	$rootScope.tituloPagina = 'CONSULTAR PROCESSO / PROTOCOLO';
 
 	var consultarProcesso = this;
 
@@ -11,8 +19,9 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.selecionarTodosProcessos = selecionarTodosProcessos;
 	consultarProcesso.onPaginaAlterada = onPaginaAlterada;
 	consultarProcesso.visualizarProcesso = visualizarProcesso;
+	consultarProcesso.visualizarNotificacao = visualizarNotificacao;
 
-	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE;
+	consultarProcesso.legendaDesvinculo = app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO;
 
 	consultarProcesso.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	consultarProcesso.processos = [];
@@ -25,6 +34,10 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO,
 		app.DISABLED_FILTER_FIELDS.GERENCIA];
+	
+	consultarProcesso.temMinuta = null;
+	consultarProcesso.temRTV = null;
+	consultarProcesso.statusCaracterizacao = app.utils.StatusCaracterizacao;
 
 	function atualizarListaProcessos(processos) {
 
@@ -54,6 +67,11 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 		return processoService.visualizarProcesso(processo);
 	}
 
+	function visualizarNotificacao(processo) {
+
+		return processoService.visualizarNotificacao(processo);
+	}
+
 	function getDiasRestantes(processo, dataVencimento, dataConclusao) {
 
 		if(processo[dataConclusao]) {
@@ -79,6 +97,25 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 					consultarProcesso.PrazoMinimoAvisoAnalise[tipoAnalise]);
 	}
 
+	consultarProcesso.getPrazoAnaliseGeo = function(processo) {
+
+		if(processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GERENTE ||
+			processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || 
+			processo.dataConclusaoAnaliseGeo) {
+
+			return 'Concluída';
+
+		} else if(processo.idCondicaoInicialHistoricoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GEO &&
+				processo.idCondicaoFinalHistoricoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_ANALISE_GEO) {
+
+			return parseInt(consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)) + processo.diasCongelamento;
+
+		}
+
+		return consultarProcesso.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo);
+
+	};
+
 	consultarProcesso.downloadPDFparecer = function (processo) {
 
 		var params = {
@@ -88,14 +125,27 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 		documentoAnaliseService.generatePDFParecerGeo(params)
 			.then(function(data, status, headers){
 
-				var a = document.createElement('a');
-				a.href = URL.createObjectURL(data.data.response.blob);
-				a.download = data.data.response.fileName ? data.data.response.fileName : 'parecer_analise_geo.pdf';
-				a.click();
+				var url = URL.createObjectURL(data.data.response.blob);
+                window.open(url, '_blank');
 
 			},function(error){
 				mensagem.error(error.data.texto);
 			});
+	};
+
+	consultarProcesso.downloadPDFparecerTecnico = function (processo) {
+
+		documentoService.downloadParecerByIdAnaliseTecnica(processo.idAnaliseTecnica);
+
+	};
+
+	consultarProcesso.downloadPDFminuta = function (processo) {
+
+		documentoService.downloadMinutaByIdAnaliseTecnica(processo.idAnaliseTecnica);
+	};
+
+	consultarProcesso.downloadPDFvistoria = function (processo) {
+		documentoService.downloadRTVByIdAnaliseTecnica(processo.idAnaliseTecnica);
 	};
 
 	consultarProcesso.downloadPDFCartaImagem = function (processo) {
@@ -107,14 +157,127 @@ var ConsultarProcessoController = function($scope, config, $rootScope, processoS
 		documentoAnaliseService.generatePDFCartaImagemGeo(params)
 			.then(function(data, status, headers){
 
-				var a = document.createElement('a');
-				a.href = URL.createObjectURL(data.data.response.blob);
-				a.download = data.data.response.fileName ? data.data.response.fileName : 'carta_imagem.pdf';
-				a.click();
+				var url = URL.createObjectURL(data.data.response.blob);
+                window.open(url, '_blank');
 
 			},function(error){
 				mensagem.error(error.data.texto);
 			});
+	};
+
+	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
+
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [27, 31];
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
+		var status = false;
+
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+
+			CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE.forEach(function(condicao){
+
+				if(idCondicaoTramitacao === condicao) {
+
+					status = true;
+
+				}
+
+			});
+
+		} else if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_GEO) {
+
+			status = true;
+
+			CONSULTAR_PROTOCOLO_ANALISTA_GEO.forEach(function(condicao){
+
+				if(idCondicaoTramitacao === condicao) {
+
+					status = false;
+
+				}
+
+			});
+		}
+
+		return status;
+
+	};
+
+	consultarProcesso.verificaStatusAnaliseTecnica = function(idCondicaoTramitacao) {
+
+		var status = false;
+
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+
+			var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE = [10, 36];
+
+			CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE.forEach(function(condicao){
+
+				if(idCondicaoTramitacao === condicao) {
+
+					status = true;
+
+				}
+
+			});
+
+		} else if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) {
+
+			// var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_FINALIZADA = [10, 36];
+			if(!consultarProcesso.condicaoTramitacao.VISUALIZA_DOC_TECNICO.includes(idCondicaoTramitacao)){
+
+				status = true;
+
+			}
+
+			// CONSULTAR_PROTOCOLO_ANALISE_TECNICA_FINALIZADA.forEach(function(condicao){
+
+			// 	if(idCondicaoTramitacao === condicao) {
+
+			// 		status = true;
+
+			// 	}
+
+			// });
+
+		}
+
+		return status;
+
+	};
+
+	consultarProcesso.prazoAnaliseTecnica = function(processo) {
+
+		if(processo.dataConclusaoAnaliseTecnica) {
+
+			return 'Concluída';
+
+		} else if(processo.diasAnaliseTecnica !== null && processo.diasAnaliseTecnica !== undefined) {
+
+			return consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica;
+
+		}
+
+		return '-';
+
+	};
+
+	consultarProcesso.validacaoDocumentos = function(processo) {
+		
+		if(!consultarProcesso.condicaoTramitacao.VISUALIZA_DOC_TECNICO.includes(processo.idCondicaoTramitacao)){
+
+			parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(processo.idAnaliseTecnica)
+				.then(function(response){
+
+					var parecerTecnico = response.data;
+
+					consultarProcesso.temMinuta = parecerTecnico.documentoMinuta ? true : false;
+
+					consultarProcesso.temRTV = parecerTecnico.vistoria.realizada;
+
+				});
+
+		}
+
 	};
 
 };

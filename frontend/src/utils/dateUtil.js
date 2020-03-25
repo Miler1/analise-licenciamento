@@ -4,7 +4,13 @@ DateUtil = {
 
         return moment(stringDate, 'DD/MM/yyyy').startOf('day')
             .diff(moment(Date.now()).startOf('day'), 'days');		
-    },
+	},
+	
+	somaPrazoEmDias: function(date, prazo) {
+
+		return moment(date, 'DD/MM/YYYY').startOf('day').add(prazo, 'days').format('DD/MM/YYYY');
+
+	},
 
 	getDiasRestantes: function(dataVencimento){
 
@@ -27,6 +33,41 @@ DateUtil = {
 		}
 
 		return this.calcularDiasRestantes(stringInicialDate)*-1;
+	},
+
+	isAfter: function(dataInicial, dataFinal) {
+
+		return moment(dataInicial).isAfter(dataFinal);
+
+	},
+
+	isBefore: function(dataInicial, dataFinal) {
+
+		return moment(dataInicial).isBefore(dataFinal);
+
+	},
+
+	sortDatas: function(arrayDatas) {
+
+		arrayDatas = arrayDatas.sort(function(data1, data2){
+
+			if(this.isAfter(data1, data2)) {
+
+				return 1;
+
+			} else if(this.isBefore(data1, data2)) {
+
+				return -1;
+
+			} else {
+
+				return 0;
+				
+			}
+ 			
+		});
+
+		return arrayDatas;
 	},
 
 	getContaDiasRestantes: function(dias, prazo) {
@@ -109,6 +150,18 @@ DateUtil = {
 		}
 
 	}
+	
+	/* Recebe valor em ms e transforma em Dias e Horas
+	transformaDataHora: function(data) {
+
+		days = Math.floor(data / (24*60*60*1000));
+		daysms=data % (24*60*60*1000);
+		hours = Math.floor((daysms)/(60*60*1000));
+		hoursms=data % (60*60*1000);
+		minutes = Math.floor((hoursms)/(60*1000));
+
+		return days + " dias, " + hours + ":" + minutes + "h"; 
+	}*/
 };
 
 exports.utils.DateUtil = DateUtil;

@@ -10,6 +10,25 @@
 	}
 }
 
+.resposta-orgao{
+
+		margin: 0px;
+		width: 850px;
+		height: 88px;
+}
+
+.info-sem-dados-para-exibir {
+		text-align: center;
+		margin-top: 15px;
+    padding-bottom: 15px;
+    font-style: italic;
+    color: #757575;
+}
+
+.margin-inconsistencia {
+	margin-top: 50px;
+}
+
 .rodape-cadastro{
 	margin-top: 40px;
 	margin-bottom: 40px;
@@ -180,60 +199,72 @@ form{
 	margin-left: 0px;
 }
 
-.icone-revisao-solicitada {
-		color: #757575;
-		font-style: italic;
+.legenda {
+	margin-top: 10px;
+}
+.legenda-ff {
+	margin-bottom: 5px;
+}
+
+.icone-legenda {
+
+	color: #757575;
+	font-style: italic;
 
 	&:before {
 		content: "";
-		background-color: #16cbd1;
 		border-radius: 50%;
 		width: 12px;
 		height: 12px;
 		display: inline-block;
 		vertical-align: middle;
+		margin-right:10px;
 	}
+}
 
-	&.legenda {
-		margin-left: 5px;
+.icone-revisao-solicitada {
 
-		&:before {
-			margin-right: 5px;
-		}
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: #16cbd1;
 	}
 }
 
 .icone-renovacao {
-	color: #757575;
-	font-style: italic;
+
+	&:extend(.icone-legenda all);
 
 	&:before {
-		content: "";
 		background-color: #002daa;
-		border-radius: 50%;
-		width: 12px;
-		height: 12px;
-		display: inline-block;
-		vertical-align: middle;
-		margin-left: 10px;
-	}
-
-	&.legenda {
-		margin-left: 5px;
-
-		&:before {
-			margin-right: 5px;
-		}
 	}
 }
 
 .icone-solicitacao-desvinculo-pendente {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: orange;
+	}
+}
+
+.icone-notificado {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: #8c8c8c;
+	}
+}
+
+.icone-aguardando-pagamento-taxa {
 	color: #757575;
 	font-style: italic;
 
 	&:before {
 		content: "";
-		background-color: orange;
+		background-color: rgb(255, 230, 0);
 		border-radius: 50%;
 		width: 12px;
 		height: 12px;
@@ -242,12 +273,97 @@ form{
 		margin-right:10px;
 	}
 
-	&.legenda {
-		margin-left: 5px;
 
-		&:before {
-			margin-right: 5px;
-		}
+}
+
+.icone-licenca-suspensa {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color:rgb(255, 230, 0);
+	}
+	
+}
+
+.icone-licenca-cancelada {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color:rgb(255, 0, 0);
+	}
+	
+}
+
+.icone-licenca-vigente {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color:rgb(54, 221, 12);
+	}
+	
+}
+
+
+.icone-solicitacao-licenca-indeferida {
+	color: #757575;
+	font-style: italic;
+
+	&:before {
+		content: "";
+		background-color: rgb(255, 0, 0);
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
+	}
+
+}
+
+.icone-aguardando-comunicado {
+	color: #757575;
+	font-style: italic;
+
+	&:before {
+		content: "";
+		background-color: rgb(183, 0, 255);
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
+	}
+
+}
+
+.icone-licenca-emitida {
+	color: #757575;
+	font-style: italic;
+
+	&:before {
+		content: "";
+		background-color: rgb(54, 221, 12);
+		border-radius: 50%;
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right:10px;
+	}
+
+}
+
+.icone-aguardando-resposta-juridico {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color:#800000b3;
 	}
 }
 
@@ -258,86 +374,217 @@ form{
 	text-decoration: none;
 }
 
+.disable-visualizar-inconsistencia {
+	color: currentColor;
+	cursor: not-allowed;
+	opacity: 0.5;
+	text-decoration: none;
+}
+
 .icone-solicitacao-finalizada {
-	color: #757575;
-	font-style: italic;
+
+	&:extend(.icone-legenda all);
 
 	&:before {
-		content: "";
 		background-color: green;
-		border-radius: 50%;
-		width: 12px;
-		height: 12px;
-		display: inline-block;
-		vertical-align: middle;
-		margin-right:10px;
 	}
+}
 
-	&.legenda {
-		margin-left: 5px;
+.icone-solicitacao-finalizada-geo {
 
-		&:before {
-			margin-right: 5px;
-		}
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: rgb(4, 87, 4);
+	}
+}
+
+.icone-solicitacao-finalizada-tecnica {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color:#7FFFD4;
 	}
 }
 
 .icone-revisao-atendida {
-		color: #757575;
-		font-style: italic;
+
+	&:extend(.icone-legenda all);
 
 	&:before {
-		content: "";
 		background-color: blue;
-		border-radius: 50%;
-		width: 12px;
-		height: 12px;
-		display: inline-block;
-	vertical-align: middle;
-	margin-left: 0px;
-	}
-
-	&.legenda {
-		margin-left: 5px;
-
-		&:before {
-			margin-right: 5px;
-		}
 	}
 }
 
 .icone-solicitacao-ajustes {
-  color: #757575;
-  font-style: italic;
 
-&:before {
-  content: "";
-    background-color: red;
-    border-radius: 50%;
-    width: 12px;
-    height: 12px;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-  }
+	&:extend(.icone-legenda all);
 
-  &.legenda {
-    margin-left: 5px;
+	&:before {
+		background-color: red;
+	}
+}
 
-    &:before {
-      margin-right: 5px;
-    }
-  }
+.icone-analise-geo {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color:#0081ff;
+	}
+}
+
+.margin-grid-licenca{
+	border: solid silver 1px;
+}
+
+.icone-licenca-aprovada {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: rgb(24, 224, 34);
+	}
+}
+
+.icone-licenca-nao-aprovada {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color: rgb(248, 0, 12);
+	}
+}
+
+.label-legenda-presidente{
+	color: #757575;
+	font-style: italic;
+}
+
+.label-cabecalho-protocolos{
+	margin-bottom: 5px;
+}
+
+.icone-analise-tecnica {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		background-color:#ADD8E6;
+	}
+}
+
+.icone-licenca-aprovada {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		font-family: 'Glyphicons Halflings';
+		color: lighten(@brand-primary,20%);
+		content: "\e013";
+	}
+}
+
+.icone-licenca-reprovada {
+
+	&:extend(.icone-legenda all);
+
+	&:before {
+		font-family: 'Glyphicons Halflings';
+		color: @vermelho-erro;
+		content: "\e014";
+	}
+}
+
+.disable-acoes {
+	color: currentColor;
+	cursor: not-allowed;
+	opacity: 0.5;
+	text-decoration: none;
 }
 
 .no-margin {
 	margin:0px !important;
 }
 
+.padding-inconsistencias{
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.label-documento-minuta{
+	font-size: 13px;
+	margin-bottom: 10px;
+}
+
+.error{
+	border-color: #d62c1a !important;
+}
+.error-div{
+	border: 1px solid;
+	border-color: #d62c1a !important;
+}
+
+.temInconsistencia {
+	color: red;
+}
+.margin-hr-analise-tecnica{
+	margin-bottom: 5px;
+}
+
+.radio-decreto-federal{
+	margin-left:125px;
+	margin-top:5px;
+}
+
+.decreto-federal{
+	display: inline-block;
+	margin-left:5px;
+}
+
+.nao-tem-inconsistencia {
+	color: green;
+}
+
+.padding-right-11 {
+	padding-right: 11px !important;
+}
+
+.padding-right-20 {
+	padding-right: 20px !important;
+}
+
+.error-summernote{
+	border-color: #d62c1a !important;
+	border: 1px solid;
+	border-radius: 5px;
+}
+
 .visualizar-justificativa{
+	text-align:center;
+	font-size:13px;
+	margin-left:2%;
+}
+
+.visualizar-parecer{
 	text-align:center; 
 	font-size:13px; 
-	margin-left:2%;
+}
+
+.visualizar-solicitacao-ajustes{
+	padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 15px;
+}
+
+.btn-visualizar-justificativa{
+	padding: 0px;
+	margin-left: 40%;
+}
+
+.justificativa-historico-analise{
+	margin-left: 15px;
 }
 
 #justificativa-desvinculo,
@@ -347,10 +594,20 @@ form{
 		font-size: 13px;
 		margin-left:15px;
 	}
-	.text-justificativa{
+	.text-justificativa,
+	.text-parecer-juridico{
 		margin:15px;
 		width: 840px;
 		height: 170px;
+	}
+}
+
+#parecer-juridico{
+
+	.label-parecer-juridico {
+
+		font-size: 13px;
+
 	}
 }
 
@@ -428,50 +685,6 @@ form{
 
 .capitalize:first-letter {
 	text-transform: uppercase;
-}
-
-.icone-licenca-aprovada {
-	color: #757575;
-	font-style: italic;
-
-	&:before {
-		font-family: 'Glyphicons Halflings';
-		color: lighten(@brand-primary,20%);
-		content: "\e013";
-		width: 12px;
-		height: 12px;
-		display: inline-block;
-	}
-
-	&.legenda {
-		margin-left: 5px;
-
-		&:before {
-			margin-right: 5px;
-		}
-	}
-}
-
-.icone-licenca-reprovada {
-	color: #757575;
-	font-style: italic;
-
-	&:before {
-		font-family: 'Glyphicons Halflings';
-		color: @vermelho-erro;
-		content: "\e014";
-		width: 12px;
-		height: 12px;
-		display: inline-block;
-	}
-
-	&.legenda {
-		margin-left: 5px;
-
-		&:before {
-			margin-right: 5px;
-		}
-	}
 }
 
 .input-dias {

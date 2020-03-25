@@ -4,6 +4,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import play.libs.Crypto;
 import utils.Configuracoes;
 import utils.FileManager;
 import utils.Identificavel;
@@ -29,12 +30,14 @@ public class Documento extends GenericModel implements Identificavel {
 	
 	@Required
 	public String caminho;
+
+	@Required
+	public String responsavel;
 	
 	@Required
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
 	public TipoDocumento tipo;
-
 
 	 @Column(name="nome_arquivo")
 	 public String nomeDoArquivo;
@@ -65,6 +68,17 @@ public class Documento extends GenericModel implements Identificavel {
 		
 		this.tipo = tipo;
 		this.arquivo = arquivo;
+	}
+
+	public Documento(TipoDocumento tipo, File arquivo, String nomeDoArquivo, String responsavel, Date dataCadastro) {
+
+		this.tipo = tipo;
+		this.arquivo = arquivo;
+		this.nomeDoArquivo = nomeDoArquivo;
+		this.responsavel = responsavel;
+		this.dataCadastro = dataCadastro;
+
+		this.save();
 	}
 	
 	public String getNome() {
@@ -125,6 +139,7 @@ public class Documento extends GenericModel implements Identificavel {
 	protected void saveArquivo(File file) {
 		
 		if (file == null || !file.exists())
+
 			throw new IllegalStateException("Arquivo não existente.");
 		
 		try {
@@ -171,10 +186,10 @@ public class Documento extends GenericModel implements Identificavel {
 
 	protected void configurarCaminho() {
 
-		this.caminho = File.separator + this.nomeDoArquivo;
-		this.caminho = this.caminho.substring(0,this.caminho.length()-4);
+		this.caminho = File.separator + Crypto.encryptAES(new Date().getTime() + this.nomeDoArquivo);
 		if (this.extensao != null)
 			this.caminho += "." + this.extensao;
+
 	}
 
 	protected void criarPasta() {
@@ -188,7 +203,7 @@ public class Documento extends GenericModel implements Identificavel {
 
 	protected String getCaminhoCompleto() {
 
-		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + this.caminho;
+		return Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH + File.separator + tipo.caminhoPasta + this.caminho;
 	}
 	
 	public File getFile() {
@@ -247,10 +262,29 @@ public class Documento extends GenericModel implements Identificavel {
 				.fetch();
 	}
 
+	public List<ParecerJuridico> getPareceresJuridicosRelacionados() {
+
+		return ParecerJuridico.find("select j from ParecerJuridico j inner join j.documentos documento where documento.id = :idDocumento")
+				.setParameter("idDocumento", this.id)
+				.fetch();
+	}
+
 	public String getNomeArquivo() {
 
 		this.arquivo = getFile();
 
 		return this.arquivo.getName();
+	}
+
+	public Boolean isType(Long idTipo) {
+		return idTipo.equals(this.tipo.id);
+	}
+
+	public Boolean isNotificacaoAnaliseGeo() {
+		return this.isType(TipoDocumento.DOCUMENTO_NOTIFICACAO_ANALISE_GEO);
+	}
+
+	public Boolean isParecerAnaliseTecnica() {
+		return this.isType(TipoDocumento.DOCUMENTO_NOTIFICACAO_TECNICA);
 	}
 }

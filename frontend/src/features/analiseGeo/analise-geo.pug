@@ -1,34 +1,9 @@
+include ../../features/resumoProcesso/resumo-processo
+
 div(ng-init='ctrl.init()')
 
-	.row
-		div(growl inline="true" reference='5')
-		.col-md-6
-			h4 PARECER GEO
-
-			div.row
-				label.col-sm-4 Processo:
-				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.numero ? ctrl.analiseGeo.analise.processo.numero : ctrl.analiseGeo.analise.processo.numeroProcesso}}
-
-			div.row
-				label.col-sm-4 CPF/CNPJ:
-				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cpf : ctrl.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
-
-			div.row
-				label.col-sm-4 Interessado:
-				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.denominacao}}
-
-			div.row
-				label.col-sm-4 Município:
-				span.col-sm-8 {{ctrl.analiseGeo.analise.processo.empreendimento.municipio.nome }}/{{ctrl.analiseGeo.analise.processo.empreendimento.municipio.estado.codigo }}
-
-		.col-md-6
-
-			button.btn.btn-sm.btn-default.pull-right(ng-click="ctrl.visualizarProcesso(ctrl.analiseGeo.analise.processo)")
-				i.fa.fa-eye
-				| &nbsp;Visualizar Processo
-			a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
-				i.fa.fa-bars
-				| &nbsp;Legislação
+	section
+		+resumo-processo('ctrl.analiseGeo.analise.processo','ctrl.visualizarProcesso(ctrl.analiseGeo.analise.processo)', 'ctrl.titulo')
 
 	.row
 		div(style="padding:15px;")
@@ -37,10 +12,9 @@ div(ng-init='ctrl.init()')
 			ul.nav.nav-tabs(role="tablist")
 				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="ctrl.validacaoAbaVoltar()")
 					a(data-toggle="tab", data-target="#tabLocalizacaoGeografica") Análise Geo
-					
-				li#conclusao.aba-clicavel(role="tab", ng-click="ctrl.validacaoAbaAvancar()", ng-class="{'disabled': !passoValido()}",
-						title="{{passoValido() ? '' : 'Para prosseguir é necessário adicionar uma inconsistência para cada restrição relacionada ao IPHAN e/ou IBAMA.'}}")
-					a(data-toggle="{{passoValido() ? 'tab' : ''}}", data-target="#tabConclusao") Conclusão da análise
+
+				li#conclusao.aba-clicavel(role="tab", ng-click="ctrl.validacaoAbaAvancar()")
+					a(data-toggle="tab", data-target="#tabConclusao") Conclusão da análise
 
 			.tab-content
 				#tabLocalizacaoGeografica.tab-pane.fade.in.active
@@ -48,14 +22,17 @@ div(ng-init='ctrl.init()')
 
 				#tabConclusao.tab-pane
 					include etapa-conclusao
-						
+
 div
-	button.btn.btn-default.pull-left(style="margin-bottom:15px;",ng-click="ctrl.cancelar()")
+	button.btn.btn-default.pull-left(style="margin-bottom:15px;", title='Cancelar análise',
+                                    ng-bootbox-title='Confirmação',
+                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                    ng-bootbox-confirm-action="ctrl.cancelar()")
 		i.glyphicon.glyphicon-remove
 		| &nbsp;Cancelar
 	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.avancarProximaEtapa()",
-			ng-if="ctrl.controleVisualizacao === 'ETAPA_LOCALIZACAO_GEOGRAFICA'",
-			ng-disabled="!passoValido()", title="{{passoValido() ? '' : 'Para prosseguir é necessário adicionar uma inconsistência para cada restrição relacionada ao IPHAN e/ou IBAMA.'}}")
+			data-toggle="tab", data-target="#tabConclusao",
+			ng-if="ctrl.controleVisualizacao === 'ETAPA_LOCALIZACAO_GEOGRAFICA'")
 		i.glyphicon.glyphicon-ok
 		| &nbsp;Avançar
 	button.btn.btn-success.posicao-avancar-concluir(ng-click="ctrl.concluir()",ng-if="ctrl.controleVisualizacao === 'ETAPA_CONCLUSAO'")

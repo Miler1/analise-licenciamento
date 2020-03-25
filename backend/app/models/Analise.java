@@ -1,11 +1,17 @@
 package models;
 
+import models.tramitacao.AcaoTramitacao;
+import models.tramitacao.HistoricoTramitacao;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import utils.Configuracoes;
+import utils.WebService;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +27,8 @@ public class Analise extends GenericModel {
 	public Long id;
 	
 	@Required
-	@ManyToOne
-	@JoinColumn(name="id_processo")
+	@OneToOne
+	@JoinColumn(name = "id_processo", referencedColumnName = "id")
 	public Processo processo;
 	
 	@Required
@@ -40,7 +46,7 @@ public class Analise extends GenericModel {
 	@OneToMany(mappedBy="analise")
 	public List<AnaliseTecnica> analisesTecnicas;
 
-	@OneToMany(mappedBy="analise")
+	@OneToMany(mappedBy="analise", fetch = FetchType.EAGER)
 	public List<AnaliseGeo> analisesGeo;
 	
 	public Boolean ativo;
@@ -59,6 +65,14 @@ public class Analise extends GenericModel {
 	
 	@Column(name="notificacao_aberta")
 	public Boolean temNotificacaoAberta;
+
+	@OneToMany(mappedBy = "analise")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerDiretorTecnico> pareceresDiretorTecnico;
+
+	@OneToMany(mappedBy = "analise")
+	@Fetch(FetchMode.SUBSELECT)
+	public List<ParecerPresidente> pareceresPresidente;
 	
 	public Analise save() {
 		
@@ -81,7 +95,7 @@ public class Analise extends GenericModel {
 					this.analiseJuridica = analiseJuridica;
 		
 		if(this.analiseJuridica == null)
-			this.analiseJuridica = AnaliseJuridica.findByProcesso(processo);
+			this.analiseJuridica = AnaliseJuridica.findByProcessoAtivo(processo);
 
 		return this.analiseJuridica;
 		
@@ -98,7 +112,7 @@ public class Analise extends GenericModel {
 					this.analiseTecnica = analiseTecnica;
 		
 		if(this.analiseTecnica == null)
-			this.analiseTecnica = analiseTecnica.findByProcesso(processo);
+			this.analiseTecnica = analiseTecnica.findByProcessoAtivo(processo);
 
 		return this.analiseTecnica;		
 	}
@@ -115,12 +129,12 @@ public class Analise extends GenericModel {
 					this.analiseGeo = analiseGeo;
 
 		if(this.analiseGeo == null)
-			this.analiseGeo = analiseGeo.findByProcesso(processo);
+			this.analiseGeo = analiseGeo.findByProcessoAtivo(processo);
 
 		return this.analiseGeo;
 	}
 	
-	public static Analise findByProcesso(Processo processo) {
+	public static Analise findByProcessoAtivo(Processo processo) {
 		return Analise.find("processo.id = :idProcesso AND ativo = true")
 				.setParameter("idProcesso", processo.id)
 				.first();
@@ -218,4 +232,91 @@ public class Analise extends GenericModel {
 		return false;
 
 	}
+
+	public static void alterarStatusLicenca(String codigoStatus, String numeroLicenca) {
+
+		CaracterizacaoStatusVO caracterizacaoStatusVO = new CaracterizacaoStatusVO(codigoStatus, numeroLicenca);
+
+		new WebService().postJSON(Configuracoes.URL_LICENCIAMENTO_UPDATE_STATUS, caracterizacaoStatusVO);
+
+	}
+
+	public Analise findUltimaInativaByProcesso(Processo processo){
+		return find("processo.numero = :numero AND ativo = false ORDER BY id DESC")
+				.setParameter("numero", processo.numero)
+				.first();
+	}
+
+	public Analisavel getAnalisavel(){
+
+		if(this.ativo) {
+
+			AnaliseGeo analiseGeo = AnaliseGeo.findByProcessoAtivo(this.processo);
+			if (analiseGeo != null) {
+				return analiseGeo;
+			}
+
+			return AnaliseTecnica.findByProcessoAtivo(this.processo);
+		}
+
+		Analise analise = findUltimaInativaByProcesso(this.processo);
+
+		if(analise != null && analise.analisesTecnicas != null && !analise.analisesTecnicas.isEmpty()) {
+			return analise.analisesTecnicas.stream().max(Comparator.comparing(AnaliseTecnica::getId)).orElse(null);
+		}
+
+		if(analise != null && analise.analisesGeo != null){
+			return analise.analisesGeo.stream().max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+		}
+
+		return null;
+	}
+
+	public void iniciar(UsuarioAnalise usuarioExecutor) {
+
+		if (this.dataCadastro == null) {
+
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+
+			this.dataCadastro = c.getTime();
+
+			this._save();
+
+		}
+
+		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_DIRETOR, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.objetoTramitavel.id), usuarioExecutor);
+
+	}
+
+	public List<Notificacao> getNotificacoes(){
+		return getAnalisavel().getNotificacoes();
+	}
+
+	public void inativar(){
+		this.getAnalisavel().inativar();
+		this.processo.inativar();
+		this.ativo = false;
+		this._save();
+	}
+
+	public void iniciarAnalisePresidente(UsuarioAnalise usuarioExecutor) {
+
+		if (this.dataCadastro == null) {
+
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+
+			this.dataCadastro = c.getTime();
+
+			this._save();
+
+		}
+
+		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_PRESIDENTE, usuarioExecutor);
+		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.idObjetoTramitavel), usuarioExecutor);
+
+	}
+	
 }

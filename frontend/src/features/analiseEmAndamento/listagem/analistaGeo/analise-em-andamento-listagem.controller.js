@@ -1,4 +1,7 @@
-var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $rootScope, processoService, mensagem) {
+var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
+												   $rootScope, processoService,
+												   analiseGeoService, parecerGerenteService,
+												   mensagem, $uibModal) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE GEO';
 
@@ -9,6 +12,9 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	listagem.selecionarTodosProcessos = selecionarTodosProcessos;
 	listagem.onPaginaAlterada = onPaginaAlterada;
 	listagem.continuarAnalise = continuarAnalise;
+	listagem.visualizarSolicitacaoAjustes = visualizarSolicitacaoAjustes;
+	listagem.verificaSolicitacaoAjustes = verificaSolicitacaoAjustes;
+	listagem.tipoResultadoAnalise = app.utils.TiposResultadoAnalise;
 
 	listagem.processos = [];
 	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_GEO;
@@ -18,12 +24,37 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 	listagem.dateUtil = app.utils.DateUtil;
 	listagem.exibirDadosProcesso = exibirDadosProcesso;
 	listagem.disabledFields = _.concat($scope.analiseEmAndamentoListagem.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
+	listagem.visualizarNotificacao = visualizarNotificacao;
+	listagem.notificacaoAtendida = notificacaoAtendida;
 
 	mensagem.verificaMensagemGlobal();
 
 	function atualizarListaProcessos(processos) {
 
 		listagem.processos = processos;
+		
+	}
+
+	function verificaSolicitacaoAjustes(processo) {
+
+		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
+			.then(function(response){
+
+				if(_.isEmpty(response.data.pareceresGerenteAnaliseGeo)){
+					processo.verificaAnalise = false;
+
+				}else{
+					_.find(response.data.pareceresGerenteAnaliseGeo, function(parecerGerente) {
+						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+							processo.verificaAnalise = false;
+
+						}else{
+							processo.verificaAnalise=true;
+
+						}
+					});
+				}
+			});
 	}
 
 	function atualizarPaginacao(totalItens) {
@@ -44,17 +75,74 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location, $r
 		});
 	}
 
-	function continuarAnalise(idAnaliseJuridica) {
+	function iniciarUploadShapes(processo){
 
-		$rootScope.$broadcast('atualizarContagemProcessos');
+		$location.path('/shape-upload/' + processo.idProcesso.toString());
+	}
 
-		$location.path('/analise-geo/' + idAnaliseJuridica.toString());
-	}	
+	function continuarAnalise(processo) {
+
+		iniciarUploadShapes(processo);
+
+	}
+
+	function primeiroAcesso(processo) {
+		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
+
+		analiseGeoService.getPossuiAnexo(cpfCnpjEmpreendimento)
+		.then(function(response){
+
+			if(response.data === null){
+
+				iniciarUploadShapes(processo);
+
+			}else {
+
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				$location.path('/analise-geo/' + processo.idAnaliseGeo.toString());
+
+			}
+		}, function(error){
+
+			mensagem.error(error.data.texto);
+
+		});
+	}
 
 	function exibirDadosProcesso(processo) {
 
         processoService.visualizarProcesso(processo);
-    }	
+	}
+
+	function visualizarSolicitacaoAjustes(processo) {
+
+		parecerGerenteService.findJustificativaParecerByIdAnaliseGeo(processo.idAnaliseGeo)
+			.then(function(response){
+
+				$uibModal.open({
+					controller: 'visualizarAjustesController',
+					controllerAs: 'visualizarAjustesController',
+					backdrop: 'static',
+					templateUrl: 'components/modalVisualizarSolicitacaoAjustes/modalVisualizarSolicitacaoAjustes.html',
+					size: 'lg',
+					resolve: {
+						justificativa: function () {
+							return response.data;
+						}
+
+					}
+				});
+		});
+	}
+
+	function visualizarNotificacao(processo) {
+
+		return processoService.visualizarNotificacao(processo);
+	}
+
+	function notificacaoAtendida(processo) {
+		return processo && processo.retificacao && processo.idAnalistaGeoAnterior === processo.idAnalistaGeo;
+	}
 };
 
 exports.controllers.AnaliseEmAndamentoGeoListController = AnaliseEmAndamentoGeoListController;

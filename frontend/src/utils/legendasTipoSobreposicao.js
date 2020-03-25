@@ -12,12 +12,15 @@ var LegendasTipoSobreposicao = {
 	UC_ESTADUAL_PI_DENTRO: 'uc_estadual_pi_dentro',
 	UC_ESTADUAL_PI_FORA: 'uc_estadual_pi_fora',
 	UC_ESTADUAL_ZA: 'uc_estadual_za',
+	UC_ESTADUAL_ZA_PI_FORA: 'uc_estadual_za_pi_fora',
 	TOMBAMENTO_ENCONTRO_AGUAS: 'tombamento_encontro_aguas',
 	TOMBAMENTO_ENCONTRO_AGUAS_ZA: 'tombamento_encontro_aguas_za',
 	AREAS_EMBARGADAS_IBAMA: 'areas_embargadas_ibama',
 	AUTO_DE_INFRACAO_IBAMA: 'auto_de_infracao_ibama',
 	SAUIM_DE_COLEIRA: 'sauim_de_coleira',
-	SITIOS_ARQUEOLOGICOS: 'sitios_arqueologicos'
+	SITIOS_ARQUEOLOGICOS: 'sitios_arqueologicos',
+	BENS_ACAUTELADOS_IPHAN_PT: 'bens_acautelados_iphan_pt',
+	BENS_ACAUTELADOS_IPHAN_POL: 'bens_acautelados_iphan_pol',
 
 };
 

@@ -1,14 +1,16 @@
 package services;
 
+import br.ufla.lemaf.beans.historico.EmpreendimentoSobreposicao;
+import br.ufla.lemaf.beans.historico.EmpreendimentoSobreposicaoVO;
 import br.ufla.lemaf.beans.pessoa.Setor;
 import exceptions.AppException;
 import exceptions.ValidacaoException;
 import exceptions.WebServiceException;
-import main.java.br.ufla.lemaf.beans.EmpreendimentoFiltroResult;
-import main.java.br.ufla.lemaf.beans.FiltroEmpreendimento;
-import main.java.br.ufla.lemaf.beans.pessoa.FiltroPessoa;
-import main.java.br.ufla.lemaf.beans.pessoa.Pessoa;
-import main.java.br.ufla.lemaf.beans.pessoa.Usuario;
+import br.ufla.lemaf.beans.EmpreendimentoFiltroResult;
+import br.ufla.lemaf.beans.FiltroEmpreendimento;
+import br.ufla.lemaf.beans.pessoa.FiltroPessoa;
+import br.ufla.lemaf.beans.pessoa.Pessoa;
+import br.ufla.lemaf.beans.pessoa.Usuario;
 import models.UsuarioAnalise;
 import models.licenciamento.Empreendimento;
 import play.Logger;
@@ -190,7 +192,7 @@ public class IntegracaoEntradaUnicaService {
 	}
 
 
-	public main.java.br.ufla.lemaf.beans.Empreendimento findEmpreendimentosByCpfCnpj(String cpfCnpj) {
+	public br.ufla.lemaf.beans.Empreendimento findEmpreendimentosByCpfCnpj(String cpfCnpj) {
 
 		try {
 
@@ -211,6 +213,12 @@ public class IntegracaoEntradaUnicaService {
 			throw new AppException(Mensagem.ERRO_COMUNICACAO_ENTRADA_UNICA);
 
 		}
+	}
+
+	public EmpreendimentoSobreposicao intersects(String cpfCnpj) {
+
+		return CadastroUnificadoWS.ws.intersects(cpfCnpj);
+
 	}
 
 }

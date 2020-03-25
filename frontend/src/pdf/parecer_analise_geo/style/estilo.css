@@ -38,3 +38,11 @@ body {
 .dado-assinatura {
   margin-top: 5px;
 }
+
+.text-align-center {
+  text-align: center;
+}
+
+.padding-none {
+  padding: 0;
+}

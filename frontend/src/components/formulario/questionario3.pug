@@ -1,0 +1,681 @@
+include pergunta-sim-nao
+include pergunta-descritiva
+include pergunta-numerica
+include pergunta-radio
+include pergunta-checkbox
+include pergunta-upload
+include pergunta-data
+
+mixin questionario3(model, ngDisabled, submitted)
+	.sub-pergunta
+
+		+perguntaRadio("Consumo de água",
+			'negrito',
+			model+'.consumoAgua',
+			{
+				"true": 'Haverá consumo',
+				"false": 'Não haverá consumo'
+			},
+			'normal',
+			submitted+' !== false && '+model+'.consumoAgua !== "true" && '+model+'.consumoAgua !== "false"',
+			ngDisabled
+		)
+		.sub-pergunta(ng-if=model+".consumoAgua === 'true'", class="animate-if")
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'consumoAguaRedePublica': 'Rede pública'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.consumoAguaRedePublica !== true && '+model+'.consumoAguaAguaSubterranea !== true && '+model+'.consumoAguaAguaSuperficial !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".consumoAguaRedePublica", class="animate-if")
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaNumerica(
+							"Consumo médio",
+							' negrito',
+							model+'.consumoAguaRedePublicaConsumoMedio',
+							2,
+							'm³/dia',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Uso",
+							' negrito',
+							{
+								'consumoAguaRedePublicaUsoDomestico': 'Doméstico',
+								'consumoAguaRedePublicaUsoIndustrial': 'Industrial'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.consumoAguaRedePublicaUsoDomestico !== true && '+model+'.consumoAguaRedePublicaUsoIndustrial !== true',
+							ngDisabled
+						)
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'consumoAguaAguaSubterranea': 'Água subterrânea'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.consumoAguaRedePublica !== true && '+model+'.consumoAguaAguaSubterranea !== true && '+model+'.consumoAguaAguaSuperficial !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".consumoAguaAguaSubterranea", class="animate-if")
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaNumerica(
+							"Consumo médio",
+							' negrito',
+							model+'.consumoAguaAguaSubterraneaConsumoMedio',
+							2,
+							'm³/dia',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Uso",
+							' negrito',
+							{
+								'consumoAguaAguaSubterraneaUsoDomestico': 'Doméstico',
+								'consumoAguaAguaSubterraneaUsoIndustrial': 'Industrial'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.consumoAguaAguaSubterraneaUsoDomestico !== true && '+model+'.consumoAguaAguaSubterraneaUsoIndustrial !== true',
+							ngDisabled
+						)
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'consumoAguaAguaSuperficial': 'Água superficial'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.consumoAguaRedePublica !== true && '+model+'.consumoAguaAguaSubterranea !== true && '+model+'.consumoAguaAguaSuperficial !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".consumoAguaAguaSuperficial", class="animate-if")
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaNumerica(
+							"Consumo médio",
+							' negrito',
+							model+'.consumoAguaAguaSuperficialConsumoMedio',
+							2,
+							'm³/dia',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Uso",
+							' negrito',
+							{
+								'consumoAguaAguaSuperficialUsoDomestico': 'Doméstico',
+								'consumoAguaAguaSuperficialUsoIndustrial': 'Industrial'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.consumoAguaAguaSuperficialUsoDomestico !== true && '+model+'.consumoAguaAguaSuperficialUsoIndustrial !== true',
+							ngDisabled
+						)
+
+		+perguntaRadio(
+			"Efluentes",
+			' negrito',
+			model+'.efluentes',
+			{
+				"true": 'Há previsão',
+				"false": 'Não há previsão'
+			},
+			'normal',
+			submitted+' !== false && '+model+'.efluentes !== "true" && '+model+'.efluentes !== "false"',
+			ngDisabled
+		)
+		.sub-pergunta(ng-if=model+".efluentes === 'true'", class="animate-if")
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'efluentesDomestico': 'Doméstico'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.efluentesDomestico !== true && '+model+'.efluentesIndustrial !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".efluentesDomestico", class="animate-if")
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaNumerica(
+							"Vazão média",
+							' negrito',
+							model+'.efluentesDomesticoVazaoMedia',
+							2,
+							'm³/dia',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaRadio(
+							"Regime de carga",
+							' negrito',
+							model+'.efluentesDomesticoRegimeCarga',
+							{
+								"CONTINUO": 'Contínuo',
+								"INTERMITENTE": 'Intermitente'
+							},
+							'normal',
+							submitted+' !== false && '+model+'.efluentesDomesticoRegimeCarga !== "CONTINUO" && '+model+'.efluentesDomesticoRegimeCarga !== "INTERMITENTE"',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaCheckbox(
+							"Tipo de tratamento",
+							' negrito',
+							{
+								'efluentesDomesticoTipoTratamentoEte': 'ETE',
+								'efluentesDomesticoTipoTratamentoFossaSeptica': 'Fossa séptica',
+								'efluentesDomesticoTipoTratamentoFossaFiltro': 'Fossa filtro',
+								'efluentesDomesticoTipoTratamentoRemocaoOleoGraxa': 'Remoção de óleos e graxas (gorduras)',
+								'efluentesDomesticoTipoTratamentoOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.efluentesDomesticoTipoTratamentoEte !== true && '+model+'.efluentesDomesticoTipoTratamentoFossaSeptica !== true && '+model+'.efluentesDomesticoTipoTratamentoFossaFiltro !== true && '+model+'.efluentesDomesticoTipoTratamentoRemocaoOleoGraxa !== true && '+model+'.efluentesDomesticoTipoTratamentoOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesDomesticoTipoTratamentoOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.efluentesDomesticoTipoTratamentoOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaCheckbox(
+							"Destino final",
+							' negrito',
+							{
+								'efluentesDomesticoDestinoFinalFossaSeptica': 'Fossa séptica',
+								'efluentesDomesticoDestinoFinalFossaFiltro': 'Fossa filtro',
+								'efluentesDomesticoDestinoFinalRemocaoOleoGraxa': 'Remoção de óleos e graxas (gorduras)',
+								'efluentesDomesticoDestinoFinalOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.efluentesDomesticoDestinoFinalFossaSeptica !== true && '+model+'.efluentesDomesticoDestinoFinalFossaFiltro !== true && '+model+'.efluentesDomesticoDestinoFinalRemocaoOleoGraxa !== true && '+model+'.efluentesDomesticoDestinoFinalOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesDomesticoDestinoFinalOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.efluentesDomesticoDestinoFinalOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'efluentesIndustrial': 'Industrial'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.efluentesDomestico !== true && '+model+'.efluentesIndustrial !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".efluentesIndustrial", class="animate-if")
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaNumerica(
+							"Vazão média",
+							' negrito',
+							model+'.efluentesIndustrialVazaoMedia',
+							2,
+							'm³/dia',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaRadio(
+							"Regime de carga",
+							' negrito',
+							model+'.efluentesIndustrialRegimeCarga',
+							{
+								"CONTINUO": 'Contínuo',
+								"INTERMITENTE": 'Intermitente'
+							},
+							'normal',
+							submitted+' !== false && '+model+'.efluentesIndustrialRegimeCarga !== "CONTINUO" && '+model+'.efluentesIndustrialRegimeCarga !== "INTERMITENTE"',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaCheckbox(
+							"Tipo de tratamento",
+							' negrito',
+							{
+								'efluentesIndustrialTipoTratamentoEte': 'ETE',
+								'efluentesIndustrialTipoTratamentoFossaSeptica': 'Fossa séptica',
+								'efluentesIndustrialTipoTratamentoFossaFiltro': 'Fossa filtro',
+								'efluentesIndustrialTipoTratamentoRemocaoOleoGraxa': 'Remoção de óleos e graxas (gorduras)',
+								'efluentesIndustrialTipoTratamentoOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.efluentesIndustrialTipoTratamentoEte !== true && '+model+'.efluentesIndustrialTipoTratamentoFossaSeptica !== true && '+model+'.efluentesIndustrialTipoTratamentoFossaFiltro !== true && '+model+'.efluentesIndustrialTipoTratamentoRemocaoOleoGraxa !== true && '+model+'.efluentesIndustrialTipoTratamentoOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesIndustrialTipoTratamentoOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.efluentesIndustrialTipoTratamentoOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaCheckbox(
+							"Destino final",
+							' negrito',
+							{
+								'efluentesIndustrialDestinoFinalFossaSeptica': 'Fossa séptica',
+								'efluentesIndustrialDestinoFinalFossaFiltro': 'Fossa filtro',
+								'efluentesIndustrialDestinoFinalRemocaoOleoGraxa': 'Remoção de óleos e graxas (gorduras)',
+								'efluentesIndustrialDestinoFinalOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.efluentesIndustrialDestinoFinalFossaSeptica !== true && '+model+'.efluentesIndustrialDestinoFinalFossaFiltro !== true && '+model+'.efluentesIndustrialDestinoFinalRemocaoOleoGraxa !== true && '+model+'.efluentesIndustrialDestinoFinalOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".efluentesIndustrialDestinoFinalOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.efluentesIndustrialDestinoFinalOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+
+		+perguntaRadio(
+			"Resíduos sólidos",
+			' negrito',
+			model+'.residuosSolidos',
+			{
+				"true": 'Há previsão',
+				"false": 'Não há previsão'
+			},
+			'normal',
+			submitted+' !== false && '+model+'.residuosSolidos !== "true" && '+model+'.residuosSolidos !== "false"',
+			ngDisabled
+		)
+		.sub-pergunta(ng-if=model+".residuosSolidos === 'true'", class="animate-if")
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'residuosSolidosDomestico': 'Doméstico'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.residuosSolidosDomestico !== true && '+model+'.residuosSolidosEscritorio !== true && '+model+'.residuosSolidosIndustrial !== true && '+model+'.residuosSolidosIndustrialPerigosos !== true && '+model+'.residuosSolidosOutros !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".residuosSolidosDomestico", class="animate-if")
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaNumerica(
+							"Quantidade média",
+							' negrito',
+							model+'.residuosSolidosDomesticoQuantidadeMedia',
+							2,
+							'kg/mês',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tratamento/Disposição",
+							' negrito',
+							{
+								'residuosSolidosDomesticoTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
+								'residuosSolidosDomesticoTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
+								'residuosSolidosDomesticoTratamentoDisposicaoIncineracao': 'Incineração',
+								'residuosSolidosDomesticoTratamentoDisposicaoReciclagem': 'Reciclagem',
+								'residuosSolidosDomesticoTratamentoDisposicaoCompostagem': 'Compostagem',
+								'residuosSolidosDomesticoTratamentoDisposicaoOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosDomesticoTratamentoDisposicaoAterroSanitario !== true && '+model+'.residuosSolidosDomesticoTratamentoDisposicaoAterroCeuAberto !== true && '+model+'.residuosSolidosDomesticoTratamentoDisposicaoIncineracao !== true && '+model+'.residuosSolidosDomesticoTratamentoDisposicaoReciclagem !== true && '+model+'.residuosSolidosDomesticoTratamentoDisposicaoCompostagem !== true && '+model+'.residuosSolidosDomesticoTratamentoDisposicaoOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosDomesticoTratamentoDisposicaoOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosDomesticoTratamentoDisposicaoOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tipo de coleta",
+							' negrito',
+							{
+								'residuosSolidosDomesticoTipoColetaPublica': 'Pública',
+								'residuosSolidosDomesticoTipoColetaPropria': 'Própria',
+								'residuosSolidosDomesticoTipoColetaTerceiros': 'Terceiros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosDomesticoTipoColetaPublica !== true && '+model+'.residuosSolidosDomesticoTipoColetaPropria !== true && '+model+'.residuosSolidosDomesticoTipoColetaTerceiros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosDomesticoTipoColetaTerceiros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosDomesticoTipoColetaTerceirosEspecificar',
+								'linha',
+								ngDisabled
+							)
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'residuosSolidosEscritorio': 'Escritório'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.residuosSolidosDomestico !== true && '+model+'.residuosSolidosEscritorio !== true && '+model+'.residuosSolidosIndustrial !== true && '+model+'.residuosSolidosIndustrialPerigosos !== true && '+model+'.residuosSolidosOutros !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".residuosSolidosEscritorio", class="animate-if")
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaNumerica(
+							"Quantidade média",
+							' negrito',
+							model+'.residuosSolidosEscritorioQuantidadeMedia',
+							2,
+							'kg/mês',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tratamento/Disposição",
+							' negrito',
+							{
+								'residuosSolidosEscritorioTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
+								'residuosSolidosEscritorioTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
+								'residuosSolidosEscritorioTratamentoDisposicaoIncineracao': 'Incineração',
+								'residuosSolidosEscritorioTratamentoDisposicaoReciclagem': 'Reciclagem',
+								'residuosSolidosEscritorioTratamentoDisposicaoOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosEscritorioTratamentoDisposicaoAterroSanitario !== true && '+model+'.residuosSolidosEscritorioTratamentoDisposicaoAterroCeuAberto !== true && '+model+'.residuosSolidosEscritorioTratamentoDisposicaoIncineracao !== true && '+model+'.residuosSolidosEscritorioTratamentoDisposicaoReciclagem !== true && '+model+'.residuosSolidosEscritorioTratamentoDisposicaoOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosEscritorioTratamentoDisposicaoOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosEscritorioTratamentoDisposicaoOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tipo de coleta",
+							' negrito',
+							{
+								'residuosSolidosEscritorioTipoColetaPublica': 'Pública',
+								'residuosSolidosEscritorioTipoColetaPropria': 'Própria',
+								'residuosSolidosEscritorioTipoColetaTerceiros': 'Terceiros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosEscritorioTipoColetaPublica !== true && '+model+'.residuosSolidosEscritorioTipoColetaPropria !== true && '+model+'.residuosSolidosEscritorioTipoColetaTerceiros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosEscritorioTipoColetaTerceiros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosEscritorioTipoColetaTerceirosEspecificar',
+								'linha',
+								ngDisabled
+							)
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'residuosSolidosIndustrial': 'Industrial'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.residuosSolidosDomestico !== true && '+model+'.residuosSolidosEscritorio !== true && '+model+'.residuosSolidosIndustrial !== true && '+model+'.residuosSolidosIndustrialPerigosos !== true && '+model+'.residuosSolidosOutros !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".residuosSolidosIndustrial", class="animate-if")
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaNumerica(
+							"Quantidade média",
+							' negrito',
+							model+'.residuosSolidosIndustrialQuantidadeMedia',
+							2,
+							'kg/mês',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tratamento/Disposição",
+							' negrito',
+							{
+								'residuosSolidosIndustrialTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
+								'residuosSolidosIndustrialTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
+								'residuosSolidosIndustrialTratamentoDisposicaoIncineracao': 'Incineração',
+								'residuosSolidosIndustrialTratamentoDisposicaoReciclagem': 'Reciclagem',
+								'residuosSolidosIndustrialTratamentoDisposicaoAterroIndustrial': 'Aterro industrial',
+								'residuosSolidosIndustrialTratamentoDisposicaoReaproveitamentoProcesso': 'Reaproveitamento no processo',
+								'residuosSolidosIndustrialTratamentoDisposicaoOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosIndustrialTratamentoDisposicaoAterroSanitario !== true && '+model+'.residuosSolidosIndustrialTratamentoDisposicaoAterroCeuAberto !== true && '+model+'.residuosSolidosIndustrialTratamentoDisposicaoIncineracao !== true && '+model+'.residuosSolidosIndustrialTratamentoDisposicaoReciclagem !== true && '+model+'.residuosSolidosIndustrialTratamentoDisposicaoAterroIndustrial !== true && '+model+'.residuosSolidosIndustrialTratamentoDisposicaoReaproveitamentoProcesso !== true && '+model+'.residuosSolidosIndustrialTratamentoDisposicaoOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialTratamentoDisposicaoOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosIndustrialTratamentoDisposicaoOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tipo de coleta",
+							' negrito',
+							{
+								'residuosSolidosIndustrialTipoColetaPublica': 'Pública',
+								'residuosSolidosIndustrialTipoColetaPropria': 'Própria',
+								'residuosSolidosIndustrialTipoColetaTerceiros': 'Terceiros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosIndustrialTipoColetaPublica !== true && '+model+'.residuosSolidosIndustrialTipoColetaPropria !== true && '+model+'.residuosSolidosIndustrialTipoColetaTerceiros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialTipoColetaTerceiros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosIndustrialTipoColetaTerceirosEspecificar',
+								'linha',
+								ngDisabled
+							)
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'residuosSolidosIndustrialPerigosos': 'Industrial - perigosos'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.residuosSolidosDomestico !== true && '+model+'.residuosSolidosEscritorio !== true && '+model+'.residuosSolidosIndustrial !== true && '+model+'.residuosSolidosIndustrialPerigosos !== true && '+model+'.residuosSolidosOutros !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".residuosSolidosIndustrialPerigosos", class="animate-if")
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaNumerica(
+							"Quantidade média",
+							' negrito',
+							model+'.residuosSolidosIndustrialPerigososQuantidadeMedia',
+							2,
+							'kg/mês',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tratamento/Disposição",
+							' negrito',
+							{
+								'residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
+								'residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
+								'residuosSolidosIndustrialPerigososTratamentoDisposicaoIncineracao': 'Incineração',
+								'residuosSolidosIndustrialPerigososTratamentoDisposicaoReciclagem': 'Reciclagem',
+								'residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroIndustrial': 'Aterro industrial',
+								'residuosSolidosIndustrialPerigososTratamentoDisposicaoOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroSanitario !== true && '+model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroCeuAberto !== true && '+model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoIncineracao !== true && '+model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoReciclagem !== true && '+model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoAterroIndustrial !== true && '+model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialPerigososTratamentoDisposicaoOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosIndustrialPerigososTratamentoDisposicaoOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+					.sub-pergunta.col-md-4.col-sm-12
+						+perguntaCheckbox(
+							"Tipo de coleta",
+							' negrito',
+							{
+								'residuosSolidosIndustrialPerigososTipoColetaPublica': 'Pública',
+								'residuosSolidosIndustrialPerigososTipoColetaPropria': 'Própria',
+								'residuosSolidosIndustrialPerigososTipoColetaTerceiros': 'Terceiros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosIndustrialPerigososTipoColetaPublica !== true && '+model+'.residuosSolidosIndustrialPerigososTipoColetaPropria !== true && '+model+'.residuosSolidosIndustrialPerigososTipoColetaTerceiros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosIndustrialPerigososTipoColetaTerceiros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosIndustrialPerigososTipoColetaTerceirosEspecificar',
+								'linha',
+								ngDisabled
+							)
+			.panel.panel-default
+				.panel-heading
+					+perguntaCheckbox(
+						null,
+						'negrito',
+						{
+							'residuosSolidosOutros': 'Outros'
+						},
+						'negrito',
+						model+"",
+						submitted+' !== false && '+model+'.residuosSolidosDomestico !== true && '+model+'.residuosSolidosEscritorio !== true && '+model+'.residuosSolidosIndustrial !== true && '+model+'.residuosSolidosIndustrialPerigosos !== true && '+model+'.residuosSolidosOutros !== true',
+						ngDisabled
+					)
+				.panel-body(ng-if=model+".residuosSolidosOutros", class="animate-if")
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaDescritiva(
+							"Origem",
+							' negrito',
+							model+'.residuosSolidosOutrosOrigem',
+							'pequeno',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaNumerica(
+							"Quantidade média",
+							' negrito',
+							model+'.residuosSolidosOutrosQuantidadeMedia',
+							2,
+							'kg/mês',
+							ngDisabled
+						)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaCheckbox(
+							"Tratamento/Disposição",
+							' negrito',
+							{
+								'residuosSolidosOutrosTratamentoDisposicaoAterroSanitario': 'Aterro sanitário',
+								'residuosSolidosOutrosTratamentoDisposicaoAterroCeuAberto': 'Aterro a céu aberto',
+								'residuosSolidosOutrosTratamentoDisposicaoIncineracao': 'Incineração',
+								'residuosSolidosOutrosTratamentoDisposicaoOutros': 'Outros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosOutrosTratamentoDisposicaoAterroSanitario !== true && '+model+'.residuosSolidosOutrosTratamentoDisposicaoAterroCeuAberto !== true && '+model+'.residuosSolidosOutrosTratamentoDisposicaoIncineracao !== true && '+model+'.residuosSolidosOutrosTratamentoDisposicaoOutros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosOutrosTratamentoDisposicaoOutros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosOutrosTratamentoDisposicaoOutrosEspecificar',
+								'linha',
+								ngDisabled
+							)
+					.sub-pergunta.col-md-3.col-sm-12
+						+perguntaCheckbox(
+							"Tipo de coleta",
+							' negrito',
+							{
+								'residuosSolidosOutrosTipoColetaPublica': 'Pública',
+								'residuosSolidosOutrosTipoColetaPropria': 'Própria',
+								'residuosSolidosOutrosTipoColetaTerceiros': 'Terceiros'
+							},
+							'normal',
+							model+"",
+							submitted+' !== false && '+model+'.residuosSolidosOutrosTipoColetaPublica !== true && '+model+'.residuosSolidosOutrosTipoColetaPropria !== true && '+model+'.residuosSolidosOutrosTipoColetaTerceiros !== true',
+							ngDisabled
+						)
+						.padding-pergunta-descritiva-pequena(ng-if=model+".residuosSolidosOutrosTipoColetaTerceiros", class="animate-if")
+							+perguntaDescritiva(
+								"Especificar",
+								' negrito',
+								model+'.residuosSolidosOutrosTipoColetaTerceirosEspecificar',
+								'linha',
+								ngDisabled
+							)

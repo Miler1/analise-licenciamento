@@ -1,13 +1,13 @@
 include ../../layout/components/inputErrors
 
-.modal-header
+.modal-header(ng-init="$ctrl.init()")
 
 	button.close(type='button', ng-click="$ctrl.fechar()")
 		span(aria-hidden='true') ×
 		span.sr-only Fechar
 
 	h4.modal-title(ng-if="!$ctrl.resolve.isSuspensao && !$ctrl.resolve.isCancelamento") Visualizar Licença
-	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Justificativa da suspensão da licença
+	h4.modal-title(ng-if="$ctrl.resolve.isSuspensao") Suspensão da licença
 	h4.modal-title(ng-if="$ctrl.resolve.isCancelamento") Cancelamento de licença
 
 .modal-body
@@ -15,7 +15,7 @@ include ../../layout/components/inputErrors
 	div(growl inline="true", reference="4")
 
 	div(ng-if="!$ctrl.resolve.isSuspensao && !$ctrl.resolve.isCancelamento")
-		label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
+		label {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}})
 
 		br
 
@@ -23,71 +23,99 @@ include ../../layout/components/inputErrors
 
 	div.info-licenca-processo(ng-if="$ctrl.resolve.isSuspensao || $ctrl.resolve.isCancelamento")
 		blockquote
-			label.tituloMaior Informações da Licença:
-			p {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.porteEmpreendimento.codigo}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacao.atividade.potencialPoluidor.codigo}})
-			p Data de emissão: {{$ctrl.resolve.dadosLicenca.dataCadastro}}
+			h5(style="padding-left:5px; padding-top:0px; margin-bottom:10px;") Informações da Licença:
+			div(ng-if="$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento !== null")
+				strong.col-md-2 Tipo de licença:
+				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento.nome}} - {{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}})
+			
+			div(ng-if="$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.porteEmpreendimento === null") 
+				strong.col-md-2 Tipo de licença:
+				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.tipoLicenca.nome}} ({{$ctrl.resolve.dadosLicenca.caracterizacao.atividadeCaracterizacaoMaiorPotencialPoluidorEPorte.atividade.potencialPoluidor.nome}})
+			div
+				strong.col-md-2(style="padding-right:0px;") Data de emissão:
+				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.dataCadastro}}
+			div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO")
+				strong.col-md-2 Validade: 
+				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.parecerTecnico.validadePermitida}} ano(s)
+		br
 		blockquote
-			label.tituloMaior Informações do Processo:
-			p Número: {{$ctrl.resolve.dadosLicenca.numeroProcesso ? $ctrl.resolve.dadosLicenca.numeroProcesso : '-'}}
-			p CPF/CNPJ: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj ? ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj | brCpfCnpj) : ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cpf | brCpfCnpj)}}
-			p Empreendimento: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
-			p Município: {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.nome + '/' + $ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.estado.codigo}}
-			p(ng-if="$ctrl.resolve.dadosLicenca.validade") Validade: {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
+			h5(style="padding-left:5px; padding-top:0px; margin-bottom:10px;") Informações do Protocolo:
+			div
+				strong.col-md-2 Número:
+				span#texto_numero_processo
+					label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.numero ? $ctrl.resolve.dadosLicenca.caracterizacao.numero : '-'}}
+			div
+				strong.col-md-2 CPF/CNPJ:
+				span#texto_numero_processo
+					label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj ? ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cnpj | brCpfCnpj) : ($ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.pessoa.cpf | brCpfCnpj)}}
+			div
+				strong.col-md-2 Empreendimento:
+				span#texto_numero_processo
+					label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.denominacao}}
+			div
+				strong.col-md-2 Município:
+				span#texto_numero_processo
+					label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.nome + '/' + $ctrl.resolve.dadosLicenca.caracterizacao.empreendimento.municipio.estado.codigo}}
 
-
+	br
+	br
 	.form-group(ng-if="!$ctrl.resolve.isSuspensao && !$ctrl.resolve.isCancelamento")
 		label.margin-right-xs(for="selectValidade") Validade: 
 		label {{$ctrl.resolve.dadosLicenca.validade ? $ctrl.resolve.dadosLicenca.validade : $ctrl.dateUtil.calcularPrazoEmAnos($ctrl.resolve.dadosLicenca.dataCadastro,$ctrl.resolve.dadosLicenca.dataValidade)}} ano(s)
+		br
+		br
+
+	div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO")
+		label.margin-right-xs Finalidade da atividade:
+		form
+			.form-group
+				p(rows="4", ng-bind-html="$ctrl.parecerTecnico.finalidadeAtividade", name="finalidadeAtividade", disabled)
+		hr
+
+		label.margin-right-xs Condicionantes:
+		div.tabela(ng-if="$ctrl.parecerTecnico.condicionantes.length > 0 ")
+
+			table.table.table-striped.table-condensed.no-margin
+				thead
+					tr
+						th.col-md-10 Condicionante
+						th.col-md-2.text-right Prazo(dias)
+
+				tbody
+					tr(ng-repeat="condicionante in $ctrl.parecerTecnico.condicionantes")
+						td
+							span {{condicionante.texto}}
+						td.text-right
+							span {{condicionante.prazo}}
 
 
-	label.margin-right-xs Observações:
-	form
-		.form-group
-			textarea.form-control.textarea--no-resize(rows="4", ng-if="$ctrl.resolve.dadosLicenca.observacao", ng-model="$ctrl.resolve.dadosLicenca.observacao", name="observacoes", disabled)
-			.text-center.vazio(ng-if="!$ctrl.resolve.dadosLicenca.observacao") 
-				span Nenhuma observação adicionada
+		.text-center.vazio(ng-if="$ctrl.parecerTecnico.condicionantes.length == 0 || !$ctrl.parecerTecnico.condicionantes")
+			span Nenhuma condicionante adicionada
+
+		label.margin-right-xs Recomendações:
+		div.tabela(ng-if="$ctrl.parecerTecnico.restricoes.length > 0 ")
+
+			table.table.table-striped.table-condensed.no-margin
+				thead
+					tr
+						th.col-md-12 Recomendação
+
+				tbody
+					tr(ng-repeat="restricao in $ctrl.parecerTecnico.restricoes")
+						td
+							span {{restricao.texto}}
+
+		.text-center.vazio(ng-if="$ctrl.parecerTecnico.restricoes.length == 0 || !$ctrl.parecerTecnico.restricoes")
+			span Nenhuma recomendação adicionada
 	hr
-
-	label.margin-right-xs Condicionantes:
-	div.tabela
-
-		table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.resolve.dadosLicenca.condicionantes")
-			thead
-				tr
-					th.col-md-10 Condicionante
-					th.col-md-2.text-right Prazo(dias)
-
-			tbody
-				tr(ng-repeat="condicionante in $ctrl.resolve.dadosLicenca.condicionantes")
-					td
-						span {{condicionante.texto}}
-					td.text-right
-						span {{condicionante.prazo}}
-
-
+	div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.INDEFERIDO")
 		.text-center.vazio
-			span(ng-if="$ctrl.resolve.dadosLicenca.condicionantes.length == 0 || !$ctrl.resolve.dadosLicenca.condicionantes") Nenhuma condicionante adicionada
-	hr
-
-	label.margin-right-xs Recomendações:
-	div.tabela
-
-		table.table.table-striped.table-condensed.no-margin(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes")
-			thead
-				tr
-					th.col-md-12 Recomendação
-
-			tbody
-				tr(ng-repeat="recomendacao in $ctrl.resolve.dadosLicenca.recomendacoes")
-					td
-						span {{recomendacao.texto}}
-
-		.text-center.vazio
-			span(ng-if="$ctrl.resolve.dadosLicenca.recomendacoes.length == 0 || !$ctrl.resolve.dadosLicenca.recomendacoes") Nenhuma recomendação adicionada
-	hr
+			p.empty-result O processo foi INDEFERIDO, portanto não possui condicionantes e/ou recomendações.
+		br
+		br
 
 	div(ng-if="$ctrl.resolve.isSuspensao")
-		label.margin-right-xs Justificativa da suspensão da(s) licença(s):
+		label.margin-right-xs.obrigatorio Justificativa da suspensão da licença:
 
 		.row
 			form(name="$ctrl.formSuspensaoLicenca")
@@ -96,7 +124,7 @@ include ../../layout/components/inputErrors
 
 				div.col-md-2.form-group
 
-					label.posicionamento-suspensao-licenca Prazo de suspensão da(s) licença(s)
+					label.posicionamento-suspensao-licenca.obrigatorio Prazo de suspensão da licença
 
 					div.col-sm-6.posicionamento-suspensao-licenca
 						input.input-dias.form-control(id="qtdeDiasSuspensao",type="number", name="qtdeDiasSuspensao",
@@ -107,7 +135,7 @@ include ../../layout/components/inputErrors
 
 	div(ng-if="$ctrl.resolve.isCancelamento")
 		form(name="$ctrl.formCancelamentoLicenca")
-			label.margin-right-xs Justificativa do cancelamento da licença: 
+			label.margin-right-xs.obrigatorio Justificativa do cancelamento da licença: 
 			textarea.textarea--no-resize.form-control(rows="4", ng-model="$ctrl.justificativaCancelamento", name="justificativaCancelamento", required)
 
 .modal-footer#footer-modal
@@ -118,12 +146,12 @@ include ../../layout/components/inputErrors
 
 	div(ng-if="$ctrl.resolve.isSuspensao")
 		form(name="formSuspensaoLicenca")
-			button.btn.btn-default.pull-right(ng-click="$ctrl.suspenderLicenca()", type="submit")
+			button.btn.btn-success.btn-cancelar-suspender-licenca(ng-click="$ctrl.suspenderLicenca()", type="submit")
 				i.glyphicon.glyphicon-ok
 				| &nbsp;Confirmar suspensão da Licença
 
 	div(ng-if="$ctrl.resolve.isCancelamento")
 		form(name="formCancelamentoLicenca")
-			button.btn.btn-default.pull-right(ng-click="$ctrl.cancelarLicenca()", type="submit")
+			button.btn.btn-success.btn-cancelar-suspender-licenca(ng-click="$ctrl.cancelarLicenca()", type="submit")
 				i.glyphicon.glyphicon-ok
 				| &nbsp;Confirmar cancelamento da licença

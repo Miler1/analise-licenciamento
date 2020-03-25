@@ -80,7 +80,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao analista.');
+			mensagem.warning('É necessário selecionar ao menos um protocolo para vinculá-lo ao analista.');
 			return;
 		}
 
@@ -108,7 +108,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um processo para vinculá-lo ao gerente.');
+			mensagem.warning('É necessário selecionar ao menos um protocolo para vinculá-lo ao gerente técnico.');
 			return;
 		}
 
@@ -169,7 +169,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function getTitleSelecaoProcesso(){
 
-		return cxEntCoordenadorTecnico.selecionouUmGerente ? '' : 'Para selecionar mais de um processo é necessário filtrar por uma gerência.';
+		return cxEntCoordenadorTecnico.selecionouUmGerente ? '' : 'Para selecionar mais de um protocolo é necessário filtrar por uma gerência.';
 	}
 
 	function getAnalistas(idProcesso) {

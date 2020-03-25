@@ -34,7 +34,7 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 		return request
                 .get(config.BASE_URL() + 'analisesGeo/parecer?numeroProcesso=' + numeroProcessoClone);
-	};	
+	};
 
 	this.salvar = function(analise) {
 
@@ -42,27 +42,41 @@ var AnaliseGeoService = function(request, $window ,config) {
 				.post(config.BASE_URL() + 'analisesGeo', analise);
 	};
 
-	this.concluir = function(analise) {
+	this.concluir = function(parecer) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesGeo/concluir', analise);
-	};	
+				.post(config.BASE_URL() + 'parecer/analistaGeo/concluir', parecer);
+	};
 
 	this.validarParecer = function(analise) {
 
 		return request
 				.post(config.BASE_URL() + 'analisesGeo/validarParecer', analise);
 	};
-	
+
 	this.listaComunicadosByIdAnaliseGeo = function(params) {
 		return request
 			.get(config.BASE_URL() + "analisesGeo/comunicado/listaComunicadosByIdAnaliseGeo/" + params);
 	};
 
-	this.getComunicadoByIdSobreposicaoEmpreendimento = function(id) {
+	this.getComunicadoByIdAnaliseGeoEmpreendimento = function(idAnaliseGeo, idEmpreendimento) {
 
 		return request
-			.get(config.BASE_URL() + "analisesGeo/comunicado/findByIdSobreposicaoEmpreendimento/" + id);
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoEmpreendimento/" + idAnaliseGeo + "/" + idEmpreendimento);
+
+	};
+
+	this.getComunicadoByIdAnaliseGeoAtividade = function(idAnaliseGeo, idAtividade) {
+
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoAtividade/" + idAnaliseGeo + "/" + idAtividade);
+
+	};
+
+	this.getComunicadoByIdAnaliseGeoComplexo = function(idAnaliseGeo, idComplexo) {
+
+		return request
+			.get(config.BASE_URL() + "analisesGeo/comunicado/findComunicadoByIdAnaliseGeoComplexo/" + idAnaliseGeo + "/" + idComplexo);
 
 	};
 
@@ -77,7 +91,7 @@ var AnaliseGeoService = function(request, $window ,config) {
         return request
             .post(config.BASE_URL() + 'analisesGeo/validarParecerAprovador', analise);
 	};
-	
+
 	this.download = function(idDocumento) {
 
         $window.open(config.BASE_URL() + 'documentos/' + idDocumento + '/download', '_blank');
@@ -92,17 +106,34 @@ var AnaliseGeoService = function(request, $window ,config) {
 	};
 
 
-	this.getAnliseGeoByAnalise = function(idAnalise) {
+	this.getAnaliseGeoByAnalise = function(idAnalise) {
 
 		return request
 			.get(config.BASE_URL() + 'analisesGeo/buscaAnaliseGeoByAnalise/' + idAnalise);
 
 	};
 
+	this.findAnalisesGeoByNumeroProcesso = function(numero) {
+		return request
+			.get(config.BASE_URL() + 'analisesGeo/findAnalisesGeoByNumeroProcesso/' + numero);
+
+	};
+
+	this.findParecerAjustesByAnaliseGeo = function(analiseGeo){
+		return request
+			.get(config.BASE_URL() + 'analisesGeo/findParecerAjustesByAnaliseGeo',analiseGeo);
+	};
+
 	this.getDadosRestricoesProjeto = function(idProcesso) {
 
 		return request
                 .get(config.BASE_URL() + 'analisesGeo/restricao/findAllById/' + idProcesso);
+
+	};
+
+	this.getDadosRestricoesEmpreendimento = function(cpfCnpj) {
+
+		return request.get(config.BASE_URL() + 'empreendimento/sobreposicoes/' + cpfCnpj);
 
 	};
 

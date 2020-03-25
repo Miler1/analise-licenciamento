@@ -1,11 +1,11 @@
 package security.cadastrounificado;
 
 import br.ufla.lemaf.beans.pessoa.Setor;
-import main.java.br.ufla.lemaf.beans.PessoaFiltroResult;
-import main.java.br.ufla.lemaf.beans.pessoa.FiltroPessoa;
-import main.java.br.ufla.lemaf.beans.pessoa.Pessoa;
-import main.java.br.ufla.lemaf.beans.pessoa.Usuario;
-import main.java.br.ufla.lemaf.services.CadastroUnificadoPessoaService;
+import br.ufla.lemaf.beans.PessoaFiltroResult;
+import br.ufla.lemaf.beans.pessoa.FiltroPessoa;
+import br.ufla.lemaf.beans.pessoa.Pessoa;
+import br.ufla.lemaf.beans.pessoa.Usuario;
+import br.ufla.lemaf.services.CadastroUnificadoPessoaService;
 import models.UsuarioAnalise;
 import play.Logger;
 import utils.Configuracoes;

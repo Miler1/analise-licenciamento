@@ -1,17 +1,36 @@
 package models;
 
-import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
+import exceptions.PortalSegurancaException;
+import br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Usuario;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import play.Play;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
+import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
+import utils.Configuracoes;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema = "analise", name = "usuario_analise")
@@ -33,6 +52,14 @@ public class UsuarioAnalise extends GenericModel  {
 	@JoinColumn(name = "id_pessoa")
 	public Pessoa pessoa;
 
+	@OneToMany(mappedBy="usuarioAnalise", fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	public List <SetorUsuarioAnalise> setores;
+
+	@OneToMany(mappedBy="usuarioAnalise", fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	public List <PerfilUsuarioAnalise> perfis;
+
 	public static transient ExecutorService executorService = new ScheduledThreadPoolExecutor(Integer.valueOf(Play.configuration.getProperty("usuario.threads", "3")));
 
 	@Transient
@@ -44,7 +71,13 @@ public class UsuarioAnalise extends GenericModel  {
 	@Transient
 	public String nome;
 
-	public static UsuarioAnalise getUsuarioByLogin(String login) {
+	public static UsuarioAnalise getUsuarioAnaliseById(Long id) {
+
+		return UsuarioAnalise.findById(id);
+
+	}
+
+	public static UsuarioAnalise getUsuarioEntradaUnicaByLogin(String login) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica= new IntegracaoEntradaUnicaService();
 
@@ -58,13 +91,13 @@ public class UsuarioAnalise extends GenericModel  {
 		return integracaoEntradaUnica.findUsuariosByPerfil(codigoPerfil);
 	}
 	
-	public static List<UsuarioAnalise> getUsuariosByPerfilSetor(String codigoPerfil, String siglaSetor) {
+	public static List<UsuarioAnalise> getUsuariosEntradaUnica(String codigoPerfil, String siglaSetor) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
 		return integracaoEntradaUnica.findUsuariosByPerfilAndSetor(codigoPerfil, siglaSetor);
 	}
-	
+
 	public static List<UsuarioAnalise> getUsuariosByPerfilSetores(String codigoPerfil, List<String> siglasSetores) {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
@@ -85,13 +118,123 @@ public class UsuarioAnalise extends GenericModel  {
 		return false;
 	}
 
+	public static UsuarioAnalise findByDiretor(Diretor diretor) {
+
+		return UsuarioAnalise.find("id = :id_diretor")
+				.setParameter("id_diretor", diretor.usuario.id).first();
+	}
+
+	public static UsuarioAnalise findByPresidente(Presidente presidente) {
+
+		return UsuarioAnalise.find("id = :id_presidente")
+				.setParameter("id_presidente", presidente.usuario.id).first();
+	}
+
 	public static UsuarioAnalise findByGerente(Gerente gerente) {
+
 		return UsuarioAnalise.find("id = :id_gerente")
 				.setParameter("id_gerente", gerente.usuario.id).first();
 	}
 
 	public static UsuarioAnalise findByAnalistaTecnico(AnalistaTecnico analistaTecnico) {
+
 		return UsuarioAnalise.find("id = :id_analista_tecnico")
-				.setParameter("id_analista_tecnico", analistaTecnico.usuario.id).first();
+			.setParameter("id_analista_tecnico", analistaTecnico.usuario.id).first();
 	}
+
+	public static UsuarioAnalise findByAnalistaGeo(AnalistaGeo analistaGeo) {
+
+		return UsuarioAnalise.find("id = :id_analista_geo")
+				.setParameter("id_analista_geo", analistaGeo.usuario.id).first();
+	}
+
+	public static List<UsuarioAnalise> findUsuariosByPerfilAndSetor(String codigoPerfil, String siglaSetor) {
+
+		return UsuarioAnalise.find("SELECT DISTINCT u FROM UsuarioAnalise u " +
+				"LEFT JOIN PerfilUsuarioAnalise p ON p.usuarioAnalise.id = u.id " +
+				"LEFT JOIN SetorUsuarioAnalise s ON s.usuarioAnalise.id = u.id " +
+				"WHERE p.codigoPerfil = :codigoPerfil AND s.siglaSetor = :siglaSetor")
+				.setParameter("codigoPerfil", codigoPerfil)
+				.setParameter("siglaSetor", siglaSetor)
+				.fetch();
+
+	}
+
+	public static List<UsuarioAnalise> findUsuariosByPerfil(String codigoPerfil) {
+
+		return UsuarioAnalise.find("SELECT DISTINCT u FROM UsuarioAnalise u " +
+				"LEFT JOIN PerfilUsuarioAnalise p ON p.usuarioAnalise.id = u.id " +
+				"WHERE p.codigoPerfil = :codigoPerfil")
+				.setParameter("codigoPerfil", codigoPerfil)
+				.fetch();
+
+	}
+
+	public static void atualizaUsuariosAnalise() {
+
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findAll();
+
+		br.ufla.lemaf.beans.pessoa.Usuario[] usuariosPorModulo = CadastroUnificadoWS.ws.findUsuariosBySiglaModulo(Configuracoes.SIGLA_MODULO);
+		List<br.ufla.lemaf.beans.pessoa.Usuario> usuarioList = Arrays.asList(usuariosPorModulo);
+
+		List<Usuario> usuariosFiltrados = usuarioList.stream().map(Usuario::new).collect(Collectors.toList());
+
+		usuariosAnalise.forEach(usuarioAnalise -> {
+
+			Usuario usuario = usuariosFiltrados.stream().filter(usuarioEU -> usuarioEU.login.equals(usuarioAnalise.login)).findAny().orElseThrow(PortalSegurancaException::new);
+
+			usuarioAnalise.perfis = usuarioAnalise.salvarPerfis(usuario);
+			usuarioAnalise.setores = usuarioAnalise.salvarSetores(usuario);
+			usuarioAnalise._save();
+
+		});
+
+	}
+
+	private List<PerfilUsuarioAnalise> salvarPerfis(Usuario usuario) {
+
+		if(this.perfis == null) {
+
+			this.perfis = new ArrayList<>();
+
+		}
+
+		this.perfis.forEach(PerfilUsuarioAnalise::_delete);
+		this.perfis.clear();
+		this._save();
+
+		usuario.perfis.forEach(perfil -> {
+
+			PerfilUsuarioAnalise perfilUsuarioAnalise = new PerfilUsuarioAnalise(perfil, this);
+			this.perfis.add(perfilUsuarioAnalise.save());
+
+		});
+
+		return this.perfis;
+
+	}
+
+	private List<SetorUsuarioAnalise> salvarSetores(Usuario usuario) {
+
+		if(this.setores == null) {
+
+			this.setores = new ArrayList<>();
+
+		}
+
+		this.setores.forEach(SetorUsuarioAnalise::_delete);
+		this.setores.clear();
+		this._save();
+
+		usuario.setores.forEach(setor -> {
+
+			SetorUsuarioAnalise setorUsuarioAnalise = new SetorUsuarioAnalise(setor, this);
+			this.setores.add(setorUsuarioAnalise.save());
+
+		});
+
+		return this.setores;
+
+	}
+
 }

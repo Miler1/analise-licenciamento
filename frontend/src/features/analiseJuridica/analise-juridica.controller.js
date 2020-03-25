@@ -75,7 +75,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
             mensagem.error('Não foi possível concluir a análise. Verifique se as seguintes condições foram satisfeitas: ' +
             '<ul>' +
                 '<li>Para concluir é necessário descrever o parecer.</li>' +
-                '<li>Selecione um parecer para o processo (Deferido, Indeferido, Notificação).</li>' +
+                '<li>Selecione um parecer para o protocolo (Deferido, Indeferido, Notificação).</li>' +
                 '<li>Para DEFERIDO, todos os documentos de validação jurídica devem ter sido validados.</li>' +
                 '<li>Para EMITIR NOTIFICAÇÃO, pelo menos um documento de validação jurídica deve ter sido invalidado.</li>' +
             '</ul>', { ttl: 10000 });
@@ -161,7 +161,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
                 if(response.data === null) {
 
                     ctrl.analiseJuridica.parecer = null;
-                    mensagem.error('Não foi encontrado um parecer para esse número de processo.');
+                    mensagem.error('Não foi encontrado um parecer para esse número de protocolo.');
                     return;
                 }
                 ctrl.analiseJuridica.parecer = response.data.parecer;
@@ -275,7 +275,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
                     var documentosProcesso = angular.copy(ctrl.analiseJuridica
                                                 .analise
                                                 .processo
-                                                .caracterizacoes[0]
+                                                .caracterizacao
                                                 .documentosEnviados);
 
                     ctrl.analisesDocumentos = documentosProcesso.map(function(documento){

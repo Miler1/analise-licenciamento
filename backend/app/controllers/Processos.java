@@ -3,15 +3,14 @@ package controllers;
 import builders.ProcessoBuilder.FiltroProcesso;
 import models.AnaliseJuridica;
 import models.Processo;
+import org.geotools.feature.SchemaException;
 import security.Acao;
 import security.Auth;
 import serializers.AnaliseJuridicaSerializer;
 import serializers.ProcessoSerializer;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import services.IntegracaoEntradaUnicaService;
-import utils.GeoJsonUtils;
 
 public class Processos extends InternalController {
 
@@ -20,8 +19,19 @@ public class Processos extends InternalController {
 		verificarPermissao(Acao.LISTAR_PROCESSO);
 		
 		List processosList = Processo.listWithFilter(filtro, Auth.getUsuarioSessao());
-		
+
 		renderJSON(processosList);
+	}
+
+	public static void getProcessosAnteriores(Long idProcessoAnterior){
+
+		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+
+		Processo processoAntigo = Processo.findById(idProcessoAnterior);
+
+		List processosList = Processo.getProcessosAnteriores(processoAntigo);
+
+		renderJSON(processosList, ProcessoSerializer.getInfo);
 	}
 	
 	public static void  countWithFilter(FiltroProcesso filtro){
@@ -38,21 +48,17 @@ public class Processos extends InternalController {
 
 	public static void findByNumProcesso(String numProcesso) {
 
-		verificarPermissao(Acao.VALIDAR_PARECER_JURIDICO, Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_JURIDICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES_JURIDICO_TECNICO);
-
 		renderJSON(Processo.findByNumProcesso(numProcesso.replace('-','/')), ProcessoSerializer.getInfo);
 	}
 
 	public static void getInfoProcesso(Long id) {
 
-		verificarPermissao(Acao.VALIDAR_PARECER_GEO, Acao.INICIAR_PARECER_GEO,Acao.VALIDAR_PARECERES);
+		//verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
 
 		Processo processo = Processo.findById(id);
 
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(processo.empreendimento.getCpfCnpj());
-		processo.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
-		
-		renderJSON(processo, ProcessoSerializer.getInfo);
+		renderJSON(processo.getInfoProcesso(), ProcessoSerializer.getInfo);
+
 	}
 
 	public static void findAnaliseJuridica(Long idProcesso) {
@@ -61,8 +67,19 @@ public class Processos extends InternalController {
 		
 		Processo processo = Processo.findById(idProcesso);
 		
-		AnaliseJuridica analise = AnaliseJuridica.findByProcesso(processo);
+		AnaliseJuridica analise = AnaliseJuridica.findByProcessoAtivo(processo);
 		
 		renderJSON(analise, AnaliseJuridicaSerializer.findInfo);
+
 	}
+
+    public static void baixarShapefile(Long idProcesso) throws IOException, SchemaException {
+
+        verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+
+        Processo processo = Processo.findById(idProcesso);
+        renderBinary(processo.gerarShape());
+
+    }
+
 }

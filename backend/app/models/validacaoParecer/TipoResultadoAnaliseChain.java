@@ -1,5 +1,6 @@
 package models.validacaoParecer;
 
+import models.Analisavel;
 import models.UsuarioAnalise;
 
 public abstract class TipoResultadoAnaliseChain<T extends Analisavel> {
@@ -26,7 +27,7 @@ public abstract class TipoResultadoAnaliseChain<T extends Analisavel> {
 	public void validarParecer(T analise, T novaAnalise, UsuarioAnalise usuarioExecultor) {
 		
 		if (novaAnalise.getTipoResultadoValidacao().id.equals(idResultadoAnalise)) {
-							
+
 			validaParecer(analise, novaAnalise, usuarioExecultor);
 			
 		} else if (next != null) {

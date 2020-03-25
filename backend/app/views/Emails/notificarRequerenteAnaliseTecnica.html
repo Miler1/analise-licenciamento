@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 %{
-processo = analiseTecnica.analise.processo;
-dataNotificacao = notificacao.dataCadastro;
-numeroNotificacao = notificacao.codigoSequencia + "/" + notificacao.codigoAno;
+numeroProcesso = analiseTecnica.analise.processo.numero;
+tipoLicenca = analiseTecnica.analise.processo.getCaracterizacao().tipoLicenca.nome;
 empreendimento = analiseTecnica.analise.processo.empreendimento;
 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-atividadesCaracerizacao = analiseTecnica.analise.processo.caracterizacoes.get(0).atividadesCaracterizacao;
-bairro = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.bairro) ? "" : " - " + empreendimento.endereco.bairro;
-numero = org.apache.commons.lang.StringUtils.isBlank(empreendimento.endereco.numero) ? "s/n" : empreendimento.endereco.numero;
-cep = empreendimento.endereco.cep == null ? "-" : empreendimento.endereco.cep;
-municipio = empreendimento.endereco.municipio.nome + " - " + empreendimento.endereco.municipio.estado.codigo;
-end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAcesso + ", " + municipio : empreendimento.endereco.logradouro + " " + numero + bairro + ", " + municipio;
+endereco = enderecoCompleto;
 }%
 
 <html>
+
+
+
 
 <head>
 </head>
@@ -21,39 +18,33 @@ end = empreendimento.endereco.tipo.id == 1 ? empreendimento.endereco.roteiroAces
 <body>
 
 <h1 style="text-align: center">
-	#{embeddedImage src:'conf/images/brasao_pa.png', name:'Pará', alt:'Estado do Pará', height:'100', width:'100' /}
+#{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'100', width:'70' /}
 </h1>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
 
-<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
 
-<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
 
-<p style="text-align: center">Diretoria de Gestão Florestal e Agrossilvipastoril - DGFLOR</p>
+<p><strong>Protocolo N°: <strong>${numeroProcesso}</strong></strong> </p>
+<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
 
-<p></p>
+<p><strong>À </strong><br> <strong> ${empreendimentoNome} </strong><br> End: ${endereco.logradouro} ${endereco.numero} - ${endereco.bairro}, ${endereco.municipio.nome} - ${endereco.municipio.estado.sigla} <br>CEP: ${endereco.cep}<br><br></p>
 
-<p>Informamos que o processo a seguir sofreu movimentação</p>
+<p> Em atenção a solicitação protocolada, sob o nº do protocolo <strong>${numeroProcesso}</strong>, o qual solicita  <strong>${tipoLicenca}</strong>, notifico V.Sa que a referida licença foi <strong>NOTIFICADA</strong> </p>
 
-<p><strong>Processo N&ordm;:</strong> ${processo.numero}</p>
+<p><strong>Descrição:</strong> ${parecerAnalistaTecnico.parecer}</p>
 
-<p><strong>Data de Protocolo:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy").format(processo.dataCadastro)}</p>
+<p><br>    <a href=${analiseTecnica.linkNotificacao} target=_blank>CLIQUE AQUI PARA ATENDER SUA NOTIFICAÇÃO </a><br></p>
 
-<p><strong>Interessado ou Requerente/Arrendatario:</strong> ${empreendimentoNome}</p>
+<p>             Atenciosamente,  </p>
 
-<p><strong>Assunto:</strong> Informe de notificação ( Movimentação de processo )</p>
+<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
 
-<p><strong>Data:</strong> ${new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataNotificacao)}</p>
-
-<p><strong>Movimentação: </strong> Notificação n° ${numeroNotificacao} <strong> SETOR:</strong> GDFLOR</p>
-
-<p>Senhor usuário, acesse o sistema de licenciamento Ambiental, para tomar ciência da notificação.</p>
-
-<p>Informamos que após 10 (dez) dias, inexistindo ciência, haverá leitura automática da notificação, passando a contar o prazo para seu respectivo atendimento.</p>
-
-<p>Por oportuno, ressaltamos que, após a data da ciência da Notificação, o interessado possui 10 (dez) dias para atender, integralmente, as solicitações realizadas por esta Secretaria.</p>
-
-<p>Expirado este prazo, em caso de não cumprimento, o processo será ARQUIVADO, nos termos da Instituição Normativa n° 01/2018.</p>
 
 </body>
+
+
+
+
 
 </html>

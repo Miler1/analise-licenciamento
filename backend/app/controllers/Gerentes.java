@@ -19,7 +19,7 @@ public class Gerentes extends InternalController {
 
 		UsuarioAnalise usuarioAnalise = UsuarioAnalise.findById(idUsuario);
 
-		UsuarioAnalise gerente = UsuarioAnalise.getUsuarioByLogin(usuarioAnalise.login);
+		UsuarioAnalise gerente = UsuarioAnalise.getUsuarioEntradaUnicaByLogin(usuarioAnalise.login);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
@@ -40,12 +40,12 @@ public class Gerentes extends InternalController {
 
 		Processo processo = Processo.findById(idProcesso);
 		
-		List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacoes.get(0).atividadesCaracterizacao;
+		List<AtividadeCaracterizacao> atividadesCaracterizacao = processo.caracterizacao.atividadesCaracterizacao;
 		
 		TipoCaracterizacaoAtividade tipoAtividadeCaracterizacao = 
 				TipoCaracterizacaoAtividade.findTipoCaracterizacaoAtividadeByAtividadesCaracterizacao(atividadesCaracterizacao);
 		
-		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.GERENTE, tipoAtividadeCaracterizacao.atividade.siglaSetor);
+		List<UsuarioAnalise> consultores = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.GERENTE, tipoAtividadeCaracterizacao.atividade.siglaSetor);
 		
 		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
 	}	

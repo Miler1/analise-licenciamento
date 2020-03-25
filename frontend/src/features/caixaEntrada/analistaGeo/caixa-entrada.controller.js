@@ -11,15 +11,16 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	cxEntAnalistaGeo.iniciarAnalise = iniciarAnalise;
 	cxEntAnalistaGeo.iniciarUploadShapes = iniciarUploadShapes;
 	cxEntAnalistaGeo.visualizarProcesso = visualizarProcesso;
-	cxEntAnalistaGeo.primeiroAcesso = primeiroAcesso;
-
 	cxEntAnalistaGeo.processos = [];
-	cxEntAnalistaGeo.condicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_GEO;
+	cxEntAnalistaGeo.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	cxEntAnalistaGeo.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntAnalistaGeo.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntAnalistaGeo.PrazoAnalise = app.utils.PrazoAnalise;
 	cxEntAnalistaGeo.dateUtil = app.utils.DateUtil;
+	cxEntAnalistaGeo.origemNotificacao = app.utils.OrigemNotificacao;
 	cxEntAnalistaGeo.disabledFields = _.concat($scope.caixaEntrada.disabledFields, app.DISABLED_FILTER_FIELDS.GERENCIA, app.DISABLED_FILTER_FIELDS.ANALISTA_TECNICO, app.DISABLED_FILTER_FIELDS.ANALISTA_GEO);
+	cxEntAnalistaGeo.notificacaoAtendida = notificacaoAtendida;
+	cxEntAnalistaGeo.visualizarNotificacao = visualizarNotificacao;
 
 	function atualizarListaProcessos(processos) {
 
@@ -43,19 +44,19 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 			processo.selecionado = cxEntAnalistaGeo.todosProcessosSelecionados;
 		});
 	}
-	
-	function iniciarAnalise(idAnaliseGeo) {
-		analiseGeoService.iniciar({ id : idAnaliseGeo })
+
+	function iniciarAnalise(processo) {
+
+		analiseGeoService.iniciar({ id : processo.idAnaliseGeo })
 			.then(function(response){
 
-				$rootScope.$broadcast('atualizarContagemProcessos');
-				$location.path('/analise-geo/' + idAnaliseGeo.toString());
-			
+				cxEntAnalistaGeo.iniciarUploadShapes(processo);
+
 			}, function(error){
 				mensagem.error(error.data.texto);
 			});
 	}
-	
+
 	function iniciarUploadShapes(processo){
 		$rootScope.processo = processo;
 
@@ -67,9 +68,9 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 	}
 
 
-	cxEntAnalistaGeo.solicitarDesvinculo =  function(processo){
+	cxEntAnalistaGeo.solicitarDesvinculoAnaliseGeo =  function(processo){
 
-				var modalInstance = $uibModal.open({
+				$uibModal.open({
 					controller: 'desvinculoController',
 					controllerAs: 'desvinculoCtrl',
 					backdrop: 'static',
@@ -84,26 +85,17 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 							return processo.idProcesso;
 						}
 					}
-					
+
 				});
 	};
 
-	function primeiroAcesso(processo) {
-		var cpfCnpjEmpreendimento = processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento;
 
-		analiseGeoService.getPossuiAnexo(cpfCnpjEmpreendimento)
-			.then(function(response){
-				// Caso possua null - nenhuma ação foi realizada no empreendimento
-				if(response.data === null){
-					cxEntAnalistaGeo.iniciarUploadShapes(processo);
-				}
-				// Caso possua true ou false - já existiu uma análise prévia do empreendimento
-				else {
-					cxEntAnalistaGeo.iniciarAnalise(processo.idAnaliseGeo);
-				}
-			}, function(error){
-				mensagem.error(error.data.texto);
-			});
+	function visualizarNotificacao(processo) {
+		return processoService.visualizarNotificacao(processo);
+	}
+
+	function notificacaoAtendida(processo) {
+		return processo && processo.retificacao && processo.idAnalistaGeoAnterior === processo.idAnalistaGeo;
 	}
 };
 

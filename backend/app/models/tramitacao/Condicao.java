@@ -15,14 +15,14 @@ public class Condicao extends GenericModel {
 	public static final Long AGUARDANDO_VINCULACAO_JURIDICA = 1l;
 	public static final Long AGUARDANDO_ANALISE_JURIDICA = 2l;
 	public static final Long EM_ANALISE_JURIDICA = 3l;
-	public static final Long NOTIFICADO = 4l;
+	public static final Long NOTIFICADO_PELO_ANALISTA_GEO = 4l;
 	public static final Long AGUARDANDO_VALIDACAO_JURIDICA = 5l;
 	public static final Long ARQUIVADO = 6l;
 	public static final Long AGUARDANDO_VINCULACAO_TECNICA_PELO_GERENTE = 7l;
 	public static final Long AGUARDANDO_ANALISE_TECNICA = 8l;
 	public static final Long EM_ANALISE_TECNICA = 9l;
 	public static final Long AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE = 10l;
-	public static final Long AGUARDANDO_ASSINATURA_APROVADOR = 11l;
+	public static final Long AGUARDANDO_ASSINATURA_PRESIDENE = 11l;
 	public static final Long AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR = 12l;
 	public static final Long AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR = 13l;
 	public static final Long LICENCA_EMITIDA = 14l;
@@ -35,10 +35,20 @@ public class Condicao extends GenericModel {
 	public static final Long AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE = 27l;
 	public static final Long AGUARDANDO_VALIDACAO_GERENTE = 28l;
 	public static final Long AGUARDANDO_VALIDACAO_DIRETORIA = 29l;
-	public static final Long SOLICITACAO_DESVINCULO_PENDENTE = 30l;
+	public static final Long SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO = 30l;
 	public static final Long EM_ANALISE_GERENTE = 31l;
+	public static final Long AGUARDANDO_RESPOSTA_COMUNICADO = 32l;
+	public static final Long SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA = 33l;
+	public static final Long ANALISE_FINALIZADA = 34l;
+	public static final Long NOTIFICADO_PELO_ANALISTA_TECNICO= 35l;
+	public static final Long EM_ANALISE_TECNICA_GERENTE = 36l;
+	public static final Long EM_ANALISE_DIRETOR = 37l;
+	public static final Long EM_ANALISE_PRESIDENTE = 38l;
+	public static final Long SOLICITACAO_LICENCA_APROVADA = 40l;
+	public static final Long SOLICITACAO_LICENCA_NEGADA = 41l;
 
-	
+	public static final Long AGUARDANDO_RESPOSTA_JURIDICA = 39L;
+
 	@Id
 	@Column(name = "ID_CONDICAO")
 	public Long idCondicao;

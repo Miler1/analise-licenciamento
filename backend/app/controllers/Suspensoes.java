@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Suspensao;
+import models.SuspensaoDispensa;
 import models.UsuarioAnalise;
 import security.Acao;
 import utils.Mensagem;
@@ -20,5 +21,19 @@ public class Suspensoes extends InternalController {
     	renderMensagem(Mensagem.LICENCA_SUSPENSA_SUCESSO);
         
     }
+
+	public static void suspenderDispensa(SuspensaoDispensa suspensaoDispensa) {
+
+		verificarPermissao(Acao.SUSPENDER_LICENCA_EMITIDA);
+
+		returnIfNull(suspensaoDispensa, "Suspensao");
+
+		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
+
+		suspensaoDispensa.suspenderDispensa(usuarioExecutor);
+
+		renderMensagem(Mensagem.LICENCA_SUSPENSA_SUCESSO);
+
+	}
 
 }

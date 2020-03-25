@@ -27,7 +27,9 @@ public class TipoSobreposicao extends GenericModel {
 	public static final long AUTO_DE_INFRACAO_IBAMA = 16l;
 	public static final long SAUIM_DE_COLEIRA = 17l;
 	public static final long SITIOS_ARQUEOLOGICOS = 18l;
-
+	public static final long UC_ESTADUAL_ZA_PI_FORA = 19l;
+	public static final long BENS_ACAUTELADOS_IPHAN_PT = 20l;
+	public static final long BENS_ACAUTELADOS_IPHAN_POL = 21l;
 
 
 	@Id

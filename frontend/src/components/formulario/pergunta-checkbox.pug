@@ -1,0 +1,15 @@
+include titulo-pergunta
+
+mixin perguntaCheckbox(texto, labelClass, opcoes, optionClass, formulario, hasError, ngDisabled)
+	+tituloPergunta(texto,labelClass)
+	div(ng-class="{'color-red' : " + hasError + "}")
+		each val, index in opcoes
+			div.input-questionario
+				input.checkbox-pergunta(
+					id="checkbox_"+formulario+"_"+index,
+					type="checkbox",
+					ng-model = formulario +"."+ index,
+					ng-disabled = ngDisabled,
+					ng-change = acaoNgChange
+				)
+				label(for="checkbox_"+formulario+"_"+index, class=optionClass, ng-class="{'check-disabled' : " + ngDisabled + "}") #{val}

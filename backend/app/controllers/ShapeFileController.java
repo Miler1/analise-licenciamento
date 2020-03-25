@@ -14,7 +14,7 @@ import utils.FileManager;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import utils.GeoCalc;
 
@@ -33,8 +33,7 @@ public class ShapeFileController extends InternalController {
 		if(realType.contains("application/zip") || realType.contains("application/x-rar-compressed")) {
 
 			byte[] data = IO.readContent(file.asFile());
-			String extension = FileManager.getInstance().getFileExtention(file.getFileName());
-			String key = FileManager.getInstance().createFile(data, extension);
+			String key = FileManager.getInstance().createKey(data, file.getFileName());
 
 			// Processamento do arquivo zip
 			ProcessamentoShapeFile processamentoShapeFile = new ProcessamentoShapeFile(file.asFile(), key, true, InformacoesNecessariasShapeEnum.APENAS_GEOMETRIA, idMunicipio, idEmpreendimento);
@@ -54,29 +53,63 @@ public class ShapeFileController extends InternalController {
 	public static void salvarGeometrias(ListShapeContentVO geometrias) {
 
 		if(geometrias.naoTemShapes) {
+
 			Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
 			empreendimento.possuiShape = false;
 			empreendimento.save();
+
+			List<EmpreendimentoCamandaGeo> empreendimentoCamandasGeo =  EmpreendimentoCamandaGeo.find("id_empreendimento = :id_empreendimento")
+					.setParameter("id_empreendimento", empreendimento.id).fetch();
+
+			empreendimentoCamandasGeo.forEach( empreendimentoCamadaGeo -> empreendimentoCamadaGeo._delete());
+
 		} else {
 
 			List<TipoAreaGeometria> tiposArea = TipoAreaGeometria.findAll();
 
+			Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
+
+			List<EmpreendimentoCamandaGeo> empreendimentoCamandasGeo =  EmpreendimentoCamandaGeo.find("id_empreendimento = :id_empreendimento")
+					.setParameter("id_empreendimento", empreendimento.id).fetch();
+
+			AtomicReference<Boolean> removida = new AtomicReference<>(true);
+
+			empreendimentoCamandasGeo.forEach( empreendimentoCamadaGeo -> {
+
+				geometrias.listaGeometrias.forEach(geometria -> {
+					if(empreendimentoCamadaGeo.id == geometria.id) {
+						removida.set(false);
+					}
+				});
+
+				if(removida.get()) {
+
+					empreendimentoCamadaGeo._delete();
+				}
+
+				removida.set(true);
+
+			});
+
 			geometrias.listaGeometrias.forEach(g -> {
 
-				TipoAreaGeometria tipoAreaGeometria = tiposArea.stream()
-						.filter(ta -> ta.codigo.equals(g.type))
-						.findAny()
-						.orElse(null);
+				if(g.id == null) {
 
-				if(tipoAreaGeometria != null){
+					TipoAreaGeometria tipoAreaGeometria = tiposArea.stream()
+							.filter(ta -> ta.codigo.equals(g.type))
+							.findAny()
+							.orElse(null);
 
-					Empreendimento empreendimento = Empreendimento.buscaEmpreendimentoByCpfCnpj(geometrias.cpfCnpjEmpreendimento);
-					empreendimento.possuiShape = true;
-					empreendimento.save();
+					if(tipoAreaGeometria != null){
 
-					EmpreendimentoCamandaGeo novoAnexo = new EmpreendimentoCamandaGeo(empreendimento, tipoAreaGeometria, g.geometry, GeoCalc.area(g.geometry)/10000);
-					novoAnexo.save();
 
+						empreendimento.possuiShape = true;
+						empreendimento.save();
+
+						EmpreendimentoCamandaGeo novoAnexo = new EmpreendimentoCamandaGeo(empreendimento, tipoAreaGeometria, g.geometry, GeoCalc.area(g.geometry) / 10000);
+						novoAnexo.save();
+
+					}
 				}
 
 			});

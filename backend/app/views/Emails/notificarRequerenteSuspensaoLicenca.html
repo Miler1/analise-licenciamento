@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 %{
   licenca = suspensao.licenca;
-  numProcesso = licenca.caracterizacao.numeroProcesso;
+  numProcesso = licenca.caracterizacao.numero;
   nomelicenca = licenca.caracterizacao.tipoLicenca.nome;
   empreendimento = licenca.caracterizacao.empreendimento;
   empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
@@ -23,7 +23,7 @@
 		#{embeddedImage src:'conf/images/brasao_pa.png', name:'Pará', alt:'Estado do Pará', height:'100', width:'100' /}
 	</h1>
 
-	<p style="text-align: center">GOVERNO DO ESTADO DO PARÁ</p>
+	<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
 	
 	<p style="text-align: center">Secretaria de Estado de Meio Ambiente e Sustentabilidade</p>
 	
@@ -31,7 +31,7 @@
 	
 	<p style="text-align: right">Belém - PA, ${utils.DateUtil.formatarMesMinusculo(new Date())};</p>
 	
-	<p><strong>Processo N&ordm;:</strong> ${numProcesso}</p>
+	<p><strong>Protocolo N&ordm;:</strong> ${numProcesso}</p>
 	<p><strong>Licença N&ordm;:</strong> ${licenca.numero}</p>
 	
 	<p><b>Á</b></p>
@@ -42,7 +42,7 @@
 
 	<p>CEP: ${cep}</p>
 
-	<p>Em atenção ao processo protocolado nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do processo ${numProcesso}, o qual solicita ${nomelicenca}, notifico V.Sa que a referida licença foi <b>SUSPENSA</b>, pelo prazo de ${suspensao.qtdeDiasSuspensao} (${new utils.NumeroExtenso().getExtenso(suspensao.qtdeDiasSuspensao.toString())}) dias.</p>
+	<p>Em atenção a solicitação protocolada nesta Secretaria de Estado do Meio Ambiente e Sustentabilidade - SEMAS, sob o nº do protocolo ${numProcesso}, o qual solicita ${nomelicenca}, notifico V.Sa que a referida licença foi <b>SUSPENSA</b>, pelo prazo de ${suspensao.qtdeDiasSuspensao} (${new utils.NumeroExtenso().getExtenso(suspensao.qtdeDiasSuspensao.toString())}) dias.</p>
 
 	<p>Procure a SEMAS para maiores esclarecimentos.</p>
 

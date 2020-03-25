@@ -1,6 +1,7 @@
+include ../../layout/components/mapPanel
 #dadosProcesso
 
-	div.row
+	.row
 
 		.col-md-12
 
@@ -16,11 +17,10 @@
 					div.col-md-2(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.empreendimento.imovel.codigo")
 						button.btn.btn-sm.btn-link.pull-right(ng-click="modalVisualizacaoProcessoCtrl.visualizarFichaImovel()") Ficha do Imóvel
 
-	div.row
+	label.titulo Localização do empreendimento
+	+mapPanel-sidebar("mapa-visualizacao-protocolo", '400', true, 'modalVisualizacaoProcessoCtrl')
 
-		div.mapa#mapa-processo
-
-	div.row
+	.row
 
 		.col-md-12
 
@@ -29,23 +29,31 @@
 			br
 
 			div(uib-accordion class="accordion")
-				div(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreDocumentacao")
+				div#accordionPanel(uib-accordion-group class="panel-default" is-open="modalVisualizacaoProcessoCtrl.abreDocumentacao")
 					uib-accordion-heading(ng-click="modalVisualizacaoProcessoCtrl.abreDocumentacao=!modalVisualizacaoProcessoCtrl.abreDocumentacao")
 						div(role="button", ng-click="$ctrl.visualizarFichaImovel()")
 							| Documentação
 							i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.abreDocumentacao, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.abreDocumentacao}")
 
-
 					table.table.table-striped.table-condensed
 						thead
-							th Documento
-							th
+							th.col-md-11 Requisitos Administrativos
+							th.col-md-1
 						tbody
-							tr(ng-repeat="caracterizacao in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacoes")
-							tr(ng-repeat="documento in caracterizacao.documentosEnviados")
-								td {{ documento.tipo.nome}}
-								td.text-center(ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
-									i.glyphicon.glyphicon-download-alt
+							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
+								td.col-md-11 {{ documento.tipo.nome}}
+								td.text-center.col-md-1(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(documento.id)")
+									i.glyphicon.glyphicon-eye-open.pointer
+
+					table.table.table-striped.table-condensed(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo.length > 0")
+						thead
+							th.col-md-11 Requisitos Técnicos
+							th.col-md-1
+						tbody
+							tr(ng-repeat="solicitacaoGrupo in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo")
+								td.col-md-11 {{ solicitacaoGrupo.tipoDocumento.nome}}
+								td.text-center.col-md-1(style='cursor: pointer;',title="Visualizar anexo",ng-click="modalVisualizacaoProcessoCtrl.baixarDocumento(solicitacaoGrupo.documento.id)")
+									i.glyphicon.glyphicon-eye-open.pointer
 
 	div#ficha
 

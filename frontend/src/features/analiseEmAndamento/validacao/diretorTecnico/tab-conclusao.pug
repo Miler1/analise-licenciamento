@@ -1,0 +1,38 @@
+#conclusao
+    label Análise final do protocolo:
+        div.pull-left.col-md-10.posicao-principal
+            form.pull-left.posicao-conteudo(ng-class="{'error': validacaoAnaliseDiretor.errors.resultadoAnalise === true}")
+                label.opDla.radio-inline.posicao-primeiroItem-diretor
+                    input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseDiretor.idTipoResultadoAnalise', value="{{validacaoAnaliseDiretor.tiposResultadoAnalise.ANALISE_APROVADA}}")
+                    | Análise APROVADA
+                label.opDla.radio-inline(style="margin-left:250px;")
+                    input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseDiretor.idTipoResultadoAnalise', value="{{validacaoAnaliseDiretor.tiposResultadoAnalise.ANALISE_NAO_APROVADA}}")
+                    | Análise NÃO APROVADA
+    hr
+    div(ng-show="validacaoAnaliseDiretor.idTipoResultadoAnalise === validacaoAnaliseDiretor.tiposResultadoAnalise.ANALISE_APROVADA.toString()")
+        label.obrigatorio(style="font-size:13px") Despacho:
+        br
+        div(ng-class="{'error-summernote': validacaoAnaliseDiretor.errors.despacho === true}")
+            summernote.form-control(id="conclusao",
+                        on-paste="snPaste(evt)",
+                        name="conclusao",
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="validacaoAnaliseDiretor.parecerDiretorTecnico",
+                        config="optionsText",
+                        class="editable",
+                        contenteditable="true")
+                        
+    div(ng-show="validacaoAnaliseDiretor.idTipoResultadoAnalise === validacaoAnaliseDiretor.tiposResultadoAnalise.ANALISE_NAO_APROVADA.toString()")
+        label.obrigatorio(style="font-size:13px") Justificativa:
+        br
+        div(ng-class="{'error-summernote': validacaoAnaliseDiretor.errors.despacho === true}")
+            summernote.form-control(id="conclusao",
+                        on-paste="snPaste(evt)",
+                        name="conclusao"
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="validacaoAnaliseDiretor.parecerDiretorTecnico",
+                        config="optionsText",
+                        class="editable",
+                        contenteditable="true")         

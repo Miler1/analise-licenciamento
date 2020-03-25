@@ -1,4 +1,4 @@
-var LicencaEmitidaService = function(request, config) {
+var LicencaEmitidaService = function(request,$window, config) {
 
 	this.getLicencasEmitidasPesquisaRapida = function(filtro) {
 
@@ -26,18 +26,25 @@ var LicencaEmitidaService = function(request, config) {
 
 	this.downloadDla = function(idLicenca) {
 
-		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/downloadDla";
+		$window.open(config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/downloadDla", "_blank");
 	};
 
 	this.downloadLicenca = function(idLicenca) {
 
-		window.location.href = config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/download";
+		$window.open(config.BASE_URL() + "licencasEmitidas/" + idLicenca + "/download", '_blank');
+		
 	};
 
 	this.suspenderLicenca = function(suspensao){
 
 		return request
 			.post(config.BASE_URL() + "suspensoes/licenca", suspensao);
+	};
+
+	this.suspenderDispensa = function(suspensao){
+
+		return request
+			.post(config.BASE_URL() + "suspensoes/dispensa", suspensao);
 	};
 
 	this.cancelarLicenca = function(cancelamento){
@@ -50,6 +57,12 @@ var LicencaEmitidaService = function(request, config) {
 
 		return request
 			.post(config.BASE_URL() + "cancelamentos/dla", cancelamento);
+	};
+
+	this.cancelarDispensa = function(cancelamento) {
+
+		return request
+			.post(config.BASE_URL() + "cancelamentos/cancelarDispensa", cancelamento);
 	};
 };
 

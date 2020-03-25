@@ -22,7 +22,9 @@ include ./endereco
 .panel.panel-default(name='proprietarios')
 	.panel-heading
 		h4.panel-title Proprietários
-	.panel-body
+	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.proprietarios.length < 1 ")
+		i Não existem proprietários	
+	.panel-body(ng-if="$ctrl.empreendimento.proprietarios.length > 0")
 		div.row
 			div.col-md-12
 				table.table.table-striped
@@ -42,7 +44,9 @@ include ./endereco
 .panel.panel-default(name='representantesLegais')
 	.panel-heading
 		h4.panel-title Representantes legais
-	.panel-body
+	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.empreendedor.representantesLegais.length < 1")
+		i Não existem representantes legais
+	.panel-body(ng-if="$ctrl.empreendimento.empreendedor.representantesLegais.length > 0")
 		div.row
 			div.col-md-12
 				table.table.table-striped
@@ -102,7 +106,9 @@ include ./endereco
 .panel.panel-default(name='responsaveis')
 	.panel-heading
 		h4.panel-title Responsáveis técnicos e legais
-	.panel-body
+	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.responsaveis.length < 1")
+		i Não existem responsáveis técnicos e legais
+	.panel-body(ng-if="$ctrl.empreendimento.responsaveis.length > 0")
 		div.row
 			div.col-md-12
 				table.table.table-striped

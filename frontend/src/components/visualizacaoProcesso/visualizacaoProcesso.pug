@@ -6,26 +6,29 @@
 			span(aria-hidden='true') ×
 			span.sr-only Fechar
 
-		h4.modal-title Visualizar Processo
+		h4.modal-title Visualizar Protocolo
 
 	div.modal-body
 
 		ul.nav.nav-tabs(role="tablist")
 			li.active(role="presentation")
-				a(data-toggle="tab", data-target="#tabDadosProcesso") Dados do Processo
+				a.pointer-important(data-toggle="tab", data-target="#tabDadosProcesso") Dados do Protocolo
 			li(role="tab")
-				a(data-toggle="tab", data-target="#tabCaracterizacao") Solicitação
+				a.pointer-important(ng-click="modalVisualizacaoProcessoCtrl.iniciarMapa()", data-toggle="tab", data-target="#tabCaracterizacao") Solicitação
 			li(role="tab")
-				a(data-toggle="tab", data-target="#tabEmpreendimento") Empreendedor / Empreendimento
+				a.pointer-important(data-toggle="tab", data-target="#tabEmpreendimento") Empreendedor / Empreendimento
 			li(role="tab")
-				a(data-toggle="tab", data-target="#tabJustificativaCoordenador") Observações 
+				a.pointer-important(data-toggle="tab", data-target="#tabJustificativaCoordenador") Observações
+			li(role="tab", ng-if="modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil === modalVisualizacaoProcessoCtrl.perfis.GERENTE || modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil === modalVisualizacaoProcessoCtrl.perfis.DIRETOR || modalVisualizacaoProcessoCtrl.usuarioLogadoCodigoPerfil === modalVisualizacaoProcessoCtrl.perfis.PRESIDENTE")
+				a.pointer-important(data-toggle="tab", data-target="#tabAnaliseDocumental") Documentos da Análise
 
 		div.row#dadosProcesso
-			.col-xs-12.col-md-8
+			.col-xs-12.col-md-6
+				.marginProcesso
 				blockquote.success
 
 					div.row
-						label.col-sm-4 Processo:
+						label.col-sm-4 Protocolo:
 						span.col-sm-8 {{modalVisualizacaoProcessoCtrl.processo.numero ? modalVisualizacaoProcessoCtrl.processo.numero : modalVisualizacaoProcessoCtrl.processo.numeroProcesso}}
 
 					div.row
@@ -49,6 +52,9 @@
 
 			#tabJustificativaCoordenador.tab-pane.fade
 				include visualizacaoJustificativaCoordenador
+			
+			#tabAnaliseDocumental.tab-pane.fade
+				include visualizacaoAnaliseDocumental
 
 
 	div.modal-footer#footer-modal

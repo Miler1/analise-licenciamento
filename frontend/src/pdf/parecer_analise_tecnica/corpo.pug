@@ -1,0 +1,115 @@
+doctype html
+|%{
+|	caracterizacao = analiseEspecifica.analise.processo.caracterizacao;
+|	numeroProtocolo = analiseEspecifica.analise.processo.numero;
+|	siglaLicenca = caracterizacao.tipoLicenca.sigla;
+|}%
+html(lang="pt-br")
+	head
+		meta(charset='utf-8')
+		title Análise - Licenciamento Ambiental - Amazonas
+		link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+		style.
+			* {
+				margin: 0;
+				padding:0;
+			}
+
+body.corpo
+	div.titulo
+		h2 PARECER TÉCNICO Nº ${numeroProcesso}
+	div.conteudo
+		h3 PROCESSO: ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
+		h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
+		h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+
+		ol.lista-conteudo
+		
+			|\#{if vistoria.realizada == false}
+			li  
+				.titulo-item DA JUSTIFICATIVA DA NÃO VISTORIA
+				.conteudo-item  
+					|\#{verbatim}${vistoria.conclusao}\#{/verbatim}
+			|\#{/if}
+
+			li
+				.titulo-item DO PROCESSO
+				.conteudo-item
+					|\#{verbatim}${parecer.doProcesso}\#{/verbatim}
+
+			li
+				.titulo-item DA ANÁLISE TÉCNICA
+				.conteudo-item
+					|\#{verbatim}${parecer.daAnaliseTecnica}\#{/verbatim}
+
+			li
+				.titulo-item DA CONCLUSÃO
+				.conteudo-item
+					|\#{verbatim}${parecer.daConclusao}\#{/verbatim}
+	
+		div
+			h3(style="text-align:center; margin-top:30px;") RESTRIÇÕES E/OU CONDIÇÕES DE VALIDADE DESTA LICENÇA - ${siglaLicenca} Nº ${numeroProtocolo}
+
+			ol.lista-conteudo
+
+				li.titulo-item
+					.conteudo-item
+						span O pedido de licenciamento e a respectiva concessão da mesma, só terá validade quando 
+							| publicada Diário Oficial do Estado, periódico regional local ou local de grande circulação, em
+							| meio eletrônico de comunicação mantido pelo IPAAM, ou nos murais das Prefeituras e
+							| Câmaras Municipais, conforme art. 24, da Lei nº.3.785 de 24 de julho de 2012;
+				li.titulo-item
+					.conteudo-item
+						span A solicitação da renovação da Licença Ambiental deverá ser requerida num prazo mínimo de 
+							| <strong>120 dias</strong>, antes do vencimento, conforme art.23, da Lei nº 3.785 de 24 de julho de 2012;
+				li.titulo-item
+					.conteudo-item
+						span A presente licença está sendo concedida com base nas informações constantes no <strong>processo nº. ${numeroProcessoLicenciamento}</strong>.
+				li.titulo-item
+					.conteudo-item
+						span Toda e qualquer modificação introduzida no projeto após a emissão da Licença implicará na 
+							| sua automática invalidação, devendo ser solicitada nova Licença, com ônus para o
+							| interessado.
+				li.titulo-item
+					.conteudo-item
+						span Esta licença é válida apenas para a localização, atividade e finalidade constante na mesma, 
+							| devendo o interessado requerer ao IPAAM nova Licença quando houver mudança de
+							| qualquer um destes itens.
+				li.titulo-item
+					.conteudo-item
+						span Esta licença não dispensa e nem substitui nenhum documento exigido pela Legislação 
+							| Federal, Estadual e Municipal.
+				li.titulo-item
+					.conteudo-item
+						span A coleta e o transporte dos resíduos de qualquer natureza gerados no empreendimento devem 
+							| ser efetuados por empresa licenciada para esta atividade.
+				li.titulo-item
+					.conteudo-item
+						span Na eventualidade de ocorrência de vazamento de combustíveis ou sinistros nas instalações 
+							| físicas do empreendimento, adotar procedimentos constantes no Plano de Emergência
+							| Individual - PEI, e encaminhar imediatamente relatório circunstanciado do evento a este
+							| IPAAM.
+				|\#{if !parecer.condicionantes.isEmpty()}
+				|\#{list items:parecer.condicionantes, as:'condicionante'}
+				li.titulo-item
+					.conteudo-item
+						span ${condicionante.texto} 
+						br
+						span Prazo para atendimento de ${condicionante.prazo} dias.
+				|\#{/list}
+				|\#{/if}
+				|\#{if !parecer.restricoes.isEmpty()}
+				|\#{list items:parecer.restricoes, as:'restricao'}
+				li.titulo-item
+					.conteudo-item
+						span ${restricao.texto}
+				|\#{/list}
+				|\#{/if}
+
+		br
+		br
+		p.text-align-center ${nomeAnalista}
+		p.text-align-center
+			strong Analista Técnico
+
+		p.text-align-right Manaus, ${dataDoParecer}

@@ -22,22 +22,81 @@ public class Condicoes extends InternalController {
 		if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
 
 			 condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
-					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
+							Condicao.AGUARDANDO_ANALISE_GEO,
+							Condicao.AGUARDANDO_ANALISE_TECNICA,
 							Condicao.EM_ANALISE_GEO,
-							Condicao.SOLICITACAO_DESVINCULO_PENDENTE,
+							Condicao.EM_ANALISE_TECNICA,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
 							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
-							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE))
+							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+							Condicao.ARQUIVADO,
+							Condicao.AGUARDANDO_RESPOSTA_JURIDICA,
+							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA
+					))
 					.fetch();
 		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_GEO)){
 
 			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
 					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_GEO,
 							Condicao.EM_ANALISE_GEO,
-							Condicao.SOLICITACAO_DESVINCULO_PENDENTE,
-							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE))
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
+							Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
+							Condicao.ARQUIVADO
+					))
+					.fetch();
+		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.ANALISTA_TECNICO)){
+
+			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.AGUARDANDO_ANALISE_TECNICA,
+							Condicao.EM_ANALISE_TECNICA,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA,
+							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
+							Condicao.AGUARDANDO_RESPOSTA_JURIDICA,
+							Condicao.ARQUIVADO
+					))
+					.fetch();
+		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.DIRETOR)){
+
+			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
+							Condicao.AGUARDANDO_ANALISE_GEO,
+							Condicao.AGUARDANDO_ANALISE_TECNICA,
+							Condicao.EM_ANALISE_GEO,
+							Condicao.EM_ANALISE_TECNICA,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
+							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
+							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+							Condicao.ARQUIVADO,
+							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA
+					))
+					.fetch();
+		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.PRESIDENTE)) {
+
+			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
+					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
+							Condicao.AGUARDANDO_ANALISE_GEO,
+							Condicao.AGUARDANDO_ANALISE_TECNICA,
+							Condicao.EM_ANALISE_GEO,
+							Condicao.EM_ANALISE_TECNICA,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
+							Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
+							Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
+							Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+							Condicao.AGUARDANDO_VALIDACAO_DIRETORIA,
+							Condicao.EM_ANALISE_DIRETOR,
+							Condicao.ARQUIVADO,
+							Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
+							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA
+					))
 					.fetch();
 		}
-		
+
 		renderJSON(condicoesVisiveis, CondicaoSerializer.list);
 	}
 

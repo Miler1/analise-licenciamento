@@ -2,14 +2,16 @@ package jobs;
 
 
 import models.*;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.Logger;
 import play.jobs.On;
+import utils.Configuracoes;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @On("cron.reenviarEmail")
 public class ReenvioEmailJob extends GenericJob {
@@ -18,15 +20,15 @@ public class ReenvioEmailJob extends GenericJob {
 	public void executar() throws Exception {
 		
 		Logger.info("[INICIO-JOB] ::ReenvioEmail:: [INICIO-JOB]");
-		
+
 		List<ReenvioEmail> reenviosEmail = ReenvioEmail.findAll();
-		
+
 		for(ReenvioEmail reenvioEmail : reenviosEmail) {
 
 			sendMail(reenvioEmail);
 
 		}
-		
+
 		Logger.info("[FIM-JOB] ::ReenvioEmail:: [FIM-JOB]");
 	}
 	
@@ -38,54 +40,78 @@ public class ReenvioEmailJob extends GenericJob {
 
 			switch(reenvioEmail.tipoEmail) {
 				
-				case NOTIFICACAO_ANALISE_JURIDICA:
+				case COMUNICAR_JURIDICO:
 
-					AnaliseJuridica analiseJuridica = AnaliseJuridica.findById(reenvioEmail.idItensEmail);
-					new EmailNotificacaoAnaliseJuridica(analiseJuridica, emailsDestinatarios).enviar();
+					List<String> destinatariosJuridico = new ArrayList<>();
+					destinatariosJuridico.add(Configuracoes.DESTINATARIO_JURIDICO);
+					destinatariosJuridico.add(Configuracoes.DESTINATARIO_JURIDICO2);
+
+					ParecerJuridico parecerJuridico = ParecerJuridico.findById(reenvioEmail.idItensEmail);
+
+					parecerJuridico.linkParecerJuridico = Configuracoes.APP_URL + "app/index.html#!/parecer-juridico/" + parecerJuridico.id;
+
+					EmailParecerJuridico emailParecerJuridico = new EmailParecerJuridico(parecerJuridico.analiseGeo, parecerJuridico.parecerAnalistaGeo, destinatariosJuridico, parecerJuridico);
+					emailParecerJuridico.enviar();
 					
 					break;
 
+				case COMUNICAR_ORGAO:
+
+					Comunicado comunicado = Comunicado.findById(reenvioEmail.idItensEmail);
+					List<String> destinatariosOrgao = new ArrayList<>();
+					destinatariosOrgao.add(comunicado.orgao.email);
+
+					List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", comunicado.analiseGeo.id).fetch();
+
+					ParecerAnalistaGeo ultimoParecer = pareceresAnalistaGeo.stream().sorted(Comparator.comparing(ParecerAnalistaGeo::getDataParecer).reversed()).collect(Collectors.toList()).get(0);
+
+					comunicado.analiseGeo.reenviarEmailComunicado(ultimoParecer, comunicado, destinatariosOrgao);
+					
+					break;
+					
 				case NOTIFICACAO_ANALISE_TECNICA:
 
-					AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(reenvioEmail.idItensEmail);
-					new EmailNotificacaoAnaliseTecnica(analiseTecnica, emailsDestinatarios).enviar();
+					ParecerAnalistaTecnico parecerAnalistaTecnico = ParecerAnalistaTecnico.findById(reenvioEmail.idItensEmail);
+
+					parecerAnalistaTecnico.analiseTecnica.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
+
+					parecerAnalistaTecnico.analiseTecnica.vistoria = parecerAnalistaTecnico.vistoria;
+
+					EmailNotificacaoAnaliseTecnica emailNotificacaoAnaliseTecnica = new EmailNotificacaoAnaliseTecnica(parecerAnalistaTecnico.analiseTecnica, parecerAnalistaTecnico, emailsDestinatarios);
+
+					emailNotificacaoAnaliseTecnica.enviar();
 					
 					break;
 
-				case CANCELAMENTO_LICENCA:
+				case NOTIFICACAO_ANALISE_GEO:
 
-					LicencaCancelada licencaCancelada = LicencaCancelada.findById(reenvioEmail.idItensEmail);
-					new EmailNotificacaoCancelamentoLicenca(licencaCancelada, emailsDestinatarios).enviar();
-					
-					break;
-					
-				case SUSPENSAO_LICENCA:
+					ParecerAnalistaGeo parecerAnalistaGeo = ParecerAnalistaGeo.findById(reenvioEmail.idItensEmail);
 
-					Suspensao suspensao = Suspensao.findById(reenvioEmail.idItensEmail);
-					new EmailNotificacaoSuspensaoLicenca(suspensao, emailsDestinatarios).enviar();
-					
-					break;
+					parecerAnalistaGeo.analiseGeo.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
 
-				case ARQUIVAMENTO_PROCESSO:
-
-					Processo processo = Processo.findById(reenvioEmail.idItensEmail);
-
-					HistoricoTramitacao arquivamento = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
-					HistoricoTramitacao historicoAnalise = HistoricoTramitacao.getPenultimaTramitacao(processo.idObjetoTramitavel);
-
-					List<Notificacao> notificacoes = Notificacao.find("id_historico_tramitacao", historicoAnalise.idHistorico).fetch();
-
-					new EmailNotificacaoArquivamentoProcesso(processo, emailsDestinatarios, arquivamento.dataInicial, notificacoes,
-							historicoAnalise.relHistoricoTramitacaoSetor.siglaSetor).enviar();
+					EmailNotificacaoAnaliseGeo emailNotificacaoAnaliseGeo = new EmailNotificacaoAnaliseGeo(parecerAnalistaGeo.analiseGeo, parecerAnalistaGeo, emailsDestinatarios);
+					emailNotificacaoAnaliseGeo.enviar();
 
 					break;
 
-				case PRORROGACAO_LICENCA:
+				case NOTIFICACAO_PRESIDENTE:
 
-				Licenca licenca = Suspensao.findById(reenvioEmail.idItensEmail);
-				new EmailNotificacaoProrrogacaoLicenca(licenca, emailsDestinatarios).enviar();
+					ParecerPresidente parecerPresidente = ParecerPresidente.findById(reenvioEmail.idItensEmail);
 
-				break;
+					EmailNotificacaoStatusAnalise emailNotificacaoStatusAnalise = new EmailNotificacaoStatusAnalise(parecerPresidente.analise,parecerPresidente, emailsDestinatarios);
+					emailNotificacaoStatusAnalise.enviar();
+
+					break;
+
+				case NOTIFICACAO_PRESIDENTE_DISPENSA:
+
+					Caracterizacao caracterizacao = Caracterizacao.findById(reenvioEmail.idItensEmail);
+
+					EmailNotificacaoStatusDispensa emailNotificacaoStatusDispensa = new EmailNotificacaoStatusDispensa(caracterizacao, emailsDestinatarios);
+					emailNotificacaoStatusDispensa.enviar();
+
+					break;
+
 			}
 
 			reenvioEmail.delete();

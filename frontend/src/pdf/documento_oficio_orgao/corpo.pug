@@ -7,6 +7,7 @@ doctype html
 |	empreendimento = analiseGeo.analise.processo.empreendimento;
 |	empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
 |	atividadesCaracterizacao = comunicado.caracterizacao.atividadesCaracterizacao;
+|	distanciaRestricao = distancia;
 |	municipio = municipio;
 |}%
 html(lang='en')
@@ -54,7 +55,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:0px;line-height:0px;")
-							|	<strong>OFÍCIO Nº: ${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019/IPAAM-DT</strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
 						.container-center
 							|	<p>Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)}</p>
 				.container
@@ -70,7 +71,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	 Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°.<strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de 
+						|	 Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°.<strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de 
 						|	 \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, 
 						|	 \#{/list} 
 						|	  no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
@@ -78,7 +79,7 @@ html(lang='en')
 				br
 		
 			div
-				|   Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				|   Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.
 				br
 				br
 		| \#{/if}
@@ -90,7 +91,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:3px;margin-top:5px;line-height:0px;")
-							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
 						
 						.container-center
 							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
@@ -108,12 +109,12 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+						|	Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
 
 					br
 
 			div
-				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				|	Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.
 				br
 				br
 
@@ -125,7 +126,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style=" margin-top:5px;margin-bottom:3px;line-height:0px;")
-							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
 						
 						.container-center
 							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
@@ -143,11 +144,11 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+						|	Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos que tramita neste Instituto o Protocolo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
 
 					br
 			div
-				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				|	Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
 				br
 				br
 
@@ -160,7 +161,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:3px; margin-top: 5px; line-height:0px;")
-							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
 						
 						.container-center
 							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
@@ -178,11 +179,11 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para manifestação quanto a situação fundiária do imóvel.
+						|	Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para manifestação quanto a situação fundiária do imóvel.
 
 					br
 			div
-				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				|	Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.
 				br
 				br
 
@@ -195,7 +196,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:3px; margin-top:5px; line-height:0px;")
-							|	<strong>Ofício n.° <strong>${numeroProcesso.substring(numeroProcesso.lastIndexOf("/") + 1)}/2019</strong>/IPAAM-DT </strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
 						
 						.container-center
 							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
@@ -213,11 +214,11 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos que tramita neste Instituto o Processo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.	
+						|	Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.	
 
 					br
 			div
-				|	Informamos ainda, que o empreendimento está próximo da <strong>${restricao}</strong>, conforme o mapa de caracterização anexo.
+				|	Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.
 				br
 				br
 

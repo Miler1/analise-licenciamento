@@ -17,11 +17,9 @@ var EstiloMapa = {
     },
 
     'PROPRIEDADE': {
-        color: '#DF5A53',
+        color: '#A52A2A',
         weight: 2,
-        fill: true,
-        fillOpacity: 0.5,
-        opacity: 1
+        fill: false
     },
 
     'AREA_ANTROPIZADA': {
@@ -33,11 +31,9 @@ var EstiloMapa = {
     },
 
     'ATIVIDADE': {
-        color: '#A52A2A',
+        color: '#006600',
         weight: 2,
-        fill: true,
-        fillOpacity: 0.5,
-        opacity: 1
+        fill: false
     },
 
     'SOBREPOSICAO': {
@@ -46,6 +42,20 @@ var EstiloMapa = {
         fill: true,
         fillOpacity: 0.5,
         opacity: 1
+    },
+
+    'COMPLEXO': {
+        color: '#006600',
+        weight: 2,
+        fill: false
+    },
+
+    'SOBREPOSICAO_EMPREENDIMENTO': {
+        color: '#F55A2F',
+        opacity: 1,
+        weight: 2,
+        fill: true,
+        fillOpacity: 0.5
     }
 
 };

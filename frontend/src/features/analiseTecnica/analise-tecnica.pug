@@ -1,10 +1,10 @@
-include ../../components/resumoProcesso/resumo-processo
+include ../../features/resumoProcesso/resumo-processo
 
 div(ng-init="ctrl.init()")
 
     section
 
-        +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()')
+        +resumo-processo('ctrl.processo','ctrl.exibirDadosProcesso()', 'ctrl.titulo')
 
     section(ng-if="ctrl.analiseTecnica.analiseTecnicaRevisada && ctrl.analiseTecnica.parecerValidacao")
         label Parecer da validação:
@@ -15,41 +15,42 @@ div(ng-init="ctrl.init()")
     section.margin-bottom-md
 
         uib-tabset(active='ctrl.tabAtiva')
-            uib-tab(index="0", heading="Análise geo")
+            uib-tab(index="0", heading="Análise técnica", ng-click="ctrl.validarAbas(0)")
                 div(ng-if='ctrl.tabAtiva === 0')
-                    //include analiseGeo/analise-geo
+                    include tab-analise-tecnica
 
-            uib-tab(index="1", heading="Parecer")
-                parecer(analise-tecnica="ctrl.analiseTecnica", formularios="ctrl.formularios", usuario-sessao="usuarioSessao")
+            uib-tab(index="1", heading="Vistoria", ng-click="ctrl.validarAbas(1)")
+                include tab-vistoria
 
-                a.btn(ng-click="ctrl.tabAtiva = 0")
-                    | << Etapa anterior
-
+            uib-tab(index="2", heading="Conclusão da análise", ng-click="ctrl.validarAbas(2)")
+                include etapa-conclusao
 
     section.margin-bottom-xl.alone
 
-        button.btn.btn-default.col-md-2.col-md-offset-0(ng-click="ctrl.cancelar()")
-            i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
-            | Cancelar
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-right-xs.margin-top-md(title='Cancelar análise',
+                                                                                    ng-bootbox-title='Confirmação',
+                                                                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                                                                    ng-bootbox-confirm-action="ctrl.cancelar()")
+            i.glyphicon.glyphicon-remove
+            | &nbsp;Cancelar 
 
-        button.btn.btn-success.pull-right.col-md-2(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 1")
+        button.btn.btn-default.col-md-2.col-md-offset-0.margin-top-md(ng-if="ctrl.tabAtiva > 0", ng-click="ctrl.voltar()")
+            | << Etapa anterior
+
+        button.btn.btn-success.pull-right.col-md-2.margin-top-md(ng-click="ctrl.concluir()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 2")
             i.glyphicon.glyphicon-check.glyphicon--with-right-margin
             | Concluir
 
-        button.btn.btn-success.pull-right.col-md-2.margin-right-xs(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
-            i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
-            | Salvar
+        //- button.btn.btn-success.pull-right.col-md-2.margin-right-xs(ng-click="ctrl.salvar()", ng-if="!ctrl.analiseTecnica.dataFim")
+        //-     i.glyphicon.glyphicon-edit.glyphicon--with-right-margin
+        //-     | Salvar
 
-        button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.EMITIR_NOTIFICACAO && ctrl.validarAnalise()" ng-click="ctrl.downloadPDFNotificacao()")
+        button.btn.btn-default.pull-right.col-md-3.margin-right-xs(ng-if="ctrl.analiseTecnica.tipoResultadoAnalise.id === ctrl.tiposResultadoAnalise.EMITIR_NOTIFICACAO" ng-click="ctrl.downloadPDFNotificacao()")
             i.glyphicon.glyphicon-save-file.glyphicon--with-right-margin
             | Visualizar notificação
 
-        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs(ng-click="ctrl.tabAtiva = 1", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva === 0")
+        button.btn.btn-success.pull-right.col-md-2.col-md-offset-1.margin-right-xs.margin-top-md(ng-click="ctrl.avancar()", ng-if="!ctrl.analiseTecnica.dataFim && ctrl.tabAtiva < 2")
             i.glyphicon.glyphicon-arrow-right.glyphicon--with-right-margin
             | Próxima etapa
 
         i.pull-right(ng-if="ctrl.analiseTecnica.dataFim") Esta análise foi concluida em {{ctrl.analiseTecnica.dataFim}} e não pode mais ser alterada.
-
-
-
-

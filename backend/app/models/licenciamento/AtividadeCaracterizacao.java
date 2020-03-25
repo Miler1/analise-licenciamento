@@ -1,9 +1,13 @@
 package models.licenciamento;
 
+import com.vividsolutions.jts.geom.Geometry;
+import models.InconsistenciaTecnicaQuestionario;
 import play.db.jpa.GenericModel;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Table(schema = "licenciamento", name = "atividade_caracterizacao")
@@ -41,7 +45,11 @@ public class AtividadeCaracterizacao extends GenericModel {
 	public List<AtividadeCaracterizacaoParametros> atividadeCaracterizacaoParametros;
 
 	@OneToMany(mappedBy = "atividadeCaracterizacao", cascade = CascadeType.ALL)
-	public List<SobreposicaoCaracterizacaoAtividade> sobreposicaoCaracterizacaoAtividades;
+	public List<SobreposicaoCaracterizacaoAtividade> sobreposicoesCaracterizacaoAtividade;
+
+	public String getNomeAtividade(){
+		return this.atividade != null ? this.atividade.nome : "-";
+	}
 
 	public static AtividadeCaracterizacao getAtividadeCaracterizacaoWithMaiorPotencialPoluidor(List<AtividadeCaracterizacao> atividadesCaracterizacao) {
 		
@@ -59,5 +67,23 @@ public class AtividadeCaracterizacao extends GenericModel {
 		
 		return maiorAC;
 	}
-	
+
+	public Boolean isAtividadeDentroEmpreendimento() {
+		return this.atividade.dentroEmpreendimento;
+	}
+
+	public Stream<Geometry> getGeoms(){
+
+		return this.geometriasAtividade.stream().map(ga -> ga.geometria);
+
+	}
+
+	public String getAreaDeclaradaInteressado() {
+
+		AtividadeCaracterizacaoParametros atividadeCaracterizacaoParametro =  this.atividadeCaracterizacaoParametros.stream().filter(valor -> valor.parametroAtividade.codigo.equals("AU")).findAny().orElse(null);
+
+		return (atividadeCaracterizacaoParametro != null) ? atividadeCaracterizacaoParametro.valorParametro.toString() : "-";
+
+	}
+
 }

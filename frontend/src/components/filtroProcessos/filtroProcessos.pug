@@ -7,8 +7,8 @@ div(uib-accordion class="accordion")
 
         .row.form-group
             .col-md-5.col-sm-6
-                label.control-label Número do processo:
-                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numeroProcesso', placeholder='Número do processo', maxlength="15")
+                label.control-label Número do protocolo:
+                input.form-control(type='text', name='numProcesso', ng-model='$ctrl.filtro.numeroProcesso', placeholder='Número do protocolo', maxlength="15")
 
             .col-md-7.col-sm-6
                 label.control-label CPF/CNPJ do empreendimento:
@@ -23,10 +23,10 @@ div(uib-accordion class="accordion")
 
         .row.form-group
             .col-md-12
-                label.control-label Tipologia do empreendimento:
+                label.control-label Tipologia da atividade:
                 select.form-control(ng-model="$ctrl.filtro.idTipologiaEmpreendimento", name="selectTipologia",
                                     ng-options="tipologia.id as tipologia.nome for tipologia in $ctrl.tipologias | orderBy:'nome' track by tipologia.id")
-                    option(value="") Selecione a tipologia do empreendimento
+                    option(value="") Selecione a tipologia da atividade
 
         .row.form-group
             .col-md-12
@@ -56,7 +56,7 @@ div(uib-accordion class="accordion")
                                     ng-options="consultorJuridico.id as consultorJuridico.pessoa.nome for consultorJuridico in $ctrl.consultoresJuridicos | orderBy:'pessoa.nome'")
                     option(value="") Selecione o consultor jurídico
 
-        .row.form-group(ng-if="$ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_GEO && !$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_GEO)")
+        .row.form-group(ng-if="$ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_GEO && !$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_GEO) && $ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_TECNICO")
             .col-md-12
                 label.control-label Analista GEO:
                 select.form-control(ng-model="$ctrl.filtro.idAnalistaGeo", name="selectGEO",
@@ -64,7 +64,7 @@ div(uib-accordion class="accordion")
                     option(value="") Selecione o analista GEO
 
         //- .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_TECNICO) ")
-        .row.form-group(ng-if="$ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_GEO")
+        .row.form-group(ng-if="$ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_GEO && $ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_TECNICO")
             .col-md-12
                 label.control-label Analista técnico:
                 select.form-control(ng-model="$ctrl.filtro.idAnalistaTecnico", name="selectAnalista",

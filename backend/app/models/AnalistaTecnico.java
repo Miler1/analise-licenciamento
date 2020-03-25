@@ -1,11 +1,15 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import security.Auth;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -26,7 +30,7 @@ public class AnalistaTecnico extends GenericModel {
 	public Long id;
 	
 	@Required
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="id_analise_tecnica")
 	public AnaliseTecnica analiseTecnica;
 	
@@ -53,14 +57,16 @@ public class AnalistaTecnico extends GenericModel {
 		
 	}
 
-	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, AnaliseGeo analiseGeo) {
+	public static AnalistaTecnico distribuicaoAutomaticaAnalistaTecnico(String setorAtividade, Analise analise) {
 
-		List<UsuarioAnalise> analistasTecnico = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
+		UsuarioAnalise.atualizaUsuariosAnalise();
 
-		if (analistasTecnico == null || analistasTecnico.size() == 0)
-			throw new WebServiceException("Não existe nenhum gerente ativado no sistema");
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
 
-		List<Long> idsAnalistasTecnico = analistasTecnico.stream()
+		if (usuariosAnalise == null || usuariosAnalise.size() == 0)
+			throw new WebServiceException("Não existe nenhum analista técnico ativado no sistema");
+
+		List<Long> idsAnalistasTecnico = usuariosAnalise.stream()
 				.map(ang->ang.id)
 				.collect(Collectors.toList());
 
@@ -78,7 +84,7 @@ public class AnalistaTecnico extends GenericModel {
 
 		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
 
-		return new AnalistaTecnico(analiseGeo.analise, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
+		return new AnalistaTecnico(analise, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
 
 	}
 
@@ -117,7 +123,6 @@ public class AnalistaTecnico extends GenericModel {
 				throw new ValidacaoException(Mensagem.ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA);
 			}
 			
-			analiseTecnica.justificativaCoordenador = justificativaCoordenador;
 		}
 		
 		AnalistaTecnico analistaTecnico = new AnalistaTecnico(analiseTecnica, usuario);
@@ -127,16 +132,13 @@ public class AnalistaTecnico extends GenericModel {
 		 * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
 		 * caso contrário atribui o usuário executor para o campo do coordenador. 
 		 */
-		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
-			
+		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+
 			analiseTecnica.usuarioValidacaoGerente = usuarioExecutor;
-			
-		} else {
-			
-			analiseTecnica.usuarioValidacao = usuarioExecutor;
+
 		}
 		
-		analiseTecnica._save();
+
 	}
 	
 	public AnalistaTecnico gerarCopia() {
@@ -160,5 +162,19 @@ public class AnalistaTecnico extends GenericModel {
 //		return perfil.setor;
 
 		return null;
+	}
+
+	public static List<UsuarioAnalise> buscarAnalistasTecnicoParaDesvinculo(String setorAtividade, Long idUltimoAnalistaTecnico) {
+
+		List<UsuarioAnalise> usuarios = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, setorAtividade);
+
+		return usuarios.stream().filter(usuario -> !usuario.id.equals(Auth.getUsuarioSessao().id) && !usuario.id.equals(idUltimoAnalistaTecnico)).collect(Collectors.toList());
+
+	}
+
+	public static AnalistaTecnico findByAnaliseTecnica(Long idAnaliseTecnica) {
+
+		return AnalistaTecnico.find("id_analise_tecnica = :analiseTecnica")
+				.setParameter("analiseTecnica", idAnaliseTecnica).first();
 	}
 }

@@ -10,7 +10,7 @@ public class AcaoTramitacao extends GenericModel{
 	
 	public static final Long VINCULAR_CONSULTOR = 1l;
 	public static final Long INICIAR_ANALISE_JURIDICA = 2l;
-	public static final Long NOTIFICAR = 3l;
+	public static final Long NOTIFICAR_PELO_ANALISTA_GEO = 3l;
 	public static final Long DEFERIR_ANALISE_JURIDICA = 4l;
 	public static final Long INVALIDAR_PARECER_JURIDICO = 5l;
 	public static final Long VALIDAR_DEFERIMENTO_JURIDICO = 6l;
@@ -25,7 +25,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE = 15l;
 	public static final Long VALIDAR_DEFERIMENTO_TECNICO_PELO_GERENTE = 16l;
 	public static final Long VALIDAR_INDEFERIMENTO_TECNICO_PELO_GERENTE = 17l;
-	public static final Long INICIAR_PROCESSO = 18l;
+	public static final Long INICIAR_PROTOCOLO = 18l;
 	public static final Long VINCULAR_GERENTE = 19l;
 	public static final Long INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 20l;
 	public static final Long DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 21l;
@@ -39,12 +39,12 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long DEFERIR_ANALISE_JURIDICA_COORDENADOR_APROVADOR = 29l;
 	public static final Long SOLICITAR_AJUSTES_ANALISE_TECNICA_APROVADOR = 30l;
 	public static final Long EMITIR_LICENCA = 31l;
-	public static final Long SUSPENDER_PROCESSO = 32l;
+	public static final Long SUSPENDER_PROTOCOLO = 32l;
 	public static final Long REEMITIR_LICENCA = 33l;
-	public static final Long CANCELAR_PROCESSO = 34l;
+	public static final Long CANCELAR_PROTOCOLO = 34l;
 	public static final Long RESOLVER_NOTIFICACAO_JURIDICA = 35l;
 	public static final Long RESOLVER_NOTIFICACAO_TECNICA = 36l;
-	public static final Long ARQUIVAR_PROCESSO = 37l;
+	public static final Long ARQUIVAR_PROTOCOLO = 37l;
 	public static final Long ARQUIVAR_POR_RENOVACAO = 38l;
 	public static final Long RENOVAR_SEM_ALTERACAO = 39l;
 	public static final Long INICIAR_ANALISE_TECNICA_MANEJO = 40l;
@@ -66,10 +66,27 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_PRESIDENTE = 56l;
 	public static final Long RESOLVER_NOTIFICACAO_GEO = 57l;
 	public static final Long INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO = 58l;
-	public static final Long SOLICITAR_DESVINCULO = 59l;
+	public static final Long SOLICITAR_DESVINCULO_ANALISE_GEO = 59l;
 	public static final Long APROVAR_SOLICITACAO_DESVINCULO = 60l;
 	public static final Long NEGAR_SOLICITACAO_DESVINCULO = 61l;
 	public static final Long INICIAR_ANALISE_GERENTE = 62l;
 	public static final Long VALIDAR_PARECER_GEO_GERENTE = 63l;
-}
+	public static final Long RESOLVER_COMUNICADO = 64l;
+	public static final Long AGUARDAR_RESPOSTA_COMUNICADO = 65l;
+	public static final Long NOTIFICAR_PELO_ANALISTA_TECNICO = 66l;
+	public static final Long INICIAR_ANALISE_TECNICA_GERENTE = 67l;
+	public static final Long VALIDAR_PARECER_TECNICO_GERENTE = 68l;
+	public static final Long APROVAR_SOLICITACAO_DESVINCULO_TECNICO = 69l;
+	public static final Long NEGAR_SOLICITACAO_DESVINCULO_TECNICO = 70l;
+	public static final Long SOLICITAR_DESVINCULO_ANALISE_TECNICA = 71l;
+	public static final Long INICIAR_ANALISE_DIRETOR = 72l;
+	public static final Long INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO = 73L;
+	public static final Long VALIDAR_ANALISE_PELO_DIRETOR = 74L;
+	public static final Long INVALIDAR_ANALISE_PELO_DIRETOR = 75L;
+	public static final Long INICIAR_ANALISE_PRESIDENTE = 76l;
+	public static final Long APROVAR_SOLICITACAO_LICENCA = 78l;
+	public static final Long NEGAR_SOLICITACAO_LICENCA = 79l;
 
+	public static final Long RESOLVER_ANALISE_JURIDICA = 77L;
+
+}

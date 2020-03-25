@@ -11,6 +11,18 @@ PARAMETRO_NAO_INFORMADO = Parâmetro faltante para requisição: %s.
 ENDERECOS_EXTRAS_NAO_PERMITIDOS = É permitido cadastrar para um CPF/CNPJ apenas um endereço comum e outro de correspondência.
 
 #
+#Jobs
+#
+JOB_EXECUTADO_SUCESSO=Job '%s' executado com sucesso!
+JOB_INICIO_MANUALMENTE=[INICIO-MANUALMENTE] ::Job executado manualmente:: [INICIO-MANUALMENTE]
+JOB_FIM_MANUALMENTE=[FIM-MANUALMENTE] ::Job executado manualmente:: [FIM-MANUALMENTE]
+JOB_ERRO_NAO_ENCONTRADO=Job '%s' não encontrado!
+JOB_ERRO_PADRAO=Job '%s' não implementa a classe 'GenericJob'
+JOB_INICIO_TODOS_MANUALMENTE=[INICIO-MANUALMENTE] ::Jobs executados manualmente:: [INICIO-MANUALMENTE]
+JOB_FIM_TODOS_MANUALMENTE=[FIM-MANUALMENTE] ::Jobs executados manualmente:: [FIM-MANUALMENTE]
+JOB_FIM_TODOS_EXECUTADOS_SUCESSO=Jobs executados manualmente com sucesso!
+
+#
 # Tramitação
 #
 
@@ -36,14 +48,17 @@ ANALISTA_VINCULADO_SUCESSO=Analista vinculado com sucesso.
 ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista técnico pelo coordenador a justificativa é obrigatória.
 DESVINCULO_SOLICITADO_COM_SUCESSO=Seu desvínculo foi solicitado com sucesso!
 DESVINCULO_RESPONDIDO_COM_SUCESSO=O desvínculo foi respondido com sucesso!
+NENHUM_ANALISTA_ENCONTRADO=Não existe nenhum analista geo para vincular automaticamente o protocolo com número %s no setor %s.
+NENHUM_GERENTE_ENCONTRADO=Não existe nenhum gerente para ser vinculado.
+NENHUM_DIRETOR_ENCONTRADO=Não existe nenhum diretor para ser vinculado.
 #
 # Inconsistencia
 #
 INCONSISTENCIA_SALVA_SUCESSO=A inconsistência foi salva com sucesso.
 INCONSISTENCIA_EXCLUIDA_SUCESSO=A inconsistência foi excluída com sucesso.
 CAMPOS_OBRIGATORIOS= Verifique os campos obrigatórios!
-CLONAR_PARECER_COM_INCONSISTENCIA=Não é possível clonar este parecer. O processo possui inconsistência cadastrada.
-PARECER_NAO_ENCONTRADO=Não foi encontrado um parecer para esse número de processo.
+CLONAR_PARECER_COM_INCONSISTENCIA=Não é possível clonar este parecer. O protocolo possui inconsistência cadastrada.
+PARECER_NAO_ENCONTRADO=Não foi encontrado um parecer para esse número de protocolo.
 #
 # Gerentes
 #
@@ -74,7 +89,7 @@ ANALISE_CADASTRADA_SUCESSO=Análise cadastrada com sucesso.
 ANALISE_PARECER_NAO_PREENCHIDO=O parecer não foi preenchido.
 ANALISE_ANALISE_TEMPORAL_NAO_PREENCHIDA=O campo análise temporal não foi preenchido.
 ANALISE_SITUACAO_FUNDIARIA_NAO_PREENCHIDA=O campo situação fundiária não foi preenchido.
-ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA=Não foi informada a análise final do processo.
+ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA=Não foi informada a análise final do protocolo.
 ANALISE_DESPACHO_NAO_PREENCHIDO= O campo despacho não foi preenchido.
 ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA = O campo justificativa não foi preenchido.
 ANALISE_CONCLUSAO_NAO_PREENCHIDA= O campo conclusão não foi preenchido.
@@ -92,6 +107,8 @@ ANALISE_SEM_PARECER_VALIDACAO=O parecer da validação não foi informado.
 #
 # Analise tecnica
 #
+ANALISE_DIRETOR_INICIADA_SUCESSO=Análise diretor iniciada com sucesso.
+ANALISE_PRESIDENTE_INICIADA_SUCESSO=Análise presidente iniciada com sucesso.
 ANALISE_TECNICA_INICIADA_SUCESSO=Análise técnica iniciada.
 ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO=A validade da licença está maior que o máximo permitido.
 ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO=A validade da condicionante está maior que o máximo permitido.
@@ -120,6 +137,7 @@ PRAZO_MAXIMO_SUSPENSAO_EXCEDIDO=O prazo máximo para suspensão da licença é d
 LICENCA_SUSPENSA_SUCESSO=Licença suspendida com sucesso.
 LICENCA_CANCELADA_OU_SUSPENSA=A Licença informada não pode ser baixada.
 LICENCA_CANCELADA_SUCESSO=Licença cancelada com sucesso.
+CARACTERIZACAO_PERGUNTAS_NAO_RESPONDIDAS = Existem perguntas obrigatórias que não foram respondidas.
 
 #
 # Dlas
@@ -130,6 +148,7 @@ ERRO_CANCELAR_DLA=Erro ao cancelar DLA, contate a SEMAS ou tente novamente mais 
 # Emails
 #
 ERRO_ENVIAR_EMAIL=O seguinte erro ocorreu ao tentar enviar o email: %s
+ERRO_ENVIAR_SEGUNDO_EMAIL_NOTIFICACAO=Ocorreu um erro ao tentar enviar o email após o vencimento do prazo da notificação: %s
 
 #
 # Analises Manejo
@@ -149,10 +168,10 @@ ANALISE_TECNICA_CONCLUSAO_OBRIGATORIA=É obrigatório informar a conclusão da a
 #
 # Processo Manejo
 #
-PROCESSO_ANALISE_USUARIO_DIFERENTE=Processo em análise por um usuário diferente.
-PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Processo cadastrado com sucesso.
-PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Processo indeferido com sucesso.
-ERRO_PROCESSAR_ANEXO_PROCESSO_MANEJO=Erro ao processar o anéxo do processo do manejo vindo da análise shape.
+PROCESSO_ANALISE_USUARIO_DIFERENTE=Protocolo em análise por um usuário diferente.
+PROCESSO_MANEJO_CADASTRADO_COM_SUCESSO=Protocolo cadastrado com sucesso.
+PROCESSO_MANEJO_INDEFERIDO_COM_SUCESSO=Protocolo indeferido com sucesso.
+ERRO_PROCESSAR_ANEXO_PROCESSO_MANEJO=Erro ao processar o anéxo do protocolo do manejo vindo da análise shape.
 
 #
 # Observações
@@ -168,3 +187,28 @@ MUNICIPIO_INVALIDO_NAO_INFORMADO=Município não informado ou inválido.
 #Entrada Única
 PERFIL_NAO_VINCULADO_AO_USUARIO=Este perfil não está vinculado a este login no Entrada Única.
 ERRO_COMUNICACAO_ENTRADA_UNICA = Não foi possível efetuar a comunicação com o Entrada Única.
+
+#
+# Notificacao
+#
+ERRO_SALVAMENTO_NOTIFICACAO=Não foi possível salvar a notificação, contate o administrador do sistema.
+
+#
+# Arquivar
+#
+ERRO_ARQUIVAR_PROCESSO=Não foi possível arquivar o processo %s
+
+#
+# Inconsistência vistoria
+#
+INCONSISTENCIA_VISTORIA_EXCLUIDA_SUCESSO=A inconsistẽncia foi excluída com sucesso
+
+#
+# Condicionantes
+#
+CONDICIONANTE_EXCLUIDA_SUCESSO=A condicionante foi excluída com sucesso
+
+#
+# Restrições
+#
+RESTRICAO_EXCLUIDA_SUCESSO=A restrição foi excluída com sucesso

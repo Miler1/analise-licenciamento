@@ -28,7 +28,7 @@ html(lang='pt-br')
 		link(href='./libs/sideBar/leaflet-sidebar.min.css', rel='stylesheet', media='screen')
 		link(href='./images/favicon.png', rel="shortcut icon")
 		link(href='./css/styles.min.css', rel='stylesheet', media='screen')
-		link(href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css", rel="stylesheet")
+		link(href="./summernote/summernote.css", rel="stylesheet")
 
 	body(id="ng-app", ng-app="licenciamento", ng-controller="AppController", ng-cloak)
 
@@ -36,7 +36,7 @@ html(lang='pt-br')
 
 			div#wrap
 
-			div(ng-if='!isRoute("/parecer-orgao")')
+			div(ng-if='!isRoute("/parecer-orgao") && !isRoute("/parecer-juridico")')
 
 				include layout/header
 				include layout/menu
@@ -62,6 +62,13 @@ html(lang='pt-br')
 				div.col-xs-12.main-container__parecer-orgao
 					section.container.main-container-parecer-orgao
 						include features/parecerOrgao/parecerOrgao
+			
+			div(ng-if='isRoute("/parecer-juridico")')
+
+				include layout/header
+				div.col-xs-12.main-container__parecer-juridico
+					section.container.main-container-parecer-juridico
+						include features/parecerJuridico/parecerJuridico
 
 		script(src="./aplicacao/info")
 		script(src="./libs/jquery/jquery.min.js")
@@ -96,7 +103,7 @@ html(lang='pt-br')
 		script(src="./libs/textAngular/textAngular-sanitize.min.js")
 		script(src="./libs/textAngular/textAngular.min.js")
 		script(src="./libs/ngSortable/ng-sortable.min.js")
-		script(src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js")
+		script(src="./summernote/summernote.js")
 		script(src="./libs/summernote/angular-summernote.min.js")
 		script(src="./libs/ngBootbox/ngBootbox.min.js")
 		script(src="./libs/bootbox/bootbox.all.min.js")

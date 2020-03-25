@@ -2,16 +2,25 @@ package controllers;
 
 import exceptions.AppException;
 import models.EntradaUnica.Usuario;
+import models.PerfilUsuarioAnalise;
 import models.Pessoa;
+import models.SetorUsuarioAnalise;
 import models.UsuarioAnalise;
 import play.Logger;
 import play.Play;
 import play.cache.Cache;
 import play.mvc.Before;
-import security.*;
+import security.Auth;
+import security.AuthService;
+import security.AuthServiceFactory;
+import security.ExternalServiceSecurity;
+import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.Helper;
 import utils.Mensagem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Login extends GenericController {
 
@@ -71,7 +80,6 @@ public class Login extends GenericController {
 		session.clear();
 	}
 
-
 	/**
 	 * Executa serviço de autenticação configurado no sistema via application.conf se o usuário não estiver autenticado
 	 * @return
@@ -94,7 +102,16 @@ public class Login extends GenericController {
 			pessoa.nome = usuario.nome;
 			pessoa.save();
 			usuarioAnalise.pessoa = pessoa;
-			usuarioAnalise.save();
+			usuarioAnalise = usuarioAnalise.save();
+
+			UsuarioAnalise.atualizaUsuariosAnalise();
+
+		}
+
+		if (usuarioAnalise.perfis == null || usuarioAnalise.perfis.isEmpty() || usuarioAnalise.setores == null || usuarioAnalise.setores.isEmpty()) {
+
+			UsuarioAnalise.atualizaUsuariosAnalise();
+
 		}
 
 		usuarioAnalise.usuarioEntradaUnica = usuario;

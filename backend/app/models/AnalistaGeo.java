@@ -1,17 +1,24 @@
 package models;
 
+import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
+import jobs.ProcessamentoCaracterizacaoEmAndamento;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
+import models.EntradaUnica.Usuario;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import play.Logger;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import play.i18n.Messages;
 import security.Auth;
+import security.cadastrounificado.CadastroUnificadoWS;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import javax.persistence.*;
-import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,149 +27,117 @@ import java.util.stream.Collectors;
 @Table(schema="analise", name="analista_geo")
 public class AnalistaGeo extends GenericModel {
 
-    public static final String SEQ = "analise.analista_geo_id_seq";
+	public static final String SEQ = "analise.analista_geo_id_seq";
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
-    @SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
-    public Long id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
+	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
+	public Long id;
 
-    @Required
-    @ManyToOne
-    @JoinColumn(name="id_analise_geo")
-    public AnaliseGeo analiseGeo;
+	@Required
+	@ManyToOne
+	@JoinColumn(name="id_analise_geo")
+	public AnaliseGeo analiseGeo;
 
-    @Required
-    @ManyToOne
-    @JoinColumn(name="id_usuario")
-    public UsuarioAnalise usuario;
+	@Required
+	@ManyToOne
+	@JoinColumn(name="id_usuario")
+	public UsuarioAnalise usuario;
 
-    @Required
-    @Column(name="data_vinculacao")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataVinculacao;
+	@Required
+	@Column(name="data_vinculacao")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date dataVinculacao;
 
-    public AnalistaGeo() {
+	public AnalistaGeo() {
 
-    }
+	}
 
-    public AnalistaGeo(AnaliseGeo analiseGeo, UsuarioAnalise usuario) {
+	public AnalistaGeo(AnaliseGeo analiseGeo, UsuarioAnalise usuario) {
 
-        super();
-        this.analiseGeo = analiseGeo;
-        this.usuario = usuario;
-        this.dataVinculacao = new Date();
+		super();
+		this.analiseGeo = analiseGeo;
+		this.usuario = usuario;
+		this.dataVinculacao = new Date();
 
-    }
+	}
 
-    public static void vincularAnalise(UsuarioAnalise usuario, AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor, String justificativaCoordenador) {
+	public AnalistaGeo gerarCopia() {
 
-        if (!usuario.hasPerfil(CodigoPerfil.ANALISTA_GEO))
-            throw new ValidacaoException(Mensagem.ANALISTA_DIFERENTE_DE_ANALISTA_GEO);
+		AnalistaGeo copia = new AnalistaGeo();
 
-        AnalistaGeo analistaGeo = new AnalistaGeo(analiseGeo, usuario);
-        analistaGeo.save();
+		copia.usuario = this.usuario;
+		copia.dataVinculacao = this.dataVinculacao;
 
-        /**
-         * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
-         * caso contrário atribui o usuário executor para o campo do coordenador.
-         */
-        if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)){
+		return copia;
+	}
 
-            analiseGeo.usuarioValidacaoGerente = usuarioExecutor;
+	public Setor getSetor() {
+		//TODO PUMA-SQUAD-1 ajustar busca de setor do analista
 
-        } else {
+		//		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
+		//				.setParameter("x", this.usuario.id)
+		//				.setParameter("y", "Analista TÉCNICO")
+		//				.first();
+		//
+		//		return perfil.setor;
 
-            analiseGeo.usuarioValidacao = usuarioExecutor;
-        }
+		return null;
+	}
 
-        analiseGeo._save();
-    }
+	public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) throws ValidacaoException {
 
-    public AnalistaGeo gerarCopia() {
+		List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-        AnalistaGeo copia = new AnalistaGeo();
+		if (usuariosAnalise.isEmpty())
+			throw new RuntimeException(Mensagem.NENHUM_ANALISTA_ENCONTRADO.getTexto(analiseGeo.analise.processo.numero, setorAtividade));
 
-        copia.usuario = this.usuario;
-        copia.dataVinculacao = this.dataVinculacao;
+		List<Long> idsAnalistasGeo = usuariosAnalise.stream()
+				.map(ang -> ang.id)
+				.collect(Collectors.toList());
 
-        return copia;
-    }
+		String parameter = "ARRAY[" + getParameterLongAsStringDBArray(idsAnalistasGeo) + "]";
 
-    public Setor getSetor() {
-    //TODO PUMA-SQUAD-1 ajustar busca de setor do analista
+		String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest(" + parameter + ") as id_usuario ORDER BY id_usuario), " +
+				"     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.analista_geo ag) LIMIT 1), " +
+				"     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.analista_geo " +
+				"        WHERE id_usuario in (" + getParameterLongAsStringDBArray(idsAnalistasGeo) + ") " +
+				"        GROUP BY id_usuario " +
+				"        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
+				"SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
 
-    //		PerfilUsuario perfil = PerfilUsuario.find("usuario.id = :x AND perfil.nome = :y")
-    //				.setParameter("x", this.usuario.id)
-    //				.setParameter("y", "Analista TÉCNICO")
-    //				.first();
-    //
-    //		return perfil.setor;
+		Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
 
-        return null;
-    }
+		DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
 
-    public static AnalistaGeo distribuicaoProcesso(String setorAtividade, AnaliseGeo analiseGeo) {
+		return new AnalistaGeo(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
 
-        List<UsuarioAnalise> analistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
+	}
 
-        if (analistasGeo == null || analistasGeo.size() == 0)
-            throw new WebServiceException("Não existe nenhum analista geo para vincular automáticamente o processo.");
+	public static AnalistaGeo findByAnaliseGeo(Long idAnaliseGeo) {
 
-        List<Long> idsAnalistasGeo = analistasGeo.stream()
-                .map(ang -> ang.id)
-                .collect(Collectors.toList());
+		return AnalistaGeo.find("id_analise_geo = :analiseGeo")
+				.setParameter("analiseGeo", idAnaliseGeo).first();
+	}
 
-        String parameter = "ARRAY[" + getParameterLongAsStringDBArray(idsAnalistasGeo) + "]";
+	private static String getParameterLongAsStringDBArray(List<Long> lista) {
 
-        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest(" + parameter + ") as id_usuario ORDER BY id_usuario), " +
-                "     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.analista_geo ag) LIMIT 1), " +
-                "     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.analista_geo " +
-                "        WHERE id_usuario in (" + getParameterLongAsStringDBArray(idsAnalistasGeo) + ") " +
-                "        GROUP BY id_usuario " +
-                "        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
-                "SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+		String retorno = "";
 
-        Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
+		for (Long id : lista) {
+			retorno = retorno + "" + id + ", ";
+		}
+		retorno = retorno.substring(0, retorno.length() -2) ;
 
-        DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
+		return retorno;
+	}
 
-        return new AnalistaGeo(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
+	public static List<UsuarioAnalise> buscarAnalistasGeoParaDesvinculo(String setorAtividade, Long idUltimoAnalistaGeo) {
 
-    }
+		List<UsuarioAnalise> usuarios = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
 
-    public static AnalistaGeo findByAnaliseGeo(Long idAnaliseGeo) {
+		return usuarios.stream().filter(usuario -> !usuario.id.equals(Auth.getUsuarioSessao().id) && !usuario.id.equals(idUltimoAnalistaGeo)).collect(Collectors.toList());
 
-        return AnalistaGeo.find("id_analise_geo = :analiseGeo")
-                .setParameter("analiseGeo", idAnaliseGeo).first();
-    }
-
-    private static String getParameterLongAsStringDBArray(List<Long> lista) {
-
-        String retorno = "";
-
-        for (Long id : lista) {
-            retorno = retorno + "" + id + ", ";
-        }
-        retorno = retorno.substring(0, retorno.length() -2) ;
-
-        return retorno;
-    }
-
-    public static List<UsuarioAnalise> buscarAnalistasGeoByIdProcesso(String setorAtividade) {
-
-        List<UsuarioAnalise> todosAnalistasGeo = UsuarioAnalise.getUsuariosByPerfilSetor(CodigoPerfil.ANALISTA_GEO, setorAtividade);
-
-        List<UsuarioAnalise> analistasGeo = new ArrayList<>();
-
-        for (UsuarioAnalise analistaGeo : todosAnalistasGeo) {
-            if(analistaGeo.pessoa != null) {
-                analistasGeo.add(analistaGeo);
-            }
-        }
-
-        return analistasGeo.stream().filter(analista -> !analista.id.equals(Auth.getUsuarioSessao().id)).collect(Collectors.toList());
-
-    }
+	}
 
 }

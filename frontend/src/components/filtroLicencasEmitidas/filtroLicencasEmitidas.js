@@ -20,10 +20,11 @@ var FiltroLicencasEmitidas = {
 		ctrl.atividades = [];
 		ctrl.tiposLicencas = [];
 		ctrl.listaStatusLicencas = [
-			{nome: 'Ativa', codigo: 'ATIVA'},
+			{nome: 'Vigente', codigo: 'DEFERIDO'},
 			{nome: 'Cancelada', codigo: 'CANCELADA'},
 			{nome: 'Renovada', codigo: 'RENOVADA'},
-			{nome: 'Suspensa', codigo: 'SUSPENSA'}
+			{nome: 'Suspensa', codigo: 'SUSPENSA'},
+			{nome: 'Vencida', codigo: 'VENCIDO'}
 		];
 		ctrl.statusLicenca = null;
 		ctrl.maxDataInicio = new Date();
@@ -111,6 +112,9 @@ var FiltroLicencasEmitidas = {
 			} else {
 				this.pesquisaRapida(pagina);
 			}
+
+			$rootScope.$broadcast('atualizarContagemProcessos');
+		
 		};
 
 		function setFiltrosPadrao(){

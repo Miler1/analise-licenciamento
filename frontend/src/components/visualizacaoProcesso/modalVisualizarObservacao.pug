@@ -1,0 +1,28 @@
+div.modal-header
+
+    button.close(type='button', ng-click="visualizarJustificativasCtlr.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Visualizar observação
+
+div.modal-body(ng-if="visualizarJustificativasCtlr.parecer.parecer")
+    div.row
+        label.col-sm-4 {{ visualizarJustificativasCtlr.labelParecer }}:
+        br
+        div.col-sm-12.espacamento-visualizar-obs
+            .area
+                p(ng-bind-html="visualizarJustificativasCtlr.parecer.parecer")
+div.modal-body(ng-if="!visualizarJustificativasCtlr.parecer.parecer")
+    div.row
+        label.col-sm-4 {{ visualizarJustificativasCtlr.labelParecer }}:
+        br
+        div.col-sm-12.espacamento-visualizar-obs
+            .area
+                p(ng-bind-html="visualizarJustificativasCtlr.parecer.justificativa")                  
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="visualizarJustificativasCtlr.fechar()")
+        i.glyphicon.glyphicon-arrow-left
+        | &nbsp;Voltar

@@ -1,17 +1,30 @@
-var DesvinculoGerenteController = function ($uibModalInstance, processo, $location ,$window,$rootScope, mensagem, desvinculoService,analistaService) {
+var DesvinculoGerenteController = function ($uibModalInstance, processo, $location ,$scope,$rootScope, mensagem, desvinculoService,analistaService) {
 
 	var desvinculoGerenteController = this;
 
 	desvinculoGerenteController.processo = processo;
+	desvinculoGerenteController.condicaoTramitacao = app.utils.CondicaoTramitacao;
 	desvinculoGerenteController.pessoa = null;
 	desvinculoGerenteController.desvinculo = null;
-	desvinculoGerenteController.analistasGeo = null;
-	desvinculoGerenteController.analistaGeoDestino = {};
+	desvinculoGerenteController.analistas = null;
+	desvinculoGerenteController.analistaDestino = {};
+	desvinculoGerenteController.tipoDesvinculo = null;
 
 	function onInit() {
-		// desvinculoGerenteController.buscarAgenteSolicitante();
-		desvinculoGerenteController.buscarDesvinculoPeloProcesso();
-		desvinculoGerenteController.buscarAnalistasGeoByIdProcesso();
+
+		if(desvinculoGerenteController.processo.idCondicaoTramitacao === desvinculoGerenteController.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA){
+
+			desvinculoGerenteController.buscarDesvinculoPeloProcessoTecnico();
+			desvinculoGerenteController.buscarAnalistasTecnicoByIdProcesso();
+			desvinculoGerenteController.tipoDesvinculo = false;
+			
+		}else {
+
+			desvinculoGerenteController.buscarDesvinculoPeloProcessoGeo();
+			desvinculoGerenteController.buscarAnalistasGeoByIdProcesso();
+			desvinculoGerenteController.tipoDesvinculo = true;
+
+		}
 	}
 
 	desvinculoGerenteController.fechar = function () {
@@ -25,28 +38,54 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 	desvinculoGerenteController.concluir = function() {
 
 		var params = desvinculoGerenteController.desvinculo;
-		if(desvinculoGerenteController.desvinculoAceito) {
-			params.analistaGeoDestino = {};
-			params.analistaGeoDestino.id = desvinculoGerenteController.analistaGeoDestino.id;
-		}
+
 		params.aprovada = desvinculoGerenteController.desvinculoAceito;
 		params.respostaGerente = desvinculoGerenteController.respostaGerente;
 
-		desvinculoService.respondersolicitacaoDesvinculo(params)
+		if (desvinculoGerenteController.tipoDesvinculo === true){
+
+			if(desvinculoGerenteController.desvinculoAceito) {
+				params.analistaGeoDestino = {};
+				params.analistaGeoDestino.id = desvinculoGerenteController.analistaDestino.id;
+			}
+
+			desvinculoService.responderSolicitacaoDesvinculoAnaliseGeo(params)
 			.then(function(response){
 
-				mensagem.success(response.data);
+				$rootScope.$broadcast('rootPesquisarProcessos');
 				$rootScope.$broadcast('atualizarContagemProcessos');
+				mensagem.success(response.data);
+				$uibModalInstance.close();
+
+			}).catch(function(response){
+				mensagem.error(response.data.texto, {referenceId: 5});
+			});
+
+		}else if (desvinculoGerenteController.tipoDesvinculo === false){
+
+			if(desvinculoGerenteController.desvinculoAceito) {
+				params.analistaTecnicoDestino = {};
+				params.analistaTecnicoDestino.id = desvinculoGerenteController.analistaDestino.id;
+			}
+
+			desvinculoService.responderSolicitacaoDesvinculoAnaliseTecnica(params)
+			.then(function(response){
+
+				$rootScope.$broadcast('rootPesquisarProcessos');
+				$rootScope.$broadcast('atualizarContagemProcessos');
+				mensagem.success(response.data);
 				$location.path('/caixa-entrada');
 				$uibModalInstance.close();
-		}).catch(function(response){
-			mensagem.error(response.data.texto, {referenceId: 5});
-		});
+
+			}).catch(function(response){
+				mensagem.error(response.data.texto, {referenceId: 5});
+			});
+		}
 
 	};
 
-	desvinculoGerenteController.buscarDesvinculoPeloProcesso = function() {
-		desvinculoService.buscarDesvinculoPeloProcesso(processo.idProcesso)
+	desvinculoGerenteController.buscarDesvinculoPeloProcessoGeo = function() {
+		desvinculoService.buscarDesvinculoPeloProcessoGeo(processo.idProcesso)
 			.then(function(response) {
 				desvinculoGerenteController.desvinculo = response.data;
 			});
@@ -55,7 +94,21 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 	desvinculoGerenteController.buscarAnalistasGeoByIdProcesso = function() {
 		analistaService.buscarAnalistasGeoByIdProcesso(processo.idProcesso)
 			.then(function(response) {
-				desvinculoGerenteController.analistasGeo = response.data;
+				desvinculoGerenteController.analistas = response.data;
+			});
+	};
+
+	desvinculoGerenteController.buscarDesvinculoPeloProcessoTecnico = function() {
+		desvinculoService.buscarDesvinculoPeloProcessoTecnico(processo.idProcesso)
+			.then(function(response) {
+				desvinculoGerenteController.desvinculo = response.data;
+			});
+	};
+
+	desvinculoGerenteController.buscarAnalistasTecnicoByIdProcesso = function() {
+		analistaService.buscarAnalistasTecnicoByIdProcesso(processo.idProcesso)
+			.then(function(response) {
+				desvinculoGerenteController.analistas = response.data;
 			});
 	};
 
@@ -63,14 +116,14 @@ var DesvinculoGerenteController = function ($uibModalInstance, processo, $locati
 		var valido = false;
 
 		if(desvinculoGerenteController.desvinculoAceito){
-			valido = desvinculoGerenteController.analistaGeoDestino.id &&
-					 desvinculoGerenteController.analistaGeoDestino.id != "" &&
+			valido = desvinculoGerenteController.analistaDestino.id &&
+					 desvinculoGerenteController.analistaDestino.id != "" &&
 					 desvinculoGerenteController.respostaGerente;
 		} else {
 			valido = desvinculoGerenteController.desvinculoAceito != undefined &&
 					desvinculoGerenteController.respostaGerente;
 			
-			desvinculoGerenteController.analistaGeoDestino.id = undefined;
+			desvinculoGerenteController.analistaDestino.id = undefined;
 		}
 
 		return valido;

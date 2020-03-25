@@ -17,10 +17,12 @@ public class Configuracoes {
 
 	private static String DEFAULT_LOGIN_URL = "/login";
 
+	public static String SIGLA_MODULO = getConfig("sigla.modulo", "MAL");
 	public static String AUTH_SERVICE = getConfig("auth.service", null);
 	public static String LOGIN_URL = getConfig("auth.login.url", DEFAULT_LOGIN_URL);
 	public static Boolean EXTERNAL_LOGIN = !LOGIN_URL.equals(DEFAULT_LOGIN_URL);
 	public static String INDEX_URL = "app/index.html";
+	public static String JOBS_PACKAGE = "jobs.";
 
 	public static Integer CODIGO_TIPO_PESSOA_JURIDICA = 1;
 
@@ -32,6 +34,7 @@ public class Configuracoes {
 	public static String ARQUIVOS_ANALISE_PATH = getConfig("arquivos.path.analise", null);
 	public static String ARQUIVOS_LICENCIAMENTO_PATH = getConfig("arquivos.path.licenciamento", null);
 	public static String ARQUIVOS_DOCUMENTOS_ANALISE_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.documentos.path", null);
+	public static String ARQUIVOS_DOCUMENTOS_SHAPEFILE_PATH = ARQUIVOS_DOCUMENTOS_ANALISE_PATH + getConfig("arquivos.shapefile.path", null);
 	public static String ARQUIVOS_DOCUMENTOS_LICENCIAMENTO_PATH = ARQUIVOS_LICENCIAMENTO_PATH + getConfig("arquivos.documentos.path", null);
 	public static String GEOJSON_INCONFORMIDADES_PATH = ARQUIVOS_ANALISE_PATH + getConfig("arquivos.geojson.inconformidades.path", null);
 	public static String ESTADO = "AM";
@@ -47,6 +50,8 @@ public class Configuracoes {
 	public static Integer PRAZO_ANALISE_GEO = getIntConfig("analise.geo.prazo");
 	public static Integer PRAZO_ANALISE_TECNICA = getIntConfig("analise.tecnica.prazo");
 
+	public static String DESTINATARIO_JURIDICO = getConfig("email.destinatario.juridico", null);
+	public static String DESTINATARIO_JURIDICO2 = getConfig("email.destinatario.juridico2", null);
 	public static String URL_LICENCIAMENTO = getConfig("licenciamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACOES_EM_ANDAMENTO = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacoes.andamento.url", null);
 	public static String URL_LICENCIAMENTO_CARACTERIZACAO_ADICIONAR_ANALISE = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.adicionar.analise", null);
@@ -54,6 +59,7 @@ public class Configuracoes {
 	public static String URL_LICENCIAMENTO_CANCELAR_DLA = URL_LICENCIAMENTO + getConfig("licenciamento.licenca.cancelar.dla", null);
 	public static String URL_LICENCIAMENTO_PRORROGAR_LICENCA = URL_LICENCIAMENTO + getConfig("licenciamento.prorrogar.licenca", null);
 	public static String URL_LICENCIAMENTO_FINALIZAR_PRORROGACAO_LICENCAS = URL_LICENCIAMENTO + getConfig("licenciamento.finalizar.prorrogacao.licencas", null);
+	public static String URL_LICENCIAMENTO_UPDATE_STATUS = URL_LICENCIAMENTO + getConfig("licenciamento.caracterizacao.update.status", null);
 
 	public static String PDF_TEMPLATES_FOLDER_PATH = "templates" + File.separator + "pdf";
 	public static String PDF_TEMPLATES_FOLDER_ABSOLUTE = Play.applicationPath.getAbsolutePath() + File.separator + "app" + File.separator + "views" + File.separator;

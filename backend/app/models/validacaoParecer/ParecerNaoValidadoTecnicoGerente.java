@@ -9,8 +9,6 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
 
-import java.util.ArrayList;
-
 public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<AnaliseTecnica> {
 
 	public ParecerNaoValidadoTecnicoGerente() {
@@ -29,7 +27,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		
 		analiseTecnica._save();
 					
-		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.getAnalistaTecnico().usuario, usuarioExecutor);
+		criarNovaAnalise(analiseTecnica, novaAnaliseTecnica.analistaTecnico.usuario, usuarioExecutor);
 		
 		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE, usuarioExecutor);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
@@ -46,12 +44,10 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		novaAnalise.ativo = true;
 		novaAnalise.usuarioValidacao = analiseTecnica.usuarioValidacao;
 		novaAnalise.usuarioValidacaoGerente = usuarioValidacao;
-		
-		novaAnalise.analistasTecnicos = new ArrayList<>();
-		AnalistaTecnico analistaTecnico = new AnalistaTecnico(novaAnalise, usuarioAnalista);
-		novaAnalise.analistasTecnicos.add(analistaTecnico);
+		novaAnalise.analistaTecnico = new AnalistaTecnico(novaAnalise, usuarioAnalista);
 		
 		novaAnalise._save();
+
 	}
 
 	private void validarAnaliseTecnica(AnaliseTecnica analiseTecnica, AnaliseTecnica novaAnaliseTecnica) {
@@ -60,7 +56,7 @@ public class ParecerNaoValidadoTecnicoGerente extends TipoResultadoAnaliseChain<
 		
 		analiseTecnica.validarParecerValidacaoGerente();
 		
-		if (novaAnaliseTecnica.analistasTecnicos == null || novaAnaliseTecnica.analistasTecnicos.isEmpty()) {
+		if (novaAnaliseTecnica.analistaTecnico == null) {
 			
 			throw new ValidacaoException(Mensagem.ANALISE_JURIDICA_CONSULTOR_NAO_INFORMADO);
 		}

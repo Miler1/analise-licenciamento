@@ -2,7 +2,10 @@ package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
 import enums.CamadaGeoEnum;
-import models.*;
+import models.CamadaGeoAtividadeVO;
+import models.EmpreendimentoCamandaGeo;
+import models.GeometriaAtividadeVO;
+import models.TipoAreaGeometria;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.ParamDef;
@@ -15,7 +18,10 @@ import utils.GeoJsonUtils;
 import utils.Helper;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema = "licenciamento", name = "empreendimento")
@@ -75,6 +81,9 @@ public class Empreendimento extends GenericModel {
 	
 	@OneToMany(mappedBy = "empreendimento", targetEntity = ResponsavelEmpreendimento.class, orphanRemoval = true)
 	public List<ResponsavelEmpreendimento> responsaveis;
+
+	@OneToMany(mappedBy = "empreendimento", targetEntity = Caracterizacao.class, orphanRemoval = true)
+	public List<Caracterizacao> caracterizacoes;
 	
 	public boolean ativo;
 	
@@ -104,6 +113,9 @@ public class Empreendimento extends GenericModel {
 
 	@Column(name = "possui_shape")
 	public Boolean possuiShape;
+
+	@Transient
+	public Double area;
 	
 	public List<String> emailsProprietarios() {
 		
@@ -145,7 +157,7 @@ public class Empreendimento extends GenericModel {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
-		main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(cpfCnpj);
+		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(cpfCnpj);
 
 		Empreendimento empreendimentoLicenciamento = Empreendimento.buscaEmpreendimentoByCpfCnpj(cpfCnpj);
 

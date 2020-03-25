@@ -6,7 +6,7 @@ div
 		atualizar-paginacao="consultarLicencas.atualizarPaginacao",
 		pesquisar-ao-inicializar="true")
 
-	h4 Lista de títulos emitidos
+	h4 Lista de licenças emitidas
 
 	hr
 	.row
@@ -15,19 +15,26 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th.col-md-2 Nº título
-							th.col-md-2 Processo
+							th
+							th.col-md-1 Nº licença
+							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-3 Empreendimento
-							th.col-md-1 Município
-							th.col-md-1 Títulos
+							th.col-md-2 Município
+							th.col-md-1 Licença
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="licenca in consultarLicencas.licencas")
-							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca | textoTruncado : 4:3}}
-							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numeroProcesso | textoTruncado : 4:3}}
+
+							td
+								span(ng-class="{'icone-licenca-vigente': consultarLicencas.statusCaracterizacao.VIGENTE === licenca.statusCaracterizacao}")
+								span(ng-class="{'icone-licenca-suspensa': consultarLicencas.statusCaracterizacao.SUSPENSO === licenca.statusCaracterizacao}")
+								span(ng-class="{'icone-licenca-cancelada': consultarLicencas.statusCaracterizacao.CANCELADO === licenca.statusCaracterizacao}")
+								
+							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca }}
+							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numero }}
 							td {{licenca.cpfEmpreendimento ? licenca.cpfEmpreendimento : licenca.cnpjEmpreendimento | brCpfCnpj}}
-							td {{licenca.denominacaoEmpreendimento}}
+							td.break-word {{licenca.denominacaoEmpreendimento}}
 							td {{licenca.municipioEmpreendimento}}/{{licenca.siglaEstadoEmpreendimento}}
 							td {{licenca.tipoLicenca}}
 							td
@@ -39,22 +46,22 @@ div
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li(ng-if="licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO")
-												a(ng-click="consultarLicencas.visualizarProcesso(licenca)")
-													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
-											li(ng-if="consultarLicencas.isSuspensaoVisivel(licenca)")
+											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao && consultarLicencas.usuarioLogadoCodigoPerfil === consultarLicencas.perfis.PRESIDENTE && consultarLicencas.isDispensaVisivel(licenca)")
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
-													i.glyphicon.glyphicon-lock
-													span Suspender título
-											li
-												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)", ng-if="consultarLicencas.isCancelamentoVisivel(licenca)")
-													i.glyphicon.glyphicon-remove
-													span Cancelar título
+													i.glyphicon.glyphicon-minus-sign
+													span Suspender licença
+											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao && consultarLicencas.usuarioLogadoCodigoPerfil === consultarLicencas.perfis.PRESIDENTE && consultarLicencas.isDispensaVisivel(licenca)")
+												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)")
+													i.glyphicon.glyphicon-ban-circle
+													span Cancelar licença
 											li
 												a(ng-click="consultarLicencas.downloadLicenca(licenca)")
-													i.glyphicon.glyphicon-download-alt
-													span Baixar título
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar licença
+				.legenda
+					span.col-md-4.icone-licenca-vigente.legenda-margin Vigente
+					span.col-md-4.icone-licenca-suspensa.legenda-margin Suspensa
+					span.col-md-4.icone-licenca-cancelada.legenda-margin(style="margin-bottom:23px") Cancelada
 
 				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
 

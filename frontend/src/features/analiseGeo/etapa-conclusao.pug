@@ -1,12 +1,12 @@
 #etapa-conclusao
     div.col-md-5.pull-right.margin-right-xs.text-cloneParecer
-        label.pull-left Informe o número do processo para copiar as informações do parecer
+        label.pull-left Informe o número do protocolo para copiar as informações do parecer
         br
         div.pull-right.display-clone
             input.form-control.textArea-clone(type='text',name="numeroProcesso", ng-model="ctrl.numeroProcessoClone", ng-disabled = "ctrl.analiseGeo.inconsistencias.length > 0")
             button.btn.btn-default.tamanho-botaoClone(type="submit", name="clonar", ng-click="ctrl.clonarParecerGeo()", ng-disabled = "ctrl.analiseGeo.inconsistencias.length > 0")
                 i.glyphicon.glyphicon-duplicate.glyphicon--with-right-margin
-                | Copiar paracer  
+                | Copiar parecer  
             
             
 
@@ -15,45 +15,79 @@ h5 Análise GEO
 div
 #camposAnaliseGeo
     div
-        label.label-parecer.obrigatorio Da situação fundiária:
+        label.label-parecer Da situação fundiária:
         br
         summernote.campos-parecer(id="situacaoFundiaria",
                     on-paste="snPaste(evt)",
                     name="situacaoFundiaria",
                     lang="pt-BR",
                     height="200",
-                    ng-model="ctrl.analiseGeo.situacaoFundiaria",
+                    ng-model="ctrl.parecer.situacaoFundiaria",
                     config="optionsText")
 
     div
-        label.label-parecer.obrigatorio Da análise temporal:
+        label.label-parecer Da análise temporal:
         br
-        summernote.campos-parecer(id="analiseTemporal",
+        div(ng-class="{'error-summernote': ctrl.errors.analiseTemporal === true}")
+            summernote.campos-parecer(id="analiseTemporal",
+                        on-paste="snPaste(evt)",
+                        name="analiseTemporal",
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="ctrl.parecer.analiseTemporal",
+                        config="optionsText")
+        div.obrigatorio.btn.btn-default(ng-class="{'error-summernote': ctrl.errors.docAnaliseTemporal}",
+                                        ng-disabled="ctrl.getDocumentosAnaliseTemporal().length === 1",
+                                        ng-show="ctrl.parecer.analiseTemporal !== '' && ctrl.parecer.analiseTemporal !== null",
+                                        title='Permitido apenas upload de 1 arquivo com extensão .pdf'
+                                        style="margin-bottom:10px",
+                                        type="file", name="arquivo", 
+                                        ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.DOCUMENTO_ANALISE_TEMPORAL)", 
+                                        ngf-accept="'application/pdf'", ngf-pattern="'application/pdf'", 
+                                        ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+
+            i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+            | Anexar arquivo na análise temporal
+        table.table.table-condensed(ng-if="ctrl.getDocumentosAnaliseTemporal().length > 0")
+
+                thead
+
+                    tr
+                        th.col-md-10 Documento anexado
+                        th.col-md-2.text-right Ações
+
+                tbody
+
+                    tr(ng-repeat="documento in ctrl.getDocumentosAnaliseTemporal()")
+
+                        td.col-md-10 {{documento.nomeDoArquivo}}
+                        td.col-md-2.text-right
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                                i.glyphicon.glyphicon-eye-open
+
+                            a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
+                                i.glyphicon.glyphicon-trash
+        i.info-sem-dados-para-exibir(style="color:red; display:flex;", ng-if="ctrl.errors.isPdf === true || ctrl.getDocumentosAnaliseTemporal().length > 1") Permitido apenas upload de 1 arquivo com extensão .pdf                      
+
+div(style="padding-top:15px;")
+    label(style="font-size:13px", ng-class="{'obrigatorio': ctrl.analiseGeo.inconsistencias.length === 0 }") Conclusão:
+    br
+    div(ng-class="{'error-summernote': ctrl.errors.conclusao === true}")
+        summernote.form-control(id="conclusao",
                     on-paste="snPaste(evt)",
-                    name="analiseTemporal",
+                    name="conclusao",
                     lang="pt-BR",
                     height="200",
-                    ng-model="ctrl.analiseGeo.analiseTemporal",
-                    config="optionsText")
+                    ng-model="ctrl.parecer.conclusao",
+                    config="optionsText",
+                    class="editable",
+                    contenteditable="true")
 
-div
-    label.obrigatorio(style="font-size:13px") Conclusão: 
-    br
-    summernote.form-control(id="conclusao",
-                on-paste="snPaste(evt)",
-                name="conclusao",
-                lang="pt-BR",
-                height="200",
-                ng-model="ctrl.analiseGeo.parecer",
-                config="optionsText",
-                class="editable",
-                contenteditable="true")
-
-    div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+    div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.PARECER_ANALISE_GEO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo ao parecer
 
-    table.table.table-condensed(ng-if="ctrl.analiseGeo.documentos.length > 0")
+    table.table.table-condensed(ng-if="ctrl.getDocumentosParecer().length > 0")
 
         thead
 
@@ -63,48 +97,73 @@ div
 
         tbody
 
-            tr(ng-repeat="documento in ctrl.analiseGeo.documentos")
+            tr(ng-repeat="documento in ctrl.getDocumentosParecer()")
 
                 td.col-md-10 {{documento.nomeDoArquivo}}
                 td.col-md-2.text-right
-                    a.d-inline.margin-right-xs(title="Baixar anexo", ng-click="ctrl.baixarDocumento(documento)")
-                        i.glyphicon.glyphicon-save
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                        i.glyphicon.glyphicon-eye-open
 
-                    a.d-inline.margin-right-xs(title="Remover anexo", ng-click="ctrl.removerDocumento($index. documento.id)")
+                    a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
                         i.glyphicon.glyphicon-trash
 div
 #conclusao
     hr
-    label.obrigatorio Análise final do processo:
+    label.obrigatorio Análise final do protocolo:
         div.pull-left.col-md-10.posicao-principal
-            form.pull-left.posicao-conteudo
+            form.pull-left.posicao-conteudo(ng-class="{'error': ctrl.errors.resultadoAnalise === true}")
                 label.opDla.radio-inline.posicao-primeiroItem
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.DEFERIDO}}", ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Deferido
-                label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length > 0")
+                    input(type='radio', name='analiseFinalRadio', data-toggle="tooltip", title="O processo não pode ser indeferido, pois há uma inconsistência.", ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
+                    | Indeferido
+                label.opDla.radio-inline(ng-if="ctrl.analiseGeo.inconsistencias.length === 0")
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.INDEFERIDO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length > 0')
                     | Indeferido
                 label.opDla.radio-inline
-                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.analiseGeo.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length == 0')
+                    input(type='radio', name='analiseFinalRadio', ng-model='ctrl.parecer.tipoResultadoAnalise.id', value="{{ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO}}",ng-disabled='ctrl.analiseGeo.inconsistencias.length == 0')
                     | Emitir notificação
     hr
 div#conclusao
-    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()")
+    div(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.INDEFERIDO.toString()")
         label.obrigatorio Justificativa:
         br
-        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.analiseGeo.despacho")
+        textarea.tamanho-obs(name="justificativa", ng-model="ctrl.parecer.parecer", ng-class="{'error': ctrl.errors.parecer === true}")
 
-    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString()")
+    div(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.DEFERIDO.toString()")
         label.obrigatorio Despacho:
         br
-        textarea.tamanho-obs(name="despacho", ng-model="ctrl.analiseGeo.despacho")
+        textarea.tamanho-obs(name="despacho", ng-model="ctrl.parecer.parecer",ng-class="{'error': ctrl.errors.parecer === true}")
 
-    div(ng-if="ctrl.analiseGeo.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()")
+    div(ng-if="ctrl.parecer.tipoResultadoAnalise.id === ctrl.TiposResultadoAnalise.EMITIR_NOTIFICACAO.toString()")
         #lista-restricoes
             #accordion.panel-group
+                .atendimento-notificacao
+                    div.label-atendimento-notificacao
+                        label.obrigatorio Atendimento:
+                    div.check-atendimento-notificacao(ng-class="{'error-summernote': ctrl.errors.atendimento === true}")
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Documentação', ng-model='ctrl.notificacao.documentacao', ng-click = "ctrl.checkedDocumentacao()")
+                            |  Documentação
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação do empreendimento', ng-model='ctrl.notificacao.retificacaoEmpreendimento', ng-click = "ctrl.checkedRetificacaoEmpreendimento()")
+                            |  Retificação do empreendimento
+                        label.checkbox-inline
+                            input.checkbox-notificacao(type='checkbox', placeholder='Retificação da solitação', ng-model='ctrl.notificacao.retificacaoSolicitacao', ng-click = "ctrl.checkedRetificacaoSolicitacao()", ng-checked = 'ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                            |  Retificação da solicitação
+                        div.retificacao-com-geo(ng-show='ctrl.notificacao.retificacaoSolicitacao || ctrl.notificacao.retificacaoEmpreendimento')
+                            label.radio-inline
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='true', ng-checked='ctrl.notificacao.retificacaoEmpreendimento', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                | Com alteração GEO
+                            label.radio-inline
+                                input(type='radio', name='retificacaoSolicitacaoGeo', ng-model='ctrl.notificacao.retificacaoSolicitacaoComGeo', value='false', ng-disabled='ctrl.notificacao.retificacaoEmpreendimento')
+                                | Sem alteração GEO
+
+                br
                 div
                     label.obrigatorio Prazo para atendimento da notificação:
-                    select.prazo-dias(ng-model="ctrl.analiseGeo.prazoNotificacao", name="prazo")
+                    select.prazo-dias(ng-model="ctrl.notificacao.prazoNotificacao", name="prazo",ng-class="{'error': ctrl.errors.prazoNotificacao === true}")
                         option(value="")
                         option(value="15") 15 dias
                         option(value="30") 30 dias
@@ -113,4 +172,28 @@ div#conclusao
                 br
                 label.obrigatorio Descrição da Solicitação:
                 br
-                textarea.tamanho-obs(name="despacho", ng-model="ctrl.analiseGeo.despacho")
+                textarea.tamanho-obs(name="despacho", ng-model="ctrl.parecer.parecer",ng-class="{'error': ctrl.errors.parecer === true}")
+    
+        div.btn.btn-default(style="margin-bottom:10px",type="file", name="arquivo", ngf-select="ctrl.upload($file, $invalidFile, ctrl.tiposUpload.NOTIFICACAO)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{ctrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+            i.glyphicon.glyphicon-open.glyphicon--with-right-margin
+            | Anexar arquivos à notificação
+
+        table.table.table-condensed(ng-if="ctrl.getDocumentosNotificacao().length > 0")
+
+            thead
+
+                tr
+                    th.col-md-10 Documento anexado
+                    th.col-md-2.text-right Ações
+
+            tbody
+
+                tr(ng-repeat="documento in ctrl.getDocumentosNotificacao()")
+
+                    td.col-md-10 {{documento.nomeDoArquivo}}
+                    td.col-md-2.text-right
+                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Visualizar anexo", ng-click="ctrl.baixarDocumento(documento)")
+                            i.glyphicon.glyphicon-eye-open
+
+                        a.d-inline.margin-right-xs(style='cursor: pointer;',title="Remover anexo", ng-click="ctrl.removerDocumento(documento)")
+                            i.glyphicon.glyphicon-trash

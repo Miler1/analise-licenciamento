@@ -1,8 +1,8 @@
 include ../../../../layout/components/panel
-include ../../../../components/resumoProcesso/resumo-processo
+include ../../../../features/resumoProcesso/resumo-processo
 include ../../../../layout/components/inputErrors
 
-+resumo-processo('validacaoAnaliseGeoGerente.analiseGeo.analise.processo','validacaoAnaliseGeoGerente.exibirDadosProcesso()')
++resumo-processo('validacaoAnaliseGeoGerente.analiseGeo.analise.processo','validacaoAnaliseGeoGerente.exibirDadosProcesso()','validacaoAnaliseGeoGerente.titulo')
 
 section.margin-bottom-md
 
@@ -24,9 +24,12 @@ section.margin-bottom-md
 				#tabValidacaoDaAnalise.tab-pane
 					include tab-validacao-analise
 
-section
+section(style="padding-top:20px;")
 
-	button.btn.btn-default.pull-left.posicao-cancelar-gerente(ng-click="validacaoAnaliseGeoGerente.cancelar()")
+	button.btn.btn-default.pull-left.posicao-cancelar-gerente(title='Cancelar análise',
+                                    ng-bootbox-title='Confirmação',
+                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                    ng-bootbox-confirm-action="validacaoAnaliseGeoGerente.cancelar()")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
 	

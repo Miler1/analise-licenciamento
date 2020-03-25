@@ -1,4 +1,4 @@
-var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$routeParams, $rootScope, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
+var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $window,$routeParams, documentoService, tamanhoMaximoArquivoAnaliseMB,uploadService,$timeout) {
 
 	$scope.comunicado = null;
 	$scope.anexos = [];
@@ -20,7 +20,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 		});
 		
-	}, 100);
+	}, 150);
 
 
 
@@ -28,27 +28,27 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 		if(file) {
 
-				uploadService.saveExterno(file)
-						.then(function(response) {
+			uploadService.saveExterno(file)
+				.then(function(response) {
 
-							$scope.anexos.push({
+					$scope.anexos.push({
 
-										key: response.data,
-										nomeDoArquivo: file.name,
-										tipoDocumento: {
+						key: response.data,
+						nomeDoArquivo: file.name,
+						tipoDocumento: {
 
-												id: app.utils.TiposDocumentosAnalise.PARECER_ORGAO
-										}
-								});
-															
-						}, function(error){
+							id: app.utils.TiposDocumentosAnalise.PARECER_ORGAO
+						}
+					});
+													
+			}, function(error){
 
-								mensagem.error(error.data.texto);
-						});
+				mensagem.error(error.data.texto);
+			});
 
 		} else if(invalidFile && invalidFile.$error === 'maxSize'){
 
-				mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
+			mensagem.error('Ocorreu um erro ao enviar o arquivo: ' + invalidFile.name + ' . Verifique se o arquivo tem no máximo ' + TAMANHO_MAXIMO_ARQUIVO_MB + 'MB');
 		}
 	};
 
@@ -59,10 +59,8 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 	$scope.baixarDocumento= function(anexo) {
 		
-		documentoService.download(anexo.key, anexo.nomeDoArquivo);
+		documentoService.downloadAnexoExterno(anexo.key, anexo.nomeDoArquivo);
 	};
-
-
 
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 	
@@ -74,17 +72,34 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 		var parecerOrgao = document.getElementById('descricaoParecer').value;
 
-		var params = {id: $routeParams.idComunicado,
-					  parecerOrgao: parecerOrgao,
-					  anexos: $scope.anexos};
-		parecerOrgaoService.enviar(params)
-			.then(function (response) {
-				if(response.data ==true){
-					$window.location.href="http://www.ipaam.am.gov.br/";
-				}else{
-					mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
-				}
-		});
+		if (!parecerOrgao || parecerOrgao ===''){
+
+			$scope.comunicado.parecerOrgao = true;
+			mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
+			return false;
+
+		}else{
+
+			var params = { 
+				id: $routeParams.idComunicado,
+				parecerOrgao: parecerOrgao,
+				anexos: $scope.anexos
+			};
+
+			parecerOrgaoService.enviar(params)
+				.then(function (response) {
+
+					if(response.data ==true){
+
+						$window.location.href="http://www.ipaam.am.gov.br/";
+
+					}else{
+
+						mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
+
+					}
+			});
+		}
 	};
 
 };

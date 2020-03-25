@@ -11,7 +11,6 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
-import utils.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,9 +22,9 @@ public class VerificarNotificacoes extends GenericJob {
 	@Override
 	public void executar() throws Exception {
 		
-		Logger.info("[INICIO-JOB] ::VerificarNotificacoes:: [INICIO-JOB]");
-		verificarStatusNotificacoes();
-		Logger.info("[FIM-JOB] ::VerificarNotificacoes:: [FIM-JOB]");
+//		Logger.info("[INICIO-JOB] ::VerificarNotificacoes:: [INICIO-JOB]");
+//		verificarStatusNotificacoes();
+//		Logger.info("[FIM-JOB] ::VerificarNotificacoes:: [FIM-JOB]");
 		
 	}
 	
@@ -56,13 +55,13 @@ public class VerificarNotificacoes extends GenericJob {
 				if (verificaDiasAnalise.qtdeDiasNotificacao > 20 || (notificacaoArquivamento != null && notificacaoArquivamento.dataFinalNotificacao !=null
 						&& CalculaDiferencaDias(notificacaoArquivamento.dataFinalNotificacao, new Date()) > 10)) {
 
-					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROCESSO);
+					analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 					analise.temNotificacaoAberta = false;
 					analise._save();
 
-					List<Long> idsCaracterizacoes = ListUtil.getIds(analise.processo.caracterizacoes);
-
-					Caracterizacao.setStatusCaracterizacao(idsCaracterizacoes, StatusCaracterizacao.ARQUIVADO);
+					Caracterizacao caracterizacao = Caracterizacao.findById(analise.processo.caracterizacao.id);
+					caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.ARQUIVADO);
+					caracterizacao._save();
 
 					enviarEmailArquivamento(analise);
 
@@ -75,8 +74,7 @@ public class VerificarNotificacoes extends GenericJob {
 					for(Notificacao notificacao : notificacoes) {
 						
 						SolicitacaoDocumentoCaracterizacao solicitacaoDocumentoCaracterizacao = 
-								SolicitacaoDocumentoCaracterizacao.findByTipoAndCaracterizacao(notificacao.tipoDocumento, analise.processo.getCaracterizacao());
-
+								SolicitacaoDocumentoCaracterizacao.findByTipoAndCaracterizacao(notificacao.tipoDocumento, analise.processo.caracterizacao);
 						
 						if(notificacao.documentoCorrigido != null) {
 							
@@ -98,11 +96,9 @@ public class VerificarNotificacoes extends GenericJob {
 						AnaliseJuridica novaAnaliseJuridica = analise.analiseJuridica.gerarCopia(true);
 						novaAnaliseJuridica._save();
 
-						for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
-
-							caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
-							caracterizacao._save();
-						}
+						Caracterizacao caracterizacao = Caracterizacao.findById(analise.processo.caracterizacao.id);
+						caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
+						caracterizacao._save();
 
 						analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.RESOLVER_NOTIFICACAO_JURIDICA);
 						
@@ -114,11 +110,9 @@ public class VerificarNotificacoes extends GenericJob {
 						AnaliseTecnica novaAnaliseTecnica = analise.analiseTecnica.gerarCopia(true);
 						novaAnaliseTecnica._save();
 
-						for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
-
-							caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
-							caracterizacao._save();
-						}
+						Caracterizacao caracterizacao = Caracterizacao.findById(analise.processo.caracterizacao.id);
+						caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.EM_ANALISE);
+						caracterizacao._save();
 						
 						/**
 						 * Workaround para persistir as licenças e os pareceres técnicos restrições
@@ -127,7 +121,6 @@ public class VerificarNotificacoes extends GenericJob {
 							
 							licencaAnalise._save();
 							
-							licencaAnalise.saveCondicionantes();
 							licencaAnalise.saveRecomendacoes();
 						}
 						

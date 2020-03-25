@@ -1,0 +1,111 @@
+doctype html
+|%{
+|	numeroProcesso = analiseTecnica.analise.processo.numero;
+|}%
+html(lang='en')
+	head
+		title Análise - Licenciamento Ambiental - Amazonas
+			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
+			meta(charset='UTF-8')
+
+	body
+		div
+			h3(style="text-align:center; margin-top:0px;") RELATÓRIO TÉCNICO DE VISTORIA N° ${numeroProcesso}
+
+
+		div
+			
+			ol
+
+				li
+					h3 DA DATA DA VISTORIA:
+						p
+							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')} Hora da vistoria: ${vistoria.hora.format('HH:mm')}.
+				
+				| \#{if tamanhoEquipeVistoria != 0}
+				li
+					h3 DA EQUIPE TÉCNICA
+						P
+							span A equipe técnica que compôs a realização da vistoria foram: 
+							| \#{if tamanhoEquipeVistoria > 1}
+							| \#{list items: 0..tamanhoEquipeVistoria-2, as:'index'}
+							span
+							| ${vistoria.equipe[index].usuario.pessoa.nome},
+							| \#{/list}
+							span
+							| \#{/if}
+							| ${vistoria.equipe[tamanhoEquipeVistoria-1].usuario.pessoa.nome}.
+
+				| \#{/if}
+
+				li
+					h3 DA DESCRIÇÃO DA ATIVIDADE
+						P
+							| \#{verbatim}${vistoria.descricao}\#{/verbatim}
+				
+				li
+					h3 DOS CURSOS D´ÁGUA
+						| \#{if vistoria.cursosDagua != '' && vistoria.cursosDagua != null}
+						P 
+							| \#{verbatim}${vistoria.cursosDagua}\#{/verbatim}
+						| \#{/if}
+						| \#{else}
+						P Não há cursos d'água.
+						|\#{/else}
+				
+				li
+					h3 DA TIPOLOGIA VEGETAL
+						| \#{if vistoria.tipologiaVegetal != '' && vistoria.tipologiaVegetal != null}
+						P 
+							| \#{verbatim}${vistoria.tipologiaVegetal}\#{/verbatim}
+						| \#{/if}
+						| \#{else}
+						P Não há tipologia vegetal.
+						|\#{/else}
+				
+				li
+					h3 DAS ÁREAS DE PRESERVAÇÃO PERMANENTE - APP
+						| \#{if vistoria.app != '' && vistoria.app != null}
+						P 
+							| \#{verbatim}${vistoria.app}\#{/verbatim}
+						| \#{/if}
+						| \#{else}
+						P Não há áreas de preservação permanente.
+						|\#{/else}
+
+				li
+					h3 DA OCORRÊNCIA DE PROCESSOS EROSIVOS
+						| \#{if vistoria.ocorrencia != '' && vistoria.ocorrencia != null}
+						P 
+							| \#{verbatim}${vistoria.ocorrencia}\#{/verbatim}
+						| \#{/if}
+						| \#{else}
+						P Não há ocorrência de processos erosivos.
+						|\#{/else}
+
+				li
+					h3 DA GESTÃO DE RESÍDUOS SÓLIDOS E LÍQUIDOS GERADOS NA ATIVIDADE PRODUTIVA
+						| \#{if vistoria.residuosLiquidos != '' && vistoria.residuosLiquidos != null}
+						P 
+							| \#{verbatim}${vistoria.residuosLiquidos}\#{/verbatim}
+						| \#{/if}
+						| \#{else}
+						P Não há gestão de resíduos sólidos e líquidos gerados na atividade produtiva.
+						|\#{/else}
+
+				li
+					h3 OUTRAS INFORMAÇÕES
+						| \#{if vistoria.outrasInformacoes != '' && vistoria.outrasInformacoes != null}
+						P 
+							| \#{verbatim}${vistoria.outrasInformacoes}\#{/verbatim}
+						| \#{/if}
+						| \#{else}
+						P Não há outras informações.
+						|\#{/else}
+
+				li
+					h3 DA CONCLUSÃO
+						P
+							| \#{verbatim}${vistoria.conclusao}\#{/verbatim}
+
+			span.in-right Manaus, ${utils.Helper.getDataPorExtenso(new Date())}

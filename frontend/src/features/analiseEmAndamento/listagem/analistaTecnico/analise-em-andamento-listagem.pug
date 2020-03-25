@@ -2,14 +2,14 @@ include ../../../../layout/components/paginacao
 
 div
 	filtro-processos(paginacao="listagem.paginacao",
-		disabled-fields="analiseEmAndamentoListagem.disabledFields"
+		disabled-fields="listagem.disabledFields"
 		atualizar-lista="listagem.atualizarListaProcessos",
 		atualizar-paginacao="listagem.atualizarPaginacao",
 		condicao-tramitacao="listagem.condicaoTramitacao",
 		pesquisar-ao-inicializar="true",
 		is-analise-tecnica="true")
 
-	h4 Lista de processos
+	h4 Lista de protocolos
 
 	hr
 	.row
@@ -18,32 +18,31 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th
-							th.col-md-1 Processo
+							th.col-sm
+							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
-							th.col-md-2 Empreendimento
+							th.col-md-3 Empreendimento
 							th.col-md-2 Município
-							th.col-md-2 Licença
+							th.col-md-1 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise técnica
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
 							td
-								span(ng-class="{'icone-revisao-solicitada': processo.revisaoSolicitadaAnaliseTecnica}")
-								span(ng-class="{'icone-revisao-atendida': processo.notificacaoAtendida}")
-								span(ng-class="{'icone-renovacao': processo.renovacao}")
-
-							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+								span(ng-class="{'icone-solicitacao-ajustes': processo.verificaAnalise === true}")
+								span(ng-class="{'icone-notificado': listagem.notificacaoAtendida(processo)}")
+	
+							td(ng-attr-title="{{processo.numero}}") {{ processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td {{processo.denominacaoEmpreendimento}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, listagem.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{listagem.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, listagem.PrazoAnalise.ANALISE)}}
-							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{listagem.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,listagem.PrazoAnalise.ANALISE_TECNICA)}}
-							td
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE), listagem.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ listagem.dateUtil.getContaDiasRestantesData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE)) }}
+							td(ng-class="{'error-message': processo.diasAnaliseTecnica > listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA}")
+								| {{ listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
+							td(ng-init="listagem.verificaSolicitacaoAjustes(processo)")
 								span.pull-right
 
 									.dropdown.action-table
@@ -55,14 +54,22 @@ div
 												a(ng-click="listagem.continuarAnalise(processo.idAnaliseTecnica)")
 													i.glyphicon.glyphicon-play-circle
 													span Continuar análise
+											li(ng-if="processo.verificaAnalise === true")
+												a(ng-click="listagem.visualizarSolicitacaoAjustes(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar Solicitação de Ajustes
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
-				div
-					span.icone-revisao-solicitada.legenda Revisão Solicitada
-					span.icone-revisao-atendida.legenda Notificação Atendida
-					span.icone-renovacao.legenda Renovação
+													span Visualizar protocolo
+											li(ng-if='listagem.notificacaoAtendida(processo)')
+												a(ng-click="listagem.visualizarNotificacao(processo)")
+													i.glyphicon.glyphicon-bell
+													span Notificação
+
+				.legenda
+					span.col-md-4.icone-solicitacao-ajustes.legenda-margin Solicitação de ajustes
+					span.col-md-4.icone-notificado.legenda-margin(style="margin-bottom:23px") Notificação Atendida
 
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 

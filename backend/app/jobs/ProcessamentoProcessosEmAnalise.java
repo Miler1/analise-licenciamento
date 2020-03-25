@@ -16,9 +16,9 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 	@Override
 	public void executar() throws Exception {
 
-		Logger.info("[INICIO-JOB] ::ProcessamentoProcessosEmAnalise:: [INICIO-JOB]");
-		recuperarProcessosEmAnalise();
-		Logger.info("[FIM-JOB] ::ProcessamentoProcessosEmAnalise:: [FIM-JOB]");
+//		Logger.info("[INICIO-JOB] ::ProcessamentoProcessosEmAnalise:: [INICIO-JOB]");
+//		recuperarProcessosEmAnalise();
+//		Logger.info("[FIM-JOB] ::ProcessamentoProcessosEmAnalise:: [FIM-JOB]");
 
 	}
 	
@@ -26,7 +26,7 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 		List<DiasAnalise> dAnalise = DiasAnalise.findAll();
 
-		if(dAnalise.size() == 0) {
+		if(dAnalise.isEmpty()) {
 
 			List<Analise> analises = Analise.findAll();
 
@@ -39,21 +39,10 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 					if (analise.analiseTecnica.dataFim != null) {
 					// se a analise tecnica acabou
-						
-						if(analise.analiseTecnica.dataFimValidacaoAprovador != null) {
-							// se o aprovador já finalizou a analise
 							
-							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, analise.analiseTecnica.dataFimValidacaoAprovador);
-							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim);
-							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim, analise.analiseTecnica.dataFimValidacaoAprovador);
-							
-						} else {
-							
-							diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
-							diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim);
-							diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim, new Date());
-							
-						}
+						diasAnalise.qtdeDiasAnalise = CalculaDiferencaDias(analise.dataCadastro, new Date());
+						diasAnalise.qtdeDiasTecnica = CalculaDiferencaDias(analise.analiseTecnica.dataCadastro, analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim);
+						diasAnalise.qtdeDiasAprovador = CalculaDiferencaDias(analise.findPrimeiraAnaliseTecnicaComDataFim().dataFim, new Date());
 
 					} else {
 					// se a analise tecnica nao acabou
@@ -94,6 +83,7 @@ public class ProcessamentoProcessosEmAnalise extends GenericJob {
 
 				diasAnalise.analise = analise;
 				diasAnalise._save();
+
 			}
 		}
 

@@ -36,6 +36,8 @@ caixasEntrada
 	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController)
 	.controller('cxEntAnalistaTecnicoController', controllers.CxEntAnalistaTecnicoController)
 	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteController)
+	.controller('cxEntDiretorController', controllers.CxEntDiretorController)
+	.controller('cxEntPresidenteController', controllers.CxEntPresidenteController)
 	.controller('cxEntAnalistaGeoController', controllers.CxEntAnalistaGeoController);
 
 caixasEntrada

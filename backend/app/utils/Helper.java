@@ -70,7 +70,7 @@ public class Helper {
 
 	public static String formatarCoordenada(Coordinate coordinate) {
 
-		return "Coordenadas [" + coordinate.y + ", " + coordinate.x + "]";
+		return "Coordenadas [" + CoordenadaUtil.formataLatitudeString(coordinate.y) + ", " + CoordenadaUtil.formataLongitudeString(coordinate.x) + "]";
 
 	}
 
@@ -820,8 +820,8 @@ public class Helper {
 	}
 
 	/**
-	 * Método que retorna a diferença entre datas em horas
-	 * O método calcula a diferença entre duas datas em horas
+	 * Método que retorna a diferença entre datas em dias
+	 * O método calcula a diferença entre duas datas em dias
 	 *
 	 * @param data
 	 *			data final que deseja calcular a diferença

@@ -1,5 +1,9 @@
 package models.tramitacao;
 
+import models.AnaliseGeo;
+import models.EntradaUnica.Setor;
+import enums.PerfilAcoesEnum;
+import models.EntradaUnica.Setor;
 import models.Notificacao;
 import models.licenciamento.DocumentoLicenciamento;
 import models.RelHistoricoTramitacaoSetor;
@@ -11,6 +15,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //View que possui informações sobre o histórico do objeto tramitavel
 
@@ -84,30 +89,33 @@ public class HistoricoTramitacao extends GenericModel {
 	@Transient
 	public Date dataFinal;
 
+	public Date getDataInicial() {
+		return this.dataInicial;
+	}
 
 	/** 
 	 * Consulta o histórico da tramitacao para um intervalo de tempo determinado e 
 	 * com uma ação e uma condição final específica.
-	 * @param processo
+	 * @param
 	 * @return
 	 */
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView
 	(Date dataInicio, Date dataFim, Long acao, Long condicaoFinal){
-		List<HistoricoTramitacao> historicoTramitacao = 
+		List<HistoricoTramitacao> historicoTramitacao =
 				HistoricoTramitacao.find(" dataInicial >=? AND dataInicial <=? AND idCondicaoFinal=? AND idAcao=? ",
 						dataInicio,dataFim,condicaoFinal,acao).fetch();
-		return historicoTramitacao;		
+		return historicoTramitacao;
 	}
 
 	/** 
 	 * Consulta o histórico da tramitacao para um intervalo com uma ação e uma condição final específica.
-	 * @param processo
+	 * @param
 	 * @return
 	 */
 	public static List<HistoricoTramitacao> consultarHistoricoTramitacaoView(Long acao, Long condicaoFinal){
-		List<HistoricoTramitacao> historicoTramitacao = 
+		List<HistoricoTramitacao> historicoTramitacao =
 				HistoricoTramitacao.find(" idCondicaoFinal=? AND idAcao=? ", condicaoFinal, acao).fetch();
-		return historicoTramitacao;		
+		return historicoTramitacao;
 	}
 
 	public static HistoricoTramitacao getUltimaTramitacao (Long idObjetoTramitavel){
@@ -122,10 +130,18 @@ public class HistoricoTramitacao extends GenericModel {
 		return historicosTramitacao.get(1);
 	}
 
-	public static List<HistoricoTramitacao> getByObjetoTramitavel (Long idObjetoTramitavel){
+	public static List<HistoricoTramitacao> getByObjetoTramitavel (List<Long> idsObjetosTramitaveis){
 
-		return HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by dataInicial desc, idHistorico desc")
-									  .setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch();
+		List<HistoricoTramitacao> historicoTramitacoes = new ArrayList<>();
+
+		idsObjetosTramitaveis.stream().forEach(idObjetoTramitavel ->
+
+				historicoTramitacoes.addAll(HistoricoTramitacao.find("idObjetoTramitavel = :idObjetoTramitavel order by dataInicial desc, idHistorico desc")
+					.setParameter("idObjetoTramitavel", idObjetoTramitavel).fetch())
+
+		);
+
+		return historicoTramitacoes;
 	}
 
 	private static String consultarHistoricoUltimaCondicaoAcao(List listCondicao, List listAcao, boolean inout){
@@ -219,9 +235,51 @@ public class HistoricoTramitacao extends GenericModel {
 				rel = new RelHistoricoTramitacaoSetor();
 
 				rel.siglaSetor = usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla;
+				HistoricoTramitacao historicoTramitacaoExitente = HistoricoTramitacao.findById(historicoTramitacao.idHistorico);
+				rel.historicoTramitacao = historicoTramitacaoExitente;
+				historicoTramitacaoExitente.relHistoricoTramitacaoSetor = rel;
+
+				rel.save();
+			}
+		}
+	}
+
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, AnaliseGeo analiseGeo) {
+
+		if (analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor != null) {
+
+			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND siglaSetor = :y")
+					.setParameter("x", historicoTramitacao.idHistorico)
+					.setParameter("y", analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor).first();
+	
+			if (rel == null) {
+
+				rel = new RelHistoricoTramitacaoSetor();
+
+				rel.siglaSetor = analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
 				rel.historicoTramitacao = historicoTramitacao;
 
 				rel.save();
+			}
+		}
+	}
+
+	public static void setSetor(HistoricoTramitacao historicoTramitacao, String siglaSetor) {
+
+		if (siglaSetor != null && !siglaSetor.isEmpty()) {
+
+			RelHistoricoTramitacaoSetor rel = RelHistoricoTramitacaoSetor.find("historicoTramitacao.id = :x AND siglaSetor = :y")
+					.setParameter("x", historicoTramitacao.idHistorico)
+					.setParameter("y", siglaSetor).first();
+
+			if (rel == null) {
+
+				rel = new RelHistoricoTramitacaoSetor();
+				rel.siglaSetor = siglaSetor;
+				rel.historicoTramitacao = historicoTramitacao;
+
+				rel.save();
+
 			}
 		}
 	}

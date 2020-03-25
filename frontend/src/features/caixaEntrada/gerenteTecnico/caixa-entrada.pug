@@ -9,7 +9,7 @@ div
 		pesquisar-ao-inicializar="true",
 		is-gerente="true")
 
-	h4 Lista de processos
+	h4 Lista de protocolos
 
 	hr
 	.row
@@ -19,11 +19,11 @@ div
 					thead
 						tr
 							th
-							th.col-md-1 Processo
+							th.col-md-1 Protocolo
 							th.col-md-2 CPF/CNPJ
-							th.col-md-2 Empreendimento
+							th.col-md-3 Empreendimento
 							th.col-md-2 Município
-							th.col-md-2 Licença
+							th.col-md-1 Licença
 							th.col-md-1 Prazo análise
 							th.col-md-1 Prazo análise GEO
 							th.col-md-1 Prazo análise técnica
@@ -31,20 +31,22 @@ div
 					tbody
 						tr(ng-repeat="processo in cxEntGerente.processos")
 							td
-								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE}")
-							td(ng-attr-title="{{processo.numero}}") {{processo.numero | textoTruncado : 4:3}}
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === cxEntGerente.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
+								span(ng-class="{'icone-analise-geo': processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE }")
+								span(ng-class="{'icone-analise-tecnica': processo.idCondicaoTramitacao === cxEntGerente.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE }")
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td {{processo.denominacaoEmpreendimento}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnalise, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE)}")
-								| {{cxEntGerente.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnalise)}}
+							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(cxEntGerente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntGerente.PrazoAnalise.ANALISE), cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ cxEntGerente.dateUtil.getContaDiasRestantesData(cxEntGerente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntGerente.PrazoAnalise.ANALISE)) }}
 
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO)}")
-								| {{processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.dateUtil.getContaDiasRestantesData(processo.dataVencimentoPrazoAnaliseGeo)}}
+							td(ng-class="{'error-message': processo.diasAnaliseGeo > cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
+								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
-							td(ng-class="{'error-message': cxEntGerente.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_GERENTE)}")
-								| -
+							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : cxEntGerente.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
 							td
 								span.pull-right
 
@@ -55,12 +57,13 @@ div
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 
-												a(ng-click="cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo)",ng-class="{'disable-acoes': cxEntGerente.verificarSolicitacaoDesvinculo(processo)}")
+												a(ng-click="cxEntGerente.verificarStatusGeo(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, processo.idAnaliseGeo, null)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusGeo(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo
 											li
-												//- habilitar só quando o processo passar pela análise técnica
-												a.disable-acoes 
+												a(ng-click="cxEntGerente.verificarStatusTecnico(processo) ? '' : cxEntGerente.iniciarAnaliseGerente(processo.idAnalise, null, processo.idAnaliseTecnica)",
+														ng-class="{'disable-acoes': cxEntGerente.verificarStatusTecnico(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise técnica
 											li
@@ -73,9 +76,11 @@ div
 
 												a(ng-click="cxEntGerente.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
-													span Visualizar processo
-				div
-					span.icone-solicitacao-desvinculo-pendente.legenda Solicitação Desvínculo Pendente
+													span Visualizar protocolo
+				.legenda
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação Desvínculo Pendente
+					span.col-md-4.icone-analise-geo.legenda-margin Análise Geo
+					span.col-md-4.icone-analise-tecnica.legenda-margin(style="margin-bottom:23px") Análise Técnica
 
 				+paginacao('cxEntGerente.paginacao', 'cxEntGerente.onPaginaAlterada')
 

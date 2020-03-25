@@ -26,6 +26,8 @@ var config = {
 		less: "src/styles/main.less",
 		fonts: "src/fonts/**",
 		pdf:  "src/pdf/**/*",
+		summernote: "src/summernote/**/*",
+		summernoteFonts: "src/summernote/font/*"
 	},
 
 	libs: {
@@ -133,7 +135,9 @@ var config = {
 		libsPath: DIST_FOLDER + "/libs",
 
 		imgsPath: DIST_FOLDER + "/images",
-		fontsPath: DIST_FOLDER + "/fonts"
+		fontsPath: DIST_FOLDER + "/fonts",
+		summernotePath: DIST_FOLDER + "/summernote",
+		summernoteFontsPath: DIST_FOLDER + "/summernote/font"
 	}
 
 };
@@ -147,7 +151,7 @@ gulp.task('clean-dist', function () {
 
 gulp.task('lint', function() {
 
-	return gulp.src(config.src.all + ".js")
+	return gulp.src([config.src.all + ".js", "!" + config.src.summernote + ".js"])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		.pipe(jshint.reporter('fail'));
@@ -159,6 +163,19 @@ gulp.task("pug", function() {
 	return gulp.src(config.src.all + ".pug")
 		.pipe(pug())
 		.pipe(gulp.dest(config.dist.htmlPath));
+
+});
+
+gulp.task("summernote", function() {
+
+	gulp.src(config.src.summernote + ".js")
+		.pipe(gulp.dest(config.dist.summernotePath));
+
+	gulp.src(config.src.summernote + ".css")
+		.pipe(gulp.dest(config.dist.summernotePath))
+
+	gulp.src(config.src.summernoteFonts)
+		.pipe(gulp.dest(config.dist.summernoteFontsPath))
 
 });
 
@@ -282,12 +299,12 @@ gulp.task("libs", function() {
 
 gulp.task('dist',['clean-dist'], function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts", "fonts-bootstrap", "pdf");
+	return gulp.run("bower", "libs", "images", "pug", "less", "js", "fonts", "fonts-bootstrap", "pdf", "summernote");
 });
 
 gulp.task('dev', function() {
 
-	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap", "pdf");
+	return gulp.run("bower", "libs", "images", "pug", "less", "lint", "js-dev", "fonts", "fonts-bootstrap", "pdf", "summernote");
 });
 
 gulp.task('default', function() {

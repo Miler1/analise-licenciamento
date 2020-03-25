@@ -2,20 +2,14 @@ package builders;
 
 import models.Processo;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
-import org.hibernate.type.IntegerType;
-import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.StringType;
+import security.Auth;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.hibernate.type.Type;
 
 public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
@@ -24,23 +18,37 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String MUNICIPIO_EMPREENDIMENTO_ALIAS = "mun";
 	private static final String ESTADO_EMPREENDIMENTO_ALIAS = "est";
 	private static final String ANALISE_ALIAS = "ana";
+	private static final String PROCESSO_ANTERIOR_ALIAS = "poa";
+	private static final String PROCESSO_ANTERIOR_ANALISE_ALIAS = "paa";
+	private static final String PROCESSO_ANTERIOR_ANALISE_GEO_ALIAS = "pga";
+	private static final String PROCESSO_ANTERIOR_ANALISE_TECNICA_ALIAS = "pta";
+	private static final String PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS = "pag";
+	private static final String PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS = "pat";
 	private static final String ANALISE_JURIDICA_ALIAS = "anj";
-	private static final String CARACTERIZACOES_ALIAS = "carac";
+	private static final String CARACTERIZACAO_ALIAS = "carac";
 	private static final String ATIVIDADE_CARACTERIZACAO_ALIAS = "atc";
 	private static final String ATIVIDADE_ALIAS = "atv";
 	private static final String TIPOLOGIA_ATIVIDADE_ALIAS = "tip";
 	private static final String OBJETO_TRAMITAVEL_ALIAS = "obt";
+	private static final String HISTORICO_OBJETO_TRAMITAVEL_ALIAS = "hot";
+	private static final String CRITERIA_HISTORICO_OBJETO_TRAMITAVEL_ALIAS = "cht";
 	private static final String CONSULTOR_JURIDICO_ALIAS = "coj";
 	private static final String ANALISE_TECNICA_ALIAS = "ant";
 	private static final String ANALISE_GEO_ALIAS = "ang";
 	private static final String ANALISTA_TECNICO_ALIAS = "att";
 	private static final String ANALISTA_GEO_ALIAS = "agt";
+	private static final String DIRETOR_ALIAS = "dt";
 	private static final String ATIVIDADE_CNAE_ALIAS = "atvc";
 	private static final String TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS = "tca";
 	private static final String GERENTE_ALIAS = "gte";
 	private static final String DIA_ANALISE_ALIAS = "da";
 	private static final String CONDICAO_ALIAS = "ca";
-	private static final String DESVINCULO_ALIAS = "dea";
+	private static final String DESVINCULO_ANALISE_GEO_ALIAS = "dea";
+	private static final String DESVINCULO_ANALISE_TECNICA_ALIAS = "deat";
+	private static final String DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS = "dagd";
+	private static final String DESVINCULO_ANALISTA_TECNICO_DESTINO_ALIAS = "datd";
+	private static final String DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS = "dags";
+	private static final String DESVINCULO_ANALISTA_TECNICO_SOLICITANTE_ALIAS = "dats";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
@@ -74,6 +82,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAlias(EMPREENDIMENTO_ALIAS+".municipio", MUNICIPIO_EMPREENDIMENTO_ALIAS);
 
 		return this;
+
 	}
 
 	public ProcessoBuilder addEstadoEmpreendimentoAlias() {
@@ -85,17 +94,43 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder addProcessoAnaliseGeoAnteriorAlias() {
+
+		addAlias("processoAnterior", PROCESSO_ANTERIOR_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ALIAS + ".analise", PROCESSO_ANTERIOR_ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_ALIAS + ".analisesGeo", PROCESSO_ANTERIOR_ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_GEO_ALIAS + ".analistasGeo", PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		return this;
+	}
+
+	public ProcessoBuilder addProcessoAnaliseTecnicaAnteriorAlias() {
+
+		addAlias("processoAnterior", PROCESSO_ANTERIOR_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ALIAS + ".analise", PROCESSO_ANTERIOR_ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_ALIAS + ".analisesTecnicas", PROCESSO_ANTERIOR_ANALISE_TECNICA_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(PROCESSO_ANTERIOR_ANALISE_TECNICA_ALIAS + ".analistaTecnico", PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		return this;
+	}
+
 	public ProcessoBuilder addAnaliseAlias() {
 
-		addAlias("analises", ANALISE_ALIAS);
+		addAlias("analise", ANALISE_ALIAS);
 
 		return this;
 	}
 
-	public ProcessoBuilder addDesvinculoAlias() {
+	public ProcessoBuilder addDesvinculoAnaliseGeoAlias(Boolean isLeftOuterJoin) {
 
-		addAnaliseGeoAlias();
-		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAnaliseGeoAlias(isLeftOuterJoin);
+		addAlias(ANALISE_GEO_ALIAS + ".desvinculos", DESVINCULO_ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
+	public ProcessoBuilder addDesvinculoAnaliseTecnicaAlias() {
+
+		addAnaliseTecnicaAlias(true);
+		addAlias(ANALISE_TECNICA_ALIAS + ".desvinculos", DESVINCULO_ANALISE_TECNICA_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 	}
@@ -122,23 +157,34 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		addAnaliseAlias();
 
-		addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS);
+//		
+		addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		return this;
 	}
 
-	public ProcessoBuilder addCaracterizacoesAlias() {
+	public ProcessoBuilder addAnaliseTecnicaAlias() {
 
-		addAlias("caracterizacoes", CARACTERIZACOES_ALIAS);
+		addAnaliseAlias();
+
+		addAlias(ANALISE_ALIAS+".analisesTecnicas", ANALISE_TECNICA_ALIAS, JoinType.LEFT_OUTER_JOIN);
+//		
+
+		return this;
+	}
+
+	public ProcessoBuilder addCaracterizacaoAlias() {
+
+		addAlias("caracterizacao", CARACTERIZACAO_ALIAS);
 
 		return this;
 	}
 
 	public ProcessoBuilder addAtividadeCaracterizacaoAlias() {
 
-		addCaracterizacoesAlias();
+		addCaracterizacaoAlias();
 
-		addAlias(CARACTERIZACOES_ALIAS+".atividadesCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
+		addAlias(CARACTERIZACAO_ALIAS +".atividadesCaracterizacao", ATIVIDADE_CARACTERIZACAO_ALIAS);
 
 		return this;
 	}
@@ -151,7 +197,6 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		return this;
 	}
-
 
 	public ProcessoBuilder addTipologiaAtividadeAlias() {
 
@@ -171,6 +216,24 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder addHistoricoObjetoTramitavelAlias(Boolean isLeftOuterJoin) {
+
+		addAtividadeCaracterizacaoAlias();
+
+		if(isLeftOuterJoin) {
+
+			addAlias(OBJETO_TRAMITAVEL_ALIAS + ".historicoTramitacoes", HISTORICO_OBJETO_TRAMITAVEL_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		} else {
+
+			addAlias(OBJETO_TRAMITAVEL_ALIAS + ".historicoTramitacoes", HISTORICO_OBJETO_TRAMITAVEL_ALIAS);
+
+		}
+
+		return this;
+
+	}
+
 	public ProcessoBuilder addConsultorJuridicoAlias() {
 
 		addAnaliseJuridicaAlias();
@@ -180,7 +243,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder addAnaliseGeoAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnaliseGeoAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseAlias();
 
@@ -189,14 +252,23 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 			addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		} else {
-
+//
 			addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS);
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder addAnaliseTecnicaAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnalistaGeoAlias() {
+
+		addAlias("analise", ANALISE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(ANALISE_ALIAS+".analisesGeo", ANALISE_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+		addAlias(ANALISE_GEO_ALIAS+".analistasGeo", ANALISTA_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+	}
+
+	public ProcessoBuilder addAnaliseTecnicaAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseAlias();
 
@@ -205,14 +277,14 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 			addAlias(ANALISE_ALIAS+".analisesTecnicas", ANALISE_TECNICA_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		} else {
-
+//
 			addAlias(ANALISE_ALIAS+".analisesTecnicas", ANALISE_TECNICA_ALIAS);
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder addAnalistaGeoAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnalistaGeoDesvinculoDestinoAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 
@@ -221,24 +293,60 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 			addAlias(ANALISE_GEO_ALIAS+".analistasGeo", ANALISTA_GEO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		} else {
-
+//
 			addAlias(ANALISE_GEO_ALIAS+".analistasGeo", ANALISTA_GEO_ALIAS);
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder addAnalistaTecnicoAlias(boolean isLeftOuterJoin) {
+	public ProcessoBuilder addAnalistaGeoDesvinculoDestinoAlias() {
+
+		addDesvinculoAnaliseGeoAlias(false);
+		addAlias(DESVINCULO_ANALISE_GEO_ALIAS + ".analistaGeoDestino", DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder addAnalistaGeoDesvinculoSolicitanteAlias() {
+
+		addDesvinculoAnaliseGeoAlias(false);
+		addAlias(DESVINCULO_ANALISE_GEO_ALIAS + ".analistaGeo", DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder addAnalistaTecnicaDesvinculoDestinoAlias() {
+
+		addDesvinculoAnaliseGeoAlias(true);
+		addAlias(DESVINCULO_ANALISE_TECNICA_ALIAS + ".analistaTecnicoDestino", DESVINCULO_ANALISTA_TECNICO_DESTINO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder addAnalistaTecnicaDesvinculoSolicitanteAlias() {
+
+		addDesvinculoAnaliseTecnicaAlias();
+		addAlias(DESVINCULO_ANALISE_TECNICA_ALIAS + ".analistaTecnico", DESVINCULO_ANALISTA_TECNICO_SOLICITANTE_ALIAS, JoinType.LEFT_OUTER_JOIN);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder addAnalistaTecnicoAlias(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 
 		if (isLeftOuterJoin){
 
-			addAlias(ANALISE_TECNICA_ALIAS+".analistasTecnicos", ANALISTA_TECNICO_ALIAS, JoinType.LEFT_OUTER_JOIN);
+			addAlias(ANALISE_TECNICA_ALIAS + ".analistaTecnico", ANALISTA_TECNICO_ALIAS, JoinType.LEFT_OUTER_JOIN);
 
 		} else {
 
-			addAlias(ANALISE_TECNICA_ALIAS+".analistasTecnicos", ANALISTA_TECNICO_ALIAS);
+			addAlias(ANALISE_TECNICA_ALIAS + ".analistaTecnico", ANALISTA_TECNICO_ALIAS);
 		}
 
 		return this;
@@ -269,8 +377,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		sb.append("(SELECT string_agg(t.sigla, '-') ");
 		sb.append("FROM licenciamento.tipo_licenca t ");
 		sb.append("INNER JOIN licenciamento.caracterizacao c ON t.id = c.id_tipo_licenca ");
-		sb.append("INNER JOIN analise.rel_processo_caracterizacao r ON c.id = r.id_caracterizacao ");
-		sb.append("WHERE r.id_processo = {alias}.id) AS licencas");
+		sb.append("INNER JOIN analise.processo p ON c.id = p.id_caracterizacao ");
+		sb.append("WHERE p.id = {alias}.id) AS licencas");
 
 		addProjection(Projections.sqlProjection(sb.toString(), new String[]{"licencas"}, new org.hibernate.type.Type[]{StringType.INSTANCE}));
 
@@ -284,9 +392,53 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByIdAnalistaGeoAnterior(){
+
+		addProcessoAnaliseGeoAnteriorAlias();
+
+		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_GEO_ALIAS +  ".usuario.id").as("idAnalistaGeoAnterior"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnalistaTecnicoAnterior(){
+
+		addProcessoAnaliseTecnicaAnteriorAlias();
+
+		addProjection(Projections.groupProperty(PROCESSO_ANTERIOR_ANALITAS_TECNICOS_ALIAS +  ".usuario.id").as("idAnalistaTecnicoAnterior"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnalistaGeo(){
+
+		addAnalistaGeoAlias();
+
+		addProjection(Projections.groupProperty(ANALISTA_GEO_ALIAS +  ".usuario.id").as("idAnalistaGeo"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdAnalistaTecnico(){
+
+		addAnalistaTecnicoAlias(true);
+
+		addProjection(Projections.groupProperty(ANALISTA_TECNICO_ALIAS +  ".usuario.id").as("idAnalistaTecnico"));
+
+		return this;
+	}
+
 	public ProcessoBuilder groupByNumeroProcesso(){
 
 		addProjection(Projections.groupProperty("numero").as("numero"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByCaracterizacao(){
+
+		addCaracterizacaoAlias();
+		addProjection(Projections.groupProperty(CARACTERIZACAO_ALIAS+".status.id").as("statusCaracterizacao"));
 
 		return this;
 	}
@@ -303,11 +455,11 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder groupByObjetoTramitavel(){
 
-		addCondicaoAlias();
-
-		addProjection(Projections.groupProperty(CONDICAO_ALIAS+".id").as("idCondicaoTramitacao"));
+		addObjetoTramitavelAlias();
+		addProjection(Projections.groupProperty(OBJETO_TRAMITAVEL_ALIAS + ".condicao.id").as("idCondicaoTramitacao"));
 
 		return this;
+
 	}
 
 	public ProcessoBuilder groupByDenominacaoEmpreendimento(){
@@ -339,10 +491,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseGeo(Boolean isLeftOuterJoin){
 
-	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseGeo(){
-
-		addAnaliseGeoAlias();
+		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseGeo"));
 
 		return this;
@@ -389,7 +540,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
-	public ProcessoBuilder groupByDataFinalAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByDataFinalAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".dataFim").as("dataConclusaoAnaliseTecnica"));
@@ -405,7 +556,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByDataFinalAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByDataFinalAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".dataFim").as("dataConclusaoAnaliseGeo"));
@@ -437,7 +588,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".notificacaoAtendida").as("notificacaoAtendida"));
@@ -453,7 +604,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByNotificacaoAtendidaAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".notificacaoAtendida").as("notificacaoAtendida"));
@@ -469,8 +620,16 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByIdAnaliseTecnica(){
 
-	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnica(boolean isLeftOuterJoin) {
+		addAnaliseTecnicaAlias(true);
+		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".id").as("idAnaliseTecnica"));
+
+		return this;
+	}
+
+
+	public ProcessoBuilder groupByDataVencimentoPrazoAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".dataVencimentoPrazo").as("dataVencimentoPrazoAnaliseTecnica"));
@@ -486,7 +645,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".revisaoSolicitada").as("revisaoSolicitadaAnaliseTecnica"));
@@ -494,7 +653,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByRevisaoSolicitadaAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".revisaoSolicitada").as("revisaoSolicitadaAnaliseGeo"));
@@ -502,7 +661,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByIdAnaliseTecnica(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByIdAnaliseTecnica(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_TECNICA_ALIAS+".id").as("idAnaliseTecnica"));
@@ -510,7 +669,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByIdAnaliseGeo(boolean isLeftOuterJoin) {
+	public ProcessoBuilder groupByIdAnaliseGeo(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 		addProjection(Projections.groupProperty(ANALISE_GEO_ALIAS+".id").as("idAnaliseGeo"));
@@ -525,12 +684,13 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByDesvinculo() {
+	public ProcessoBuilder groupByDesvinculoAnaliseGeo() {
 
-		addDesvinculoAlias();
-		addProjection(Projections.groupProperty(DESVINCULO_ALIAS+".respostaGerente").as("desvinculoRespondido"));
+		addAnalistaGeoDesvinculoDestinoAlias();
+		addProjection(Projections.groupProperty(DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS + ".login").as("loginUsuarioDestino"));
 
 		return this;
+
 	}
 
 	public ProcessoBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
@@ -614,14 +774,16 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 			addObjetoTramitavelAlias();
 			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS+".condicao.idCondicao", idCondicao));
+
 		}
 
 		return this;
+
 	}
 
 	public ProcessoBuilder filtrarPorListaIdCondicao(List<Long> listaIdCondicao) {
 
-		if (!listaIdCondicao.isEmpty()) {
+		if (listaIdCondicao != null && !listaIdCondicao.isEmpty()) {
 
 			addObjetoTramitavelAlias();
 			addRestriction(Restrictions.in(OBJETO_TRAMITAVEL_ALIAS + ".condicao.idCondicao", listaIdCondicao));
@@ -666,6 +828,32 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
+	public ProcessoBuilder filtrarIdDiretor(Long idUsuarioDiretor) {
+
+		if (idUsuarioDiretor != null) {
+
+			addObjetoTramitavelAlias();
+			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioDiretor));
+
+		}
+
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarIdPresidente(Long idUsuarioPresidente) {
+
+		if (idUsuarioPresidente != null) {
+
+			addObjetoTramitavelAlias();
+			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioPresidente));
+
+		}
+
+		return this;
+
+	}
+
 	public ProcessoBuilder filtrarPorPeriodoProcesso(Date periodoInicial, Date periodoFinal) {
 
 		if (periodoInicial != null) {
@@ -684,29 +872,49 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorIdAnalistaTecnico(Long idAnalistaTecnico, boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarPorIdAnalistaTecnico(Long idAnalistaTecnico, Boolean isLeftOuterJoin) {
 
 		if (idAnalistaTecnico != null) {
 
 			addAnalistaTecnicoAlias(isLeftOuterJoin);
-			addRestriction(Restrictions.eq(ANALISTA_TECNICO_ALIAS+".usuario.id", idAnalistaTecnico));
+			addRestriction(Restrictions.eq(ANALISTA_TECNICO_ALIAS + ".usuario.id", idAnalistaTecnico));
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorIdAnalistaGeo(Long idAnalistaGeo, boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarPorIdAnalistaGeo(Long idAnalistaGeo, Boolean isLeftOuterJoin) {
 
 		if (idAnalistaGeo != null) {
 
-			addAnalistaGeoAlias(isLeftOuterJoin);
+			addAnalistaGeoDesvinculoDestinoAlias(isLeftOuterJoin);
 			addRestriction(Restrictions.eq(ANALISTA_GEO_ALIAS+".usuario.id", idAnalistaGeo));
+
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(boolean isLeftOuterJoin) {
+	public ProcessoBuilder filtrarPorAnaliseAiva(Boolean analiseAtiva){
+
+		addAnaliseAlias();
+		addRestriction(Restrictions.eq(ANALISE_ALIAS+".ativo", analiseAtiva));
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarPorIdDiretor(Long idDiretor, boolean isLeftOuterJoin) {
+
+		if (idDiretor != null) {
+
+			addRestriction(Restrictions.eq(DIRETOR_ALIAS+".usuario.id", idDiretor));
+
+		}
+
+		return this;
+	}
+
+	public ProcessoBuilder filtrarAnaliseTecnicaAtiva(Boolean isLeftOuterJoin) {
 
 		addAnaliseTecnicaAlias(isLeftOuterJoin);
 
@@ -725,8 +933,77 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder filtrarDesvinculoAnaliseGeoComResposta(Boolean isLeftOuterJoin) {
 
-	public ProcessoBuilder filtrarAnaliseGeoAtiva(boolean isLeftOuterJoin) {
+		addAnaliseGeoAlias(isLeftOuterJoin);
+		addDesvinculoAnaliseGeoAlias(true);
+		addAnalistaGeoDesvinculoDestinoAlias();
+
+		addRestriction(Restrictions.or(
+				Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
+				Restrictions.eq(DESVINCULO_ANALISTA_GEO_DESTINO_ALIAS + ".login", Auth.getUsuarioSessao().login))
+		);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarDesvinculoAnaliseGeoSemResposta() {
+
+		addAnaliseGeoAlias(true);
+		addDesvinculoAnaliseGeoAlias(false);
+		addAnalistaGeoDesvinculoSolicitanteAlias();
+		addDesvinculoAnaliseTecnicaAlias();
+
+		addRestriction(Restrictions.and(
+				Restrictions.isNull(DESVINCULO_ANALISE_TECNICA_ALIAS + ".analiseTecnica"),
+				Restrictions.or(
+						Restrictions.isEmpty(ANALISE_GEO_ALIAS + ".desvinculos"),
+				        Restrictions.and(
+				        		Restrictions.eq(DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS + ".login", Auth.getUsuarioSessao().login)),
+								Restrictions.isNull(DESVINCULO_ANALISE_GEO_ALIAS + ".aprovada")
+						)
+				)
+		);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarDesvinculoAnaliseTecnicaComResposta(Boolean isLeftOuterJoin) {
+
+		addAnaliseTecnicaAlias(isLeftOuterJoin);
+		addDesvinculoAnaliseTecnicaAlias();
+		addAnalistaTecnicaDesvinculoDestinoAlias();
+
+		addRestriction(Restrictions.or(
+				Restrictions.isEmpty(ANALISE_TECNICA_ALIAS + ".desvinculos"),
+				Restrictions.eq(DESVINCULO_ANALISTA_TECNICO_DESTINO_ALIAS + ".login", Auth.getUsuarioSessao().login))
+		);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarDesvinculoAnaliseTecnicaSemResposta() {
+
+		addAnaliseTecnicaAlias(true);
+		addDesvinculoAnaliseTecnicaAlias();
+		addAnalistaTecnicaDesvinculoSolicitanteAlias();
+
+		addRestriction(Restrictions.or(
+				Restrictions.isEmpty(ANALISE_TECNICA_ALIAS + ".desvinculos"),
+				Restrictions.and(
+						Restrictions.eq(DESVINCULO_ANALISTA_TECNICO_SOLICITANTE_ALIAS + ".login", Auth.getUsuarioSessao().login)),
+						Restrictions.isNull(DESVINCULO_ANALISE_TECNICA_ALIAS + ".aprovada")
+				)
+		);
+
+		return this;
+
+	}
+
+	public ProcessoBuilder filtrarAnaliseGeoAtiva(Boolean isLeftOuterJoin) {
 
 		addAnaliseGeoAlias(isLeftOuterJoin);
 
@@ -909,6 +1186,20 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByRetificacao() {
+
+		addProjection(Projections.groupProperty("retificacao").as("retificacao"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByIdOrigemNotificacao() {
+
+		addProjection(Projections.groupProperty("origemNotificacao.id").as("idOrigemNotificacao"));
+
+		return this;
+	}
+
 	public static class FiltroProcesso {
 
 		public String numeroProcesso;
@@ -918,26 +1209,28 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idAtividadeEmpreendimento;
 		public Long idCondicaoTramitacao;
 		public List<Long> listaIdCondicaoTramitacao;
-		public Boolean filtrarPorUsuario;
+		public Boolean filtrarPorUsuario = false;
 		public Date periodoInicial;
 		public Date periodoFinal;
 		public Long paginaAtual;
 		public Long itensPorPagina;
-		public boolean isAnaliseJuridica;
-		public boolean isAnaliseTecnica;
-		public boolean isAnaliseTecnicaOpcional;
+		public Boolean isAnaliseJuridica = false;
+		public Boolean isAnaliseTecnica = false;
+		public Boolean isAnaliseTecnicaOpcional = false;
 		public Long idAnalistaTecnico;
-		public boolean isAnaliseGeo;
-		public boolean isAnaliseGeoOpcional;
-		public boolean isGerente;
+		public Long idDiretor;
+		public Boolean isAnaliseGeo = false;
+		public Boolean isAnaliseGeoOpcional = false;
+		public Boolean isGerente = false;
+		public boolean isDiretor;
+		public boolean isPresidente;
 		public Long idAnalistaGeo;
 		public String siglaSetorGerencia;
 		public String siglaSetorCoordenadoria;
 		public Long idConsultorJuridico;
 		public Long idUsuarioLogado;
-		public Long idSituacao;
-		public boolean isConsultarProcessos;
-		public boolean desvinculoRespondido;
+		public Boolean isConsultarProcessos = false;
+		public Boolean analiseAtiva = false;
 
 		public FiltroProcesso() {
 

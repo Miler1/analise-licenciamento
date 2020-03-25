@@ -11,13 +11,13 @@ form(name="formVincularConsultor", novalidate)
 
 	div.modal-body
 
-		h4 Processos a vincular
+		h4 Protocolos a vincular
 		.row
 			.col-md-12
 				table.table.table-striped
 					thead
 						tr
-							th.col-md-2 Processo
+							th.col-md-2 Protocolo
 							th.col-md-2 CPF/CNPJ
 							th.col-md-2 Empreendimento
 							th.col-md-2 Município
@@ -25,7 +25,7 @@ form(name="formVincularConsultor", novalidate)
 						tr(ng-repeat="processo in modalCtrl.processos | orderBy: 'numero'")
 							td {{processo.numero}}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td {{processo.denominacaoEmpreendimento}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 
 		.row.form-group

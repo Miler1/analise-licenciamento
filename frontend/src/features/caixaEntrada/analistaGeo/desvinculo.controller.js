@@ -1,10 +1,10 @@
-var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso, $location ,$window,$rootScope, mensagem, desvinculoService) {
+var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso, $location,$rootScope, mensagem, desvinculoService) {
 
     var desvinculoController = this;
     desvinculoController.respondido =null;
-    
+    desvinculoController.errorJustificativa = false;
 
-        desvinculoService.buscarDesvinculoPeloProcesso(idProcesso)
+        desvinculoService.buscarDesvinculoPeloProcessoGeo(idProcesso)
         .then(function(response){
 
             desvinculoController.justificativa = response.data.respostaGerente;
@@ -32,14 +32,22 @@ var DesvinculoController = function ($uibModalInstance,idAnaliseGeo, idProcesso,
             justificativa: desvinculoController.justificativa,
             analiseGeo: {id: idAnaliseGeo}
         };
+        if (desvinculoController.justificativa === '' || !desvinculoController.justificativa){
+            mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
+            desvinculoController.errorJustificativa = true;
+            return false;
+        }
+        
 
-        desvinculoService.solicitarDesvinculo(params)
+        desvinculoService.solicitarDesvinculoAnaliseGeo(params)
             .then(function(response){
 
+                $rootScope.$broadcast('rootPesquisarProcessos');
                 $rootScope.$broadcast('atualizarContagemProcessos');
                 mensagem.success(response.data);
                 $location.path('/caixa-entrada');
                 $uibModalInstance.close();
+                
         }).catch(function(response){
             mensagem.error(response.data.texto, {referenceId: 5});
         });

@@ -3,15 +3,21 @@ package controllers;
 import models.*;
 import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.geotools.feature.SchemaException;
 import security.Acao;
 import serializers.AnaliseGeoSerializer;
 import serializers.CamadaGeoAtividadeSerializer;
 import serializers.EmpreendimentoSerializer;
 import utils.Mensagem;
 
+import javax.validation.ValidationException;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class AnalisesGeo extends InternalController {
@@ -42,20 +48,6 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void concluir(AnaliseGeo analise) throws Exception {
-
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
-
-        AnaliseGeo analiseAAlterar = AnaliseGeo.findById(analise.id);
-
-        UsuarioAnalise usuarioExecutor = getUsuarioSessao();
-
-        analiseAAlterar.finalizar(analise, usuarioExecutor);
-
-        renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
-
-    }
-
     public static void findByNumeroProcesso() {
 
         verificarPermissao(Acao.INICIAR_PARECER_GEO);
@@ -64,18 +56,26 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analise = AnaliseGeo.findByNumeroProcesso(numeroProcesso);
 
-        if(analise == null){
+        if(analise == null) {
 
             renderMensagem(Mensagem.PARECER_NAO_ENCONTRADO);
 
-        }else if(!analise.inconsistencias.isEmpty()){
+        } else if(!analise.inconsistencias.isEmpty()) {
 
             renderMensagem(Mensagem.CLONAR_PARECER_COM_INCONSISTENCIA);
 
-        }else if(analise.inconsistencias.isEmpty()){
+        } else {
 
             renderJSON(analise, AnaliseGeoSerializer.parecer);
         }
+
+    }
+
+    public static void findAnalisesGeoByNumeroProcesso(String numero) {
+
+        String numeroDecodificado = new String(Base64.decodeBase64(numero.getBytes()));
+
+        renderJSON(AnaliseGeo.findAnalisesByNumeroProcesso(numeroDecodificado), AnaliseGeoSerializer.findInfo);
 
     }
 
@@ -163,34 +163,43 @@ public class AnalisesGeo extends InternalController {
 
     public static void downloadPDFParecer(AnaliseGeo analiseGeo) throws Exception {
 
+        verificarPermissao(Acao.BAIXAR_DOCUMENTO);
 
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
+        ParecerAnalistaGeo ultimoParecer = analiseGeoSalva.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
 
-        Documento pdfParecer = analiseGeoSalva.gerarPDFParecer();
+        ultimoParecer.documentoParecer = analiseGeoSalva.gerarPDFParecer(ultimoParecer);
 
-        String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
+        String nome = ultimoParecer.documentoParecer.tipo.nome + "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
-        renderBinary(pdfParecer.arquivo, nome);
+        ultimoParecer._save();
+
+        renderBinary(ultimoParecer.documentoParecer.getFile(), nome);
 
     }
 
     public static void downloadPDFCartaImagem(AnaliseGeo analiseGeo) {
 
+        verificarPermissao(Acao.BAIXAR_DOCUMENTO);
+
         AnaliseGeo analiseGeoSalva = AnaliseGeo.findById(analiseGeo.id);
+        ParecerAnalistaGeo ultimoParecer = analiseGeoSalva.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
 
-        Documento pdfParecer = analiseGeoSalva.gerarPDFCartaImagem();
+        ultimoParecer.cartaImagem = analiseGeoSalva.gerarPDFCartaImagem(ultimoParecer);
 
-        String nome = pdfParecer.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
+        String nome = ultimoParecer.cartaImagem.tipo.nome +  "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
-        renderBinary(pdfParecer.arquivo, nome);
+        ultimoParecer._save();
+
+        renderBinary(ultimoParecer.cartaImagem.getFile(), nome);
 
     }
 
@@ -200,13 +209,13 @@ public class AnalisesGeo extends InternalController {
 
        analiseGeo.analise = Analise.findById(analiseGeo.analise.id);
 
-       List<Notificacao> notificacaos = Notificacao.gerarNotificacoesTemporarias(analiseGeo);
+       List<Notificacao> notificacoes = Notificacao.gerarNotificacoesTemporarias(analiseGeo);
 
-       Documento pdfNotificacao = Notificacao.gerarPDF(notificacaos, analiseGeo);
+       Documento pdfNotificacao = Notificacao.gerarPDF(notificacoes, analiseGeo);
 
        String nome = pdfNotificacao.tipo.nome +  "_" + analiseGeo.id + ".pdf";
        nome = nome.replace(' ', '_');
-       response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+       response.setHeader("Content-Disposition", "inline; filename=" + nome);
        response.setHeader("Content-Transfer-Encoding", "binary");
        response.setHeader("Content-Type", "application/pdf");
 
@@ -225,13 +234,12 @@ public class AnalisesGeo extends InternalController {
 
         String nome = pdfParecer.tipo.nome + "_" + analiseGeoSalva.id + ".pdf";
         nome = nome.replace(' ', '_');
-        response.setHeader("Content-Disposition", "attachment; filename=" + nome);
+        response.setHeader("Content-Disposition", "inline; filename=" + nome);
         response.setHeader("Content-Transfer-Encoding", "binary");
         response.setHeader("Content-Type", "application/pdf");
 
         renderBinary(pdfParecer.arquivo, nome);
     }
-
 
     public static void buscaDadosProcesso(Long idProcesso) {
 
@@ -239,30 +247,21 @@ public class AnalisesGeo extends InternalController {
 
         Processo processo = Processo.findById(idProcesso);
 
-        DadosProcessoVO dadosProcesso = processo.getDadosProcesso();
-
-        renderJSON(dadosProcesso, CamadaGeoAtividadeSerializer.getDadosProjeto);
+        renderJSON(processo.getDadosProcesso(), CamadaGeoAtividadeSerializer.getDadosProjeto);
 
     }
 
     public static void buscaAnaliseGeoByAnalise(Long idAnalise) {
-        AnaliseGeo analiseGeo = AnaliseGeo.find("id_analise = :id_analise")
-                .setParameter("id_analise", idAnalise).first();
+
+        Analise analise = Analise.findById(idAnalise);
+
+        List<AnaliseGeo> analisesGeo = AnaliseGeo.findAllByProcesso(analise.processo.numero);
+
+        AnaliseGeo analiseGeo = analisesGeo.stream()
+                .max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
 
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
-    }
 
-    public static void concluirParecerGerente(AnaliseGeo analiseGeo) throws Exception {
-
-        returnIfNull(analiseGeo, "AnaliseGeo");
-
-        AnaliseGeo analiseGerente = AnaliseGeo.findById(analiseGeo.id);
-
-        UsuarioAnalise gerente = getUsuarioSessao();
-
-        analiseGerente.finalizarAnaliseGerente(analiseGeo, gerente);
-
-        renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
     }
 
     public static void findAllRestricoesById(Long idProcesso) {
@@ -271,8 +270,7 @@ public class AnalisesGeo extends InternalController {
 
         Processo processo = Processo.findById(idProcesso);
 
-        renderJSON(Processo.preencheListaRestricoes(processo.getCaracterizacao()), CamadaGeoAtividadeSerializer.getDadosRestricoesProjeto);
-
+        renderJSON(Processo.preencheListaRestricoes(processo.caracterizacao), CamadaGeoAtividadeSerializer.getDadosRestricoesProjeto);
 
     }
 

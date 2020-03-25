@@ -38,7 +38,7 @@ var MenuPrincipal = {
 		function atualizarContagemProcessos() {
 
 			for (var i = 0; i < ctrl.itens.length; i++) {
-				if(ctrl.itens[i].condicaoTramitacao)
+				if(ctrl.itens[i].condicaoTramitacao && ctrl.itens[i].countItens && ctrl.itens[i].visivel())
 					countProcessos(ctrl.itens[i]);
 			}
 		}
@@ -54,7 +54,7 @@ var MenuPrincipal = {
 			} else if(_.isFunction(item.condicaoTramitacao))
 
 				filtro.idCondicaoTramitacao = item.condicaoTramitacao();
-				
+
 			else
 				filtro.idCondicaoTramitacao = item.condicaoTramitacao;
 
@@ -71,6 +71,8 @@ var MenuPrincipal = {
 				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
 				filtro.isAnaliseGeo = isAnaliseGeo(codigoPerfilSelecionado);
 				filtro.isGerente = isGerente(codigoPerfilSelecionado);
+				filtro.isDiretor = isDiretor(codigoPerfilSelecionado);
+				filtro.isDiretor = isPresidente(codigoPerfilSelecionado);
 			}
 
 			processoService.getProcessosCount(filtro)
@@ -81,7 +83,7 @@ var MenuPrincipal = {
 					if(!!response.data.texto)
 						mensagem.warning(response.data.texto);
 					else
-						mensagem.error("Ocorreu um erro ao buscar a quantidade de processos.");
+						mensagem.error("Ocorreu um erro ao buscar a quantidade de protocolos.");
 				});
 		}
 
@@ -105,6 +107,18 @@ var MenuPrincipal = {
 		function isGerente(codigoPerfilSelecionado) {
 
 			return codigoPerfilSelecionado === app.utils.Perfis.GERENTE;
+
+		}
+
+		function isDiretor(codigoPerfilSelecionado) {
+
+			return codigoPerfilSelecionado === app.utils.Perfis.DIRETOR;
+
+		}
+
+		function isPresidente(codigoPerfilSelecionado) {
+
+			return codigoPerfilSelecionado === app.utils.Perfis.PRESIDENTE;
 
 		}
 

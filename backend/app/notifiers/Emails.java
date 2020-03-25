@@ -1,9 +1,10 @@
 package notifiers;
 
-import main.java.br.ufla.lemaf.beans.Empreendimento;
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
+import br.ufla.lemaf.beans.Empreendimento;
+import br.ufla.lemaf.beans.pessoa.Endereco;
+import br.ufla.lemaf.beans.pessoa.Municipio;
 import models.*;
+import models.licenciamento.Caracterizacao;
 import models.licenciamento.Licenca;
 import org.apache.commons.mail.EmailAttachment;
 import play.Play;
@@ -22,7 +23,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> notificarRequerenteAnaliseJuridica(List<String> destinatarios, String licencas,
 			List<AnaliseDocumento> documentosAnalisados, AnaliseJuridica analiseJuridica, Notificacao notificacao) {
 		
-		setSubject("Movimentação do processo %s", analiseJuridica.analise.processo.numero);
+		setSubject("Movimentação do protocolo %s", analiseJuridica.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 			
@@ -32,31 +33,87 @@ public class Emails extends Mailer {
 	}
 
 	public static Future<Boolean> notificarRequerenteAnaliseGeo(List<String> destinatarios, String licencas,
-																AnaliseGeo analiseGeo, Endereco enderecoCompleto, File pdfNotificacao) {
+			AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, List<Documento> pdfsNotificacao) {
 
-		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 
 			addRecipient(email);
 		}
-		EmailAttachment attachment = new EmailAttachment();
-		attachment.setPath(new File(pdfNotificacao.getPath()).getPath());
-		addAttachment(attachment);
 
-		return send(licencas, analiseGeo, enderecoCompleto);
+		pdfsNotificacao.stream().forEach(pdfNotificacao -> {
+
+            EmailAttachment attachment = new EmailAttachment();
+			attachment.setPath(new File(pdfNotificacao.getFile().getPath()).getPath());
+			addAttachment(attachment);
+
+		});
+
+		return send(licencas, analiseGeo, parecerAnalistaGeo, enderecoCompleto);
+
 	}
-	
-	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas, 
-			List<AnaliseDocumento> documentosAnalisados, AnaliseTecnica analiseTecnica, Notificacao notificacao) {
-		
-		setSubject("Movimentação do processo %s", analiseTecnica.analise.processo.numero);
+
+	public static Future<Boolean> notificarInteressadoComunicado(List<String> destinatarios, String licencas,
+																 AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Endereco enderecoCompleto, Caracterizacao caracterizacao, Comunicado comunicado) {
+
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
-			
+
 			addRecipient(email);
 		}
-		return send(licencas, documentosAnalisados, analiseTecnica, notificacao);
+
+		return send(licencas, analiseGeo, parecerAnalistaGeo, enderecoCompleto, caracterizacao, comunicado);
+
+	}
+
+	public static Future<Boolean> notificarRequerenteStatusAnalise(List<String> destinatarios, Analise analise, ParecerPresidente parecerPresidente) {
+
+		setSubject("Movimentação do protocolo %s", analise.processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+
+		return send(analise, parecerPresidente);
+
+	}
+
+	public static Future<Boolean> notificarRequerenteStatusDispensa(List<String> destinatarios, Caracterizacao caracterizacao) {
+
+		setSubject("Movimentação do protocolo %s", caracterizacao.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+
+		return send(caracterizacao);
+
+	}
+
+	public static Future<Boolean> notificarRequerenteAnaliseTecnica(List<String> destinatarios, String licencas,
+																AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecerAnalistaTecnico, Endereco enderecoCompleto, List<Documento> pdfsNotificacao) {
+
+		setSubject("Movimentação do protocolo %s", analiseTecnica.analise.processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+
+		pdfsNotificacao.stream().forEach(pdfNotificacao -> {
+
+			EmailAttachment attachment = new EmailAttachment();
+			attachment.setPath(new File(pdfNotificacao.getFile().getPath()).getPath());
+			addAttachment(attachment);
+
+		});
+
+		return send(licencas, analiseTecnica, parecerAnalistaTecnico, enderecoCompleto);
+
 	}
 	
 	public static Future<Boolean> notificarRequerenteSuspensaoLicenca(List<String> destinatarios, Suspensao suspensao) {
@@ -98,7 +155,7 @@ public class Emails extends Mailer {
 	                                                                      Date arquivamento, List<Notificacao> notificacoes,
 	                                                                      String siglaSetor) {
 
-		setSubject("Notificacao referente ao arquivamento do processo: " + processo.numero);
+		setSubject("Notificacao referente ao arquivamento do protocolo: " + processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") + ">");
 
 		for(String email:destinatarios) {
@@ -123,7 +180,7 @@ public class Emails extends Mailer {
 	public static Future<Boolean> comunicarOrgaoResponsavelAnaliseGeo(List<String> destinatarios,
 																	  AnaliseGeo analiseGeo, Comunicado comunicado, Municipio municipio, File filePdfParecer, File cartaImagem) {
 
-		setSubject("Movimentação do processo %s", analiseGeo.analise.processo.numero);
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
 		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
 		for(String email : destinatarios) {
 
@@ -138,6 +195,28 @@ public class Emails extends Mailer {
 		addAttachment(attachmentCartaImagem);
 
 		return send(analiseGeo, comunicado, municipio);
+	}
+
+	public static Future<Boolean> comunicarJuridicoAnalise(List<String> destinatarios,
+											AnaliseGeo analiseGeo, Municipio municipio, ParecerJuridico parecerJuridico, ParecerAnalistaGeo parecerAnalistaGeo,File filePdfParecer, File cartaImagem) {
+
+		setSubject("Movimentação do protocolo %s", analiseGeo.analise.processo.numero);
+		setFrom("Análise <"+ Play.configuration.getProperty("mail.smtp.sender") +">");
+		for(String email : destinatarios) {
+
+			addRecipient(email);
+		}
+
+		EmailAttachment attachment = new EmailAttachment();
+		attachment.setPath(new File(filePdfParecer.getPath()).getPath());
+		addAttachment(attachment);
+
+		EmailAttachment attachmentCartaImagem = new EmailAttachment();
+		attachmentCartaImagem.setPath(new File(cartaImagem.getPath()).getPath());
+		addAttachment(attachmentCartaImagem);
+
+
+		return send(analiseGeo, municipio, parecerJuridico, parecerAnalistaGeo);
 	}
 
 }

@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import main.java.br.ufla.lemaf.beans.pessoa.Perfil;
+import br.ufla.lemaf.beans.pessoa.Perfil;
 import models.EntradaUnica.Setor;
 import models.EntradaUnica.Usuario;
 import models.UsuarioAnalise;

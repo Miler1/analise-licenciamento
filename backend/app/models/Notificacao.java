@@ -5,16 +5,17 @@ import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.StatusCaracterizacao;
 import models.licenciamento.TipoDocumentoLicenciamento;
 import models.pdf.PDFGenerator;
-import models.AnaliseGeo;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
 import utils.Configuracoes;
+import utils.DateUtil;
 import utils.Helper;
 import utils.QRCode;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema="analise", name="notificacao")
@@ -38,6 +39,14 @@ public class Notificacao extends GenericModel {
 	@ManyToOne
 	@JoinColumn(name="id_analise_geo", nullable=true)
 	public AnaliseGeo analiseGeo;
+
+	@OneToOne
+	@JoinColumn(name="id_parecer_analista_geo")
+	public ParecerAnalistaGeo parecerAnalistaGeo;
+
+	@OneToOne
+	@JoinColumn(name="id_parecer_analista_tecnico")
+	public ParecerAnalistaTecnico parecerAnalistaTecnico;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tipo_documento", referencedColumnName="id")
@@ -60,9 +69,6 @@ public class Notificacao extends GenericModel {
 
 	@Column(name="codigo_ano")
 	public Integer codigoAno;
-
-	@Column(name="justificativa")
-	public String justificativa;
 	
 	@Column(name="data_notificacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -76,17 +82,92 @@ public class Notificacao extends GenericModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date dataFinalNotificacao;
 
-	@Column(name="resposta_notificacao")
-	public String respostaNotificacao;
+	@Column(name="documentacao")
+	public Boolean documentacao;
 
+	@Column(name="retificacao_empreendimento")
+	public Boolean retificacaoEmpreendimento;
 
-	public Notificacao(AnaliseGeo analiseGeo, int prazoNotificacao){
+	@Column(name="retificacao_solicitacao")
+	public Boolean retificacaoSolicitacao;
+
+	@Column(name="retificacao_solicitacao_com_geo")
+	public Boolean retificacaoSolicitacaoComGeo;
+
+	@ManyToMany
+	@JoinTable(schema="analise", name="rel_documento_notificacao",
+			joinColumns=@JoinColumn(name="id_notificacao"),
+			inverseJoinColumns=@JoinColumn(name="id_documento"))
+	public List<Documento> documentos;
+
+	@ManyToMany
+	@JoinTable(schema="analise", name="rel_documento_notificacao_tecnica",
+			joinColumns=@JoinColumn(name="id_notificacao"),
+			inverseJoinColumns=@JoinColumn(name="id_documento"))
+	public List<Documento> documentosNotificacaoTecnica;
+
+	@Column(name="prazo_notificacao")
+	public Integer prazoNotificacao;
+
+	@Column(name="justificativa_documentacao")
+	public String justificativaDocumentacao;
+
+	@Column(name="justificativa_retificacao_empreendimento")
+	public String justificativaRetificacaoEmpreendimento;
+
+	@Column(name="justificativa_retificacao_solicitacao")
+	public String justificativaRetificacaoSolicitacao;
+
+	@Column(name="segundo_email_enviado")
+	public Boolean segundoEmailEnviado;
+
+	@Column(name = "data_conclusao")
+	public Date dataConclusao;
+
+	@Transient
+	public String justificativa;
+
+	@Transient
+	public List<Documento> documentosParecer;
+
+	@Transient
+	public Integer diasConclusao;
+
+	public Notificacao(AnaliseGeo analiseGeo, Notificacao notificacao, List<Documento> documentos, ParecerAnalistaGeo parecerAnalistaGeo){
+		
 		this.analiseGeo = analiseGeo;
+		this.parecerAnalistaGeo = parecerAnalistaGeo;
 		this.resolvido = false;
 		this.ativo = true;
 		this.dataNotificacao = new Date();
-		this.justificativa = analiseGeo.despacho;
-		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, prazoNotificacao);
+		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
+		this.documentacao = notificacao.documentacao;
+		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
+		this.retificacaoSolicitacao = notificacao.retificacaoSolicitacao;
+		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
+		this.prazoNotificacao = notificacao.prazoNotificacao;
+		this.documentos = new ArrayList<>();
+		this.documentosNotificacaoTecnica = new ArrayList<>();
+		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
+
+	}
+
+	public Notificacao(AnaliseTecnica analiseTecnica, Notificacao notificacao, ParecerAnalistaTecnico parecerAnalistaTecnico){
+
+		this.analiseTecnica = analiseTecnica;
+		this.parecerAnalistaTecnico = parecerAnalistaTecnico;
+		this.resolvido = false;
+		this.ativo = true;
+		this.dataNotificacao = new Date();
+		this.dataFinalNotificacao = Helper.somarDias(dataNotificacao, notificacao.prazoNotificacao);
+		this.documentacao = notificacao.documentacao;
+		this.retificacaoEmpreendimento = notificacao.retificacaoEmpreendimento;
+		this.retificacaoSolicitacao = notificacao.retificacaoSolicitacao;
+		this.retificacaoSolicitacaoComGeo = notificacao.retificacaoSolicitacaoComGeo;
+		this.prazoNotificacao = notificacao.prazoNotificacao;
+		this.documentos = new ArrayList<>();
+		this.documentosNotificacaoTecnica = new ArrayList<>();
+		this.segundoEmailEnviado = notificacao.segundoEmailEnviado;
 
 	}
 
@@ -127,7 +208,7 @@ public class Notificacao extends GenericModel {
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
 
-		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+		for (Caracterizacao caracterizacao : analise.processo.empreendimento.caracterizacoes) {
 
 			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
 			caracterizacao._save();
@@ -206,7 +287,7 @@ public class Notificacao extends GenericModel {
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
 
-		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+		for (Caracterizacao caracterizacao : analise.processo.empreendimento.caracterizacoes) {
 
 			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
 			caracterizacao._save();
@@ -250,7 +331,7 @@ public class Notificacao extends GenericModel {
 		verificaDiasAnalise.qtdeDiasNotificacao = 0;
 		verificaDiasAnalise.save();
 
-		for (Caracterizacao caracterizacao : analise.processo.caracterizacoes) {
+		for (Caracterizacao caracterizacao : analise.processo.empreendimento.caracterizacoes) {
 
 			caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacao.NOTIFICADO);
 			caracterizacao._save();
@@ -369,6 +450,20 @@ public class Notificacao extends GenericModel {
 		}
 	}
 
+	public void setJustificativa() {
+		this.justificativa = this.getParecerAnalista().parecer;
+	}
+
+	public void setDocumentosParecer() {
+		this.documentosParecer = this.getParecerAnalista().getDocumentosParecer();
+	}
+
+	public Date getDataNotificacao(){
+
+		return this.dataNotificacao;
+
+	}
+
 	public Documento gerarPDF() throws Exception {
 
 		Long analiseId;
@@ -453,7 +548,6 @@ public class Notificacao extends GenericModel {
 
 		return new Documento(tipoDocumento, pdf.getFile());
 	}
-
 
 	public static Documento gerarPDF(List<Notificacao> notificacoes, AnaliseTecnica analiseTecnica) throws Exception {
 
@@ -551,4 +645,27 @@ public class Notificacao extends GenericModel {
 
 		return notificacao.codigoSequencia + 1;
 	}
+
+	public ParecerAnalista getParecerAnalista() {
+		 return this.parecerAnalistaGeo != null ? this.parecerAnalistaGeo : this.parecerAnalistaTecnico;
+	}
+
+	public void setDiasConclusao(){
+		if(this.dataNotificacao != null && this.dataConclusao != null) {
+			this.diasConclusao = DateUtil.getDiferencaEmDias(this.dataNotificacao, this.dataConclusao);
+		}
+	}
+
+	public static List<Notificacao> findByIdParecer(Long id) {
+
+		return Notificacao.find("id_parecer_analista_geo", id).fetch();
+
+	}
+
+	public static List<Notificacao> findByIdParecerTecnico(Long id) {
+
+		return Notificacao.find("id_parecer_analista_tecnico", id).fetch();
+
+	}
+
 }

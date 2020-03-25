@@ -1,10 +1,10 @@
 package models;
 
 import exceptions.AppException;
-import main.java.br.ufla.lemaf.beans.Empreendimento;
-import main.java.br.ufla.lemaf.beans.pessoa.Endereco;
-import main.java.br.ufla.lemaf.beans.pessoa.Municipio;
-import main.java.br.ufla.lemaf.enums.TipoEndereco;
+import br.ufla.lemaf.beans.Empreendimento;
+import br.ufla.lemaf.beans.pessoa.Endereco;
+import br.ufla.lemaf.beans.pessoa.Municipio;
+import br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
@@ -26,12 +26,22 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
     private Documento pdfParecer;
     private Documento cartaImagem;
 
-    public EmailComunicarOrgaoResponsavelAnaliseGeo(AnaliseGeo analiseGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
+    public EmailComunicarOrgaoResponsavelAnaliseGeo(AnaliseGeo analiseGeo, ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
 
         super(emailsDestinatarios);
-        this.pdfParecer = analiseGeo.gerarPDFParecer();
-        this.cartaImagem = analiseGeo.gerarPDFCartaImagem();
+        this.pdfParecer = analiseGeo.gerarPDFParecer(parecerAnalistaGeo);
+        this.cartaImagem = analiseGeo.gerarPDFCartaImagem(parecerAnalistaGeo);
         this.analiseGeo = analiseGeo;
+        this.comunicado = comunicado;
+
+    }
+
+    public EmailComunicarOrgaoResponsavelAnaliseGeo(ParecerAnalistaGeo parecerAnalistaGeo, Comunicado comunicado, List<String> emailsDestinatarios) throws Exception {
+
+        super(emailsDestinatarios);
+        this.pdfParecer = parecerAnalistaGeo.documentoParecer;
+        this.cartaImagem = parecerAnalistaGeo.cartaImagem;
+        this.analiseGeo = parecerAnalistaGeo.analiseGeo;
         this.comunicado = comunicado;
 
     }
@@ -40,13 +50,6 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
     public void enviar() {
 
         try {
-
-            List<String> tiposlicenca = new ArrayList<String>();
-            for(Caracterizacao caracterizacao : this.analiseGeo.analise.processo.caracterizacoes) {
-
-                tiposlicenca.add(caracterizacao.tipoLicenca.nome);
-            }
-            String licencas = StringUtils.join(tiposlicenca, ",");
 
             List<AnaliseDocumento> documentosInvalidados = new ArrayList<AnaliseDocumento>();
             for(AnaliseDocumento analiseDocumento : this.analiseGeo.analisesDocumentos) {
@@ -57,7 +60,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
             }
 
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-            main.java.br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+            br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
             Municipio municipio = null;
             for(Endereco endereco : empreendimentoEU.enderecos){
                 if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){
@@ -65,7 +68,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
                 }
             }
 
-            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio, this.pdfParecer.arquivo, this.cartaImagem.arquivo).get()) {
+            if(!Emails.comunicarOrgaoResponsavelAnaliseGeo(this.emailsDestinatarios, this.analiseGeo, this.comunicado, municipio, this.pdfParecer.getFile(), this.cartaImagem.getFile()).get()) {
 
                 throw new AppException();
 
@@ -73,7 +76,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
-            ReenvioEmail reenvioEmail = new ReenvioEmail(this.analiseGeo.id, ReenvioEmail.TipoEmail.NOTIFICACAO_ANALISE_GEO, e.getMessage(), this.emailsDestinatarios);
+            ReenvioEmail reenvioEmail = new ReenvioEmail(this.comunicado.id, ReenvioEmail.TipoEmail.COMUNICAR_ORGAO, e.getMessage(), this.emailsDestinatarios);
             reenvioEmail.save();
 
             e.printStackTrace();
