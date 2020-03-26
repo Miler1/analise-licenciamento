@@ -2,7 +2,7 @@
 
 --BEGIN;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/01.sql
+--										01.sql
 
 
 DROP SCHEMA IF EXISTS analise CASCADE;
@@ -10,7 +10,7 @@ DROP SCHEMA IF EXISTS analise CASCADE;
 CREATE SCHEMA analise;
 
 GRANT ALL ON SCHEMA analise TO postgres;
-GRANT USAGE ON SCHEMA analise TO licenciamento_am;
+GRANT USAGE ON SCHEMA analise TO licenciamento_ap;
 
 
 
@@ -29,7 +29,7 @@ WITH (
 ALTER TABLE analise.tipo_documento
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipo_documento TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_documento TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_documento TO licenciamento_ap;
 COMMENT ON TABLE analise.tipo_documento
   IS 'Entidade responsavel por armazenar os possíveis tipos de documentos exigidos pelo analise.';
 COMMENT ON COLUMN analise.tipo_documento.id IS 'Identificado único da entidade.';
@@ -57,8 +57,8 @@ WITH (
 ALTER TABLE analise.documento
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.documento_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.documento_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.documento
   IS 'Entidade responsavel por armazenar aos documentos que passaram pela análise.';
 COMMENT ON COLUMN analise.documento.id IS 'Identificado único da entidade.';
@@ -71,14 +71,12 @@ id SERIAL NOT NULL,
 numero TEXT NOT NULL,
 id_empreendimento INTEGER NOT NULL,
 id_objeto_tramitavel INTEGER,
-CONSTRAINT pk_processo PRIMARY KEY(id),
-CONSTRAINT fk_p_empreendimento FOREIGN KEY(id_empreendimento)
-REFERENCES licenciamento.empreendimento(id)
+CONSTRAINT pk_processo PRIMARY KEY(id)
 );
 ALTER TABLE analise.processo OWNER TO postgres;
 GRANT ALL ON TABLE analise.processo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_ap;
 
 
 CREATE TABLE analise.analise(
@@ -92,8 +90,8 @@ REFERENCES analise.processo(id)
 );
 ALTER TABLE analise.analise OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_id_seq TO licenciamento_ap;
 
 
 CREATE TABLE analise.tipo_resultado_analise(
@@ -103,8 +101,8 @@ CONSTRAINT pk_tipo_resultado_analise PRIMARY KEY(id)
 );
 ALTER TABLE analise.tipo_resultado_analise OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipo_resultado_analise TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_resultado_analise TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.tipo_resultado_analise_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_resultado_analise TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.tipo_resultado_analise_id_seq TO licenciamento_ap;
 
 
 
@@ -131,8 +129,8 @@ REFERENCES analise.tipo_resultado_analise(id)
 );
 ALTER TABLE analise.analise_juridica OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_juridica TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_juridica TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_juridica_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_juridica TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_juridica_id_seq TO licenciamento_ap;
 
 
 CREATE TABLE analise.consultor_juridico(
@@ -142,14 +140,12 @@ id_usuario INTEGER NOT NULL,
 data_vinculacao TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 CONSTRAINT pk_consultor_juridico PRIMARY KEY(id),
 CONSTRAINT fk_cj_analise_juridica FOREIGN KEY(id_analise_juridica)
-REFERENCES analise.analise_juridica,
-CONSTRAINT fk_cj_usuario FOREIGN KEY(id_usuario)
-REFERENCES portal_seguranca.usuario
+REFERENCES analise.analise_juridica
 );
 ALTER TABLE analise.processo OWNER TO postgres;
 GRANT ALL ON TABLE analise.processo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.processo_id_seq TO licenciamento_ap;
 
 
 CREATE TABLE analise.analise_documento(
@@ -166,8 +162,8 @@ REFERENCES licenciamento.documento(id)
 );
 ALTER TABLE analise.analise_documento OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_documento TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_documento TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_documento_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_documento TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_documento_id_seq TO licenciamento_ap;
 
 
 CREATE TABLE analise.rel_documento_analise_juridica(
@@ -181,7 +177,7 @@ REFERENCES analise.analise_juridica(id)
 );
 ALTER TABLE analise.rel_documento_analise_juridica OWNER TO postgres;
 GRANT ALL ON TABLE analise.rel_documento_analise_juridica TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_analise_juridica TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_analise_juridica TO licenciamento_ap;
 
 
 CREATE TABLE analise.rel_processo_caracterizacao(
@@ -196,18 +192,18 @@ CONSTRAINT ue_pc_id_caracterizacao UNIQUE(id_caracterizacao)
 );
 ALTER TABLE analise.rel_processo_caracterizacao OWNER TO postgres;
 GRANT ALL ON TABLE analise.rel_processo_caracterizacao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_processo_caracterizacao TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_processo_caracterizacao TO licenciamento_ap;
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/02.sql
+--										02.sql
 
 ALTER TABLE analise.analise_juridica ALTER COLUMN parecer DROP NOT NULL;
 ALTER TABLE analise.analise_juridica RENAME COLUMN revisao_soilicitada TO revisao_solicitada;
 ALTER TABLE analise.analise_juridica ALTER COLUMN revisao_solicitada SET DEFAULT FALSE;
 ALTER TABLE analise.analise_juridica ALTER COLUMN ativo SET DEFAULT TRUE;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/03.sql
+--										03.sql
 
 
 COMMENT ON TABLE analise.processo IS 'Entidade responsável por armazenar um processo em análise.';
@@ -260,24 +256,24 @@ COMMENT ON COLUMN analise.rel_processo_caracterizacao.id_caracterizacao IS 'Iden
 COMMENT ON COLUMN analise.rel_processo_caracterizacao.id_processo IS 'Identificador da tabela processo, responsável pelo relacionamento entre as duas tabelas.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/04.sql
+--										04.sql
 
 ALTER TABLE analise.processo ADD COLUMN data_cadastro TIMESTAMP WITHOUT TIME ZONE NOT NULL; -- Data de cadastro do processo.
 COMMENT ON COLUMN analise.processo.data_cadastro IS 'Data de cadastro do processo.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/05.sql
+--										05.sql
 
 ALTER TABLE analise.analise ADD COLUMN ativo Boolean DEFAULT true;
 
 COMMENT ON COLUMN analise.analise.ativo IS 'Indica se a analise está ativa ou não.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/06.sql
+--										06.sql
 
 INSERT INTO analise.tipo_documento (id,nome,caminho_modelo,caminho_pasta,prefixo_nome_arquivo) VALUES
 (1,'Documento análise jurídica',NULL,'documento_analise_juridica','documento_analise_juridica'),
 (2,'Documento análise técnica',NULL,'documento_analise_tecnica','documento_analise_tecnica');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/07.sql
+--										07.sql
 
 
 CREATE TABLE analise.geoserver
@@ -286,8 +282,8 @@ id SERIAL NOT NULL,
 url_getcapabilities VARCHAR(250) NOT NULL,
 CONSTRAINT pk_geoserver PRIMARY KEY(id)
 );
-GRANT SELECT,INSERT,UPDATE,DELETE ON analise.geoserver TO licenciamento_am;
-GRANT SELECT,USAGE ON analise.geoserver_id_seq TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON analise.geoserver TO licenciamento_ap;
+GRANT SELECT,USAGE ON analise.geoserver_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.geoserver IS 'Entidade responsável por armazenar os endereços dos geoserver';
 COMMENT ON COLUMN analise.geoserver.id IS 'Identificador único da entidade.';
@@ -307,8 +303,8 @@ CONSTRAINT pk_configuracao_layer PRIMARY KEY(id),
 CONSTRAINT fk_cl_geoserver FOREIGN KEY(id_geoserver)
 REFERENCES analise.geoserver(id)
 );
-GRANT SELECT,INSERT,UPDATE,DELETE ON analise.configuracao_layer TO licenciamento_am;
-GRANT SELECT,USAGE ON analise.configuracao_layer_id_seq TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON analise.configuracao_layer TO licenciamento_ap;
+GRANT SELECT,USAGE ON analise.configuracao_layer_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.configuracao_layer IS 'Entidade responsável por armazenar as configurações das layers que serão utilizadas para cacular regras de analise';
 COMMENT ON COLUMN analise.configuracao_layer.id IS 'Identificador único da entidade.';
@@ -319,14 +315,14 @@ COMMENT ON COLUMN analise.configuracao_layer.buffer IS 'Buffer em metros.';
 COMMENT ON COLUMN analise.configuracao_layer.id_geoserver IS 'Identificador da entidade geoserver que faz o relacionamento entre as duas entidades.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/08.sql
+--										08.sql
 
 INSERT INTO analise.tipo_resultado_analise(id,nome) VALUES
 (1,'Deferido'),
 (2,'Indeferido'),
 (3,'Emitir notificação');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/09.sql
+--										09.sql
 
 INSERT INTO analise.tipo_resultado_analise(id,nome) VALUES
 (4,'Parecer validado'),
@@ -342,12 +338,132 @@ ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_tipo_resultado_validac
 REFERENCES analise.tipo_resultado_analise;
 COMMENT ON COLUMN analise.analise_juridica.id_tipo_resultado_validacao IS 'Campo responsavel por armazenar o resultado da análise do coordenador jurídico';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/11.sql
+--                    10.sql
+CREATE TABLE analise.analise_tecnica (
+ id serial NOT NULL,
+ id_analise integer NOT NULL, 
+ parecer text, 
+ data_vencimento_prazo date NOT NULL, 
+ revisao_solicitada boolean DEFAULT false, 
+ ativo boolean DEFAULT true,
+ id_analise_tecnica_revisada integer,
+ data_inicio timestamp without time zone, 
+ data_fim timestamp without time zone,
+ id_tipo_resultado_analise integer, 
+ id_tipo_resultado_validacao integer,
+ CONSTRAINT pk_analise_tecnica PRIMARY KEY (id),
+ CONSTRAINT fk_at_analise FOREIGN KEY (id_analise)
+ REFERENCES analise.analise(id),
+ CONSTRAINT fk_at_analise_juridica FOREIGN KEY (id_analise_tecnica_revisada)
+ REFERENCES analise.analise_juridica (id),
+ CONSTRAINT fk_at_tipo_resultado_analise FOREIGN KEY (id_tipo_resultado_analise)
+ REFERENCES analise.tipo_resultado_analise(id),
+ CONSTRAINT fk_at_tipo_resultado_validacao FOREIGN KEY (id_tipo_resultado_validacao)
+ REFERENCES analise.tipo_resultado_analise(id)
+);
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analise_tecnica TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.analise_tecnica_id_seq TO licenciamento_am;
+ALTER TABLE analise.analise_tecnica OWNER TO postgres;
+
+
+
+CREATE TABLE analise.licenca_analise(
+ id SERIAL NOT NULL,
+ id_analise_tecnica INTEGER NOT NULL,
+ validade INTEGER NOT NULL,
+ id_licenca INTEGER NOT NULL,
+ observacao TEXT,
+ CONSTRAINT pk_licenca_analise PRIMARY KEY(id),
+ CONSTRAINT fk_la_analise_tecnica FOREIGN KEY(id_analise_tecnica)
+ REFERENCES analise.analise_tecnica(id),
+ CONSTRAINT fk_la_licenca FOREIGN KEY(id_licenca)
+ REFERENCES licenciamento.licenca(id)
+ 
+);
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.licenca_analise TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.licenca_analise_id_seq TO licenciamento_am;
+ALTER TABLE analise.licenca_analise OWNER TO postgres;
+
+
+CREATE TABLE analise.condicionante(
+ id SERIAL NOT NULL,
+ id_licenca_analise INTEGER NOT NULL,
+ texto TEXT NOT NULL,
+ prazo INTEGER NOT NULL,
+ ordem INTEGER NOT NULL,
+ CONSTRAINT pk_condicionante PRIMARY KEY(id),
+ CONSTRAINT fk_c_licenca_analise FOREIGN KEY(id_licenca_analise)
+ REFERENCES analise.licenca_analise(id) 
+);
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.condicionante TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.condicionante_id_seq TO licenciamento_am;
+ALTER TABLE analise.condicionante OWNER TO postgres;
+
+
+
+CREATE TABLE analise.recomendacao (
+ id SERIAL NOT NULL,
+ id_licenca_analise INTEGER NOT NULL,
+ texto TEXT NOT NULL,
+ ordem INTEGER NOT NULL,
+ CONSTRAINT pk_recomendacao PRIMARY KEY(id),
+ CONSTRAINT fk_r_licenca_analise FOREIGN KEY(id_licenca_analise)
+ REFERENCES analise.licenca_analise(id)
+);
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.recomendacao TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.recomendacao_id_seq TO licenciamento_am;
+ALTER TABLE analise.recomendacao OWNER TO postgres;
+
+
+CREATE TABLE analise.parecer_tecnico_restricao(
+ id SERIAL NOT NULL,
+ id_analise_tecnica INTEGER NOT NULL,
+ codigo_camada TEXT NOT NULL,
+ parecer TEXT NOT NULL,
+ CONSTRAINT pk_parecer_tecnico_restricoes PRIMARY KEY(id),
+ CONSTRAINT fk_ptr_analise_tecnica FOREIGN KEY(id_analise_tecnica)
+ REFERENCES analise.analise_tecnica(id)
+);
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.parecer_tecnico_restricao TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.parecer_tecnico_restricao_id_seq TO licenciamento_am;
+ALTER TABLE analise.parecer_tecnico_restricao OWNER TO postgres;
+
+CREATE TABLE analise.analista_tecnico(
+ id SERIAL NOT NULL,
+ id_analise_tecnica INTEGER NOT NULL,
+ id_usuario INTEGER NOT NULL,
+ data_vinculacao TIMESTAMP WITHOUT TIME ZONE,
+ CONSTRAINT pk_analista_tecnico PRIMARY KEY(id),
+ CONSTRAINT fk_at_analise_tecnica FOREIGN KEY(id_analise_tecnica)
+ REFERENCES analise.analise_tecnica(id)
+
+);
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analista_tecnico TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.analista_tecnico_id_seq TO licenciamento_am;
+ALTER TABLE analise.analista_tecnico OWNER TO postgres;
+
+CREATE TABLE analise.rel_documento_analise_tecnica(
+ id_documento INTEGER NOT NULL,
+ id_analise_tecnica INTEGER NOT NULL,
+ CONSTRAINT pk_rel_documento_analise_tecnica PRIMARY KEY(id_documento,id_analise_tecnica),
+ CONSTRAINT fk_rdat_documento FOREIGN KEY(id_documento)
+ REFERENCES analise.documento(id),
+ CONSTRAINT fk_rdat_analise_tecnica FOREIGN KEY(id_analise_tecnica)
+ REFERENCES analise.analise_tecnica(id)
+);
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_analise_tecnica TO licenciamento_am;
+ALTER TABLE analise.rel_documento_analise_tecnica OWNER TO postgres;
+
+ALTER TABLE analise.analise_documento ADD COLUMN id_analise_tecnica INTEGER;
+ALTER TABLE analise.analise_documento ADD CONSTRAINT fk_ad_analise_tecnica FOREIGN KEY(id_analise_tecnica)
+REFERENCES analise.analise_tecnica(id);
+
+--										11.sql
 
 ALTER TABLE analise.analise_juridica ADD COLUMN parecer_validacao TEXT;
 COMMENT ON COLUMN analise.analise_juridica.parecer_validacao IS 'Parecer da validação da análise jurdica';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/12.sql
+--										12.sql
 
 ALTER TABLE analise.analise_documento ALTER COLUMN id_analise_juridica DROP NOT NULL;
 
@@ -355,13 +471,13 @@ ALTER TABLE analise.analise_tecnica ADD parecer_validacao TEXT;
 
 COMMENT ON COLUMN analise.analise_tecnica.parecer_validacao IS 'Parecer da validação da análise técnica.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/13.sql
+--										13.sql
 
 ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_analise_juridica;
 ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_analise_tecnica FOREIGN KEY (id_analise_tecnica_revisada)
 REFERENCES analise.analise_tecnica(id);
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/14.sql
+--										14.sql
 
 ALTER TABLE analise.licenca_analise DROP COLUMN id_licenca; 
 
@@ -372,12 +488,12 @@ ALTER TABLE analise.licenca_analise ADD
       REFERENCES licenciamento.caracterizacao (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
       
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/15.sql
+--										15.sql
 
 ALTER TABLE analise.licenca_analise ADD COLUMN emitir BOOLEAN;
 COMMENT ON COLUMN analise.licenca_analise.emitir IS 'Flag que indica se irá emitir a licença(True: emite, False: não emite e Null: aguardando ação do usuário).';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/16.sql
+--										16.sql
 
 INSERT INTO analise.geoserver (id, url_getcapabilities) 
 VALUES (1, 'http://car.semas.pa.gov.br/geoserver/wfs?REQUEST=GetCapabilities&version=1.1.0');
@@ -391,7 +507,7 @@ VALUES ('name', 10000, 'Terras quilombolas', 1, 'base_referencia:vw_mzee_terras_
 INSERT INTO analise.configuracao_layer (atributo_descricao, buffer, descricao, id_geoserver, nome_layer) 
 VALUES ('name', 10000, 'Forças armadas', 1, 'base_referencia:vw_mzee_area_forcas_armadas');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/17.sql
+--										17.sql
 
 
 ALTER TABLE analise.analise_juridica ADD COLUMN id_usuario_validacao INTEGER;
@@ -401,7 +517,7 @@ ALTER TABLE analise.analise_tecnica ADD COLUMN id_usuario_validacao INTEGER;
 COMMENT ON COLUMN analise.analise_tecnica.id_usuario_validacao IS 'Identificador da entidade portal_seguranca.usuario que realizará o relacionamento entre as duas entidades.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/18.sql
+--										18.sql
 
 COMMENT ON TABLE analise.analise_tecnica IS 'Entidade responsável por armazenar as análises técnicas.';
 COMMENT ON COLUMN analise.analise_tecnica.id IS 'Identificador único da entidade.';
@@ -455,7 +571,7 @@ COMMENT ON TABLE analise.rel_documento_analise_tecnica IS 'Entidade responsável
 COMMENT ON COLUMN analise.rel_documento_analise_tecnica.id_documento IS 'Identificador da entidade documento.';
 COMMENT ON COLUMN analise.rel_documento_analise_tecnica.id_analise_tecnica IS 'Identificador da entidade analise_tecnica.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/19.sql
+--										19.sql
 
 UPDATE licenciamento.tipo_documento SET tipo_analise= 0 WHERE id= 101 ;
 UPDATE licenciamento.tipo_documento SET tipo_analise= 0 WHERE id= 102 ;
@@ -547,13 +663,34 @@ UPDATE licenciamento.tipo_documento SET tipo_analise= 1 WHERE id= 190 ;
 UPDATE licenciamento.tipo_documento SET tipo_analise= 1 WHERE id= 191 ;
 UPDATE licenciamento.tipo_documento SET tipo_analise= 1 WHERE id= 192 ;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/21.sql
+--                    20.sql
+
+CREATE TABLE analise.gerente_tecnico
+(
+  id serial NOT NULL,
+  id_analise_tecnica integer NOT NULL,
+  id_usuario integer NOT NULL,
+  data_vinculacao timestamp without time zone,
+  CONSTRAINT pk_gerente_tecnico PRIMARY KEY (id),
+  CONSTRAINT fk_gt_analise_tecnica FOREIGN KEY (id_analise_tecnica)REFERENCES analise.analise_tecnica (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
+  );
+
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.gerente_tecnico TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.gerente_tecnico_id_seq TO licenciamento_ap;
+
+COMMENT ON TABLE analise.gerente_tecnico IS 'Entidade responsável por armazenar o Gerente responsável pela análise técnica.';
+COMMENT ON COLUMN analise.gerente_tecnico.id IS 'Identificador único da entidade.';
+COMMENT ON COLUMN analise.gerente_tecnico.id_analise_tecnica IS 'Identificador da entidade analise_tecnica que realiza o relacionamento entre as entidades gerente_tecnico e analise_tecnica.';
+COMMENT ON COLUMN analise.gerente_tecnico.id_usuario IS 'Identificador da entidade portal_seguranca.usuario que realiza o relacionamento entre as entidades gerente_tecnico e portal_seguranca.usuario.';
+COMMENT ON COLUMN analise.gerente_tecnico.data_vinculacao IS 'Data em que o usuário foi vinculado a análise técnica.';
+
+--										21.sql
 
 ALTER TABLE analise.analise_tecnica ADD justificativa_coordenador TEXT;
 
 COMMENT ON COLUMN analise.analise_tecnica.parecer_validacao IS 'Campo responsável por armazenar a justificativa do coordenador quando o mesmo vincular diretamente um analista técnico.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/22.sql
+--										22.sql
 
 ALTER TABLE analise.analise_tecnica ADD id_tipo_resultado_validacao_gerente integer;
 ALTER TABLE analise.analise_tecnica ADD parecer_validacao_gerente text;
@@ -564,17 +701,12 @@ ALTER TABLE analise.analise_tecnica ADD
       REFERENCES analise.tipo_resultado_analise (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE analise.analise_tecnica ADD       
-  CONSTRAINT fk_at_usuario_validacao_gerente FOREIGN KEY (id_usuario_validacao_gerente)
-      REFERENCES portal_seguranca.usuario (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 COMMENT ON COLUMN analise.analise_tecnica.id_tipo_resultado_validacao_gerente IS 'Campo responsavel por armazenar o resultado da análise do gerente técnico.';
 COMMENT ON COLUMN analise.analise_tecnica.id_usuario_validacao_gerente IS 'Campo responsável por armazernar o gerente que fez a validação.';
 COMMENT ON COLUMN analise.analise_tecnica.parecer_validacao_gerente IS 'Campo responsável por armazenar a descrição da validação do gerente técnico.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/23.sql
+--										23.sql
 
 ALTER TABLE analise.analise_tecnica ADD COLUMN data_cadastro TIMESTAMP WITHOUT TIME ZONE;
 COMMENT ON COLUMN analise.analise_tecnica.data_cadastro IS 'Data de cadastro da análise.';
@@ -583,7 +715,7 @@ UPDATE analise.analise_tecnica SET data_cadastro=(data_vencimento_prazo-10);
 
 ALTER TABLE analise.analise_tecnica ALTER COLUMN data_cadastro SET NOT NULL;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/24.sql
+--										24.sql
 
 ALTER TABLE analise.analise_tecnica ADD id_tipo_resultado_validacao_aprovador integer;
 ALTER TABLE analise.analise_tecnica ADD parecer_validacao_aprovador text;
@@ -594,10 +726,6 @@ CONSTRAINT fk_at_tipo_resultado_validacao_aprovador FOREIGN KEY (id_tipo_resulta
 REFERENCES analise.tipo_resultado_analise (id) MATCH SIMPLE
 ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE analise.analise_tecnica ADD 
-CONSTRAINT fk_at_usuario_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador)
-REFERENCES portal_seguranca.usuario (id) MATCH SIMPLE
-ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 COMMENT ON COLUMN analise.analise_tecnica.id_tipo_resultado_validacao_aprovador IS 'Campo responsavel por armazenar o resultado da análise do aprovador.';
 COMMENT ON COLUMN analise.analise_tecnica.id_usuario_validacao_aprovador IS 'Campo responsável por armazernar o aprovador que fez a validação.';
@@ -612,17 +740,13 @@ CONSTRAINT fk_aj_tipo_resultado_validacao_aprovador FOREIGN KEY (id_tipo_resulta
 REFERENCES analise.tipo_resultado_analise (id) MATCH SIMPLE
 ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-ALTER TABLE analise.analise_juridica ADD 
-CONSTRAINT fk_aj_usuario_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador)
-REFERENCES portal_seguranca.usuario (id) MATCH SIMPLE
-ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 COMMENT ON COLUMN analise.analise_juridica.id_tipo_resultado_validacao_aprovador IS 'Campo responsavel por armazenar o resultado da análise do aprovador.';
 COMMENT ON COLUMN analise.analise_juridica.id_usuario_validacao_aprovador IS 'Campo responsável por armazernar o aprovador que fez a validação.';
 COMMENT ON COLUMN analise.analise_juridica.parecer_validacao_aprovador IS 'Campo responsável por armazenar a descrição da validação do aprovador.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/25.sql
+--										25.sql
 
 CREATE TABLE analise.dia_analise(
 id SERIAL NOT NULL,
@@ -633,9 +757,9 @@ qtde_dias_tecnica INTEGER,
 CONSTRAINT pk_dia_analise PRIMARY KEY(id),
 CONSTRAINT fk_da_analise FOREIGN KEY(id_analise) REFERENCES analise.analise(id)
 );
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.dia_analise TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.dia_analise_id_seq TO licenciamento_am;
-ALTER TABLE analise.dia_analise OWNER TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.dia_analise TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.dia_analise_id_seq TO licenciamento_ap;
+ALTER TABLE analise.dia_analise OWNER TO licenciamento_ap;
 
 COMMENT ON TABLE analise.dia_analise IS 'Entidade responsável por armazenar a contagem de dias da análise em cada etapa.';
 COMMENT ON COLUMN analise.dia_analise.id IS 'Identificador único da entidade.';
@@ -644,7 +768,7 @@ COMMENT ON COLUMN analise.dia_analise.qtde_dias_analise IS 'Quantidade de dias d
 COMMENT ON COLUMN analise.dia_analise.qtde_dias_juridica IS 'Quantidade de dias da análise Jurídica.';
 COMMENT ON COLUMN analise.dia_analise.qtde_dias_tecnica IS 'Quantidade de dias da análise Técnica.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/26.sql
+--										26.sql
 
 CREATE TABLE analise.suspensao(
  id SERIAL NOT NULL,
@@ -654,9 +778,9 @@ CREATE TABLE analise.suspensao(
  data_suspensao DATE,
  CONSTRAINT pk_suspensao PRIMARY KEY(id)
 );
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.suspensao TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.suspensao_id_seq TO licenciamento_am;
-ALTER TABLE analise.suspensao OWNER TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.suspensao TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.suspensao_id_seq TO licenciamento_ap;
+ALTER TABLE analise.suspensao OWNER TO licenciamento_ap;
 
 COMMENT ON TABLE analise.suspensao IS 'Entidade responsável por armazenar a contagem de dias que cada licença fica suspensa.';
 COMMENT ON COLUMN analise.suspensao.id IS 'Identificador único da entidade.';
@@ -665,18 +789,18 @@ COMMENT ON COLUMN analise.suspensao.id_usuario_suspensao IS 'Identificador da en
 COMMENT ON COLUMN analise.suspensao.qtde_dias_suspensao IS 'Quantidade de dias em que a licença será suspensa.';
 COMMENT ON COLUMN analise.suspensao.data_suspensao IS 'Data em que a licença foi suspensa.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/27.sql
+--										27.sql
 
 ALTER TABLE analise.suspensao ADD COLUMN justificativa text;
 COMMENT ON COLUMN analise.suspensao.justificativa IS 'justificativa da suspensão de licença realizada pelo Aprovador.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/28.sql
+--										28.sql
 
 ALTER TABLE analise.analise_tecnica ADD COLUMN data_fim_validacao_aprovador timestamp without time zone;
 
 COMMENT ON COLUMN analise.analise_tecnica.data_fim_validacao_aprovador IS 'Data final da análise do aprovador.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/29.sql
+--										29.sql
 
 ALTER TABLE analise.dia_analise ADD COLUMN quantidade_dias_aprovador INTEGER;
 COMMENT ON COLUMN analise.dia_analise.quantidade_dias_aprovador IS 'Quantidade de dias em que a análise ficará no aprovador.';
@@ -687,15 +811,21 @@ ALTER TABLE analise.dia_analise RENAME COLUMN qtde_dias_tecnica TO quantidade_di
 
 ALTER TABLE analise.suspensao RENAME COLUMN qtde_dias_suspensao TO quantidade_dias_suspensao;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/31.sql
+--                    30.sql
+
+ALTER TABLE analise.suspensao ADD COLUMN ativo BOOLEAN NOT NULL DEFAULT TRUE;
+
+COMMENT ON COLUMN analise.suspensao.ativo IS 'Indica se a suspensão está ativa (TRUE - Ativa; FALSE - Inativa).';
+
+--										31.sql
 
 ALTER TABLE analise.suspensao ADD CONSTRAINT un_suspensao_id_licenca UNIQUE (id_licenca);
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/32.sql
+--										32.sql
 
 ALTER TABLE analise.suspensao ALTER COLUMN data_suspensao TYPE TIMESTAMP WITHOUT TIME ZONE;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/33.sql
+--										33.sql
 
 --LICENCA_CANCELADA
 CREATE TABLE analise.licenca_cancelada(
@@ -707,8 +837,8 @@ id_usuario_executor INTEGER NOT NULL,
 CONSTRAINT pk_licenca_cancelada PRIMARY KEY(id)
 );
 
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.licenca_cancelada TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.licenca_cancelada_id_seq TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.licenca_cancelada TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.licenca_cancelada_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.licenca_cancelada IS 'Entidade responsável por armazenar as licenças canceladas.';
 COMMENT ON COLUMN analise.licenca_cancelada.id IS 'Identificador único da entidade.';
@@ -727,8 +857,8 @@ id_usuario_executor INTEGER NOT NULL,
 CONSTRAINT pk_dispensa_licencamento_cancelada PRIMARY KEY(id)
 );
 
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.dispensa_licencamento_cancelada TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licencamento_cancelada_id_seq TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.dispensa_licencamento_cancelada TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licencamento_cancelada_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.dispensa_licencamento_cancelada IS 'Entidade responsável por armazenar as Dispensas de licenciamento Ambiental canceladas.';
 COMMENT ON COLUMN analise.dispensa_licencamento_cancelada.id IS 'Identificador único da entidade.';
@@ -745,7 +875,7 @@ ALTER TABLE analise.suspensao RENAME id_usuario_suspensao  TO id_usuario_executo
 
 ALTER TABLE analise.suspensao RENAME TO licenca_suspensa;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/34.sql
+--										34.sql
 
 ALTER TABLE analise.licenca_cancelada
 DROP COLUMN data_cancelamento;
@@ -768,7 +898,7 @@ ALTER COLUMN justificativa TYPE TEXT;
 ALTER TABLE analise.dispensa_licencamento_cancelada
 ALTER COLUMN justificativa TYPE TEXT;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/35.sql
+--										35.sql
 
 CREATE SEQUENCE analise.notificacao_id_seq
   INCREMENT 1
@@ -778,7 +908,7 @@ CREATE SEQUENCE analise.notificacao_id_seq
   CACHE 1;
 ALTER TABLE analise.notificacao_id_seq
 OWNER TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE analise.notificacao_id_seq TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.notificacao_id_seq TO licenciamento_ap;
 
 CREATE TABLE analise.notificacao ( 
 	id Integer DEFAULT nextval('analise.notificacao_id_seq'::regclass) NOT NULL,
@@ -795,7 +925,7 @@ CREATE TABLE analise.notificacao (
  ALTER TABLE analise.notificacao
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.notificacao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.notificacao TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.notificacao TO licenciamento_ap;
 
 COMMENT ON COLUMN analise.notificacao.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.notificacao.id_analise_juridica IS 'Identificador da tabela analise_juridica, responsável pelo relacionamento entre as duas tabelas.';
@@ -838,7 +968,7 @@ ALTER TABLE analise.notificacao
 	ON DELETE No Action
 	ON UPDATE No Action;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/36.sql
+--										36.sql
 
 ALTER TABLE analise.dia_analise ADD COLUMN quantidade_dias_notificacao INTEGER;
 COMMENT ON COLUMN analise.dia_analise.quantidade_dias_notificacao IS 'Quantidade de dias em que a análise ficará com notificação não resolvida. Esse campo é resetado toda vez que uma notificação é finalizada.';
@@ -846,14 +976,14 @@ COMMENT ON COLUMN analise.dia_analise.quantidade_dias_notificacao IS 'Quantidade
 ALTER TABLE analise.analise ADD COLUMN notificacao_aberta BOOLEAN default false;
 COMMENT ON COLUMN analise.analise.notificacao_aberta IS 'Frag que indica se a analise possui notificações abertas (que não foram resolvidas), podendo ser: TRUE - quando existem notificações abertas e FALSE - quando não existe notificações abertas.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/37.sql
+--										37.sql
 
 ALTER TABLE analise.notificacao ADD COLUMN justificativa Text;
 
 COMMENT ON COLUMN analise.notificacao.justificativa IS 'Campo responsável por armazenar uma justificativa caso o requerente não queira subir outro documento para resolver a notificação.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/38.sql
+--										38.sql
 
 ALTER TABLE analise.analise_documento ADD COLUMN id_analise_documento_anterior INTEGER;
 
@@ -863,7 +993,7 @@ ALTER TABLE analise.analise_documento
 
 COMMENT ON COLUMN analise.analise_documento.id_analise_documento_anterior IS 'Identificador da tabela analise_documento, responsável pelo auto-relacionamento. Identifica a análise anterior do documento.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/39.sql
+--										39.sql
 
 CREATE SEQUENCE analise.reenvio_email_id_seq
   INCREMENT 1
@@ -874,7 +1004,7 @@ CREATE SEQUENCE analise.reenvio_email_id_seq
 ALTER TABLE analise.reenvio_email_id_seq
   OWNER TO postgres;
 GRANT ALL ON SEQUENCE analise.reenvio_email_id_seq TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE analise.reenvio_email_id_seq TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.reenvio_email_id_seq TO licenciamento_ap;
 
 CREATE TABLE analise.reenvio_email ( 
 	id Integer DEFAULT nextval('analise.reenvio_email_id_seq'::regclass) NOT NULL,
@@ -890,7 +1020,7 @@ WITH (
 ALTER TABLE analise.reenvio_email
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.reenvio_email TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.reenvio_email TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.reenvio_email TO licenciamento_ap;
 
 COMMENT ON TABLE analise.reenvio_email
   IS 'Entidade responsável por armazenar o controle do reenvio de email. Guarad os emails que não foram enviados para serem enviados na próxima interação do job de reenvio de email.';
@@ -900,13 +1030,19 @@ COMMENT ON COLUMN analise.reenvio_email.tipo_email IS 'Tipo de email que deve se
 COMMENT ON COLUMN analise.reenvio_email.log IS 'Motivo da tentativa de envio de email.';
 COMMENT ON COLUMN analise.reenvio_email.emails_destinatario IS 'Lista de destinatários (separado por ;) que receberão os emails enviados.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/41.sql
+--                    40.sql
+
+ALTER TABLE analise.notificacao ADD COLUMN data_cadastro timestamp without time zone ;
+
+COMMENT ON COLUMN analise.notificacao.justificativa IS 'Campo responsável por armazenar a data em que a notificação foi criada.';
+
+--										41.sql
 
 INSERT INTO analise.tipo_documento (id,nome,caminho_modelo,caminho_pasta,prefixo_nome_arquivo) VALUES
 (3,'Documento parecer análise jurídica',NULL,'parecer_analise','parecer_analise_juridica'),
 (4,'Documento parecer análise técnica',NULL,'parecer_analise','parecer_analise_tecnica');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/42.sql
+--										42.sql
 
 ALTER TABLE analise.notificacao ADD COLUMN codigo_sequencia INTEGER;
 
@@ -917,7 +1053,7 @@ ALTER TABLE analise.notificacao ADD COLUMN codigo_ano INTEGER;
 COMMENT ON COLUMN analise.notificacao.codigo_ano IS 'Campo responsável por armazenar a parte referente ao ano do codigo.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/43.sql
+--										43.sql
 
 ALTER TABLE analise.notificacao ADD COLUMN id_historico_tramitacao INTEGER;
 COMMENT ON COLUMN analise.notificacao.id_historico_tramitacao IS 'Identificador da entidade historico_tramitacao responsável pelo relacionamento entre historico_tramitacao e notificacao.';
@@ -928,7 +1064,7 @@ INSERT INTO analise.tipo_documento (id,nome,caminho_modelo,caminho_pasta,prefixo
 (6,'Notificação análise técnica',NULL,'notificacao_analise','notificacao_analise_tecnica');
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/44.sql
+--										44.sql
 
 --
 -- Alterando configurações do geoserver
@@ -938,7 +1074,7 @@ UPDATE analise.geoserver set url_getcapabilities = 'http://car.semas.pa.gov.br/g
 WHERE url_getcapabilities = 'http://car.semas.pa.gov.br/geoserver/wfs?REQUEST=GetCapabilities&version=1.1.0';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/45.sql
+--										45.sql
 
 --
 -- Criação da coluna data de leitura de uma notificação
@@ -948,7 +1084,7 @@ ALTER TABLE analise.notificacao ADD COLUMN data_leitura TIMESTAMP;
 COMMENT ON COLUMN analise.notificacao.data_leitura IS 'Data da leitura de uma notificação pelo usuário externo.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/46.sql
+--										46.sql
 
 
 -- Criação da coluna notificacao_atendida para indicar se a notificaçao da analise juridica anterior foi atendida
@@ -962,7 +1098,7 @@ ALTER TABLE analise.analise_tecnica ADD COLUMN notificacao_atendida BOOLEAN DEFA
 COMMENT ON COLUMN analise.analise_tecnica.notificacao_atendida IS 'Flag para identificar as notificações atendidas.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/47.sql
+--										47.sql
 
 -- remover restrição de que o campo id_caracterização seja único
 
@@ -975,7 +1111,7 @@ ALTER TABLE analise.processo ADD CONSTRAINT fk_processo_anterior FOREIGN KEY(id_
 
 COMMENT ON COLUMN analise.processo.id_processo_anterior IS 'Identificador da entidade processo que faz o relacionamento entre o processo e o processo anterior a renovação.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/48.sql
+--										48.sql
 
 -- Criação da tabela base_vetorial
 
@@ -999,8 +1135,8 @@ COMMENT ON COLUMN analise.base_vetorial.observacao IS 'Observação da base veto
 
 ALTER TABLE analise.base_vetorial OWNER TO postgres;
 GRANT ALL ON TABLE analise.base_vetorial TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.base_vetorial TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.base_vetorial_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.base_vetorial TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.base_vetorial_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela imovel_manejo
@@ -1031,8 +1167,8 @@ COMMENT ON COLUMN analise.imovel_manejo.area_uso_consolidado IS 'Área de uso co
 
 ALTER TABLE analise.imovel_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.imovel_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.imovel_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.imovel_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.imovel_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.imovel_manejo_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela analise_manejo
@@ -1062,8 +1198,7 @@ CREATE TABLE analise.analise_manejo (
  consideracoes TEXT NOT NULL,
  conclusao TEXT NOT NULL,
  id_usuario INTEGER NOT NULL,
- CONSTRAINT pk_analise_manejo PRIMARY KEY(id),
- CONSTRAINT fk_am_u FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario (id)
+ CONSTRAINT pk_analise_manejo PRIMARY KEY(id)
 );
 
 COMMENT ON TABLE analise.analise_manejo IS 'Entidade responsável por armazenas uma análise de manejo.';
@@ -1093,8 +1228,8 @@ COMMENT ON COLUMN analise.analise_manejo.id_usuario IS 'Identificador da entidad
 
 ALTER TABLE analise.analise_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_manejo_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela rel_base_vetorial_analise_manejo
@@ -1115,8 +1250,8 @@ COMMENT ON COLUMN analise.rel_base_vetorial_analise_manejo.id_analise_manejo IS 
 
 ALTER TABLE analise.rel_base_vetorial_analise_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.rel_base_vetorial_analise_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_base_vetorial_analise_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.rel_base_vetorial_analise_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_base_vetorial_analise_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.rel_base_vetorial_analise_manejo_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela analise_vetorial
@@ -1148,8 +1283,8 @@ COMMENT ON COLUMN analise.analise_vetorial.id_analise_manejo IS 'Identificador d
 
 ALTER TABLE analise.analise_vetorial OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_vetorial TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_vetorial TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_vetorial_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_vetorial TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_vetorial_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela analise_ndfi
@@ -1180,8 +1315,8 @@ COMMENT ON COLUMN analise.analise_ndfi.id_analise_manejo IS 'Identificador da an
 
 ALTER TABLE analise.analise_ndfi OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_ndfi TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_ndfi TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_ndfi_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_ndfi TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_ndfi_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela observacao
@@ -1203,8 +1338,8 @@ COMMENT ON COLUMN analise.observacao.num_passo IS 'Número do passo em que a obs
 
 ALTER TABLE analise.observacao OWNER TO postgres;
 GRANT ALL ON TABLE analise.observacao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.observacao TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.observacao_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.observacao TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.observacao_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela processo_manejo
@@ -1241,11 +1376,11 @@ COMMENT ON COLUMN analise.processo_manejo.id_analise_manejo IS 'Identificador da
 
 ALTER TABLE analise.processo_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.processo_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.processo_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.processo_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.processo_manejo_id_seq TO licenciamento_ap;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/49.sql
+--										49.sql
 
 -- adicionando colunas de tramitação em tabela de processo manejo
 
@@ -1253,8 +1388,15 @@ ALTER TABLE analise.processo_manejo  ADD COLUMN id_objeto_tramitavel INTEGER;
 
 COMMENT ON COLUMN analise.processo_manejo.id_objeto_tramitavel IS 'Identificador único da entidade objeto_tramitavel.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/51.sql
+--                    50.sql
 
+-- adicionando nova coluna em observação
+
+ALTER TABLE analise.observacao ADD COLUMN data TIMESTAMP NOT NULL DEFAULT now();
+
+COMMENT ON COLUMN analise.observacao.data IS 'Data da observação.';
+
+--										51.sql
 
 INSERT INTO analise.tipo_documento (id,nome,caminho_modelo,caminho_pasta,prefixo_nome_arquivo) VALUES
 (7,'Documento análise manejo',NULL,'analise_manejo','analise_manejo');
@@ -1279,12 +1421,12 @@ ALTER TABLE analise.imovel_manejo ADD COLUMN cep VARCHAR(10);
 COMMENT ON COLUMN analise.imovel_manejo.bairro IS 'Código de endereçamento postal do imóvel.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/52.sql
+--										52.sql
 
 ALTER TABLE analise.processo ADD COLUMN renovacao BOOLEAN DEFAULT FALSE;
 COMMENT ON COLUMN analise.processo.renovacao IS 'Flag que indica se o processo é de renovação de licença.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/53.sql
+--										53.sql
 
 -- Alterando entidade de processo_manejo
 
@@ -1313,8 +1455,8 @@ COMMENT ON COLUMN analise.tipo_licenca_manejo.codigo IS 'Código do tipo de lice
 
 ALTER TABLE analise.tipo_licenca_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipo_licenca_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_licenca_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.tipo_licenca_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipo_licenca_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.tipo_licenca_manejo_id_seq TO licenciamento_ap;
 
 
 -- Criação da tabela tipologia_manejo
@@ -1333,8 +1475,8 @@ COMMENT ON COLUMN analise.tipologia_manejo.codigo IS 'Código da tipologia.';
 
 ALTER TABLE analise.tipologia_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.tipologia_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipologia_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.tipologia_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.tipologia_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.tipologia_manejo_id_seq TO licenciamento_ap;
 
 -- Criação da tabela atividade_manejo
 
@@ -1355,8 +1497,8 @@ COMMENT ON COLUMN analise.atividade_manejo.id_tipologia IS 'Identificador da ent
 
 ALTER TABLE analise.atividade_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.atividade_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.atividade_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.atividade_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.atividade_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.atividade_manejo_id_seq TO licenciamento_ap;
 
 -- tabela empreendimento_manejo
 
@@ -1378,8 +1520,8 @@ CREATE TABLE analise.empreendimento_manejo
 ALTER TABLE analise.empreendimento_manejo
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.empreendimento_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.empreendimento_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.empreendimento_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.empreendimento_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.empreendimento_manejo_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.empreendimento_manejo IS 'Entidade responsavel por armazenar o empreendimento do manejo.';
 COMMENT ON COLUMN analise.empreendimento_manejo.id IS 'Identificado único da entidade.';
@@ -1418,7 +1560,7 @@ ALTER TABLE analise.processo_manejo ADD CONSTRAINT fk_pm_atm FOREIGN KEY (id_ati
 COMMENT ON COLUMN analise.processo_manejo.id_atividade_manejo IS 'Identificador da entidade atividade_manejo que faz o relacionamento entre atividade manejo e processo manejo.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/54.sql
+--										54.sql
 
 --- Carga de dados na entidade tipo_licenca_manejo
 
@@ -1447,7 +1589,7 @@ ALTER TABLE analise.imovel_manejo ALTER COLUMN area_total_imovel_documentado DRO
 ALTER TABLE analise.imovel_manejo ALTER COLUMN area_liquida_imovel DROP NOT NULL;
 ALTER TABLE analise.imovel_manejo ADD COLUMN nome VARCHAR(450);
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/55.sql
+--										55.sql
 
 --- Alteração na entidade analise_manejo
 
@@ -1465,7 +1607,7 @@ ALTER TABLE analise.analise_manejo ALTER COLUMN conclusao DROP NOT NULL;
 ALTER TABLE analise.analise_manejo ADD COLUMN object_id VARCHAR(200);
 COMMENT ON COLUMN analise.analise_manejo.object_id IS 'Identificador da análise no serviço de validação de shape.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/56.sql
+--										56.sql
 
 -- Removendo atributo na entidade analise_manejo
 
@@ -1489,7 +1631,7 @@ COMMENT ON COLUMN analise.documento_manejo_shape.id_analise_tecnica_manejo IS 'I
 
 ALTER TABLE analise.documento_manejo_shape OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento_manejo_shape TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_manejo_shape TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_manejo_shape TO licenciamento_ap;
 
 -- Adicionando tipos de documento manejo na entidade
 
@@ -1536,9 +1678,8 @@ CREATE TABLE analise.analista_tecnico_manejo (
  id_analise_tecnica_manejo INTEGER NOT NULL,
  id_usuario INTEGER NOT NULL,
  CONSTRAINT pk_analista_tecnico_manejo PRIMARY KEY (id),
- CONSTRAINT fk_antm_analise_tecnica_manejo FOREIGN KEY (id_analise_tecnica_manejo) REFERENCES analise.analise_tecnica_manejo(id),
- CONSTRAINT fk_antm_usuario FOREIGN KEY (id_usuario) REFERENCES portal_seguranca.usuario(id)
-);
+ CONSTRAINT fk_antm_analise_tecnica_manejo FOREIGN KEY (id_analise_tecnica_manejo) REFERENCES analise.analise_tecnica_manejo(id)
+ );
 
 COMMENT ON TABLE analise.analista_tecnico_manejo IS 'Entidade responsável por armazenar os analistas técnicos do manejo.';
 COMMENT ON COLUMN analise.analista_tecnico_manejo.id IS 'Identificador único da entidade.';
@@ -1548,11 +1689,11 @@ COMMENT ON COLUMN analise.analista_tecnico_manejo.id_usuario IS 'Identificador d
 
 ALTER TABLE analise.analista_tecnico_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analista_tecnico_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_tecnico_manejo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analista_tecnico_manejo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_tecnico_manejo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analista_tecnico_manejo_id_seq TO licenciamento_ap;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/57.sql
+--										57.sql
 
 -- Alterando o nome da sequence analise_manejo_id_seq
 
@@ -1580,7 +1721,7 @@ COMMENT ON COLUMN analise.documento_imovel_manejo.nome IS 'Nome do documento.';
 
 ALTER TABLE analise.documento_imovel_manejo OWNER TO postgres;
 GRANT ALL ON TABLE analise.documento_imovel_manejo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_imovel_manejo TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.documento_imovel_manejo TO licenciamento_ap;
 
 -- Adicionando tipos de documento do imóvel do manejo na entidade tipo_documento
 
@@ -1591,7 +1732,7 @@ INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquiv
 
 ALTER TABLE analise.observacao RENAME COLUMN id_analise_manejo TO id_analise_tecnica_manejo;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/58.sql
+--										58.sql
 
 -- Renomeando a entidade para documento_imovel_manejo para documento_manejo
 
@@ -1605,7 +1746,7 @@ ALTER TABLE analise.documento_imovel_manejo RENAME TO documento_manejo;
 INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
  (12, 'Documento complementar manejo', 'documento-complementar-manejo', 'documento_complementar');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/59.sql
+--										59.sql
 
 -- Alterando a entidade analise_vetorial para incluir flag de exibição no pdf
 
@@ -1635,8 +1776,8 @@ COMMENT ON COLUMN analise.insumo.orb_ponto IS 'Orb e ponto utilizados.';
 
 ALTER TABLE analise.insumo OWNER TO postgres;
 GRANT ALL ON TABLE analise.insumo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.insumo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.insumo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.insumo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.insumo_id_seq TO licenciamento_ap;
 
 -- Criando da entidade vinculo_analise_tecnica_manejo_insumo
 
@@ -1658,8 +1799,8 @@ COMMENT ON COLUMN analise.vinculo_analise_tecnica_manejo_insumo.exibir_pdf IS 'F
 
 ALTER TABLE analise.vinculo_analise_tecnica_manejo_insumo OWNER TO postgres;
 GRANT ALL ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_insumo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_insumo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_insumo_id_seq TO licenciamento_ap;
 
 -- Removendo atributos desnecessários
 
@@ -1668,12 +1809,17 @@ ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN analise_temporal;
 ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN consideracoes;
 ALTER TABLE analise.analise_tecnica_manejo DROP COLUMN conclusao;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/61.sql
+--                    60.sql
+
+ALTER TABLE analise.processo_manejo ADD COLUMN revisao_solicitada BOOLEAN NOT NULL DEFAULT FALSE;
+COMMENT ON COLUMN analise.processo_manejo.revisao_solicitada IS 'Flag que indica se foi solicitada uma revisão dos arquivos shape do processo.';
+
+--										61.sql
 
 ALTER TABLE analise.processo_manejo ADD COLUMN justificativa_indeferimento TEXT;
 COMMENT ON COLUMN analise.processo_manejo.justificativa_indeferimento IS 'Justificativa dada pelo análista técnico para o indeferimento do processo.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/62.sql
+--										62.sql
 
 --- Inserir novos tipos de documentos para dados do imovel em analise manejo
 
@@ -1691,8 +1837,7 @@ ALTER TABLE analise.base_vetorial ADD COLUMN exibir_pdf BOOLEAN NOT NULL DEFAULT
 COMMENT ON COLUMN analise.base_vetorial.exibir_pdf IS 'Flag de exibição no pdf da análise.';
 
 
-
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/63.sql
+--										63.sql
 
 --- Retirando obrigatóriedade dos campos da tabela base vetorial
 
@@ -1702,13 +1847,13 @@ ALTER TABLE analise.insumo ALTER COLUMN data DROP NOT NULL;
 ALTER TABLE analise.analise_ndfi ALTER COLUMN data DROP NOT NULL;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/64.sql
+--										64.sql
 
 --- Removendo coluna escala da entidade base_vetorial
 
 ALTER TABLE analise.base_vetorial DROP COLUMN escala;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/65.sql
+--										65.sql
 
 --- Adicionando atributo na entidade analise_tecnica_manejo
 
@@ -1729,8 +1874,8 @@ COMMENT ON COLUMN analise.consideracao.texto IS 'Conteúdo da consideração.';
 
 ALTER TABLE analise.consideracao OWNER TO postgres;
 GRANT ALL ON TABLE analise.consideracao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.consideracao TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.consideracao_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.consideracao TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.consideracao_id_seq TO licenciamento_ap;
 
 INSERT INTO analise.consideracao (texto) VALUES
  ('Toda a análise da GEOTEC foi realizada com base em dados apresentados pelo próprio Técnico Responsável, passível de sanções administrativas conforme art. 66 da Lei n° 9605 de 12/02/1998 e art. 82 do Decreto n° 6514 de 22/07/2008.'),
@@ -1759,8 +1904,8 @@ COMMENT ON COLUMN analise.vinculo_analise_tecnica_manejo_consideracao.exibir_pdf
 
 ALTER TABLE analise.vinculo_analise_tecnica_manejo_consideracao OWNER TO postgres;
 GRANT ALL ON TABLE analise.vinculo_analise_tecnica_manejo_consideracao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_consideracao TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_consideracao_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_consideracao TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_consideracao_id_seq TO licenciamento_ap;
 
 
 -- Criando da entidade embasamento_legal
@@ -1777,8 +1922,8 @@ COMMENT ON COLUMN analise.embasamento_legal.texto IS 'Conteúdo do embasamento.'
 
 ALTER TABLE analise.embasamento_legal OWNER TO postgres;
 GRANT ALL ON TABLE analise.embasamento_legal TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.embasamento_legal TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.embasamento_legal_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.embasamento_legal TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.embasamento_legal_id_seq TO licenciamento_ap;
 
 INSERT INTO analise.embasamento_legal (texto) VALUES
  ('Código Florestal - Lei n°12651/2012'),
@@ -1815,18 +1960,18 @@ COMMENT ON COLUMN analise.vinculo_analise_tecnica_manejo_embasamento_legal.exibi
 
 ALTER TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal OWNER TO postgres;
 GRANT ALL ON TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_embasamento_legal_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vinculo_analise_tecnica_manejo_embasamento_legal TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.vinculo_analise_tecnica_manejo_embasamento_legal_id_seq TO licenciamento_ap;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/66.sql
+--										66.sql
 
 --- Alteração na entidade imovel_manejo
 
 ALTER TABLE analise.imovel_manejo ADD COLUMN status TEXT;
 COMMENT ON COLUMN analise.imovel_manejo.status IS 'Indicador do status atual do imóvel no CAR.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/67.sql
+--										67.sql
 
 --- Alterando texto das considerações
 
@@ -1842,7 +1987,7 @@ UPDATE analise.consideracao
  SET texto = 'Consta no processo memorial e planta gerada automaticamente pelo SIGEF - Sistema de Gestão Fundiária, com base nas informações transmitidas e assinadas digitalmente pelo responsável técnico credenciado.'
  WHERE texto = 'De acordo com a INSTRUÇÃO NORMATIVA Nº 001, de 14 de janeiro de 2014, a APAT não permite o início das atividades de manejo, não autoriza a exploração florestal e nem se constitui em prova de posse ou propriedade para fins de regularização fundiários, de autorização de desmatamento ou de obtenção de financiamento junto às instituições de crédito públicas ou privados;';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/68.sql
+--										68.sql
 
 --- Inserir novo tipo de documento para anexos do ARQGIS em analise manejo
 
@@ -1854,7 +1999,7 @@ INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquiv
 
 UPDATE analise.tipo_documento SET nome = 'Termo de ajustamento da conduta - TAC' WHERE id = 14;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/69.sql
+--										69.sql
 
 CREATE TABLE analise.usuario_analise (
 	id serial NOT NULL , 
@@ -1866,11 +2011,11 @@ ALTER TABLE analise.usuario_analise OWNER TO postgres;
 
 GRANT ALL ON TABLE analise.usuario_analise TO postgres;
 
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.usuario_analise TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.usuario_analise TO licenciamento_ap;
 
 GRANT SELECT ON TABLE analise.usuario_analise TO tramitacao;
 
-GRANT SELECT,USAGE ON SEQUENCE analise.usuario_analise_id_seq TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.usuario_analise_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.usuario_analise IS 'Entidade responsável por armazenar os usuários que possui permissão para acessar o módulo de análise do licenciamento';
 
@@ -1878,24 +2023,28 @@ COMMENT ON COLUMN analise.usuario_analise.id IS 'Identificador único da entidad
 
 COMMENT ON COLUMN analise.usuario_analise.login IS 'Login do usuário que pode ser cpf ou cnpj';
 
+--                    70.sql
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/71.sql
+CREATE TABLE analise.historico_tramitacao_setor
+(
+  id_historico_tramitacao integer NOT NULL, -- Identificador único da entidade historico_tramitacao.
+  sigla_setor character varying(255) NOT NULL, -- Identificador do setor que faz o relacionamento entre o histórico de tramitação e setor.
+  CONSTRAINT pk_historico_tramitacao_setor PRIMARY KEY (id_historico_tramitacao, sigla_setor)
+);
+
+ALTER TABLE analise.historico_tramitacao_setor OWNER TO postgres;
+GRANT ALL ON TABLE analise.historico_tramitacao_setor TO postgres;
+GRANT SELECT,UPDATE,INSERT,DELETE ON TABLE analise.historico_tramitacao_setor TO licenciamento_am;
+
+COMMENT ON TABLE analise.historico_tramitacao_setor IS 'Entidade responsável por armazenar o relacionamento entre historico_tramitacao e um setor.';
+COMMENT ON COLUMN analise.historico_tramitacao_setor.id_historico_tramitacao IS 'Identificador único da entidade historico_tramitacao.';
+COMMENT ON COLUMN analise.historico_tramitacao_setor.sigla_setor IS 'Identificador do setor que faz o relacionamento entre o histórico de tramitação e setor.';
+
+
+--										71.sql
 
 BEGIN;
-
-ALTER TABLE analise.analise_juridica DROP CONSTRAINT fk_aj_usuario;
-ALTER TABLE analise.analise_juridica DROP CONSTRAINT fk_aj_usuario_validacao_aprovador;
-ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario;
-ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario_validacao_aprovador;
-ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario_validacao_gerente;
-ALTER TABLE analise.analista_tecnico DROP CONSTRAINT fk_at_usuario;
-ALTER TABLE analise.analista_tecnico_manejo DROP CONSTRAINT fk_antm_usuario;
-ALTER TABLE analise.consultor_juridico DROP CONSTRAINT fk_cj_usuario;
-ALTER TABLE analise.dispensa_licencamento_cancelada DROP CONSTRAINT fk_dlc_usuario_executor;
-ALTER TABLE analise.gerente_tecnico DROP CONSTRAINT fk_gt_usuario;
-ALTER TABLE analise.licenca_cancelada DROP CONSTRAINT fk_lc_usuario_executor;
-ALTER TABLE analise.licenca_suspensa DROP CONSTRAINT fk_ls_usuario_executor;
 
 ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise FOREIGN KEY (id_usuario_validacao) REFERENCES analise.usuario_analise (id);
 ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
@@ -1925,7 +2074,7 @@ COMMENT ON COLUMN analise.licenca_suspensa.id_usuario_executor IS 'Identificador
 
 COMMIT;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/72.sql
+--										72.sql
 
 BEGIN;
 
@@ -1996,8 +2145,8 @@ CREATE TABLE analise.analise_geo
 
 ALTER TABLE analise.analise_geo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analise_geo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_geo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_geo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analise_geo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_geo_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.analise_geo IS 'Entidade responsável por armazenar as análises geo.';
 COMMENT ON COLUMN analise.analise_geo.id IS 'Identificador único da entidade.';
@@ -2044,8 +2193,8 @@ CREATE TABLE analise.analista_geo
 
 ALTER TABLE analise.analista_geo OWNER TO postgres;
 GRANT ALL ON TABLE analise.analista_geo TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_geo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analista_geo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.analista_geo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analista_geo_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.analista_geo IS 'Entidade responsável por armazenar o analista da analise geo.';
 COMMENT ON COLUMN analise.analista_geo.id IS 'Identificador único da entidade.';
@@ -2069,8 +2218,8 @@ CREATE TABLE analise.parecer_geo_restricao
 
 ALTER TABLE analise.parecer_geo_restricao OWNER TO postgres;
 GRANT ALL ON TABLE analise.parecer_geo_restricao TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.parecer_geo_restricao TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.parecer_geo_restricao_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.parecer_geo_restricao TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_geo_restricao_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.parecer_geo_restricao IS 'Entidade responsável por armazenar o parecer das restrições geográficas.';
 COMMENT ON COLUMN analise.parecer_geo_restricao.id IS 'Identificador único da entidade.';
@@ -2134,7 +2283,7 @@ ALTER TABLE analise.gerente RENAME CONSTRAINT fk_gt_usuario_analise TO fk_g_usua
 
 COMMIT;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/73.sql
+--										73.sql
 
 CREATE TABLE analise.rel_documento_analise_geo
 (
@@ -2152,13 +2301,13 @@ CREATE TABLE analise.rel_documento_analise_geo
 );
 
 ALTER TABLE analise.rel_documento_analise_geo OWNER TO postgres;
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_analise_geo TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_analise_geo TO licenciamento_ap;
 
 COMMENT ON TABLE analise.rel_documento_analise_juridica is 'Entidade responsável por armazenar a relação entre as entidades documento e análise geo.';
 COMMENT ON COLUMN analise.rel_documento_analise_juridica.id_documento is 'Identificador da tabela documento, responsável pelo relacionamento entre as duas tabelas.';
 COMMENT ON COLUMN analise.rel_documento_analise_juridica.id_analise_juridica is 'Identificador da tabela analise_geo, responsável pelo relacionamento entre as duas tabelas.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/74.sql
+--										74.sql
 
 BEGIN;
 
@@ -2174,7 +2323,7 @@ CREATE TABLE analise.tipo_area_geometria
 );
 
 ALTER TABLE analise.tipo_area_geometria OWNER TO postgres;
-GRANT SELECT, DELETE, UPDATE, INSERT ON TABLE analise.tipo_area_geometria TO licenciamento_am;
+GRANT SELECT, DELETE, UPDATE, INSERT ON TABLE analise.tipo_area_geometria TO licenciamento_ap;
 
 COMMENT ON TABLE analise.tipo_area_geometria IS 'Entidade que vai armazenar os tipos de geometrias do emprrendimento do licenciamento';
 COMMENT ON COLUMN analise.tipo_area_geometria.id IS 'Identificador e chave primária da entidade';
@@ -2199,8 +2348,8 @@ CREATE TABLE analise.analise_geo_anexo
 SELECT addGeometryColumn('analise', 'analise_geo_anexo', 'geom', 4674, 'MULTIPOLYGON', 2);
 
 ALTER TABLE analise.analise_geo_anexo OWNER TO postgres;
-GRANT SELECT, DELETE, UPDATE, INSERT ON TABLE analise.analise_geo_anexo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.analise_geo_anexo_id_seq TO licenciamento_am;
+GRANT SELECT, DELETE, UPDATE, INSERT ON TABLE analise.analise_geo_anexo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.analise_geo_anexo_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.analise_geo_anexo IS 'Entidade que vai armazenar os tipos de geometrias do emprrendimento do licenciamento';
 COMMENT ON COLUMN analise.analise_geo_anexo.id IS 'Identificador e chave primária da entidade';
@@ -2217,8 +2366,8 @@ CREATE TABLE analise.pessoa
 );
 
 ALTER TABLE analise.pessoa OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.pessoa TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.pessoa_id_pessoa_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.pessoa TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.pessoa_id_pessoa_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.pessoa IS 'Entidade responsavel por armazenar as informações referentes a pessoa, utilizado pela tramitação.';
 COMMENT ON COLUMN analise.pessoa.id_pessoa IS 'Identificador único da entidade.';
@@ -2244,11 +2393,11 @@ INSERT INTO analise.tipo_area_geometria (id, codigo, nome) VALUES
 
 COMMIT;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/75.sql
+--										75.sql
 
 DROP TABLE analise.dispensa_licencamento_cancelada;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/76.sql
+--										76.sql
 
 CREATE TABLE analise.inconsistencia
 (
@@ -2265,7 +2414,7 @@ CREATE TABLE analise.inconsistencia
 );
 
 ALTER TABLE analise.inconsistencia OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia TO licenciamento_ap;
 GRANT SELECT ON TABLE analise.inconsistencia TO tramitacao;
 
 COMMENT ON TABLE analise.inconsistencia IS 'Entidade responsável por armazenar as análises geo.';
@@ -2289,14 +2438,14 @@ CREATE TABLE analise.rel_documento_inconsistencia
 );
 
 ALTER TABLE analise.rel_documento_inconsistencia OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_inconsistencia TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_inconsistencia TO licenciamento_ap;
 GRANT SELECT ON TABLE analise.rel_documento_inconsistencia TO tramitacao;
 
 COMMENT ON TABLE analise.rel_documento_inconsistencia IS 'Entidade que armazena a relação dos documentos com a análise GEO.';
 COMMENT ON COLUMN analise.rel_documento_inconsistencia.id_documento IS 'Identificador do documento.';
 COMMENT ON COLUMN analise.rel_documento_inconsistencia.id_inconsistencia IS 'Identificador da inconsistência';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/77.sql
+--										77.sql
 
 BEGIN;
 
@@ -2315,7 +2464,7 @@ INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo
 
 COMMIT;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/78.sql
+--										78.sql
 
 BEGIN;
 
@@ -2328,12 +2477,56 @@ SELECT setval('analise.configuracao_layer_id_seq', coalesce(max(id), 1)) FROM an
 
 COMMIT;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/79.sql
+--										79.sql
 
 ALTER TABLE analise.documento ADD COLUMN nome_arquivo TEXT;
 COMMENT ON COLUMN analise.documento.nome_arquivo IS 'Nome de referência para upload e download do arquivo armazenado na máquina';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/81.sql
+--                    80.sql
+
+CREATE TABLE analise.desvinculo
+(
+    id               serial  NOT NULL,
+    id_processo      integer NOT NULL,
+    id_analista      integer NOT NULL,
+    justificativa    text    NOT NULL,
+    resposta_gerente text,
+    aprovada         boolean,
+    id_gerente       integer,
+    data_solicitacao timestamp WITHOUT TIME ZONE,
+    data_resposta    timestamp WITHOUT TIME ZONE,
+
+    CONSTRAINT pk_desvinculo PRIMARY KEY (id),
+
+    CONSTRAINT fk_d_processo FOREIGN KEY (id_processo)
+        REFERENCES analise.processo (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+    CONSTRAINT fk_d__analista_usuario_analise FOREIGN KEY (id_analista)
+        REFERENCES analise.usuario_analise (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+    CONSTRAINT fk_d_gerente_usuario_analise FOREIGN KEY (id_gerente)
+        REFERENCES analise.usuario_analise (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+ALTER TABLE analise.desvinculo OWNER TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.desvinculo TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.desvinculo_id_seq TO licenciamento_am;
+
+COMMENT ON TABLE analise.desvinculo  IS 'Entidade responsável por armazenar o analista da analise geo.';
+COMMENT ON COLUMN analise.desvinculo.id IS 'Identificador único da entidade.';
+COMMENT ON COLUMN analise.desvinculo.id_processo IS 'Identificador da entidade processo que faz o relacionamento entre as duas entidades.';
+COMMENT ON COLUMN analise.desvinculo.id_analista IS 'Identificador da entidade usuario que faz o relacionamento entre as duas entidades.';
+COMMENT ON COLUMN analise.desvinculo.justificativa IS 'Campo para armazenar a justificativa da solicitação de desvínculo do analista.';
+COMMENT ON COLUMN analise.desvinculo.resposta_gerente IS 'Campo para armazenar a resposta digitada pelo gerente.';
+COMMENT ON COLUMN analise.desvinculo.aprovada IS 'Flag de controle para saber o status da solicitação de desvínculo.';
+COMMENT ON COLUMN analise.desvinculo.id_gerente IS 'Identificador único da entidade gerentes que faz o relacionamento entre as duas entidades.';
+COMMENT ON COLUMN analise.desvinculo.data_solicitacao IS 'Data em que foi solicitado o desvínculo por um analista.';
+COMMENT ON COLUMN analise.desvinculo.data_resposta IS 'Data em que o gerente responde o desvínculo.';
+
+--										81.sql
 
 UPDATE analise.tipo_documento SET caminho_pasta = 'parecer_analise_geo'
 WHERE prefixo_nome_arquivo = 'parecer_analise_geo';
@@ -2341,7 +2534,7 @@ WHERE prefixo_nome_arquivo = 'parecer_analise_geo';
 INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo)
 VALUES (19, 'Documento carta imagem', 'carta_imagem', 'carta_imagem_analise_geo');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/82.sql
+--										82.sql
 
 ALTER TABLE analise.analise_geo 
 	ADD COLUMN situacao_fundiaria TEXT,
@@ -2352,11 +2545,11 @@ COMMENT ON COLUMN analise.analise_geo.situacao_fundiaria IS 'Situação fundiár
 COMMENT ON COLUMN analise.analise_geo.analise_temporal IS 'Análise temporal do empreendimento da análise GEO';
 COMMENT ON COLUMN analise.analise_geo.despacho_analista IS 'Campo responsavel por armazenar o despacho/justificativa do analista GEO';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/83.sql
+--										83.sql
 
 COMMENT ON COLUMN analise.analise_geo.id_tipo_resultado_analise IS 'Campo responsavel por armazenar o resultado da análise do analista';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/84.sql
+--										84.sql
 
 ALTER TABLE analise.desvinculo
     ADD COLUMN id_analise_geo INTEGER,
@@ -2398,8 +2591,8 @@ CREATE TABLE analise.comunicado
 );
 
 ALTER TABLE analise.comunicado OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.comunicado TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.comunicado_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.comunicado TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.comunicado_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.comunicado IS 'Entidade responsável por armazenar os dados referentes ao comunicado que será enviado ao órgão responsável para resolver a restrição encontrada na análise.';
 COMMENT ON COLUMN analise.comunicado.id IS 'Identificador único da entidade.';
@@ -2414,7 +2607,7 @@ COMMENT ON COLUMN analise.comunicado.parecer_orgao IS 'Campo responsável por ar
 COMMENT ON COLUMN analise.comunicado.resolvido IS 'Flag que indica se o comunicado foi resolvido.';
 COMMENT ON COLUMN analise.comunicado.ativo IS ' Flag que indica se o comunicado está ativo.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/85.sql
+--										85.sql
 
 ALTER TABLE analise.comunicado
     DROP COLUMN justificativa,
@@ -2423,7 +2616,7 @@ ALTER TABLE analise.comunicado
 COMMENT ON COLUMN analise.comunicado.id_orgao IS 
 	'Campo responsável por armazenar o id do órgão responsável pela sobreposição encontrada.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/86.sql
+--										86.sql
 
 ALTER TABLE analise.inconsistencia
     ADD COLUMN id_atividade_caracterizacao INTEGER,
@@ -2432,7 +2625,7 @@ ALTER TABLE analise.inconsistencia
 COMMENT ON COLUMN analise.inconsistencia.id_atividade_caracterizacao IS 'Campo responsável por armazenar o id da atividade_caracterizacao da inconsistencia.';
 COMMENT ON COLUMN analise.inconsistencia.id_geometria_atividade IS 'Campo responsável por armazenar o id da geometria_atividade da inconsistencia.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/87.sql
+--										87.sql
 
 COMMENT ON COLUMN analise.comunicado.data_cadastro is 'Data em que o comunicado foi cadastrado.';
 COMMENT ON COLUMN analise.comunicado.data_leitura is 'Data em que o comunicado foi lido.';
@@ -2446,7 +2639,7 @@ ALTER TABLE analise.comunicado RENAME COLUMN data_leitura TO data_vencimento;
 
 COMMENT ON COLUMN analise.comunicado.data_vencimento is 'Data de venciamento do comunicado.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/88.sql
+--										88.sql
 
 CREATE TABLE analise.rel_documento_comunicado
 (
@@ -2463,7 +2656,7 @@ CREATE TABLE analise.rel_documento_comunicado
 );
 
 ALTER TABLE analise.rel_documento_comunicado OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_comunicado TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_comunicado TO licenciamento_ap;
 
 COMMENT ON TABLE analise.rel_documento_comunicado IS 'Entidade que relaciona a Entidade Documento e a Entidade Comunicado';
 COMMENT ON COLUMN analise.rel_documento_comunicado.id_documento IS 'Entidade que relaciona a Entidade Documento e a Entidade Comunicado';
@@ -2472,12 +2665,9 @@ COMMENT ON COLUMN analise.rel_documento_comunicado.id_comunicado IS 'Entidade qu
 INSERT INTO analise.tipo_documento(id,nome,caminho_modelo,caminho_pasta,prefixo_nome_arquivo)
 VALUES (20,'Documento comunicado órgão', NULL, 'documento_comunicado', 'documento_comunicado');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/89.sql
+--										89.sql
 
 BEGIN;
-
-ALTER TABLE analise.inconsistencia
-    DROP CONSTRAINT fk_i_atividade_caracterizacao;
 
 UPDATE analise.inconsistencia SET id_atividade_caracterizacao = ac.id_caracterizacao
 FROM (
@@ -2489,11 +2679,8 @@ WHERE id_atividade_caracterizacao = ac.id;
 ALTER TABLE analise.inconsistencia RENAME COLUMN id_atividade_caracterizacao TO id_caracterizacao;
 COMMENT ON COLUMN analise.inconsistencia.id_caracterizacao IS 'Campo responsável por armazenar o id da caracterizacao da inconsistencia.';
 
-ALTER TABLE analise.inconsistencia
-    ADD CONSTRAINT fk_i_caracterizacao FOREIGN KEY (id_caracterizacao)
-        REFERENCES licenciamento.caracterizacao (id);
 
-ALTER TABLE analise.comunicado DROP CONSTRAINT fk_c_atividade_caracterizacao;
+--ALTER TABLE analise.comunicado DROP CONSTRAINT fk_c_atividade_caracterizacao;
 
 UPDATE analise.comunicado SET id_atividade_caracterizacao = ac.id_caracterizacao
 FROM (
@@ -2503,15 +2690,25 @@ FROM (
 WHERE id_atividade_caracterizacao = ac.id;
 
 ALTER TABLE analise.comunicado RENAME COLUMN id_atividade_caracterizacao TO id_caracterizacao;
-ALTER TABLE analise.comunicado
-    ADD CONSTRAINT fk_c_caracterizacao FOREIGN KEY (id_caracterizacao)
-        REFERENCES licenciamento.caracterizacao (id);
 
 COMMENT ON COLUMN analise.comunicado.id_caracterizacao IS 'Coluna que relaciona um comunicado a uma caracterização';
 
 COMMIT;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/91.sql
+--                    90.sql
+
+ALTER TABLE analise.notificacao 
+  ADD COLUMN resposta_notificacao TEXT;
+  
+COMMENT ON COLUMN analise.notificacao.resposta_notificacao IS 'Campo responsável por armazenar a resposta do interessado';
+
+
+ALTER TABLE analise.notificacao RENAME COLUMN data_cadastro TO data_notificacao;
+ALTER TABLE analise.notificacao RENAME COLUMN data_leitura TO data_final_notificacao;
+ALTER TABLE analise.notificacao ALTER COLUMN id_tipo_documento DROP NOT NULL;
+ALTER TABLE analise.notificacao ALTER COLUMN id_analise_documento DROP NOT NULL;
+
+--										91.sql
 
 ALTER TABLE analise.desvinculo ADD COLUMN id_usuario INTEGER;
 COMMENT ON COLUMN analise.desvinculo.id_usuario IS 'Identificador da entidade usuario_analise';
@@ -2525,51 +2722,37 @@ ALTER TABLE analise.gerente ALTER COLUMN id_analise_tecnica DROP NOT NULL;
 ALTER TABLE analise.gerente ALTER COLUMN id_analise_geo DROP NOT NULL;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/92.sql
+--										92.sql
 
 UPDATE analise.tipo_documento
 SET caminho_pasta        = 'notificacao_analise_geo',
     prefixo_nome_arquivo = 'notificacao_analise_geo'
 WHERE id = 17;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/93.sql
+--										93.sql
 
 ALTER TABlE analise.inconsistencia ADD COLUMN id_sobreposicao_empreendimento INTEGER;
-ALTER TABLE analise.inconsistencia ADD CONSTRAINT fk_i_sobreposicao_empreendimento FOREIGN KEY (id_sobreposicao_empreendimento)
-  REFERENCES licenciamento.sobreposicao_caracterizacao_empreendimento (id);
+COMMENT ON COLUMN analise.inconsistencia.id_sobreposicao_empreendimento IS 'Id da sobreposição do empreendimento no licenciamento';
 
 ALTER TABlE analise.inconsistencia ADD COLUMN id_sobreposicao_complexo INTEGER;
-ALTER TABLE analise.inconsistencia ADD CONSTRAINT fk_i_sobreposicao_complexo FOREIGN KEY (id_sobreposicao_complexo)
-  REFERENCES licenciamento.sobreposicao_complexo (id);
-
-COMMENT ON COLUMN analise.inconsistencia.id_sobreposicao_empreendimento IS 'Id da sobreposição do empreendimento no licenciamento';
 COMMENT ON COLUMN analise.inconsistencia.id_sobreposicao_complexo IS 'Id da sobreposição do complexo no licenciamento';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/94.sql
+--										94.sql
 
 INSERT INTO analise.tipo_documento(id,nome,caminho_modelo,caminho_pasta,prefixo_nome_arquivo)
 VALUES (21,'Documento oficio ao órgão', NULL, 'documento_oficio_orgao', 'documento_oficio_orgao');
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/95.sql
+--										95.sql
 
 ALTER TABlE analise.comunicado ADD COLUMN id_sobreposicao_empreendimento INTEGER;
-ALTER TABLE analise.comunicado ADD CONSTRAINT fk_c_sobreposicao_empreendimento FOREIGN KEY (id_sobreposicao_empreendimento)
-  REFERENCES licenciamento.sobreposicao_caracterizacao_empreendimento (id);
-
 ALTER TABlE analise.comunicado ADD COLUMN id_sobreposicao_complexo INTEGER;
-ALTER TABLE analise.comunicado ADD CONSTRAINT fk_c_sobreposicao_complexo FOREIGN KEY (id_sobreposicao_complexo)
-  REFERENCES licenciamento.sobreposicao_complexo (id);
-
 ALTER TABlE analise.comunicado ADD COLUMN id_sobreposicao_atividade INTEGER;
-ALTER TABLE analise.comunicado ADD CONSTRAINT fk_c_sobreposicao_atividade FOREIGN KEY (id_sobreposicao_atividade)
-  REFERENCES licenciamento.sobreposicao_caracterizacao_atividade (id);
-
 COMMENT ON COLUMN analise.comunicado.id_sobreposicao_empreendimento IS 'Identificador da sobreposição do empreendimento no licenciamento';
 COMMENT ON COLUMN analise.comunicado.id_sobreposicao_complexo IS 'Identificador da sobreposição do complexo no licenciamento';
 COMMENT ON COLUMN analise.comunicado.id_sobreposicao_complexo IS 'Identificador da sobreposição da atividade no licenciamento';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/96.sql
+--										96.sql
 
 CREATE TABLE analise.setor_usuario_analise
 (
@@ -2588,8 +2771,8 @@ WITH (
 ALTER TABLE analise.setor_usuario_analise
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.setor_usuario_analise TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.setor_usuario_analise TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.setor_usuario_analise_id_seq TO licenciamento_am; 
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.setor_usuario_analise TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.setor_usuario_analise_id_seq TO licenciamento_ap; 
 
 COMMENT ON TABLE analise.setor_usuario_analise
   IS 'Entidade responsável por armazenar o setor do usuário.';
@@ -2616,8 +2799,8 @@ WITH (
 ALTER TABLE analise.perfil_usuario_analise
   OWNER TO postgres;
 GRANT ALL ON TABLE analise.perfil_usuario_analise TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.perfil_usuario_analise TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.perfil_usuario_analise_id_seq TO licenciamento_am; 
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.perfil_usuario_analise TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.perfil_usuario_analise_id_seq TO licenciamento_ap; 
 
 COMMENT ON TABLE analise.perfil_usuario_analise
   IS 'Entidade responsável por armazenar o perfil do usuário.';
@@ -2626,50 +2809,8 @@ COMMENT ON COLUMN analise.perfil_usuario_analise.id_usuario_analise IS 'Identifi
 COMMENT ON COLUMN analise.perfil_usuario_analise.codigo_perfil IS 'Sigla do perfil do usuário.';
 COMMENT ON COLUMN analise.perfil_usuario_analise.nome_perfil IS 'Nome do perfil do usuário.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/97.sql
 
-
--- Evolution com problemas, as sequences ja existem na tabela
-
-
---CREATE SEQUENCE analise.perfil_usuario_analise_id_seq
---  INCREMENT 1
---  MINVALUE 1
---  NO MAXVALUE
---  START 1
---  CACHE 1;
---
---ALTER TABLE analise.perfil_usuario_analise ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.perfil_usuario_analise_id_seq');
---
---ALTER TABLE analise.perfil_usuario_analise_id_seq OWNER TO postgres;
---
---ALTER SEQUENCE analise.perfil_usuario_analise_id_seq OWNED BY analise.perfil_usuario_analise.id;
---
---GRANT SELECT, USAGE ON SEQUENCE analise.perfil_usuario_analise_id_seq TO licenciamento_am;
---
---SELECT setval('analise.perfil_usuario_analise_id_seq', coalesce(max(id), 1)) FROM analise.perfil_usuario_analise;
---
---
---
---CREATE SEQUENCE analise.setor_usuario_analise_id_seq
---  INCREMENT 1
---  MINVALUE 1
---  NO MAXVALUE
---  START 1
---  CACHE 1;
---
---ALTER TABLE analise.setor_usuario_analise ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.setor_usuario_analise_id_seq');
---
---ALTER TABLE analise.setor_usuario_analise_id_seq OWNER TO postgres;
---
---ALTER SEQUENCE analise.setor_usuario_analise_id_seq OWNED BY analise.setor_usuario_analise.id;
---
---GRANT SELECT, USAGE ON SEQUENCE analise.setor_usuario_analise_id_seq TO licenciamento_am;
---
---SELECT setval('analise.setor_usuario_analise_id_seq', coalesce(max(id), 1)) FROM analise.setor_usuario_analise;
-
-
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/98.sql
+--										98.sql
 
 INSERT INTO analise.tipo_documento(
             id, nome, caminho_modelo, caminho_pasta, prefixo_nome_arquivo)
@@ -2691,7 +2832,7 @@ CREATE TABLE analise.rel_documento_notificacao
 );
 
 ALTER TABLE analise.rel_documento_notificacao OWNER TO postgres;
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_notificacao TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_notificacao TO licenciamento_ap;
 
 COMMENT ON TABLE analise.rel_documento_notificacao is 'Entidade responsável por armazenar a relação entre as entidades documento e notificação.';
 COMMENT ON COLUMN analise.rel_documento_notificacao.id_documento is 'Identificador da tabela documento, responsável pelo relacionamento entre as duas tabelas.';
@@ -2719,7 +2860,7 @@ COMMENT ON COLUMN analise.notificacao.retificacao_solicitacao_com_geo IS 'Indica
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/99.sql
+--										99.sql
 
 
 ALTER TABLE analise.processo ADD COLUMN id_caracterizacao INTEGER;
@@ -2729,13 +2870,217 @@ UPDATE analise.processo p SET id_caracterizacao = pc.id_caracterizacao FROM anal
 
 ALTER TABLE analise.processo ALTER COLUMN id_caracterizacao SET NOT NULL;
 
-ALTER TABLE analise.processo ADD CONSTRAINT fk_caracterizacao FOREIGN KEY (id_caracterizacao) REFERENCES licenciamento.caracterizacao;
-
 DROP TABLE analise.rel_processo_caracterizacao;
 
+--                    100.sql
+
+ALTER TABLE analise.notificacao ADD COLUMN prazo_notificacao INTEGER;
+COMMENT ON COLUMN analise.notificacao.prazo_notificacao IS 'Campo resposável por armazenar o prazo em dias para o atendimento da notificação.';
+
+ALTER TABLE analise.notificacao RENAME COLUMN resposta_notificacao TO justificativa_documentacao;
+COMMENT ON COLUMN analise.notificacao.justificativa_documentacao IS 'Campo resposável por armazenar a justificativa adicionada no licenciamento referente ao atendimento de documentação.';
+
+ALTER TABLE analise.notificacao ADD COLUMN justificativa_retificacao_empreendimento TEXT;
+COMMENT ON COLUMN analise.notificacao.justificativa_retificacao_empreendimento IS 'Campo resposável por armazenar a justificativa adicionada no licenciamento referente ao atendimento da retificação do empreendimento.';
+
+ALTER TABLE analise.notificacao ADD COLUMN justificativa_retificacao_solicitacao TEXT;
+COMMENT ON COLUMN analise.notificacao.justificativa_retificacao_solicitacao IS 'Campo resposável por armazenar a justificativa adicionada no licenciamento referente ao atendimento da retificação da solicitação.';
+
+--                    101.sql
+
+INSERT INTO analise.tipo_documento (id,nome,caminho_modelo,caminho_pasta,prefixo_nome_arquivo) VALUES (23,'Documento análise temporal',NULL,'documento_analise_temporal','documento_analise_temporal');
+
+--                    102.sql
+ALTER TABLE analise.analise_geo DROP COLUMN id_tipo_resultado_validacao_gerente, DROP COLUMN parecer_validacao_gerente, DROP COLUMN id_usuario_validacao_gerente;
+
+CREATE TABLE analise.parecer_gerente_analise_geo (
+    id integer NOT NULL,
+    id_tipo_resultado_analise integer NOT NULL,
+    parecer text NOT NULL,
+    data_parecer timestamp default now(),
+    id_usuario_gerente integer NOT NULL,
+    id_analise_geo integer NOT NULL,
+    CONSTRAINT pk_parecer_gerente_analise_geo PRIMARY KEY(id),
+    CONSTRAINT fk_pgag_tipo_resultado_analise FOREIGN KEY(id_tipo_resultado_analise) 
+        REFERENCES  analise.tipo_resultado_analise(id),
+    CONSTRAINT fk_pgag_usuario_analise FOREIGN KEY(id_usuario_gerente) 
+        REFERENCES  analise.usuario_analise(id),
+    CONSTRAINT fk_pgag_analise_geo FOREIGN KEY(id_analise_geo) 
+        REFERENCES  analise.analise_geo(id)
+);
+ALTER TABLE analise.parecer_gerente_analise_geo OWNER TO postgres;
+ALTER TABLE analise.parecer_gerente_analise_geo OWNER TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_gerente_analise_geo TO licenciamento_am;
+GRANT ALL ON TABLE analise.parecer_gerente_analise_geo TO postgres;
+COMMENT ON TABLE analise.parecer_gerente_analise_geo is 'Entidade responsável por armazenar informações sobre o parecer do gerente em uma análise técnica';
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id is 'Id do parecer do gerente';
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id_tipo_resultado_analise is 'Tipo do resultado da análise';
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.parecer is 'Descrição do parecer feito pelo gerente';
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.data_parecer is 'Data do parecer';
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id_usuario_gerente is 'Id do gerente responsável pelo parecer';
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id_analise_geo is 'Id da análise geo que teve parecer';
+
+CREATE SEQUENCE analise.parecer_gerente_analise_geo_id_seq 
+    INCREMENT 1
+    MINVALUE 1
+    NO MAXVALUE
+    START 1
+    CACHE 1;
+ALTER TABLE analise.parecer_gerente_analise_geo ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.parecer_gerente_analise_geo_id_seq');
+ALTER TABLE analise.parecer_gerente_analise_geo_id_seq OWNER TO postgres;
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_gerente_analise_geo_id_seq TO licenciamento_am; 
+SELECT setval('analise.parecer_gerente_analise_geo_id_seq', coalesce(max(id), 1)) FROM analise.parecer_gerente_analise_geo;
+
+--                    103.sql
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/110.sql
+ALTER TABLE analise.parecer_gerente_analise_geo ADD COLUMN id_historico_tramitacao integer NOT NULL;
+COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id_historico_tramitacao IS 'Identificador da tramitação gerada pelo parecer.';
+
+ALTER TABLE analise.analise_geo DROP COLUMN parecer, DROP COLUMN id_tipo_resultado_analise, DROP COLUMN situacao_fundiaria, DROP COLUMN analise_temporal, DROP COLUMN despacho_analista;
+
+CREATE TABLE analise.parecer_analista_geo (
+    id integer NOT NULL,
+    id_analise_geo integer NOT NULL,
+    id_tipo_resultado_analise integer NOT NULL,
+    parecer text NOT NULL,
+    data_parecer timestamp default now(),
+    id_usuario_analista_geo integer NOT NULL,
+    id_historico_tramitacao integer NOT NULL,
+    situacao_fundiaria TEXT,
+    analise_temporal TEXT,
+    conclusao TEXT NOT NULL,
+    CONSTRAINT pk_parecer_analista_geo PRIMARY KEY(id),
+    CONSTRAINT fk_pag_analise_geo FOREIGN KEY(id_analise_geo)
+        REFERENCES analise.analise_geo(id), 
+    CONSTRAINT fk_pag_tipo_resultado_analise FOREIGN KEY(id_tipo_resultado_analise)
+        REFERENCES analise.tipo_resultado_analise(id),
+    CONSTRAINT fk_pag_usuario_analise FOREIGN KEY(id_usuario_analista_geo)
+        REFERENCES analise.usuario_analise(id)    
+);
+ALTER TABLE analise.parecer_analista_geo OWNER TO postgres;
+ALTER TABLE analise.parecer_analista_geo OWNER TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_analista_geo TO licenciamento_am;
+GRANT ALL ON TABLE analise.parecer_analista_geo TO postgres;
+COMMENT ON TABLE analise.parecer_analista_geo IS 'Entidade responsável por armazenar informações sobre o parecer do analista geo em uma análise técnica';
+COMMENT ON COLUMN analise.parecer_analista_geo.id IS 'Id do parecer do analista';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_analise_geo IS 'Id da analise';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_tipo_resultado_analise IS 'Tipo do resultado da análise';
+COMMENT ON COLUMN analise.parecer_analista_geo.parecer IS 'Descrição do parecer feito pelo analista';
+COMMENT ON COLUMN analise.parecer_analista_geo.data_parecer IS 'Data do parecer';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_usuario_analista_geo IS 'Id do analista geo responsável pelo parecer';
+COMMENT ON COLUMN analise.parecer_analista_geo.id_historico_tramitacao IS 'Identificador da tramitação gerada pelo parecer.';
+COMMENT ON COLUMN analise.parecer_analista_geo.situacao_fundiaria IS 'Situação fundiária do empreendimento da análise GEO.';
+COMMENT ON COLUMN analise.parecer_analista_geo.analise_temporal IS 'Análise temporal do empreendimento da análise GEO';
+COMMENT ON COLUMN analise.parecer_analista_geo.conclusao IS 'Notas de conclusão da análise.';
+
+
+CREATE SEQUENCE analise.parecer_analista_geo_id_seq 
+    INCREMENT 1
+    MINVALUE 1
+    NO MAXVALUE
+    START 1
+    CACHE 1;
+ALTER TABLE analise.parecer_analista_geo ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.parecer_analista_geo_id_seq');
+ALTER TABLE analise.parecer_analista_geo_id_seq OWNER TO postgres;
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_analista_geo_id_seq TO licenciamento_am; 
+SELECT setval('analise.parecer_analista_geo_id_seq', coalesce(max(id), 1)) FROM analise.parecer_analista_geo;   
+
+
+--                    104.sql
+
+CREATE TABLE analise.rel_documento_parecer_analista_geo (
+    id_documento integer NOT NULL,
+    id_parecer_analista_geo integer NOT NULL,
+    CONSTRAINT fk_rdpag_documento FOREIGN KEY(id_documento)
+        REFERENCES analise.documento(id),
+    CONSTRAINT fk_rdpag_parecer_analista_geo FOREIGN KEY(id_parecer_analista_geo)
+        REFERENCES analise.parecer_analista_geo(id)
+);
+ALTER TABLE analise.rel_documento_parecer_analista_geo OWNER TO postgres;
+ALTER TABLE analise.rel_documento_parecer_analista_geo OWNER TO licenciamento_am;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.rel_documento_parecer_analista_geo TO licenciamento_am;
+GRANT ALL ON TABLE analise.rel_documento_parecer_analista_geo TO postgres;
+COMMENT ON TABLE analise.rel_documento_parecer_analista_geo IS 'Entidade responsável por relacionar documentos de um parecer de um analista geo';
+COMMENT ON COLUMN analise.rel_documento_parecer_analista_geo.id_documento IS 'Identificador do documento';
+COMMENT ON COLUMN analise.rel_documento_parecer_analista_geo.id_parecer_analista_geo IS 'Identificador do parecer do analista geo';
+
+--                    105.sql
+CREATE TABLE analise.desvinculo_analise_tecnica
+(
+  id serial NOT NULL, -- Identificador único da entidade.
+  justificativa text NOT NULL, -- Campo para armazenar a justificativa da solicitação de desvínculo do analista.
+  resposta_gerente text, -- Campo para armazenar a resposta digitada pelo gerente.
+  aprovada boolean, -- Flag de controle para saber o status da solicitação de desvínculo.
+  id_gerente integer, -- Identificador único da entidade gerentes que faz o relacionamento entre as duas entidades.
+  data_solicitacao timestamp without time zone, -- Data em que foi solicitado o desvínculo por um analista.
+  data_resposta timestamp without time zone, -- Data em que o gerente responde o desvínculo.
+  id_analise_tecnica integer, -- Identificador da tabela id_analise_geo, responsável pelo relacionamento entre as duas tabelas.
+  id_usuario integer, -- Identificador da entidade usuario_analise
+  id_usuario_destino integer, -- Indentificador da entidade usuario_analise para guardar o destinatário da analise
+  CONSTRAINT pk_desvinculo_analise_tecnica PRIMARY KEY (id),
+  CONSTRAINT fk_dat_gerente_usuario_analise FOREIGN KEY (id_gerente)
+      REFERENCES analise.usuario_analise (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE analise.desvinculo_analise_tecnica OWNER TO postgres;
+GRANT ALL ON TABLE analise.desvinculo_analise_tecnica TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.desvinculo_analise_tecnica TO licenciamento_am;
+GRANT SELECT ON TABLE analise.desvinculo_analise_tecnica TO tramitacao;
+COMMENT ON TABLE analise.desvinculo_analise_tecnica IS 'Entidade responsável por armazenar o analista da analise geo.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.id IS 'Identificador único da entidade.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.justificativa IS 'Campo para armazenar a justificativa da solicitação de desvínculo do analista.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.resposta_gerente IS 'Campo para armazenar a resposta digitada pelo gerente.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.aprovada IS 'Flag de controle para saber o status da solicitação de desvínculo.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.id_gerente IS 'Identificador único da entidade gerentes que faz o relacionamento entre as duas entidades.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.data_solicitacao IS 'Data em que foi solicitado o desvínculo por um analista.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.data_resposta IS 'Data em que o gerente responde o desvínculo.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.id_analise_tecnica IS 'Identificador da tabela id_analise_geo, responsável pelo relacionamento entre as duas tabelas.';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.id_usuario IS 'Identificador da entidade usuario_analise';
+COMMENT ON COLUMN analise.desvinculo_analise_tecnica.id_usuario_destino IS 'Indentificador da entidade usuario_analise para guardar o destinatário da analise';
+
+
+ALTER TABLE analise.desvinculo RENAME TO desvinculo_analise_geo;
+
+ALTER TABLE analise.desvinculo_analise_geo RENAME CONSTRAINT pk_desvinculo TO pk_desvinculo_analise_geo;
+
+ALTER TABLE analise.desvinculo_analise_geo RENAME CONSTRAINT fk_d_gerente_usuario_analise TO fk_dag_gerente_usuario_analise;
+
+ALTER TABLE analise.desvinculo_analise_geo  DROP COLUMN id_analise_tecnica; 
+
+ALTER TABLE analise.desvinculo_analise_geo  DROP COLUMN id_analise_juridica;
+
+
+--                    106.sql
+
+ALTER TABLE analise.inconsistencia ADD COLUMN id_atividade_caracterizacao INTEGER;
+COMMENT ON COLUMN analise.inconsistencia.id_atividade_caracterizacao IS 'Campo responsável por armazenar o id da atividade de caracterização quando a categoria é ATIVIDADE.';
+
+--                    107.sql
+
+ALTER TABLE analise.notificacao ADD COLUMN segundo_email_enviado BOOLEAN NOT NULL DEFAULT FALSE;
+COMMENT ON COLUMN analise.notificacao.segundo_email_enviado IS 'Indica se o segundo email da notificação foi enviado pelo vencimento do prazo da notificação';
+
+--                    108.sql
+
+INSERT INTO analise.tipo_documento (id, nome, caminho_modelo, caminho_pasta, prefixo_nome_arquivo) 
+  VALUES (24, 'Documento RIT', null, 'documento_rit', 'documento_rit');
+INSERT INTO analise.tipo_documento (id, nome, caminho_modelo, caminho_pasta, prefixo_nome_arquivo) 
+  VALUES (25, 'Documento vistoria', null, 'documento_vistoria', 'documento_vistoria');
+
+--                    109.sql
+
+ALTER TABLE analise.notificacao ADD COLUMN id_parecer_analista_geo INTEGER NOT NULL;
+COMMENT ON COLUMN analise.notificacao.id_parecer_analista_geo IS 'Identificador do parecer do analista geo';
+
+ALTER TABLE analise.notificacao ADD CONSTRAINT fk_n_parecer_analista_geo FOREIGN KEY (id_parecer_analista_geo) REFERENCES analise.parecer_analista_geo(id); 
+
+ALTER TABLE analise.notificacao DROP COLUMN justificativa;
+
+--										110.sql
 
 
 CREATE TABLE analise.vistoria (
@@ -2760,7 +3105,7 @@ CREATE TABLE analise.vistoria (
         REFERENCES analise.analise_tecnica(id)
 );
 ALTER TABLE analise.vistoria OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vistoria TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.vistoria TO licenciamento_ap;
 COMMENT ON TABLE analise.vistoria is 'Entidade responsável por armazenar informações da vistoria da análise técnica';
 COMMENT ON COLUMN analise.vistoria.id IS 'Identificador único da entidade vistoria';
 COMMENT ON COLUMN analise.vistoria.realizada IS 'Flag responsável por dizer se uma vistoria foi realizada ou não em uma análise técnica';
@@ -2788,7 +3133,7 @@ CREATE TABLE analise.equipe_vistoria (
         REFERENCES analise.usuario_analise(id)
 );
 ALTER TABLE analise.equipe_vistoria OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.equipe_vistoria TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.equipe_vistoria TO licenciamento_ap;
 COMMENT ON TABLE analise.equipe_vistoria is 'Entidade responsável por armazenar a equipe da vistoria de uma análise técnica caso a mesma foi realizada';
 COMMENT ON COLUMN analise.equipe_vistoria.id_vistoria IS 'Identificador da vistoria';
 COMMENT ON COLUMN analise.equipe_vistoria.id_usuario IS 'Identificador do usuário relacionado a equipe de uma vistoria';
@@ -2804,7 +3149,7 @@ CREATE TABLE analise.rel_documento_vistoria (
         REFERENCES analise.vistoria(id)
 );
 ALTER TABLE analise.rel_documento_vistoria OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE  analise.rel_documento_vistoria TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE  analise.rel_documento_vistoria TO licenciamento_ap;
 COMMENT ON  TABLE analise.rel_documento_vistoria is 'Entidade responsável por armazenar os documentos de uma vistoria de análise técnica';
 COMMENT ON COLUMN analise.rel_documento_vistoria.id_documento IS 'Identificador do documento da vistoria';
 COMMENT ON COLUMN analise.rel_documento_vistoria.id_vistoria IS 'Identificador da vistoria';
@@ -2820,8 +3165,8 @@ CREATE TABLE analise.inconsistencia_vistoria (
       REFERENCES analise.vistoria(id) 
 );
 ALTER TABLE analise.inconsistencia_vistoria OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_vistoria TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.inconsistencia_vistoria_id_seq TO licenciamento_am; 
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_vistoria TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.inconsistencia_vistoria_id_seq TO licenciamento_ap; 
 COMMENT ON  TABLE analise.inconsistencia_vistoria IS 'Entidade responsável por armazenar as análises geo.';
 COMMENT ON  COLUMN analise.inconsistencia_vistoria.id IS 'Identificador único da entidade.';
 COMMENT ON  COLUMN analise.inconsistencia_vistoria.id_vistoria IS 'Identificador da tabela vistoria, responsável pelo relacionamento entre as duas tabelas.';
@@ -2838,7 +3183,7 @@ CREATE TABLE analise.rel_documento_inconsistencia_vistoria (
         REFERENCES analise.documento(id)
 );
 ALTER TABLE analise.rel_documento_inconsistencia_vistoria OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_inconsistencia_vistoria TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_inconsistencia_vistoria TO licenciamento_ap;
 COMMENT ON  TABLE analise.rel_documento_inconsistencia_vistoria is 'Entidade responsável por armazenar documentos da inconsistência da vistoria';
 COMMENT ON COLUMN analise.rel_documento_inconsistencia_vistoria.id_inconsistencia_vistoria IS 'Identificador da inconsistência relacionada a vistoria';
 COMMENT ON COLUMN analise.rel_documento_inconsistencia_vistoria.id_documento IS 'Identificador do documento da inconsistência relacionada a vistoria';
@@ -2856,10 +3201,10 @@ CREATE SEQUENCE analise.vistoria_id_seq
     CACHE 1;
 ALTER TABLE analise.vistoria ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.vistoria_id_seq');
 ALTER TABLE analise.vistoria_id_seq OWNER TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE analise.vistoria_id_seq TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.vistoria_id_seq TO licenciamento_ap;
 SELECT setval('analise.vistoria_id_seq', coalesce(max(id), 1)) FROM analise.vistoria;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/111.sql
+--										111.sql
 
 
 CREATE TABLE analise.inconsistencia_tecnica (
@@ -2872,9 +3217,9 @@ CREATE TABLE analise.inconsistencia_tecnica (
       REFERENCES analise.analise_tecnica (id) 
 );
 ALTER TABLE analise.inconsistencia_tecnica OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica TO licenciamento_ap;
 GRANT SELECT ON TABLE analise.inconsistencia_tecnica TO tramitacao;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_id_seq TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica IS 'Entidade responsável por armazenar as análises geo.';
 COMMENT ON COLUMN analise.inconsistencia_tecnica.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.inconsistencia_tecnica.descricao_inconsistencia IS 'Campo que armazena a descrição da inconsistência relatada pelo analista.';
@@ -2891,8 +3236,8 @@ CREATE TABLE analise.inconsistencia_tecnica_atividade (
       REFERENCES analise.inconsistencia_tecnica (id) 
 );
 ALTER TABLE analise.inconsistencia_tecnica_atividade OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_atividade_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_atividade_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica_atividade IS 'Tabela responsável por armazenar todas informações das inconsistências do tipo ATIVIDADE adicionadas pelo analista técnico';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_atividade.id IS 'Identificador único da entidade';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_atividade.id_atividade_caracterizacao IS 'Identificador que faz o relacionamento com a tabela llicenciamento.atividade_caracterizacao';
@@ -2908,8 +3253,8 @@ CREATE TABLE analise.inconsistencia_tecnica_parametro (
       REFERENCES analise.inconsistencia_tecnica (id)
 );
 ALTER TABLE analise.inconsistencia_tecnica_parametro OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_parametro TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_parametro_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_parametro TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_parametro_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica_parametro IS 'Tabela responsável por relacionamento das tabelas';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_parametro.id IS 'Identificador único da entidade';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_parametro.id_inconsistencia_tecnica IS 'Identificador que faz relacionamento com a tabela inconsistencia_tecnica';
@@ -2926,8 +3271,8 @@ CREATE TABLE analise.inconsistencia_tecnica_tipo_licenca (
       REFERENCES analise.inconsistencia_tecnica (id)
 );
 ALTER TABLE analise.inconsistencia_tecnica_tipo_licenca OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_tipo_licenca TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_tipo_licenca_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_tipo_licenca TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_tipo_licenca_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica_tipo_licenca IS 'Tabela responsável por armazenar todas informações das inconsistências adicionadas pelo analista técnico com relaçao aos tipos de licença';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_tipo_licenca.id IS 'Identificador único da entidade';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_tipo_licenca.id_inconsistencia_tecnica IS 'Identificador que faz relacionamento com a tabela inconsistencia_tecnica';
@@ -2944,8 +3289,8 @@ CREATE TABLE analise.inconsistencia_tecnica_questionario (
       REFERENCES analise.inconsistencia_tecnica (id)
 );
 ALTER TABLE analise.inconsistencia_tecnica_questionario OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_questionario TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_questionario_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_questionario TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_questionario_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica_questionario IS 'Tabela responsável por armazenar todas informações das inconsistências adicionadas pelo analista técnico com relaçao ao questionário';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_questionario.id IS 'Identificador único da entidade';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_questionario.id_inconsistencia_tecnica IS 'Identificador que faz relacionamento com a tabela inconsistencia_tecnica';
@@ -2963,8 +3308,8 @@ CREATE TABLE analise.inconsistencia_tecnica_documento (
       REFERENCES analise.inconsistencia_tecnica (id)
 );
 ALTER TABLE analise.inconsistencia_tecnica_documento OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_documento TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_documento_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_documento TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_documento_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica_documento IS 'Tabela responsável por armazenar todas informações das inconsistências adicionadas pelo analista técnico com relaçao aos documentos';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_documento.id IS 'Identificador único da entidade';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_documento.id_inconsistencia_tecnica IS 'Identificador que faz relacionamento com a tabela inconsistencia_tecnica';
@@ -2984,7 +3329,7 @@ CREATE TABLE analise.rel_documento_inconsistencia_tecnica (
       REFERENCES analise.inconsistencia_tecnica (id) 
 );
 ALTER TABLE analise.rel_documento_inconsistencia_tecnica OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_inconsistencia_tecnica TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_inconsistencia_tecnica TO licenciamento_ap;
 GRANT SELECT ON TABLE analise.rel_documento_inconsistencia_tecnica TO tramitacao;
 
 
@@ -2993,12 +3338,12 @@ INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo
   VALUES(26, 'Documento inconsistência técnica', 'documento_inconsistencia_tecnica', 'documento_inconsistencia_tecnica' );
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/112.sql
+--										112.sql
 
 
 ALTER TABLE analise.parecer_analista_geo ALTER COLUMN id_historico_tramitacao DROP NOT NULL;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/113.sql
+--										113.sql
 
 
 INSERT INTO analise.tipo_documento( id, nome, caminho_modelo, caminho_pasta, prefixo_nome_arquivo)
@@ -3006,7 +3351,7 @@ INSERT INTO analise.tipo_documento( id, nome, caminho_modelo, caminho_pasta, pre
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/114.sql
+--										114.sql
 
 
 ALTER TABLE analise.perfil_usuario_analise 
@@ -3020,7 +3365,7 @@ ALTER TABLE analise.setor_usuario_analise
     ADD CONSTRAINT fk_sua_usuario_analise PRIMARY KEY (id_usuario_analise, sigla_setor);
 
     
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/115.sql
+--										115.sql
 
 
 DROP TABLE analise.inconsistencia_tecnica_documento;
@@ -3032,14 +3377,12 @@ CREATE TABLE analise.inconsistencia_tecnica_documento_tecnico_ambiental (
   id_documento_tecnico integer NOT NULL, 
   CONSTRAINT pk_inconsistencia_tecnica_documento_tecnico_ambiental PRIMARY KEY (id),
   CONSTRAINT fk_itdta_inconsistencia_tecnica FOREIGN KEY (id_inconsistencia_tecnica)
-      REFERENCES analise.inconsistencia_tecnica (id),
-  CONSTRAINT fk_itdta_documento_tecnico FOREIGN KEY (id_documento_tecnico)
-      REFERENCES licenciamento.solicitacao_grupo_documento (id)
+      REFERENCES analise.inconsistencia_tecnica (id)
 );
-ALTER TABLE analise.inconsistencia_tecnica_documento_tecnico_ambiental OWNER TO licenciamento_am;
+ALTER TABLE analise.inconsistencia_tecnica_documento_tecnico_ambiental OWNER TO licenciamento_ap;
 ALTER TABLE analise.inconsistencia_tecnica_documento_tecnico_ambiental OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_documento_tecnico_ambiental TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_documento_tecnico_ambiental_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_documento_tecnico_ambiental TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_documento_tecnico_ambiental_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica_documento_tecnico_ambiental IS 'Tabela responsável por armazenar todas informações das inconsistências adicionadas pelo analista técnico com relaçao aos documentos';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_documento_tecnico_ambiental.id IS 'Identificador único da entidade';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_documento_tecnico_ambiental.id_inconsistencia_tecnica IS 'Identificador que faz relacionamento com a tabela inconsistencia_tecnica';
@@ -3052,15 +3395,13 @@ CREATE TABLE analise.inconsistencia_tecnica_documento_administrativo (
   id_documento_administrativo integer NOT NULL, 
   CONSTRAINT pk_inconsistencia_tecnica_documento_administrativo PRIMARY KEY (id),
   CONSTRAINT fk_itda_inconsistencia_tecnica FOREIGN KEY (id_inconsistencia_tecnica)
-      REFERENCES analise.inconsistencia_tecnica (id),
-  CONSTRAINT fk_itda_documento_administrativo FOREIGN KEY (id_documento_administrativo)
-      REFERENCES licenciamento.solicitacao_documento_caracterizacao (id) 
+      REFERENCES analise.inconsistencia_tecnica (id) 
 );
-ALTER TABLE analise.inconsistencia_tecnica_documento_administrativo OWNER TO licenciamento_am;
-ALTER TABLE analise.inconsistencia_tecnica_documento_administrativo OWNER TO licenciamento_am;
+ALTER TABLE analise.inconsistencia_tecnica_documento_administrativo OWNER TO licenciamento_ap;
+ALTER TABLE analise.inconsistencia_tecnica_documento_administrativo OWNER TO licenciamento_ap;
 ALTER TABLE analise.inconsistencia_tecnica_documento_administrativo OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_documento_administrativo TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_documento_administrativo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.inconsistencia_tecnica_documento_administrativo TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.inconsistencia_tecnica_documento_administrativo_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.inconsistencia_tecnica_documento_administrativo IS 'Tabela responsável por armazenar todas informações das inconsistências adicionadas pelo analista técnico com relaçao aos documentos';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_documento_administrativo.id IS 'Identificador único da entidade';
 COMMENT ON COLUMN analise.inconsistencia_tecnica_documento_administrativo.id_inconsistencia_tecnica IS 'Identificador que faz relacionamento com a tabela inconsistencia_tecnica';
@@ -3068,7 +3409,7 @@ COMMENT ON COLUMN analise.inconsistencia_tecnica_documento_administrativo.id_doc
 
 
     
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/116.sql
+--										116.sql
 
 
 CREATE TABLE analise.parecer_analista_tecnico (
@@ -3089,7 +3430,7 @@ CREATE TABLE analise.parecer_analista_tecnico (
         REFERENCES analise.usuario_analise (id)
 );
 ALTER TABLE analise.parecer_analista_tecnico OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.parecer_analista_tecnico TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.parecer_analista_tecnico TO licenciamento_ap;
 COMMENT ON TABLE analise.parecer_analista_tecnico IS 'Entidade responsável por armazenar os pareceres dos analistas técnicos';
 COMMENT ON COLUMN analise.parecer_analista_tecnico.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.parecer_analista_tecnico.id_analise_tecnica IS 'Identificador da análise técnica ligada ao parecer';
@@ -3108,7 +3449,7 @@ CREATE SEQUENCE analise.parecer_analista_tecnico_id_seq
     CACHE 1;
 ALTER TABLE analise.parecer_analista_tecnico ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.parecer_analista_tecnico_id_seq');
 ALTER TABLE analise.parecer_analista_tecnico_id_seq OWNER TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE analise.parecer_analista_tecnico_id_seq TO licenciamento_am;
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_analista_tecnico_id_seq TO licenciamento_ap;
 SELECT setval('analise.parecer_analista_tecnico_id_seq', coalesce(max(id), 1)) FROM analise.parecer_analista_tecnico;
 
 CREATE TABLE analise.rel_documento_parecer_analista_tecnico (
@@ -3120,37 +3461,37 @@ CREATE TABLE analise.rel_documento_parecer_analista_tecnico (
         REFERENCES analise.documento (id)
 );
 ALTER TABLE  analise.rel_documento_parecer_analista_tecnico OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE  analise.rel_documento_parecer_analista_tecnico TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE  analise.rel_documento_parecer_analista_tecnico TO licenciamento_ap;
 COMMENT ON TABLE analise.rel_documento_parecer_analista_tecnico IS 'Entidade responsável por armazenar a relação dos documentos de um parecer de analista técnico';
 COMMENT ON COLUMN analise.rel_documento_parecer_analista_tecnico.id_parecer_analista_tecnico IS 'Identificador do parecer';
 COMMENT ON COLUMN analise.rel_documento_parecer_analista_tecnico.id_documento IS 'Identificador do documento relacionado ao parecer';
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/117.sql
+--										117.sql
 
 
 ALTER TABLE analise.parecer_analista_tecnico ADD COLUMN parecer TEXT;
 COMMENT ON COLUMN analise.parecer_analista_tecnico.parecer IS 'Campo responsável por armazenar o parecer da análise técnica';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/118.sql
+--										118.sql
 
 
 INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
 (29, 'Documento Auto de Infração', 'documento_auto_infracao', 'documento_auto_infracao' );
     
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/119.sql
+--										119.sql
 
 
 ALTER TABLE analise.inconsistencia_tecnica_parametro ADD COLUMN id_atividade_caracterizacao integer;
 COMMENT ON COLUMN analise.inconsistencia_tecnica_parametro.id_atividade_caracterizacao IS 'Identificador da atividade caracterizacao a qual os parâmetros pertencem.';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/120.sql
+--										120.sql
 
 ALTER TABLE analise.parecer_analista_tecnico ADD COLUMN id_historico_tramitacao integer;
 COMMENT ON COLUMN analise.parecer_analista_tecnico.id_historico_tramitacao IS 'Campo responsável por armazenar o id do histórico de tramitação';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/121.sql
+--										121.sql
 
 
 ALTER TABLE analise.parecer_analista_tecnico ADD COLUMN validade_permitida integer;
@@ -3182,15 +3523,15 @@ CREATE TABLE analise.restricao (
         REFERENCES analise.parecer_analista_tecnico(id)
 );
 ALTER TABLE analise.restricao OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.restricao TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.restricao_id_seq TO licenciamento_am; 
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.restricao TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.restricao_id_seq TO licenciamento_ap; 
 COMMENT ON TABLE analise.restricao IS 'Entidade responsável por armazenar as restrições das licença de análise.';
 COMMENT ON COLUMN analise.restricao.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.restricao.texto IS 'Descrição da restrição.';
 COMMENT ON COLUMN analise.restricao.id_parecer_analista_tecnico IS 'Identificador do parecer da análise técnica da condicionante';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/122.sql
+--										122.sql
 
 
 ALTER TABLE analise.vistoria DROP CONSTRAINT fk_v_analise_tecnica;
@@ -3208,13 +3549,13 @@ ALTER TABLE analise.inconsistencia_vistoria ADD COLUMN tipo_inconsistencia text 
 COMMENT ON COLUMN analise.inconsistencia_vistoria.tipo_inconsistencia IS 'Campo que armazena o tipo da inconsistência relatada pelo analista.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/123.sql
+--										123.sql
 
 
 ALTER TABLE analise.parecer_analista_geo ALTER COLUMN conclusao DROP NOT NULL;
 ALTER TABLE analise.parecer_analista_tecnico ALTER COLUMN da_conclusao DROP NOT NULL;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/124.sql
+--										124.sql
 
 
 ALTER TABLE analise.notificacao ADD COLUMN id_parecer_analista_tecnico INTEGER;
@@ -3226,7 +3567,7 @@ FOREIGN KEY (id_parecer_analista_tecnico) REFERENCES analise.parecer_analista_te
 ALTER TABLE analise.notificacao ALTER COLUMN id_parecer_analista_geo DROP NOT NULL;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/125.sql
+--										125.sql
 
 
 ALTER TABLE analise.parecer_analista_tecnico ADD COLUMN id_documento INTEGER;
@@ -3237,7 +3578,7 @@ CONSTRAINT fk_pat_documento FOREIGN KEY (id_documento)
 	REFERENCES analise.documento(id);
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/126.sql
+--										126.sql
 
 
 UPDATE analise.tipo_documento
@@ -3258,13 +3599,13 @@ CREATE TABLE analise.rel_documento_notificacao_tecnica
         REFERENCES analise.notificacao (id)
 );
 ALTER TABLE analise.rel_documento_notificacao_tecnica OWNER TO postgres;
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_notificacao_tecnica TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_notificacao_tecnica TO licenciamento_ap;
 COMMENT ON TABLE analise.rel_documento_notificacao_tecnica is 'Entidade responsável por armazenar a relação entre as entidades documento e notificação referentes aos documentos gerados na notificação do técnico.';
 COMMENT ON COLUMN analise.rel_documento_notificacao_tecnica.id_documento is 'Identificador da tabela documento, responsável pelo relacionamento entre as duas tabelas.';
 COMMENT ON COLUMN analise.rel_documento_notificacao_tecnica.id_notificacao is 'Identificador da tabela notificacao, responsável pelo relacionamento entre as duas tabelas referentes aos documentos gerados na notificação do técnico.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/127.sql
+--										127.sql
 
 
 CREATE TABLE analise.parecer_gerente_analise_tecnica
@@ -3285,10 +3626,10 @@ CREATE TABLE analise.parecer_gerente_analise_tecnica
       REFERENCES analise.usuario_analise (id) 
 );
 ALTER TABLE analise.parecer_gerente_analise_tecnica OWNER TO postgres;
-ALTER TABLE analise.parecer_gerente_analise_tecnica OWNER TO licenciamento_am;
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_gerente_analise_tecnica TO licenciamento_am;
+ALTER TABLE analise.parecer_gerente_analise_tecnica OWNER TO licenciamento_ap;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_gerente_analise_tecnica TO licenciamento_ap;
 GRANT ALL ON TABLE analise.parecer_gerente_analise_tecnica TO postgres;
-GRANT SELECT,USAGE ON SEQUENCE analise.parecer_gerente_analise_tecnica_id_seq TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.parecer_gerente_analise_tecnica_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.parecer_gerente_analise_tecnica IS 'Entidade responsável por armazenar informações sobre o parecer do gerente em uma análise técnica';
 COMMENT ON COLUMN analise.parecer_gerente_analise_tecnica.id IS 'Identificador do parecer do gerente';
 COMMENT ON COLUMN analise.parecer_gerente_analise_tecnica.id_tipo_resultado_analise IS 'Tipo do resultado da análise';
@@ -3316,9 +3657,9 @@ CREATE TABLE analise.diretor
 );
 ALTER TABLE analise.diretor OWNER TO postgres;
 GRANT ALL ON TABLE analise.diretor TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.diretor TO licenciamento_am;
-ALTER TABLE  analise.diretor OWNER TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE  analise.diretor_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.diretor TO licenciamento_ap;
+ALTER TABLE  analise.diretor OWNER TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE  analise.diretor_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.diretor IS 'Entidade responsável por armazenar o Gerente responsável pela análise técnica.';
 COMMENT ON COLUMN analise.diretor.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.diretor.id_analise_tecnica IS 'Identificador da entidade analise_tecnica que realiza o relacionamento entre as entidades diretor e analise_tecnica.';
@@ -3328,7 +3669,7 @@ COMMENT ON COLUMN analise.diretor.id_analise_geo IS 'Identificador da entidade a
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/128.sql
+--										128.sql
 
 
 INSERT INTO analise.tipo_documento(id, nome, caminho_modelo, caminho_pasta, prefixo_nome_arquivo) VALUES 
@@ -3339,19 +3680,19 @@ COMMENT ON COLUMN analise.vistoria.id_documento_relatorio_tecnico_vistoria IS 'I
 
 ALTER TABLE analise.vistoria ALTER COLUMN hora TYPE TIMESTAMP WITHOUT TIME ZONE;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/129.sql
+--										129.sql
 
 
 ALTER TABLE analise.parecer_analista_tecnico RENAME COLUMN data TO data_parecer;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/130.sql
+--										130.sql
 
 
 UPDATE analise.tipo_documento SET caminho_pasta = 'parecer_analise_tecnica' WHERE id = 4;
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/131.sql
+--										131.sql
 
 
 ALTER TABLE analise.comunicado ADD COLUMN aguardando_resposta BOOLEAN DEFAULT FALSE;
@@ -3361,7 +3702,7 @@ ALTER TABLE analise.comunicado ADD COLUMN segundo_email_enviado BOOLEAN DEFAULT 
 COMMENT ON COLUMN analise.comunicado.segundo_email_enviado IS 'Campo que idenfitica se houve o envio do segundo e-mail para o órgão.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/132.sql
+--										132.sql
 
 
 INSERT INTO analise.tipo_documento(id, nome, caminho_modelo, caminho_pasta, prefixo_nome_arquivo) VALUES 
@@ -3371,7 +3712,7 @@ ALTER TABLE analise.parecer_analista_tecnico ADD COLUMN id_documento_minuta INTE
 COMMENT ON COLUMN analise.parecer_analista_tecnico.id_documento_minuta IS 'Identificador único da entidade documento.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/133.sql
+--										133.sql
 
 
 ALTER TABLE analise.parecer_analista_geo ADD COLUMN id_documento INTEGER;
@@ -3392,7 +3733,7 @@ ALTER TABLE analise.documento ADD COLUMN responsavel VARCHAR(200);
 COMMENT ON COLUMN analise.documento.responsavel IS 'Campo que apresenta o responsável por gerar o documento';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/134.sql
+--										134.sql
 
 ALTER TABLE analise.processo ADD COLUMN retificacao BOOLEAN DEFAULT FALSE NOT NULL;
 COMMENT ON COLUMN analise.processo.retificacao IS 'Flag que indica se um processo é proveniente de retificação de uma caracterização';
@@ -3447,7 +3788,7 @@ WHERE processo.id = result.id_processo;
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/135.sql
+--										135.sql
 
 
 CREATE TABLE analise.parecer_diretor_tecnico
@@ -3468,10 +3809,10 @@ CREATE TABLE analise.parecer_diretor_tecnico
       REFERENCES analise.usuario_analise (id)
 );
 ALTER TABLE analise.parecer_diretor_tecnico OWNER TO postgres;
-ALTER TABLE analise.parecer_diretor_tecnico OWNER TO licenciamento_am;
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_diretor_tecnico TO licenciamento_am;
+ALTER TABLE analise.parecer_diretor_tecnico OWNER TO licenciamento_ap;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_diretor_tecnico TO licenciamento_ap;
 GRANT ALL ON TABLE analise.parecer_diretor_tecnico TO postgres;
-GRANT SELECT,USAGE ON SEQUENCE analise.parecer_diretor_tecnico_id_seq TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.parecer_diretor_tecnico_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.parecer_diretor_tecnico IS 'Entidade responsável por armazenar informações sobre o parecer do diretor técnico';
 COMMENT ON COLUMN analise.parecer_diretor_tecnico.id IS 'Identificador do parecer do diretor técnico';
 COMMENT ON COLUMN analise.parecer_diretor_tecnico.id_tipo_resultado_analise IS 'Tipo do resultado da análise';
@@ -3508,9 +3849,9 @@ CREATE TABLE analise.presidente
 );
 ALTER TABLE analise.presidente OWNER TO postgres;
 GRANT ALL ON TABLE analise.presidente TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.presidente TO licenciamento_am;
-ALTER TABLE  analise.presidente OWNER TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE  analise.presidente_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.presidente TO licenciamento_ap;
+ALTER TABLE  analise.presidente OWNER TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE  analise.presidente_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.presidente IS 'Entidade responsável por armazenar o Presidente.';
 COMMENT ON COLUMN analise.presidente.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.presidente.id_analise_tecnica IS 'Identificador da entidade analise_tecnica que realiza o relacionamento entre as entidades presidente e analise_tecnica.';
@@ -3529,14 +3870,14 @@ ALTER TABLE analise.diretor
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/136.sql
+--										136.sql
 
 
 ALTER TABLE analise.comunicado ADD COLUMN interessado_notificado BOOLEAN DEFAULT FALSE;
 COMMENT ON COLUMN analise.comunicado.interessado_notificado IS 'Campo que identifica se houve o envio da notificação ao interessado.';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/137.sql
+--										137.sql
 
 
 CREATE TABLE analise.parecer_presidente
@@ -3557,10 +3898,10 @@ CREATE TABLE analise.parecer_presidente
       REFERENCES analise.usuario_analise (id)
 );
 ALTER TABLE analise.parecer_presidente OWNER TO postgres;
-ALTER TABLE analise.parecer_presidente OWNER TO licenciamento_am;
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_presidente TO licenciamento_am;
+ALTER TABLE analise.parecer_presidente OWNER TO licenciamento_ap;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_presidente TO licenciamento_ap;
 GRANT ALL ON TABLE analise.parecer_presidente TO postgres;
-GRANT SELECT,USAGE ON SEQUENCE analise.parecer_presidente_id_seq TO licenciamento_am;
+GRANT SELECT,USAGE ON SEQUENCE analise.parecer_presidente_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.parecer_presidente IS 'Entidade responsável por armazenar informações sobre o parecer do presidente';
 COMMENT ON COLUMN analise.parecer_presidente.id IS 'Identificador do parecer do presidente';
 COMMENT ON COLUMN analise.parecer_presidente.id_tipo_resultado_analise IS 'Tipo do resultado da análise';
@@ -3570,7 +3911,7 @@ COMMENT ON COLUMN analise.parecer_presidente.id_usuario_presidente IS 'Identific
 COMMENT ON COLUMN analise.parecer_presidente.id_analise IS 'Identificador da análise que teve parecer do presidente';
 COMMENT ON COLUMN analise.parecer_presidente.id_historico_tramitacao IS 'Identificador do histórico da tramitação';
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/138.sql
+--										138.sql
 
 
 INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
@@ -3601,14 +3942,12 @@ CREATE TABLE analise.parecer_juridico (
         REFERENCES analise.tipo_resultado_analise (id),
     CONSTRAINT fk_pj_analise_tecnica FOREIGN KEY (id_analise_tecnica)
         REFERENCES analise.analise_tecnica(id),
-    CONSTRAINT fk_pj_documento_fundiario_licenciamento FOREIGN KEY (id_documento_fundiario)
-        REFERENCES licenciamento.documento(id),
     CONSTRAINT fk_pj_analise_geo FOREIGN KEY (id_analise_geo)
         REFERENCES analise.analise_geo (id)
 );
 ALTER TABLE analise.parecer_juridico OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.parecer_juridico TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.parecer_juridico_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.parecer_juridico TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_juridico_id_seq TO licenciamento_ap;
 COMMENT ON TABLE analise.parecer_juridico IS 'Entidade responsável por armazenar os dados referentes ao parecer jurídico que será enviado ao setor jurídico responsável.';
 COMMENT ON COLUMN analise.parecer_juridico.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.parecer_juridico.id_analise_geo IS 'Identificador da tabela analise_geo, responsável pelo relacionamento entre as duas tabelas.';
@@ -3634,19 +3973,19 @@ CREATE TABLE analise.rel_documento_juridico (
         REFERENCES analise.parecer_juridico (id)
 );
 ALTER TABLE analise.rel_documento_juridico OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_juridico TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.rel_documento_juridico TO licenciamento_ap;
 COMMENT ON TABLE analise.rel_documento_juridico IS 'Entidade que relaciona a Entidade Documento e a Entidade Parecer Juridico';
 COMMENT ON COLUMN analise.rel_documento_juridico.id_documento IS 'Identificador da tabela documento, responśavel pelo relacionamento entre as duas tabelas';
 COMMENT ON COLUMN analise.rel_documento_juridico.id_parecer_juridico IS 'Identificador da tabela parecer_juridico, responśavel pelo relacionamento entre as duas tabelas';
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/139.sql
+--										139.sql
 
 ALTER TABLE analise.licenca_suspensa DROP CONSTRAINT fk_ls_usuario_analise_executor;
 
 ALTER TABLE analise.licenca_cancelada DROP CONSTRAINT fk_lc_usuario_analise_executor ;
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/140.sql
+--										140.sql
 
 CREATE TABLE analise.dispensa_licenciamento_cancelada (
   id serial NOT NULL,
@@ -3659,8 +3998,8 @@ CREATE TABLE analise.dispensa_licenciamento_cancelada (
 );
 ALTER TABLE analise.dispensa_licenciamento_cancelada OWNER TO postgres;
 GRANT ALL ON TABLE analise.dispensa_licenciamento_cancelada TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.dispensa_licenciamento_cancelada TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licenciamento_cancelada_id_seq TO licenciamento_am; 
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.dispensa_licenciamento_cancelada TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licenciamento_cancelada_id_seq TO licenciamento_ap; 
 COMMENT ON TABLE analise.dispensa_licenciamento_cancelada IS 'Entidade responsável por armazenar as Dispensas de licenciamento Ambiental canceladas.';
 COMMENT ON COLUMN analise.dispensa_licenciamento_cancelada.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.dispensa_licenciamento_cancelada.id_dispensa_licenciamento IS 'Identificador da entidade licenciamento.dispensa_licenciamento que realiza o relacionamento entre as entidades dispensa_licencamento_cancelada e licenciamento.dispensa_licenciamento.';
@@ -3681,8 +4020,8 @@ CREATE TABLE analise.dispensa_licenciamento_suspensa (
 );
 ALTER TABLE analise.dispensa_licenciamento_suspensa OWNER TO postgres;
 GRANT ALL ON TABLE analise.dispensa_licenciamento_suspensa TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.dispensa_licenciamento_suspensa TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licenciamento_suspensa_id_seq TO licenciamento_am; 
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.dispensa_licenciamento_suspensa TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.dispensa_licenciamento_suspensa_id_seq TO licenciamento_ap; 
 COMMENT ON TABLE analise.dispensa_licenciamento_suspensa IS 'Entidade responsável por armazenar as Dispensas de licenciamento Ambiental suspensas.';
 COMMENT ON COLUMN analise.dispensa_licenciamento_suspensa.id IS 'Identificador único da entidade.';
 COMMENT ON COLUMN analise.dispensa_licenciamento_suspensa.id_dispensa_licenciamento IS 'Identificador da entidade licenciamento.dispensa_licenciamento que realiza o relacionamento entre as entidades dispensa_licencamento_suspensa e licenciamento.dispensa_licenciamento.';
@@ -3694,7 +4033,7 @@ COMMENT ON COLUMN analise.dispensa_licenciamento_suspensa.ativo is 'Indica se a 
 
 
 
---										/home/adriana/projetos_git/AP/analise/backend/db/evolutions/141.sql
+--										141.sql
 
 INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES 
 	(33, 'Documento notificação análise técnica', 'documento-notificacao-analise-tecnica', 'documento_notificacao_analise_tecnica');
@@ -3705,3 +4044,4 @@ INSERT INTO analise.tipo_documento (id, nome, caminho_pasta, prefixo_nome_arquiv
 
 # --- !Downs
 
+DROP SCHEMA IF EXISTS analise CASCADE;
