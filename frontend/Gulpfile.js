@@ -313,6 +313,6 @@ gulp.task('default', function() {
 	return gulp.watch(config.src.all, ['dev']);
 });
 
-gulp.task('runners', function () {
+gulp.task('teste', function () {
 	return gulp.run('dist');
 });
