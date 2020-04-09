@@ -1548,6 +1548,14 @@ INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_fina
 SELECT setval('tramitacao.transicao_id_transicao_seq', coalesce(max(id_transicao), 1)) FROM tramitacao.transicao;
 
 
+--98
+DELETE FROM tramitacao.transicao WHERE id_acao = 37 and id_condicao_final=6;
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) 
+    SELECT 37, id_condicao, 6, null, null FROM tramitacao.condicao WHERE id_condicao NOT IN (6, 14, 15, 16, 34);
+
+
+
 # --- !Downs
 
 DROP SCHEMA tramitacao CASCADE;
