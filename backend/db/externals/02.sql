@@ -620,10 +620,7 @@ SET search_path = analise, pg_catalog, public;
 
 CREATE ROLE tramitacao LOGIN
 ENCRYPTED PASSWORD 'tramitacao'
-NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
-
-GRANT USAGE ON SCHEMA portal_seguranca TO tramitacao;
-GRANT SELECT ON ALL TABLES IN SCHEMA portal_seguranca TO tramitacao;
+SUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
 
 GRANT USAGE ON SCHEMA public TO tramitacao;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tramitacao;
@@ -631,6 +628,14 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO tramitacao;
 GRANT USAGE ON SCHEMA tramitacao TO tramitacao;
 GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA tramitacao TO tramitacao;
 GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA tramitacao TO tramitacao;
+
+GRANT CONNECT ON DATABASE licenciamento_ap TO tramitacao;
+
+GRANT USAGE ON SCHEMA analise, tramitacao TO tramitacao;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA analise TO tramitacao;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA analise TO tramitacao;
+
 
 SET search_path = tramitacao, pg_catalog;
 
