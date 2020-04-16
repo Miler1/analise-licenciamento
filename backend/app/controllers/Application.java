@@ -99,7 +99,7 @@ public class Application extends GenericController {
 		String url = Configuracoes.APP_URL + "notificacoes/" + Crypto.encryptAES(String.valueOf(notificacao.historicoTramitacao.idHistorico))
 				+ "/download";
 
-		String urlImageLogo = Configuracoes.APP_URL + "app/images/brasao_pa.png";
+		String urlImageLogo = Configuracoes.APP_URL + "app/images/brasao_ap.png";
 
 		Map<String, Object> args = new HashMap<>(7);
 		args.put("notificacoes", notificacoes);
