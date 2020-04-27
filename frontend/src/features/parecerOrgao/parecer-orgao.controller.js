@@ -22,8 +22,6 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 		
 	}, 150);
 
-
-
 	$scope.upload = function(file, invalidFile) {
 
 		if(file) {
@@ -31,10 +29,20 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 			uploadService.saveExterno(file)
 				.then(function(response) {
 
+					var nomeDoArquivo = file.name;
+
+					var quantidadeDocumentosComMesmoNome = $scope.anexos.filter(function(documento) {
+						return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+					}).length;
+
+					if(quantidadeDocumentosComMesmoNome > 0) {
+						nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+					}
+
 					$scope.anexos.push({
 
 						key: response.data,
-						nomeDoArquivo: file.name,
+						nomeDoArquivo: nomeDoArquivo,
 						tipoDocumento: {
 
 							id: app.utils.TiposDocumentosAnalise.PARECER_ORGAO

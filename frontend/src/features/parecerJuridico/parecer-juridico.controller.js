@@ -32,11 +32,21 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 	};
 		
 	$timeout(function () {
-		
-		parecerJuridicoService.findParecerJuridico($routeParams.idParecerJuridico)
-		.then(function(response){
 
-			$scope.parecerJuridico = response.data;
+		parecerJuridicoService.findPareceres()
+			.then(function(response){
+
+			$scope.pareceresJuridicos = response.data;
+			
+			_.forEach($scope.pareceresJuridicos, function(parecerJuridico) {
+
+				if(parecerJuridico.id.toString() === $routeParams.idParecerJuridico) {
+
+					$scope.parecerJuridico = parecerJuridico;
+					
+				}
+			});
+
 			$scope.setDocumentos();
 			
 			if (!$scope.parecerJuridico.ativo) {
@@ -49,7 +59,7 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 
 		});
 		
-	}, 300);
+	}, 50);
 
 	$scope.upload = function(file, invalidFile) {
 
@@ -58,10 +68,20 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 			uploadService.saveExterno(file)
 				.then(function(response) {
 
+					var nomeDoArquivo = file.name;
+
+					var quantidadeDocumentosComMesmoNome = $scope.anexos.filter(function(documento) {
+						return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+					}).length;
+
+					if(quantidadeDocumentosComMesmoNome > 0) {
+						nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+					}
+
 					$scope.anexos.push({
 
 						key: response.data,
-						nomeDoArquivo: file.name,
+						nomeDoArquivo: nomeDoArquivo,
 						tipoDocumento: {
 
 							id: app.utils.TiposDocumentosAnalise.DOCUMENTO_JURIDICO
@@ -110,11 +130,14 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 
 		if(!$scope.parecerJuridico.tipoResultadoAnalise){
 			$scope.errors.resultadoAnalise = true;
+			mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
 			return false;
+		}else{
+			$scope.errors.resultadoAnalise = false;
 		}
 
 		if (!$scope.parecerJuridico.parecer || $scope.parecerJuridico.parecer === ''){
-
+			$scope.errors.consideracoes = true;
 			mensagem.error("Verifique os campos obrigatórios!",{referenceId: 5});
 			return false;
 

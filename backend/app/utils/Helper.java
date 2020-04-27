@@ -246,7 +246,7 @@ public class Helper {
 			return valor;
 		}
 
-		return valor.substring(0, 4) + "-" + valor.substring(5);
+		return valor.substring(0, 5) + "-" + valor.substring(5);
 	}
 
 	/**

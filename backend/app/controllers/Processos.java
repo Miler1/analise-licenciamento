@@ -82,4 +82,13 @@ public class Processos extends InternalController {
 
     }
 
+	public static void baixarShapefileAtividades(Long idProcesso) throws IOException, SchemaException {
+
+		verificarPermissao(Acao.VISUALIZAR_PROTOCOLO);
+
+		Processo processo = Processo.findById(idProcesso);
+		renderBinary(processo.gerarShapeAtividades());
+
+	}
+
 }

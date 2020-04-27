@@ -33,6 +33,15 @@ public class PareceresJuridicos extends GenericController{
 
     }
 
+    public static void findPareceres(Long id) {
+
+        List<ParecerJuridico> parecerJuridicoBanco =  ParecerJuridico.findAll();
+
+        renderJSON(parecerJuridicoBanco, ParecerJuridicoSerializer.findParecerJuridico);
+
+    }
+
+
     public static void getParecerJuridicoByAnaliseTecnica(Long idAnaliseTecnica) {
 
         ParecerJuridico parecerFinal = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(idAnaliseTecnica);

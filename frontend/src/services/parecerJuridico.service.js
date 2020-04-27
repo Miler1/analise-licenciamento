@@ -12,6 +12,12 @@ var ParecerJuridicoService = function(request,config) {
 			.get(config.BASE_URL() + 'analisesGeo/parecerJuridico/findParecerJuridico/'+ idParecerJuridico);
 	};
 
+	this.findPareceres = function(){
+
+		return request
+			.get(config.BASE_URL() + 'analisesGeo/parecerJuridico/findPareceres/');
+	};
+
 	this.getParecerJuridicoByAnaliseTecnica = function(idAnaliseTecnica){
 
 		return request

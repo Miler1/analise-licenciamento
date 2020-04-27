@@ -20,9 +20,11 @@ import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static security.Auth.getUsuarioSessao;
 
@@ -197,6 +199,24 @@ public class AnaliseTecnica extends Analisavel {
 		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
 		this.dataVencimentoPrazo = c.getTime();
+
+		this.ativo = true;
+
+		if (this.analise.diasAnalise.qtdeDiasTecnica == null) {
+
+			this.analise.diasAnalise.qtdeDiasTecnica = 0;
+			this.analise.diasAnalise.save();
+		}
+
+		return super.save();
+
+	}
+
+	public AnaliseTecnica save(AnaliseTecnica analiseTecnicaAnterior) {
+
+
+		this.dataCadastro = analiseTecnicaAnterior.dataCadastro;
+		this.dataVencimentoPrazo = analiseTecnicaAnterior.dataVencimentoPrazo;
 
 		this.ativo = true;
 
@@ -815,7 +835,15 @@ public class AnaliseTecnica extends Analisavel {
 
 		return documentosNotificacao;
 	
-	}	
+	}
+
+	public Date getDataParecer(){
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = this.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
+
+		return parecerAnalistaTecnico.dataParecer;
+
+	}
 	
 	public AnalistaTecnico getAnalistaTecnico() {
 
@@ -835,9 +863,11 @@ public class AnaliseTecnica extends Analisavel {
 
 	public static List<AnaliseTecnica> findAnalisesByNumeroProcesso(String numeroProcesso) {
 
-		return AnaliseTecnica.find("analise.processo.numero = :numeroProcesso")
+		List<AnaliseTecnica> analisesTecnicas = AnaliseTecnica.find("analise.processo.numero = :numeroProcesso")
 				.setParameter("numeroProcesso", numeroProcesso)
 				.fetch();
+
+		return analisesTecnicas.stream().sorted(Comparator.comparing(AnaliseTecnica::getDataParecer).reversed()).collect(Collectors.toList());
 
 	}
 

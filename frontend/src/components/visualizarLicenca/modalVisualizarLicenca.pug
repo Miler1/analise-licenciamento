@@ -34,7 +34,7 @@ include ../../layout/components/inputErrors
 			div
 				strong.col-md-2(style="padding-right:0px;") Data de emissão:
 				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.resolve.dadosLicenca.dataCadastro}}
-			div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO")
+			div(ng-if="$ctrl.parecerTecnico.tipoResultadoAnalise.id === $ctrl.tiposResultadoAnalise.DEFERIDO && $ctrl.parecerTecnico.validadePermitida !== null")
 				strong.col-md-2 Validade: 
 				label.not-bold.margin-right-xs(style="margin-left:15px;") {{$ctrl.parecerTecnico.validadePermitida}} ano(s)
 		br

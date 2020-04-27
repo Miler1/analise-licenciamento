@@ -1,6 +1,6 @@
 var AnaliseEmAndamentoPresidenteListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'EM VALIDAÇÃO DIRETOR PRESIDENTE';
+	$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO DIRETOR PRESIDENTE';
 
 	var listagem = this;
 

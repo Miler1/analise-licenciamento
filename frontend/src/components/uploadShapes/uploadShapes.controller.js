@@ -221,5 +221,11 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 	};
 
+	uploadShapes.baixarShapefileAtividades = function(idProcesso) {
+
+		processoService.baixarShapefileAtividades(idProcesso);
+
+	};
+
 };
 exports.controllers.UploadShapesController = UploadShapesController;

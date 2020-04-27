@@ -274,7 +274,7 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
 			.then(function(response){
                 $location.path("analise-gerente");
                 $timeout(function() {
-                    mensagem.success("Analise Gerente Técnico finalizada!", {referenceId: 5});
+                    mensagem.success("Validação finalizada!", {referenceId: 5});
                 }, 0);
             },function(error){
 				mensagem.error(error.data.texto);

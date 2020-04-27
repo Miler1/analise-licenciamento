@@ -141,7 +141,15 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	}
 
 	function notificacaoAtendida(processo) {
-		return processo && processo.retificacao && processo.idAnalistaGeoAnterior === processo.idAnalistaGeo;
+		
+		if (processo.idAnalistaGeoAnterior !== undefined) {
+
+			return processo && processo.retificacao && processo.idAnalistaGeoAnterior === processo.idAnalistaGeo;
+
+		} else {
+
+			return processo && processo.retificacao;
+		}
 	}
 };
 

@@ -88,6 +88,12 @@ var ProcessoService = function(request, config, $uibModal, $window) {
 		$window.open(config.BASE_URL() + 'processos/baixarShapefile/' + idProcesso, '_blank');
 
 	};
+
+	this.baixarShapefileAtividades = function(idProcesso){
+
+		$window.open(config.BASE_URL() + 'processos/baixarShapefileAtividades/' + idProcesso, '_blank');
+
+	};
 };
 
 exports.services.ProcessoService = ProcessoService;

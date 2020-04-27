@@ -272,6 +272,19 @@ public class Analise extends GenericModel {
 		return null;
 	}
 
+	public Analisavel getAnalisavelNotificacao(){
+
+		if(this.analisesTecnicas != null && !this.analisesTecnicas.isEmpty()) {
+			return this.analisesTecnicas.stream().max(Comparator.comparing(AnaliseTecnica::getId)).orElse(null);
+		}
+
+		if(this.analisesGeo != null){
+			return this.analisesGeo.stream().max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+		}
+
+		return null;
+	}
+
 	public void iniciar(UsuarioAnalise usuarioExecutor) {
 
 		if (this.dataCadastro == null) {
@@ -291,7 +304,7 @@ public class Analise extends GenericModel {
 	}
 
 	public List<Notificacao> getNotificacoes(){
-		return getAnalisavel().getNotificacoes();
+		return getAnalisavelNotificacao().getNotificacoes();
 	}
 
 	public void inativar(){

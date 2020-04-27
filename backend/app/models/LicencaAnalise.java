@@ -82,20 +82,25 @@ public class LicencaAnalise extends GenericModel implements Identificavel {
 	@Override
 	public LicencaAnalise save() {
 		
-		Validacao.validar(this);
-		
-		if (this.validade.compareTo(caracterizacao.tipoLicenca.validadeEmAnos) > 0) {
-			
-			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO);
+		if (this.validade != null) {
+
+			Validacao.validar(this);
+
+			if (this.validade.compareTo(caracterizacao.tipoLicenca.validadeEmAnos) > 0) {
+
+				throw new ValidacaoException(Mensagem.ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO);
+			}
+
 		}
-		
+
 		if (!emitirIsTrue()) {
-			
+
 			this.validade = caracterizacao.tipoLicenca.validadeEmAnos;
 			this.observacao = null;
 		}
-		 
-		return super.save();		
+
+		return super.save();
+
 	}
 	
 	public void update(LicencaAnalise novaLicencaAnalise) {

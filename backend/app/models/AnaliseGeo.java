@@ -3,6 +3,7 @@ package models;
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import controllers.PareceresAnalistasGeo;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.PortalSegurancaException;
@@ -137,6 +138,14 @@ public class AnaliseGeo extends Analisavel {
                 .first();
     }
 
+    public Date getDataParecer(){
+
+        ParecerAnalistaGeo parecerAnalistaGeo = this.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
+
+        return parecerAnalistaGeo.dataParecer;
+
+    }
+
     public AnaliseGeo save() {
 
         if (this.dataCadastro == null) {
@@ -148,6 +157,16 @@ public class AnaliseGeo extends Analisavel {
         c.setTime(this.dataCadastro);
         c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_GEO);
         this.dataVencimentoPrazo = c.getTime();
+
+        this.ativo = true;
+
+        return super.save();
+    }
+
+    public AnaliseGeo save(AnaliseGeo analiseGeoAnterior) {
+
+        this.dataCadastro = analiseGeoAnterior.dataCadastro;
+        this.dataVencimentoPrazo = analiseGeoAnterior.dataVencimentoPrazo;
 
         this.ativo = true;
 
@@ -210,9 +229,11 @@ public class AnaliseGeo extends Analisavel {
 
     public static List<AnaliseGeo> findAnalisesByNumeroProcesso(String numeroProcesso) {
 
-        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso")
+        List<AnaliseGeo> analisesGeo = AnaliseGeo.find("analise.processo.numero = :numeroProcesso")
                 .setParameter("numeroProcesso", numeroProcesso)
                 .fetch();
+
+        return analisesGeo.stream().sorted(Comparator.comparing(AnaliseGeo::getDataParecer).reversed()).collect(Collectors.toList());
 
     }
     
@@ -729,7 +750,7 @@ public class AnaliseGeo extends Analisavel {
 
     }
 
-    public Documento gerarPDFCartaImagem(ParecerAnalistaGeo parecerAnalistaGeo) {
+    public Documento  gerarPDFCartaImagem(ParecerAnalistaGeo parecerAnalistaGeo) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
         Processo processo = Processo.findById(this.analise.processo.id);
@@ -775,6 +796,8 @@ public class AnaliseGeo extends Analisavel {
 
         MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasAtividades, geometriasRestricoes, geometriasEmpreendimento, geometriasComplexo, geometriaFoco);
 
+        Integer coodinatesAtividadeSize = grupoImagemCaracterizacao.coordinatesAtividade.length;
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -783,6 +806,8 @@ public class AnaliseGeo extends Analisavel {
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
                 .addParam("coordinates", grupoImagemCaracterizacao.coordinates)
+                .addParam("coordinatesAtividades", grupoImagemCaracterizacao.coordinatesAtividade)
+                .addParam("coordinatesAtividadeSize", coodinatesAtividadeSize)
                 .setPageSize(30.0D, 21.0D, 0.2D, 0D, 0D, 0.2D);
 
         pdf.generate();

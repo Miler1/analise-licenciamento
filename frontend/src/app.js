@@ -89,7 +89,7 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 }]).config(['growlProvider', function(growlProvider) {
 
 	growlProvider.globalDisableCountDown(false)
-		.globalTimeToLive(6000);
+		.globalTimeToLive(10000);
 
 }]).config(function($provide){
 

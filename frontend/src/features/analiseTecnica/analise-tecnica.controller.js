@@ -1012,9 +1012,17 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
 
                     } else if(tipoDocumento === ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA) {
 
+                        quantidadeDocumentosComMesmoNome = ctrl.parecer.vistoria.anexos.filter(function(documento) {
+                            return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+                        }).length;
+    
+                        if(quantidadeDocumentosComMesmoNome > 0) {
+                            nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+                        }
+
                         ctrl.parecer.vistoria.anexos.push({
                             key: response.data,
-                            nomeDoArquivo: file.name,
+                            nomeDoArquivo: nomeDoArquivo,
                             tipo: {
                                 id: ctrl.tiposDocumentosAnalise.DOCUMENTO_VISTORIA
                             }

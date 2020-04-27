@@ -31,7 +31,11 @@ mixin uploadShapes(idMapa)
 
 					button.btn.btn-sm.btn-default.pull-right(ng-click='uploadShapes.baixarShapefile(uploadShapes.processo.id)')
 						i.fa.fa-download
-						| &nbsp;Baixar shape do empreendimento/atividade(s)
+						| &nbsp;Baixar shape do empreendimento
+
+					button.btn.btn-sm.btn-default.pull-right.upload-button-atividades(ng-click='uploadShapes.baixarShapefileAtividades(uploadShapes.processo.id)')
+						i.fa.fa-download
+						| &nbsp;Baixar shape da(s) atividade(s)
 
 					h5.us-map-title Localização das camadas
 

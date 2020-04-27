@@ -40,7 +40,7 @@ div
 							td.text-center {{processo.licencas}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE), listagem.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
 								| {{listagem.dateUtil.getContaDiasRestantesData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE))}}
-							td(ng-class="{'error-message': processo.diasAnaliseGeo > listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
+							td(ng-class="{'error-message': processo.diasAnaliseGeo > listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO}").text-center
 								| {{ listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 							td( ng-init="listagem.verificaSolicitacaoAjustes(processo)")
 								span.pull-right

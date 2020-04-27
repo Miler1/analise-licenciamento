@@ -1,6 +1,6 @@
 var CxEntGerenteController = function($scope, config, analistaService,analiseTecnicaService, mensagem, $uibModal,$rootScope, processoService, analiseGeoService, $location) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO GERENTE TÉCNICO';
+	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO DO GERENTE TÉCNICO';
 
 	var cxEntGerente = this;
 
@@ -195,7 +195,7 @@ var CxEntGerenteController = function($scope, config, analistaService,analiseTec
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO GERENTE TÉCNICO';
+				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO GERENTE TÉCNICO';
 				$location.path('/analise-gerente/' + idAnalise.toString());
 			
 			}, function(error){
@@ -207,7 +207,7 @@ var CxEntGerenteController = function($scope, config, analistaService,analiseTec
 			analiseTecnicaService.iniciarAnaliseTecnicaGerente({ id : idAnaliseTecnica })
 			.then(function(response){
 
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO GERENTE TÉCNICO';
+				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO GERENTE TÉCNICO';
 				$location.path('/analise-tecnica-gerente/' + idAnalise.toString());
 				$rootScope.$broadcast('atualizarContagemProcessos');
 			

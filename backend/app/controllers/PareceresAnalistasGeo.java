@@ -21,7 +21,7 @@ public class PareceresAnalistasGeo extends InternalController {
 
 		parecerAnalistaGeo.finalizar(usuarioExecutor);
 
-		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+		renderMensagem(Mensagem.ANALISE_FINALIZADA_SUCESSO);
 
 	}
 

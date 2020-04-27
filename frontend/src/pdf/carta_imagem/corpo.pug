@@ -186,12 +186,23 @@ body.corpo
                     | \#{/list}
 
                     br
-                .coordendas.quebra
+                .coordenadas.quebra
                     p
                         strong Coordenadas do Empreendimento:
                     |\#{list items:0..coordinates.length -2, as: 'coordenadas'}
-                    p P${coordenadas +1} - ${utils.CoordenadaUtil.formataLatitudeString(coordinates[coordenadas].y)} ${utils.CoordenadaUtil.formataLongitudeString(coordinates[coordenadas].x)}
+                    p.coordenada P${coordenadas +1} - ${utils.CoordenadaUtil.formataLatitudeString(coordinates[coordenadas].y)} ${utils.CoordenadaUtil.formataLongitudeString(coordinates[coordenadas].x)}
                     div
+                    | \#{/list}
+                    br
+                    p
+                        strong Coordenadas da(s) Atividade(s):
+                    
+                    |\#{list items:0..coordinatesAtividades.length -1, as: 'coordenadasAtividade'}
+                    |\#{list items:0..coordinatesAtividades[coordenadasAtividade].length -2, as: 'coordenadas'}
+                    p.coordenada G${coordenadasAtividade +1}-${coordenadas +1} - ${utils.CoordenadaUtil.formataLatitudeString(coordinatesAtividades[coordenadasAtividade][coordenadas].y)} ${utils.CoordenadaUtil.formataLongitudeString(coordinatesAtividades[coordenadasAtividade][coordenadas].x)}
+                    div
+                    | \#{/list}
+                    br
                     | \#{/list}
 
             .footer

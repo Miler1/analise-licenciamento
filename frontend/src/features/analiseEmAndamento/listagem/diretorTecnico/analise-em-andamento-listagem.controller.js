@@ -1,6 +1,6 @@
 var AnaliseEmAndamentoDiretorListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'EM VALIDAÇÃO DIRETOR TÉCNICO';
+	$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO DIRETOR TÉCNICO';
 
 	var listagem = this;
 

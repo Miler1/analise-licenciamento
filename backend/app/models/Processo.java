@@ -606,6 +606,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
+				.groupByDataFinalAnaliseTecnica(!filtro.isAnaliseTecnica)
 				.groupByRenovacao()
 				.groupByRetificacao()
 				.groupByCaracterizacao()
@@ -648,6 +649,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		processoBuilder
 				.groupByDataVencimentoPrazoAnaliseGeo(true)
 				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
+				.groupByDataFinalAnaliseTecnica(!filtro.isAnaliseTecnica)
 				.groupByPrazoAnaliseGerente();
 
 	}
@@ -1123,7 +1125,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	public File gerarShape() throws IOException, SchemaException {
-		return this.caracterizacao.gerarShape();
+		return this.caracterizacao.gerarShapeEmpreendimento();
+	}
+
+	public File gerarShapeAtividades() throws IOException, SchemaException {
+		return this.caracterizacao.gerarShapeAtividade();
 	}
 
 }

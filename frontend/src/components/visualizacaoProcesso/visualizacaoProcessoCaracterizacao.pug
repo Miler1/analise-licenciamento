@@ -38,7 +38,7 @@ include ../../layout/components/mapPanel
 					table.table.table-striped.table-condensed
 						thead
 							th.col-md-11 Requisitos Administrativos
-							th.col-md-1
+							th.col-md-1.text-center Ação
 						tbody
 							tr(ng-repeat="documento in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosEnviados")
 								td.col-md-11 {{ documento.tipo.nome}}
@@ -48,7 +48,7 @@ include ../../layout/components/mapPanel
 					table.table.table-striped.table-condensed(ng-if="modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo.length > 0")
 						thead
 							th.col-md-11 Requisitos Técnicos
-							th.col-md-1
+							th.col-md-1.text-center Ação
 						tbody
 							tr(ng-repeat="solicitacaoGrupo in modalVisualizacaoProcessoCtrl.dadosProcesso.caracterizacao.documentosSolicitacaoGrupo")
 								td.col-md-11 {{ solicitacaoGrupo.tipoDocumento.nome}}

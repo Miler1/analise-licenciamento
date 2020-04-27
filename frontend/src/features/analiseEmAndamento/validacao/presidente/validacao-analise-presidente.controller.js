@@ -1,5 +1,6 @@
 var ValidacaoAnalisePresidenteController = function($uibModal,
 												 $route,
+												 $timeout,
 												 mensagem,
                                                  desvinculoService,      
                                                  analiseTecnicaService,
@@ -301,7 +302,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 				
 				$location.path('/analise-presidente');
 				$timeout(function() {
-                    mensagem.success(response.data.texto, {referenceId: 5});
+                    mensagem.success("Validação finalizada!", {referenceId: 5});
                 }, 0);
 
 		}).catch(function(){
