@@ -805,19 +805,7 @@ VALUES (19, 3, 9, 4, NULL, NULL);
 
 SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 19, true);
 
---16
-UPDATE analise.analise_juridica AS aj SET id_usuario_validacao=(SELECT h.id_usuario FROM tramitacao.historico_objeto_tramitavel h
-JOIN analise.processo p ON h.id_historico_objeto_tramitavel=p.id_objeto_tramitavel
-JOIN analise.analise a ON a.id_processo=p.id
-WHERE aj.id_analise=a.id AND h.id_condicao_inicial=5 ORDER BY h.id_historico_objeto_tramitavel DESC LIMIT 1
-);
 
-
-UPDATE analise.analise_tecnica AS at SET id_usuario_validacao=(SELECT h.id_usuario FROM tramitacao.historico_objeto_tramitavel h
-JOIN analise.processo p ON h.id_historico_objeto_tramitavel=p.id_objeto_tramitavel
-JOIN analise.analise a ON a.id_processo=p.id
-WHERE at.id_analise=a.id AND h.id_condicao_inicial=10 ORDER BY h.id_historico_objeto_tramitavel DESC LIMIT 1
-);
 --18
 
 
@@ -998,9 +986,6 @@ SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 36, TRUE);
 
 UPDATE tramitacao.condicao SET nm_condicao = 'Licença emitida' WHERE id_condicao = 14;
 
---30
-ALTER TABLE analise.licenca_cancelada
-ADD CONSTRAINT fk_lc_licenca FOREIGN KEY(id_licenca) REFERENCES licenciamento.licenca(id);
 
 --31
 
@@ -1234,12 +1219,6 @@ UPDATE licenciamento.empreendimento SET possui_anexo = false WHERE possui_anexo 
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET NOT NULL;
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET DEFAULT FALSE;
 
-ALTER TABLE analise.empreendimento_camada_geo
-    ADD CONSTRAINT fk_ecg_empreendimento FOREIGN KEY (id_empreendimento)
-        REFERENCES licenciamento.empreendimento (id);
-
-GRANT USAGE ON SCHEMA analise TO tramitacao;
-GRANT SELECT ON ALL TABLES IN SCHEMA analise TO tramitacao;
 
 --44
 ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo DROP NOT NULL;
@@ -1265,29 +1244,6 @@ SELECT setval('tramitacao.acao_id_acao_seq', max(id_acao)) FROM tramitacao.acao;
 SELECT setval('tramitacao.transicao_id_transicao_seq', max(id_transicao)) FROM tramitacao.transicao;
 
 
---46
-ALTER TABLE analise.comunicado
-
-    ADD CONSTRAINT fk_c_tipo_sobreposicao FOREIGN KEY (id_tipo_sobreposicao)
-        REFERENCES licenciamento.tipo_sobreposicao (id);
-
---47
-ALTER TABLE analise.comunicado
-    ADD CONSTRAINT fk_c_orgao FOREIGN KEY (id_orgao) REFERENCES licenciamento.orgao (id);
-
-
---48
-ALTER TABLE analise.inconsistencia
-
-    ADD CONSTRAINT fk_i_geometria_atividade FOREIGN KEY (id_geometria_atividade)
-        REFERENCES licenciamento.geometria_atividade (id),
-
-    ADD CONSTRAINT fk_i_atividade_caracterizacao FOREIGN KEY (id_atividade_caracterizacao)
-        REFERENCES licenciamento.atividade_caracterizacao (id);
---49
-ALTER TABLE analise.inconsistencia
-    ADD CONSTRAINT fk_i_sobreposicao FOREIGN KEY (id_sobreposicao)
-        REFERENCES licenciamento.sobreposicao_caracterizacao_atividade (id);
 
 --50
 INSERT INTO tramitacao.etapa(id_etapa, id_fluxo, tx_etapa) VALUES (6, 1, 'Análise gerente');
@@ -1345,23 +1301,6 @@ INSERT INTO tramitacao.etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (7,
 INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (34, 7, 'Análise finalizada', 1);
 
 SELECT setval('tramitacao.condicao_id_condicao_seq', coalesce(max(id_condicao), 1)) FROM tramitacao.condicao;
-
---64
-ALTER TABLE analise.inconsistencia_tecnica_tipo_licenca ADD 
-CONSTRAINT fk_ittl_tipo_licenca FOREIGN KEY (id_tipo_licenca)
-      REFERENCES licenciamento.tipo_licenca (id) ;
-
-ALTER TABLE analise.inconsistencia_tecnica_questionario ADD 
-CONSTRAINT fk_itq_id_inconsistencia_tecnica_questionario FOREIGN KEY (id_questionario)
-      REFERENCES licenciamento.questionario_3 (id);
-
-ALTER TABLE analise.inconsistencia_tecnica_atividade ADD 
-CONSTRAINT fk_ita_atividade_caracterizacao FOREIGN KEY (id_atividade_caracterizacao)
-    REFERENCES licenciamento.atividade_caracterizacao (id);
-
-ALTER TABLE analise.inconsistencia_tecnica_parametro ADD
-CONSTRAINT fk_itp_parametro_atividade FOREIGN KEY (id_parametro)
-    REFERENCES licenciamento.parametro_atividade (id); 
 
 --69
 UPDATE tramitacao.transicao SET id_condicao_final = 25 WHERE id_acao = 58 AND id_condicao_inicial = 31;
