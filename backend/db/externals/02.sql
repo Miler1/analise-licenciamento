@@ -616,6 +616,890 @@ ALTER TABLE ONLY transicao ADD CONSTRAINT fk_t_id_condicao_inicial FOREIGN KEY (
 
 SET search_path = analise, pg_catalog, public;
 
+--3
+
+CREATE ROLE tramitacao LOGIN
+ENCRYPTED PASSWORD 'tramitacao'
+SUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+
+GRANT USAGE ON SCHEMA public TO tramitacao;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO tramitacao;
+
+GRANT USAGE ON SCHEMA tramitacao TO tramitacao;
+GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA tramitacao TO tramitacao;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA tramitacao TO tramitacao;
+
+GRANT CONNECT ON DATABASE licenciamento_ap TO tramitacao;
+
+GRANT USAGE ON SCHEMA analise, tramitacao TO tramitacao;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA analise TO tramitacao;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA analise TO tramitacao;
+
+
+SET search_path = tramitacao, pg_catalog;
+
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (1, 'Vincular', 1, 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (2, 'Iniciar análise', 1, 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (3, 'Notificar', 1, 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (4, 'Analisar', 1, 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (5, 'Recusar análise', 1, 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (6, 'Deferir análise', 1, 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (7, 'Indeferir análise', 1, 1);
+
+SELECT pg_catalog.setval('acao_id_acao_seq', 7, true);
+
+INSERT INTO tramitacao.fluxo (id_fluxo, id_condicao_inicial, tx_descricao, dt_prazo) VALUES (1, null, 'Processo de Análise do Licenciamento Ambiental', NULL);
+
+--SELECT pg_catalog.setval('fluxo_id_fluxo_seq', 1, true);
+
+INSERT INTO tramitacao.etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (1, 1, 'Análise jurídica', NULL);
+INSERT INTO tramitacao.etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (2, 1, 'Análise técnica', NULL);
+
+--SELECT pg_catalog.setval('etapa_id_etapa_seq', 2, true);
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (1, 1, 'Aguardando vinculação jurídica', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (2, 1, 'Aguardando análise jurídica', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (3, 1, 'Em análise jurídica', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (4, NULL, 'Notificado', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (5, 1, 'Aguardando validação jurídica', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (6, NULL, 'Arquivado', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (7, 2, 'Aguardando vinculação técnica', 1);
+
+--SELECT pg_catalog.setval('condicao_id_condicao_seq', 7, true);
+
+UPDATE tramitacao.fluxo SET id_condicao_inicial = 1 WHERE id_fluxo = 1;
+
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (1, 1, 1, 2, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (2, 2, 2, 3, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (3, 3, 3, 4, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (4, 4, 3, 5, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (5, 5, 5, 2, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (6, 6, 5, 7, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (7, 7, 5, 6, NULL, NULL);
+
+--SELECT pg_catalog.setval('transicao_id_transicao_seq', 7, true);
+
+INSERT INTO tramitacao.tipo_objeto_tramitavel (id_tipo_objeto_tramitavel, tx_descricao, fl_ativo) VALUES (1, 'Licenciamento Ambiental', 1);
+
+--SELECT pg_catalog.setval('tipo_objeto_tramitavel_id_tipo_objeto_tramitavel_seq', 1, true);
+
+SET search_path = licenciamento, pg_catalog, public;
+
+--4
+-- Grant select do schema licenciamento para a role tramitacao
+GRANT USAGE ON SCHEMA licenciamento TO tramitacao;
+GRANT SELECT ON ALL TABLES IN SCHEMA licenciamento TO tramitacao;
+
+--7
+
+
+SET search_path = tramitacao, pg_catalog;
+
+UPDATE acao SET tx_descricao = 'Vincular consultor' WHERE id_acao = 1;
+UPDATE acao SET tx_descricao = 'Iniciar análise jurídica' WHERE id_acao = 2;
+UPDATE acao SET tx_descricao = 'Deferir análise jurídica' WHERE id_acao = 4;
+UPDATE acao SET tx_descricao = 'Invalidar parecer jurídico' WHERE id_acao = 5;
+UPDATE acao SET tx_descricao = 'Validar deferimento jurídico' WHERE id_acao = 6;
+UPDATE acao SET tx_descricao = 'Validar indeferimento jurídico' WHERE id_acao = 7;
+
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (8, 'Indeferir análise jurídica', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (9, 'Solicitar ajustes parecer jurídico', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (10, 'Vincular analista', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (11, 'Iniciar análise técnica', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (12, 'Deferir análise técnica', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (13, 'Indeferir análise técnica', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (14, 'Invalidar parecer técnico', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (15, 'Solicitar ajustes parecer técnico', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (16, 'Validar deferimento técnico', 1, 1);
+INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (17, 'Validar indeferimento técnico', 1, 1);
+
+SELECT pg_catalog.setval('acao_id_acao_seq', 17, TRUE);
+
+INSERT INTO tramitacao.etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (3, 1, 'Liberação da licença', NULL);
+
+--SELECT pg_catalog.setval('etapa_id_etapa_seq', 3, TRUE);
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (8, 2, 'Aguardando análise técnica', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (9, 2, 'Em análise técnica', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (10, 2, 'Aguardando validação técnica', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (11, 3, 'Aguardando assinatura diretor', 1);
+
+--SELECT pg_catalog.setval('condicao_id_condicao_seq', 11, TRUE);
+
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (8, 8, 3, 5, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (9, 9, 5, 2, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (10, 10, 7, 8, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (11, 11, 8, 9, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (12, 12, 9, 10, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (13, 13, 9, 10, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (14, 14, 10, 8, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (15, 15, 10, 8, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (16, 16, 10, 11, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (17, 17, 10, 6, NULL, NULL);
+
+--SELECT pg_catalog.setval('transicao_id_transicao_seq', 17, TRUE);
+
+INSERT INTO tramitacao.situacao (id_situacao, fl_ativo, tx_descricao) VALUES (1,1,'Deferido');
+INSERT INTO tramitacao.situacao (id_situacao, fl_ativo, tx_descricao) VALUES (2,1,'Indeferido');
+
+SELECT pg_catalog.setval('situacao_id_situacao_seq', 2, TRUE);
+
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (1, 1, 4, 1);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (2, 2, 8, 1);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (3, 1, 3, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (4, 2, 3, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (5, 1, 5, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (6, 2, 5, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (7, 1, 6, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (8, 2, 6, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (9, 1, 7, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (10, 2, 7, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (11, 1, 9, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (12, 2, 9, 0);
+
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (13, 1, 12, 1);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (14, 2, 13, 1);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (15, 1, 3, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (16, 2, 3, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (17, 1, 14, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (18, 2, 14, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (19, 1, 15, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (20, 2, 15, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (21, 1, 16, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (22, 2, 16, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (23, 1, 17, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (24, 2, 17, 0);
+
+-- SELECT pg_catalog.setval('config_situacao_id_config_situacao_seq', 24, TRUE);
+
+-- INSERT INTO impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (1, 1, 6, 1);
+-- INSERT INTO impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (2, 2, 7, 1);
+
+-- SELECT pg_catalog.setval('impedimento_transicao_id_impedimento_transicao_seq', 2, TRUE);
+--8
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (18, 'Iniciar processo', 1, 1);
+
+SELECT pg_catalog.setval('tramitacao.acao_id_acao_seq', 18, true);
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (0, null, 'Estado inicial', 1);
+
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (18, 18, 0, 1, NULL, NULL);
+
+SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 18, true);
+
+--12
+GRANT USAGE ON SCHEMA tramitacao TO licenciamento_ap;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA tramitacao TO licenciamento_ap;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA tramitacao TO licenciamento_ap;
+
+GRANT USAGE ON SCHEMA analise TO licenciamento_ap;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA analise TO licenciamento_ap;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA analise TO licenciamento_ap;
+
+--14
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) 
+VALUES (19, 3, 9, 4, NULL, NULL);
+
+SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 19, true);
+
+
+--18
+
+
+UPDATE tramitacao.condicao SET nm_condicao='Aguardando vinculação técnica pelo gerente' WHERE id_condicao=7;
+UPDATE tramitacao.condicao SET nm_condicao='Aguardando validação técnica pelo gerente' WHERE id_condicao=10;
+
+INSERT INTO tramitacao.condicao(id_condicao,id_etapa,nm_condicao,fl_ativo) VALUES
+(12,2,'Aguardando vinculação técnica pelo coordenador',1),
+(13,2,'Aguardando validação técnica pelo coordenador',1);
+
+
+
+UPDATE tramitacao.acao SET tx_descricao='Deferir análise técnica via gerente' WHERE id_acao=12;
+UPDATE tramitacao.acao SET tx_descricao='Indeferir análise técnica via gerente' WHERE id_acao=13;
+UPDATE tramitacao.acao SET tx_descricao='Validar deferimento técnico pelo gerente' WHERE id_acao=16;
+UPDATE tramitacao.acao SET tx_descricao='Invalidar parecer técnico pelo gerente' WHERE id_acao=14;
+UPDATE tramitacao.acao SET tx_descricao='Solicitar ajustes parecer técnico pelo gerente' WHERE id_acao=15;
+UPDATE tramitacao.acao SET tx_descricao='Validar indeferimento técnico pelo gerente' WHERE id_acao=17;
+
+INSERT INTO tramitacao.acao(id_acao,tx_descricao,fl_ativo,fl_tramitavel) VALUES
+(19,'Vincular gerente',1,1),
+(20,'Indeferir análise técnica via coordenador',1,1),
+(21,'Deferir análise técnica via coordenador',1,1),
+(22,'Validar deferimento técnico pelo coordenador',1,1),
+(23,'Validar indeferimento técnico pelo coordenador',1,1),
+(24,'Invalidar parecer técnico pelo coordenador encaminhando para outro gerente',1,1),
+(25,'Invalidar parecer técnico encaminhando para outro técnico',1,1),
+(26,'Solicitar ajuste do parecer técnico pelo coordenador',1,1);
+
+
+
+UPDATE tramitacao.transicao SET id_condicao_final=12 WHERE id_condicao_inicial=5 AND id_condicao_final=7 AND id_acao=6;
+
+UPDATE tramitacao.transicao SET id_condicao_final=13 WHERE id_condicao_inicial=10 AND id_acao=16;
+
+
+UPDATE tramitacao.transicao SET id_condicao_final = 13 WHERE id_transicao = 17;
+
+INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_final,id_acao) VALUES
+(20,12,7,19),
+(21,13,11,22),
+(22,13,6,23),
+(23,13,8,25),
+(24,13,7,24),
+(25,13,8,26),
+(26,12,8,10),
+(27,9,13,21),
+(28,9,13,20);
+
+-- INICIO Configurar adição e remoção de situações
+
+--Ação 21 (Deferir análise técnica via coordenador) - Adicionar situação "Deferido" - (Nº da transição: 27)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (25, 1, 27, 1);
+--Ação 20 (Indeferir análise técnica via coordenador) - Adicionar situação "Indeferido" - (Nº da transição: 28)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (26, 2, 28, 1);
+
+--Ação 22 (Validar deferimento técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 21)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (27, 1, 21, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (28, 2, 21, 0);
+
+--Ação 23 (Validar indeferimento técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 22)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (29, 1, 22, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (30, 2, 22, 0);
+
+--Ação 24 (Invalidar parecer técnico pelo coordenador encaminhando para outro gerente) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 24)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (31, 1, 24, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (32, 2, 24, 0);
+
+--Ação 25 (Invalidar parecer técnico encaminhando para outro técnico) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 23)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (33, 1, 23, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (34, 2, 23, 0);
+
+--Ação 26 (Solicitar ajuste do parecer técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 25)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (35, 1, 25, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (36, 2, 25, 0);
+
+
+-- FIM Configurar adição e remoção de situações
+
+-- INICIO Configuração dos impedimentos
+
+--Ação 16 (Validar deferimento técnico pelo gerente) - Situação "Deferido" obrigatória - (Nº da transição: 16)
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (3, 1, 16, 1);
+--Ação 17 (Validar indeferimento técnico pelo gerente) - Situação "Indeferido" obrigatória - (Nº da transição: 17)
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (4, 2, 17, 1);
+
+--Ação 22 (Validar deferimento técnico pelo coordenador) - Situação "Deferido" obrigatória - (Nº da transição: 21)
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (5, 1, 21, 1);
+--Ação 23 (Validar indeferimento pelo coordenador) - Situação "Indeferido" obrigatória - (Nº da transição: 22)
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES (6, 2, 22, 1);
+
+-- fim Configuração dos impedimentos
+--19
+UPDATE tramitacao.acao SET tx_descricao = 'Solicitar ajustes do parecer técnico pelo coordenador para o analista' WHERE id_acao = 26;
+
+INSERT INTO tramitacao.acao(id_acao,tx_descricao,fl_ativo,fl_tramitavel) VALUES
+(27,'Solicitar ajustes do parecer técnico pelo coordenador para o gerente',1,1);
+
+INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_final,id_acao) VALUES (29,13,10,27);
+
+--Ação 27 (Solicitar ajuste do parecer técnico pelo coordenador) - Remover situações "Deferido" e "Indeferido" - (Nº da transição: 29)
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (37, 1, 29, 0);
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES (38, 2, 29, 0);
+
+--20
+DELETE FROM tramitacao.config_situacao WHERE id_transicao in (16,17,29);
+
+--21
+INSERT INTO tramitacao.acao(id_acao,tx_descricao,fl_ativo,fl_tramitavel) VALUES
+(28, 'Solicitar ajuste da análise jurídica pelo aprovador',1,1),
+(29, 'Deferir análise juridica pelo coordenador para o aprovador',1,1),
+(30, 'Solicitar ajuste da análise técnica pelo aprovador',1,1);
+
+SELECT pg_catalog.setval('tramitacao.acao_id_acao_seq', 30, TRUE);
+
+INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_final,id_acao) VALUES
+(30,11,5,28),
+(31,5,11,29),
+(32,11,13,30);
+
+SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 32, TRUE);
+
+INSERT INTO tramitacao.situacao(id_situacao,tx_descricao,fl_ativo) VALUES
+(3, 'Revisão solicitada aprovador',1);
+
+SELECT pg_catalog.setval('tramitacao.situacao_id_situacao_seq', 3, TRUE);
+
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES 
+(37, 3, 30, 1),
+(38, 3, 31, 0);
+
+SELECT pg_catalog.setval('tramitacao.config_situacao_id_config_situacao_seq', 38, TRUE);
+
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES 
+(7, 3, 6, 0),
+(8, 3, 31, 1);
+
+SELECT pg_catalog.setval('tramitacao.impedimento_transicao_id_impedimento_transicao_seq', 8, TRUE);
+
+--24
+UPDATE tramitacao.condicao set nm_condicao = 'Aguardando assinatura aprovador' where id_condicao = 11;
+
+--25
+DELETE FROM tramitacao.config_situacao WHERE id_transicao = 21;
+
+--27
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES
+(14, 3, 'Licenca emitida', 1);
+SELECT pg_catalog.setval('tramitacao.condicao_id_condicao_seq', 14, TRUE);
+
+INSERT INTO tramitacao.acao(id_acao,tx_descricao,fl_ativo,fl_tramitavel) VALUES
+(31, 'Emitir licença', 1, 1);
+SELECT pg_catalog.setval('tramitacao.acao_id_acao_seq', 31, TRUE);
+
+INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_final,id_acao) VALUES
+(33,11,14,31);
+SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 33, TRUE);
+
+--29
+INSERT INTO tramitacao.acao(id_acao,tx_descricao,fl_ativo,fl_tramitavel) VALUES
+(32, 'Suspender processo',1,1),
+(33, 'Reemitir licença',1,1),
+(34, 'Cancelar processo',1,1);
+
+SELECT pg_catalog.setval('tramitacao.acao_id_acao_seq', 34, TRUE);
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (15, 3, 'Suspenso', 1);
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (16, 3, 'Cancelado', 1);
+
+SELECT pg_catalog.setval('tramitacao.condicao_id_condicao_seq', 16, TRUE);
+
+INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_final,id_acao) VALUES
+(34,14,15,32),
+(35,15,14,33),
+(36,14,16,34);
+
+SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 36, TRUE);
+
+UPDATE tramitacao.condicao SET nm_condicao = 'Licença emitida' WHERE id_condicao = 14;
+
+
+--31
+
+INSERT INTO tramitacao.acao(id_acao,tx_descricao,fl_ativo,fl_tramitavel) VALUES
+(35, 'Resolver notificação jurídica',1,1),
+(36, 'Resolver notificação técnica',1,1),
+(37, 'Arquivar processo',1,1);
+
+SELECT pg_catalog.setval('tramitacao.acao_id_acao_seq', 37, TRUE);
+
+INSERT INTO tramitacao.transicao(id_transicao,id_condicao_inicial,id_condicao_final,id_acao) VALUES
+(37,4,2,35),
+(38,4,8,36),
+(39,4,6,37);
+
+SELECT pg_catalog.setval('tramitacao.transicao_id_transicao_seq', 39, TRUE);
+
+INSERT INTO tramitacao.situacao(id_situacao,tx_descricao,fl_ativo) VALUES
+(4, 'Notificado via jurídico',1),
+(5, 'Notificado via técnico',1);
+
+SELECT pg_catalog.setval('tramitacao.situacao_id_situacao_seq', 5, TRUE);
+
+INSERT INTO tramitacao.config_situacao (id_config_situacao, id_situacao, id_transicao, fl_adicionar) VALUES 
+(39, 4, 3, 1),
+(40, 4, 37, 0),
+(41, 4, 39, 0),
+(42, 5, 19, 1),
+(43, 5, 38, 0),
+(44, 5, 39, 0);
+
+SELECT pg_catalog.setval('tramitacao.config_situacao_id_config_situacao_seq', 44, TRUE);
+
+INSERT INTO tramitacao.impedimento_transicao (id_impedimento_transicao, id_situacao, id_transicao, tp_impedimento) VALUES 
+(9, 4, 37, 1),
+(10, 5, 38, 1);
+
+SELECT pg_catalog.setval('tramitacao.impedimento_transicao_id_impedimento_transicao_seq', 10, TRUE);
+
+--32
+-- Adicionar ações para a renovação de licencas simples
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (38, 'Arquivar por renovação', 1, 1);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (40, 38, 14, 6, NULL, NULL);
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (39, 'Renovar licença sem alterações', 1, 1);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (41, 39, 1, 12, NULL, NULL);
+
+SELECT pg_catalog.setval('tramitacao.acao_id_acao_seq', 39, TRUE);
+
+--33
+
+-- Adicionar condições do manejo digital
+
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (17, NULL, 'Manejo digital aguardando análise técnica', 1);
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (18, NULL, 'Manejo digital em análise técnica', 1);
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (19, NULL, 'Manejo digital deferido', 1);
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (20, NULL, 'Manejo digital indeferido', 1);
+
+SELECT setval('tramitacao.condicao_id_condicao_seq', max(id_condicao)) FROM tramitacao.condicao;
+
+-- Adicionar fluxo do manejo digital
+
+INSERT INTO tramitacao.fluxo(id_fluxo, id_condicao_inicial, tx_descricao, dt_prazo) VALUES (2, 17, 'Processo de Análise do Manejo Digital', NULL);
+
+SELECT setval('tramitacao.fluxo_id_fluxo_seq', max(id_fluxo)) FROM tramitacao.fluxo;
+
+-- Adicionar condições do manejo digital
+
+INSERT INTO tramitacao.tipo_objeto_tramitavel(id_tipo_objeto_tramitavel, tx_descricao, fl_ativo) VALUES (2,'Manejo digital', 2);
+
+SELECT setval('tramitacao.tipo_objeto_tramitavel_id_tipo_objeto_tramitavel_seq', max(id_tipo_objeto_tramitavel)) FROM tramitacao.tipo_objeto_tramitavel;
+
+-- Adicionar etapa do manejo digital e definir a etapa nas condições criadas
+
+INSERT INTO tramitacao.etapa(id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (4, 2, 'Análise técnica do manejo digital', NULL);
+UPDATE tramitacao.condicao SET id_etapa = 4 WHERE id_condicao in (17, 18, 19, 20);
+
+SELECT setval('tramitacao.etapa_id_etapa_seq', max(id_etapa)) FROM tramitacao.etapa;
+
+-- Adicionar ação do manejo digital
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (40, 'Iniciar análise técnica do manejo florestal', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (41, 'Deferir análise técnica do manejo florestal', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (42, 'Indeferir análise técnica do manejo florestal', 1, 1);
+
+SELECT setval('tramitacao.acao_id_acao_seq', max(id_acao)) FROM tramitacao.acao;
+
+-- Adicionar tramitação do manejo digital
+
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (44, 40, 17, 18, NULL, NULL);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (45, 41, 18, 19, NULL, NULL);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (46, 42, 18, 20, NULL, NULL);
+
+
+SELECT setval('tramitacao.transicao_id_transicao_seq', max(id_transicao)) FROM tramitacao.transicao;
+
+--34
+
+-- Adicionando nova condição do licenciamento
+
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (21, 3, 'Em prorrogação', 1);
+
+SELECT setval('tramitacao.condicao_id_condicao_seq', max(id_condicao)) FROM tramitacao.condicao;
+
+-- Adicionando novas ações do licenciamento
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (43, 'Prorrogar licença', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (44, 'Arquivar prorrogação por renovação', 1, 1);
+
+SELECT setval('tramitacao.acao_id_acao_seq', max(id_acao)) FROM tramitacao.acao;
+
+-- Adicionanando novas transições do licenciamento
+
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (47, 43, 14, 21, NULL, NULL);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (48, 44, 21, 6, NULL, NULL);
+
+
+SELECT setval('tramitacao.transicao_id_transicao_seq', max(id_transicao)) FROM tramitacao.transicao;
+
+--35
+
+-- Adicionar novas condições do manejo digital
+
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (22, 4, 'Manejo digital Aguardando Análise de Shape', 1);
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (23, 4, 'Manejo digital em análise de Shape', 1);
+
+-- Adicionar novas ações do manejo digital
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (45, 'Iniciar análise de Shape do manejo florestal', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (46, 'Finalizar análise de Shape do manejo florestal', 1, 1);
+
+-- Adicionar novas tramitações do manejo digital
+
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (49, 45, 22, 23, NULL, NULL);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (50, 46, 23, 17, NULL, NULL);
+
+-- Alterando fluxo de manejo digital
+
+UPDATE tramitacao.fluxo SET id_condicao_inicial = 22 WHERE id_fluxo = 2;
+
+--37
+
+-- Alterar condições do manejo digital
+
+UPDATE tramitacao.condicao SET nm_condicao = 'Manejo digital apto' WHERE id_condicao = 19;
+UPDATE tramitacao.condicao SET nm_condicao = 'Manejo digital inapto' WHERE id_condicao = 20;
+
+--38
+
+-- Adicionar/Alterar ações do manejo digital
+
+UPDATE tramitacao.acao SET tx_descricao = 'Indeferir análise do shape do manejo digital' WHERE id_acao = 42;
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (48, 'Indeferir análise técnica do manejo digital', 1, 1);
+
+-- Adicionar novas transições do manejo digital
+
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (52, 48, 18, 20, NULL, NULL);
+
+
+--40
+SELECT setval('tramitacao.acao_id_acao_seq', max(id_acao)) FROM tramitacao.acao;
+
+INSERT INTO tramitacao.acao(tx_descricao, fl_ativo, fl_tramitavel) VALUES
+('Deferir análise GEO via gerente', 1, 1),
+('Indeferir análise GEO via gerente', 1, 1),
+('Iniciar análise GEO', 1, 1),
+('Invalidar parecer GEO pelo gerente', 1, 1),
+('Validar deferimento GEO pelo gerente', 1, 1),
+('Validar indeferimento GEO pelo gerente', 1, 1),
+('Solicitar ajustes parecer GEO pelo gerente', 1, 1),
+('Solicitar ajuste da análise GEO pelo presidente', 1, 1),
+('Resolver notificação GEO', 1, 1),
+('Invalidar parecer GEO encaminhando para outro GEO', 1, 1);
+
+SELECT setval('tramitacao.etapa_id_etapa_seq', max(id_etapa)) FROM tramitacao.etapa;
+
+INSERT INTO tramitacao.etapa(id_fluxo, tx_etapa, dt_prazo) VALUES
+(1, 'Análise GEO', null);
+
+SELECT setval('tramitacao.condicao_id_condicao_seq', max(id_condicao)) FROM tramitacao.condicao;
+
+INSERT INTO tramitacao.condicao(id_etapa, nm_condicao, fl_ativo) VALUES
+((SELECT id_etapa FROM tramitacao.etapa where tx_etapa ilike 'Análise GEO'), 'Aguardando vinculação GEO pelo gerente', 1),
+((SELECT id_etapa FROM tramitacao.etapa where tx_etapa ilike 'Análise GEO'), 'Aguardando análise GEO', 1),
+((SELECT id_etapa FROM tramitacao.etapa where tx_etapa ilike 'Análise GEO'), 'Em análise GEO', 1),
+((SELECT id_etapa FROM tramitacao.etapa where tx_etapa ilike 'Análise GEO'), 'Aguardando validação GEO pelo gerente', 1);
+
+SELECT setval('tramitacao.situacao_id_situacao_seq', max(id_situacao)) FROM tramitacao.situacao;
+
+INSERT INTO tramitacao.situacao(tx_descricao, fl_ativo)
+VALUES ('Notificado via GEO', 1);
+
+--41
+
+INSERT INTO tramitacao.condicao(id_etapa, nm_condicao, fl_ativo) VALUES
+((SELECT id_etapa FROM tramitacao.etapa where tx_etapa = 'Análise GEO'), 'Aguardando validação gerente', 1),
+((SELECT id_etapa FROM tramitacao.etapa where tx_etapa = 'Análise GEO'), 'Aguardando validação pela diretoria', 1);
+
+--42
+DELETE FROM tramitacao.config_situacao WHERE id_transicao IS NOT NULL;
+DELETE FROM tramitacao.impedimento_transicao WHERE id_transicao IS NOT NULL;
+DELETE FROM tramitacao.transicao;
+
+ALTER SEQUENCE tramitacao.transicao_id_transicao_seq RESTART WITH 1;
+ALTER SEQUENCE tramitacao.impedimento_transicao_id_impedimento_transicao_seq RESTART WITH 1;
+ALTER SEQUENCE tramitacao.config_situacao_id_config_situacao_seq RESTART WITH 1;
+
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (18, 0, 25);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (51, 25, 26);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (49, 26, 27);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (50, 26, 27);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (52, 27, 25);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (55, 27, 25);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (53, 27, 29);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (54, 27, 29);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (3, 26, 4);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (58, 29, 25);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (58, 29, 25);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES (10, 27, 8);
+
+UPDATE tramitacao.fluxo SET id_condicao_inicial = 25 WHERE id_fluxo = 1;
+
+--43
+ALTER TABLE licenciamento.empreendimento ADD COLUMN possui_anexo BOOLEAN;
+
+COMMENT ON COLUMN licenciamento.empreendimento.possui_anexo IS 'Boooleano que indica se o empreendimento posui ou não anexos';
+
+UPDATE licenciamento.empreendimento SET possui_anexo = false WHERE possui_anexo is null;
+
+ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET NOT NULL;
+ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET DEFAULT FALSE;
+
+
+--44
+ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo DROP NOT NULL;
+ALTER TABLE licenciamento.empreendimento ALTER COLUMN possui_anexo SET DEFAULT NULL;
+ALTER TABLE licenciamento.empreendimento RENAME COLUMN possui_anexo TO possui_shape;
+COMMENT ON COLUMN licenciamento.empreendimento.possui_shape IS 'Boooleano que indica se o empreendimento posui ou não upload de shapes, se é nulo o empreendimento nunca cadastrou shapes';
+
+--45
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES
+(30, (SELECT id_etapa FROM tramitacao.etapa where tx_etapa = 'Análise GEO'), 'Solicitação de desvínculo pendente', 1);
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES
+(59, 'Solicitar desvínculo', 1, 1),
+(60, 'Aprovar solicitação de desvínculo', 1, 1),
+(61, 'Negar solicitação de desvínculo', 1, 1);
+
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final) VALUES (13, 59, 25, 30);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final) VALUES (14, 60, 30, 25);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final) VALUES (15, 61, 30, 25);
+
+SELECT setval('tramitacao.condicao_id_condicao_seq', max(id_condicao)) FROM tramitacao.condicao;
+SELECT setval('tramitacao.acao_id_acao_seq', max(id_acao)) FROM tramitacao.acao;
+SELECT setval('tramitacao.transicao_id_transicao_seq', max(id_transicao)) FROM tramitacao.transicao;
+
+
+
+--50
+INSERT INTO tramitacao.etapa(id_etapa, id_fluxo, tx_etapa) VALUES (6, 1, 'Análise gerente');
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (31, 6, 'Em análise pelo gerente', 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (62, 'Iniciar análise gerente', 1, 1);
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (62, 27, 31, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (62, 10, 31, NULL, NULL);
+
+--51
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (63, 'Validar parecer geo pelo gerente', 1, 1);
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (55, 31, 26, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (63, 31, 8, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (58, 31, 26, NULL, NULL);
+
+
+--52
+UPDATE tramitacao.acao SET tx_descricao = REPLACE(tx_descricao, 'processo', 'protocolo') WHERE tx_descricao LIKE '%processo%';
+
+--53
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final) VALUES (39, 25, 25);
+
+--55
+UPDATE tramitacao.acao SET tx_descricao = REPLACE(tx_descricao, 'Deferir análise GEO via gerente', 'Deferir análise GEO') WHERE id_acao = 49;
+UPDATE tramitacao.acao SET tx_descricao = REPLACE(tx_descricao, 'Indeferir análise GEO via gerente', 'Indeferir análise GEO') WHERE id_acao = 50;
+
+--56
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final) VALUES (11, 8, 9);
+
+--57
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (64, 'Resolver comunicado', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (65, 'Aguardar resposta comunicado', 1, 1);
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (32, 5, 'Aguardando resposta comunicado', 1);
+
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final) VALUES (30, 64, 32, 27);
+INSERT INTO tramitacao.transicao(id_transicao, id_acao, id_condicao_inicial, id_condicao_final) VALUES (31, 65, 26, 32);
+
+--59
+
+UPDATE tramitacao.condicao SET nm_condicao = 'Solicitação de desvínculo pendente análise GEO' WHERE nm_condicao = 'Solicitação de desvínculo pendente' ;
+
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES
+(33, (SELECT id_etapa FROM tramitacao.etapa where tx_etapa = 'Análise técnica'), 'Solicitação de desvínculo pendente análise técnica', 1);
+
+INSERT INTO tramitacao.transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final) VALUES (32, 59, 8, 33);
+
+
+--62
+
+INSERT INTO tramitacao.etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (7, 1, 'Análise finalizada', NULL);
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (34, 7, 'Análise finalizada', 1);
+
+SELECT setval('tramitacao.condicao_id_condicao_seq', coalesce(max(id_condicao), 1)) FROM tramitacao.condicao;
+
+--69
+UPDATE tramitacao.transicao SET id_condicao_final = 25 WHERE id_acao = 58 AND id_condicao_inicial = 31;
+
+--71
+INSERT INTO tramitacao.transicao(id_condicao_inicial,id_condicao_final,id_acao) 
+    VALUES (9,10,13);
+SELECT setval('tramitacao.transicao_id_transicao_seq', coalesce(max(id_transicao), 1)) FROM tramitacao.transicao;
+
+--72
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final) 
+    VALUES (12, 9, 10);
+SELECT setval('tramitacao.transicao_id_transicao_seq', coalesce(max(id_transicao), 1)) FROM tramitacao.transicao;
+
+--73
+UPDATE tramitacao.acao SET tx_descricao='Deferir análise GEO com comunicado' WHERE id_acao = 65;
+
+--74
+UPDATE tramitacao.condicao SET id_etapa = 7 WHERE id_condicao = 6;
+
+--75
+UPDATE tramitacao.acao SET tx_descricao='Notificar pelo Analista GEO' WHERE id_acao = 3;
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
+    (66, 'Notificar pelo Analista técnico', 1, 1);
+
+UPDATE tramitacao.condicao SET id_etapa = 5, nm_condicao = 'Notificado pelo Analista GEO' WHERE id_condicao = 4;
+
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES 
+    (35, 2, 'Notificado pelo Analista técnico', 1);
+
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES 
+    (66, 9, 35);
+
+--76
+INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
+    ((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista TÉCNICO' AND id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')), 
+     (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'ANL_VISUALIZAR_NOTIFICACAO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
+
+--77
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
+    (67, 'Iniciar análise técnica gerente', 1, 1);
+
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES 
+    (36, 6, 'Em análise técnica pelo gerente', 1);
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES 
+    (67, 10, 36, NULL, NULL);
+
+--78
+
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (68, 'Validar parecer técnico gerente', 1, 1);
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (15, 36, 9, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (68, 36, 29, NULL, NULL);
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (25, 36, 8, NULL, NULL);
+
+-- 81
+
+UPDATE tramitacao.acao SET tx_descricao = 'Solicitar desvínculo análise Geo' WHERE tx_descricao = 'Solicitar desvínculo';
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES
+    (69, 'Aprovar solicitação de desvínculo do Analista técnico', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES
+    (70, 'Negar solicitação de desvínculo do Analista técnico', 1, 1);
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES
+    (71, 'Solicitar desvínculo análise técnica', 1, 1);
+
+DELETE FROM tramitacao.transicao WHERE id_acao = 59 AND id_condicao_inicial = 8 AND id_condicao_final = 33;
+
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES
+    (69, 33, 8);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES
+    (70, 33, 8);
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES
+    (71, 8, 33);
+
+--83
+INSERT INTO licenciamento.rel_tipo_sobreposicao_orgao(id_tipo_sobreposicao, id_orgao) VALUES (19, 2);
+
+--85
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior)
+VALUES (37, 35, 6, NULL, NULL);
+
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel)
+VALUES (73, 'Iniciar analise Técnica por volta de notificação', 1, 1);
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior)
+VALUES (73, 25, 8, NULL, NULL);
+
+--87
+
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
+    (72, 'Iniciar análise pelo diretor', 1, 1);
+
+INSERT INTO tramitacao.condicao(id_condicao,id_etapa,nm_condicao,fl_ativo) VALUES
+(37,2,'Em análise pelo diretor',1);
+
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES 
+    (72, 29, 37);
+
+--89
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
+    (74, 'Validar análise pelo diretor', 1, 1);
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
+    (75, 'Invalidar análise pelo diretor', 1, 1);
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES 
+    (74, 37, 11, NULL, NULL); 
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES 
+    (75, 37, 11, NULL, NULL);
+
+--90
+UPDATE tramitacao.condicao SET nm_condicao='Aguardando assinatura do presidente' WHERE id_condicao=11;
+
+INSERT INTO tramitacao.acao(id_acao,tx_descricao,fl_ativo,fl_tramitavel) VALUES
+    (76,'Iniciar análise do presidente',1,1);
+
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES 
+    (38, 7, 'Em análise pelo presidente', 1);
+
+INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES 
+    (76, 11, 38);
+
+--92
+UPDATE tramitacao.acao SET tx_descricao = 'Deferir análise técnica via gerente técnico' WHERE id_acao = 12;
+UPDATE tramitacao.acao SET tx_descricao = 'Indeferir análise técnica via gerente técnico' WHERE id_acao = 13;
+UPDATE tramitacao.acao SET tx_descricao = 'Solicitar ajustes parecer técnico pelo gerente técnico' WHERE id_acao = 15;
+UPDATE tramitacao.acao SET tx_descricao = 'Validar parecer geo pelo gerente técnico' WHERE id_acao = 63;
+UPDATE tramitacao.acao SET tx_descricao = 'Solicitar ajustes parecer GEO pelo gerente técnico' WHERE id_acao = 55;
+UPDATE tramitacao.acao SET tx_descricao = 'Validar deferimento técnico pelo gerente técnico' WHERE id_acao = 16;
+UPDATE tramitacao.acao SET tx_descricao = 'Invalidar parecer técnico pelo gerente técnico' WHERE id_acao = 14;
+UPDATE tramitacao.acao SET tx_descricao = 'Validar indeferimento técnico pelo gerente técnico' WHERE id_acao = 17;
+UPDATE tramitacao.acao SET tx_descricao = 'Vincular gerente técnico' WHERE id_acao = 19;
+UPDATE tramitacao.acao SET tx_descricao = 'Deferir análise GEO via gerente técnico' WHERE id_acao = 49;
+UPDATE tramitacao.acao SET tx_descricao = 'Indeferir análise GEO via gerente técnico' WHERE id_acao = 50;
+UPDATE tramitacao.acao SET tx_descricao = 'Invalidar parecer GEO pelo gerente técnico' WHERE id_acao = 52;
+UPDATE tramitacao.acao SET tx_descricao = 'Validar deferimento GEO pelo gerente técnico' WHERE id_acao = 53;
+UPDATE tramitacao.acao SET tx_descricao = 'Validar indeferimento GEO pelo gerente técnico' WHERE id_acao = 54;
+UPDATE tramitacao.acao SET tx_descricao = 'Iniciar análise gerente técnico' WHERE id_acao = 62;
+UPDATE tramitacao.acao SET tx_descricao = 'Validar parecer técnico gerente técnico' WHERE id_acao = 68;
+UPDATE tramitacao.acao SET tx_descricao = 'Iniciar análise técnica gerente técnico' WHERE id_acao = 67;
+UPDATE tramitacao.acao SET tx_descricao = 'Iniciar análise pelo diretor técnico' WHERE id_acao = 72;
+UPDATE tramitacao.acao SET tx_descricao = 'Validar análise pelo diretor técnico' WHERE id_acao = 74;
+UPDATE tramitacao.acao SET tx_descricao = 'Invalidar análise pelo diretor técnico' WHERE id_acao = 75;
+
+UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando vinculação técnica pelo gerente técnico' WHERE id_condicao = 7;
+UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando validação técnica pelo gerente técnico' WHERE id_condicao = 10;
+UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando validação GEO pelo gerente técnico' WHERE id_condicao = 27;
+UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando vinculação GEO pelo gerente técnico' WHERE id_condicao = 24;
+UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando validação gerente técnico' WHERE id_condicao = 28;
+UPDATE tramitacao.condicao SET nm_condicao = 'Em análise pelo gerente técnico' WHERE id_condicao = 31;
+UPDATE tramitacao.condicao SET nm_condicao = 'Em análise técnica pelo gerente técnico' WHERE id_condicao = 36;
+UPDATE tramitacao.condicao SET nm_condicao = 'Em análise pelo diretor técnico' WHERE id_condicao = 37;
+
+--93
+INSERT INTO tramitacao.acao(id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
+    (78, 'Aprovar solicitação de licença', 1, 1),
+    (79, 'Negar solicitação de licença', 1, 1);
+
+INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES 
+    (40, 7, 'Solicitação da licença aprovada', 1),
+    (41, 7, 'Solicitação da licença negada', 1);
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES 
+    (78, 38, 40, NULL, NULL),
+    (79, 38, 41, NULL, NULL);
+
+--96
+INSERT INTO tramitacao.condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES 
+    (39, 1, 'Aguardando resposta jurídica', 1);
+
+INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
+    (77, 'Resolver análise jurídica', 1, 1);
+
+UPDATE tramitacao.transicao SET id_condicao_final = 39 WHERE id_acao = 63; 
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES 
+    (77, 39, 8, NULL, NULL);
+
+--97
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final) 
+    VALUES (32, 40, 15);
+SELECT setval('tramitacao.transicao_id_transicao_seq', coalesce(max(id_transicao), 1)) FROM tramitacao.transicao;
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final) 
+    VALUES (34, 40, 16);
+SELECT setval('tramitacao.transicao_id_transicao_seq', coalesce(max(id_transicao), 1)) FROM tramitacao.transicao;
+
+
+--98
+DELETE FROM tramitacao.transicao WHERE id_acao = 37 and id_condicao_final=6;
+
+INSERT INTO tramitacao.transicao (id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) 
+    SELECT 37, id_condicao, 6, null, null FROM tramitacao.condicao WHERE id_condicao NOT IN (6, 14, 15, 16, 34);
+
+
+
 # --- !Downs
 
 DROP SCHEMA tramitacao CASCADE;

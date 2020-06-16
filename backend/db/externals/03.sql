@@ -1,97 +1,140 @@
 # --- !Ups
 
-CREATE ROLE tramitacao LOGIN
-ENCRYPTED PASSWORD 'tramitacao'
-NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+--16
+UPDATE analise.analise_juridica AS aj SET id_usuario_validacao=(SELECT h.id_usuario FROM tramitacao.historico_objeto_tramitavel h
+JOIN analise.processo p ON h.id_historico_objeto_tramitavel=p.id_objeto_tramitavel
+JOIN analise.analise a ON a.id_processo=p.id
+WHERE aj.id_analise=a.id AND h.id_condicao_inicial=5 ORDER BY h.id_historico_objeto_tramitavel DESC LIMIT 1
+);
 
-GRANT USAGE ON SCHEMA portal_seguranca TO tramitacao;
-GRANT SELECT ON ALL TABLES IN SCHEMA portal_seguranca TO tramitacao;
 
-GRANT USAGE ON SCHEMA public TO tramitacao;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO tramitacao;
+UPDATE analise.analise_tecnica AS at SET id_usuario_validacao=(SELECT h.id_usuario FROM tramitacao.historico_objeto_tramitavel h
+JOIN analise.processo p ON h.id_historico_objeto_tramitavel=p.id_objeto_tramitavel
+JOIN analise.analise a ON a.id_processo=p.id
+WHERE at.id_analise=a.id AND h.id_condicao_inicial=10 ORDER BY h.id_historico_objeto_tramitavel DESC LIMIT 1
+);
 
-GRANT USAGE ON SCHEMA tramitacao TO tramitacao;
-GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA tramitacao TO tramitacao;
-GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA tramitacao TO tramitacao;
 
-SET search_path = tramitacao, pg_catalog;
+--30
+ALTER TABLE analise.licenca_cancelada
+ADD CONSTRAINT fk_lc_licenca FOREIGN KEY(id_licenca) REFERENCES licenciamento.licenca(id);
 
-INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (1, 'Vincular', 1, 1);
-INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (2, 'Iniciar análise', 1, 1);
-INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (3, 'Notificar', 1, 1);
-INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (4, 'Analisar', 1, 1);
-INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (5, 'Recusar análise', 1, 1);
-INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (6, 'Deferir análise', 1, 1);
-INSERT INTO acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES (7, 'Indeferir análise', 1, 1);
 
-SELECT pg_catalog.setval('acao_id_acao_seq', 7, true);
+ALTER TABLE analise.empreendimento_camada_geo
+    ADD CONSTRAINT fk_ecg_empreendimento FOREIGN KEY (id_empreendimento)
+        REFERENCES licenciamento.empreendimento (id);
 
-INSERT INTO fluxo (id_fluxo, id_condicao_inicial, tx_descricao, dt_prazo) VALUES (1, null, 'Processo de Análise do Licenciamento Ambiental', NULL);
+GRANT USAGE ON SCHEMA analise TO tramitacao;
+GRANT SELECT ON ALL TABLES IN SCHEMA analise TO tramitacao;
 
-SELECT pg_catalog.setval('fluxo_id_fluxo_seq', 1, true);
 
-INSERT INTO etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (1, 1, 'Análise jurídica', NULL);
-INSERT INTO etapa (id_etapa, id_fluxo, tx_etapa, dt_prazo) VALUES (2, 1, 'Análise técnica', NULL);
+--46
+ALTER TABLE analise.comunicado
 
-SELECT pg_catalog.setval('etapa_id_etapa_seq', 2, true);
+    ADD CONSTRAINT fk_c_tipo_sobreposicao FOREIGN KEY (id_tipo_sobreposicao)
+        REFERENCES licenciamento.tipo_sobreposicao (id);
 
-INSERT INTO condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (1, 1, 'Aguardando vinculação jurídica', 1);
-INSERT INTO condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (2, 1, 'Aguardando análise jurídica', 1);
-INSERT INTO condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (3, 1, 'Em análise jurídica', 1);
-INSERT INTO condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (4, NULL, 'Notificado', 1);
-INSERT INTO condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (5, 1, 'Aguardando validação jurídica', 1);
-INSERT INTO condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (6, NULL, 'Arquivado', 1);
-INSERT INTO condicao (id_condicao, id_etapa, nm_condicao, fl_ativo) VALUES (7, 2, 'Aguardando vinculação técnica', 1);
+--47
+ALTER TABLE analise.comunicado
+    ADD CONSTRAINT fk_c_orgao FOREIGN KEY (id_orgao) REFERENCES licenciamento.orgao (id);
 
-SELECT pg_catalog.setval('condicao_id_condicao_seq', 7, true);
 
-UPDATE fluxo SET id_condicao_inicial = 1 WHERE id_fluxo = 1;
+--48
+ALTER TABLE analise.inconsistencia
 
-INSERT INTO transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (1, 1, 1, 2, NULL, NULL);
-INSERT INTO transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (2, 2, 2, 3, NULL, NULL);
-INSERT INTO transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (3, 3, 3, 4, NULL, NULL);
-INSERT INTO transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (4, 4, 3, 5, NULL, NULL);
-INSERT INTO transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (5, 5, 5, 2, NULL, NULL);
-INSERT INTO transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (6, 6, 5, 7, NULL, NULL);
-INSERT INTO transicao (id_transicao, id_acao, id_condicao_inicial, id_condicao_final, dt_prazo, fl_retornar_fluxo_anterior) VALUES (7, 7, 5, 6, NULL, NULL);
+    ADD CONSTRAINT fk_i_geometria_atividade FOREIGN KEY (id_geometria_atividade)
+        REFERENCES licenciamento.geometria_atividade (id),
 
-SELECT pg_catalog.setval('transicao_id_transicao_seq', 7, true);
+    ADD CONSTRAINT fk_i_atividade_caracterizacao FOREIGN KEY (id_atividade_caracterizacao)
+        REFERENCES licenciamento.atividade_caracterizacao (id);
+--49
+ALTER TABLE analise.inconsistencia
+    ADD CONSTRAINT fk_i_sobreposicao FOREIGN KEY (id_sobreposicao)
+        REFERENCES licenciamento.sobreposicao_caracterizacao_atividade (id);
 
-INSERT INTO tipo_objeto_tramitavel (id_tipo_objeto_tramitavel, tx_descricao, fl_ativo) VALUES (1, 'Licenciamento Ambiental', 1);
 
-SELECT pg_catalog.setval('tipo_objeto_tramitavel_id_tipo_objeto_tramitavel_seq', 1, true);
+--64
+ALTER TABLE analise.inconsistencia_tecnica_tipo_licenca ADD 
+CONSTRAINT fk_ittl_tipo_licenca FOREIGN KEY (id_tipo_licenca)
+      REFERENCES licenciamento.tipo_licenca (id) ;
 
-SET search_path = licenciamento, pg_catalog, public;
+ALTER TABLE analise.inconsistencia_tecnica_questionario ADD 
+CONSTRAINT fk_itq_id_inconsistencia_tecnica_questionario FOREIGN KEY (id_questionario)
+      REFERENCES licenciamento.questionario_3 (id);
 
+ALTER TABLE analise.inconsistencia_tecnica_atividade ADD 
+CONSTRAINT fk_ita_atividade_caracterizacao FOREIGN KEY (id_atividade_caracterizacao)
+    REFERENCES licenciamento.atividade_caracterizacao (id);
+
+ALTER TABLE analise.inconsistencia_tecnica_parametro ADD
+CONSTRAINT fk_itp_parametro_atividade FOREIGN KEY (id_parametro)
+    REFERENCES licenciamento.parametro_atividade (id); 
 
 # --- !Downs
 
-SET search_path = tramitacao, pg_catalog;
+--64
 
-DELETE FROM tipo_objeto_tramitavel;
+ALTER TABLE analise.inconsistencia_tecnica_tipo_licenca DROP 
+CONSTRAINT fk_ittl_tipo_licenca;
 
-SELECT pg_catalog.setval('tipo_objeto_tramitavel_id_tipo_objeto_tramitavel_seq', 1, false);
+ALTER TABLE analise.inconsistencia_tecnica_questionario DROP 
+CONSTRAINT fk_itq_id_inconsistencia_tecnica_questionario;
 
-UPDATE fluxo SET id_condicao_inicial = null WHERE id_fluxo = 1;
+ALTER TABLE analise.inconsistencia_tecnica_documento DROP  
+CONSTRAINT fk_itd_documento_administrativo;
+ALTER TABLE analise.inconsistencia_tecnica_documento DROP  
+CONSTRAINT fk_itd_documento_tecnico;
 
-DELETE FROM transicao;
 
-SELECT pg_catalog.setval('transicao_id_transicao_seq', 1, false);
+ALTER TABLE analise.inconsistencia_tecnica_atividade DROP 
+CONSTRAINT fk_ita_atividade_caracterizacao;
 
-DELETE FROM condicao;
+ALTER TABLE analise.inconsistencia_tecnica_parametro DROP
+CONSTRAINT fk_itp_parametro_atividade; 
 
-SELECT pg_catalog.setval('condicao_id_condicao_seq', 1, false);
 
-DELETE FROM etapa;
+--49
+ALTER TABLE analise.inconsistencia
+    DROP CONSTRAINT fk_i_sobreposicao;
 
-SELECT pg_catalog.setval('etapa_id_etapa_seq', 1, false);
+--48
+ALTER TABLE analise.inconsistencia
 
-DELETE FROM fluxo;
+    DROP CONSTRAINT fk_i_geometria_atividade,
+    
+    DROP CONSTRAINT fk_i_atividade_caracterizacao;
 
-SELECT pg_catalog.setval('fluxo_id_fluxo_seq', 1, false);
+--47
+ALTER TABLE analise.comunicado DROP CONSTRAINT fk_c_orgao;
 
-DELETE FROM acao;
+--46
 
-SELECT pg_catalog.setval('acao_id_acao_seq', 1, false);
+ALTER TABLE analise.comunicado
+    DROP CONSTRAINT fk_c_atividade_caracterizacao,
+    DROP CONSTRAINT fk_c_tipo_sobreposicao;
 
-SET search_path = licenciamento, pg_catalog;
+--30
+
+ALTER TABLE analise.licenca_cancelada
+DROP CONSTRAINT fk_lc_licenca;
+
+ALTER TABLE analise.licenca_cancelada
+DROP CONSTRAINT fk_lc_usuario_executor;
+
+ALTER TABLE analise.dispensa_licencamento_cancelada
+DROP CONSTRAINT fk_dlc_dispensa_licenciamento;
+
+ALTER TABLE analise.dispensa_licencamento_cancelada
+DROP CONSTRAINT fk_dlc_usuario_executor;
+
+ALTER TABLE analise.licenca_suspensa
+RENAME CONSTRAINT fk_ls_licenca TO fk_licenca_suspensao ;
+
+ALTER TABLE analise.licenca_suspensa
+RENAME CONSTRAINT fk_ls_usuario_executor TO  fk_usuario_suspensao;
+
+
+--16 
+ UPDATE analise.analise_juridica SET id_usuario_validacao=NULL;
+ 
+ UPDATE analise.analise_tecnica SET id_usuario_validacao=NULL;
