@@ -195,6 +195,11 @@ INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
 	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
 	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERH'));
 
+--76
+INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
+    ((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista TÉCNICO' AND id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')), 
+     (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'ANL_VISUALIZAR_NOTIFICACAO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
+
 
 --79
 INSERT INTO portal_seguranca.permissao (codigo, data_cadastro, nome, id_modulo) 
@@ -553,6 +558,13 @@ id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigl
 id_permissao = (SELECT p.id FROM portal_seguranca.permissao p WHERE p.codigo = 'ANL_BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA');
 
 DELETE FROM portal_seguranca.permissao WHERE codigo = 'ANL_BAIXAR_DOCUMENTO_RELATORIO_TECNICO_VISTORIA' AND nome = 'Baixar Documento Relatório Técnico Vistoria' AND id_modulo =  (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'); 
+
+--76
+DELETE FROM portal_seguranca.permissao_perfil WHERE 
+id_perfil = (SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista TÉCNICO' AND 
+id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')) AND 
+id_permissao = (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'ANL_VISUALIZAR_NOTIFICACAO' AND 
+id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL'));
 
 
 --70
