@@ -1335,11 +1335,6 @@ INSERT INTO tramitacao.condicao(id_condicao, id_etapa, nm_condicao, fl_ativo) VA
 INSERT INTO tramitacao.transicao(id_acao, id_condicao_inicial, id_condicao_final) VALUES 
     (66, 9, 35);
 
---76
-INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
-    ((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista TÉCNICO' AND id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')), 
-     (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'ANL_VISUALIZAR_NOTIFICACAO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
-
 --77
 INSERT INTO tramitacao.acao (id_acao, tx_descricao, fl_ativo, fl_tramitavel) VALUES 
     (67, 'Iniciar análise técnica gerente', 1, 1);
