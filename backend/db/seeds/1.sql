@@ -14,7 +14,7 @@ COMMIT;
 BEGIN;
 
 UPDATE analise.geoserver
-SET url_getcapabilities='http://homologacao.ipaam.lemaf.com.br/geoserver/wfs?REQUEST=GetCapabilities&version=1.0.0'
+SET url_getcapabilities='http://homologacao.sistemas.sema.ap.gov.br/geoserver/web/'
 WHERE id = 1;
 
 COMMIT;
