@@ -371,13 +371,13 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
             denominacaoEmpreendimento: ctrl.processo.empreendimento.denominacao
         };
 
-        if (ctrl.processo.empreendimento.pessoa.cnpj) {
+        if (ctrl.processo.empreendimento.cpfCnpj.length > 11) {
 
-            processo.cnpjEmpreendimento = ctrl.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = ctrl.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = ctrl.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = ctrl.processo.empreendimento.cpfCnpj;
         }
 
         processoService.visualizarProcesso(processo);

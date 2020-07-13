@@ -9,6 +9,7 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import models.validacaoParecer.SolicitarAjustesJuridicoAprovador;
 import org.apache.commons.lang.StringUtils;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Configuracoes;
 import utils.ListUtil;
 import utils.Mensagem;
@@ -286,8 +287,11 @@ public class AnaliseJuridica extends Analisavel implements Cloneable {
 	public void enviarEmailNotificacao() {
 				
 		List<String> destinatarios = new ArrayList<String>();
-		destinatarios.addAll(this.analise.processo.empreendimento.emailsProprietarios());
-		destinatarios.addAll(this.analise.processo.empreendimento.emailsResponsaveis());
+
+		destinatarios = CadastroUnificadoWS.ws.getEmailProprietarioResponsaveis(this.analise.processo.empreendimento.empreendimentoEU.proprietarios,
+																				this.analise.processo.empreendimento.empreendimentoEU.representantesLegais,
+																				this.analise.processo.empreendimento.empreendimentoEU.responsaveisTecnicos, destinatarios);
+
 				
 		EmailNotificacaoAnaliseJuridica notificacao = new EmailNotificacaoAnaliseJuridica(this, destinatarios);
 		notificacao.enviar();				

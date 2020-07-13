@@ -147,7 +147,7 @@ public class ProcessamentoShapeFile implements Callable<ResultadoProcessamentoSh
 
 			Empreendimento empreendimentoBanco = Empreendimento.findById(this.idEmpreendimento);
 			IntegracaoEntradaUnicaService integracaoEntradaUnicaService = new IntegracaoEntradaUnicaService();
-			br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnicaService.findEmpreendimentosByCpfCnpj(empreendimentoBanco.getCpfCnpj());
+			br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnicaService.findEmpreendimentosByCpfCnpj(empreendimentoBanco.cpfCnpj);
 			Geometry geometriaEmpreendimento = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
 
 			isForaEmpreendimento = getTodasAsGeometriasDoShape()

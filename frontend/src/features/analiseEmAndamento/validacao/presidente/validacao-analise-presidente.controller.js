@@ -71,13 +71,13 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
             denominacaoEmpreendimento: validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.cpfCnpj.length) {
 
-            processo.cnpjEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
         }		
 
         processoService.visualizarProcesso(processo);

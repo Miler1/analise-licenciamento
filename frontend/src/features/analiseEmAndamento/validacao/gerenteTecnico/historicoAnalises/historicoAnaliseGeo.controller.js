@@ -35,13 +35,15 @@ var HistoricoAnaliseGeoCtrl = function( processo,
                 }
     
             }
-    
-            _.forEach(historicoAnaliseGeoCtrl.notificacoes[0].documentosNotificacaoTecnica, function(documento){
+            
+            if(historicoAnaliseGeoCtrl.notificacoes[0]){
                 
-                historicoAnaliseGeoCtrl.documentos.push(documento);
+                _.forEach(historicoAnaliseGeoCtrl.notificacoes[0].documentosNotificacaoTecnica, function(documento){
                 
-            });
-
+                    historicoAnaliseGeoCtrl.documentos.push(documento);
+                    
+                });
+            }
         });
 
     };
@@ -54,9 +56,8 @@ var HistoricoAnaliseGeoCtrl = function( processo,
     
     historicoAnaliseGeoCtrl.setDocumentos();
 
-    console.log(historicoAnaliseGeoCtrl.parecer);
     historicoAnaliseGeoCtrl.fechar =function() {
-
+      
         $uibModalInstance.dismiss('cancel');
     };
 

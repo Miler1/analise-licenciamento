@@ -1,5 +1,6 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Contato;
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -24,6 +25,7 @@ import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
+import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
@@ -403,7 +405,11 @@ public class AnaliseGeo extends Analisavel {
     public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaGeo parecerAnalistaGeo, List<Documento> documentos) throws Exception {
 
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
-        List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+        Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
+                .filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+
+        List<String> destinatarios = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
 
@@ -714,6 +720,8 @@ public class AnaliseGeo extends Analisavel {
 
         UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
+        this.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.analise.processo.empreendimento.cpfCnpj);
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -798,6 +806,8 @@ public class AnaliseGeo extends Analisavel {
 
         Integer coodinatesAtividadeSize = grupoImagemCaracterizacao.coordinatesAtividade.length;
 
+        this.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.analise.processo.empreendimento.cpfCnpj);
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -849,7 +859,7 @@ public class AnaliseGeo extends Analisavel {
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-        br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+        br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
         final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
         UsuarioAnalise analista;

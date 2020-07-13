@@ -4,19 +4,18 @@ var ResumoEmpreendimento = {
 		empreendimento: '='
 	},
 
-	controller: function($scope, mensagem, $timeout) {
+	controller: function($timeout) {
 
 		var ctrl = this;
 
 		ctrl.enderecoEmpreendedorPrincipal = null;
 		ctrl.enderecoEmpreendedorCorrespondencia = null;
 		ctrl.geo = null;
-
-
+		
 		this.$onInit = function() {
 
 			$timeout(function(){
-
+				
 				init();
 			});
 
@@ -33,7 +32,7 @@ var ResumoEmpreendimento = {
 
 			if(ctrl.empreendimento) {
 
-				return _.find(ctrl.empreendimento.empreendedor.pessoa.enderecos, {correspondencia: isCorrespondencia});
+				return _.find(ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa.enderecos, {correspondencia: isCorrespondencia});
 			}
 		}
 

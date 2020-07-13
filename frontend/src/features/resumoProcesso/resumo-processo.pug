@@ -25,11 +25,11 @@ mixin resumo-processo(processo, abrirDadosProcesso, titulo)
             div
                 strong CPF/CNPJ: 
                 span#texto_cpf_ou_cnpj
-                    label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj",style="margin-left:100px;") {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
+                    label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj",style="margin-left:100px;") {{#{processo}.empreendimento.cpfCnpj | brCpfCnpj}}
             div
                 strong Empreendimento: 
                 span#texto_nome_empreendimento
-                    label.not-bold.margin-right-xs(for="texto_nome_empreendimento",style="margin-left:61px;") {{#{processo}.empreendimento.denominacao}}
+                    label.not-bold.margin-right-xs(for="texto_nome_empreendimento",style="margin-left:61px;") {{#{processo}.empreendimento.empreendimentoEU.denominacao}}
             div
                 strong Município: 
                 span#texto_municipio_estado   

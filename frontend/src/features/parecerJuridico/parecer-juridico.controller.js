@@ -33,19 +33,19 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 		
 	$timeout(function () {
 
-		parecerJuridicoService.findPareceres()
+		parecerJuridicoService.findParecerJuridico($routeParams.idParecerJuridico)
 			.then(function(response){
 
-			$scope.pareceresJuridicos = response.data;
+			$scope.parecerJuridico = response.data;
 			
-			_.forEach($scope.pareceresJuridicos, function(parecerJuridico) {
+			// _.forEach($scope.pareceresJuridicos, function(parecerJuridico) {
 
-				if(parecerJuridico.id.toString() === $routeParams.idParecerJuridico) {
+			// 	if(parecerJuridico.id.toString() === $routeParams.idParecerJuridico) {
 
-					$scope.parecerJuridico = parecerJuridico;
+			// 		$scope.parecerJuridico = parecerJuridico;
 					
-				}
-			});
+			// 	}
+			// });
 
 			$scope.setDocumentos();
 			
@@ -59,7 +59,7 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 
 		});
 		
-	}, 50);
+	}, 1500);
 
 	$scope.upload = function(file, invalidFile) {
 

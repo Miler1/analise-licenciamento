@@ -1,5 +1,6 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Contato;
 import com.itextpdf.text.DocumentException;
 import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
@@ -16,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
+import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
@@ -447,7 +449,11 @@ public class AnaliseTecnica extends Analisavel {
 	public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaTecnico parecerAnalistaTecnico, List<Documento> documentos) throws Exception {
 
 		Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
-		List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+		Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
+				.filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+
+		List<String> destinatarios = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
 		this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
 
@@ -732,6 +738,8 @@ public class AnaliseTecnica extends Analisavel {
 		Vistoria vistoria = Vistoria.findByIdParecer(parecerAnalistaTecnico.id);
 		String numeroProcesso = this.analise.processo.numero;
 		String numeroProcessoLicenciamento = this.analise.processo.caracterizacao.processoLicenciamento.numero;
+
+		this.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.analise.processo.empreendimento.cpfCnpj);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 

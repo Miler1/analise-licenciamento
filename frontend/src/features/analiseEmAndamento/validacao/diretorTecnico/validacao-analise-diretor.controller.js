@@ -165,13 +165,13 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             denominacaoEmpreendimento: validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.cpfCnpj.length > 11) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.cpfCnpj;
         }		
 
         processoService.visualizarProcesso(processo);

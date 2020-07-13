@@ -445,10 +445,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder groupByCpfCnpjEmpreendimento(){
 
-		addPessoaEmpreendimentoAlias();
+		addEmpreendimentoAlias();
 
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cpf").as("cpfEmpreendimento"));
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj").as("cnpjEmpreendimento"));
+		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".cpfCnpj").as("cpfEmpreendimento"));
 
 		return this;
 	}

@@ -1,11 +1,9 @@
 package models.licenciamento;
 
-import models.EmailNotificacaoProrrogacaoLicenca;
-import models.LicencaAnalise;
-import models.LicencaCancelada;
-import models.Suspensao;
+import models.*;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Identificavel;
 import utils.ListUtil;
 
@@ -157,8 +155,10 @@ public class Licenca extends GenericModel implements Identificavel {
 	public void enviarNotificacaoProrrogadaPorEmail() {
 
 		List<String> destinatarios = new ArrayList<String>();
-		destinatarios.addAll(this.caracterizacao.empreendimento.emailsProprietarios());
-		destinatarios.addAll(this.caracterizacao.empreendimento.emailsResponsaveis());
+
+		destinatarios = CadastroUnificadoWS.ws.getEmailProprietarioResponsaveis(this.caracterizacao.empreendimento.empreendimentoEU.proprietarios,
+																				this.caracterizacao.empreendimento.empreendimentoEU.responsaveisLegais,
+																				this.caracterizacao.empreendimento.empreendimentoEU.responsaveisTecnicos, destinatarios);
 
 		EmailNotificacaoProrrogacaoLicenca emailNotificacao = new EmailNotificacaoProrrogacaoLicenca(this, destinatarios);
 		emailNotificacao.enviar();

@@ -137,8 +137,6 @@ public class Geoserver extends GenericModel {
 			retorno = new File(caminhoFile);
 		}
 
-
-
 		return retorno;
 
 	}

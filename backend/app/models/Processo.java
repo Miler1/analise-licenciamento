@@ -594,7 +594,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByNumeroProcesso()
 				.groupByObjetoTramitavel()
 				.groupByCpfCnpjEmpreendimento()
-				.groupByDenominacaoEmpreendimento()
+//				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
@@ -623,8 +623,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		listWithFilterAnaliseTecnica(processoBuilder, filtro);
 
 		listWithFilterAnaliseGeo(processoBuilder, filtro);
-
-//		listWithFilterAprovador(processoBuilder, usuarioSessao);
 
 		listWithFilterDiretor(processoBuilder, filtro);
 
@@ -761,8 +759,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public static Long countWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
 
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
-				.addPessoaEmpreendimentoAlias()
-				.addEstadoEmpreendimentoAlias()
+//				.addPessoaEmpreendimentoAlias()
+//				.addEstadoEmpreendimentoAlias()
 				.addAnaliseAlias()
 				.count();
 
@@ -1020,9 +1018,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public Processo getInfoProcesso() {
 
-		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
-		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
-		this.empreendimento.area = GeoCalc.area(this.empreendimento.coordenadas) / 1000;
+		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.cpfCnpj);
+		this.empreendimento.empreendimentoEU = empreendimentoEU;
+		this.empreendimento.area = GeoCalc.area(GeoJsonUtils.toGeometry(this.empreendimento.empreendimentoEU.localizacao.geometria)) / 1000;
 
 		UsuarioAnalise usuario = Auth.getUsuarioSessao();
 

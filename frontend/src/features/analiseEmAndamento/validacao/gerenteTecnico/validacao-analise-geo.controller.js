@@ -164,13 +164,13 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
             denominacaoEmpreendimento: validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.cpfCnpj.length > 11) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnaliseGeoGerente.analiseGeo.analise.processo.empreendimento.cpfCnpj;
         }		
 
         processoService.visualizarProcesso(processo);
@@ -350,8 +350,8 @@ var ValidacaoAnaliseGeoGerenteController = function($rootScope,
     };
 
     function getDadosVisualizar(processo) {
-        var pessoa = processo.empreendimento.pessoa;
-        var cpfCnpjEmpreendimento = pessoa.cpf ? pessoa.cpf : pessoa.cnpj;
+        
+        var cpfCnpjEmpreendimento = processo.empreendimento.cpfCnpj;
 
         var idProcesso = processo.id;
 

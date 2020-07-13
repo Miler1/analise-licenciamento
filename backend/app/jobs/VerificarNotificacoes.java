@@ -11,6 +11,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
+import security.cadastrounificado.CadastroUnificadoWS;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,8 +141,10 @@ public class VerificarNotificacoes extends GenericJob {
 	private void enviarEmailArquivamento(Analise analise) {
 
 		List<String> destinatarios = new ArrayList<>();
-		destinatarios.addAll(analise.processo.empreendimento.emailsProprietarios());
-		destinatarios.addAll(analise.processo.empreendimento.emailsResponsaveis());
+
+		destinatarios = CadastroUnificadoWS.ws.getEmailProprietarioResponsaveis(analise.processo.empreendimento.empreendimentoEU.proprietarios,
+																				analise.processo.empreendimento.empreendimentoEU.responsaveisLegais,
+																				analise.processo.empreendimento.empreendimentoEU.responsaveisTecnicos, destinatarios);
 
 		HistoricoTramitacao arquivamento = HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel);
 		HistoricoTramitacao historicoAnalise = HistoricoTramitacao.getPenultimaTramitacao(analise.processo.idObjetoTramitavel);

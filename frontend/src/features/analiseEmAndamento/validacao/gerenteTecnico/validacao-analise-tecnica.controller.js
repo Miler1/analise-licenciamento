@@ -243,13 +243,13 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
             denominacaoEmpreendimento: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.cpfCnpj.length > 11) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
         }		
 
 

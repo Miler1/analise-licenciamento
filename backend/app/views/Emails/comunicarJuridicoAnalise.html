@@ -4,8 +4,8 @@ numeroProtocolo = analiseGeo.analise.processo.numero;
 numeroProcesso = analiseGeo.analise.processo.caracterizacao.processoLicenciamento.numero;
 parecerJuridico = parecerJuridico;
 empreendimento = analiseGeo.analise.processo.empreendimento;
-empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-empreendimentoCpfCnpj = empreendimento.getCpfCnpj();
+empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome  ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
+empreendimentoCpfCnpj = empreendimento.cpfCnpj;
 endereco = enderecoCompleto;
 }%
 

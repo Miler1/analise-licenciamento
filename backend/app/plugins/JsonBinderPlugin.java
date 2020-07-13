@@ -1,12 +1,10 @@
 package plugins;
 
+import br.ufla.lemaf.beans.pessoa.Pessoa;
 import com.google.gson.*;
 import com.vividsolutions.jts.geom.Geometry;
 import deserializers.DateDeserializer;
 import deserializers.GeometryDeserializer;
-import models.licenciamento.Pessoa;
-import models.licenciamento.PessoaFisica;
-import models.licenciamento.PessoaJuridica;
 import play.Logger;
 import play.PlayPlugin;
 import play.mvc.Http.Request;
@@ -24,9 +22,9 @@ public class JsonBinderPlugin extends PlayPlugin {
 	public void onLoad() {
 		
 
-		RuntimeTypeAdapterFactory<Pessoa> pessoaAdapterFactory = RuntimeTypeAdapterFactory.of(Pessoa.class)
-				.registerSubtype(PessoaFisica.class)
-				.registerSubtype(PessoaJuridica.class);
+		RuntimeTypeAdapterFactory<Pessoa> pessoaAdapterFactory = RuntimeTypeAdapterFactory.of(Pessoa.class);
+//				.registerSubtype(PessoaFisica.class)
+//				.registerSubtype(PessoaJuridica.class);
 		
 		gson = new GsonBuilder()
 					.registerTypeAdapter(Date.class, new DateDeserializer())

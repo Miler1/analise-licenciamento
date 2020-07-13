@@ -1,18 +1,18 @@
 mixin endereco(endereco, labelEndereco)
 
-	div.row(ng-if=`${endereco}.tipo === 'ZONA_URBANA'`)
+	div.row(ng-if=`${endereco}.zonaLocalizacao.codigo === 0`)
 		label.col-md-2.text-right {{#{labelEndereco}}}
 		span.col-md-10 
 			| {{#{endereco}.logradouro}}, 
 			| {{#{endereco}.numero ? #{endereco}.numero : 'S/N'}}, 
 			| {{#{endereco}.complemento ? #{endereco}.complemento + ', ' : ''}} 
 			| {{#{endereco}.bairro ? #{endereco}.bairro + ', ' : ''}}
-			| {{#{endereco}.municipio.nome}}/{{#{endereco}.municipio.estado.codigo + ', '}}
+			| {{#{endereco}.municipio.nome}}/{{#{endereco}.municipio.estado.codigo  ? #{endereco}.municipio.estado.codigo + ', ' : #{endereco}.municipio.estado.sigla + ', '}}
 			| {{#{endereco}.correspondencia && #{endereco}.caixaPostal ? "Caixa postal: " + #{endereco}.caixaPostal + ", " : ""}}
 			| CEP: {{#{endereco}.cep.zeroEsquerda(8) | brCep}}
 
-	div.row(ng-if=`${endereco}.tipo === 'ZONA_RURAL'`)
+	div.row(ng-if=`${endereco}.zonaLocalizacao.codigo === 1`)
 		label.col-md-2.text-right {{#{labelEndereco}}}
 		span.col-md-10
-			| {{#{endereco}.municipio.nome}}/{{#{endereco}.municipio.estado.codigo}} - 
+			| {{#{endereco}.municipio.nome}}/{{#{endereco}.municipio.estado.codigo ? #{endereco}.municipio.estado.codigo : #{endereco}.municipio.estado.sigla}} - 
 			| {{#{endereco}.roteiroAcesso}}

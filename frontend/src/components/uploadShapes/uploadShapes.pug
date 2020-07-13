@@ -19,10 +19,10 @@ mixin uploadShapes(idMapa)
 							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.numero : '-'}}
 						.row
 							label.col-sm-4 CPF/CNPJ:
-							span.col-sm-8 {{uploadShapes.processo ? (uploadShapes.processo.empreendimento.pessoa.cpf ? uploadShapes.processo.empreendimento.pessoa.cpf : uploadShapes.processo.empreendimento.pessoa.cnpj ) : '-' | brCpfCnpj}}
+							span.col-sm-8 {{uploadShapes.processo.empreendimento.cpfCnpj | brCpfCnpj}}
 						.row
 							label.col-sm-4 Interessado:
-							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.empreendimento.denominacao : '-'}}
+							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.empreendimento.empreendimentoEU.denominacao : '-'}}
 						.row
 							label.col-sm-4 Município:
 							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.empreendimento.municipio.nome : '-'}} / {{uploadShapes.processo ? uploadShapes.processo.empreendimento.municipio.estado.codigo : '-'}}

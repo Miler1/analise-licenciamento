@@ -1,5 +1,6 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Contato;
 import models.licenciamento.Caracterizacao;
 import models.licenciamento.Empreendimento;
 import models.licenciamento.StatusCaracterizacao;
@@ -7,6 +8,7 @@ import models.licenciamento.StatusCaracterizacaoEnum;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Configuracoes;
 import utils.DateUtil;
 
@@ -97,7 +99,11 @@ public class ParecerPresidente extends GenericModel {
 	public void enviarEmailStatusAnalise(Analise analise) throws Exception {
 
 		Empreendimento empreendimento = Empreendimento.findById(analise.processo.empreendimento.id);
-		List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+		Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
+				.filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+
+		List<String> interessados = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
 		EmailNotificacaoStatusAnalise emailNotificacaoStatusAnalise = new EmailNotificacaoStatusAnalise(analise,this, interessados);
 		emailNotificacaoStatusAnalise.enviar();
