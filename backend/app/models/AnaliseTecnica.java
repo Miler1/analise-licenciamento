@@ -1,6 +1,7 @@
 package models;
 
 import br.ufla.lemaf.beans.pessoa.Contato;
+import br.ufla.lemaf.beans.pessoa.Pessoa;
 import com.itextpdf.text.DocumentException;
 import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
@@ -782,7 +783,13 @@ public class AnaliseTecnica extends Analisavel {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
+
+		analiseTecnica.analise.processo.empreendimento.empreendimentoEU = empreendimentoEU;
+
 		final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+
+		Pessoa cadastrante = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.cpfCnpjCadastrante).pessoa;
+		final  Contato contatoCadastrante = cadastrante.contatos.stream().filter(contato -> contato.principal).findAny().orElseThrow(PortalSegurancaException::new);
 
 		UsuarioAnalise analista;
 		AnalistaVO analistaVO;
@@ -814,6 +821,7 @@ public class AnaliseTecnica extends Analisavel {
 					.setTemplate(tipoDocumento.getPdfTemplate())
 					.addParam("analiseTecnica", analiseTecnica)
 					.addParam("inconsistencia", inconsistencia)
+					.addParam("contatoCadastrante", contatoCadastrante.valor)
 					.addParam("enderecoCompleto", enderecoCompleto)
 					.addParam("analista", finalAnalistaVO)
 					.addParam("vistoria", false)

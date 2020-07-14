@@ -49,6 +49,8 @@ public class PareceresJuridicos extends GenericController{
 
         ParecerJuridico parecerFinal = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(idAnaliseTecnica);
 
+        parecerFinal.analiseGeo.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(parecerFinal.analiseGeo.analise.processo.empreendimento.cpfCnpj);
+
         renderJSON(parecerFinal, ParecerJuridicoSerializer.findParecerJuridico);
 
     }

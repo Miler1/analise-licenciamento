@@ -18,11 +18,11 @@ div.modal-body
 
             div.row
                 label.col-sm-4 CPF/CNPJ:
-                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf : modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
+                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.cpfCnpj | brCpfCnpj}}
 
             div.row
                 label.col-sm-4 Interessado:
-                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.denominacao}}
+                span.col-sm-8 {{modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.empreendimentoEU.empreendedor.pessoa.nome : modalCtrl.parecerJuridico.analiseGeo.analise.processo.empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial}}
 
             div.row
                 label.col-sm-4 Município:
