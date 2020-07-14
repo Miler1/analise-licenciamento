@@ -3,7 +3,7 @@
 numeroProcesso = analiseGeo.analise.processo.numero;
 tipoLicenca = analiseGeo.analise.processo.getCaracterizacao().tipoLicenca.nome;
 empreendimento = analiseGeo.analise.processo.empreendimento;
-empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ?empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 endereco = enderecoCompleto;
 }%
 

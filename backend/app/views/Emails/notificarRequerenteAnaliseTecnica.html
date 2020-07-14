@@ -3,7 +3,7 @@
 numeroProcesso = analiseTecnica.analise.processo.numero;
 tipoLicenca = analiseTecnica.analise.processo.getCaracterizacao().tipoLicenca.nome;
 empreendimento = analiseTecnica.analise.processo.empreendimento;
-empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 endereco = enderecoCompleto;
 }%
 

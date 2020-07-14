@@ -99,6 +99,8 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analise = AnaliseGeo.findById(idAnaliseGeo);
 
+        analise.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analise.analise.processo.empreendimento.cpfCnpj);
+
         renderJSON(analise, AnaliseGeoSerializer.findInfo);
 
     }

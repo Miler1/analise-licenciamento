@@ -1,6 +1,7 @@
 package models;
 
 import br.ufla.lemaf.beans.pessoa.Contato;
+import br.ufla.lemaf.beans.pessoa.Pessoa;
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -859,8 +860,14 @@ public class AnaliseGeo extends Analisavel {
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+
         br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
+        analiseGeo.analise.processo.empreendimento.empreendimentoEU = empreendimentoEU;
+
         final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+
+        Pessoa cadastrante = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpjCadastrante).pessoa;
+        final  Contato contatoCadastrante = cadastrante.contatos.stream().filter(contato -> contato.principal).findAny().orElseThrow(PortalSegurancaException::new);
 
         UsuarioAnalise analista;
         AnalistaVO analistaVO;
@@ -955,6 +962,7 @@ public class AnaliseGeo extends Analisavel {
                     .addParam("enderecoCompleto", enderecoCompleto)
                     .addParam("analista", finalAnalistaVO)
                     .addParam("localizacoes", localizacoes)
+                    .addParam("contatoPrincipal", contatoCadastrante.valor)
                     .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                     .addParam("categoriaInconsistencia", categoriaInconsistencia)
                     .addParam("itemRestricao", itemRestricao)
