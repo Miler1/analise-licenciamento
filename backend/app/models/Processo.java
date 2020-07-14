@@ -175,8 +175,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoAnaliseGeo(processoBuilder, filtro, usuarioSessao);
 
-//		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
-
 		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
 
 		commonFilterProcessoDiretor(processoBuilder, filtro, usuarioSessao);
