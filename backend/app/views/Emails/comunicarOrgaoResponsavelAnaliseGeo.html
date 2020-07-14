@@ -5,7 +5,7 @@
     restricao = comunicado.tipoSobreposicao.nome;
     orgaoResponsavel = comunicado.orgao;
     empreendimento = analiseGeo.analise.processo.empreendimento;
-    empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+    empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
     atividadesCaracterizacao = comunicado.caracterizacao.atividadesCaracterizacao;
     distanciaRestricao = comunicado.distancia;
     municipio = municipio;
