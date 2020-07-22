@@ -12,6 +12,7 @@ import play.Logger;
 import play.jobs.On;
 import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
+import utils.Configuracoes;
 import utils.Helper;
 import utils.WebService;
 
@@ -83,6 +84,7 @@ public class VerificarComunicado extends GenericJob {
 
 						List<String> destinatarios = new ArrayList<String>();
 						destinatarios.add(comunicado.orgao.email);
+						destinatarios.add(Configuracoes.DESTINATARIO_COPIA);
 
 						analiseGeo.reenviarEmailComunicado(ultimoParecer, comunicado, destinatarios);
 

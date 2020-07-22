@@ -1,6 +1,6 @@
 var AnaliseEmAndamentoJuridicoListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'EM ANÁLISE JURÍDICA';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.EM_ANALISE_JURIDICA;
 
 	var listagem = this;
 

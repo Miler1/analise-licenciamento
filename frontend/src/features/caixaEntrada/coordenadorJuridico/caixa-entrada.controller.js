@@ -1,6 +1,6 @@
 var CxEntCoordenadorJuridicoController = function($scope, config, consultorService, mensagem, $uibModal, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VINCULAÇÃO JURÍDICA';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_VINCULACAO_JURIDICA;
 
 	var cxEntCoordenadorJuridico = this;
 

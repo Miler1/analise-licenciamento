@@ -1,6 +1,6 @@
 var CxEntDiretorController = function($scope, config, mensagem,$rootScope, processoService, analiseService, $location) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO DO DIRETOR TÉCNICO';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_VALIDACAO_DIRETOR;
 
 	var cxEntDiretor = this;
 
@@ -34,7 +34,7 @@ var CxEntDiretorController = function($scope, config, mensagem,$rootScope, proce
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO DIRETOR TÉCNICO';
+				$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_VALIDACAO_DIRETOR;
 				$location.path('/analise-diretor/' + idAnalise.toString());
 							
 			}, function(error){

@@ -1,6 +1,6 @@
 var AguardandoValidacaoTecnicaListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VALIDACÃO TÉCNICA';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_VALIDACAO_TECNICA;
 
 	var listagem = this;
 

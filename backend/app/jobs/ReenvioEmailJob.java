@@ -45,6 +45,7 @@ public class ReenvioEmailJob extends GenericJob {
 					List<String> destinatariosJuridico = new ArrayList<>();
 					destinatariosJuridico.add(Configuracoes.DESTINATARIO_JURIDICO);
 					destinatariosJuridico.add(Configuracoes.DESTINATARIO_JURIDICO2);
+					destinatariosJuridico.add(Configuracoes.DESTINATARIO_COPIA);
 
 					ParecerJuridico parecerJuridico = ParecerJuridico.findById(reenvioEmail.idItensEmail);
 
@@ -60,6 +61,7 @@ public class ReenvioEmailJob extends GenericJob {
 					Comunicado comunicado = Comunicado.findById(reenvioEmail.idItensEmail);
 					List<String> destinatariosOrgao = new ArrayList<>();
 					destinatariosOrgao.add(comunicado.orgao.email);
+					destinatariosOrgao.add(Configuracoes.DESTINATARIO_COPIA);
 
 					List<ParecerAnalistaGeo> pareceresAnalistaGeo = ParecerAnalistaGeo.find("id_analise_geo", comunicado.analiseGeo.id).fetch();
 

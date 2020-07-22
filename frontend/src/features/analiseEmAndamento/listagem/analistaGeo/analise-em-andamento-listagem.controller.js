@@ -3,7 +3,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 												   analiseGeoService, parecerGerenteService,
 												   mensagem, $uibModal) {
 
-	$rootScope.tituloPagina = 'EM ANÁLISE GEO';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.EM_ANALISE_GEO;
 
 	var listagem = this;
 

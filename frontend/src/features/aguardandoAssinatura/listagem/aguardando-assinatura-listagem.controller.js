@@ -1,6 +1,6 @@
 var AguardandoAssinaturaAprovadorListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ASSINATURA APROVADOR';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_ASSINATURA_APROVADOR;
 
 	var listagem = this;
 

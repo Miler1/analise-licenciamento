@@ -3,6 +3,7 @@
 numeroProcesso = analiseTecnica.analise.processo.numero;
 tipoLicenca = analiseTecnica.analise.processo.getCaracterizacao().tipoLicenca.nome;
 empreendimento = analiseTecnica.analise.processo.empreendimento;
+atividadesCaracterizacao = analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao;
 empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 endereco = enderecoCompleto;
 }%
@@ -30,7 +31,7 @@ endereco = enderecoCompleto;
 
 <p><strong>À </strong><br> <strong> ${empreendimentoNome} </strong><br> End: ${endereco.logradouro} ${endereco.numero} - ${endereco.bairro}, ${endereco.municipio.nome} - ${endereco.municipio.estado.sigla} <br>CEP: ${endereco.cep}<br><br></p>
 
-<p> Em atenção a solicitação protocolada, sob o nº do protocolo <strong>${numeroProcesso}</strong>, o qual solicita  <strong>${tipoLicenca}</strong>, notifico V.Sa que a referida licença foi <strong>NOTIFICADA</strong> </p>
+<p> Em atenção ao requerimento protocolado sob o nº <strong>${numeroProcesso}</strong>, o qual solicita  <strong>${tipoLicenca}</strong> para a(s) atividade(s) </strong>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome}, </strong>#{/list}informamos a V. Sa. que a referida solicitação foi <strong>NOTIFICADA</strong> </p>
 
 <p><strong>Descrição:</strong> ${parecerAnalistaTecnico.parecer}</p>
 

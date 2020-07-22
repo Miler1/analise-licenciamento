@@ -5,7 +5,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                                         documentoLicenciamentoService, processoService, documentoService, parecerJuridicoService,
                                         parecerAnalistaTecnicoService) {
 
-    $rootScope.tituloPagina = 'EM ANÁLISE TÉCNICA';
+    $rootScope.tituloPagina = app.TITULOS_PAGINA.EM_ANALISE_TECNICA;
 
     var ctrl = this;
 

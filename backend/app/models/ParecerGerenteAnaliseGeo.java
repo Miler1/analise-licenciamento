@@ -126,6 +126,7 @@ public class ParecerGerenteAnaliseGeo extends GenericModel {
 		List<String> destinatarios = new ArrayList<>();
 		destinatarios.add(Configuracoes.DESTINATARIO_JURIDICO);
 		destinatarios.add(Configuracoes.DESTINATARIO_JURIDICO2);
+		destinatarios.add(Configuracoes.DESTINATARIO_COPIA);
 
 		TipoDocumentoLicenciamento tipoDocumentoLicenciamento = TipoDocumentoLicenciamento.findByCodigo(TipoDocumentoLicenciamento.DOCUMENTO_FUNDIARIO);
 

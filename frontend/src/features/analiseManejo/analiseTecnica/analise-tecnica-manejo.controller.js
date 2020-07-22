@@ -1,6 +1,6 @@
 var AnaliseTecnicaManejoController = function($rootScope, $scope, $routeParams, analiseManejoService, $location, mensagem, $uibModal, observacaoService, $timeout) {
 
-	$rootScope.tituloPagina = 'PARECER TÉCNICO';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.PARECER_TECNICO;
 
 	var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
 

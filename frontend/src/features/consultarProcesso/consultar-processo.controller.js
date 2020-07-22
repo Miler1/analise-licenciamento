@@ -8,7 +8,7 @@ var ConsultarProcessoController = function($scope,
 										documentoService,
 										parecerAnalistaTecnicoService) {
 
-	$rootScope.tituloPagina = 'CONSULTAR PROCESSO / PROTOCOLO';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.CONSULTAR_PROCESSO_PROTOCOLO;
 
 	var consultarProcesso = this;
 

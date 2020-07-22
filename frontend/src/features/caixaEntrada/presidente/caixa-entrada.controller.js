@@ -6,7 +6,7 @@ var CxEntPresidenteController = function($scope,
 										analiseService, 
 										$location) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ASSINATURA DO DIRETOR PRESIDENTE';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_ASSINATURA_DIRETOR_PRESIDENTE;
 
 	var cxEntPresidente = this;
 
@@ -36,7 +36,7 @@ var CxEntPresidenteController = function($scope,
 			.then(function(response){
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO DIRETOR PRESIDENTE';
+				$rootScope.tituloPagina = app.TITULOS_PAGINA.EM_VALIDACAO_PELO_DIRETOR_PRESIDENTE;
 				$location.path('/analise-presidente/' + idAnalise.toString());
 							
 			}, function(error){

@@ -1,6 +1,6 @@
 var AnaliseGeoManejoController = function($rootScope, $scope, $routeParams, processoManejoService, documentoService, $location, mensagem) {
 
-	$rootScope.tituloPagina = 'PARECER TÉCNICO';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.PARECER_TECNICO;
 
 	var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
 

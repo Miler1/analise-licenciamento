@@ -2,7 +2,7 @@ var AnaliseJuridicaController = function($rootScope, $scope, $routeParams, $wind
         analiseJuridica, documentoLicenciamentoService, uploadService, mensagem, $uibModal, analiseJuridicaService,
         documentoAnaliseService, processoService, TiposAnalise, modalSimplesService) {
 
-    $rootScope.tituloPagina = 'PARECER JURÍDICO';
+    $rootScope.tituloPagina = app.TITULOS_PAGINA.PARECER_JURIDICO;
     var TAMANHO_MAXIMO_ARQUIVO_MB = 10;
     var ctrl = this;
 

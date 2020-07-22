@@ -264,6 +264,7 @@ POST	/external/upload/save						Application.upload
 
 GET     /notificacoes/{idTramitacao}                         Notificacoes.downloadPDF
 GET     /notificacoes/findByIdProcesso/{id}                  Notificacoes.findByIdProcesso
+GET     /notificacoes/findNotificacoesByIdProcesso/{id}      Notificacoes.findNotificacoesByIdProcesso
 GET     /notificacoes/findByIdProcessoTecnico/{id}           Notificacoes.findByIdProcessoTecnico
 GET     /notificacoes/findByIdParecer/{id}                   Notificacoes.findByIdParecer
 GET     /notificacoes/findByIdParecerTecnico/{id}            Notificacoes.findByIdParecerTecnico

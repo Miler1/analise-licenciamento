@@ -1,6 +1,6 @@
 var CxEntCoordenadorTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService, gerenteService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO VINCULAÇÃO TÉCNICA';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_VINCULACAO_TECNICA;
 
 	var cxEntCoordenadorTecnico = this;
 

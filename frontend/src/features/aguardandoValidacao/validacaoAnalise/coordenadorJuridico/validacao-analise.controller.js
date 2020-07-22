@@ -1,7 +1,7 @@
 var ValidacaoAnaliseJuridicaController = function($rootScope, analiseJuridicaService, $route, $scope, 
 		mensagem, $location, consultorService, documentoAnaliseService, processoService) {
 
-	$rootScope.tituloPagina = 'VALIDAÇÃO PARECER JURÍDICO';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.VALIDACAO_PARECER_JURIDICO;
 
 	var validacaoAnaliseJuridica = this;
 

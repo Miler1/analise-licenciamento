@@ -1,7 +1,7 @@
 var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, processoService, parecerAnalistaTecnicoService,
 	licencaEmitidaService, licencaService, $uibModal, mensagem, dispensaLicencaService) {
 
-	$rootScope.tituloPagina = 'CONSULTAR LICENÇAS EMITIDAS';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.CONSULTAR_LICENCAS_EMITIDAS;
 
 	var consultarLicencas = this;
 

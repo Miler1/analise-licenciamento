@@ -1,6 +1,6 @@
 var CadastroProcessoManejoController = function($scope, config, $rootScope, tipoLicencaManejoService, atividadeManejoService, municipioService, tipologiaManejoService, mensagem, $location, imovelService, processoManejoService) {
 
-	$rootScope.tituloPagina = 'CADASTRAR PROCESSO MANEJO DIGITAL';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.CADASTRAR_PROCESSO_MANEJO_DIGITAL;
 
 	var cadastroProcessoManejoController = this;
 

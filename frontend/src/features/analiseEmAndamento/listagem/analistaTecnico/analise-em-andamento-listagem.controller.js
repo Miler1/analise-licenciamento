@@ -2,7 +2,7 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 														parecerGerenteService, $rootScope,
 														analiseTecnicaService, processoService) {
 
-	$rootScope.tituloPagina = 'EM ANÁLISE TÉCNICA';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.EM_ANALISE_TECNICA;
 
 	var listagem = this;
 

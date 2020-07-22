@@ -9,6 +9,8 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 
 	if (processo.idProcesso) {
 
+		if($rootScope.tituloPagina === app.TITULOS_PAGINA.CONSULTAR_PROCESSO_PROTOCOLO){
+
 			notificacaoService.findByIdProcesso(processo.idProcesso).then(function(response){
 
 				modalCtrl.notificacoes = response.data;
@@ -19,6 +21,20 @@ var VisualizacaoNotificacaoController = function ($rootScope,$uibModalInstance, 
 				mensagem.error("Ocorreu um erro ao buscar dados das notificações.");
 
 			});
+
+		}else{
+			notificacaoService.findNotificacoesByIdProcesso(processo.idProcesso).then(function(response){
+
+				modalCtrl.notificacoes = response.data;
+				prepararDadosParaExibicao();
+
+			}).catch(function(){
+
+				mensagem.error("Ocorreu um erro ao buscar dados das notificações.");
+
+			});
+		}
+
 	}
 
 	modalCtrl.fechar = function () {

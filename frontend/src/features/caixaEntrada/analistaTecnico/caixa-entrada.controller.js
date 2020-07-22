@@ -2,7 +2,7 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 											  $location, analiseTecnicaService,
 											  mensagem, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE TÉCNICA';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_ANALISE_TECNICA;
 
 	var cxEntAnalistaTecnico = this;
 

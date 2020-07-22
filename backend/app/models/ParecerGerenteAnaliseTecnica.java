@@ -58,7 +58,7 @@ public class ParecerGerenteAnaliseTecnica extends GenericModel {
 			diretor.save();
 
 			analiseTecnica.geraLicencasAnaliseTecnica(analiseTecnica.licencasAnalise);
-			analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, diretor.usuario).save();
+			//analiseTecnica.analistaTecnico = new AnalistaTecnico(analiseTecnica, diretor.usuario).save();
 
 			analiseTecnica.dataFim = new Date();
 			analiseTecnica.ativo = false;

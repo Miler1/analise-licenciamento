@@ -32,6 +32,17 @@ public class Notificacoes extends InternalController {
 
         Processo processo = Processo.findById(id);
 
+        renderJSON(processo.inicializaNotificacoes(), NotificacaoSerializer.findAll);
+
+    }
+
+
+    public static void findNotificacoesByIdProcesso(Long id) {
+
+        verificarPermissao(Acao.VISUALIZAR_NOTIFICACAO);
+
+        Processo processo = Processo.findById(id);
+
         List<Notificacao> notificacoes = new ArrayList<>();
 
         while(processo.processoAnterior != null) {

@@ -443,6 +443,7 @@ public class AnaliseGeo extends Analisavel {
 
         List<String> destinatarios = new ArrayList<>();
         destinatarios.add(orgaoResponsavel.email);
+        destinatarios.add(Configuracoes.DESTINATARIO_COPIA);
 
         Boolean aguardandoResposta = false;
 
@@ -464,6 +465,7 @@ public class AnaliseGeo extends Analisavel {
 
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
+        destinatarios.add(Configuracoes.DESTINATARIO_COPIA);
 
         Boolean aguardandoResposta = false;
 
@@ -485,6 +487,7 @@ public class AnaliseGeo extends Analisavel {
 
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
+        destinatarios.add(Configuracoes.DESTINATARIO_COPIA);
 
         Boolean aguardandoResposta = false;
 

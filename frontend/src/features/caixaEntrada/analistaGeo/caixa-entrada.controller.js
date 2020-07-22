@@ -1,6 +1,6 @@
 var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoService, mensagem, $rootScope, $uibModal ,processoService) {
 
-	$rootScope.tituloPagina = 'AGUARDANDO ANÁLISE GEO';
+	$rootScope.tituloPagina = app.TITULOS_PAGINA.AGUARDANDO_ANALISE_GEO;
 
 	var cxEntAnalistaGeo = this;
 
