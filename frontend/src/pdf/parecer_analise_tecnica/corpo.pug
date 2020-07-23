@@ -3,6 +3,7 @@ doctype html
 |	caracterizacao = analiseEspecifica.analise.processo.caracterizacao;
 |	numeroProtocolo = analiseEspecifica.analise.processo.numero;
 |	siglaLicenca = caracterizacao.tipoLicenca.sigla;
+|   nomeEmpreendedor = empreendedor.pessoa.nome ? empreendedor.pessoa.nome : empreendedor.pessoa.razaoSocial; 
 |}%
 html(lang="pt-br")
 	head
@@ -21,7 +22,7 @@ body.corpo
 	div.conteudo
 		h3 PROCESSO: ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
 		h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
-		h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.empreendimentoEU.denominacao}
+		h3 INTERESSADO: ${nomeEmpreendedor}
 
 		ol.lista-conteudo
 		

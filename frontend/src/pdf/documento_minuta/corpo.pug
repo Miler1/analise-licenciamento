@@ -45,7 +45,7 @@ html(lang='en')
 
 			tr
 				td(colspan='10')
-					span Empresa/Interessado: ${empreendimento.denominacao}
+					span Empresa/Interessado: ${empreendimento.empreendedor.pessoa.nome ? empreendimento.empreendedor.pessoa.nome : empreendimento.empreendedor.pessoa.razaoSocial}
 
 			tr
 				td(colspan='5')
