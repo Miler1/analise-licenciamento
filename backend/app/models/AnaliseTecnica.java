@@ -753,6 +753,7 @@ public class AnaliseTecnica extends Analisavel {
 				.addParam("parecer", parecerAnalistaTecnico)
 				.addParam("condicionantes", condicionantes)
 				.addParam("restricoes", restricoes)
+				.addParam("empreendedor",this.analise.processo.empreendimento.empreendimentoEU.empreendedor)
 				.addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
 				.addParam("nomeAnalista", usuarioExecutor.pessoa.nome)
 				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 2.0D, 4.0D);
