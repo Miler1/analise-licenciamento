@@ -925,8 +925,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	public static Processo findByNumProcesso(String numProcesso) {
+		Processo processo = Processo.find("numero", numProcesso).first();
 
-		return Processo.find("numero", numProcesso).first();
+		processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(processo.empreendimento.cpfCnpj);
+
+		return processo;
 	}
 
 	public DadosProcessoVO getDadosProcesso() {

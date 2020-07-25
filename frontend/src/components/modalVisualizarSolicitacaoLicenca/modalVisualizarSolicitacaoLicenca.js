@@ -22,7 +22,7 @@ var ModalVisualizarSolicitacaoLicenca = {
             ctrl.processo = ctrl.resolve.processo;
             ctrl.possuiValidade = (ctrl.analiseTecnica.analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.codigo === ctrl.tipologias.ID_AQUICULTURA) ? false : true;
             ctrl.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
-            ctrl.cpfCnpj = (ctrl.processo.empreendimento.pessoa.cpf === null || ctrl.processo.empreendimento.pessoa.cpf === undefined) ? ctrl.processo.empreendimento.pessoa.cnpj : ctrl.processo.empreendimento.pessoa.cpf;
+            ctrl.cpfCnpj = ctrl.processo.empreendimento.cpfCnpj;
 
         };
 
