@@ -182,10 +182,9 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	
 	public LicencaEmitidaBuilder groupByCpfCnpjEmpreendimento(){
 		
-		addPessoaEmpreendimentoAlias();
+		addEmpreendimentoAlias();
 		
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cpf").as("cpfEmpreendimento"));
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj").as("cnpjEmpreendimento"));
+		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".cpfCnpj").as("cpfEmpreendimento"));
 		
 		return this;
 	}	
@@ -317,24 +316,23 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		if (StringUtils.isNotEmpty(cpfCnpj)) {
 
-			addPessoaEmpreendimentoAlias();
+			addEmpreendimentoAlias();
 			
 			criteria.add(Restrictions.or(
-					getCpfEmpreendimentoRestricao(cpfCnpj), 
-					getCnpjEmpreendimentoRestricao(cpfCnpj)
+					getCpfCnpjEmpreendimentoRestricao(cpfCnpj)
 			));
 		}
 		
 		return this;
 	}
 
-	private Criterion getCnpjEmpreendimentoRestricao(String cnpj) {
-		return Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cnpj, MatchMode.START);
+	private Criterion getCpfCnpjEmpreendimentoRestricao(String cpfCnpj) {
+		return Restrictions.ilike(EMPREENDIMENTO_ALIAS+".cpfCnpj", cpfCnpj, MatchMode.START);
 	}
 
-	private Criterion getCpfEmpreendimentoRestricao(String cpf) {
-		return Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpf, MatchMode.START);
-	}
+//	private Criterion getCpfEmpreendimentoRestricao(String cpf) {
+//		return Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpf, MatchMode.START);
+//	}
 	
 	public LicencaEmitidaBuilder filtrarPorIdAtividade(Long idAtividade) {
 		
@@ -441,13 +439,13 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 
 		if (StringUtils.isNotEmpty(pesquisa)) {
 
-			addPessoaEmpreendimentoAlias();
+//			addPessoaEmpreendimentoAlias();
 			addMunicipioEmpreendimentoAlias();
 			
 			criteria.add(Restrictions.or(
 				getNumeroLicencaRestricao(pesquisa),
 				getNumeroProcessoRestricao(pesquisa),
-//				getCpfEmpreendimentoRestricao(pesquisa),
+				getCpfCnpjEmpreendimentoRestricao(pesquisa),
 //				getCnpjEmpreendimentoRestricao(pesquisa),
 				getDenominacaoEmpreendimentoRestricao(pesquisa),
 				getMunicipioRestricao(pesquisa)
