@@ -27,11 +27,11 @@ analiseNaoAprovada = 20l;
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'100', width:'70' /}
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'AMAZONAS', alt:'Estado do AMAZONAS', height:'100', width:'70' /}
 </h1>
 <p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
 
 <p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(new Date())} </p>
 
@@ -43,7 +43,7 @@ analiseNaoAprovada = 20l;
 
 #{if tipoResultadoAnaliseFinal == analiseAprovada}
 
-<p> Em atenção ao requerimento protocolado neste Instituto de Proteção Ambiental do Amazonas – IPAAM, sob o nº ${numeroProtocolo}, o qual solicita uma ${tipoLicenca} para a(s) atividade(s) </strong>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome}, </strong>#{/list}informamos a V. Sa. que a referida solicitação foi <strong>APROVADA</strong>. Consulte a solicitação para ver status de sua licença.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>APROVADA</strong>. E encontra-se aguardando pagamento da taxa de licença.</p>
 
 <p style="display: inline-flex"> <strong> Despacho: </strong>#{verbatim}${parecer}#{/verbatim}</p>
 
@@ -51,7 +51,7 @@ analiseNaoAprovada = 20l;
 
 #{if tipoResultadoAnaliseFinal == analiseNaoAprovada}
 
-<p> Em atenção ao requerimento protocolado neste Instituto de Proteção Ambiental do Amazonas – IPAAM, sob o nº ${numeroProtocolo}, o qual solicita uma ${tipoLicenca} para a(s) atividade(s) </strong>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome}, </strong>#{/list}informamos a V. Sa. que a referida solicitação foi <strong>NÃO FOI APROVADA</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença <strong>NÃO FOI APROVADA</strong>.</p>
 
 <p style="display: inline-flex"> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
 
@@ -59,13 +59,13 @@ analiseNaoAprovada = 20l;
 
 #{if tipoResultadoAnaliseFinal == analiseCancelada}
 
-<p> Em atenção ao requerimento protocolado neste Instituto de Proteção Ambiental do Amazonas – IPAAM, sob o nº ${numeroProtocolo}, o qual solicita uma ${tipoLicenca} para a(s) atividade(s) </strong>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome}, </strong>#{/list}informamos a V. Sa. que a referida solicitação foi <strong>CANCELADA</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>CANCELADA</strong>.</p>
 
 #{/if}
 
 #{if tipoResultadoAnaliseFinal == analiseSuspensa}
 
-<p> Em atenção ao requerimento protocolado neste Instituto de Proteção Ambiental do Amazonas – IPAAM, sob o nº ${numeroProtocolo}, o qual solicita uma ${tipoLicenca} para a(s) atividade(s) </strong>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome}, </strong>#{/list}informamos a V. Sa. que a referida solicitação foi <strong>SUSPENSA</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>SUSPENSA</strong>.</p>
 
 #{/if}
 
