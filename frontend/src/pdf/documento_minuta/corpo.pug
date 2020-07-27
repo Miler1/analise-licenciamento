@@ -102,7 +102,7 @@ html(lang='en')
 								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas].x)}
 								|\#{if coordenadas+1 != geometriaAtividade.geometria.getCoordinates().length -1}
 								td.table-coordenadas(colspan='1') P-${coordenadas +2}
-								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].y) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].y) : '-'}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].y) != null ? utils.CoordenadaUtil.formataLatitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].y) : '-'}
 								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].x) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaAtividade.geometria.getCoordinates()[coordenadas+1].x) : '-' }
 								|\#{/if}
 							|\#{/if}
@@ -140,7 +140,7 @@ html(lang='en')
 								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas].x)}
 								|\#{if coordenadas+1 != geometriaComplexo.geometria.getCoordinates().length -1}
 								td.table-coordenadas(colspan='1') P-${coordenadas +2}
-								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].y) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].y) : '-'}
+								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLatitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].y) != null ? utils.CoordenadaUtil.formataLatitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].y) : '-'}
 								td.table-coordenadas(colspan='2') ${utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].x) != null ? utils.CoordenadaUtil.formataLongitudeString(geometriaComplexo.geometria.getCoordinates()[coordenadas+1].x) : '-' }
 								|\#{/if}
 							|\#{/if}
