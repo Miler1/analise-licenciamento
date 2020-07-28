@@ -7,7 +7,7 @@ restricao = comunicado.tipoSobreposicao.nome;
 orgaoResponsavel = comunicado.orgao;
 nomeAnalista = parecerAnalistaGeo.usuario.pessoa.nome;
 empreendimento = analiseGeo.analise.processo.empreendimento;
-empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+empreendimentoNome = empreendimento.empreendimentoEU.pessoa.nome ? empreendimento.empreendimentoEU.pessoa.nome : empreendimento.empreendimentoEU.pessoa.razaoSocial;
 nomeEmpreendimento = empreendimento.denominacao;
 atividadesCaracterizacao = caracterizacao.atividadesCaracterizacao;
 endereco = enderecoCompleto;
@@ -45,7 +45,7 @@ endereco = enderecoCompleto;
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
 
 
 </body>
