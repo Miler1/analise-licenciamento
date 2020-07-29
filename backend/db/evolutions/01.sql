@@ -361,8 +361,8 @@ CREATE TABLE analise.analise_tecnica (
  CONSTRAINT fk_at_tipo_resultado_validacao FOREIGN KEY (id_tipo_resultado_validacao)
  REFERENCES analise.tipo_resultado_analise(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analise_tecnica TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.analise_tecnica_id_seq TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analise_tecnica TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.analise_tecnica_id_seq TO licenciamento_ap;
 ALTER TABLE analise.analise_tecnica OWNER TO postgres;
 
 
@@ -380,8 +380,8 @@ CREATE TABLE analise.licenca_analise(
  REFERENCES licenciamento.licenca(id)
  
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.licenca_analise TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.licenca_analise_id_seq TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.licenca_analise TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.licenca_analise_id_seq TO licenciamento_ap;
 ALTER TABLE analise.licenca_analise OWNER TO postgres;
 
 
@@ -395,8 +395,8 @@ CREATE TABLE analise.condicionante(
  CONSTRAINT fk_c_licenca_analise FOREIGN KEY(id_licenca_analise)
  REFERENCES analise.licenca_analise(id) 
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.condicionante TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.condicionante_id_seq TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.condicionante TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.condicionante_id_seq TO licenciamento_ap;
 ALTER TABLE analise.condicionante OWNER TO postgres;
 
 
@@ -410,8 +410,8 @@ CREATE TABLE analise.recomendacao (
  CONSTRAINT fk_r_licenca_analise FOREIGN KEY(id_licenca_analise)
  REFERENCES analise.licenca_analise(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.recomendacao TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.recomendacao_id_seq TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.recomendacao TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.recomendacao_id_seq TO licenciamento_ap;
 ALTER TABLE analise.recomendacao OWNER TO postgres;
 
 
@@ -424,8 +424,8 @@ CREATE TABLE analise.parecer_tecnico_restricao(
  CONSTRAINT fk_ptr_analise_tecnica FOREIGN KEY(id_analise_tecnica)
  REFERENCES analise.analise_tecnica(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.parecer_tecnico_restricao TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.parecer_tecnico_restricao_id_seq TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.parecer_tecnico_restricao TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.parecer_tecnico_restricao_id_seq TO licenciamento_ap;
 ALTER TABLE analise.parecer_tecnico_restricao OWNER TO postgres;
 
 CREATE TABLE analise.analista_tecnico(
@@ -438,8 +438,8 @@ CREATE TABLE analise.analista_tecnico(
  REFERENCES analise.analise_tecnica(id)
 
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analista_tecnico TO licenciamento_am;
-GRANT SELECT,USAGE ON SEQUENCE analise.analista_tecnico_id_seq TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.analista_tecnico TO licenciamento_ap;
+GRANT SELECT,USAGE ON SEQUENCE analise.analista_tecnico_id_seq TO licenciamento_ap;
 ALTER TABLE analise.analista_tecnico OWNER TO postgres;
 
 CREATE TABLE analise.rel_documento_analise_tecnica(
@@ -451,7 +451,7 @@ CREATE TABLE analise.rel_documento_analise_tecnica(
  CONSTRAINT fk_rdat_analise_tecnica FOREIGN KEY(id_analise_tecnica)
  REFERENCES analise.analise_tecnica(id)
 );
-GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_analise_tecnica TO licenciamento_am;
+GRANT INSERT, SELECT,UPDATE,DELETE ON TABLE analise.rel_documento_analise_tecnica TO licenciamento_ap;
 ALTER TABLE analise.rel_documento_analise_tecnica OWNER TO postgres;
 
 ALTER TABLE analise.analise_documento ADD COLUMN id_analise_tecnica INTEGER;
@@ -2035,7 +2035,7 @@ CREATE TABLE analise.historico_tramitacao_setor
 
 ALTER TABLE analise.historico_tramitacao_setor OWNER TO postgres;
 GRANT ALL ON TABLE analise.historico_tramitacao_setor TO postgres;
-GRANT SELECT,UPDATE,INSERT,DELETE ON TABLE analise.historico_tramitacao_setor TO licenciamento_am;
+GRANT SELECT,UPDATE,INSERT,DELETE ON TABLE analise.historico_tramitacao_setor TO licenciamento_ap;
 
 COMMENT ON TABLE analise.historico_tramitacao_setor IS 'Entidade responsável por armazenar o relacionamento entre historico_tramitacao e um setor.';
 COMMENT ON COLUMN analise.historico_tramitacao_setor.id_historico_tramitacao IS 'Identificador único da entidade historico_tramitacao.';
@@ -2046,18 +2046,43 @@ COMMENT ON COLUMN analise.historico_tramitacao_setor.sigla_setor IS 'Identificad
 
 BEGIN;
 
-ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise FOREIGN KEY (id_usuario_validacao) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario_validacao) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_gerente FOREIGN KEY (id_usuario_validacao_gerente) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analista_tecnico ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analista_tecnico_manejo ADD CONSTRAINT fk_antm_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.consultor_juridico ADD CONSTRAINT fk_cj_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.dispensa_licencamento_cancelada ADD CONSTRAINT fk_dlc_usuario_analise_executor FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.gerente_tecnico ADD CONSTRAINT fk_gt_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.licenca_cancelada ADD CONSTRAINT fk_lc_usuario_analise_executor FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.licenca_suspensa ADD CONSTRAINT fk_ls_usuario_analise_executor FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_juridica DROP CONSTRAINT fk_aj_usuario;
+ALTER TABLE analise.analise_juridica DROP CONSTRAINT fk_aj_usuario_validacao_aprovador;
+ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario;
+ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario_validacao_aprovador;
+ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario_validacao_gerente;
+ALTER TABLE analise.analista_tecnico DROP CONSTRAINT fk_at_usuario;
+ALTER TABLE analise.analista_tecnico_manejo DROP CONSTRAINT fk_antm_usuario;
+ALTER TABLE analise.consultor_juridico DROP CONSTRAINT fk_cj_usuario;
+ALTER TABLE analise.dispensa_licenciamento_cancelada DROP CONSTRAINT fk_dlc_usuario_executor;
+ALTER TABLE analise.gerente DROP CONSTRAINT fk_gt_usuario;
+ALTER TABLE analise.licenca_cancelada DROP CONSTRAINT fk_lc_usuario_executor;
+ALTER TABLE analise.licenca_suspensa DROP CONSTRAINT fk_ls_usuario_executor;
+
+ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise 
+  FOREIGN KEY (id_usuario_validacao) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise_validacao_aprovador 
+  FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario_validacao) 
+  REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_aprovador 
+  FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_gerente 
+  FOREIGN KEY (id_usuario_validacao_gerente) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analista_tecnico ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario) 
+  REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analista_tecnico_manejo ADD CONSTRAINT fk_antm_usuario_analise FOREIGN KEY (id_usuario) 
+  REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.consultor_juridico ADD CONSTRAINT fk_cj_usuario_analise FOREIGN KEY (id_usuario) 
+  REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.dispensa_licenciamento_cancelada ADD CONSTRAINT fk_dlc_usuario_analise_executor 
+  FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.gerente ADD CONSTRAINT fk_gt_usuario_analise FOREIGN KEY (id_usuario) 
+  REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.licenca_cancelada ADD CONSTRAINT fk_lc_usuario_analise_executor 
+  FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.licenca_suspensa ADD CONSTRAINT fk_ls_usuario_analise_executor 
+  FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
 
 COMMENT ON COLUMN analise.analise_juridica.id_usuario_validacao_aprovador IS 'Campo responsável por armazernar o aprovador que fez a validação.';
 COMMENT ON COLUMN analise.analise_juridica.id_usuario_validacao IS 'Identificador da entidade analise.usuario_analise que realizará o relacionamento entre as duas entidades.';
@@ -2073,6 +2098,7 @@ COMMENT ON COLUMN analise.licenca_cancelada.id_usuario_executor IS 'Identificado
 COMMENT ON COLUMN analise.licenca_suspensa.id_usuario_executor IS 'Identificador da entidade analise.usuario_analise que faz o relacionamento entre as duas entidades.';
 
 COMMIT;
+
 
 --										72.sql
 
@@ -2512,8 +2538,8 @@ CREATE TABLE analise.desvinculo
 );
 
 ALTER TABLE analise.desvinculo OWNER TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.desvinculo TO licenciamento_am;
-GRANT SELECT, USAGE ON SEQUENCE analise.desvinculo_id_seq TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.desvinculo TO licenciamento_ap;
+GRANT SELECT, USAGE ON SEQUENCE analise.desvinculo_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.desvinculo  IS 'Entidade responsável por armazenar o analista da analise geo.';
 COMMENT ON COLUMN analise.desvinculo.id IS 'Identificador único da entidade.';
@@ -2909,8 +2935,8 @@ CREATE TABLE analise.parecer_gerente_analise_geo (
         REFERENCES  analise.analise_geo(id)
 );
 ALTER TABLE analise.parecer_gerente_analise_geo OWNER TO postgres;
-ALTER TABLE analise.parecer_gerente_analise_geo OWNER TO licenciamento_am;
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_gerente_analise_geo TO licenciamento_am;
+ALTER TABLE analise.parecer_gerente_analise_geo OWNER TO licenciamento_ap;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_gerente_analise_geo TO licenciamento_ap;
 GRANT ALL ON TABLE analise.parecer_gerente_analise_geo TO postgres;
 COMMENT ON TABLE analise.parecer_gerente_analise_geo is 'Entidade responsável por armazenar informações sobre o parecer do gerente em uma análise técnica';
 COMMENT ON COLUMN analise.parecer_gerente_analise_geo.id is 'Id do parecer do gerente';
@@ -2928,7 +2954,7 @@ CREATE SEQUENCE analise.parecer_gerente_analise_geo_id_seq
     CACHE 1;
 ALTER TABLE analise.parecer_gerente_analise_geo ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.parecer_gerente_analise_geo_id_seq');
 ALTER TABLE analise.parecer_gerente_analise_geo_id_seq OWNER TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE analise.parecer_gerente_analise_geo_id_seq TO licenciamento_am; 
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_gerente_analise_geo_id_seq TO licenciamento_ap; 
 SELECT setval('analise.parecer_gerente_analise_geo_id_seq', coalesce(max(id), 1)) FROM analise.parecer_gerente_analise_geo;
 
 --                    103.sql
@@ -2959,8 +2985,8 @@ CREATE TABLE analise.parecer_analista_geo (
         REFERENCES analise.usuario_analise(id)    
 );
 ALTER TABLE analise.parecer_analista_geo OWNER TO postgres;
-ALTER TABLE analise.parecer_analista_geo OWNER TO licenciamento_am;
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_analista_geo TO licenciamento_am;
+ALTER TABLE analise.parecer_analista_geo OWNER TO licenciamento_ap;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.parecer_analista_geo TO licenciamento_ap;
 GRANT ALL ON TABLE analise.parecer_analista_geo TO postgres;
 COMMENT ON TABLE analise.parecer_analista_geo IS 'Entidade responsável por armazenar informações sobre o parecer do analista geo em uma análise técnica';
 COMMENT ON COLUMN analise.parecer_analista_geo.id IS 'Id do parecer do analista';
@@ -2983,7 +3009,7 @@ CREATE SEQUENCE analise.parecer_analista_geo_id_seq
     CACHE 1;
 ALTER TABLE analise.parecer_analista_geo ALTER COLUMN id SET DEFAULT pg_catalog.nextval('analise.parecer_analista_geo_id_seq');
 ALTER TABLE analise.parecer_analista_geo_id_seq OWNER TO postgres;
-GRANT SELECT, USAGE ON SEQUENCE analise.parecer_analista_geo_id_seq TO licenciamento_am; 
+GRANT SELECT, USAGE ON SEQUENCE analise.parecer_analista_geo_id_seq TO licenciamento_ap; 
 SELECT setval('analise.parecer_analista_geo_id_seq', coalesce(max(id), 1)) FROM analise.parecer_analista_geo;   
 
 
@@ -2998,8 +3024,8 @@ CREATE TABLE analise.rel_documento_parecer_analista_geo (
         REFERENCES analise.parecer_analista_geo(id)
 );
 ALTER TABLE analise.rel_documento_parecer_analista_geo OWNER TO postgres;
-ALTER TABLE analise.rel_documento_parecer_analista_geo OWNER TO licenciamento_am;
-GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.rel_documento_parecer_analista_geo TO licenciamento_am;
+ALTER TABLE analise.rel_documento_parecer_analista_geo OWNER TO licenciamento_ap;
+GRANT SELECT,INSERT,UPDATE,DELETE ON TABLE analise.rel_documento_parecer_analista_geo TO licenciamento_ap;
 GRANT ALL ON TABLE analise.rel_documento_parecer_analista_geo TO postgres;
 COMMENT ON TABLE analise.rel_documento_parecer_analista_geo IS 'Entidade responsável por relacionar documentos de um parecer de um analista geo';
 COMMENT ON COLUMN analise.rel_documento_parecer_analista_geo.id_documento IS 'Identificador do documento';
@@ -3028,7 +3054,7 @@ WITH (
 );
 ALTER TABLE analise.desvinculo_analise_tecnica OWNER TO postgres;
 GRANT ALL ON TABLE analise.desvinculo_analise_tecnica TO postgres;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.desvinculo_analise_tecnica TO licenciamento_am;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.desvinculo_analise_tecnica TO licenciamento_ap;
 GRANT SELECT ON TABLE analise.desvinculo_analise_tecnica TO tramitacao;
 COMMENT ON TABLE analise.desvinculo_analise_tecnica IS 'Entidade responsável por armazenar o analista da analise geo.';
 COMMENT ON COLUMN analise.desvinculo_analise_tecnica.id IS 'Identificador único da entidade.';
