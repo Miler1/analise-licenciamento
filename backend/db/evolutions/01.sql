@@ -1626,8 +1626,6 @@ COMMENT ON COLUMN analise.historico_tramitacao_setor.sigla_setor IS 'Identificad
 
 --										71.sql
 
-BEGIN;
-
 ALTER TABLE analise.analise_juridica DROP CONSTRAINT fk_aj_usuario;
 ALTER TABLE analise.analise_juridica DROP CONSTRAINT fk_aj_usuario_validacao_aprovador;
 ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario;
@@ -1679,12 +1677,9 @@ COMMENT ON COLUMN analise.gerente_tecnico.id_usuario IS 'Identificador da entida
 COMMENT ON COLUMN analise.licenca_cancelada.id_usuario_executor IS 'Identificador da entidade analise.usuario_analise que realiza o relacionamento entre as entidades licenca_cancelada e portal_analise.usuario_analise identifica o usuário executor da ação.';
 COMMENT ON COLUMN analise.licenca_suspensa.id_usuario_executor IS 'Identificador da entidade analise.usuario_analise que faz o relacionamento entre as duas entidades.';
 
-COMMIT;
-
 
 --										72.sql
 
-BEGIN;
 
 CREATE TABLE analise.analise_geo
 (
@@ -1889,7 +1884,6 @@ ALTER TABLE analise.gerente RENAME CONSTRAINT fk_gt_analise_tecnica TO fk_g_anal
 
 ALTER TABLE analise.gerente RENAME CONSTRAINT fk_gt_usuario_analise TO fk_g_usuario_analise;
 
-COMMIT;
 
 --										73.sql
 
@@ -1916,8 +1910,6 @@ COMMENT ON COLUMN analise.rel_documento_analise_juridica.id_documento is 'Identi
 COMMENT ON COLUMN analise.rel_documento_analise_juridica.id_analise_juridica is 'Identificador da tabela analise_geo, responsável pelo relacionamento entre as duas tabelas.';
 
 --										74.sql
-
-BEGIN;
 
 CREATE TABLE analise.tipo_area_geometria
 (
@@ -1999,7 +1991,6 @@ INSERT INTO analise.tipo_area_geometria (id, codigo, nome) VALUES
 (2, 'APP', 'Área de preservação permanente'),
 (3, 'AA', 'Área Antropizada');
 
-COMMIT;
 
 --										75.sql
 
@@ -2055,7 +2046,6 @@ COMMENT ON COLUMN analise.rel_documento_inconsistencia.id_inconsistencia IS 'Ide
 
 --										77.sql
 
-BEGIN;
 
 ALTER SEQUENCE analise.analise_geo_anexo_id_seq RENAME TO empreendimento_camada_geo_id_seq;
 
@@ -2070,11 +2060,8 @@ ALTER TABLE analise.analise_geo_anexo RENAME TO empreendimento_camada_geo;
 INSERT INTO analise.tipo_documento(id, nome, caminho_pasta, prefixo_nome_arquivo) VALUES
 (18, 'Documento inconsistência', 'documento_inconsistencia', 'documento_inconsistencia' );
 
-COMMIT;
 
 --										78.sql
-
-BEGIN;
 
 UPDATE analise.configuracao_layer SET nome_layer='areas_restritas_am:unidade_conservacao' WHERE id = 1;
 UPDATE analise.configuracao_layer SET nome_layer='areas_restritas_am:terra_indigena' WHERE id = 2;
@@ -2082,8 +2069,6 @@ UPDATE analise.configuracao_layer SET nome_layer='areas_restritas_am:terra_indig
 DELETE FROM analise.configuracao_layer WHERE id in (3,4);
 
 SELECT setval('analise.configuracao_layer_id_seq', coalesce(max(id), 1)) FROM analise.configuracao_layer;
-
-COMMIT;
 
 --										79.sql
 
@@ -2275,8 +2260,6 @@ VALUES (20,'Documento comunicado órgão', NULL, 'documento_comunicado', 'docume
 
 --										89.sql
 
-BEGIN;
-
 UPDATE analise.inconsistencia SET id_atividade_caracterizacao = ac.id_caracterizacao
 FROM (
     SELECT a.id_caracterizacao, a.id FROM licenciamento.atividade_caracterizacao a
@@ -2301,7 +2284,6 @@ ALTER TABLE analise.comunicado RENAME COLUMN id_atividade_caracterizacao TO id_c
 
 COMMENT ON COLUMN analise.comunicado.id_caracterizacao IS 'Coluna que relaciona um comunicado a uma caracterização';
 
-COMMIT;
 
 --                    90.sql
 
