@@ -91,7 +91,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:3px;margin-top:5px;line-height:0px;")
-							|	<strong>OFÍCIO Nº: ${numeroProcesso}/SEMA</strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM</strong>
 						
 						.container-center
 							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)}
@@ -99,7 +99,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	À <br> <strong> Secretaria de Estado do Meio Ambiente - SEMA<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Manaus/AM<br><br>
+						|	À <br> <strong> Instituto de Proteção Ambiental do Amazonas - IPAAM<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Manaus/AM<br><br>
 
 				.container
 					.container-flex
@@ -109,7 +109,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/SEMA/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+						|	Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
 
 					br
 
