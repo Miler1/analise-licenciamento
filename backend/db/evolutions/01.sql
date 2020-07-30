@@ -1595,8 +1595,6 @@ GRANT ALL ON TABLE analise.usuario_analise TO postgres;
 
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE analise.usuario_analise TO licenciamento_ap;
 
-GRANT SELECT ON TABLE analise.usuario_analise TO tramitacao;
-
 GRANT SELECT,USAGE ON SEQUENCE analise.usuario_analise_id_seq TO licenciamento_ap;
 
 COMMENT ON TABLE analise.usuario_analise IS 'Entidade responsável por armazenar os usuários que possui permissão para acessar o módulo de análise do licenciamento';
