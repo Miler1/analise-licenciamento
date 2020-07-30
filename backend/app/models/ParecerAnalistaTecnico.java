@@ -269,6 +269,13 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 
 			this.vistoria.parecerAnalistaTecnico = this;
 			this.vistoria = this.vistoria.salvar();
+
+			if (this.vistoria.equipe.size() > 0) {
+				this.vistoria.equipe.forEach(equipeVistoria -> {
+					equipeVistoria.save();
+				});
+			}
+
 			analiseTecnicaBanco.vistoria = this.vistoria;
 
 		}
