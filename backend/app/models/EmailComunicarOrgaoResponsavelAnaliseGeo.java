@@ -61,6 +61,7 @@ public class EmailComunicarOrgaoResponsavelAnaliseGeo extends EmailComunicado {
 
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
             br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+            analiseGeo.analise.processo.empreendimento.empreendimentoEU = empreendimentoEU;
             Municipio municipio = null;
             for(Endereco endereco : empreendimentoEU.enderecos){
                 if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){

@@ -96,6 +96,8 @@ public class VerificarComunicado extends GenericJob {
 
 							Empreendimento empreendimento = Empreendimento.findById(analiseGeo.analise.processo.empreendimento.id);
 
+							analiseGeo.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(empreendimento.cpfCnpj);
+
 							Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
 									.filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
 
