@@ -869,7 +869,7 @@ public class AnaliseGeo extends Analisavel {
 
         final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
-        Pessoa cadastrante = CadastroUnificadoWS.ws.getPessoa(analiseGeo.analise.processo.empreendimento.cpfCnpjCadastrante);
+        Pessoa cadastrante = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpjCadastrante).pessoa;
         final  Contato contatoCadastrante = cadastrante.contatos.stream().filter(contato -> contato.principal).findAny().orElseThrow(PortalSegurancaException::new);
 
         UsuarioAnalise analista;

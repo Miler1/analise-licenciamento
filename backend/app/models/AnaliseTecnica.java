@@ -789,7 +789,7 @@ public class AnaliseTecnica extends Analisavel {
 
 		final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
 
-		Pessoa cadastrante = CadastroUnificadoWS.ws.getPessoa(analiseTecnica.analise.processo.empreendimento.cpfCnpjCadastrante);
+		Pessoa cadastrante = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.cpfCnpjCadastrante).pessoa;
 		final  Contato contatoCadastrante = cadastrante.contatos.stream().filter(contato -> contato.principal).findAny().orElseThrow(PortalSegurancaException::new);
 
 		UsuarioAnalise analista;

@@ -10,23 +10,35 @@ ALTER TABLE analise.analise_tecnica DROP CONSTRAINT fk_at_usuario_validacao_gere
 ALTER TABLE analise.analista_tecnico DROP CONSTRAINT fk_at_usuario;
 ALTER TABLE analise.analista_tecnico_manejo DROP CONSTRAINT fk_antm_usuario;
 ALTER TABLE analise.consultor_juridico DROP CONSTRAINT fk_cj_usuario;
-ALTER TABLE analise.dispensa_licencamento_cancelada DROP CONSTRAINT fk_dlc_usuario_executor;
-ALTER TABLE analise.gerente_tecnico DROP CONSTRAINT fk_gt_usuario;
+ALTER TABLE analise.dispensa_licenciamento_cancelada DROP CONSTRAINT fk_dlc_usuario_executor;
+ALTER TABLE analise.gerente DROP CONSTRAINT fk_gt_usuario;
 ALTER TABLE analise.licenca_cancelada DROP CONSTRAINT fk_lc_usuario_executor;
 ALTER TABLE analise.licenca_suspensa DROP CONSTRAINT fk_ls_usuario_executor;
 
-ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise FOREIGN KEY (id_usuario_validacao) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario_validacao) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_aprovador FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_gerente FOREIGN KEY (id_usuario_validacao_gerente) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analista_tecnico ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.analista_tecnico_manejo ADD CONSTRAINT fk_antm_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.consultor_juridico ADD CONSTRAINT fk_cj_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.dispensa_licencamento_cancelada ADD CONSTRAINT fk_dlc_usuario_analise_executor FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.gerente_tecnico ADD CONSTRAINT fk_gt_usuario_analise FOREIGN KEY (id_usuario) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.licenca_cancelada ADD CONSTRAINT fk_lc_usuario_analise_executor FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
-ALTER TABLE analise.licenca_suspensa ADD CONSTRAINT fk_ls_usuario_analise_executor FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise 
+	FOREIGN KEY (id_usuario_validacao) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_juridica ADD CONSTRAINT fk_aj_usuario_analise_validacao_aprovador 
+	FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario_validacao) 
+	REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_aprovador 
+	FOREIGN KEY (id_usuario_validacao_aprovador) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analise_tecnica ADD CONSTRAINT fk_at_usuario_analise_validacao_gerente 
+	FOREIGN KEY (id_usuario_validacao_gerente) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analista_tecnico ADD CONSTRAINT fk_at_usuario_analise FOREIGN KEY (id_usuario) 
+	REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.analista_tecnico_manejo ADD CONSTRAINT fk_antm_usuario_analise FOREIGN KEY (id_usuario) 
+	REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.consultor_juridico ADD CONSTRAINT fk_cj_usuario_analise FOREIGN KEY (id_usuario) 
+	REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.dispensa_licenciamento_cancelada ADD CONSTRAINT fk_dlc_usuario_analise_executor 
+	FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.gerente ADD CONSTRAINT fk_gt_usuario_analise FOREIGN KEY (id_usuario) 
+	REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.licenca_cancelada ADD CONSTRAINT fk_lc_usuario_analise_executor 
+	FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
+ALTER TABLE analise.licenca_suspensa ADD CONSTRAINT fk_ls_usuario_analise_executor 
+	FOREIGN KEY (id_usuario_executor) REFERENCES analise.usuario_analise (id);
 
 COMMENT ON COLUMN analise.analise_juridica.id_usuario_validacao_aprovador IS 'Campo responsável por armazernar o aprovador que fez a validação.';
 COMMENT ON COLUMN analise.analise_juridica.id_usuario_validacao IS 'Identificador da entidade analise.usuario_analise que realizará o relacionamento entre as duas entidades.';
