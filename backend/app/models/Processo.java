@@ -592,7 +592,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByNumeroProcesso()
 				.groupByObjetoTramitavel()
 				.groupByCpfCnpjEmpreendimento()
-//				.groupByDenominacaoEmpreendimento()
+				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
