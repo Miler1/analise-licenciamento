@@ -7,7 +7,7 @@ restricao = comunicado.tipoSobreposicao.nome;
 orgaoResponsavel = comunicado.orgao;
 nomeAnalista = parecerAnalistaGeo.usuario.pessoa.nome;
 empreendimento = analiseGeo.analise.processo.empreendimento;
-empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 nomeEmpreendimento = empreendimento.denominacao;
 atividadesCaracterizacao = caracterizacao.atividadesCaracterizacao;
 endereco = enderecoCompleto;
@@ -28,9 +28,9 @@ endereco = enderecoCompleto;
 </h1>
 <p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS- IPAAM</p>
 
-<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(new Date())} </p>
+<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
 <p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong><strong> Protocolo N°: ${numeroProtocolo}</strong></p>
 
 <p><strong>Interessado: </strong> <strong> ${empreendimentoNome} </strong><br>#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>Atividade(s): ${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list} </p>
@@ -39,13 +39,13 @@ endereco = enderecoCompleto;
 
 <p> O prosseguimento da análise do processo, bem como demais procedimentos e prazos para manifestação e/ou autorização da instituição serão realizados conforme disposto na Portaria Interministerial nº 060, de 24 de março de 2015 e na Lei Estadual nº 4.185. de 26 de junho de 2015.</p>
 
-<p> No caso de dúvidas ou para maiores esclarecimentos acesse o sistema do licenciamento ou procure o SEMA-AP/${orgaoResponsavel.sigla} mencionada nesta comunicação</p>
+<p> No caso de dúvidas ou para maiores esclarecimentos acesse o sistema do licenciamento ou procure o IPAAM/${orgaoResponsavel.sigla} mencionada nesta comunicação</p>
 
 <p> <strong> Responsável pela Análise GEO: ${nomeAnalista}</strong> </p>
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
 
 
 </body>
