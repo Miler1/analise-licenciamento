@@ -626,6 +626,12 @@ GRANT USAGE ON SCHEMA public TO tramitacao;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tramitacao;
 
 GRANT SELECT ON TABLE analise.usuario_analise TO tramitacao;
+GRANT SELECT ON TABLE analise.inconsistencia TO tramitacao;
+GRANT SELECT ON TABLE analise.rel_documento_inconsistencia TO tramitacao;
+GRANT SELECT ON TABLE analise.inconsistencia_tecnica TO tramitacao;
+GRANT SELECT ON TABLE analise.rel_documento_inconsistencia_tecnica TO tramitacao;
+GRANT SELECT ON TABLE analise.desvinculo_analise_tecnica TO tramitacao;
+
 
 GRANT USAGE ON SCHEMA tramitacao TO tramitacao;
 GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA tramitacao TO tramitacao;
