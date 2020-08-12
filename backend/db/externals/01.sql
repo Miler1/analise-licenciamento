@@ -164,37 +164,6 @@ INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
 	(SELECT id FROM portal_seguranca.permissao WHERE codigo = 'ANL_BAIXAR_DOCUMENTO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
 
 
-
-
---70
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES 
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GCAP'));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES 
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GFAU'));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES 
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERM'));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES 
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	 (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECF'));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES 
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GELI'));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES 
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	 (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECP'));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES 
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERH'));
-
 --76
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
     ((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Analista TÉCNICO' AND id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')), 
@@ -225,8 +194,6 @@ INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES
 INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao) VALUES 
 	((SELECT id FROM portal_seguranca.perfil WHERE nome = 'Gerente' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')),
 	(SELECT id FROM portal_seguranca.permissao WHERE codigo = 'VISUALIZAR_PROTOCOLO' AND id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')));
-
-
 
 --82
 INSERT INTO portal_seguranca.permissao (codigo, data_cadastro, nome, id_modulo) 
@@ -300,35 +267,6 @@ INSERT INTO portal_seguranca.permissao_perfil(id_perfil, id_permissao)
     VALUES ((SELECT p.id FROM portal_seguranca.perfil p WHERE p.codigo = 'PRESIDENTE' AND p.id_modulo_pertencente =(SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
         (SELECT p.id  FROM portal_seguranca.permissao p WHERE p.codigo = 'ANL_BAIXAR_DOCUMENTO_MINUTA' AND p.id_modulo =(SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')));
 
-
---94
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GCAP' AND ativo));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GFAU' AND ativo));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERM' AND ativo));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	 (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECF' AND ativo));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GELI' AND ativo));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	 (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECP' AND ativo));
-
-INSERT INTO portal_seguranca.perfil_setor(id_perfil, id_setor) VALUES
-	((SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')),
-	(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERH' AND ativo));
 
 --95
 UPDATE portal_seguranca.perfil SET nome = 'Gerente TÉCNICO' WHERE codigo = 'GERENTE' AND id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL');
@@ -441,35 +379,6 @@ UPDATE portal_seguranca.perfil SET nome = 'Gerente' WHERE codigo = 'GERENTE' AND
 UPDATE portal_seguranca.perfil SET nome = 'Diretor' WHERE codigo = 'DIRETOR' AND id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL');
 UPDATE portal_seguranca.perfil SET nome = 'Presidente' WHERE codigo = 'PRESIDENTE' AND id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL');
 
---94
-DELETE FROM  portal_seguranca.perfil_setor WHERE id_perfil = 
-	(SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')) 
-	AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GCAP' AND ativo);
-
-DELETE FROM  portal_seguranca.perfil_setor WHERE id_perfil = 
-	(SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')) 
-	AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GFAU' AND ativo);
-
-DELETE FROM  portal_seguranca.perfil_setor WHERE id_perfil = 
-	(SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')) 
-	AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERM' AND ativo);
-
-DELETE FROM  portal_seguranca.perfil_setor WHERE id_perfil = 
-	(SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')) 
-	AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECF' AND ativo);
-
-DELETE FROM  portal_seguranca.perfil_setor WHERE id_perfil = 
-	(SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')) 
-	AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GELI' AND ativo);
-
-DELETE FROM  portal_seguranca.perfil_setor WHERE id_perfil = 
-	(SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')) 
-	AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECP' AND ativo);
-
-DELETE FROM  portal_seguranca.perfil_setor WHERE id_perfil = 
-	(SELECT id FROM portal_seguranca.perfil p WHERE p.codigo = 'ANALISTA_TECNICO' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')) 
-	AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERH' AND ativo);
-
 --93
 DELETE FROM portal_seguranca.permissao_perfil WHERE 
 id_perfil = (SELECT p.id FROM portal_seguranca.perfil p WHERE p.codigo = 'PRESIDENTE' AND p.id_modulo_pertencente =(SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL')
@@ -567,28 +476,6 @@ id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'M
 id_permissao = (SELECT id FROM portal_seguranca.permissao WHERE codigo = 'ANL_VISUALIZAR_NOTIFICACAO' AND 
 id_modulo = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL'));
 
-
---70
-DELETE FROM portal_seguranca.perfil_setor WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'))
- AND id_setor =(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERH');
-
-DELETE FROM portal_seguranca.perfil_setor WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'))
- AND id_setor =(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECP');
-
- DELETE FROM portal_seguranca.perfil_setor WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'))
- AND id_setor =(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GELI');
-
-  DELETE FROM portal_seguranca.perfil_setor WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'))
- AND id_setor =(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GECF');
-
-   DELETE FROM portal_seguranca.perfil_setor WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'))
- AND id_setor =(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GERM');
-
- DELETE FROM portal_seguranca.perfil_setor WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'))
- AND id_setor =(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GFAU');
-
-  DELETE FROM portal_seguranca.perfil_setor WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil p WHERE p.nome = 'Gerente' and p.id_modulo_pertencente = (SELECT m.id FROM portal_seguranca.modulo m WHERE m.sigla = 'MAL'))
- AND id_setor =(SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GCAP');
 
 --68
 DELETE FROM portal_seguranca.permissao_perfil WHERE id_perfil =(SELECT id FROM portal_seguranca.perfil WHERE nome = 'Diretor' and id_modulo_pertencente = (SELECT id FROM portal_seguranca.modulo WHERE sigla = 'MAL')) AND id_permissao =( SELECT id FROM portal_seguranca.permissao WHERE codigo = 'ANL_BAIXAR_DOCUMENTO');
