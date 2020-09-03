@@ -1166,7 +1166,7 @@ var AnaliseGeoController = function($injector, $rootScope, $scope, $timeout, $ui
 
 			} else {
 
-				ctrl.errors.analiseTemporal = true;
+				ctrl.errors.analiseTemporal = false;
 
 			}
 			
