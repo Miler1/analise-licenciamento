@@ -67,3 +67,5 @@ AND id_setor = (SELECT id FROM portal_seguranca.setor s WHERE s.sigla = 'GGEO');
 
 
 # --- !Downs
+
+-- fazer backup dos dados 
