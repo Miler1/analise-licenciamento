@@ -1,7 +1,5 @@
 # --- !Ups
 
-# --- !Ups
-
 --EXECUTAR NO ENTRADA UNICA (utilitarios)
 
 -- Inserir permissão de visualizar notificações

@@ -2,7 +2,7 @@
 
 ALTER TABLE analise.comunicado
 
-    ADD CONSTRAINT fk_c_atividade_caracterizacao FOREIGN KEY (id_atividade_caracterizacao)
+    ADD CONSTRAINT fk_c_atividade_caracterizacao FOREIGN KEY (id_caracterizacao)
         REFERENCES licenciamento.atividade_caracterizacao (id),
 
     ADD CONSTRAINT fk_c_tipo_sobreposicao FOREIGN KEY (id_tipo_sobreposicao)
