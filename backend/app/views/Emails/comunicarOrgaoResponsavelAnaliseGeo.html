@@ -65,7 +65,7 @@
 </body>
 #{/if}
 
-#{if orgaoResponsavel.sigla == 'DEMUC'}
+#{if orgaoResponsavel.sigla == 'SEMA'}
 
 
 <head>
@@ -84,7 +84,7 @@
 <p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/IPAAM </strong> </p>
 <p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
-<p>À <br> <strong> Secretaria de Estado do Meio Ambiente - SEMA<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Manaus/AM<br><br></p>
+<p>À <br> <strong>${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Manaus/AM<br><br></p>
 
 
 <p><strong> Prezada Coordenadoria,</strong></p>
@@ -264,6 +264,58 @@
 <br>
 <p style="font-size: 11px; font-style: italic; color: dimgray">  * Este é um email automático. Não responda a esta mensagem.</p>
 
+
+</body>
+#{/if}
+
+
+
+#{if orgaoResponsavel.sigla == 'SEMMAS'}
+
+
+<head>
+</head>
+
+<body>
+
+<h1 style="text-align: center">
+    #{embeddedImage src:'conf/images/brasao_am.png', name:'AMAZONAS', alt:'Estado do AMAZONAS', height:'95', width:'80' /}
+</h1>
+
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+
+<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+
+<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/IPAAM </strong> </p>
+<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
+
+<p>À <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Rua do Rubídio, 288 - Vila da Prata<br> CEP: 69030-530 Manaus/AM<br><br></p>
+
+
+<p><strong> Prezada Coordenadoria,</strong></p>
+
+
+<p> Em cumprimento à Portaria Interministerial n° 60, de 24 de março de 2015 e à Lei Estadual nº 4.185, de 26 de junho de 2015, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
+
+<p>Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme planta de caracterização em anexo.</p>
+
+<p> O prazo para manifestação e/ou autorização desta Instituição quanto à continuidade do processo de licenciamento ambiental obedecerá ao disposto nas referidas normas legais. </p>
+
+#{if aguardandoResposta == true}
+
+<p><br>    <a href=${comunicado.linkComunicado} target=_blank>CLIQUE AQUI PARA RESPONDER O PARECER</a><br></p>
+<br>
+<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada a Secretaria de Estado do Meio Ambiente fazendo referência expressa ao número deste Ofício.</p>
+
+#{/if}
+
+<p>             Atenciosamente,  </p>
+
+<p style="text-align: center"><strong>  Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<br>
+<br>
+<br>
+<p style="font-size: 11px; font-style: italic; color: dimgray"> * Este é um email automático. Não responda a esta mensagem.</p>
 
 </body>
 #{/if}
