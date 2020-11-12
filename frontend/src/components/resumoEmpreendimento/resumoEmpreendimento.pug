@@ -7,24 +7,24 @@ include ./endereco
 	.panel-heading
 		h4.panel-title Empreendedor
 	.panel-body
-		div(ng-if="$ctrl.empreendimento.empreendedor.pessoa.type === 'PessoaFisica'")
-			+pessoa-fisica('$ctrl.empreendimento.empreendedor.pessoa')
+		div(ng-if="$ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa.cpf")
+			+pessoa-fisica('$ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa')
 
-		div(ng-if="$ctrl.empreendimento.empreendedor.pessoa.type === 'PessoaJuridica'")
-			+pessoa-juridica('$ctrl.empreendimento.empreendedor.pessoa')(modelEsfera="$ctrl.empreendimento.empreendedor.esfera")
+		div(ng-if="$ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa.cnpj")
+			+pessoa-juridica('$ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa')(modelEsfera="$ctrl.empreendimento.empreendedor.esfera")
 
-		+contato('$ctrl.empreendimento.empreendedor.pessoa.contato')
+		+contato('$ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa.contatos')
 
-		+endereco('$ctrl.enderecoEmpreendedorPrincipal', `"Endereço do empreendedor:"`)
+		+endereco('$ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa.enderecos.principal', `"Endereço do empreendedor:"`)
 
-		+endereco('$ctrl.enderecoEmpreendedorCorrespondencia', `"Endereço de correspondência:"`)
+		+endereco('$ctrl.empreendimento.empreendimentoEU.empreendedor.pessoa.enderecos.correspondencia', `"Endereço de correspondência:"`)
 
 .panel.panel-default(name='proprietarios')
 	.panel-heading
 		h4.panel-title Proprietários
-	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.proprietarios.length < 1 ")
+	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.empreendimentoEU.proprietarios.length < 1 ")
 		i Não existem proprietários	
-	.panel-body(ng-if="$ctrl.empreendimento.proprietarios.length > 0")
+	.panel-body(ng-if="$ctrl.empreendimento.empreendimentoEU.proprietarios.length > 0")
 		div.row
 			div.col-md-12
 				table.table.table-striped
@@ -36,17 +36,17 @@ include ./endereco
 							th RG
 					tbody
 						tr(ng-repeat="proprietario in $ctrl.empreendimento.proprietarios")
-							td {{proprietario.pessoa.cpf | brCpfCnpj}}
-							td {{proprietario.pessoa.nome}}
-							td {{proprietario.pessoa.dataNascimento | date :  'dd/MM/yyyy'}}
-							td {{proprietario.pessoa.rg}}
+							td {{proprietario.cpf | brCpfCnpj}}
+							td {{proprietario.nome}}
+							td {{proprietario.dataNascimento | date :  'dd/MM/yyyy'}}
+							td {{proprietario.rg}}
 
 .panel.panel-default(name='representantesLegais')
 	.panel-heading
 		h4.panel-title Representantes legais
-	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.empreendedor.representantesLegais.length < 1")
+	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.empreendimentoEU.representantesLegais.length < 1")
 		i Não existem representantes legais
-	.panel-body(ng-if="$ctrl.empreendimento.empreendedor.representantesLegais.length > 0")
+	.panel-body(ng-if="$ctrl.empreendimento.empreendimentoEU.representantesLegais.length > 0")
 		div.row
 			div.col-md-12
 				table.table.table-striped
@@ -57,27 +57,27 @@ include ./endereco
 							th Data da vinculação
 							th Email
 					tbody
-					tr(ng-repeat="representante in $ctrl.empreendimento.empreendedor.representantesLegais")
-						td {{representante.pessoa.cpf | brCpfCnpj}}
-						td {{representante.pessoa.nome}}
+					tr(ng-repeat="representante in $ctrl.empreendimento.empreendimentoEU.representantesLegais")
+						td {{representante.cpf | brCpfCnpj}}
+						td {{representante.nome}}
 						td {{representante.dataVinculacao}}
-						td {{representante.pessoa.contato.email || '-' }}
+						td {{representante.contato.email || '-' }}
 
 .panel.panel-default(name='empreendimento')
 	.panel-heading
 		h4.panel-title Empreendimento
 	.panel-body
-		div(ng-if="$ctrl.empreendimento.pessoa.type === 'PessoaFisica'")
-			+pessoa-fisica('$ctrl.empreendimento.pessoa')
+		div(ng-if="$ctrl.empreendimento.empreendimentoEU.pessoa.cpf")
+			+pessoa-fisica('$ctrl.empreendimento.empreendimentoEU.pessoa')
 
-		div(ng-if="$ctrl.empreendimento.pessoa.type === 'PessoaJuridica'")
-			+pessoa-juridica('$ctrl.empreendimento.pessoa', true)
+		div(ng-if="$ctrl.empreendimento.empreendimentoEU.pessoa.cnpj")
+			+pessoa-juridica('$ctrl.empreendimento.empreendimentoEU.pessoa', true)
 
 		div.row
 			div.col-md-12
 				div.row
 					label.col-md-2.text-right Denominação do empreendimento:
-					span.col-md-10 {{$ctrl.empreendimento.denominacao}}
+					span.col-md-10 {{$ctrl.empreendimento.empreendimentoEU.denominacao}}
 
 		div.row.form-group
 			div.col-md-6
@@ -90,9 +90,9 @@ include ./endereco
 					label.col-md-4.text-right Município/UF do empreendimento:
 					span.col-md-8 {{$ctrl.empreendimento.municipio.nome}}/{{$ctrl.empreendimento.municipio.estado.codigo}}
 
-		+contato('$ctrl.empreendimento.contato')
+		+contato('$ctrl.empreendimento.empreendimentoEU.contatos')
 
-		+endereco('$ctrl.empreendimento.endereco', `"Endereço:"`)
+		+endereco('$ctrl.empreendimento.empreendimentoEU.enderecos.principal', `"Endereço:"`)
 
 		div.row
 			label.col-md-2.text-right Localização do empreendimento:
@@ -106,9 +106,9 @@ include ./endereco
 .panel.panel-default(name='responsaveis')
 	.panel-heading
 		h4.panel-title Responsáveis técnicos e legais
-	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.responsaveis.length < 1")
+	div.info-sem-dados-para-exibir(ng-if="$ctrl.empreendimento.empreendimentoEU.responsaveis.length < 1")
 		i Não existem responsáveis técnicos e legais
-	.panel-body(ng-if="$ctrl.empreendimento.responsaveis.length > 0")
+	.panel-body(ng-if="$ctrl.empreendimento.empreendimentoEU.responsaveis.length > 0")
 		div.row
 			div.col-md-12
 				table.table.table-striped
@@ -120,11 +120,11 @@ include ./endereco
 							th E-mail
 							th Celular
 					tbody
-						tr(ng-repeat="responsavel in $ctrl.empreendimento.responsaveis")
+						tr(ng-repeat="responsavel in $ctrl.empreendimento.empreendimentoEU.responsaveis")
 							td
 								span.icone-responsavel-tecnico.legal(ng-show="responsavel.tipo === 'LEGAL'", title="Responsável legal")
 								span.icone-responsavel-tecnico.tecnico(ng-show="responsavel.tipo === 'TECNICO'", title="Responsável técnico")
-							td {{responsavel.pessoa.cpf | brCpfCnpj}}
-							td {{responsavel.pessoa.nome}}
+							td {{responsavel.cpf | brCpfCnpj}}
+							td {{responsavel.nome}}
 							td {{responsavel.contato.email || ' - '}}
 							td {{(responsavel.contato.celular | brPhoneNumber) || ' - '}}

@@ -11,7 +11,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 			$scope.comunicado = response.data;
 			
 			if (!comunicado.valido) {
-				$window.location.href="http://www.ipaam.am.gov.br/";
+				$window.location.href="http://www.sema.ap.gov.br/";
 			}
 
 		}).catch(function(response){
@@ -22,8 +22,6 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 		
 	}, 150);
 
-
-
 	$scope.upload = function(file, invalidFile) {
 
 		if(file) {
@@ -31,10 +29,20 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 			uploadService.saveExterno(file)
 				.then(function(response) {
 
+					var nomeDoArquivo = file.name;
+
+					var quantidadeDocumentosComMesmoNome = $scope.anexos.filter(function(documento) {
+						return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+					}).length;
+
+					if(quantidadeDocumentosComMesmoNome > 0) {
+						nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+					}
+
 					$scope.anexos.push({
 
 						key: response.data,
-						nomeDoArquivo: file.name,
+						nomeDoArquivo: nomeDoArquivo,
 						tipoDocumento: {
 
 							id: app.utils.TiposDocumentosAnalise.PARECER_ORGAO
@@ -65,7 +73,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 	
 	$scope.cancelar = function () {
-		$window.location.href="http://www.ipaam.am.gov.br/";
+		$window.location.href="http://www.sema.ap.gov.br/";
 	};
 
 	$scope.enviar = function () {
@@ -91,7 +99,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 					if(response.data ==true){
 
-						$window.location.href="http://www.ipaam.am.gov.br/";
+						$window.location.href="http://www.sema.ap.gov.br/";
 
 					}else{
 

@@ -7,9 +7,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.geotools.feature.SchemaException;
 import security.Acao;
+import security.cadastrounificado.CadastroUnificadoWS;
 import serializers.AnaliseGeoSerializer;
 import serializers.CamadaGeoAtividadeSerializer;
 import serializers.EmpreendimentoSerializer;
+import services.IntegracaoEntradaUnicaService;
+import utils.GeoJsonUtils;
 import utils.Mensagem;
 
 import javax.validation.ValidationException;
@@ -96,6 +99,8 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analise = AnaliseGeo.findById(idAnaliseGeo);
 
+        analise.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analise.analise.processo.empreendimento.cpfCnpj);
+
         renderJSON(analise, AnaliseGeoSerializer.findInfo);
 
     }
@@ -106,8 +111,10 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analiseGeo = AnaliseGeo.findById(idAnaliseGeo);
 
+        analiseGeo.analise.processo.empreendimento.empreendimentoEU =  new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
+
         File file = Geoserver.verificarRestricoes(
-                analiseGeo.analise.processo.empreendimento.coordenadas,
+                GeoJsonUtils.toGeometry(analiseGeo.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
                 analiseGeo.analise.processo.empreendimento.imovel,
                 "analise-geo-id-" + idAnaliseGeo
         );
@@ -259,6 +266,8 @@ public class AnalisesGeo extends InternalController {
 
         AnaliseGeo analiseGeo = analisesGeo.stream()
                 .max(Comparator.comparing(AnaliseGeo::getId)).orElse(null);
+
+        analiseGeo.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
 
         renderJSON(analiseGeo, AnaliseGeoSerializer.findInfo);
 

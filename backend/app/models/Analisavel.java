@@ -1,5 +1,6 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Pessoa;
 import models.licenciamento.TipoAnalise;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;

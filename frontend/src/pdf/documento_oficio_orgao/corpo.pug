@@ -12,7 +12,7 @@ doctype html
 |}%
 html(lang='en')
 	head
-		title Análise - Licenciamento Ambiental - Amazonas
+		title Análise - Licenciamento Ambiental - Amapá
 		link(rel='stylesheet' href='${templatePath}/style/estilo.css')
 		meta(charset='UTF-8')
 		style.
@@ -55,13 +55,13 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:0px;line-height:0px;")
-							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/SEMA-AP</strong>
 						.container-center
-							|	<p>Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)}</p>
+							|	<p>Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)}</p>
 				.container
 					.container-flex
 						.container-left
-						|	<p>À <br> <strong> Coordenadoria Regional de Manaus - ${orgaoResponsavel.sigla} </strong><br> Rua Maceió, 224 - Adrianópolis <br> CEP: 69057-010 - Manaus/AM<br><br></p>
+						|	<p>À <br> <strong> Coordenadoria Regional de Macapá - ${orgaoResponsavel.sigla} </strong><br> Rua Maceió, 224 - Adrianópolis <br> CEP: 69057-010 - Macapá/AP<br><br></p>
 
 				.container
 					.container-flex
@@ -71,7 +71,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	 Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°.<strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de 
+						|	 Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/SEMA/ N°.<strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de 
 						|	 \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, 
 						|	 \#{/list} 
 						|	  no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
@@ -91,15 +91,15 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:3px;margin-top:5px;line-height:0px;")
-							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/SEMA</strong>
 						
 						.container-center
-							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+							|	Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
 
 				.container
 					.container-flex
 						.container-left
-						|	À <br> <strong> Secretaria de Estado do Meio Ambiente - SEMA<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Manaus/AM<br><br>					
+						|	À <br> <strong> Secretaria de Estado do Meio Ambiente - SEMA<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Macapá/AP<br><br>					
 
 				.container
 					.container-flex
@@ -109,7 +109,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+						|	Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos que tramita neste Instituto o Protocolo/SEMA/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
 
 					br
 
@@ -126,10 +126,10 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style=" margin-top:5px;margin-bottom:3px;line-height:0px;")
-							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/SEMA</strong>
 						
 						.container-center
-							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+							|	Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
 
 				.container
 					.container-flex
@@ -144,7 +144,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos que tramita neste Instituto o Protocolo/IPAAM/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
+						|	Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos que tramita neste Instituto o Protocolo/SEMA/N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>
 
 					br
 			div
@@ -161,15 +161,15 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:3px; margin-top: 5px; line-height:0px;")
-							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/SEMA</strong>
 						
 						.container-center
-							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+							|	Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
 
 				.container
 					.container-flex
 						.container-left
-						|	Ao <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Av. Andre Araujo, 901 – Aleixo<br> CEP: 69060-000 Manaus/AM<br><br>
+						|	Ao <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Av. Andre Araujo, 901 – Aleixo<br> CEP: 69060-000 Macapá/AP<br><br>
 							
 				.container
 					.container-flex
@@ -179,7 +179,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para manifestação quanto a situação fundiária do imóvel.
+						|	Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos que tramita neste Instituto o Protocolo/SEMA/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para manifestação quanto a situação fundiária do imóvel.
 
 					br
 			div
@@ -196,15 +196,15 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-center(style="margin-bottom:3px; margin-top:5px; line-height:0px;")
-							|	<strong>OFÍCIO Nº: ${numeroProcesso}/IPAAM-DT</strong>
+							|	<strong>OFÍCIO Nº: ${numeroProcesso}/SEMA</strong>
 						
 						.container-center
-							|	Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
+							|	Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} 
 
 				.container
 					.container-flex
 						.container-left
-						|	À <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Rodovia Deputado Vital de Mendonça, S/N, KM-09 (Ao lado da Expoagro)<br> Bairro de Flores <br> Manaus/AM<br><br>
+						|	À <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Rodovia Deputado Vital de Mendonça, S/N, KM-09 (Ao lado da Expoagro)<br> Bairro de Flores <br> Macapá/AP<br><br>
 
 				.container
 					.container-flex
@@ -214,7 +214,7 @@ html(lang='en')
 				.container
 					.container-flex
 						.container-left
-						|	Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.	
+						|	Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos que tramita neste Instituto o Protocolo/SEMA/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de \#{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, \#{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.	
 
 					br
 			div
@@ -227,7 +227,7 @@ html(lang='en')
 	br
 	br
 	div(style="text-align: center")
-		span <strong> Juliano Marcos Valente de Souza</strong>
+		span <strong> Robério Aleixo</strong>
 		br
 		span <strong> Diretor Presidente</strong>
 	br

@@ -44,3 +44,7 @@ body {
   page-break-after: always;
   page-break-inside: avoid;
 }
+
+.coordenada {
+  margin-top: 3px;
+}

@@ -7,7 +7,7 @@ doctype html
 html(lang="pt-br")
 	head
 		meta(charset='utf-8')
-		title Análise - Licenciamento Ambiental - Amazonas
+		title Análise - Licenciamento Ambiental - Amapá
 		link(rel='stylesheet' href='${templatePath}/style/estilo.css')
 		style.
 			* {
@@ -21,7 +21,7 @@ body.corpo
 	div.conteudo
 		h3 PROCESSO: ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
 		h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
-		h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+		h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.empreendimentoEU.denominacao}
 
 		ol.lista-conteudo
 		
@@ -56,7 +56,7 @@ body.corpo
 					.conteudo-item
 						span O pedido de licenciamento e a respectiva concessão da mesma, só terá validade quando 
 							| publicada Diário Oficial do Estado, periódico regional local ou local de grande circulação, em
-							| meio eletrônico de comunicação mantido pelo IPAAM, ou nos murais das Prefeituras e
+							| meio eletrônico de comunicação mantido pela SEMA, ou nos murais das Prefeituras e
 							| Câmaras Municipais, conforme art. 24, da Lei nº.3.785 de 24 de julho de 2012;
 				li.titulo-item
 					.conteudo-item
@@ -73,7 +73,7 @@ body.corpo
 				li.titulo-item
 					.conteudo-item
 						span Esta licença é válida apenas para a localização, atividade e finalidade constante na mesma, 
-							| devendo o interessado requerer ao IPAAM nova Licença quando houver mudança de
+							| devendo o interessado requerer a SEMA nova Licença quando houver mudança de
 							| qualquer um destes itens.
 				li.titulo-item
 					.conteudo-item
@@ -88,7 +88,7 @@ body.corpo
 						span Na eventualidade de ocorrência de vazamento de combustíveis ou sinistros nas instalações 
 							| físicas do empreendimento, adotar procedimentos constantes no Plano de Emergência
 							| Individual - PEI, e encaminhar imediatamente relatório circunstanciado do evento a este
-							| IPAAM.
+							| SEMA.
 				|\#{if !parecer.condicionantes.isEmpty()}
 				|\#{list items:parecer.condicionantes, as:'condicionante'}
 				li.titulo-item
@@ -112,4 +112,4 @@ body.corpo
 		p.text-align-center
 			strong Analista Técnico
 
-		p.text-align-right Manaus, ${dataDoParecer}
+		p.text-align-right Macapá, ${dataDoParecer}

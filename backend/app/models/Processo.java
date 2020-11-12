@@ -175,8 +175,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoAnaliseGeo(processoBuilder, filtro, usuarioSessao);
 
-//		commonFilterProcessoAprovador(processoBuilder, filtro, usuarioSessao);
-
 		commonFilterProcessoGerente(processoBuilder, filtro, usuarioSessao);
 
 		commonFilterProcessoDiretor(processoBuilder, filtro, usuarioSessao);
@@ -594,7 +592,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByNumeroProcesso()
 				.groupByObjetoTramitavel()
 				.groupByCpfCnpjEmpreendimento()
-				.groupByDenominacaoEmpreendimento()
+//				.groupByDenominacaoEmpreendimento()
 				.groupByMunicipioEmpreendimento()
 				.groupByDataVencimentoPrazoAnalise()
 				.groupByDataVencimentoPrazoAnaliseGeo(!filtro.isAnaliseGeo)
@@ -606,6 +604,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByDiasAnalise()
 				.groupByDataCadastroAnalise()
 				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
+				.groupByDataFinalAnaliseTecnica(!filtro.isAnaliseTecnica)
 				.groupByRenovacao()
 				.groupByRetificacao()
 				.groupByCaracterizacao()
@@ -622,8 +621,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		listWithFilterAnaliseTecnica(processoBuilder, filtro);
 
 		listWithFilterAnaliseGeo(processoBuilder, filtro);
-
-//		listWithFilterAprovador(processoBuilder, usuarioSessao);
 
 		listWithFilterDiretor(processoBuilder, filtro);
 
@@ -648,6 +645,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		processoBuilder
 				.groupByDataVencimentoPrazoAnaliseGeo(true)
 				.groupByDataFinalAnaliseGeo(!filtro.isAnaliseGeo)
+				.groupByDataFinalAnaliseTecnica(!filtro.isAnaliseTecnica)
 				.groupByPrazoAnaliseGerente();
 
 	}
@@ -759,8 +757,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	public static Long countWithFilter(FiltroProcesso filtro, UsuarioAnalise usuarioSessao) {
 
 		ProcessoBuilder processoBuilder = commonFilterProcesso(filtro, usuarioSessao)
-				.addPessoaEmpreendimentoAlias()
-				.addEstadoEmpreendimentoAlias()
+//				.addPessoaEmpreendimentoAlias()
+//				.addEstadoEmpreendimentoAlias()
 				.addAnaliseAlias()
 				.count();
 
@@ -1018,9 +1016,9 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 	public Processo getInfoProcesso() {
 
-		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.getCpfCnpj());
-		this.empreendimento.coordenadas = GeoJsonUtils.toGeometry(empreendimentoEU.localizacao.geometria);
-		this.empreendimento.area = GeoCalc.area(this.empreendimento.coordenadas) / 1000;
+		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.empreendimento.cpfCnpj);
+		this.empreendimento.empreendimentoEU = empreendimentoEU;
+		this.empreendimento.area = GeoCalc.area(GeoJsonUtils.toGeometry(this.empreendimento.empreendimentoEU.localizacao.geometria)) / 1000;
 
 		UsuarioAnalise usuario = Auth.getUsuarioSessao();
 
@@ -1123,7 +1121,11 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 	}
 
 	public File gerarShape() throws IOException, SchemaException {
-		return this.caracterizacao.gerarShape();
+		return this.caracterizacao.gerarShapeEmpreendimento();
+	}
+
+	public File gerarShapeAtividades() throws IOException, SchemaException {
+		return this.caracterizacao.gerarShapeAtividade();
 	}
 
 }

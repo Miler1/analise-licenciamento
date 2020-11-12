@@ -2,7 +2,7 @@ doctype html
 html(lang="pt-br")
     head
         meta(charset='utf-8')
-        title Análise - Licenciamento Ambiental - Amazonas
+        title Análise - Licenciamento Ambiental - Amapá
         link(rel='stylesheet' href='${templatePath}/style/estilo.css')
         style.
 
@@ -131,11 +131,11 @@ html(lang="pt-br")
                 margin: 0 5px;
             }
 
-            .logo-ipaam {
+            .logo-sema {
                 margin-bottom: 10px;
             }
 
-            .logo-amazonas {
+            .logo-amapa {
                 margin-right: 20px;
             }
 
@@ -186,18 +186,29 @@ body.corpo
                     | \#{/list}
 
                     br
-                .coordendas.quebra
+                .coordenadas.quebra
                     p
                         strong Coordenadas do Empreendimento:
                     |\#{list items:0..coordinates.length -2, as: 'coordenadas'}
-                    p P${coordenadas +1} - ${utils.CoordenadaUtil.formataLatitudeString(coordinates[coordenadas].y)} ${utils.CoordenadaUtil.formataLongitudeString(coordinates[coordenadas].x)}
+                    p.coordenada P${coordenadas +1} - ${utils.CoordenadaUtil.formataLatitudeString(coordinates[coordenadas].y)} ${utils.CoordenadaUtil.formataLongitudeString(coordinates[coordenadas].x)}
                     div
+                    | \#{/list}
+                    br
+                    p
+                        strong Coordenadas da(s) Atividade(s):
+                    
+                    |\#{list items:0..coordinatesAtividades.length -1, as: 'coordenadasAtividade'}
+                    |\#{list items:0..coordinatesAtividades[coordenadasAtividade].length -2, as: 'coordenadas'}
+                    p.coordenada G${coordenadasAtividade +1}-${coordenadas +1} - ${utils.CoordenadaUtil.formataLatitudeString(coordinatesAtividades[coordenadasAtividade][coordenadas].y)} ${utils.CoordenadaUtil.formataLongitudeString(coordinatesAtividades[coordenadasAtividade][coordenadas].x)}
+                    div
+                    | \#{/list}
+                    br
                     | \#{/list}
 
             .footer
                 .logos
-                    img.logo.logo-ipaam(src='/public/app/images/logo-ipaam-preto.png' height="30")
-                    img.logo.logo-amazonas(src='/public/app/images/logo_governo_am.png' height="60")
+                    img.logo.logo-sema(src='/public/app/images/logo-sema.png' height="70", style="margin-right:10px")
+                    img.logo.logo-amapa(src='/public/app/images/logo-governo-ap-horizontal.png' height="70")
 
                 table
                     tr
@@ -208,7 +219,7 @@ body.corpo
                         td ${analiseEspecifica.analise.processo.numero}
                     tr
                         th INTERESSADO:
-                        td ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+                        td ${analiseEspecifica.analise.processo.empreendimento.empreendimentoEU.denominacao}
                     tr
                         th MUNICÍPIO:
                         td ${analiseEspecifica.analise.processo.empreendimento.municipio.nome}/AM

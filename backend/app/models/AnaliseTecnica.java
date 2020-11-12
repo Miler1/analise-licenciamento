@@ -1,5 +1,7 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Contato;
+import br.ufla.lemaf.beans.pessoa.Pessoa;
 import com.itextpdf.text.DocumentException;
 import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
@@ -16,13 +18,16 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
+import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
 import javax.persistence.*;
+import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static security.Auth.getUsuarioSessao;
 
@@ -197,6 +202,24 @@ public class AnaliseTecnica extends Analisavel {
 		c.setTime(this.dataCadastro);
 		c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_TECNICA);
 		this.dataVencimentoPrazo = c.getTime();
+
+		this.ativo = true;
+
+		if (this.analise.diasAnalise.qtdeDiasTecnica == null) {
+
+			this.analise.diasAnalise.qtdeDiasTecnica = 0;
+			this.analise.diasAnalise.save();
+		}
+
+		return super.save();
+
+	}
+
+	public AnaliseTecnica save(AnaliseTecnica analiseTecnicaAnterior) {
+
+
+		this.dataCadastro = analiseTecnicaAnterior.dataCadastro;
+		this.dataVencimentoPrazo = analiseTecnicaAnterior.dataVencimentoPrazo;
 
 		this.ativo = true;
 
@@ -427,7 +450,11 @@ public class AnaliseTecnica extends Analisavel {
 	public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaTecnico parecerAnalistaTecnico, List<Documento> documentos) throws Exception {
 
 		Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
-		List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+		Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
+				.filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+
+		List<String> destinatarios = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
 		this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
 
@@ -713,6 +740,8 @@ public class AnaliseTecnica extends Analisavel {
 		String numeroProcesso = this.analise.processo.numero;
 		String numeroProcessoLicenciamento = this.analise.processo.caracterizacao.processoLicenciamento.numero;
 
+		this.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.analise.processo.empreendimento.cpfCnpj);
+
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
 		PDFGenerator pdf = new PDFGenerator()
@@ -754,7 +783,13 @@ public class AnaliseTecnica extends Analisavel {
 
 		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
+
+		analiseTecnica.analise.processo.empreendimento.empreendimentoEU = empreendimentoEU;
+
 		final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+
+		Pessoa cadastrante = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.cpfCnpjCadastrante).pessoa;
+		final  Contato contatoCadastrante = cadastrante.contatos.stream().filter(contato -> contato.principal).findAny().orElseThrow(PortalSegurancaException::new);
 
 		UsuarioAnalise analista;
 		AnalistaVO analistaVO;
@@ -786,6 +821,7 @@ public class AnaliseTecnica extends Analisavel {
 					.setTemplate(tipoDocumento.getPdfTemplate())
 					.addParam("analiseTecnica", analiseTecnica)
 					.addParam("inconsistencia", inconsistencia)
+					.addParam("contatoCadastrante", contatoCadastrante.valor)
 					.addParam("enderecoCompleto", enderecoCompleto)
 					.addParam("analista", finalAnalistaVO)
 					.addParam("vistoria", false)
@@ -815,7 +851,15 @@ public class AnaliseTecnica extends Analisavel {
 
 		return documentosNotificacao;
 	
-	}	
+	}
+
+	public Date getDataParecer(){
+
+		ParecerAnalistaTecnico parecerAnalistaTecnico = this.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
+
+		return parecerAnalistaTecnico.dataParecer;
+
+	}
 	
 	public AnalistaTecnico getAnalistaTecnico() {
 
@@ -835,9 +879,11 @@ public class AnaliseTecnica extends Analisavel {
 
 	public static List<AnaliseTecnica> findAnalisesByNumeroProcesso(String numeroProcesso) {
 
-		return AnaliseTecnica.find("analise.processo.numero = :numeroProcesso")
+		List<AnaliseTecnica> analisesTecnicas = AnaliseTecnica.find("analise.processo.numero = :numeroProcesso")
 				.setParameter("numeroProcesso", numeroProcesso)
 				.fetch();
+
+		return analisesTecnicas.stream().sorted(Comparator.comparing(AnaliseTecnica::getDataParecer).reversed()).collect(Collectors.toList());
 
 	}
 

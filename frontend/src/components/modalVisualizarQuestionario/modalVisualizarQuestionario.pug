@@ -12,3 +12,9 @@ include ../formulario/questionario3
 
 	div.modal-body
 		+questionario3('$ctrl.questionario', "true", "false")
+	
+	div.modal-footer
+
+		button.btn.btn-default.pull-left(ng-click="$ctrl.fechar()")
+			i.glyphicon.glyphicon-remove
+			| &nbsp;Fechar

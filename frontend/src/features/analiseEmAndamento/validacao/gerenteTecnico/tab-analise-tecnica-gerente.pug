@@ -1,265 +1,256 @@
 #accordion-empreendimento.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-empreendimento', aria-expanded='false', data-target='#dados-empreendimento', ng-init = 'validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento = false', ng-click = 'validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento = !validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title
-                                    | Resumo da análise
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento}")
+                div(uib-accordion class="accordion-empreendimento")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento")
+                        uib-accordion-heading(ng-click="validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento=!validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento")
+                            div Resumo da análise
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionEmpreendimento}")
+        
+                        #dados-empreendimento
+                            #lista-camadas-empreendimento
+                                .row
+                                    .col-md-12.padding-inconsistencias
 
-                    #dados-empreendimento.collapse
-                        #lista-camadas-empreendimento
-                            .row
-                                .col-md-12.padding-inconsistencias
+                                        .label-analista
+                                            span.title-info Analista :
+                                            span {{validacaoAnaliseTecnicaGerente.analiseTecnica.analistaTecnico.usuario.pessoa.nome}}
 
-                                    .label-analista
-                                        span.title-info Analista :
-                                        span {{validacaoAnaliseTecnicaGerente.analiseTecnica.analistaTecnico.usuario.pessoa.nome}}
+                                        div.row
 
-                                    div.row
-
-                                        table.table.table-striped.table-condensed.table-responsive.table-empreendimento
-                                            thead
-                                                tr
-                                                th.col-md-11 Fase
-                                                th.col-md-2.text-right Ações
-
-                                            tbody
-                                                tr
-                                                    td.col-md-6 {{validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.tipoLicenca.nome}}
-                                                    td.col-md-2
-                                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.tipoLicenca === false",
-                                                                                                            ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaTipoLicenca(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.TIPO_LICENCA)")
-                                                            | &nbsp;
-                                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.tipoLicenca === true",
-                                                                                                            title="Não foi adicionada inconsistência de 'Fase'.",
-                                                                                                            ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.tipoLicenca === true}")
-                                                            | &nbsp;
-
-                                    div.row
-                                        strong.col-sm-2.margin-hr-analise-tecnica Atividades/Parâmetros:
-                                        hr
-                                        div(ng-repeat="atividadeCaracterizacao in validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao")
-                                            .panel-group(id='accordion-atividadesCaracterizacao-{{atividadeCaracterizacao.id}}')
-                                                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividade-parametro-{{atividadeCaracterizacao.id}}',
-                                                    aria-expanded='false', data-target='#dados-atividade-parametro-{{atividadeCaracterizacao.id}}',
-                                                    ng-click = 'validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id] = !validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id]')
-                                                    .panel.panel-default.panel-analise
-                                                        .panel-heading
-                                                            h4.panel-title
-                                                                | {{atividadeCaracterizacao.atividade.nome}}
-                                                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id], 'glyphicon-chevron-right': !validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id]}")
-
-                                                .collapse.dados-atividade-parametro(id='dados-atividade-parametro-{{atividadeCaracterizacao.id}}')
-                                                    div
-                                                        table.table.table-striped.table-condensed.table-responsive.table-empreendimento
-                                                            thead
-                                                                tr
-                                                                th.col-md-9 Atividade/Parâmetro
-                                                                th.col-md-2 Valor
-                                                                th.col-md-2.text-right Ações
-                                                            tbody
-                                                                tr
-                                                                    td.col-md-9 {{atividadeCaracterizacao.atividade.nome}}
-                                                                    td.col-md-2 -
-                                                                    td.col-md-2
-                                                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$index].atividadeValida === false",
-                                                                                                                            ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaAtividade(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.ATIVIDADE, atividadeCaracterizacao, $index)")
-                                                                            | &nbsp;
-                                                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$index].atividadeValida === true",
-                                                                                                                            title="Não foi adicionada inconsistência de 'Atividade'.",
-                                                                                                                            ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.atividade[$index].atividadeValida === true}")
-                                                                            | &nbsp;
-
-                                                                tr(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
-                                                                    td.col-md-6 {{ atividadeCaracterizacao.atividade.parametros[$index].codigo }} - {{ atividadeCaracterizacao.atividade.parametros[$index].nome }}
-                                                                    td.col-md-2 {{ atividadeCaracterizacaoParametro.valorParametro }}
-                                                                    td.col-md-2
-                                                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$parent.$index].parametros[$index] === false",
-                                                                                                                            ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaParametro(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index], $parent.$index, $index, atividadeCaracterizacao)")
-                                                                            | &nbsp;
-                                                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$parent.$index].parametros[$index] === true",
-                                                                                                                            title="Não foi adicionada inconsistência de 'Parametro'.",
-                                                                                                                            ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.atividade[$parent.$parent.$index].parametros[$parent.$index] === true}")
-                                                                            | &nbsp;
-
-                                    div.row
-                                        hr
-                                        div
                                             table.table.table-striped.table-condensed.table-responsive.table-empreendimento
                                                 thead
                                                     tr
-                                                    th.col-md-9 Questionários
+                                                    th.col-md-11 Fase
                                                     th.col-md-2.text-right Ações
 
                                                 tbody
                                                     tr
-                                                        td.col-md-9 Questionário 03
+                                                        td.col-md-6 {{validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.tipoLicenca.nome}}
                                                         td.col-md-2
-                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.questionario === false",
-                                                                                                                ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaQuestionario(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.QUESTIONARIO)")
+                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.tipoLicenca === false",
+                                                                                                                ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaTipoLicenca(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.TIPO_LICENCA)")
                                                                 | &nbsp;
-                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.questionario === true",
-                                                                                                                title="Não foi adicionada inconsistência de 'Questionário'",
-                                                                                                                ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.questionario === true}")
+                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.tipoLicenca === true",
+                                                                                                                title="Não foi adicionada inconsistência de 'Fase'.",
+                                                                                                                ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.tipoLicenca === true}")
                                                                 | &nbsp;
-                                    div.row
-                                        hr
-                                        div
-                                            table.table.table-striped.table-condensed.table-responsive.table-empreendimento
-                                                thead
-                                                    tr
-                                                    th.col-md-9 Documentos administrativos
-                                                    th.col-md-2.text-right Ações
 
-                                                tbody
-                                                    tr(ng-repeat="documentoAdministrativo in validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosEnviados")
-                                                        td.col-md-9 {{ documentoAdministrativo.tipo.nome}}
-                                                        td.col-md-2
-                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[$index] === false",
-                                                                                                                ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaDocumentoAdministrativo(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.solicitacoesDocumento[$index], $index)")
-                                                                | &nbsp;
-                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[$index] === true",
-                                                                                                                title="Não foi adicionada inconsistência de 'Documento Aministrativo'.",
-                                                                                                                ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[$index] === true}")
-                                                                | &nbsp;
-                                    div.row(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosEnviados.length === 0")
-                                        strong.col-sm-6.margin-hr-analise-tecnica Documentos administrativos
-                                        hr
-                                        div.info-sem-dados-para-exibir.margin-inconsistencia
-                                            i Nenhum documento administrativo adicionado.
+                                        div.row
+                                            strong.col-sm-2.margin-hr-analise-tecnica Atividades/Parâmetros:
+                                            hr
+                                            div(ng-repeat="atividadeCaracterizacao in validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.atividadesCaracterizacao")
+                                                .panel-group(id='accordion-atividadesCaracterizacao-{{atividadeCaracterizacao.id}}')
+                                                    div(uib-accordion class="accordion-atividade-parametro-{{atividadeCaracterizacao.id}}")
+                                                        div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id]")
+                                                            uib-accordion-heading(ng-click="validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id]=!validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id]")
+                                                                div {{atividadeCaracterizacao.atividade.nome}}
+                                                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id], 'glyphicon-chevron-right': !validacaoAnaliseTecnica.openedAccordionAtividadeParametro[atividadeCaracterizacao.id]}")
+                        
+                                                            div
+                                                                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                                                                    thead
+                                                                        tr
+                                                                        th.col-md-9 Atividade/Parâmetro
+                                                                        th.col-md-2 Valor
+                                                                        th.col-md-2.text-right Ações
+                                                                    tbody
+                                                                        tr
+                                                                            td.col-md-9 {{atividadeCaracterizacao.atividade.nome}}
+                                                                            td.col-md-2 -
+                                                                            td.col-md-2
+                                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$index].atividadeValida === false",
+                                                                                                                                    ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaAtividade(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.ATIVIDADE, atividadeCaracterizacao, $index)")
+                                                                                    | &nbsp;
+                                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$index].atividadeValida === true",
+                                                                                                                                    title="Não foi adicionada inconsistência de 'Atividade'.",
+                                                                                                                                    ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.atividade[$index].atividadeValida === true}")
+                                                                                    | &nbsp;
 
-                                    div.row(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length > 0")
-                                        hr
-                                        div
-                                            table.table.table-striped.table-condensed.table-responsive.table-empreendimento
-                                                thead
-                                                    tr
-                                                    th.col-md-9 Documentos técnicos/ambientais
-                                                    th.col-md-2.text-right Ações
+                                                                        tr(ng-repeat="atividadeCaracterizacaoParametro in atividadeCaracterizacao.atividadeCaracterizacaoParametros")
+                                                                            td.col-md-6 {{ atividadeCaracterizacao.atividade.parametros[$index].codigo }} - {{ atividadeCaracterizacao.atividade.parametros[$index].nome }}
+                                                                            td.col-md-2 {{ atividadeCaracterizacaoParametro.valorParametro }}
+                                                                            td.col-md-2
+                                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$parent.$index].parametros[$index] === false",
+                                                                                                                                    ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaParametro(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.PARAMETRO, atividadeCaracterizacao.atividade.parametros[$index], $parent.$index, $index, atividadeCaracterizacao)")
+                                                                                    | &nbsp;
+                                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.atividade[$parent.$index].parametros[$index] === true",
+                                                                                                                                    title="Não foi adicionada inconsistência de 'Parametro'.",
+                                                                                                                                    ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.atividade[$parent.$parent.$index].parametros[$parent.$index] === true}")
+                                                                                    | &nbsp;
 
-                                                tbody
-                                                    tr(ng-repeat="documentoTecnicoAmbiental in validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo")
-                                                        td.col-md-9 {{ documentoTecnicoAmbiental.tipoDocumento.nome}}
-                                                        td.col-md-2
-                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[$index] === false",
-                                                                                                                ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaDocumentoTecnicoAmbiental(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, $index)")
-                                                                | &nbsp;
-                                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[$index] === true",
-                                                                                                                title="Não foi adicionada inconsistência de 'Documento Técnico Ambiental'.",
-                                                                                                                ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[$index] === true}")
-                                                                | &nbsp;
-                                    div.row(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length === 0")
-                                        strong.col-sm-6.margin-hr-analise-tecnica Documentos técnicos/ambientais
-                                        hr
-                                        div.info-sem-dados-para-exibir.margin-inconsistencia
-                                            i Nenhum documento técnico/ambiental adicionado.
+                                        div.row
+                                            hr
+                                            div
+                                                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                                                    thead
+                                                        tr
+                                                        th.col-md-9 Questionários
+                                                        th.col-md-2.text-right Ações
+
+                                                    tbody
+                                                        tr
+                                                            td.col-md-9 Questionário 03
+                                                            td.col-md-2
+                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.questionario === false",
+                                                                                                                    ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaQuestionario(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.QUESTIONARIO)")
+                                                                    | &nbsp;
+                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.questionario === true",
+                                                                                                                    title="Não foi adicionada inconsistência de 'Questionário'",
+                                                                                                                    ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.questionario === true}")
+                                                                    | &nbsp;
+                                        div.row
+                                            hr
+                                            div
+                                                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                                                    thead
+                                                        tr
+                                                        th.col-md-9 Documentos administrativos
+                                                        th.col-md-2.text-right Ações
+
+                                                    tbody
+                                                        tr(ng-repeat="documentoAdministrativo in validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosEnviados")
+                                                            td.col-md-9 {{ documentoAdministrativo.tipo.nome}}
+                                                            td.col-md-2
+                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[$index] === false",
+                                                                                                                    ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaDocumentoAdministrativo(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.DOCUMENTO_ADMINISTRATIVO, validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.caracterizacao.solicitacoesDocumento[$index], $index)")
+                                                                    | &nbsp;
+                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[$index] === true",
+                                                                                                                    title="Não foi adicionada inconsistência de 'Documento Aministrativo'.",
+                                                                                                                    ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.documentoAdministrativo[$index] === true}")
+                                                                    | &nbsp;
+                                        div.row(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosEnviados.length === 0")
+                                            strong.col-sm-6.margin-hr-analise-tecnica Documentos administrativos
+                                            hr
+                                            div.info-sem-dados-para-exibir.margin-inconsistencia
+                                                i Nenhum documento administrativo adicionado.
+
+                                        div.row(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length > 0")
+                                            hr
+                                            div
+                                                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                                                    thead
+                                                        tr
+                                                        th.col-md-9 Documentos técnicos/ambientais
+                                                        th.col-md-2.text-right Ações
+
+                                                    tbody
+                                                        tr(ng-repeat="documentoTecnicoAmbiental in validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo")
+                                                            td.col-md-9 {{ documentoTecnicoAmbiental.tipoDocumento.nome}}
+                                                            td.col-md-2
+                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[$index] === false",
+                                                                                                                    ng-click="validacaoAnaliseTecnicaGerente.visualizarInconsistenciaTecnicaDocumentoTecnicoAmbiental(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga, validacaoAnaliseTecnicaGerente.tipoDeInconsistenciaTecnica.DOCUMENTO_TECNICO_AMBIENTAL, documentoTecnicoAmbiental, $index)")
+                                                                    | &nbsp;
+                                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-if="validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[$index] === true",
+                                                                                                                    title="Não foi adicionada inconsistência de 'Documento Técnico Ambiental'.",
+                                                                                                                    ng-class="{'disable-visualizar-inconsistencia': validacaoAnaliseTecnicaGerente.disable.documentoTecnicoAmbiental[$index] === true}")
+                                                                    | &nbsp;
+                                        div.row(ng-if="validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length === 0")
+                                            strong.col-sm-6.margin-hr-analise-tecnica Documentos técnicos/ambientais
+                                            hr
+                                            div.info-sem-dados-para-exibir.margin-inconsistencia
+                                                i Nenhum documento técnico/ambiental adicionado.
 
 #accordion-resultado.panel-group
-    div.col-md-12(style="padding:0px;")
-        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-resultado', aria-expanded='false', data-target='#resultatdo-analise', ng-init = 'validacaoAnaliseTecnicaGerente.openedAccordionResultado = false', ng-click = 'validacaoAnaliseTecnicaGerente.openedAccordionResultado = !validacaoAnaliseTecnicaGerente.openedAccordionResultado' )
-            .panel.panel-default.panel-analise
-                .panel-heading
-                    h4.panel-title
-                        | Resultado da análise técnica
-                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionResultado, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionResultado}")
+    div(uib-accordion class="accordion-resultado")
+        div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseTecnicaGerente.openedAccordionResultado")
+            uib-accordion-heading(ng-click="validacaoAnaliseTecnicaGerente.openedAccordionResultado=!validacaoAnaliseTecnicaGerente.openedAccordionResultado")
+                div Resultado da análise técnica
+                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionResultado, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionResultado}")
+        
+            #resultatdo-analise
+                .label-situacao
+                    span.title-info Situação: 
+                    span {{validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.nome | uppercase}}
 
-        #resultatdo-analise.collapse
-            .label-situacao
-                span.title-info Situação: 
-                span {{validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.nome | uppercase}}
+                .botoes-download
+                    div
+                        button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFParecer(validacaoAnaliseTecnicaGerente.analiseTecnica)")
+                            .glyphicon.glyphicon-file.icon-download
+                            | Parecer Técnico
+                        br
+                    div(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
+                        button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFMinuta(validacaoAnaliseTecnicaGerente.analiseTecnica)")
+                            .glyphicon.glyphicon-file.icon-download
+                            | Minuta da Licença
+                        br
+                    div(ng-if="validacaoAnaliseTecnicaGerente.possuiAutoInfracao === true")
+                        button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.visualizarAutoInfracao(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos)")
+                            .glyphicon.glyphicon-file.icon-download
+                            | Auto de Infração
+                        br
+                    div(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.vistoria.realizada === true")
+                        button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadRTVByIdAnaliseTecnica(validacaoAnaliseTecnicaGerente.analiseTecnica)")
+                            .glyphicon.glyphicon-file.icon-download
+                            | Relatório Técnico de Vistoria
+                        br
+                        br
 
-            .botoes-download
-                div
-                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFParecer(validacaoAnaliseTecnicaGerente.analiseTecnica)")
-                        .glyphicon.glyphicon-file.icon-download
-                        | Parecer Técnico
-                    br
-                div(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
-                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadPDFMinuta(validacaoAnaliseTecnicaGerente.analiseTecnica)")
-                        .glyphicon.glyphicon-file.icon-download
-                        | Minuta da Licença
-                    br
-                div(ng-if="validacaoAnaliseTecnicaGerente.possuiAutoInfracao === true")
-                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.visualizarAutoInfracao(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos)")
-                        .glyphicon.glyphicon-file.icon-download
-                        | Auto de Infração
-                    br
-                div(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.vistoria.realizada === true")
-                    button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseTecnicaGerente.downloadRTVByIdAnaliseTecnica(validacaoAnaliseTecnicaGerente.analiseTecnica)")
-                        .glyphicon.glyphicon-file.icon-download
-                        | Relatório Técnico de Vistoria
-                    br
-                    br
+                #camposAnaliseTecnica
+                    div
+                        label.label-parecer Do processo:
+                        br
+                        p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.doProcesso", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.doProcesso")
 
-            #camposAnaliseTecnica
-                div
-                    label.label-parecer Do processo:
-                    br
-                    p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.doProcesso", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.doProcesso")
+                    div
+                        label.label-parecer Da análise técnica:
+                        br
+                        p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daAnaliseTecnica", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daAnaliseTecnica")
 
-                div
-                    label.label-parecer Da análise técnica:
-                    br
-                    p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daAnaliseTecnica", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daAnaliseTecnica")
+                    div
+                        label.label-parecer Da conclusão:
+                        br
+                        p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao")
+                    
+                    table.table.table-condensed.table-docs(ng-if="validacaoAnaliseTecnicaGerente.documentos.length > 0")
 
-                div
-                    label.label-parecer Da conclusão:
-                    br
-                    p(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao", ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.daConclusao")
-                
-                table.table.table-condensed.table-docs(ng-if="validacaoAnaliseTecnicaGerente.parecerTecnico.documentos.length > 0")
+                                thead
 
-                            thead
+                                    tr
+                                        th.col-md-10 Documento anexado
+                                        th.col-md-2.text-right Ações
 
-                                tr
-                                    th.col-md-10 Documento anexado
-                                    th.col-md-2.text-right Ações
+                                tbody
 
-                            tbody
-
-                                tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.parecerTecnico.documentos")
-                                    td.col-md-10 {{ documento.nomeDoArquivo }}
-                                    td.col-md-2.text-right
-                                        a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
-                                            i.glyphicon.glyphicon-eye-open
-            #camposAnaliseTecnica
-                div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
-                    label.label-parecer Despacho:
-                    br
-                    p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer")
-                div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.INDEFERIDO")
-                    label.label-parecer Justificativa:
-                    br
-                    p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer")
+                                    tr(ng-repeat="documento in validacaoAnaliseTecnicaGerente.documentos")
+        
+                                        td.col-md-10 {{ documento.nomeDoArquivo }}
+                                        td.col-md-2.text-right
+                                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseTecnicaGerente.baixarDocumento(documento)")
+                                                i.glyphicon.glyphicon-eye-open
+                #camposAnaliseTecnica
+                    div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.DEFERIDO")
+                        label.label-parecer Despacho:
+                        br
+                        p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer")
+                    div(ng-show="validacaoAnaliseTecnicaGerente.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseTecnicaGerente.TiposResultadoAnalise.INDEFERIDO")
+                        label.label-parecer Justificativa:
+                        br
+                        p(ng-bind-html="validacaoAnaliseTecnicaGerente.parecerTecnico.parecer")
 
 #accordion-historico-analises.panel-group
-    div.col-md-12(style="padding:0px;")
-        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-historico-analises', aria-expanded='false', data-target='#historico-analises', ng-init = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = false', ng-click = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises' )
-            .panel.panel-default.panel-analise
-                .panel-heading
-                    h4.panel-title
-                        | Histórico da(s) análise(s) anterior(es)
-                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises}")
+     div(uib-accordion class="accordion-historico-analises")
+        div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises")
+            uib-accordion-heading(ng-click="validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises=!validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises")
+                div Histórico da(s) análise(s) anterior(es)
+                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises}")
+        
+            #historico-analises
 
-                    #historico-analises.collapse
+                table.table.table-striped.table-condensed
 
-                        table.table.table-striped.table-condensed
+                    thead
+                        tr
+                            th.col-md-2 Início da análise
+                            th.col-md-2 Término da análise
+                            th.col-md-2 Analista responsável
+                            th.col-md-2 Situação
+                            th.col-md-1 Documentação
 
-                            thead
-                                tr
-                                    th Início da análise
-                                    th Término da análise
-                                    th Analista responsável
-                                    th Situação
-                                    th Documentação
-
-                            tbody(ng-repeat="analiseTecnica in validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas")
-                                tr(ng-repeat="parecer in analiseTecnica.pareceresAnalistaTecnico")
-                                    td.col-md-1 {{analiseTecnica.dataInicio}}
-                                    td.col-md-1 {{parecer.dataParecer}}
-                                    td.col-md-2 {{parecer.analistaTecnico.pessoa.nome}}
-                                    td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
-                                    td.col-md-1 
-                                        button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseTecnicaGerente.visualizarJustificativas(parecer, analiseTecnica, analiseTecnica.analise.processo )")
-                                            i.glyphicon.glyphicon-list-alt
+                    tbody(ng-repeat="analiseTecnica in validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas")
+                        tr(ng-repeat="parecer in analiseTecnica.pareceresAnalistaTecnico")
+                            td.col-md-2 {{analiseTecnica.dataInicio}}
+                            td.col-md-2 {{parecer.dataParecer}}
+                            td.col-md-2 {{parecer.analistaTecnico.pessoa.nome}}
+                            td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
+                            td.col-md-1 
+                                button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseTecnicaGerente.visualizarJustificativas(parecer, analiseTecnica, analiseTecnica.analise.processo )")
+                                    i.glyphicon.glyphicon-list-alt

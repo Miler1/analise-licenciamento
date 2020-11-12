@@ -31,7 +31,7 @@ public class PareceresAnalistasTecnico extends InternalController {
 
 		}
 
-		renderMensagem(Mensagem.ANALISE_CONCLUIDA_SUCESSO);
+		renderMensagem(Mensagem.ANALISE_FINALIZADA_SUCESSO);
 
 	}
 

@@ -11,7 +11,7 @@ div
 		is-diretor="usuarioLogadoCodigoPerfil === app.utils.Perfis.DIRETOR",
 		is-diretor-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.DIRETOR")
 
-	h4 Lista de protocolo
+	h4 Lista de protocolos
 
 	hr
 	.row
@@ -20,28 +20,22 @@ div
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
-							th.col-md-1 Protocolo
-							th.col-md-2 CPF/CNPJ
-							th.col-md-3 Empreendimento
-							th.col-md-2 Município
-							th.col-md-1 Licença
-							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise GEO
-							th.col-md-1 Prazo análise técnica
-							th.col-md-1.text-right Ações
+							th.col-md-1.text-center Protocolo
+							th.col-md-2.text-center CPF/CNPJ
+							th.col-md-3.text-center Empreendimento
+							th.col-md-2.text-center Município
+							th.col-md-1.text-center Licença
+							th.col-md-2.text-center Prazo análise
+							th.col-md-1.text-center Ações
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
-							td(ng-attr-title="{{processo.numero}}") {{ processo.numero }}
-							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
-							td.break-word {{processo.denominacaoEmpreendimento}}
-							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
-							td {{processo.licencas}}
+							td(ng-attr-title="{{processo.numero}}").text-center {{ processo.numero }}
+							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td.text-center {{processo.denominacaoEmpreendimento}}
+							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td.text-center {{processo.licencas}}
 							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE), listagem.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
 								| {{ listagem.dateUtil.getContaDiasRestantesData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE)) }}
-							td(ng-class="{'error-message': processo.diasAnaliseGeo > listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
-								| {{ listagem.dataConclusaoAnaliseGeo ? 'Concluída' : listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
-							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ listagem.prazoAnaliseTecnica(processo) }}
 							td
 								span.pull-right
 

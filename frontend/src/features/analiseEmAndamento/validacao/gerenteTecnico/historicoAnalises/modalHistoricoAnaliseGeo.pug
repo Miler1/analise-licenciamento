@@ -27,13 +27,13 @@ div.modal-body
             span.span-dados-processo {{historicoAnaliseGeoCtrl.parecer.tipoResultadoAnalise.nome}}
 
         .info-dados-solicitante
-            label.label-dados-solicitante Documentos gerados na análise:
-            table.table.table-condensed.table-docs(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length > 0 || historicoAnaliseGeoCtrl.documentos.length > 0")
+            label Documentos gerados na análise:
+            table.table.table-condensed(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length > 0 || historicoAnaliseGeoCtrl.documentos.length > 0")
 
                 thead
 
                     tr
-                        th.col-md-10 Nome documento
+                        th.col-md-10 Nome de documento
                         th.col-md-2.text-right Ação
 
                 tbody
@@ -41,13 +41,13 @@ div.modal-body
                     tr(ng-repeat="documento in historicoAnaliseGeoCtrl.parecer.documentos", ng-if= "documento.tipo.id === historicoAnaliseGeoCtrl.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
                         td.col-md-10 {{ documento.nomeDoArquivo }}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.baixarDocumento(documento)")
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.baixarDocumento(documento)")
                                 i.glyphicon.glyphicon-eye-open
                     
                     tr(ng-repeat="documento in historicoAnaliseGeoCtrl.documentos")
                         td.col-md-10 {{ documento.nomeDoArquivo }}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.downloadDocumentos(documento.id)")
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.downloadDocumentos(documento.id)")
                                 i.glyphicon.glyphicon-eye-open
             
             div.info-sem-dados-para-exibir(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length == 0 && historicoAnaliseGeoCtrl.documentos.length == 0")

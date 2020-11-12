@@ -2,10 +2,7 @@ package models.licenciamento;
 
 import com.vividsolutions.jts.geom.Geometry;
 import enums.CamadaGeoEnum;
-import models.CamadaGeoAtividadeVO;
-import models.EmpreendimentoCamandaGeo;
-import models.GeometriaAtividadeVO;
-import models.TipoAreaGeometria;
+import models.*;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.ParamDef;
@@ -36,51 +33,25 @@ public class Empreendimento extends GenericModel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
+//
+//	@Required
+//	public String denominacao;
 	
-	@Required
-	public String denominacao;
-	
-	@Column(name = "id_redesim")
-	public Long idRedeSim;
-	
-	@Required
-	@OneToOne
-	@JoinColumn(name = "id_pessoa", referencedColumnName = "id")
-	public Pessoa pessoa;
-	
-	@Required
-	@OneToOne
-	@JoinColumn(name = "id_empreendedor", referencedColumnName = "id")
-	public Empreendedor empreendedor;
-	
-	@Valid
-	@Required
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_contato", referencedColumnName = "id")
-	public Contato contato;
+//	@Column(name = "id_redesim")
+//	public Long idRedeSim;
 
-	@Valid
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(schema = "licenciamento", name = "endereco_empreendimento",
-			joinColumns = @JoinColumn(name = "id_empreendimento"),
-			inverseJoinColumns = @JoinColumn(name = "id_endereco"))
-	public List<Endereco> enderecos;
-	
 	@Column(name="tipo_localizacao")
 	@Enumerated(EnumType.ORDINAL)
 	public TipoLocalizacao localizacao;
 	
-	@Column(name = "the_geom", columnDefinition = "Geometry")
-	public Geometry coordenadas;
+//	@Column(name = "the_geom", columnDefinition = "Geometry")
+//	public Geometry coordenadas;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empreendimento", orphanRemoval = true)
 	public ImovelEmpreendimento imovel;
 	
 	@Column(name = "data_cadastro")
 	public Date dataCadastro;
-	
-	@OneToMany(mappedBy = "empreendimento", targetEntity = ResponsavelEmpreendimento.class, orphanRemoval = true)
-	public List<ResponsavelEmpreendimento> responsaveis;
 
 	@OneToMany(mappedBy = "empreendimento", targetEntity = Caracterizacao.class, orphanRemoval = true)
 	public List<Caracterizacao> caracterizacoes;
@@ -96,17 +67,9 @@ public class Empreendimento extends GenericModel {
 	@Column(name="tipo_esfera")
 	@Enumerated(EnumType.ORDINAL)
 	public Esfera jurisdicao;
-	
-	@OneToMany(mappedBy = "empreendimento", targetEntity = Proprietario.class, orphanRemoval=true)
-	public List<Proprietario> proprietarios;
 
-	@Required
-	@ManyToOne
-	@JoinColumn(name = "id_cadastrante", referencedColumnName = "id")
-	public Pessoa cadastrante;
-
-	@Column(name = "houve_alteracoes")
-	public boolean houveAlteracoes;
+//	@Column(name = "houve_alteracoes")
+//	public boolean houveAlteracoes;
 	
 	@Transient
 	public boolean possuiCaracterizacoes;
@@ -116,41 +79,28 @@ public class Empreendimento extends GenericModel {
 
 	@Transient
 	public Double area;
-	
-	public List<String> emailsProprietarios() {
-		
-		List<String> emails = new ArrayList<String>();
-		for(Proprietario proprietario : this.proprietarios) {
-			
-			if(proprietario.pessoa.contato != null) {				
-				emails.add(proprietario.pessoa.contato.email);
-			}
-		}
-		return emails;	
-	}
-	
-	public List<String> emailsResponsaveis() {
-		
-		List<String> emails = new ArrayList<String>();
-		for(ResponsavelEmpreendimento responsavel : this.responsaveis) {
-			emails.add(responsavel.pessoa.contato.email);
-		}
-		return emails;		
-	}
+
+	@Required
+	@Column(name = "cpf_cnpj")
+	public String cpfCnpj;
+
+	@Required
+	@Column(name = "cpf_cnpj_cadastrante")
+	public String cpfCnpjCadastrante;
+
+	@Transient
+	public Pessoa pessoa;
+
+	@Transient
+	public Pessoa cadastrante;
+
+	@Transient
+	public br.ufla.lemaf.beans.Empreendimento empreendimentoEU;
 
 	public static Empreendimento buscaEmpreendimentoByCpfCnpj(String cpfCnpj) {
-		String select = "";
-		select =
-				" SELECT emp FROM " + Empreendimento.class.getCanonicalName() + " emp " +
-						" INNER JOIN emp.pessoa p ";
 
-		select += cpfCnpj.length() > 11 ?
-				" INNER JOIN PessoaJuridica pj ON p.id = pj.id WHERE pj.cnpj = :cpfCnpj" :
-				" INNER JOIN PessoaFisica pf ON p.id = pf.id WHERE pf.cpf = :cpfCnpj" ;
+		return Empreendimento.find("cpfCnpj", cpfCnpj).first();
 
-		return Empreendimento.find(select)
-				.setParameter("cpfCnpj", cpfCnpj)
-				.first();
 	}
 
 	public static  List<CamadaGeoAtividadeVO> buscaDadosGeoEmpreendimento(String cpfCnpj) {
@@ -203,7 +153,7 @@ public class Empreendimento extends GenericModel {
 
 	public  String getCpfCnpj() {
 
-		return this.pessoa.getCpfCnpj();
+		return this.cpfCnpj;
 	}
 
 }

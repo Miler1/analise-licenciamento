@@ -30,6 +30,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.idTipoResultadoAnalise = null; 
     validacaoAnaliseDiretor.parecerDiretorTecnico = '';
     validacaoAnaliseDiretor.exibirDadosProcesso = exibirDadosProcesso;
+    validacaoAnaliseDiretor.documentosAnaliseTecnica = [];
 
     validacaoAnaliseDiretor.errors = {
 
@@ -55,6 +56,16 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
                 validacaoAnaliseDiretor.parecerTecnico = response.data;
                 setLabelsAnaliseTecnica();
+
+                _.filter(validacaoAnaliseDiretor.parecerTecnico.documentos , function(documento){
+                    if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
+
+                        validacaoAnaliseDiretor.possuiAutoInfracao = true;
+
+                    } else {
+                        validacaoAnaliseDiretor.documentosAnaliseTecnica.push(documento);
+                    }
+                });
         });
 
     };
@@ -154,13 +165,13 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             denominacaoEmpreendimento: validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.cpfCnpj.length > 11) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.cpfCnpj;
         }		
 
         processoService.visualizarProcesso(processo);
@@ -186,14 +197,6 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                 validacaoAnaliseDiretor.analiseTecnica = response.data;
                 getUltimoParecerAnalistaTecnico(validacaoAnaliseDiretor.analiseTecnica);
                 getUltimoParecerGerenteTecnico(validacaoAnaliseDiretor.analiseTecnica);
-                
-                _.filter(validacaoAnaliseDiretor.parecerTecnico.documentos , function(documento){
-                    if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
-
-                        validacaoAnaliseDiretor.possuiAutoInfracao = true;
-
-                    }
-                });
 
         });
         
@@ -301,7 +304,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 			.then(function(response){
                 $location.path('/analise-diretor');
                 $timeout(function() {
-                    mensagem.success("Validacao diretor técnico finalizada!", {referenceId: 5});
+                    mensagem.success("Validação finalizada!", {referenceId: 5});
                 }, 0);
             },function(error){
 				mensagem.error(error.data.texto);

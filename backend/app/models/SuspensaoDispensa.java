@@ -1,5 +1,6 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Contato;
 import exceptions.AppException;
 import exceptions.ValidacaoException;
 import models.licenciamento.*;
@@ -7,6 +8,7 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.DateUtil;
 import utils.ListUtil;
 import utils.Mensagem;
@@ -89,7 +91,11 @@ public class SuspensaoDispensa extends GenericModel {
     public void enviarEmailStatusDispensa(Caracterizacao caracterizacao) throws Exception {
 
         Empreendimento empreendimento = Empreendimento.findById(caracterizacao.empreendimento.id);
-        List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+        Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
+                .filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+
+        List<String> interessados = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
         EmailNotificacaoStatusDispensa emailNotificacaoStatusDispensa = new EmailNotificacaoStatusDispensa(caracterizacao, interessados);
         emailNotificacaoStatusDispensa.enviar();

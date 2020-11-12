@@ -11,11 +11,11 @@
 
                 div.row
                     label.col-sm-4 CPF/CNPJ:
-                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf ? parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cpf : parecerJuridico.analiseGeo.analise.processo.empreendimento.pessoa.cnpj | brCpfCnpj}}
+                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.cpfCnpj}}
 
                 div.row
                     label.col-sm-4 Interessado:
-                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.denominacao}}
+                    span.col-sm-8 {{parecerJuridico.analiseGeo.analise.processo.empreendimento.empreendimentoEU.denominacao}}
 
                 div.row
                     label.col-sm-4 Município:
@@ -78,10 +78,10 @@
                 div.pull-left.col-md-10.posicao-principal
                     form.pull-left.posicao-conteudo(ng-class="{'error': errors.resultadoAnalise === true}")
                         label.opDla.radio-inline.posicao-primeiroItem-juridico
-                            input(type='radio', name='validacaoJuridica', ng-model='parecerJuridico.tipoResultadoAnalise.id', value="{{tiposResultadoAnalise.APTO}}")
+                            input(type='radio', name='validacaoJuridica', ng-click="errors.resultadoAnalise = false", ng-model='parecerJuridico.tipoResultadoAnalise.id', value="{{tiposResultadoAnalise.APTO}}")
                             | APTO
                         label.opDla.radio-inline(style="margin-left:280px;")
-                            input(type='radio', name='validacaoJuridica', ng-model='parecerJuridico.tipoResultadoAnalise.id', value="{{tiposResultadoAnalise.NAO_APTO}}")
+                            input(type='radio', name='validacaoJuridica', ng-click="errors.resultadoAnalise = false", ng-model='parecerJuridico.tipoResultadoAnalise.id', value="{{tiposResultadoAnalise.NAO_APTO}}")
                             | NÃO APTO
                 hr
                 div(ng-show="parecerJuridico.tipoResultadoAnalise.id === tiposResultadoAnalise.APTO.toString()")

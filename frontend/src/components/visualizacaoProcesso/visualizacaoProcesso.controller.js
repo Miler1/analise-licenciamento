@@ -42,6 +42,19 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.documentos = [];
 	modalCtrl.processosAnteriores = [];
 	modalCtrl.tramitacoes = [];
+	modalCtrl.tipoContato = app.TIPO_CONTATO;
+	modalCtrl.tipoEndereco = app.TIPO_ENDERECO;
+
+	modalCtrl.contatoPrincipal = {
+		email: null,
+		telefone:null,
+		celular: null
+	};
+
+	modalCtrl.enderecosEU = {
+		principal: {},
+		correspondencia: {}
+	};
 
 	$injector.invoke(exports.controllers.PainelMapaController, this,
 		{
@@ -240,6 +253,11 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 				modalCtrl.dadosProcesso = response.data;
 				modalCtrl.limite = modalCtrl.dadosProcesso.empreendimento.imovel ? modalCtrl.dadosProcesso.empreendimento.imovel.limite : modalCtrl.dadosProcesso.empreendimento.municipio.limite;
+				modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.empreendedor.pessoa.contatos = getContatoPessoa(modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.empreendedor.pessoa.contatos, modalCtrl.contatoPrincipal);
+				modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.contatos = getContatoPessoa(modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.contatos, modalCtrl.contatoPrincipal);
+				modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.enderecos = getEndereco(modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.enderecos,modalCtrl.enderecosEU);
+				modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.empreendedor.pessoa.enderecos = getEndereco(modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.empreendedor.pessoa.enderecos,modalCtrl.enderecosEU);
+				setResponsaveisLegaisTecnicos();
 
 				if (modalCtrl.dadosProcesso.processoAnterior != null) {
 
@@ -435,7 +453,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 					popupText: empreendimento.municipio.nome + ' - AM'
 				});
 
-				var cpfCnpjEmpreendimento = empreendimento.pessoa.cpf || empreendimento.pessoa.cnpj;
+				var cpfCnpjEmpreendimento = empreendimento.cpfCnpj;
 
 				empreendimentoService.getDadosGeoEmpreendimento(cpfCnpjEmpreendimento).then(function(response) {
 
@@ -970,6 +988,48 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		return maiorPotencialPoluidor;
 
 	}
+
+	function getContatoPessoa(listaContatos, contatoPrincipal){
+
+		_.forEach(listaContatos, function (contato){
+					
+			if(contato.principal === true && contato.tipo.id === modalCtrl.tipoContato.EMAIL)
+				contatoPrincipal.email = contato.valor;
+			else if (contato.tipo.id === modalCtrl.tipoContato.TELEFONE_RESIDENCIAL)
+				contatoPrincipal.telefone = contato.valor;
+			else if (contato.tipo.id === modalCtrl.tipoContato.TELEFONE_CELULAR)
+				contatoPrincipal.celular = contato.valor;
+			 
+		});	
+		return contatoPrincipal;
+	}
+
+	function getEndereco(listaEnderecos, enderecos) {
+
+		_.forEach(listaEnderecos, function(endereco){
+
+			if(endereco.tipo.id === modalCtrl.tipoEndereco.PRINCIPAL)
+				enderecos.principal = endereco; 
+			else
+				enderecos.correspondencia = endereco;
+		});
+		return enderecos;
+	}
+	
+	function setResponsaveisLegaisTecnicos() {
+
+		modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.responsaveis = [];
+
+		_.forEach(modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.responsaveisLegais, function(responsavelLegal){
+			modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.responsaveis.push(responsavelLegal);
+		});
+
+		_.forEach(modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.responsaveisTecnicos, function(responsavelTecnico){
+			modalCtrl.dadosProcesso.empreendimento.empreendimentoEU.responsaveis.push(responsavelTecnico);
+		});
+
+	}
+
 
 };
 

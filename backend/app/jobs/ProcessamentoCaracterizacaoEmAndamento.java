@@ -83,7 +83,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 				if (analisavel.getTipoAnalise().equals(TipoAnalise.GEO)) {
 
 					AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
-					criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
+					criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo(), analiseGeoAnterior);
 					processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_GEO.id);
 
 				} else if (analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)) {
@@ -101,7 +101,7 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 						analise._save();
 
 						AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
-						criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico);
+						criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico, analiseTecnicaAnterior);
 					}
 
 					processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_TECNICA.id);
@@ -161,7 +161,13 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		Processo processo = new Processo();
 		processo.numero = caracterizacao.numero;
 		processo.empreendimento = caracterizacao.empreendimento;
-		processo.dataCadastro = new Date();
+
+		if (processoAnterior != null) {
+			processo.dataCadastro = processoAnterior.dataCadastro;
+		} else {
+			processo.dataCadastro = new Date();
+		}
+
 		processo.caracterizacao = caracterizacao;
 		processo.processoAnterior = processoAnterior;
 		processo.renovacao = renovacao;
@@ -178,7 +184,13 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 		
 		Analise analise = new Analise();
 		analise.processo = processo;
-		analise.dataCadastro = new Date();
+
+		if (processo.processoAnterior != null) {
+			analise.dataCadastro = processo.processoAnterior.analise.dataCadastro;
+		} else {
+			analise.dataCadastro = new Date();
+		}
+
 		analise.ativo = true;
 		analise.temNotificacaoAberta = false;
 
@@ -193,6 +205,30 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	private void criaAnaliseGeo(Analise analise) {
 
 		criaAnaliseGeo(analise,null);
+
+	}
+
+	private void criaAnaliseGeo(Analise analise, AnalistaGeo analistaGeo, AnaliseGeo analiseGeoAnterior) {
+
+		AnaliseGeo analiseGeo = new AnaliseGeo();
+		analiseGeo.analise = analise;
+		AnalistaGeo analista = new AnalistaGeo();
+
+		if(analistaGeo == null){
+
+			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+			analista = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+
+		} else {
+
+			analista.usuario = analistaGeo.usuario;
+			analista.analiseGeo = analiseGeo;
+			analista.dataVinculacao = new Date();
+
+		}
+
+		analiseGeo.analistasGeo = Collections.singletonList(analista);
+		analiseGeo.save(analiseGeoAnterior);
 
 	}
 
@@ -222,6 +258,35 @@ public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 	private void criaAnaliseTecnica(Analise analise) {
 
 		criaAnaliseTecnica(analise,null);
+
+	}
+
+	private void criaAnaliseTecnica(Analise analise, AnalistaTecnico analistaTecnico, AnaliseTecnica analiseTecnicaAnterior) {
+
+		AnaliseTecnica analiseTecnica = new AnaliseTecnica();
+		analiseTecnica.analise = analise;
+		AnalistaTecnico analista = new AnalistaTecnico();
+
+		ParecerJuridico parecerJuridico = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(analise.processo.processoAnterior.analise.analiseTecnica.id);
+
+		parecerJuridico.analiseTecnica = analiseTecnica;
+
+		if(analistaTecnico == null){
+
+			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+			analista = AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(siglaSetor, analise);
+
+		} else {
+
+			analista.usuario = analistaTecnico.usuario;
+			analista.analiseTecnica = analiseTecnica;
+			analista.dataVinculacao = new Date();
+
+		}
+
+		analiseTecnica.analistaTecnico = analista;
+		analiseTecnica.save(analiseTecnicaAnterior);
+		parecerJuridico.save();
 
 	}
 

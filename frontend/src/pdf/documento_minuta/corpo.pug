@@ -11,7 +11,7 @@ doctype html
 |}%
 html(lang='en')
 	head
-		title Análise - Licenciamento Ambiental - Amazonas
+		title Análise - Licenciamento Ambiental - Amapá
 			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
 			meta(charset='UTF-8')
 
@@ -172,7 +172,7 @@ html(lang='en')
 					.conteudo-item
 						span O pedido de licenciamento e a respectiva concessão da mesma, só terá validade quando 
 							| publicada Diário Oficial do Estado, periódico regional local ou local de grande circulação, em
-							| meio eletrônico de comunicação mantido pelo IPAAM, ou nos murais das Prefeituras e
+							| meio eletrônico de comunicação mantido pela SEMA, ou nos murais das Prefeituras e
 							| Câmaras Municipais, conforme art. 24, da Lei nº.3.785 de 24 de julho de 2012;
 				li.titulo-item
 					.conteudo-item
@@ -189,7 +189,7 @@ html(lang='en')
 				li.titulo-item
 					.conteudo-item
 						span Esta licença é válida apenas para a localização, atividade e finalidade constante na mesma, 
-							| devendo o interessado requerer ao IPAAM nova Licença quando houver mudança de
+							| devendo o interessado requerer a SEMA nova Licença quando houver mudança de
 							| qualquer um destes itens.
 				li.titulo-item
 					.conteudo-item
@@ -201,7 +201,7 @@ html(lang='en')
 					.conteudo-item
 						span ${condicionante.texto} 
 						br
-						span Prazo para atendimento de ${condicionante.prazo} dias.
+						span Prazo para atendimento de ${condicionante.prazo} dia(s).
 				|\#{/list}
 				|\#{/if}
 				|\#{if !parecer.restricoes.isEmpty()}
@@ -211,4 +211,4 @@ html(lang='en')
 						span ${restricao.texto}
 				|\#{/list}
 				|\#{/if}
-			span.in-right Manaus, ${utils.Helper.getDataPorExtenso(new Date())}
+			span.in-right Macapá, ${utils.Helper.getDataPorExtenso(new Date())}

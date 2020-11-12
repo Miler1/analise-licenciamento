@@ -157,4 +157,22 @@ public class CadastroUnificadoWS extends CadastroUnificadoPessoaService {
         return pessoa;
     }
 
+    public List<String> getEmailProprietarioResponsaveis(List<Pessoa> proprietarios, List<Pessoa> responsaveisLegais, List<Pessoa> responsaveisTecnicos, List<String> destinatarios){
+
+        proprietarios.forEach(proprietario -> {
+            destinatarios.add(proprietario.contatos.stream().filter(contato -> contato.principal && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null).valor);
+        });
+
+        responsaveisTecnicos.forEach(responsavelTecnico -> {
+            destinatarios.add(responsavelTecnico.contatos.stream().filter(contato -> contato.principal && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null).valor);
+        });
+
+        responsaveisLegais.forEach(responsavelLegal -> {
+            destinatarios.add(responsavelLegal.contatos.stream().filter(contato -> contato.principal && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null).valor);
+        });
+
+        return destinatarios;
+
+    }
+
 }

@@ -5,7 +5,7 @@
     restricao = comunicado.tipoSobreposicao.nome;
     orgaoResponsavel = comunicado.orgao;
     empreendimento = analiseGeo.analise.processo.empreendimento;
-    empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+    empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
     atividadesCaracterizacao = comunicado.caracterizacao.atividadesCaracterizacao;
     distanciaRestricao = comunicado.distancia;
     municipio = municipio;
@@ -24,22 +24,22 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
+    #{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'95', width:'80' /}
 </h1>
-<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
 
-<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/IPAAM-DT </strong> </p>
-<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
+<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/SEMA-AP </strong> </p>
+<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
-<p>À <br> <strong> Coordenadoria Regional de Manaus - ${orgaoResponsavel.sigla} </strong><br> Rua Maceió, 224 - Adrianópolis <br> CEP: 69057-010 - Manaus/AM<br><br></p>
+<p>À <br> <strong> Coordenadoria Regional de Manaus - ${orgaoResponsavel.sigla} </strong><br> Rua Maceió, 224 - Adrianópolis <br> CEP: 69057-010 - Macapá/AP<br><br></p>
 
 
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
+<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e Resolução n.° 378, de 19 de outubro de 2006, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/SEMA-AP/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
 
 <p>Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.</p>
 
@@ -49,13 +49,13 @@
 
 <p><br>    <a href=${comunicado.linkComunicado} target=_blank>CLIQUE AQUI PARA RESPONDER O PARECER</a><br></p>
 <br>
-<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada ao Instituto de Proteção Ambiental do Amazonas fazendo referência expressa ao número deste Ofício.</p>
+<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada a Secretaria de Estado do Meio Ambiente fazendo referência expressa ao número deste Ofício.</p>
 
 #{/if}
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
 <br>
 <br>
 <br>
@@ -74,23 +74,23 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
+    #{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'95', width:'80' /}
 </h1>
 
-<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
 
-<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/IPAAM </strong> </p>
-<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
+<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/SEMA </strong> </p>
+<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
-<p>À <br> <strong> Secretaria de Estado do Meio Ambiente - SEMA<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Manaus/AM<br><br></p>
+<p>À <br> <strong> Secretaria de Estado do Meio Ambiente - SEMA<br> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br> Av. Mario Ypiranga Monteiro, 3280 – Parque 10<br> CEP: 69050-030 Macapá/AP<br><br></p>
 
 
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e à Lei Estadual nº 4.185, de 26 de junho de 2015, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
+<p> Em cumprimento a Portaria Interministerial n.° 60, de 24 de março de 2015 e à Lei Estadual nº 4.185, de 26 de junho de 2015, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/SEMA-AP/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
 
 <p>Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.</p>
 
@@ -100,13 +100,13 @@
 
 <p><br>    <a href=${comunicado.linkComunicado} target=_blank>CLIQUE AQUI PARA RESPONDER O PARECER</a><br></p>
 <br>
-<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada ao Instituto de Proteção Ambiental do Amazonas fazendo referência expressa ao número deste Ofício.</p>
+<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada a Secretaria de Estado do Meio Ambiente fazendo referência expressa ao número deste Ofício.</p>
 
 #{/if}
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
 <br>
 <br>
 <br>
@@ -124,15 +124,15 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
+    #{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'95', width:'80' /}
 </h1>
 
-<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
 
-<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/IPAAM-DT </strong> </p>
-<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
+<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/SEMA-AP </strong> </p>
+<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
 <p>Ao <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Avenida Lauro Sodré, 6500 - Aeroporto<br> CEP: 76803-260 – Porto Velho/RO<br><br></p>
 
@@ -140,7 +140,7 @@
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
+<p> Em cumprimento a Resolução n.o 428, de 17 de dezembro de 2010, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/SEMA-AP/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> </p>
 
 <p>Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.</p>
 
@@ -150,13 +150,13 @@
 
 <p><br>    <a href=${comunicado.linkComunicado} target=_blank>CLIQUE AQUI PARA RESPONDER O PARECER</a><br></p>
 <br>
-<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada ao Instituto de Proteção Ambiental do Amazonas fazendo referência expressa ao número deste Ofício.</p>
+<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada a Secretaria de Estado do Meio Ambiente fazendo referência expressa ao número deste Ofício.</p>
 
 #{/if}
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
 <br>
 <br>
 <br>
@@ -174,24 +174,24 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
+    #{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'95', width:'80' /}
 </h1>
 
-<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
 
 
-<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/IPAAM-DT </strong> </p>
-<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
+<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/SEMA-AP </strong> </p>
+<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
-<p>Ao <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Av. Andre Araujo, 901 – Aleixo<br> CEP: 69060-000 Manaus/AM<br><br></p>
+<p>Ao <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Av. Andre Araujo, 901 – Aleixo<br> CEP: 69060-000 Macapá/AP<br><br></p>
 
 
 <p><strong> Prezada Coordenadoria,</strong></p>
 
 
-<p> Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para
+<p> Em cumprimento ao Decreto no 1.110, de 9 de julho de 1970, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/SEMA/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong> para
     manifestação quanto a situação fundiária do imóvel.</p>
 
 <p>Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.</p>
@@ -202,13 +202,13 @@
 
 <p><br>    <a href=${comunicado.linkComunicado} target=_blank>CLIQUE AQUI PARA RESPONDER O PARECER</a><br></p>
 <br>
-<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada ao Instituto de Proteção Ambiental do Amazonas fazendo referência expressa ao número deste Ofício.</p>
+<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada a Secretaria de Estado do Meio Ambiente fazendo referência expressa ao número deste Ofício.</p>
 
 #{/if}
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
 <br>
 <br>
 <br>
@@ -227,22 +227,22 @@
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'95', width:'80' /}
+    #{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'95', width:'80' /}
 </h1>
-<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
 
-<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/IPAAM-DT </strong> </p>
-<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
+<p><strong>Ofício n.° <strong>${numeroProcesso}</strong>/SEMA-AP </strong> </p>
+<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(dataCadastro)} </p>
 
-<p>À <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Rodovia Deputado Vital de Mendonça, S/N, KM-09 (Ao lado da Expoagro)<br> Bairro de Flores <br> Manaus/AM<br><br></p>
+<p>À <br> <strong> ${orgaoResponsavel.nome} - ${orgaoResponsavel.sigla} </strong><br>Rodovia Deputado Vital de Mendonça, S/N, KM-09 (Ao lado da Expoagro)<br> Bairro de Flores <br> Macapá/AP<br><br></p>
 
 
 <p><strong> Prezada Secretaria,</strong></p>
 
 
-<p> Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/IPAAM/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.</p>
+<p> Em cumprimento a Lei 2.783, de 31 de janeiro de 2003, informamos#{if segundoEmailEnviado == true} <strong>novamente</strong>#{/if} que tramita neste Instituto o Protocolo/SEMA-AP/ N°. <strong>${numeroProcesso}</strong> de interesse de <strong>${empreendimentoNome}</strong>, referente à solicitação de licenciamento ambiental para a atividade de #{list items:atividadesCaracterizacao, as:'atividadeCaracterizacao' }<strong>${atividadeCaracterizacao.atividade.nome.toUpperCase()}</strong>, #{/list}no município de <strong>${municipio.nome} - ${municipio.estado.sigla}</strong>.</p>
 
 <p>Informamos ainda, que ${distanciaRestricao} da <strong>${restricao}</strong>, conforme o mapa de caracterização em anexo.</p>
 
@@ -252,13 +252,13 @@
 
 <p><br>    <a href=${comunicado.linkComunicado} target=_blank>CLIQUE AQUI PARA RESPONDER O PARECER</a><br></p>
 <br>
-<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada ao Instituto de Proteção Ambiental do Amazonas fazendo referência expressa ao número deste Ofício.</p>
+<p style="font-size: 11px; font-style: italic; color: dimgray">   * Este link poderá ser utilizado por 15 dias a contar da data de envio do mesmo. Após esse período, qualquer manifestação deverá ser encaminhada a Secretaria de Estado do Meio Ambiente fazendo referência expressa ao número deste Ofício.</p>
 
 #{/if}
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
 <br>
 <br>
 <br>

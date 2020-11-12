@@ -2,7 +2,7 @@ doctype html
 html(lang="pt-br")
     head
         meta(charset='utf-8')
-        title Análise - Licenciamento Ambiental - Amazonas
+        title Análise - Licenciamento Ambiental - Amapá
         link(rel='stylesheet' href='${templatePath}/style/estilo.css')
         style.
             * {
@@ -87,7 +87,7 @@ body.corpo
     div.conteudo
         h3 PROCESSO: ${analiseEspecifica.analise.processo.caracterizacao.processoLicenciamento.numero}
         h3 PROTOCOLO: ${analiseEspecifica.analise.processo.numero}
-        h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.denominacao}
+        h3 INTERESSADO: ${analiseEspecifica.analise.processo.empreendimento.empreendimentoEU.denominacao}
 
         ol.lista-conteudo
 
@@ -237,4 +237,4 @@ body.corpo
         p.text-align-center.padding-none
             strong Analista Geo
 
-        p.text-align-right Manaus, ${dataDoParecer}
+        p.text-align-right Macapá, ${dataDoParecer}

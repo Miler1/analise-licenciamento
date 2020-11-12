@@ -92,15 +92,25 @@ modalCtrl.upload = function(file, invalidFile) {
             uploadService.save(file)
                     .then(function(response) {
 
+                        var nomeDoArquivo = file.name;
+
+                        var quantidadeDocumentosComMesmoNome = modalCtrl.anexos.filter(function(documento) {
+                            return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+                        }).length;
+    
+                        if(quantidadeDocumentosComMesmoNome > 0) {
+                            nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+                        }
+
                         modalCtrl.anexos.push({
 
-                                    key: response.data,
-                                    nomeDoArquivo: file.name,
-                                    tipoDocumento: {
+                            key: response.data,
+                            nomeDoArquivo: nomeDoArquivo,
+                            tipoDocumento: {
 
-                                            id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA_TECNICA
-                                    }
-                            });
+                                    id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA_TECNICA
+                            }
+                        });
                                                         
                     }, function(error){
 

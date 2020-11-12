@@ -4,8 +4,8 @@ numeroProtocolo = analise.processo.numero;
 numeroProcesso = analise.processo.caracterizacao.processoLicenciamento.numero;
 tipoLicenca = analise.processo.caracterizacao.tipoLicenca.nome;
 empreendimento = analise.processo.empreendimento;
-empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-nomeEmpreendimento = empreendimento.denominacao;
+empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
+nomeEmpreendimento = empreendimento.empreendimentoEU.denominacao;
 atividadesCaracterizacao = analise.processo.caracterizacao.atividadesCaracterizacao;
 tipologia = analise.processo.caracterizacao.atividadesCaracterizacao[0].atividade.tipologia.nome;
 parecer = parecerPresidente.parecer;
@@ -27,13 +27,13 @@ analiseNaoAprovada = 20l;
 <body>
 
 <h1 style="text-align: center">
-    #{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'100', width:'70' /}
+    #{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'100', width:'70' /}
 </h1>
-<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
 
-<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
+<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(new Date())} </p>
 
 <p><strong>Processo N°: <strong>${numeroProcesso}</strong></strong><br><strong> Protocolo N°: ${numeroProtocolo}</strong></p>
 
@@ -43,7 +43,7 @@ analiseNaoAprovada = 20l;
 
 #{if tipoResultadoAnaliseFinal == analiseAprovada}
 
-<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>APROVADA</strong>. E encontra-se aguardando pagamento da taxa de licença.</p>
+<p> Em atenção a solicitação protocolada neste Secretaria de Estado do Meio Ambiente - SEMA-AP, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>APROVADA</strong>. E encontra-se aguardando pagamento da taxa de licença.</p>
 
 <p style="display: inline-flex"> <strong> Despacho: </strong>#{verbatim}${parecer}#{/verbatim}</p>
 
@@ -51,7 +51,7 @@ analiseNaoAprovada = 20l;
 
 #{if tipoResultadoAnaliseFinal == analiseNaoAprovada}
 
-<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença <strong>NÃO FOI APROVADA</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Secretaria de Estado do Meio Ambiente - SEMA-AP, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença <strong>NÃO FOI APROVADA</strong>.</p>
 
 <p style="display: inline-flex"> <strong> Justificativa: </strong>#{verbatim}${parecer}#{/verbatim}</p>
 
@@ -59,22 +59,22 @@ analiseNaoAprovada = 20l;
 
 #{if tipoResultadoAnaliseFinal == analiseCancelada}
 
-<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>CANCELADA</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Secretaria de Estado do Meio Ambiente - SEMA-AP, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>CANCELADA</strong>.</p>
 
 #{/if}
 
 #{if tipoResultadoAnaliseFinal == analiseSuspensa}
 
-<p> Em atenção a solicitação protocolada neste Instituto de Proteção Ambiental do Amazonas - IPAAM, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>SUSPENSA</strong>.</p>
+<p> Em atenção a solicitação protocolada neste Secretaria de Estado do Meio Ambiente - SEMA-AP, sob o nº do protocolo ${numeroProtocolo}, o qual solicita uma ${tipoLicenca}, notifico V.Sa que a referida licença foi <strong>SUSPENSA</strong>.</p>
 
 #{/if}
 
-<p> Procure o IPAAM para maiores esclarecimentos</p>
+<p> Procure a SEMA para maiores esclarecimentos</p>
 
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
 
 
 </body>

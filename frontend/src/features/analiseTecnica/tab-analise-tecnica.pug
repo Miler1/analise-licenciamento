@@ -1,11 +1,14 @@
 .col-xs-12
+
     .marginProcesso
 
         div.row
-            label.col-sm-2 Analista Técnico:
-            span.col-sm-8 {{ ctrl.analistaTecnico }}
-        br    
-        hr
+            .analiseTecnica
+                label Analista técnico: 
+                span.nome  {{ usuarioSessao.usuarioEntradaUnica.nome }}
+
+            br
+            hr
 
         div.row
 
@@ -61,7 +64,7 @@
                                         td.col-md-9 {{atividadeCaracterizacao.atividade.nome}}
                                         td.col-md-2 -
                                         td.col-md-2
-                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.atividade[$index].atividadeValida === true}",
+                                            i.aba-clicavel.icon-eye.glyphicon.glyphicon-remove-sign(ng-class="{'temInconsistencia' :  ctrl.itemValidoLicenca.atividade[$index].atividadeValida === true}", title="Adicionar inconsistência",
                                                                                                     ng-click="ctrl.adicionarInconsistenciaTecnicaAtividade(ctrl.analiseTecnica, ctrl.tipoDeInconsistenciaTecnica.ATIVIDADE, atividadeCaracterizacao, $index)")
                                                 | &nbsp;                        
                                             i.aba-clicavel.icon-eye.glyphicon.glyphicon-ok-sign(ng-if="ctrl.itemValidoLicenca.atividade[$index].atividadeValida === true",
@@ -181,7 +184,7 @@
                                 | &nbsp;
                                 
                             td.col-md-2.padding-right-20
-                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.openModalParecerJuridico(ctrl.parecerJuridico, ctrl.documentos)")
+                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(ng-click="ctrl.openModalParecerJuridico(ctrl.parecerJuridico, ctrl.documentos)", title="Visualizar análise jurídica")
                                 | &nbsp;
 
         div.row(ng-if="ctrl.analiseTecnica.analise.processo.caracterizacao.documentosSolicitacaoGrupo.length > 0")

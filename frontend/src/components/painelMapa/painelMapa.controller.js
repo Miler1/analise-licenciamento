@@ -193,12 +193,11 @@ var PainelMapaController = function ($scope, wmsTileService) {
 
 	function preparaModalComDadosDaSobreposicao(shape) {
 
-		var coteudoModal = '<p style="text-align:center;"><b>' + shape.popupText + '</b><br> <hr>';
+		var coteudoModal = '<p style="text-align:center;"><b>' + shape.nomeAreaSobreposicao + '</b><br> <hr>';
 
 		if(shape.cpfCnpjAreaSobreposicao) {
 
 			coteudoModal = coteudoModal +
-				'<b>Nome responsável:</b> ' + shape.nomeAreaSobreposicao + '</p>' +
 				'<b>CPF/CNPJ:</b> ' + shape.cpfCnpjAreaSobreposicao + '</p>';
 
 		} else if(shape.nomeAreaSobreposicao) {

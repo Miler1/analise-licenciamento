@@ -12,24 +12,24 @@ mixin resumo-processo(processo, abrirDadosProcesso, titulo)
                     i.fa.fa-eye
                     | &nbsp;Visualizar Protocolo
 
-                a.btn.btn-sm.btn-default.pull-right.margin-right-xs(href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
+                a.btn.btn-sm.btn-default.pull-right.margin-right-xs(ng-disabled='true',href="http://online.sefaz.am.gov.br/silt/Normas/Legisla%E7%E3o%20Estadual/Lei%20Estadual/Ano%202012/Arquivo/LE%203785_12.htm", target="_blank")
                     i.fa.fa-bars
                     | &nbsp;Legislação
 
         div
 
             div
-                strong Número: 
+                strong Número do protocolo: 
                 span#texto_numero_processo
-                    label.not-bold.margin-right-xs(for="texto_numero_processo",style="margin-left:113px;") {{#{processo}.numero}}
+                    label.not-bold.margin-right-xs(for="texto_numero_processo",style="margin-left:38px;") {{#{processo}.numero}}
             div
                 strong CPF/CNPJ: 
                 span#texto_cpf_ou_cnpj
-                    label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj",style="margin-left:100px;") {{#{processo}.empreendimento.pessoa.cpf ? #{processo}.empreendimento.pessoa.cpf : #{processo}.empreendimento.pessoa.cnpj | brCpfCnpj}}
+                    label.not-bold.margin-right-xs(for="texto_cpf_ou_cnpj",style="margin-left:100px;") {{#{processo}.empreendimento.cpfCnpj | brCpfCnpj}}
             div
                 strong Empreendimento: 
                 span#texto_nome_empreendimento
-                    label.not-bold.margin-right-xs(for="texto_nome_empreendimento",style="margin-left:61px;") {{#{processo}.empreendimento.denominacao}}
+                    label.not-bold.margin-right-xs(for="texto_nome_empreendimento",style="margin-left:61px;") {{#{processo}.empreendimento.empreendimentoEU.denominacao}}
             div
                 strong Município: 
                 span#texto_municipio_estado   

@@ -31,6 +31,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
     validacaoAnaliseTecnicaGerente.listaAnalisesTecnicas = [];
     validacaoAnaliseTecnicaGerente.processo = null;
     validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga = null;
+    validacaoAnaliseTecnicaGerente.documentos = [];
 
     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = false;
 
@@ -73,8 +74,11 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
             findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaGerente.analiseTecnicaAntiga.analise.processo);
 
             _.filter(validacaoAnaliseTecnicaGerente.parecerTecnico.documentos , function(documento){
+                
                 if(documento.tipo.id === validacaoAnaliseTecnicaGerente.enumDocumentos.AUTO_INFRACAO){
                     validacaoAnaliseTecnicaGerente.possuiAutoInfracao = true;
+                }else {
+                    validacaoAnaliseTecnicaGerente.documentos.push(documento);
                 }
             });
 
@@ -167,13 +171,20 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 
                     validacaoAnaliseTecnicaGerente.processo = response.data;
 
-                    if(validacaoAnaliseTecnicaGerente.processo.processoAnterior === null || validacaoAnaliseTecnicaGerente.processo.processoAnterior === undefined ){
+                    if(validacaoAnaliseTecnicaGerente.processo.processoAnterior === undefined || validacaoAnaliseTecnicaGerente.processo.processoAnterior === null  ){
 
                         getAnaliseTecnica(validacaoAnaliseTecnicaGerente.analiseTecnica.id);
                         
-                    }else{
+                    } else{
 
-                        getAnaliseTecnica(validacaoAnaliseTecnicaGerente.processo.processoAnterior.analise.analisesTecnicas[0].id);
+                        if(validacaoAnaliseTecnicaGerente.processo.processoAnterior.analise.analisesTecnicas.length === 0) {
+                            
+                            getAnaliseTecnica(validacaoAnaliseTecnicaGerente.analiseTecnica.id);
+                       
+                        } else {
+
+                            getAnaliseTecnica(validacaoAnaliseTecnicaGerente.processo.processoAnterior.analise.analisesTecnicas[0].id);
+                        }
 
                     }
                    
@@ -232,13 +243,13 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
             denominacaoEmpreendimento: validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.cpfCnpj.length > 11) {
 
-            processo.cnpjEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnaliseTecnicaGerente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
         }		
 
 
@@ -507,7 +518,7 @@ var ValidacaoAnaliseTecnicaGerenteController = function($rootScope,
 			.then(function(response){
                 $location.path("analise-gerente");
                 $timeout(function() {
-                    mensagem.success("Analise Gerente finalizada!", {referenceId: 5});
+                    mensagem.success("Validação finalizada!", {referenceId: 5});
                 }, 0);
             },function(error){
 				mensagem.error(error.data.texto);

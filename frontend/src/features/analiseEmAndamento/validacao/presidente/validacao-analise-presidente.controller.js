@@ -1,5 +1,6 @@
 var ValidacaoAnalisePresidenteController = function($uibModal,
 												 $route,
+												 $timeout,
 												 mensagem,
                                                  desvinculoService,      
                                                  analiseTecnicaService,
@@ -70,13 +71,13 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
             denominacaoEmpreendimento: validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.denominacao
         };
 
-        if(validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj) {
+        if(validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.cpfCnpj.length) {
 
-            processo.cnpjEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cnpj;
+            processo.cnpjEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
 
         } else {
 
-            processo.cpfEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.pessoa.cpf;
+            processo.cpfEmpreendimento = validacaoAnalisePresidente.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
         }		
 
         processoService.visualizarProcesso(processo);
@@ -301,7 +302,7 @@ var ValidacaoAnalisePresidenteController = function($uibModal,
 				
 				$location.path('/analise-presidente');
 				$timeout(function() {
-                    mensagem.success(response.data.texto, {referenceId: 5});
+                    mensagem.success("Validação finalizada!", {referenceId: 5});
                 }, 0);
 
 		}).catch(function(){

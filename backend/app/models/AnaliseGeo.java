@@ -1,8 +1,11 @@
 package models;
 
+import br.ufla.lemaf.beans.pessoa.Contato;
+import br.ufla.lemaf.beans.pessoa.Pessoa;
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import controllers.PareceresAnalistasGeo;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.PortalSegurancaException;
@@ -23,6 +26,7 @@ import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.libs.Crypto;
+import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
 
@@ -137,6 +141,14 @@ public class AnaliseGeo extends Analisavel {
                 .first();
     }
 
+    public Date getDataParecer(){
+
+        ParecerAnalistaGeo parecerAnalistaGeo = this.pareceresAnalistaGeo.stream().max(Comparator.comparing(ParecerAnalistaGeo::getDataParecer)).orElseThrow(ValidationException::new);
+
+        return parecerAnalistaGeo.dataParecer;
+
+    }
+
     public AnaliseGeo save() {
 
         if (this.dataCadastro == null) {
@@ -148,6 +160,16 @@ public class AnaliseGeo extends Analisavel {
         c.setTime(this.dataCadastro);
         c.add(Calendar.DAY_OF_MONTH, Configuracoes.PRAZO_ANALISE_GEO);
         this.dataVencimentoPrazo = c.getTime();
+
+        this.ativo = true;
+
+        return super.save();
+    }
+
+    public AnaliseGeo save(AnaliseGeo analiseGeoAnterior) {
+
+        this.dataCadastro = analiseGeoAnterior.dataCadastro;
+        this.dataVencimentoPrazo = analiseGeoAnterior.dataVencimentoPrazo;
 
         this.ativo = true;
 
@@ -210,9 +232,11 @@ public class AnaliseGeo extends Analisavel {
 
     public static List<AnaliseGeo> findAnalisesByNumeroProcesso(String numeroProcesso) {
 
-        return AnaliseGeo.find("analise.processo.numero = :numeroProcesso")
+        List<AnaliseGeo> analisesGeo = AnaliseGeo.find("analise.processo.numero = :numeroProcesso")
                 .setParameter("numeroProcesso", numeroProcesso)
                 .fetch();
+
+        return analisesGeo.stream().sorted(Comparator.comparing(AnaliseGeo::getDataParecer).reversed()).collect(Collectors.toList());
 
     }
     
@@ -382,7 +406,11 @@ public class AnaliseGeo extends Analisavel {
     public void enviarEmailNotificacao(Notificacao notificacao, ParecerAnalistaGeo parecerAnalistaGeo, List<Documento> documentos) throws Exception {
 
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
-        List<String> destinatarios = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+        Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
+                .filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+
+        List<String> destinatarios = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
         this.linkNotificacao = Configuracoes.URL_LICENCIAMENTO;
 
@@ -693,6 +721,8 @@ public class AnaliseGeo extends Analisavel {
 
         UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
+        this.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.analise.processo.empreendimento.cpfCnpj);
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -729,7 +759,7 @@ public class AnaliseGeo extends Analisavel {
 
     }
 
-    public Documento gerarPDFCartaImagem(ParecerAnalistaGeo parecerAnalistaGeo) {
+    public Documento  gerarPDFCartaImagem(ParecerAnalistaGeo parecerAnalistaGeo) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.CARTA_IMAGEM);
         Processo processo = Processo.findById(this.analise.processo.id);
@@ -775,6 +805,10 @@ public class AnaliseGeo extends Analisavel {
 
         MapaImagem.GrupoDataLayerImagem grupoImagemCaracterizacao = new MapaImagem().createMapCaracterizacaoImovel(camadaPropriedade, geometriasAtividades, geometriasRestricoes, geometriasEmpreendimento, geometriasComplexo, geometriaFoco);
 
+        Integer coodinatesAtividadeSize = grupoImagemCaracterizacao.coordinatesAtividade.length;
+
+        this.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(this.analise.processo.empreendimento.cpfCnpj);
+
         PDFGenerator pdf = new PDFGenerator()
                 .setTemplate(tipoDocumento.getPdfTemplate())
                 .addParam("analiseEspecifica", this)
@@ -783,6 +817,8 @@ public class AnaliseGeo extends Analisavel {
                 .addParam("imagemCaracterizacao", grupoImagemCaracterizacao.imagem)
                 .addParam("grupoDataLayers", grupoImagemCaracterizacao.grupoDataLayers)
                 .addParam("coordinates", grupoImagemCaracterizacao.coordinates)
+                .addParam("coordinatesAtividades", grupoImagemCaracterizacao.coordinatesAtividade)
+                .addParam("coordinatesAtividadeSize", coodinatesAtividadeSize)
                 .setPageSize(30.0D, 21.0D, 0.2D, 0D, 0D, 0.2D);
 
         pdf.generate();
@@ -824,8 +860,14 @@ public class AnaliseGeo extends Analisavel {
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.NOTIFICACAO_ANALISE_GEO);
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
-        br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+
+        br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
+        analiseGeo.analise.processo.empreendimento.empreendimentoEU = empreendimentoEU;
+
         final Endereco enderecoCompleto = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)).findAny().orElseThrow(PortalSegurancaException::new);
+
+        Pessoa cadastrante = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpjCadastrante).pessoa;
+        final  Contato contatoCadastrante = cadastrante.contatos.stream().filter(contato -> contato.principal).findAny().orElseThrow(PortalSegurancaException::new);
 
         UsuarioAnalise analista;
         AnalistaVO analistaVO;
@@ -920,6 +962,7 @@ public class AnaliseGeo extends Analisavel {
                     .addParam("enderecoCompleto", enderecoCompleto)
                     .addParam("analista", finalAnalistaVO)
                     .addParam("localizacoes", localizacoes)
+                    .addParam("contatoPrincipal", contatoCadastrante.valor)
                     .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                     .addParam("categoriaInconsistencia", categoriaInconsistencia)
                     .addParam("itemRestricao", itemRestricao)

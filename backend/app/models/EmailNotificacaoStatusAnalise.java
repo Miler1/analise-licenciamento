@@ -39,6 +39,9 @@ public class EmailNotificacaoStatusAnalise extends EmailNotificacao {
 
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
             br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analise.processo.empreendimento.getCpfCnpj());
+
+            this.analise.processo.empreendimento.empreendimentoEU = empreendimentoEU;
+
             Municipio municipio = null;
             for(Endereco endereco : empreendimentoEU.enderecos){
                 if(endereco.tipo.id == TipoEndereco.ID_PRINCIPAL){

@@ -6,6 +6,7 @@ import models.Processo;
 import security.Acao;
 import serializers.NotificacaoSerializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Notificacoes extends InternalController {
@@ -31,7 +32,16 @@ public class Notificacoes extends InternalController {
 
         Processo processo = Processo.findById(id);
 
-        renderJSON(processo.inicializaNotificacoes(), NotificacaoSerializer.findAll);
+        List<Notificacao> notificacoes = new ArrayList<>();
+
+        while(processo.processoAnterior != null) {
+
+            processo = Processo.findById(processo.processoAnterior.id);
+
+            notificacoes.addAll(processo.inicializaNotificacoes());
+        }
+
+        renderJSON(notificacoes, NotificacaoSerializer.findAll);
     }
 
     public static void findByIdParecer(Long id) {

@@ -9,6 +9,7 @@ require:
     - org.postgresql -> postgresql 42.1.4:
           force: true
     - org.geotools -> gt-geojson 14.3
+    - org.geotools -> gt-shapefile 14.3
     - org.geotools -> gt-wfs 14.3
     - org.geotools -> gt-epsg-hsql 14.3
     - org.hibernate -> hibernate-spatial 5.2.13.Final
@@ -27,7 +28,7 @@ require:
     - org.apache.tika -> tika-core 1.7
     - com.google.guava -> guava 27.0.1-jre
     - br.com.caelum.stella -> caelum-stella-bean-validation 2.0.4
-    - br.ufla.lemaf -> cadastro-unificado-oauth-client 2.1.6
+    - br.ufla.lemaf -> cadastro-unificado-oauth-client 2.1.8
     - com.github.junrar -> junrar 0.7
     - br.ufla -> tmsmap 0.1.6:
           exclude:
@@ -61,6 +62,11 @@ repositories:
               - it.geosolutions.imageio-ext -> *
               - com.google.zxing -> *
               - br.ufla.lemaf -> *
+              - org.geotools -> *
+              - it.geosolutions.* -> *
+              - it.geosolutions.*.* -> *
+              - org.geotools.xsd -> *
+              - org.geotools.ogc -> *
 
     - BOUNDLESSGEO:
           type: iBiblio

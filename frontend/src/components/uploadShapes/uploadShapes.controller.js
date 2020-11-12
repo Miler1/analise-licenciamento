@@ -1,7 +1,7 @@
 /**
  * Controller para a tela de upload de shapes
  **/
-var UploadShapesController = function ($injector, $scope, $timeout, $location, analiseGeoService, $rootScope, validacaoShapeService, $route, processoService, tiposSobreposicaoService) {
+var UploadShapesController = function ($injector, $scope, $timeout, $location, $rootScope, validacaoShapeService, $route, processoService, tiposSobreposicaoService) {
 
 	var uploadShapes = this;
 
@@ -38,7 +38,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 			uploadShapes.idEmpreendimento = uploadShapes.processo.empreendimento.id;
 
 			$scope.$emit('mapa:adicionar-geometria-base', {
-				geometria: JSON.parse(uploadShapes.processo.empreendimento.coordenadas),
+				geometria: JSON.parse(uploadShapes.processo.empreendimento.empreendimentoEU.localizacao.geometria),
 				tipo: 'PROPRIEDADE',
 				estilo: {
 					style: {
@@ -138,7 +138,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 
 		});
 
-		var cpfCnpjEmpreendimento = uploadShapes.processo.empreendimento.pessoa.cpf ? uploadShapes.processo.empreendimento.pessoa.cpf : uploadShapes.processo.empreendimento.pessoa.cnpj;
+		var cpfCnpjEmpreendimento = uploadShapes.processo.empreendimento.cpfCnpj;
 
 		validacaoShapeService.salvarGeometrias(listaGeometrias, uploadShapes.doesntHasShapes, cpfCnpjEmpreendimento)
 			.then(function(response){
@@ -218,6 +218,12 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, a
 	uploadShapes.baixarShapefile = function(idProcesso) {
 
 		processoService.baixarShapefile(idProcesso);
+
+	};
+
+	uploadShapes.baixarShapefileAtividades = function(idProcesso) {
+
+		processoService.baixarShapefileAtividades(idProcesso);
 
 	};
 

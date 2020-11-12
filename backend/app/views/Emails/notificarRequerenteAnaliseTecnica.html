@@ -3,7 +3,7 @@
 numeroProcesso = analiseTecnica.analise.processo.numero;
 tipoLicenca = analiseTecnica.analise.processo.getCaracterizacao().tipoLicenca.nome;
 empreendimento = analiseTecnica.analise.processo.empreendimento;
-empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
+empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 endereco = enderecoCompleto;
 }%
 
@@ -18,15 +18,15 @@ endereco = enderecoCompleto;
 <body>
 
 <h1 style="text-align: center">
-#{embeddedImage src:'conf/images/brasao_am.png', name:'Amazonas', alt:'Estado do Amazonas', height:'100', width:'70' /}
+#{embeddedImage src:'conf/images/brasao_ap.png', name:'Amapá', alt:'Estado do Amapá', height:'100', width:'70' /}
 </h1>
-<p style="text-align: center">GOVERNO DO ESTADO DO AMAZONAS</p>
+<p style="text-align: center">GOVERNO DO ESTADO DO AMAPÁ</p>
 
-<p style="text-align: center">INSTITUTO DE PROTEÇÃO AMBIENTAL DO AMAZONAS - IPAAM</p>
+<p style="text-align: center">SECRETARIA DE ESTADO DO MEIO AMBIENTE - SEMA-AP</p>
 
 
 <p><strong>Protocolo N°: <strong>${numeroProcesso}</strong></strong> </p>
-<p style="text-align: right">  Manaus/AM, ${utils.Helper.getDataPorExtenso(new Date())} </p>
+<p style="text-align: right">  Macapá/AP, ${utils.Helper.getDataPorExtenso(new Date())} </p>
 
 <p><strong>À </strong><br> <strong> ${empreendimentoNome} </strong><br> End: ${endereco.logradouro} ${endereco.numero} - ${endereco.bairro}, ${endereco.municipio.nome} - ${endereco.municipio.estado.sigla} <br>CEP: ${endereco.cep}<br><br></p>
 
@@ -38,7 +38,7 @@ endereco = enderecoCompleto;
 
 <p>             Atenciosamente,  </p>
 
-<p style="text-align: center"><strong> Juliano Marcos Valente de Souza<br>Diretor Presidente </strong></p>
+<p style="text-align: center"><strong> Robério Aleixo<br>Diretor Presidente </strong></p>
 
 
 </body>

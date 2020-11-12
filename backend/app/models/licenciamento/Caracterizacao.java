@@ -283,13 +283,9 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 		return this.retificacao && (this.idCaracterizacaoOrigem == null || !this.caracterizacaoAnteriorAtiva());
 	}
 
-	public File gerarShape() throws IOException {
+	public File gerarShapeAtividade() throws IOException {
 
-		if(this.atividadesCaracterizacao.get(0).isAtividadeDentroEmpreendimento()) {
-
-			return this.gerarShapeEmpreendimento();
-
-		} else if(this.isComplexo()){
+		if(this.isComplexo()){
 
 			return this.gerarShapeComplexo();
 
@@ -301,13 +297,13 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	public File gerarShapeComplexo() throws IOException {
 
-		return gerarShape(this.geometriasComplexo.stream().map(gc -> gc.geometria).collect(toList()));
+		return gerarShapeAtividade(this.geometriasComplexo.stream().map(gc -> gc.geometria).collect(toList()));
 
 	}
 
 	public File gerarShapeAtividades() throws IOException {
 
-		return gerarShape(this.atividadesCaracterizacao.stream().flatMap(ac -> ac.getGeoms()).collect(toList()));
+		return gerarShapeAtividade(this.atividadesCaracterizacao.stream().flatMap(ac -> ac.getGeoms()).collect(toList()));
 
 	}
 
@@ -320,14 +316,36 @@ public class Caracterizacao extends GenericModel implements Identificavel {
 
 	}
 
+	private File gerarShapeAtividade(List<Geometry> geoms) throws IOException {
+
+		String basePath = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH;
+		String shapefilePAth = Configuracoes.ARQUIVOS_DOCUMENTOS_SHAPEFILE_PATH + File.separator + this.id;
+
+		File shapeFile = new File(shapefilePAth + "/");
+		File file = new File(shapefilePAth + "/geom_ativ.shp");
+		File fileZip = new File(basePath + "/geom_ativ.zip");
+
+		if(!shapeFile.exists()){
+			shapeFile.mkdirs();
+		}
+
+		WriteShapefile.write(file, geoms, MultiPolygon.class);
+		Files.zip(shapeFile, fileZip);
+
+		Files.deleteDirectory(new File(Configuracoes.ARQUIVOS_DOCUMENTOS_SHAPEFILE_PATH));
+
+		return fileZip;
+
+	}
+
 	private File gerarShape(List<Geometry> geoms) throws IOException {
 
 		String basePath = Configuracoes.ARQUIVOS_DOCUMENTOS_ANALISE_PATH;
 		String shapefilePAth = Configuracoes.ARQUIVOS_DOCUMENTOS_SHAPEFILE_PATH + File.separator + this.id;
 
 		File shapeFile = new File(shapefilePAth + "/");
-		File file = new File(shapefilePAth + "/geom.shp");
-		File fileZip = new File(basePath + "/geom.zip");
+		File file = new File(shapefilePAth + "/geom_emp.shp");
+		File fileZip = new File(basePath + "/geom_emp.zip");
 
 		if(!shapeFile.exists()){
 			shapeFile.mkdirs();

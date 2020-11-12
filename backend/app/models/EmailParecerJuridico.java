@@ -46,6 +46,7 @@ public class EmailParecerJuridico extends EmailJuridico {
 
             IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
             br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(this.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
+            this.analiseGeo.analise.processo.empreendimento.empreendimentoEU = empreendimentoEU;
 
             Municipio municipio = empreendimentoEU.enderecos.stream().filter(e -> e.tipo.id == TipoEndereco.ID_PRINCIPAL).findFirst().orElse(null).municipio;
 

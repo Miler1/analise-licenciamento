@@ -10,6 +10,7 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.Logger;
 import play.db.jpa.GenericModel;
+import security.cadastrounificado.CadastroUnificadoWS;
 import utils.DateUtil;
 import utils.ListUtil;
 import utils.Mensagem;
@@ -104,8 +105,11 @@ public class Suspensao extends GenericModel {
 	private void enviarNotificacaoSuspensaoPorEmail() {
 
 		List<String> destinatarios = new ArrayList<String>();
-		destinatarios.addAll(this.licenca.caracterizacao.empreendimento.emailsProprietarios());
-		destinatarios.addAll(this.licenca.caracterizacao.empreendimento.emailsResponsaveis());
+
+		destinatarios = CadastroUnificadoWS.ws.getEmailProprietarioResponsaveis(this.licenca.caracterizacao.empreendimento.empreendimentoEU.proprietarios,
+																				this.licenca.caracterizacao.empreendimento.empreendimentoEU.responsaveisLegais,
+																				this.licenca.caracterizacao.empreendimento.empreendimentoEU.responsaveisTecnicos, destinatarios);
+
 
 		EmailNotificacaoSuspensaoLicenca emailNotificacao = new EmailNotificacaoSuspensaoLicenca(this, destinatarios);
 		emailNotificacao.enviar();

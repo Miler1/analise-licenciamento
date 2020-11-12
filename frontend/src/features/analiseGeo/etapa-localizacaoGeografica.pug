@@ -8,55 +8,52 @@ include ../../layout/components/mapPanel
             +mapPanel-sidebar("mapa-localizacao-empreendimento",'400', true, 'ctrl')
             br
             #accordion-empreendimento.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-empreendimento', aria-expanded='false', data-target='#meusDadosEmpreendimento', ng-init = 'ctrl.openedAccordionEmpreendimento = false', ng-click = 'ctrl.openedAccordionEmpreendimento = !ctrl.openedAccordionEmpreendimento' )
-                        .panel.panel-default
-                            .panel-heading
-                                h4.panel-title
-                                    | Dados do empreendimento
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !ctrl.openedAccordionEmpreendimento}")
-                    #meusDadosEmpreendimento.collapse
-                        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                            thead
-                                tr
-                                    th.col-md-5 Item
-                                    th.col-md-5 Área (ha)
-                                    th.col-md-2.text-right Alertas
+                div(uib-accordion class="accordion-empreendimento")
+                    div(uib-accordion-group class="panel-default" is-open="ctrl.openedAccordionEmpreendimento")
+                        uib-accordion-heading(ng-click="ctrl.openedAccordionEmpreendimento=!ctrl.openedAccordionEmpreendimento")
+                            div Dados do empreendimento
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':ctrl.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !ctrl.openedAccordionEmpreendimento}")
 
-                            tbody
-                                tr(ng-repeat='camada in ctrl.camadasDadosEmpreendimento')
-                                    td.col-md-5 {{camada.geometrias[0].item}}
-                                    td.col-md-5 {{camada.geometrias[0].descricao}}
-                                    td.col-md-2.text-right
-                                        i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.geometrias[0].item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
-                                        | &nbsp;&nbsp;
+                        #meusDadosEmpreendimento
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                thead
+                                    tr
+                                        th.col-md-5 Item
+                                        th.col-md-5 Área (ha)
+                                        th.col-md-2.text-right Alertas
+
+                                tbody
+                                    tr(ng-repeat='camada in ctrl.camadasDadosEmpreendimento')
+                                        td.col-md-5 {{camada.geometrias[0].item}}
+                                        td.col-md-5 {{camada.geometrias[0].descricao}}
+                                        td.col-md-2.text-right
+                                            i.glyphicon.glyphicon-exclamation-sign(ng-class="{'temInconsistencia' : verificaInconsistenciaEmpreendimento() }", ng-if="camada.geometrias[0].item.toUpperCase() === ctrl.categoria.PROPRIEDADE && verificaInconsistenciaEmpreendimento()" , title='Inconsistência adicionada', )
+                                            | &nbsp;&nbsp;
 
             #accordion-complexo.panel-group(ng-if="ctrl.dadosProjeto.categoria === ctrl.categoria.COMPLEXO || ctrl.dadosProjeto.complexo")
-                 div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-complexo', aria-expanded='false', data-target='#meusDadosComplexo', ng-init = 'ctrl.openedAccordionDadosComplexo = false', ng-click = 'ctrl.openedAccordionDadosComplexo = !ctrl.openedAccordionDadosComplexo' )
-                        .panel.panel-default
-                            .panel-heading
-                                h4.panel-title
-                                    | {{ ctrl.labelDadosProjeto }}
-                                    i(class="pull-right glyphicon" ng-class="{ 'glyphicon-chevron-down': ctrl.openedAccordionDadosComplexo, 'glyphicon-chevron-right': !ctrl.openedAccordionDadosComplexo }")
+                 div(uib-accordion class="accordion-complexo")
+                    div(uib-accordion-group class="panel-default" is-open="ctrl.openedAccordionDadosComplexo")
+                        uib-accordion-heading(ng-click="ctrl.openedAccordionDadosComplexo=!ctrl.openedAccordionDadosComplexo")
+                            div {{ ctrl.labelDadosProjeto }}
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':ctrl.openedAccordionDadosComplexo, 'glyphicon-chevron-right': !ctrl.openedAccordionDadosComplexo}")
+                   
+                        #meusDadosComplexo
+                            span.atividades Atividades:
+                            .div-list(style="margin-left: 10px",  ng-repeat="atividade in ctrl.dadosProjeto.atividades")
+                                label {{ atividade.atividadeCaracterizacao.atividade.nome }}
+                            br
+                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                thead
+                                    tr
+                                        th.col-md-4 Item
+                                        th.col-md-3 Vetorizado
+                                        th.col-md-3 Declarado
 
-                    #meusDadosComplexo.collapse
-                        span.atividades Atividades:
-                        .div-list(style="margin-left: 10px",  ng-repeat="atividade in ctrl.dadosProjeto.atividades")
-                            label {{ atividade.atividadeCaracterizacao.atividade.nome }}
-                        br
-                        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                            thead
-                                tr
-                                    th.col-md-4 Item
-                                    th.col-md-3 Vetorizado
-                                    th.col-md-3 Declarado
-
-                            tbody
-                                tr(ng-repeat="geometria in ctrl.dadosProjeto.complexo.geometrias")
-                                    td.col-md-5 {{ geometria.item }}
-                                    td.col-md-3 {{ geometria.descricao }}
-                                    td.col-md-3 {{ atividadeCaracterizacaoParametro }}
+                                tbody
+                                    tr(ng-repeat="geometria in ctrl.dadosProjeto.complexo.geometrias")
+                                        td.col-md-5 {{ geometria.item }}
+                                        td.col-md-3 {{ geometria.descricao }}
+                                        td.col-md-3 {{ atividadeCaracterizacaoParametro }}
 
             #lista-camadas-atividades(ng-if="ctrl.dadosProjeto.categoria !== ctrl.categoria.COMPLEXO && ctrl.dadosProjeto.complexo === null")
                 #accordion-atividades.panel-group
@@ -64,26 +61,25 @@ include ../../layout/components/mapPanel
                     br
                     hr(style="margin-top:2px;")
                     div.collapse-atividade(ng-repeat="atividade in ctrl.dadosProjeto.atividades")
-                        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAtividadesProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
-                            .panel.panel-default
-                                .panel-heading
-                                    h4.panel-title
-                                        | Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
-                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
+                        div(uib-accordion class="accordion-atividades")
+                            div(uib-accordion-group class="panel-default" is-open="atividade.openedAccordion")
+                                uib-accordion-heading(ng-click="atividade.openedAccordion=!atividade.openedAccordion")
+                                    div Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
+                                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
+                   
+                        
+                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                                    thead
+                                        tr
+                                        th.col-md-4 Item
+                                        th.col-md-3 Vetorizado
+                                        th.col-md-3 Declarado
 
-                        .collapse(id='dadosAtividadesProjeto{{$index}}')
-                            table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                                thead
-                                    tr
-                                    th.col-md-4 Item
-                                    th.col-md-3 Vetorizado
-                                    th.col-md-3 Declarado
-
-                                tbody
-                                    tr(ng-repeat="geometria in atividade.geometrias")
-                                        td.col-md-5 {{ geometria.item }}
-                                        td.col-md-3 {{ geometria.descricao }}
-                                        td.col-md-3 {{ geometria.parametro }}
+                                    tbody
+                                        tr(ng-repeat="geometria in atividade.geometrias")
+                                            td.col-md-5 {{ geometria.item }}
+                                            td.col-md-3 {{ geometria.descricao }}
+                                            td.col-md-3 {{ geometria.parametro }}
 
             hr
 

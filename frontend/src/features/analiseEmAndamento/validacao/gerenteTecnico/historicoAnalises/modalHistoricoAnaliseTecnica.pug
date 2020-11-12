@@ -25,7 +25,6 @@ div.modal-body
         .info-dados-processo
             label.label-dados-processo Situação: 
             span.span-dados-processo {{historicoAnaliseTecnicaCtrl.parecer.tipoResultadoAnalise.nome}}
-            br
             
         .info-dados-solicitante
             label Documentos gerados na análise: 
@@ -34,7 +33,7 @@ div.modal-body
                 thead
 
                     tr
-                        th.col-md-10 Nome documento
+                        th.col-md-10 Nome de documento
                         th.col-md-2.text-right Ação
 
                 tbody
@@ -42,22 +41,22 @@ div.modal-body
                     tr(ng-if="historicoAnaliseTecnicaCtrl.parecer.documentoParecer != null ")  
                         td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecer.documentoParecer.nomeDoArquivo }}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.PARECER_ANALISE_TECNICA)")
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.PARECER_ANALISE_TECNICA)")
                                 i.glyphicon.glyphicon-eye-open
                     tr(ng-if="historicoAnaliseTecnicaCtrl.parecer.documentoMinuta != null ")   
                         td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecer.documentoMinuta.nomeDoArquivo }}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_MINUTA)")
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_MINUTA)")
                                 i.glyphicon.glyphicon-eye-open
                     tr(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria != null ") 
                         td.col-md-10 {{ historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria.nomeDoArquivo }}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA)")
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.baixarDocumento(historicoAnaliseTecnicaCtrl.analiseTecnica, historicoAnaliseTecnicaCtrl.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA)")
                                 i.glyphicon.glyphicon-eye-open
                     tr(ng-repeat=" documentoNotificacao in historicoAnaliseTecnicaCtrl.notificacoes[0].documentosNotificacaoTecnica ")    
                         td.col-md-10 {{ documentoNotificacao.nomeDoArquivo }}
                         td.col-md-2.text-right
-                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.downloadDocumentos(documentoNotificacao.id)")
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseTecnicaCtrl.downloadDocumentos(documentoNotificacao.id)")
                                 i.glyphicon.glyphicon-eye-open
 
             div.info-sem-dados-para-exibir(ng-if="historicoAnaliseTecnicaCtrl.parecer.vistoria.documentoRelatorioTecnicoVistoria == null && historicoAnaliseTecnicaCtrl.parecer.documentoParecer == null && historicoAnaliseTecnicaCtrl.parecer.documentoMinuta == null && historicoAnaliseTecnicaCtrl.notificacoes[0].documentosNotificacaoTecnica.length == 0")

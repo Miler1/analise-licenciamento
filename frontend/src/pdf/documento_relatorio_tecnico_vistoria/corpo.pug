@@ -4,7 +4,7 @@ doctype html
 |}%
 html(lang='en')
 	head
-		title Análise - Licenciamento Ambiental - Amazonas
+		title Análise - Licenciamento Ambiental - Amapá
 			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
 			meta(charset='UTF-8')
 
@@ -20,7 +20,9 @@ html(lang='en')
 				li
 					h3 DA DATA DA VISTORIA:
 						p
-							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')} Hora da vistoria: ${vistoria.hora.format('HH:mm')}.
+							span Data de realização da vistoria: ${vistoria.data.format('dd/MM/yyyy')}.
+						p
+							span Hora da vistoria: ${vistoria.hora.format('HH:mm')}.
 				
 				| \#{if tamanhoEquipeVistoria != 0}
 				li
@@ -108,4 +110,4 @@ html(lang='en')
 						P
 							| \#{verbatim}${vistoria.conclusao}\#{/verbatim}
 
-			span.in-right Manaus, ${utils.Helper.getDataPorExtenso(new Date())}
+			span.in-right Macapá, ${utils.Helper.getDataPorExtenso(new Date())}

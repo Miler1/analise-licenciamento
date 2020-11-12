@@ -25,3 +25,18 @@ var tiposCaracterizacoes = {
 };
 
 exports.TIPOS_CARACTERIZACOES = tiposCaracterizacoes;
+
+var tipoContato = {
+	EMAIL: 1,
+	TELEFONE_RESIDENCIAL: 2,
+	TELEFONE_COMERCIAL: 3,
+	TELEFONE_CELULAR: 4
+};
+ exports.TIPO_CONTATO = tipoContato;
+
+ var tipoEndereco = {
+	PRINCIPAL: 1,
+	CORRESPONDENCIA: 2
+
+};
+exports.TIPO_ENDERECO = tipoEndereco;

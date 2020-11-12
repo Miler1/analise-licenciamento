@@ -445,10 +445,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	public ProcessoBuilder groupByCpfCnpjEmpreendimento(){
 
-		addPessoaEmpreendimentoAlias();
+		addEmpreendimentoAlias();
 
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cpf").as("cpfEmpreendimento"));
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj").as("cnpjEmpreendimento"));
+		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".cpfCnpj").as("cpfEmpreendimento"));
 
 		return this;
 	}
@@ -724,12 +723,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 		if (StringUtils.isNotEmpty(cpfCnpj)) {
 
-			addPessoaEmpreendimentoAlias();
+			addEmpreendimentoAlias();
 
-			criteria.add(Restrictions.or(
-					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cpf", cpfCnpj, MatchMode.START),
-					Restrictions.ilike(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj", cpfCnpj, MatchMode.START)
-			));
+			addRestriction(Restrictions.ilike(EMPREENDIMENTO_ALIAS+".cpfCnpj", cpfCnpj, MatchMode.START));
 		}
 
 		return this;

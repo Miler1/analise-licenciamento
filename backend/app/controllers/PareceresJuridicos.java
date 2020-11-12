@@ -5,6 +5,7 @@ import models.licenciamento.SobreposicaoCaracterizacaoEmpreendimento;
 import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import serializers.ComunicadoSerializer;
 import serializers.ParecerJuridicoSerializer;
+import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
 import java.util.Comparator;
@@ -29,13 +30,26 @@ public class PareceresJuridicos extends GenericController{
 
         ParecerJuridico parecerJuridicoBanco =  ParecerJuridico.findById(id);
 
+        parecerJuridicoBanco.analiseGeo.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(parecerJuridicoBanco.analiseGeo.analise.processo.empreendimento.cpfCnpj);
+
         renderJSON(parecerJuridicoBanco, ParecerJuridicoSerializer.findParecerJuridico);
 
     }
 
+    public static void findPareceres(Long id) {
+
+        List<ParecerJuridico> parecerJuridicoBanco =  ParecerJuridico.findAll();
+
+        renderJSON(parecerJuridicoBanco, ParecerJuridicoSerializer.findParecerJuridico);
+
+    }
+
+
     public static void getParecerJuridicoByAnaliseTecnica(Long idAnaliseTecnica) {
 
         ParecerJuridico parecerFinal = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(idAnaliseTecnica);
+
+        parecerFinal.analiseGeo.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(parecerFinal.analiseGeo.analise.processo.empreendimento.cpfCnpj);
 
         renderJSON(parecerFinal, ParecerJuridicoSerializer.findParecerJuridico);
 

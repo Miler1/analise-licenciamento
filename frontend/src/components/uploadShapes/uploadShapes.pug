@@ -19,10 +19,10 @@ mixin uploadShapes(idMapa)
 							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.numero : '-'}}
 						.row
 							label.col-sm-4 CPF/CNPJ:
-							span.col-sm-8 {{uploadShapes.processo ? (uploadShapes.processo.empreendimento.pessoa.cpf ? uploadShapes.processo.empreendimento.pessoa.cpf : uploadShapes.processo.empreendimento.pessoa.cnpj ) : '-' | brCpfCnpj}}
+							span.col-sm-8 {{uploadShapes.processo.empreendimento.cpfCnpj | brCpfCnpj}}
 						.row
 							label.col-sm-4 Interessado:
-							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.empreendimento.denominacao : '-'}}
+							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.empreendimento.empreendimentoEU.denominacao : '-'}}
 						.row
 							label.col-sm-4 Município:
 							span.col-sm-8 {{uploadShapes.processo ? uploadShapes.processo.empreendimento.municipio.nome : '-'}} / {{uploadShapes.processo ? uploadShapes.processo.empreendimento.municipio.estado.codigo : '-'}}
@@ -31,7 +31,11 @@ mixin uploadShapes(idMapa)
 
 					button.btn.btn-sm.btn-default.pull-right(ng-click='uploadShapes.baixarShapefile(uploadShapes.processo.id)')
 						i.fa.fa-download
-						| &nbsp;Baixar shape do empreendimento/atividade(s)
+						| &nbsp;Baixar shape do empreendimento
+
+					button.btn.btn-sm.btn-default.pull-right.upload-button-atividades(ng-click='uploadShapes.baixarShapefileAtividades(uploadShapes.processo.id)')
+						i.fa.fa-download
+						| &nbsp;Baixar shape da(s) atividade(s)
 
 					h5.us-map-title Localização das camadas
 

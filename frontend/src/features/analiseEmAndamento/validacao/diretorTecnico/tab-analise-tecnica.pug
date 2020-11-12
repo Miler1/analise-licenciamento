@@ -2,104 +2,98 @@
     .row
         .col-md-12
             #accordion-analista-tecnico.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-analista-tecnico', aria-expanded='false', data-target='#dados-analista-tecnico', ng-init = 'validacaoAnaliseDiretor.openedAccordionAnalistaTecnico = false', ng-click = 'validacaoAnaliseDiretor.openedAccordionAnalistaTecnico = !validacaoAnaliseDiretor.openedAccordionAnalistaTecnico' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title
-                                    | Resultado da análise técnica
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionAnalistaTecnico, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionAnalistaTecnico}")
+                div(uib-accordion class="accordion-analista-tecnico")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionAnalistaTecnico")
+                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionAnalistaTecnico=!validacaoAnaliseDiretor.openedAccordionAnalistaTecnico")
+                            div Resultado da análise técnica
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':validacaoAnaliseDiretor.openedAccordionAnalistaTecnico, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionAnalistaTecnico}")
                    
-                    #dados-analista-tecnico.collapse
-                        .parecer-diretor
-                            .label-analista
-                                span.title-info Analista Técnico: 
-                                span {{validacaoAnaliseDiretor.analiseTecnica.analistaTecnico.usuario.pessoa.nome}}
+                        #dados-analista-tecnico
+                            .parecer-diretor
+                                .label-analista
+                                    span.title-info Analista Técnico: 
+                                    span {{validacaoAnaliseDiretor.analiseTecnica.analistaTecnico.usuario.pessoa.nome}}
 
-                            .label-situacao
-                                span.title-info Situação: 
-                                span {{validacaoAnaliseDiretor.parecerTecnico.tipoResultadoAnalise.nome | uppercase}}
+                                .label-situacao
+                                    span.title-info Situação: 
+                                    span {{validacaoAnaliseDiretor.parecerTecnico.tipoResultadoAnalise.nome | uppercase}}
 
-                            .label-situacao
-                                span.title-info {{validacaoAnaliseDiretor.labelParecerAnalistaTecnico}}: 
-                                br
-                                span(ng-bind-html=" validacaoAnaliseDiretor.parecerTecnico.parecer ") 
+                                .label-situacao
+                                    span.title-info {{validacaoAnaliseDiretor.labelParecerAnalistaTecnico}}: 
+                                    br
+                                    span(ng-bind-html=" validacaoAnaliseDiretor.parecerTecnico.parecer ") 
                         
             #accordion-documentos-tecnicos.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-documentos-tecnicos', aria-expanded='false', data-target='#dados-documentos-tecnicos', ng-init = 'validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos = false', ng-click = 'validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos = !validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title
-                                    | Documentos da análise técnica
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos}")
-                   
-                    #dados-documentos-tecnicos.collapse
-                        .parecer-diretor
+                div(uib-accordion class="accordion-documentos-tecnicos")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos")
+                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos=!validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos")
+                            div Documentos da análise técnica
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionDocumentosTecnicos}")
+                    
+                        #dados-documentos-tecnicos
+                            .parecer-diretor
 
-                            .botoes-download
-                                div
-                                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumento(validacaoAnaliseDiretor.analiseTecnica, validacaoAnaliseDiretor.tipoDocumento.PARECER_ANALISE_TECNICA)")
-                                        .glyphicon.glyphicon-file.icon-download
-                                        | Parecer Técnico
-                                    br
-                                div(ng-if="validacaoAnaliseDiretor.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.DEFERIDO")
-                                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumento(validacaoAnaliseDiretor.analiseTecnica, validacaoAnaliseDiretor.tipoDocumento.DOCUMENTO_MINUTA)")
-                                        .glyphicon.glyphicon-file.icon-download
-                                        | Minuta da Licença
-                                    br
-                                div(ng-if="validacaoAnaliseDiretor.possuiAutoInfracao === true")
-                                    button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.visualizarAutoInfracao(validacaoAnaliseDiretor.parecerTecnico.documentos)")
-                                        .glyphicon.glyphicon-file.icon-download
-                                        | Auto de Infração
-                                    br
-                                div(ng-if="validacaoAnaliseDiretor.parecerTecnico.vistoria.realizada === true")   
-                                    button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumento(validacaoAnaliseDiretor.analiseTecnica, validacaoAnaliseDiretor.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA)")
-                                        .glyphicon.glyphicon-file.icon-download
-                                        | Relatório Técnico de Vistoria
-                                    br
-                                 
-                                table.table.table-condensed(ng-if="validacaoAnaliseDiretor.parecerTecnico.documentos.length > 0 ")
+                                .botoes-download
+                                    div
+                                        button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumento(validacaoAnaliseDiretor.analiseTecnica, validacaoAnaliseDiretor.tipoDocumento.PARECER_ANALISE_TECNICA)")
+                                            .glyphicon.glyphicon-file.icon-download
+                                            | Parecer Técnico
+                                        br
+                                    div(ng-if="validacaoAnaliseDiretor.parecerTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.DEFERIDO")
+                                        button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumento(validacaoAnaliseDiretor.analiseTecnica, validacaoAnaliseDiretor.tipoDocumento.DOCUMENTO_MINUTA)")
+                                            .glyphicon.glyphicon-file.icon-download
+                                            | Minuta da Licença
+                                        br
+                                    div(ng-if="validacaoAnaliseDiretor.possuiAutoInfracao === true")
+                                        button.btn.btn-success.btn-download(style="width:170px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.visualizarAutoInfracao(validacaoAnaliseDiretor.parecerTecnico.documentos)")
+                                            .glyphicon.glyphicon-file.icon-download
+                                            | Auto de Infração
+                                        br
+                                    div(ng-if="validacaoAnaliseDiretor.parecerTecnico.vistoria.realizada === true")   
+                                        button.btn.btn-success.btn-download(style="width:240px",type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumento(validacaoAnaliseDiretor.analiseTecnica, validacaoAnaliseDiretor.tipoDocumento.DOCUMENTO_RELATORIO_TECNICO_VISTORIA)")
+                                            .glyphicon.glyphicon-file.icon-download
+                                            | Relatório Técnico de Vistoria
+                                        br
+                                    
+                                    table.table.table-condensed.table-docs(ng-if="validacaoAnaliseDiretor.documentosAnaliseTecnica.length > 0")
 
-                                    thead
+                                        thead
 
-                                        tr
-                                            th Arquivo anexado
-                                            th.text-right Ações
+                                            tr
+                                                th.col-md-10 Arquivos anexados
+                                                th.col-md-2.text-right Ações
 
-                                    tbody
+                                        tbody
 
-                                        tr(ng-repeat="documento in validacaoAnaliseDiretor.parecerTecnico.documentos")
+                                            tr(ng-repeat="documento in validacaoAnaliseDiretor.documentosAnaliseTecnica")
 
-                                            td {{documento.nomeDoArquivo}}
-                                            td.text-right 
-                                                a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="validacaoAnaliseDiretor.downloadDocumentoAnalise(documento.id)")
-                                                    i.glyphicon.glyphicon-eye-open
+                                                td.col-md-10 {{documento.nomeDoArquivo}}
+                                                td.col-md-2.text-right 
+                                                    a.d-inline.margin-right-xs.aba-clicavel(ng-if="documento.id", title="Visualizar documento", ng-click="validacaoAnaliseDiretor.downloadDocumentoAnalise(documento.id)")
+                                                        i.glyphicon.glyphicon-eye-open
 
-                                .row(ng-show="!validacaoAnaliseDiretor.parecerTecnico.documentos || validacaoAnaliseDiretor.parecerTecnico.documentos.length == 0")
-                                    .col-md-12
-                                        p.empty-result Não existem arquivos anexados. 
+                                    .row(ng-show="!validacaoAnaliseDiretor.parecerTecnico.documentos || validacaoAnaliseDiretor.parecerTecnico.documentos.length == 0")
+                                        .col-md-12
+                                            p.empty-result Não existem arquivos anexados. 
 
             #accordion-gerente-tecnico.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente-tecnico', aria-expanded='false', data-target='#dados-gerente-tecnico', ng-init = 'validacaoAnaliseDiretor.openedAccordionGerenteTecnico = false', ng-click = 'validacaoAnaliseDiretor.openedAccordionGerenteTecnico = !validacaoAnaliseDiretor.openedAccordionGerenteTecnico' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title 
-                                    | Resultado da análise do gerente técnico
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionGerenteTecnico, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionGerenteTecnico}")
-                   
-                    #dados-gerente-tecnico.collapse
-                        .parecer-diretor
-                            .label-analista
-                                span.title-info Gerente Técnico: 
-                                span {{validacaoAnaliseDiretor.parecerGerenteTecnico.usuario.pessoa.nome}}
+                div(uib-accordion class="accordion-gerente-tecnico")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionGerenteTecnico")
+                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionGerenteTecnico=!validacaoAnaliseDiretor.openedAccordionGerenteTecnico")
+                            div Resultado da análise do gerente técnico
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':validacaoAnaliseDiretor.openedAccordionGerenteTecnico, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionGerenteTecnico}")
+                    
+                        #dados-gerente-tecnico
+                            .parecer-diretor
+                                .label-analista
+                                    span.title-info Gerente Técnico: 
+                                    span {{validacaoAnaliseDiretor.parecerGerenteTecnico.usuario.pessoa.nome}}
 
-                            .label-situacao
-                                span.title-info Situação: 
-                                span {{validacaoAnaliseDiretor.parecerGerenteTecnico.tipoResultadoAnalise.nome | uppercase}}
+                                .label-situacao
+                                    span.title-info Situação: 
+                                    span {{validacaoAnaliseDiretor.parecerGerenteTecnico.tipoResultadoAnalise.nome | uppercase}}
 
-                            .label-situacao
-                                span.title-info {{validacaoAnaliseDiretor.labelParecerGerente}}: 
-                                br
-                                span(ng-bind-html=" validacaoAnaliseDiretor.parecerGerenteTecnico.parecer ") 
+                                .label-situacao
+                                    span.title-info {{validacaoAnaliseDiretor.labelParecerGerente}}: 
+                                    br
+                                    span(ng-bind-html=" validacaoAnaliseDiretor.parecerGerenteTecnico.parecer ") 

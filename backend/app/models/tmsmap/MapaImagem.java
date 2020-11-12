@@ -45,7 +45,9 @@ public class MapaImagem {
 		public Color color;
 		public Color fillColor;
 		public Stroke stroke;
-		String colorCode;
+		public String colorCode;
+		public List<Coordinate> coordinates;
+		public Coordinate[][] coordinatesAtividade;
 
 		public DataLayer(String name, Geometry geometry, Color color, String colorCode) {
 
@@ -85,6 +87,8 @@ public class MapaImagem {
 		public String titulo;
 		public List<DataLayer> dataLayers;
 		public List<String> atividades;
+//		public String tituloGeometria;
+//		public List<Coordinate> coordinates;
 
 		public GrupoDataLayer(String titulo, List<DataLayer> dataLayers) {
 			this.titulo = titulo;
@@ -97,6 +101,14 @@ public class MapaImagem {
 			this.atividades = atividades;
 		}
 
+//		public GrupoDataLayer(String titulo, List<DataLayer> dataLayers, List<String> atividades, String tituloGeometria, List<Coordinate> coordinates) {
+//			this.titulo = titulo;
+//			this.dataLayers = dataLayers;
+//			this.atividades = atividades;
+//			this.tituloGeometria = tituloGeometria;
+//			this.coordinates = coordinates;
+//		}
+
 	}
 
 	public class GrupoDataLayerImagem {
@@ -104,11 +116,13 @@ public class MapaImagem {
 		public String imagem;
 		public List<GrupoDataLayer> grupoDataLayers;
 		public Coordinate[] coordinates;
+		public Coordinate[][] coordinatesAtividade;
 
-		public GrupoDataLayerImagem(String imagem, List<GrupoDataLayer> grupoDataLayers, Coordinate[] coordinates) {
+		public GrupoDataLayerImagem(String imagem, List<GrupoDataLayer> grupoDataLayers, Coordinate[] coordinates, Coordinate[][] coordinatesAtividade) {
 			this.imagem = imagem;
 			this.grupoDataLayers = grupoDataLayers;
 			this.coordinates = coordinates;
+			this.coordinatesAtividade = coordinatesAtividade;
 		}
 
 	}
@@ -189,7 +203,7 @@ public class MapaImagem {
 		Style polygonStyle = new PolygonStyle().fillOpacity(0f).color(Color.RED).width(2).dashArray(2f).opacity(1f);
 		map.addLayer(JTSLayer.from(DefaultGeographicCRS.WGS84, polygonStyle, geometryAreaImovel));
 
-		Collection<Coordinate> mainCoordinates = createMainCoordinates(map, geometryAreaImovel.getCoordinates(), crs);
+		Collection<Coordinate> mainCoordinates = createMainCoordinates(map, geometryAreaImovel.getCoordinates(), crs, "P");
 
 		BufferedImage mapa = new BufferedImage(MAP_WIDTH, MAP_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		map.render(MAP_WIDTH, MAP_HEIGHT, Format.PNG, mapa);
@@ -294,6 +308,8 @@ public class MapaImagem {
 			}
 
             grupoDataLayers.add(new GrupoDataLayer(layerType.getName(), dataLayers, atividades));
+
+// 			TENTAR ORDENAR AQUI OS GRUPOSDATALAYERS E EM OUTROS LUGARES QUE ADD
 
         }
 
@@ -409,7 +425,7 @@ public class MapaImagem {
 
 		dataLayers.addFirst(new DataLayer("Área total do município", geometryAreaImovel, Color.YELLOW).stroke(new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, new float[] {2,2}, 1 )));
 
-		createMainCoordinates(map, geometryAreaImovel.getCoordinates(), crs);
+		createMainCoordinates(map, geometryAreaImovel.getCoordinates(), crs, "P");
 
 		//Setando os pontos do poligono
 		for(DataLayer dataLayer : dataLayers) {
@@ -513,7 +529,6 @@ public class MapaImagem {
 
 		}
 
-
 		Geometry geometryAreaImovel = new GeometryFactory().createGeometryCollection(geometriaImovel.geometrias.stream().map(geometria -> geometria.geometria).toArray(Geometry[]::new));
 
 		CoordinateReferenceSystem crs = GeoCalc.detecteCRS(geometryAreaFoco)[0];
@@ -554,7 +569,9 @@ public class MapaImagem {
 
 		Coordinate[] coordinates = geometryAreaFoco.getCoordinates();
 
-		createMainCoordinates(map, coordinates, crs);
+		createMainCoordinates(map, coordinates, crs, "P");
+
+		Coordinate[][] coordinatesAtividades = addCoordenadasDasAtividades(map, dataLayers, crs);
 
 		adicionarProjecaoMapa(map);
 
@@ -602,7 +619,7 @@ public class MapaImagem {
 
 		}
 
-		return new GrupoDataLayerImagem("data:image/png;base64," + Base64.encodeBase64String(out.toByteArray()), grupoDataLayersOrder, coordinates);
+		return new GrupoDataLayerImagem("data:image/png;base64," + Base64.encodeBase64String(out.toByteArray()), grupoDataLayersOrder, coordinates, coordinatesAtividades);
 
 	}
 
@@ -640,6 +657,42 @@ public class MapaImagem {
 			}
 
 		}
+
+	}
+
+	private Coordinate[][] addCoordenadasDasAtividades(TMSMap map, LinkedList<DataLayer> dataLayers, CoordinateReferenceSystem crs) {
+
+		int index = 1;
+
+		for (DataLayer dataLayer : dataLayers) {
+
+			if (dataLayer.name.contains("Geometria_")) {
+
+				createMainCoordinates(map, dataLayer.geometry.getCoordinates(), crs, "G" + index + "-");
+
+				index++;
+
+			}
+
+		}
+
+		Coordinate[][] coordinatesAtividades = new Coordinate[index-1][];
+
+		index = 0;
+
+		for (DataLayer dataLayer : dataLayers) {
+
+			if (dataLayer.name.contains("Geometria_")) {
+
+				coordinatesAtividades[index] = dataLayer.geometry.getCoordinates();
+
+				index++;
+
+			}
+
+		}
+
+		return coordinatesAtividades;
 
 	}
 
@@ -1061,7 +1114,7 @@ public class MapaImagem {
 
 	}
 
-	private Collection<Coordinate> createMainCoordinates(TMSMap map, Coordinate[] coordinates, CoordinateReferenceSystem crs) {
+	private Collection<Coordinate> createMainCoordinates(TMSMap map, Coordinate[] coordinates, CoordinateReferenceSystem crs, String identificador) {
 
 		List<Coordinate> mainCoordinatesResult = new ArrayList<>();
 
@@ -1085,12 +1138,12 @@ public class MapaImagem {
 				graphics.setFont(fontBold);
 				graphics.setColor(Color.BLACK);
 				graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 2, resultPoint.getY() - 2, 6, 6));
-				graphics.drawString("P" + coordinateNumber, (float)resultPoint.getX() + 3, (float)resultPoint.getY() + 3);
+				graphics.drawString(identificador + coordinateNumber, (float)resultPoint.getX() + 3, (float)resultPoint.getY() + 3);
 
 				graphics.setFont(fontPlain);
 				graphics.setColor(Color.WHITE);
 				graphics.fill(new Ellipse2D.Double(resultPoint.getX() - 1, resultPoint.getY() - 1, 4, 4));
-				graphics.drawString("P" + coordinateNumber, (float)resultPoint.getX() + 4, (float)resultPoint.getY() + 3);
+				graphics.drawString(identificador + coordinateNumber, (float)resultPoint.getX() + 4, (float)resultPoint.getY() + 3);
 
 				Coordinate worldUtmCoordinate = GeoCalc.transform(coordinate, DefaultGeographicCRS.WGS84, crs);
 				mainCoordinatesResult.add(worldUtmCoordinate);

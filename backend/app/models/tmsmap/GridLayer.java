@@ -59,8 +59,8 @@ public class GridLayer implements CustomLayer {
 
 		Point2D worldResultPoint1 = new Point2D.Double();
 		Point2D worldResultPoint2 = new Point2D.Double();
-		mapViewport.getScreenToWorld().transform(new Point2D.Double(doubleMarginSize, doubleMarginSize), worldResultPoint1);
-		mapViewport.getScreenToWorld().transform(new Point2D.Double(this.width - doubleMarginSize, this.height - doubleMarginSize), worldResultPoint2);
+		mapViewport.getScreenToWorld().transform(new Point2D.Double(doubleMarginSize + 20, doubleMarginSize + 20), worldResultPoint1);
+		mapViewport.getScreenToWorld().transform(new Point2D.Double(this.width - doubleMarginSize - 20, this.height - doubleMarginSize - 20), worldResultPoint2);
 
 		Coordinate worldCoordinate1 = new Coordinate(worldResultPoint1.getX(), worldResultPoint1.getY());
 		Coordinate worldUtmCoordinate1 = GeoCalc.transform(worldCoordinate1, DefaultGeographicCRS.WGS84, this.crs);

@@ -22,7 +22,21 @@ public class CoordenadaUtil implements Serializable {
         parteAposVirgula = minuto % 1;
         Double segundo = Math.abs((parteAposVirgula * 60));
 
-        String segundoFormatado = new DecimalFormat("###").format(segundo);
+        String segundoFormatado = new DecimalFormat("##.####").format(segundo);
+
+        if (segundo < 10.0) {
+
+            while(segundoFormatado.length() < 6) {
+                segundoFormatado += "0";
+            }
+
+        } else {
+
+            while(segundoFormatado.length() < 7) {
+                segundoFormatado += "0";
+            }
+
+        }
 
         String gms = (grau > 9 ? grau.toString() : "0" + grau) + "º " +
                 (minuto > 9D ? minuto.longValue() : "0" +  minuto.longValue()) + "' " +

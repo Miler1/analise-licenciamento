@@ -6,261 +6,252 @@
                 span.title-info Analista Geo: 
                 span {{validacaoAnaliseGeoGerente.analiseGeo.analistasGeo[0].usuario.pessoa.nome}}
 
-            #accordion-empreendimento.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-empreendimento', aria-expanded='false', data-target='#dados-empreendimento', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionEmpreendimento = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionEmpreendimento = !validacaoAnaliseGeoGerente.openedAccordionEmpreendimento' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title
-                                    | Resumo da análise
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionEmpreendimento}")
+#accordion-empreendimento.panel-group
+    div(uib-accordion class="accordion-empreendimento")
+        div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseGeoGerente.openedAccordionEmpreendimento")
+            uib-accordion-heading(ng-click="validacaoAnaliseGeoGerente.openedAccordionEmpreendimento=!validacaoAnaliseGeoGerente.openedAccordionEmpreendimento")
+                div Resumo da análise
+                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionEmpreendimento}")
+        
+            #dados-empreendimento
+                #lista-camadas-empreendimento
+                    span.title-info Dados do empreendimento
+                    table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                        thead
+                            tr
+                                th.col-md-6 Item
+                                th.col-md-6 Área (ha)
 
-                    #dados-empreendimento.collapse
-                        #lista-camadas-empreendimento
-                            span.title-info Dados do empreendimento
-                            table.table.table-striped.table-condensed.table-responsive.table-empreendimento
-                                thead
-                                    tr
-                                        th.col-md-6 Item
-                                        th.col-md-6 Área (ha)
+                        tbody
+                            tr(ng-repeat='camada in validacaoAnaliseGeoGerente.camadasDadosEmpreendimento')
+                                td.col-md-5 {{camada.geometrias[0].item}}
+                                td.col-md-5 {{camada.geometrias[0].descricao}}
 
-                                tbody
-                                    tr(ng-repeat='camada in validacaoAnaliseGeoGerente.camadasDadosEmpreendimento')
-                                        td.col-md-5 {{camada.geometrias[0].item}}
-                                        td.col-md-5 {{camada.geometrias[0].descricao}}
+                #lista-camadas-restricoes
+                    
+                    label Restrição da sobreposição
+                    div(ng-if="getRestricoes().length > 0")
+                        table.table.table-striped.table-condensed.table-responsive.table-empreendimento
+                            thead
+                                tr
+                                th.col-md-6 Item
+                                th.col-md-5 Descrição
+                                th.col-md-1.text-right Ações
 
-                        #lista-camadas-restricoes
-                            
-                            label Restrição da sobreposição
-                            div(ng-if="getRestricoes().length > 0")
-                                table.table.table-striped.table-condensed.table-responsive.table-empreendimento
-                                    thead
-                                        tr
-                                        th.col-md-4 Item
-                                        th.col-md-5 Descrição
-                                        th.col-md-1
+                            tbody(ng-repeat="restricao in getRestricoes()")
+                                tr(ng-repeat="orgao in getOrgaos(restricao)")
+                                    td.col-md-6 {{ restricao.item }} 
+                                    td.col-md-5 {{ restricao.descricao }}
+                                    td.col-md-1.text-right
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
+                                            ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)",
+                                            data-toggle="tooltip", title="Visualizar resposta do comunicado ao órgão")
+                    
+                    div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="getRestricoes().length === 0")
+                        i Nenhuma restrição encontrada.
 
-                                    tbody(ng-repeat="restricao in getRestricoes()")
-                                        tr(ng-repeat="orgao in getOrgaos(restricao)")
-                                            td.col-md-5 {{ restricao.item }} 
-                                            td.col-md-5 {{ restricao.descricao }}
-                                            td.col-md-2.text-right
-                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
-                                                    ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(restricao) : validacaoAnaliseGeoGerente.openModalOficio(restricao)",
-                                                    data-toggle="tooltip", title="Visualizar resposta do comunicado ao órgão")
-                            
-                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="getRestricoes().length === 0")
-                                i Nenhuma restrição encontrada.
+                    label Sobreposições
+                    div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
 
-                            label Sobreposições
-                            div(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length > 0")
+                        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
+                            thead
+                                tr
+                                th.col-md-4 Item
+                                th.col-md-5 Descrição
 
+                            tbody(ng-repeat="restricao in validacaoAnaliseGeoGerente.dadosProjeto.restricoes")
+                                tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
+                                    td.col-md-5 {{ restricao.item }} 
+                                    td.col-md-5 {{ restricao.descricao }}              
+
+                                tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
+                                    td.col-md-5 {{ restricao.item }} 
+                                    td.col-md-5 {{ restricao.descricao }} 
+                                
+                                tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis")
+                                    td.col-md-5 {{ restricao.item }} 
+                                    td.col-md-5 {{ restricao.descricao }} 
+                        
+                    div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length === 0")
+                        i Nenhuma sobreposição encontrada.
+                    
+                    label.title-inconsistencia Inconsistências Adicionadas
+                    div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.inconsistencias.length > 0")
+                        
+                        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
+                            thead
+                                tr
+                                th.col-md-4 Item
+                                th.col-md-3 Categoria
+                                th.col-md-4 Descrição
+                                th.col-md-1.text-right Ações
+
+                            tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.inconsistencias")
+                                tr
+                                    td.col-md-4 {{ validacaoAnaliseGeoGerente.getItemRestricao(inconsistencia) }}
+                                    td.col-md-3 {{ inconsistencia.categoria }}
+                                    td.col-md-4 {{ validacaoAnaliseGeoGerente.getDescricaoRestricao(inconsistencia) }}
+                                    td.col-md-2.text-right
+                                        i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
+                                            ng-click="(orgao.sigla !== 'IPHAN' || orgao.sigla !== 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(inconsistencia) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")
+                    
+                    div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="!validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
+                        i Nenhuma inconsistência adicionada.
+
+                #accordion-complexo.panel-group(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.categoria === validacaoAnaliseGeoGerente.enumCategoria.COMPLEXO || validacaoAnaliseGeoGerente.dadosProjeto.complexo")
+                    div(uib-accordion class="accordion-complexo")
+                        div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseGeoGerente.openedAccordionDadosComplexo")
+                            uib-accordion-heading(ng-click="validacaoAnaliseGeoGerente.openedAccordionDadosComplexo=!validacaoAnaliseGeoGerente.openedAccordionDadosComplexo")
+                                div {{ validacaoAnaliseGeoGerente.labelDadosProjeto }}
+                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionDadosComplexo, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionDadosComplexo}")
+                        
+                            #meusDadosComplexo
+                                span.atividades Atividades:
+                                .div-list(style="margin-left: 10px",  ng-repeat="atividade in validacaoAnaliseGeoGerente.dadosProjeto.atividades")
+                                    label {{ atividade.atividadeCaracterizacao.atividade.nome }}
+                                br
                                 table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                     thead
                                         tr
-                                        th.col-md-4 Item
-                                        th.col-md-5 Descrição
+                                            th.col-md-4 Item
+                                            th.col-md-5 Declarado
 
-                                    tbody(ng-repeat="restricao in validacaoAnaliseGeoGerente.dadosProjeto.restricoes")
-                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
-                                            td.col-md-5 {{ restricao.item }} 
-                                            td.col-md-5 {{ restricao.descricao }}              
+                                    tbody
+                                        tr(ng-repeat="geometria in validacaoAnaliseGeoGerente.dadosProjeto.complexo.geometrias")
+                                            td.col-md-5 {{ geometria.item }}
+                                            td.col-md-5 {{ geometria.descricao }}
 
-                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
-                                            td.col-md-5 {{ restricao.item }} 
-                                            td.col-md-5 {{ restricao.descricao }} 
-                                        
-                                        tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis")
-                                            td.col-md-5 {{ restricao.item }} 
-                                            td.col-md-5 {{ restricao.descricao }} 
-                                
-                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.restricoes.length === 0")
-                                i Nenhuma sobreposição encontrada.
-                            
-                            label.title-inconsistencia Inconsistências Adicionadas
-                            div.inconsistencias(ng-if="validacaoAnaliseGeoGerente.inconsistencias.length > 0")
-                                
-                                table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
-                                    thead
-                                        tr
-                                        th.col-md-4 Item
-                                        th.col-md-3 Categoria
-                                        th.col-md-4 Descrição
-                                        th.col-md-1.text-right
+                #lista-camadas-atividades(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.categoria !== validacaoAnaliseGeoGerente.enumCategoria.COMPLEXO && validacaoAnaliseGeoGerente.dadosProjeto.complexo === null")
+                    #accordion-atividades.panel-group
+                        h5(style="margin-bottom:0px") {{ validacaoAnaliseGeoGerente.labelDadosProjeto }}
+                        br
+                        hr(style="margin-top:2px;")
+                        div.collapse-atividade(ng-repeat="atividade in validacaoAnaliseGeoGerente.dadosProjeto.atividades")
+                            div(uib-accordion class="accordion-atividades")
+                                div(uib-accordion-group class="panel-default" is-open="atividade.openedAccordion")
+                                    uib-accordion-heading(ng-click="atividade.openedAccordion=!atividade.openedAccordion")
+                                        div Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
+                                            i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
+                        
 
-                                    tbody(ng-repeat="inconsistencia in validacaoAnaliseGeoGerente.inconsistencias")
-                                        tr
-                                            td.col-md-4 {{ validacaoAnaliseGeoGerente.getItemRestricao(inconsistencia) }}
-                                            td.col-md-3 {{ inconsistencia.categoria }}
-                                            td.col-md-4 {{ validacaoAnaliseGeoGerente.getDescricaoRestricao(inconsistencia) }}
-                                            td.col-md-2.text-right
-                                                i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
-                                                    ng-click="(orgao.sigla !== 'IPHAN' || orgao.sigla !== 'IBAMA') ? validacaoAnaliseGeoGerente.openModalNotificacao(inconsistencia) : validacaoAnaliseGeoGerente.openModalOficio(restricao, processo)")
-                            
-                            div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="!validacaoAnaliseGeoGerente.verificarTamanhoInconsistencias()")
-                                i Nenhuma inconsistência adicionada.
-
-                        #accordion-complexo.panel-group(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.categoria === validacaoAnaliseGeoGerente.enumCategoria.COMPLEXO || validacaoAnaliseGeoGerente.dadosProjeto.complexo")
-                            div
-                                a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-complexo', aria-expanded='false', data-target='#meusDadosComplexo', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionDadosComplexo = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionDadosComplexo = !validacaoAnaliseGeoGerente.openedAccordionDadosComplexo' )
-                                    .panel.panel-default
-                                        .panel-heading
-                                            h4.panel-title 
-                                                | {{ validacaoAnaliseGeoGerente.labelDadosProjeto }}
-                                                i(class="pull-right glyphicon" ng-class="{ 'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionDadosComplexo, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionDadosComplexo }")
-
-                                #meusDadosComplexo.collapse
-                                    span.atividades Atividades:
-                                    .div-list(style="margin-left: 10px",  ng-repeat="atividade in validacaoAnaliseGeoGerente.dadosProjeto.atividades")
-                                        label {{ atividade.atividadeCaracterizacao.atividade.nome }}
-                                    br
                                     table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                         thead
                                             tr
                                                 th.col-md-4 Item
                                                 th.col-md-5 Declarado
 
-                                        tbody
-                                            tr(ng-repeat="geometria in validacaoAnaliseGeoGerente.dadosProjeto.complexo.geometrias")
+                                        tbody(ng-repeat="geometria in atividade.geometrias")
+                                            tr
                                                 td.col-md-5 {{ geometria.item }}
                                                 td.col-md-5 {{ geometria.descricao }}
 
-                        #lista-camadas-atividades(ng-if="validacaoAnaliseGeoGerente.dadosProjeto.categoria !== validacaoAnaliseGeoGerente.enumCategoria.COMPLEXO && validacaoAnaliseGeoGerente.dadosProjeto.complexo === null")
-                            #accordion-atividades.panel-group
-                                h5(style="margin-bottom:0px") {{ validacaoAnaliseGeoGerente.labelDadosProjeto }}
-                                br
-                                hr(style="margin-top:2px;")
-                                div.collapse-atividade(ng-repeat="atividade in validacaoAnaliseGeoGerente.dadosProjeto.atividades")
-                                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-atividades',aria-expanded='false', data-target='#dadosAtividadesProjeto{{$index}}', ng-click = 'atividade.openedAccordion = !atividade.openedAccordion')
-                                        .panel.panel-default
-                                            .panel-heading
-                                                h4.panel-title
-                                                    | Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
-                                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
+#accordion-resultado.panel-group
+    div(uib-accordion class="accordion-resultado")
+        div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseGeoGerente.openedAccordionResultado")
+            uib-accordion-heading(ng-click="validacaoAnaliseGeoGerente.openedAccordionResultado=!validacaoAnaliseGeoGerente.openedAccordionResultado")
+                div Resultado da análise
+                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionResultado, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionResultado}")
+        
+            #resultatdo-analise
+                .label-situacao
+                    span.title-info Situação: 
+                    span {{validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
+                
+                .botoes-download
+                    button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
+                        .glyphicon.glyphicon-file.icon-download
+                        | Parecer Geo
+                    br
+                    button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
+                        .glyphicon.glyphicon-file.icon-download
+                        | Carta Imagem 
 
-                                    .collapse(id='dadosAtividadesProjeto{{$index}}')
-                                        table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
-                                            thead
-                                                tr
-                                                    th.col-md-4 Item
-                                                    th.col-md-5 Declarado
+                #camposAnaliseGeo
+                    div
+                        label.label-parecer Da situação fundiária:
+                        br
+                        p(ng-if="validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria", ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria")
+                        div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria") 
+                            i Não há situação fundiária
 
-                                            tbody(ng-repeat="geometria in atividade.geometrias")
-                                                tr
-                                                    td.col-md-5 {{ geometria.item }}
-                                                    td.col-md-5 {{ geometria.descricao }}
+                    div
+                        label.label-parecer Da análise temporal:
+                        br
+                        p(ng-if="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal", ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal")
+                        div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal") 
+                            i Não há análise temporal
 
-            #accordion-resultado.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-resultado', aria-expanded='false', data-target='#resultatdo-analise', ng-init = 'validacaoAnaliseGeoGerente.openedAccordionResultado = false', ng-click = 'validacaoAnaliseGeoGerente.openedAccordionResultado = !validacaoAnaliseGeoGerente.openedAccordionResultado' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title
-                                    | Resultado da análise
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoGerente.openedAccordionResultado, 'glyphicon-chevron-right': !validacaoAnaliseGeoGerente.openedAccordionResultado}")
-                    
-                    #resultatdo-analise.collapse
-                        .label-situacao
-                            span.title-info Situação: 
-                            span {{validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
-                        
-                        .botoes-download
-                            button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFparecer(validacaoAnaliseGeoGerente.analiseGeo)")
-                                .glyphicon.glyphicon-file.icon-download
-                                | Parecer Geo
-                            br
-                            button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoGerente.downloadPDFCartaImagem(validacaoAnaliseGeoGerente.analiseGeo)")
-                                .glyphicon.glyphicon-file.icon-download
-                                | Carta Imagem 
-
-                        #camposAnaliseGeo
-                            div
-                                label.label-parecer Da situação fundiária:
-                                br
-                                p(ng-if="validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria", ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria")
-                                div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.situacaoFundiaria") 
-                                    i Não há situação fundiária
-
-                            div
-                                label.label-parecer Da análise temporal:
-                                br
-                                p(ng-if="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal", ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal")
-                                div.info-sem-dados-para-exibir(ng-if="!validacaoAnaliseGeoGerente.parecerGeo.analiseTemporal") 
-                                    i Não há análise temporal
-
-                            table.table.table-condensed(ng-if="validacaoAnaliseGeoGerente.possuiAnaliseTemporal")
-
-                                thead
-
-                                    tr
-                                        th.col-md-10 Documento anexado
-                                        th.col-md-2.text-right Ações
-
-                                tbody
-
-                                    tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos", ng-if= "documento.tipo.id === validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
-                                        td.col-md-10 {{ documento.nomeDoArquivo }}
-                                        td.col-md-2.text-right
-                                            a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
-                                                i.glyphicon.glyphicon-eye-open
-                            div
-                                label.label-parecer Conclusão:
-                                br
-                                p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.conclusao")
-
-                        table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.possuiDocumentos")
-
-                            thead
-
-                                tr
-                                    th.col-md-10 Documento anexado
-                                    th.col-md-2.text-right Ações
-
-                            tbody
-
-                                tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos", ng-if= "documento.tipo.id !== validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
-                                    td.col-md-10 {{ documento.nomeDoArquivo }}
-                                    td.col-md-2.text-right
-                                        a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
-                                            i.glyphicon.glyphicon-eye-open
-
-                        #camposAnaliseGeoObservacao
-                            div(ng-show="validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
-                                label.label-parecer Despacho:
-                                br
-                                p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.parecer")
-                            div(ng-show="validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.INDEFERIDO")
-                                label.label-parecer Justificativa:
-                                br
-                                p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.parecer")
-
-#accordion-historico-analises.panel-group
-    div.col-md-12(style="padding:0px;")
-        a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-historico-analises', aria-expanded='false', data-target='#historico-analises', ng-init = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = false', ng-click = 'validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises = !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises' )
-            .panel.panel-default.panel-analise
-                .panel-heading
-                    h4.panel-title
-                        | Histórico da(s) análise(s) anterior(es)
-                        i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises}")
-
-                #historico-analises.collapse
-
-                    table.table.table-striped.table-condensed
+                    table.table.table-condensed(ng-if="validacaoAnaliseGeoGerente.possuiAnaliseTemporal")
 
                         thead
-                            tr
-                                th Início da análise
-                                th Término da análise
-                                th Analista responsável
-                                th Situação
-                                th Documentação
 
-                        tbody(ng-repeat="analiseGeo in validacaoAnaliseGeoGerente.listaAnalisesGeo")
-                            tr(ng-repeat="parecer in analiseGeo.pareceresAnalistaGeo")
-                                td.col-md-1 {{analiseGeo.dataInicio}}
-                                td.col-md-1 {{parecer.dataParecer}}
-                                td.col-md-2 {{parecer.usuario.pessoa.nome}}
-                                td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
-                                td.col-md-1 
-                                    button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseGeoGerente.visualizarJustificativas(parecer, analiseGeo, analiseGeo.analise.processo )")
-                                        i.glyphicon.glyphicon-list-alt
+                            tr
+                                th.col-md-10 Documento anexado
+                                th.col-md-2.text-right Ações
+
+                        tbody
+
+                            tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos", ng-if= "documento.tipo.id === validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
+                                td.col-md-10 {{ documento.nomeDoArquivo }}
+                                td.col-md-2.text-right
+                                    a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
+                                        i.glyphicon.glyphicon-eye-open
+                    div
+                        label.label-parecer Conclusão:
+                        br
+                        p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.conclusao")
+
+                table.table.table-condensed.table-docs(ng-if="validacaoAnaliseGeoGerente.possuiDocumentos")
+
+                    thead
+
+                        tr
+                            th.col-md-10 Documento anexado
+                            th.col-md-2.text-right Ações
+
+                    tbody
+
+                        tr(ng-repeat="documento in validacaoAnaliseGeoGerente.parecerGeo.documentos", ng-if= "documento.tipo.id !== validacaoAnaliseGeoGerente.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
+                            td.col-md-10 {{ documento.nomeDoArquivo }}
+                            td.col-md-2.text-right
+                                a.d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="validacaoAnaliseGeoGerente.baixarDocumento(documento)")
+                                    i.glyphicon.glyphicon-eye-open
+
+                #camposAnaliseGeoObservacao
+                    div(ng-show="validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.DEFERIDO")
+                        label.label-parecer Despacho:
+                        br
+                        p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.parecer")
+                    div(ng-show="validacaoAnaliseGeoGerente.parecerGeo.tipoResultadoAnalise.id === validacaoAnaliseGeoGerente.TiposResultadoAnalise.INDEFERIDO")
+                        label.label-parecer Justificativa:
+                        br
+                        p(ng-bind-html="validacaoAnaliseGeoGerente.parecerGeo.parecer")
+
+#accordion-historico-analises.panel-group
+    div(uib-accordion class="accordion-historico-analises")
+        div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises")
+            uib-accordion-heading(ng-click="validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises=!validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises")
+                div Histórico da(s) análise(s) anterior(es)
+                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaGerente.openedAccordionHistoricoAnalises}")
+        
+            #historico-analises
+
+                table.table.table-striped.table-condensed
+
+                    thead
+                        tr
+                            th.col-md-2 Início da análise
+                            th.col-md-2 Término da análise
+                            th.col-md-2 Analista responsável
+                            th.col-md-2 Situação
+                            th.col-md-1 Documentação
+
+                    tbody(ng-repeat="analiseGeo in validacaoAnaliseGeoGerente.listaAnalisesGeo")
+                        tr(ng-repeat="parecer in analiseGeo.pareceresAnalistaGeo")
+                            td.col-md-2 {{analiseGeo.dataInicio}}
+                            td.col-md-2 {{parecer.dataParecer}}
+                            td.col-md-2 {{parecer.usuario.pessoa.nome}}
+                            td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
+                            td.col-md-1 
+                                button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseGeoGerente.visualizarJustificativas(parecer, analiseGeo, analiseGeo.analise.processo )")
+                                    i.glyphicon.glyphicon-list-alt

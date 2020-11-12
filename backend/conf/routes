@@ -20,6 +20,7 @@ GET		/processos/{idProcesso}						        Processos.findById
 GET 	/processos/{idProcesso}/analiseJuridica		        Processos.findAnaliseJuridica
 GET     /processos/numero/{numProcesso}/completo            Processos.findByNumProcesso
 GET		/processos/baixarShapefile//{idProcesso}	        Processos.baixarShapefile
+GET		/processos/baixarShapefileAtividades//{idProcesso}	Processos.baixarShapefileAtividades
 
 #Questionario
 GET     /questionario/{idProcesso}                  Questionarios.findQuestionario
@@ -112,6 +113,7 @@ GET     /inconsistencia/analiseTecnica/findInconsistenciaByAnaliseTecnica/{idAna
 
 POST    /analisesGeo/parecerJuridico/salvarParecerJuridico                                           PareceresJuridicos.salvarParecerJuridico
 GET     /analisesGeo/parecerJuridico/findParecerJuridico/{id}                                        PareceresJuridicos.findParecerJuridico
+GET     /analisesGeo/parecerJuridico/findPareceres/                                                  PareceresJuridicos.findPareceres
 GET     /analisesGeo/parecerJuridico/getParecerJuridicoByAnaliseTecnica/{idAnaliseTecnica}           PareceresJuridicos.getParecerJuridicoByAnaliseTecnica
 
 POST    /analisesGeo/comunicado/salvarParecerOrgao                                                                      Comunicados.salvarParecerOrgao

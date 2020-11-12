@@ -1,5 +1,6 @@
 package jobs;
 
+import br.ufla.lemaf.beans.pessoa.Contato;
 import models.*;
 
 import models.licenciamento.*;
@@ -9,7 +10,10 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
+import security.cadastrounificado.CadastroUnificadoWS;
+import services.IntegracaoEntradaUnicaService;
 import utils.Helper;
+import utils.WebService;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -89,7 +93,11 @@ public class VerificarComunicado extends GenericJob {
 						if (!comunicado.interessadoNotificado) {
 
 							Empreendimento empreendimento = Empreendimento.findById(analiseGeo.analise.processo.empreendimento.id);
-							List<String> interessados = new ArrayList<>(Collections.singleton(empreendimento.cadastrante.contato.email));
+
+							Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
+									.filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+
+							List<String> interessados = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
 							if (comunicado.sobreposicaoCaracterizacaoEmpreendimento != null) {
 

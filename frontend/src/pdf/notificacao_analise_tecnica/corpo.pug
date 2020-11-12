@@ -3,13 +3,14 @@ doctype html
 |%{
 |	 numeroProcesso = analiseTecnica.analise.processo.numero;
 |	 empreendimento = analiseTecnica.analise.processo.empreendimento;
-|	 empreendimentoNome = empreendimento.pessoa.type == "PessoaFisica" ? empreendimento.pessoa.nome : empreendimento.pessoa.razaoSocial;
-|	 empreendimentoCPF = empreendimento.pessoa.getCpfCnpj();
+|    contatoCadastrante = contatoCadastrante;
+|	 empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
+|	 empreendimentoCPF = empreendimento.cpfCnpj;
 |	 enderecoCompleto = enderecoCompleto;
 |}%
 html(lang='en')
 	head
-		title Análise - Licenciamento Ambiental - Amazonas
+		title Análise - Licenciamento Ambiental - Amapá
 			link(rel='stylesheet' href='${templatePath}/style/estilo.css')
 			meta(charset='UTF-8')
 			style.
@@ -66,7 +67,7 @@ html(lang='en')
 						.container-left
 							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
 						.container-right
-							span <strong>Email:</strong> ${empreendimento.cadastrante.contato.email}
+							span <strong>Email:</strong> ${contatoCadastrante}
 					br
 
 				div
@@ -100,7 +101,7 @@ html(lang='en')
 
 					br
 					br
-					span A pessoa jurídica/pessoa física acima identificada, fica <strong>NOTIFICADA</strong>, de acordo com o artigo 59, do Decreto Estadual no 10.028, de 04.02.87, a prestar a(s) informação(ões), a atender a(s) convocação(ões), solicitação(ões) e decisão(ões) do IPAAM, abaixo descriminada(s), no prazo de <strong>${analiseTecnica.prazoNotificacao} dias</strong>, a contar da data do recebimento desta <strong>NOTIFICAÇÃO</strong>.
+					span A pessoa jurídica/pessoa física acima identificada, fica <strong>NOTIFICADA</strong>, de acordo com o artigo 59, do Decreto Estadual no 10.028, de 04.02.87, a prestar a(s) informação(ões), a atender a(s) convocação(ões), solicitação(ões) e decisão(ões) da SEMA, abaixo descriminada(s), no prazo de <strong>${analiseTecnica.prazoNotificacao} dias</strong>, a contar da data do recebimento desta <strong>NOTIFICAÇÃO</strong>.
 
 					ol
 
@@ -150,7 +151,7 @@ html(lang='en')
 			span ${analista.perfilAnalista} - ${analista.setorAnalista}
 		br
 		div(style="text-align: center")
-			span <strong> Juliano Marcos Valente de Souza</strong>
+			span <strong> Robério Aleixo</strong>
 			br
 			span <strong> Diretor Presidente</strong>
 		br

@@ -2,92 +2,86 @@
     .row
         .col-md-12
             #accordion-analista-geo.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-analista-geo', aria-expanded='false', data-target='#dados-analista-geo', ng-init = 'validacaoAnaliseDiretor.openedAccordionAnalistaGeo = false', ng-click = 'validacaoAnaliseDiretor.openedAccordionAnalistaGeo = !validacaoAnaliseDiretor.openedAccordionAnalistaGeo' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title
-                                    | Resultado da análise geo
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionAnalistaGeo, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionAnalistaGeo}")
+                 div(uib-accordion class="accordion-analista-geo")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionAnalistaGeo")
+                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionAnalistaGeo=!validacaoAnaliseDiretor.openedAccordionAnalistaGeo")
+                            div Resultado da análise geo
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':validacaoAnaliseDiretor.openedAccordionAnalistaGeo, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionAnalistaGeo}")
                    
-                    #dados-analista-geo.collapse
-                        .parecer-diretor
-                            .label-analista
-                                span.title-info Analista Geo: 
-                                span {{validacaoAnaliseDiretor.analiseGeo.analistasGeo[0].usuario.pessoa.nome}}
+                        #dados-analista-geo
+                            .parecer-diretor
+                                .label-analista
+                                    span.title-info Analista Geo: 
+                                    span {{validacaoAnaliseDiretor.analiseGeo.analistasGeo[0].usuario.pessoa.nome}}
 
-                            .label-situacao
-                                span.title-info Situação: 
-                                span {{validacaoAnaliseDiretor.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
+                                .label-situacao
+                                    span.title-info Situação: 
+                                    span {{validacaoAnaliseDiretor.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
 
-                            .label-situacao
-                                span.title-info {{validacaoAnaliseDiretor.labelParecerAnalistaGeo}}: 
-                                br
-                                span {{validacaoAnaliseDiretor.parecerGeo.parecer}}
+                                .label-situacao
+                                    span.title-info {{validacaoAnaliseDiretor.labelParecerAnalistaGeo}}: 
+                                    br
+                                    span {{validacaoAnaliseDiretor.parecerGeo.parecer}}
                         
             #accordion-documentos.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-documentos', aria-expanded='false', data-target='#dados-documentos', ng-init = 'validacaoAnaliseDiretor.openedAccordionDocumentos = false', ng-click = 'validacaoAnaliseDiretor.openedAccordionDocumentos = !validacaoAnaliseDiretor.openedAccordionDocumentos' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title
-                                    | Documentos da análise geo
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionDocumentos, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionDocumentos}")
-                   
-                    #dados-documentos.collapse
-                        .parecer-diretor
+                div(uib-accordion class="accordion-documentos")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionDocumentos")
+                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionDocumentos=!validacaoAnaliseDiretor.openedAccordionDocumentos")
+                            div Documentos da análise geo
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionDocumentos, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionDocumentos}")
 
-                            .botoes-download
-                                button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumentoGeo( validacaoAnaliseDiretor.parecerGeo, validacaoAnaliseDiretor.tipoDocumento.PARECER_ANALISE_GEO )")
-                                    .glyphicon.glyphicon-file.icon-download
-                                    | Parecer Geo
-                                br
-                                button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumentoGeo( validacaoAnaliseDiretor.parecerGeo, validacaoAnaliseDiretor.tipoDocumento.CARTA_IMAGEM )")
-                                    .glyphicon.glyphicon-file.icon-download
-                                    | Carta Imagem 
+                        #dados-documentos
+                            .parecer-diretor
+
+                                .botoes-download
+                                    button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumentoGeo( validacaoAnaliseDiretor.parecerGeo, validacaoAnaliseDiretor.tipoDocumento.PARECER_ANALISE_GEO )")
+                                        .glyphicon.glyphicon-file.icon-download
+                                        | Parecer Geo
+                                    br
+                                    button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseDiretor.baixarDocumentoGeo( validacaoAnaliseDiretor.parecerGeo, validacaoAnaliseDiretor.tipoDocumento.CARTA_IMAGEM )")
+                                        .glyphicon.glyphicon-file.icon-download
+                                        | Carta Imagem 
 
 
-                        table.table.table-condensed.table-docs(style="padding:0px;",ng-if="validacaoAnaliseDiretor.parecerGeo.documentos.length > 0 ")
+                            table.table.table-condensed.table-docs(style="padding:0px;",ng-if="validacaoAnaliseDiretor.parecerGeo.documentos.length > 0 ")
 
-                            thead
+                                thead
 
-                                tr
-                                    th.col-md-10 Arquivo anexado
-                                    th.col-md-2.text-right Ações
+                                    tr
+                                        th.col-md-10 Arquivo anexado
+                                        th.col-md-2.text-right Ações
 
-                            tbody
+                                tbody
 
-                                tr(ng-repeat="documento in validacaoAnaliseDiretor.parecerGeo.documentos")
+                                    tr(ng-repeat="documento in validacaoAnaliseDiretor.parecerGeo.documentos")
 
-                                    td.col-md-10 {{documento.nomeDoArquivo}}
-                                    td.col-md-2.text-right 
-                                        a.btn(ng-if="documento.id", title="Visualizar documento", ng-click="validacaoAnaliseDiretor.downloadDocumentoAnalise(documento.id)")
-                                            i.glyphicon.glyphicon-eye-open
+                                        td.col-md-10 {{documento.nomeDoArquivo}}
+                                        td.col-md-2.text-right 
+                                            a.d-inline.margin-right-xs.aba-clicavel(ng-if="documento.id", title="Visualizar documento", ng-click="validacaoAnaliseDiretor.downloadDocumentoAnalise(documento.id)")
+                                                i.glyphicon.glyphicon-eye-open
 
-                            .row(ng-show="!validacaoAnaliseDiretor.parecerGeo.documentos || validacaoAnaliseDiretor.parecerGeo.documentos.length == 0")
-                                .col-md-12
-                                    p.empty-result Não existem arquivos anexados. 
+                                .row(ng-show="!validacaoAnaliseDiretor.parecerGeo.documentos || validacaoAnaliseDiretor.parecerGeo.documentos.length == 0")
+                                    .col-md-12
+                                        p.empty-result Não existem arquivos anexados. 
 
             #accordion-gerente.panel-group
-                div
-                    a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-gerente', aria-expanded='false', data-target='#dados-gerente', ng-init = 'validacaoAnaliseDiretor.openedAccordionGerente = false', ng-click = 'validacaoAnaliseDiretor.openedAccordionGerente = !validacaoAnaliseDiretor.openedAccordionGerente' )
-                        .panel.panel-default.panel-analise
-                            .panel-heading
-                                h4.panel-title 
-                                    | Resultado da análise do gerente técnico
-                                    i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionGerente, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionGerente}")
-                   
-                    #dados-gerente.collapse
-                        .parecer-diretor
-                            .label-analista
-                                span.title-info Gerente Técnico: 
-                                span {{validacaoAnaliseDiretor.parecerGerenteGeo.usuario.pessoa.nome}}
+                div(uib-accordion class="accordion-gerente")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionGerente")
+                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionGerente=!validacaoAnaliseDiretor.openedAccordionGerente")
+                            div Resultado da análise do gerente técnico
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionGerente, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionGerente}")
+                
+                        #dados-gerente
+                            .parecer-diretor
+                                .label-analista
+                                    span.title-info Gerente Técnico: 
+                                    span {{validacaoAnaliseDiretor.parecerGerenteGeo.usuario.pessoa.nome}}
 
-                            .label-situacao
-                                span.title-info Situação: 
-                                span {{validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.nome | uppercase}}
+                                .label-situacao
+                                    span.title-info Situação: 
+                                    span {{validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.nome | uppercase}}
 
-                            .label-situacao
-                                span.title-info {{validacaoAnaliseDiretor.labelParecerGerente}}: 
-                                br
-                                span(ng-bind-html=" validacaoAnaliseDiretor.parecerGerenteGeo.parecer ") 
+                                .label-situacao
+                                    span.title-info {{validacaoAnaliseDiretor.labelParecerGerente}}: 
+                                    br
+                                    span(ng-bind-html=" validacaoAnaliseDiretor.parecerGerenteGeo.parecer ") 

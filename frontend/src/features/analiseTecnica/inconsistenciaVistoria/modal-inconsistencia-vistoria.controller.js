@@ -46,10 +46,20 @@ var ModalInconsistenciaVistoriaController = function (
             uploadService.save(file)
                 .then(function(response) {
 
+                    var nomeDoArquivo = file.name;
+
+                    var quantidadeDocumentosComMesmoNome = modalCtrl.inconsistenciaVistoria.anexos.filter(function(documento) {
+                        return documento.nomeDoArquivo.includes(file.name.split("\.")[0]);
+                    }).length;
+
+                    if(quantidadeDocumentosComMesmoNome > 0) {
+                        nomeDoArquivo = file.name.split("\.")[0] + " (" + quantidadeDocumentosComMesmoNome + ")." + file.name.split("\.")[1];
+                    }
+
                     modalCtrl.inconsistenciaVistoria.anexos.push(
                         {
                             key: response.data,
-                            nomeDoArquivo: file.name,
+                            nomeDoArquivo: nomeDoArquivo,
                             tipo: {
                                 id: app.utils.TiposDocumentosAnalise.INCONSISTENCIA_VISTORIA
                             }

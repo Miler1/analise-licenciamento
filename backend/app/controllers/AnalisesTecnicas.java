@@ -9,6 +9,7 @@ import security.Acao;
 import serializers.AnaliseGeoSerializer;
 import serializers.AnaliseTecnicaSerializer;
 import services.IntegracaoEntradaUnicaService;
+import utils.GeoJsonUtils;
 import utils.Mensagem;
 
 import javax.validation.ValidationException;
@@ -53,6 +54,8 @@ public class AnalisesTecnicas extends InternalController {
 		String numeroProcesso = getParamAsString("numeroProcesso");
 		
 		AnaliseTecnica analise = AnaliseTecnica.findByNumeroProcesso(numeroProcesso);
+
+		analise.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analise.analise.processo.empreendimento.cpfCnpj);
 		
 		renderJSON(analise, AnaliseTecnicaSerializer.parecer);
 	
@@ -74,6 +77,8 @@ public class AnalisesTecnicas extends InternalController {
 		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES);
 		
 		AnaliseTecnica analise = AnaliseTecnica.findById(idAnaliseTecnica);
+
+		analise.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analise.analise.processo.empreendimento.cpfCnpj);
 		
 		renderJSON(analise, AnaliseTecnicaSerializer.findInfo);
 		
@@ -85,8 +90,10 @@ public class AnalisesTecnicas extends InternalController {
 
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
 
+		analiseTecnica.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.cpfCnpj);
+
 		File file = Geoserver.verificarRestricoes(
-				analiseTecnica.analise.processo.empreendimento.coordenadas,
+				GeoJsonUtils.toGeometry(analiseTecnica.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
 				analiseTecnica.analise.processo.empreendimento.imovel,
 				"analise-geo-id-" + idAnaliseTecnica
 		);
@@ -178,6 +185,8 @@ public class AnalisesTecnicas extends InternalController {
 
 		AnaliseTecnica analiseTecnica = AnaliseTecnica.find("id_analise = :id_analise")
 				.setParameter("id_analise", idAnalise).first();
+
+		analiseTecnica.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.cpfCnpj);
 
 		renderJSON(analiseTecnica, AnaliseTecnicaSerializer.findInfo);
 	}
