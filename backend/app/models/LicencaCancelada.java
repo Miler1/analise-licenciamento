@@ -41,8 +41,6 @@ public class LicencaCancelada extends GenericModel{
 	public Date dataCancelada;
 	
 	public String justificativa;
-		
-	
 	public LicencaCancelada() {
 		
 	}

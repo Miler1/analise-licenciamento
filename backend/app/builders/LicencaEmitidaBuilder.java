@@ -2,6 +2,7 @@ package builders;
 
 import models.StatusLicenca;
 import models.licenciamento.LicencaEmitida;
+import models.licenciamento.StatusCaracterizacao;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
@@ -34,6 +35,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		return this;
 	}
+
 
 	public LicencaEmitidaBuilder addEmpreendimentoAlias() {
 
@@ -259,7 +261,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	}
 
 	private Criterion getStatusAtivoLicencaRestricao(Boolean ativo) {
-
+		addLicencaAlias();
 		return Restrictions.eq("ativo", ativo);
 	}
 
@@ -293,6 +295,34 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		addCaracterizacaoAlias();
 
 		return Restrictions.eq(CARACTERIZACAO_ALIAS+".renovacao", renovado);
+	}
+
+	private Criterion getStatusLicencaCancelada() {
+
+		addCaracterizacaoAlias();
+
+		return Restrictions.eq(CARACTERIZACAO_ALIAS+".status.id",StatusCaracterizacao.CANCELADO);
+	}
+
+	private Criterion getStatusLicencaDeferida() {
+
+		addCaracterizacaoAlias();
+
+		return Restrictions.eq(CARACTERIZACAO_ALIAS+".status.id",StatusCaracterizacao.DEFERIDO);
+	}
+
+	private Criterion getStatusLicencaSuspensa() {
+
+		addCaracterizacaoAlias();
+
+		return Restrictions.eq(CARACTERIZACAO_ALIAS+".status.id",StatusCaracterizacao.SUSPENSO);
+	}
+
+	private Criterion getStatusLicencaVencida() {
+
+		addCaracterizacaoAlias();
+
+		return Restrictions.eq(CARACTERIZACAO_ALIAS+".status.id", StatusCaracterizacao.VENCIDA);
 	}
 	
 	public LicencaEmitidaBuilder filtrarPorNumeroProcesso(String numeroProcesso) {
@@ -391,12 +421,17 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 
 			switch (statusLicenca) {
 
-				case ATIVA:
-					addRestriction(this.getStatusAtivoLicencaRestricao(true));
+				case DEFERIDO:
+					addRestriction(this.getStatusLicencaDeferida());
+					break;
+
+				case VENCIDO:
+					addRestriction(this.getStatusLicencaVencida());
 					break;
 
 				case CANCELADA:
-					addRestriction(Restrictions.or(this.getStatusCanceladaLicencaRestricao(true),this.getStatusCanceladaDispensaRestricao(true)));
+//					addRestriction(Restrictions.or(this.getStatusCanceladaLicencaRestricao(true),this.getStatusCanceladaDispensaRestricao(true)));
+					addRestriction(this.getStatusLicencaCancelada());
 					break;
 
 				case RENOVADA:

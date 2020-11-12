@@ -30,6 +30,7 @@ div
 								span(ng-class="{'icone-licenca-vigente': consultarLicencas.statusCaracterizacao.VIGENTE === licenca.statusCaracterizacao}")
 								span(ng-class="{'icone-licenca-suspensa': consultarLicencas.statusCaracterizacao.SUSPENSO === licenca.statusCaracterizacao}")
 								span(ng-class="{'icone-licenca-cancelada': consultarLicencas.statusCaracterizacao.CANCELADO === licenca.statusCaracterizacao}")
+								span(ng-class="{'icone-licenca-vencida': consultarLicencas.statusCaracterizacao.VENCIDA === licenca.statusCaracterizacao}")
 								
 							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca }}
 							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numero }}
@@ -61,7 +62,8 @@ div
 				.legenda
 					span.col-md-4.icone-licenca-vigente.legenda-margin Vigente
 					span.col-md-4.icone-licenca-suspensa.legenda-margin Suspensa
-					span.col-md-4.icone-licenca-cancelada.legenda-margin(style="margin-bottom:23px") Cancelada
+					span.col-md-4.icone-licenca-cancelada.legenda-margin Cancelada
+					span.col-md-4.icone-licenca-vencida.legenda-margin(style="margin-bottom:23px") Vencida
 
 				+paginacao('consultarLicencas.paginacao', 'consultarLicencas.onPaginaAlterada')
 

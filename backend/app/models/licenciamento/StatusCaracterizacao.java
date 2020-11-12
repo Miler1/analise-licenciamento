@@ -21,7 +21,7 @@ public class StatusCaracterizacao extends GenericModel {
 	public static final Long NOTIFICADO = 9l;
 	public static final Long EM_RENOVACAO_SEM_ALTERACAO = 10l;
 	public static final Long EM_RENOVACAO_COM_ALTERACAO = 11l;
-	public static final Long EXPIRADA = 12L;
+	public static final Long VENCIDA = 12L;
 	public static final Long VENCIDO_AGUARDANDO_PAGAMENTO = 13L;
 	public static final Long VENCIDO_AGUARDANDO_EMISSAO = 14L;
 	public static final Long ANALISE_APROVADA = 15l;

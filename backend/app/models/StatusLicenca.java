@@ -2,7 +2,9 @@ package models;
 
 public enum StatusLicenca {
 
-	ATIVA,
+//	ATIVA,
+	DEFERIDO,
+	VENCIDO,
 	CANCELADA,
 	RENOVADA,
 	SUSPENSA
