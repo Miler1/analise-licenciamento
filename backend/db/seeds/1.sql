@@ -19,17 +19,6 @@ WHERE id = 1;
 
 COMMIT;
 
-
--- Executar no ambiente de producao
-
-BEGIN;
-
-UPDATE analise.geoserver
-SET url_getcapabilities='http://sistemas.ipaam.am.gov.br/geoserver/wfs?version=1.0.0&REQUEST=GetCapabilities'
-WHERE id = 1;
-
-COMMIT;
-
 # --- !Downs
 
 BEGIN;
