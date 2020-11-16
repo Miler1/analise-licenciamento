@@ -21,7 +21,8 @@
     "gulp-util": "*",
     "gulp-wrapper": "^1.0.0",
     "jshint": "^2.9.0",
-    "jshint-stylish": "^2.2.1"
+    "jshint-stylish": "^2.2.1",
+    "natives": "^1.1.6"
   },
   "dependencies": {
     "arcgis-to-geojson-utils": "^1.0.3",
